@@ -4,9 +4,6 @@
   "active": [
     {
       "change": "2026-09-10-notify-channel-config"
-    },
-    {
-      "change": "2026-09-12-rename-ruoyi-dromara-to-wta"
     }
   ],
   "archived": [
@@ -20,6 +17,7 @@
     "2026-08-28-observability-log-monitoring-eli5",
     "2026-09-08-richtext-third-oss",
     "2026-09-11-notify-outbox-wake-poll",
-    "2026-09-12-richtext-list-automapper"
+    "2026-09-12-richtext-list-automapper",
+    "2026-09-12-rename-ruoyi-dromara-to-wta"
   ]
 }

@@ -1,0 +1,92 @@
+{
+  "schema_version": 6,
+  "artifact": "change-status",
+  "change": "2026-09-12-rename-ruoyi-dromara-to-wta",
+  "change_status": "archived",
+  "phase": null,
+  "current_work": null,
+  "works_run": [
+    "specdev/P-goal-plan",
+    "specdev/R-review-architecture",
+    "specdev/S-spec",
+    "specdev/T-tickets",
+    "specdev/I-implement",
+    "specdev/C-code-review",
+    "specdev/A-archive-and-consolidate"
+  ],
+  "claimed_investigations": [],
+  "documentation_status": "iterated-p0-closed",
+  "review_status": "cr-001b-approve-log027-closed",
+  "implementation_status": "t15-frozen-t14-published",
+  "implementation_authorized": true,
+  "public_repo_publication_authorized": true,
+  "legacy_repo_mutation_authorized": true,
+  "documentation_gate": "consistency-pass-with-nits-s-spec-local-ready",
+  "implementation_gate": "authorized-pub-and-legacy",
+  "execution_authorization": {
+    "implementation_commit": {
+      "status": "authorized",
+      "source": "USER-DECISION:t98u-dispatch-implement",
+      "granted_at": "2026-09-12T12:06:16+08:00",
+      "scope": "I-implement for change 2026-09-12-rename-ruoyi-dromara-to-wta; Herdr→Grok→/goal; landed code acceptance"
+    },
+    "local_candidate_integration": {
+      "status": "authorized",
+      "source": "USER-DECISION:t98u",
+      "granted_at": "2026-09-12T12:06:16+08:00",
+      "scope": "integration within new monorepo prep on box; not CTO machine"
+    },
+    "source_cleanup": {
+      "status": "not-authorized",
+      "source": null,
+      "granted_at": null,
+      "scope": "Source worktree and branch cleanup"
+    },
+    "public_repo_publication": {
+      "status": "authorized",
+      "source": "USER-DECISION:t23u-authorize-public-push-and-legacy-freeze-first",
+      "granted_at": "2026-09-12T12:39:02+08:00",
+      "scope": "Create/push orphan public monorepo NAMEWTA/WTA-plus after T-12 checklist; CTO order: freeze legacy remotes first then publish"
+    },
+    "legacy_repo_mutation": {
+      "status": "authorized",
+      "source": "USER-DECISION:t23u-authorize-public-push-and-legacy-freeze-first",
+      "granted_at": "2026-09-12T12:39:02+08:00",
+      "scope": "Freeze transition on NAMEWTA/ruoyi-vue-plus-docs, ruoyi-vue-plus-namewta, plus-ui-namewta: README successor banner + archive/protection as approved; NO force-push/rewrite/filter-repo"
+    }
+  },
+  "leadership": {
+    "current": "rvp-lead:1c44f1c3-a61e-4d39-a7a7-f2d21ce5fb00",
+    "epoch": 4,
+    "assigned_at": "2026-09-12T11:20:00+08:00",
+    "history": [
+      {
+        "from": "secretary/RVP Lead",
+        "to": "RVP·项目Lead",
+        "at": "2026-09-12T10:33:09+08:00",
+        "note": "secretary handoff registered; dispatch P-goal-plan"
+      },
+      {
+        "from": "RVP·项目Lead",
+        "to": "rvp-lead:1c44f1c3-a61e-4d39-a7a7-f2d21ce5fb00",
+        "at": "2026-09-12T10:46:30+08:00",
+        "note": "P-goal-plan local finalize; normalize lead locator; ChatGPT upload Auto-review blocked"
+      },
+      {
+        "from": "rvp-lead:1c44f1c3-a61e-4d39-a7a7-f2d21ce5fb00",
+        "to": "rvp-lead:1c44f1c3-a61e-4d39-a7a7-f2d21ce5fb00",
+        "at": "2026-09-12T11:20:00+08:00",
+        "note": "ChatGPT ingest BLOCKED; local P0-01..08 closed in SpecDev; awaiting CTO + consistency re-review; no implementation auth"
+      }
+    ]
+  },
+  "created_at": "2026-09-12T10:29:50+08:00",
+  "updated_at": "2026-09-12T14:46:32+08:00",
+  "completed_at": "2026-09-12T14:46:32+08:00",
+  "archived": true,
+  "archive_path": "<Path>{roots.state}/specdev/archive/2026-09/2026-09-12-rename-ruoyi-dromara-to-wta</Path>",
+  "blockers": [],
+  "deviations": [],
+  "worktrees": [],
+  "notes": "LOG-022: CTO t98u authorized implement. Dispatch RVP·实现 via Lead: herdr→grok→/goal on this change absolute path. | Lead dispatched RVP·实现 I-implement 2026-09-12 after t98u auth. | LOG-024: CTO t23u authorized public_repo_publication + legacy_repo_mutation; order freeze-then-publish. | Lead dispatched T-15→T-14 per LOG-024/t23u. | Lead: all 18 tickets done; LOG-025 T-15/T-14 complete; dispatching C-code-review. | LOG-026: root dirs → backend/frontend; dispatching implement. | LOG-027: drop upstream-fork-sync; upstream only in root README. | CR-001 request-changes (LOG-027 skill dead links); layout-delta 01f42cf→cdf4d10 included; current_work=null | CR-001 request-changes; dispatching fix for skill dead links. | CR-001-fix pushed 138fedc; delta review dispatched. | CR-001b delta approve: cdf4d10→138fedc; LOG-027 skill dead links CLOSED; blockers cleared for CR-001. | Lead accepted CR-001b approve; dispatching A-archive. | A-archive: WTA-plus mechanical archive; knowledge 0046-0055 + context graduated @ 2026-09-12T14:46:32+08:00."
+}
