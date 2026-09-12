@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Architecture review - OSS 直传与统一对外通知</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+    </script>
+    <style>
+      * { letter-spacing: 0 !important; }
+      .seam { border-style: dashed; }
+      .module-label { font-size: 0.72rem; text-transform: uppercase; }
+      .quality-bar { min-height: 2.75rem; }
+      code { overflow-wrap: anywhere; }
+      .mermaid { min-height: 290px; display: flex; align-items: center; justify-content: center; }
+      @media (max-width: 640px) { .mermaid { min-height: 240px; } }
+    </style>
+  </head>
+  <body class="bg-stone-50 text-slate-900 font-sans">
+    <main class="mx-auto max-w-6xl px-4 py-9 sm:px-6 sm:py-12">
+      <header class="border-b border-slate-300 pb-6">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-sm font-semibold text-emerald-700">ruoyi-vue-plus-docs / 2026-08-23</p>
+            <h1 class="mt-1 font-serif text-3xl font-semibold sm:text-4xl">Architecture review</h1>
+          </div>
+          <p class="max-w-xl text-sm text-slate-600 sm:text-right">OSS 直传、业务引用、通知审计与附件快照</p>
+        </div>
+        <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-600" aria-label="图例">
+          <span><span class="mr-1 inline-block h-3 w-5 border border-slate-700 align-middle"></span>module</span>
+          <span><span class="mr-1 inline-block h-3 w-5 border border-dashed border-slate-700 align-middle"></span>seam</span>
+          <span><span class="mr-1 inline-block h-0 w-5 border-t-2 border-red-600 align-middle"></span>leak</span>
+          <span><span class="mr-1 inline-block h-3 w-5 border-4 border-slate-900 align-middle"></span>deep module</span>
+        </div>
+        <p class="mt-4 text-xs text-slate-500">
+          Decision record: <code>&lt;Path&gt;{roots.state}/specdev/changes/2026-08-21-oss-direct-unified-notification/architecture-review.md&lt;/Path&gt;</code>
+        </p>
+      </header>
+
+      <section class="mt-10 grid gap-5 border-b border-slate-300 pb-10 md:grid-cols-3" aria-label="审查证据">
+        <div>
+          <p class="text-xs font-semibold uppercase text-slate-500">Scope</p>
+          <p class="mt-2 text-sm">用户指定 change；不扩大到 RBAC、支付或部署配置。</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase text-slate-500">Pressure</p>
+          <p class="mt-2 text-sm">backend 17 commits / 179 files；frontend 3 commits / 17 files。</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase text-slate-500">Filtered out</p>
+          <p class="mt-2 text-sm"><code>NotifyDispatcher</code> 与 <code>uploadDirectToOss</code> 已提供真实 depth。</p>
+        </div>
+      </section>
+
+      <section id="candidates" class="divide-y divide-slate-300">
+        <article id="ar-001" class="py-12">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-emerald-700">AR-001</p>
+              <h2 class="mt-1 font-serif text-2xl font-semibold">Deepen business-owned OSS references</h2>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-semibold">
+              <span class="rounded border border-emerald-700 bg-emerald-50 px-2 py-1 text-emerald-800">Strong</span>
+              <span class="rounded border border-emerald-700 bg-emerald-700 px-2 py-1 text-white">Consensus</span>
+              <span class="rounded border border-slate-400 bg-white px-2 py-1 text-slate-700">mock</span>
+            </div>
+          </div>
+
+          <div class="mt-5 border-y border-slate-200 py-3">
+            <p class="text-xs font-semibold uppercase text-slate-500">Files</p>
+            <p class="mt-1 font-mono text-xs leading-6 sm:text-sm">
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-api/src/main/java/org/dromara/system/api/OssService.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/service/OssLifecycleManager.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysUserServiceImpl.java&lt;/Path&gt; ·
+              &lt;Path&gt;plus-ui-namewta/src/views/system/user/profile/userAvatar.vue&lt;/Path&gt;
+            </p>
+          </div>
+
+          <div class="mt-7 grid gap-8 lg:grid-cols-2">
+            <section aria-labelledby="ar1-before">
+              <h3 id="ar1-before" class="text-sm font-semibold">Before</h3>
+              <pre class="mermaid mt-2 border-l-4 border-red-600 bg-white px-3 py-4">
+flowchart TD
+  U[Direct upload module] --> O[ossId / TEMP]
+  O --> B[Business write module]
+  B --> D[(Business row)]
+  B -. caller must remember .-> R[OssService bind/unbind]
+  R --> L[Lifecycle module]
+  classDef leak stroke:#dc2626,stroke-width:2px
+  class B,R leak
+              </pre>
+            </section>
+            <section aria-labelledby="ar1-after">
+              <h3 id="ar1-after" class="text-sm font-semibold">After</h3>
+              <div class="mt-2 flex min-h-72 flex-col justify-center border-4 border-slate-900 bg-white p-5">
+                <p class="module-label font-semibold text-slate-500">Narrow interface</p>
+                <div class="quality-bar mt-2 flex items-center border border-emerald-700 bg-emerald-50 px-4 text-sm font-semibold text-emerald-900">one business write outcome</div>
+                <p class="module-label mt-6 font-semibold text-slate-500">Hidden implementation</p>
+                <div class="mt-2 grid gap-2 text-sm text-slate-600 sm:grid-cols-2">
+                  <div class="border border-slate-200 bg-stone-50 p-3">record persistence</div>
+                  <div class="border border-slate-200 bg-stone-50 p-3">old/new attachment diff</div>
+                  <div class="border border-slate-200 bg-stone-50 p-3">reference transition</div>
+                  <div class="border border-slate-200 bg-stone-50 p-3">failure compensation</div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <dl class="mt-7 grid gap-5 border-t border-slate-200 pt-5 md:grid-cols-3">
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Problem</dt><dd class="mt-1 text-sm">User and notice modules now repeat old/new diff, bind/unbind order and transaction coordination.</dd></div>
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Solution</dt><dd class="mt-1 text-sm">Move record persistence and reference lifecycle behind one deep module.</dd></div>
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Wins</dt><dd class="mt-1 text-sm">locality: one write module · leverage: every attachment caller · tests: one interface</dd></div>
+          </dl>
+          <p class="mt-5 text-sm text-slate-700"><strong>Deletion test:</strong> current omissions compile and leave assets TEMP; removing the deep module would spread persistence, diff, bind/unbind and compensation back to every business writer.</p>
+          <p class="mt-3 border-l-4 border-emerald-700 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">ADR: no conflict. This makes ADR-005 executable at the business write seam.</p>
+          <p class="mt-3 border-l-4 border-slate-900 bg-white px-4 py-3 text-sm text-slate-800"><strong>Interview / round 12:</strong> Business OSS Owner stays in each domain write module; shared implementation carries only mechanical reference rules. This is a fresh baseline with no historical compatibility or backfill.</p>
+          <p class="mt-3 border-l-4 border-slate-900 bg-white px-4 py-3 text-sm text-slate-800"><strong>Interview / round 13:</strong> Business persistence and reference transitions fail closed in one transaction. Logical deletion follows each owner's explicit restore contract.</p>
+          <p class="mt-3 border-l-4 border-slate-900 bg-white px-4 py-3 text-sm text-slate-800"><strong>Interview / round 14:</strong> An explicit owner manifest plus focused architecture and contract tests ratchets every future persistent ossId owner; no runtime scanning or dynamic callbacks.</p>
+          <p class="mt-3 border-l-4 border-emerald-700 bg-emerald-50 px-4 py-3 text-sm text-emerald-950"><strong>Consensus:</strong> The complete frontier was traversed and explicitly confirmed by the user.</p>
+        </article>
+
+        <article id="ar-002" class="py-12">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-amber-700">AR-002</p>
+              <h2 class="mt-1 font-serif text-2xl font-semibold">Localize notification audit policy</h2>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-semibold">
+              <span class="rounded border border-amber-600 bg-amber-50 px-2 py-1 text-amber-900">Worth exploring</span>
+              <span class="rounded border border-slate-400 bg-white px-2 py-1 text-slate-700">in-process</span>
+            </div>
+          </div>
+
+          <div class="mt-5 border-y border-slate-200 py-3">
+            <p class="text-xs font-semibold uppercase text-slate-500">Files</p>
+            <p class="mt-1 font-mono text-xs leading-6 sm:text-sm">
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/src/main/java/org/dromara/common/notify/model/NotifyAuditPolicy.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/src/main/java/org/dromara/common/notify/model/NotifyRequest.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/src/main/java/org/dromara/common/notify/core/NotifyDispatcher.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/notify/service/impl/SysNotifyMonitorServiceImpl.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-admin/src/main/java/org/dromara/web/controller/CaptchaController.java&lt;/Path&gt;
+            </p>
+          </div>
+
+          <div class="mt-7 grid gap-8 lg:grid-cols-2">
+            <section aria-labelledby="ar2-before">
+              <h3 id="ar2-before" class="text-sm font-semibold">Before</h3>
+              <div class="mt-2 space-y-2 border-l-4 border-red-600 bg-white p-4">
+                <div class="h-12 border border-slate-300 bg-stone-50 px-4 py-3 text-sm">Captcha caller selects persistence policy</div>
+                <div class="h-12 border border-red-500 bg-red-50 px-4 py-3 text-sm">NotifyRequest exposes audit policy</div>
+                <div class="h-12 border border-red-500 bg-red-50 px-4 py-3 text-sm">Dispatcher copies policy during normalization</div>
+                <div class="h-12 border border-slate-300 bg-stone-50 px-4 py-3 text-sm">Monitor persistence branches on policy</div>
+              </div>
+            </section>
+            <section aria-labelledby="ar2-after">
+              <h3 id="ar2-after" class="text-sm font-semibold">After</h3>
+              <div class="mt-2 flex min-h-72 flex-col justify-center border-4 border-slate-900 bg-white p-5">
+                <p class="module-label font-semibold text-slate-500">Delivery facts</p>
+                <div class="quality-bar mt-2 flex items-center border border-slate-300 bg-stone-50 px-4 text-sm">stable request and result</div>
+                <p class="module-label mt-6 font-semibold text-slate-500">Deep monitoring module</p>
+                <div class="mt-2 border border-emerald-700 bg-emerald-50 p-4 text-sm text-emerald-950">classification · retention · redaction · persistence</div>
+              </div>
+            </section>
+          </div>
+
+          <dl class="mt-7 grid gap-5 border-t border-slate-200 pt-5 md:grid-cols-3">
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Problem</dt><dd class="mt-1 text-sm">Persistence knowledge leaks from Captcha through the delivery interface.</dd></div>
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Solution</dt><dd class="mt-1 text-sm">Concentrate classification, retention and redaction in a deep monitoring module.</dd></div>
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Wins</dt><dd class="mt-1 text-sm">interface shrinks · locality: one policy module · tests: one policy surface</dd></div>
+          </dl>
+          <p class="mt-5 text-sm text-slate-700"><strong>Deletion test:</strong> removing the enum erases branches in three modules but does not erase the retention requirement; without a deep monitoring module the choice spreads again.</p>
+          <p class="mt-3 border-l-4 border-amber-600 bg-amber-50 px-4 py-3 text-sm text-amber-950">ADR warning: ADR-008 requires full plaintext retention. Current REDACT_SENSITIVE work reverses that accepted trade-off and must be revisited explicitly.</p>
+        </article>
+
+        <article id="ar-003" class="py-12">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-amber-700">AR-003</p>
+              <h2 class="mt-1 font-serif text-2xl font-semibold">Deepen authorized attachment snapshots</h2>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-semibold">
+              <span class="rounded border border-amber-600 bg-amber-50 px-2 py-1 text-amber-900">Worth exploring</span>
+              <span class="rounded border border-slate-400 bg-white px-2 py-1 text-slate-700">mock</span>
+            </div>
+          </div>
+
+          <div class="mt-5 border-y border-slate-200 py-3">
+            <p class="text-xs font-semibold uppercase text-slate-500">Files</p>
+            <p class="mt-1 font-mono text-xs leading-6 sm:text-sm">
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/src/main/java/org/dromara/demo/controller/MailSendController.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/notify/attachment/SystemNotifyAttachmentSnapshotService.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/notify/attachment/NotifyAttachmentObjectStore.java&lt;/Path&gt; ·
+              &lt;Path&gt;ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/notify/service/impl/SysNotifyMonitorServiceImpl.java&lt;/Path&gt;
+            </p>
+          </div>
+
+          <div class="mt-7 grid gap-8 lg:grid-cols-2">
+            <section aria-labelledby="ar3-before">
+              <h3 id="ar3-before" class="text-sm font-semibold">Before</h3>
+              <pre class="mermaid mt-2 border-l-4 border-red-600 bg-white px-3 py-4">
+sequenceDiagram
+  participant C as Caller
+  participant S as Snapshot module
+  participant P as Provider adapter
+  participant M as Monitor module
+  C->>C: permission check
+  C->>S: source ossIds
+  S->>S: ambient permission check
+  S->>P: copy + materialize
+  S-->>C: snapshots
+  C->>M: best-effort event
+  M->>M: bind references
+              </pre>
+            </section>
+            <section aria-labelledby="ar3-after">
+              <h3 id="ar3-after" class="text-sm font-semibold">After</h3>
+              <div class="mt-2 flex min-h-72 flex-col justify-center border-4 border-slate-900 bg-white p-5">
+                <p class="module-label font-semibold text-slate-500">Authorized snapshot seam</p>
+                <div class="quality-bar seam mt-2 flex items-center border-2 border-emerald-700 bg-emerald-50 px-4 text-sm font-semibold text-emerald-950">caller crosses one seam</div>
+                <p class="module-label mt-6 font-semibold text-slate-500">Hidden implementation</p>
+                <div class="mt-2 grid gap-2 text-sm text-slate-600 sm:grid-cols-2">
+                  <div class="border border-slate-200 bg-stone-50 p-3">source authorization</div>
+                  <div class="border border-slate-200 bg-stone-50 p-3">Provider adapter</div>
+                  <div class="border border-slate-200 bg-stone-50 p-3">copy compensation</div>
+                  <div class="border border-slate-200 bg-stone-50 p-3">snapshot lifecycle</div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <dl class="mt-7 grid gap-5 border-t border-slate-200 pt-5 md:grid-cols-3">
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Problem</dt><dd class="mt-1 text-sm">Authorization, copy, compensation and binding span caller, snapshot and monitor modules.</dd></div>
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Solution</dt><dd class="mt-1 text-sm">Deepen the snapshot module around authorized use and lifecycle.</dd></div>
+            <div><dt class="text-xs font-semibold uppercase text-slate-500">Wins</dt><dd class="mt-1 text-sm">locality: authorization · one test interface · adapter stays internal</dd></div>
+          </dl>
+          <p class="mt-5 text-sm text-slate-700"><strong>Deletion test:</strong> removing the snapshot module spreads source lookup, copy, metadata, materialization and compensation; removing one duplicate permission check does not remove the complexity.</p>
+          <p class="mt-3 border-l-4 border-emerald-700 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">ADR: no conflict. ADR-009 still requires pre-send copy, zero Provider calls on copy failure and TEMP cleanup after monitor failure.</p>
+        </article>
+      </section>
+
+      <section id="top-recommendation" class="border-t-4 border-emerald-700 py-10">
+        <p class="text-sm font-semibold text-emerald-700">Best recommendation</p>
+        <h2 class="mt-1 font-serif text-2xl font-semibold"><a class="underline decoration-emerald-600 decoration-2 underline-offset-4" href="#ar-001">Deepen business-owned OSS references</a></h2>
+        <p class="mt-2 max-w-3xl text-slate-700">Recent implementation now repeats the lifecycle transition in two business modules; every new attachment writer will inherit the same invisible coordination risk.</p>
+      </section>
+    </main>
+  </body>
+</html>

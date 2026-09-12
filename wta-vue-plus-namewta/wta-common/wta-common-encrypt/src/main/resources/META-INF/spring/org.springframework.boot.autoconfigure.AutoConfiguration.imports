@@ -1,0 +1,3 @@
+org.namewta.common.encrypt.config.EncryptorAutoConfiguration
+org.namewta.common.encrypt.config.ApiDecryptAutoConfiguration
+

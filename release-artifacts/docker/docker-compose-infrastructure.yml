@@ -1,0 +1,165 @@
+x-default-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "100m"
+    max-file: "5"
+
+services:
+  mysql:
+    image: mysql:8.4.9
+    container_name: namewta-mysql
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-ry-namewta}"
+      MYSQL_USER: "${MYSQL_APP_USER:?MYSQL_APP_USER is required}"
+      MYSQL_PASSWORD: "${MYSQL_APP_PASSWORD:?MYSQL_APP_PASSWORD is required}"
+      NACOS_MYSQL_INIT_ENABLED: "${NACOS_MYSQL_INIT_ENABLED:-false}"
+      NACOS_DB_NAME: "${NACOS_DB_NAME:-nacos}"
+      NACOS_DB_USER: "${NACOS_DB_USER:-nacos}"
+      NACOS_DB_PASSWORD: "${NACOS_DB_PASSWORD:-}"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:43306:3306"
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/mysql/data:/var/lib/mysql"
+      - ./infrastructure/mysql/init:/docker-entrypoint-initdb.d:ro
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+      - --explicit_defaults_for_timestamp=true
+      - --lower_case_table_names=1
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  nacos:
+    image: nacos/nacos-server:v2.5.4
+    container_name: namewta-nacos
+    profiles: [nacos]
+    environment:
+      TZ: Asia/Shanghai
+      MODE: standalone
+      PREFER_HOST_MODE: hostname
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: "${NACOS_DB_NAME:-nacos}"
+      MYSQL_SERVICE_USER: "${NACOS_DB_USER:-nacos}"
+      MYSQL_SERVICE_PASSWORD: "${NACOS_DB_PASSWORD:-}"
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      NACOS_AUTH_ENABLE: "true"
+      NACOS_AUTH_CACHE_ENABLE: "false"
+      JAVA_OPT: -Dnacos.core.auth.caching.enabled=false
+      NACOS_AUTH_TOKEN: "${NACOS_AUTH_TOKEN:-}"
+      NACOS_AUTH_IDENTITY_KEY: "${NACOS_AUTH_IDENTITY_KEY:-}"
+      NACOS_AUTH_IDENTITY_VALUE: "${NACOS_AUTH_IDENTITY_VALUE:-}"
+      NACOS_AUTH_USER_AGENT_AUTH_WHITE_ENABLE: "false"
+      JVM_XMS: 512m
+      JVM_XMX: 512m
+      JVM_XMN: 256m
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:8848:8848"
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:9848:9848"
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/nacos/logs:/home/nacos/logs"
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/nacos/data:/home/nacos/data"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://127.0.0.1:8848/nacos/v1/console/health/readiness >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  redis:
+    image: redis:8.6.3
+    container_name: namewta-redis
+    environment:
+      TZ: Asia/Shanghai
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD is required}"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:46379:6379"
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/redis/data:/data"
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --requirepass
+      - "${REDIS_PASSWORD:?REDIS_PASSWORD is required}"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli --no-auth-warning -a \"$$REDIS_PASSWORD\" ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  minio:
+    image: pgsty/minio:RELEASE.2026-04-17T00-00-00Z
+    container_name: namewta-minio
+    environment:
+      TZ: Asia/Shanghai
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:?MINIO_ROOT_USER is required}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD is required}"
+      MINIO_API_CORS_ALLOW_ORIGIN: "${MINIO_API_CORS_ALLOW_ORIGIN:-*}"
+      MINIO_COMPRESS: "off"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49000:9000"
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49001:9001"
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/minio/data:/data"
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/minio/config:/root/.minio"
+    command: server --address ':9000' --console-address ':9001' /data
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:9000/minio/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  elasticsearch:
+    image: "${ELASTICSEARCH_IMAGE:-docker.elastic.co/elasticsearch/elasticsearch:9.4.2}"
+    container_name: namewta-elasticsearch
+    profiles: [ai]
+    environment:
+      TZ: Asia/Shanghai
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49200:9200"
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/elasticsearch/data:/usr/share/elasticsearch/data"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://127.0.0.1:9200/_cluster/health >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+networks:
+  namewta:
+    external: true
+    name: "${NAMEWTA_NETWORK:-namewta-network}"

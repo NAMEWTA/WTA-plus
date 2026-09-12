@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-24-notify-eli5",
+  "status": "consensus",
+  "round": 4,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "统一通知平台目标",
+      "question": "本 change 的目标是否从现有应用内通知工具演进为公司级统一通知平台，使业务系统只对接一个平台并集中查看配置、用量和投递结果？",
+      "depends_on": [],
+      "recommendation": "是。以统一接入、集中治理和可审计投递为目标，而不是只增加一个短信发送页面。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。所有业务系统通过统一平台发送通知，供应商迁移、渠道配置、模板和发送统计由平台集中管理。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "复用现有内核而非改造 Austin",
+      "question": "平台是否复用当前 common-notify、common-sms、common-mail、SMS4J 和监控能力，而不引入或 fork Austin 形成第二套通知内核？",
+      "depends_on": ["D-001"],
+      "recommendation": "是。当前内核已经覆盖渠道 SPI、同步分发、Redis 幂等、附件快照和投递事件，缺口主要在管理控制面。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。以现有 NAMEWTA 通知能力为底座新增管理平台，不改造 Austin，也不重复实现发送内核。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "后端模块与部署形态",
+      "question": "首期是否在后端子仓的 ruoyi-modules 下新增 ruoyi-notify，并随 ruoyi-admin 同进程部署，而不是在父工作区根目录创建模块或立即拆成独立微服务？",
+      "depends_on": ["D-001", "D-002"],
+      "recommendation": "是。先保持模块化单体，复用现有认证、RBAC、数据库、Redis、OSS 和运维体系；出现独立扩缩容或故障隔离需求后再评估拆分。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。后端模块落在 ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify，首期由 ruoyi-admin 组装部署。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "控制面与数据面边界",
+      "question": "新模块是否只拥有应用、渠道账号、模板、供应商绑定、路由、配额、统一 API 和统计等控制面，common-notify 继续保持渠道无关的数据面内核？",
+      "depends_on": ["D-002", "D-003"],
+      "recommendation": "是。ruoyi-notify 可以依赖 common-notify，common-notify 不得反向依赖业务模块或数据库实体。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。新增模块管理平台业务状态并编排现有内核，不把 CRUD、业务实体或系统用户解析塞入 common-notify。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "公司系统统一接入入口",
+      "question": "外部业务系统是否通过稳定 HTTP API 接入，并复用现有 NAMEWTA OpenAPI 的 HMAC 签名、防重放、权限和分布式限流能力？",
+      "depends_on": ["D-001", "D-003"],
+      "recommendation": "是。复用现有机器调用网关，在其认证结果之上叠加通知应用、模板、配额和路由授权，避免建设第二套密钥协议。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。统一发送接口走现有 OpenAPI 机器调用边界，平台再执行通知领域授权。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-006",
+      "title": "前端领域落位",
+      "question": "通知管理前端是否按现有模块对齐规范新增 packages/domains/notify 与 packages/web-domains/notify，并由 admin-web 显式选择其 manifest？",
+      "depends_on": ["D-003", "D-004"],
+      "recommendation": "是。无头 API、模型和服务进入 Domain，Vue 页面进入同名 Web Domain，不继续扩大 system 前端包。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。前端一级边界与新后端 ruoyi-notify 模块对齐，并遵守现有 Domain/Web Domain 分层和 manifest 路由。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-007",
+      "title": "现有投递日志复用与迁移边界",
+      "question": "是否继续复用 sys_notify_log、sys_notify_delivery_log 和当前监控页面，避免新建平行日志体系，并在后续设计中决定是否把 system/notify 迁入新模块？",
+      "depends_on": ["D-003", "D-004"],
+      "recommendation": "是。先保持表和 HTTP 合同兼容，控制面新增数据使用独立表；监控代码归属迁移必须单独设计。",
+      "status": "answered",
+      "round": 1,
+      "answer": "不创建长期并存的第二套通知日志；现有实现只作为事实参考。D-020 的后续用户决定已取消旧 URL、权限和历史数据兼容，不迁移现有监控数据。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-008",
+      "title": "首期渠道范围",
+      "question": "第一期应只完成短信平台，还是同时把邮件纳入统一模板、路由、配额和统计？",
+      "depends_on": ["D-001", "D-002", "D-004"],
+      "recommendation": "首期把短信和邮件都纳入统一领域模型，但只把短信做成完整的多供应商路由与回执闭环；邮件复用现有 SMTP Adapter 完成账号、模板、发送和统计，不阻塞短信上线。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采纳推荐方案：统一模型同时覆盖短信和邮件；首期优先完成短信多供应商、路由和回执闭环，邮件先复用现有 SMTP Adapter 完成基础治理。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-009",
+      "title": "发送执行与可靠性模式",
+      "question": "统一 API 应只保留当前同步发送，还是同时提供同步快速发送与持久化异步发送两种模式？",
+      "depends_on": ["D-001", "D-004", "D-005"],
+      "recommendation": "提供两种显式模式：验证码等低延迟场景同步返回 Provider 接受结果；普通业务通知先持久化任务再异步投递。异步链路必须使用 Outbox 或 durable queue，不能把现有 Spring @Async 监控事件当作可靠队列。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采纳推荐方案：提供显式同步快速发送与持久化异步发送；可靠异步使用 Outbox 或 durable queue，不复用 best-effort Spring @Async 监控事件。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-010",
+      "title": "通知应用身份模型",
+      "question": "是否新增一等 notify_app 作为业务系统身份，并把已验证的 OpenAPI credential 绑定到通知应用，而不是直接把用户、OAuth Client 或 providerKey 当作调用应用？",
+      "depends_on": ["D-001", "D-005"],
+      "recommendation": "是。notify_app 拥有状态、允许模板、允许渠道、配额和审计标签；OpenAPI credential 只负责机器认证，一个身份概念不能替代另一个。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采纳推荐方案：新增一等 notify_app，显式绑定已验证的 OpenAPI credential，并独立拥有渠道、模板、配额和审计授权。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-011",
+      "title": "模板优先与原始内容权限",
+      "question": "业务系统是否默认只能提交逻辑模板编码和参数，原始短信/邮件正文仅向受控的内部调用方开放？",
+      "depends_on": ["D-001", "D-004", "D-005"],
+      "recommendation": "是。模板优先才能集中审批、迁移供应商和准确统计；原始内容发送作为独立高权限能力保留，不能成为普通接入默认值。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采纳推荐方案：普通调用默认只提交逻辑模板编码和参数；原始内容发送作为独立高权限能力，仅向受控内部应用开放。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-012",
+      "title": "供应商与路由选择权",
+      "question": "普通业务请求是否只表达逻辑渠道或场景，由平台选择供应商账号；providerKey 仅向运维测试和受控内部调用开放？",
+      "depends_on": ["D-001", "D-004", "D-005"],
+      "recommendation": "是。否则调用方仍耦合阿里云、腾讯云等供应商，平台无法透明迁移、灰度或故障切换。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采纳推荐方案：普通调用方不选择 providerKey，由平台根据场景和路由选择渠道账号；providerKey 仅用于运维测试和受控内部调用。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-013",
+      "title": "动态配置与发布方式",
+      "question": "渠道账号和供应商配置是否必须数据库集中管理、加密保存并支持校验后热发布，还是允许修改 YAML 后重启生效？",
+      "depends_on": ["D-001", "D-002", "D-004"],
+      "recommendation": "生产账号进入数据库并加密保存，管理端永不回显密钥明文；发布先校验再原子切换运行时快照，失败保留上一版本。YAML 只用于本地开发或引导配置。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采纳推荐方案：生产渠道账号数据库集中管理并加密保存，校验后原子热发布，发布失败保留上一运行时快照；YAML 只用于开发或引导。",
+      "log_ref": "LOG-013"
+    },
+    {
+      "id": "D-014",
+      "title": "路由、灰度与故障切换",
+      "question": "平台应支持哪些路由维度、优先级、权重、健康判定和自动故障切换语义？",
+      "depends_on": ["D-008", "D-009", "D-012", "D-013"],
+      "recommendation": "按应用、逻辑模板、渠道和目标区域匹配有版本的路由规则；同一请求固定路由快照，只有明确可重试错误才切换备用供应商，并保留每次 attempt。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采纳推荐方案：按应用、逻辑模板、渠道和目标区域匹配版本化路由；请求固定路由快照，仅对明确可重试错误切换备用供应商，并记录每次 attempt。",
+      "log_ref": "LOG-014"
+    },
+    {
+      "id": "D-015",
+      "title": "统一发送 API 合同",
+      "question": "统一 API 的请求、同步响应、异步受理、幂等、批量上限和状态查询应采用什么稳定合同？",
+      "depends_on": ["D-008", "D-009", "D-010", "D-011", "D-012"],
+      "recommendation": "使用平台 requestId、业务幂等键、逻辑模板、目标和参数构成稳定合同；同步返回 attempt 结果，异步返回受理 ID，并提供按应用受限的状态查询。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采纳推荐方案：统一合同包含平台 requestId、业务幂等键、逻辑模板、目标和参数；同步返回 attempt 结果，异步返回受理 ID，并提供应用受限状态查询。",
+      "log_ref": "LOG-015"
+    },
+    {
+      "id": "D-016",
+      "title": "幂等作用域与重复请求",
+      "question": "跨应用统一接入后，幂等键应如何分区，重复、进行中和同键异载荷分别返回什么行为？",
+      "depends_on": ["D-009", "D-010", "D-015"],
+      "recommendation": "作用域使用 notify_app + channel + business idempotency key，默认 24 小时并允许应用在 5 分钟至 7 天内配置；同摘要返回原受理结果，进行中返回稳定状态，同键不同摘要拒绝。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采纳推荐方案：幂等作用域为 notifyAppId + channel + idempotencyKey，默认 24 小时并允许 5 分钟至 7 天配置；同键同摘要复用原结果或状态，同键不同摘要拒绝且不调用 Provider。",
+      "log_ref": "LOG-021"
+    },
+    {
+      "id": "D-017",
+      "title": "配额、频控与黑名单",
+      "question": "应用、模板、目标和渠道分别需要哪些日/月配额、瞬时频控、黑名单与越限行为？",
+      "depends_on": ["D-010", "D-011"],
+      "recommendation": "至少支持应用月配额、应用/接口分钟限流、同目标模板级频控、号码黑名单和验证码更严格策略；越限在调用 Provider 前拒绝并留下安全审计。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采纳推荐方案：支持应用月配额、应用/接口分钟限流、同目标模板频控、号码黑名单及验证码专项限制；所有拒绝发生在 Provider 调用前并记录安全审计。",
+      "log_ref": "LOG-016"
+    },
+    {
+      "id": "D-018",
+      "title": "模板与供应商绑定生命周期",
+      "question": "逻辑模板、渠道内容版本、供应商模板编码、参数 schema、审核状态和发布回滚如何建模？",
+      "depends_on": ["D-008", "D-011", "D-012", "D-013"],
+      "recommendation": "逻辑模板保持稳定业务编码；每个渠道使用不可变发布版本，并通过 provider binding 映射供应商模板编码和参数；草稿、已发布、停用分离，发送只读取已发布快照。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采纳推荐方案：逻辑模板使用稳定业务编码，渠道内容以不可变版本发布，通过 provider binding 映射供应商模板与参数；发送只读取已发布快照。",
+      "log_ref": "LOG-017"
+    },
+    {
+      "id": "D-019",
+      "title": "回执与最终状态",
+      "question": "如何接收不同短信供应商回执、验证回调、去重并把 ACCEPTED 演进为 DELIVERED、UNDELIVERABLE 或 UNKNOWN？",
+      "depends_on": ["D-008", "D-009", "D-012", "D-013"],
+      "recommendation": "为供应商提供独立回调适配器，校验签名和来源后持久化原始回调摘要，再幂等更新 attempt 最终状态；没有回执时保持 ACCEPTED/UNKNOWN，不虚构送达。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采纳推荐方案：供应商回调适配器完成验签、来源校验、原始摘要持久化和幂等状态更新；区分 ACCEPTED、DELIVERED、UNDELIVERABLE、UNKNOWN，没有回执不宣称送达。",
+      "log_ref": "LOG-018"
+    },
+    {
+      "id": "D-020",
+      "title": "监控归属、统计与保留",
+      "question": "现有 system/notify 代码何时迁入 ruoyi-notify，日志保留周期、聚合统计和敏感正文策略如何演进？",
+      "depends_on": ["D-007", "D-009", "D-010", "D-019"],
+      "recommendation": "ruoyi-notify 直接拥有新的监控合同，不保留旧 URL、权限别名或历史数据迁移；完整正文和参数保留 30 天，脱敏投递明细 180 天，回调摘要 90 天，日聚合 24 个月，敏感通知始终 REDACT_SENSITIVE。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采纳数据分级保留建议，但用户明确补充无需历史兼容：不迁移旧日志，不保留 /monitor/notify、system:notify:* 或其他兼容别名；ruoyi-notify 建立新的规范监控合同。",
+      "log_ref": "LOG-022"
+    },
+    {
+      "id": "D-021",
+      "title": "现有调用方迁移",
+      "question": "Captcha、Workflow、Demo 等 JVM 内调用方应直接继续使用 NotifyClient，还是逐步改走 ruoyi-notify 的应用服务以获得模板、路由和配额治理？",
+      "depends_on": ["D-008", "D-009", "D-010", "D-011", "D-012"],
+      "recommendation": "保留 NotifyClient 作为底层端口，但产品调用方逐步迁移到 ruoyi-notify 应用服务；不要求同 JVM 调用绕行 HTTP。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采纳推荐方案：NotifyClient 保留为底层端口，Captcha、Workflow 等产品调用方逐步迁移到 ruoyi-notify 应用服务；同 JVM 调用不绕行 HTTP。",
+      "log_ref": "LOG-019"
+    },
+    {
+      "id": "D-022",
+      "title": "密钥、权限与审计边界",
+      "question": "渠道密钥的加密、轮换、回显、操作权限、双人审批和运行日志脱敏采用什么安全合同？",
+      "depends_on": ["D-010", "D-013"],
+      "recommendation": "复用项目 KEK/AES-GCM 模式，密钥创建后不回显；查看元数据、编辑、发布、停用和测试发送使用独立权限，生产发布与密钥轮换保留不可篡改审计，任何日志不记录 secret。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采纳推荐方案：渠道密钥使用 KEK/AES-GCM 加密且不回显；查看、编辑、发布、停用、测试发送权限分离，生产发布和轮换保留不可篡改审计，日志不记录 secret。",
+      "log_ref": "LOG-020"
+    },
+    {
+      "id": "D-023",
+      "title": "容量、SLA 与验收",
+      "question": "平台需要满足的峰值吞吐、同步延迟、异步恢复时间、可用性、数据保留和端到端验收标准是什么？",
+      "depends_on": ["D-009", "D-014", "D-017", "D-019", "D-020"],
+      "recommendation": "先基于实际业务量确定可验证 SLO；验收至少覆盖双供应商迁移、故障切换、幂等、配额、密钥不泄露、回执去重、统计一致性和现有调用方回归。",
+      "status": "answered",
+      "round": 4,
+      "answer": "采纳推荐基线：模拟 Provider 下持续 200 请求/秒、1000 目标/秒运行 10 分钟无任务丢失；异步受理 P95 <= 300ms、P99 <= 800ms，投递启动 P95 <= 5s；同步平台开销 P95 <= 100ms、Provider 超时 5s；重启后 60s 内恢复，月度可用性 99.9%。已受理异步任务不得丢失，采用 at-least-once，不承诺 Provider exactly-once。端到端验收覆盖路由、迁移、幂等、配额、频控、黑名单、模板、密钥、回执、清理、统计、调用方迁移和旧能力破坏性收口。",
+      "log_ref": "LOG-023"
+    }
+  ]
+}

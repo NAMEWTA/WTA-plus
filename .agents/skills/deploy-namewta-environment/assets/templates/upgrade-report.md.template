@@ -1,0 +1,39 @@
+# {{deploymentName}} 迭代升级记录
+
+- 升级时间：{{generatedAt}}
+- 原发布编号：{{previousReleaseId}}
+- 新发布编号：{{releaseId}}
+- 源修订：{{sourceRevision}}
+- 目标修订：{{targetRevision}}
+- Compose 身份：{{composeIdentity}}
+- 后端镜像：{{backendImage}}
+- 后端 Image ID：{{backendImageId}}
+- 前端 index SHA-256：{{frontendIndexSha256}}
+- 数据库迁移：{{databaseMigration}}
+- 配置变更：{{configurationChange}}
+- 验证结论：{{verificationStatus}}
+- 回滚命令：{{rollbackCommand}}
+
+## 变更
+
+{{changeSummary}}
+
+## 备份与校验
+
+{{backupEvidence}}
+
+## 验证证据
+
+{{verificationSection}}
+
+## Rollout 尝试
+
+{{rolloutSection}}
+
+## 保留与恢复资产
+
+{{retainedArtifactSection}}
+
+## 异常与处置
+
+{{riskSection}}

@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-31-optional-nacos-dynamic-config",
+  "status": "consensus",
+  "round": 4,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "远程配置目标",
+      "question": "Nacos 在本 change 中承担什么职责？",
+      "depends_on": [],
+      "recommendation": "只承担可选的动态配置覆盖，不引入服务注册、服务发现或完整 Spring Cloud Alibaba 微服务体系。",
+      "status": "answered",
+      "round": 1,
+      "answer": "按用户指定的 CDE Nacos 用法，首要目标是让应用运行后可以按需动态覆盖 YAML 配置；未要求服务注册或发现，因此它们不进入本 change。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "稀疏覆盖与本地兜底",
+      "question": "Nacos 是完整配置事实源，还是只保存需要覆盖的 YAML 片段？",
+      "depends_on": [],
+      "recommendation": "Nacos 只保存稀疏 YAML 覆盖；远程未提供的键继续读取本地 application*.yml，Nacos 未配置或不可达不阻止应用启动。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用参考实现的稀疏覆盖语义；没有远程内容或没有 Nacos 都没关系，本地 YAML 保持完整可运行基线。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "公共模块落位",
+      "question": "Nacos 客户端、覆盖层和刷新能力应归属哪个 Maven 模块？",
+      "depends_on": [],
+      "recommendation": "新增薄封装 ruoyi-common-nacos，按需被组装应用依赖，并纳入 ruoyi-common reactor 与 BOM。",
+      "status": "answered",
+      "round": 1,
+      "answer": "用户明确要求新增与 ruoyi-common-elasticsearch 类似的 ruoyi-common-nacos。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "基础设施交付",
+      "question": "Nacos Server 如何进入发布工件？",
+      "depends_on": [],
+      "recommendation": "在 release-artifacts/docker 的基础设施编排中使用官方、固定版本的 nacos/nacos-server 镜像，不在本仓库内嵌或重打 Nacos Server。",
+      "status": "answered",
+      "round": 1,
+      "answer": "用户明确要求直接使用稳定的 Nacos 镜像，并将其作为 release-artifacts/docker/infrastructure 对应的基础设施。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "配置管理交付面",
+      "question": "本 change 只交付后端运行时与 Docker Nacos，并由运维使用 Nacos 官方控制台编辑配置；还是还要复制参考项目的 /system/nacos 读写 API，甚至交付 plus-ui-namewta 管理页面？",
+      "depends_on": ["D-001", "D-003"],
+      "recommendation": "首期只交付 ruoyi-common-nacos 运行时、应用装配、配置样例、测试和 Docker Nacos；配置编辑使用 Nacos 官方控制台。这样不会重复造一个权限、审计和版本能力更弱的配置编辑器。",
+      "status": "answered",
+      "round": 1,
+      "answer": "完整复刻参考项目的 Nacos 配置管理能力，并可基于 API 做必要增强；交付后端 API、plus-ui-namewta 页面、系统管理下的 Nacos 配置管理动态菜单和功能权限。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-006",
+      "title": "配置优先级与保护键",
+      "question": "远程覆盖是否可以压过命令行参数和容器环境变量，并且是否允许覆盖 nacos.config.*、spring.profiles.* 等引导配置？",
+      "depends_on": ["D-002"],
+      "recommendation": "采用命令行/环境变量 > Nacos 稀疏覆盖 > application-{profile}.yml > application.yml；拒绝 nacos.config.*、spring.profiles.* 和其他明确的引导保护键，避免远程配置改写自身连接或绕过部署层强制值。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用推荐优先级：命令行和环境变量高于 Nacos，Nacos 高于本地 profile 与基础 YAML；Nacos 自身连接、profile 等引导保护键禁止远程覆盖。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-007",
+      "title": "环境隔离模型",
+      "question": "当前项目 local/dev/prod 三个 profile 应如何映射 Nacos namespace、group 和 dataId？",
+      "depends_on": ["D-002"],
+      "recommendation": "一个 Nacos 集群中使用 local、dev、prod 三个独立 namespace，共用 DEFAULT_GROUP 和 ruoyi-namewta.yml；namespaceId 均允许通过环境变量覆盖，不凭空增加当前项目不存在的 sit profile。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用推荐映射：local、dev、prod 分别使用独立 namespace，共用 DEFAULT_GROUP 与 ruoyi-namewta.yml，namespaceId 支持环境变量覆盖。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-008",
+      "title": "热更新安全边界",
+      "question": "Nacos 推送后，是否接受把配置分为“可立即生效”和“保存成功但重启后生效”两类？这里的即时生效配置清单，是指明确列出经过验证能够安全重绑定的配置前缀；清单外配置仍可保存在 Nacos 并在下次启动覆盖本地 YAML，但当前进程不强行做不可靠的局部刷新。",
+      "depends_on": ["D-002"],
+      "recommendation": "采用“即时生效配置清单 + 其余配置重启生效”。Nacos 可以接收一般 YAML，但只有经过测试的运行期配置即时重绑定；server.port、数据源连接、@ConditionalOnProperty 开关和普通 @Value 注入等默认归为重启生效。发布文档、运行日志与状态信息明确区分即时生效和等待重启。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采用推荐：配置分为经过验证的即时生效配置清单与其余重启生效配置；允许一般 YAML 存入 Nacos 不等于所有 Spring 运行时对象都能够安全热更新。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-009",
+      "title": "镜像版本与部署级别",
+      "question": "Docker 基础设施应采用单机持久化基线还是直接交付生产高可用集群，并选择 Nacos 2.x 还是 3.x？",
+      "depends_on": ["D-004"],
+      "recommendation": "固定官方 nacos/nacos-server:v2.5.4，使用 standalone + 现有 MySQL 持久化 + 开启鉴权，默认只绑定本机；这与参考实现的 2.5.x Config Client 路线接近且镜像更小。生产多节点集群另立部署 change，不能把 standalone 宣称为生产高可用。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用固定官方推荐：nacos/nacos-server:v2.5.4，standalone，复用现有 MySQL 做独立持久化，开启鉴权并默认只绑定本机；生产高可用集群不在本 change 内冒充交付。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-010",
+      "title": "敏感配置边界",
+      "question": "Nacos YAML 是否允许保存数据库密码、第三方密钥等 secret？",
+      "depends_on": ["D-006"],
+      "recommendation": "不允许 secret 进入普通 Nacos YAML；敏感值继续由容器 secret 或环境变量注入并保持更高优先级，Nacos 仅承载非敏感运行参数。",
+      "status": "answered",
+      "round": 2,
+      "answer": "允许数据库密码、第三方密钥等敏感配置进入 Nacos；具体采用明文还是 Nacos 配置加密插件，交由 D-017 决定。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-011",
+      "title": "管理接口合同",
+      "question": "如果交付自有配置管理 API，它应只读写当前进程环境，还是允许跨环境管理，并需要哪些权限、审计与并发控制？",
+      "depends_on": ["D-005", "D-018"],
+      "recommendation": "只允许管理当前部署环境对应的 namespace；GET 查询、POST 校验与发布并使用 @Log，使用内容 MD5 做乐观并发控制，提供连接状态、配置预检、生效分类和发布结果，不向前端返回 Nacos 凭据。",
+      "status": "rejected",
+      "round": 3,
+      "answer": "D-018 已选择官方 Nacos 控制台内嵌并撤销自建配置 CRUD API，因此自有管理接口合同不再适用。",
+      "log_ref": "LOG-019"
+    },
+    {
+      "id": "D-012",
+      "title": "删除与失联语义",
+      "question": "远程 YAML 清空、删除单个键、运行中断开 Nacos、断开后重启分别保留什么配置？",
+      "depends_on": ["D-002", "D-008"],
+      "recommendation": "清空文档或删除键立即回退本地值；运行中失联保留进程内最后一次有效覆盖；失联后重启不使用本地持久化快照，直接以本地 YAML 启动。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采用推荐：删除远程键或清空文档后回退本地基线；运行中失联保留进程内最后有效覆盖；失联后重启不使用远程持久快照，只用本地 YAML 启动。",
+      "log_ref": "LOG-015"
+    },
+    {
+      "id": "D-013",
+      "title": "配置校验与回滚",
+      "question": "如何阻止非法 YAML、保护键或不能安全热更新的值污染运行实例？",
+      "depends_on": ["D-006", "D-008"],
+      "recommendation": "启动期解析失败则忽略远程文档并告警；监听期先完整解析、校验保护键与即时生效键，再原子替换内存覆盖层，失败时保留上一版。若改用官方控制台发布，运行时仍必须独立执行这套校验，因为控制台只负责保存内容，不理解应用配置合同。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采用推荐：启动期非法远程文档被忽略并告警；监听期完整解析和校验后原子应用，任何非法 YAML、保护键或类型错误都拒绝整份新版本并保留上一有效版本。",
+      "log_ref": "LOG-016"
+    },
+    {
+      "id": "D-014",
+      "title": "多实例收敛",
+      "question": "两个 ruoyi-admin 实例如何接收同一配置变更并证明最终一致？",
+      "depends_on": ["D-007", "D-008"],
+      "recommendation": "每个实例直接订阅自身 namespace/dataId；不引入 Spring Cloud Bus。记录 dataId、namespace、内容 MD5、应用结果和时间，健康信息暴露连接与最后成功版本但不暴露内容。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采用推荐：每个 ruoyi-admin 实例直接订阅自身环境配置单元，不引入 Spring Cloud Bus；分别记录配置版本摘要、应用结果和最后成功时间。",
+      "log_ref": "LOG-017"
+    },
+    {
+      "id": "D-015",
+      "title": "基础设施安全与健康",
+      "question": "Nacos 的端口、鉴权凭据、MySQL schema、健康检查和数据卷如何进入现有 Docker 发布合同？",
+      "depends_on": ["D-009"],
+      "recommendation": "8848/9848 只绑定 NAMEWTA_BIND_HOST，默认 127.0.0.1；鉴权 token、identity 与账号密码由必填环境变量提供；复用现有 MySQL 但使用独立 nacos 库和用户；提供持久卷、健康检查及后端 depends_on 健康门。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采用推荐：Nacos 端口默认仅绑定本机，鉴权参数由必填环境变量提供，复用现有 MySQL 的独立 nacos 库和用户，并交付健康检查、持久化和后端健康依赖门。",
+      "log_ref": "LOG-018"
+    },
+    {
+      "id": "D-016",
+      "title": "迁移与验收",
+      "question": "如何在不破坏现有 application.yml、Docker 双实例和无 Nacos 开发流程的前提下验收本 change？",
+      "depends_on": ["D-005", "D-006", "D-007", "D-008", "D-009", "D-010", "D-012", "D-013", "D-014", "D-015", "D-017", "D-018"],
+      "recommendation": "保留现有 YAML 为完整基线，不迁移或删除现有键；nacos.config.enabled 默认 false，本地开发显式选择是否启用，包含 Nacos 基础设施的 Docker 发布通过环境变量为两个 ruoyi-admin 实例启用。用模块单测覆盖展平、优先级、删除、非法文档、分类和重绑定；用真实 Docker 验证本地兜底、双实例推送、离线重启、鉴权、MySQL 持久化、明文 secret 不回显，以及系统管理菜单、iframe 登录与 /nacos/ 反代。",
+      "status": "answered",
+      "round": 4,
+      "answer": "采用推荐：现有 application*.yml 保持完整且不迁移；nacos.config.enabled 默认 false，本地按需开启，包含 Nacos 的 Docker 发布为两个 ruoyi-admin 显式开启；按推荐范围完成模块测试与真实 Docker 端到端验收。",
+      "log_ref": "LOG-020"
+    },
+    {
+      "id": "D-017",
+      "title": "敏感配置存储保护",
+      "question": "既然允许 secret 进入 Nacos，是接受普通 dataId 中的数据库明文存储，还是启用 Nacos AES 配置加密插件并把 dataId 调整为 cipher-aes-ruoyi-namewta.yml？",
+      "depends_on": ["D-007", "D-010"],
+      "recommendation": "采用 Nacos AES 配置加密插件：Server 与 ruoyi-common-nacos 客户端都安装兼容插件，敏感远程文档使用 cipher-aes-ruoyi-namewta.yml；同时保留鉴权、内网绑定和最小账号权限，因为静态加密不能替代访问控制。",
+      "status": "answered",
+      "round": 3,
+      "answer": "不采用 AES 配置加密插件；继续使用普通 ruoyi-namewta.yml dataId，允许敏感配置以 Nacos 普通配置形式存储，并以鉴权、内网限制、最小权限和禁止回显作为补偿控制。",
+      "log_ref": "LOG-014"
+    },
+    {
+      "id": "D-018",
+      "title": "官方控制台内嵌替代自建管理面",
+      "question": "是否撤销原先自建 /system/nacos API 与配置编辑页面，改为在系统管理菜单中复用 monitor/external iframe 打开 Nacos 官方控制台，并接受用户在 iframe 内使用 Nacos 自身账号登录？",
+      "depends_on": ["D-005"],
+      "recommendation": "采用官方控制台内嵌并接受独立登录：新增 nacos 外部目标、环境地址、动态菜单权限和 /nacos/ 同源反代，不把 Nacos 密码或 token 注入前端，也不在本 change 实现 SSO。这样保留官方的配置历史、回滚与 namespace 管理能力，同时删除重复的自建 CRUD API。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采用官方控制台内嵌替代自建 /system/nacos API 与配置编辑页面；入口位于系统管理，复用 monitor/external iframe 和 /nacos/ 同源反代，用户使用 Nacos 自身账号登录，不实现 SSO。",
+      "log_ref": "LOG-013"
+    }
+  ]
+}

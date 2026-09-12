@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 2,
+  "deployment": {
+    "name": "namewta-dev",
+    "mode": "takeover",
+    "environment": "dev",
+    "releaseId": "请替换为不可变发布编号"
+  },
+  "server": {
+    "host": "172.16.105.9",
+    "sshPort": 22,
+    "sshUser": "root",
+    "root": "/data/namewta-data",
+    "credentialSource": "Fileterm 托管连接"
+  },
+  "network": {
+    "bindHost": "0.0.0.0",
+    "dockerNetwork": "namewta-network",
+    "serverName": "172.16.105.9",
+    "tlsEnabled": false,
+    "ports": {
+      "ingressHttp": 40080,
+      "ingressHttps": 40443,
+      "adminWeb": 41080,
+      "backend1": 48080,
+      "backend2": 48081,
+      "mysql": 43306,
+      "redis": 46379,
+      "minioApi": 49000,
+      "minioConsole": 49001,
+      "monitor": 49090,
+      "grafana": 43000
+    }
+  },
+  "routes": {
+    "adminPrefix": "namewta",
+    "monitor": "/admin/applications",
+    "snailJob": "/snail-job/",
+    "snailAi": "/snail-ai/",
+    "nacos": "/nacos/"
+  },
+  "services": {
+    "mysqlDatabase": "ry-namewta",
+    "mysqlUser": "namewta_app",
+    "redisDatabase": 0,
+    "minioBucket": "wta",
+    "minioEndpoint": "http://minio:9000",
+    "minioDiagnosticObject": ".well-known/oss-readiness/private-canary.txt",
+    "nacosEnabled": true,
+    "nacosInternalOnly": true,
+    "nacosNamespace": "prod",
+    "nacosGroup": "DEFAULT_GROUP",
+    "nacosDataId": "wta-namewta.yml",
+    "snailJobEnabled": true,
+    "snailAiEnabled": true
+  },
+  "ownership": {
+    "composeProjects": ["namewta-data", "namewta-backend", "namewta-observability", "namewta-frontend"],
+    "protectedExternalProjects": ["cde"]
+  },
+  "release": {
+    "compose": {
+      "identityConfirmed": false,
+      "project": "namewta-backend",
+      "files": [
+        "/data/namewta-data/compose/docker-compose-backend.yml",
+        "/data/namewta-data/compose/overrides/nacos-enabled.yml",
+        "/data/namewta-data/compose/overrides/snail-enabled.yml",
+        "/data/namewta-data/compose/overrides/openapi-runtime.yml"
+      ],
+      "envFile": "/data/namewta-data/compose/namewta-release.env",
+      "backendServices": ["namewta-server1", "namewta-server2"],
+      "frontendServices": ["namewta-nginx-admin-web", "namewta-nginx-lb"]
+    },
+    "images": {
+      "admin": "namewta/namewta-admin:6.0.0"
+    },
+    "frontend": {
+      "buildEnvironment": "prod",
+      "contextPath": "/namewta/",
+      "baseApi": "/namewta/prod-api",
+      "assetPrefix": "/namewta/assets/"
+    },
+    "rollout": {
+      "maxRestartCount": 0,
+      "probeIntervalSeconds": 2,
+      "timeoutSeconds": 120,
+      "requiredConsecutiveSuccesses": 3
+    }
+  },
+  "capabilities": {
+    "openApi": {
+      "enabled": false,
+      "kekVersion": "",
+      "kekPresenceRequired": false,
+      "secretSource": "deployment-secrets"
+    }
+  }
+}

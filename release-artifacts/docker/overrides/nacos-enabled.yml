@@ -1,0 +1,43 @@
+services:
+  mysql:
+    environment:
+      NACOS_MYSQL_INIT_ENABLED: "true"
+      NACOS_DB_NAME: "${NACOS_DB_NAME:-nacos}"
+      NACOS_DB_USER: "${NACOS_DB_USER:-nacos}"
+      NACOS_DB_PASSWORD: "${NACOS_DB_PASSWORD:?NACOS_DB_PASSWORD is required}"
+
+  nacos:
+    profiles: !reset []
+    environment:
+      MYSQL_SERVICE_DB_NAME: "${NACOS_DB_NAME:-nacos}"
+      MYSQL_SERVICE_USER: "${NACOS_DB_USER:-nacos}"
+      MYSQL_SERVICE_PASSWORD: "${NACOS_DB_PASSWORD:?NACOS_DB_PASSWORD is required}"
+      NACOS_AUTH_TOKEN: "${NACOS_AUTH_TOKEN:?NACOS_AUTH_TOKEN is required}"
+      NACOS_AUTH_IDENTITY_KEY: "${NACOS_AUTH_IDENTITY_KEY:?NACOS_AUTH_IDENTITY_KEY is required}"
+      NACOS_AUTH_IDENTITY_VALUE: "${NACOS_AUTH_IDENTITY_VALUE:?NACOS_AUTH_IDENTITY_VALUE is required}"
+
+  namewta-server1:
+    environment:
+      NACOS_CONFIG_ENABLED: "true"
+      NACOS_CONFIG_SERVER_ADDR: nacos:8848
+      NACOS_CONFIG_USERNAME: "${NACOS_CONFIG_USERNAME:?NACOS_CONFIG_USERNAME is required}"
+      NACOS_CONFIG_PASSWORD: "${NACOS_CONFIG_PASSWORD:?NACOS_CONFIG_PASSWORD is required}"
+      NACOS_CONFIG_NAMESPACE_LOCAL: "${NACOS_CONFIG_NAMESPACE_LOCAL:-local}"
+      NACOS_CONFIG_NAMESPACE_DEV: "${NACOS_CONFIG_NAMESPACE_DEV:-dev}"
+      NACOS_CONFIG_NAMESPACE_PROD: "${NACOS_CONFIG_NAMESPACE_PROD:-prod}"
+    depends_on:
+      nacos:
+        condition: service_healthy
+
+  namewta-server2:
+    environment:
+      NACOS_CONFIG_ENABLED: "true"
+      NACOS_CONFIG_SERVER_ADDR: nacos:8848
+      NACOS_CONFIG_USERNAME: "${NACOS_CONFIG_USERNAME:?NACOS_CONFIG_USERNAME is required}"
+      NACOS_CONFIG_PASSWORD: "${NACOS_CONFIG_PASSWORD:?NACOS_CONFIG_PASSWORD is required}"
+      NACOS_CONFIG_NAMESPACE_LOCAL: "${NACOS_CONFIG_NAMESPACE_LOCAL:-local}"
+      NACOS_CONFIG_NAMESPACE_DEV: "${NACOS_CONFIG_NAMESPACE_DEV:-dev}"
+      NACOS_CONFIG_NAMESPACE_PROD: "${NACOS_CONFIG_NAMESPACE_PROD:-prod}"
+    depends_on:
+      nacos:
+        condition: service_healthy

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="log.path" value="${LOG_PATH:-./logs}"/>
+    <property name="console.log.pattern"
+              value="%cyan(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}%n) - %msg%n"/>
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%ex"/>
+
+    <conversionRule conversionWord="sysConsoleLine"
+                    converterClass="org.namewta.common.web.logging.SysConsoleLineConverter"/>
+
+    <!-- 终端输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${console.log.pattern}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 唯一的同步文件输出：HTTP 事件为原始 JSON 行，其他事件沿用文本格式。 -->
+    <appender name="file_console" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/sys-console.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/sys-console.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>40GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%sysConsoleLine(${log.pattern})</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- 显式级别避免生产环境 org.namewta=WARN 抑制 HTTP 系统日志。 -->
+    <logger name="org.namewta.system.http" level="INFO"/>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file_console"/>
+    </root>
+</configuration>

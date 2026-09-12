@@ -1,0 +1,29 @@
+{
+  "artifact_language": "zh-CN",
+  "execution": {
+    "deep_ticket_human_approval": true,
+    "max_implementation_agents": 3,
+    "max_integration_attempts": 3,
+    "shared_path_owner": "explicit"
+  },
+  "git": {
+    "default_branch": "main"
+  },
+  "interaction_language": "zh-CN",
+  "planning": {
+    "default_depth": "standard",
+    "require_evidence": true,
+    "require_ready_gate": true,
+    "ui_design_default_candidates": 3,
+    "ui_design_max_candidates": 4,
+    "ui_prototype_default_variants": 3,
+    "ui_prototype_max_variants": 5
+  },
+  "schema_version": 5,
+  "verification": {
+    "build": "cd ruoyi-vue-plus-namewta && sh mvnw package -DskipTests && cd ../plus-ui-namewta && pnpm build",
+    "lint": "pnpm --dir plus-ui-namewta lint",
+    "test": "cd ruoyi-vue-plus-namewta && sh mvnw test",
+    "typecheck": "pnpm --dir plus-ui-namewta exec vue-tsc --noEmit"
+  }
+}

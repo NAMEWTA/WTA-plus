@@ -1,0 +1,26 @@
+{
+  "name": "@namewta/adapter-crypto-browser",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint src",
+    "test": "vitest run src",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@namewta/platform-contracts": "workspace:*",
+    "crypto-js": "catalog:",
+    "jsencrypt": "catalog:"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "4.2.2",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "4.1.10"
+  }
+}

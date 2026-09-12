@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.profile.enterprise.mapper.EnterpriseAdminMapper">
+
+    <select id="countProfiles" resultType="java.lang.Long">
+        select count(*) from profile_enterprise p
+         where p.del_flag = '0'
+        <if test="status == null or status == ''">and p.status != 'REVOKED'</if>
+        <if test="status != null and status != ''">and p.status = #{status}</if>
+        <if test="enterpriseName != null and enterpriseName != ''">and p.enterprise_name like concat('%', #{enterpriseName}, '%')</if>
+        <if test="unifiedCreditCode != null and unifiedCreditCode != ''">and p.unified_credit_code = #{unifiedCreditCode}</if>
+    </select>
+
+    <select id="selectProfiles" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$ProfileRow">
+        select p.enterprise_profile_id profile_id, p.previous_profile_id, p.current_version_id, p.enterprise_name,
+               p.unified_credit_code, p.unified_credit_code identity_key, p.enterprise_type,
+               p.legal_representative_name, p.legal_document_type_code, p.legal_document_number,
+               p.established_date, p.business_term_from, p.business_term_until, p.registered_address,
+               p.business_scope, p.contact_name, p.contact_phone, p.email, p.registered_capital,
+               p.industry_code, p.website, p.status, p.version, p.create_time,
+               b.user_id binding_user_id, b.status binding_status
+          from profile_enterprise p
+          left join profile_enterprise_binding b on b.enterprise_profile_id = p.enterprise_profile_id
+                 and b.status in ('ACTIVE','SUSPENDED') and b.del_flag = '0'
+         where p.del_flag = '0'
+        <if test="status == null or status == ''">and p.status != 'REVOKED'</if>
+        <if test="status != null and status != ''">and p.status = #{status}</if>
+        <if test="enterpriseName != null and enterpriseName != ''">and p.enterprise_name like concat('%', #{enterpriseName}, '%')</if>
+        <if test="unifiedCreditCode != null and unifiedCreditCode != ''">and p.unified_credit_code = #{unifiedCreditCode}</if>
+         order by p.create_time desc, p.enterprise_profile_id desc limit #{limit} offset #{offset}
+    </select>
+
+    <select id="selectProfile" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$ProfileRow">
+        select p.enterprise_profile_id profile_id, p.previous_profile_id, p.current_version_id, p.enterprise_name,
+               p.unified_credit_code, p.unified_credit_code identity_key, p.enterprise_type,
+               p.legal_representative_name, p.legal_document_type_code, p.legal_document_number,
+               p.established_date, p.business_term_from, p.business_term_until, p.registered_address,
+               p.business_scope, p.contact_name, p.contact_phone, p.email, p.registered_capital,
+               p.industry_code, p.website, p.status, p.version, p.create_time,
+               b.user_id binding_user_id, b.status binding_status
+          from profile_enterprise p
+          left join profile_enterprise_binding b on b.enterprise_profile_id = p.enterprise_profile_id
+                 and b.status in ('ACTIVE','SUSPENDED') and b.del_flag = '0'
+         where p.enterprise_profile_id = #{profileId} and p.del_flag = '0'
+    </select>
+
+    <select id="lockProfile" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$ProfileRow">
+        select p.enterprise_profile_id profile_id, p.previous_profile_id, p.current_version_id, p.enterprise_name,
+               p.unified_credit_code, p.unified_credit_code identity_key, p.enterprise_type,
+               p.legal_representative_name, p.legal_document_type_code, p.legal_document_number,
+               p.established_date, p.business_term_from, p.business_term_until, p.registered_address,
+               p.business_scope, p.contact_name, p.contact_phone, p.email, p.registered_capital,
+               p.industry_code, p.website, p.status, p.version, p.create_time
+          from profile_enterprise p where p.enterprise_profile_id = #{profileId} and p.del_flag = '0' for update
+    </select>
+
+    <select id="selectVersions" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$VersionRow">
+        select enterprise_version_id version_id, enterprise_profile_id profile_id, version_no, source_type, source_id,
+               enterprise_name, unified_credit_code, unified_credit_code identity_key, enterprise_type,
+               legal_representative_name, legal_document_type_code, legal_document_number, established_date,
+               business_term_from, business_term_until, registered_address, business_scope, contact_name,
+               contact_phone, email, registered_capital, industry_code, website, status, published_time
+          from profile_enterprise_version where enterprise_profile_id = #{profileId} and del_flag = '0'
+         order by version_no desc
+    </select>
+
+    <select id="lockCurrentVersion" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$VersionRow">
+        select enterprise_version_id version_id, enterprise_profile_id profile_id, version_no, source_type, source_id,
+               enterprise_name, unified_credit_code, unified_credit_code identity_key, enterprise_type,
+               legal_representative_name, legal_document_type_code, legal_document_number, established_date,
+               business_term_from, business_term_until, registered_address, business_scope, contact_name,
+               contact_phone, email, registered_capital, industry_code, website, status, published_time
+          from profile_enterprise_version where enterprise_profile_id = #{profileId} and status = 'CURRENT'
+           and del_flag = '0' for update
+    </select>
+
+    <select id="selectBindings" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$BindingRow">
+        select enterprise_binding_id binding_id, enterprise_profile_id profile_id, user_id, status, binding_version,
+               source_type, source_id, bound_time, unbound_time
+          from profile_enterprise_binding where enterprise_profile_id = #{profileId} and del_flag = '0'
+         order by create_time desc, enterprise_binding_id desc
+    </select>
+
+    <select id="lockEffectiveBinding" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$BindingRow">
+        select enterprise_binding_id binding_id, enterprise_profile_id profile_id, user_id, status, binding_version,
+               source_type, source_id, bound_time, unbound_time
+          from profile_enterprise_binding where enterprise_profile_id = #{profileId}
+           and status in ('ACTIVE','SUSPENDED') and del_flag = '0' for update
+    </select>
+
+    <select id="countEffectiveBindingByUser" resultType="java.lang.Integer">
+        select count(*) from profile_enterprise_binding where user_id = #{userId}
+         and status in ('ACTIVE','SUSPENDED') and del_flag = '0'
+    </select>
+
+    <select id="selectSources" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$SourceRow">
+        select enterprise_source_id source_id, source_type, operator_user_id, operation_reason reason,
+               field_snapshot_json, occurred_time from profile_enterprise_source
+         where enterprise_profile_id = #{profileId} and del_flag = '0' order by occurred_time desc
+    </select>
+
+    <select id="selectAudits" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$AuditRow">
+        select operation_audit_id audit_id, operation_type, operator_user_id, capability, reason,
+               before_status, after_status, result, failure_category, occurred_time
+          from profile_operation_audit where profile_type = 'ENTERPRISE' and profile_id = #{profileId}
+           and del_flag = '0' order by occurred_time desc
+    </select>
+
+    <select id="selectReview" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$ReviewRow">
+        select a.enterprise_application_id application_id, a.applicant_user_id, a.status, a.submission_seq,
+               a.decision_version, a.version, s.enterprise_submission_id submission_id,
+               s.field_snapshot_json, s.submitted_time
+          from profile_enterprise_application a join profile_enterprise_submission s
+            on s.enterprise_application_id = a.enterprise_application_id and s.submission_seq = a.submission_seq
+           and s.del_flag = '0'
+         where a.enterprise_application_id = #{applicationId} and a.submission_seq > 0 and a.del_flag = '0'
+    </select>
+
+    <select id="lockWaitingApplication" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseAdminRows$ReviewRow">
+        select a.enterprise_application_id application_id, a.applicant_user_id, a.status, a.submission_seq,
+               a.decision_version, a.version, s.enterprise_submission_id submission_id,
+               s.field_snapshot_json, s.submitted_time
+          from profile_enterprise_application a join profile_enterprise_submission s
+            on s.enterprise_application_id = a.enterprise_application_id and s.submission_seq = a.submission_seq
+           and s.del_flag = '0'
+         where a.enterprise_application_id = #{applicationId} and a.status = 'WAITING' and a.del_flag = '0'
+         for update
+    </select>
+
+    <update id="markOverridePending">
+        update profile_enterprise_application set status = 'OVERRIDE_PENDING', decision_version = decision_version + 1,
+               decision_source = 'ADMIN_OVERRIDE', decision_result = #{decision}, decision_reason = #{reason},
+               version = version + 1, update_time = #{now}, update_by = #{operatorId}
+         where enterprise_application_id = #{applicationId} and status = 'WAITING'
+           and decision_version = #{decisionVersion} and version = #{version} and del_flag = '0'
+    </update>
+
+    <insert id="insertDecision">
+        insert into profile_decision_record(decision_record_id, profile_type, application_id, submission_id,
+            decision_version, decision_source, decision_result, decision_status, operator_user_id, reason,
+            occurred_time, version, create_dept, create_time, create_by, update_time, update_by, del_flag)
+        values(#{id}, 'ENTERPRISE', #{applicationId}, #{submissionId}, #{decisionVersion}, 'ADMIN_OVERRIDE',
+            #{decision}, 'PENDING', #{operatorId}, #{reason}, #{now}, 0, -1, #{now}, #{operatorId},
+            #{now}, #{operatorId}, '0')
+    </insert>
+
+    <update id="resumeWaiting">
+        update profile_enterprise_application set status = 'WAITING', version = version + 1,
+               update_time = current_timestamp, update_by = #{operatorId}
+         where enterprise_application_id = #{applicationId} and status = 'OVERRIDE_PENDING'
+           and decision_version = #{decisionVersion} and del_flag = '0'
+    </update>
+
+    <update id="markApproved">
+        update profile_enterprise_application set decision_source = 'ADMIN_OVERRIDE', decision_result = 'APPROVED',
+               decision_reason = #{reason}, version = version + 1, update_time = #{now}, update_by = #{operatorId}
+         where enterprise_application_id = #{applicationId} and status = 'FINISH' and del_flag = '0'
+    </update>
+
+    <update id="markRejected">
+        update profile_enterprise_application set status = 'INVALID', decision_source = 'ADMIN_OVERRIDE',
+               decision_result = 'REJECTED', decision_reason = #{reason}, finished_time = #{now},
+               version = version + 1, update_time = #{now}, update_by = #{operatorId}
+         where enterprise_application_id = #{applicationId} and status = 'OVERRIDE_PENDING'
+           and decision_version = #{decisionVersion} and del_flag = '0'
+    </update>
+
+    <update id="finalizeDecision">
+        update profile_decision_record set decision_status = 'FINAL', occurred_time = #{now},
+               update_time = #{now}, update_by = #{operatorId}, version = version + 1
+         where profile_type = 'ENTERPRISE' and application_id = #{applicationId}
+           and decision_version = #{decisionVersion} and decision_source = 'ADMIN_OVERRIDE'
+           and decision_status = 'PENDING' and del_flag = '0'
+    </update>
+
+    <insert id="insertProfile">
+        insert into profile_enterprise(enterprise_profile_id, previous_profile_id, current_version_id,
+            enterprise_name, unified_credit_code, enterprise_type, legal_representative_name,
+            legal_document_type_code, legal_document_number, established_date, business_term_from,
+            business_term_until, registered_address, business_scope, contact_name, contact_phone, email,
+            registered_capital, industry_code, website, status, version, create_dept, create_time, create_by,
+            update_time, update_by, del_flag)
+        values(#{profileId}, null, null, #{enterpriseName}, #{unifiedCreditCode}, #{enterpriseType},
+            #{legalRepresentativeName}, #{legalDocumentTypeCode}, #{legalDocumentNumber}, #{establishedDate},
+            #{businessTermFrom}, #{businessTermUntil}, #{registeredAddress}, #{businessScope}, #{contactName},
+            #{contactPhone}, #{email}, #{registeredCapital}, #{industryCode}, #{website}, 'ACTIVE', 0, -1,
+            #{now}, #{operatorId}, #{now}, #{operatorId}, '0')
+    </insert>
+
+    <insert id="insertSource">
+        insert into profile_enterprise_source(enterprise_source_id, enterprise_profile_id, source_type, operator_user_id,
+            operation_reason, enterprise_name, unified_credit_code, identity_key, enterprise_type,
+            legal_representative_name, legal_document_type_code, legal_document_number, established_date,
+            business_term_from, business_term_until, registered_address, business_scope, contact_name,
+            contact_phone, email, registered_capital, industry_code, website, field_snapshot_json,
+            occurred_time, version, create_dept, create_time, create_by, update_time, update_by, del_flag)
+        values(#{sourceId}, #{profileId}, #{sourceType}, #{operatorId}, #{reason}, #{enterpriseName},
+            #{unifiedCreditCode}, #{identityKey}, #{enterpriseType}, #{legalRepresentativeName},
+            #{legalDocumentTypeCode}, #{legalDocumentNumber}, #{establishedDate}, #{businessTermFrom},
+            #{businessTermUntil}, #{registeredAddress}, #{businessScope}, #{contactName}, #{contactPhone},
+            #{email}, #{registeredCapital}, #{industryCode}, #{website}, #{json}, #{now}, 0, -1, #{now},
+            #{operatorId}, #{now}, #{operatorId}, '0')
+    </insert>
+
+    <insert id="insertVersion">
+        insert into profile_enterprise_version(enterprise_version_id, enterprise_profile_id, version_no, source_type, source_id,
+            enterprise_name, unified_credit_code, enterprise_type, legal_representative_name,
+            legal_document_type_code, legal_document_number, established_date, business_term_from,
+            business_term_until, registered_address, business_scope, contact_name, contact_phone, email,
+            registered_capital, industry_code, website, status, published_time, version, create_dept,
+            create_time, create_by, update_time, update_by, del_flag)
+        values(#{versionId}, #{profileId}, #{versionNo}, #{sourceType}, #{sourceId}, #{enterpriseName},
+            #{unifiedCreditCode}, #{enterpriseType}, #{legalRepresentativeName}, #{legalDocumentTypeCode},
+            #{legalDocumentNumber}, #{establishedDate}, #{businessTermFrom}, #{businessTermUntil},
+            #{registeredAddress}, #{businessScope}, #{contactName}, #{contactPhone}, #{email},
+            #{registeredCapital}, #{industryCode}, #{website}, 'CURRENT', #{now}, 0, -1, #{now},
+            #{operatorId}, #{now}, #{operatorId}, '0')
+    </insert>
+
+    <update id="supersedeVersion">
+        update profile_enterprise_version set status = 'SUPERSEDED', version = version + 1,
+               update_time = #{now}, update_by = #{operatorId}
+         where enterprise_version_id = #{versionId} and status = 'CURRENT' and del_flag = '0'
+    </update>
+
+    <update id="updateProfileVersion">
+        update profile_enterprise set current_version_id = #{versionId}, enterprise_name = #{enterpriseName},
+               unified_credit_code = #{unifiedCreditCode}, enterprise_type = #{enterpriseType},
+               legal_representative_name = #{legalRepresentativeName},
+               legal_document_type_code = #{legalDocumentTypeCode}, legal_document_number = #{legalDocumentNumber},
+               established_date = #{establishedDate}, business_term_from = #{businessTermFrom},
+               business_term_until = #{businessTermUntil}, registered_address = #{registeredAddress},
+               business_scope = #{businessScope}, contact_name = #{contactName}, contact_phone = #{contactPhone},
+               email = #{email}, registered_capital = #{registeredCapital}, industry_code = #{industryCode},
+               website = #{website},
+               version = version + 1, update_time = #{now}, update_by = #{operatorId}
+         where enterprise_profile_id = #{profileId} and status = 'ACTIVE' and version = #{expectedVersion}
+           and del_flag = '0'
+    </update>
+
+    <insert id="insertBinding">
+        insert into profile_enterprise_binding(enterprise_binding_id, enterprise_profile_id, user_id, status, binding_version,
+            source_type, source_id, bound_time, version, create_dept, create_time, create_by, update_time,
+            update_by, del_flag)
+        values(#{bindingId}, #{profileId}, #{userId}, 'ACTIVE', 1, #{sourceType}, #{sourceId}, #{now}, 0,
+            -1, #{now}, #{operatorId}, #{now}, #{operatorId}, '0')
+    </insert>
+
+    <update id="updateBinding">
+        update profile_enterprise_binding set status = #{targetStatus}, binding_version = binding_version + 1,
+               unbound_time = case when #{targetStatus} = 'UNBOUND' then #{now} else unbound_time end,
+               update_time = #{now}, update_by = #{operatorId}
+         where enterprise_binding_id = #{bindingId} and binding_version = #{expectedVersion}
+           and status = #{sourceStatus} and del_flag = '0'
+    </update>
+
+    <insert id="insertBindingEvent">
+        insert into profile_enterprise_binding_event(enterprise_binding_event_id, enterprise_binding_id, enterprise_profile_id,
+            user_id, event_type, binding_version, source_type, source_id, reason, occurred_time, version,
+            create_dept, create_time, create_by, update_time, update_by, del_flag)
+        values(#{eventId}, #{bindingId}, #{profileId}, #{userId}, #{eventType}, #{bindingVersion},
+            'ADMIN_OVERRIDE', #{sourceId}, #{reason}, #{now}, 0, -1, #{now}, #{operatorId},
+            #{now}, #{operatorId}, '0')
+    </insert>
+
+    <insert id="cloneVersionMaterials">
+        insert into profile_material_ref(material_ref_id, owner_type, owner_id, profile_type, oss_id,
+            material_node_id, material_tag_code, material_tag_name, file_name, file_size, file_extension,
+            mime_type, status, immutable_flag, attached_time, detached_time, version, create_dept, create_time,
+            create_by, update_time, update_by, del_flag)
+        select #{newIdBase} + row_number() over(order by material_ref_id), 'SOURCE', #{sourceId}, profile_type,
+               oss_id, material_node_id, material_tag_code, material_tag_name, file_name, file_size,
+               file_extension, mime_type, 'ATTACHED', 'Y', #{now}, null, 0, -1, #{now}, #{operatorId},
+               #{now}, #{operatorId}, '0' from profile_material_ref
+         where profile_type = 'ENTERPRISE' and owner_type = 'VERSION' and owner_id = #{versionId}
+           and status = 'ATTACHED' and del_flag = '0'
+    </insert>
+
+    <update id="revokeProfile">
+        update profile_enterprise set status = 'REVOKED', revoked_time = #{now}, revoked_reason = #{reason},
+               version = version + 1, update_time = #{now}, update_by = #{operatorId}
+         where enterprise_profile_id = #{profileId} and status = 'ACTIVE' and version = #{expectedVersion}
+           and del_flag = '0'
+    </update>
+
+    <insert id="insertAudit">
+        insert into profile_operation_audit(operation_audit_id, profile_type, profile_id, application_id,
+            binding_id, operation_type, operator_user_id, capability, reason, before_status, after_status,
+            result, failure_category, occurred_time, version, create_dept, create_time, create_by,
+            update_time, update_by, del_flag)
+        values(#{auditId}, 'ENTERPRISE', #{profileId}, #{applicationId}, #{bindingId}, #{operationType},
+            #{operatorId}, #{capability}, #{reason}, #{beforeStatus}, #{afterStatus}, 'SUCCESS', null,
+            #{now}, 0, -1, #{now}, #{operatorId}, #{now}, #{operatorId}, '0')
+    </insert>
+
+</mapper>

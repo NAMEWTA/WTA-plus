@@ -1,0 +1,278 @@
+--- # 监控中心配置
+spring.boot.admin.client:
+  # 增加客户端开关
+  enabled: false
+  url: http://localhost:9090/admin
+  instance:
+    service-host-type: IP
+    metadata:
+      username: ${spring.boot.admin.client.username}
+      userpassword: ${spring.boot.admin.client.password}
+  username: @monitor.username@
+  password: @monitor.password@
+
+--- # snail-job 配置
+snail-job:
+  enabled: false
+  # 需要在 SnailJob 后台组管理创建对应名称的组,然后创建任务的时候选择对应的组,才能正确分派任务
+  group: "wta_group"
+  # SnailJob 接入验证令牌详见发布基座 20-ry-job.sql 的 `sj_group_config` 表
+  token: "SJ_cKqBTPzCsWA3VyuCfFoccmuIEGXjr5KT"
+  server:
+    host: 127.0.0.1
+    port: 17888
+  # 命名空间 UUID 详见发布基座 20-ry-job.sql 的 `sj_namespace.unique_id`
+  namespace: ${spring.profiles.active}
+  # 随主应用端口漂移
+  port: 2${server.port}
+  # 客户端ip指定
+  host:
+
+--- # snail-ai 配置
+snail-ai:
+  # 启用客户端模式
+  enabled: false
+  # ==================== Server 连接 ====================
+  # Server 端 gRPC 地址（即 snail-ai-starter 的 snail-ai.server.grpc-port）
+  server:
+    host: 127.0.0.1
+    port: 18888
+  # ==================== 客户端配置 ====================
+  # 本客户端 gRPC 端口（Server 通过此端口分发 Chat 请求）
+  # 应用 ID（在 Server「应用管理」页面创建后获取）
+  app-id: 1
+  # 认证令牌（在 Server「应用管理」页面创建时自动生成）
+  token: SAI_566a6bfbc26e4998b4841cc927d50c5d
+  port: 3${server.port}
+  # Skill 文件临时目录
+  skill-temp-dir: /tmp/snail-ai-agent/skills
+  # ==================== Chat 嵌入模式配置 ====================
+  chat.ui.embed:
+    # 启用嵌入模式
+    enabled: true
+    # 嵌入模式下隐藏顶部栏
+    show-header: false
+    # 嵌入模式下隐藏侧边栏用户信息
+    show-sidebar-user: false
+    # 嵌入模式下隐藏智能体市场入口
+    show-agent-market: true
+    # 嵌入模式下使用紧凑输入框
+    compact-input: true
+    # 是否锁定当前智能体
+    lock-agent: false
+  # ==================== OpenAPI Client 配置 ====================
+  open-api:
+    # 启用 OpenAPI Client
+    enabled: true
+    # Server HTTP 端口
+    web-port: 8900
+    # 是否使用 HTTPS
+    https: false
+    # API 路径前缀
+    prefix: snail-ai
+    # 超时配置（毫秒）
+    connect-timeout-ms: 5000
+    read-timeout-ms: 60000
+    chat-timeout-ms: 300000
+
+--- # MyBatis Plus 配置
+mybatis-plus:
+  sql-log:
+    # 完整 SQL 输出开关
+    enabled: true
+    # 输出方式，可选 console、log
+    output: console
+
+--- # 数据源配置
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content
+    dynamic:
+      # 设置默认的数据源或者数据源组,默认值即为 master
+      primary: master
+      # 严格模式 匹配不到数据源则报错
+      strict: true
+      datasource:
+        # 主库数据源
+        master:
+          type: ${spring.datasource.type}
+          driverClassName: com.mysql.cj.jdbc.Driver
+          # jdbc 所有参数配置参考 https://lionli.blog.csdn.net/article/details/122018562
+          # rewriteBatchedStatements=true 批处理优化 大幅提升批量插入更新删除性能(对数据库有性能损耗 使用批量操作应考虑性能问题)
+          url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+          username: root
+          password: root
+#        # 从库数据源
+#        slave:
+#          lazy: true
+#          type: ${spring.datasource.type}
+#          driverClassName: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+#          username:
+#          password:
+#        oracle:
+#          type: ${spring.datasource.type}
+#          driverClassName: oracle.jdbc.OracleDriver
+#          url: jdbc:oracle:thin:@//localhost:1521/XE
+#          username: ROOT
+#          password: root
+#        postgres:
+#          type: ${spring.datasource.type}
+#          driverClassName: org.postgresql.Driver
+#          url: jdbc:postgresql://localhost:5432/postgres?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&reWriteBatchedInserts=true
+#          username: root
+#          password: root
+#        sqlserver:
+#          type: ${spring.datasource.type}
+#          driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#          url: jdbc:sqlserver://localhost:1433;DatabaseName=tempdb;SelectMethod=cursor;encrypt=false;rewriteBatchedStatements=true
+#          username: SA
+#          password: root
+      hikari:
+        # 最大连接池数量
+        maxPoolSize: 20
+        # 最小空闲线程数量
+        minIdle: 10
+        # 配置获取连接等待超时的时间
+        connectionTimeout: 30000
+        # 校验超时时间
+        validationTimeout: 5000
+        # 空闲连接存活最大时间，默认10分钟
+        idleTimeout: 600000
+        # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认30分钟
+        maxLifetime: 1800000
+        # 多久检查一次连接的活性
+        keepaliveTime: 30000
+
+--- # redis 单机配置(单机与集群只能开启一个另一个需要注释掉)
+spring.data:
+  redis:
+    # 地址
+    host: localhost
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # redis 密码必须配置
+    password: wta123
+    # 连接超时时间
+    timeout: 10s
+    # 是否开启ssl
+    ssl.enabled: false
+
+# redisson 配置
+redisson:
+  # redis key前缀
+  keyPrefix:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称 不能用中文
+    clientName: WTA-Plus
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+
+--- # mail 邮件发送
+# SMTP 发件账号由通知中心「通知配置」维护，运行时不再读取 YAML 发件人。
+mail: {}
+
+--- # sms 短信
+# 厂商账号、模板码与收件人拦截由通知配置写入数据库；SMS4J 仅保留框架配置源。
+sms:
+  config-type: interface
+
+
+--- # 三方授权
+justauth:
+  # 前端外网访问地址
+  address: http://localhost:80
+  type:
+    maxkey:
+      # maxkey 服务器地址
+      # 注意 如下均配置均不需要修改 maxkey 已经内置好了数据
+      server-url: http://sso.maxkey.top
+      client-id: 876892492581044224
+      client-secret: x1Y5MTMwNzIwMjMxNTM4NDc3Mzche8
+      redirect-uri: ${justauth.address}/social-callback?source=maxkey
+    topiam:
+      # topiam 服务器地址
+      server-url: http://127.0.0.1:1898/api/v1/authorize/y0q************spq***********8ol
+      client-id: 449c4*********937************759
+      client-secret: ac7***********1e0************28d
+      redirect-uri: ${justauth.address}/social-callback?source=topiam
+      scopes: [openid, email, phone, profile]
+    qq:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=qq
+      union-id: false
+    weibo:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=weibo
+    gitee:
+      client-id: 91436b7940090d09c72c7daf85b959cfd5f215d67eea73acbf61b6b590751a98
+      client-secret: 02c6fcfd70342980cd8dd2f2c06c1a350645d76c754d7a264c4e125f9ba915ac
+      redirect-uri: ${justauth.address}/social-callback?source=gitee
+    dingtalk:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=dingtalk
+    baidu:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=baidu
+    csdn:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=csdn
+    coding:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=coding
+      coding-group-name: xx
+    oschina:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=oschina
+    alipay_wallet:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=alipay_wallet
+      alipay-public-key: MIIB**************DAQAB
+    wechat_open:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=wechat_open
+    wechat_mp:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=wechat_mp
+    wechat_enterprise:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=wechat_enterprise
+      agent-id: 1000002
+    gitlab:
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=gitlab
+    gitea:
+      # 前端改动 https://github.com/NAMEWTA/WTA-plus/pulls/204
+      # gitea 服务器地址
+      server-url: https://demo.gitea.com
+      client-id: 10**********6
+      client-secret: 1f7d08**********5b7**********29e
+      redirect-uri: ${justauth.address}/social-callback?source=gitea

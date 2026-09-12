@@ -1,0 +1,2 @@
+org.namewta.common.json.config.JacksonConfig
+org.namewta.common.json.config.JsonEnhancementConfig

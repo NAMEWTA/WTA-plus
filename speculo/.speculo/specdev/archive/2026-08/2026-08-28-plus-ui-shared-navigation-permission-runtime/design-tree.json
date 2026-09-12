@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-28-plus-ui-shared-navigation-permission-runtime",
+  "status": "consensus",
+  "round": 3,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "抽象准入原则",
+      "question": "本次改造以什么条件判断一个能力应进入共享包？",
+      "depends_on": [],
+      "recommendation": "只抽取具有稳定语义、能脱离 Admin 依赖、已有真实消费证据并能降低未来 App 重复实现的能力。",
+      "status": "answered",
+      "round": 1,
+      "answer": "不为了解耦而解耦；符合开发规范、属于必备通用能力并确实便利后续开发时才抽象。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "零兼容基座策略",
+      "question": "确认无真实消费者的旧动态路由兼容入口是否可以直接删除，而不保留别名或转发门面？",
+      "depends_on": [],
+      "recommendation": "沿用已确认的零兼容基座策略；迁移调用方后直接删除遗留入口。",
+      "status": "answered",
+      "round": 1,
+      "answer": "可以。当前项目是新基座，不为旧调用方保留兼容门面；删除前必须以源码和测试证明没有真实消费者。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "本次改造范围",
+      "question": "本 change 是否聚焦认证后的权限与导航运行时，包括 Vue 权限指令、服务端菜单转换、Admin 导航 Store、路由守卫薄化及遗留入口清理，而不顺带重构其他 Store、布局或 UI 组件？",
+      "depends_on": ["D-001"],
+      "recommendation": "聚焦该纵向切片；把其他 App 基础设施重构明确列为 OUT，防止再次演变为全仓目录搬迁。",
+      "status": "answered",
+      "round": 1,
+      "answer": "聚焦认证后的权限与导航运行时纵向切片，不顺带重构其他 Store、布局或 UI 组件。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "Vue 权限宿主合同",
+      "question": "是否现在建立一个 Web Kit 权限指令包，以注入的 AccessEvaluator 生成并注册 v-hasPermi 与 v-hasRoles，使所有复用 web-domain 页面不再隐式依赖 Admin 私有指令实现？",
+      "depends_on": ["D-001"],
+      "recommendation": "建立。多个 web-domain 已真实使用这两个全局指令，合同已经存在；共享包只依赖 Vue 与 platform-permission，不读取 Pinia、不认识 Admin。",
+      "status": "answered",
+      "round": 1,
+      "answer": "建立 Web Kit 权限指令包；这是多个 Web Domain 已真实依赖的宿主合同，不是为假想消费者建立的抽象。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "Admin 导航 Store 归位",
+      "question": "是否把当前 permission Store 明确改名为 navigation Store，并继续留在 admin-web，只负责 Admin 的侧栏、顶栏、默认路由和动态注册状态？",
+      "depends_on": ["D-001"],
+      "recommendation": "改名并保留在 App。该 Store 管的是导航投影而不是权限权威；Router、Pinia、Layout 与导航容器仍属于 Admin。",
+      "status": "answered",
+      "round": 1,
+      "answer": "将 permission Store 改名为 navigation Store 并继续留在 admin-web；它拥有 Admin 导航投影，不拥有权限权威。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-006",
+      "title": "服务端菜单纯流程下沉",
+      "question": "是否只把 ParentView 展平、空 children 清理、组件键装配和重复 route name 诊断等无 Pinia、无 Router 单例的纯流程继续下沉到 platform-app-runtime？",
+      "depends_on": ["D-001"],
+      "recommendation": "下沉纯流程但不抽公共 Store 或公共 Router。它们是同一后端 RouterVo 合同下的稳定运行时规则，可由 Web App 注入特殊组件和 manifest resolver。",
+      "status": "answered",
+      "round": 1,
+      "answer": "只把无 Pinia、无 Router 单例的服务端菜单纯函数下沉到 platform-app-runtime，不抽公共 Store 或公共 Router。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-007",
+      "title": "Manifest-only 动态页面",
+      "question": "是否删除空的 local dynamicRoutes 权限分支和 App 本地 views 动态 glob 兜底，要求服务端动态页面只能来自特殊宿主组件或已选择的 WebDomainManifest，未知键继续显示稳定诊断？",
+      "depends_on": ["D-002"],
+      "recommendation": "删除。当前 dynamicRoutes 为空，Admin 自有页面已有显式静态路由，动态 glob 会弱化已接受的 manifest-only 包边界。",
+      "status": "answered",
+      "round": 1,
+      "answer": "删除空的 local dynamicRoutes 权限分支和本地 views 动态 glob 兜底；Admin 自有页面使用静态路由，动态领域页面严格通过 manifest。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-008",
+      "title": "共享包公开边界",
+      "question": "共享 Vue 指令与菜单纯流程分别应使用哪些包和公开 API，才能保持 Web 与跨终端能力边界？",
+      "depends_on": ["D-004", "D-006"],
+      "recommendation": "Vue 指令进入独立 web-kit 包；跨终端权限算法继续留在 platform-permission；菜单纯流程扩展现有 platform-app-runtime，不新增大而全的 common 包。",
+      "status": "answered",
+      "round": 2,
+      "answer": "Vue 权限指令进入独立 web-kit 包；platform-permission 保持跨终端纯权限算法；服务端菜单纯流程扩展现有 platform-app-runtime；不新增公共 Store、Router 或大而全 common 包。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-009",
+      "title": "迁移与验收门禁",
+      "question": "如何分阶段迁移并证明登录、菜单、路由、权限和 Web Domain 宿主合同没有行为回归？",
+      "depends_on": ["D-003", "D-004", "D-005", "D-006", "D-007", "D-008"],
+      "recommendation": "先建立纯函数与指令特征测试，再迁移 Admin，删除遗留入口，最后执行架构、lint、typecheck、unit、双模式 build 和 Admin Playwright 回归。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采用行为冻结、共享能力、Admin 迁移、零兼容清理、全量验收五阶段策略；每阶段保持绿色，不使用功能开关或兼容门面，并保持 Client 裁剪、getInfo -> getRouters -> addRoute -> replace 顺序和失败关闭规则。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-010",
+      "title": "最终共识与下游路由",
+      "question": "设计树是否已覆盖范围、包边界、清理策略、迁移与验收，并可进入 Spec？",
+      "depends_on": ["D-003", "D-004", "D-005", "D-006", "D-007", "D-008", "D-009"],
+      "recommendation": "确认无遗漏后结束 Grill，进入 Spec 固化外部行为、不变量和验收合同，不直接实施。",
+      "status": "answered",
+      "round": 3,
+      "answer": "确认共识。范围、公共包边界、迁移策略、安全行为和验收标准均已关闭；具体函数名与局部文件组织留给 Spec/Ticket，不继续制造设计节点。",
+      "log_ref": "LOG-010"
+    }
+  ]
+}

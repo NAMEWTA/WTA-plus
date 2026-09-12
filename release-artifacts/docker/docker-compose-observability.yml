@@ -1,0 +1,129 @@
+x-default-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "100m"
+    max-file: "5"
+
+services:
+  namewta-monitor-admin:
+    image: "${NAMEWTA_MONITOR_IMAGE:-namewta/namewta-monitor-admin:6.0.0}"
+    build:
+      context: ./backend/images/wta-monitor-admin
+    container_name: namewta-monitor-admin
+    environment:
+      TZ: Asia/Shanghai
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
+      SPRING_APPLICATION_NAME: namewta-monitor-admin
+      JAVA_OPTS: "${JAVA_OPTS:--Xms256m -Xmx512m}"
+      SPRING_SECURITY_USER_NAME: "${MONITOR_USERNAME:?MONITOR_USERNAME is required}"
+      SPRING_SECURITY_USER_PASSWORD: "${MONITOR_PASSWORD:?MONITOR_PASSWORD is required}"
+      SPRING_BOOT_ADMIN_CLIENT_URL: http://namewta-monitor-admin:9090/admin
+      SPRING_BOOT_ADMIN_CLIENT_USERNAME: "${MONITOR_USERNAME:?MONITOR_USERNAME is required}"
+      SPRING_BOOT_ADMIN_CLIENT_PASSWORD: "${MONITOR_PASSWORD:?MONITOR_PASSWORD is required}"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49090:9090"
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/logs/monitor:/wta/monitor/logs"
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  loki:
+    image: grafana/loki:3.6.0
+    container_name: namewta-loki
+    user: "0:0"
+    command: ["-config.file=/etc/loki/loki.yml"]
+    volumes:
+      - ./observability/loki/loki.yml:/etc/loki/loki.yml:ro
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/observability/loki:/loki"
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  alloy:
+    image: grafana/alloy:v1.11.0
+    container_name: namewta-alloy
+    command: ["run", "--storage.path=/var/lib/alloy/data", "/etc/alloy/config.alloy"]
+    volumes:
+      - ./observability/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/logs:/var/log/wta:ro"
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/observability/alloy:/var/lib/alloy/data"
+    depends_on: [loki]
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  grafana:
+    image: grafana/grafana:12.2.8
+    container_name: namewta-grafana
+    environment:
+      TZ: Asia/Shanghai
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:?GRAFANA_ADMIN_USER is required}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD is required}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION: "false"
+      GF_SECURITY_DISABLE_USERNAME_LOGIN_PROTECTION: "false"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:43000:3000"
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/observability/grafana:/var/lib/grafana"
+    depends_on: [loki]
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: namewta-prometheus
+    profiles: [metrics]
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49091:9090"
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/observability/prometheus:/prometheus"
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  node-exporter:
+    image: prom/node-exporter:v1.9.1
+    container_name: namewta-node-exporter
+    profiles: [metrics]
+    command:
+      - --path.rootfs=/host
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+)($$|/)
+    volumes:
+      - /:/host:ro
+    pid: host
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:v0.57.0
+    container_name: namewta-cadvisor
+    profiles: [metrics]
+    command: ["--docker_only=true", "--housekeeping_interval=15s"]
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    devices:
+      - /dev/kmsg
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+networks:
+  namewta:
+    external: true
+    name: "${NAMEWTA_NETWORK:-namewta-network}"

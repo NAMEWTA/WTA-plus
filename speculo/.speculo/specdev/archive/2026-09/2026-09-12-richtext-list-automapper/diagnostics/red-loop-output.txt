@@ -1,0 +1,13 @@
+# red-loop capture 2026-09-11T16:37:28Z
+assert_missing_AutoMapper:0 assert_ConvertException:0 assert_error_id:0
+red_exit:0
+--- e2e stack excerpt ---
+8: - 请求地址'/demo/rich-text/list',发生未知异常, 错误编号: 85384381
+9:io.github.linpeilie.ConvertException: cannot find converter from TestRichText to TestRichTextSummaryVo
+12:	at org.dromara.common.core.utils.MapstructUtils.convert(MapstructUtils.java:72)
+13:	at org.dromara.common.mybatis.core.mapper.BaseMapperPlus.selectVoPage(BaseMapperPlus.java:392)
+17:	at jdk.proxy2/jdk.proxy2.$Proxy277.selectVoPage(Unknown Source)
+18:	at org.dromara.common.mybatis.core.mapper.BaseMapperPlus.selectVoPage(BaseMapperPlus.java:371)
+22:	at jdk.proxy2/jdk.proxy2.$Proxy277.selectVoPage(Unknown Source)
+23:	at org.dromara.demo.service.impl.TestRichTextServiceImpl.list(TestRichTextServiceImpl.java:40)
+135: - {"记录时间":"2026-09-11T16:31:44.855727910Z","事件类型":"响应返回","请求标识":"7baa1b19-28bc-4c98-ace9-fa1dc941a01e","请求方法":"GET","请求路径":"/demo/rich-text/list","响应状态":200,"响应头":{"Date":["Fri, 11 Sep 2026 16:31:44 GMT"],"X-Request-Id":["7baa1b19-28bc-4c98-ace9-fa1dc941a01e"],"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"]},"内容类型":"application/json","内容长度":-1,"耗时毫秒":27,"处理完成":true,"正文已记录":true,"正文长度":110,"正文已截断":false,"正文":"{\"code\":500,\"data\":null,\"error\":null,\"msg\":\"发生未知异常，请联系管理员 [错误编号: 85384381]\"}"}

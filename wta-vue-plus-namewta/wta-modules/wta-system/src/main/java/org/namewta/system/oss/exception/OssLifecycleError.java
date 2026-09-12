@@ -1,0 +1,17 @@
+package org.namewta.system.oss.exception;
+
+/**
+ * OSS 生命周期稳定错误分类。
+ */
+public enum OssLifecycleError {
+    OBJECT_NOT_FOUND,
+    OBJECT_REFERENCED,
+    OBJECT_DELETE_PENDING,
+    INVALID_REFERENCE,
+    PROVIDER_DELETE_FAILED,
+    STORAGE_NOT_SERVING,
+    ACCESS_POLICY_INVALID,
+    PUBLIC_PRESIGN_FORBIDDEN,
+    DOWNLOAD_POLICY_INVALID,
+    PROVIDER_ACCESS_FAILED
+}

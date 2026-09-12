@@ -1,0 +1,25 @@
+{
+  "schema_version": 5,
+  "workflow": "specdev",
+  "active": [
+    {
+      "change": "2026-09-10-notify-channel-config"
+    },
+    {
+      "change": "2026-09-12-rename-ruoyi-dromara-to-wta"
+    }
+  ],
+  "archived": [
+    "2026-08-24-notify-eli5",
+    "2026-08-24-oss-eli5",
+    "2026-08-31-account-profile-verification",
+    "2026-09-04-third-party-http-integration",
+    "2026-08-24-login-register-client-dynamic-routing-eli5",
+    "2026-08-25-ruoyi-ai-person-archive-eli5",
+    "2026-08-25-workflow-code-first-multi-client-eli5",
+    "2026-08-28-observability-log-monitoring-eli5",
+    "2026-09-08-richtext-third-oss",
+    "2026-09-11-notify-outbox-wake-poll",
+    "2026-09-12-richtext-list-automapper"
+  ]
+}

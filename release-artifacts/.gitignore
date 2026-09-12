@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+builds/*
+!builds/.gitignore
+bundles/*
+!bundles/.gitignore
+docker/backend/images/*/app.jar
+docker/frontend/nginx/html/*/*
+!docker/frontend/nginx/html/*/.gitignore
+!docker/frontend/nginx/html/nginx-lb/system-updating.html
+docker/frontend/nginx/cert/*/*
+!docker/frontend/nginx/cert/*/.gitignore
+docker/frontend/nginx/log/*
+!docker/frontend/nginx/log/.gitignore
+runtime/
+*.log

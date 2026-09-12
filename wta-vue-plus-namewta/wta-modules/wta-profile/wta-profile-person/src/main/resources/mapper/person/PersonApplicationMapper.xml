@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.profile.person.mapper.PersonApplicationMapper">
+
+    <select id="selectActiveIdentityMatches"
+            resultType="org.namewta.profile.person.domain.model.read.PersonActiveIdentityMatchRow">
+        select b.user_id, p.person_profile_id
+          from profile_person p
+          join profile_person_binding b on b.person_profile_id = p.person_profile_id
+         where p.full_name = #{fullName}
+           and upper(right(trim(p.document_number), 4)) = #{documentLastFour}
+           and p.status = 'ACTIVE'
+           and p.del_flag = '0'
+           and b.status = 'ACTIVE'
+           and b.del_flag = '0'
+         order by b.user_id, p.person_profile_id
+    </select>
+
+    <select id="lockActiveIdentityMatch"
+            resultType="org.namewta.profile.person.domain.model.read.PersonActiveIdentityMatchRow">
+        select b.user_id, p.person_profile_id
+          from profile_person p
+          join profile_person_binding b on b.person_profile_id = p.person_profile_id
+         where b.user_id = #{userId}
+           and p.person_profile_id = #{personProfileId}
+           and p.full_name = #{fullName}
+           and upper(right(trim(p.document_number), 4)) = #{documentLastFour}
+           and p.status = 'ACTIVE'
+           and p.del_flag = '0'
+           and b.status = 'ACTIVE'
+           and b.del_flag = '0'
+         for update
+    </select>
+
+    <select id="lockMaterialWorkingOwner" resultType="java.lang.Long">
+        select applicant_user_id
+          from profile_person_application
+         where person_application_id = #{ownerId}
+           and del_flag = '0'
+         for update
+    </select>
+
+    <select id="lockMaterialSubmissionOwner" resultType="java.lang.Long">
+        select a.applicant_user_id
+          from profile_person_submission s
+          join profile_person_application a on a.person_application_id = s.person_application_id
+         where s.person_submission_id = #{ownerId}
+           and s.del_flag = '0'
+           and a.del_flag = '0'
+         for update
+    </select>
+
+    <select id="lockMaterialImmutableOwner" resultType="java.lang.Long">
+        <choose>
+            <when test="ownerType == 'SOURCE'">
+                select person_source_id
+                  from profile_person_source
+                 where person_source_id = #{ownerId} and del_flag = '0'
+                 for update
+            </when>
+            <when test="ownerType == 'VERSION'">
+                select person_version_id
+                  from profile_person_version
+                 where person_version_id = #{ownerId} and del_flag = '0'
+                 for update
+            </when>
+            <otherwise>
+                select null where 1 = 0
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="countEditableMaterialWorkingOwner" resultType="long">
+        select count(*)
+          from profile_person_application
+         where person_application_id = #{ownerId}
+           and status in ('DRAFT','BACK','CANCEL')
+           and del_flag = '0'
+    </select>
+
+    <select id="countMaterialSnapshotRelationship" resultType="long">
+        select count(*) from (
+            select 1 as allowed
+              from profile_person_submission s
+             where #{sourceType} = 'WORKING'
+               and #{targetType} = 'SUBMISSION'
+               and s.person_application_id = #{sourceId}
+               and s.person_submission_id = #{targetId}
+               and s.del_flag = '0'
+            union all
+            select 1
+              from profile_person_version v
+             where #{sourceType} = 'SUBMISSION'
+               and #{targetType} = 'VERSION'
+               and v.source_type = 'USER_SUBMISSION'
+               and v.source_id = #{sourceId}
+               and v.person_version_id = #{targetId}
+               and v.del_flag = '0'
+            union all
+            select 1
+              from profile_person_version v
+             where #{sourceType} = 'SOURCE'
+               and #{targetType} = 'VERSION'
+               and v.source_type in ('ADMIN_CREATE','ADMIN_OVERRIDE')
+               and v.source_id = #{sourceId}
+               and v.person_version_id = #{targetId}
+               and v.del_flag = '0'
+        ) snapshot_relationship
+    </select>
+
+    <select id="selectOpenByUserId" resultType="org.namewta.profile.person.domain.model.read.PersonApplicationRow">
+        select
+                person_application_id, applicant_user_id, target_profile_id, status, full_name,
+                document_type_code, document_number, identity_key, gender, birth_date, valid_from,
+                valid_until, provider_code, submission_seq, rebind_intent, expected_binding_id,
+                expected_binding_version, decision_version, version, submitted_time, finished_time
+                 from profile_person_application where applicant_user_id = #{userId} and status in ('DRAFT','BACK','CANCEL','WAITING') and del_flag = '0'
+    </select>
+
+    <select id="lockOpenByUserId" resultType="org.namewta.profile.person.domain.model.read.PersonApplicationRow">
+        select
+                person_application_id, applicant_user_id, target_profile_id, status, full_name,
+                document_type_code, document_number, identity_key, gender, birth_date, valid_from,
+                valid_until, provider_code, submission_seq, rebind_intent, expected_binding_id,
+                expected_binding_version, decision_version, version, submitted_time, finished_time
+                 from profile_person_application where applicant_user_id = #{userId} and status in ('DRAFT','BACK','CANCEL','WAITING') and del_flag = '0' for update
+    </select>
+
+    <select id="lockApplicationById" resultType="org.namewta.profile.person.domain.model.read.PersonApplicationRow">
+        select
+                person_application_id, applicant_user_id, target_profile_id, status, full_name,
+                document_type_code, document_number, identity_key, gender, birth_date, valid_from,
+                valid_until, provider_code, submission_seq, rebind_intent, expected_binding_id,
+                expected_binding_version, decision_version, version, submitted_time, finished_time
+                 from profile_person_application where person_application_id = #{applicationId} and del_flag = '0' for update
+    </select>
+
+    <select id="selectDocumentType" resultType="org.namewta.profile.person.domain.model.read.PersonDocumentTypeRow">
+        select document_type_code, number_pattern, validity_required
+                  from profile_document_type
+                 where document_type_code = #{code} and status = '0' and del_flag = '0'
+    </select>
+
+    <select id="selectActiveProfileIdByIdentity" resultType="java.lang.Long">
+        select person_profile_id
+                  from profile_person
+                 where identity_key = #{identityKey} and status = 'ACTIVE' and del_flag = '0'
+    </select>
+
+    <select id="selectEffectiveProfileIdByUser" resultType="java.lang.Long">
+        select b.person_profile_id
+                  from profile_person_binding b
+                  join profile_person p on p.person_profile_id = b.person_profile_id
+                 where b.user_id = #{userId} and b.status in ('ACTIVE','SUSPENDED') and b.del_flag = '0'
+                   and p.status = 'ACTIVE' and p.del_flag = '0'
+    </select>
+
+    <insert id="insertApplication">
+        insert into profile_person_application (
+                    person_application_id, applicant_user_id, target_profile_id, status, full_name,
+                    document_type_code, document_number, identity_key, gender, birth_date, valid_from,
+                    valid_until, provider_code, submission_seq, rebind_intent, decision_version, version,
+                    create_dept, create_time, create_by, update_time, update_by, del_flag
+                ) values (
+                    #{personApplicationId}, #{applicantUserId}, #{targetProfileId}, 'DRAFT', #{fullName},
+                    #{documentTypeCode}, #{documentNumber}, #{identityKey}, #{gender}, #{birthDate}, #{validFrom},
+                    #{validUntil}, #{providerCode}, 0, 'N', 0, 0,
+                    -1, current_timestamp, #{applicantUserId}, current_timestamp, #{applicantUserId}, '0'
+                )
+    </insert>
+
+    <update id="updateDraft">
+        update profile_person_application
+                   set target_profile_id = #{targetProfileId}, status = 'DRAFT', full_name = #{fullName},
+                       document_type_code = #{documentTypeCode}, document_number = #{documentNumber},
+                       identity_key = #{identityKey}, gender = #{gender}, birth_date = #{birthDate},
+                       valid_from = #{validFrom}, valid_until = #{validUntil}, version = version + 1,
+                       update_time = current_timestamp, update_by = #{applicantUserId}
+                 where person_application_id = #{personApplicationId} and applicant_user_id = #{applicantUserId}
+                   and status in ('DRAFT','BACK','CANCEL') and version = #{version} and del_flag = '0'
+    </update>
+
+    <insert id="insertSubmission">
+        insert into profile_person_submission (
+                    person_submission_id, person_application_id, submission_seq, full_name,
+                    document_type_code, document_number, identity_key, gender, birth_date, valid_from,
+                    valid_until, provider_code, rebind_intent, target_profile_id, expected_binding_id,
+                    expected_binding_version, field_snapshot_json, submitted_time, version,
+                    create_dept, create_time, create_by, update_time, update_by, del_flag
+                ) values (
+                    #{personSubmissionId}, #{personApplicationId}, #{submissionSeq}, #{fullName},
+                    #{documentTypeCode}, #{documentNumber}, #{identityKey}, #{gender}, #{birthDate}, #{validFrom},
+                    #{validUntil}, #{providerCode}, #{rebindIntent}, #{targetProfileId}, #{expectedBindingId},
+                    #{expectedBindingVersion}, #{fieldSnapshotJson}, #{submittedTime}, 0,
+                    -1, current_timestamp, #{applicantUserId}, current_timestamp, #{applicantUserId}, '0'
+                )
+    </insert>
+
+    <select id="selectSubmission" resultType="org.namewta.profile.person.domain.model.read.PersonSubmissionRow">
+        select s.person_submission_id, s.person_application_id, s.submission_seq,
+                       a.applicant_user_id, s.full_name, s.document_type_code, s.document_number,
+                       s.identity_key, s.gender, s.birth_date, s.valid_from, s.valid_until,
+                       s.provider_code, s.rebind_intent, s.target_profile_id, s.expected_binding_id,
+                       s.expected_binding_version, s.field_snapshot_json, s.submitted_time
+                  from profile_person_submission s
+                  join profile_person_application a on a.person_application_id = s.person_application_id
+                 where s.person_application_id = #{applicationId} and s.submission_seq = #{submissionSeq}
+                   and s.del_flag = '0' and a.del_flag = '0'
+    </select>
+
+    <update id="markWaiting">
+        update profile_person_application
+                   set status = 'WAITING', submission_seq = #{submissionSeq}, submitted_time = #{submittedTime},
+                       finished_time = null, decision_source = null, decision_result = null, decision_reason = null,
+                       version = version + 1, update_time = current_timestamp, update_by = applicant_user_id
+                 where person_application_id = #{applicationId} and submission_seq = #{submissionSeq} - 1
+                   and status in ('DRAFT','BACK','CANCEL') and version = #{expectedVersion} and del_flag = '0'
+    </update>
+
+    <select id="lockActiveProfileByIdentity" resultType="org.namewta.profile.person.domain.model.read.PersonProfileRow">
+        select
+                person_profile_id, previous_profile_id, current_version_id, full_name,
+                document_type_code, document_number, identity_key, gender, birth_date,
+                valid_from, valid_until, status, version
+                 from profile_person where identity_key = #{identityKey} and status = 'ACTIVE' and del_flag = '0' for update
+    </select>
+
+    <select id="lockActiveProfileById" resultType="org.namewta.profile.person.domain.model.read.PersonProfileRow">
+        select
+                person_profile_id, previous_profile_id, current_version_id, full_name,
+                document_type_code, document_number, identity_key, gender, birth_date,
+                valid_from, valid_until, status, version
+                 from profile_person where person_profile_id = #{profileId} and status = 'ACTIVE' and del_flag = '0' for update
+    </select>
+
+    <update id="updateIdentityGuard">
+        update profile_identity_guard
+                   set identity_key = #{identityKey}, version = version + 1,
+                       update_time = current_timestamp, update_by = -1
+                 where profile_type = 'PERSON' and owner_type = 'PROFILE' and owner_id = #{profileId}
+                   and status = 'ACTIVE' and del_flag = '0'
+    </update>
+
+    <select id="lockLatestRevokedProfileByIdentity" resultType="org.namewta.profile.person.domain.model.read.PersonProfileRow">
+        select
+                person_profile_id, previous_profile_id, current_version_id, full_name,
+                document_type_code, document_number, identity_key, gender, birth_date,
+                valid_from, valid_until, status, version
+                 from profile_person where identity_key = #{identityKey} and status = 'REVOKED' and del_flag = '0' order by revoked_time desc, person_profile_id desc limit 1 for update
+    </select>
+
+    <insert id="insertIdentityGuard">
+        insert into profile_identity_guard (
+                    identity_guard_id, profile_type, identity_key, owner_type, owner_id, status,
+                    version, create_dept, create_time, create_by, update_time, update_by, del_flag
+                ) values (
+                    #{guardId}, 'PERSON', #{identityKey}, 'PROFILE', #{profileId}, 'ACTIVE',
+                    0, -1, current_timestamp, -1, current_timestamp, -1, '0'
+                )
+    </insert>
+
+    <insert id="insertProfile">
+        insert into profile_person (
+                    person_profile_id, previous_profile_id, current_version_id, full_name,
+                    document_type_code, document_number, identity_key, gender, birth_date, valid_from,
+                    valid_until, status, version, create_dept, create_time, create_by,
+                    update_time, update_by, del_flag
+                ) values (
+                    #{personProfileId}, #{previousProfileId}, null, #{fullName},
+                    #{documentTypeCode}, #{documentNumber}, #{identityKey}, #{gender}, #{birthDate}, #{validFrom},
+                    #{validUntil}, 'ACTIVE', 0, -1, current_timestamp, -1,
+                    current_timestamp, -1, '0'
+                )
+    </insert>
+
+    <select id="selectCurrentVersionForUpdate" resultType="org.namewta.profile.person.domain.model.read.PersonVersionRow">
+        select person_version_id, person_profile_id, version_no, source_type, source_id,
+                       full_name, document_type_code, document_number, identity_key, gender,
+                       birth_date, valid_from, valid_until, status, published_time
+                  from profile_person_version
+                 where person_profile_id = #{profileId} and status = 'CURRENT' and del_flag = '0'
+                 for update
+    </select>
+
+    <update id="supersedeVersion">
+        update profile_person_version
+                   set status = 'SUPERSEDED', version = version + 1,
+                       update_time = current_timestamp, update_by = -1
+                 where person_version_id = #{versionId} and status = 'CURRENT' and del_flag = '0'
+    </update>
+
+    <insert id="insertVersion">
+        insert into profile_person_version (
+                    person_version_id, person_profile_id, version_no, source_type, source_id,
+                    full_name, document_type_code, document_number, identity_key, gender, birth_date,
+                    valid_from, valid_until, status, published_time, version,
+                    create_dept, create_time, create_by, update_time, update_by, del_flag
+                ) values (
+                    #{personVersionId}, #{personProfileId}, #{versionNo}, #{sourceType}, #{sourceId},
+                    #{fullName}, #{documentTypeCode}, #{documentNumber}, #{identityKey}, #{gender}, #{birthDate},
+                    #{validFrom}, #{validUntil}, 'CURRENT', #{publishedTime}, 0,
+                    -1, current_timestamp, -1, current_timestamp, -1, '0'
+                )
+    </insert>
+
+    <update id="updateProfile">
+        update profile_person
+                   set current_version_id = #{currentVersionId}, full_name = #{fullName},
+                       document_type_code = #{documentTypeCode}, document_number = #{documentNumber},
+                       identity_key = #{identityKey}, gender = #{gender}, birth_date = #{birthDate},
+                       valid_from = #{validFrom}, valid_until = #{validUntil}, status = 'ACTIVE',
+                       version = version + 1, update_time = current_timestamp, update_by = -1
+                 where person_profile_id = #{personProfileId} and status = 'ACTIVE'
+                   and version = #{version} and del_flag = '0'
+    </update>
+
+    <select id="lockEffectiveBindingByUser" resultType="org.namewta.profile.person.domain.model.read.PersonBindingRow">
+        select person_binding_id, person_profile_id, user_id, status, binding_version,
+                       source_type, source_id, bound_time
+                  from profile_person_binding
+                 where user_id = #{userId} and status in ('ACTIVE','SUSPENDED') and del_flag = '0'
+                 for update
+    </select>
+
+    <select id="lockEffectiveBindingByProfile" resultType="org.namewta.profile.person.domain.model.read.PersonBindingRow">
+        select person_binding_id, person_profile_id, user_id, status, binding_version,
+                       source_type, source_id, bound_time
+                  from profile_person_binding
+                 where person_profile_id = #{profileId} and status in ('ACTIVE','SUSPENDED') and del_flag = '0'
+                 for update
+    </select>
+
+    <insert id="insertBinding">
+        insert into profile_person_binding (
+                    person_binding_id, person_profile_id, user_id, status, binding_version,
+                    source_type, source_id, bound_time, version,
+                    create_dept, create_time, create_by, update_time, update_by, del_flag
+                ) values (
+                    #{personBindingId}, #{personProfileId}, #{userId}, 'ACTIVE', #{bindingVersion},
+                    #{sourceType}, #{sourceId}, #{boundTime}, 0,
+                    -1, current_timestamp, -1, current_timestamp, -1, '0'
+                )
+    </insert>
+
+    <insert id="insertBindingEvent">
+        insert into profile_person_binding_event (
+                    person_binding_event_id, person_binding_id, person_profile_id, user_id,
+                    event_type, binding_version, source_type, source_id, reason, occurred_time,
+                    version, create_dept, create_time, create_by, update_time, update_by, del_flag
+                ) values (
+                    #{personBindingEventId}, #{personBindingId}, #{personProfileId}, #{userId},
+                    #{eventType}, #{bindingVersion}, #{sourceType}, #{sourceId}, #{reason}, #{occurredTime},
+                    0, -1, current_timestamp, -1, current_timestamp, -1, '0'
+                )
+    </insert>
+
+    <update id="finishApplication">
+        update profile_person_application
+                   set status = 'FINISH', decision_version = decision_version + 1,
+                       decision_source = 'WORKFLOW', decision_result = 'APPROVED', finished_time = #{finishedTime},
+                       version = version + 1, update_time = current_timestamp, update_by = -1
+                 where person_application_id = #{applicationId} and submission_seq = #{snapshotVersion}
+                   and status = 'WAITING' and decision_version = #{decisionVersion}
+                   and version = #{expectedVersion} and del_flag = '0'
+    </update>
+
+    <update id="updateWorkflowStatus">
+        update profile_person_application
+                   set status = #{status}, decision_version = decision_version + 1,
+                       decision_source = 'WORKFLOW', decision_result = #{status},
+                       finished_time = case when #{status} in ('INVALID','TERMINATION') then #{occurredTime} else null end,
+                       version = version + 1, update_time = current_timestamp, update_by = -1
+                 where person_application_id = #{applicationId} and submission_seq = #{snapshotVersion}
+                   and status = 'WAITING' and version = #{expectedVersion} and del_flag = '0'
+    </update>
+
+    <select id="selectActiveProjections" resultType="org.namewta.profile.person.domain.model.read.PersonActiveProjectionRow">
+        select b.user_id, b.person_profile_id, v.published_time as verified_at
+                  from profile_person_binding b
+                  join profile_person p on p.person_profile_id = b.person_profile_id
+                  join profile_person_version v on v.person_version_id = p.current_version_id
+                 where b.status = 'ACTIVE' and b.del_flag = '0'
+                   and p.status = 'ACTIVE' and p.del_flag = '0'
+                   and v.status = 'CURRENT' and v.del_flag = '0'
+                   and b.user_id in
+                   <foreach collection="userIds" item="userId" open="(" separator="," close=")">#{userId}</foreach>
+                 order by b.user_id
+    </select>
+</mapper>

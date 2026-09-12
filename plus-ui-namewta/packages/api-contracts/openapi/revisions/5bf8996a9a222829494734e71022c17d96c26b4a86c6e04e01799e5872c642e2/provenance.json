@@ -1,0 +1,13 @@
+{
+  "backendCommit": "34766a607210873dd36af9a02effb0b49f5bb9f1",
+  "backendRepository": "ruoyi-vue-plus-namewta",
+  "generator": "openapi-typescript@7.13.0",
+  "openapiVersion": "3.1.0",
+  "rawSha256": "ce0d2264ea59303514560e1651e836f6a18db833a5104320793e61baa5755cc1",
+  "runtimeEndpoint": "/v3/api-docs",
+  "totals": {
+    "paths": 396,
+    "schemas": 437,
+    "tags": 71
+  }
+}

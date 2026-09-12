@@ -1,0 +1,70 @@
+specdev-worktree/
+speculo/.speculo/back/
+
+# Operating system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# Editors and IDEs
+.idea/
+.vscode/*
+!.vscode/settings.json
+*.iml
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.local
+
+# Dependencies and package-manager caches
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/cache/
+.yarn/unplugged/
+
+# Build output and compiled artifacts
+dist/
+build/
+out/
+target/
+*.class
+
+# Test and tooling output
+coverage/
+.nyc_output/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs, temporary files, and caches
+logs/
+*.log
+*.log.gz
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.cache/
+.temp/
+.tmp/
+tmp/
+
+# Python local environments and bytecode
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pnpm-store/
+.run/
+.codex/config.toml
+specdev-worktree/
+temp/

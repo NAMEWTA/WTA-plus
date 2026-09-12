@@ -1,0 +1,48 @@
+{
+  "name": "@namewta/web-domain-system",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./config": "./src/config/index.ts",
+    "./dept": "./src/dept/index.ts",
+    "./dict-type": "./src/dict-type/index.ts",
+    "./menu": "./src/menu/index.ts",
+    "./monitor/cache": "./src/monitor/cache/index.ts",
+    "./monitor/login-info": "./src/monitor/login-info/index.ts",
+    "./monitor/online": "./src/monitor/online/index.ts",
+    "./monitor/operlog": "./src/monitor/operlog/index.ts",
+    "./open-api": "./src/open-api/index.ts",
+    "./oss": "./src/oss/index.ts",
+    "./oss-config": "./src/oss-config/index.ts",
+    "./pages": "./src/pages.ts",
+    "./post": "./src/post/index.ts",
+    "./role": "./src/role/index.ts",
+    "./user": "./src/user/index.ts",
+    "./user-type": "./src/user-type/index.ts"
+  },
+  "scripts": {
+    "build": "vue-tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint src",
+    "test": "vitest run src",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@namewta/domain-system": "workspace:*",
+    "@namewta/platform-app-runtime": "workspace:*",
+    "echarts": "6.1.0",
+    "element-plus": "catalog:",
+    "vue": "catalog:",
+    "vue-json-pretty": "2.6.0",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "4.1.10",
+    "vue-tsc": "3.3.8"
+  }
+}

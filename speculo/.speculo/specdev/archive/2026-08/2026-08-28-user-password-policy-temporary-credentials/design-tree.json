@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-28-user-password-policy-temporary-credentials",
+  "status": "consensus",
+  "round": 5,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "用户密码优化范围",
+      "question": "本 change 要解决哪些用户密码流程？",
+      "depends_on": [],
+      "recommendation": "覆盖用户管理临时密码、管理员重置密码和公开注册，并以服务端统一策略防止绕过。",
+      "status": "answered",
+      "round": 1,
+      "answer": "优化 admin-web 用户管理及对应后端：增加一分钟临时密码登录、把重置默认密码改为合规随机密码，并强化用户注册密码校验。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "最低密码强度",
+      "question": "密码最低强度采用什么基线？",
+      "depends_on": [],
+      "recommendation": "至少 8 位，且至少各含一个大写字母、小写字母、数字和特殊字符；前端提示与服务端强制一致。",
+      "status": "answered",
+      "round": 1,
+      "answer": "密码必须为 8 位以上，并同时包含大写字母、小写字母、数字和特殊字符。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "一分钟临时密码",
+      "question": "临时密码的有效窗口是多少？",
+      "depends_on": [],
+      "recommendation": "从签发成功起精确有效 60 秒，过期后不能再用于认证。",
+      "status": "answered",
+      "round": 1,
+      "answer": "管理员可为用户生成一个符合强度规则、有效期为一分钟并可用于登录的临时密码。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "重置默认密码随机化",
+      "question": "管理员重置密码的默认值应如何产生？",
+      "depends_on": ["D-002"],
+      "recommendation": "由服务端依据有效策略生成，不再使用 123456，并在授权响应中只返回一次明文。",
+      "status": "answered",
+      "round": 1,
+      "answer": "重置密码的默认密码应为符合强度规则的随机密码，而不是 123456。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "注册强度校验",
+      "question": "公开注册如何执行密码强度规则？",
+      "depends_on": ["D-002"],
+      "recommendation": "前端即时提示，服务端在持久化前使用同一策略强制校验，拒绝绕过前端的弱密码。",
+      "status": "answered",
+      "round": 1,
+      "answer": "用户注册必须执行相同的密码强度校验。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-006",
+      "title": "策略配置载体",
+      "question": "现有默认密码实际位于 sys_config 参数 sys.user.initPassword，而不是 sys_dict。新策略应继续使用 sys_config 的 JSON 对象配置，还是迁移到真正的 sys_dict？",
+      "depends_on": ["D-002"],
+      "recommendation": "继续使用 sys_config，并新增类型化 JSON 策略；支持 random 模式配置长度和字符集，也支持 fixed 模式填写一个必须通过强度校验的固定默认密码。sys_dict 适合枚举翻译，不适合承载安全策略对象。",
+      "status": "answered",
+      "round": 1,
+      "answer": "继续使用 sys_config 作为密码策略配置载体。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-007",
+      "title": "临时凭据消费语义",
+      "question": "一分钟内临时密码可以重复登录，还是首次认证成功后立即失效？签发新临时密码时是否作废上一枚？",
+      "depends_on": ["D-003"],
+      "recommendation": "单次使用：仅保存 BCrypt 哈希到 Redis，TTL 60 秒；首次成功认证原子消费，签发新值覆盖旧值，且不修改用户永久密码。",
+      "status": "answered",
+      "round": 1,
+      "answer": "临时密码单次使用，成功认证后原子消费；新签发覆盖旧值，且永久密码不受影响。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-008",
+      "title": "临时登录会话",
+      "question": "临时密码成功认证后，签发普通 Client 时长会话、60 秒短会话，还是进入只允许修改密码的受限会话？",
+      "depends_on": ["D-007"],
+      "recommendation": "签发带 temporaryCredential 标记的受限会话，只允许读取本人资料、修改密码和退出；永久密码修改成功后踢出该临时会话，用户再用新密码正常登录。",
+      "status": "answered",
+      "round": 2,
+      "answer": "临时密码仅在密码认证阶段临时生效；认证成功后签发与普通密码登录完全一致的普通会话，不增加标记、限制或权限变化。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-009",
+      "title": "统一强度覆盖面",
+      "question": "除公开注册与管理员重置外，管理员新增用户、Excel 导入初始密码和个人中心修改密码是否也必须执行同一服务端策略？",
+      "depends_on": ["D-001", "D-002", "D-005"],
+      "recommendation": "全部统一，否则弱密码仍可从相邻入口进入数据库；登录请求本身不做强度拒绝，以兼容尚未迁移的存量密码。",
+      "status": "answered",
+      "round": 1,
+      "answer": "统一覆盖公开注册、管理员重置、管理员新增、Excel 导入和个人中心修改密码；存量弱密码暂不阻断登录，在下一次改密或重置时收敛。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-010",
+      "title": "重置交互与明文交付",
+      "question": "管理员点击重置后，是服务端直接生成并重置，还是前端先展示可编辑默认值再提交？",
+      "depends_on": ["D-004", "D-006"],
+      "recommendation": "服务端直接生成并完成重置，响应只返回一次明文；前端用可复制、不可再次查询的结果对话框展示，避免客户端生成规则漂移。fixed 模式则返回经服务端校验的固定值。",
+      "status": "answered",
+      "round": 2,
+      "answer": "服务端先生成合规候选密码，前端允许管理员编辑后再确认提交；只有最终确认提交才修改永久密码，服务端对最终值重新执行权威校验。",
+      "log_ref": "LOG-013"
+    },
+    {
+      "id": "D-011",
+      "title": "临时密码权限",
+      "question": "生成临时密码是否复用 system:user:resetPwd 权限，还是使用独立权限以便最小授权和审计？",
+      "depends_on": ["D-001", "D-003"],
+      "recommendation": "新增 system:user:temporaryPassword 独立权限；后端单独鉴权，前端按钮也使用该权限，不让拥有重置永久密码权限自动获得临时登录凭据签发权。",
+      "status": "answered",
+      "round": 1,
+      "answer": "新增 system:user:temporaryPassword 独立权限，使临时登录凭据签发权可以独立授权和审计。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-012",
+      "title": "重置后的既有会话",
+      "question": "永久密码被管理员重置后，用户已有的全部 Client 会话是否立即失效？",
+      "depends_on": ["D-010"],
+      "recommendation": "重置成功后踢出该用户全部 Client 会话，并删除未消费临时密码，避免旧会话继续访问或旧临时凭据覆盖新的恢复流程。",
+      "status": "answered",
+      "round": 3,
+      "answer": "保持当前系统行为：管理员重置永久密码只更新密码，不主动使既有会话失效，也不因本 change 额外改变该行为。",
+      "log_ref": "LOG-017"
+    },
+    {
+      "id": "D-013",
+      "title": "非法策略配置",
+      "question": "策略 JSON 缺字段、字符集无法满足强度或 fixed 密码不合规时，系统应如何处理？",
+      "depends_on": ["D-006", "D-009"],
+      "recommendation": "密码写入、重置和临时密码签发全部失败关闭，返回不含配置明文的稳定错误；启动/配置保存时增加校验，禁止静默回退到 123456。",
+      "status": "answered",
+      "round": 2,
+      "answer": "服务端按具体失败原因返回稳定且详细的校验错误，例如长度不足或缺少某类字符；不得只返回笼统的不合规提示，且不得泄露 fixed 密码或生成内部参数。",
+      "log_ref": "LOG-014"
+    },
+    {
+      "id": "D-014",
+      "title": "验收与兼容边界",
+      "question": "最终验收如何覆盖配置模式、随机质量、所有密码入口、临时凭据并发消费、Client 准入、权限、日志和会话失效？",
+      "depends_on": ["D-008", "D-009", "D-010", "D-011", "D-012", "D-013", "D-015", "D-016", "D-017", "D-018", "D-019", "D-020"],
+      "recommendation": "以后端策略/认证单元与集成测试、前端 domain/component 测试、跨 Client 负向矩阵、SQL fresh/upgrade 演练及两端完整质量门禁作为 Ready 验收合同。",
+      "status": "answered",
+      "round": 5,
+      "answer": "用户确认完整验收矩阵：覆盖 sys_config random/fixed 策略、所有密码写入口、可编辑重置候选、临时密码生命周期与权限、存量兼容、Client 精确会话失效、Redis/JVM 缓存一致性及前后端质量门禁。",
+      "log_ref": "LOG-021"
+    },
+    {
+      "id": "D-015",
+      "title": "临时密码 Client 作用域",
+      "question": "临时密码应只允许登录签发它的管理端 Client，还是可用于用户本来就有准入资格的任意 Client？",
+      "depends_on": ["D-007"],
+      "recommendation": "绑定签发时明确选择的目标 Client 主键；登录仍执行该 Client 的用户类型准入，不能把管理端签发的一枚凭据扩散到用户其他 Client。",
+      "status": "answered",
+      "round": 2,
+      "answer": "临时密码是用户级密码认证凭据，可用于该用户原本具有准入资格的任意 Client；每次登录仍执行目标 Client 的既有用户类型和状态校验。",
+      "log_ref": "LOG-015"
+    },
+    {
+      "id": "D-016",
+      "title": "前端安全策略投影",
+      "question": "注册页和用户管理页如何取得动态密码规则而不暴露 fixed 默认密码？",
+      "depends_on": ["D-006"],
+      "recommendation": "认证公开上下文只投影最小长度、必需字符类别和允许的特殊字符等非敏感规则；fixed 值和生成内部配置永不返回公开端点，服务端仍做最终校验。",
+      "status": "answered",
+      "round": 2,
+      "answer": "公开认证上下文只返回最小长度、必需字符类别和允许的特殊字符等非敏感规则；fixed 密码和随机生成内部参数永不下发，服务端始终是最终校验权威。",
+      "log_ref": "LOG-016"
+    },
+    {
+      "id": "D-017",
+      "title": "存量弱密码兼容",
+      "question": "启用新策略后，已有不合规密码是否立即禁止登录？",
+      "depends_on": ["D-009"],
+      "recommendation": "不在登录时按新强度拒绝已存 BCrypt 密码；所有新注册、重置、新增、导入和个人改密执行新策略，存量账号在下一次改密/重置时收敛，避免无恢复流程地锁死用户。",
+      "status": "answered",
+      "round": 2,
+      "answer": "不在登录时按新强度拒绝已有 BCrypt 密码；存量弱密码可继续登录，并在下一次改密或管理员重置时按新策略收敛。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-018",
+      "title": "权限变更强制重新登录",
+      "question": "角色菜单/数据权限或用户角色关系发生变化后，受影响的既有授权会话是否必须全部失效？",
+      "depends_on": [],
+      "recommendation": "使所有授权快照可能受影响的会话失效，用户重新登录后按最新角色、菜单和数据权限生成新快照。",
+      "status": "answered",
+      "round": 3,
+      "answer": "调整角色对应的菜单权限，或调整用户角色时，受影响的既有会话必须失效，用户必须重新登录；角色权限接口同时承载的数据权限变化也按同一规则处理。",
+      "log_ref": "LOG-018"
+    },
+    {
+      "id": "D-019",
+      "title": "授权会话分层缓存清理",
+      "question": "强制会话失效是否必须同时清理 Redis 会话数据和全部运行实例的 JVM 本地缓存？",
+      "depends_on": ["D-018"],
+      "recommendation": "必须同时清理 Sa-Token Redis 数据、权限数据缓存和所有实例的 Caffeine 副本，不能依赖 5 秒或 30 秒自然过期；失效链路应集中封装并可验证。",
+      "status": "answered",
+      "round": 3,
+      "answer": "权限变更导致会话失效时，必须清理 Redis 和内存中的相关 Token、登录快照与权限缓存，覆盖所有运行实例。",
+      "log_ref": "LOG-019"
+    },
+    {
+      "id": "D-020",
+      "title": "权限变更的 Client 会话范围",
+      "question": "这里的“所有会话”是指权限可能变化的 Client 范围，还是受影响用户在其他 Client 中权限未变化的会话也一并失效？",
+      "depends_on": ["D-018", "D-019"],
+      "recommendation": "按权限归属精确失效：角色菜单/数据权限变化使该角色所属 Client 的全部会话失效；用户角色变化使该用户在目标 Client 的全部会话失效。其他 Client 的权限快照未受影响，不额外踢出。",
+      "status": "answered",
+      "round": 4,
+      "answer": "按受影响 Client 精确失效：角色菜单/数据权限变化注销角色所属 Client 的全部会话；用户角色变化注销该用户在目标 Client 的全部会话；其他 Client 会话保留。",
+      "log_ref": "LOG-020"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@namewta/domain-profile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./material-tags": "./src/material-tags/index.ts",
+    "./person/application": "./src/person/application/index.ts",
+    "./person/rebind": "./src/person/rebind/index.ts",
+    "./person/materials": "./src/person/materials/index.ts",
+    "./person/archive": "./src/person/archive/index.ts",
+    "./enterprise/application": "./src/enterprise/application/index.ts",
+    "./enterprise/transfer": "./src/enterprise/transfer/index.ts",
+    "./enterprise/materials": "./src/enterprise/materials/index.ts",
+    "./enterprise/archive": "./src/enterprise/archive/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint src",
+    "test": "vitest run src",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@namewta/platform-app-runtime": "workspace:*",
+    "@namewta/platform-contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "4.1.10"
+  }
+}

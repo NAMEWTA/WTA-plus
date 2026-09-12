@@ -1,0 +1,35 @@
+{
+  "name": "@namewta/web-domain-workflow",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./category": "./src/category/index.ts",
+    "./definition": "./src/definition/index.ts",
+    "./instance": "./src/instance/index.ts",
+    "./leave": "./src/leave/index.ts",
+    "./spel": "./src/spel/index.ts",
+    "./task": "./src/task/index.ts"
+  },
+  "scripts": {
+    "build": "vue-tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint src",
+    "test": "vitest run src",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@namewta/domain-workflow": "workspace:*",
+    "@namewta/platform-app-runtime": "workspace:*",
+    "element-plus": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "4.1.10",
+    "vue-tsc": "3.3.8"
+  }
+}

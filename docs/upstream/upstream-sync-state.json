@@ -1,0 +1,17 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-06T18:36:05+08:00",
+  "current_change": "current",
+  "repositories": {
+    "backend": {
+      "integrated_upstream_sha": "bffc39a89fd6ed196031e71cbceefd9986eecce8",
+      "main_merge_sha": "9b66010d29a37b577eb29e48ba7790ad04906119",
+      "observed_upstream_sha": "bffc39a89fd6ed196031e71cbceefd9986eecce8"
+    },
+    "frontend": {
+      "integrated_upstream_sha": "a85fa0aee44f6f12dc35198126914ce722ee8622",
+      "main_merge_sha": "d1748f3506259fa75eced87d6983dd14292b9a68",
+      "observed_upstream_sha": "a85fa0aee44f6f12dc35198126914ce722ee8622"
+    }
+  }
+}

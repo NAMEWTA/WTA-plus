@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "owners": [
+    {
+      "id": "system-user-avatar",
+      "module": "wta-system",
+      "table": "sys_user",
+      "carrier": "avatar",
+      "encoding": "single-positive-oss-id",
+      "primaryKey": "user_id",
+      "ownerService": "org.namewta.system.service.impl.SysUserServiceImpl",
+      "callerClass": "org.namewta.system.service.impl.SysUserServiceImpl",
+      "insertStrategy": "reconcile empty set to persisted avatar after insert",
+      "updateStrategy": "reconcile persisted avatar to requested avatar after update",
+      "deleteStrategy": "reconcile persisted avatar to empty set before logical delete",
+      "restoreStrategy": "not supported; deleted users are not restored",
+      "carrierSource": "wta-modules/wta-system/src/main/java/org/dromara/system/domain/SysUser.java",
+      "contractTest": "wta-admin/src/test/java/org/dromara/test/oss/owner/system/SystemUserAvatarOssOwnerUnitTest.java"
+    },
+    {
+      "id": "workflow-history-task-attachments",
+      "module": "wta-workflow",
+      "table": "flow_his_task",
+      "carrier": "ext",
+      "encoding": "comma-separated positive oss ids when attachment input is supplied",
+      "primaryKey": "id",
+      "ownerService": "org.namewta.workflow.oss.WorkflowHistoryOssOwner",
+      "callerClass": "org.namewta.workflow.oss.WorkflowHistoryOssOwner",
+      "insertStrategy": "capture runtime transition then reconcile empty set to each created history row ext",
+      "updateStrategy": "reconcile persisted history ext to requested attachment ids for transition-created rows",
+      "deleteStrategy": "reconcile each persisted history ext to empty set before instance history deletion",
+      "restoreStrategy": "not supported; deleted workflow history is not restored",
+      "carrierSource": "release-artifacts/docker/infrastructure/mysql/init/30-ry-workflow.sql",
+      "contractTest": "wta-admin/src/test/java/org/dromara/test/oss/owner/workflow/WorkflowHistoryOssOwnerUnitTest.java"
+    },
+    {
+      "id": "profile-material-reference",
+      "module": "wta-profile",
+      "table": "profile_material_ref",
+      "carrier": "oss_id",
+      "encoding": "single-positive-oss-id",
+      "primaryKey": "material_ref_id",
+      "ownerService": "org.namewta.profile.person.service.ProfileMaterialService",
+      "callerClass": "org.namewta.profile.person.service.ProfileMaterialService",
+      "insertStrategy": "validate OSS ownership and reconcile empty set to the inserted working or immutable snapshot reference",
+      "updateStrategy": "material OSS references are immutable; metadata and tags are snapshot fields",
+      "deleteStrategy": "reconcile the persisted OSS id to empty set when mutable working evidence is logically detached",
+      "restoreStrategy": "not supported; detached evidence is retained and a new reference is attached instead",
+      "carrierSource": "wta-modules/wta-profile/wta-profile-person/src/main/java/org/dromara/profile/person/domain/material/MaterialReference.java",
+      "contractTest": "wta-modules/wta-profile/wta-profile-person/src/test/java/org/dromara/profile/person/service/impl/ProfileMaterialServiceTest.java"
+    },
+    {
+      "id": "demo-rich-text-content",
+      "module": "wta-demo",
+      "table": "test_rich_text",
+      "carrier": "content_html",
+      "encoding": "canonical-html-oss-id-references",
+      "primaryKey": "rich_text_id",
+      "ownerService": "org.namewta.demo.service.impl.TestRichTextServiceImpl",
+      "callerClass": "org.namewta.demo.service.impl.TestRichTextServiceImpl",
+      "insertStrategy": "normalize and validate assets before reconcile after insert",
+      "updateStrategy": "optimistic update then reconcile previous and current canonical references",
+      "deleteStrategy": "reconcile persisted references to empty set during logical delete",
+      "restoreStrategy": "not supported",
+      "carrierSource": "wta-modules/wta-demo/src/main/java/org/dromara/demo/domain/TestRichText.java",
+      "contractTest": "wta-admin/src/test/java/org/dromara/test/oss/owner/demo/TestRichTextOssOwnerUnitTest.java"
+    }
+  ],
+  "carrierAllowlist": [
+    {
+      "candidate": "sys_oss.oss_id",
+      "reason": "OSS lifecycle aggregate primary key, not a business-owned reference carrier"
+    },
+    {
+      "candidate": "sys_oss_config.oss_config_id",
+      "reason": "storage provider configuration primary key, not an OSS object reference"
+    },
+    {
+      "candidate": "sys_oss_ref.oss_id",
+      "reason": "lifecycle reference index maintained internally by OssLifecycleManager"
+    },
+    {
+      "candidate": "sys_oss_ref.oss_ref_id",
+      "reason": "lifecycle reference row primary key, not a business-owned reference carrier"
+    },
+    {
+      "candidate": "sys_oss_migration_batch.oss_migration_batch_id",
+      "reason": "OSS migration governance batch primary key, not a business-owned reference carrier"
+    },
+    {
+      "candidate": "sys_oss_migration_item.oss_migration_item_id",
+      "reason": "OSS migration governance item primary key, not a business-owned reference carrier"
+    },
+    {
+      "candidate": "sys_oss_migration_item.oss_migration_batch_id",
+      "reason": "OSS migration governance batch foreign key, not a business-owned reference carrier"
+    },
+    {
+      "candidate": "sys_oss_migration_item.oss_id",
+      "reason": "OSS migration execution target recorded by infrastructure, not a business-owned reference carrier"
+    }
+  ],
+  "callerAllowlist": [
+    {
+      "callerClass": "org.namewta.system.service.impl.SysOssServiceImpl",
+      "reason": "public OssService adapter delegates the collection reconciliation contract to OssLifecycleManager"
+    }
+  ]
+}

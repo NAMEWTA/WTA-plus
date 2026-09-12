@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-26-current-log-system-eli5",
+  "status": "consensus",
+  "round": 4,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "操作审计日志保持不变",
+      "question": "本次系统运行日志优化是否修改 @Log、LogAspect、OperLogEvent 或 sys_oper_log？",
+      "depends_on": [],
+      "recommendation": "完全不修改操作审计链路，只处理 ruoyi-common-web 的 HTTP 运行日志与 ruoyi-admin 的 Logback 持久化。",
+      "status": "answered",
+      "round": 1,
+      "answer": "不修改 @Log 及其数据库操作审计链路。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "完整请求生命周期目标",
+      "question": "系统运行日志需要覆盖一次 HTTP 调用的哪些阶段？",
+      "depends_on": [],
+      "recommendation": "记录请求进入时的方法、路径、参数和正文，以及处理结束后的状态、响应正文和耗时，并能关联为同一次调用。",
+      "status": "answered",
+      "round": 1,
+      "answer": "记录请求进入时的完整参数等信息，以及处理完成后返回前端的响应 body，使两端共同构成一次完整请求数据。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "业务正文原样记录",
+      "question": "普通业务请求参数和响应 body 是否进行字段级脱敏或业务值改写？",
+      "depends_on": ["D-002"],
+      "recommendation": "按用户要求保留业务正文原值；传输凭证是否例外由独立安全边界节点决定。",
+      "status": "answered",
+      "round": 1,
+      "answer": "普通业务请求输入和响应输出原样记录，不做字段级脱敏或内容改写。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "单文件持久化",
+      "question": "系统运行日志保留哪些文件以及采用什么轮转周期？",
+      "depends_on": [],
+      "recommendation": "只保留 sys-console.log，INFO 及以上统一进入该文件，按天滚动压缩并保留 60 天。",
+      "status": "answered",
+      "round": 1,
+      "answer": "只保留 sys-console.log；历史按天滚动为 gzip 压缩文件并保留 60 天，不再生成 sys-info.log 和 sys-error.log。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "配置所有权边界",
+      "question": "普通 Spring Java 配置类无法接管早于 ApplicationContext 初始化的 Logback 启动阶段。是否接受：HTTP 采集开关、正文范围和限制由 ruoyi-common-web 的 @ConfigurationProperties + @AutoConfiguration 管理并允许 YAML 覆盖；文件路径、滚动、压缩和保留仍由 ruoyi-admin 的 logback-plus.xml 管理？",
+      "depends_on": [],
+      "recommendation": "接受该分层。Java 配置拥有 HTTP 采集行为，Logback XML 拥有日志文件持久化，避免伪造一个启动时序上不能生效的 Java 配置。",
+      "status": "answered",
+      "round": 1,
+      "answer": "接受启动边界分层，但不在 application.yml 写常规 sysLog 配置。HTTP 日志默认值写在 Java 配置类中；默认开启并允许通过外部属性显式关闭。文件持久化、轮转和保留写在 logback-plus.xml。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-006",
+      "title": "安全凭证例外",
+      "question": "业务 JSON 原样记录的前提下，Authorization、Cookie、登录密码、短信/邮箱验证码、access token、refresh token、client secret 等可直接取得系统访问权的凭证是否也必须原样写入 sys-console.log？",
+      "depends_on": ["D-003"],
+      "recommendation": "业务字段保持原样，但永不记录 Authorization/Cookie 等请求头，并对明确的认证凭证字段做最小排除。这是满足仓库 SEC-003/SEC-005 且避免重现现有完整 token 泄露的最低安全边界。",
+      "status": "answered",
+      "round": 1,
+      "answer": "用户当前要求正常请求的输入输出全部保持原样，包括正文中的密码、验证码、token 和 client secret；理由是假定服务器本身安全、部分密码已加密且动态凭证会刷新。该决定仍需在 D-014 对照实际风险显式确认是否作为安全规范例外。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-007",
+      "title": "响应类型覆盖范围",
+      "question": "“完整响应 body”是仅指普通 JSON/文本 API，还是也包括 Excel、ZIP、PDF、图片、OSS 文件和 SSE/AI 流式响应的原始字节？",
+      "depends_on": ["D-002"],
+      "recommendation": "完整记录普通 JSON/文本 API；文件、multipart 和流式响应只记录路径、参数、Content-Type、Content-Length、状态和耗时，不缓存或打印正文。",
+      "status": "answered",
+      "round": 1,
+      "answer": "普通 JSON/文本接口记录正文；文件、multipart 和流式响应不记录原始字节，只记录路径、参数、Content-Type、Content-Length、状态和耗时。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-008",
+      "title": "正文容量边界",
+      "question": "单次请求或响应正文是否允许无限长度写入，还是设置可由 YAML 覆盖的默认上限并在截断时明确记录原始长度和 truncated=true？",
+      "depends_on": ["D-002", "D-003"],
+      "recommendation": "默认 1 MiB、YAML 可调、不得配置为无限；超过时显式截断。无限正文会同时扩大堆内存、日志队列、磁盘和 60 天存储事故半径。",
+      "status": "answered",
+      "round": 1,
+      "answer": "单次请求或响应正文上限采用 Java 默认值 1 MiB；超过时截断并记录原始长度和 truncated=true。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-009",
+      "title": "链路日志形态",
+      "question": "请求与响应采用两条日志并用 requestId/MDC 关联，还是等请求结束后输出一条包含请求和响应的合并记录？",
+      "depends_on": ["D-002"],
+      "recommendation": "采用 REQUEST 与 RESPONSE/COMPLETE 两条单行结构化日志，共用服务端生成的 requestId；这样挂起、超时或进程崩溃时仍保留请求进入证据，中间业务日志也可通过 MDC 关联。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用请求和响应两条记录，以同一个 requestId 关联；requestId 的生成与回传规则由 D-013 决定。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-010",
+      "title": "启用环境",
+      "question": "完整 HTTP 正文日志在哪些环境默认启用？",
+      "depends_on": ["D-002", "D-004"],
+      "recommendation": "由 YAML 开关控制，local/dev 默认启用，prod 也可显式启用；生产启用时为采集类单独保持 INFO，不受 org.dromara=warn 影响。",
+      "status": "answered",
+      "round": 1,
+      "answer": "所有环境默认开启，但允许显式关闭；Java 条件配置采用默认开启语义，不要求在 application.yml 声明。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-011",
+      "title": "Filter 边界捕获语义",
+      "question": "系统日志是在现有 CryptoFilter 之后捕获它当时可见的请求与响应内容，还是要求还原客户端线路上的密文字节？",
+      "depends_on": ["D-007", "D-008"],
+      "recommendation": "在 CryptoFilter 之后使用统一系统日志 Filter，记录该 Filter 实际观察到的请求和响应内容；这对应解密后的请求正文与响应加密前的正文。",
+      "status": "answered",
+      "round": 2,
+      "answer": "以系统日志 Filter 经过时实际捕获到的内容为准：Filter 位于现有 CryptoFilter 之后，因此记录解密后的请求正文和响应加密前的正文，不额外还原客户端线路密文。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-012",
+      "title": "失败与验收合同",
+      "question": "采集失败、配置错误、异常响应、异步请求及滚动清理分别应如何降级和验证？",
+      "depends_on": ["D-005", "D-006", "D-007", "D-008", "D-009", "D-010", "D-011", "D-013", "D-014", "D-015", "D-016", "D-017"],
+      "recommendation": "日志采集失败不得改变业务响应；配置启动即校验；测试正常/异常/超长/敏感凭证/下载/SSE/MDC 清理和 60 天滚动策略。",
+      "status": "answered",
+      "round": 4,
+      "answer": "完整接受推荐合同：非法配置启动失败；采集、JSON 编码或缓存失败不得改变业务响应并向终端报告；正常、业务异常和未处理异常尽可能形成同 requestId 的请求/响应记录；Servlet 异步请求在真实完成时只记录一次，JSON/文本记录正文而 SSE/文件只记元数据；所有路径清理 MDC；验收覆盖正常、异常、截断、原值凭证、加解密边界、排除类型、异步、requestId、同步 appender、每日 gzip、60 天、40GB 以及不再生成 info/error 文件。",
+      "log_ref": "LOG-017"
+    },
+    {
+      "id": "D-013",
+      "title": "requestId 生成与回传",
+      "question": "requestId 是否由服务器为每次 HTTP 请求生成 UUID，并通过 MDC 写入所有相关日志，同时在响应头 X-Request-Id 返回给前端？是否接受客户端传入的 X-Request-Id？",
+      "depends_on": ["D-009"],
+      "recommendation": "始终由当前服务器生成 UUID，不把客户端传入值当权威 requestId；可将外部值另记为 upstreamRequestId。响应头回传服务端 requestId，便于前端报障。",
+      "status": "answered",
+      "round": 2,
+      "answer": "完全接受推荐方案：每次请求由服务器生成 UUID requestId，写入 MDC 并通过 X-Request-Id 响应头回传；客户端传入值不作为权威 requestId，可单独记为 upstreamRequestId；请求结束必须清理 MDC。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-014",
+      "title": "原样凭证风险确认",
+      "question": "当前 cryptoFilter 先解密再把请求交给 RepeatableFilter/Interceptor，因此日志采集看到的是解密后的正文；响应 Advice 也位于响应加密写出之前。验证码刷新不消除有效期内的重放风险，access/refresh token 在过期前可被重放，日志还会保留 60 天；SysClient.clientSecret 是真实持久化字段，不等于公开 clientId。已知这些事实后，是否仍要求把密码、验证码、token 和 client secret 原样写入日志，并将其记录为本 change 对 SEC-003/SEC-005 的显式例外？",
+      "depends_on": ["D-006"],
+      "recommendation": "普通业务字段原样；认证凭证字段不采集。服务器安全降低外部读取概率，但不能消除运维账号、备份、日志下载、误授权、主机入侵和支持人员访问带来的第二份凭证库风险。",
+      "status": "answered",
+      "round": 2,
+      "answer": "仍要求密码、验证码、token 和 client secret 等凭证按 Filter 捕获到的原值记录；当前先不处理相关风险，并将其作为本 change 对 SEC-003/SEC-005 的明确局部例外。",
+      "log_ref": "LOG-013"
+    },
+    {
+      "id": "D-015",
+      "title": "正文日志编码",
+      "question": "原样业务值是以单行结构化 JSON 的 body 字段记录并转义换行/引号，还是把原始多行正文直接拼进日志？",
+      "depends_on": ["D-003", "D-009"],
+      "recommendation": "使用单行结构化 JSON；不改业务值，只做 JSON 必需的转义。直接多行拼接会破坏一条请求一条事件的边界，并允许用户输入伪造日志行。",
+      "status": "answered",
+      "round": 2,
+      "answer": "每个 HTTP_REQUEST 和 HTTP_RESPONSE 事件输出为单行结构化 JSON；正文值不改写，只进行形成合法单行 JSON 所必需的转义。",
+      "log_ref": "LOG-014"
+    },
+    {
+      "id": "D-016",
+      "title": "文件写入可靠性",
+      "question": "sys-console 文件采用同步 RollingFileAppender，还是在其外层增加 AsyncAppender？",
+      "depends_on": ["D-004", "D-008", "D-010", "D-015"],
+      "recommendation": "采用同步 RollingFileAppender。完整请求/响应日志是排障证据，同步写入能避免异步队列溢出或进程异常退出时丢失尾部事件；代价是磁盘写入会进入请求耗时。",
+      "status": "answered",
+      "round": 3,
+      "answer": "延续当前 sys-console 的直接 RollingFileAppender 设计，采用同步写入，不新增 AsyncAppender。",
+      "log_ref": "LOG-015"
+    },
+    {
+      "id": "D-017",
+      "title": "保留时间与磁盘上限",
+      "question": "“保留 60 天”是否要求在磁盘足够时严格保留 60 个日归档且不设置 totalSizeCap，还是设置总容量上限并接受旧日志可能早于 60 天删除？",
+      "depends_on": ["D-004", "D-008", "D-010"],
+      "recommendation": "设置 totalSizeCap 并将 60 天作为最长保留期。全量 HTTP 正文的每日体量不可预先保证，容量上限可以避免日志占满服务器磁盘；代价是高流量时不足 60 天。",
+      "status": "answered",
+      "round": 3,
+      "answer": "历史 gzip 归档最多保留 60 天，同时设置 40GB 总容量上限；任一限制先达到即清理更旧归档。",
+      "log_ref": "LOG-016"
+    }
+  ]
+}

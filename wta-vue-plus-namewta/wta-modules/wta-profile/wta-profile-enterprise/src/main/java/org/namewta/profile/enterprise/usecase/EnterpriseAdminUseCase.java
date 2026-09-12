@@ -1,0 +1,79 @@
+package org.namewta.profile.enterprise.usecase;
+
+import org.namewta.common.core.domain.PageResult;
+import org.namewta.profile.enterprise.domain.bo.*;
+import org.namewta.profile.enterprise.domain.vo.*;
+
+import java.util.List;
+
+/**
+ * EnterpriseAdminUseCase 应用用例合同，定义入口可调用的业务场景。
+ */
+public interface EnterpriseAdminUseCase {
+    /** @deprecated 新入口必须显式传入操作者编号。 */
+    @Deprecated
+    default EnterpriseAdminResultVo decide(long applicationId, EnterpriseAdminDecisionBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
+    /** @deprecated 新入口必须显式传入操作者编号。 */
+    @Deprecated
+    default EnterpriseAdminResultVo create(EnterpriseAdminCreateBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
+    /** @deprecated 新入口必须显式传入操作者编号。 */
+    @Deprecated
+    default EnterpriseAdminResultVo revise(long profileId, EnterpriseAdminReviseBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
+    /** @deprecated 新入口必须显式传入操作者编号。 */
+    @Deprecated
+    default EnterpriseAdminResultVo manageBinding(long profileId, EnterpriseAdminBindingBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
+    /** @deprecated 新入口必须显式传入操作者编号。 */
+    @Deprecated
+    default EnterpriseAdminResultVo assign(long profileId, EnterpriseAdminAssignBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
+    /** @deprecated 新入口必须显式传入操作者编号。 */
+    @Deprecated
+    default EnterpriseAdminResultVo revoke(long profileId, EnterpriseAdminRevokeBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
+    /**
+     * 编排 page 应用用例。
+     */
+    PageResult<EnterpriseProfileSummaryVo> page(EnterpriseAdminQueryBo query);
+    /**
+     * 编排 eligibleUsers 应用用例。
+     */
+    List<EnterpriseAccountCandidateVo> eligibleUsers(String keyword);
+    /**
+     * 编排 detail 应用用例。
+     */
+    EnterpriseProfileDetailVo detail(long profileId);
+    /**
+     * 编排 review 应用用例。
+     */
+    EnterpriseReviewContextVo review(long applicationId);
+    /**
+     * 编排 reviewMaterial 应用用例。
+     */
+    EnterpriseProfileAccessUrl reviewMaterial(long applicationId, long materialRefId);
+    /**
+     * 编排 material 应用用例。
+     */
+    EnterpriseProfileAccessUrl material(long profileId, long materialRefId);
+    /**
+     * 编排 decide 应用用例。
+     */
+    EnterpriseAdminResultVo decide(long operatorId, long applicationId, EnterpriseAdminDecisionBo command);
+    /**
+     * 编排 create 应用用例。
+     */
+    EnterpriseAdminResultVo create(long operatorId, EnterpriseAdminCreateBo command);
+    /**
+     * 编排 revise 应用用例。
+     */
+    EnterpriseAdminResultVo revise(long operatorId, long profileId, EnterpriseAdminReviseBo command);
+    /**
+     * 编排 manageBinding 应用用例。
+     */
+    EnterpriseAdminResultVo manageBinding(long operatorId, long profileId, EnterpriseAdminBindingBo command);
+    /**
+     * 编排 assign 应用用例。
+     */
+    EnterpriseAdminResultVo assign(long operatorId, long profileId, EnterpriseAdminAssignBo command);
+    /**
+     * 编排 revoke 应用用例。
+     */
+    EnterpriseAdminResultVo revoke(long operatorId, long profileId, EnterpriseAdminRevokeBo command);
+}

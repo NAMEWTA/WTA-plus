@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "@namewta/web-kit-rich-text",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./editor": "./src/RichTextEditor.vue",
+    "./viewer": "./src/RichTextViewer.vue",
+    "./content": "./src/content.ts"
+  },
+  "scripts": {
+    "build": "vue-tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint src",
+    "test": "vitest run src",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@wangeditor-next/editor": "5.7.16",
+    "@wangeditor-next/editor-for-vue": "5.1.14",
+    "dompurify": "3.2.6",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "catalog:",
+    "happy-dom": "^20.14.0",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "4.1.10",
+    "vue-tsc": "3.3.8"
+  }
+}

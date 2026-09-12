@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.system.mapper.SysOssMapper">
+
+    <select id="selectByIdForUpdate" resultType="org.namewta.system.domain.SysOss">
+        select *
+        from sys_oss
+        where oss_id = #{ossId}
+        for update
+    </select>
+
+    <select id="selectByIdsForUpdate" resultType="org.namewta.system.domain.SysOss">
+        select *
+        from sys_oss
+        where oss_id in
+        <foreach collection="ossIds" item="ossId" open="(" separator="," close=")">
+            #{ossId}
+        </foreach>
+        order by oss_id
+        for update
+    </select>
+
+    <update id="updateLifecycle">
+        update sys_oss
+        set is_temp = #{isTemp},
+            expire_time = #{expireTime},
+            delete_state = 'ACTIVE',
+            update_time = now()
+        where oss_id = #{ossId}
+    </update>
+
+    <update id="markDeletePending">
+        update sys_oss
+        set is_temp = 'Y',
+            expire_time = #{expireTime},
+            delete_state = 'PENDING',
+            update_time = now()
+        where oss_id = #{ossId}
+    </update>
+
+    <update id="compareAndSetService">
+        update sys_oss
+        set service = #{targetService},
+            update_time = now()
+        where oss_id = #{ossId}
+          and service = #{expectedService}
+          and delete_state = 'ACTIVE'
+    </update>
+
+    <select id="selectExpiredTempIds" resultType="java.lang.Long">
+        select oss_id
+        from sys_oss
+        where is_temp = 'Y'
+          and expire_time is not null
+          and expire_time &lt;= #{expireTime}
+        order by expire_time, oss_id
+        limit #{limit}
+    </select>
+</mapper>

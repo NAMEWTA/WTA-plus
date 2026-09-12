@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.profile.person.mapper.ProfileMaterialMapper">
+
+    <select id="selectNodes" resultType="org.namewta.profile.person.domain.model.read.MaterialNodeRow">
+        select material_node_id, parent_id, node_type, node_depth, profile_type, material_tag_code,
+                       node_name, system_required, status, order_num, version
+                  from profile_material_node
+                 where del_flag = '0'
+                   and (profile_type = #{scope} or (#{scope} &lt;> 'COMMON' and profile_type = 'COMMON'))
+                   and (#{includeDisabled} = true or status = '0')
+                 order by node_depth, order_num, material_node_id
+    </select>
+
+    <select id="selectNode" resultType="org.namewta.profile.person.domain.model.read.MaterialNodeRow">
+        select material_node_id, parent_id, node_type, node_depth, profile_type, material_tag_code,
+                       node_name, system_required, status, order_num, version
+                  from profile_material_node
+                 where material_node_id = #{materialNodeId} and del_flag = '0'
+    </select>
+
+    <select id="lockNode" resultType="org.namewta.profile.person.domain.model.read.MaterialNodeRow">
+        select material_node_id, parent_id, node_type, node_depth, profile_type, material_tag_code,
+                       node_name, system_required, status, order_num, version
+                  from profile_material_node
+                 where material_node_id = #{materialNodeId} and del_flag = '0'
+                 for update
+    </select>
+
+    <insert id="insertNode">
+        insert into profile_material_node (
+                    material_node_id, parent_id, node_type, node_depth, profile_type, material_tag_code,
+                    node_name, system_required, status, order_num, version, create_dept, create_time, create_by,
+                    update_time, update_by, del_flag
+                ) values (
+                    #{materialNodeId}, #{parentId}, #{nodeType}, #{nodeDepth}, #{profileType}, #{materialTagCode},
+                    #{nodeName}, #{systemRequired}, '0', #{orderNum}, 0, -1, current_timestamp, -1,
+                    current_timestamp, -1, '0'
+                )
+    </insert>
+
+    <update id="updateNode">
+        update profile_material_node
+                   set parent_id = #{parentId}, node_depth = #{nodeDepth}, profile_type = #{profileType},
+                       material_tag_code = #{materialTagCode}, node_name = #{nodeName},
+                       system_required = #{systemRequired}, order_num = #{orderNum}, version = version + 1,
+                       update_time = current_timestamp, update_by = -1
+                 where material_node_id = #{materialNodeId} and version = #{expectedVersion} and del_flag = '0'
+    </update>
+
+    <select id="countChildren" resultType="long">
+        select count(*) from profile_material_node where parent_id = #{id} and del_flag = '0'
+    </select>
+
+    <select id="countReferences" resultType="long">
+        select count(*) from profile_material_ref where material_node_id = #{id} and del_flag = '0'
+    </select>
+
+    <update id="updateStatus">
+        update profile_material_node
+                   set status = #{status}, version = version + 1, update_time = current_timestamp, update_by = -1
+                 where material_node_id = #{id} and version = #{expectedVersion} and del_flag = '0'
+    </update>
+
+    <update id="archiveNode">
+        update profile_material_node
+                   set del_flag = '1', status = '1', version = version + 1,
+                       update_time = current_timestamp, update_by = -1
+                 where material_node_id = #{id} and version = #{expectedVersion} and del_flag = '0'
+    </update>
+
+    <select id="countAttached" resultType="long">
+        select count(*) from profile_material_ref
+                 where profile_type = #{profileType} and owner_type = #{ownerType} and owner_id = #{ownerId}
+                   and status = 'ATTACHED' and del_flag = '0'
+    </select>
+
+    <insert id="insertReference">
+        insert into profile_material_ref (
+                    material_ref_id, owner_type, owner_id, profile_type, oss_id, material_node_id,
+                    material_tag_code, material_tag_name, file_name, file_size, file_extension, mime_type,
+                    status, immutable_flag, attached_time, detached_time, version,
+                    create_dept, create_time, create_by, update_time, update_by, del_flag
+                ) values (
+                    #{materialRefId}, #{ownerType}, #{ownerId}, #{profileType}, #{ossId}, #{materialNodeId},
+                    #{materialTagCode}, #{materialTagName}, #{fileName}, #{fileSize}, #{fileExtension}, #{mimeType},
+                    #{status}, #{immutableFlag}, #{attachedTime}, #{detachedTime}, #{version},
+                    -1, current_timestamp, -1, current_timestamp, -1, '0'
+                )
+    </insert>
+
+    <select id="lockReference" resultType="org.namewta.profile.person.domain.model.read.MaterialReferenceRow">
+        select material_ref_id, owner_type, owner_id, profile_type, oss_id, material_node_id,
+                       material_tag_code, material_tag_name, file_name, file_size, file_extension, mime_type,
+                       status, immutable_flag, attached_time, detached_time, version
+                  from profile_material_ref
+                 where material_ref_id = #{id} and del_flag = '0'
+                 for update
+    </select>
+
+    <update id="detachReference">
+        update profile_material_ref
+                   set status = 'DETACHED', detached_time = #{detachedTime}, version = version + 1,
+                       update_time = current_timestamp, update_by = -1
+                 where material_ref_id = #{id} and status = 'ATTACHED' and immutable_flag = 'N' and del_flag = '0'
+    </update>
+
+    <select id="selectReferences" resultType="org.namewta.profile.person.domain.model.read.MaterialReferenceRow">
+        select material_ref_id, owner_type, owner_id, profile_type, oss_id, material_node_id,
+                       material_tag_code, material_tag_name, file_name, file_size, file_extension, mime_type,
+                       status, immutable_flag, attached_time, detached_time, version
+                  from profile_material_ref
+                 where profile_type = #{profileType} and owner_type = #{ownerType} and owner_id = #{ownerId}
+                   and del_flag = '0'
+                 order by attached_time, material_ref_id
+    </select>
+
+    <select id="selectRequirements" resultType="org.namewta.profile.person.domain.model.read.MaterialRequirementRow">
+        select material_tag_code, minimum_count
+                  from profile_material_requirement
+                 where profile_type = #{profileType} and status = '0' and del_flag = '0'
+                   and (document_type_code = '*' or document_type_code = #{documentTypeCode})
+                   and (handler_condition = 'ALWAYS'
+                     <if test="conditions != null and !conditions.isEmpty()">
+                       or handler_condition in
+                       <foreach collection="conditions" item="condition" open="(" separator="," close=")">#{condition}</foreach>
+                     </if>)
+                 order by material_requirement_id
+    </select>
+
+    <select id="selectAttachedCounts" resultType="org.namewta.profile.person.domain.model.read.MaterialTagCountRow">
+        select material_tag_code, count(*) as material_count
+                  from profile_material_ref
+                 where profile_type = #{profileType} and owner_type = #{ownerType} and owner_id = #{ownerId}
+                   and status = 'ATTACHED' and del_flag = '0'
+                 group by material_tag_code
+    </select>
+</mapper>

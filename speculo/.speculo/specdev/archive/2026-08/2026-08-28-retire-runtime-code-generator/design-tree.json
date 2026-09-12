@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-28-retire-runtime-code-generator",
+  "status": "consensus",
+  "round": 3,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "运行时代码生成器退役边界",
+      "question": "本 change 是否完整删除后端 ruoyi-gen 运行模块及其 Maven、Admin、Springdoc 装配，不保留 API 兼容入口？",
+      "depends_on": [],
+      "recommendation": "完整删除运行模块和所有装配；请求已明确由 AI 参考标准模板完成 CRUD，不再保留低代码运行能力。",
+      "status": "answered",
+      "round": 1,
+      "answer": "完整删除 ruoyi-gen 代码生成部分及其装配，不保留运行时入口。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "前端生成管理能力退役边界",
+      "question": "是否删除 domain-gen、web-domain-gen、Admin 服务与 manifest 组合、依赖、锁文件记录、相关测试和首页能力文案？",
+      "depends_on": [],
+      "recommendation": "全部删除并刷新工作区依赖；动态菜单不再能解析 tool/gen 页面。",
+      "status": "answered",
+      "round": 1,
+      "answer": "完整清理 plus-ui-namewta 中相关生成代码的前端管理界面，包括 packages/domains/gen 与 packages/web-domains/gen。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "CRUD 标准模板归属",
+      "question": "运行生成器退役后，docs/fm 是否作为保留的 CRUD 标准参考资产，并明确不进入应用 classpath 或前端运行时？",
+      "depends_on": [],
+      "recommendation": "保留 docs/fm 作为 AI 与开发者参考的唯一标准模板资产，不保留任何运行生成逻辑。",
+      "status": "answered",
+      "round": 1,
+      "answer": "保留已经移植的 docs/fm，供 AI 参考完成 CRUD 开发及注意事项。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "数据库与菜单迁移载体",
+      "question": "是否保持冻结的 ry_vue.sql 及 Oracle、PostgreSQL、SQL Server 上游基线不变，只在 MySQL namewta DDL.sql 与 DML.sql 末尾追加退役迁移？",
+      "depends_on": ["D-001", "D-002"],
+      "recommendation": "遵循项目 append-only 合同：DDL 物理删除专属 schema，DML 物理删除菜单与角色菜单关系；当前是未投产基座，不设计升级兼容、备份恢复或滚动发布合同。",
+      "status": "answered",
+      "round": 1,
+      "answer": "追加 script/sql/namewta SQL 完成硬删除；当前是基座，无需考虑兼容性和生产问题，冻结上游基线仍保持不变。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-005",
+      "title": "菜单权限清理范围",
+      "question": "是否删除 tool:gen:* 功能权限、代码生成与编辑路由菜单、全部 sys_role_menu 关系，并在系统工具目录无其他子项时同时删除该空目录？",
+      "depends_on": ["D-002", "D-004"],
+      "recommendation": "全部物理删除。源码证明系统工具目录仅承载两个生成器页面，保留空目录会形成失效导航。",
+      "status": "answered",
+      "round": 1,
+      "answer": "将相关菜单权限清理干净；没有其他子项的系统工具目录也不保留。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-006",
+      "title": "生成器历史元数据处置",
+      "question": "退役时是否物理删除 gen_table_column 与 gen_table，从而永久删除其中已有的导入表结构和生成配置历史？",
+      "depends_on": ["D-001", "D-004"],
+      "recommendation": "直接删除两张专用表；它们没有生成器之外的消费者，当前基座也不存在生产数据保留或兼容义务。",
+      "status": "answered",
+      "round": 1,
+      "answer": "物理删除 gen_table_column 与 gen_table，永久删除全部历史元数据；当前是基座，无需考虑兼容性和生产问题。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-007",
+      "title": "迁移与验收合同",
+      "question": "最终应如何证明生成能力、权限、数据库对象和构建图均已完整退役？",
+      "depends_on": ["D-005", "D-006"],
+      "recommendation": "按基座硬退役验收：全仓残留扫描必须无运行时代码生成器引用；后端测试及双 bundle 构建通过；前端架构、lint、typecheck、test、build 通过；OpenAPI 快照重建后不再含 /tool/gen 与 GenTable；namewta SQL 顺序检查证明菜单关系、菜单和两张表均被物理删除。不设置兼容、upgrade、生产演练或回滚门禁。",
+      "status": "answered",
+      "round": 2,
+      "answer": "确认按基座硬退役标准验收：执行残留扫描、后端测试与双 bundle 构建、前端完整质量门禁、OpenAPI 合同重建以及 namewta SQL 最终状态检查；不设置兼容、upgrade、生产演练或回滚门禁。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-008",
+      "title": "最终共识与下游路由",
+      "question": "设计树是否已经完整覆盖运行时代码生成器退役范围、docs/fm 保留边界、永久数据删除、菜单权限清理、基座 SQL 策略和验收合同，并可进入 Spec？",
+      "depends_on": ["D-001", "D-002", "D-003", "D-004", "D-005", "D-006", "D-007"],
+      "recommendation": "确认无遗漏后结束 Grill，进入 Spec 固化外部行为、删除范围和验收合同；不在 Grill 阶段直接实施。",
+      "status": "answered",
+      "round": 3,
+      "answer": "确认设计树已完整覆盖退役范围、保留边界、永久数据删除、菜单权限、基座 SQL 策略和验收合同；结束 Grill 并进入 Spec。",
+      "log_ref": "LOG-009"
+    }
+  ]
+}

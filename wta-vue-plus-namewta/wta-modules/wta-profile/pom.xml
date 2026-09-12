@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.namewta</groupId>
+        <artifactId>wta-modules</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>wta-profile</artifactId>
+    <packaging>pom</packaging>
+
+    <description>账户个人与企业档案聚合模块</description>
+
+    <modules>
+        <module>wta-profile-bom</module>
+        <module>wta-profile-person</module>
+        <module>wta-profile-enterprise</module>
+    </modules>
+</project>

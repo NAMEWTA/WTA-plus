@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.namewta</groupId>
+        <artifactId>wta-common</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>wta-common-openapi</artifactId>
+
+    <description>wta-common-openapi machine invocation runtime</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-satoken</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-doc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

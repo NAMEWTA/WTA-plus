@@ -1,0 +1,29 @@
+{
+  "name": "@namewta/tooling-openapi",
+  "version": "0.0.0",
+  "private": true,
+  "bin": {
+    "namewta-openapi": "./src/cli.mjs"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "scripts": {
+    "build": "node --check src/index.mjs && node --check src/cli.mjs",
+    "lint": "oxlint src test",
+    "openapi:check": "node src/cli.mjs check",
+    "openapi:fetch": "node src/cli.mjs fetch",
+    "openapi:generate": "node src/cli.mjs generate",
+    "test": "node --test test/*.test.mjs",
+    "typecheck": "node --check src/index.mjs && node --check src/cli.mjs && node --check test/openapi.test.mjs"
+  },
+  "dependencies": {
+    "openapi-typescript": "7.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "5.9.3"
+  }
+}

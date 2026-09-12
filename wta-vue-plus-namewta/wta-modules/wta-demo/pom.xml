@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.namewta</groupId>
+        <artifactId>wta-modules</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>wta-demo</artifactId>
+
+    <description>
+        demo模块
+    </description>
+
+    <dependencies>
+
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-richtext</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-satoken</artifactId>
+        </dependency>
+
+        <!-- OpenAPI 机器调用示例 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-openapi</artifactId>
+        </dependency>
+
+        <!-- api模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-api</artifactId>
+        </dependency>
+
+        <!-- 接口模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-doc</artifactId>
+        </dependency>
+
+        <!-- 短信模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-sms</artifactId>
+        </dependency>
+
+        <!-- 统一通知服务 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-notify</artifactId>
+        </dependency>
+
+        <!-- 缓存服务 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-redis</artifactId>
+        </dependency>
+
+        <!-- 数据库服务 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-mybatis</artifactId>
+        </dependency>
+
+        <!-- 日志记录 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-log</artifactId>
+        </dependency>
+
+        <!-- excel -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-excel</artifactId>
+        </dependency>
+
+        <!-- 安全模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-security</artifactId>
+        </dependency>
+
+        <!-- web服务 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-web</artifactId>
+        </dependency>
+
+        <!-- 翻译模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-translation</artifactId>
+        </dependency>
+
+        <!-- 脱敏模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-sensitive</artifactId>
+        </dependency>
+
+        <!-- 数据库加解密模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-encrypt</artifactId>
+        </dependency>
+
+        <!-- ES搜索引擎服务 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-elasticsearch</artifactId>
+        </dependency>
+
+        <!-- 消息推送模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-push</artifactId>
+        </dependency>
+
+        <!-- mqtt模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-mqtt</artifactId>
+        </dependency>
+
+        <!-- mcp模块 -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-mcp</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

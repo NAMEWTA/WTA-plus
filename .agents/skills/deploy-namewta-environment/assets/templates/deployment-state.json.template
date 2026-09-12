@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "capturedAt": "请替换为 ISO-8601 时间",
+  "requiredServices": ["mysql", "redis", "minio", "backend1", "backend2", "frontend", "ingress"],
+  "compose": {
+    "identityConfirmed": false,
+    "project": "请替换为现场 Compose project",
+    "files": [],
+    "envFile": "请替换为现场 env 文件",
+    "rendered": false
+  },
+  "services": {
+    "mysql": {"status": "unknown", "image": "未采集"},
+    "redis": {"status": "unknown", "image": "未采集"},
+    "minio": {"status": "unknown", "image": "未采集"},
+    "backend1": {"status": "unknown", "image": "未采集", "imageId": "未采集", "restartCount": -1, "environmentDigest": "未采集"},
+    "backend2": {"status": "unknown", "image": "未采集", "imageId": "未采集", "restartCount": -1, "environmentDigest": "未采集"},
+    "frontend": {"status": "unknown", "image": "未采集"},
+    "ingress": {"status": "unknown", "image": "未采集"}
+  },
+  "publishedPorts": [],
+  "endpoints": {},
+  "semanticProbes": {},
+  "frontend": {
+    "indexSha256": "未采集",
+    "contextPath": "/namewta/",
+    "baseApi": "/namewta/prod-api",
+    "assetPrefix": "/namewta/assets/",
+    "observedAssetPaths": [],
+    "stableWindow": {
+      "requiredConsecutiveSuccesses": 3,
+      "observedConsecutiveSuccesses": 0,
+      "timeoutSeconds": 120,
+      "elapsedSeconds": 0,
+      "transientFailures": []
+    }
+  },
+  "capabilities": {
+    "openApi": {
+      "enabled": false,
+      "kekVersion": "",
+      "kekPresent": false,
+      "backendDigests": []
+    }
+  },
+  "rollout": {
+    "attempts": [],
+    "retainedArtifacts": []
+  },
+  "database": {
+    "migrationPerformed": false,
+    "backup": {"status": "not-required", "evidence": "未执行数据库迁移"},
+    "waiver": null
+  },
+  "oss": {
+    "enabledDefaultCount": 0,
+    "privateDefaultCount": 0,
+    "anonymousDenied": false,
+    "signedUrlWorks": false,
+    "signedUrlExpired": false
+  },
+  "nacos": {
+    "enabled": false,
+    "adminUserCount": 0,
+    "configReaderUserCount": 0,
+    "backendDigests": []
+  },
+  "rollback": {
+    "previousReleaseId": "未登记",
+    "command": "未登记"
+  },
+  "risks": ["尚未完成现场采集"]
+}

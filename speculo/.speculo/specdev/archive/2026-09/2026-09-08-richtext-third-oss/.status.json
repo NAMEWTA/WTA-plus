@@ -1,0 +1,187 @@
+{
+  "schema_version": 6,
+  "artifact": "change-status",
+  "change": "2026-09-08-richtext-third-oss",
+  "change_status": "archived",
+  "current_work": null,
+  "works_run": [
+    "specdev/D-diagnose-bugs",
+    "specdev/T-tickets",
+    "specdev/C-code-review",
+    "specdev/I-implement",
+    "specdev/T-triage",
+    "specdev/A-archive-and-consolidate"
+  ],
+  "claimed_investigations": [],
+  "execution_authorization": {
+    "implementation_commit": {
+      "status": "authorized",
+      "source": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-01.md</Path>",
+      "granted_at": "2026-09-10T17:55:00+08:00",
+      "scope": "Historical Ticket implementation commits already on main"
+    },
+    "local_candidate_integration": {
+      "status": "authorized",
+      "source": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-01.md</Path>",
+      "granted_at": "2026-09-10T17:55:00+08:00",
+      "scope": "Lead-owned local direct-parent verification of existing parent commits"
+    },
+    "source_cleanup": {
+      "status": "not-authorized",
+      "source": null,
+      "granted_at": null,
+      "scope": "Source worktree and branch cleanup"
+    }
+  },
+  "leadership": {
+    "current": "grok-build",
+    "epoch": 2,
+    "assigned_at": "2026-09-10T17:03:11+08:00",
+    "history": [
+      {
+        "owner": "codex:/root",
+        "epoch": 1,
+        "assigned_at": "2026-09-08T11:28:11+08:00",
+        "ended_at": "2026-09-10T17:03:11+08:00"
+      }
+    ]
+  },
+  "created_at": "2026-09-08T11:28:11+08:00",
+  "updated_at": "2026-09-10T17:56:00+08:00",
+  "completed_at": "2026-09-10T17:55:00+08:00",
+  "archived": true,
+  "archive_path": "<Path>{roots.state}/specdev/archive/2026-09/2026-09-08-richtext-third-oss</Path>",
+  "blockers": [],
+  "deviations": [],
+  "worktrees": [
+    {
+      "ticket_id": "T-01",
+      "owner": "grok-build",
+      "implementation_owner": "grok-build",
+      "integration_owner": "grok-build",
+      "provider": "git",
+      "base_sha": "35a871dc8b7541927c2dda4d2e8635500180809d",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "35a871dc8b7541927c2dda4d2e8635500180809d",
+        "source_sha": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "No Goal Plan full-suite gate; ruoyi-demo has no TestRichTextServiceImplTest.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-01.md</Path>"
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "No dedicated Playwright spec for unhandled rejection; Lead verified catch blocks in RichTextPage.vue.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-01.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-01.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-10T17:55:00+08:00"
+    },
+    {
+      "ticket_id": "T-02",
+      "owner": "grok-build",
+      "implementation_owner": "grok-build",
+      "integration_owner": "grok-build",
+      "provider": "git",
+      "base_sha": "35a871dc8b7541927c2dda4d2e8635500180809d",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "35a871dc8b7541927c2dda4d2e8635500180809d",
+        "source_sha": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "No Goal Plan full-suite gate; ThirdObservabilityControllerContractTest is absent.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-02.md</Path>"
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Existing Playwright mocks API 200 and cannot prove empty providerCode; Lead verified optional param in source.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-02.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-02.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-10T17:55:00+08:00"
+    },
+    {
+      "ticket_id": "T-03",
+      "owner": "grok-build",
+      "implementation_owner": "grok-build",
+      "integration_owner": "grok-build",
+      "provider": "git",
+      "base_sha": "31096b665be5b6812d09d6400d365d08727e528a",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "31096b665be5b6812d09d6400d365d08727e528a",
+        "source_sha": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "1db8c0a1de1092d050da1c3791afcf6e1bd425d1",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Config and documentation change only; no application test suite applies.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-03.md</Path>"
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Docker CLI unavailable; CORS default verified from compose and env text, not live OPTIONS/PUT.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-03.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-08-richtext-third-oss/evidence/T-03.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-10T17:55:00+08:00"
+    }
+  ]
+}

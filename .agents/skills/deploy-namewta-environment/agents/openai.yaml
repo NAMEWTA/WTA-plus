@@ -1,0 +1,4 @@
+interface:
+  display_name: "部署 NAMEWTA 全栈环境"
+  short_description: "安全部署和运维完整的 NAMEWTA 前后端与中间件"
+  default_prompt: "使用 $deploy-namewta-environment 审计或部署 NAMEWTA 全栈，并生成私密的部署交接文档。"

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>wta-vue-plus</artifactId>
+        <groupId>org.namewta</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>wta-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        common 通用模块
+    </description>
+
+    <modules>
+        <module>wta-common-bom</module>
+        <module>wta-common-social</module>
+        <module>wta-common-core</module>
+        <module>wta-common-doc</module>
+        <module>wta-common-excel</module>
+        <module>wta-common-job</module>
+        <module>wta-common-log</module>
+        <module>wta-common-notify</module>
+        <module>wta-common-mail</module>
+        <module>wta-common-mybatis</module>
+        <module>wta-common-oss</module>
+        <module>wta-common-redis</module>
+        <module>wta-common-satoken</module>
+        <module>wta-common-security</module>
+        <module>wta-common-sms</module>
+        <module>wta-common-nacos</module>
+        <module>wta-common-elasticsearch</module>
+        <module>wta-common-web</module>
+        <module>wta-common-translation</module>
+        <module>wta-common-sensitive</module>
+        <module>wta-common-json</module>
+        <module>wta-common-encrypt</module>
+        <module>wta-common-push</module>
+        <module>wta-common-liteflow</module>
+        <module>wta-common-mqtt</module>
+        <module>wta-common-ai</module>
+        <module>wta-common-mcp</module>
+        <module>wta-common-openapi</module>
+        <module>wta-common-richtext</module>
+    </modules>
+
+</project>

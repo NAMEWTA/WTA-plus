@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-09-11-notify-outbox-wake-poll",
+  "status": "consensus",
+  "round": 2,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "本 change 范围边界",
+      "question": "本期是否严格限定为「保留 Transactional Outbox，只改进唤醒与轮询策略」？\nA. 严格小范围：不取消 Outbox；不扩到通知配置页/渠道账号；不顺带做 Relay 队列平台。\nB. 小范围 + 允许若唤醒方案需要而调整 claim 批次/租约默认值（仍不扩配置页）。\nC. 扩大到 Outbox→消息队列 Relay（Redis/MQ）作为本期主路径。",
+      "depends_on": [],
+      "recommendation": "A。与 source 与 Lead 派单一致；批次/租约若只是实现旋钮可在 Spec 记为实现者可定，不必抬成平台化 Relay。",
+      "status": "answered",
+      "round": 1,
+      "answer": "A。严格小范围：保留 Transactional Outbox，只改进唤醒与轮询；不扩通知配置页/渠道账号；不做 Outbox→MQ Relay 平台。",
+      "log_ref": "LOG-015"
+    },
+    {
+      "id": "D-002",
+      "title": "空闲与有任务时的调度策略",
+      "question": "当前 `NotifyOutboxWorker` 以 `fixedDelay` 默认 1s 空转 claim。目标策略？\nA. 写入唤醒 + 慢速兜底扫描（有任务被叫醒；空队列几乎睡；轮询只兜底）。\nB. 仅自适应退避轮询（无显式唤醒）。\nC. 保持固定轮询，只调大默认 `poll-delay-ms`。\nD. Outbox Relay 到 Redis/MQ，Worker 消费队列。",
+      "depends_on": [],
+      "recommendation": "A。保留现有 claim/lease/`SKIP LOCKED` 正确性，消灭空转，延迟由唤醒决定；C 只是本地缓解。",
+      "status": "answered",
+      "round": 1,
+      "answer": "A。写入唤醒 + 慢速兜底扫描：有任务被叫醒，空队列几乎睡，轮询只做兜底。",
+      "log_ref": "LOG-016"
+    },
+    {
+      "id": "D-003",
+      "title": "写入后首投延迟目标",
+      "question": "业务提交 Outbox 行后，首次 claim/dispatch 的延迟目标？\nA. 近实时：典型 <1s。\nB. 数秒可接受：典型 ≤5s。\nC. 只保证最终投递，延迟次要。",
+      "depends_on": [],
+      "recommendation": "A。否则「写入唤醒」收益不明显，容易退化成只调大轮询间隔。",
+      "status": "answered",
+      "round": 1,
+      "answer": "A。近实时：提交后首次 claim/dispatch 典型 <1s。",
+      "log_ref": "LOG-017"
+    },
+    {
+      "id": "D-004",
+      "title": "本期多实例假设",
+      "question": "唤醒设计按什么部署假设落地？\nA. 多实例一等公民：唤醒必须跨进程（例如 Redis）。\nB. 单实例/同 JVM 优先：进程内 afterCommit 唤醒；多实例正确性只靠慢速兜底扫描 + 现有 lease。\nC. 两端都必须一等公民（进程内 + 跨实例）同期交付。",
+      "depends_on": [],
+      "recommendation": "A（CTO via Lead 拍板）。跨进程唤醒一等公民。",
+      "status": "answered",
+      "round": 1,
+      "answer": "A。多实例一等公民：唤醒必须跨进程（例如 Redis）。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-010",
+      "title": "唤醒介质",
+      "question": "若采用「写入唤醒」，一期唤醒介质选什么？\nA. 同 JVM：事务 afterCommit 发 ApplicationEvent / 唤醒 Worker latch。\nB. Redis pub/sub 或 list（跨实例）。\nC. 数据库通知机制（如 LISTEN/NOTIFY；对本项目 MySQL 不友好）。\nD. 本期不做显式唤醒，只做可配置慢速兜底。",
+      "depends_on": [
+        "D-002",
+        "D-004"
+      ],
+      "recommendation": "B。D-004=A 要求跨进程唤醒；Redis 为主，同 JVM 可辅助。",
+      "status": "answered",
+      "round": 2,
+      "answer": "B。跨进程以 Redis pub/sub 或 list 为主唤醒；允许同 JVM afterCommit 事件/latch 作为同实例辅助加速，但不能替代跨进程信号。",
+      "log_ref": "LOG-018"
+    },
+    {
+      "id": "D-011",
+      "title": "兜底扫描间隔",
+      "question": "慢速兜底扫描的默认间隔？\nA. 30s\nB. 60s\nC. 5min\nD. 保留可配置 `notify.outbox.poll-delay-ms`，默认改为慢值（请指定默认秒数）。",
+      "depends_on": [
+        "D-002"
+      ],
+      "recommendation": "D，默认 60s：兜住租约过期/漏唤醒/定时任务；空转成本远低于 1s。",
+      "status": "answered",
+      "round": 2,
+      "answer": "D。保留可配置 `notify.outbox.poll-delay-ms`，默认 60000（60s）作为慢速兜底。",
+      "log_ref": "LOG-019"
+    },
+    {
+      "id": "D-012",
+      "title": "唤醒与 claim 的耦合点",
+      "question": "唤醒后 Worker 应做什么？\nA. 仅触发一次与现网相同的 `claim()` + `dispatch` 循环（可连续 claim 直到本批空）。\nB. 唤醒后进入短时高频 burst，再回到慢速兜底。\nC. 唤醒直接携带 outboxId 精确投递，绕过 claim。",
+      "depends_on": [
+        "D-002"
+      ],
+      "recommendation": "A。复用 `SKIP LOCKED`/lease，避免绕过租约造成双投；burst 可作为实现优化但非合同必需。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。唤醒后仅触发与现网相同的 claim()+dispatch（可连捞到空批）；不绕过 lease；不做合同级 burst；不带 outboxId 直投。",
+      "log_ref": "LOG-020"
+    },
+    {
+      "id": "D-013",
+      "title": "重试到期任务如何被看见",
+      "question": "失败退避后的 `next_attempt_at` 到期任务，靠什么再次进入 claim？\nA. 只靠慢速兜底扫描（唤醒不负责未来时刻）。\nB. 额外调度：为 next_attempt 注册延迟唤醒。\nC. 保持较快固定轮询专吃重试。",
+      "depends_on": [
+        "D-002",
+        "D-011"
+      ],
+      "recommendation": "A。与「轮询只兜底」一致；若 D-003 要求近实时重试，再评估 B。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。失败退避后的 `next_attempt_at` 到期任务只靠慢速兜底扫描再进 claim；写入唤醒不负责未来时刻；不为重试另留快轮询。",
+      "log_ref": "LOG-021"
+    },
+    {
+      "id": "D-020",
+      "title": "与永久 ADR-0006/0007 的边界",
+      "question": "本期改造落在哪一层，是否改动 common-notify 同步契约？\nA. 仅 `ruoyi-notify` Outbox Worker/写入路径；不改变 ADR-0007 同步 Dispatcher 语义；不把可靠重试塞进 common-notify（遵守 ADR-0006）。\nB. 允许改 common-notify 以统一同步/异步唤醒。\nC. 取消模块内 Outbox，改回同步重试。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "A。ADR-0007 已要求 durable 另建 Outbox；现网已建在 `ruoyi-notify`。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。仅改 `ruoyi-notify` Outbox Worker/写入唤醒路径；不改 ADR-0007 同步 Dispatcher；不把可靠重试塞进 common-notify。",
+      "log_ref": "LOG-022"
+    },
+    {
+      "id": "D-021",
+      "title": "验收与可观测",
+      "question": "本期必须可验证的行为？\nA. 空队列时不再以 1s 频率打 claim SQL；写入后在延迟目标内被 claim；漏唤醒仍能被兜底扫描捞起；多实例不双投（现有 lease）。\nB. 只需证明可配置 poll-delay。\nC. 必须压测给出吞吐数字才算完成。",
+      "depends_on": [
+        "D-002",
+        "D-003"
+      ],
+      "recommendation": "A。对应本 change 动机；C 可作加分非门禁。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。验收（跨进程）：空队列不再以 1s 频率 claim；写入后典型 <1s 内被某实例 claim；漏唤醒仍被兜底捞起；多实例不双投（现有 lease）。压测吞吐非门禁。",
+      "log_ref": "LOG-023"
+    }
+  ]
+}

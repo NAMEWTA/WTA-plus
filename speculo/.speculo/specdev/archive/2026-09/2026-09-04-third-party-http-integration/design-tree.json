@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-09-04-third-party-http-integration",
+  "status": "consensus",
+  "round": 4,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "目标仓库与模块 owner",
+      "question": "这套统一第三方 HTTP 能力首期应落在哪个代码 owner：当前 `ruoyi-vue-plus-namewta` 的 `ruoyi-modules`，还是继续在外部 `cde-standard/cde-third` 演进，或两边同步交付？",
+      "depends_on": [],
+      "recommendation": "以当前工作区产品仓库为唯一实现 owner，在 `ruoyi-vue-plus-namewta/ruoyi-modules` 下建立独立的 layered `ruoyi-third` 聚合/BOM/universal 模块；`cde-third` 只作为迁移参考，除非另有明确授权，不直接改外部目录。",
+      "status": "answered",
+      "round": 1,
+      "answer": "代码落到 `D:/Document/code/ruoyi-vue-plus-docs/ruoyi-vue-plus-namewta/ruoyi-modules` 下建立独立且更全面的 `ruoyi-third`；`cde-third` 只作参考。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-002",
+      "title": "Spring Boot 4 HTTP 客户端基座",
+      "question": "HTTP 执行层是否采用 Spring Framework 7 的 `RestClient` 为同步核心，并在有稳定 Java 接口合同的供应商适配器上使用 `@HttpExchange`/`HttpServiceProxyFactory`？数据库中动态 URI 通过通用 `RestClient` exchange 发送，而不是试图动态生成 `@HttpExchange` 接口。是否排除 OpenFeign 和默认 WebClient？",
+      "depends_on": [],
+      "recommendation": "确认该混合方案：`RestClient` 负责统一连接、超时、状态和消息转换；`@HttpExchange` 只用于代码拥有的强类型供应商 facade；不引入 OpenFeign，非响应式 MVC 不引入 WebFlux/WebClient。",
+      "status": "answered",
+      "round": 1,
+      "answer": "确认这个混合方案：`RestClient` 负责统一连接、超时、状态和消息转换；`@HttpExchange` 作为声明式接口层。运行时 URI 定义的执行边界由 D-008 继续明确。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-003",
+      "title": "供应商与接口的领域层级",
+      "question": "配置模型是否固定为“供应商（Provider） -> 外部接口（Endpoint/URI）”两级？供应商保存 base URL、默认请求头、认证配置与总开关；接口保存 method/path、请求/响应格式、独立开关、超时/重试策略与调用统计；供应商关闭时所有子接口是否强制不可调用？",
+      "depends_on": [],
+      "recommendation": "采用两级聚合：供应商关闭优先于接口开关；接口按 `provider_code + endpoint_code` 唯一，base URL 和共享认证默认从供应商继承，接口只声明覆盖项；统计同时保留供应商汇总与接口维度。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用两级聚合：供应商关闭优先于接口开关；接口按 `provider_code + endpoint_code` 唯一；base URL 和共享认证默认从供应商继承，接口可覆盖；同时保留供应商汇总与接口维度统计。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-004",
+      "title": "动态元数据与代码适配边界",
+      "question": "管理员创建接口时，是否要求仅凭数据库元数据即可支持常见 JSON/query/form HTTP 调用，还是每个接口必须有 Java DTO/适配器？面对企查查这类固定头但不同 URI body 的供应商，是否接受“元数据驱动传输 + 代码 SPI 处理特殊签名/加密/响应映射”的混合模式？",
+      "depends_on": [],
+      "recommendation": "采用混合模式：标准 method/path/query/header/body/JSON 响应由安全白名单元数据驱动；供应商或接口遇到签名、非标准加密、分页/错误码转换时挂接显式 Java SPI；禁止数据库存脚本、SpEL 或任意类名反射执行。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用混合模式：标准 method/path/query/header/body/JSON 响应由安全白名单元数据驱动；特殊签名、非标准加密、分页和错误码转换使用显式 Java SPI；禁止数据库脚本、SpEL 和任意类名反射执行。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-005",
+      "title": "统一调用公共合同",
+      "question": "其他业务模块调用时，是否统一依赖一个同步端口（例如 `ThirdPartyGateway.invoke(providerCode, endpointCode, parameters)`），返回包含 HTTP 状态、供应商业务码、headers/body、耗时和 requestId 的标准结果；异步推送是否首期不纳入，后续再以任务/outbox 扩展？",
+      "depends_on": [],
+      "recommendation": "首期提供同步、类型安全且不暴露数据库实体的 `ThirdPartyGateway`/`ThirdPartyRequest`/`ThirdPartyResponse` 合同；调用方只传供应商/接口编码和受约束参数；异步投递、批量任务和 outbox 作为后续独立能力。",
+      "status": "answered",
+      "round": 1,
+      "answer": "首期提供同步、类型安全且不暴露数据库实体的 `ThirdPartyGateway`、`ThirdPartyRequest`、`ThirdPartyResponse` 合同；调用方只传供应商/接口编码和受约束参数；异步投递、批量任务和 outbox 后续再做。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-006",
+      "title": "超时、重试与熔断策略",
+      "question": "首期是否为每个供应商/接口提供连接与读取超时、显式幂等条件下的有限重试、限流/并发隔离和熔断？容错策略由数据库配置动态调整，还是先使用静态 application 配置？是否接受 Spring Cloud 2025.1.x/Resilience4j 3.x 这类额外依赖，还是只做 RestClient 超时与失败返回？",
+      "depends_on": [],
+      "recommendation": "首期至少强制连接/读取超时和失败分类；只对明确幂等接口启用有限重试；熔断/限流采用可验证兼容的 Resilience4j/Spring Cloud 组合或项目已有 Redis 能力，不把无限动态策略和全自动降级作为默认；策略配置可先静态、后续再 DB 化。",
+      "status": "answered",
+      "round": 1,
+      "answer": "首期至少强制连接/读取超时和失败分类；只对明确幂等接口启用有限重试；限流使用项目已有 Redisson 能力；不把无限动态策略和全自动降级作为默认；策略配置先简单静态化。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-007",
+      "title": "凭据、密钥与敏感日志",
+      "question": "供应商 API key/secret、签名私钥、加密密钥应由哪里托管？是否允许管理端编辑后加密落库，还是只保存 Nacos/环境变量/外部 Secret 的引用？请求头、请求体、响应体和日志中的凭据/个人信息是否默认禁止持久化，只保留脱敏摘要？",
+      "depends_on": [],
+      "recommendation": "密钥默认不进入普通业务表明文：首选外部 Secret/Nacos 加密配置并在数据库只存引用；若确需管理端编辑，使用项目 `ruoyi-common-encrypt` 的密文存储且主密钥在外部配置。请求/响应只按字段白名单脱敏采样，永不记录 Authorization、签名原文和完整敏感 body。",
+      "status": "answered",
+      "round": 1,
+      "answer": "供应商 API key/secret、签名私钥、加密密钥前期可以在 DB 托管，但必须密文存储；对称加密密钥由 yml 持久化配置。敏感日志边界继续由 D-014 明确。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-008",
+      "title": "运行时 URI 与声明式接口边界",
+      "question": "请确认：数据库中新增或编辑的 endpoint URI 是否一律由通用 `RestClient` 请求构造器在运行时解析并执行；`@HttpExchange` 是否只用于源码中固定的、可类型化的供应商 facade，不参与数据库动态生成？对于需要运行时 path/query/body 的 endpoint，是否接受统一参数模型与严格 URI/头部白名单校验？",
+      "depends_on": ["D-002"],
+      "recommendation": "确认该边界：动态 endpoint 只走 `RestClient`；`@HttpExchange` 只走静态 Java 接口；运行时 URI 仅允许规范化 path 模板、query/header/body 白名单参数，不允许完整 URL、脚本或任意表达式。",
+      "status": "answered",
+      "round": 2,
+      "answer": "固定接口下仅动态传入 id、query、header 或 body 值时继续使用类型化 `@HttpExchange`；数据库决定 HTTP 方法、URI 模板、参数结构或响应类型时统一走通用 `RestClient`，响应式场景使用 `WebClient`。Provider 提供受信任 base URL，数据库 endpoint 只能提供校验后的相对 path 和白名单参数；拒绝完整 URL、`//host`、路径穿越、脚本/表达式、任意 header 和跨域重定向。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-009",
+      "title": "供应商扩展设计模式与注册",
+      "question": "为了持续扩展企查查、天眼查及其他供应商，是否采用以下组合：`ThirdPartyGateway` 外观（Facade）统一入口；按 providerCode 的 Strategy + Spring Registry 选择供应商适配器；请求处理使用 Chain of Responsibility（参数校验 -> 认证 -> 签名/加密 -> 发送 -> 解码）；RestClient 实例用 Factory/Provider 创建；统计、日志、容错以 Decorator/Interceptor 横切？供应商适配器是否通过显式 Spring Bean/SPI 注册，而不是 DB 类名反射？",
+      "depends_on": ["D-003", "D-004", "D-005"],
+      "recommendation": "确认该组合：Facade + Registry/Strategy + Factory + Pipeline/Chain + Decorator；每个供应商只实现真实特殊行为的窄 SPI，标准传输复用通用链；通过 Spring Bean 的 providerCode 唯一注册并在启动时校验冲突。",
+      "status": "answered",
+      "round": 2,
+      "answer": "确认 Facade、Registry/Strategy、Factory、Pipeline/Chain 和 Decorator/Interceptor 的组合及各自 owner；供应商适配器通过 `providerCode` 唯一的 Spring Bean/SPI 注册，并在启动时校验冲突。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-010",
+      "title": "配置持久化与运行时刷新",
+      "question": "供应商和 endpoint 的开关、base URL、非敏感默认头、请求模板与静态策略落 DB 后，运行时是否采用本地缓存 + Redis 失效/广播？管理端修改后应立即影响新请求，还是允许 TTL 延迟？缓存不可用或配置读取失败时应 fail-closed 还是继续使用上次快照？",
+      "depends_on": ["D-003", "D-006"],
+      "recommendation": "采用 DB 为事实源、本地短缓存 + Redis 失效通知；修改成功后立即失效，后续新请求读取新快照；无法确认供应商/endpoint 启用状态或凭据时 fail-closed，不使用过期未知配置发起外部请求。",
+      "status": "answered",
+      "round": 2,
+      "answer": "DB 是事实源，使用项目 Redis/Redisson 做二级缓存；供应商或 endpoint 变化时清空对应 Redis 缓存并发送失效通知；保存成功后立即失效，新请求读取新快照；无法确认启用状态、配置或凭据时 fail-closed，不使用过期未知快照。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-011",
+      "title": "密文凭据数据模型与密钥轮换",
+      "question": "既然前期凭据允许密文入库，模型是供应商一条加密 credential payload（字段由 credential type/version 描述），还是拆成多行 key/value？加密算法、nonce/IV、密文版本、旧密钥轮换和解密失败行为是否需要进入首期合同？",
+      "depends_on": ["D-007", "D-009"],
+      "recommendation": "供应商与凭据分表，凭据保存版本化密文 payload 和非敏感类型/状态；使用 AES-GCM 等带完整性校验的对称加密，yml 只提供外部主密钥引用/密钥材料；解密失败立即 fail-closed 并告警，轮换先支持版本字段和双读单写。",
+      "status": "answered",
+      "round": 2,
+      "answer": "供应商和 endpoint 凭据分离建模，endpoint 凭据覆盖供应商同类型凭据；采用 AES-GCM 这类认证加密，主密钥只从 yml/外部密钥配置读取，首期保留轮换字段但不引入复杂轮换流程。",
+      "log_ref": "LOG-015"
+    },
+    {
+      "id": "D-012",
+      "title": "动态 endpoint 参数与内容类型",
+      "question": "首期动态 endpoint 是否只支持 JSON、query/form 三类请求，以及 JSON/text/bytes 三类响应？path/query/header/body 的参数名是否采用显式 schema/白名单，禁止把整段 URL 或未声明 header 交给调用方？企查查 endpoint 的 body 是由调用参数映射生成，还是允许保存固定模板并只替换声明变量？",
+      "depends_on": ["D-003", "D-004", "D-008"],
+      "recommendation": "首期限定 JSON、query/form 请求和 JSON/text/bytes 响应；endpoint 保存参数 schema 与允许位置，调用方只能提供声明参数；固定 body 使用版本化模板 + 变量白名单，不接受任意 JSONPath/SpEL。",
+      "status": "answered",
+      "round": 2,
+      "answer": "首期支持 JSON/query/form 请求和 JSON/text/bytes 响应；body 采用结构化 JSON 与显式变量白名单。multipart、流式上传和复杂模板后续通过显式 SPI 支持。",
+      "log_ref": "LOG-016"
+    },
+    {
+      "id": "D-013",
+      "title": "响应类型与业务错误映射",
+      "question": "统一 `ThirdPartyResponse` 的“类型安全”如何落地：调用方是否提供目标 Java `Class/TypeRef` 并由 provider adapter 做映射，动态 endpoint 则返回 `JsonNode/JsonValue`；HTTP 非 2xx、供应商业务失败码、空响应和解码失败是否统一为可区分的错误分类？",
+      "depends_on": ["D-004", "D-005", "D-009"],
+      "recommendation": "统一结果携带 requestId、HTTP 状态、供应商业务码、headers（脱敏）、原始/结构化 body 摘要和耗时；静态适配器返回强类型 DTO，动态 endpoint 返回受限 JSON value；错误分类固定为 transport/http/provider/decode/config，并保留原始异常 cause。",
+      "status": "answered",
+      "round": 2,
+      "answer": "动态调用使用 JsonNode/受限 value，类型化 facade 使用 Class<T> 或 ParameterizedTypeReference<T>；2xx 只表示传输成功，供应商业务错误由显式 adapter 映射为 PROVIDER，不把完整原始 body 放进业务响应或统计表。",
+      "log_ref": "LOG-017"
+    },
+    {
+      "id": "D-014",
+      "title": "调用统计、审计与敏感数据留存",
+      "question": "调用次数应按“已真正发出 HTTP 请求”统计，还是仅统计成功？是否记录每次调用明细（requestId、provider/endpoint、状态、耗时、重试次数、错误分类）还是只保留计数与失败摘要？quota 是否只是展示，还是达到额度必须阻断？敏感 header/body/response 的脱敏规则由谁配置？",
+      "depends_on": ["D-003", "D-005", "D-007"],
+      "recommendation": "按已发出请求计一次，成功/失败分开计数；默认只持久化脱敏调用明细和聚合计数，不保存完整请求/响应；quota 首期仅展示不自动阻断；敏感字段使用服务端不可绕过的 header 名和 JSON path 黑名单。",
+      "status": "answered",
+      "round": 2,
+      "answer": "按已发出请求计一次，并拆分成功、失败、超时、拒绝计数；默认只持久化脱敏明细和聚合计数，不保存完整请求/响应；完整请求和响应可通过系统日志存储；quota 首期仅展示不自动阻断；核心敏感头和字段使用服务端不可绕过的黑名单，endpoint 只能增加脱敏规则不能关闭。现有 `SysLogFilter` 只覆盖入站 Servlet 请求，出站 RestClient 日志实现由 D-016 明确。",
+      "log_ref": "LOG-013"
+    },
+    {
+      "id": "D-015",
+      "title": "Redisson 限流与失败关闭",
+      "question": "Redisson 限流/并发隔离是否按 provider 与 endpoint 分层 key（例如 `third:rate:{provider}`、`third:rate:{provider}:{endpoint}`），由静态 application 配置提供令牌速率/并发上限？Redis/Redisson 不可用、超过限流、供应商/接口关闭、配置缺失时是否统一 fail-closed 并返回可区分错误？",
+      "depends_on": ["D-006", "D-003"],
+      "recommendation": "供应商级和 endpoint 级均可配置，endpoint 受供应商上限约束；限流、熔断或并发拒绝不发出 HTTP；Redis/配置状态无法确认时 fail-closed，错误中包含稳定错误码，不泄露凭据。",
+      "status": "answered",
+      "round": 2,
+      "answer": "供应商级和 endpoint 级均可配置，endpoint 受供应商上限约束；限流或并发拒绝时不发出 HTTP；Redis/配置状态无法确认时 fail-closed；错误码可区分 `PROVIDER_DISABLED`、`ENDPOINT_DISABLED`、`RATE_LIMITED`、`CONFIG_UNAVAILABLE`，且不泄露凭据。",
+      "log_ref": "LOG-014"
+    },
+    {
+      "id": "D-016",
+      "title": "出站 HTTP 日志捕获与注解边界",
+      "question": "出站第三方请求是否由 `ruoyi-third` 的统一 gateway/executor 自动记录结构化请求与响应事件，复用 `ruoyi-common-web` 可见的 `SysLogEventWriter`/`SysLogEventSink` 和 `org.dromara.system.http` logger，同时在 `ruoyi-third` 内实现出站 body 截断与脱敏？对于绕过 gateway 的静态 `@HttpExchange` facade，是否再提供可选的模块内 `@ThirdPartyHttpLog` 注解，还是一律禁止绕过统一 executor？",
+      "depends_on": ["D-014", "D-002", "D-005"],
+      "recommendation": "统一 gateway/executor 自动记录，不依赖调用方添加注解；所有 `@HttpExchange` facade 也使用同一 `RestClient` builder/interceptor 或显式 decorator，禁止绕过日志与脱敏链。只在确有独立静态调用场景时提供窄的 `@ThirdPartyHttpLog`，且不能关闭核心敏感黑名单。复用公共 event writer 的输出合同，但将出站采集、截断和脱敏实现集中在 `ruoyi-third`。",
+      "status": "answered",
+      "round": 3,
+      "answer": "所有 ruoyi-third 出站 HTTP 请求自动捕获并进入现有系统日志管道，复用公共 writer/sink；日志仍受服务端黑名单、大小上限和脱敏约束。暂不实现独立日志场景和业务侧注解，仅覆盖 ruoyi-third 的统一出站链路。",
+      "log_ref": "LOG-018"
+    },
+    {
+      "id": "D-017",
+      "title": "管理端菜单与前端领域 owner",
+      "question": "三方接口管理能力在 Admin Web 的菜单与领域包中如何落位？",
+      "depends_on": ["D-001", "D-003", "D-014"],
+      "recommendation": "在系统管理下新增 `三方接口管理` 目录菜单；前端仍按后端 `ruoyi-third` owner 建立独立 `domains/third` 与 `web-domains/third`，由 Admin Web 显式组合，不把三方领域代码放进 system 包。目录下提供供应商、Endpoint、调用记录和调用统计页面，凭据与策略在所属供应商/Endpoint 编辑流程中管理。",
+      "status": "answered",
+      "round": 4,
+      "answer": "用户确认整体设计，并要求管理端在系统管理下提供独立的 `三方接口管理` 菜单及相关管理配置页面。依据项目 owner 规范，菜单归属系统管理导航树，但前端实现归独立 third domain/web-domain；首期按供应商、Endpoint、调用记录、调用统计四个页面组织。",
+      "log_ref": "LOG-019"
+    }
+  ]
+}

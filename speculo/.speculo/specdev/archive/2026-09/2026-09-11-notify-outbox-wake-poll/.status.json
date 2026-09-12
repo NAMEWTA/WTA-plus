@@ -1,0 +1,51 @@
+{
+  "schema_version": 6,
+  "artifact": "change-status",
+  "change": "2026-09-11-notify-outbox-wake-poll",
+  "change_status": "archived",
+  "current_work": null,
+  "works_run": [
+    "specdev/G-grill-with-docs",
+    "specdev/S-spec",
+    "specdev/T-tickets",
+    "specdev/P-goal-plan",
+    "specdev/I-implement",
+    "specdev/C-code-review",
+    "specdev/A-archive-and-consolidate"
+  ],
+  "claimed_investigations": [],
+  "execution_authorization": {
+    "implementation_commit": {
+      "status": "authorized",
+      "source": "CTO via Lead chat: authorize implementation_commit + local_candidate_integration only; defer I-implement",
+      "granted_at": "2026-09-11T15:53:14+08:00",
+      "scope": "Ticket implementation commits"
+    },
+    "local_candidate_integration": {
+      "status": "authorized",
+      "source": "CTO via Lead chat: authorize implementation_commit + local_candidate_integration only; defer I-implement",
+      "granted_at": "2026-09-11T15:53:14+08:00",
+      "scope": "Lead-owned local direct-parent or candidate integration and parent update"
+    },
+    "source_cleanup": {
+      "status": "not-authorized",
+      "source": null,
+      "granted_at": null,
+      "scope": "Source worktree and branch cleanup"
+    }
+  },
+  "leadership": {
+    "current": "rvp-lead:1c44f1c3-a61e-4d39-a7a7-f2d21ce5fb00",
+    "epoch": 1,
+    "assigned_at": "2026-09-11T15:09:05+08:00",
+    "history": []
+  },
+  "created_at": "2026-09-11T15:09:05+08:00",
+  "updated_at": "2026-09-11T23:42:00+08:00",
+  "completed_at": "2026-09-11T23:41:05+08:00",
+  "archived": true,
+  "archive_path": "<Path>{roots.state}/specdev/archive/2026-09/2026-09-11-notify-outbox-wake-poll</Path>",
+  "blockers": [],
+  "deviations": [],
+  "worktrees": []
+}

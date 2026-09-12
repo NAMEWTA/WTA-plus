@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-25-plus-ui-multi-app-domain-architecture",
+  "status": "consensus",
+  "round": 4,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "多应用前端目标",
+      "question": "同一后台面向多个 Web Client，并预留移动端和小程序时，前端是否以可组合的共享能力支撑多个独立 App？",
+      "depends_on": [],
+      "recommendation": "建立以共享平台能力、无头领域包、Web 领域实现和独立 App 组装为核心的多应用架构。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。多个 App 共享后台合同、认证授权、领域 API、类型和基础能力，各自保留布局、样式和产品组合自由。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "总体架构形态",
+      "question": "多应用共享能力采用编译期 Monorepo 模块组合，还是运行时微前端与远程模块？",
+      "depends_on": ["D-001"],
+      "recommendation": "采用编译期模块化单体 Monorepo，当前不引入微前端。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用 pnpm workspace 管理的编译期模块化单体；每个 App 显式选择包并独立构建部署，不采用运行时微前端。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "Domains 与 Web Domains 边界",
+      "question": "跨平台业务能力和 Vue/Element Plus 页面能力是否拆成 domains 与 web-domains 两层？",
+      "depends_on": ["D-002"],
+      "recommendation": "拆分：domains 保持无头和跨平台，web-domains 承载 Vue Web 表现层。",
+      "status": "answered",
+      "round": 2,
+      "answer": "拆分。domains 不依赖 Vue Router、Element Plus、DOM、浏览器存储或 Axios 具体实现；web-domains 提供 Vue 页面、组件、composables、路由与菜单清单。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "前端领域划分",
+      "question": "前端领域是否严格一一复制后端 Maven 模块名？",
+      "depends_on": ["D-003"],
+      "recommendation": "按前端稳定业务能力划分，并通过元数据追踪对应后端模块。",
+      "status": "answered",
+      "round": 2,
+      "answer": "不机械复制 Maven 模块。首批领域为 identity-access、system-admin、workflow、ai、demo、devtools、operations；每个领域可记录 backendModules 来源。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "应用组合与未来终端",
+      "question": "首期 App 组合与移动端、小程序如何进入目录和依赖治理？",
+      "depends_on": ["D-002", "D-003"],
+      "recommendation": "保留 admin-web 和 client-web 的可执行方向，mobile-web 与 miniapp-taro 先只做 README 占位。",
+      "status": "answered",
+      "round": 3,
+      "answer": "apps 下规划 admin-web、client-web、mobile-web、miniapp-taro；移动端和小程序首期只建边界清晰的 README 占位，不预装 Taro 或 Capacitor，也不创建虚假包。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-006",
+      "title": "平台端口与适配器",
+      "question": "HTTP、Token、Client 上下文、导航、存储和错误展示如何避免绑定单一浏览器实现？",
+      "depends_on": ["D-003", "D-005"],
+      "recommendation": "由 platform 定义稳定端口，由 adapters 提供浏览器和未来 Taro 等运行时实现。",
+      "status": "answered",
+      "round": 3,
+      "answer": "platform 定义 HttpClient、TokenStorage、ClientContext、SessionService、AccessEvaluator、ErrorPresenter、NavigationPort、DomainModule 等合同；adapters 实现 Axios/browser，未来再实现 Taro。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-007",
+      "title": "动态路由与领域清单",
+      "question": "后端 component 字符串如何在拆包后映射到不同 web-domain 页面，并由不同 App 选择性组装？",
+      "depends_on": ["D-003", "D-004", "D-005"],
+      "recommendation": "每个 web-domain 导出显式 WebDomainManifest，App 汇总视图加载器、消息和权限贡献。",
+      "status": "answered",
+      "round": 3,
+      "answer": "以 WebDomainManifest 替代根目录单一 import.meta.glob 假设；App 显式组合所需 manifest，保留后端 component 字符串并检查缺失键与重复键。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-008",
+      "title": "认证授权与 Client 不变量",
+      "question": "共享认证、注册、权限、动态菜单和 Client 上下文在多 App 中由谁负责，是否改变后端裁剪语义？",
+      "depends_on": ["D-005", "D-006", "D-007"],
+      "recommendation": "identity-access 与 platform auth 复用认证流程，App 注入 Client；继续信任后端按 Client 裁剪菜单，前端只负责注册路由。",
+      "status": "answered",
+      "round": 3,
+      "answer": "登录、注册、社交登录、Token、401、getInfo、getRouters 和按钮权限作为共享能力；每个 App 配置 VITE_APP_CLIENT_ID，前端不重复做跨 Client 菜单过滤。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-009",
+      "title": "Monorepo 工具链",
+      "question": "Monorepo 首期采用什么包管理、发布和依赖约束策略？",
+      "depends_on": ["D-002", "D-004", "D-005"],
+      "recommendation": "沿用 pnpm 10，使用 workspace:*、catalog、显式 exports 和架构检查；首期不增加 Nx/Turbo。",
+      "status": "answered",
+      "round": 3,
+      "answer": "pnpm-workspace 覆盖根、apps、packages、tooling；私有 source-first 包通过 workspace:* 复用，禁止深导入和循环依赖，待规模证明需要后再引入独立构建或 Nx/Turbo。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-010",
+      "title": "渐进迁移顺序",
+      "question": "现有单体 src 如何迁移到新架构，是否一次性搬迁？",
+      "depends_on": ["D-003", "D-004", "D-006", "D-007", "D-009"],
+      "recommendation": "保留现有 src 作为兼容入口，按基线测试、占位、平台合同、试点领域、第二 App、认证壳层、复杂领域的波次迁移。",
+      "status": "answered",
+      "round": 3,
+      "answer": "不一次性搬迁。先建立特征测试和 README 占位，再抽 platform/adapters，以 demo 试点并用 client-web 证明组合边界，随后迁移 identity-access、workflow 和其余领域，最后移动 admin-web 入口并清理兼容层。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-011",
+      "title": "上游演进策略",
+      "question": "大改后如何处理 RuoYi 上游前端更新？",
+      "depends_on": ["D-002", "D-010"],
+      "recommendation": "产品架构自主演进，上游仅作为能力和优化来源，按对应领域选择性吸收。",
+      "status": "answered",
+      "round": 3,
+      "answer": "不再以保持低差异和整包合并为目标；继续查看上游新增能力、修复和交互优化，再映射到本地 platform、domain、web-domain 或 app 区域增量吸收。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-012",
+      "title": "质量门禁与共识",
+      "question": "该计划的验证边界、首期非目标和设计共识是否完整？",
+      "depends_on": ["D-005", "D-006", "D-007", "D-008", "D-009", "D-010", "D-011"],
+      "recommendation": "以现有 lint、typecheck、unit、E2E、build 为基础，并增加依赖边界检查；明确微前端、移动端实装和全量 OpenAPI 生成不在首期。",
+      "status": "answered",
+      "round": 4,
+      "answer": "用户确认整体计划已经完整并达成共识。首期只做可验证的渐进重构，不实施微前端、运行时远程模块、公共 npm 发布、Taro/Capacitor 实装或一次性 UI 重写。",
+      "log_ref": "LOG-012"
+    }
+  ]
+}

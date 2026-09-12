@@ -1,0 +1,6 @@
+interface:
+  display_name: "项目品牌定制与交付"
+  short_description: "人工激活后按品牌、Logo 和目录完成迁移、可选中间件部署及真实验收"
+  default_prompt: "使用 $project-customization-delivery，按我提供的品牌、Logo、本地根目录和可选中间件服务器完成整体定制迁移与交付。"
+policy:
+  allow_implicit_invocation: false

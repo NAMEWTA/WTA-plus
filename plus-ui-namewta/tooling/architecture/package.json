@@ -1,0 +1,28 @@
+{
+  "name": "@namewta/architecture",
+  "version": "0.0.0",
+  "private": true,
+  "bin": {
+    "namewta-architecture": "./src/cli.mjs"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "scripts": {
+    "build": "node --check ./src/index.mjs && node --check ./src/cli.mjs",
+    "check": "node ./src/cli.mjs check --root ../..",
+    "lint": "oxlint src test",
+    "test": "node --test ./test/*.test.mjs",
+    "typecheck": "node --check ./src/index.mjs && node --check ./src/cli.mjs && node --check ./test/architecture.test.mjs"
+  },
+  "dependencies": {
+    "@vue/compiler-sfc": "catalog:",
+    "typescript": "catalog:",
+    "yaml": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "oxlint": "catalog:"
+  }
+}

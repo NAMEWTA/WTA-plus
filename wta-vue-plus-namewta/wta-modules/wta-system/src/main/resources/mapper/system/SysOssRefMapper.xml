@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.system.oss.mapper.SysOssRefMapper">
+
+    <select id="countActiveByOssId" resultType="java.lang.Long">
+        select count(*) from sys_oss_ref where oss_id = #{ossId} and del_flag = '0'
+    </select>
+
+    <select id="existsActive" resultType="boolean">
+        select exists(
+            select 1 from sys_oss_ref
+            where oss_id = #{ossId} and ref_type = #{refType} and ref_id = #{refId} and del_flag = '0'
+        )
+    </select>
+
+    <update id="restoreReference">
+        update sys_oss_ref
+        set del_flag = '0', update_time = now()
+        where oss_id = #{ossId} and ref_type = #{refType} and ref_id = #{refId} and del_flag = '1'
+    </update>
+
+    <update id="deactivateReference">
+        update sys_oss_ref
+        set del_flag = '1', update_time = now()
+        where oss_id = #{ossId} and ref_type = #{refType} and ref_id = #{refId} and del_flag = '0'
+    </update>
+
+    <select id="selectActiveByOssId" resultType="org.namewta.system.oss.domain.SysOssRef">
+        select * from sys_oss_ref
+        where oss_id = #{ossId} and del_flag = '0'
+        order by ref_type, ref_id
+    </select>
+</mapper>

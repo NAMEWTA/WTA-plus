@@ -1,0 +1,11 @@
+*
+!.gitignore
+!10-wta-base.sql
+!15-nacos-init.sh
+!20-ry-job.sql
+!30-ry-workflow.sql
+!40-ry-ai.sql
+!50-namewta-ddl.sql
+!60-namewta-dml.sql
+!nacos/
+!nacos/**

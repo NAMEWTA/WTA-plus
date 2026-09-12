@@ -1,0 +1,15 @@
+export { default as SystemClientPage } from './client/ClientPage.vue';
+export { default as SystemConfigPage } from './config/ConfigPage.vue';
+export { default as SystemDepartmentPage } from './dept/DepartmentPage.vue';
+export { default as SystemDictPage } from './dict-type/DictPage.vue';
+export { default as SystemMenuPage } from './menu/MenuPage.vue';
+export { default as SystemOssConfigPage } from './oss-config/OssConfigPage.vue';
+export { default as SystemOssPage } from './oss/OssPage.vue';
+export { default as SystemPostPage } from './post/PostPage.vue';
+export { default as SystemRoleAuthUserPage } from './role/RoleAuthUserPage.vue';
+export { default as SystemRolePage } from './role/RolePage.vue';
+export { default as SystemRoleSelectUser } from './role/RoleSelectUser.vue';
+export { default as SystemUserAuthRolePage } from './user/UserAuthRolePage.vue';
+export { default as SystemUserPage } from './user/UserPage.vue';
+export { default as SystemUserViewDrawer } from './user/UserViewDrawer.vue';
+export { default as SystemUserTypePage } from './user-type/UserTypePage.vue';

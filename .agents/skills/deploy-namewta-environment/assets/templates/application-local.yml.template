@@ -1,0 +1,23 @@
+# 自动生成的本地覆盖，不得提交。
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          url: '{{jdbcUrl}}'
+          username: '{{mysqlUser}}'
+          password: '{{mysqlAppPassword}}'
+  data:
+    redis:
+      host: '{{serverHost}}'
+      port: {{redisPort}}
+      database: {{redisDatabase}}
+      password: '{{redisPassword}}'
+      timeout: 10s
+      ssl:
+        enabled: false
+
+oss:
+  readiness:
+    diagnostic-objects:
+      minio: {{minioDiagnosticObject}}

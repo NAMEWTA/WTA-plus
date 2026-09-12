@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.notify.mapper.NotifyOutboxMapper">
+    <select id="selectClaimable" resultType="org.namewta.notify.domain.entity.NotifyOutbox">
+        select * from notify_outbox
+        where status in ('READY', 'PROCESSING') and available_at &lt;= #{now}
+          and (next_attempt_at is null or next_attempt_at &lt;= #{now})
+          and (lease_until is null or lease_until &lt;= #{now})
+        order by outbox_id
+        limit #{limit}
+        for update skip locked
+    </select>
+
+    <update id="claim">
+        update notify_outbox
+        set status = 'PROCESSING', lease_owner = #{owner}, lease_token = #{token}, lease_until = #{leaseUntil}
+        where outbox_id = #{outboxId}
+          and status in ('READY', 'PROCESSING')
+          and available_at &lt;= #{now}
+          and (next_attempt_at is null or next_attempt_at &lt;= #{now})
+          and (lease_until is null or lease_until &lt;= #{now})
+    </update>
+
+    <update id="renew">
+        update notify_outbox
+        set lease_until = #{leaseUntil}
+        where outbox_id = #{outboxId} and status = 'PROCESSING'
+          and lease_owner = #{owner} and lease_token = #{token}
+    </update>
+
+    <update id="finish">
+        update notify_outbox
+        set status = #{status}, attempt_count = #{attemptCount}, next_attempt_at = #{nextAttemptAt},
+            last_error_code = #{errorCode}, last_error_message = #{errorMessage},
+            lease_owner = null, lease_token = null, lease_until = null
+        where outbox_id = #{outboxId} and status = 'PROCESSING'
+          and lease_owner = #{owner} and lease_token = #{token}
+    </update>
+
+    <update id="requeue">
+        update notify_outbox
+        set status = 'READY', available_at = #{now}, attempt_count = 0, next_attempt_at = #{now},
+            lease_owner = null, lease_token = null, lease_until = null,
+            last_error_code = null, last_error_message = null
+        where delivery_id = #{deliveryId}
+          and status in ('WAITING_RECEIPT', 'DEAD_LETTER')
+        order by outbox_id desc
+        limit 1
+    </update>
+</mapper>

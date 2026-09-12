@@ -1,0 +1,72 @@
+package org.namewta.system.domain;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.namewta.common.mybatis.core.domain.BaseEntity;
+
+import java.time.LocalDateTime;
+
+/**
+ * OSS对象存储对象
+ *
+ * @author Lion Li
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@TableName("sys_oss")
+public class SysOss extends BaseEntity {
+
+    /**
+     * 对象存储主键
+     */
+    @TableId(value = "oss_id")
+    private Long ossId;
+
+    /**
+     * 文件名
+     */
+    private String fileName;
+
+    /**
+     * 原名
+     */
+    private String originalName;
+
+    /**
+     * 文件后缀名
+     */
+    private String fileSuffix;
+
+    /**
+     * URL地址
+     */
+    private String url;
+
+    /**
+     * 扩展字段
+     */
+    private String ext1;
+
+    /**
+     * 服务商
+     */
+    private String service;
+
+    /**
+     * 是否为尚未被业务引用的临时对象。
+     */
+    private String isTemp;
+
+    /**
+     * 临时对象到期时间。
+     */
+    private LocalDateTime expireTime;
+
+    /**
+     * 对象删除状态（ACTIVE 正常，PENDING 等待供应商删除）。
+     */
+    private String deleteState;
+
+}

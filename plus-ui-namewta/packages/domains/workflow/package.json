@@ -1,0 +1,32 @@
+{
+  "name": "@namewta/domain-workflow",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./category": "./src/category/index.ts",
+    "./definition": "./src/definition/index.ts",
+    "./instance": "./src/instance/index.ts",
+    "./leave": "./src/leave/index.ts",
+    "./spel": "./src/spel/index.ts",
+    "./task": "./src/task/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint src",
+    "test": "vitest run src",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@namewta/api-contracts": "workspace:*",
+    "@namewta/domain-system": "workspace:*",
+    "@namewta/platform-app-runtime": "workspace:*",
+    "@namewta/platform-contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "4.1.10"
+  }
+}

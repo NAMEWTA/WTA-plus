@@ -1,0 +1,10 @@
+{
+  "name": "@namewta/web-domain-notify",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts", "./monitor": "./src/monitor/index.ts", "./notice": "./src/notice/index.ts", "./inbox": "./src/inbox/index.ts", "./config": "./src/config/index.ts" },
+  "scripts": { "build": "vue-tsc --noEmit -p tsconfig.json", "test": "vitest run src", "typecheck": "vue-tsc --noEmit -p tsconfig.json", "lint": "oxlint src" },
+  "dependencies": { "@namewta/domain-notify": "workspace:*", "@namewta/platform-app-runtime": "workspace:*", "element-plus": "catalog:", "vue": "catalog:" },
+  "devDependencies": { "@vue/compiler-sfc": "catalog:", "oxlint": "catalog:", "typescript": "catalog:", "vue-tsc": "3.3.8" }
+}

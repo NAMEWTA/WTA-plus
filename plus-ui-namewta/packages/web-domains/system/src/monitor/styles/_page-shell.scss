@@ -1,0 +1,14 @@
+@mixin table-crud-page($mobile-breakpoint: 900px) {
+  .data-table :deep(.el-button.is-link) {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(53, 109, 255, 0.08);
+  }
+
+  @media (max-width: $mobile-breakpoint) {
+    .toolbar-shell {
+      align-items: flex-start;
+    }
+  }
+}

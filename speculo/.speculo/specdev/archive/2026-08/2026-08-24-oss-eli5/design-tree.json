@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-08-24-oss-eli5",
+  "status": "consensus",
+  "round": 4,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "增强目标与复用边界",
+      "question": "本 change 是否以增强现有 OSS 为目标，保留直传、UploadTicket、TEMP、业务引用、删除和短时签名能力，只补齐公共资源与受控资源的访问和路由闭环？",
+      "depends_on": [],
+      "recommendation": "是。把现有能力作为基线，只扩展缺失合同并修正访问策略语义。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。用户要求在原本基础上增强完善并尽可能复用，不重建 OSS 子系统。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "公共与受控读取语义",
+      "question": "目标读取语义是否为：门户等显式公共资源允许任何持有稳定 URL 的访问者直接预览或下载；涉及权限的资源必须由业务先授权，再返回短时签名 URL？",
+      "depends_on": ["D-001"],
+      "recommendation": "是。公共只允许匿名读取，上传和变更仍由服务端策略授权；受控资源保持 Provider 私有。",
+      "status": "answered",
+      "round": 1,
+      "answer": "是。公共资源通过公共桶稳定 URL 匿名读取；权限资源通过私有桶和短时签名访问。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "存储拓扑",
+      "question": "公共资源与受控资源应使用两个独立 configKey 和两个独立 Bucket，还是在同一 Bucket 内使用对象级 ACL/Policy 混合？",
+      "depends_on": ["D-001", "D-002"],
+      "recommendation": "使用两个独立 configKey 和两个独立 Bucket：public-read 与 private。隔离清晰，避免对象 ACL 漂移，也便于 CDN、审计和生命周期分别配置。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用推荐方案：公共资源与受控资源使用独立 configKey 和独立 Bucket，分别为 public-read 与 private。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "公共 URL 暴露边界",
+      "question": "公共资源是否只允许由门户等业务接口返回稳定 URL，而不新增可按任意 ossId 匿名查询 URL 的通用 HTTP 接口？",
+      "depends_on": ["D-002"],
+      "recommendation": "只由业务接口暴露。公共读不等于公开 sys_oss 索引，避免 ossId 枚举、元数据泄露和未来误分类扩大事故面。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用推荐方案：稳定公共 URL 只由门户等业务接口随业务数据返回，不提供按任意 ossId 匿名查询的通用 HTTP 接口。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "跨模块 Service 合同",
+      "question": "ruoyi-api 的 OssService 应增加一个按对象访问类型解析 URL 的统一结构化方法，还是分别提供公共 URL 与签名 URL 两套方法？",
+      "depends_on": ["D-001", "D-002"],
+      "recommendation": "增加统一的 resolveAccessUrl(ossId) 结构化合同，同时保留显式 presignDownload(ossId)。统一结果返回访问类型、URL、可空 expiresAt 和文件名；显式签名方法供必须强制私有下载的调用方使用。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用推荐方案：新增统一 resolveAccessUrl(ossId) 结构化合同，并保留 presignDownload(ossId)。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-006",
+      "title": "存量对象迁移",
+      "question": "现有 sys_oss 对象应保持当前受控访问，还是根据现有 accessPolicy 自动批量转为公共资源？",
+      "depends_on": ["D-001", "D-002"],
+      "recommendation": "全部保持受控访问；只让新公共上传策略和经过业务清点的显式迁移对象进入公共 Bucket，不按旧 accessPolicy 自动放开。",
+      "status": "answered",
+      "round": 1,
+      "answer": "采用推荐方案：现有对象全部保持受控访问，只迁移经过业务清点的门户资源，不按旧 accessPolicy 自动公开。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-007",
+      "title": "访问类型权威来源",
+      "question": "对象的 PUBLIC/PRIVATE 访问类型应由其冻结的 storage configKey 推导，还是在 sys_oss 增加对象级访问类型快照？",
+      "depends_on": ["D-003"],
+      "recommendation": "在独立 Bucket 前提下由不可混用的 storage configKey 推导，并限制有存量对象的配置改变访问类型；避免给 sys_oss 增加重复状态。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采用推荐方案：对象访问类型由其绑定且不可混用的 storage configKey 推导，不在 sys_oss 增加重复快照；有存量对象时禁止直接改变配置访问类型。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-008",
+      "title": "上传策略路由",
+      "question": "命名 uploadPolicy 是否增加服务端 storageConfigKey，使 portal-image 等策略固定路由公共存储、business-attachment 等策略固定路由私有存储？",
+      "depends_on": ["D-003", "D-007"],
+      "recommendation": "是。storageConfigKey 只能来自启动时校验的服务端命名策略，客户端仍只能提交 policy 键。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采用推荐方案：命名 uploadPolicy 由服务端绑定 storageConfigKey；客户端只能提交策略名，启动时校验目标配置存在、启用且访问类型匹配。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-009",
+      "title": "Provider 策略治理",
+      "question": "应用对 public-read/private Bucket 的真实 Provider Policy 应只诊断并在不一致时阻止就绪，还是由应用主动修改 Bucket Policy？",
+      "depends_on": ["D-003"],
+      "recommendation": "延续现有边界：应用不修改 Provider Policy；启动/健康诊断发现声明与真实策略不一致时 fail-closed，部署配置负责修正。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采用推荐方案：应用不修改 Provider Policy；启动与健康诊断发现声明和真实策略不一致时停用对应配置并使就绪检查失败，由部署配置修正。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-010",
+      "title": "公共 URL 组成",
+      "question": "公共稳定 URL 在生产环境是否必须使用配置的自定义域名/CDN，开发环境才允许回退 Provider Bucket URL？",
+      "depends_on": ["D-003", "D-005"],
+      "recommendation": "是。生产公共配置缺少 domainUrl 时拒绝启用；开发配置可显式允许 Provider URL 回退。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采用推荐方案：生产公共配置必须使用 domainUrl 或 CDN；开发环境只有显式允许时才回退 Provider Bucket URL。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-011",
+      "title": "旧 URL 方法兼容",
+      "question": "现有 selectUrlByIds/selectByIds 是否改为委托统一访问 URL 解析，使公共对象返回稳定 URL、私有对象返回短时 URL，同时保持方法签名兼容？",
+      "depends_on": ["D-005"],
+      "recommendation": "是，但继续要求调用方先完成业务授权；管理列表仍不直接回传 URL。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采用推荐方案：selectUrlByIds/selectByIds 委托统一访问解析并保持签名兼容；公共对象返回稳定 URL，私有对象返回短时 URL，调用方仍先授权且管理列表不直接回传 URL。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-012",
+      "title": "私有下载 TTL 范围",
+      "question": "私有下载有效期继续全局统一，还是允许命名访问策略覆盖？",
+      "depends_on": ["D-005"],
+      "recommendation": "保留全局默认 2 分钟，并允许服务端命名访问策略在安全上下限内覆盖；客户端不能自报 TTL。",
+      "status": "answered",
+      "round": 2,
+      "answer": "采用推荐方案：保留全局默认 2 分钟，允许服务端命名访问策略在安全上下限内覆盖，客户端不能提交 TTL。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-013",
+      "title": "访问策略语义收敛",
+      "question": "是否移除 PUBLIC_READ_WRITE/custom 歧义，将应用支持的读取类型收敛为 PRIVATE 与 PUBLIC_READ，并禁止公共匿名写？",
+      "depends_on": ["D-003", "D-007"],
+      "recommendation": "是。管理页、SQL 增量、枚举、校验和测试使用同一语义，上传永远使用授权的预签名 PUT。",
+      "status": "answered",
+      "round": 3,
+      "answer": "采用推荐方案：应用读取类型统一为 PRIVATE 与 PUBLIC_READ，移除 PUBLIC_READ_WRITE/custom 歧义；公共匿名写永不开放，旧值通过显式数据迁移转换。",
+      "log_ref": "LOG-013"
+    },
+    {
+      "id": "D-014",
+      "title": "配置变更保护",
+      "question": "存在存量对象时，是否禁止直接改变 configKey 的访问类型或 Bucket，并要求显式迁移流程？",
+      "depends_on": ["D-007", "D-013"],
+      "recommendation": "是。配置更新先检查引用对象；访问类型或 Bucket 变化必须走可审计迁移，普通凭据和域名轮换不受此限制。",
+      "status": "answered",
+      "round": 4,
+      "answer": "采用推荐方案：configKey 存在对象时禁止普通更新改变 Bucket 或访问类型，必须走可审计、可验证、可回滚的显式迁移；不改变对象归属边界的凭据、endpoint 和 domainUrl 轮换仍可常规更新。",
+      "log_ref": "LOG-014"
+    }
+  ]
+}

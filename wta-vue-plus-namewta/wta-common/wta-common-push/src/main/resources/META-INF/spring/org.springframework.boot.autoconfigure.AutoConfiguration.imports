@@ -1,0 +1,3 @@
+org.namewta.common.push.config.MessageAutoConfiguration
+org.namewta.common.push.config.MessageSseConfiguration
+org.namewta.common.push.config.MessageWebSocketConfiguration

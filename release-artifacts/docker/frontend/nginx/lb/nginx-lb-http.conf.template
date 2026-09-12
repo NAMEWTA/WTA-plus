@@ -1,0 +1,148 @@
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+upstream app_admin_web {
+    server namewta-nginx-admin-web:80;
+    keepalive 32;
+}
+
+upstream app_home_web {
+    server namewta-nginx-home-web:80;
+    keepalive 32;
+}
+
+# APP_UPSTREAMS: add_app.py 在此处追加 App upstream。
+
+upstream monitor_admin {
+    server namewta-monitor-admin:9090;
+}
+
+upstream snailjob_server {
+    server namewta-snailjob-server:8800;
+}
+
+upstream snailai_server {
+    server namewta-snailai-server:8900;
+}
+
+upstream nacos_server {
+    server nacos:8848;
+    keepalive 16;
+}
+
+server {
+    listen 80 default_server;
+    server_name ${LB_SERVER_NAME};
+    server_tokens off;
+    absolute_redirect off;
+    port_in_redirect off;
+    server_name_in_redirect off;
+    client_max_body_size 100m;
+    proxy_intercept_errors on;
+    error_page 404 500 502 503 504 /nginx-lb/system-updating.html;
+
+    location ~ ^(/[^/]*)?/actuator(?:/.*)?$ {
+        return 403;
+    }
+
+    location = /${APP_ADMIN_WEB_PREFIX} {
+        return 302 /${APP_ADMIN_WEB_PREFIX}/;
+    }
+
+    location /${APP_ADMIN_WEB_PREFIX}/ {
+        proxy_pass http://app_admin_web/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /${APP_ADMIN_WEB_PREFIX};
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_read_timeout 86400s;
+        proxy_buffering off;
+    }
+
+    location = /${APP_HOME_WEB_PREFIX} {
+        return 302 /${APP_HOME_WEB_PREFIX}/;
+    }
+
+    location /${APP_HOME_WEB_PREFIX}/ {
+        proxy_pass http://app_home_web/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /${APP_HOME_WEB_PREFIX};
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_read_timeout 86400s;
+        proxy_buffering off;
+    }
+
+    # APP_ROUTES: add_app.py 在此处追加 App 路由。
+
+    location /admin/ {
+        proxy_pass http://monitor_admin/admin/;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /snail-job/ {
+        proxy_pass http://snailjob_server/snail-job/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_buffering off;
+    }
+
+    location /snail-ai/ {
+        proxy_pass http://snailai_server/snail-ai/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_read_timeout 86400s;
+        proxy_buffering off;
+    }
+
+    location /nacos/ {
+        proxy_pass http://nacos_server/nacos/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 86400s;
+        proxy_buffering off;
+    }
+
+    # 维护页只允许 error_page 内部跳转，避免暴露独立入口或缓存过期状态。
+    location = /nginx-lb/system-updating.html {
+        internal;
+        root /usr/share/nginx/html;
+        charset utf-8;
+        add_header Cache-Control "no-store, no-cache, must-revalidate" always;
+    }
+
+    # 管理端使用私有前缀，根路径不暴露入口。
+    location = / {
+        return 404;
+    }
+
+    location / {
+        return 404;
+    }
+}

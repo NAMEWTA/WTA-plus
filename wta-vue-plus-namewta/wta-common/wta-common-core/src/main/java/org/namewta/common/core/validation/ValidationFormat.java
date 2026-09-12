@@ -1,0 +1,18 @@
+package org.namewta.common.core.validation;
+
+/** 统一格式校验类型。 */
+public enum ValidationFormat {
+    EMAIL,
+    MAINLAND_MOBILE,
+    TELEPHONE,
+    E164_PHONE,
+    MAINLAND_ID_CARD,
+    HK_RESIDENT_ID,
+    MO_RESIDENT_ID,
+    TW_RESIDENT_ID,
+    HK_MACAO_RESIDENCE_PERMIT,
+    TW_RESIDENCE_PERMIT,
+    MAINLAND_TRAVEL_PERMIT_HK_MACAO,
+    MAINLAND_TRAVEL_PERMIT_TW,
+    UNIFIED_SOCIAL_CREDIT_CODE
+}

@@ -1,0 +1,5 @@
+org.namewta.common.web.config.CaptchaConfig
+org.namewta.common.web.config.FilterConfig
+org.namewta.common.web.config.I18nConfig
+org.namewta.common.web.config.ResourcesConfig
+org.namewta.common.web.config.SysLogConfig

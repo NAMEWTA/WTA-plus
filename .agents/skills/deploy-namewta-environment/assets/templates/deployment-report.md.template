@@ -1,0 +1,67 @@
+# {{deploymentName}} 部署交接
+
+- 生成时间：{{generatedAt}}
+- 模式：{{mode}}
+- 环境：{{environment}}
+- 发布编号：{{releaseId}}
+- 验证结论：{{verificationStatus}}
+
+## 服务器与持久化
+
+{{serverSection}}
+
+## Compose 身份
+
+{{composeSection}}
+
+## 入口与端口
+
+{{endpointSection}}
+
+## 账号与凭据
+
+{{credentialSection}}
+
+## 服务与版本
+
+{{serviceSection}}
+
+## 发布构件
+
+{{artifactSection}}
+
+## 滚动发布尝试
+
+{{rolloutSection}}
+
+## 前端发布
+
+{{frontendSection}}
+
+## 数据保护
+
+{{dataProtectionSection}}
+
+## 保留与恢复资产
+
+{{retainedArtifactSection}}
+
+## 验证证据
+
+{{verificationSection}}
+
+## 检测证据归档
+
+{{evidenceSection}}
+
+## 后续升级步骤
+
+{{upgradeSection}}
+
+## 回滚步骤
+
+{{rollbackSection}}
+
+## 未决事项与风险
+
+{{riskSection}}

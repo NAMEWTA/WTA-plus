@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.profile.enterprise.mapper.EnterpriseTransferMapper">
+
+    <select id="selectActiveOwner" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseTransferOwnerRow">
+        select b.enterprise_binding_id as binding_id, b.enterprise_profile_id as profile_id,
+               b.user_id, b.binding_version
+          from profile_enterprise_binding b
+          join profile_enterprise p on p.enterprise_profile_id = b.enterprise_profile_id
+         where b.user_id = #{userId} and b.status = 'ACTIVE' and b.del_flag = '0'
+           and p.status = 'ACTIVE' and p.del_flag = '0'
+    </select>
+
+    <select id="lockActiveOwner" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseTransferOwnerRow">
+        select b.enterprise_binding_id as binding_id, b.enterprise_profile_id as profile_id,
+               b.user_id, b.binding_version
+          from profile_enterprise_binding b
+          join profile_enterprise p on p.enterprise_profile_id = b.enterprise_profile_id
+         where b.user_id = #{userId} and b.status = 'ACTIVE' and b.del_flag = '0'
+           and p.status = 'ACTIVE' and p.del_flag = '0'
+         for update
+    </select>
+
+    <select id="countEffectiveBinding" resultType="java.lang.Integer">
+        select count(1)
+          from profile_enterprise_binding
+         where user_id = #{userId} and status in ('ACTIVE','SUSPENDED') and del_flag = '0'
+    </select>
+
+    <insert id="insertTransferRecord">
+        insert into profile_enterprise_transfer_record (
+            enterprise_transfer_record_id, enterprise_profile_id, source_binding_id,
+            source_user_id, target_user_id, challenge_id, expected_binding_version,
+            status, failed_attempts, expires_time, version,
+            create_dept, create_time, create_by, update_time, update_by, del_flag
+        ) values (
+            #{recordId}, #{profileId}, #{sourceBindingId},
+            #{sourceUserId}, #{targetUserId}, #{challengeId}, #{bindingVersion},
+            'CHALLENGED', 0, #{expiresTime}, 0,
+            -1, #{occurredTime}, #{sourceUserId}, #{occurredTime}, #{sourceUserId}, '0'
+        )
+    </insert>
+
+    <update id="confirmTransferRecord">
+        update profile_enterprise_transfer_record
+           set status = 'CONFIRMED', confirmed_time = #{occurredTime},
+               version = version + 1, update_time = current_timestamp, update_by = #{operatorId}
+         where challenge_id = #{challengeId} and enterprise_profile_id = #{profileId}
+           and source_binding_id = #{sourceBindingId} and source_user_id = #{sourceUserId}
+           and target_user_id = #{targetUserId} and expected_binding_version = #{bindingVersion}
+           and status = 'CHALLENGED' and del_flag = '0'
+    </update>
+
+    <select id="lockEffectiveBindingId" resultType="java.lang.Long">
+        select enterprise_binding_id
+          from profile_enterprise_binding
+         where user_id = #{userId} and status in ('ACTIVE','SUSPENDED') and del_flag = '0'
+         for update
+    </select>
+
+    <update id="unbindSource">
+        update profile_enterprise_binding
+           set status = 'UNBOUND', binding_version = binding_version + 1,
+               unbound_time = #{occurredTime}, update_time = current_timestamp, update_by = #{operatorId}
+         where enterprise_binding_id = #{bindingId} and enterprise_profile_id = #{profileId}
+           and user_id = #{userId} and binding_version = #{bindingVersion}
+           and status = 'ACTIVE' and del_flag = '0'
+    </update>
+
+    <insert id="insertBinding">
+        insert into profile_enterprise_binding (
+            enterprise_binding_id, enterprise_profile_id, user_id, status, binding_version,
+            source_type, source_id, bound_time, version,
+            create_dept, create_time, create_by, update_time, update_by, del_flag
+        ) values (
+            #{bindingId}, #{profileId}, #{userId}, 'ACTIVE', 1,
+            #{sourceType}, #{sourceId}, #{occurredTime}, 0,
+            -1, current_timestamp, #{operatorId}, current_timestamp, #{operatorId}, '0'
+        )
+    </insert>
+
+    <insert id="insertEvent">
+        insert into profile_enterprise_binding_event (
+            enterprise_binding_event_id, enterprise_binding_id, enterprise_profile_id, user_id,
+            event_type, binding_version, source_type, source_id, reason, occurred_time,
+            version, create_dept, create_time, create_by, update_time, update_by, del_flag
+        ) values (
+            #{eventId}, #{bindingId}, #{profileId}, #{userId},
+            #{eventType}, #{bindingVersion}, #{sourceType}, #{sourceId}, #{reason}, #{occurredTime},
+            0, -1, current_timestamp, #{operatorId}, current_timestamp, #{operatorId}, '0'
+        )
+    </insert>
+
+</mapper>
