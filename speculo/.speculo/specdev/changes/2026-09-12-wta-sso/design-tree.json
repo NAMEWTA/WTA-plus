@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-09-12-wta-sso",
+  "status": "consensus",
+  "round": 2,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "P0 方案包确认（CTO-Q1）",
+      "question": "P0 是否就按下列整包推进？\nA. 是：Authorization Code + PKCE S256 + sso-web + 扩展 sys_client + 本地登录并存（禁 Implicit/password/SAML；无外置 IdP；OIDC→P1）。\nB. 否：缩小 P0（请指出去掉哪一块）。\nC. 否：扩大 P0（请指出并入哪块，如 refresh/OIDC/SLO）。",
+      "depends_on": [],
+      "recommendation": "A。与 CTO intake 一致；缩小会拆坏换票链路，扩大会拖垮 P0。",
+      "status": "answered",
+      "round": 1,
+      "answer": "A。P0 按 Authorization Code + PKCE S256 + sso-web + 扩展 sys_client + 本地登录并存；禁 Implicit/password/SAML；无外置 IdP；OIDC→P1。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-002",
+      "title": "SSO 域名与回调矩阵（CTO-Q2）",
+      "question": "各环境 SSO 对外 Origin 与 callback URL 如何定？\nA. 先给**环境级矩阵模板**（dev/test/prod 行：SSO Origin、sso-web callback、admin callback、home callback），本轮填可写占位值，上线前再替换真实域名。\nB. 本轮必须给出**真实生产域名**与全部精确 callback，否则 P0 Spec 不启动。\nC. 本轮只定本地/dev；test/prod 延后到发布票（风险：回调白名单与 Cookie 域晚定）。",
+      "depends_on": [],
+      "recommendation": "A。精确白名单需要矩阵形态；真实 DNS 可后填但不能没有行结构。",
+      "status": "answered",
+      "round": 1,
+      "answer": "A。采用环境级 Origin/callback 矩阵（每环境至少：SSO Web Origin、SSO/Auth Origin、admin callback、home callback）；callback 精确匹配、禁 wildcard；矩阵可先占位，上线前填真实值。",
+      "log_ref": "LOG-006"
+    },
+    {
+      "id": "D-003",
+      "title": "admin/home 默认 authMode（CTO-Q3）",
+      "question": "admin-web / home-web 默认 authMode？\nA. 两者默认 `both`（本地登录与 SSO 入口并存）。\nB. 两者默认 `sso`（入口直接走 SSO；本地仅运维/例外 Client）。\nC. 分端：admin=`both`，home=`sso`（或相反，请写明）。\nD. 仅提供能力，默认保持 `local`，SSO 灰度另开开关。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "默认 both + 可选直连入口（CTO 拍板）。",
+      "status": "answered",
+      "round": 1,
+      "answer": "默认 admin-web/home-web 的 authMode=`both`；并允许配置**部分入口直接 `sso`**（其余入口保持 both/local）。不是「全局 only-both」与「全局 only-sso」的互斥二选一。",
+      "log_ref": "LOG-005"
+    },
+    {
+      "id": "D-004",
+      "title": "生产部署形态（CTO-Q4）",
+      "question": "生产期 sso-web 如何部署？（请拆开选）\n**Q4a 进程：**\nA1. 同进程附带（随 wta-admin / 同一可部署单元提供 SSO 面）。\nA2. 独立进程（单独部署单元跑 SSO）。\n**Q4b Web Origin：**\nB1. 与业务同站/同父域路径挂载（共享 cookie 父域更易，但边界糊）。\nB2. `sso-web` **独立 Web Origin**（推荐与两层会话一致）。\n组合示例：A1+B2 = 同进程但独立 Origin（反代）；A2+B2 = 独立进程+独立域。",
+      "depends_on": [],
+      "recommendation": "先 A1+B2：同进程降低运维，独立 Origin 保住 Cookie/会话分层；独立进程放到 P2。",
+      "status": "answered",
+      "round": 1,
+      "answer": "A1+B2。Q4a：P0 `wta-sso` 与 `wta-admin` **同进程/同 JVM 组装**（独立后端进程→P2）；Q4b：`sso-web` **从一开始使用独立 Web Origin/DNS**（可通过反代挂到同进程后端）。",
+      "log_ref": "LOG-007"
+    },
+    {
+      "id": "D-010",
+      "title": "PKCE/Code 负向合同是否进 P0 AC（F-02）",
+      "question": "下列负向合同是否全部作为 P0 不可绕过 AC（缺任一则 Spec 不算 Ready）？\n缺 code_challenge 拒；非 S256 拒；错 verifier 拒；code 单次使用；TTL；client 绑定；redirect 与 authorize 一致；白名单精确匹配禁*；challenge 绑定；state CSRF 一次性；并发兑换至多一成功；敏感字段不进普通日志。\nA. 全部列入 P0 AC/Evidence。\nB. 仅列正向路径；负向延后。\nC. 子集列入（请勾选删减项）。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "A。认证系统无负向矩阵会假绿。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。PKCE/code 生命周期负向合同全部列入 P0 不可绕过 AC/Evidence（缺 challenge、非 S256、错 verifier、单次使用、TTL、client/redirect/challenge 绑定、白名单精确匹配、state CSRF、并发至多一成功、敏感字段不进普通日志）。",
+      "log_ref": "LOG-008"
+    },
+    {
+      "id": "D-011",
+      "title": "真 SSO 复用硬验收（F-03）",
+      "question": "P0 硬验收是否拆成两门？\nA. 是：P0-SSO-REUSE（第二次业务 App 授权不得再要密码）+ P0-CLIENT-ISOLATION（两 Token clientid 不同且互拒）。\nB. 否：只保留现有「两 Token 互拒」一条。\nC. 三条：再加「SSO Cookie/会话存在」独立门。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "A。否则本地各登一次也能混过隔离门。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。P0 硬验收拆两门：P0-SSO-REUSE（第二次业务 App 授权不得再要密码）+ P0-CLIENT-ISOLATION（admin/home Token clientid 不同且互拒）。",
+      "log_ref": "LOG-009"
+    },
+    {
+      "id": "D-012",
+      "title": "wta-sso 跨模块依赖边界（F-04）",
+      "question": "wta-sso 如何读用户/Client/登录准入？\nA. 仅经 `wta-api` / 明确 Port/SPI；禁止依赖 system Mapper/ISys*/admin 组装例外实现。\nB. 允许 wta-sso 直接调 system Service（短期例外）。\nC. 把登录策略迁回 common（扩大 common）。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "A。符合 layered 与 system 调用边界。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。wta-sso 仅经 wta-api / 明确 Port/SPI 取得用户、Client、登录准入；禁止依赖 system Mapper/ISys* / admin 组装例外实现。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-013",
+      "title": "SSO HttpOnly Cookie owner（F-05）",
+      "question": "SSO 域 HttpOnly Cookie 谁创建？\nA. 后端 `wta-sso`（或明确 SSO 登录 endpoint）`Set-Cookie` 建立 SSO 会话；authorize 读该会话。sso-web 不把业务票塞进 JS storage 冒充 SSO 会话。\nB. sso-web 仅用 JS 存 Sso-Token（放弃 HttpOnly 原则）。\nC. 延后：P0 先 JS storage，P1 再 HttpOnly。",
+      "depends_on": [
+        "D-004"
+      ],
+      "recommendation": "A。否则两层会话合同空洞；具体 Cookie 名/Domain 随 Q2/Q4 矩阵填写。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。SSO 域 HttpOnly Cookie 由后端（wta-sso 或明确 SSO 登录 endpoint）Set-Cookie 建立；authorize 读该会话；sso-web 不以 JS storage 冒充 SSO 会话。Cookie 名/Domain 随独立 Origin 矩阵进 Spec。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-014",
+      "title": "前端 platform vs adapters（F-06）",
+      "question": "`startSsoLogin` / `handleCallback` 落点？\nA. `packages/platform/auth` 只放无浏览器依赖的纯合同/状态；browser crypto/storage/HTTP/redirect 在 `packages/adapters/*`；各 app 组合 ClientId/callback。\nB. 允许 platform 直接写 window/location/storage。\nC. 全部逻辑只放在各 app，不抽共享。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "A。对齐现有前端分层。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。packages/platform/auth 仅无浏览器依赖的纯合同/状态；browser crypto/storage/HTTP/redirect 在 packages/adapters/*；各 app 组合 ClientId/callback。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-015",
+      "title": "public/confidential 与 token 鉴权（F-07）",
+      "question": "P0 Client 类型合同？\nA. admin-web/home-web/sso-web 在 OAuth 意义下均为 **public**（浏览器）：强制 PKCE S256；**禁止** browser 持有 sso_secret；confidential + `sso_secret_hash` 仅留给非浏览器客户端（若 P0 暂无则管理项可建但默认不用）。\nB. admin/home 视为 confidential，token 必须带 client secret（与 SPA 现实冲突，需 BFF）。\nC. 本轮不区分，实现时再定。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "A。密钥不得进前端包。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。admin-web/home-web/sso-web 在 OAuth 意义下均为 public（浏览器）：强制 PKCE S256；禁止 browser 持有 sso_secret；confidential+sso_secret_hash 仅非浏览器客户端（P0 可有管理项但第一方 SPA 不用）。",
+      "log_ref": "LOG-013"
+    },
+    {
+      "id": "D-016",
+      "title": "revoke 作用域 vs SLO（F-08）",
+      "question": "P0 `POST /oauth2/revoke` 撤销什么？\nA. 仅撤销**提交的那个** access/refresh（若有）令牌对应会话；**不等于**全 App SLO；跨 App 登出→P1。\nB. revoke 任一业务票 = 同时清 SSO 会话 + 全部业务票（实质提前做 SLO）。\nC. P0 去掉 revoke，全部放到 P1。",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "A。与 intake「SLO→P1」一致，避免 silently 做全站登出。",
+      "status": "answered",
+      "round": 2,
+      "answer": "A。P0 POST /oauth2/revoke 仅撤销提交的那个令牌对应会话；不等于全 App SLO；跨 App 登出→P1。",
+      "log_ref": "LOG-014"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "schema_version": 6,
   "artifact": "change-status",
   "change": "2026-09-10-notify-channel-config",
-  "change_status": "active",
+  "change_status": "archived",
   "current_work": null,
   "works_run": [
     "specdev/G-grill-with-docs",
@@ -10,7 +10,9 @@
     "specdev/T-tickets",
     "specdev/P-goal-plan",
     "specdev/I-implement",
-    "specdev/C-code-review"
+    "specdev/C-code-review",
+    "specdev/T-triage",
+    "specdev/A-archive-and-consolidate"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
@@ -40,12 +42,15 @@
     "history": []
   },
   "created_at": "2026-09-10T14:49:31+08:00",
-  "updated_at": "2026-09-12T18:10:00+08:00",
-  "completed_at": null,
-  "archived": false,
-  "archive_path": null,
+  "updated_at": "2026-09-13T07:24:00+08:00",
+  "completed_at": "2026-09-13T07:22:30+08:00",
+  "archived": true,
+  "archive_path": "<Path>{roots.state}/specdev/archive/2026-09/2026-09-10-notify-channel-config</Path>",
   "blockers": [],
-  "deviations": [],
+  "deviations": [
+    "waived: external-brain-cr003-delta-suspended — CTO/Lead SUSPEND 外脑门禁（CF BLOCKED；t148u 废 ChatGPT；本轮外脑跳过；禁止标通过）。证据 reviews/CR-003.md / external-brain/notes.md",
+    "waived: spec-section9-path-doc-low — Spec §9 / 验证表仍写 ruoyi-*/org.dromara；文档 low 非代码归档阻塞。证据 reviews/CR-003.md P-L1"
+  ],
   "worktrees": [
     {
       "ticket_id": "T-01",
