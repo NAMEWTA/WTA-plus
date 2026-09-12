@@ -14,13 +14,13 @@ contract_ids: [AC-005, AC-006]
 owner: unassigned
 expected_changes:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify/src/main/java/org/dromara/notify/service/runtime/DispatchNotificationService.java</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/notify/**</Path>"
+  - "<Path>frontend/packages/web-domains/notify/**</Path>"
 writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/api-contracts/**</Path>"
+  - "<Path>frontend/packages/domains/notify/**</Path>"
+  - "<Path>frontend/packages/web-domains/notify/**</Path>"
+  - "<Path>frontend/packages/api-contracts/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>release-artifacts/tests/**</Path>"

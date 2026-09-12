@@ -12,9 +12,9 @@ risk: high
 blocked_by: [T-09]
 contract_ids: [AC-027, AC-028, AC-029, AC-030]
 owner: cursor-agent
-expected_changes: ["<Path>plus-ui-namewta/src/api/monitor/notify/**</Path>", "<Path>plus-ui-namewta/src/views/monitor/notify/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/src/api/monitor/notify/**</Path>", "<Path>plus-ui-namewta/src/views/monitor/notify/**</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/src/views/monitor/operlog/**</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>"]
+expected_changes: ["<Path>frontend/src/api/monitor/notify/**</Path>", "<Path>frontend/src/views/monitor/notify/**</Path>"]
+writable_paths: ["<Path>frontend/src/api/monitor/notify/**</Path>", "<Path>frontend/src/views/monitor/notify/**</Path>"]
+read_only_paths: ["<Path>frontend/src/views/monitor/operlog/**</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

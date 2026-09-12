@@ -3,7 +3,7 @@
 - **更新时间：** 2026-08-28T23:19:58+08:00
 - **Change：** `2026-08-28-plus-ui-shared-navigation-permission-runtime`
 - **当前状态：** `completed`，未归档
-- **前端最终结果：** `plus-ui-namewta/main@07962c7cad9ca4db168b3c423b9e3675f312a874`
+- **前端最终结果：** `frontend/main@07962c7cad9ca4db168b3c423b9e3675f312a874`
 - **复审：** `CR-002=approved`，标准轴与规范轴均为 `pass`
 - **下一独立 Work：** `<Path>{roots.workflows}/specdev/A-archive-and-consolidate/A-archive-and-consolidate.md</Path>`
 
@@ -46,9 +46,9 @@
 
 ## Git 与 Worktree 现场
 
-- `plus-ui-namewta/main` 已包含 T-06、T-07、T-08 source commits，HEAD 为 `07962c7cad9ca4db168b3c423b9e3675f312a874`。
+- `frontend/main` 已包含 T-06、T-07、T-08 source commits，HEAD 为 `07962c7cad9ca4db168b3c423b9e3675f312a874`。
 - 用户已明确授权全面清理已完成 worktree；本 change 的 T-06/T-07/T-08 source/candidate worktree 与对应本地分支均已清理。
-- `plus-ui-namewta` 主检出仍有用户既有的 Skill 删除与 README 修改。本 change 未暂存、回退或提交这些路径；因此以该 dirty 主检出运行 `validate-specdev --repo` 会对所有 Ticket 报 repository dirty，这不是 change finding。
+- `frontend` 主检出仍有用户既有的 Skill 删除与 README 修改。本 change 未暂存、回退或提交这些路径；因此以该 dirty 主检出运行 `validate-specdev --repo` 会对所有 Ticket 报 repository dirty，这不是 change finding。
 - 密码策略 change 的 8 个 source/candidate worktree 与对应本地分支也已按同一授权清理。
 - 父聚合仓库有大量其他并行改动；本轮没有创建父仓库 commit，也没有改写其他 change。
 

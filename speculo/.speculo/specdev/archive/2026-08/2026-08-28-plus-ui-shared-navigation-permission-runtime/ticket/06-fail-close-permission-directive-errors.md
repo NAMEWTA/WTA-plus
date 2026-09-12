@@ -12,9 +12,9 @@ risk: high
 blocked_by: [T-05]
 contract_ids: [AC-002, AC-003, AC-004, AC-012, AC-014]
 owner: codex:leadership-epoch-1
-expected_changes: ["<Path>plus-ui-namewta/packages/web-kit/permission/src/index.ts</Path>", "<Path>plus-ui-namewta/packages/web-kit/permission/src/index.test.ts</Path>", "<Path>plus-ui-namewta/packages/web-kit/permission/README.md</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/web-kit/permission/src/index.ts</Path>", "<Path>plus-ui-namewta/packages/web-kit/permission/src/index.test.ts</Path>", "<Path>plus-ui-namewta/packages/web-kit/permission/README.md</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/platform/permission/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/directive/index.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/main.ts</Path>"]
+expected_changes: ["<Path>frontend/packages/web-kit/permission/src/index.ts</Path>", "<Path>frontend/packages/web-kit/permission/src/index.test.ts</Path>", "<Path>frontend/packages/web-kit/permission/README.md</Path>"]
+writable_paths: ["<Path>frontend/packages/web-kit/permission/src/index.ts</Path>", "<Path>frontend/packages/web-kit/permission/src/index.test.ts</Path>", "<Path>frontend/packages/web-kit/permission/README.md</Path>"]
+read_only_paths: ["<Path>frontend/packages/platform/permission/**</Path>", "<Path>frontend/apps/admin-web/src/directive/index.ts</Path>", "<Path>frontend/apps/admin-web/src/main.ts</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

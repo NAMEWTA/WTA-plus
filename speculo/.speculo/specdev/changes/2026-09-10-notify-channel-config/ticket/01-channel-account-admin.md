@@ -14,7 +14,7 @@ contract_ids: [AC-001, AC-002, AC-003, AC-014, AC-017]
 owner: unassigned
 expected_changes:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify/src/main/java/org/dromara/notify/controller/admin/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/notify/src/index.ts</Path>"
+  - "<Path>frontend/packages/web-domains/notify/src/index.ts</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/resources/application-dev.yml</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql</Path>"
 writable_paths:
@@ -24,14 +24,14 @@ writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/resources/application-dev.yml</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/resources/application-prod.yml</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/api-contracts/**</Path>"
+  - "<Path>frontend/packages/domains/notify/**</Path>"
+  - "<Path>frontend/packages/web-domains/notify/**</Path>"
+  - "<Path>frontend/packages/api-contracts/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>release-artifacts/tests/**</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/packages/web-domains/system/src/oss-config/OssConfigPage.vue</Path>"
+  - "<Path>frontend/packages/web-domains/system/src/oss-config/OssConfigPage.vue</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/controller/system/SysOssConfigController.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/**</Path>"
 shared_paths: []
@@ -130,7 +130,7 @@ shared_path_owners: []
 | 失败：YAML 已删仍发送 | Dispatch 测试 | MAIL/SMS 失败关闭 | 同上 |
 | 回归：IN_APP 公告 | 既有 notify 测试 | 站内信不受影响 | 同上 |
 
-- **Workspace checks：** `./mvnw -pl ruoyi-modules/ruoyi-notify -am test`；`node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify --mode layered`；`pnpm --dir plus-ui-namewta typecheck`（若改前端）。
+- **Workspace checks：** `./mvnw -pl ruoyi-modules/ruoyi-notify -am test`；`node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify --mode layered`；`pnpm --dir frontend typecheck`（若改前端）。
 - **E2E disposition：** required：管理员打开通知配置，邮件/短信 TAB 可见账号列表，无权限失败关闭。
 - **E2E owner/environment：** Lead / current-workspace。
 - **Integration evidence：** implementation commit + direct-parent + Lead Evidence。

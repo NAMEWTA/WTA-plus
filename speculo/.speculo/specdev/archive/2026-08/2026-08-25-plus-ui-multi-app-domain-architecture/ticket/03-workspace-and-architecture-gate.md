@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-02]
 contract_ids: [AC-001, AC-007, AC-008, AC-025, AC-026, AC-030]
 owner: native:/root/t01
-expected_changes: ["<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-workspace.yaml</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/tsconfig.json</Path>", "<Path>plus-ui-namewta/vite.config.ts</Path>", "<Path>plus-ui-namewta/.oxlintrc.json</Path>", "<Path>plus-ui-namewta/tooling/architecture/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-workspace.yaml</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/tsconfig.json</Path>", "<Path>plus-ui-namewta/vite.config.ts</Path>", "<Path>plus-ui-namewta/.oxlintrc.json</Path>", "<Path>plus-ui-namewta/tooling/architecture/**</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/src/**</Path>", "<Path>plus-ui-namewta/e2e/**</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-workspace.yaml</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/tsconfig.json</Path>", "<Path>plus-ui-namewta/vite.config.ts</Path>", "<Path>plus-ui-namewta/.oxlintrc.json</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/package.json</Path> => T-03", "<Path>plus-ui-namewta/pnpm-workspace.yaml</Path> => T-03", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path> => T-03", "<Path>plus-ui-namewta/tsconfig.json</Path> => T-03", "<Path>plus-ui-namewta/vite.config.ts</Path> => T-03", "<Path>plus-ui-namewta/.oxlintrc.json</Path> => T-03"]
+expected_changes: ["<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-workspace.yaml</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/tsconfig.json</Path>", "<Path>frontend/vite.config.ts</Path>", "<Path>frontend/.oxlintrc.json</Path>", "<Path>frontend/tooling/architecture/**</Path>"]
+writable_paths: ["<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-workspace.yaml</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/tsconfig.json</Path>", "<Path>frontend/vite.config.ts</Path>", "<Path>frontend/.oxlintrc.json</Path>", "<Path>frontend/tooling/architecture/**</Path>"]
+read_only_paths: ["<Path>frontend/src/**</Path>", "<Path>frontend/e2e/**</Path>"]
+shared_paths: ["<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-workspace.yaml</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/tsconfig.json</Path>", "<Path>frontend/vite.config.ts</Path>", "<Path>frontend/.oxlintrc.json</Path>"]
+shared_path_owners: ["<Path>frontend/package.json</Path> => T-03", "<Path>frontend/pnpm-workspace.yaml</Path> => T-03", "<Path>frontend/pnpm-lock.yaml</Path> => T-03", "<Path>frontend/tsconfig.json</Path> => T-03", "<Path>frontend/vite.config.ts</Path> => T-03", "<Path>frontend/.oxlintrc.json</Path> => T-03"]
 ---
 
 # Ticket T-03: 激活 pnpm workspace 与架构 Ratchet
@@ -79,7 +79,7 @@ shared_path_owners: ["<Path>plus-ui-namewta/package.json</Path> => T-03", "<Path
 
 ## 7. 路径访问契约
 
-- **预计修改点/可写范围：** frontmatter 所列根配置与 `<Path>plus-ui-namewta/tooling/architecture/**</Path>`。
+- **预计修改点/可写范围：** frontmatter 所列根配置与 `<Path>frontend/tooling/architecture/**</Path>`。
 - **只读上下文：** 当前 src 与 E2E，只用于证明兼容。
 - **共享路径：** 六个根配置均由 `T-03` 唯一拥有；后续越界必须在 Goal Plan 记录 deviation。
 - **保留或不动：** 业务源码、后端与占位 README 语义。

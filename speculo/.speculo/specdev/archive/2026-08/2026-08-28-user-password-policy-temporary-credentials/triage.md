@@ -19,7 +19,7 @@ updated_at: 2026-08-29T09:17:03+0800
 - **影响：** 跨 JVM 缓存、Client 授权快照、密码写入与认证、Redis 一次性凭据、前端公开策略和生产迁移合同。
 - **紧急度：** completed / archive-ready
 - **当前证据：** 8 张 Ticket 均为 done，8 份 Lead Evidence 完整；required source/candidate 已集成并清理，当前前后端 main 仍包含本 change 的结果提交；complete validator 为 0 errors、0 warnings。
-- **相关代码/工件：** `<Path>ruoyi-vue-plus-namewta/**</Path>`、`<Path>plus-ui-namewta/**</Path>`、`<Path>docs/upstream/customization-map.md</Path>` 与本 change 工件。
+- **相关代码/工件：** `<Path>ruoyi-vue-plus-namewta/**</Path>`、`<Path>frontend/**</Path>`、`<Path>docs/upstream/customization-map.md</Path>` 与本 change 工件。
 
 ## 未知项
 

@@ -572,9 +572,9 @@ init-nacos-mysql-container.sh 幂等补建并校验
 
 相关前端实现位于：
 
-- `<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`：把后端组件键映射为 Vue 页面。
-- `<Path>plus-ui-namewta/apps/admin-web/src/views/monitor/external/index.vue</Path>`：统一外部运维页面容器。
-- `<Path>plus-ui-namewta/packages/domains/system/src/monitor/index.ts</Path>`：权限映射与 URL 安全策略。
+- `<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`：把后端组件键映射为 Vue 页面。
+- `<Path>frontend/apps/admin-web/src/views/monitor/external/index.vue</Path>`：统一外部运维页面容器。
+- `<Path>frontend/packages/domains/system/src/monitor/index.ts</Path>`：权限映射与 URL 安全策略。
 
 开发环境可把 `VITE_APP_NACOS_ADMIN` 配为 `http://localhost:8848/nacos/`，标准生产环境配为同源相对路径 `/nacos/`。
 
@@ -727,9 +727,9 @@ Nacos 配置正文
 | 通知幂等热更新参与者 | `<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/src/main/java/org/dromara/common/notify/idempotency/NotifyIdempotencyProperties.java</Path>` |
 | OSS TTL 热更新参与者 | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/config/OssLifecycleProperties.java</Path>` |
 | 配置中心菜单 DML | `<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>` |
-| 前端动态组件注册 | `<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` |
-| iframe 页面 | `<Path>plus-ui-namewta/apps/admin-web/src/views/monitor/external/index.vue</Path>` |
-| 前端权限与 URL 校验 | `<Path>plus-ui-namewta/packages/domains/system/src/monitor/index.ts</Path>` |
+| 前端动态组件注册 | `<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` |
+| iframe 页面 | `<Path>frontend/apps/admin-web/src/views/monitor/external/index.vue</Path>` |
+| 前端权限与 URL 校验 | `<Path>frontend/packages/domains/system/src/monitor/index.ts</Path>` |
 | Nacos Docker 服务 | `<Path>release-artifacts/docker/docker-compose-infrastructure.yml</Path>` |
 | 显式启用覆盖 | `<Path>release-artifacts/docker/overrides/nacos-enabled.yml</Path>` |
 | MySQL 初始化与 E2E | `<Path>release-artifacts/scripts/</Path>` |

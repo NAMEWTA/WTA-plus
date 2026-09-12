@@ -50,7 +50,7 @@
 - **轮次与依赖：** round 1 / D-001
 - **状态：** confirmed
 - **问题：** 当前只有一个激活 App 时，Vue 权限指令是否具有足够真实证据进入 Web Kit。
-- **事实与来源：** system、workflow、demo、gen 多个 Web Domain 页面已经直接使用全局 `v-hasPermi`；用户确认这是真实宿主合同而非假想抽象；`CODE:<Path>plus-ui-namewta/packages/web-domains/**</Path>`；`USER-DECISION:Q2`。
+- **事实与来源：** system、workflow、demo、gen 多个 Web Domain 页面已经直接使用全局 `v-hasPermi`；用户确认这是真实宿主合同而非假想抽象；`CODE:<Path>frontend/packages/web-domains/**</Path>`；`USER-DECISION:Q2`。
 - **选项：** 保留 Admin 私有实现；将指令放入跨终端 Platform；建立注入权限求值器的 Web Kit 包。
 - **推荐：** 建立独立 Web Kit 权限指令包。
 - **结论：** Web Kit 提供无 Admin Store 依赖的 Vue 权限指令工厂或安装入口，App 注入自己的 `AccessEvaluator`。
@@ -65,7 +65,7 @@
 - **轮次与依赖：** round 1 / D-001
 - **状态：** confirmed
 - **问题：** 当前 permission Store 的名称和所有权是否与真实职责一致。
-- **事实与来源：** Store 保存 routes、sidebarRouters、topbarRouters 与 defaultRoutes，并连接 Admin Router、Layout 和导航组件；用户采纳改名并留在 App 的建议；`CODE:<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>`；`USER-DECISION:Q3`。
+- **事实与来源：** Store 保存 routes、sidebarRouters、topbarRouters 与 defaultRoutes，并连接 Admin Router、Layout 和导航组件；用户采纳改名并留在 App 的建议；`CODE:<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>`；`USER-DECISION:Q3`。
 - **选项：** 整体搬入共享包；保留当前名称；改名为 navigation Store 并保持 App ownership。
 - **推荐：** 改名且继续归 Admin。
 - **结论：** Admin navigation Store 只拥有导航投影和 Router 注册；权限判断由 `platform-permission` 负责。

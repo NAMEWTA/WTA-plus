@@ -12,8 +12,8 @@ risk: high
 blocked_by: [T-15]
 contract_ids: [AC-009, AC-010, AC-013, AC-028]
 owner: codex
-expected_changes: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/**</Path>", "<Path>plus-ui-namewta/src/views/system/notice/**</Path>"]
-writable_paths: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/**</Path>", "<Path>plus-ui-namewta/src/**</Path>"]
+expected_changes: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/**</Path>", "<Path>frontend/src/views/system/notice/**</Path>"]
+writable_paths: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/**</Path>", "<Path>frontend/src/**</Path>"]
 read_only_paths: []
 shared_paths: []
 shared_path_owners: []

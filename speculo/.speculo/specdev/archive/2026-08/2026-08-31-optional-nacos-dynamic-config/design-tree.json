@@ -52,12 +52,12 @@
     {
       "id": "D-005",
       "title": "配置管理交付面",
-      "question": "本 change 只交付后端运行时与 Docker Nacos，并由运维使用 Nacos 官方控制台编辑配置；还是还要复制参考项目的 /system/nacos 读写 API，甚至交付 plus-ui-namewta 管理页面？",
+      "question": "本 change 只交付后端运行时与 Docker Nacos，并由运维使用 Nacos 官方控制台编辑配置；还是还要复制参考项目的 /system/nacos 读写 API，甚至交付 frontend 管理页面？",
       "depends_on": ["D-001", "D-003"],
       "recommendation": "首期只交付 ruoyi-common-nacos 运行时、应用装配、配置样例、测试和 Docker Nacos；配置编辑使用 Nacos 官方控制台。这样不会重复造一个权限、审计和版本能力更弱的配置编辑器。",
       "status": "answered",
       "round": 1,
-      "answer": "完整复刻参考项目的 Nacos 配置管理能力，并可基于 API 做必要增强；交付后端 API、plus-ui-namewta 页面、系统管理下的 Nacos 配置管理动态菜单和功能权限。",
+      "answer": "完整复刻参考项目的 Nacos 配置管理能力，并可基于 API 做必要增强；交付后端 API、frontend 页面、系统管理下的 Nacos 配置管理动态菜单和功能权限。",
       "log_ref": "LOG-006"
     },
     {

@@ -8,7 +8,7 @@
 
 ## AGENTS.md 索引
 
-- 根 `plus-ui-namewta/AGENTS.md` 描述工作区；每个含 `package.json` 的 App、domain、web-domain、platform、adapter、web-kit、合同或 tooling 包各有一份同目录 `AGENTS.md`。
+- 根 `frontend/AGENTS.md` 描述工作区；每个含 `package.json` 的 App、domain、web-domain、platform、adapter、web-kit、合同或 tooling 包各有一份同目录 `AGENTS.md`。
 - 索引只写当前包的用途、组成、公开入口、依赖方向、验证命令和 `Read Next` 链接，不复制架构规范、README 全文或源码实现。
 - 读取代码时使用最近的 `AGENTS.md`；子包可以补充本地事实，但不能放宽父级硬边界。README、`package.json#exports`、入口和测试变化必须同步检查索引。
 - `node_modules`、`dist`、`coverage`、`target`、生成快照和 README-only 占位目录不创建索引；尚未激活的未来 App/适配器继续使用已有 README。

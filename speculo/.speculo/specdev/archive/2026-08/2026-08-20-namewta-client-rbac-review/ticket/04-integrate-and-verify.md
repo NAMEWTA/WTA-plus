@@ -12,8 +12,8 @@ risk: high
 blocked_by: [T-02, T-03]
 contract_ids: [AC-001, AC-002, AC-003, AC-004, AC-005, AC-006]
 owner: codex-root
-expected_changes: ["<Path>plan/update.md</Path>", "<Path>docs/upstream/customization-map.md</Path>", "<Path>ruoyi-vue-plus-namewta</Path>", "<Path>plus-ui-namewta</Path>"]
-writable_paths: ["<Path>plan/update.md</Path>", "<Path>docs/upstream/customization-map.md</Path>", "<Path>ruoyi-vue-plus-namewta</Path>", "<Path>plus-ui-namewta</Path>"]
+expected_changes: ["<Path>plan/update.md</Path>", "<Path>docs/upstream/customization-map.md</Path>", "<Path>ruoyi-vue-plus-namewta</Path>", "<Path>frontend</Path>"]
+writable_paths: ["<Path>plan/update.md</Path>", "<Path>docs/upstream/customization-map.md</Path>", "<Path>ruoyi-vue-plus-namewta</Path>", "<Path>frontend</Path>"]
 read_only_paths: ["<Path>ruoyi-vue-plus-namewta/script/sql/**</Path>"]
 shared_paths: ["<Path>plan/update.md</Path>", "<Path>docs/upstream/customization-map.md</Path>"]
 shared_path_owners: ["<Path>plan/update.md</Path> => codex-root", "<Path>docs/upstream/customization-map.md</Path> => codex-root"]

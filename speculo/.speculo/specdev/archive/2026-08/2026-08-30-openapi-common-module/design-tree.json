@@ -13,7 +13,7 @@
       "recommendation": "以完整可用平台为目标，但按可验证垂直切片交付；common 只承载通用运行时与 SPI，system 承载密钥和权限业务，前端承载管理体验。",
       "status": "answered",
       "round": 9,
-      "answer": "首期交付完整可用的前后端开放平台。后端包括 ruoyi-common-openapi、ruoyi-system 持久化与管理/目录 API、ruoyi-admin 装配；前端在 plus-ui-namewta 交付“系统管理 > 应用开放管理”和个人信息“开放应用”Tab。common、system 与前端的职责仍按既有模块边界拆分。该结论修正 round 1 中‘首期不交付前端’的旧范围。",
+      "answer": "首期交付完整可用的前后端开放平台。后端包括 ruoyi-common-openapi、ruoyi-system 持久化与管理/目录 API、ruoyi-admin 装配；前端在 frontend 交付“系统管理 > 应用开放管理”和个人信息“开放应用”Tab。common、system 与前端的职责仍按既有模块边界拆分。该结论修正 round 1 中‘首期不交付前端’的旧范围。",
       "log_ref": "LOG-030"
     },
     {

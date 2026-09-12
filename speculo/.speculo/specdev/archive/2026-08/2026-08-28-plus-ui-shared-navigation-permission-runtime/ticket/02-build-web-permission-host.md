@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-01]
 contract_ids: [AC-001, AC-002, AC-003, AC-004, AC-012, AC-014]
 owner: codex:leadership-epoch-1
-expected_changes: ["<Path>plus-ui-namewta/packages/web-kit/permission/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/web-kit/permission/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/apps/admin-web/src/directive/permission/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Path>", "<Path>plus-ui-namewta/packages/platform/permission/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/**</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/apps/admin-web/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/apps/admin-web/package.json</Path> => T-02", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path> => T-02"]
+expected_changes: ["<Path>frontend/packages/web-kit/permission/**</Path>", "<Path>frontend/apps/admin-web/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+writable_paths: ["<Path>frontend/packages/web-kit/permission/**</Path>", "<Path>frontend/apps/admin-web/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+read_only_paths: ["<Path>frontend/apps/admin-web/src/directive/permission/**</Path>", "<Path>frontend/apps/admin-web/src/application/access.ts</Path>", "<Path>frontend/packages/platform/permission/**</Path>", "<Path>frontend/packages/web-domains/**</Path>"]
+shared_paths: ["<Path>frontend/apps/admin-web/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+shared_path_owners: ["<Path>frontend/apps/admin-web/package.json</Path> => T-02", "<Path>frontend/pnpm-lock.yaml</Path> => T-02"]
 ---
 
 # Ticket T-02: 建立 Vue Web 权限宿主合同
@@ -31,14 +31,14 @@ shared_path_owners: ["<Path>plus-ui-namewta/apps/admin-web/package.json</Path> =
 - **目标：** 建立可由任意 Vue Web App 安装、但不读取 Admin Store 的权限指令宿主。
 - **可观察产出：** 一个最小测试宿主仅注入 `AccessEvaluator` provider，即可获得行为与当前 `v-hasPermi`、`v-hasRoles` 一致的全局指令。
 - **来源：** `US-001`、`US-002`、`US-003`、`US-005`、`AC-001` 至 `AC-004`、`AC-012`、`ADR-001`。
-- **当前事实：** 指令位于 `<Path>plus-ui-namewta/apps/admin-web/src/directive/permission/</Path>` 并直接导入 Admin 权限装配，而多个 `<Path>plus-ui-namewta/packages/web-domains/</Path>` 页面依赖同名全局指令。
+- **当前事实：** 指令位于 `<Path>frontend/apps/admin-web/src/directive/permission/</Path>` 并直接导入 Admin 权限装配，而多个 `<Path>frontend/packages/web-domains/</Path>` 页面依赖同名全局指令。
 - **Planning Depth 原因：** 该 Ticket 新增权限公共接口并处理非法输入、超级管理员和通配符等安全语义。
 
 ## 2. 决策状态
 
 ### 已锁定决策
 
-- 新包目录为 `<Path>plus-ui-namewta/packages/web-kit/permission/</Path>`，包名使用 `@namewta/web-kit-permission`。
+- 新包目录为 `<Path>frontend/packages/web-kit/permission/</Path>`，包名使用 `@namewta/web-kit-permission`。
 - 根公开入口提供显式安装函数；输入是每次调用可取得当前 `AccessEvaluator` 的 provider，避免捕获过期身份快照。
 - 安装函数只注册 `hasPermi` 与 `hasRoles`，不迁移 copyText 或其他 Admin directive。
 - 指令仅调用 Platform Permission 的 `hasAnyPermission` / `hasAnyRole`，不得复制角色或通配权限算法。

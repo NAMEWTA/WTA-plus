@@ -13,23 +13,23 @@ blocked_by: []
 contract_ids: [AC-015, AC-016, AC-022, AC-024]
 owner: unassigned
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/domains/system/src/monitor/**</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/views/monitor/external/index.vue</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"
+  - "<Path>frontend/packages/domains/system/src/monitor/**</Path>"
+  - "<Path>frontend/apps/admin-web/src/views/monitor/external/index.vue</Path>"
+  - "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"
   - "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/packages/domains/system/src/monitor/**</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/views/monitor/external/index.vue</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/types/env.d.ts</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/.env.development</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/.env.production</Path>"
+  - "<Path>frontend/packages/domains/system/src/monitor/**</Path>"
+  - "<Path>frontend/apps/admin-web/src/views/monitor/external/index.vue</Path>"
+  - "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"
+  - "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>"
+  - "<Path>frontend/apps/admin-web/src/types/env.d.ts</Path>"
+  - "<Path>frontend/apps/admin-web/.env.development</Path>"
+  - "<Path>frontend/apps/admin-web/.env.production</Path>"
   - "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/nacos/menu/**</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/apps/admin-web/src/views/monitor/external/**</Path>"
+  - "<Path>frontend/apps/admin-web/src/views/monitor/external/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>"
   - "<Path>release-artifacts/docker/frontend/nginx/**</Path>"
 shared_paths: []

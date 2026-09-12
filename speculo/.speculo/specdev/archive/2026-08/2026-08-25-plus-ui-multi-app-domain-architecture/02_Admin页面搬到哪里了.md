@@ -51,7 +51,7 @@ admin-web/src/views 变少
 
 ### 第一步：哪些页面仍属于 Admin 自己
 
-当前 `<Path>plus-ui-namewta/apps/admin-web/src/views</Path>` 保留的是应用专属页面：
+当前 `<Path>frontend/apps/admin-web/src/views</Path>` 保留的是应用专属页面：
 
 ```text
 admin-web/src/views
@@ -69,7 +69,7 @@ admin-web/src/views
 
 ### 第二步：原来的领域页面搬到了哪里
 
-可被多个 Web App 使用的 Vue 页面，位于 `<Path>plus-ui-namewta/packages/web-domains</Path>`：
+可被多个 Web App 使用的 Vue 页面，位于 `<Path>frontend/packages/web-domains</Path>`：
 
 | 原来的页面类别 | 现在的位置 | 例子 |
 | --- | --- | --- |
@@ -144,7 +144,7 @@ component = "system/user/index"
 
 每个 Web 领域都有一个清单（专业名：`WebDomainManifest`）。
 
-系统管理领域在 `<Path>plus-ui-namewta/packages/web-domains/system-admin/src/index.ts</Path>` 中登记了类似关系：
+系统管理领域在 `<Path>frontend/packages/web-domains/system-admin/src/index.ts</Path>` 中登记了类似关系：
 
 ```text
 system/client/index   -> ClientPage.vue
@@ -171,7 +171,7 @@ system/oss/index      -> OssPage.vue
 
 ### 第五步：Admin 明确选择需要哪些领域
 
-`<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` 是 Admin 的 Web 领域组合处。
+`<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` 是 Admin 的 Web 领域组合处。
 
 当前 Admin 明确选择了：
 

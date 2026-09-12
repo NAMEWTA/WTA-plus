@@ -233,7 +233,7 @@ async function readAndValidateActiveRevision(store, pointer) {
 
 export async function fetchSnapshot({
   backendCommit,
-  backendRepository = 'wta-vue-plus-namewta',
+  backendRepository = 'backend',
   pointer = defaultPaths.pointer,
   runtimeEndpoint = '/v3/api-docs',
   source,

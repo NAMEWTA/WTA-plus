@@ -12,9 +12,9 @@ risk: low
 blocked_by: [T-01]
 contract_ids: [AC-004, AC-005, AC-009]
 owner: native:/root/t01
-expected_changes: ["<Path>plus-ui-namewta/apps/**/README.md</Path>", "<Path>plus-ui-namewta/packages/**/README.md</Path>", "<Path>plus-ui-namewta/tooling/**/README.md</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/apps/**/README.md</Path>", "<Path>plus-ui-namewta/packages/**/README.md</Path>", "<Path>plus-ui-namewta/tooling/**/README.md</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
+expected_changes: ["<Path>frontend/apps/**/README.md</Path>", "<Path>frontend/packages/**/README.md</Path>", "<Path>frontend/tooling/**/README.md</Path>"]
+writable_paths: ["<Path>frontend/apps/**/README.md</Path>", "<Path>frontend/packages/**/README.md</Path>", "<Path>frontend/tooling/**/README.md</Path>"]
+read_only_paths: ["<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

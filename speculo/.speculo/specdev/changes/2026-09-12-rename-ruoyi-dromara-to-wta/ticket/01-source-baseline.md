@@ -26,7 +26,7 @@ writable_paths:
   - "<Path>{roots.state}/specdev/changes/2026-09-12-rename-ruoyi-dromara-to-wta/LOG.md</Path>"
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/</Path>"
-  - "<Path>plus-ui-namewta/</Path>"
+  - "<Path>frontend/</Path>"
   - "<Path>docs/</Path>"
 shared_paths: []
 shared_path_owners: []

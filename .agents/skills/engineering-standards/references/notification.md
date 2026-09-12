@@ -46,8 +46,8 @@ notificationService.submit(new NotificationCommand(
 
 ```bash
 ./mvnw -pl wta-modules/wta-notify -am test
-node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs wta-vue-plus-namewta/wta-modules/wta-notify --mode layered
-pnpm --dir plus-ui-namewta typecheck
+node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-notify --mode layered
+pnpm --dir frontend typecheck
 node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs
 ```
 

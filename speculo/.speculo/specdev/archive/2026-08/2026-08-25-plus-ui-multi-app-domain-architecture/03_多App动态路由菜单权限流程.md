@@ -136,14 +136,14 @@ VITE_CLIENT_WEB_CLIENT_ID=B
 
 Admin 的装配入口位于：
 
-- `<Path>plus-ui-namewta/apps/admin-web/src/application/http.ts</Path>`
-- `<Path>plus-ui-namewta/apps/admin-web/src/application/session.ts</Path>`
-- `<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path>`
+- `<Path>frontend/apps/admin-web/src/application/http.ts</Path>`
+- `<Path>frontend/apps/admin-web/src/application/session.ts</Path>`
+- `<Path>frontend/apps/admin-web/src/application/services.ts</Path>`
 
 Client Web 的独立装配位于：
 
-- `<Path>plus-ui-namewta/apps/client-web/src/config.ts</Path>`
-- `<Path>plus-ui-namewta/apps/client-web/src/application.ts</Path>`
+- `<Path>frontend/apps/client-web/src/config.ts</Path>`
+- `<Path>frontend/apps/client-web/src/application.ts</Path>`
 
 Client Web 的会话键按 App 与 Client 命名：
 
@@ -181,11 +181,11 @@ POST /auth/login
 
 如果 Client 缺失、被禁用或关键字段格式错误，流程会失败关闭，不会猜一个默认 Client，也不会退回其他 App 的会话。
 
-共享实现位于 `<Path>plus-ui-namewta/packages/domains/identity-access/src/index.ts</Path>`。它不依赖 Vue Router、Pinia、Element Plus 或某个 App 的全局变量，因此能被不同终端复用。
+共享实现位于 `<Path>frontend/packages/domains/identity-access/src/index.ts</Path>`。它不依赖 Vue Router、Pinia、Element Plus 或某个 App 的全局变量，因此能被不同终端复用。
 
 ### 第三步：Admin 路由守卫识别是否需要恢复会话
 
-Admin 的入口在 `<Path>plus-ui-namewta/apps/admin-web/src/permission.ts</Path>`。
+Admin 的入口在 `<Path>frontend/apps/admin-web/src/permission.ts</Path>`。
 
 ```text
 [发生页面导航]
@@ -248,7 +248,7 @@ GET /system/menu/getRouters
 
 ### 第五步：`getInfo` 返回的是权限快照
 
-Admin 的用户 Store 位于 `<Path>plus-ui-namewta/apps/admin-web/src/store/modules/user.ts</Path>`。它把响应保存为当前 Admin 会话的内存状态：
+Admin 的用户 Store 位于 `<Path>frontend/apps/admin-web/src/store/modules/user.ts</Path>`。它把响应保存为当前 Admin 会话的内存状态：
 
 ```text
 getInfo 响应
@@ -287,7 +287,7 @@ getInfo 响应
 
 ### 第七步：Admin 为不同导航区域准备路由副本
 
-Admin 的权限 Store 位于 `<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>`。它对后端菜单做结构化克隆，然后生成几种用途不同的状态：
+Admin 的权限 Store 位于 `<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>`。它对后端菜单做结构化克隆，然后生成几种用途不同的状态：
 
 ```text
 [同一棵后端菜单树]
@@ -320,7 +320,7 @@ assembleServerRoutes(...)
 packages/web-domains/system-admin 中的 UserPage.vue
 ```
 
-共享递归算法位于 `<Path>plus-ui-namewta/packages/platform/app-runtime/src/routeAssembler.ts</Path>`，它负责：
+共享递归算法位于 `<Path>frontend/packages/platform/app-runtime/src/routeAssembler.ts</Path>`，它负责：
 
 1. 递归保留菜单树结构。
 2. 把 `Layout`、`ParentView`、`InnerLink` 换成当前 App 注入的特殊组件。
@@ -331,7 +331,7 @@ packages/web-domains/system-admin 中的 UserPage.vue
 
 ### 第九步：当前 App 只能解析自己明确选择的页面
 
-Admin 在 `<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` 中明确组合：
+Admin 在 `<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` 中明确组合：
 
 ```text
 identity-access
@@ -359,7 +359,7 @@ operations
 
 因此，一个 App 安装了 Monorepo 包，不代表它自动暴露所有页面；只有写入该 App 组合清单的领域才会进入运行时。
 
-Admin 还保留一个 App 本地页面兜底查找，只能搜索 `<Path>plus-ui-namewta/apps/admin-web/src/views</Path>`。它用于 Admin 专属页面，不会扫描另一个 App 的目录，也不会绕过 Manifest 去加载未选择领域。
+Admin 还保留一个 App 本地页面兜底查找，只能搜索 `<Path>frontend/apps/admin-web/src/views</Path>`。它用于 Admin 专属页面，不会扫描另一个 App 的目录，也不会绕过 Manifest 去加载未选择领域。
 
 ### 第十步：动态注册后必须重新进入原目标
 
@@ -406,7 +406,7 @@ Admin 布局读取 `sidebarRouters`、`topbarRouters` 等状态来画侧栏和�
 
 ### 第十二步：按钮权限使用同一份权限快照
 
-共享权限求值器位于 `<Path>plus-ui-namewta/packages/platform/permission/src/index.ts</Path>`。Admin 用 `<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Path>` 把自己的 Store 快照接进去。
+共享权限求值器位于 `<Path>frontend/packages/platform/permission/src/index.ts</Path>`。Admin 用 `<Path>frontend/apps/admin-web/src/application/access.ts</Path>` 把自己的 Store 快照接进去。
 
 页面中的按钮可以这样声明：
 
@@ -457,7 +457,7 @@ Admin 还保留 `dynamicRoutes` 与 `filterDynamicRoutes`，用于过滤前端�
 [有权的记录才 addRoute]
 ```
 
-当前 `<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>` 中的 `dynamicRoutes` 是空数组，所以 Admin 的主要业务菜单来源仍是后端 `getRouters`。保留这条分支是为了显式本地路由能力，不应误认为系统页面仍硬编码在 App Router 中。
+当前 `<Path>frontend/apps/admin-web/src/router/index.ts</Path>` 中的 `dynamicRoutes` 是空数组，所以 Admin 的主要业务菜单来源仍是后端 `getRouters`。保留这条分支是为了显式本地路由能力，不应误认为系统页面仍硬编码在 App Router 中。
 
 ### 第十四步：401 与退出会清理当前 App 的会话
 
@@ -501,7 +501,7 @@ HTTP 适配器遇到 401 后，会调用当前 App 注入的失效处理：
 getInfo -> getRouters -> assembleServerRoutes -> addRoute
 ```
 
-它的路由定义位于 `<Path>plus-ui-namewta/apps/client-web/src/router.ts</Path>`，当前只有显式静态路由。`permissionProof.ts` 中的 `hasPermi` 也是用于证明 App 级指令隔离的测试接线，会移除被标记元素，不是正式的 Client 权限快照求值器。
+它的路由定义位于 `<Path>frontend/apps/client-web/src/router.ts</Path>`，当前只有显式静态路由。`permissionProof.ts` 中的 `hasPermi` 也是用于证明 App 级指令隔离的测试接线，会移除被标记元素，不是正式的 Client 权限快照求值器。
 
 所以当前真实状态应表达为：
 

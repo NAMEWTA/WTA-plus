@@ -30,8 +30,8 @@ writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/openapi/credential/SysOpenApiCredentialControllerContractTest.java</Path>"
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/resources/application.yml</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/system/src/**</Path>"
+  - "<Path>frontend/apps/admin-web/src/**</Path>"
+  - "<Path>frontend/packages/web-domains/system/src/**</Path>"
 shared_paths:
   - "<Path>release-artifacts/docker/docker-compose-backend.yml</Path>"
   - "<Path>release-artifacts/.env.example</Path>"

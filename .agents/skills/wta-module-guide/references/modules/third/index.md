@@ -27,7 +27,7 @@ Provider disabled state takes precedence over endpoint state. Redis is a second-
 
 ## Verification
 
-From `wta-vue-plus-namewta` run:
+From `backend` run:
 
 ```text
 ./mvnw -P local -pl wta-modules/wta-third -am test

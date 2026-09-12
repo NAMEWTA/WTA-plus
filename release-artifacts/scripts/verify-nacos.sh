@@ -4,7 +4,7 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RELEASE_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 REPO_ROOT="$(cd "${RELEASE_ROOT}/.." && pwd)"
-APP_JAR="${NACOS_E2E_APP_JAR:-${REPO_ROOT}/wta-vue-plus-namewta/wta-admin/target/wta-admin.jar}"
+APP_JAR="${NACOS_E2E_APP_JAR:-${REPO_ROOT}/backend/wta-admin/target/wta-admin.jar}"
 WORK_PARENT="${NACOS_E2E_WORK_PARENT:-${TMPDIR:-/tmp}}"
 KEEP_ON_FAILURE=false
 

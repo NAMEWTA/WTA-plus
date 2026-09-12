@@ -31,7 +31,7 @@ status: active
 
 ## 超出范围
 
-- 不修改 `<Path>plus-ui-namewta/</Path>` 或 `<Path>ruoyi-vue-plus-namewta/</Path>` 生产源码
+- 不修改 `<Path>frontend/</Path>` 或 `<Path>ruoyi-vue-plus-namewta/</Path>` 生产源码
 - 不打包 `.skill` 文件
 - 不提交 git
 - 不改写既有 blocked change `2026-08-20-namewta-client-rbac-review`

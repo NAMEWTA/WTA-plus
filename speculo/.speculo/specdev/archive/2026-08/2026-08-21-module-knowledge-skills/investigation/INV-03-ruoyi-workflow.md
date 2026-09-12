@@ -113,9 +113,9 @@ ruoyi-workflow 对外公共服务能力是什么，业务模块如何接入？
 
 ### R-011
 
-- Claim: 仓库内唯一完整业务接入样例是模块自带请假：`TestLeaveServiceImpl`。模式：(1) 先 `insertOrUpdate` `test_leave`；(2) `params.ignore=true`；(3) `StartProcessDTO.businessId=leave.id`，`flowCode` 默认 `"leave1"`；(4) `workflowService.startCompleteTask`（启动并办掉申请人首节点）；失败抛 `流程发起异常`。(5) 删除单据时 `workflowService.deleteInstance(ids)`。(6) `@EventListener(condition="#processEvent.flowCode.startsWith('leave')")` 把 `ProcessEvent.status` 回写 `test_leave.status`，提交时强制 `waiting`。(7) `ProcessTaskEvent` 仅打日志，预留按 `nodeCode` 分支。(8) `ProcessDeleteEvent` 级联删请假行。(9) `eval(leaveDays)` 供流程 SpEL 判断请假天数。HTTP：`POST /workflow/leave/submitAndFlowStart`。前端：`<Path>plus-ui-namewta/src/api/workflow/leave/index.ts</Path>`。
+- Claim: 仓库内唯一完整业务接入样例是模块自带请假：`TestLeaveServiceImpl`。模式：(1) 先 `insertOrUpdate` `test_leave`；(2) `params.ignore=true`；(3) `StartProcessDTO.businessId=leave.id`，`flowCode` 默认 `"leave1"`；(4) `workflowService.startCompleteTask`（启动并办掉申请人首节点）；失败抛 `流程发起异常`。(5) 删除单据时 `workflowService.deleteInstance(ids)`。(6) `@EventListener(condition="#processEvent.flowCode.startsWith('leave')")` 把 `ProcessEvent.status` 回写 `test_leave.status`，提交时强制 `waiting`。(7) `ProcessTaskEvent` 仅打日志，预留按 `nodeCode` 分支。(8) `ProcessDeleteEvent` 级联删请假行。(9) `eval(leaveDays)` 供流程 SpEL 判断请假天数。HTTP：`POST /workflow/leave/submitAndFlowStart`。前端：`<Path>frontend/src/api/workflow/leave/index.ts</Path>`。
 - Type: code fact
-- Source: `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/service/impl/TestLeaveServiceImpl.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/controller/TestLeaveController.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/domain/TestLeave.java</Path>`（`status` 字段）；`<Path>plus-ui-namewta/src/api/workflow/leave/index.ts</Path>`
+- Source: `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/service/impl/TestLeaveServiceImpl.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/controller/TestLeaveController.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/domain/TestLeave.java</Path>`（`status` 字段）；`<Path>frontend/src/api/workflow/leave/index.ts</Path>`
 - Confidence: high
 - Limits: 这是 workflow 模块内部示例，不是 `ruoyi-demo` 模块。`leave1` 流程定义内容在 SQL/设计器数据中，本次未展开定义 JSON。
 - Artifact impact: Skill 业务接入 playbook 应以本类为唯一成熟样例，并写明「把该模式复制到其他业务模块，注入 `WorkflowService`，用自己的 `flowCode`」。
@@ -167,9 +167,9 @@ ruoyi-workflow 对外公共服务能力是什么，业务模块如何接入？
 
 ### R-017
 
-- Claim: REST vs 内部 API 的实际消费关系：`ruoyi-admin` Maven 依赖 `ruoyi-workflow`（唯一业务模块依赖方）。其他模块不依赖该 artifact。Java 类型消费：`WorkflowService` 实现与 `TestLeaveServiceImpl` 在同一模块；无外部模块 import。定义管理大量走 Warm-Flow `DefService`/`InsService`（引擎服务，不是本模块 IFlw 接口）。前端工作流页通过 HTTP 调 `/workflow/*` 与 Warm-Flow UI；待办跳转用 `formPath`+`businessId`+`taskId`（`<Path>plus-ui-namewta/src/api/workflow/workflowCommon/index.ts</Path>` `routerJump`）。
+- Claim: REST vs 内部 API 的实际消费关系：`ruoyi-admin` Maven 依赖 `ruoyi-workflow`（唯一业务模块依赖方）。其他模块不依赖该 artifact。Java 类型消费：`WorkflowService` 实现与 `TestLeaveServiceImpl` 在同一模块；无外部模块 import。定义管理大量走 Warm-Flow `DefService`/`InsService`（引擎服务，不是本模块 IFlw 接口）。前端工作流页通过 HTTP 调 `/workflow/*` 与 Warm-Flow UI；待办跳转用 `formPath`+`businessId`+`taskId`（`<Path>frontend/src/api/workflow/workflowCommon/index.ts</Path>` `routerJump`）。
 - Type: code fact
-- Source: `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/pom.xml</Path>`；全仓 `org.dromara.workflow` import 搜索；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/controller/FlwDefinitionController.java</Path>` `DefService` 字段；`<Path>plus-ui-namewta/src/api/workflow/workflowCommon/index.ts</Path>`
+- Source: `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/pom.xml</Path>`；全仓 `org.dromara.workflow` import 搜索；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/controller/FlwDefinitionController.java</Path>` `DefService` 字段；`<Path>frontend/src/api/workflow/workflowCommon/index.ts</Path>`
 - Confidence: high
 - Limits: Warm-Flow UI 插件自带的 `/warm-flow*` 控制器来自第三方 jar，本仓库无源码。
 - Artifact impact: Skill 决策：新业务模块 = 依赖 `ruoyi-api` + 注入 `WorkflowService` + 监听 api.event；不要依赖 `ruoyi-workflow`、不要调用 `IFlw*`、不要直接调 `InsService`。
@@ -185,9 +185,9 @@ ruoyi-workflow 对外公共服务能力是什么，业务模块如何接入？
 
 ### R-019
 
-- Claim: 「表单」在本模块中是路由元数据，不是独立表单引擎服务。`FlowDefinitionVo`/`FlowTaskVo`/`FlowHisTaskVo`/`FlowInstanceVo` 带 `formCustom`/`formPath`；待办查询用 SQL `COALESCE` 选择任务或定义的 `form_path`。前端 `routerJump` 把 `formPath` 当 Vue 路由，query 带业务 `id`、`type`、`taskId`。请假页 `<Path>plus-ui-namewta/src/views/workflow/leave/</Path>` 是该模式的页面侧。没有表单设计 CRUD Controller。
+- Claim: 「表单」在本模块中是路由元数据，不是独立表单引擎服务。`FlowDefinitionVo`/`FlowTaskVo`/`FlowHisTaskVo`/`FlowInstanceVo` 带 `formCustom`/`formPath`；待办查询用 SQL `COALESCE` 选择任务或定义的 `form_path`。前端 `routerJump` 把 `formPath` 当 Vue 路由，query 带业务 `id`、`type`、`taskId`。请假页 `<Path>frontend/src/views/workflow/leave/</Path>` 是该模式的页面侧。没有表单设计 CRUD Controller。
 - Type: code fact
-- Source: `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/domain/vo/FlowTaskVo.java</Path>`；`FlwTaskMapper.getListRunTask`；`<Path>plus-ui-namewta/src/api/workflow/workflowCommon/index.ts</Path>`；`<Path>plus-ui-namewta/src/views/workflow/leave/index.vue</Path>`
+- Source: `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/domain/vo/FlowTaskVo.java</Path>`；`FlwTaskMapper.getListRunTask`；`<Path>frontend/src/api/workflow/workflowCommon/index.ts</Path>`；`<Path>frontend/src/views/workflow/leave/index.vue</Path>`
 - Confidence: high
 - Limits: Warm-Flow UI 是否另有在线表单设计器能力未在本仓库源码中证实。
 - Artifact impact: Skill 表单一节应写「在流程定义上配置 `formPath` 指向业务页；业务页用 `id`/`taskId` 调自己的 CRUD + 工作流办理 REST」。

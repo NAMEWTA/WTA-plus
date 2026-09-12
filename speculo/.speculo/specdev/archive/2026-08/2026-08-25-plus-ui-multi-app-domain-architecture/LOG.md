@@ -35,7 +35,7 @@
 - **轮次与依赖：** round 2 / D-002
 - **状态：** confirmed
 - **问题：** 业务 API、模型和规则是否与 Vue/Element Plus 页面、路由和浏览器能力放在同一领域包。
-- **事实与来源：** 用户要求未来可支持移动端和小程序；当前请求层同时依赖 Axios、Element Plus、Router、Pinia、浏览器 Token 和语言设施，直接复用会把非 Web 端绑定到浏览器实现；`CODE:<Path>plus-ui-namewta/src/utils/request.ts</Path>`。
+- **事实与来源：** 用户要求未来可支持移动端和小程序；当前请求层同时依赖 Axios、Element Plus、Router、Pinia、浏览器 Token 和语言设施，直接复用会把非 Web 端绑定到浏览器实现；`CODE:<Path>frontend/src/utils/request.ts</Path>`。
 - **选项：** 每个领域只有一个 Vue 包；每个终端完整复制领域代码；拆分无头 domains 与 Web 专用 web-domains。
 - **推荐：** 拆分无头业务层和 Web 表现层，以端口/适配器隔离运行时依赖。
 - **结论：** `domains` 保存 API 合同、模型、应用服务、权限语义、领域 i18n 数据和纯函数；`web-domains` 保存 Vue 页面、组件、composables 与 Web 路由清单。
@@ -95,7 +95,7 @@
 - **轮次与依赖：** round 3 / D-003, D-004, D-005
 - **状态：** confirmed
 - **问题：** 拆包后如何继续解析后端返回的 component 字符串，并让不同 App 只注册自己拥有的页面。
-- **事实与来源：** 当前权限 Store 通过 `import.meta.glob('./../../views/**/*.vue')` 绑定单一 `src/views` 目录；后端菜单已经按 Client 裁剪，前端守卫负责 `addRoute`。`CODE:<Path>plus-ui-namewta/src/store/modules/permission.ts</Path>`；`CODE:<Path>plus-ui-namewta/src/permission.ts</Path>`。
+- **事实与来源：** 当前权限 Store 通过 `import.meta.glob('./../../views/**/*.vue')` 绑定单一 `src/views` 目录；后端菜单已经按 Client 裁剪，前端守卫负责 `addRoute`。`CODE:<Path>frontend/src/store/modules/permission.ts</Path>`；`CODE:<Path>frontend/src/permission.ts</Path>`。
 - **选项：** 保留单一根 views；让后端返回包 import 路径；每个 web-domain 导出清单，由 App 建立组件注册表。
 - **推荐：** 使用显式 WebDomainManifest，保留后端稳定 component key，并在 App 组合阶段汇总 view loaders、消息和权限贡献。
 - **结论：** App 只注册选择的 web-domain；组件注册表必须检测重复 key 和缺失 key，服务端 component 字符串不直接等同于 npm 包路径。
@@ -110,7 +110,7 @@
 - **轮次与依赖：** round 3 / D-005, D-006, D-007
 - **状态：** confirmed
 - **问题：** 多 App 如何复用登录注册、鉴权、动态路由和按钮权限，同时保持 NAMEWTA Client 安全合同。
-- **事实与来源：** `VITE_APP_CLIENT_ID` 是部署级 OAuth Client 标识；后端 `getRouters` 已按 Client 裁剪；永久 ADR 已确认 Client 是认证授权上下文而非 tenant。`CODE:<Path>docs/upstream/customization-map.md</Path>`；`CODE:<Path>plus-ui-namewta/src/utils/request.ts</Path>`；`CODE:<Path>plus-ui-namewta/src/store/modules/permission.ts</Path>`；`ADR-0001`。
+- **事实与来源：** `VITE_APP_CLIENT_ID` 是部署级 OAuth Client 标识；后端 `getRouters` 已按 Client 裁剪；永久 ADR 已确认 Client 是认证授权上下文而非 tenant。`CODE:<Path>docs/upstream/customization-map.md</Path>`；`CODE:<Path>frontend/src/utils/request.ts</Path>`；`CODE:<Path>frontend/src/store/modules/permission.ts</Path>`；`ADR-0001`。
 - **选项：** 每个 App 复制登录流程；把 Client 当业务租户；以 identity-access 和 platform auth 共享流程并由 App 注入 ClientContext。
 - **推荐：** 共享认证状态机和权限求值，App 仅提供 Client、导航和 UI 适配。
 - **结论：** 登录、注册、社交回调、Token、401、getInfo、getRouters、路由注册和按钮权限形成公共能力；保持 `getInfo -> getRouters -> addRoute` 顺序和服务端授权权威。
@@ -170,7 +170,7 @@
 - **轮次与依赖：** round 4 / D-005, D-006, D-007, D-008, D-009, D-010, D-011
 - **状态：** confirmed
 - **问题：** 计划是否已覆盖验证边界和首期非目标，并可作为下游设计合同。
-- **事实与来源：** 当前前端已有 lint、typecheck、Vitest、Playwright 和生产构建门禁；用户明确表示认可解释和方案，并确认整体计划已经完整。`CODE:<Path>plus-ui-namewta/package.json</Path>`；`USER-DECISION:2026-08-25`。
+- **事实与来源：** 当前前端已有 lint、typecheck、Vitest、Playwright 和生产构建门禁；用户明确表示认可解释和方案，并确认整体计划已经完整。`CODE:<Path>frontend/package.json</Path>`；`USER-DECISION:2026-08-25`。
 - **选项：** 继续扩展开放问题；直接开始代码改造；结束 Grill 并进入 Spec。
 - **推荐：** 关闭设计树，先进入 Spec 固化外部行为、迁移验收与非功能约束，不直接实施。
 - **结论：** 设计树达成 consensus。首期非目标包括微前端、运行时远程模块、公共 npm 发布、一次性 UI 重写、Taro/Capacitor 实装和全量自动 OpenAPI 生成；OpenAPI 类型生成作为后期波次评估。
@@ -185,7 +185,7 @@
 - **轮次与依赖：** contract follow-up / D-006, D-007, D-008, D-010
 - **状态：** implemented
 - **问题：** 基座完成 domain / web-domain 迁移后，Admin App 是否继续保留 `src/api`、领域页面 wrapper、全局 `$auth` 插件和旧工具兼容入口。
-- **事实与来源：** 用户明确确认当前项目是新基座，无需为旧调用方保留兼容；实施前 Admin 仍有 70 余个 API 转发文件和大量领域页面 wrapper。`USER-DECISION:2026-08-27`；`CODE:<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path>`。
+- **事实与来源：** 用户明确确认当前项目是新基座，无需为旧调用方保留兼容；实施前 Admin 仍有 70 余个 API 转发文件和大量领域页面 wrapper。`USER-DECISION:2026-08-27`；`CODE:<Path>frontend/apps/admin-web/src/application/services.ts</Path>`。
 - **选项：** 长期保留兼容门面；按 App 继续复制 API；迁移消费者后一次性删除旧入口并由架构规则禁止回流。
 - **推荐：** 采用零兼容收口，App 只保留服务组合、终端 HTTP/会话/权限装配和宿主行为，正式 API、模型与领域页面分别由 domain 和 web-domain 提供。
 - **结论：** 已删除 Admin `src/api`、`src/plugins`、领域页面 wrapper、旧流程组件及无调用工具；新增 `application/services.ts`、`application/http.ts`、`application/session.ts`、`application/access.ts` 和 `application/host/*`；新增 `app-api-facade` 架构规则，阻止已激活 App 重建 `src/api`。

@@ -100,7 +100,7 @@ sources:
 ### OUT
 
 - **OOS-001**：不修改 `<Path>ruoyi-vue-plus-namewta/ruoyi-admin</Path>` 或 `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system</Path>` 业务源码/POM；诊断已证明依赖合同与源码正常。
-- **OOS-002**：不修改 `<Path>plus-ui-namewta</Path>` 产品源码；本变更只验证现有前端编译与启动。
+- **OOS-002**：不修改 `<Path>frontend</Path>` 产品源码；本变更只验证现有前端编译与启动。
 - **OOS-003**：不提交、推送、部署或执行数据迁移；本次未获得这些独立授权。
 
 ## 6. 已锁定实现约束

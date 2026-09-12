@@ -48,7 +48,7 @@ status: consensus
 
 ### AR-001: Deepen business-owned OSS references
 
-- **文件：** `<Path>ruoyi-vue-plus-namewta/ruoyi-api/src/main/java/org/dromara/system/api/OssService.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/service/OssLifecycleManager.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysUserServiceImpl.java</Path>`；`<Path>plus-ui-namewta/src/views/system/user/profile/userAvatar.vue</Path>`
+- **文件：** `<Path>ruoyi-vue-plus-namewta/ruoyi-api/src/main/java/org/dromara/system/api/OssService.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/service/OssLifecycleManager.java</Path>`；`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysUserServiceImpl.java</Path>`；`<Path>frontend/src/views/system/user/profile/userAvatar.vue</Path>`
 - **问题：** TEMP 到业务引用的转换依赖每个业务写入 module 记住旧新 ossId 差异、`bind/unbind` 顺序、真实表名和失败语义；编译器不会暴露遗漏。`fc902e082` 已在用户头像与公告 module 分别手写同一协调规则，形成直接重复压力。
 - **解决方案：** 将业务记录保存、旧新附件差异和引用生命周期放进同一个 deep module，使调用者不再协调两个独立 interface；报告阶段不决定具体 interface。
 - **收益：** locality 集中在业务写入 module；一次实现覆盖新增/替换/删除；测试穿过一个 interface；TEMP 误清理风险下降。

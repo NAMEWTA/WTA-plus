@@ -19,7 +19,7 @@ updated_at: 2026-08-28T23:19:58+08:00
 - **影响：** `CR-001` 的权限 DOM 失败关闭、菜单 TypeScript 边界和并发 E2E 稳定性 findings 已全部关闭；App/Platform 所有权和零兼容合同保持不变。
 - **紧急度：** completed / archive-ready
 - **当前证据：** T-06/T-07/T-08 全部 done/integrated；前端 `main@07962c7cad9ca4db168b3c423b9e3675f312a874`；连续三轮完整 Playwright 与标准 suite 全部 48/48；根质量矩阵通过；`CR-002=approved`。
-- **相关代码/工件：** `<Path>{roots.state}/specdev/changes/2026-08-28-plus-ui-shared-navigation-permission-runtime/reviews/CR-001.md</Path>`、`<Path>{roots.state}/specdev/changes/2026-08-28-plus-ui-shared-navigation-permission-runtime/reviews/CR-002.md</Path>`、`<Path>{roots.state}/specdev/changes/2026-08-28-plus-ui-shared-navigation-permission-runtime/evidence/</Path>` 与 `<Path>plus-ui-namewta/**</Path>`。
+- **相关代码/工件：** `<Path>{roots.state}/specdev/changes/2026-08-28-plus-ui-shared-navigation-permission-runtime/reviews/CR-001.md</Path>`、`<Path>{roots.state}/specdev/changes/2026-08-28-plus-ui-shared-navigation-permission-runtime/reviews/CR-002.md</Path>`、`<Path>{roots.state}/specdev/changes/2026-08-28-plus-ui-shared-navigation-permission-runtime/evidence/</Path>` 与 `<Path>frontend/**</Path>`。
 
 ## 未知项
 

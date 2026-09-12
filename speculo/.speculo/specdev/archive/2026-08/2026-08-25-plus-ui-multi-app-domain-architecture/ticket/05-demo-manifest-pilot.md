@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-04]
 contract_ids: [AC-010, AC-011, AC-012, AC-022, AC-027]
 owner: native:/root/t01
-expected_changes: ["<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>", "<Path>plus-ui-namewta/packages/domains/demo/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/demo/**</Path>", "<Path>plus-ui-namewta/src/api/demo/**</Path>", "<Path>plus-ui-namewta/src/views/demo/**</Path>", "<Path>plus-ui-namewta/e2e/demo-manifest.spec.ts</Path>", "<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>", "<Path>plus-ui-namewta/packages/domains/demo/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/demo/**</Path>", "<Path>plus-ui-namewta/src/api/demo/**</Path>", "<Path>plus-ui-namewta/src/views/demo/**</Path>", "<Path>plus-ui-namewta/e2e/demo-manifest.spec.ts</Path>", "<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/platform/contracts/**</Path>", "<Path>plus-ui-namewta/packages/platform/http/**</Path>", "<Path>plus-ui-namewta/packages/platform/auth/**</Path>", "<Path>plus-ui-namewta/packages/platform/permission/**</Path>", "<Path>plus-ui-namewta/src/permission.ts</Path>", "<Path>plus-ui-namewta/src/store/modules/permission.ts</Path>", "<Path>plus-ui-namewta/src/router/**</Path>", "<Path>plus-ui-namewta/pnpm-workspace.yaml</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/package.json</Path> => T-03 policy owner; T-05 scoped writer for workspace:* declarations actually consumed by root compatibility facades only (DEV-T05-001)", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path> => T-03 policy owner; T-05 scoped writer for matching root specifiers and importers generated from T-05 manifests only (DEV-T05-001)"]
+expected_changes: ["<Path>frontend/packages/platform/app-runtime/**</Path>", "<Path>frontend/packages/domains/demo/**</Path>", "<Path>frontend/packages/web-domains/demo/**</Path>", "<Path>frontend/src/api/demo/**</Path>", "<Path>frontend/src/views/demo/**</Path>", "<Path>frontend/e2e/demo-manifest.spec.ts</Path>", "<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+writable_paths: ["<Path>frontend/packages/platform/app-runtime/**</Path>", "<Path>frontend/packages/domains/demo/**</Path>", "<Path>frontend/packages/web-domains/demo/**</Path>", "<Path>frontend/src/api/demo/**</Path>", "<Path>frontend/src/views/demo/**</Path>", "<Path>frontend/e2e/demo-manifest.spec.ts</Path>", "<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+read_only_paths: ["<Path>frontend/packages/platform/contracts/**</Path>", "<Path>frontend/packages/platform/http/**</Path>", "<Path>frontend/packages/platform/auth/**</Path>", "<Path>frontend/packages/platform/permission/**</Path>", "<Path>frontend/src/permission.ts</Path>", "<Path>frontend/src/store/modules/permission.ts</Path>", "<Path>frontend/src/router/**</Path>", "<Path>frontend/pnpm-workspace.yaml</Path>"]
+shared_paths: ["<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+shared_path_owners: ["<Path>frontend/package.json</Path> => T-03 policy owner; T-05 scoped writer for workspace:* declarations actually consumed by root compatibility facades only (DEV-T05-001)", "<Path>frontend/pnpm-lock.yaml</Path> => T-03 policy owner; T-05 scoped writer for matching root specifiers and importers generated from T-05 manifests only (DEV-T05-001)"]
 ---
 
 # Ticket T-05: 以 demo 建立 Domain 与 WebDomainManifest 曳光弹
@@ -77,7 +77,7 @@ App 选择 demo manifest 后，只注册其页面和贡献；后端返回合法 
 ## 7. 路径访问契约
 
 - **可写：** demo 新包、旧 demo 兼容路径和专用 E2E；**只读：** platform、全局 permission、根配置。
-- **共享路径：** `DEV-T05-001` 将通用 registry 的 `<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>` 激活权转交 T-05，并允许只写 root compatibility facade 实际消费的新包 `workspace:*` 声明、匹配 root lock specifier 与本 Ticket manifests 机械生成的 importer。T-03 继续拥有 workspace/catalog/root dependency/lock 策略；禁止修改根 scripts、catalog、外部版本、无关依赖、workspace 配置或既有 resolution。
+- **共享路径：** `DEV-T05-001` 将通用 registry 的 `<Path>frontend/packages/platform/app-runtime/**</Path>` 激活权转交 T-05，并允许只写 root compatibility facade 实际消费的新包 `workspace:*` 声明、匹配 root lock specifier 与本 Ticket manifests 机械生成的 importer。T-03 继续拥有 workspace/catalog/root dependency/lock 策略；禁止修改根 scripts、catalog、外部版本、无关依赖、workspace 配置或既有 resolution。
 - **保留或不动：** 全局认证/路由语义、其他业务域、后端 component key。
 
 ## 8. 验证矩阵

@@ -528,10 +528,10 @@ Client 或用户类型变化
 | 自己/目标用户管理 API | <Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/controller/system/openapi/SysOpenApiCredentialController.java</Path> |
 | 实时接口目录 | <Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/openapi/catalog/SystemOpenApiCatalogService.java</Path> |
 | 机器身份进入原安全链的条件 | <Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-security/src/main/java/org/dromara/common/security/config/SecurityConfig.java</Path> |
-| 前端领域 API 和输入校验 | <Path>plus-ui-namewta/packages/domains/system/src/open-api/service.ts</Path> |
-| 前端运行时响应校验 | <Path>plus-ui-namewta/packages/domains/system/src/open-api/transport.ts</Path> |
-| 双 scope 工作流 | <Path>plus-ui-namewta/packages/web-domains/system/src/open-api/workflow.ts</Path> |
-| 双入口复用 UI | <Path>plus-ui-namewta/packages/web-domains/system/src/open-api/OpenApiWorkspace.vue</Path> |
+| 前端领域 API 和输入校验 | <Path>frontend/packages/domains/system/src/open-api/service.ts</Path> |
+| 前端运行时响应校验 | <Path>frontend/packages/domains/system/src/open-api/transport.ts</Path> |
+| 双 scope 工作流 | <Path>frontend/packages/web-domains/system/src/open-api/workflow.ts</Path> |
+| 双入口复用 UI | <Path>frontend/packages/web-domains/system/src/open-api/OpenApiWorkspace.vue</Path> |
 | 数据库表与菜单权限 | <Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path>、<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path> |
 
 ### 17. 当前实现没有承诺什么

@@ -1,10 +1,10 @@
 # TypeScript 工程规范
 
-适用 `module:plus-ui-namewta`。当前使用 TypeScript 6、ESM、pnpm 10 workspace 与 Vite 8；根配置由各 App/包继承或组合，各包拥有自己的源码范围和边界，不存在根级产品 `src` 单体别名合同。
+适用 `module:frontend`。当前使用 TypeScript 6、ESM、pnpm 10 workspace 与 Vite 8；根配置由各 App/包继承或组合，各包拥有自己的源码范围和边界，不存在根级产品 `src` 单体别名合同。
 
 ### TS-001 类型严格度 Ratchet
 
-Scope: `language:typescript`, `module:plus-ui-namewta`
+Scope: `language:typescript`, `module:frontend`
 
 Level: MUST
 
@@ -16,7 +16,7 @@ Verification: `pnpm lint`; `pnpm build:prod`; review 变更中的 `any`、双重
 
 ### TS-002 API 类型与 transport 分离
 
-Scope: `path:plus-ui-namewta/packages/api-contracts/**`, `path:plus-ui-namewta/packages/domains/**`, `path:plus-ui-namewta/packages/platform/http/**`, `path:plus-ui-namewta/packages/adapters/**`
+Scope: `path:frontend/packages/api-contracts/**`, `path:frontend/packages/domains/**`, `path:frontend/packages/platform/http/**`, `path:frontend/packages/adapters/**`
 
 Level: MUST
 
@@ -28,7 +28,7 @@ Verification: 对照后端 controller/BO/VO；`pnpm lint`; `pnpm build:prod`; �
 
 ### TS-003 模块与 import
 
-Scope: `module:plus-ui-namewta`
+Scope: `module:frontend`
 
 Level: SHOULD
 

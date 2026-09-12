@@ -27,7 +27,7 @@ writable_paths:
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/nacos/menu/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/system/src/**</Path>"
+  - "<Path>frontend/packages/web-domains/system/src/**</Path>"
 shared_paths:
   - "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path>"
   - "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>"

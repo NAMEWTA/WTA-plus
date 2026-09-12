@@ -25,7 +25,7 @@ writable_paths:
   - "<Path>{roots.state}/specdev/changes/2026-09-12-rename-ruoyi-dromara-to-wta/evidence/inventory/**</Path>"
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/**</Path>"
-  - "<Path>plus-ui-namewta/**</Path>"
+  - "<Path>frontend/**</Path>"
   - "<Path>docs/**</Path>"
   - "<Path>{roots.state}/specdev/changes/2026-09-12-rename-ruoyi-dromara-to-wta/evidence/SOURCE-BASELINE.md</Path>"
   - "<Path>{roots.state}/specdev/changes/2026-09-12-rename-ruoyi-dromara-to-wta/evidence/THIRD-PARTY-KEEP.md</Path>"

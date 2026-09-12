@@ -43,7 +43,7 @@ Profile 后端 Controller 与前端资源的当前映射如下。`web-domain` �
 
 `material-tags`（领域合同、后端路径）与 `material-tag`（页面 owner、组件键 `profile/materialTag/index`）是有意的复数/单数别名，不能随意改名。匿名验证回调是后端入口，没有前端页面时不创建空资源目录。
 
-当前工作树的 `plus-ui-namewta/packages/api-contracts/openapi/current.json` 不包含任何 `/profile/**` 路径，`generated/openapi.ts` 也没有 Profile 传输类型。这是已确认的暂态事实：Profile domain 的类型化 HTTP service 可以暂时在资源边界维护 URL/方法和领域映射，并用合同测试固定；不得伪造 OpenAPI 类型，也不得让页面直接依赖 generated 文件。
+当前工作树的 `frontend/packages/api-contracts/openapi/current.json` 不包含任何 `/profile/**` 路径，`generated/openapi.ts` 也没有 Profile 传输类型。这是已确认的暂态事实：Profile domain 的类型化 HTTP service 可以暂时在资源边界维护 URL/方法和领域映射，并用合同测试固定；不得伪造 OpenAPI 类型，也不得让页面直接依赖 generated 文件。
 
 后端 OpenAPI 快照纳入 Profile 后，按 `tooling/openapi` 的 `openapi:fetch`、`openapi:generate`、`openapi:check` 流程更新快照和生成结果，禁止手工编辑 `generated/openapi.ts`。domain 仍需把生成 transport 映射成自有模型，Web 只依赖 domain 公开合同；迁移完成后删除上述暂态例外。
 

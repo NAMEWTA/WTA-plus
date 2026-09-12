@@ -13,11 +13,11 @@ blocked_by: []
 contract_ids: [AC-001]
 owner: grok-build
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>"
+  - "<Path>frontend/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/src/main/java/org/dromara/demo/service/impl/TestRichTextServiceImpl.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/src/test/java/org/dromara/demo/service/impl/TestRichTextServiceImplTest.java</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>"
+  - "<Path>frontend/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/src/main/java/org/dromara/demo/service/impl/TestRichTextServiceImpl.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/src/test/java/org/dromara/demo/service/impl/TestRichTextServiceImplTest.java</Path>"
 read_only_paths:
@@ -25,7 +25,7 @@ read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-api/src/main/java/org/dromara/system/api/model/LoginUser.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysLoginService.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/controller/system/SysMenuController.java</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/demo/src/rich-text.ts</Path>"
+  - "<Path>frontend/packages/domains/demo/src/rich-text.ts</Path>"
 shared_paths: []
 shared_path_owners: []
 ---
@@ -43,7 +43,7 @@ shared_path_owners: []
 
 - **目标：** 把富文本演示页对会话 Client 的隐式假设变成显式、可诊断的业务错误，同时让页面本身捕获失败，不再输出未处理 promise rejection。
 - **可观察产出：** 缺少 Client 时，列表刷新或保存会显示明确错误；会话正常时，富文本创建/编辑/删除仍可用。
-- **来源：** `AC-001`、`DIAG-2026-09-08-richtext-third-oss`、`CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/src/main/java/org/dromara/demo/service/impl/TestRichTextServiceImpl.java</Path>`、`CODE:<Path>plus-ui-namewta/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>`
+- **来源：** `AC-001`、`DIAG-2026-09-08-richtext-third-oss`、`CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/src/main/java/org/dromara/demo/service/impl/TestRichTextServiceImpl.java</Path>`、`CODE:<Path>frontend/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>`
 - **当前事实：** 服务层多处依赖 `LoginHelper.getUserId()` 与 `clientPk()`，页面在 mounted/save/remove 路径上没有统一失败捕获。
 - **Planning Depth 原因：** 这是跨前后端的垂直修复，需要把显式业务错误和页面容错一起落地，但不涉及 schema、迁移或 shared owner。
 

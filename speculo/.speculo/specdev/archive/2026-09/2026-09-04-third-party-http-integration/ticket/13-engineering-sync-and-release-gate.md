@@ -27,7 +27,7 @@ writable_paths:
   - "<Path>.agents/skills/namewta-fullstack-development/references/frontend/crud-resource-slices.md</Path>"
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/**</Path>"
-  - "<Path>plus-ui-namewta/**</Path>"
+  - "<Path>frontend/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/**</Path>"
 shared_paths:
   - "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>"

@@ -11,7 +11,7 @@ description: 选择 wta-common-* 依赖、SPI 或公共工具入口时使用；�
 
 针对每个模块/能力的具体描述，如不明确，必须直接根据文中给出的仓库路径读取对应源码确认，不得凭空推断。职责以子 POM `<description>` 与类 JavaDoc 首句为准。
 
-路径相对工作区，前缀 `wta-vue-plus-namewta/`（磁盘目录亦可能显示为 `WTA-Plus-namewta`）。
+路径相对工作区，前缀 `backend/`（磁盘目录亦可能显示为 `WTA-Plus-namewta`）。
 
 ## 分工
 

@@ -19,7 +19,7 @@ updated_at: 2026-08-28T09:34:56+0800
 - **影响：** 前端多 App 工作区、领域边界、认证权限、动态路由和构建交付。
 - **紧急度：** completed / archive-ready
 - **当前证据：** change 已完成，17 张 Ticket 均为 done，集成记录均为 passed，当前前端 `main` 包含最终结果。
-- **相关代码/工件：** `<Path>plus-ui-namewta/**</Path>` 与本 change 全部 SpecDev 工件。
+- **相关代码/工件：** `<Path>frontend/**</Path>` 与本 change 全部 SpecDev 工件。
 
 ## 未知项
 

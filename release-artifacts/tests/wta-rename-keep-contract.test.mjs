@@ -6,10 +6,10 @@ import { fileURLToPath } from 'node:url';
 
 const releaseRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const adjacentRoot = path.resolve(releaseRoot, '..');
-const workspaceRoot = fs.existsSync(path.join(adjacentRoot, 'wta-vue-plus-namewta'))
+const workspaceRoot = fs.existsSync(path.join(adjacentRoot, 'backend'))
   ? adjacentRoot
   : (process.env.WTA_PLUS_ROOT || '/workspace/vp-dev/WTA-plus');
-const backendRoot = path.join(workspaceRoot, 'wta-vue-plus-namewta');
+const backendRoot = path.join(workspaceRoot, 'backend');
 const skipDirNames = new Set(['node_modules', 'target', 'dist', '.git', 'speculo']);
 
 function walk(directory, files = []) {
@@ -55,7 +55,7 @@ test('KEEP third-party dromara coordinates still occur as Maven groupIds and Jav
 });
 
 test('first-party backend POM groupId is org.namewta and owned modules are wta-*', () => {
-  const pom = read('wta-vue-plus-namewta/pom.xml');
+  const pom = read('backend/pom.xml');
   const groupId = pom.match(/<groupId>([^<]+)<\/groupId>/);
   const artifactId = pom.match(/<artifactId>([^<]+)<\/artifactId>/);
   assert.equal(groupId?.[1], 'org.namewta');
@@ -95,8 +95,8 @@ test('owned filesystem paths use org/namewta not org/dromara', () => {
 });
 
 test('live admin home and docs widget do not depend on dromara product URLs', () => {
-  const index = read('plus-ui-namewta/apps/admin-web/src/views/index.vue');
-  const doc = read('plus-ui-namewta/apps/admin-web/src/components/WTADoc/index.vue');
+  const index = read('frontend/apps/admin-web/src/views/index.vue');
+  const doc = read('frontend/apps/admin-web/src/components/WTADoc/index.vue');
   assert.match(index, /https:\/\/github\.com\/NAMEWTA\/WTA-plus/);
   assert.doesNotMatch(index, /plus-doc\.dromara\.org/);
   assert.doesNotMatch(index, /github\.com\/dromara/);
@@ -114,12 +114,12 @@ test('README clones the WTA-plus monorepo without git submodule delivery', () =>
 
 test('shipped Nacos runtime reads only the new data-id (hard-cut, no dual-read loader)', () => {
   const constants = read(
-    'wta-vue-plus-namewta/wta-common/wta-common-nacos/src/main/java/org/namewta/common/nacos/NacosConfigConstants.java',
+    'backend/wta-common/wta-common-nacos/src/main/java/org/namewta/common/nacos/NacosConfigConstants.java',
   );
   const settings = read(
-    'wta-vue-plus-namewta/wta-common/wta-common-nacos/src/main/java/org/namewta/common/nacos/NacosConfigSettings.java',
+    'backend/wta-common/wta-common-nacos/src/main/java/org/namewta/common/nacos/NacosConfigSettings.java',
   );
-  const application = read('wta-vue-plus-namewta/wta-admin/src/main/resources/application.yml');
+  const application = read('backend/wta-admin/src/main/resources/application.yml');
   assert.match(constants, /DEFAULT_DATA_ID = "wta-namewta.yml"/);
   assert.match(application, /data-id:\s*wta-namewta\.yml/);
   assert.doesNotMatch(application, /ruoyi-namewta\.yml/);

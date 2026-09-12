@@ -12,9 +12,9 @@ risk: high
 blocked_by: []
 contract_ids: [AC-021]
 owner: native:/root/t01
-expected_changes: ["<Path>plus-ui-namewta/e2e/multi-app-baseline.spec.ts</Path>", "<Path>plus-ui-namewta/src/store/modules/permission.test.ts</Path>", "<Path>plus-ui-namewta/src/utils/request.test.ts</Path>", "<Path>plus-ui-namewta/docs/architecture-baseline.md</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/e2e/multi-app-baseline.spec.ts</Path>", "<Path>plus-ui-namewta/src/store/modules/permission.test.ts</Path>", "<Path>plus-ui-namewta/src/utils/request.test.ts</Path>", "<Path>plus-ui-namewta/docs/architecture-baseline.md</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/src/permission.ts</Path>", "<Path>plus-ui-namewta/src/utils/request.ts</Path>", "<Path>plus-ui-namewta/src/store/modules/user.ts</Path>", "<Path>plus-ui-namewta/e2e/client-auth-context.spec.ts</Path>", "<Path>plus-ui-namewta/package.json</Path>"]
+expected_changes: ["<Path>frontend/e2e/multi-app-baseline.spec.ts</Path>", "<Path>frontend/src/store/modules/permission.test.ts</Path>", "<Path>frontend/src/utils/request.test.ts</Path>", "<Path>frontend/docs/architecture-baseline.md</Path>"]
+writable_paths: ["<Path>frontend/e2e/multi-app-baseline.spec.ts</Path>", "<Path>frontend/src/store/modules/permission.test.ts</Path>", "<Path>frontend/src/utils/request.test.ts</Path>", "<Path>frontend/docs/architecture-baseline.md</Path>"]
+read_only_paths: ["<Path>frontend/src/permission.ts</Path>", "<Path>frontend/src/utils/request.ts</Path>", "<Path>frontend/src/store/modules/user.ts</Path>", "<Path>frontend/e2e/client-auth-context.spec.ts</Path>", "<Path>frontend/package.json</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---
@@ -31,7 +31,7 @@ shared_path_owners: []
 - **目标：** 在移动任何生产代码前，把登录 Client、401、动态路由恢复和管理端构建的当前语义变成可重复门禁。
 - **可观察产出：** 维护者能运行一组基线命令并得到真实通过/失败结果和已知存量偏差报告。
 - **来源：** `US-002`、`US-007`、`US-011`、`AC-021`、`ADR-006`、`CODE`。
-- **当前事实：** `<Path>plus-ui-namewta/src/permission.ts</Path>` 直接 glob views 并 `addRoute`；Client 认证已有局部 E2E，但 permission/request 缺少完整迁移特征测试。
+- **当前事实：** `<Path>frontend/src/permission.ts</Path>` 直接 glob views 并 `addRoute`；Client 认证已有局部 E2E，但 permission/request 缺少完整迁移特征测试。
 - **Planning Depth 原因：** 测试跨认证、路由、request 与构建边界，错误基线会让后续重构产生假阳性。
 
 ## 2. 决策状态

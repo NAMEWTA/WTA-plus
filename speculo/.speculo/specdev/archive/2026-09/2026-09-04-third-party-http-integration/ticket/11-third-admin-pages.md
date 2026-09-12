@@ -13,17 +13,17 @@ blocked_by: [T-10]
 contract_ids: [AC-015, AC-016]
 owner: codex:/root
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/web-domains/third/**</Path>"
+  - "<Path>frontend/packages/web-domains/third/**</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/packages/web-domains/third/**</Path>"
+  - "<Path>frontend/packages/web-domains/third/**</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/packages/domains/third/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/system/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/**</Path>"
+  - "<Path>frontend/packages/domains/third/**</Path>"
+  - "<Path>frontend/packages/web-domains/system/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/**</Path>"
 shared_paths:
-  - "<Path>plus-ui-namewta/packages/web-domains/third/**</Path>"
+  - "<Path>frontend/packages/web-domains/third/**</Path>"
 shared_path_owners:
-  - "<Path>plus-ui-namewta/packages/web-domains/third/**</Path> => T-11"
+  - "<Path>frontend/packages/web-domains/third/**</Path> => T-11"
 ---
 
 # Ticket T-11: 交付三方接口管理四个 Admin 页面

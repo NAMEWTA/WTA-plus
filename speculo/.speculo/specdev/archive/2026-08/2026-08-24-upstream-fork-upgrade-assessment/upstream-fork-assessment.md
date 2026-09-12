@@ -43,7 +43,7 @@ assessed_at: 2026-08-24T01:12:00+08:00
 |---|---|---|---|---|
 | Parent `<Path>.</Path>` | `aa4752fe2d51ce705d442c9567e8e33f3676b736` | 无独立 upstream | 不适用 | 本地比 `origin/main` 领先 1 |
 | Backend `<Path>ruoyi-vue-plus-namewta/</Path>` | `58aaf342100a2cfc2988e01b257f7468bb2bbad9` | `2933badb9182aaecfd5a45ce09444b8ac59576bb` | `387c4f0a20e9232f44e762ef5a46c462f54bd464` | upstream-only 1 / fork-only 42 |
-| Frontend `<Path>plus-ui-namewta/</Path>` | `f7d116f6e2b6b61239afc86cbcb860a07530abad` | `0870ce17514895854ccff03600e102546d8c5046` | 同 upstream 固定点 | upstream-only 0 / fork-only 20 |
+| Frontend `<Path>frontend/</Path>` | `f7d116f6e2b6b61239afc86cbcb860a07530abad` | `0870ce17514895854ccff03600e102546d8c5046` | 同 upstream 固定点 | upstream-only 0 / fork-only 20 |
 
 后端公开 `6.X` 提交页在评估日仍以 `2933bad` 为最新提交：<Url>https://github.com/dromara/RuoYi-Vue-Plus/commits/6.X</Url>。前端本地 `upstream/6.X-Vue` 为 `0870ce1`，但 GitHub 页面返回 429，不能声明已实时确认；其公开仓库为 <Url>https://github.com/CrazyLionCat/plus-ui/tree/6.X-Vue</Url>。
 
@@ -108,7 +108,7 @@ OAuth clientId string
 - `<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-satoken/src/main/java/org/dromara/common/satoken/utils/LoginHelper.java</Path>` 只读 Token 快照，不再从 loginId 或用户对象回退推断。
 - 用户停用/删除按已有登录域清理会话，避免只清一个类型留下存量 Token。
 
-前端 `<Path>plus-ui-namewta/src/views/login.vue</Path>`、`<Path>plus-ui-namewta/src/views/register.vue</Path>` 和 `<Path>plus-ui-namewta/src/api/login.ts</Path>` 在提交前读取 `/auth/client/context`；仅接受精确 JSON Boolean，加载失败或畸形时禁用登录/注册。
+前端 `<Path>frontend/src/views/login.vue</Path>`、`<Path>frontend/src/views/register.vue</Path>` 和 `<Path>frontend/src/api/login.ts</Path>` 在提交前读取 `/auth/client/context`；仅接受精确 JSON Boolean，加载失败或畸形时禁用登录/注册。
 
 ### 4.2 权限、角色与动态路由：全部按 Client PK 收敛
 
@@ -124,7 +124,7 @@ effective permissions = userId + sys_client.id + explicit roles + valid default 
 - `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysMenuServiceImpl.java</Path>` 即使超管也只读取当前 Client 菜单，不再返回全局并集。
 - 默认角色运行时合并，不写入 `sys_user_role`；无效默认角色失败关闭。
 - `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysTaskAssigneeServiceImpl.java</Path>` 将工作流角色办理人查询也收敛到 Client，堵住外围调用绕过。
-- 前端 `<Path>plus-ui-namewta/src/views/system/user/index.vue</Path>` 按用户登录域对应的启用 Client 顺序加载角色上下文，全部成功后才打开编辑框。
+- 前端 `<Path>frontend/src/views/system/user/index.vue</Path>` 按用户登录域对应的启用 Client 顺序加载角色上下文，全部成功后才打开编辑框。
 - 前端不重复过滤菜单；`getRouters -> addRoute` 消费后端已裁剪结果。
 
 这部分的核心优化不是新增字段，而是取消所有 userId-only 和跨 Client fallback，使授权错误从“悄悄扩大权限”变成“明确失败”。
@@ -154,8 +154,8 @@ Business Service
 - `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/controller/system/SysOssUploadController.java</Path>` 暴露控制面。
 - `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/upload/OssUploadService.java</Path>` 负责命名策略、身份、Ticket、签名、完成校验、取消和诊断。
 - Redis Ticket 默认 24 小时，签名默认 5 分钟；Part 签名有批次上限，配置在启动时强校验。
-- 前端 `<Path>plus-ui-namewta/src/hooks/oss/useDirectOssUpload.ts</Path>` 集中单 PUT/Multipart、进度、取消、重试和恢复；`transport.ts` 与主 Axios 鉴权客户端隔离，避免把业务 Header 泄漏到 OSS。
-- `<Path>plus-ui-namewta/src/components/FileUpload/index.vue</Path>`、`ImageUpload/index.vue`、`Editor/index.vue` 只消费 hook，返回值统一为 `ossId`。
+- 前端 `<Path>frontend/src/hooks/oss/useDirectOssUpload.ts</Path>` 集中单 PUT/Multipart、进度、取消、重试和恢复；`transport.ts` 与主 Axios 鉴权客户端隔离，避免把业务 Header 泄漏到 OSS。
+- `<Path>frontend/src/components/FileUpload/index.vue</Path>`、`ImageUpload/index.vue`、`Editor/index.vue` 只消费 hook，返回值统一为 `ossId`。
 - 下载通过短时 URL，文件字节不再经过业务 Controller。
 
 业务收益：降低 JVM 内存和双向带宽，支持大文件、断点续传和失败 Part 重试，同时保留后端授权与策略控制。
@@ -191,7 +191,7 @@ Caller -> NotifyClient/NotifyDispatcher
 - 附件在发送前复制为通知快照，避免业务源文件后续变更破坏审计。
 - 发送保持同步；监控事件发布或落库失败只记录告警，不改写 Provider 发送结果。这是明确的 best-effort 语义，不是可靠队列。
 - `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/notify/service/impl/SysNotifyMonitorServiceImpl.java</Path>` 记录逻辑通知与逐目标 Delivery，支持清洗、脱敏、完整详情、附件授权下载和物理清理。
-- 前端 `<Path>plus-ui-namewta/src/views/monitor/notify/index.vue</Path>` 与 `detailDrawer.vue` 提供全局运维视图，并用 `system:notify:*` 权限保护。
+- 前端 `<Path>frontend/src/views/monitor/notify/index.vue</Path>` 与 `detailDrawer.vue` 提供全局运维视图，并用 `system:notify:*` 权限保护。
 
 ### 4.7 工作流与现有调用方迁移
 
@@ -223,16 +223,16 @@ Caller -> NotifyClient/NotifyDispatcher
 | Notify monitoring | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/notify/</Path>` | 双层日志、脱敏/清洗、附件 owner、查询/删除/清空 |
 | Workflow ownership | `WorkflowHistoryOssOwner.java`, `FlwCommonServiceImpl.java`, `FlwTaskServiceImpl.java` | 统一通知，历史附件在真实 `flow_his_task` 主键上绑定 |
 | SQL | `<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path>`, `DML.sql` | 2 个登录域表、Client/role/menu 字段、OSS 引用、2 个通知表、菜单与默认角色 |
-| Frontend Client/RBAC | login/register, `<Path>plus-ui-namewta/src/views/system/user/</Path>`, role/menu/client/userType API/pages | 严格 Client context、分域用户、Client-scoped role/menu 管理 |
-| Frontend OSS | `<Path>plus-ui-namewta/src/hooks/oss/</Path>`, `<Path>plus-ui-namewta/src/utils/oss/</Path>`, three upload components, download plugin | 直传、续传、隔离 transport、授权下载、生命周期状态 |
-| Frontend monitoring | `<Path>plus-ui-namewta/src/api/monitor/notify/</Path>`, `<Path>plus-ui-namewta/src/views/monitor/notify/</Path>` | 全局检索、详情、完整投递、附件授权下载、双确认清空 |
+| Frontend Client/RBAC | login/register, `<Path>frontend/src/views/system/user/</Path>`, role/menu/client/userType API/pages | 严格 Client context、分域用户、Client-scoped role/menu 管理 |
+| Frontend OSS | `<Path>frontend/src/hooks/oss/</Path>`, `<Path>frontend/src/utils/oss/</Path>`, three upload components, download plugin | 直传、续传、隔离 transport、授权下载、生命周期状态 |
+| Frontend monitoring | `<Path>frontend/src/api/monitor/notify/</Path>`, `<Path>frontend/src/views/monitor/notify/</Path>` | 全局检索、详情、完整投递、附件授权下载、双确认清空 |
 | Deployment | `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/pom.xml</Path>` | 默认 `bundle-full` 组合和未来 bundle 扩展点 |
 
 完整文件清单可用以下固定命令重现：
 
 ```bash
 git -C ruoyi-vue-plus-namewta diff --name-status 387c4f0a20e9232f44e762ef5a46c462f54bd464...58aaf342100a2cfc2988e01b257f7468bb2bbad9
-git -C plus-ui-namewta diff --name-status 0870ce17514895854ccff03600e102546d8c5046...f7d116f6e2b6b61239afc86cbcb860a07530abad
+git -C frontend diff --name-status 0870ce17514895854ccff03600e102546d8c5046...f7d116f6e2b6b61239afc86cbcb860a07530abad
 ```
 
 ## 6. 当前架构评价
@@ -340,7 +340,7 @@ business/workflow owners
 1. **数据库能力二选一。** 若产品只支持 MySQL，修改所有对外能力声明；若保留上游多库能力，为 NAMEWTA DDL/DSL 提供 PostgreSQL/Oracle/SQL Server 方言和自动验证。
 2. **引入版本化 migration ledger。** 记录 change id、checksum、执行时间、状态和补偿，不仅依赖人工阅读 append-only 文件。
 3. **实现真实 bundle。** 至少定义并验证 platform-only、workflow-enabled、full 等支持组合；启动时检查缺失 Bean 和配置。
-4. **完成或隐藏四个业务工作台。** `<Path>plus-ui-namewta/src/views/business/</Path>` 当前仅是可导航占位，不能当作已交付业务能力。
+4. **完成或隐藏四个业务工作台。** `<Path>frontend/src/views/business/</Path>` 当前仅是可导航占位，不能当作已交付业务能力。
 5. **发布治理。** 增加 changelog、SBOM、依赖漏洞扫描、artifact checksum、数据库兼容矩阵和回滚演练。
 
 ### P3：需求触发后再做的演进

@@ -12,11 +12,11 @@ risk: critical
 blocked_by: [T-11, T-12, T-13, T-14]
 contract_ids: [AC-002, AC-021, AC-024]
 owner: codex:/root
-expected_changes: ["<Path>plus-ui-namewta/apps/admin-web/**</Path>", "<Path>plus-ui-namewta/src/**</Path>", "<Path>plus-ui-namewta/e2e/**</Path>", "<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/playwright.config.ts</Path>", "<Path>plus-ui-namewta/vitest.config.ts</Path>", "<Path>plus-ui-namewta/tsconfig.json</Path>", "<Path>plus-ui-namewta/index.html</Path>", "<Path>plus-ui-namewta/public/**</Path>", "<Path>plus-ui-namewta/vite.config.ts</Path>", "<Path>plus-ui-namewta/vite/**</Path>", "<Path>plus-ui-namewta/uno.config.ts</Path>", "<Path>plus-ui-namewta/.env.development</Path>", "<Path>plus-ui-namewta/.env.production</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/apps/admin-web/**</Path>", "<Path>plus-ui-namewta/src/**</Path>", "<Path>plus-ui-namewta/e2e/**</Path>", "<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/playwright.config.ts</Path>", "<Path>plus-ui-namewta/vitest.config.ts</Path>", "<Path>plus-ui-namewta/tsconfig.json</Path>", "<Path>plus-ui-namewta/index.html</Path>", "<Path>plus-ui-namewta/public/**</Path>", "<Path>plus-ui-namewta/vite.config.ts</Path>", "<Path>plus-ui-namewta/vite/**</Path>", "<Path>plus-ui-namewta/uno.config.ts</Path>", "<Path>plus-ui-namewta/.env.development</Path>", "<Path>plus-ui-namewta/.env.production</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/**</Path>", "<Path>plus-ui-namewta/pnpm-workspace.yaml</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/src/**</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/src/**</Path> => T-15"]
+expected_changes: ["<Path>frontend/apps/admin-web/**</Path>", "<Path>frontend/src/**</Path>", "<Path>frontend/e2e/**</Path>", "<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>frontend/vitest.config.ts</Path>", "<Path>frontend/tsconfig.json</Path>", "<Path>frontend/index.html</Path>", "<Path>frontend/public/**</Path>", "<Path>frontend/vite.config.ts</Path>", "<Path>frontend/vite/**</Path>", "<Path>frontend/uno.config.ts</Path>", "<Path>frontend/.env.development</Path>", "<Path>frontend/.env.production</Path>"]
+writable_paths: ["<Path>frontend/apps/admin-web/**</Path>", "<Path>frontend/src/**</Path>", "<Path>frontend/e2e/**</Path>", "<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>frontend/vitest.config.ts</Path>", "<Path>frontend/tsconfig.json</Path>", "<Path>frontend/index.html</Path>", "<Path>frontend/public/**</Path>", "<Path>frontend/vite.config.ts</Path>", "<Path>frontend/vite/**</Path>", "<Path>frontend/uno.config.ts</Path>", "<Path>frontend/.env.development</Path>", "<Path>frontend/.env.production</Path>"]
+read_only_paths: ["<Path>frontend/packages/**</Path>", "<Path>frontend/pnpm-workspace.yaml</Path>"]
+shared_paths: ["<Path>frontend/src/**</Path>"]
+shared_path_owners: ["<Path>frontend/src/**</Path> => T-15"]
 ---
 
 # Ticket T-15: 激活 admin-web 并收缩根应用兼容入口
@@ -81,7 +81,7 @@ shared_path_owners: ["<Path>plus-ui-namewta/src/**</Path> => T-15"]
 ## 7. 路径访问契约
 
 - **可写：** admin-web、整个旧 src 收缩面和 E2E；**只读：** packages 与 T-03 根配置。
-- **共享路径：** `<Path>plus-ui-namewta/src/**</Path>` 唯一 contract owner `T-15`；前序 Ticket 合并后不得继续修改。
+- **共享路径：** `<Path>frontend/src/**</Path>` 唯一 contract owner `T-15`；前序 Ticket 合并后不得继续修改。
 - **保留或不动：** package public contracts、根 lock/config、后端。
 
 ## 8. 验证矩阵

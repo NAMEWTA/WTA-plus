@@ -68,7 +68,7 @@ for _ in {1..60}; do
 done
 curl --fail --silent "http://127.0.0.1:$minio_port/minio/health/ready" >/dev/null
 
-cd "$workspace_root/wta-vue-plus-namewta"
+cd "$workspace_root/backend"
 ./mvnw -Pdev -pl wta-admin -am test \
   -Dtest=RedisNotifyIdempotencyStoreIntegrationTest,RedisOssUploadTicketStoreIntegrationTest,NotifyMonitorMySqlIntegrationTest,MinioOssClientIntegrationTest,BusinessMenuRetirementMySqlIntegrationTest,ThirdSchemaMySqlIntegrationTest,ThirdRedisIntegrationTest \
   -Dsurefire.failIfNoSpecifiedTests=false \

@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-04, T-05]
 contract_ids: [AC-003, AC-015, AC-016, AC-018]
 owner: codex:lead
-expected_changes: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path>", "<Path>plus-ui-namewta/packages/domains/admin/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/views/register.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/views/system/user/profile/resetPwd.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/lang/**</Path>", "<Path>plus-ui-namewta/e2e/client-auth-context.spec.ts</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path>", "<Path>plus-ui-namewta/packages/domains/admin/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/views/register.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/views/system/user/profile/resetPwd.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/lang/**</Path>", "<Path>plus-ui-namewta/e2e/client-auth-context.spec.ts</Path>"]
-read_only_paths: ["<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/java/org/dromara/web/controller/AuthController.java</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/java/org/dromara/web/domain/vo/AuthClientContextVo.java</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>", "<Path>plus-ui-namewta/packages/domains/system/src/index.ts</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path> => T-06"]
+expected_changes: ["<Path>frontend/packages/api-contracts/**</Path>", "<Path>frontend/packages/domains/admin/**</Path>", "<Path>frontend/apps/admin-web/src/views/register.vue</Path>", "<Path>frontend/apps/admin-web/src/views/system/user/profile/resetPwd.vue</Path>", "<Path>frontend/apps/admin-web/src/lang/**</Path>", "<Path>frontend/e2e/client-auth-context.spec.ts</Path>"]
+writable_paths: ["<Path>frontend/packages/api-contracts/**</Path>", "<Path>frontend/packages/domains/admin/**</Path>", "<Path>frontend/apps/admin-web/src/views/register.vue</Path>", "<Path>frontend/apps/admin-web/src/views/system/user/profile/resetPwd.vue</Path>", "<Path>frontend/apps/admin-web/src/lang/**</Path>", "<Path>frontend/e2e/client-auth-context.spec.ts</Path>"]
+read_only_paths: ["<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/java/org/dromara/web/controller/AuthController.java</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/java/org/dromara/web/domain/vo/AuthClientContextVo.java</Path>", "<Path>frontend/apps/admin-web/src/application/services.ts</Path>", "<Path>frontend/apps/admin-web/src/router/index.ts</Path>", "<Path>frontend/packages/domains/system/src/index.ts</Path>"]
+shared_paths: ["<Path>frontend/packages/api-contracts/**</Path>"]
+shared_path_owners: ["<Path>frontend/packages/api-contracts/**</Path> => T-06"]
 ---
 
 # Ticket T-06: 在注册与个人改密采用公开密码策略
@@ -40,7 +40,7 @@ shared_path_owners: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path> => 
 
 - T-06 唯一更新本 change 的 OpenAPI snapshot/current/generated files，快照必须来自已集成 T-04/T-05 backend commit 并保留 provenance。
 - domain-admin 把 transport narrowing 为 domain-owned PasswordPolicy；未知/缺字段失败关闭，不默认放宽到 5/6 位。
-- 注册和 profile 复用 `domain-admin` 拥有的纯 PasswordPolicy validator，App 在 `<Path>plus-ui-namewta/apps/admin-web/src/lang/**</Path>` 映射可展示消息，不复制 regex；服务端 violations 仍直接可展示。
+- 注册和 profile 复用 `domain-admin` 拥有的纯 PasswordPolicy validator，App 在 `<Path>frontend/apps/admin-web/src/lang/**</Path>` 映射可展示消息，不复制 regex；服务端 violations 仍直接可展示。
 - 注册与 profile 保持 Admin App 私有静态页面；manifest-only 约束适用于服务端业务菜单，本 Ticket 不把它们迁入 web-domain，也不修改 `router/index.ts`。
 - UI 不接触 mode/fixed/generator，且不把公开投影当授权边界。
 

@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-03]
 contract_ids: [AC-006, AC-007, AC-008, AC-021]
 owner: native:/root/t01
-expected_changes: ["<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/packages/adapters/axios-browser/**</Path>", "<Path>plus-ui-namewta/packages/adapters/storage-browser/**</Path>", "<Path>plus-ui-namewta/packages/adapters/crypto-browser/**</Path>", "<Path>plus-ui-namewta/src/utils/request.ts</Path>", "<Path>plus-ui-namewta/src/utils/auth.ts</Path>", "<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/packages/adapters/axios-browser/**</Path>", "<Path>plus-ui-namewta/packages/adapters/storage-browser/**</Path>", "<Path>plus-ui-namewta/packages/adapters/crypto-browser/**</Path>", "<Path>plus-ui-namewta/src/utils/request.ts</Path>", "<Path>plus-ui-namewta/src/utils/auth.ts</Path>", "<Path>plus-ui-namewta/src/utils/request.test.ts</Path>", "<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/pnpm-workspace.yaml</Path>", "<Path>plus-ui-namewta/src/store/modules/user.ts</Path>", "<Path>plus-ui-namewta/src/permission.ts</Path>", "<Path>plus-ui-namewta/e2e/**</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/src/utils/request.ts</Path>", "<Path>plus-ui-namewta/src/utils/auth.ts</Path>", "<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/src/utils/request.ts</Path> => T-04", "<Path>plus-ui-namewta/src/utils/auth.ts</Path> => T-04", "<Path>plus-ui-namewta/package.json</Path> => T-03 policy owner; T-04 scoped writer for workspace:* declarations actually consumed by its root facades only (DEV-T04-001)", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path> => T-03 policy owner; T-04 scoped writer for matching root specifiers and importers generated from T-04 manifests only (DEV-T04-001)"]
+expected_changes: ["<Path>frontend/packages/platform/**</Path>", "<Path>frontend/packages/adapters/axios-browser/**</Path>", "<Path>frontend/packages/adapters/storage-browser/**</Path>", "<Path>frontend/packages/adapters/crypto-browser/**</Path>", "<Path>frontend/src/utils/request.ts</Path>", "<Path>frontend/src/utils/auth.ts</Path>", "<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+writable_paths: ["<Path>frontend/packages/platform/**</Path>", "<Path>frontend/packages/adapters/axios-browser/**</Path>", "<Path>frontend/packages/adapters/storage-browser/**</Path>", "<Path>frontend/packages/adapters/crypto-browser/**</Path>", "<Path>frontend/src/utils/request.ts</Path>", "<Path>frontend/src/utils/auth.ts</Path>", "<Path>frontend/src/utils/request.test.ts</Path>", "<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+read_only_paths: ["<Path>frontend/pnpm-workspace.yaml</Path>", "<Path>frontend/src/store/modules/user.ts</Path>", "<Path>frontend/src/permission.ts</Path>", "<Path>frontend/e2e/**</Path>"]
+shared_paths: ["<Path>frontend/src/utils/request.ts</Path>", "<Path>frontend/src/utils/auth.ts</Path>", "<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+shared_path_owners: ["<Path>frontend/src/utils/request.ts</Path> => T-04", "<Path>frontend/src/utils/auth.ts</Path> => T-04", "<Path>frontend/package.json</Path> => T-03 policy owner; T-04 scoped writer for workspace:* declarations actually consumed by its root facades only (DEV-T04-001)", "<Path>frontend/pnpm-lock.yaml</Path> => T-03 policy owner; T-04 scoped writer for matching root specifiers and importers generated from T-04 manifests only (DEV-T04-001)"]
 ---
 
 # Ticket T-04: 提取平台端口与浏览器适配器
@@ -100,7 +100,7 @@ App 组装浏览器 adapters 后，调用者通过 platform/domain 端口发出�
 ## 9. 发布、迁移与恢复
 
 - **迁移顺序：** 端口 expand -> adapters -> compat facade -> 调用方逐 Ticket migrate -> T-15 contract。
-- **兼容窗口：** `<Path>plus-ui-namewta/src/utils/request.ts</Path>` 与 auth facade 保留至 T-15。
+- **兼容窗口：** `<Path>frontend/src/utils/request.ts</Path>` 与 auth facade 保留至 T-15。
 - **监控信号：** 401 次数、Client 缺失错误、request 测试、import graph、admin E2E。
 - **回滚或前向恢复：** 在兼容 facade 内切回旧实现；不得通过默认 Client 绕过失败。
 - **不可逆操作与批准点：** 无；compat 删除需 T-15 Lead 批准。

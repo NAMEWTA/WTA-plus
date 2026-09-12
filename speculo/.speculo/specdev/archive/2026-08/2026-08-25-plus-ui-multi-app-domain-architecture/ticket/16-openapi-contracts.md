@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-15]
 contract_ids: [AC-027, AC-028]
 owner: codex:/root
-expected_changes: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path>", "<Path>plus-ui-namewta/tooling/openapi/**</Path>", "<Path>plus-ui-namewta/tooling/architecture/**</Path>", "<Path>plus-ui-namewta/packages/domains/**</Path>", "<Path>plus-ui-namewta/.oxfmtrc.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path>", "<Path>plus-ui-namewta/tooling/openapi/**</Path>", "<Path>plus-ui-namewta/tooling/architecture/**</Path>", "<Path>plus-ui-namewta/packages/domains/**</Path>", "<Path>plus-ui-namewta/.oxfmtrc.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-read_only_paths: ["<Path>ruoyi-admin/**</Path>", "<Path>ruoyi-modules/**</Path>", "<Path>plus-ui-namewta/apps/**</Path>", "<Path>plus-ui-namewta/package.json</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path> => T-16"]
+expected_changes: ["<Path>frontend/packages/api-contracts/**</Path>", "<Path>frontend/tooling/openapi/**</Path>", "<Path>frontend/tooling/architecture/**</Path>", "<Path>frontend/packages/domains/**</Path>", "<Path>frontend/.oxfmtrc.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+writable_paths: ["<Path>frontend/packages/api-contracts/**</Path>", "<Path>frontend/tooling/openapi/**</Path>", "<Path>frontend/tooling/architecture/**</Path>", "<Path>frontend/packages/domains/**</Path>", "<Path>frontend/.oxfmtrc.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+read_only_paths: ["<Path>ruoyi-admin/**</Path>", "<Path>ruoyi-modules/**</Path>", "<Path>frontend/apps/**</Path>", "<Path>frontend/package.json</Path>"]
+shared_paths: ["<Path>frontend/packages/api-contracts/**</Path>"]
+shared_path_owners: ["<Path>frontend/packages/api-contracts/**</Path> => T-16"]
 ---
 
 # Ticket T-16: 引入 OpenAPI transport 合同生成与漂移检查

@@ -10,7 +10,7 @@
 
 ## Decision
 
-`plus-ui-namewta` 使用 pnpm workspace 管理的编译期模块化单体。App 通过 workspace 私有包显式组合能力并独立产出；首期不采用微前端、Module Federation、运行时远程插件或多仓复制。
+`frontend` 使用 pnpm workspace 管理的编译期模块化单体。App 通过 workspace 私有包显式组合能力并独立产出；首期不采用微前端、Module Federation、运行时远程插件或多仓复制。
 
 ## Consequences
 

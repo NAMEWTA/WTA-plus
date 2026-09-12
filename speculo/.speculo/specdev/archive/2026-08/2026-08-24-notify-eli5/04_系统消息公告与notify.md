@@ -278,8 +278,8 @@ POST /system/notice
 - 两张表的结构：`<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>`
 - 实时推送入口：`<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-push/src/main/java/org/dromara/common/push/helper/PushHelper.java</Path>`
 - Redis 消息订阅与在线分发：`<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-push/src/main/java/org/dromara/common/push/listener/MessageTopicListener.java</Path>`
-- 前端历史加载和实时接收：`<Path>plus-ui-namewta/apps/admin-web/src/utils/push.ts</Path>`
-- 前端已读状态：`<Path>plus-ui-namewta/apps/admin-web/src/utils/message-read.ts</Path>`
+- 前端历史加载和实时接收：`<Path>frontend/apps/admin-web/src/utils/push.ts</Path>`
+- 前端已读状态：`<Path>frontend/apps/admin-web/src/utils/message-read.ts</Path>`
 - `notify` 统一入口：`<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/src/main/java/org/dromara/common/notify/core/NotifyClient.java</Path>`
 - `notify` 调度规则：`<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/src/main/java/org/dromara/common/notify/core/NotifyDispatcher.java</Path>`
 - `notify` 监控落库：`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/notify/service/impl/SysNotifyMonitorServiceImpl.java</Path>`

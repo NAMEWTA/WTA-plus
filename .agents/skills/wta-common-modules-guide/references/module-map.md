@@ -1,6 +1,6 @@
 # wta-common 子模块地图
 
-条目不够明确时，按路径读取源码，不得凭空推断。路径相对工作区，前缀 `wta-vue-plus-namewta/`（磁盘目录亦可能显示为 `WTA-Plus-namewta`）。
+条目不够明确时，按路径读取源码，不得凭空推断。路径相对工作区，前缀 `backend/`（磁盘目录亦可能显示为 `WTA-Plus-namewta`）。
 
 ## 目录
 

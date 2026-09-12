@@ -38,7 +38,7 @@ Verification: 重复/并行运行相关测试；review teardown、fixture 和事
 
 ### TEST-004 不夸大当前门禁
 
-Scope: `module:plus-ui-namewta`, `module:wta-vue-plus-namewta`
+Scope: `module:frontend`, `module:backend`
 
 Level: MUST
 

@@ -13,17 +13,17 @@ blocked_by: [T-03, T-04, T-05, T-09]
 contract_ids: [AC-015, AC-016]
 owner: codex:/root
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/domains/third/**</Path>"
+  - "<Path>frontend/packages/domains/third/**</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/packages/domains/third/**</Path>"
+  - "<Path>frontend/packages/domains/third/**</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/packages/domains/system/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/profile/**</Path>"
+  - "<Path>frontend/packages/domains/system/**</Path>"
+  - "<Path>frontend/packages/domains/profile/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-third/src/main/java/org/dromara/third/controller/admin/**</Path>"
 shared_paths:
-  - "<Path>plus-ui-namewta/packages/domains/third/**</Path>"
+  - "<Path>frontend/packages/domains/third/**</Path>"
 shared_path_owners:
-  - "<Path>plus-ui-namewta/packages/domains/third/**</Path> => T-10"
+  - "<Path>frontend/packages/domains/third/**</Path> => T-10"
 ---
 
 # Ticket T-10: 建立 third 前端 Domain 合同与权限投影

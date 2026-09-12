@@ -52,7 +52,7 @@
 ## 验证
 
 ```bash
-node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs wta-vue-plus-namewta/wta-modules/wta-notify --mode layered
+node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-notify --mode layered
 ./mvnw -pl wta-modules/wta-notify -am test
 node --test release-artifacts/tests/notify-baseline-contract.test.mjs
 ```

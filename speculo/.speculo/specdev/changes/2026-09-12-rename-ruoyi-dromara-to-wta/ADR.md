@@ -236,7 +236,7 @@ Gate fields（默认全 false）：
 **Supersedes:** ADR-005「聚合仓目录名 KEEP」及一切「继续以三仓+submodule 为交付主线」的旧叙述；关闭「是否新远程」方向性开放项
 
 ### Context
-当前形态：聚合仓 `ruoyi-vue-plus-docs` + submodule 后端 `ruoyi-vue-plus-namewta` + submodule 前端 `plus-ui-namewta`。三仓分裂增加坐标迁移与发布成本。
+当前形态：聚合仓 `ruoyi-vue-plus-docs` + submodule 后端 `ruoyi-vue-plus-namewta` + submodule 前端 `frontend`。三仓分裂增加坐标迁移与发布成本。
 
 ### Decision
 将**前端、后端、副/聚合仓**合并为**同一个仓库**（monorepo），并更改整体仓库名（与 `wta` / NAMEWTA 品牌对齐；精确 GitHub slug **待 CTO 最终点名**，候选 `NAMEWTA/wta` 或 `NAMEWTA/namewta`）。合并后不再以 git submodule 作为默认交付形态；目录布局（如 `backend/`、`frontend/`、`docs/`、`speculo/`）在 S-spec / inventory 定稿前不得假装已冻结。

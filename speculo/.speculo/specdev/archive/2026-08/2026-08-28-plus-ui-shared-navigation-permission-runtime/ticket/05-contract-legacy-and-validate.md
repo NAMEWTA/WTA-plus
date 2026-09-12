@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-04]
 contract_ids: [AC-009, AC-013, AC-014, AC-015]
 owner: codex:leadership-epoch-1
-expected_changes: ["<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>", "<Path>plus-ui-namewta/tooling/architecture/**</Path>", "<Path>plus-ui-namewta/README.md</Path>", "<Path>plus-ui-namewta/.codex/skills/plus-ui-domain-development/**</Path>", "<Path>plus-ui-namewta/.claude/agents/plus-ui-domain-development.md</Path>", "<Path>README.md</Path>", "<Path>docs/namewta-enhancements.md</Path>", "<Path>.agents/skills/namewta-fullstack-development/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>", "<Path>plus-ui-namewta/tooling/architecture/**</Path>", "<Path>plus-ui-namewta/README.md</Path>", "<Path>plus-ui-namewta/.codex/skills/plus-ui-domain-development/**</Path>", "<Path>plus-ui-namewta/.claude/agents/plus-ui-domain-development.md</Path>", "<Path>README.md</Path>", "<Path>docs/namewta-enhancements.md</Path>", "<Path>.agents/skills/namewta-fullstack-development/**</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/apps/admin-web/src/**</Path>", "<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/packages/web-kit/**</Path>", "<Path>plus-ui-namewta/e2e/**</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/tooling/architecture/**</Path>", "<Path>plus-ui-namewta/README.md</Path>", "<Path>README.md</Path>", "<Path>docs/namewta-enhancements.md</Path>", "<Path>.agents/skills/namewta-fullstack-development/**</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/tooling/architecture/**</Path> => T-05", "<Path>plus-ui-namewta/README.md</Path> => T-05", "<Path>README.md</Path> => T-05", "<Path>docs/namewta-enhancements.md</Path> => T-05", "<Path>.agents/skills/namewta-fullstack-development/**</Path> => T-05"]
+expected_changes: ["<Path>frontend/apps/admin-web/src/router/index.ts</Path>", "<Path>frontend/tooling/architecture/**</Path>", "<Path>frontend/README.md</Path>", "<Path>frontend/.codex/skills/plus-ui-domain-development/**</Path>", "<Path>frontend/.claude/agents/plus-ui-domain-development.md</Path>", "<Path>README.md</Path>", "<Path>docs/namewta-enhancements.md</Path>", "<Path>.agents/skills/namewta-fullstack-development/**</Path>"]
+writable_paths: ["<Path>frontend/apps/admin-web/src/router/index.ts</Path>", "<Path>frontend/tooling/architecture/**</Path>", "<Path>frontend/README.md</Path>", "<Path>frontend/.codex/skills/plus-ui-domain-development/**</Path>", "<Path>frontend/.claude/agents/plus-ui-domain-development.md</Path>", "<Path>README.md</Path>", "<Path>docs/namewta-enhancements.md</Path>", "<Path>.agents/skills/namewta-fullstack-development/**</Path>"]
+read_only_paths: ["<Path>frontend/apps/admin-web/src/**</Path>", "<Path>frontend/packages/platform/**</Path>", "<Path>frontend/packages/web-kit/**</Path>", "<Path>frontend/e2e/**</Path>"]
+shared_paths: ["<Path>frontend/tooling/architecture/**</Path>", "<Path>frontend/README.md</Path>", "<Path>README.md</Path>", "<Path>docs/namewta-enhancements.md</Path>", "<Path>.agents/skills/namewta-fullstack-development/**</Path>"]
+shared_path_owners: ["<Path>frontend/tooling/architecture/**</Path> => T-05", "<Path>frontend/README.md</Path> => T-05", "<Path>README.md</Path> => T-05", "<Path>docs/namewta-enhancements.md</Path> => T-05", "<Path>.agents/skills/namewta-fullstack-development/**</Path> => T-05"]
 ---
 
 # Ticket T-05: 收缩遗留入口并完成全量验收
@@ -31,7 +31,7 @@ shared_path_owners: ["<Path>plus-ui-namewta/tooling/architecture/**</Path> => T-
 - **目标：** 删除最后的空动态路由入口，以架构测试阻止旧边界回流，并把前端与父仓库长期文档/Skill 更新为最终真实结构。
 - **可观察产出：** 工作区只有一条 manifest-only 动态页面路径；旧名称与路径零匹配；开发/生产构建和完整 Admin Playwright 全绿；维护者从 README 与 Skill 能直接找到新 owner。
 - **来源：** `US-005`、`US-006`、`US-007`、`AC-009`、`AC-013`、`AC-014`、`AC-015`、`ADR-003`、`USER-DECISION:零兼容基座`。
-- **当前事实：** `<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>` 仍导出空 `dynamicRoutes`；父仓库和前端 Skill 仍指向 permission Store、App 私有指令与 `filterAsyncRouter`。
+- **当前事实：** `<Path>frontend/apps/admin-web/src/router/index.ts</Path>` 仍导出空 `dynamicRoutes`；父仓库和前端 Skill 仍指向 permission Store、App 私有指令与 `filterAsyncRouter`。
 - **Planning Depth 原因：** 这是 destructive contract 阶段和最终集成 Gate，同时跨前端子仓库与父仓库当前知识文件。
 
 ## 2. 决策状态

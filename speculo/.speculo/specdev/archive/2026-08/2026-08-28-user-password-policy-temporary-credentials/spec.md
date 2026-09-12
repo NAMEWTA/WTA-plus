@@ -232,7 +232,7 @@ sources:
 - 复用 `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/java/org/dromara/web/service/impl/PasswordAuthStrategy.java</Path>` 的验证码、登录失败记录、Client/登录域准入和普通令牌签发主流程。
 - 复用 `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/ClientSessionService.java</Path>` 的按用户/Client 会话定位语义，并扩展为全部缓存层可确认失效的统一边界。
 - 复用 `RedisUtils`、`LoginHelper`、现有 BCrypt 和现有 `R` envelope；业务代码不硬编码基础设施 key 或直接绕过 common helper。
-- 复用 `<Path>plus-ui-namewta/packages/domains/system/</Path>` 的系统领域服务、`<Path>plus-ui-namewta/packages/web-domains/system/</Path>` 的用户管理页面与 manifest 权限所有权，以及 `<Path>plus-ui-namewta/packages/domains/admin/</Path>` 的公开认证上下文 transport；Admin 仅在 `adminManifestRegistry.ts` 注入宿主 port，注册/profile 保持 App 私有静态页面。
+- 复用 `<Path>frontend/packages/domains/system/</Path>` 的系统领域服务、`<Path>frontend/packages/web-domains/system/</Path>` 的用户管理页面与 manifest 权限所有权，以及 `<Path>frontend/packages/domains/admin/</Path>` 的公开认证上下文 transport；Admin 仅在 `adminManifestRegistry.ts` 注入宿主 port，注册/profile 保持 App 私有静态页面。
 - 复用当前用户 allowed、data scope、超级管理员保护、角色 Client 归属和用户角色目标 Client 校验。
 - 复用当前永久重置 `PUT /system/user/resetPwd`，不为同一确认动作建立兼容双轨。
 
@@ -353,12 +353,12 @@ fixed 模式把 `defaultPassword` 改为 `{ "mode": "FIXED", "fixedValue": "合�
 | 用户新增、重置、个人改密与导入 | 后端 Controller/service 集成 | AC-001 至 AC-004、AC-017、AC-018、AC-023 | `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/</Path>` 的 password 聚合测试；`./mvnw -pl ruoyi-modules/ruoyi-system,ruoyi-admin -am test` | DB 前后状态、审计脱敏与退出码 |
 | 临时凭据存储与认证 | 真实 Redis 集成、并发 | AC-006 至 AC-014 | 复用 RedisUtils 和认证集成测试基础；外部服务环境运行定向 Maven tests | TTL、覆盖、CAS、并发唯一成功、故障注入 Evidence |
 | Client 精确会话/缓存失效 | 双 Client、双 JVM 集成 | AC-020 至 AC-022 | Sa-Token/ClientSession 相邻测试；真实 Redis + 两个独立本地缓存实例 | Token/Session/缓存前后快照、节点确认、故障注入 |
-| admin domain 公开认证 transport | 前端领域单元 | AC-015、AC-016、AC-019 | `<Path>plus-ui-namewta/packages/domains/admin/src/index.test.ts</Path>`、`transport` 测试；`pnpm test` | Vitest 输出与敏感字段拒绝/忽略断言 |
-| system domain 用户凭据 API | 前端领域单元 | AC-001 至 AC-006、AC-023 | `<Path>plus-ui-namewta/packages/domains/system/src/index.test.ts</Path>` | URL、method、加密 header、payload/response 投影断言 |
-| 用户管理 Web Domain | Vue 组件/领域集成 | AC-001 至 AC-006、AC-017、AC-023 | `<Path>plus-ui-namewta/packages/web-domains/system/src/index.test.ts</Path>`；定向 Vitest | 权限可见性、候选可编辑、错误与一次展示交互 |
-| 注册与个人改密 App 页面 | Vue 组件/App 集成 | AC-003、AC-015 至 AC-018 | `<Path>plus-ui-namewta/apps/admin-web/src/views/register.vue</Path>`、profile resetPwd 相邻测试；App Vitest/typecheck | 动态规则、详细反馈、直接 API 失败回显 |
+| admin domain 公开认证 transport | 前端领域单元 | AC-015、AC-016、AC-019 | `<Path>frontend/packages/domains/admin/src/index.test.ts</Path>`、`transport` 测试；`pnpm test` | Vitest 输出与敏感字段拒绝/忽略断言 |
+| system domain 用户凭据 API | 前端领域单元 | AC-001 至 AC-006、AC-023 | `<Path>frontend/packages/domains/system/src/index.test.ts</Path>` | URL、method、加密 header、payload/response 投影断言 |
+| 用户管理 Web Domain | Vue 组件/领域集成 | AC-001 至 AC-006、AC-017、AC-023 | `<Path>frontend/packages/web-domains/system/src/index.test.ts</Path>`；定向 Vitest | 权限可见性、候选可编辑、错误与一次展示交互 |
+| 注册与个人改密 App 页面 | Vue 组件/App 集成 | AC-003、AC-015 至 AC-018 | `<Path>frontend/apps/admin-web/src/views/register.vue</Path>`、profile resetPwd 相邻测试；App Vitest/typecheck | 动态规则、详细反馈、直接 API 失败回显 |
 | NAMEWTA DML 与权限声明 | 静态/迁移检查 | AC-005、AC-019、AC-023 | DML 尾部结构检查、固定主键冲突扫描、fresh/upgrade 数据核对；`pnpm architecture:check` | SQL dry-run、行数据查询、权限 manifest 零遗漏 |
-| Admin 浏览器主流程 | 端到端 | AC-001 至 AC-018、AC-020、AC-021 | `<Path>plus-ui-namewta/e2e/client-auth-context.spec.ts</Path>`、`system-identity.spec.ts`；`pnpm test:e2e` | Playwright 报告、跨 Client 场景与截图/网络断言 |
+| Admin 浏览器主流程 | 端到端 | AC-001 至 AC-018、AC-020、AC-021 | `<Path>frontend/e2e/client-auth-context.spec.ts</Path>`、`system-identity.spec.ts`；`pnpm test:e2e` | Playwright 报告、跨 Client 场景与截图/网络断言 |
 | 前端工作区全量门禁 | 静态、单元、构建 | 所有前端合同 | `pnpm --filter @namewta/tooling-openapi openapi:check`；`pnpm architecture:check`；`pnpm architecture:test`；`pnpm lint`；`pnpm typecheck`；`pnpm test`；`pnpm build:dev`；`pnpm build:prod` | cwd、命令、退出码和摘要 |
 | 后端全量回归 | 单元/集成/打包 | 所有后端合同 | `./mvnw test` 及适用的全量 package；真实 Redis/MySQL 外部服务验证单独记录 | Maven 报告、环境说明、未运行项与残余风险 |
 

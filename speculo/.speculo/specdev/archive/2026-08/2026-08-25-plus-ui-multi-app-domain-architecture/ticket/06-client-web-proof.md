@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-05]
 contract_ids: [AC-003, AC-018, AC-019, AC-023]
 owner: native:/root/t01
-expected_changes: ["<Path>plus-ui-namewta/apps/client-web/**</Path>", "<Path>plus-ui-namewta/packages/domains/identity-access/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/identity-access/**</Path>", "<Path>plus-ui-namewta/packages/web-kit/**</Path>", "<Path>plus-ui-namewta/e2e/client-web-proof.spec.ts</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/apps/client-web/**</Path>", "<Path>plus-ui-namewta/packages/domains/identity-access/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/identity-access/**</Path>", "<Path>plus-ui-namewta/packages/web-kit/**</Path>", "<Path>plus-ui-namewta/e2e/client-web-proof.spec.ts</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/domains/demo/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/demo/**</Path>", "<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/src/**</Path>", "<Path>plus-ui-namewta/package.json</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/pnpm-lock.yaml</Path> => T-03 policy owner; T-06 scoped writer for importers mechanically generated from activated T-06 package manifests only (DEV-T06-001)"]
+expected_changes: ["<Path>frontend/apps/client-web/**</Path>", "<Path>frontend/packages/domains/identity-access/**</Path>", "<Path>frontend/packages/web-domains/identity-access/**</Path>", "<Path>frontend/packages/web-kit/**</Path>", "<Path>frontend/e2e/client-web-proof.spec.ts</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+writable_paths: ["<Path>frontend/apps/client-web/**</Path>", "<Path>frontend/packages/domains/identity-access/**</Path>", "<Path>frontend/packages/web-domains/identity-access/**</Path>", "<Path>frontend/packages/web-kit/**</Path>", "<Path>frontend/e2e/client-web-proof.spec.ts</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+read_only_paths: ["<Path>frontend/packages/domains/demo/**</Path>", "<Path>frontend/packages/web-domains/demo/**</Path>", "<Path>frontend/packages/platform/**</Path>", "<Path>frontend/src/**</Path>", "<Path>frontend/package.json</Path>"]
+shared_paths: ["<Path>frontend/pnpm-lock.yaml</Path>"]
+shared_path_owners: ["<Path>frontend/pnpm-lock.yaml</Path> => T-03 policy owner; T-06 scoped writer for importers mechanically generated from activated T-06 package manifests only (DEV-T06-001)"]
 ---
 
 # Ticket T-06: 激活 client-web 第二 App 组合证明

@@ -209,7 +209,7 @@ T-05 是双仓库 Ticket，backend 与 frontend commit 均为完成条件，任�
 
 - 后端实际测试命令：在 `<Path>ruoyi-vue-plus-namewta</Path>` 运行 `sh mvnw -pl ruoyi-admin -am -Dmaven.test.skip=false test`；package 不能替代 tests。
 - 后端 build：`sh mvnw -pl ruoyi-admin -am package -DskipTests`，关键 Gate 可运行 `sh mvnw clean package`。
-- 前端 active gates：在 `<Path>plus-ui-namewta</Path>` 运行 `pnpm lint` 与 `pnpm build:prod`。
+- 前端 active gates：在 `<Path>frontend</Path>` 运行 `pnpm lint` 与 `pnpm build:prod`。
 - `pnpm exec vue-tsc --noEmit` 仅为补充诊断。基线因 `src/api/monitor/loginInfo` 与 `logininfo` 大小写冲突产生两个 TS1149、退出 2；本 change 不新增诊断即可，不能报告 typecheck passed。
 - 全部 E2E status 为 not-required。人工浏览器/API/SQL/Provider 验收只按 manual/integration Evidence 报告。
 - 禁止通过删除测试、放宽 compiler/lint、修改全局 skip、吞失败或提交生成物获得绿色。

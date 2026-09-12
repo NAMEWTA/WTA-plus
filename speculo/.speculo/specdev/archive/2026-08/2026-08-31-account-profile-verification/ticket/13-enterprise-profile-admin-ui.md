@@ -13,13 +13,13 @@ blocked_by: [T-10]
 contract_ids: [AC-018, AC-019, AC-020, AC-021, AC-022, AC-023, AC-024, AC-025, AC-026, AC-027, AC-028, AC-029, AC-030, AC-031, AC-039, AC-040, AC-041]
 owner: codex:/root
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/enterprise/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/enterprise/**</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/enterprise/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/enterprise/**</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/packages/domains/profile/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/index.ts</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/workflow/**</Path>"
+  - "<Path>frontend/packages/domains/profile/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/index.ts</Path>"
+  - "<Path>frontend/packages/web-domains/workflow/**</Path>"
 shared_paths: []
 shared_path_owners: []
 ---

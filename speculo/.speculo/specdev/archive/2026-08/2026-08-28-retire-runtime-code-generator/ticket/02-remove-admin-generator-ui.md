@@ -12,11 +12,11 @@ risk: high
 blocked_by: []
 contract_ids: [AC-003, AC-004]
 owner: codex:/root
-expected_changes: ["<Path>plus-ui-namewta/packages/domains/gen/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/gen/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/package.json</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/host/download.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/views/index.vue</Path>", "<Path>plus-ui-namewta/tooling/architecture/test/domain-layout.test.mjs</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/e2e/devtools-domain.spec.ts</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/domains/gen/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/gen/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/package.json</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/host/download.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/views/index.vue</Path>", "<Path>plus-ui-namewta/tooling/architecture/test/domain-layout.test.mjs</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/e2e/devtools-domain.spec.ts</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/api-contracts/**</Path>", "<Path>plus-ui-namewta/tooling/generators/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/host/download.ts</Path>", "<Path>docs/fm/**</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/apps/admin-web/package.json</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>plus-ui-namewta/tooling/architecture/test/domain-layout.test.mjs</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/apps/admin-web/package.json</Path> => T-02", "<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path> => T-02", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path> => T-02", "<Path>plus-ui-namewta/tooling/architecture/test/domain-layout.test.mjs</Path> => T-02", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path> => T-02"]
+expected_changes: ["<Path>frontend/packages/domains/gen/**</Path>", "<Path>frontend/packages/web-domains/gen/**</Path>", "<Path>frontend/apps/admin-web/package.json</Path>", "<Path>frontend/apps/admin-web/src/application/services.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>", "<Path>frontend/apps/admin-web/src/application/host/download.test.ts</Path>", "<Path>frontend/apps/admin-web/src/views/index.vue</Path>", "<Path>frontend/tooling/architecture/test/domain-layout.test.mjs</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/e2e/devtools-domain.spec.ts</Path>"]
+writable_paths: ["<Path>frontend/packages/domains/gen/**</Path>", "<Path>frontend/packages/web-domains/gen/**</Path>", "<Path>frontend/apps/admin-web/package.json</Path>", "<Path>frontend/apps/admin-web/src/application/services.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>", "<Path>frontend/apps/admin-web/src/application/host/download.test.ts</Path>", "<Path>frontend/apps/admin-web/src/views/index.vue</Path>", "<Path>frontend/tooling/architecture/test/domain-layout.test.mjs</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/e2e/devtools-domain.spec.ts</Path>"]
+read_only_paths: ["<Path>frontend/packages/api-contracts/**</Path>", "<Path>frontend/tooling/generators/**</Path>", "<Path>frontend/apps/admin-web/src/application/host/download.ts</Path>", "<Path>docs/fm/**</Path>"]
+shared_paths: ["<Path>frontend/apps/admin-web/package.json</Path>", "<Path>frontend/apps/admin-web/src/application/services.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>frontend/tooling/architecture/test/domain-layout.test.mjs</Path>", "<Path>frontend/pnpm-lock.yaml</Path>"]
+shared_path_owners: ["<Path>frontend/apps/admin-web/package.json</Path> => T-02", "<Path>frontend/apps/admin-web/src/application/services.ts</Path> => T-02", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path> => T-02", "<Path>frontend/tooling/architecture/test/domain-layout.test.mjs</Path> => T-02", "<Path>frontend/pnpm-lock.yaml</Path> => T-02"]
 ---
 
 # Ticket T-02: 删除前端 Admin 代码生成管理能力
@@ -38,7 +38,7 @@ shared_path_owners: ["<Path>plus-ui-namewta/apps/admin-web/package.json</Path> =
 
 ### 已锁定决策
 
-- 物理删除 `<Path>plus-ui-namewta/packages/domains/gen/**</Path>` 与 `<Path>plus-ui-namewta/packages/web-domains/gen/**</Path>`，不保留空包、alias 或 stub registration。
+- 物理删除 `<Path>frontend/packages/domains/gen/**</Path>` 与 `<Path>frontend/packages/web-domains/gen/**</Path>`，不保留空包、alias 或 stub registration。
 - 从 Admin 显式组合和依赖中删除 `gen`；不修改 manifest-only 失败关闭合同。
 - 通用下载宿主保留，仅把其测试中的 `/tool/gen` fixture 替换为中性下载资源。
 
@@ -85,13 +85,13 @@ Admin 解析动态菜单和启动应用时，不再有 `gen` domain、service �
 - **可写范围：** 仅 `writable_paths`；OpenAPI 与说明文档分别由 T-04/T-05 处理。
 - **只读上下文：** 当前 API contracts、通用下载实现、`tooling/generators` 与 `docs/fm`。
 - **共享路径：** Admin package/services/manifest、architecture mapping 和 lockfile 由 T-02 唯一修改。
-- **保留或不动：** `<Path>plus-ui-namewta/tooling/generators/**</Path>`、非 gen Domain/Web Domain 与通用下载实现。
+- **保留或不动：** `<Path>frontend/tooling/generators/**</Path>`、非 gen Domain/Web Domain 与通用下载实现。
 
 ## 8. 验证矩阵
 
 | 行为或风险 | 验证接缝 | 命令或步骤 | 预期结果 | Evidence |
 |---|---|---|---|---|
-| 正常路径 | workspace/App 组合 | 在 `<Path>plus-ui-namewta/**</Path>` 运行 `pnpm architecture:check`、`pnpm architecture:test`、定向 Admin Vitest | 包图和组合测试通过且无 gen registration | `<Path>{roots.state}/specdev/changes/2026-08-28-retire-runtime-code-generator/evidence/T-02.md</Path>` |
+| 正常路径 | workspace/App 组合 | 在 `<Path>frontend/**</Path>` 运行 `pnpm architecture:check`、`pnpm architecture:test`、定向 Admin Vitest | 包图和组合测试通过且无 gen registration | `<Path>{roots.state}/specdev/changes/2026-08-28-retire-runtime-code-generator/evidence/T-02.md</Path>` |
 | 失败路径 | 未知 component 与引用扫描 | 保留现有未知 key 断言；扫描 package、service、manifest、lockfile 和文案 | 未知 key 仍失败关闭，生成器活动引用为零 | 同上 |
 | 回归 | 全前端门禁 | 运行 `pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod` | 全部通过；通用下载定向测试通过 | 同上 |
 

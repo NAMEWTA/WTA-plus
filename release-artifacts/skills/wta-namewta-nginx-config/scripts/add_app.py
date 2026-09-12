@@ -288,7 +288,7 @@ def main() -> None:
         default=str(Path(__file__).resolve().parents[4]),
         help="WTA-plus 根目录",
     )
-    parser.add_argument("--app", help="plus-ui-namewta/apps 下的 App 目录名")
+    parser.add_argument("--app", help="frontend/apps 下的 App 目录名")
     parser.add_argument("--prefix", help="URL 路径前缀，不含首尾斜杠")
     parser.add_argument("--sensitive", action="store_true", help="生成 10 位私有前缀")
     parser.add_argument("--port", type=int, help="独立 Nginx 宿主机端口")
@@ -304,7 +304,7 @@ def main() -> None:
         parser.error("--app 必填（或使用 --list）")
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", args.app):
         parser.error("--app 只允许小写字母、数字和连字符")
-    package_json = repo / "plus-ui-namewta" / "apps" / args.app / "package.json"
+    package_json = repo / "frontend" / "apps" / args.app / "package.json"
     if not package_json.is_file():
         parser.error(f"App 尚不可构建或不存在 package.json: {package_json}")
     if args.sensitive and args.prefix:

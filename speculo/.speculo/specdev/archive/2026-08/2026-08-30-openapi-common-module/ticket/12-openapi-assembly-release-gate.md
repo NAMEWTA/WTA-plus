@@ -28,7 +28,7 @@ read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-openapi/src/main/java/org/dromara/common/openapi/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/pom.xml</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/pom.xml</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/system/src/open-api/**</Path>"
+  - "<Path>frontend/packages/web-domains/system/src/open-api/**</Path>"
 shared_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-openapi/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/main/resources/application*.yml</Path>"

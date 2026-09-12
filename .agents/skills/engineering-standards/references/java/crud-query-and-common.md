@@ -1,10 +1,10 @@
 # 后端 CRUD、查询与公共设施实现规范
 
-适用 `module:wta-vue-plus-namewta` 中业务 CRUD、MyBatis 查询、树结构、翻译、缓存和导入导出。父仓库 `docs/fm` 定义标准骨架，demo 展示完整链路，system/workflow 展示复杂领域约束。
+适用 `module:backend` 中业务 CRUD、MyBatis 查询、树结构、翻译、缓存和导入导出。父仓库 `docs/fm` 定义标准骨架，demo 展示完整链路，system/workflow 展示复杂领域约束。
 
 ### BE-CRUD-001 标准分层与实现基线
 
-Scope: `path:wta-vue-plus-namewta/wta-modules/**`
+Scope: `path:backend/wta-modules/**`
 
 Level: MUST
 
@@ -16,7 +16,7 @@ Verification: 全链路文件与同模块最近实现对照；controller/service
 
 ### BE-CRUD-002 Entity、BO、VO 与映射
 
-Scope: `path:wta-vue-plus-namewta/wta-modules/**/domain/**`
+Scope: `path:backend/wta-modules/**/domain/**`
 
 Level: MUST
 
@@ -28,7 +28,7 @@ Verification: 表 schema/entity/BO/VO 字段对照；mapping/validation 测试�
 
 ### BE-CRUD-003 Mapper 与数据权限
 
-Scope: MyBatis mapper interfaces and XML under `wta-vue-plus-namewta`
+Scope: MyBatis mapper interfaces and XML under `backend`
 
 Level: MUST
 
@@ -52,7 +52,7 @@ Verification: 空字符串/null/日期范围/排序测试；review wrapper 创�
 
 ### BE-CRUD-005 Service 不变量、唯一性与删除校验
 
-Scope: service implementations under `wta-vue-plus-namewta/wta-modules/**`
+Scope: service implementations under `backend/wta-modules/**`
 
 Level: MUST
 
@@ -64,7 +64,7 @@ Verification: insert/update/duplicate/delete forbidden 测试；review `validEnt
 
 ### BE-CRUD-006 Controller transport 与安全注解
 
-Scope: Spring MVC controllers under `wta-vue-plus-namewta/wta-modules/**`
+Scope: Spring MVC controllers under `backend/wta-modules/**`
 
 Level: MUST
 
@@ -88,7 +88,7 @@ Verification: 中途失败回滚、关联清空/替换、跨 Client 拒绝和缓
 
 ### BE-CRUD-008 树结构不变量
 
-Scope: tree entities and services under `wta-vue-plus-namewta/wta-modules/**`
+Scope: tree entities and services under `backend/wta-modules/**`
 
 Level: MUST
 

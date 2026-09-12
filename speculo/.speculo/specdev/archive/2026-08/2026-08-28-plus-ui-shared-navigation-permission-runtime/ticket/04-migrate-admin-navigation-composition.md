@@ -12,9 +12,9 @@ risk: critical
 blocked_by: [T-02, T-03]
 contract_ids: [AC-001, AC-002, AC-003, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-014]
 owner: codex:leadership-epoch-1
-expected_changes: ["<Path>plus-ui-namewta/apps/admin-web/src/directive/index.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/directive/permission/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/navigation.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/navigation.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/permission.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/components/Breadcrumb/index.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/components/TopNav/index.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/layout/components/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry*</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/manifestDiagnostic*</Path>", "<Path>plus-ui-namewta/apps/admin-web/README.md</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/apps/admin-web/src/directive/index.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/directive/permission/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/navigation.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/store/modules/navigation.test.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/permission.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/components/Breadcrumb/index.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/components/TopNav/index.vue</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/layout/components/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry*</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/manifestDiagnostic*</Path>", "<Path>plus-ui-namewta/apps/admin-web/README.md</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/web-kit/permission/**</Path>", "<Path>plus-ui-namewta/packages/platform/permission/**</Path>", "<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>", "<Path>plus-ui-namewta/e2e/app-runtime-baseline.spec.ts</Path>"]
+expected_changes: ["<Path>frontend/apps/admin-web/src/directive/index.ts</Path>", "<Path>frontend/apps/admin-web/src/directive/permission/**</Path>", "<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/store/modules/permission.test.ts</Path>", "<Path>frontend/apps/admin-web/src/store/modules/navigation.ts</Path>", "<Path>frontend/apps/admin-web/src/store/modules/navigation.test.ts</Path>", "<Path>frontend/apps/admin-web/src/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/components/Breadcrumb/index.vue</Path>", "<Path>frontend/apps/admin-web/src/components/TopNav/index.vue</Path>", "<Path>frontend/apps/admin-web/src/layout/components/**</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry*</Path>", "<Path>frontend/apps/admin-web/src/router/manifestDiagnostic*</Path>", "<Path>frontend/apps/admin-web/README.md</Path>"]
+writable_paths: ["<Path>frontend/apps/admin-web/src/directive/index.ts</Path>", "<Path>frontend/apps/admin-web/src/directive/permission/**</Path>", "<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/store/modules/permission.test.ts</Path>", "<Path>frontend/apps/admin-web/src/store/modules/navigation.ts</Path>", "<Path>frontend/apps/admin-web/src/store/modules/navigation.test.ts</Path>", "<Path>frontend/apps/admin-web/src/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/components/Breadcrumb/index.vue</Path>", "<Path>frontend/apps/admin-web/src/components/TopNav/index.vue</Path>", "<Path>frontend/apps/admin-web/src/layout/components/**</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry*</Path>", "<Path>frontend/apps/admin-web/src/router/manifestDiagnostic*</Path>", "<Path>frontend/apps/admin-web/README.md</Path>"]
+read_only_paths: ["<Path>frontend/packages/web-kit/permission/**</Path>", "<Path>frontend/packages/platform/permission/**</Path>", "<Path>frontend/packages/platform/app-runtime/**</Path>", "<Path>frontend/apps/admin-web/src/router/index.ts</Path>", "<Path>frontend/e2e/app-runtime-baseline.spec.ts</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---
@@ -31,7 +31,7 @@ shared_path_owners: []
 - **目标：** 让 Admin 显式组合新 Web 权限宿主和菜单纯运行时，并把 permission Store 收口为 App 自有 navigation Store。
 - **可观察产出：** Admin 登录、导航、侧栏、顶栏、标签页、动态页面、权限按钮和失败诊断与 T-01 基线一致，同时生产源码不再包含 App 私有权限指令或本地动态页面解析算法。
 - **来源：** `US-001`、`US-002`、`US-004` 至 `US-007`、`AC-001` 至 `AC-012`、`ADR-001` 至 `ADR-003`。
-- **当前事实：** `<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>` 混合导航状态与纯菜单算法，8 个布局/导航消费者使用旧 Store；指令仍直接导入 Admin evaluator。
+- **当前事实：** `<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>` 混合导航状态与纯菜单算法，8 个布局/导航消费者使用旧 Store；指令仍直接导入 Admin evaluator。
 - **Planning Depth 原因：** 这是认证后纵向链路的生产迁移汇合点，任何遗漏都可能导致空白页、循环导航或权限可见性回归。
 
 ## 2. 决策状态
@@ -40,7 +40,7 @@ shared_path_owners: []
 
 - 新正式 Store 命名为 navigation Store，Pinia id、导出名、变量名和调用点统一表达 navigation，不保留旧 alias。
 - navigation Store 只拥有 routes、sidebar、topbar、default 投影和 Router 注册；菜单转换调用 T-03 公开能力。
-- Admin evaluator provider 由 `<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Path>` 提供给 T-02 安装入口。
+- Admin evaluator provider 由 `<Path>frontend/apps/admin-web/src/application/access.ts</Path>` 提供给 T-02 安装入口。
 - 动态领域页面只使用特殊组件、所选 manifest 或 App-owned manifest；新 Store 不包含 `import.meta.glob`、`loadView` 或本地权限 dynamic route 过滤。
 
 ### 已采用的低影响假设
@@ -87,7 +87,7 @@ Admin 启动时通过自己的会话状态安装 Web Kit 权限指令。受保�
 - **可写范围：** 仅列出的 Admin 路径；越界必须停止。
 - **只读上下文：** 三个共享包、Router 静态表和 T-01 E2E。
 - **共享路径：** 无；本 Ticket 是 Admin 迁移路径唯一 writer。
-- **保留或不动：** `<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>` 留给 T-05 删除空 legacy export；其他 Store、样式和领域页面不动。
+- **保留或不动：** `<Path>frontend/apps/admin-web/src/router/index.ts</Path>` 留给 T-05 删除空 legacy export；其他 Store、样式和领域页面不动。
 
 ## 8. 验证矩阵
 

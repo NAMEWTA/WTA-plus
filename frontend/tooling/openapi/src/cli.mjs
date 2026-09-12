@@ -12,7 +12,7 @@ try {
   if (command === 'fetch') {
     const result = await fetchSnapshot({
       backendCommit: option('backend-commit'),
-      backendRepository: option('backend-repository') ?? 'wta-vue-plus-namewta',
+      backendRepository: option('backend-repository') ?? 'backend',
       pointer: option('pointer') ?? defaultPaths.pointer,
       runtimeEndpoint: option('runtime-endpoint') ?? '/v3/api-docs',
       source: option('source'),

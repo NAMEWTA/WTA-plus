@@ -4,7 +4,7 @@
 
 ### FE-CRUD-001 采用领域纵切片
 
-Scope: `module:plus-ui-namewta`
+Scope: `module:frontend`
 
 Level: MUST
 
@@ -16,7 +16,7 @@ Verification: 对照后端 controller/BO/VO/OpenAPI；review mapper、公开 exp
 
 ### FE-CRUD-002 HTTP 合同与方法
 
-Scope: `path:plus-ui-namewta/packages/domains/**`, `path:plus-ui-namewta/packages/api-contracts/**`
+Scope: `path:frontend/packages/domains/**`, `path:frontend/packages/api-contracts/**`
 
 Level: MUST
 
@@ -28,7 +28,7 @@ Verification: 跨端合同 review；domain transport/mapper 测试；搜索受�
 
 ### FE-CRUD-003 查询与变更状态
 
-Scope: `path:plus-ui-namewta/packages/web-domains/**`
+Scope: `path:frontend/packages/web-domains/**`
 
 Level: MUST
 
@@ -40,7 +40,7 @@ Verification: 页面/组合式函数测试覆盖成功、失败、空结果、�
 
 ### FE-CRUD-004 树与层级数据
 
-Scope: `path:plus-ui-namewta/packages/domains/**`, `path:plus-ui-namewta/packages/web-domains/**`
+Scope: `path:frontend/packages/domains/**`, `path:frontend/packages/web-domains/**`
 
 Level: MUST
 
@@ -52,7 +52,7 @@ Verification: domain 树转换测试；页面展开/选择/过滤测试；真实
 
 ### FE-CRUD-005 权限与宿主副作用
 
-Scope: `path:plus-ui-namewta/packages/web-domains/**`, `path:plus-ui-namewta/apps/**`
+Scope: `path:frontend/packages/web-domains/**`, `path:frontend/apps/**`
 
 Level: MUST
 
@@ -64,7 +64,7 @@ Verification: manifest inventory、权限负向和零副作用测试；相关浏
 
 ### FE-CRUD-006 复用必须有真实消费者
 
-Scope: `module:plus-ui-namewta`
+Scope: `module:frontend`
 
 Level: SHOULD
 

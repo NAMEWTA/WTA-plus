@@ -22,12 +22,12 @@ blocked_by: [T-04]
 contract_ids: [AC-001, NAC-01]
 owner: unassigned
 expected_changes:
-  - "<Path>plus-ui-namewta/**</Path>"
+  - "<Path>frontend/**</Path>"
   - "<Path>docs/**</Path>"
   - "<Path>AGENTS.md</Path>"
   - "<Path>README.md</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/**</Path>"
+  - "<Path>frontend/**</Path>"
   - "<Path>docs/**</Path>"
   - "<Path>AGENTS.md</Path>"
   - "<Path>README.md</Path>"

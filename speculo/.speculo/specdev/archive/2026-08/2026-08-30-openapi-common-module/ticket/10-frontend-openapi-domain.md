@@ -13,24 +13,24 @@ blocked_by: [T-04, T-06]
 contract_ids: [AC-009, AC-020, AC-021, AC-022, AC-024, AC-026, AC-027]
 owner: codex:/root
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/domains/system/src/open-api/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/src/index.ts</Path>"
+  - "<Path>frontend/packages/domains/system/src/open-api/**</Path>"
+  - "<Path>frontend/packages/domains/system/src/index.ts</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/packages/domains/system/src/open-api/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/src/index.ts</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/package.json</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/README.md</Path>"
+  - "<Path>frontend/packages/domains/system/src/open-api/**</Path>"
+  - "<Path>frontend/packages/domains/system/src/index.ts</Path>"
+  - "<Path>frontend/packages/domains/system/package.json</Path>"
+  - "<Path>frontend/packages/domains/system/README.md</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/packages/platform/src/http/**</Path>"
+  - "<Path>frontend/packages/platform/src/http/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/controller/system/openapi/**</Path>"
 shared_paths:
-  - "<Path>plus-ui-namewta/packages/domains/system/src/index.ts</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/package.json</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/README.md</Path>"
+  - "<Path>frontend/packages/domains/system/src/index.ts</Path>"
+  - "<Path>frontend/packages/domains/system/package.json</Path>"
+  - "<Path>frontend/packages/domains/system/README.md</Path>"
 shared_path_owners:
-  - "<Path>plus-ui-namewta/packages/domains/system/src/index.ts</Path> => T-10"
-  - "<Path>plus-ui-namewta/packages/domains/system/package.json</Path> => T-10"
-  - "<Path>plus-ui-namewta/packages/domains/system/README.md</Path> => T-10"
+  - "<Path>frontend/packages/domains/system/src/index.ts</Path> => T-10"
+  - "<Path>frontend/packages/domains/system/package.json</Path> => T-10"
+  - "<Path>frontend/packages/domains/system/README.md</Path> => T-10"
 ---
 
 # Ticket T-10: 建立前端 system domain 的 OpenAPI 类型与请求合同

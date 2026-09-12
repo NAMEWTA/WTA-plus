@@ -8,7 +8,7 @@ sources:
   - USER-DECISION:2026-08-25-multi-app-domain-architecture
   - USER-DECISION:2026-08-25-final-plan-approved
   - ADR-001-through-ADR-007
-  - "CODE:<Path>plus-ui-namewta/</Path>"
+  - "CODE:<Path>frontend/</Path>"
   - "CODE:<Path>docs/upstream/customization-map.md</Path>"
 ---
 
@@ -23,7 +23,7 @@ sources:
 
 ### 问题陈述
 
-当前 `<Path>plus-ui-namewta/src/</Path>` 是单一 Vue Web 应用。API、类型、页面、hooks、组件、Store、请求适配、路由、认证和浏览器 UI 反馈共同依赖一个应用入口。虽然 `<Path>plus-ui-namewta/src/api/</Path>` 与 `<Path>plus-ui-namewta/src/views/</Path>` 已按 ai、demo、monitor、system、tool、workflow 分组，但这些分组尚未形成可由多个 App 独立选择、可跨终端复用、可验证依赖方向的公共模块。
+当前 `<Path>frontend/src/</Path>` 是单一 Vue Web 应用。API、类型、页面、hooks、组件、Store、请求适配、路由、认证和浏览器 UI 反馈共同依赖一个应用入口。虽然 `<Path>frontend/src/api/</Path>` 与 `<Path>frontend/src/views/</Path>` 已按 ai、demo、monitor、system、tool、workflow 分组，但这些分组尚未形成可由多个 App 独立选择、可跨终端复用、可验证依赖方向的公共模块。
 
 未来需要多个独立前端 App 共用同一后台，并可能增加移动 Web 和小程序。若继续复制当前单体，每个 App 会重复维护 API、DTO、认证、权限和动态路由；若直接把现有 Vue 页面包当作领域包，未来非 Web 终端又会被 Vue Router、Element Plus、DOM、浏览器存储和 Axios 具体实现锁定。
 
@@ -46,7 +46,7 @@ sources:
 4. 每个 App 通过自己的 ClientContext 使用同一后台；登录、注册、社交回调、Token、401、用户信息、权限和动态菜单行为不弱化。
 5. 后端菜单 component key 能经 WebDomainManifest 映射到被当前 App 选择的页面；重复或缺失映射产生明确、可诊断失败。
 6. mobile-web、miniapp-taro 和未来 Taro adapter 以 README 占位表达边界，但在激活前不成为虚假可构建包、不引入依赖。
-7. 迁移按可验证波次推进；旧 `<Path>plus-ui-namewta/src/</Path>` 仅在替代能力通过对应 Gate 后删除。
+7. 迁移按可验证波次推进；旧 `<Path>frontend/src/</Path>` 仅在替代能力通过对应 Gate 后删除。
 8. 上游变化可以按能力选择性吸收，同时继续保持 NAMEWTA Client、权限、菜单和认证不变量。
 
 ### 非目标
@@ -97,47 +97,47 @@ App = Platform Kernel
 以下是完整目标布局。标有 README 的未来目录在首期允许只有文档；只有被迁移波次激活的目录才获得 `package.json` 和源码。
 
 ```text
-<Path>plus-ui-namewta/</Path>
-├── <Path>plus-ui-namewta/apps/README.md</Path>
-├── <Path>plus-ui-namewta/apps/admin-web/README.md</Path>
-├── <Path>plus-ui-namewta/apps/client-web/README.md</Path>
-├── <Path>plus-ui-namewta/apps/mobile-web/README.md</Path>
-├── <Path>plus-ui-namewta/apps/miniapp-taro/README.md</Path>
-├── <Path>plus-ui-namewta/packages/README.md</Path>
-├── <Path>plus-ui-namewta/packages/platform/contracts/README.md</Path>
-├── <Path>plus-ui-namewta/packages/platform/http/README.md</Path>
-├── <Path>plus-ui-namewta/packages/platform/auth/README.md</Path>
-├── <Path>plus-ui-namewta/packages/platform/permission/README.md</Path>
-├── <Path>plus-ui-namewta/packages/platform/app-runtime/README.md</Path>
-├── <Path>plus-ui-namewta/packages/domains/identity-access/README.md</Path>
-├── <Path>plus-ui-namewta/packages/domains/system-admin/README.md</Path>
-├── <Path>plus-ui-namewta/packages/domains/workflow/README.md</Path>
-├── <Path>plus-ui-namewta/packages/domains/ai/README.md</Path>
-├── <Path>plus-ui-namewta/packages/domains/demo/README.md</Path>
-├── <Path>plus-ui-namewta/packages/domains/devtools/README.md</Path>
-├── <Path>plus-ui-namewta/packages/domains/operations/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-domains/identity-access/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-domains/system-admin/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-domains/workflow/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-domains/ai/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-domains/demo/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-domains/devtools/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-domains/operations/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-kit/shell-element/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-kit/ui-element/README.md</Path>
-├── <Path>plus-ui-namewta/packages/web-kit/design-tokens/README.md</Path>
-├── <Path>plus-ui-namewta/packages/adapters/axios-browser/README.md</Path>
-├── <Path>plus-ui-namewta/packages/adapters/storage-browser/README.md</Path>
-├── <Path>plus-ui-namewta/packages/adapters/crypto-browser/README.md</Path>
-├── <Path>plus-ui-namewta/packages/adapters/taro-request/README.md</Path>
-├── <Path>plus-ui-namewta/packages/adapters/taro-storage/README.md</Path>
-├── <Path>plus-ui-namewta/packages/api-contracts/README.md</Path>
-├── <Path>plus-ui-namewta/tooling/architecture/README.md</Path>
-├── <Path>plus-ui-namewta/tooling/generators/README.md</Path>
-├── <Path>plus-ui-namewta/tooling/openapi/README.md</Path>
-├── <Path>plus-ui-namewta/src/</Path>  # 兼容迁移入口，Wave 10 前保留
-├── <Path>plus-ui-namewta/package.json</Path>
-└── <Path>plus-ui-namewta/pnpm-workspace.yaml</Path>
+<Path>frontend/</Path>
+├── <Path>frontend/apps/README.md</Path>
+├── <Path>frontend/apps/admin-web/README.md</Path>
+├── <Path>frontend/apps/client-web/README.md</Path>
+├── <Path>frontend/apps/mobile-web/README.md</Path>
+├── <Path>frontend/apps/miniapp-taro/README.md</Path>
+├── <Path>frontend/packages/README.md</Path>
+├── <Path>frontend/packages/platform/contracts/README.md</Path>
+├── <Path>frontend/packages/platform/http/README.md</Path>
+├── <Path>frontend/packages/platform/auth/README.md</Path>
+├── <Path>frontend/packages/platform/permission/README.md</Path>
+├── <Path>frontend/packages/platform/app-runtime/README.md</Path>
+├── <Path>frontend/packages/domains/identity-access/README.md</Path>
+├── <Path>frontend/packages/domains/system-admin/README.md</Path>
+├── <Path>frontend/packages/domains/workflow/README.md</Path>
+├── <Path>frontend/packages/domains/ai/README.md</Path>
+├── <Path>frontend/packages/domains/demo/README.md</Path>
+├── <Path>frontend/packages/domains/devtools/README.md</Path>
+├── <Path>frontend/packages/domains/operations/README.md</Path>
+├── <Path>frontend/packages/web-domains/identity-access/README.md</Path>
+├── <Path>frontend/packages/web-domains/system-admin/README.md</Path>
+├── <Path>frontend/packages/web-domains/workflow/README.md</Path>
+├── <Path>frontend/packages/web-domains/ai/README.md</Path>
+├── <Path>frontend/packages/web-domains/demo/README.md</Path>
+├── <Path>frontend/packages/web-domains/devtools/README.md</Path>
+├── <Path>frontend/packages/web-domains/operations/README.md</Path>
+├── <Path>frontend/packages/web-kit/shell-element/README.md</Path>
+├── <Path>frontend/packages/web-kit/ui-element/README.md</Path>
+├── <Path>frontend/packages/web-kit/design-tokens/README.md</Path>
+├── <Path>frontend/packages/adapters/axios-browser/README.md</Path>
+├── <Path>frontend/packages/adapters/storage-browser/README.md</Path>
+├── <Path>frontend/packages/adapters/crypto-browser/README.md</Path>
+├── <Path>frontend/packages/adapters/taro-request/README.md</Path>
+├── <Path>frontend/packages/adapters/taro-storage/README.md</Path>
+├── <Path>frontend/packages/api-contracts/README.md</Path>
+├── <Path>frontend/tooling/architecture/README.md</Path>
+├── <Path>frontend/tooling/generators/README.md</Path>
+├── <Path>frontend/tooling/openapi/README.md</Path>
+├── <Path>frontend/src/</Path>  # 兼容迁移入口，Wave 10 前保留
+├── <Path>frontend/package.json</Path>
+└── <Path>frontend/pnpm-workspace.yaml</Path>
 ```
 
 每个占位 README 必须说明：当前状态、职责、明确非职责、允许依赖、禁止依赖、未来公开入口、后端能力来源、激活条件和适用验证。占位目录在激活前不得创建空 `package.json`、伪造 exports 或被根构建当成有效 App/包。
@@ -315,9 +315,9 @@ placeholder
 
 ### IN
 
-- 将 `<Path>plus-ui-namewta/</Path>` 规划并渐进改造成 pnpm 多 App、多包 Monorepo。
+- 将 `<Path>frontend/</Path>` 规划并渐进改造成 pnpm 多 App、多包 Monorepo。
 - 创建目标 apps、platform、domains、web-domains、web-kit、adapters、api-contracts 和 tooling 的占位目录与 README 合同。
-- 保留并逐步迁移现有 `<Path>plus-ui-namewta/src/</Path>`，直到新 admin-web 入口完成行为等价。
+- 保留并逐步迁移现有 `<Path>frontend/src/</Path>`，直到新 admin-web 入口完成行为等价。
 - 建立 platform 公共端口、browser adapters、DomainModule、WebDomainManifest 和 App Composition Manifest。
 - 以 capability domain 而不是 Maven 模块镜像划分 identity-access、system-admin、workflow、ai、demo、devtools、operations。
 - 建立 admin-web 和最小 client-web，验证多 Client、多 App、不同 UI 组合。
@@ -332,8 +332,8 @@ placeholder
 
 - 当前 Vue、TypeScript、Vite、Pinia、Vue Router、Element Plus、vue-i18n 和 Axios 版本基线。
 - 当前登录、注册、社交回调、Token、Client context、401、getInfo、getRouters、按钮权限和路由守卫行为。
-- 当前 `<Path>plus-ui-namewta/src/api/</Path>` 的 HTTP/transport types 作为领域迁移来源。
-- 当前 `<Path>plus-ui-namewta/src/views/</Path>`、`<Path>plus-ui-namewta/src/components/</Path>` 与 `<Path>plus-ui-namewta/src/hooks/</Path>` 的成熟页面、组件和 composable。
+- 当前 `<Path>frontend/src/api/</Path>` 的 HTTP/transport types 作为领域迁移来源。
+- 当前 `<Path>frontend/src/views/</Path>`、`<Path>frontend/src/components/</Path>` 与 `<Path>frontend/src/hooks/</Path>` 的成熟页面、组件和 composable。
 - 当前 Oxlint、Oxfmt、vue-tsc、Vitest、Playwright 与 Vite 门禁。
 - `<Path>docs/upstream/customization-map.md</Path>` 的 NAMEWTA Client、认证、权限和动态路由合同。
 - 后端现有 HTTP/JSON 合同和服务端按 Client 菜单裁剪。
@@ -378,15 +378,15 @@ placeholder
 
 ### Monorepo 管理合同
 
-`<Path>plus-ui-namewta/pnpm-workspace.yaml</Path>` 激活后应覆盖根包、App、一级共享包、二级能力包和 tooling；允许采用等价 glob，但必须表达以下集合：
+`<Path>frontend/pnpm-workspace.yaml</Path>` 激活后应覆盖根包、App、一级共享包、二级能力包和 tooling；允许采用等价 glob，但必须表达以下集合：
 
 | Workspace 成员 | 项目根相对模式 |
 |---|---|
-| 根兼容包 | `<Path>plus-ui-namewta/</Path>` |
-| App | `<Path>plus-ui-namewta/apps/*/</Path>` |
-| 一级共享包 | `<Path>plus-ui-namewta/packages/*/</Path>` |
-| 二级能力包 | `<Path>plus-ui-namewta/packages/*/*/</Path>` |
-| Tooling | `<Path>plus-ui-namewta/tooling/*/</Path>` |
+| 根兼容包 | `<Path>frontend/</Path>` |
+| App | `<Path>frontend/apps/*/</Path>` |
+| 一级共享包 | `<Path>frontend/packages/*/</Path>` |
+| 二级能力包 | `<Path>frontend/packages/*/*/</Path>` |
+| Tooling | `<Path>frontend/tooling/*/</Path>` |
 
 - 内部包统一以 `@namewta/` 为 scope，例如 `@namewta/app-admin-web`、`@namewta/domain-workflow`、`@namewta/web-domain-workflow`、`@namewta/platform-http`、`@namewta/adapter-axios-browser`、`@namewta/web-shell-element`。
 - 内部依赖使用 `workspace:*`，共享第三方版本族使用 pnpm catalog；禁止在不同 App 重复漂移 Vue、Router、Pinia 和 UI 框架版本。
@@ -416,7 +416,7 @@ placeholder
 | Domain pure logic | 单元 | AC-006、AC-017、AC-019 | `pnpm test`，测试与包相邻 | Vitest 结果 |
 | Manifest registry | 单元/集成 | AC-009、AC-010、AC-011、AC-012 | 新增稳定 registry 测试 seam | Vitest 结果 |
 | Session/request/router | 单元/集成 | AC-013、AC-014、AC-016、AC-017 | 当前 permission/request/store 行为特征测试 | Vitest 结果 |
-| Client 认证矩阵 | 浏览器 E2E | AC-015、AC-016、AC-018 | `<Path>plus-ui-namewta/e2e/client-auth-context.spec.ts</Path>`；`pnpm test:e2e` | Playwright trace/report |
+| Client 认证矩阵 | 浏览器 E2E | AC-015、AC-016、AC-018 | `<Path>frontend/e2e/client-auth-context.spec.ts</Path>`；`pnpm test:e2e` | Playwright trace/report |
 | admin-web 用户路径 | 浏览器 E2E | AC-002、AC-013、AC-014、AC-021、AC-024 | `pnpm test:e2e`，覆盖登录和动态路由 | Playwright report |
 | client-web 组合证明 | 浏览器 E2E | AC-003、AC-018、AC-019、AC-023 | 新建第二 App 场景 | Playwright report |
 | TypeScript/Vue 合同 | 静态 | AC-002、AC-003、AC-007、AC-021、AC-028 | `pnpm typecheck` | exit code + diagnostics |

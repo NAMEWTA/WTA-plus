@@ -57,8 +57,8 @@ class WorkspaceFixture {
     initRepo(root);
     this.parentSha = commitFile(root, 'parent.txt', 'parent\n', 'parent base');
     command(root, 'git', 'update-ref', 'refs/remotes/origin/main', this.parentSha);
-    this.backend = join(root, 'wta-vue-plus-namewta');
-    this.frontend = join(root, 'plus-ui-namewta');
+    this.backend = join(root, 'backend');
+    this.frontend = join(root, 'frontend');
     this.createBackend();
     this.createFrontend();
   }

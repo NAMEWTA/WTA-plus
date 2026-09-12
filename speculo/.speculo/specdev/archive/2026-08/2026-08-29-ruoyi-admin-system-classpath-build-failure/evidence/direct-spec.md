@@ -76,7 +76,7 @@ status: done
 | `scripts/ci/verify-dev-build-guard.sh` | parent current-workspace | pass / exit 0 | 活锁、嵌套、普通/并发 stale、部分 owner、INT handler、TERM、JAR 正负向、干净入口全绿 |
 | Ruby `YAML.load_file` | parent current-workspace | pass / exit 0 | quality-gates workflow 可解析 |
 | `git diff --check` | parent current-workspace | pass / exit 0 | 无 whitespace error |
-| `pnpm install --frozen-lockfile` | `<Path>plus-ui-namewta</Path>` | pass / exit 0 | pnpm 10.34.5，lockfile 未变化 |
+| `pnpm install --frozen-lockfile` | `<Path>frontend</Path>` | pass / exit 0 | pnpm 10.34.5，lockfile 未变化 |
 | `pnpm architecture:check` | frontend current-workspace | pass / exit 0 | 24 packages，0 violation |
 | `pnpm architecture:test` | frontend current-workspace | pass / exit 0 | 99/99 |
 | `pnpm lint` | frontend current-workspace | pass / exit 0 | ESLint 通过 |

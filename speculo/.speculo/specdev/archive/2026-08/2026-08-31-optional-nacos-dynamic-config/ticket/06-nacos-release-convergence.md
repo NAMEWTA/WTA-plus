@@ -25,8 +25,8 @@ read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-web/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-notify/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/**</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/**</Path>"
+  - "<Path>frontend/apps/admin-web/**</Path>"
+  - "<Path>frontend/packages/domains/system/**</Path>"
   - "<Path>release-artifacts/docker/**</Path>"
 shared_paths: []
 shared_path_owners: []

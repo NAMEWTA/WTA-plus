@@ -332,7 +332,7 @@ public void onProcess(ProcessEvent event) {
           +-- 用 taskId 调 POST /workflow/task/completeTask
 ```
 
-公共跳转代码位于 `<Path>plus-ui-namewta/src/api/workflow/workflowCommon/index.ts</Path>`。因此每个会打开这项待办的 Client 都必须满足两件事：
+公共跳转代码位于 `<Path>frontend/src/api/workflow/workflowCommon/index.ts</Path>`。因此每个会打开这项待办的 Client 都必须满足两件事：
 
 1. 它的路由表中存在该 `formPath`，或者当前节点用自己的 `formPath` 覆盖流程默认值。
 2. 当前用户有权读取这张业务单。拥有流程任务并不会自动获得业务表的数据权限。
@@ -432,7 +432,7 @@ flow_task.client_id = 当前 clientPk
 [角色选择器只查询这个 Client 的角色]
 ```
 
-前端设计器 iframe 也把 `clientid` 传给后端，路径是 `<Path>plus-ui-namewta/src/views/workflow/processDefinition/design.vue</Path>`。
+前端设计器 iframe 也把 `clientid` 传给后端，路径是 `<Path>frontend/src/views/workflow/processDefinition/design.vue</Path>`。
 
 这个改动修复的是“设计流程时不能看到并选择别的 Client 的角色”。它没有做以下事情：
 
@@ -588,4 +588,4 @@ Client1 / Client2 / Client3 / 管理端
 | 当前用户身份交给引擎 | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/handler/WorkflowPermissionHandler.java</Path>` |
 | 设计器办理人解析 | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/service/impl/FlwTaskAssigneeServiceImpl.java</Path>` |
 | Client 角色候选过滤 | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysTaskAssigneeServiceImpl.java</Path>` |
-| 前端待办跳转 | `<Path>plus-ui-namewta/src/api/workflow/workflowCommon/index.ts</Path>` |
+| 前端待办跳转 | `<Path>frontend/src/api/workflow/workflowCommon/index.ts</Path>` |

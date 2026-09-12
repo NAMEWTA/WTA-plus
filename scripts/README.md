@@ -58,9 +58,9 @@ bash scripts/start-dev.sh
 
 ### 前置条件与保护
 
-- 前端需要可用的 Node.js、Corepack，以及完整的 `plus-ui-namewta/package.json` 和 lockfile。
+- 前端需要可用的 Node.js、Corepack，以及完整的 `frontend/package.json` 和 lockfile。
 - 后端需要 Java 21、可执行的 Maven Wrapper，以及非空的
-  `wta-vue-plus-namewta/wta-admin/src/main/resources/application-local.yml`；该配置允许纳入 Git 跟踪，
+  `backend/wta-admin/src/main/resources/application-local.yml`；该配置允许纳入 Git 跟踪，
   启动脚本不校验其忽略状态。
 - 启动前检查前端 `80` 或后端 `8080` 端口：优先 `lsof`，Windows 上回退到 `netstat`；端口被占用时只报告
   进程并退出，不会自动终止任何现有服务。
@@ -120,18 +120,18 @@ WTA-plus 默认交付是单一 monorepo，**不再**以 git submodule 检出前�
 | `core` | `wta-system`、`wta-common-notify`、`wta-common-oss` | 必须排除上述四个业务模块。 |
 
 脚本使用 JDK 的 `jar tf` 读取
-`wta-vue-plus-namewta/wta-admin/target/wta-admin.jar` 中的 `BOOT-INF/lib/` 条目。
+`backend/wta-admin/target/wta-admin.jar` 中的 `BOOT-INF/lib/` 条目。
 它只校验已经生成的产物，不负责执行 Maven 打包；产物不存在、参数无效或模块集合不符合契约时均会失败。
 
 ### 使用方式
 
 ```bash
 # 全量业务组合
-(cd wta-vue-plus-namewta && ./mvnw clean package -DskipTests)
+(cd backend && ./mvnw clean package -DskipTests)
 scripts/ci/verify-admin-bundle.sh full
 
 # 核心平台组合
-(cd wta-vue-plus-namewta && ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true)
+(cd backend && ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true)
 scripts/ci/verify-admin-bundle.sh core
 ```
 

@@ -31,9 +31,9 @@ writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-third/src/main/java/org/dromara/third/usecase/impl/ThirdObservabilityUseCaseImpl.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-third/src/test/java/org/dromara/third/controller/admin/ThirdObservabilityControllerContractTest.java</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/packages/web-domains/third/src/ThirdPage.vue</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/utils/ruoyi.ts</Path>"
-  - "<Path>plus-ui-namewta/e2e/third-party-management.spec.ts</Path>"
+  - "<Path>frontend/packages/web-domains/third/src/ThirdPage.vue</Path>"
+  - "<Path>frontend/apps/admin-web/src/utils/ruoyi.ts</Path>"
+  - "<Path>frontend/e2e/third-party-management.spec.ts</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-web/src/main/java/org/dromara/common/web/handler/GlobalExceptionHandler.java</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql</Path>"
 shared_paths: []
@@ -53,7 +53,7 @@ shared_path_owners: []
 
 - **目标：** 让调用明细和调用统计页在不输入 `providerCode` 时也能打开并显示最近数据。
 - **可观察产出：** `GET /third/invocation/list` 和 `GET /third/statistics/list` 在缺省筛选时返回 200，不再由空参数触发 500。
-- **来源：** `AC-002`、`DIAG-2026-09-08-richtext-third-oss`、`CODE:<Path>plus-ui-namewta/packages/web-domains/third/src/ThirdPage.vue</Path>`、`CODE:<Path>plus-ui-namewta/apps/admin-web/src/utils/ruoyi.ts</Path>`、`CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-third/src/main/java/org/dromara/third/controller/admin/ThirdObservabilityController.java</Path>`
+- **来源：** `AC-002`、`DIAG-2026-09-08-richtext-third-oss`、`CODE:<Path>frontend/packages/web-domains/third/src/ThirdPage.vue</Path>`、`CODE:<Path>frontend/apps/admin-web/src/utils/ruoyi.ts</Path>`、`CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-third/src/main/java/org/dromara/third/controller/admin/ThirdObservabilityController.java</Path>`
 - **当前事实：** 前端会把空字符串从 query 参数里剥掉，而 controller 当前把 `providerCode` 当作必填参数；实际调用链还经过 `ThirdObservabilityUseCaseImpl`，不能只改 controller。
 - **Planning Depth 原因：** 这是对公开 GET 接口查询语义的修订，controller/service/mapper 必须同步，并保持现有页面直开行为。
 

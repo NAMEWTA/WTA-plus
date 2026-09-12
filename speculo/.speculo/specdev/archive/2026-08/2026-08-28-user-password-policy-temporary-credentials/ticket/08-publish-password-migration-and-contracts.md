@@ -14,7 +14,7 @@ contract_ids: [AC-005, AC-006, AC-019, AC-023]
 owner: codex:lead
 expected_changes: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/README.md</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/migration/password/**</Path>", "<Path>docs/upstream/customization-map.md</Path>"]
 writable_paths: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/README.md</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/migration/password/**</Path>", "<Path>docs/upstream/customization-map.md</Path>"]
-read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-08-28-user-password-policy-temporary-credentials/spec.md</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>", "<Path>plus-ui-namewta/packages/web-domains/system/src/index.ts</Path>", "<Path>plus-ui-namewta/packages/api-contracts/**</Path>"]
+read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-08-28-user-password-policy-temporary-credentials/spec.md</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>", "<Path>frontend/packages/web-domains/system/src/index.ts</Path>", "<Path>frontend/packages/api-contracts/**</Path>"]
 shared_paths: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/README.md</Path>", "<Path>docs/upstream/customization-map.md</Path>"]
 shared_path_owners: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path> => T-08", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/README.md</Path> => T-08", "<Path>docs/upstream/customization-map.md</Path> => T-08"]
 ---

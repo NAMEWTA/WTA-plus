@@ -12,8 +12,8 @@ risk: high
 blocked_by: [T-16]
 contract_ids: [AC-003, AC-004, AC-014]
 owner: codex
-expected_changes: ["<Path>plus-ui-namewta/src/components/**</Path>", "<Path>plus-ui-namewta/src/views/system/user/profile/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/src/**</Path>"]
+expected_changes: ["<Path>frontend/src/components/**</Path>", "<Path>frontend/src/views/system/user/profile/**</Path>"]
+writable_paths: ["<Path>frontend/src/**</Path>"]
 read_only_paths: []
 shared_paths: []
 shared_path_owners: []

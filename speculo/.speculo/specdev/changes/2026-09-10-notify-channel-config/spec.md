@@ -29,7 +29,7 @@ sources:
   - CODE:ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify
   - CODE:ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-mail
   - CODE:ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-sms
-  - CODE:plus-ui-namewta/packages/web-domains/notify/src/index.ts
+  - CODE:frontend/packages/web-domains/notify/src/index.ts
   - CODE:ruoyi-vue-plus-namewta/ruoyi-admin/src/main/resources/application-dev.yml
 ---
 
@@ -251,10 +251,10 @@ sources:
 | 调用方契约 | 单元/静态 | AC-011, AC-012, AC-013 | `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/notify/caller/CaptchaNotifyCallerUnitTest.java</Path>` | 测试 |
 | 模块分层 | 静态 | DEC-002 | `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify --mode layered` | 命令 |
 | 后端测试 | 模块测试 | 受影响 notify 合同 | `./mvnw -pl ruoyi-modules/ruoyi-notify -am test` | 命令 |
-| 前端类型与页面 | typecheck/单测 | AC-001, DEC-015 | `pnpm --dir plus-ui-namewta typecheck`；notify web-domain 测试 | 命令 |
+| 前端类型与页面 | typecheck/单测 | AC-001, DEC-015 | `pnpm --dir frontend typecheck`；notify web-domain 测试 | 命令 |
 | 基座 SQL | 契约测试 | AC-001, AC-015, 播种场景 | `<Path>release-artifacts/tests/</Path>` notify/菜单基线 | 测试 |
 | Skill 事实 | 静态 | AC-018, DEC-016 | `node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs` | 命令 |
-| 管理员 E2E | 浏览器 | AC-001, AC-002, 启停与 TAB | 参照 `<Path>plus-ui-namewta/e2e/oss-config-access-policy.spec.ts</Path>` | E2E（有浏览器工具时） |
+| 管理员 E2E | 浏览器 | AC-001, AC-002, 启停与 TAB | 参照 `<Path>frontend/e2e/oss-config-access-policy.spec.ts</Path>` | E2E（有浏览器工具时） |
 
 ## 10. 风险、假设与未决问题
 

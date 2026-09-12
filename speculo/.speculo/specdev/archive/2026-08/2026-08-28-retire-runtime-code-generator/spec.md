@@ -9,8 +9,8 @@ sources:
   - "<Path>{roots.state}/specdev/changes/2026-08-28-retire-runtime-code-generator/design-tree.json</Path>"
   - "<Path>{roots.state}/specdev/changes/2026-08-28-retire-runtime-code-generator/ADR.md</Path>"
   - "CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-gen/**</Path>"
-  - "CODE:<Path>plus-ui-namewta/packages/domains/gen/**</Path>"
-  - "CODE:<Path>plus-ui-namewta/packages/web-domains/gen/**</Path>"
+  - "CODE:<Path>frontend/packages/domains/gen/**</Path>"
+  - "CODE:<Path>frontend/packages/web-domains/gen/**</Path>"
 ---
 
 # Spec: 完整退役运行时代码生成器
@@ -140,8 +140,8 @@ sources:
 ### REUSE
 
 - `<Path>docs/fm/**</Path>` 的 CRUD 标准模板、catalog、上下文合同和校验脚本。
-- `<Path>plus-ui-namewta/tooling/openapi/**</Path>` 的不可变 revision、current pointer 和确定性生成机制。
-- `<Path>plus-ui-namewta/tooling/architecture/**</Path>` 的 workspace、包边界和 App 组合检查。
+- `<Path>frontend/tooling/openapi/**</Path>` 的不可变 revision、current pointer 和确定性生成机制。
+- `<Path>frontend/tooling/architecture/**</Path>` 的 workspace、包边界和 App 组合检查。
 - Admin 现有 manifest-only 路由诊断、通用下载、HTTP、权限和反馈宿主能力。
 - `<Path>ruoyi-vue-plus-namewta/script/docker/docker-compose.yml</Path>` 的 MySQL 8.4 fresh 初始化顺序。
 
@@ -151,7 +151,7 @@ sources:
 - **OOS-002**：不删除不可变 OpenAPI 历史 revisions；只更新 current 指针和当前生成合同。
 - **OOS-003**：不删除或重写过去由生成器产出的业务代码；真实业务模块继续由各自 owner 维护。
 - **OOS-004**：不删除路由 `generateRoutes`、密码生成、OpenAPI 生成等与低代码 CRUD 运行能力无关的通用语义。
-- **OOS-005**：不激活、扩展或删除 `<Path>plus-ui-namewta/tooling/generators/**</Path>` 的工作区脚手架占位；它不是当前运行时代码生成器。
+- **OOS-005**：不激活、扩展或删除 `<Path>frontend/tooling/generators/**</Path>` 的工作区脚手架占位；它不是当前运行时代码生成器。
 - **OOS-006**：不改变认证、Client 隔离、菜单裁剪或其他模块的权限语义。
 - **OOS-007**：不承担生产数据迁移、备份、兼容、滚动发布、upgrade 或回滚恢复。
 
@@ -188,7 +188,7 @@ sources:
 | 接缝 | 层级 | 覆盖合同 | 现有先例或命令 | Evidence 类型 |
 |---|---|---|---|---|
 | 后端 Maven reactor 与部署组合 | 构建/集成 | AC-001, AC-002, AC-012 | 在 `<Path>ruoyi-vue-plus-namewta/**</Path>` 运行 `./mvnw test`、`./mvnw clean package -DskipTests`、`./mvnw clean package -Pbundle-core -Dmaven.test.skip=true` | Ticket Evidence 中的命令、退出码与跳过项 |
-| 前端包图、App 组合与单元测试 | 架构/类型/测试/构建 | AC-003, AC-004, AC-012 | 在 `<Path>plus-ui-namewta/**</Path>` 运行 `pnpm architecture:check`、`pnpm architecture:test`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod` | Ticket Evidence 中的命令、退出码与诊断 |
+| 前端包图、App 组合与单元测试 | 架构/类型/测试/构建 | AC-003, AC-004, AC-012 | 在 `<Path>frontend/**</Path>` 运行 `pnpm architecture:check`、`pnpm architecture:test`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod` | Ticket Evidence 中的命令、退出码与诊断 |
 | 当前 OpenAPI 快照与生成合同 | 合同 | AC-002, AC-008 | 使用 `pnpm --filter @namewta/tooling-openapi openapi:fetch`、`pnpm --filter @namewta/tooling-openapi openapi:generate`、`pnpm --filter @namewta/tooling-openapi openapi:check` 的既有流程，并扫描 current snapshot 与生成 TypeScript | revision provenance、diff 与 check 结果 |
 | NAMEWTA MySQL 最终状态 | 数据库集成 | AC-005, AC-006, AC-007 | 在可丢弃 MySQL 8.4 数据目录按 `<Path>ruoyi-vue-plus-namewta/script/docker/docker-compose.yml</Path>` 的既有初始化顺序执行，并查询 `sys_menu`、`sys_role_menu` 与 `information_schema` | SQL 执行结果和最终状态查询 |
 | CRUD 标准模板资产 | 静态合同 | AC-010 | 在父仓库运行 `node docs/fm/scripts/validate.mjs` | validator 退出码与输出摘要 |

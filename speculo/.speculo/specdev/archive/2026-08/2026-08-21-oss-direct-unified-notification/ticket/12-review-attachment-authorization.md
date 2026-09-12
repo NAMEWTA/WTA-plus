@@ -12,8 +12,8 @@ risk: high
 blocked_by: []
 contract_ids: [AC-013, AC-023, AC-024]
 owner: codex
-expected_changes: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/**/MailSendController.java</Path>", "<Path>plus-ui-namewta/src/views/monitor/notify/**</Path>"]
-writable_paths: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/**</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/**</Path>", "<Path>plus-ui-namewta/src/api/monitor/notify/**</Path>", "<Path>plus-ui-namewta/src/views/monitor/notify/**</Path>"]
+expected_changes: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/**/MailSendController.java</Path>", "<Path>frontend/src/views/monitor/notify/**</Path>"]
+writable_paths: ["<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-demo/**</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/**</Path>", "<Path>frontend/src/api/monitor/notify/**</Path>", "<Path>frontend/src/views/monitor/notify/**</Path>"]
 read_only_paths: []
 shared_paths: []
 shared_path_owners: []

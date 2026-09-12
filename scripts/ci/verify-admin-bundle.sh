@@ -11,7 +11,7 @@ case "$mode" in
 esac
 
 workspace_root=$(git rev-parse --show-toplevel)
-artifact="${ADMIN_ARTIFACT:-$workspace_root/wta-vue-plus-namewta/wta-admin/target/wta-admin.jar}"
+artifact="${ADMIN_ARTIFACT:-$workspace_root/backend/wta-admin/target/wta-admin.jar}"
 if [[ ! -f "$artifact" ]]; then
   echo "missing admin artifact: $artifact" >&2
   exit 1

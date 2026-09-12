@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const releaseRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const workspaceRoot = path.resolve(releaseRoot, '..');
-const backendRoot = path.join(workspaceRoot, 'wta-vue-plus-namewta');
+const backendRoot = path.join(workspaceRoot, 'backend');
 const sqlRoot = path.join(releaseRoot, 'docker/infrastructure/mysql/init');
 const sqlFiles = [
   '10-wta-base.sql',

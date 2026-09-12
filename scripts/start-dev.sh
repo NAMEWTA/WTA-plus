@@ -10,8 +10,8 @@ esac
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 workspace_root=$(cd -- "${script_dir}/.." && pwd)
-frontend_dir="${workspace_root}/plus-ui-namewta"
-backend_dir="${workspace_root}/wta-vue-plus-namewta"
+frontend_dir="${workspace_root}/frontend"
+backend_dir="${workspace_root}/backend"
 backend_local_config="wta-admin/src/main/resources/application-local.yml"
 backend_build_guard="${script_dir}/lib/backend-build-guard.sh"
 dev_runtime="${script_dir}/lib/dev-runtime.sh"

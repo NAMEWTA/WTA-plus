@@ -30,7 +30,7 @@ _Avoid_: 只改目录不改 package / AutoConfiguration / mapper namespace
 **MigrationWave**：分波次；硬门禁见 goal-plan（documentation → inventory → auth → prepare → rename → residual → verify → publication readiness → publication_authorized push → legacy freeze）。  
 _Avoid_: 无闸门 big-bang；未授权改产品代码
 
-**CurrentCheckout（非目标拓扑）**：此刻 box 上常见形态为聚合工作区 `ruoyi-vue-plus-docs` + submodule `ruoyi-vue-plus-namewta` + `plus-ui-namewta`。仅描述现状，**不**表示交付继续 submodule。  
+**CurrentCheckout（非目标拓扑）**：此刻 box 上常见形态为聚合工作区 `ruoyi-vue-plus-docs` + submodule `ruoyi-vue-plus-namewta` + `frontend`。仅描述现状，**不**表示交付继续 submodule。  
 _Avoid_: 把 checkout 路径 KEEP 写成 ADR；默默 `mv` 根目录导致其他 agent 失联
 
 **TargetTopology（ADR-011 + Spec DEC-SLUG/LAYOUT；LOG-017）**：单一 public monorepo；slug **`NAMEWTA/WTA-plus`**；布局镜像现 `ruoyi-vue-plus-docs`；去 submodule；前后端+文档/release/speculo 同源。  

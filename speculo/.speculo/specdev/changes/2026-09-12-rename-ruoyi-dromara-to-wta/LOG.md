@@ -20,7 +20,7 @@
 - **轮次与依赖：** round 0 / LOG-001
 - **状态：** confirmed
 - **问题：** 扫描哪些树、排除哪些噪声
-- **事实与来源：** 仓库含 `ruoyi-vue-plus-namewta`、`plus-ui-namewta`、`docs`、`release-artifacts`、`speculo`、`.agents`
+- **事实与来源：** 仓库含 `ruoyi-vue-plus-namewta`、`frontend`、`docs`、`release-artifacts`、`speculo`、`.agents`
 - **结论：** 排除 `node_modules`、`.git`、`target`、`dist`、`pnpm-lock.yaml`、`.flattened-pom.xml`；扫描 Maven/Java/前端/docker/docs/skills
 - **影响工件：** evidence/SURVEY.md、source.md
 - **后续：** 分类 OWNED / KEEP / AMBIGUOUS
@@ -111,7 +111,7 @@
 - **结论：**
   1. **换前缀**：`ruoyi-` → 小写 **`wta-`**（不是单纯去前缀）。例：`ruoyi-system`→`wta-system`。
   2. **原有仓库先不动**：`NAMEWTA/ruoyi-vue-plus-namewta`、`NAMEWTA/plus-ui-namewta`、`NAMEWTA/ruoyi-vue-plus-docs` 现网 remote **冻结保留**，不在本阶段改写或 force-push。
-  3. **三仓合一**：将当前**前端**（`plus-ui-namewta`）、**后端**（`ruoyi-vue-plus-namewta`）、**副/聚合仓**（`ruoyi-vue-plus-docs` 内文档/SpecDev/release 等）合并为**同一 monorepo**，并更改整体仓库名。
+  3. **三仓合一**：将当前**前端**（`frontend`）、**后端**（`ruoyi-vue-plus-namewta`）、**副/聚合仓**（`ruoyi-vue-plus-docs` 内文档/SpecDev/release 等）合并为**同一 monorepo**，并更改整体仓库名。
   4. **摘取 + 清空旧内容 + 重置历史**：从三源摘出前后端与所需文档内容；**删除**合并工作区中的旧历史/旧布局残留；以**全新 orphan/单根提交**重置整个历史；推送到一个**全新的 public** GitHub 仓库。
   5. **流程门禁（本轮文档后）：** ① 整包 change + zip（无运行缓存）上传 ChatGPT 6 Pro 全面 review → ② 按 review 本地迭代到完善 → ③ **再问 CTO 是否实施**（implementation_commit 仍须书面授权）。
 - **原因：** 品牌坐标与仓库形态一次对齐；旧仓可作只读备份；新仓干净公开、无上游历史包袱。

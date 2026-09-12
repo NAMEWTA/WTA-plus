@@ -25,7 +25,7 @@ close_capability: not-applicable
 
 请你创建一个 change 激活 speculo/workflows/specdev/common/skills/research/SKILL.md 为我深度的搜索当前仓库里以下内容的情况。随后激活 /skill-creator 去创建多个 skill 以满足我的要求。该 SKILL 都创建到 .agents/skills/* 下。
 具体需要探索的如下：
-1、plus-ui-namewta 关于前端的代码编码规范、注释规范、动态权限路由规范等
+1、frontend 关于前端的代码编码规范、注释规范、动态权限路由规范等
 2、ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system 这个公共服务类的整体使用方法，提供了哪些能力供其他子模块调用使用
 3、ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow 这个公共服务类的整体使用方法，提供了哪些能力供其他子模块调用使用
 4、ruoyi-vue-plus-namewta/ruoyi-common 这里包含了哪些模块，分别都是什么作用？有哪些工具类？

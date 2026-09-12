@@ -1,7 +1,7 @@
 # 前端工作区索引
 
 ## Scope
-`plus-ui-namewta` pnpm 多 App 工作区。
+`frontend` pnpm 多 App 工作区。
 
 ## Purpose
 组合可复用 domain、Web domain、平台合同和终端适配器，当前产品入口是 Admin Web 与 Home Web。

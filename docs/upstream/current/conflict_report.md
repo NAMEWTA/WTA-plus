@@ -40,7 +40,7 @@
 ### 复现命令
 
 ```bash
-git -C wta-vue-plus-namewta merge-tree --write-tree --messages 28ce64ecd9b5a479089106aa961a77bdd41c5209 bffc39a89fd6ed196031e71cbceefd9986eecce8
+git -C backend merge-tree --write-tree --messages 28ce64ecd9b5a479089106aa961a77bdd41c5209 bffc39a89fd6ed196031e71cbceefd9986eecce8
 ```
 
 ## frontend
@@ -78,7 +78,7 @@ git -C wta-vue-plus-namewta merge-tree --write-tree --messages 28ce64ecd9b5a4790
 ### 复现命令
 
 ```bash
-git -C plus-ui-namewta merge-tree --write-tree --messages 10e662d825aa24d4ae7adb9d73ea9a4be2683ce4 a85fa0aee44f6f12dc35198126914ce722ee8622
+git -C frontend merge-tree --write-tree --messages 10e662d825aa24d4ae7adb9d73ea9a4be2683ce4 a85fa0aee44f6f12dc35198126914ce722ee8622
 ```
 
 ## 局限

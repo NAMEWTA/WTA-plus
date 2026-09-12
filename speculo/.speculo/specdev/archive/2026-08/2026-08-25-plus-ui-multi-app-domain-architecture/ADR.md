@@ -10,7 +10,7 @@
 多个前端 App 共享同一后台合同、团队和大部分领域能力，但需要独立构建、部署、Client 配置和表现层定制。运行时微前端会引入版本协议、远程加载、故障隔离和部署编排成本。
 
 ### Decision
-`plus-ui-namewta` 演进为 pnpm workspace 管理的编译期模块化单体。App 通过 workspace 私有包显式组合能力并独立产出，首期不使用微前端、Module Federation 或运行时远程插件。
+`frontend` 演进为 pnpm workspace 管理的编译期模块化单体。App 通过 workspace 私有包显式组合能力并独立产出，首期不使用微前端、Module Federation 或运行时远程插件。
 
 ### Trade-off
 相比微前端，编译期组合不能让多个团队任意独立发布领域模块，但换取统一类型检查、原子依赖升级、更简单的部署和更低的运行时故障面。相比多仓库复制，它要求严格维护包边界。
@@ -115,7 +115,7 @@ Client 缺失或非法时 fail-close；UI 权限只控制呈现，不能替代�
 现有单体的请求、Store、Router、页面和组件存在真实耦合；一次性目录迁移会把结构变化与行为回归混合，尤其威胁登录、Client 和动态路由。
 
 ### Decision
-保留现有 `<Path>plus-ui-namewta/src/</Path>` 作为兼容入口，按“特征测试、占位、workspace、platform/adapters、demo 试点、第二 App、identity/shell、workflow、其余领域、入口迁移、后期生成能力”的波次推进。替代路径通过对应门禁前不得删除旧入口。
+保留现有 `<Path>frontend/src/</Path>` 作为兼容入口，按“特征测试、占位、workspace、platform/adapters、demo 试点、第二 App、identity/shell、workflow、其余领域、入口迁移、后期生成能力”的波次推进。替代路径通过对应门禁前不得删除旧入口。
 
 ### Trade-off
 渐进迁移会产生短期双结构和适配代码，整体历时长于一次性移动；换取每个波次可运行、可回滚、可定位问题的落点。

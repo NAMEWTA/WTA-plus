@@ -4,7 +4,7 @@
 1. Owned `ruoyi` → `wta`; owned `org.dromara` → **`org.namewta`** (NOT `org.wta`; LOG-020); KEEP sms4j/warm-flow/easy-es/mica-mqtt (never → org.namewta.*).
 2. Prefix **swap** `ruoyi-` → `wta-` (not bare names).
 3. Nacos data-id rename = **hard-cut no dual-read** (LOG-018); default user `wta`; seed literals rename; public slug `NAMEWTA/WTA-plus`.
-4. **Freeze** old remotes: `ruoyi-vue-plus-namewta`, `plus-ui-namewta`, `ruoyi-vue-plus-docs` (see ADR-010 freeze definition).
+4. **Freeze** old remotes: `ruoyi-vue-plus-namewta`, `frontend`, `ruoyi-vue-plus-docs` (see ADR-010 freeze definition).
 5. Merge FE + BE + aggregate/docs into **one monorepo**, rename overall repo, extract content, wipe old layout, **orphan-reset history**, push to a **brand-new public** GitHub repo — **only after publication gate + auth**.
 6. Gate: ChatGPT review → local doc iteration → **ask CTO before any implement / create-repo / legacy mutation**.
 

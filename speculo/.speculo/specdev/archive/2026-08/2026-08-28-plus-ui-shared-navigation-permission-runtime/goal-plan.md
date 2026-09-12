@@ -31,7 +31,7 @@ ready_for_execution: false
 
 成功必须同时满足：T-01 至 T-05 的历史 Evidence 保持有效；T-06 至 T-08 都有通过的 source commit、parent-candidate、前端父分支 result 与 Lead Evidence；`AC-001` 至 `AC-015` 全部闭合；权限异常 DOM 失败关闭、递归菜单边界、显式 Router adapter 和并发 E2E 稳定性均通过；独立 `CR-002` 状态为 `approved`；旧 Store、私有权限指令、`dynamicRoutes`、`filterDynamicRoutes` 和本地动态 `views` glob 继续零匹配。
 
-以下均属于伪完成：忽略 `CR-001=request-changes` 而沿用旧 completed 状态；把“抛错”等同于 DOM 失败关闭；以双重断言代替 runtime narrowing；以失败后的单次重跑替代并发稳定证据；source worktree 自报 E2E；candidate 未进入 `plus-ui-namewta/main`；通过 alias、功能开关、提高 retry、降低 workers、删除测试或放宽架构规则制造绿色。
+以下均属于伪完成：忽略 `CR-001=request-changes` 而沿用旧 completed 状态；把“抛错”等同于 DOM 失败关闭；以双重断言代替 runtime narrowing；以失败后的单次重跑替代并发稳定证据；source worktree 自报 E2E；candidate 未进入 `frontend/main`；通过 alias、功能开关、提高 retry、降低 workers、删除测试或放宽架构规则制造绿色。
 
 ### Non-goals
 
@@ -108,7 +108,7 @@ required 模式下 Wave 4 最多同时存在两个 implementation owner；其他
 
 ### Overall Definition of Done
 
-- 每个非 cancelled Ticket 有非空 source commit、通过的 candidate、`plus-ui-namewta/main` result SHA 和 Lead Evidence。
+- 每个非 cancelled Ticket 有非空 source commit、通过的 candidate、`frontend/main` result SHA 和 Lead Evidence。
 - T-05 的前端 result 已由父仓库以 submodule pointer 记录；父仓库文档 commit 不夹带现有无关归档或后端指针改动。
 - Spec 合同全部 covered，无 deferred、未批准偏差、未集成 source checkpoint 或活动 candidate。
 - 架构、lint、typecheck、workspace test、开发/生产构建与完整 Playwright 通过；命令、cwd、退出码和未运行项均记录。
@@ -155,7 +155,7 @@ required 模式下 Wave 4 最多同时存在两个 implementation owner；其他
 
 | Ticket | Parent/base | Workspace/branch | Source checks | Implementation commit | Integration checks/E2E | Parent result |
 |---|---|---|---|---|---|---|
-| T-01 | `plus-ui-namewta/main` 最新 SHA | `specdev-worktree/.../T-01` / `specdev/.../T-01` | lint/typecheck 与 E2E 文件静态检查 | source clean non-empty commit | Lead candidate：定向 Playwright | result 进入前端 main |
+| T-01 | `frontend/main` 最新 SHA | `specdev-worktree/.../T-01` / `specdev/.../T-01` | lint/typecheck 与 E2E 文件静态检查 | source clean non-empty commit | Lead candidate：定向 Playwright | result 进入前端 main |
 | T-02 | T-01 result | `specdev-worktree/.../T-02` / `specdev/.../T-02` | 包 lint/typecheck/test/build、architecture | source clean non-empty commit | Lead candidate：包/架构；E2E not-required | integration 序号 2 |
 | T-03 | T-01 result | `specdev-worktree/.../T-03` / `specdev/.../T-03` | App Runtime lint/typecheck/test/build、architecture | source clean non-empty commit | Lead 在 T-02 后的最新 main 重建 candidate；E2E not-required | integration 序号 3 |
 | T-04 | T-03 result（已含 T-02） | `specdev-worktree/.../T-04` / `specdev/.../T-04` | Admin 定向 test/typecheck/build、root architecture/lint/test | source clean non-empty commit | Lead candidate：T-01 + 受影响权限/领域 E2E | integration 序号 4 |
@@ -164,7 +164,7 @@ required 模式下 Wave 4 最多同时存在两个 implementation owner；其他
 | T-07 | 获得 G-50 后的最新 main（规划 checkpoint 为 T-05 result） | `specdev-worktree/.../T-07` / `specdev/.../T-07` | Domain/App Runtime/Admin tests、typecheck/lint、architecture | source clean non-empty commit | Lead 在 T-06 后最新 main 重建 candidate；required app-runtime E2E | integration 序号 7 |
 | T-08 | T-07 result（已含 T-06） | `specdev-worktree/.../T-08` / `specdev/.../T-08` | 两个 E2E spec 静态/lint 检查 | source clean non-empty commit | Lead candidate：重复并发 Playwright、完整根 Gate | integration 序号 8 + CR-002 input |
 
-`ticket_workspace_policy: required`：每个 Ticket 使用独立 source worktree；source worktree 不运行 E2E。Lead 在最新前端父分支创建 `specdev-worktree/.integration/2026-08-28-plus-ui-shared-navigation-permission-runtime/T-NN` candidate，验证通过且父 HEAD 未漂移后才推进 `plus-ui-namewta/main`。成功集成不自动删除 source branch/worktree。
+`ticket_workspace_policy: required`：每个 Ticket 使用独立 source worktree；source worktree 不运行 E2E。Lead 在最新前端父分支创建 `specdev-worktree/.integration/2026-08-28-plus-ui-shared-navigation-permission-runtime/T-NN` candidate，验证通过且父 HEAD 未漂移后才推进 `frontend/main`。成功集成不自动删除 source branch/worktree。
 
 T-05 的父仓库文档与 submodule pointer 由 Lead 在当前聚合 workspace 处理：先保存/重读现有无关 dirty paths，只暂存本 change 授权文档与 pointer；任何重叠或无法隔离的并行修改都会暂停父仓库 commit，不回退用户内容。
 
@@ -198,7 +198,7 @@ implementation owner 只返回 source commit、dirty 状态、实际路径、非
 
 ### Verification Integrity
 
-规划基线已在 `plus-ui-namewta/main@d2961dbb444b9f036ad84c26ee8bcd69d973955c` 实测：architecture check 通过、architecture tests 98/98、App Runtime 18/18、Permission 13/13。实现不得删测试、降低断言、放宽 tsconfig/架构规则或把 skipped/not-run 写成 passed。
+规划基线已在 `frontend/main@d2961dbb444b9f036ad84c26ee8bcd69d973955c` 实测：architecture check 通过、architecture tests 98/98、App Runtime 18/18、Permission 13/13。实现不得删测试、降低断言、放宽 tsconfig/架构规则或把 skipped/not-run 写成 passed。
 
 source-worktree 只运行非 E2E；parent-candidate 才是组合与 E2E 判卷接缝。T-05 架构规则必须做受控反向验证并恢复后重跑。每条命令记录 cwd、checkpoint、退出码和测试数。
 

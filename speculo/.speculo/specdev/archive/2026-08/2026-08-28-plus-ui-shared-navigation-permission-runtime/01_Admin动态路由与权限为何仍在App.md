@@ -113,7 +113,7 @@ getRouters / addRoute    -> 页面路线是否进入当前 Router
 
 ### 第二步：权限“算法”其实已经抽到了公共包
 
-真正的通用规则位于 `<Path>plus-ui-namewta/packages/platform/permission/src/index.ts</Path>`：
+真正的通用规则位于 `<Path>frontend/packages/platform/permission/src/index.ts</Path>`：
 
 ```text
 [权限快照]
@@ -143,7 +143,7 @@ roles       = 当前会话的角色标识
 
 因此它才是真正可以让不同 App 复用的“权限发动机”。
 
-Admin 中的 `<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Path>` 只有一个很薄的职责：
+Admin 中的 `<Path>frontend/apps/admin-web/src/application/access.ts</Path>` 只有一个很薄的职责：
 
 ```text
 [Admin 用户 Store 中的 roles 和 permissions]
@@ -159,7 +159,7 @@ Admin 中的 `<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Pa
 
 ### 第三步：为什么权限指令还在 `admin-web`
 
-`<Path>plus-ui-namewta/apps/admin-web/src/directive/permission/index.ts</Path>` 做了两件事：
+`<Path>frontend/apps/admin-web/src/directive/permission/index.ts</Path>` 做了两件事：
 
 ```text
 事情 A：读取 v-hasPermi 或 v-hasRoles 的参数
@@ -168,7 +168,7 @@ Admin 中的 `<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Pa
 
 事情 A 和“把求值器包装成 Vue 指令”的办法具有 Web 复用潜力；事情 B 当前明确依赖 `createAdminAccessEvaluator`，所以它还是 Admin 适配器。
 
-`<Path>plus-ui-namewta/apps/admin-web/src/directive/index.ts</Path>` 还会把指令注册到具体的 Vue App：
+`<Path>frontend/apps/admin-web/src/directive/index.ts</Path>` 还会把指令注册到具体的 Vue App：
 
 ```text
 [Admin createApp]
@@ -196,7 +196,7 @@ Admin 中的 `<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Pa
 
 ### 第四步：为什么 `router` 必须有一部分属于 App
 
-`<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>` 不只是“路由算法”，它直接声明：
+`<Path>frontend/apps/admin-web/src/router/index.ts</Path>` 不只是“路由算法”，它直接声明：
 
 ```text
 Admin 使用哪种浏览器 History
@@ -222,7 +222,7 @@ Admin 首页                Client 自己的首页
 
 因此每个 App 都应该拥有自己的 Router 实例和静态路由。公共包不能替所有 App 决定这些产品行为。
 
-真正通用的“把后端组件键变成页面加载器”已经位于 `<Path>plus-ui-namewta/packages/platform/app-runtime/src/routeAssembler.ts</Path>`：
+真正通用的“把后端组件键变成页面加载器”已经位于 `<Path>frontend/packages/platform/app-runtime/src/routeAssembler.ts</Path>`：
 
 ```text
 [后端菜单中的 component 字符串]
@@ -247,7 +247,7 @@ Admin 首页                Client 自己的首页
 
 ### 第五步：为什么 `permission store` 不能整块变成公共 Store
 
-`<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>` 混合了两类内容。
+`<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>` 混合了两类内容。
 
 第一类具有复用价值：
 
@@ -303,7 +303,7 @@ Admin 需要五组路由状态，不代表移动端、小程序或门户 App 也
 
 ### 第六步：为什么根级 `permission.ts` 仍在 App
 
-`<Path>plus-ui-namewta/apps/admin-web/src/permission.ts</Path>` 是 Admin Router 的全局守卫。它决定：
+`<Path>frontend/apps/admin-web/src/permission.ts</Path>` 是 Admin Router 的全局守卫。它决定：
 
 ```text
 是否展示 Admin 的页面进度条
@@ -316,7 +316,7 @@ Admin 需要五组路由状态，不代表移动端、小程序或门户 App 也
 使用哪个 Router 实例
 ```
 
-这些都是 App 策略。但其中“恢复受保护页面”的顺序已经抽到 `<Path>plus-ui-namewta/packages/platform/app-runtime/src/navigationRecovery.ts</Path>`：
+这些都是 App 策略。但其中“恢复受保护页面”的顺序已经抽到 `<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.ts</Path>`：
 
 ```text
 [loadIdentity 读取身份]
@@ -480,4 +480,4 @@ App 中保留“我选择什么、我接到哪里、我怎样展示”
 5. `permission store` 同时包含通用树处理和 Admin 侧栏、顶栏、布局、页面目录等状态，因此不能整块共享，只适合继续提炼其中独立的纯流程。
 6. 新 App 不需要重新对接后端 API 和权限算法，只需要拥有自己的终端策略，并通过薄装配层组合已有 domain、platform 和 web-domain。
 
-事实依据：`<Path>plus-ui-namewta/apps/admin-web/src/main.ts</Path>`、`<Path>plus-ui-namewta/apps/admin-web/src/permission.ts</Path>`、`<Path>plus-ui-namewta/apps/admin-web/src/directive/permission/index.ts</Path>`、`<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>`、`<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`、`<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>`、`<Path>plus-ui-namewta/apps/admin-web/src/application/access.ts</Path>`、`<Path>plus-ui-namewta/packages/domains/admin/src/index.ts</Path>`、`<Path>plus-ui-namewta/packages/platform/permission/src/index.ts</Path>` 与 `<Path>plus-ui-namewta/packages/platform/app-runtime/src/</Path>`。
+事实依据：`<Path>frontend/apps/admin-web/src/main.ts</Path>`、`<Path>frontend/apps/admin-web/src/permission.ts</Path>`、`<Path>frontend/apps/admin-web/src/directive/permission/index.ts</Path>`、`<Path>frontend/apps/admin-web/src/router/index.ts</Path>`、`<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`、`<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>`、`<Path>frontend/apps/admin-web/src/application/access.ts</Path>`、`<Path>frontend/packages/domains/admin/src/index.ts</Path>`、`<Path>frontend/packages/platform/permission/src/index.ts</Path>` 与 `<Path>frontend/packages/platform/app-runtime/src/</Path>`。

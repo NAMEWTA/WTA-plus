@@ -46,7 +46,7 @@ shared_path_owners: []
 - **目标：** 在授权后落实旧三仓 freeze **意图/清单**（禁止主线 rename/force-push/rewrite）；落地 README/archive/protection 变更仍归 T-15 + legacy auth。
 - **可观察产出：** freeze checklist 证明默认分支只读备份语义；无 force-push/rewrite。
 - **来源：** ADR-010 freeze 定义、HC-05、AC-LEGACY、AC-W0b。
-- **当前事实：** 旧 remote：ruoyi-vue-plus-namewta / plus-ui-namewta / ruoyi-vue-plus-docs。
+- **当前事实：** 旧 remote：ruoyi-vue-plus-namewta / frontend / ruoyi-vue-plus-docs。
 - **Planning Depth 原因：** 旧三仓 freeze 语义与保护意图；跨 remote 策略与授权边界。
 
 ## 2. 决策状态

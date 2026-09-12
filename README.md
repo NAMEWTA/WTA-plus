@@ -7,8 +7,8 @@
 | 子树 | 职责 | 详细说明 |
 |---|---|---|
 | `WTA-plus`（本仓） | 聚合文档、工程规范、发布资产与前后端同源 | 当前 README 与 [文档导航](docs/README.md) |
-| `plus-ui-namewta` | Vue 3 多 App 领域化前端 | [前端 README](plus-ui-namewta/README.md) |
-| `wta-vue-plus-namewta` | Spring Boot 模块化后端（`org.namewta` / `wta-*`） | [后端 README](wta-vue-plus-namewta/README.md) |
+| `frontend` | Vue 3 多 App 领域化前端 | [前端 README](frontend/README.md) |
+| `backend` | Spring Boot 模块化后端（`org.namewta` / `wta-*`） | [后端 README](backend/README.md) |
 
 ## 相较上游的核心增强
 
@@ -31,10 +31,10 @@
 ```text
 WTA-plus/
 ├── .agents/skills/                    # 唯一项目开发 Skill 根目录
-├── plus-ui-namewta/                 # 前端（合入，非 submodule）
+├── frontend/                 # 前端（合入，非 submodule）
 │   ├── apps/                        # 可独立构建、部署的终端 App
 │   └── packages/                    # 领域、平台、适配器和 Web 共享包
-├── wta-vue-plus-namewta/          # 后端（合入，非 submodule）
+├── backend/          # 后端（合入，非 submodule）
 │   ├── wta-admin/                 # 服务启动与模块组装
 │   ├── wta-api/                   # 跨模块公开合同
 │   ├── wta-common/                # 通用基础能力
@@ -69,13 +69,13 @@ git clone https://github.com/NAMEWTA/WTA-plus.git
 cd WTA-plus
 ```
 
-前端在 `plus-ui-namewta/`，后端在 `wta-vue-plus-namewta/`。前端要求 Node.js `>=20.19.0`、pnpm `>=10.0.0`；后端要求 Java 21，并通过仓库内 Maven Wrapper 构建。具体启动、构建和验证命令分别见前后端 README。
+前端在 `frontend/`，后端在 `backend/`。前端要求 Node.js `>=20.19.0`、pnpm `>=10.0.0`；后端要求 Java 21，并通过仓库内 Maven Wrapper 构建。具体启动、构建和验证命令分别见前后端 README。
 
 ## 分支与上游关系
 
 - 本仓 `main` 是 NAMEWTA 产品分支；默认交付不再使用 git submodule。
 - 上游 RuoYi-Vue-Plus / Plus-UI 仅作能力发现；不要求本地目录与上游路径同构，也不把上游 URL 当作运行依赖。
-- 旧三仓 `ruoyi-vue-plus-namewta` / `plus-ui-namewta` / `ruoyi-vue-plus-docs` 按 freeze 语义只读备份，不在本仓内 `gitlink` 推进。
+- 旧三仓 `ruoyi-vue-plus-namewta` / `frontend` / `ruoyi-vue-plus-docs` 按 freeze 语义只读备份，不在本仓内 `gitlink` 推进。
 
 长期约束见 [上游能力治理](docs/upstream/README.md)与 [定制边界](docs/upstream/customization-map.md)。历史变化直接通过本仓 Git 日志查看，文档只维护当前有效状态。
 

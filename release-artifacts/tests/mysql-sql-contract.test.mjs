@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const releaseRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const workspaceRoot = path.resolve(releaseRoot, '..');
 const sqlRoot = path.join(releaseRoot, 'docker/infrastructure/mysql/init');
-const backendTestRoot = path.join(workspaceRoot, 'wta-vue-plus-namewta/wta-admin/src/test');
+const backendTestRoot = path.join(workspaceRoot, 'backend/wta-admin/src/test');
 
 function javaFiles(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {

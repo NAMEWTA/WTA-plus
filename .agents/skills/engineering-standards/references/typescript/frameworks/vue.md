@@ -1,6 +1,6 @@
 # Vue 3 / Pinia 工程规范
 
-适用 `framework:vue`, `module:plus-ui-namewta`。当前使用 Vue 3.5.40、`@vue/compiler-sfc` 3.5.40、Composition API、`<script setup lang="ts">`、Pinia 4、Element Plus 与 Vite，无 SSR 信号。
+适用 `framework:vue`, `module:frontend`。当前使用 Vue 3.5.40、`@vue/compiler-sfc` 3.5.40、Composition API、`<script setup lang="ts">`、Pinia 4、Element Plus 与 Vite，无 SSR 信号。
 
 ### VUE-001 SFC 与组件合同
 
@@ -52,7 +52,7 @@ Verification: DOM/交互测试或人工键盘/焦点检查；review `v-html`、U
 
 ### VUE-005 大页面按职责 Ratchet
 
-Scope: `path:plus-ui-namewta/packages/web-domains/**`, `path:plus-ui-namewta/apps/**`
+Scope: `path:frontend/packages/web-domains/**`, `path:frontend/apps/**`
 
 Level: SHOULD
 

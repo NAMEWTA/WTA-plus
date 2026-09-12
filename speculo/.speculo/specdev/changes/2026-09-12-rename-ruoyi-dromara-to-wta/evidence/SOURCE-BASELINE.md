@@ -33,7 +33,7 @@
 | Path | URL |
 |---|---|
 | `ruoyi-vue-plus-namewta` | `https://github.com/NAMEWTA/ruoyi-vue-plus-namewta.git` |
-| `plus-ui-namewta` | `https://github.com/NAMEWTA/plus-ui-namewta.git` |
+| `frontend` | `https://github.com/NAMEWTA/plus-ui-namewta.git` |
 
 ---
 
@@ -57,11 +57,11 @@
 
 ---
 
-## 3. Frontend submodule — `plus-ui-namewta`
+## 3. Frontend submodule — `frontend`
 
 | Field | Value |
 |---|---|
-| Path | `/workspace/vp-dev/ruoyi-vue-plus-docs/plus-ui-namewta` |
+| Path | `/workspace/vp-dev/ruoyi-vue-plus-docs/frontend` |
 | Remote `origin` | `https://github.com/NAMEWTA/plus-ui-namewta.git` |
 | HEAD commit SHA | `d77b55651e5754a54508e51a79f536afbd2392b8` |
 | HEAD subject / commit time (UTC) | `chore(admin-web): regenerate components.d.ts for ElSpace` @ 2026-09-12 02:10:07 +0000 |

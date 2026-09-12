@@ -12,9 +12,9 @@ risk: medium
 blocked_by: [T-16]
 contract_ids: [AC-029]
 owner: codex:/root
-expected_changes: ["<Path>docs/upstream/customization-map.md</Path>", "<Path>docs/upstream/README.md</Path>", "<Path>plus-ui-namewta/README.md</Path>"]
-writable_paths: ["<Path>docs/upstream/customization-map.md</Path>", "<Path>docs/upstream/README.md</Path>", "<Path>plus-ui-namewta/README.md</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/apps/**</Path>", "<Path>plus-ui-namewta/packages/**</Path>", "<Path>speculo/.speculo/specdev/changes/2026-08-25-plus-ui-multi-app-domain-architecture/**</Path>"]
+expected_changes: ["<Path>docs/upstream/customization-map.md</Path>", "<Path>docs/upstream/README.md</Path>", "<Path>frontend/README.md</Path>"]
+writable_paths: ["<Path>docs/upstream/customization-map.md</Path>", "<Path>docs/upstream/README.md</Path>", "<Path>frontend/README.md</Path>"]
+read_only_paths: ["<Path>frontend/apps/**</Path>", "<Path>frontend/packages/**</Path>", "<Path>speculo/.speculo/specdev/changes/2026-08-25-plus-ui-multi-app-domain-architecture/**</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

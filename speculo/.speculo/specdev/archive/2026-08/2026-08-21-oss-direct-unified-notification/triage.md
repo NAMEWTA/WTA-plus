@@ -19,7 +19,7 @@ updated_at: 2026-08-23T13:22:35+08:00
 - **影响：** 跨前端、后端、OSS 生命周期、通知渠道、持久化与权限边界的高事故半径功能；本地实现已由 22 个 Ticket 和最终 Evidence 完成验证。
 - **紧急度：** completed / archive-ready
 - **当前证据：** change `change_status=completed`；22 个 Ticket done；22 条 current/direct-parent 集成记录 passed；完整完成校验为 0 error / 0 warning。
-- **相关代码/工件：** `<Path>ruoyi-vue-plus-namewta</Path>`、`<Path>plus-ui-namewta</Path>`、`<Path>{roots.state}/specdev/changes/2026-08-21-oss-direct-unified-notification</Path>`
+- **相关代码/工件：** `<Path>ruoyi-vue-plus-namewta</Path>`、`<Path>frontend</Path>`、`<Path>{roots.state}/specdev/changes/2026-08-21-oss-direct-unified-notification</Path>`
 
 ## 未知项
 

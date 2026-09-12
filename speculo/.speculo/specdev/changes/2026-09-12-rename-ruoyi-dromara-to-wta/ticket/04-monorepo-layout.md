@@ -26,7 +26,7 @@ writable_paths:
   - "<Path>{roots.state}/specdev/changes/2026-09-12-rename-ruoyi-dromara-to-wta/evidence/**</Path>"
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/**</Path>"
-  - "<Path>plus-ui-namewta/**</Path>"
+  - "<Path>frontend/**</Path>"
   - "<Path>docs/**</Path>"
   - "<Path>speculo/**</Path>"
   - "<Path>release-artifacts/**</Path>"
@@ -51,7 +51,7 @@ shared_path_owners: []
 - **目标：** 授权后准备目标仓 **WTA-plus** 工作树：布局**镜像当前 ruoyi-vue-plus-docs 聚合树**（前后端子树 + docs/speculo/release-artifacts/scripts…），去 submodule、内容合入；产出「旧 docs 树 → WTA-plus 树」对照表与 orphan prep 清单。
 - **可观察产出：** 本地/私有准备树存在且对照表完整；**未** public push；**未**在旧仓主线 rename。
 - **来源：** ADR-011、ADR-012、AC-W0b、AC-REPOSITORY、HC-13、NAC-06。
-- **当前事实：** 当前聚合根含 ruoyi-vue-plus-namewta、plus-ui-namewta、docs、speculo、release-artifacts、scripts 等。**废止**强制 `/backend` `/frontend` `/docs` `/speculo` 四顶层合同（旧 DEC-LAYOUT 被 ADR-012 覆盖）。
+- **当前事实：** 当前聚合根含 ruoyi-vue-plus-namewta、frontend、docs、speculo、release-artifacts、scripts 等。**废止**强制 `/backend` `/frontend` `/docs` `/speculo` 四顶层合同（旧 DEC-LAYOUT 被 ADR-012 覆盖）。
 - **Planning Depth 原因：** W0b 合仓准备、布局对照、去 submodule、orphan prep；跨仓拓扑与发布前序。
 
 ## 2. 决策状态

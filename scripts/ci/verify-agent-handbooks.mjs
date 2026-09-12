@@ -8,8 +8,8 @@ import { dirname, join, relative, resolve } from 'node:path';
 
 const root = resolve(dirname(new URL(import.meta.url).pathname), '../..');
 const products = [
-  { path: join(root, 'wta-vue-plus-namewta'), manifest: 'pom.xml' },
-  { path: join(root, 'plus-ui-namewta'), manifest: 'package.json' },
+  { path: join(root, 'backend'), manifest: 'pom.xml' },
+  { path: join(root, 'frontend'), manifest: 'package.json' },
 ];
 const ignored = new Set(['.git', 'node_modules', 'target', 'dist', 'specdev-worktree']);
 const requiredSections = ['## Scope', '## Purpose', '## Components', '## Entry Points',
@@ -49,7 +49,7 @@ for (const product of products) {
       failures.push(`${relative(root, file)} 必须包含中文索引内容`);
     }
     // 旧模块保留既有详细手册；新索引必须保持渐进式披露的七个最小章节。
-    const isLegacySystem = relative(root, directory) === 'wta-vue-plus-namewta/wta-modules/wta-system';
+    const isLegacySystem = relative(root, directory) === 'backend/wta-modules/wta-system';
     if (!isLegacySystem) {
       for (const section of requiredSections) {
         if (!source.includes(section)) failures.push(`${relative(root, file)} 缺少 ${section}`);

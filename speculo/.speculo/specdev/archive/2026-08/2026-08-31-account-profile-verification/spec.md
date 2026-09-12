@@ -325,7 +325,7 @@ sources:
 | Admin profile domain/web-domain | Vitest + typecheck | AC-031、AC-040/AC-041 | 复用现有 domain/web-domain service、manifest 和树表测试范式；运行新增 profile 包定向 test/typecheck | test/typecheck output |
 | Admin 关键管理闭环 | Playwright | AC-024 至 AC-035、AC-040/AC-041 | 登录后台验证三菜单、列表到详情、workflow formPath、直建/覆盖确认和注销只读态 | trace/screenshot + test output |
 | DDL/DML 与模块装配 | Maven + MySQL fresh install + static scan | AC-008、AC-027、AC-032 至 AC-034、AC-038/AC-044 | cwd `<Path>ruoyi-vue-plus-namewta/</Path>` 运行 `./mvnw test`、full/core 适用 package；执行 NAMEWTA DDL/DML fresh fixture | build output + schema/menu assertions |
-| 前端完整门禁 | workspace checks | AC-040/AC-041 | cwd `<Path>plus-ui-namewta/</Path>` 运行 `pnpm architecture:check`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod`，按风险运行定向 E2E | command output + build artifacts |
+| 前端完整门禁 | workspace checks | AC-040/AC-041 | cwd `<Path>frontend/</Path>` 运行 `pnpm architecture:check`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod`，按风险运行定向 E2E | command output + build artifacts |
 
 ## 10. 风险、假设与未决问题
 

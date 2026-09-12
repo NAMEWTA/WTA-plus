@@ -12,8 +12,8 @@ risk: high
 blocked_by: [T-02]
 contract_ids: [AC-002, AC-003]
 owner: codex-root
-expected_changes: ["<Path>plus-ui-namewta/src/api/**</Path>", "<Path>plus-ui-namewta/src/views/system/user/**</Path>", "<Path>plus-ui-namewta/src/views/login.vue</Path>", "<Path>plus-ui-namewta/src/views/register.vue</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/src/api/**</Path>", "<Path>plus-ui-namewta/src/views/system/user/**</Path>", "<Path>plus-ui-namewta/src/views/login.vue</Path>", "<Path>plus-ui-namewta/src/views/register.vue</Path>"]
+expected_changes: ["<Path>frontend/src/api/**</Path>", "<Path>frontend/src/views/system/user/**</Path>", "<Path>frontend/src/views/login.vue</Path>", "<Path>frontend/src/views/register.vue</Path>"]
+writable_paths: ["<Path>frontend/src/api/**</Path>", "<Path>frontend/src/views/system/user/**</Path>", "<Path>frontend/src/views/login.vue</Path>", "<Path>frontend/src/views/register.vue</Path>"]
 read_only_paths: ["<Path>docs/upstream/customization-map.md</Path>"]
 shared_paths: []
 shared_path_owners: []

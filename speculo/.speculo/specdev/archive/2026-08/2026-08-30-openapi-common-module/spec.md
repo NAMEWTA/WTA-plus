@@ -244,7 +244,7 @@ v1
 - `ruoyi-system` 凭据表、Mapper/service、全局授权快照、管理 API、目录/详情 API、会话失效和调用事件。
 - `ruoyi-admin` 依赖与 Bean 装配、OpenAPI 环境配置。
 - `script/sql/namewta/DDL.sql` append-only 表/索引和 `DML.sql` 菜单/按钮权限初始化。
-- `plus-ui-namewta` 的 system domain transport/模型/service、system web-domain 共享组件与动态管理页、manifest 注册、admin runtime 组合和个人信息“开放应用”Tab。
+- `frontend` 的 system domain transport/模型/service、system web-domain 共享组件与动态管理页、manifest 注册、admin runtime 组合和个人信息“开放应用”Tab。
 - cURL/Java 调用示例、接口详情、一次性 secret 交互和前后端权限失败状态。
 - 固定签名向量、后端单元/模块测试、前端聚焦测试、架构检查、类型检查、lint 和构建。
 
@@ -361,9 +361,9 @@ system 拥有一张 OpenAPI 凭据表，至少包含：
 | LoginUser 与 Session 桥接 | Sa-Token module test | AC-012 至 AC-019 | `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/authorization/session/ClientSessionServiceUnitTest.java</Path>` | Session/调用交互 |
 | 目录与 owner scope | service/controller contract test | AC-020 至 AC-022、AC-026 | system controller/service 测试形态 | target/current user 矩阵 |
 | HTTP 日志安全 | common-web unit test | AC-028、AC-029 | `<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-web/src/test/java/org/dromara/common/web/logging/SysLogFilterTest.java</Path>` | 捕获日志事件 |
-| system domain | Vitest | AC-009、AC-020 至 AC-027 | `<Path>plus-ui-namewta/packages/domains/system/src/index.test.ts</Path>`、transport tests | 请求与领域映射 |
-| system web-domain | Vitest component/workflow | AC-023 至 AC-027 | `<Path>plus-ui-namewta/packages/web-domains/system/src/index.test.ts</Path>` | manifest、scope、状态 |
-| admin App 组合与个人页 | Vitest integration | AC-023 至 AC-027、AC-030 | `<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>` | 注册与页面组合 |
+| system domain | Vitest | AC-009、AC-020 至 AC-027 | `<Path>frontend/packages/domains/system/src/index.test.ts</Path>`、transport tests | 请求与领域映射 |
+| system web-domain | Vitest component/workflow | AC-023 至 AC-027 | `<Path>frontend/packages/web-domains/system/src/index.test.ts</Path>` | manifest、scope、状态 |
+| admin App 组合与个人页 | Vitest integration | AC-023 至 AC-027、AC-030 | `<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>` | 注册与页面组合 |
 | 普通认证回归 | backend/frontend module regression | AC-030 | 现有 authorization 与 navigation tests | 不变合同 |
 
 后端至少执行受影响测试和 reactor 打包：

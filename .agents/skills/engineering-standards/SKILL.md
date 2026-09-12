@@ -15,8 +15,8 @@ description: 为本仓库提供架构、模块边界、Java/Vue/MyBatis 固定�
 2. 将任务映射到 `repository`、`module:*`、`language:*`、`framework:*`、`runtime:*` 或具体 `path:*` scope。
 3. 修改后端业务模块时，必须读取[后端模块模式登记表](references/project/03-backend-module-modes.md)，由登记表裁决 `layered` 与 `classic`；未登记的新业务模块一律按 `layered` 处理。命中下列领域时，再根据实际任务调用最小充分的开发导航或原子 Skill；跨领域任务可以组合调用，不相关领域不加载。
 4. 按风险读取相关通用规则：[架构与边界](references/rules/architecture-and-boundaries.md)、[文件/目录/命名](references/rules/files-and-naming.md)、[文档与注释](references/rules/documentation-and-comments.md)、[API/错误/资源](references/rules/api-errors-resources.md)、[测试](references/rules/testing.md)、[安全与数据](references/rules/security-and-data.md)、[质量门禁](references/rules/quality-gates.md)、[评审与交付](references/rules/review-and-delivery.md)。新增/移动文件必须读取命名规则；修改 public contract 或非直观实现时读取注释规则；涉及 HTTP API 或 CRUD 时必须读取 API 规则，并执行其中“查询 GET、变更 POST、POST 使用 `@Log`”的传输与追踪约束。
-5. 修改 `plus-ui-namewta/**` 时读取 [TypeScript 核心](references/typescript/core.md)、[代码组织与注释](references/typescript/code-organization-and-comments.md)、[Vue](references/typescript/frameworks/vue.md)和[Browser](references/typescript/runtimes/browser.md)；涉及 `packages/domains/**`、`packages/web-domains/**`、CRUD 页面、树表、表单或 OpenAPI 传输合同映射时再读取[前端 CRUD/API 实现规范](references/typescript/crud-api-and-pages.md)。
-6. 修改 `wta-vue-plus-namewta/**` 时读取 [Java 核心](references/java/core.md)；涉及 Spring 应用、Web、配置或 Bean 生命周期时再读取 [Spring Boot](references/java/frameworks/spring-boot.md)；涉及事务、`@DS`、数据源切换、事务事件、DDL、建表或 schema 迁移时必须读取[数据源事务与建表](references/java/persistence-transactions-and-ddl.md)；涉及 entity/BO/VO、mapper、查询封装、CRUD、树结构、翻译、缓存或导入导出时再读取[后端 CRUD/查询实现规范](references/java/crud-query-and-common.md)。
+5. 修改 `frontend/**` 时读取 [TypeScript 核心](references/typescript/core.md)、[代码组织与注释](references/typescript/code-organization-and-comments.md)、[Vue](references/typescript/frameworks/vue.md)和[Browser](references/typescript/runtimes/browser.md)；涉及 `packages/domains/**`、`packages/web-domains/**`、CRUD 页面、树表、表单或 OpenAPI 传输合同映射时再读取[前端 CRUD/API 实现规范](references/typescript/crud-api-and-pages.md)。
+6. 修改 `backend/**` 时读取 [Java 核心](references/java/core.md)；涉及 Spring 应用、Web、配置或 Bean 生命周期时再读取 [Spring Boot](references/java/frameworks/spring-boot.md)；涉及事务、`@DS`、数据源切换、事务事件、DDL、建表或 schema 迁移时必须读取[数据源事务与建表](references/java/persistence-transactions-and-ddl.md)；涉及 entity/BO/VO、mapper、查询封装、CRUD、树结构、翻译、缓存或导入导出时再读取[后端 CRUD/查询实现规范](references/java/crud-query-and-common.md)。
 7. 涉及架构迁移、存量偏差、例外、上游同步或 Ratchet 时读取[决策、迁移与例外](references/project/02-decisions-and-exceptions.md)，确认 current、target、Ratchet、`pending-decision` 和未到期例外；普通局部修复不因惯例加载整份决策记录。
 8. 实现前检查 public API、依赖方向、安全、错误/取消/资源、数据库兼容和测试影响。涉及动态菜单/路由或菜单图标时，同时读取 `namewta-fullstack-development` 的 `permission-routing.md`、`contract-mapping.md` 和 `backend/mapper-and-sql.md`，按动态路由与图标协议合同验收。
 9. 实现后运行项目画像中该 scope 的真实质量门禁，并按[评审清单](references/project/review-checklist.md)报告命令、退出码、未验证项和残余风险。测试范围应覆盖受影响合同；小型可逆修改不添加只重复实现的测试。
@@ -36,7 +36,7 @@ description: 为本仓库提供架构、模块边界、Java/Vue/MyBatis 固定�
 
 | 实际任务领域 | Skill |
 |---|---|
-| `plus-ui-namewta` 与 `wta-vue-plus-namewta` 的业务垂直切片、CRUD/API、领域资源、权限菜单、事务、SQL、前端 App 组合或全栈交付 | [namewta-fullstack-development](../namewta-fullstack-development/SKILL.md) |
+| `frontend` 与 `backend` 的业务垂直切片、CRUD/API、领域资源、权限菜单、事务、SQL、前端 App 组合或全栈交付 | [namewta-fullstack-development](../namewta-fullstack-development/SKILL.md) |
 | 新增模块、Profile/System/Workflow/Notify 事实地图、跨模块 API 或业务接入 | [wta-module-guide](../wta-module-guide/SKILL.md) |
 | `wta-common` 子模块选择、BOM、Maven 依赖、Utils/Helper、Redis/Login/JSON/Excel/OSS 等公共入口 | [wta-common-modules-guide](../wta-common-modules-guide/SKILL.md) |
 

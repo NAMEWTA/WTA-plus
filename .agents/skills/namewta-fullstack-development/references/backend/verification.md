@@ -10,7 +10,7 @@
 
 ## 快速 Maven 反馈
 
-从 `wta-vue-plus-namewta` 执行：
+从 `backend` 执行：
 
 ```bash
 ./mvnw -pl :<artifact-id> -am test

@@ -32,7 +32,7 @@ legacy_repo_mutation_authorized: false
 
 - 权威：CTO > ADR-006/010/011/012/013 > spec > goal-plan > 本 map > tickets。
 - 旧三仓 freeze；新 public：**NAMEWTA/WTA-plus**。
-- 布局镜像当前 `ruoyi-vue-plus-docs` 聚合树（`ruoyi-vue-plus-namewta` / `plus-ui-namewta` / `docs` / `speculo` / `release-artifacts` / `scripts`…），去 submodule、内容合入。
+- 布局镜像当前 `ruoyi-vue-plus-docs` 聚合树（`ruoyi-vue-plus-namewta` / `frontend` / `docs` / `speculo` / `release-artifacts` / `scripts`…），去 submodule、内容合入。
 - Nacos：发版窗口人工迁 data-id 后硬切；**无双读**。
 - 前缀 SWAP：`ruoyi-X`→`wta-X`；自有 `org.dromara`→`org.namewta`；KEEP 四件套。
 - 写面：HOLD 下仅 SpecDev；授权后仅准备树/批准 remote。

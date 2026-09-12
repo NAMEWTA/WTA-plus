@@ -12,9 +12,9 @@ risk: high
 blocked_by: [T-11]
 contract_ids: [AC-009, AC-010, AC-019, AC-021]
 owner: codex:/root
-expected_changes: ["<Path>plus-ui-namewta/packages/domains/devtools/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/devtools/**</Path>", "<Path>plus-ui-namewta/src/api/tool/**</Path>", "<Path>plus-ui-namewta/src/views/tool/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/domains/devtools/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/devtools/**</Path>", "<Path>plus-ui-namewta/src/api/tool/**</Path>", "<Path>plus-ui-namewta/src/views/tool/**</Path>", "<Path>plus-ui-namewta/e2e/devtools-domain.spec.ts</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/domains/system-admin/**</Path>", "<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/package.json</Path>"]
+expected_changes: ["<Path>frontend/packages/domains/devtools/**</Path>", "<Path>frontend/packages/web-domains/devtools/**</Path>", "<Path>frontend/src/api/tool/**</Path>", "<Path>frontend/src/views/tool/**</Path>"]
+writable_paths: ["<Path>frontend/packages/domains/devtools/**</Path>", "<Path>frontend/packages/web-domains/devtools/**</Path>", "<Path>frontend/src/api/tool/**</Path>", "<Path>frontend/src/views/tool/**</Path>", "<Path>frontend/e2e/devtools-domain.spec.ts</Path>"]
+read_only_paths: ["<Path>frontend/packages/domains/system-admin/**</Path>", "<Path>frontend/packages/platform/**</Path>", "<Path>frontend/package.json</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---
@@ -109,4 +109,4 @@ admin 选择 devtools 后可配置、预览并下载生成结果；字典和菜�
 - source 保留且 clean：`a73007e54dcb517fccf4e5470e679dfee7ac0c00`，tree `37895e4c70901b47dfe40f17c9fe47b5c907687c`。
 - attempt 7 完整 non-browser Gate 通过：27-workspace architecture `0 + 92/92`、lint/typecheck、root `48 files / 232 tests`、全部 workspace unit 与双 App production build 均通过。
 - Lead candidate targeted Playwright `5/5`、full dual-App Playwright `47/47`；预览进程停止且 `4173/4174` 已释放。
-- `plus-ui-namewta main` 仅在完整门禁通过后以 `--ff-only` 推进到 `a73007e54dcb517fccf4e5470e679dfee7ac0c00`；transient candidate worktree/branch 已删除，source worktree/branch 保留。
+- `frontend main` 仅在完整门禁通过后以 `--ff-only` 推进到 `a73007e54dcb517fccf4e5470e679dfee7ac0c00`；transient candidate worktree/branch 已删除，source worktree/branch 保留。

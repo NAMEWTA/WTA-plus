@@ -68,7 +68,7 @@ class NotifyOutboxWakeScopeGateTest {
             }
             dir = dir.getParent();
         }
-        fail("cannot locate wta-vue-plus-namewta git root from " + System.getProperty("user.dir"));
+        fail("cannot locate backend git root from " + System.getProperty("user.dir"));
         return null;
     }
 

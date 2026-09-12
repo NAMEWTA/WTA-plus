@@ -21,9 +21,9 @@
   },
   "schema_version": 5,
   "verification": {
-    "build": "cd ruoyi-vue-plus-namewta && sh mvnw package -DskipTests && cd ../plus-ui-namewta && pnpm build",
-    "lint": "pnpm --dir plus-ui-namewta lint",
+    "build": "cd ruoyi-vue-plus-namewta && sh mvnw package -DskipTests && cd ../frontend && pnpm build",
+    "lint": "pnpm --dir frontend lint",
     "test": "cd ruoyi-vue-plus-namewta && sh mvnw test",
-    "typecheck": "pnpm --dir plus-ui-namewta exec vue-tsc --noEmit"
+    "typecheck": "pnpm --dir frontend exec vue-tsc --noEmit"
   }
 }

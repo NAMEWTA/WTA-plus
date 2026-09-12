@@ -1,6 +1,6 @@
 # 跨模块 Utils / Helper 索引
 
-条目不够明确时，按路径读取源码，不得凭空推断。路径相对工作区，前缀 `wta-vue-plus-namewta/`。职责取各类 JavaDoc 首句。
+条目不够明确时，按路径读取源码，不得凭空推断。路径相对工作区，前缀 `backend/`。职责取各类 JavaDoc 首句。
 
 全 `wta-common` glob：`*Utils.java` 29 + `*Helper.java` 4 + `*Util.java` 3。本表覆盖 **15** 个跨模块 notable `*Utils` / `*Util` / `*Helper`（不含 [core-utils.md](core-utils.md) 的 21 个）。`ExcelBuilder` / `ExcelWriterWrapper` / `MailBuilder` / `OssFactory` / `OssClient` 不是 Utils 命名，但替代旧入口，附在对应模块。
 

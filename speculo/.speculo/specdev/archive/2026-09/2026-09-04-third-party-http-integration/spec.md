@@ -9,7 +9,7 @@ sources:
   - USER-DECISION:system-management-third-party-admin-menu
   - ADR-001-through-ADR-012
   - CODE:ruoyi-vue-plus-namewta/pom.xml
-  - CODE:plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts
+  - CODE:frontend/apps/admin-web/src/router/adminManifestRegistry.ts
   - CODE:release-artifacts/docker/infrastructure/mysql/init/10-ruoyi-base.sql
   - RESEARCH:https://docs.spring.io/spring-framework/reference/integration/rest-clients.html
 ---

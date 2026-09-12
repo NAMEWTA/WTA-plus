@@ -173,10 +173,10 @@ App 从自己的会话状态创建 AccessEvaluator
 
 ### REUSE
 
-- 复用 `<Path>plus-ui-namewta/packages/platform/permission/</Path>` 的现有角色、权限、超级管理员、通配符和失败关闭语义。
-- 复用 `<Path>plus-ui-namewta/packages/platform/app-runtime/</Path>` 的服务端路由装配与受保护导航恢复能力，不新增大而全 common 包。
-- 复用 `<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` 所体现的 App 显式选择与 manifest registry 模式。
-- 复用 `<Path>plus-ui-namewta/packages/web-domains/</Path>` 中现有全局指令使用方式，不要求领域页面改用 Admin 私有 API。
+- 复用 `<Path>frontend/packages/platform/permission/</Path>` 的现有角色、权限、超级管理员、通配符和失败关闭语义。
+- 复用 `<Path>frontend/packages/platform/app-runtime/</Path>` 的服务端路由装配与受保护导航恢复能力，不新增大而全 common 包。
+- 复用 `<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>` 所体现的 App 显式选择与 manifest registry 模式。
+- 复用 `<Path>frontend/packages/web-domains/</Path>` 中现有全局指令使用方式，不要求领域页面改用 Admin 私有 API。
 - 复用现有 Vitest、架构检查、TypeScript/Vue 类型检查、双模式构建和 Playwright 接缝。
 
 ### OUT
@@ -197,7 +197,7 @@ App 从自己的会话状态创建 AccessEvaluator
 - **DEC-008：** 缺失身份、畸形输入、未知/未选择组件和权限不匹配必须失败关闭；前端权限可见性不替代后端鉴权。来源：`ADR-001`、`ADR-003`。
 - **DEC-009：** 迁移固定分为行为冻结、共享能力、Admin 迁移、零兼容清理、全量验证五阶段，每阶段绿色后才能进入下一阶段。来源：`USER-DECISION:2026-08-28-migration-strategy`。
 - **DEC-010：** 工作区内部只从包公开 `exports` 导入；共享包不得导入 `apps/**`、App alias 或其他包的深层入口。来源：永久前端架构合同与 `ADR-001`、`ADR-002`。
-- **DEC-011：** `v-hasPermi` 与 `v-hasRoles` 的名称和已冻结行为是 Web Domain 宿主合同；本变更不要求现有领域模板改名。来源：`CODE:<Path>plus-ui-namewta/packages/web-domains/</Path>`、`ADR-001`。
+- **DEC-011：** `v-hasPermi` 与 `v-hasRoles` 的名称和已冻结行为是 Web Domain 宿主合同；本变更不要求现有领域模板改名。来源：`CODE:<Path>frontend/packages/web-domains/</Path>`、`ADR-001`。
 - **DEC-012：** 共享纯流程通过显式输入接收特殊组件解析、manifest resolver 和诊断信息；诊断如何展示由 App 决定。来源：`ADR-002`、`ADR-003`。
 
 ## 7. 数据、接口与兼容
@@ -224,11 +224,11 @@ App 从自己的会话状态创建 AccessEvaluator
 
 | 接缝 | 层级 | 覆盖合同 | 现有先例或命令 | Evidence 类型 |
 |---|---|---|---|---|
-| Platform Permission | 纯单元 | AC-002、AC-003、AC-004、AC-012 | `<Path>plus-ui-namewta/packages/platform/permission/src/index.test.ts</Path>`；包级 `pnpm test` / `pnpm typecheck` | Vitest 输出与退出码 |
+| Platform Permission | 纯单元 | AC-002、AC-003、AC-004、AC-012 | `<Path>frontend/packages/platform/permission/src/index.test.ts</Path>`；包级 `pnpm test` / `pnpm typecheck` | Vitest 输出与退出码 |
 | Web Kit 权限宿主 | Vue 指令单元/组件 | AC-001、AC-002、AC-003、AC-012 | 复用 Admin 当前指令行为作为先验，建立包级 Vitest 接缝 | 定向测试输出、依赖图审查 |
-| Platform App Runtime 菜单纯流程 | 纯单元、表驱动 | AC-006、AC-007、AC-009、AC-010、AC-012 | `<Path>plus-ui-namewta/packages/platform/app-runtime/src/routeAssembler.test.ts</Path>`、`<Path>plus-ui-namewta/packages/platform/app-runtime/src/navigationRecovery.test.ts</Path>` | Vitest 输出与失败路径断言 |
-| Admin manifest registry | App 集成单元 | AC-008、AC-009、AC-010 | `<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>`、`<Path>plus-ui-namewta/apps/admin-web/src/router/manifestDiagnostic.test.ts</Path>` | Vitest 输出与诊断断言 |
-| Admin navigation Store 与守卫 | App 状态/路由集成 | AC-005、AC-006、AC-008、AC-011、AC-012 | 迁移 `<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.test.ts</Path>` 的有效行为；复用 App Runtime 恢复顺序测试 | Vitest、typecheck 与调用顺序断言 |
+| Platform App Runtime 菜单纯流程 | 纯单元、表驱动 | AC-006、AC-007、AC-009、AC-010、AC-012 | `<Path>frontend/packages/platform/app-runtime/src/routeAssembler.test.ts</Path>`、`<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.test.ts</Path>` | Vitest 输出与失败路径断言 |
+| Admin manifest registry | App 集成单元 | AC-008、AC-009、AC-010 | `<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts</Path>`、`<Path>frontend/apps/admin-web/src/router/manifestDiagnostic.test.ts</Path>` | Vitest 输出与诊断断言 |
+| Admin navigation Store 与守卫 | App 状态/路由集成 | AC-005、AC-006、AC-008、AC-011、AC-012 | 迁移 `<Path>frontend/apps/admin-web/src/store/modules/permission.test.ts</Path>` 的有效行为；复用 App Runtime 恢复顺序测试 | Vitest、typecheck 与调用顺序断言 |
 | 架构与遗留扫描 | 静态架构 | AC-001、AC-004、AC-013、AC-015 | `pnpm architecture:check`；`pnpm architecture:test`；针对旧标识、App 私有指令和动态 glob 的 `rg` 扫描 | 命令、退出码、零匹配或批准清单 |
 | 前端工作区门禁 | 静态、单元、构建 | AC-014、AC-015 | `pnpm lint`；`pnpm typecheck`；`pnpm test`；`pnpm build:dev`；`pnpm build:prod` | 各命令 cwd、退出码和摘要 |
 | Admin 浏览器流程 | 端到端 | AC-005、AC-006、AC-008、AC-009、AC-011、AC-012、AC-015 | `pnpm test:e2e`，覆盖登录、Client 菜单、动态页面、权限可见性与失败路径 | Playwright 报告、场景结果 |

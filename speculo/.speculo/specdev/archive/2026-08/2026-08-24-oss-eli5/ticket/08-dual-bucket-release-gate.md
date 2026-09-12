@@ -15,27 +15,27 @@ owner: codex:/root
 expected_changes:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/oss/client/MinioOssClientIntegrationTest.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/oss/release/**</Path>"
-  - "<Path>plus-ui-namewta/e2e/system-resources.spec.ts</Path>"
+  - "<Path>frontend/e2e/system-resources.spec.ts</Path>"
   - "<Path>docs/oss-public-private-operations.md</Path>"
 writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/oss/client/MinioOssClientIntegrationTest.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/oss/release/**</Path>"
-  - "<Path>plus-ui-namewta/e2e/system-resources.spec.ts</Path>"
+  - "<Path>frontend/e2e/system-resources.spec.ts</Path>"
   - "<Path>docs/oss-public-private-operations.md</Path>"
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-api/src/main/java/org/dromara/system/api/OssService.java</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path>"
   - "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/system/**</Path>"
+  - "<Path>frontend/packages/domains/system/**</Path>"
+  - "<Path>frontend/packages/web-domains/system/**</Path>"
 shared_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/oss/client/MinioOssClientIntegrationTest.java</Path>"
-  - "<Path>plus-ui-namewta/e2e/system-resources.spec.ts</Path>"
+  - "<Path>frontend/e2e/system-resources.spec.ts</Path>"
   - "<Path>docs/oss-public-private-operations.md</Path>"
 shared_path_owners:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/oss/client/MinioOssClientIntegrationTest.java</Path> => T-08"
-  - "<Path>plus-ui-namewta/e2e/system-resources.spec.ts</Path> => T-08"
+  - "<Path>frontend/e2e/system-resources.spec.ts</Path> => T-08"
   - "<Path>docs/oss-public-private-operations.md</Path> => T-08"
 ---
 

@@ -57,7 +57,7 @@ profile 中每个 Compose/env 路径必须是授权根目录下的绝对路径�
    ```bash
    node .agents/skills/deploy-namewta-environment/scripts/verify-frontend-artifact.mjs \
      --profile temp/relase/deployment-profile.json \
-     --index plus-ui-namewta/apps/admin-web/dist/index.html
+     --index frontend/apps/admin-web/dist/index.html
    ```
 
 6. 使用 `.part` 或新 staging 目录传输，服务器端重新计算 SHA-256，再原子重命名为不可变目录。

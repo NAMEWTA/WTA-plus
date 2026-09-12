@@ -39,9 +39,9 @@
 ### 复现命令
 
 ```bash
-git -C wta-vue-plus-namewta log --oneline bffc39a89fd6ed196031e71cbceefd9986eecce8..bffc39a89fd6ed196031e71cbceefd9986eecce8
-git -C wta-vue-plus-namewta diff --name-status bffc39a89fd6ed196031e71cbceefd9986eecce8..bffc39a89fd6ed196031e71cbceefd9986eecce8
-git -C wta-vue-plus-namewta diff bffc39a89fd6ed196031e71cbceefd9986eecce8..bffc39a89fd6ed196031e71cbceefd9986eecce8 -- <path>
+git -C backend log --oneline bffc39a89fd6ed196031e71cbceefd9986eecce8..bffc39a89fd6ed196031e71cbceefd9986eecce8
+git -C backend diff --name-status bffc39a89fd6ed196031e71cbceefd9986eecce8..bffc39a89fd6ed196031e71cbceefd9986eecce8
+git -C backend diff bffc39a89fd6ed196031e71cbceefd9986eecce8..bffc39a89fd6ed196031e71cbceefd9986eecce8 -- <path>
 ```
 
 ## frontend
@@ -78,9 +78,9 @@ git -C wta-vue-plus-namewta diff bffc39a89fd6ed196031e71cbceefd9986eecce8..bffc3
 ### 复现命令
 
 ```bash
-git -C plus-ui-namewta log --oneline a85fa0aee44f6f12dc35198126914ce722ee8622..a85fa0aee44f6f12dc35198126914ce722ee8622
-git -C plus-ui-namewta diff --name-status a85fa0aee44f6f12dc35198126914ce722ee8622..a85fa0aee44f6f12dc35198126914ce722ee8622
-git -C plus-ui-namewta diff a85fa0aee44f6f12dc35198126914ce722ee8622..a85fa0aee44f6f12dc35198126914ce722ee8622 -- <path>
+git -C frontend log --oneline a85fa0aee44f6f12dc35198126914ce722ee8622..a85fa0aee44f6f12dc35198126914ce722ee8622
+git -C frontend diff --name-status a85fa0aee44f6f12dc35198126914ce722ee8622..a85fa0aee44f6f12dc35198126914ce722ee8622
+git -C frontend diff a85fa0aee44f6f12dc35198126914ce722ee8622..a85fa0aee44f6f12dc35198126914ce722ee8622 -- <path>
 ```
 
 ## 现状 Merge 清单

@@ -5,14 +5,14 @@
 | ID | Path | Language / framework / runtime | Build | Source / test roots | Public entrypoint | Quality gates | Evidence |
 |---|---|---|---|---|---|---|---|
 | `workspace-parent` | `.` | Markdown、Git/Submodule 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | submodule snapshot + frontend/backend/external-services jobs | `README.md`, `.gitmodules`, `.github/workflows/quality-gates.yml`; high |
-| `plus-ui` | `plus-ui-namewta` | TypeScript、Vue 3、Pinia、Browser，可扩展多 App monorepo | pnpm workspace、Vite、Oxlint、Vitest、Playwright | `apps/admin-web/src`、`packages/**/src`、`tooling/**/src`、相邻 `*.test.ts`、`e2e/**` | `apps/admin-web/src/main.ts` | architecture check/test、lint、typecheck、workspace test、双模式 build、按风险 E2E | `package.json`、`pnpm-workspace.yaml`、`tooling/architecture/**`、`playwright.config.ts`; high |
-| `backend-root` | `wta-vue-plus-namewta` | Java 21, Spring Boot 4, JVM | Maven Wrapper | 46 Maven projects below; 176 tracked Java test source files | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
+| `plus-ui` | `frontend` | TypeScript、Vue 3、Pinia、Browser，可扩展多 App monorepo | pnpm workspace、Vite、Oxlint、Vitest、Playwright | `apps/admin-web/src`、`packages/**/src`、`tooling/**/src`、相邻 `*.test.ts`、`e2e/**` | `apps/admin-web/src/main.ts` | architecture check/test、lint、typecheck、workspace test、双模式 build、按风险 E2E | `package.json`、`pnpm-workspace.yaml`、`tooling/architecture/**`、`playwright.config.ts`; high |
+| `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | 46 Maven projects below; 176 tracked Java test source files | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
 
 ## 后端 Maven 模块
 
 下表每一行都是唯一 `module:<path>` scope。未另行标注时，语言为 Java、运行时为 JVM、构建为 Maven，源码根为 `src/main/java`（存在资源时同时含 `src/main/resources`），测试根为空，generated path 为空，证据为该路径 `pom.xml` 与源码，置信度 high。
 
-| ID / path suffix under `wta-vue-plus-namewta/` | Role / framework | Public entrypoint | Test / generated notes |
+| ID / path suffix under `backend/` | Role / framework | Public entrypoint | Test / generated notes |
 |---|---|---|---|
 | `wta-admin` | Spring Boot 可部署主应用，组装 api/common/modules | `org.namewta.DromaraApplication` | `src/test/java`; JUnit 示例/基础测试 |
 | `wta-api` | 跨业务模块公开 API/DTO 合同 | `org.namewta.system.api.*` | none |
@@ -85,10 +85,10 @@
 
 ## 路由
 
-- `path:plus-ui-namewta/**` -> 通用相关规则 + TypeScript core + 代码组织/命名/注释 + Vue + Browser。
-- `path:plus-ui-namewta/packages/domains/**`、`packages/web-domains/**`、`packages/api-contracts/**` 或领域 CRUD 页面 -> 追加前端 CRUD/API 实现规范。
-- `path:wta-vue-plus-namewta/**` -> 通用相关规则 + Java core；Spring 应用/配置/Web scope 再加 Spring Boot；事务、数据源切换和 DDL/schema scope 追加数据源事务与建表规范。
-- `path:wta-vue-plus-namewta/wta-modules/**` 中的 CRUD/mapper/service/controller，以及 `wta-common-mybatis`、`wta-common-translation` -> 追加后端 CRUD/查询实现规范；模板修改单独路由到 `path:docs/fm/**`。
+- `path:frontend/**` -> 通用相关规则 + TypeScript core + 代码组织/命名/注释 + Vue + Browser。
+- `path:frontend/packages/domains/**`、`packages/web-domains/**`、`packages/api-contracts/**` 或领域 CRUD 页面 -> 追加前端 CRUD/API 实现规范。
+- `path:backend/**` -> 通用相关规则 + Java core；Spring 应用/配置/Web scope 再加 Spring Boot；事务、数据源切换和 DDL/schema scope 追加数据源事务与建表规范。
+- `path:backend/wta-modules/**` 中的 CRUD/mapper/service/controller，以及 `wta-common-mybatis`、`wta-common-translation` -> 追加后端 CRUD/查询实现规范；模板修改单独路由到 `path:docs/fm/**`。
 - `path:docs/upstream/**`、Submodule 指针或上游同步 -> 架构边界 + 安全数据 + 评审交付。
 - SQL/表结构变化 -> 安全数据 + Java/Spring contract + 数据源事务与建表 + customization map；新建项目自有表应用基础字段基线，直接修改父仓库六份 MySQL 8.4 完整基座中的对应文件。
 - 跨前后端 API 变化 -> 同时加载 TypeScript、Java、测试、安全和交付规则，并以后端兼容合同先行。

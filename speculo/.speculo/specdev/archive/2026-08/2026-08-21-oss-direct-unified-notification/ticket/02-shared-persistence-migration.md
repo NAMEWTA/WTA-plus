@@ -14,7 +14,7 @@ contract_ids: [AC-005, AC-008, AC-009, AC-010, AC-011, AC-025, AC-029, AC-032]
 owner: cursor-agent
 expected_changes: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/migration/ossnotify/**</Path>"]
 writable_paths: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/migration/ossnotify/**</Path>"]
-read_only_paths: ["<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>", "<Path>plus-ui-namewta/src/views/monitor/**</Path>"]
+read_only_paths: ["<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>", "<Path>frontend/src/views/monitor/**</Path>"]
 shared_paths: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path>", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path>"]
 shared_path_owners: ["<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DDL.sql</Path> => T-02", "<Path>ruoyi-vue-plus-namewta/script/sql/namewta/DML.sql</Path> => T-02"]
 ---

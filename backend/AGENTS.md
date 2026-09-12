@@ -1,4 +1,4 @@
-# wta-vue-plus-namewta 模块索引
+# backend 模块索引
 
 ## Scope
 
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-说明 wta-vue-plus-namewta 的职责边界、组成和最小验证入口。
+说明 backend 的职责边界、组成和最小验证入口。
 
 ## Components
 

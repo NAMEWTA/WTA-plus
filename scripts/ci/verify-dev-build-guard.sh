@@ -377,7 +377,7 @@ if [[ "${sentinel_output}" != *"class 哨兵"* ]]; then
 fi
 
 start_workspace="${test_root}/start-workspace"
-start_backend="${start_workspace}/wta-vue-plus-namewta"
+start_backend="${start_workspace}/backend"
 mkdir -p "${start_workspace}/scripts/lib" "${start_backend}"
 cp "${workspace_root}/scripts/start-dev.sh" "${start_workspace}/scripts/start-dev.sh"
 cp "${guard_module}" "${start_workspace}/scripts/lib/backend-build-guard.sh"

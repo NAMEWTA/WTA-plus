@@ -57,12 +57,12 @@ rg -n 'import org\.dromara\.warm' -g '*.java' ruoyi-vue-plus-namewta
 rg -n 'import org\.dromara\.(easyes|mica)' -g '*.java' ruoyi-vue-plus-namewta
 
 # 文件触达约数
-rg -l -i 'ruoyi' ruoyi-vue-plus-namewta plus-ui-namewta docs release-artifacts ... | wc -l
+rg -l -i 'ruoyi' ruoyi-vue-plus-namewta frontend docs release-artifacts ... | wc -l
 rg -l 'org\.dromara' ... | wc -l
 rg -l 'sms4j|org\.dromara\.sms4j' ... | wc -l
 
 # 前端 / Docker / 文档
-rg -n '"name"|@namewta|RuoYi' plus-ui-namewta/package.json plus-ui-namewta/apps/*/.env*
+rg -n '"name"|@namewta|RuoYi' frontend/package.json frontend/apps/*/.env*
 rg -n 'namewta|/ruoyi|ruoyi-' release-artifacts/docker/docker-compose*.yml
 cat .gitmodules
 ```

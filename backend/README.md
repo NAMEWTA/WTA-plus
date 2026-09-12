@@ -43,7 +43,7 @@ wta-extend/      monitor、SnailJob、SnailAI 等独立应用
 
 后端向所有 App 提供一致的 HTTP/JSON 合同，并负责最终认证、授权、数据范围和 Client 隔离。前端可以按 App 选择页面与菜单表现，但不能放宽服务端权限。
 
-前端只消费 HTTP/JSON 合同。Vue 页面、动态路由和 App 组合归独立仓库 `plus-ui-namewta` 所有，后端仓库不维护前端源码副本。
+前端只消费 HTTP/JSON 合同。Vue 页面、动态路由和 App 组合归独立仓库 `frontend` 所有，后端仓库不维护前端源码副本。
 
 新增前端 App 不需要在后端复制 Controller。它应申请或配置独立 ClientId，并复用相同的领域接口；需要不同准入、默认角色、菜单和权限时，通过 Client 级数据配置实现。
 

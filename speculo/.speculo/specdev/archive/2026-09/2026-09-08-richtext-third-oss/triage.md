@@ -19,7 +19,7 @@ updated_at: 2026-09-10T17:55:00+08:00
 - **影响：** 富文本演示页、三方调用明细/统计页、本地 OSS 直传预检。
 - **紧急度：** scheduled
 - **当前证据：** 来源为对话报障；无远程 Issue。实现已在 2026-09-08 提交，本次审查确认行为落地。
-- **相关代码/工件：** `<Path>plus-ui-namewta/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>`、`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-third/src/main/java/org/dromara/third/controller/admin/ThirdObservabilityController.java</Path>`、`<Path>release-artifacts/docker/docker-compose-infrastructure.yml</Path>`
+- **相关代码/工件：** `<Path>frontend/packages/web-domains/demo/src/test-rich-text/RichTextPage.vue</Path>`、`<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-third/src/main/java/org/dromara/third/controller/admin/ThirdObservabilityController.java</Path>`、`<Path>release-artifacts/docker/docker-compose-infrastructure.yml</Path>`
 
 ## 未知项
 

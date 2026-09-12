@@ -24,7 +24,7 @@
       "recommendation": "全部删除并刷新工作区依赖；动态菜单不再能解析 tool/gen 页面。",
       "status": "answered",
       "round": 1,
-      "answer": "完整清理 plus-ui-namewta 中相关生成代码的前端管理界面，包括 packages/domains/gen 与 packages/web-domains/gen。",
+      "answer": "完整清理 frontend 中相关生成代码的前端管理界面，包括 packages/domains/gen 与 packages/web-domains/gen。",
       "log_ref": "LOG-002"
     },
     {

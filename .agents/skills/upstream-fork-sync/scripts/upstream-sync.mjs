@@ -20,7 +20,7 @@ export const SCHEMA_VERSION = 2;
 const STATE_RELATIVE_PATH = 'docs/upstream/upstream-sync-state.json';
 export const REPOSITORIES = {
   backend: {
-    path: 'wta-vue-plus-namewta',
+    path: 'backend',
     productRef: 'refs/heads/main',
     originProductRef: 'refs/remotes/origin/main',
     upstreamRef: 'refs/remotes/upstream/6.X',
@@ -28,7 +28,7 @@ export const REPOSITORIES = {
     baselineTagRef: 'refs/tags/namewta-base-upstream-6x',
   },
   frontend: {
-    path: 'plus-ui-namewta',
+    path: 'frontend',
     productRef: 'refs/heads/main',
     originProductRef: 'refs/remotes/origin/main',
     upstreamRef: 'refs/remotes/upstream/6.X-Vue',

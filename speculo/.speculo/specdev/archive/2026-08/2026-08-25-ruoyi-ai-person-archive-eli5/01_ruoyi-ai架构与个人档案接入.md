@@ -63,7 +63,7 @@
 
 ```text
 [前端]
-plus-ui-namewta
+frontend
   |
   +-- src/views/ai/chat
   |      嵌入 SnailAI 聊天页面
@@ -104,7 +104,7 @@ ruoyi-extend/ruoyi-snailai-server
 | AI 公共层 | <Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-ai/src/main/java/org/dromara/common/ai/config/SnailAiConfig.java</Path> | 一个条件自动配置，打开第三方 Agent 与 OpenAPI 能力。 |
 | SnailAI 独立服务 | <Path>ruoyi-vue-plus-namewta/ruoyi-extend/ruoyi-snailai-server/src/main/java/org/dromara/snailai/SnailAiServerApplication.java</Path> | 启动 `com.aizuda` 提供的 Server 主程序。 |
 | SnailAI 数据 | <Path>ruoyi-vue-plus-namewta/script/sql/ry_ai.sql</Path> | 创建 `sai_*` 用户、模型、智能体、会话、RAG、MCP、Skill、应用和节点表。 |
-| AI 聊天页面 | <Path>plus-ui-namewta/src/views/ai/chat/index.vue</Path> | 先注册若依用户，再以 iframe 打开 `/snail-chat/`。 |
+| AI 聊天页面 | <Path>frontend/src/views/ai/chat/index.vue</Path> | 先注册若依用户，再以 iframe 打开 `/snail-chat/`。 |
 
 ## 一步一步看
 
@@ -209,7 +209,7 @@ ruoyi-extend/ruoyi-snailai-server
 [展示智能体、会话和聊天输入框]
 ```
 
-前端管理页 `<Path>plus-ui-namewta/src/views/monitor/snailai/index.vue</Path>` 则直接嵌入 SnailAI Server 的管理界面，开发环境地址来自 `VITE_APP_SNAILAI_ADMIN`。
+前端管理页 `<Path>frontend/src/views/monitor/snailai/index.vue</Path>` 则直接嵌入 SnailAI Server 的管理界面，开发环境地址来自 `VITE_APP_SNAILAI_ADMIN`。
 
 ### 第四步：发送一句话后怎样流动
 

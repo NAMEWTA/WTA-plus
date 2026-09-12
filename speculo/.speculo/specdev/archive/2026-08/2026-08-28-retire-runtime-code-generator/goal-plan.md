@@ -36,7 +36,7 @@ ready_for_execution: false
 ### Non-goals
 
 - 不创建替代生成器、CLI、插件、stub、redirect 或 deprecated API。
-- 不修改过去生成的业务代码、无关 `generateRoutes`/密码/OpenAPI 生成语义或 `<Path>plus-ui-namewta/tooling/generators/**</Path>`。
+- 不修改过去生成的业务代码、无关 `generateRoutes`/密码/OpenAPI 生成语义或 `<Path>frontend/tooling/generators/**</Path>`。
 - 不执行 push、PR、远端合并、部署、生产数据库操作、branch/worktree 清理或归档。
 
 ### Authoritative Inputs

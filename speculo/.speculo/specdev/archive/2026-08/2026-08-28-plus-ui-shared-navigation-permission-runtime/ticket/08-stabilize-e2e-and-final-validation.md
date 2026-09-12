@@ -12,9 +12,9 @@ risk: high
 blocked_by: [T-06, T-07]
 contract_ids: [AC-002, AC-005, AC-006, AC-008, AC-009, AC-011, AC-012, AC-014, AC-015]
 owner: codex:leadership-epoch-1
-expected_changes: ["<Path>plus-ui-namewta/e2e/system-resources.spec.ts</Path>", "<Path>plus-ui-namewta/e2e/workflow-runtime.spec.ts</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/e2e/system-resources.spec.ts</Path>", "<Path>plus-ui-namewta/e2e/workflow-runtime.spec.ts</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/apps/admin-web/**</Path>", "<Path>plus-ui-namewta/packages/domains/admin/**</Path>", "<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>", "<Path>plus-ui-namewta/packages/web-kit/permission/**</Path>", "<Path>plus-ui-namewta/tooling/**</Path>"]
+expected_changes: ["<Path>frontend/e2e/system-resources.spec.ts</Path>", "<Path>frontend/e2e/workflow-runtime.spec.ts</Path>"]
+writable_paths: ["<Path>frontend/e2e/system-resources.spec.ts</Path>", "<Path>frontend/e2e/workflow-runtime.spec.ts</Path>"]
+read_only_paths: ["<Path>frontend/apps/admin-web/**</Path>", "<Path>frontend/packages/domains/admin/**</Path>", "<Path>frontend/packages/platform/app-runtime/**</Path>", "<Path>frontend/packages/web-kit/permission/**</Path>", "<Path>frontend/tooling/**</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

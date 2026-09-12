@@ -12,9 +12,9 @@ risk: high
 blocked_by: [T-09]
 contract_ids: [AC-009, AC-010, AC-019, AC-021]
 owner: codex:/root
-expected_changes: ["<Path>plus-ui-namewta/packages/domains/operations/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/operations/**</Path>", "<Path>plus-ui-namewta/src/api/monitor/**</Path>", "<Path>plus-ui-namewta/src/views/monitor/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/domains/operations/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/operations/**</Path>", "<Path>plus-ui-namewta/src/api/monitor/**</Path>", "<Path>plus-ui-namewta/src/views/monitor/**</Path>", "<Path>plus-ui-namewta/e2e/operations-domain.spec.ts</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/packages/domains/identity-access/**</Path>", "<Path>plus-ui-namewta/package.json</Path>"]
+expected_changes: ["<Path>frontend/packages/domains/operations/**</Path>", "<Path>frontend/packages/web-domains/operations/**</Path>", "<Path>frontend/src/api/monitor/**</Path>", "<Path>frontend/src/views/monitor/**</Path>"]
+writable_paths: ["<Path>frontend/packages/domains/operations/**</Path>", "<Path>frontend/packages/web-domains/operations/**</Path>", "<Path>frontend/src/api/monitor/**</Path>", "<Path>frontend/src/views/monitor/**</Path>", "<Path>frontend/e2e/operations-domain.spec.ts</Path>"]
+read_only_paths: ["<Path>frontend/packages/platform/**</Path>", "<Path>frontend/packages/domains/identity-access/**</Path>", "<Path>frontend/package.json</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

@@ -15,17 +15,17 @@ owner: unassigned
 expected_changes:
   - "<Path>release-artifacts/docker/frontend/nginx/lb/nginx-lb-http.conf.template</Path>"
   - "<Path>release-artifacts/docker/frontend/nginx/lb/nginx-lb-tls.conf.template</Path>"
-  - "<Path>plus-ui-namewta/e2e/nacos-console.spec.ts</Path>"
+  - "<Path>frontend/e2e/nacos-console.spec.ts</Path>"
 writable_paths:
   - "<Path>release-artifacts/docker/frontend/nginx/lb/nginx-lb-http.conf.template</Path>"
   - "<Path>release-artifacts/docker/frontend/nginx/lb/nginx-lb-tls.conf.template</Path>"
   - "<Path>release-artifacts/tests/nacos-proxy-config.test.mjs</Path>"
-  - "<Path>plus-ui-namewta/e2e/nacos-console.spec.ts</Path>"
+  - "<Path>frontend/e2e/nacos-console.spec.ts</Path>"
 read_only_paths:
   - "<Path>release-artifacts/docker/docker-compose-infrastructure.yml</Path>"
   - "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/views/monitor/external/index.vue</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/system/src/monitor/**</Path>"
+  - "<Path>frontend/apps/admin-web/src/views/monitor/external/index.vue</Path>"
+  - "<Path>frontend/packages/domains/system/src/monitor/**</Path>"
 shared_paths: []
 shared_path_owners: []
 ---

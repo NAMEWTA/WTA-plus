@@ -2,7 +2,7 @@
 
 ### ARCH-001 Submodule 所有权
 
-Scope: `repository`, `module:plus-ui-namewta`, `module:wta-vue-plus-namewta`
+Scope: `repository`, `module:frontend`, `module:backend`
 
 Level: MUST
 
@@ -14,7 +14,7 @@ Verification: 分别检查父仓库及两个子模块 `git status`; review 父�
 
 ### ARCH-002 后端依赖方向
 
-Scope: `module:wta-vue-plus-namewta`
+Scope: `module:backend`
 
 Level: MUST
 
@@ -26,7 +26,7 @@ Verification: `./mvnw clean package`; review 变更模块的 `pom.xml` 与 impor
 
 ### ARCH-002A 新业务模块五层调用链
 
-Scope: `path:wta-vue-plus-namewta/wta-modules/**`
+Scope: `path:backend/wta-modules/**`
 
 Level: MUST
 
@@ -42,7 +42,7 @@ Verification: 对 layered 模块运行 `validate-module-mode.mjs`，检查入口
 
 ### ARCH-003 前端边界
 
-Scope: `module:plus-ui-namewta`
+Scope: `module:frontend`
 
 Level: MUST
 
@@ -54,7 +54,7 @@ Verification: `pnpm architecture:check`; `pnpm architecture:test`; `pnpm lint`; 
 
 ### ARCH-004 Public contract 与跨端顺序
 
-Scope: `public-api:wta-api`, HTTP/JSON, SQL/schema, `path:plus-ui-namewta/packages/api-contracts/**`, `path:plus-ui-namewta/packages/domains/**`
+Scope: `public-api:wta-api`, HTTP/JSON, SQL/schema, `path:frontend/packages/api-contracts/**`, `path:frontend/packages/domains/**`
 
 Level: MUST
 
@@ -78,7 +78,7 @@ Verification: review 新路径能映射到模块职责；检查是否新增含�
 
 ### ARCH-006 生成器与生成物分离
 
-Scope: `path:plus-ui-namewta/**`, `path:wta-vue-plus-namewta/**`
+Scope: `path:frontend/**`, `path:backend/**`
 
 Level: MUST
 

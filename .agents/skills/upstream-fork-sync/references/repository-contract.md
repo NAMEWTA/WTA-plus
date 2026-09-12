@@ -4,8 +4,8 @@
 
 | ID | 路径 | 产品分支 | Origin 跟踪 ref | Upstream 跟踪 ref | 本地镜像 | 不可变基线标签 |
 |---|---|---|---|---|---|---|
-| `backend` | `wta-vue-plus-namewta` | `main` | `origin/main` | `upstream/6.X` | `6.X` | `namewta-base-upstream-6x` |
-| `frontend` | `plus-ui-namewta` | `main` | `origin/main` | `upstream/6.X-Vue` | `6.X-Vue` | `namewta-base-upstream-6x-vue` |
+| `backend` | `backend` | `main` | `origin/main` | `upstream/6.X` | `6.X` | `namewta-base-upstream-6x` |
+| `frontend` | `frontend` | `main` | `origin/main` | `upstream/6.X-Vue` | `6.X-Vue` | `namewta-base-upstream-6x-vue` |
 
 父仓库只有 `origin/main`；它拥有文档和子模块 gitlink，不拥有子仓库的源码历史。
 

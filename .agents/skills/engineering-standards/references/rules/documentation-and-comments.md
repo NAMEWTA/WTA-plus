@@ -50,7 +50,7 @@ Verification: review 新增 `TODO|FIXME|HACK|XXX|@author|Copyright`；确认来�
 
 ### DOC-005 Profile Java 类型与业务方法使用中文 Javadoc
 
-Scope: `path:wta-vue-plus-namewta/wta-modules/wta-profile/**/src/main/java/**`
+Scope: `path:backend/wta-modules/wta-profile/**/src/main/java/**`
 
 Level: MUST
 
@@ -60,7 +60,7 @@ Verification: 评审 `wta-profile` 新增/修改 Java 源码，确认类型和�
 
 ### DOC-006 新业务模块中文 Javadoc
 
-Scope: `path:wta-vue-plus-namewta/wta-modules/**/src/main/java/**`，仅适用于模块模式登记表中的新模块和新增/实质修改代码
+Scope: `path:backend/wta-modules/**/src/main/java/**`，仅适用于模块模式登记表中的新模块和新增/实质修改代码
 
 Level: MUST
 

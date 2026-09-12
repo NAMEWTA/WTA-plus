@@ -13,13 +13,13 @@ blocked_by: [T-10]
 contract_ids: [AC-032, AC-033, AC-034, AC-035, AC-040]
 owner: codex:/root
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/material-tag/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/material-tag/**</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/material-tag/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/material-tag/**</Path>"
 read_only_paths:
-  - "<Path>plus-ui-namewta/packages/domains/profile/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/index.ts</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/system/src/**</Path>"
+  - "<Path>frontend/packages/domains/profile/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/index.ts</Path>"
+  - "<Path>frontend/packages/web-domains/system/src/**</Path>"
 shared_paths: []
 shared_path_owners: []
 ---

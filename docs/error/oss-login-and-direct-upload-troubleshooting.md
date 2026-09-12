@@ -184,10 +184,10 @@ OSS Direct Upload配置 [minio] CORS/Lifecycle 辅助检查未通过
 ### 4.2 本地前后端
 
 ```powershell
-# 后端，工作目录为 wta-vue-plus-namewta/wta-admin
+# 后端，工作目录为 backend/wta-admin
 java -jar target\wta-admin.jar --server.port=18080 --openapi.enabled=false
 
-# 前端，工作目录为 plus-ui-namewta/apps/admin-web
+# 前端，工作目录为 frontend/apps/admin-web
 pnpm exec vite serve --mode development --port 5177 --host 0.0.0.0
 ```
 

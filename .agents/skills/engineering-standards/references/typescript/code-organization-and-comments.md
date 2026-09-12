@@ -1,10 +1,10 @@
 # TypeScript / Vue 代码组织、命名与注释
 
-适用 `module:plus-ui-namewta`。当前架构以工作区包所有权为主轴；根级 `src/` 与 `gen/` 已退役。
+适用 `module:frontend`。当前架构以工作区包所有权为主轴；根级 `src/` 与 `gen/` 已退役。
 
 ### TS-ORG-001 代码按所有权落位
 
-Scope: `path:plus-ui-namewta/apps/**`, `path:plus-ui-namewta/packages/**`, `path:plus-ui-namewta/tooling/**`
+Scope: `path:frontend/apps/**`, `path:frontend/packages/**`, `path:frontend/tooling/**`
 
 Level: MUST
 
@@ -16,7 +16,7 @@ Verification: review 新文件 owner；`pnpm architecture:check`; `pnpm architec
 
 ### TS-ORG-002 按角色命名
 
-Scope: `module:plus-ui-namewta`
+Scope: `module:frontend`
 
 Level: SHOULD
 
@@ -28,7 +28,7 @@ Verification: 对照同包相邻文件；检查 exports、组件注册、route n
 
 ### TS-ORG-003 公开入口不是通用 barrel
 
-Scope: `module:plus-ui-namewta`
+Scope: `module:frontend`
 
 Level: MUST
 
@@ -40,7 +40,7 @@ Verification: review `package.json#exports` 与消费者 import；`pnpm architec
 
 ### TS-ORG-004 测试命名与边界一致
 
-Scope: `path:plus-ui-namewta/**/*.test.ts`, `path:plus-ui-namewta/e2e/**/*.spec.ts`
+Scope: `path:frontend/**/*.test.ts`, `path:frontend/e2e/**/*.spec.ts`
 
 Level: SHOULD
 
@@ -52,7 +52,7 @@ Verification: `pnpm test`; 按风险运行 `pnpm test:e2e`; review runner discov
 
 ### TS-ORG-005 注释解释原因与边界
 
-Scope: `module:plus-ui-namewta`
+Scope: `module:frontend`
 
 Level: SHOULD
 

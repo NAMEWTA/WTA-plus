@@ -135,7 +135,7 @@ NAMEWTA 当前以本地 `application*.yml` 和部署环境变量提供配置。�
 ### REUSE
 
 - 复用 `<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-elasticsearch</Path>` 的可选 common artifact 组织方式，但不复制其业务行为。
-- 复用 `<Path>plus-ui-namewta/apps/admin-web/src/views/monitor/external</Path>`、外部监控 target、动态菜单权限和 URL 安全机制。
+- 复用 `<Path>frontend/apps/admin-web/src/views/monitor/external</Path>`、外部监控 target、动态菜单权限和 URL 安全机制。
 - 复用现有 Docker MySQL、network、本机端口绑定和 Nginx 外部服务反代约定。
 - CDE Nacos 实现只作为客户端生命周期与 YAML 展平参考；优先级、默认开启、Spring Cloud rebinder 和快照行为以本 Spec 为准。
 

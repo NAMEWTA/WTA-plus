@@ -19,12 +19,12 @@
     {
       "id": "D-002",
       "title": "首期交付范围",
-      "question": "首期是只交付后端模块骨架与核心 Java 能力，还是交付可运行的后端完整闭环，或连同 plus-ui-namewta 的申请、档案、材料和待办页面一起端到端交付？",
+      "question": "首期是只交付后端模块骨架与核心 Java 能力，还是交付可运行的后端完整闭环，或连同 frontend 的申请、档案、材料和待办页面一起端到端交付？",
       "depends_on": [],
       "recommendation": "首期交付后端完整闭环：Maven/BOM/ruoyi-admin 装配、Java API、MySQL DDL/DML、权限菜单、两类流程接入、自动化测试；前端另立 change，避免本次设计树同时承担两仓的大范围 UI 决策。",
       "status": "answered",
       "round": 1,
-      "answer": "完整交付后端与 plus-ui-namewta。admin-web 是管理后台，在档案管理下交付个人档案管理和企业档案管理；申请端是否在 admin-web 提供自助页面由 D-012 继续收敛。",
+      "answer": "完整交付后端与 frontend。admin-web 是管理后台，在档案管理下交付个人档案管理和企业档案管理；申请端是否在 admin-web 提供自助页面由 D-012 继续收敛。",
       "log_ref": "LOG-005"
     },
     {

@@ -6,7 +6,7 @@ status: ready
 ready_for_tickets: true
 sources:
   - USER-DECISION:前端 domain 第一层与后端模块一致，资源目录可从 Controller 稳定定位
-  - CODE:<Path>plus-ui-namewta/packages/domains/**</Path>
+  - CODE:<Path>frontend/packages/domains/**</Path>
   - CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/**/controller/**</Path>
 ---
 

@@ -12,9 +12,9 @@ risk: high
 blocked_by: [T-01]
 contract_ids: [AC-006, AC-007, AC-010, AC-012, AC-014]
 owner: codex:leadership-epoch-1
-expected_changes: ["<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/apps/admin-web/src/store/modules/permission.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>plus-ui-namewta/apps/admin-web/src/router/manifestDiagnostic.ts</Path>"]
+expected_changes: ["<Path>frontend/packages/platform/app-runtime/**</Path>"]
+writable_paths: ["<Path>frontend/packages/platform/app-runtime/**</Path>"]
+read_only_paths: ["<Path>frontend/apps/admin-web/src/store/modules/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>frontend/apps/admin-web/src/router/manifestDiagnostic.ts</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---
@@ -31,7 +31,7 @@ shared_path_owners: []
 - **目标：** 将 ParentView 展平、空 children 清理和重复 route name 识别收口为无 App 单例的确定性公共能力。
 - **可观察产出：** 任意 App 可输入服务端菜单、特殊组件、manifest resolver 与诊断 factory，得到确定路由投影及结构化重复名称诊断，无需复制 Admin Store 算法。
 - **来源：** `US-002`、`US-005`、`US-006`、`AC-006`、`AC-007`、`AC-010`、`AC-012`、`ADR-002`。
-- **当前事实：** `<Path>plus-ui-namewta/packages/platform/app-runtime/src/routeAssembler.ts</Path>` 已负责组件装配和缺失键诊断，ParentView 展平、空 children 清理与重复名称通知仍混在 Admin permission Store。
+- **当前事实：** `<Path>frontend/packages/platform/app-runtime/src/routeAssembler.ts</Path>` 已负责组件装配和缺失键诊断，ParentView 展平、空 children 清理与重复名称通知仍混在 Admin permission Store。
 - **Planning Depth 原因：** 公共类型和菜单状态转换被未来 App 复用，错误会影响认证后全部动态导航。
 
 ## 2. 决策状态
@@ -81,7 +81,7 @@ shared_path_owners: []
 
 ## 7. 路径访问契约
 
-- **预计修改点：** `<Path>plus-ui-namewta/packages/platform/app-runtime/</Path>` 内源码、测试、exports 和 README。
+- **预计修改点：** `<Path>frontend/packages/platform/app-runtime/</Path>` 内源码、测试、exports 和 README。
 - **可写范围：** 仅该包。
 - **只读上下文：** Admin 当前 Store、manifest registry 和诊断组件。
 - **共享路径：** 无；T-03 是 App Runtime 唯一 writer。

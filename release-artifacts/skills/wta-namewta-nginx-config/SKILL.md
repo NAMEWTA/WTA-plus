@@ -1,6 +1,6 @@
 ---
 name: wta-namewta-nginx-config
-description: 维护 wta-vue-plus-docs 的 release-artifacts 多 App Nginx 部署体系，包括统一 nginx-lb、每 App 独立 HTTP Nginx、路径前缀、独立端口、可选 TLS、docker-compose-frontend.yml、发布构建前缀与新增 App 自动化。处理新增或删除 plus-ui-namewta/apps 前端 App、Nginx 404/400/502、静态资源或 API 前缀错误、LB 重定向、证书、端口台账、add_app.py 或 release-artifacts 前端容器时使用。
+description: 维护 wta-vue-plus-docs 的 release-artifacts 多 App Nginx 部署体系，包括统一 nginx-lb、每 App 独立 HTTP Nginx、路径前缀、独立端口、可选 TLS、docker-compose-frontend.yml、发布构建前缀与新增 App 自动化。处理新增或删除 frontend/apps 前端 App、Nginx 404/400/502、静态资源或 API 前缀错误、LB 重定向、证书、端口台账、add_app.py 或 release-artifacts 前端容器时使用。
 ---
 
 # NAMEWTA 多 App Nginx 配置
@@ -15,7 +15,7 @@ description: 维护 wta-vue-plus-docs 的 release-artifacts 多 App Nginx 部署
 
 ## 新增 App
 
-前置条件：`plus-ui-namewta/apps/<app>/package.json` 存在并提供 `build:dev`、`build:prod`。
+前置条件：`frontend/apps/<app>/package.json` 存在并提供 `build:dev`、`build:prod`。
 
 ```bash
 # 公开 App
@@ -49,7 +49,7 @@ bash release-artifacts/scripts/docker-manage.sh config frontend
 bash release-artifacts/scripts/docker-manage.sh up frontend
 ```
 
-发布脚本通过进程环境覆盖 Vite 的 `VITE_APP_CONTEXT_PATH` 和 `VITE_APP_BASE_API`。不要为部署前缀修改 `plus-ui-namewta/apps/*/.env.*`。
+发布脚本通过进程环境覆盖 Vite 的 `VITE_APP_CONTEXT_PATH` 和 `VITE_APP_BASE_API`。不要为部署前缀修改 `frontend/apps/*/.env.*`。
 
 ## 不变量
 

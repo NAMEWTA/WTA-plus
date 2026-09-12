@@ -382,7 +382,7 @@ try {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'namewta-release-test-'));
   try {
     fs.cpSync(releaseRoot, path.join(tempRoot, 'release-artifacts'), { recursive: true });
-    const appRoot = path.join(tempRoot, 'plus-ui-namewta/apps/sample-web');
+    const appRoot = path.join(tempRoot, 'frontend/apps/sample-web');
     fs.mkdirSync(appRoot, { recursive: true });
     fs.writeFileSync(
       path.join(appRoot, 'package.json'),

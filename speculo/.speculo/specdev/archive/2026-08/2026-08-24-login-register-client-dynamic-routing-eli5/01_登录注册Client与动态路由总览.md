@@ -219,9 +219,9 @@ upstream 的注册更像一个平台级开关。当前版本把它放到具体 C
 | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/domain/SysUserType.java</Path>` 与 `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/domain/SysUserTypeRel.java</Path>` | 新增登录域定义和用户关系。 |
 | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysPermissionServiceImpl.java</Path>` | 权限查询增加 clientPk 维度。 |
 | `<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/controller/system/SysMenuController.java</Path>` | `getRouters` 按当前会话的 userId + clientPk 查询菜单。 |
-| `<Path>plus-ui-namewta/src/views/login.vue</Path>` 与 `<Path>plus-ui-namewta/src/views/register.vue</Path>` | 先读取 Client 上下文，并按严格布尔值开放登录/注册。 |
-| `<Path>plus-ui-namewta/src/store/modules/permission.ts</Path>` | 将后端菜单转换并注册为当前会话的动态路由。 |
-| `<Path>plus-ui-namewta/src/views/system/userType/index.vue</Path>` | 新增登录域管理页面。 |
+| `<Path>frontend/src/views/login.vue</Path>` 与 `<Path>frontend/src/views/register.vue</Path>` | 先读取 Client 上下文，并按严格布尔值开放登录/注册。 |
+| `<Path>frontend/src/store/modules/permission.ts</Path>` | 将后端菜单转换并注册为当前会话的动态路由。 |
+| `<Path>frontend/src/views/system/userType/index.vue</Path>` | 新增登录域管理页面。 |
 
 ## 术语小词典
 

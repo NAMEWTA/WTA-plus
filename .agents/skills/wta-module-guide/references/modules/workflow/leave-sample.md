@@ -8,22 +8,22 @@
 
 | 层 | 路径 |
 |---|---|
-| 实体 `test_leave`，含 `status` | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/domain/TestLeave.java` |
-| BO（含可选 `flowCode`） | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/domain/bo/TestLeaveBo.java` |
-| Mapper XML | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/resources/mapper/workflow/TestLeaveMapper.xml` |
-| 服务实现 | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/TestLeaveServiceImpl.java` |
-| 服务接口 | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/ITestLeaveService.java` |
-| HTTP | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java`（`@RequestMapping("/workflow/leave")`） |
-| 前端领域资源 | `plus-ui-namewta/packages/domains/workflow/src/leave/index.ts`；service 合同与 transport 位于同包 `src/index.ts` |
-| 前端领域页面 | `plus-ui-namewta/packages/web-domains/workflow/src/leave/LeaveListPage.vue`、`LeaveEditPage.vue` |
-| Web manifest | `plus-ui-namewta/packages/web-domains/workflow/src/index.ts`（注册 `workflow/leave/index` 与 `workflow/leave/leaveEdit`） |
+| 实体 `test_leave`，含 `status` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/domain/TestLeave.java` |
+| BO（含可选 `flowCode`） | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/domain/bo/TestLeaveBo.java` |
+| Mapper XML | `backend/wta-modules/wta-workflow/src/main/resources/mapper/workflow/TestLeaveMapper.xml` |
+| 服务实现 | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/TestLeaveServiceImpl.java` |
+| 服务接口 | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/ITestLeaveService.java` |
+| HTTP | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java`（`@RequestMapping("/workflow/leave")`） |
+| 前端领域资源 | `frontend/packages/domains/workflow/src/leave/index.ts`；service 合同与 transport 位于同包 `src/index.ts` |
+| 前端领域页面 | `frontend/packages/web-domains/workflow/src/leave/LeaveListPage.vue`、`LeaveEditPage.vue` |
+| Web manifest | `frontend/packages/web-domains/workflow/src/index.ts`（注册 `workflow/leave/index` 与 `workflow/leave/leaveEdit`） |
 | 流程定义资产 | `release-artifacts/workflow/leave/leave1.json` 至 `leave6.json` |
 
 控制器均 `@ConditionalOnEnable`。提交入口：`POST /workflow/leave/submitAndFlowStart`，权限 `workflow:leave:add`。
 
 ## HTTP
 
-路径：`wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java`
+路径：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java`
 
 | 能力 | HTTP | 权限 |
 |---|---|---|
@@ -58,7 +58,7 @@
 
 SpEL 辅助：`eval(leaveDays)` 返回 `leaveDays <= 2`，供流程定义判断请假天数。路径同 `TestLeaveServiceImpl`。
 
-申请编号常量：`FlowConstant.BUSINESS_CODE`（`"businessCode"`）— `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/common/constant/FlowConstant.java`。
+申请编号常量：`FlowConstant.BUSINESS_CODE`（`"businessCode"`）— `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/common/constant/FlowConstant.java`。
 
 ## 三个监听器
 
@@ -96,7 +96,7 @@ public void processDeleteHandler(ProcessDeleteEvent processDeleteEvent)
 
 ## 前端对应
 
-`plus-ui-namewta/packages/domains/workflow/src/index.ts` 的 workflow service：
+`frontend/packages/domains/workflow/src/index.ts` 的 workflow service：
 
 | 函数 | HTTP |
 |---|---|
@@ -109,7 +109,7 @@ public void processDeleteHandler(ProcessDeleteEvent processDeleteEvent)
 
 前端 PUT/DELETE 同样只是与当前后端存量合同对齐，不是新实现模板。
 
-待办打开业务页使用任务的 `formPath`，query 携带业务 `id` / `taskId`，不是请假 service 自己查询待办。当前入口位于 `plus-ui-namewta/packages/web-domains/workflow/src/task/TaskListPage.vue`，实例入口位于 `src/instance/{InstancePage,MyDocumentPage}.vue`；导航由 workflow web-domain 通过 App runtime 执行。
+待办打开业务页使用任务的 `formPath`，query 携带业务 `id` / `taskId`，不是请假 service 自己查询待办。当前入口位于 `frontend/packages/web-domains/workflow/src/task/TaskListPage.vue`，实例入口位于 `src/instance/{InstancePage,MyDocumentPage}.vue`；导航由 workflow web-domain 通过 App runtime 执行。
 
 ## 复制到其他模块时改什么
 

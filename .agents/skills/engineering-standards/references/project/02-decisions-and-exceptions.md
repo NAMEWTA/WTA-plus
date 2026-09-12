@@ -4,7 +4,7 @@
 
 ### DEC-000 实现证据优先级
 
-- Scope: `path:plus-ui-namewta/apps/**`, `path:plus-ui-namewta/packages/**`, `path:wta-vue-plus-namewta/wta-modules/**`
+- Scope: `path:frontend/apps/**`, `path:frontend/packages/**`, `path:backend/wta-modules/**`
 - Decision: 前端实现按“同 owner、同形态的成熟 domain/web-domain/App 实现 -> 当前公开平台/宿主合同 -> 后端或 OpenAPI 合同 -> 框架通用做法”排序。后端标准 CRUD 按“同 owner 且已确认规范的成熟实现 -> `wta-system` 同类实现 -> `docs/fm` 中职责对应的精确模板 -> `wta-common` 公共合同 -> 框架通用做法”排序；已知待重构模块不能反向成为规范样例。`docs/fm` 提供当前标准骨架，不得覆盖复杂模块既有权限、事务、缓存、关系和交互合同。
 - Source: `repository-fact`
 - Rationale: 当前成熟模块包含模板没有覆盖的 Client 隔离、数据权限、关联写入、缓存失效、导入导出和条件装配。
@@ -31,7 +31,7 @@
 
 ### DEC-003 保留项目目录主轴
 
-- Scope: `module:plus-ui-namewta`, `module:wta-vue-plus-namewta`
+- Scope: `module:frontend`, `module:backend`
 - Decision: 前端保持 `apps`、`domains`、`web-domains`、`platform`、`adapters`、`web-kit`、`api-contracts`、`tooling` 的所有权主轴；后端由[模块模式登记表](03-backend-module-modes.md)裁决目录主轴：登记为 classic 的存量模块保持 `controller`、`domain/{bo,vo}`、`mapper`、`service/impl`，新建或登记为 layered 的模块使用 `controller`、`usecase`、`service`、`dao`、`mapper` 和 `domain/model/read`。所有 Mapper XML 位于 `src/main/resources/mapper/<module>/`。
 - Source: `repository-fact`
 - Rationale: 前端多 App 领域重构已完成且有架构工具持续检查；后端仍保持稳定模块边界。
@@ -40,7 +40,7 @@
 
 ### DEC-009 新后端业务模块默认五层
 
-- Scope: `path:wta-vue-plus-namewta/wta-modules/**`
+- Scope: `path:backend/wta-modules/**`
 - Decision: 新增后端业务模块默认登记为 `layered`，强制 `Controller/Listener/API Adapter -> UseCase -> Service -> DAO -> Mapper -> Mapper XML`。DAO 不继承 MyBatis-Plus `IService`；Service 不继承 `IService`/`ServiceImpl`，只承载业务规则并通过 DAO 持久化。`wta-system`、`wta-workflow`、`wta-job`、`wta-demo`、`wta-ai` 在本阶段登记为 classic，保持现状。
 - Source: `user-decision` + `repository-fact` (`wta-profile`)
 - Rationale: 编排、业务规则和持久化条件分离，避免 ServiceImpl 变成 SQL、事务、关系和外部副作用的耦合中心，同时保留存量模块兼容窗口。
@@ -76,7 +76,7 @@
 
 ### DEC-007 前端按文件角色命名
 
-- Scope: `module:plus-ui-namewta`
+- Scope: `module:frontend`
 - Decision: 不采用全仓单一 kebab/Pascal/camel 文件名规则；按 API/页面、通用组件、page-local SFC、composable、枚举、utility/store/plugin 和测试角色使用 `TS-ORG` 映射。
 - Source: `repository-fact` + `builder-baseline`
 - Rationale: 当前生成器和源码已形成稳定的角色化模式，同时保留少量历史组件、layout 和 workflow 例外；单一大小写会破坏生成路径、路由和局部一致性。
@@ -85,7 +85,7 @@
 
 ### DEC-008 后端 Controller 访问面与匿名边界
 
-- Scope: `path:wta-vue-plus-namewta/wta-modules/**/controller/**`
+- Scope: `path:backend/wta-modules/**/controller/**`
 - Decision: 需要登录与权限校验的管理端接口放入 `controller/admin`；使用 `@SaIgnore` 的匿名接口放入 `controller/anonymous`，不得与受保护接口混放。只有真实存在并有独立合同的其他客户端才建立 `controller/<actual-client>`；不得为“未来可能存在”的客户端预建目录。已登录但非管理端的自服务接口必须在业务规格中先裁决访问面，通用规范不猜测归属。
 - Source: `user-decision` + `repository-fact` (`wta-system` controller/security practices)
 - Rationale: 目录直接暴露认证边界，防止匿名与管理接口混杂，也避免围绕假想客户端制造空抽象。
@@ -110,9 +110,9 @@
 
 ### EX-001 前端 axios TypeScript 6 兼容断言
 
-- Scope: `path:plus-ui-namewta/packages/adapters/axios-browser/src/index.ts`
+- Scope: `path:frontend/packages/adapters/axios-browser/src/index.ts`
 - Rule: 边界不得使用无约束 `any`。
-- Owner: `plus-ui-namewta` maintainers
+- Owner: `frontend` maintainers
 - Reason: 当前源码记录 axios 1.x 默认导出与 TypeScript 6 的 `export=` 解析兼容问题。
 - Risk: request/response/interceptor 类型错误可能被隐藏。
 - Compensation: 将兼容断言限制在 axios browser adapter；domain 使用平台 HTTP 合同与明确模型，修改时审查所有断言。

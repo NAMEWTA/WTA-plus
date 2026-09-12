@@ -90,4 +90,4 @@ done
 - 未把研究正文从 Ticket 移入 solution comment 全文；评论只保留一句话答案与资产指针，详细声明仍在 Ticket 正文。
 - 四个原始领域 Skill 与本 Evidence 的初版已包含在父仓库 commit `477f09b032d514ea80fc71b49e92c681c3b00b74`。CR-001 修复、engineering-standards 路由、review 与状态收尾是当前未提交工作树变更；未授权且未执行 git commit。
 - 未归档、未提升永久 `<Path>{roots.state}/specdev/research/</Path>`；需用户确认后由 A-archive 处理。
-- 不修改 `<Path>plus-ui-namewta/</Path>` 与 `<Path>ruoyi-vue-plus-namewta/</Path>`。
+- 不修改 `<Path>frontend/</Path>` 与 `<Path>ruoyi-vue-plus-namewta/</Path>`。

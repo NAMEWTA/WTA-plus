@@ -50,7 +50,7 @@
 - **轮次与依赖：** round 1 / D-002
 - **状态：** confirmed
 - **问题：** 管理员重置密码的默认值来源。
-- **事实与来源：** 用户要求随机且合规，不再使用 123456；当前 SQL 的 `sys.user.initPassword` 是 123456，前端重置仍要求管理员手填 5–20 位密码；`USER-DECISION:2026-08-28`，`CODE:<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>`，`CODE:<Path>plus-ui-namewta/packages/web-domains/system/src/user/UserPage.vue</Path>`。
+- **事实与来源：** 用户要求随机且合规，不再使用 123456；当前 SQL 的 `sys.user.initPassword` 是 123456，前端重置仍要求管理员手填 5–20 位密码；`USER-DECISION:2026-08-28`，`CODE:<Path>ruoyi-vue-plus-namewta/script/sql/ry_vue.sql</Path>`，`CODE:<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path>`。
 - **选项：** 固定 123456；前端随机；服务端按策略产生。
 - **推荐：** 服务端按策略产生并只在响应中返回一次明文。
 - **结论：** 重置默认值不能再是 123456，random 模式必须生成符合 D-002 的密码。
@@ -65,7 +65,7 @@
 - **轮次与依赖：** round 1 / D-002
 - **状态：** confirmed
 - **问题：** 公开注册是否只做前端校验。
-- **事实与来源：** 用户要求注册执行同样规则；当前前端只校验 5–20 位及禁用字符，`RegisterBody` 只校验 5–30 位，强度正则被注释；`USER-DECISION:2026-08-28`，`CODE:<Path>plus-ui-namewta/apps/admin-web/src/views/register.vue</Path>`，`CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-api/src/main/java/org/dromara/system/api/model/RegisterBody.java</Path>`。
+- **事实与来源：** 用户要求注册执行同样规则；当前前端只校验 5–20 位及禁用字符，`RegisterBody` 只校验 5–30 位，强度正则被注释；`USER-DECISION:2026-08-28`，`CODE:<Path>frontend/apps/admin-web/src/views/register.vue</Path>`，`CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-api/src/main/java/org/dromara/system/api/model/RegisterBody.java</Path>`。
 - **选项：** 仅前端；仅 Bean Validation 固定正则；前端反馈加服务端动态策略。
 - **推荐：** 前端即时反馈加服务端策略权威校验。
 - **结论：** 注册持久化前必须在服务端拒绝不符合 D-002 的密码，前端呈现相同规则与错误提示。
@@ -83,7 +83,7 @@
 - **事实与来源：** `sys.user.initPassword` 是 `sys_config` 参数而非 `sys_dict`；新增用户页面和 Excel 导入读取该值，管理员重置要求手填，注册与个人改密规则彼此不一致，后端多个写入口未执行统一强度策略；临时登录必须修改 `ruoyi-admin` 认证策略，注册模型位于 `ruoyi-api`。来源为本轮源码、SQL、测试和项目规范检索。
 - **选项：** 按目录名猜测；仅改用户管理 SFC/Controller；建立跨模块统一策略。
 - **推荐：** 以 `ruoyi-system` 拥有策略/临时凭据服务，`ruoyi-admin` 在认证和注册组装层调用，前端 domain/web-domain 消费明确 HTTP 合同。
-- **结论：** 最终计划必须跨 `plus-ui-namewta`、`ruoyi-system`、`ruoyi-admin`、`ruoyi-api`、必要的 common 常量及 NAMEWTA DML；仅修改用户点名的两个目录无法完成需求。
+- **结论：** 最终计划必须跨 `frontend`、`ruoyi-system`、`ruoyi-admin`、`ruoyi-api`、必要的 common 常量及 NAMEWTA DML；仅修改用户点名的两个目录无法完成需求。
 - **原因：** 真实调用链跨越管理、认证、公共请求模型和运行时缓存边界。
 - **影响工件：** Spec / Ticket / Goal Plan
 - **约束或不变量：** 前端不生成安全密码；后端不记录密码到 `@Log` 数据库审计参数/响应；专用 HTTP 原样日志仍遵循永久 ADR-0017。
@@ -320,7 +320,7 @@
 - **轮次与依赖：** planning refresh / LOG-021
 - **状态：** confirmed
 - **问题：** 原规划工件形成后，前端继续完成共享导航运行时与 manifest-only 导航优化，需确认密码策略与用户凭据计划仍落在当前 owner 和真实验证入口。
-- **事实与来源：** 当前 frontend 为 `main@efb8e0d7fae86cfd09c1f55204e8b486a499a3cc` 且 clean；`domain-admin` 仍拥有 `/auth/client/context` 与注册服务，注册和 profile 仍是 Admin App 私有静态页面；`domain-system` 拥有用户 HTTP 服务，`web-domain-system` 的 `createSystemWebDomain` manifest 拥有用户页组件键和 `system:user:*` 权限声明；`adminManifestRegistry.ts` 只负责显式组合 manifest 与注入 `SystemWebRuntime`，业务页面不得回写 `router/index.ts` 静态路由。Admin 国际化目录为 `apps/admin-web/src/lang/**`，不是不存在的 `src/locales/**`。来源：`CODE:<Path>plus-ui-namewta/packages/domains/admin/src/index.ts</Path>`、`CODE:<Path>plus-ui-namewta/packages/domains/system/src/index.ts</Path>`、`CODE:<Path>plus-ui-namewta/packages/web-domains/system/src/index.ts</Path>`、`CODE:<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`、`CODE:<Path>plus-ui-namewta/apps/admin-web/src/router/index.ts</Path>`、`GIT:plus-ui-namewta@efb8e0d`。
+- **事实与来源：** 当前 frontend 为 `main@efb8e0d7fae86cfd09c1f55204e8b486a499a3cc` 且 clean；`domain-admin` 仍拥有 `/auth/client/context` 与注册服务，注册和 profile 仍是 Admin App 私有静态页面；`domain-system` 拥有用户 HTTP 服务，`web-domain-system` 的 `createSystemWebDomain` manifest 拥有用户页组件键和 `system:user:*` 权限声明；`adminManifestRegistry.ts` 只负责显式组合 manifest 与注入 `SystemWebRuntime`，业务页面不得回写 `router/index.ts` 静态路由。Admin 国际化目录为 `apps/admin-web/src/lang/**`，不是不存在的 `src/locales/**`。来源：`CODE:<Path>frontend/packages/domains/admin/src/index.ts</Path>`、`CODE:<Path>frontend/packages/domains/system/src/index.ts</Path>`、`CODE:<Path>frontend/packages/web-domains/system/src/index.ts</Path>`、`CODE:<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`、`CODE:<Path>frontend/apps/admin-web/src/router/index.ts</Path>`、`GIT:frontend@efb8e0d`。
 - **选项：** 保留旧路径与旧 SHA；把注册/profile 迁入 web-domain；按当前 owner 刷新路径、命令和 manifest 约束。
 - **推荐：** 保持现有领域与 App 边界，只刷新 T-06/T-07 及上游投影，不发动额外页面迁移。
 - **结论：** T-06 继续由 `domain-admin` + Admin 私有注册/profile 页面消费公开策略，国际化写入 `src/lang/**`；T-07 在 `domain-system`、`web-domain-system` manifest 和 Admin runtime 组合入口交付用户凭据 UI，不新增静态业务路由。OpenAPI 漂移检查使用真实命令 `pnpm --filter @namewta/tooling-openapi openapi:check`。

@@ -2,7 +2,7 @@
 
 ### BROWSER-001 浏览器边界
 
-Scope: `runtime:browser`, `module:plus-ui-namewta`
+Scope: `runtime:browser`, `module:frontend`
 
 Level: MUST
 
@@ -14,7 +14,7 @@ Verification: review `window/document/storage/import.meta.env` 使用；输入�
 
 ### BROWSER-002 网络生命周期
 
-Scope: `runtime:browser`, `path:plus-ui-namewta/packages/adapters/axios-browser/**`, `path:plus-ui-namewta/packages/platform/http/**`, `path:plus-ui-namewta/packages/domains/**`
+Scope: `runtime:browser`, `path:frontend/packages/adapters/axios-browser/**`, `path:frontend/packages/platform/http/**`, `path:frontend/packages/domains/**`
 
 Level: MUST
 

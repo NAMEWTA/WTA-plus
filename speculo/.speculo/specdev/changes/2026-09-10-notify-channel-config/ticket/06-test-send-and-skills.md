@@ -13,14 +13,14 @@ blocked_by: [T-04, T-05]
 contract_ids: [AC-016, AC-018]
 owner: unassigned
 expected_changes:
-  - "<Path>plus-ui-namewta/packages/web-domains/notify/**</Path>"
+  - "<Path>frontend/packages/web-domains/notify/**</Path>"
   - "<Path>.agents/skills/engineering-standards/references/notification.md</Path>"
 writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/api-contracts/**</Path>"
+  - "<Path>frontend/packages/domains/notify/**</Path>"
+  - "<Path>frontend/packages/web-domains/notify/**</Path>"
+  - "<Path>frontend/packages/api-contracts/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>.agents/skills/engineering-standards/**</Path>"
   - "<Path>.agents/skills/ruoyi-module-guide/**</Path>"

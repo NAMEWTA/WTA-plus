@@ -19,9 +19,9 @@ writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-sms/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/notify/**</Path>"
-  - "<Path>plus-ui-namewta/packages/api-contracts/**</Path>"
+  - "<Path>frontend/packages/domains/notify/**</Path>"
+  - "<Path>frontend/packages/web-domains/notify/**</Path>"
+  - "<Path>frontend/packages/api-contracts/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>release-artifacts/tests/**</Path>"
 read_only_paths:

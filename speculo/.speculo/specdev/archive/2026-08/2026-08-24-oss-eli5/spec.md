@@ -13,7 +13,7 @@ sources:
   - "CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/upload/DefaultOssUploadObjectStore.java</Path>"
   - "CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/oss/service/OssLifecycleManager.java</Path>"
   - "CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysOssConfigServiceImpl.java</Path>"
-  - "CODE:<Path>plus-ui-namewta/packages/web-domains/system/src/oss-config/OssConfigPage.vue</Path>"
+  - "CODE:<Path>frontend/packages/web-domains/system/src/oss-config/OssConfigPage.vue</Path>"
 ---
 
 # Spec: OSS 公共只读与受控短时访问增强
@@ -338,11 +338,11 @@ Migration: source verified -> target copied -> content verified
 | 配置语义、边界编辑和 readiness | ApplicationContext + Service/Health | AC-013/AC-014/AC-015/AC-016/AC-017/AC-018 | 配置绑定失败、缓存不变、Actuator health 和零 Provider mutation 替身测试；cwd `<Path>ruoyi-vue-plus-namewta/</Path>` 运行受影响 `ruoyi-admin` reactor 测试 | test output + health payload |
 | 公共/私有真实访问矩阵 | S3-compatible 集成 | AC-001/AC-002/AC-005/AC-006/AC-008/AC-009/AC-016 | 扩展 `<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/oss/client/MinioOssClientIntegrationTest.java</Path>`，使用独立 public/private Bucket 验证未签名与签名请求；外部环境缺失时不得宣称 E2E 通过 | integration output + HTTP status |
 | Service/Controller 兼容与权限 | Spring MVC/Java 合同 | AC-003/AC-010/AC-011/AC-012/AC-021 | 现有 `/resource/oss` 权限矩阵、序列化结果和调用点扫描；管理列表断言 URL 为 null | test output + scan output |
-| 配置管理前端与 transport | Vitest/类型检查 | AC-010 至 AC-015 | 扩展 `<Path>plus-ui-namewta/packages/domains/system/src/resource-service.test.ts</Path>` 和 web-domain 配置测试；cwd `<Path>plus-ui-namewta/</Path>` 运行 `pnpm --filter @namewta/domain-system test`、`pnpm --filter @namewta/web-domain-system test`、相应 typecheck | test/typecheck output |
-| 管理配置与下载行为 | Playwright | AC-012/AC-013/AC-018 | 扩展 `<Path>plus-ui-namewta/e2e/system-resources.spec.ts</Path>`；cwd `<Path>plus-ui-namewta/</Path>` 运行定向 `pnpm exec playwright test e2e/system-resources.spec.ts` | trace/screenshot + test output |
+| 配置管理前端与 transport | Vitest/类型检查 | AC-010 至 AC-015 | 扩展 `<Path>frontend/packages/domains/system/src/resource-service.test.ts</Path>` 和 web-domain 配置测试；cwd `<Path>frontend/</Path>` 运行 `pnpm --filter @namewta/domain-system test`、`pnpm --filter @namewta/web-domain-system test`、相应 typecheck | test/typecheck output |
+| 管理配置与下载行为 | Playwright | AC-012/AC-013/AC-018 | 扩展 `<Path>frontend/e2e/system-resources.spec.ts</Path>`；cwd `<Path>frontend/</Path>` 运行定向 `pnpm exec playwright test e2e/system-resources.spec.ts` | trace/screenshot + test output |
 | SQL fresh/upgrade 与存量安全 | MySQL migration | AC-013/AC-017/AC-018/AC-019/AC-020 | Fresh DDL -> DML、旧值 fixture、对象引用 fixture、迁移 dry-run/rollback；查询 schema、配置类型、service 和引用不变量 | query transcript + migration report |
 | 存储边界迁移状态机 | Java + DB + 双 Bucket 集成 | AC-019/AC-020 | 故障注入复制、校验、切换、业务验收与重复执行，确认源清理延后 | test output + audit rows |
-| 既有 OSS 回归与组装 | Maven/Vitest/build | AC-011/AC-012/AC-022/AC-023 | cwd `<Path>ruoyi-vue-plus-namewta/</Path>`：`./mvnw -pl ruoyi-admin -am -Dmaven.test.skip=false test`、`./mvnw -pl ruoyi-admin -am -DskipTests package`；cwd `<Path>plus-ui-namewta/</Path>`：受影响 test/typecheck/build | command output |
+| 既有 OSS 回归与组装 | Maven/Vitest/build | AC-011/AC-012/AC-022/AC-023 | cwd `<Path>ruoyi-vue-plus-namewta/</Path>`：`./mvnw -pl ruoyi-admin -am -Dmaven.test.skip=false test`、`./mvnw -pl ruoyi-admin -am -DskipTests package`；cwd `<Path>frontend/</Path>`：受影响 test/typecheck/build | command output |
 | 路由与禁止能力静态扫描 | 仓库检查 | AC-003/AC-010/AC-013/AC-022 | 扫描匿名 OSS Controller、PUBLIC_READ_WRITE/custom、客户端 configKey/TTL、默认 OssClient 直传初始化和管理列表 URL 回填 | scan output |
 
 ## 10. 风险、假设与未决问题

@@ -31,7 +31,7 @@ sources:
   - EVIDENCE:evidence/THIRD-PARTY-KEEP.md
   - EVIDENCE:evidence/SOURCE-BASELINE.md
   - CODE:ruoyi-vue-plus-namewta/pom.xml
-  - CODE:plus-ui-namewta/package.json
+  - CODE:frontend/package.json
   - CODE:release-artifacts/docker/docker-compose-backend.yml
 ---
 
@@ -250,7 +250,7 @@ Ticket: **T02** (blocked until `implementation_authorized` for *execution*; docu
 ```text
 /   # NAMEWTA/WTA-plus（orphan public）
   <backend-tree>/     # 自 ruoyi-vue-plus-namewta 摘取；模块为 wta-*
-  <frontend-tree>/    # 自 plus-ui-namewta 摘取
+  <frontend-tree>/    # 自 frontend 摘取
   docs/
   release-artifacts/
   scripts/

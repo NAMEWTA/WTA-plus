@@ -17,7 +17,7 @@ status: completed
 
 本 Map 将 `US-001` 至 `US-012` 和 `ADR-001` 至 `ADR-007` 落成 17 个可验证纵向切片。先用行为基线与占位合同形成安全落点，再建立 workspace、平台端口、浏览器适配器和 demo manifest 曳光弹；随后证明第二 App，迁移认证、工作流及其余能力领域；最后收缩根应用、引入 OpenAPI 生成并固化上游能力映射。
 
-迁移遵循 expand-migrate-contract：`T-03` 至 `T-14` 保留现有 `<Path>plus-ui-namewta/src/**</Path>` 兼容入口，只有 `T-15` 在消费者扫描与双 App 门禁通过后删除旧入口。真实移动端/小程序实现由 Spec 明确排除，本变更只交付占位和可移植边界。
+迁移遵循 expand-migrate-contract：`T-03` 至 `T-14` 保留现有 `<Path>frontend/src/**</Path>` 兼容入口，只有 `T-15` 在消费者扫描与双 App 门禁通过后删除旧入口。真实移动端/小程序实现由 Spec 明确排除，本变更只交付占位和可移植边界。
 
 ## 2. 执行清单
 
@@ -100,12 +100,12 @@ T-01 baseline
 
 ## 5. 并行与路径所有权
 
-- `T-03` 唯一拥有根 `<Path>plus-ui-namewta/package.json</Path>`、workspace、lockfile 策略、根 TypeScript/Vite/Oxlint 配置；其他 Ticket 只读，变更必须由 Goal Plan 形成显式 ownership deviation。`DEV-T04-001` 与 `DEV-T05-001` 只把各自 root facade 实际消费的内部 `workspace:*` 声明及匹配 lock specifier/importers 委托给对应 Ticket，不转移策略所有权；`DEV-T05-001` 同时把占位 README 明确约定在 demo pilot 激活的 `<Path>plus-ui-namewta/packages/platform/app-runtime/**</Path>` 转交 T-05。`DEV-T06-001` 只允许 T-06 写其目录内新 package manifests 机械生成的 lock importers，不允许 root manifest 或 lock 策略漂移。
-- `T-04` 唯一拥有兼容期 `<Path>plus-ui-namewta/src/utils/request.ts</Path>` 与 `<Path>plus-ui-namewta/src/utils/auth.ts</Path>`；`T-07` 消费其端口并拥有认证 store/router/guard。
+- `T-03` 唯一拥有根 `<Path>frontend/package.json</Path>`、workspace、lockfile 策略、根 TypeScript/Vite/Oxlint 配置；其他 Ticket 只读，变更必须由 Goal Plan 形成显式 ownership deviation。`DEV-T04-001` 与 `DEV-T05-001` 只把各自 root facade 实际消费的内部 `workspace:*` 声明及匹配 lock specifier/importers 委托给对应 Ticket，不转移策略所有权；`DEV-T05-001` 同时把占位 README 明确约定在 demo pilot 激活的 `<Path>frontend/packages/platform/app-runtime/**</Path>` 转交 T-05。`DEV-T06-001` 只允许 T-06 写其目录内新 package manifests 机械生成的 lock importers，不允许 root manifest 或 lock 策略漂移。
+- `T-04` 唯一拥有兼容期 `<Path>frontend/src/utils/request.ts</Path>` 与 `<Path>frontend/src/utils/auth.ts</Path>`；`T-07` 消费其端口并拥有认证 store/router/guard。
 - `T-07` 唯一拥有兼容期认证、权限和动态路由共享路径；业务域 Ticket 只注册 manifest，不写全局路由表。
 - `T-09` 先建立 system user 公共接缝，`T-10` 复用并扩展 system-admin 内部实现，不回写 workflow 私有路径。
 - `T-10`、`T-12`、`T-14` 在 `T-09` 后可并行；`T-13` 必须等待 `T-11` 的字典/菜单公开合同。
-- `T-15` 是 `<Path>plus-ui-namewta/src/**</Path>` 收缩 owner；它在汇合前不得开始删除。
+- `T-15` 是 `<Path>frontend/src/**</Path>` 收缩 owner；它在汇合前不得开始删除。
 
 | Ticket A | Ticket B | Writable 交集 | 真实依赖 | 处理 |
 |---|---|---|---|---|
@@ -117,7 +117,7 @@ T-01 baseline
 
 ## 6. Gate、Wave 与集成点
 
-本变更已由 `<Path>{roots.state}/specdev/changes/2026-08-25-plus-ui-multi-app-domain-architecture/goal-plan.md</Path>` 锁定为 `lead-directed`、`required` source worktree、`candidate-merge`。主要实现仓库 `<Path>plus-ui-namewta/</Path>` 每 Ticket 使用独立 worktree，最多 3 个 implementation subagent；Lead 串行集成 candidate、运行 required E2E 并推进前端 `main`。docs 聚合父仓库不创建 worktree，只由 Lead 在当前 workspace 写 SpecDev 工件和 T-17 scoped docs commit。
+本变更已由 `<Path>{roots.state}/specdev/changes/2026-08-25-plus-ui-multi-app-domain-architecture/goal-plan.md</Path>` 锁定为 `lead-directed`、`required` source worktree、`candidate-merge`。主要实现仓库 `<Path>frontend/</Path>` 每 Ticket 使用独立 worktree，最多 3 个 implementation subagent；Lead 串行集成 candidate、运行 required E2E 并推进前端 `main`。docs 聚合父仓库不创建 worktree，只由 Lead 在当前 workspace 写 SpecDev 工件和 T-17 scoped docs commit。
 
 Map 中 W1-W12/Gate A-J 是产品迁移投影；Goal Plan 将 workflow/system 扇出细化为 W08A/W08B/W09A-W09C，并明确 T-10 优先集成以解锁 T-11。实际 base/source/candidate/result SHA、worktree locator 与 Gate 关闭证据在执行期写入 change status 和 Ticket Evidence。
 

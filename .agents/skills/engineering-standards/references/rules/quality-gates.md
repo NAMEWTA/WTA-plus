@@ -26,7 +26,7 @@ Verification: 项目画像中的真实命令；若因环境/成本未运行，�
 
 ### QUALITY-002A 前端类型补充诊断
 
-Scope: `module:plus-ui-namewta`, TypeScript/Vue contract changes
+Scope: `module:frontend`, TypeScript/Vue contract changes
 
 Level: SHOULD
 
@@ -34,7 +34,7 @@ Source: `repository-fact` (`package.json`, `tsconfig.json`)
 
 Rule: 修改 API 类型、通用 hooks、复杂表单或组件公开合同时，必须运行 `pnpm typecheck`。该 script 执行完整 `vue-tsc --noEmit`，不得用缩小 scope 或跳过诊断制造绿色。
 
-Verification: 在 `plus-ui-namewta` 目录记录命令、退出码和诊断；同时仍执行 `pnpm lint` 与 `pnpm build:prod`，遵循 `PENDING-FE-001`。
+Verification: 在 `frontend` 目录记录命令、退出码和诊断；同时仍执行 `pnpm lint` 与 `pnpm build:prod`，遵循 `PENDING-FE-001`。
 
 ### QUALITY-003 不绕过门禁
 
@@ -50,7 +50,7 @@ Verification: config diff review；比较失败前后命令与覆盖范围；严
 
 ### QUALITY-004 工具链与锁文件稳定
 
-Scope: `module:plus-ui-namewta`, `module:wta-vue-plus-namewta`
+Scope: `module:frontend`, `module:backend`
 
 Level: MUST
 

@@ -129,20 +129,20 @@ const expectedTemplates = [
 for (const template of expectedTemplates) read(join(workspaceRoot, 'docs/fm', template));
 
 const frontendAnchors = [
-  'plus-ui-namewta/packages/domains',
-  'plus-ui-namewta/packages/web-domains',
-  'plus-ui-namewta/packages/api-contracts',
-  'plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts',
-  'plus-ui-namewta/tooling/architecture/test/domain-layout.test.mjs',
+  'frontend/packages/domains',
+  'frontend/packages/web-domains',
+  'frontend/packages/api-contracts',
+  'frontend/apps/admin-web/src/router/adminManifestRegistry.ts',
+  'frontend/tooling/architecture/test/domain-layout.test.mjs',
 ];
 for (const anchor of frontendAnchors) {
   if (!existsSync(join(workspaceRoot, anchor))) fail(`缺少前端架构证据: ${anchor}`);
 }
 
 const backendAnchors = [
-  'wta-vue-plus-namewta/pom.xml',
-  'wta-vue-plus-namewta/wta-modules/wta-system/src/main/java',
-  'wta-vue-plus-namewta/wta-common',
+  'backend/pom.xml',
+  'backend/wta-modules/wta-system/src/main/java',
+  'backend/wta-common',
   'release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql',
   'release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql',
 ];

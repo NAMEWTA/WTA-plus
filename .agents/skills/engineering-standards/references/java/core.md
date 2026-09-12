@@ -1,10 +1,10 @@
 # Java / Maven 工程规范
 
-适用 `language:java`, `module:wta-vue-plus-namewta`。版本事实：Java 21、Maven Wrapper、多模块 parent/BOM/pluginManagement、JUnit Platform/Surefire；未启用 JPMS、统一 formatter 或静态分析插件。
+适用 `language:java`, `module:backend`。版本事实：Java 21、Maven Wrapper、多模块 parent/BOM/pluginManagement、JUnit Platform/Surefire；未启用 JPMS、统一 formatter 或静态分析插件。
 
 ### JAVA-001 Maven 模块与依赖
 
-Scope: `language:java`, `module:wta-vue-plus-namewta`
+Scope: `language:java`, `module:backend`
 
 Level: MUST
 
@@ -28,7 +28,7 @@ Verification: compiler/package review；跨模块 import review；API/序列化�
 
 ### JAVA-003 BO/VO/entity 映射
 
-Scope: `path:wta-vue-plus-namewta/wta-modules/**`, `public-api:wta-api`
+Scope: `path:backend/wta-modules/**`, `public-api:wta-api`
 
 Level: MUST
 

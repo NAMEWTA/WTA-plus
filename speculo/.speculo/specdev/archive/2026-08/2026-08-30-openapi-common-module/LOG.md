@@ -48,7 +48,7 @@
 ### R-006
 - Claim: 仓库已有 SpringDoc 3、运行时 JavaDoc 和 Sa-Token 权限元数据解析能力，前端也已有可追溯 OpenAPI 合同生成工具；另写类路径扫描和参数反射会形成第二套接口事实源。
 - Type: code fact
-- Source: `CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-doc/</Path>`；`CODE:<Path>plus-ui-namewta/tooling/openapi/</Path>`。
+- Source: `CODE:<Path>ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-doc/</Path>`；`CODE:<Path>frontend/tooling/openapi/</Path>`。
 - Confidence: high
 - Limits: 面向第三方的接口详情 DTO 与客户端示例仍需设计。
 - Artifact impact: D-009、D-015。
@@ -523,7 +523,7 @@
 
 ## Research: 2026-08-31 最新前后端实现对齐
 - Decision / target: 在生成 Spec 前，以已同步的父仓、前端和后端 HEAD 复核模块边界、安全缓存、日志与未来 UI 落位；目标工件为本 change 的 `spec.md`、`ADR.md`、`CONTEXT.md` 和设计树。
-- Scope / version: 父仓 `6de6884`、`plus-ui-namewta` `381918e`、`ruoyi-vue-plus-namewta` `e5cef5a61`。
+- Scope / version: 父仓 `6de6884`、`frontend` `381918e`、`ruoyi-vue-plus-namewta` `e5cef5a61`。
 - Stop condition: 已识别会改变原设计事实、复用约束或验收接缝的最新实现，并保留仍需用户决策的高影响问题。
 
 ### R-018
@@ -553,7 +553,7 @@
 ### R-021
 - Claim: 当前前端 admin App 显式组合 `system` domain/web-domain，`gen` 已退出选择集合；系统动态页面由 system web-domain manifest 承接，而个人信息页是 App 自有静态页并已使用同级 `el-tabs` 组织个人能力。
 - Type: code fact + architecture rule
-- Source: `CODE:<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`；`CODE:<Path>plus-ui-namewta/apps/admin-web/src/views/system/user/profile/index.vue</Path>`；`CODE:<Path>plus-ui-namewta/packages/domains/system/README.md</Path>`；`CODE:<Path>plus-ui-namewta/packages/web-domains/system/README.md</Path>`；`ADR:<Path>speculo/.speculo/specdev/adr/0013-cross-terminal-domain-and-web-domain-separation.md</Path>`；`ADR:<Path>speculo/.speculo/specdev/adr/0021-manifest-only-dynamic-page-resolution.md</Path>`。
+- Source: `CODE:<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`；`CODE:<Path>frontend/apps/admin-web/src/views/system/user/profile/index.vue</Path>`；`CODE:<Path>frontend/packages/domains/system/README.md</Path>`；`CODE:<Path>frontend/packages/web-domains/system/README.md</Path>`；`ADR:<Path>speculo/.speculo/specdev/adr/0013-cross-terminal-domain-and-web-domain-separation.md</Path>`；`ADR:<Path>speculo/.speculo/specdev/adr/0021-manifest-only-dynamic-page-resolution.md</Path>`。
 - Confidence: high
 - Limits: 前端实现仍不属于本 change 首期范围；这里只约束后端合同的两个未来消费者和未来落位。
 - Artifact impact: D-013、D-025、ADR-013、ADR-014、Spec IN/OUT。
@@ -650,7 +650,7 @@
 ### R-022
 - Claim: 当前 `admin-web` 已显式组合 system domain/web-domain；系统动态页面由 system manifest 注册，个人信息页则是 App 自有静态页并已有同级 `el-tabs`。因此 OpenAPI 管理页应新增 system domain/web-domain 资源，个人“开放应用”入口应由静态个人信息壳组合该 Web 领域的共享组件。
 - Type: code fact + architecture rule
-- Source: `CODE:<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`；`CODE:<Path>plus-ui-namewta/apps/admin-web/src/views/system/user/profile/index.vue</Path>`；`CODE:<Path>plus-ui-namewta/packages/domains/system/README.md</Path>`；`CODE:<Path>plus-ui-namewta/packages/web-domains/system/README.md</Path>`；`SKILL:<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`。
+- Source: `CODE:<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>`；`CODE:<Path>frontend/apps/admin-web/src/views/system/user/profile/index.vue</Path>`；`CODE:<Path>frontend/packages/domains/system/README.md</Path>`；`CODE:<Path>frontend/packages/web-domains/system/README.md</Path>`；`SKILL:<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`。
 - Confidence: high
 - Limits: App 静态壳只负责入口组合，不得拥有或复制 OpenAPI transport、领域状态、owner-scope 规则和权限过滤。
 - Artifact impact: D-001、D-013、D-015、D-025、ADR-020、ADR-021、Spec IN/OUT 与 Ticket。
@@ -660,7 +660,7 @@
 - **轮次与依赖：** round 9 / 无
 - **状态：** superseded-and-confirmed
 - **问题：** 首期是否只交付后端，还是同时交付已经明确的管理端和个人入口。
-- **事实与来源：** 用户纠正此前范围，明确 `plus-ui-namewta/apps/admin-web` 需要增加个人部分和管理部分；R-022 确认当前组合与落位。
+- **事实与来源：** 用户纠正此前范围，明确 `frontend/apps/admin-web` 需要增加个人部分和管理部分；R-022 确认当前组合与落位。
 - **结论：** 首期改为交付完整前后端开放平台：后端 common/system/admin 装配与前端两个入口均在本 change 范围内。
 - **原因：** 管理页和个人 Tab 不是未来占位，而是本次功能完整性的组成部分。
 - **影响工件：** CONTEXT / ADR / Spec / Ticket

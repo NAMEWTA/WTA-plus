@@ -94,7 +94,7 @@ docker compose \
 ```bash
 node .agents/skills/deploy-namewta-environment/scripts/verify-frontend-artifact.mjs \
   --profile temp/relase/deployment-profile.json \
-  --index plus-ui-namewta/apps/admin-web/dist/index.html
+  --index frontend/apps/admin-web/dist/index.html
 node .agents/skills/deploy-namewta-environment/scripts/verify-release-candidate.mjs \
   --profile temp/relase/deployment-profile.json \
   --state temp/relase/deployment-state.json

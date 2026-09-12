@@ -78,7 +78,7 @@ Profile 当前 OpenAPI 快照 `packages/api-contracts/openapi/current.json` 尚�
 
 ## 验证
 
-先运行受影响包的 `lint`、`typecheck`、`test`，再从 `plus-ui-namewta` 根运行：
+先运行受影响包的 `lint`、`typecheck`、`test`，再从 `frontend` 根运行：
 
 ```bash
 pnpm architecture:check

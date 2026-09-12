@@ -12,9 +12,9 @@ risk: high
 blocked_by: []
 contract_ids: [AC-005, AC-006, AC-008, AC-009, AC-011, AC-012, AC-014]
 owner: codex:leadership-epoch-1
-expected_changes: ["<Path>plus-ui-namewta/e2e/app-runtime-baseline.spec.ts</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/e2e/app-runtime-baseline.spec.ts</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/apps/admin-web/src/**</Path>", "<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/**</Path>"]
+expected_changes: ["<Path>frontend/e2e/app-runtime-baseline.spec.ts</Path>"]
+writable_paths: ["<Path>frontend/e2e/app-runtime-baseline.spec.ts</Path>"]
+read_only_paths: ["<Path>frontend/apps/admin-web/src/**</Path>", "<Path>frontend/packages/platform/**</Path>", "<Path>frontend/packages/web-domains/**</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---
@@ -31,7 +31,7 @@ shared_path_owners: []
 - **目标：** 在改动共享权限和菜单实现前，用真实 Admin 浏览器边界冻结服务端菜单、manifest、权限可见性、请求次数和失败关闭行为。
 - **可观察产出：** 重构前后的同一组 Playwright 场景可证明登录只触发一次身份/菜单请求、所选 manifest 页面可达、受限操作不可见、未知组件显示稳定诊断且不会加载任意本地页面。
 - **来源：** `US-004`、`US-005`、`US-006`、`AC-005`、`AC-006`、`AC-008`、`AC-009`、`AC-011`、`AC-012`、`AC-014`、`USER-DECISION:每阶段先保持绿色`。
-- **当前事实：** `<Path>plus-ui-namewta/e2e/app-runtime-baseline.spec.ts</Path>` 已覆盖登录、`getInfo`、`getRouters` 与重定向，但菜单 fixture 仍使用会被本次删除的 App 本地页面键，且没有同一接缝下的未知组件诊断断言。
+- **当前事实：** `<Path>frontend/e2e/app-runtime-baseline.spec.ts</Path>` 已覆盖登录、`getInfo`、`getRouters` 与重定向，但菜单 fixture 仍使用会被本次删除的 App 本地页面键，且没有同一接缝下的未知组件诊断断言。
 - **Planning Depth 原因：** 该 Ticket 不改变生产行为，但它定义后续认证、权限与动态路由迁移的安全判定基线。
 
 ## 2. 决策状态
@@ -80,7 +80,7 @@ shared_path_owners: []
 
 ## 7. 路径访问契约
 
-- **预计修改点：** `<Path>plus-ui-namewta/e2e/app-runtime-baseline.spec.ts</Path>`。
+- **预计修改点：** `<Path>frontend/e2e/app-runtime-baseline.spec.ts</Path>`。
 - **可写范围：** 仅该 E2E 文件。
 - **只读上下文：** Admin 源码、Platform 与 Web Domain manifest。
 - **共享路径：** 无。

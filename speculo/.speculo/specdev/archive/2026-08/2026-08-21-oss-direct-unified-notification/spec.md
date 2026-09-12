@@ -18,9 +18,9 @@ sources:
   - CODE:ruoyi-vue-plus-namewta/ruoyi-common/ruoyi-common-oss/src/main/java/org/dromara/common/oss/client/OssClient.java
   - CODE:ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/controller/system/SysOssController.java
   - CODE:ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-system/src/main/java/org/dromara/system/service/impl/SysOssServiceImpl.java
-  - CODE:plus-ui-namewta/src/components/FileUpload/index.vue
-  - CODE:plus-ui-namewta/src/components/ImageUpload/index.vue
-  - CODE:plus-ui-namewta/src/components/Editor/index.vue
+  - CODE:frontend/src/components/FileUpload/index.vue
+  - CODE:frontend/src/components/ImageUpload/index.vue
+  - CODE:frontend/src/components/Editor/index.vue
 ---
 
 # Spec: OSS 浏览器直传与统一对外通知

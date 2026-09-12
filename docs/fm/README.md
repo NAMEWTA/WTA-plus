@@ -11,7 +11,7 @@
 
 ## Vue 输出
 
-Vue 模板面向 `plus-ui-namewta` 当前多 App 架构：
+Vue 模板面向 `frontend` 当前多 App 架构：
 
 ```text
 packages/domains/<module>/src/<resource>/

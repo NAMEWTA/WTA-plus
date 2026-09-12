@@ -19,7 +19,7 @@ updated_at: 2026-08-24T01:03:01+08:00
 - **影响：** 覆盖父聚合仓库、后端与前端两个产品仓库，形成二开流程、业务逻辑、文件级差异、架构、持续同步适配度和后续升级优先级的决策依据；本 change 不修改产品代码。
 - **紧急度：** normal
 - **当前证据：** 后端当前 HEAD 为 `58aaf342100a2cfc2988e01b257f7468bb2bbad9`，缓存上游 `upstream/6.X` 为 `2933badb9182aaecfd5a45ce09444b8ac59576bb`；前端当前 HEAD 为 `f7d116f6e2b6b61239afc86cbcb860a07530abad`，缓存上游 `upstream/6.X-Vue` 为 `0870ce17514895854ccff03600e102546d8c5046`。2026-08-24 上游 fetch 因 GitHub 443 连接超时失败，报告必须保留时效性限制。
-- **相关代码/工件：** `<Path>ruoyi-vue-plus-namewta/**</Path>`、`<Path>plus-ui-namewta/**</Path>`、`<Path>docs/upstream/customization-map.md</Path>`、`<Path>{roots.state}/specdev/adr/</Path>`、`<Path>{roots.state}/specdev/context/</Path>`
+- **相关代码/工件：** `<Path>ruoyi-vue-plus-namewta/**</Path>`、`<Path>frontend/**</Path>`、`<Path>docs/upstream/customization-map.md</Path>`、`<Path>{roots.state}/specdev/adr/</Path>`、`<Path>{roots.state}/specdev/context/</Path>`
 
 ## 未知项
 

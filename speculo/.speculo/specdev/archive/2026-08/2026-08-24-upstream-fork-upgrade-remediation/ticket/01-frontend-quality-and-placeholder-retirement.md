@@ -12,9 +12,9 @@ risk: medium
 blocked_by: []
 contract_ids: [AC-001, AC-004]
 owner: codex
-expected_changes: ["<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/.gitignore</Path>", "<Path>plus-ui-namewta/src/types/auto-imports.d.ts</Path>", "<Path>plus-ui-namewta/src/types/components.d.ts</Path>", "<Path>plus-ui-namewta/src/api/monitor/logininfo/**</Path>", "<Path>plus-ui-namewta/src/views/business/**</Path>", "<Path>plus-ui-namewta/e2e/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/package.json</Path>", "<Path>plus-ui-namewta/pnpm-lock.yaml</Path>", "<Path>plus-ui-namewta/.gitignore</Path>", "<Path>plus-ui-namewta/src/types/auto-imports.d.ts</Path>", "<Path>plus-ui-namewta/src/types/components.d.ts</Path>", "<Path>plus-ui-namewta/playwright.config.ts</Path>", "<Path>plus-ui-namewta/src/api/monitor/loginInfo/**</Path>", "<Path>plus-ui-namewta/src/api/monitor/logininfo/**</Path>", "<Path>plus-ui-namewta/src/views/monitor/logininfo/**</Path>", "<Path>plus-ui-namewta/src/views/business/**</Path>", "<Path>plus-ui-namewta/e2e/**</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/tsconfig.json</Path>", "<Path>plus-ui-namewta/src/views/login.vue</Path>", "<Path>plus-ui-namewta/src/hooks/oss/**</Path>"]
+expected_changes: ["<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/.gitignore</Path>", "<Path>frontend/src/types/auto-imports.d.ts</Path>", "<Path>frontend/src/types/components.d.ts</Path>", "<Path>frontend/src/api/monitor/logininfo/**</Path>", "<Path>frontend/src/views/business/**</Path>", "<Path>frontend/e2e/**</Path>"]
+writable_paths: ["<Path>frontend/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/.gitignore</Path>", "<Path>frontend/src/types/auto-imports.d.ts</Path>", "<Path>frontend/src/types/components.d.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>frontend/src/api/monitor/loginInfo/**</Path>", "<Path>frontend/src/api/monitor/logininfo/**</Path>", "<Path>frontend/src/views/monitor/logininfo/**</Path>", "<Path>frontend/src/views/business/**</Path>", "<Path>frontend/e2e/**</Path>"]
+read_only_paths: ["<Path>frontend/tsconfig.json</Path>", "<Path>frontend/src/views/login.vue</Path>", "<Path>frontend/src/hooks/oss/**</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

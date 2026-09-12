@@ -12,9 +12,9 @@ risk: medium
 blocked_by: [T-09]
 contract_ids: [AC-009, AC-010, AC-019, AC-021]
 owner: codex:/root
-expected_changes: ["<Path>plus-ui-namewta/packages/domains/ai/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/ai/**</Path>", "<Path>plus-ui-namewta/src/api/ai/**</Path>", "<Path>plus-ui-namewta/src/views/ai/**</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/domains/ai/**</Path>", "<Path>plus-ui-namewta/packages/web-domains/ai/**</Path>", "<Path>plus-ui-namewta/src/api/ai/**</Path>", "<Path>plus-ui-namewta/src/views/ai/**</Path>", "<Path>plus-ui-namewta/e2e/ai-domain.spec.ts</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/platform/**</Path>", "<Path>plus-ui-namewta/packages/domains/identity-access/**</Path>", "<Path>plus-ui-namewta/package.json</Path>"]
+expected_changes: ["<Path>frontend/packages/domains/ai/**</Path>", "<Path>frontend/packages/web-domains/ai/**</Path>", "<Path>frontend/src/api/ai/**</Path>", "<Path>frontend/src/views/ai/**</Path>"]
+writable_paths: ["<Path>frontend/packages/domains/ai/**</Path>", "<Path>frontend/packages/web-domains/ai/**</Path>", "<Path>frontend/src/api/ai/**</Path>", "<Path>frontend/src/views/ai/**</Path>", "<Path>frontend/e2e/ai-domain.spec.ts</Path>"]
+read_only_paths: ["<Path>frontend/packages/platform/**</Path>", "<Path>frontend/packages/domains/identity-access/**</Path>", "<Path>frontend/package.json</Path>"]
 shared_paths: []
 shared_path_owners: []
 ---

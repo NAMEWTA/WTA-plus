@@ -12,11 +12,11 @@ risk: high
 blocked_by: [T-01]
 contract_ids: [AC-002, AC-008]
 owner: codex:/root
-expected_changes: ["<Path>plus-ui-namewta/packages/api-contracts/openapi/revisions/{new-content-hash}/source.json</Path>", "<Path>plus-ui-namewta/packages/api-contracts/openapi/revisions/{new-content-hash}/provenance.json</Path>", "<Path>plus-ui-namewta/packages/api-contracts/openapi/current.json</Path>", "<Path>plus-ui-namewta/packages/api-contracts/generated/openapi.ts</Path>"]
-writable_paths: ["<Path>plus-ui-namewta/packages/api-contracts/openapi/revisions/{new-content-hash}/**</Path>", "<Path>plus-ui-namewta/packages/api-contracts/openapi/current.json</Path>", "<Path>plus-ui-namewta/packages/api-contracts/generated/openapi.ts</Path>"]
-read_only_paths: ["<Path>plus-ui-namewta/packages/api-contracts/openapi/revisions/612ad27447c60cf330820b30ffa40d2d9eb8c60f4816340e536c6581b313a11d/**</Path>", "<Path>plus-ui-namewta/packages/api-contracts/openapi/revisions/a1f65734eec247e2dc33c42bb017309b48f5ffe0b86a0bab1d176a41c247b50f/**</Path>", "<Path>plus-ui-namewta/tooling/openapi/**</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/**</Path>"]
-shared_paths: ["<Path>plus-ui-namewta/packages/api-contracts/openapi/current.json</Path>", "<Path>plus-ui-namewta/packages/api-contracts/generated/openapi.ts</Path>"]
-shared_path_owners: ["<Path>plus-ui-namewta/packages/api-contracts/openapi/current.json</Path> => T-04", "<Path>plus-ui-namewta/packages/api-contracts/generated/openapi.ts</Path> => T-04"]
+expected_changes: ["<Path>frontend/packages/api-contracts/openapi/revisions/{new-content-hash}/source.json</Path>", "<Path>frontend/packages/api-contracts/openapi/revisions/{new-content-hash}/provenance.json</Path>", "<Path>frontend/packages/api-contracts/openapi/current.json</Path>", "<Path>frontend/packages/api-contracts/generated/openapi.ts</Path>"]
+writable_paths: ["<Path>frontend/packages/api-contracts/openapi/revisions/{new-content-hash}/**</Path>", "<Path>frontend/packages/api-contracts/openapi/current.json</Path>", "<Path>frontend/packages/api-contracts/generated/openapi.ts</Path>"]
+read_only_paths: ["<Path>frontend/packages/api-contracts/openapi/revisions/612ad27447c60cf330820b30ffa40d2d9eb8c60f4816340e536c6581b313a11d/**</Path>", "<Path>frontend/packages/api-contracts/openapi/revisions/a1f65734eec247e2dc33c42bb017309b48f5ffe0b86a0bab1d176a41c247b50f/**</Path>", "<Path>frontend/tooling/openapi/**</Path>", "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/**</Path>"]
+shared_paths: ["<Path>frontend/packages/api-contracts/openapi/current.json</Path>", "<Path>frontend/packages/api-contracts/generated/openapi.ts</Path>"]
+shared_path_owners: ["<Path>frontend/packages/api-contracts/openapi/current.json</Path> => T-04", "<Path>frontend/packages/api-contracts/generated/openapi.ts</Path> => T-04"]
 ---
 
 # Ticket T-04: 重建无生成器的当前 OpenAPI 契约
@@ -39,7 +39,7 @@ shared_path_owners: ["<Path>plus-ui-namewta/packages/api-contracts/openapi/curre
 ### 已锁定决策
 
 - T-01 是真实前置：只有后端 endpoint 已删除并形成可引用 commit 后才能获取目标合同。
-- 必须运行 tooling fetch/generate/check；不得直接手改 `<Path>plus-ui-namewta/packages/api-contracts/generated/openapi.ts</Path>`。
+- 必须运行 tooling fetch/generate/check；不得直接手改 `<Path>frontend/packages/api-contracts/generated/openapi.ts</Path>`。
 - 只新增一个内容哈希 revision并原子更新 current；两个既有历史 revision 只读。
 
 ### 已采用的低影响假设
@@ -91,7 +91,7 @@ shared_path_owners: ["<Path>plus-ui-namewta/packages/api-contracts/openapi/curre
 
 | 行为或风险 | 验证接缝 | 命令或步骤 | 预期结果 | Evidence |
 |---|---|---|---|---|
-| 正常路径 | 确定性合同流 | 在 `<Path>plus-ui-namewta/**</Path>` 运行 filter 后的 `openapi:fetch`、`openapi:generate`、`openapi:check` | 新 revision 激活、生成成功、check 无漂移 | `<Path>{roots.state}/specdev/changes/2026-08-28-retire-runtime-code-generator/evidence/T-04.md</Path>` |
+| 正常路径 | 确定性合同流 | 在 `<Path>frontend/**</Path>` 运行 filter 后的 `openapi:fetch`、`openapi:generate`、`openapi:check` | 新 revision 激活、生成成功、check 无漂移 | `<Path>{roots.state}/specdev/changes/2026-08-28-retire-runtime-code-generator/evidence/T-04.md</Path>` |
 | 失败路径 | 原子性与残留 | 运行工具现有失败测试；扫描 current/generated 的 `/tool/gen`、`GenTable` 和 generator operation | 无效来源不切换；生成器专属命中为零 | 同上 |
 | 回归 | 历史不可变与包门禁 | 比较既有 revision hash/diff；运行 OpenAPI 工具 test/typecheck/build | 历史零 diff，工具与 API contracts 消费通过 | 同上 |
 

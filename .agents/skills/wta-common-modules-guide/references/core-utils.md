@@ -1,6 +1,6 @@
 # wta-common-core 工具类与基元
 
-条目不够明确时，按路径读取源码，不得凭空推断。路径相对工作区，前缀 `wta-vue-plus-namewta/`。职责取各类 JavaDoc 首句。未逐方法展开 API；方法语义以源码为准。
+条目不够明确时，按路径读取源码，不得凭空推断。路径相对工作区，前缀 `backend/`。职责取各类 JavaDoc 首句。未逐方法展开 API；方法语义以源码为准。
 
 模块根：`wta-common/wta-common-core/src/main/java/org/namewta/common/core/`。Maven：`wta-common/wta-common-core/pom.xml`。
 

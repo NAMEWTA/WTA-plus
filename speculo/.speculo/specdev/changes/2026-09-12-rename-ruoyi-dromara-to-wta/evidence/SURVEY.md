@@ -136,7 +136,7 @@ import org.dromara.mica.mqtt.spring.client.MqttClientTemplate;
 | 项 | 现状 | 分类 |
 |---|---|---|
 | 聚合仓目录名 `ruoyi-vue-plus-docs` | clone path / `.gitmodules` 子模块名 | ~~建议本期 KEEP~~ → **SUPERSEDED**：见 ADR-010/011（新 public monorepo；旧仓冻结） |
-| 子模块目录 `ruoyi-vue-plus-namewta` / `plus-ui-namewta` | 已带 namewta 后缀 | ~~去掉 ruoyi- 前缀 AMBIGUOUS~~ → **SUPERSEDED**：ADR-008 **换前缀** `ruoyi-`→`wta-`（在新 monorepo 内） |
+| 子模块目录 `ruoyi-vue-plus-namewta` / `frontend` | 已带 namewta 后缀 | ~~去掉 ruoyi- 前缀 AMBIGUOUS~~ → **SUPERSEDED**：ADR-008 **换前缀** `ruoyi-`→`wta-`（在新 monorepo 内） |
 | Skills `ruoyi-module-guide` / `ruoyi-common-modules-guide` | 工程 Skill 名 | OWNED_RENAME（与代码波次同步） |
 | README 标题 | `NAMEWTA RuoYi-Vue-Plus` | 品牌文案 OWNED；「基于上游」叙述 KEEP 溯源语义 |
 | fm 模板 `import org.dromara.common...` | `docs/fm/java/**` | OWNED_RENAME |

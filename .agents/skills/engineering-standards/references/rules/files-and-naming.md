@@ -14,7 +14,7 @@ Verification: review 新路径能映射到模块地图和语言规则；同一 s
 
 ### FILES-002 保持目录主轴与公开边界
 
-Scope: `module:plus-ui-namewta`, `module:wta-vue-plus-namewta`
+Scope: `module:frontend`, `module:backend`
 
 Level: MUST
 
@@ -60,7 +60,7 @@ Verification: module map review；检查新增目录的 owner、依赖和导航�
 
 ### FILES-005 Domain 类型与读模型归属
 
-Scope: `path:wta-vue-plus-namewta/wta-modules/**/domain/**`
+Scope: `path:backend/wta-modules/**/domain/**`
 
 Level: MUST
 
@@ -72,7 +72,7 @@ Verification: review 每个 domain 类型的生产者和消费者；扫描 Contr
 
 ### FILES-003 保留生成器、框架与大小写合同
 
-Scope: `path:plus-ui-namewta/**`, `path:wta-vue-plus-namewta/**`
+Scope: `path:frontend/**`, `path:backend/**`
 
 Level: MUST
 

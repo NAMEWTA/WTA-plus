@@ -20,7 +20,7 @@
 - **轮次与依赖：** round 1 / 无
 - **状态：** confirmed
 - **问题：** 前端生成管理能力删除到何种边界。
-- **事实与来源：** 用户明确点名 `<Path>plus-ui-namewta/packages/domains/gen/**</Path>` 与 `<Path>plus-ui-namewta/packages/web-domains/gen/**</Path>`；源码显示 Admin 服务与 manifest 仍选择这两个包。
+- **事实与来源：** 用户明确点名 `<Path>frontend/packages/domains/gen/**</Path>` 与 `<Path>frontend/packages/web-domains/gen/**</Path>`；源码显示 Admin 服务与 manifest 仍选择这两个包。
 - **选项：** 只删页面；删除两个包但保留宿主适配；完整删除包、组合和依赖。
 - **推荐：** 完整删除包、组合、依赖、测试和失效文案。
 - **结论：** 前端不再提供代码生成管理界面或对应 domain 能力。

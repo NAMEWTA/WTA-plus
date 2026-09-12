@@ -13,10 +13,10 @@ blocked_by: [T-02, T-11, T-12, T-13]
 contract_ids: [AC-001, AC-002, AC-005, AC-007, AC-024, AC-025, AC-031, AC-034, AC-038, AC-039, AC-040, AC-041, AC-042, AC-043, AC-044]
 owner: codex:/root
 expected_changes:
-  - "<Path>plus-ui-namewta/apps/admin-web/src/**</Path>"
-  - "<Path>plus-ui-namewta/e2e/profile-management.spec.ts</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/profile/src/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/**</Path>"
+  - "<Path>frontend/apps/admin-web/src/**</Path>"
+  - "<Path>frontend/e2e/profile-management.spec.ts</Path>"
+  - "<Path>frontend/packages/domains/profile/src/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/profile/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/resources/oss/business-oss-owners.json</Path>"
@@ -25,10 +25,10 @@ expected_changes:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-profile/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/listener/WorkflowGlobalListener.java</Path>"
 writable_paths:
-  - "<Path>plus-ui-namewta/apps/admin-web/src/**</Path>"
-  - "<Path>plus-ui-namewta/e2e/profile-management.spec.ts</Path>"
-  - "<Path>plus-ui-namewta/packages/domains/profile/src/**</Path>"
-  - "<Path>plus-ui-namewta/packages/web-domains/profile/src/**</Path>"
+  - "<Path>frontend/apps/admin-web/src/**</Path>"
+  - "<Path>frontend/e2e/profile-management.spec.ts</Path>"
+  - "<Path>frontend/packages/domains/profile/src/**</Path>"
+  - "<Path>frontend/packages/web-domains/profile/src/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/java/org/dromara/test/profile/**</Path>"
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-admin/src/test/resources/oss/business-oss-owners.json</Path>"
@@ -38,11 +38,11 @@ writable_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-workflow/src/main/java/org/dromara/workflow/listener/WorkflowGlobalListener.java</Path>"
 read_only_paths: []
 shared_paths:
-  - "<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path>"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"
+  - "<Path>frontend/apps/admin-web/src/application/services.ts</Path>"
+  - "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"
 shared_path_owners:
-  - "<Path>plus-ui-namewta/apps/admin-web/src/application/services.ts</Path> => T-14"
-  - "<Path>plus-ui-namewta/apps/admin-web/src/router/adminManifestRegistry.ts</Path> => T-14"
+  - "<Path>frontend/apps/admin-web/src/application/services.ts</Path> => T-14"
+  - "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path> => T-14"
 ---
 
 # Ticket T-14: 完成 admin-web 显式组合与 Profile 发布验收

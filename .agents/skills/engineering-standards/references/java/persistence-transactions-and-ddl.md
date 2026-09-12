@@ -14,7 +14,7 @@
 
 ### PERSIST-001 统一使用动态数据源事务
 
-Scope: `module:wta-vue-plus-namewta`, business service transaction boundaries
+Scope: `module:backend`, business service transaction boundaries
 
 Level: MUST
 

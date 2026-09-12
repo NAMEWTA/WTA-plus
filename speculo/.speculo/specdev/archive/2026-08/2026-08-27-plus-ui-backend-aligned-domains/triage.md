@@ -19,7 +19,7 @@ updated_at: 2026-08-28T09:34:56+0800
 - **影响：** 前端 domain/web-domain 包名、Controller 资源定位、双 App 组合、认证权限与动态菜单。
 - **紧急度：** completed / archive-ready
 - **当前证据：** T-01 已完成并集成；当前前端 `main` 包含结果提交，完整门禁与双 App E2E Evidence 已闭合。
-- **相关代码/工件：** `<Path>plus-ui-namewta/packages/domains/**</Path>`、`<Path>plus-ui-namewta/packages/web-domains/**</Path>` 与本 change 工件。
+- **相关代码/工件：** `<Path>frontend/packages/domains/**</Path>`、`<Path>frontend/packages/web-domains/**</Path>` 与本 change 工件。
 
 ## 未知项
 

@@ -62,7 +62,7 @@ Nacos 的真实运行验收会创建并销毁独立的 MySQL、Redis、Nacos 与
 `release-artifacts/.env`，也不复用现有容器或数据卷；必须显式确认后运行：
 
 ```bash
-./mvnw -f wta-vue-plus-namewta/pom.xml -Pbundle-full -DskipTests package
+./mvnw -f backend/pom.xml -Pbundle-full -DskipTests package
 NACOS_E2E_CONFIRM=1 \
   bash release-artifacts/scripts/verify-nacos.sh
 
