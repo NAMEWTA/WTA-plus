@@ -49,7 +49,6 @@ test('当前治理声明直接维护基座并要求按标签升级已有库', ()
   const currentAuthority = [
     'README.md',
     'docs/namewta-enhancements.md',
-    'docs/upstream/customization-map.md',
     'release-artifacts/README.md',
     '.agents/skills/namewta-fullstack-development/SKILL.md',
     '.agents/skills/engineering-standards/references/java/persistence-transactions-and-ddl.md',

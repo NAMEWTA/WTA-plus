@@ -1,10 +1,8 @@
 # NAMEWTA 后端
 
-本仓库是基于 WTA-Plus 持续演进的 NAMEWTA 后端增强版。它保留上游模块化业务基础，并重点增强 Client 登录域与 RBAC 隔离、OSS 直传和对象生命周期、统一通知、完整 HTTP 系统日志、增量 SQL 及组合构建治理。
+本目录是 WTA-plus monorepo 的后端（`backend/`）。它增强 Client 登录域与 RBAC 隔离、OSS 直传和对象生命周期、统一通知、完整 HTTP 系统日志、增量 SQL 及组合构建治理。
 
-`main` 是 NAMEWTA 产品实现权威，`6.X` 只跟踪上游能力，不承载本地业务提交。
-
-## 相较上游的核心增强
+## 核心能力
 
 | 增强方向 | 当前实现 | 主要位置 |
 |---|---|---|
@@ -18,7 +16,7 @@
 | 模块组合 | 明确 `wta-admin` 组装、`wta-api` 跨模块合同和 common SPI 边界，同时验证 full/core bundle | 根 POM、`wta-admin`、`wta-api`、`wta-common` |
 | MySQL 合同 | 后端测试消费父聚合仓库维护的六份 MySQL 8.4 完整基座，本仓库不保存 SQL 副本 | `../release-artifacts/docker/infrastructure/mysql/init` |
 
-在父聚合工作区中，更完整的跨端行为和安全不变量位于 `docs/namewta-enhancements.md` 与 `docs/upstream/customization-map.md`。独立克隆本仓库时，可直接以本 README、[上游边界](docs/upstream/README.md)和当前测试作为入口。
+更完整的跨端行为和安全不变量见仓库根目录 `docs/namewta-enhancements.md`。
 
 ## 技术栈
 
@@ -80,12 +78,11 @@ wta-extend/      monitor、SnailJob、SnailAI 等独立应用
 
 ## 开发导航
 
-- 父工作区工程规范：`../.agents/skills/engineering-standards/SKILL.md`
-- 父工作区后端导航：`../.agents/skills/namewta-fullstack-development/SKILL.md`
-- 上游边界：[docs/upstream/README.md](docs/upstream/README.md)
+- 工程规范：`../.agents/skills/engineering-standards/SKILL.md`
+- 后端导航：`../.agents/skills/namewta-fullstack-development/SKILL.md`
 
-项目开发 Skill 只在 `wta-vue-plus-docs/.agents/skills/` 集中维护，本仓库不保留 `.claude` 或 `.codex` 副本。独立克隆本仓库时以本 README、模块源码、POM、测试和上游边界文档为证据。
+项目开发 Skill 只在仓库根 `.agents/skills/` 集中维护。
 
 ## 许可证
 
-本仓库保留上游项目许可证和署名，详见 `LICENSE`。上游能力进入 NAMEWTA 时按当前模块和公开合同适配，不以覆盖本地 Client 隔离、OSS、通知或日志增强为代价。
+许可证见 `LICENSE`。

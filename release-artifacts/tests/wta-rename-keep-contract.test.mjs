@@ -63,9 +63,23 @@ test('first-party backend POM groupId is org.namewta and owned modules are wta-*
   assert.match(pom, /<module>wta-admin<\/module>/);
   assert.doesNotMatch(pom, /<groupId>org\.dromara<\/groupId>/);
   assert.doesNotMatch(pom, /<module>ruoyi-/);
+  assert.ok(fs.existsSync(path.join(workspaceRoot, 'backend')));
+  assert.ok(fs.existsSync(path.join(workspaceRoot, 'frontend')));
   assert.ok(fs.existsSync(path.join(backendRoot, 'wta-admin')));
   assert.equal(fs.existsSync(path.join(backendRoot, 'ruoyi-admin')), false);
-  assert.equal(fs.existsSync(path.join(workspaceRoot, 'ruoyi-vue-plus-namewta')), false);
+  assert.equal(fs.existsSync(path.join(workspaceRoot, 'wta-vue-plus-namewta')), false);
+  assert.equal(fs.existsSync(path.join(workspaceRoot, 'plus-ui-namewta')), false);
+});
+
+test('upstream-fork-sync skill and docs/upstream workflow tree are absent', () => {
+  assert.equal(fs.existsSync(path.join(workspaceRoot, '.agents/skills/upstream-fork-sync')), false);
+  assert.equal(fs.existsSync(path.join(workspaceRoot, 'speculo/skills/upstream-fork-sync')), false);
+  assert.equal(fs.existsSync(path.join(workspaceRoot, 'docs/upstream')), false);
+  const agents = read('AGENTS.md');
+  assert.doesNotMatch(agents, /upstream-fork-sync/);
+  const readme = read('README.md');
+  const ruoyiLines = readme.split('\n').filter((line) => line.includes('RuoYi-Vue-Plus'));
+  assert.equal(ruoyiLines.length, 1, readme);
 });
 
 test('owned filesystem paths use org/namewta not org/dromara', () => {

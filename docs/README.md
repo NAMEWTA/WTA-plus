@@ -1,13 +1,11 @@
 # NAMEWTA 文档导航
 
-本目录只维护当前有效的产品架构、增强边界与上游治理信息。实现细节以对应前后端仓库源码和测试为准；历史设计与变更通过 Git 日志查看。
+本目录只维护当前有效的产品架构与增强边界。实现细节以对应前后端源码和测试为准；历史设计与变更通过 Git 日志查看。
 
 ## 项目说明
 
-- [NAMEWTA 增强说明](./namewta-enhancements.md)：相较上游的当前能力、实现位置和前后端协作方式。
+- [NAMEWTA 增强说明](./namewta-enhancements.md)：当前能力、实现位置和前后端协作方式。
 - [OSS 登录与浏览器直传排障手册](./error/oss-login-and-direct-upload-troubleshooting.md)：登录、预签名上传、MinIO CORS、重启顺序和故障验证。
-- [上游能力治理](./upstream/README.md)：产品分支、上游镜像、评估和集成规则。
-- [定制边界](./upstream/customization-map.md)：前端、后端及跨端必须保持的不变量。
 
 ## 子仓库文档
 

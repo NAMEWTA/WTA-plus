@@ -1611,54 +1611,6 @@
       "package_version": "1.0.3"
     },
     {
-      "path": "skills/upstream-fork-sync/references/entry-procedure.md",
-      "bytes": 5051,
-      "sha256": "549ab2938498ee4e94d3463732eb49722d12baeb065ac2c5203e26e087a53ce5",
-      "owner": "core/skills",
-      "kind": "static",
-      "package_version": "1.0.3"
-    },
-    {
-      "path": "skills/upstream-fork-sync/references/report-contract.md",
-      "bytes": 1592,
-      "sha256": "0a5879fdf80d4c006545cbfa026d97555bf5fa257d0bc17b0a385f8e95587300",
-      "owner": "core/skills",
-      "kind": "static",
-      "package_version": "1.0.3"
-    },
-    {
-      "path": "skills/upstream-fork-sync/references/repository-contract.md",
-      "bytes": 2635,
-      "sha256": "1063fbc6fd7c9c6294cd2d2fe43fdf4e57af358af6aa3cd65c55f099578c6703",
-      "owner": "core/skills",
-      "kind": "static",
-      "package_version": "1.0.3"
-    },
-    {
-      "path": "skills/upstream-fork-sync/references/state-schema.md",
-      "bytes": 1763,
-      "sha256": "0bf9e323e2080f38c0e3ddd2e8c2177409f1a1add398511a76a39ca8bd580c6c",
-      "owner": "core/skills",
-      "kind": "static",
-      "package_version": "1.0.3"
-    },
-    {
-      "path": "skills/upstream-fork-sync/scripts/upstream-sync.mjs",
-      "bytes": 37449,
-      "sha256": "b3d7da757d0f98a0d5d3d59acf4490cd1265f34c502425e68c0353474ebee566",
-      "owner": "core/skills",
-      "kind": "static",
-      "package_version": "1.0.3"
-    },
-    {
-      "path": "skills/upstream-fork-sync/SKILL.md",
-      "bytes": 922,
-      "sha256": "e87d7c679aa3df6982b70b738f59625d6644b254391bde225726dcb2efd9f96c",
-      "owner": "core/skills",
-      "kind": "static",
-      "package_version": "1.0.3"
-    },
-    {
       "path": "skills/writing-great-skills/GLOSSARY.md",
       "bytes": 18228,
       "sha256": "3763cb39b96028837371688c368fd902048c327d19fdc2efe156a50ff3f25eae",

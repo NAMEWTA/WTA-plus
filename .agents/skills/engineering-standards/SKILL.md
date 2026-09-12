@@ -47,7 +47,7 @@ description: 为本仓库提供架构、模块边界、Java/Vue/MyBatis 固定�
 - 不适用规则不加载；依赖、构建输出、生成声明和冻结 scope 不手工修改。
 - 不通过删除测试、关闭核心规则、放宽编译配置或扩大例外获得通过。
 - 新代码遵循 Target；存量偏差按 Migration/Ratchet 处理，不发动无关全仓重写。
-- 前后端是独立 Git Submodule；在各自仓库完成变更与验证后，再单独更新父仓库指针。
+- 前后端合入本 monorepo 的 `backend/` 与 `frontend/`；不使用 git submodule 作为默认交付。
 - 项目事实变化时先更新 Project Profile/Module Map，再更新规则，不静默猜测。
 
 Skills 与模板发布前运行：

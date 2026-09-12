@@ -10,7 +10,7 @@
 | `frontend` | Vue 3 多 App 领域化前端 | [前端 README](frontend/README.md) |
 | `backend` | Spring Boot 模块化后端（`org.namewta` / `wta-*`） | [后端 README](backend/README.md) |
 
-## 相较上游的核心增强
+## 核心能力
 
 | 方向 | NAMEWTA 增强 | 直接收益 |
 |---|---|---|
@@ -22,7 +22,7 @@
 | 通知 | 渠道无关的通知分发，提供邮件/短信适配、Redis 幂等、OSS 附件快照、调用上下文审计、脱敏和全局投递监控 | 业务模块通过统一合同发送和追踪通知 |
 | HTTP 可观测性 | 在 Servlet 边界输出可关联的请求/响应结构化事件，覆盖同步、异步、异常、正文截断和媒体类型策略 | 无需为每个接口重复编写基础访问日志，可按 requestId 串联一次调用 |
 | 数据变更 | 父仓库统一维护六份 MySQL 8.4 完整初始化基座（三方菜单 DML 已并入 60），业务迭代直接修改对应基座文件 | 全新环境可确定性初始化，已有环境按源/目标 Git Tag 评审差异后升级 |
-| 工程治理 | 前后端产品分支与上游镜像分离，固定基线，维护定制边界、架构检查、OpenAPI 漂移检查和分层测试 | 可吸收上游能力，同时避免覆盖 NAMEWTA 的核心改造 |
+| 工程治理 | 单一 monorepo 固定基线，维护架构检查、OpenAPI 漂移检查和分层测试 | 产品能力在本仓演进，不以 git submodule 或上游 URL 为交付依赖 |
 
 完整能力、实现位置和边界见 [NAMEWTA 增强说明](docs/namewta-enhancements.md)。
 
@@ -39,7 +39,7 @@ WTA-plus/
 │   ├── wta-api/                   # 跨模块公开合同
 │   ├── wta-common/                # 通用基础能力
 │   └── wta-modules/               # system/workflow/demo/profile/notify/ai/job/third
-├── docs/                            # 当前架构与上游治理文档
+├── docs/                            # 当前架构与产品说明
 ├── release-artifacts/               # 发布资产及六份 MySQL 8.4 初始化基座
 ├── scripts/                         # 聚合 CI / 开发脚本
 └── speculo/                         # 规格驱动研发状态
@@ -71,14 +71,6 @@ cd WTA-plus
 
 前端在 `frontend/`，后端在 `backend/`。前端要求 Node.js `>=20.19.0`、pnpm `>=10.0.0`；后端要求 Java 21，并通过仓库内 Maven Wrapper 构建。具体启动、构建和验证命令分别见前后端 README。
 
-## 分支与上游关系
+## 许可证
 
-- 本仓 `main` 是 NAMEWTA 产品分支；默认交付不再使用 git submodule。
-- 上游 RuoYi-Vue-Plus / Plus-UI 仅作能力发现；不要求本地目录与上游路径同构，也不把上游 URL 当作运行依赖。
-- 旧三仓 `ruoyi-vue-plus-namewta` / `frontend` / `ruoyi-vue-plus-docs` 按 freeze 语义只读备份，不在本仓内 `gitlink` 推进。
-
-长期约束见 [上游能力治理](docs/upstream/README.md)与 [定制边界](docs/upstream/customization-map.md)。历史变化直接通过本仓 Git 日志查看，文档只维护当前有效状态。
-
-## 许可证与上游
-
-NAMEWTA 保留上游项目许可证和署名。使用、分发与二次开发时，请同时遵守前后端仓库中的许可证及其依赖许可证。
+使用、分发与二次开发时，请遵守本仓前后端 `LICENSE` 及其依赖许可证。

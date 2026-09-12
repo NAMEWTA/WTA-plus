@@ -1,6 +1,6 @@
 # NAMEWTA 增强说明
 
-NAMEWTA 是 WTA-Plus / Plus-UI 的增强发行线。上游仍是基础能力与修复的重要来源，但 NAMEWTA 的产品分支、目录所有权和安全不变量以本工作区当前实现为准。
+NAMEWTA 是 WTA-plus 的产品发行线。目录所有权和安全不变量以本工作区当前实现为准。
 
 ## 前端增强
 
@@ -63,9 +63,3 @@ Token 明确区分 OAuth `clientId`、数据库 Client 主键和登录域。角�
 NAMEWTA 当前只支持并验收 MySQL 8.4。数据库初始化资产由父仓库 `release-artifacts/docker/infrastructure/mysql/init/` 统一拥有，六份 SQL 是可直接修改的当前完整基座：`10` 至 `40` 分别承载 WTA、Job、Workflow、AI，`50-namewta-ddl.sql` 承载 NAMEWTA 结构，`60-namewta-dml.sql` 承载 NAMEWTA 数据（包括三方接口管理菜单与权限）。Nacos schema 保持在 `init/nacos/` 独立初始化。后端仓库不再保存 `script/` 或 SQL 副本，也不维护 PostgreSQL、Oracle、SQL Server 方言。
 
 全新环境按文件名前缀顺序执行全部六份基座。已有环境不得重放基座；升级时必须指定源 Git Tag 与目标 Git Tag，备份现场，在隔离库中生成、评审并演练差异 SQL，再执行获批的升级步骤。
-
-## 上游能力吸收
-
-后端 `6.X`、前端 `6.X-Vue` 只作为上游镜像。每次上游变化先识别能力、修复或安全语义，再映射到当前模块和包所有者，形成 `adopt`、`adapt`、`reject` 或 `defer` 结论。上游路径可参考，但不会为了目录同构而恢复已移除的兼容门面或破坏 NAMEWTA 的 Client 隔离和多 App 架构。
-
-更细的长期不变量见 [定制边界](upstream/customization-map.md)。

@@ -6,8 +6,8 @@
 ## 项目开发 Skill
 
 - 项目开发 Skill 的唯一根目录是 `./.agents/skills/`；本 monorepo 不维护 `.claude` 或 `.codex` Skill/Agent 副本。
-- 处理代码、目录、测试、构建、依赖、API、数据库、权限、上游同步或交付变化前，必须先读取 `./.agents/skills/engineering-standards/SKILL.md`。该入口保留项目架构、模块边界、MyBatis/Java/Vue 结构、质量门禁和交付裁决；入口内部按任务 scope 选择 references。
-- 再按任务加载最小充分的前端、后端、system、workflow、common 或 upstream Skill。Skill 的描述只用于触发判断，详细资料按入口中的路由按需读取。
+- 处理代码、目录、测试、构建、依赖、API、数据库、权限或交付变化前，必须先读取 `./.agents/skills/engineering-standards/SKILL.md`。该入口保留项目架构、模块边界、MyBatis/Java/Vue 结构、质量门禁和交付裁决；入口内部按任务 scope 选择 references。
+- 再按任务加载最小充分的前端、后端、system、workflow、common Skill。Skill 的描述只用于触发判断，详细资料按入口中的路由按需读取。
 - 项目规范中的“必须/禁止”是硬约束；“建议/优先”是可调整的实现指导。硬约束不能为了省上下文而删除或改成可选。
 - 用户指令优先于项目 Skill 中的普通指导；如果用户要求与硬约束冲突，先指出冲突和受影响的契约，再继续完成可以安全完成的部分。
 - Skill 摘要与当前源码、配置、POM 或测试冲突时，以当前工作树证据为准，并同步修正父级 Skill；不要为了迎合摘要修改真实实现。
@@ -32,7 +32,6 @@
 | wta-common 依赖、SPI 和工具入口 | [wta-common-modules-guide](.agents/skills/wta-common-modules-guide/SKILL.md) |
 | Java 公共 API 兼容演进 | [java-api-compatibility](.agents/skills/java-api-compatibility/SKILL.md) |
 | NAMEWTA 环境审计、部署、升级和回滚 | [deploy-namewta-environment](.agents/skills/deploy-namewta-environment/SKILL.md) |
-| 上游 Fork 评估与获授权集成 | [upstream-fork-sync](.agents/skills/upstream-fork-sync/SKILL.md) |
 
 </PROJECT_SKILLS>
 

@@ -1,4 +1,0 @@
-interface:
-  display_name: "上游 Fork 同步"
-  short_description: "跟踪并评估安全的上游 Fork 同步"
-  default_prompt: "使用 $upstream-fork-sync 刷新 Fork 检查点，并生成上游差异与冲突报告。"

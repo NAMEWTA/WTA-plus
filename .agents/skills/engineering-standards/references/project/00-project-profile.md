@@ -4,13 +4,12 @@
 
 - Project: `wta-vue-plus-docs`
 - Repository root: 当前包含本 Skill 的 Git 工作区根目录
-- Topology: 多根、多语言聚合仓库；父仓库通过 Git Submodule 管理两个独立产品仓库
+- Topology: 单一 monorepo；`backend/` 与 `frontend/` 合入，不以 git submodule 为默认交付
 
 ## 事实来源
 
-- `README.md`、`.gitmodules`：父仓库只聚合 `frontend` 与 `backend`，两个子模块独立开发和发布。
-- `.agents/skills/**`、`AGENTS.md`：项目开发 Skill 只在父工作区集中维护；两个产品子仓库不保留 `.claude` 或 `.codex` Skill/Agent 副本。
-- `docs/upstream/customization-map.md`：NAMEWTA 相对上游的认证、权限、Client、菜单、SQL 和前端契约权威清单。
+- `README.md`：本仓聚合 `frontend` 与 `backend`，同源开发与发布。
+- `.agents/skills/**`、`AGENTS.md`：项目开发 Skill 只在本仓集中维护。
 - `frontend/package.json`、`pnpm-workspace.yaml`、`pnpm-lock.yaml`、各包 `package.json`/`tsconfig.json`：Vue 3、TypeScript 6、Vite 8、Pinia 4、pnpm 10、Node `>=20.19.0` 的多 App monorepo。
 - `frontend/apps/admin-web/src/main.ts`：当前唯一可构建和部署的浏览器 App；其他未激活终端仅保留 README 占位。
 - `frontend/packages/{domains,web-domains,platform,adapters,web-kit}/**`：headless domain、Vue Web 表现、平台端口、运行时适配器与共享 Web 机制的依赖方向。
@@ -40,7 +39,7 @@
 | `module:backend` | `backend` | `./mvnw clean package -DskipTests` | `bundle-full` 全量组合打包 | `pom.xml`, `wta-admin/pom.xml` | active local/CI gate |
 | `module:backend` | `backend` | `./mvnw clean package -Pbundle-core -Dmaven.test.skip=true` | 核心平台组合打包；clean 防止 profile 产物污染，测试由前置 `./mvnw test` 承担 | `wta-admin/pom.xml` | active local/CI gate |
 | `workspace-parent` | `.` | `scripts/ci/verify-admin-bundle.sh full\|core` | 断言最终 admin jar 的必需/可选模块集合 | `.github/workflows/quality-gates.yml` | active local/CI gate |
-| `workspace-parent` | `.` | `scripts/ci/verify-submodules.sh` | 校验父仓库 gitlink 与检出子模块 SHA 一致 | `.github/workflows/quality-gates.yml` | active CI gate; local dirty tree预期失败 |
+| `workspace-parent` | `.` | `scripts/ci/verify-submodules.sh` | 遗留脚本；WTA-plus 默认交付不再使用 git submodule | `.github/workflows/quality-gates.yml` | not a default clone/start step |
 | `workspace-parent` | `.` | `scripts/ci/run-external-services.sh` | Docker 启动 Redis 8、MySQL 8.4、MinIO 并运行真实集成测试 | `.github/workflows/quality-gates.yml` | active CI gate; local Docker unavailable |
 
 父仓库已有 GitHub Actions 工作流候选，但只有提交、推送并在仓库分支保护中设为 required check 后，才能称为远程合并门禁。当前本地可执行门禁与 CI 命令保持同源；外部服务 job 因本机无 Docker 尚未本地实跑。
@@ -50,8 +49,7 @@
 - 依赖/缓存/构建输出：`.git/**`、`.pnpm-store/**`、`**/node_modules/**`、`**/dist/**`、`**/target/**`、`**/.flattened-pom.xml`、coverage 和工具缓存。
 - 生成声明：`frontend/apps/*/src/types/{auto-imports,components}.d.ts` 及同类 Vite 插件输出；修改生成器配置后重新生成，不手改结果。
 - 前端 `packages/api-contracts` 生成结果由 `tooling/openapi` 与已提交快照维护；`tooling/generators` 当前为 README-only 占位。运行时代码生成器及其前端管理面已从基座物理删除；CRUD 实现参考父仓库 `docs/fm/**` 静态模板，不存在 `wta-gen` classpath 或可编辑运行源码。
-- 上游冻结分支：后端 `6.X`、前端 `6.X-Vue` 只允许 fast-forward，不承载业务提交；产品变更进入各自 `main`。
-- 上游基线标签 `namewta-base-upstream-6x`、`namewta-base-upstream-6x-vue` 不移动。
+- 产品变更进入本仓 `main`。
 - `release-artifacts/docker/infrastructure/mysql/init/` 是六份 MySQL 8.4 完整初始化基座的唯一事实源；后端仓库不保存 `script/`、SQL 副本或其他数据库方言。
 - NAMEWTA 自有表结构只合并到 `50-namewta-ddl.sql`；初始化数据、菜单和回填只合并到 `60-namewta-dml.sql`。两者是完整可重建基座，不是按时间无限追加的迁移日志。
 - SnailJob、WarmFlow、AI 等上游或第三方拥有的 schema 不是 NAMEWTA 表结构整治目标；只在项目明确接管其 schema 时应用项目自有建表规则。
