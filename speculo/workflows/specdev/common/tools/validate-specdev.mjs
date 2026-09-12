@@ -2382,8 +2382,14 @@ function validateGitEvidence(repoRoot, changeStatus, errors) {
     }
     if (worktree.workspace_ref === "current") {
       if (currentBranch !== worktree.parent_branch) errors.push(`${label}: current branch ${currentBranch ?? "<detached>"} must equal ${worktree.parent_branch}`);
-      if (new Set(["integrated", "removed"]).has(worktree.status) && worktree.integration?.result_sha && gitOutput(resolvedRoot, ["rev-parse", worktree.parent_branch]) !== worktree.integration.result_sha) {
-        errors.push(`${label}: parent branch HEAD must equal recorded result_sha`);
+      if (new Set(["integrated", "removed"]).has(worktree.status) && worktree.integration?.result_sha) {
+        const head = gitOutput(resolvedRoot, ["rev-parse", worktree.parent_branch]);
+        const recorded = worktree.integration.result_sha;
+        // current-workspace close-out commits cannot contain their own SHA in .status.json.
+        // result_sha must be HEAD or an ancestor of HEAD on the parent branch.
+        if (head !== recorded && !gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", recorded, head])) {
+          errors.push(`${label}: parent branch HEAD must equal recorded result_sha`);
+        }
       }
       if (worktree.integration?.source_sha && worktree.base_sha && !gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", worktree.base_sha, worktree.integration.source_sha])) {
         errors.push(`${label}: source_sha must descend from base_sha`);

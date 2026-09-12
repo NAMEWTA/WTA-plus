@@ -3,7 +3,7 @@
   "artifact": "change-status",
   "change": "2026-09-10-notify-channel-config",
   "change_status": "active",
-  "current_work": null,
+  "current_work": "specdev/C-code-review",
   "works_run": [
     "specdev/G-grill-with-docs",
     "specdev/S-spec",
@@ -39,7 +39,7 @@
     "history": []
   },
   "created_at": "2026-09-10T14:49:31+08:00",
-  "updated_at": "2026-09-12T16:20:00+08:00",
+  "updated_at": "2026-09-12T16:45:00+08:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -56,17 +56,17 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "source_checkpoint": "3a86dfe9973bd01815293bf027a2f9be79f48150",
       "integration": {
         "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
-        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "source_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "result_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "method": "direct-parent",
         "conflict_paths": [],
         "verification": "passed",
@@ -87,7 +87,7 @@
         "promotion_status": "applied"
       },
       "status": "integrated",
-      "updated_at": "2026-09-12T16:20:00+08:00"
+      "updated_at": "2026-09-12T16:45:00+08:00"
     },
     {
       "ticket_id": "T-02",
@@ -99,17 +99,17 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "source_checkpoint": "3a86dfe9973bd01815293bf027a2f9be79f48150",
       "integration": {
         "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
-        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "source_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "result_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "method": "direct-parent",
         "conflict_paths": [],
         "verification": "passed",
@@ -130,7 +130,7 @@
         "promotion_status": "applied"
       },
       "status": "integrated",
-      "updated_at": "2026-09-12T16:20:00+08:00"
+      "updated_at": "2026-09-12T16:45:00+08:00"
     },
     {
       "ticket_id": "T-03",
@@ -142,17 +142,17 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "source_checkpoint": "3a86dfe9973bd01815293bf027a2f9be79f48150",
       "integration": {
         "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
-        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "source_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "result_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "method": "direct-parent",
         "conflict_paths": [],
         "verification": "passed",
@@ -173,7 +173,7 @@
         "promotion_status": "applied"
       },
       "status": "integrated",
-      "updated_at": "2026-09-12T16:20:00+08:00"
+      "updated_at": "2026-09-12T16:45:00+08:00"
     },
     {
       "ticket_id": "T-04",
@@ -185,17 +185,17 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "source_checkpoint": "3a86dfe9973bd01815293bf027a2f9be79f48150",
       "integration": {
         "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
-        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "source_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "result_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "method": "direct-parent",
         "conflict_paths": [],
         "verification": "passed",
@@ -216,7 +216,7 @@
         "promotion_status": "applied"
       },
       "status": "integrated",
-      "updated_at": "2026-09-12T16:20:00+08:00"
+      "updated_at": "2026-09-12T16:45:00+08:00"
     },
     {
       "ticket_id": "T-05",
@@ -228,17 +228,17 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "source_checkpoint": "3a86dfe9973bd01815293bf027a2f9be79f48150",
       "integration": {
         "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
-        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "source_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "result_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "method": "direct-parent",
         "conflict_paths": [],
         "verification": "passed",
@@ -259,7 +259,7 @@
         "promotion_status": "applied"
       },
       "status": "integrated",
-      "updated_at": "2026-09-12T16:20:00+08:00"
+      "updated_at": "2026-09-12T16:45:00+08:00"
     },
     {
       "ticket_id": "T-06",
@@ -271,17 +271,17 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "source_checkpoint": "3a86dfe9973bd01815293bf027a2f9be79f48150",
       "integration": {
         "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
-        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "source_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "result_sha": "3a86dfe9973bd01815293bf027a2f9be79f48150",
         "method": "direct-parent",
         "conflict_paths": [],
         "verification": "passed",
@@ -302,7 +302,7 @@
         "promotion_status": "applied"
       },
       "status": "integrated",
-      "updated_at": "2026-09-12T16:20:00+08:00"
+      "updated_at": "2026-09-12T16:45:00+08:00"
     }
   ]
 }
