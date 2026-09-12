@@ -68,3 +68,7 @@ venv/
 .codex/config.toml
 specdev-worktree/
 temp/
+
+# local secrets for box E2E
+# tracked per CTO: local box E2E config (intranet-only)
+# backend/wta-admin/src/main/resources/application-local.yml

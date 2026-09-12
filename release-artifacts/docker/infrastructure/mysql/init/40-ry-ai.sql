@@ -551,8 +551,8 @@ CREATE TABLE IF NOT EXISTS sai_resource
 -- 九、初始化数据
 -- ============================================================
 
--- 默认管理员：admin / admin123
-INSERT INTO sai_user VALUES (1, 2, NULL, 'admin', 'admin', '',  'pbkdf2$120000$c25haWwtYWktYWRtaW4tMQ==$kakglT/wYKOgv/77Ah1stie58d/JbY2nGgq5DwgUBw4=', NULL, NOW(), NOW());
+-- 默认管理员：WTA / admin123
+INSERT INTO sai_user VALUES (1, 2, NULL, 'WTA', 'WTA', '',  'pbkdf2$120000$c25haWwtYWktYWRtaW4tMQ==$kakglT/wYKOgv/77Ah1stie58d/JbY2nGgq5DwgUBw4=', NULL, NOW(), NOW());
 
 -- 插入常见的AI提供商
 INSERT INTO sai_model_provider (provider_name, provider_key, description, is_enabled)

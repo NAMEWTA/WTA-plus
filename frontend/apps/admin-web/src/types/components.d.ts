@@ -86,13 +86,13 @@ declare module 'vue' {
     RoleSelect: typeof import('./../components/RoleSelect/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    WTADoc: typeof import('./../components/WTADoc/index.vue')['default']
-    WTAGit: typeof import('./../components/WTAGit/index.vue')['default']
     Screenfull: typeof import('./../components/Screenfull/index.vue')['default']
     SizeSelect: typeof import('./../components/SizeSelect/index.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
     TopNav: typeof import('./../components/TopNav/index.vue')['default']
     TreePanel: typeof import('./../components/TreePanel/index.vue')['default']
+    WTADoc: typeof import('./../components/WTADoc/index.vue')['default']
+    WTAGit: typeof import('./../components/WTAGit/index.vue')['default']
   }
   export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
