@@ -37,13 +37,13 @@ ready_for_execution: true
 
 | Ticket | 必须调用的项目 Skill（SKILL.md） | 进入 Ticket 前额外 references |
 |---|---|---|
-| ALL | `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`；`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`；`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>` | 工程规范：`<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>`、`<Path>.agents/skills/engineering-standards/references/project/01-module-map.md</Path>`、`<Path>.agents/skills/engineering-standards/references/project/03-backend-module-modes.md</Path>`；notify 事实：`<Path>.agents/skills/ruoyi-module-guide/references/modules/notify/index.md</Path>` |
-| T-01 | 上述 ALL + `<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>` | mail/sms 运行时入口；OSS 配置只作交互对照，不复制 system CRUD 到 notify |
+| ALL | `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`；`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`；`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>` | 工程规范：`<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>`、`<Path>.agents/skills/engineering-standards/references/project/01-module-map.md</Path>`、`<Path>.agents/skills/engineering-standards/references/project/03-backend-module-modes.md</Path>`；notify 事实：`<Path>.agents/skills/wta-module-guide/references/modules/notify/index.md</Path>` |
+| T-01 | 上述 ALL + `<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>` | mail/sms 运行时入口；OSS 配置只作交互对照，不复制 system CRUD 到 notify |
 | T-02 | ALL 三项 | 全栈合同映射、layered CRUD、权限路由 |
-| T-03 | ALL + `<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>` | SMS4J / NotifyTemplateContent；禁止业务直连 SmsFactory |
-| T-04 | ALL + `<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>` | RedisUtils 限额；安全与失败关闭 |
+| T-03 | ALL + `<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>` | SMS4J / NotifyTemplateContent；禁止业务直连 SmsFactory |
+| T-04 | ALL + `<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>` | RedisUtils 限额；安全与失败关闭 |
 | T-05 | ALL 三项 | notify 调用入口；workflow/profile 只改公开 NotificationCommand 构造 |
-| T-06 | ALL + `<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>` | 更新 notification.md 与 notify index 事实；跑 `validate-skill-facts.mjs` |
+| T-06 | ALL + `<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>` | 更新 notification.md 与 notify index 事实；跑 `validate-skill-facts.mjs` |
 
 Dispatch Packet（若派 implementation subagent）必须把上述 Skill 路径写入 packet，并写明「Map → Skill → Ticket」。未读 Skill、跳过 references、或用「沿用现有写法」代替硬约束时，Lead 停止该 Ticket。
 

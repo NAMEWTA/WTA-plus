@@ -4,7 +4,7 @@ artifact: ticket
 change: 2026-09-10-notify-channel-config
 id: T-01
 title: 交付通知配置入口与可启停的邮件/短信渠道账号
-status: ready
+status: done
 planning_depth: deep
 planning_depth_reason: 新增配置表与管理 API、密钥不回显、YAML 账号权威退出，并改变 MAIL/SMS 运行时数据源。
 ready: true
@@ -47,7 +47,7 @@ shared_path_owners: []
 
 实现本 Ticket 时，Lead 与 implementation subagent **必须**按顺序：Goal Plan 第 0 节 → Tickets Map 技能矩阵 → 下列 SKILL.md 全文 → 本 Ticket「必须加载的 Skill」→ 本 Ticket 其余章节。未读完不得改代码。Dispatch Packet 必须列出这些 Skill 路径。
 
-**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>`。
+**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>`。
 
 ## 1. 战略与来源
 
@@ -79,7 +79,7 @@ shared_path_owners: []
 
 ## 2.1 必须加载的 Skill 与工程基线
 
-- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>`。
+- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>`。
 - **目录：** notify 保持 layered；Controller 只注入 UseCase。
 - **停止条件：** 把配置放进 system；common-notify 建账号表；YAML 双读；回显 secret；MAIL/SMS 在无账号时回退 YAML。
 

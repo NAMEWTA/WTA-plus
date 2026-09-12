@@ -8,7 +8,8 @@
     "specdev/G-grill-with-docs",
     "specdev/S-spec",
     "specdev/T-tickets",
-    "specdev/P-goal-plan"
+    "specdev/P-goal-plan",
+    "specdev/I-implement"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
@@ -38,11 +39,270 @@
     "history": []
   },
   "created_at": "2026-09-10T14:49:31+08:00",
-  "updated_at": "2026-09-10T19:00:00+08:00",
+  "updated_at": "2026-09-12T16:20:00+08:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [],
   "deviations": [],
-  "worktrees": []
+  "worktrees": [
+    {
+      "ticket_id": "T-01",
+      "owner": "grok:local",
+      "implementation_owner": "grok:local",
+      "integration_owner": "grok:local",
+      "provider": "git",
+      "base_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
+        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Close-out ran targeted notify domain/web-domain tests; Java notify suite unchanged this round.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-01.md</Path>"
+        },
+        "e2e": {
+          "required": true,
+          "status": "passed",
+          "reason": "Live admin-web :4174 / backend :18080 MAIL/SMS TAB and add-account dialogs.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-01.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-01.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-12T16:20:00+08:00"
+    },
+    {
+      "ticket_id": "T-02",
+      "owner": "grok:local",
+      "implementation_owner": "grok:local",
+      "integration_owner": "grok:local",
+      "provider": "git",
+      "base_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
+        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "MAIL bind close-out used existing Dispatch tests plus live scene-bind UX.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-02.md</Path>"
+        },
+        "e2e": {
+          "required": true,
+          "status": "passed",
+          "reason": "MAIL \u573a\u666f\u7ed1\u5b9a dialog with ${code} tokens captured.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-02.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-02.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-12T16:20:00+08:00"
+    },
+    {
+      "ticket_id": "T-03",
+      "owner": "grok:local",
+      "implementation_owner": "grok:local",
+      "integration_owner": "grok:local",
+      "provider": "git",
+      "base_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
+        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "SMS bind close-out used existing NotifyTemplateContent tests plus live SMS bind UX.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-03.md</Path>"
+        },
+        "e2e": {
+          "required": true,
+          "status": "passed",
+          "reason": "SMS TAB and \u573a\u666f\u7ed1\u5b9a with vendor template code, no free-text body.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-03.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-03.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-12T16:20:00+08:00"
+    },
+    {
+      "ticket_id": "T-04",
+      "owner": "grok:local",
+      "implementation_owner": "grok:local",
+      "integration_owner": "grok:local",
+      "provider": "git",
+      "base_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
+        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Quota Java tests unchanged this round; AC-AUDIT already pass.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-04.md</Path>"
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Goal Plan E2E not-required; Dispatch quota can be judged without UI.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-04.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-04.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-12T16:20:00+08:00"
+    },
+    {
+      "ticket_id": "T-05",
+      "owner": "grok:local",
+      "implementation_owner": "grok:local",
+      "integration_owner": "grok:local",
+      "provider": "git",
+      "base_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
+        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Caller contract tests unchanged this round; AC-AUDIT already pass.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-05.md</Path>"
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Goal Plan E2E not-required; caller tests are the seam.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-05.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-05.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-12T16:20:00+08:00"
+    },
+    {
+      "ticket_id": "T-06",
+      "owner": "grok:local",
+      "implementation_owner": "grok:local",
+      "integration_owner": "grok:local",
+      "provider": "git",
+      "base_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+      "integration": {
+        "status": "passed",
+        "parent_ref": "main",
+        "parent_before_sha": "b06d1619bc3bb4fcb4d5ccf44720c0576b7e0b05",
+        "source_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": "8680fe6b7225950fbe9cdce23d6e38b7e141b189",
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "passed",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Skill facts unchanged this round; test-send API tests already in AC-AUDIT.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-06.md</Path>"
+        },
+        "e2e": {
+          "required": true,
+          "status": "passed",
+          "reason": "Config page \u8bd5\u53d1 buttons visible on MAIL/SMS account and scene rows.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-06.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-06.md</Path>",
+        "attempts": 1,
+        "promotion_status": "applied"
+      },
+      "status": "integrated",
+      "updated_at": "2026-09-12T16:20:00+08:00"
+    }
+  ]
 }

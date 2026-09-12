@@ -2,7 +2,7 @@
 schema_version: 3
 artifact: tickets-map
 change: 2026-09-10-notify-channel-config
-status: ready
+status: completed
 ---
 
 # Tickets Map: 通知中心邮件/短信配置管理
@@ -41,31 +41,31 @@ status: ready
 |---|---|---|---|---|
 | ALL | `<Path>.agents/skills/engineering-standards/SKILL.md</Path>` | 架构、权限、API GET/POST、质量门禁 | Map 后、Ticket 前 | 硬约束与模块模式 |
 | ALL | `<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>` | 跨层菜单/API/SQL/domain/web-domain | Map 后、Ticket 前 | 垂直切片与合同映射 |
-| ALL | `<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>` | ruoyi-notify 控制面事实 | Map 后、Ticket 前 | Notify 入口与分层 |
-| T-01,T-03,T-04,T-06 | `<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>` | mail/sms SPI、Redis 限额、Skill 事实同步 | 进入这些 Ticket 前 | 选择 common 入口，禁止业务直连 SDK；T-06 回写 mail/sms 事实 |
+| ALL | `<Path>.agents/skills/wta-module-guide/SKILL.md</Path>` | ruoyi-notify 控制面事实 | Map 后、Ticket 前 | Notify 入口与分层 |
+| T-01,T-03,T-04,T-06 | `<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>` | mail/sms SPI、Redis 限额、Skill 事实同步 | 进入这些 Ticket 前 | 选择 common 入口，禁止业务直连 SDK；T-06 回写 mail/sms 事实 |
 
 ## 2. 执行清单
 
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| T-01 | `<Path>{roots.state}/specdev/changes/{change}/ticket/01-channel-account-admin.md</Path>` | 通知配置双 TAB 账号 CRUD/启停，YAML 账号退出 | — | deep | high | yes | unassigned | AC-001, AC-002, AC-003, AC-014, AC-017 | W1 | ready |
-| T-02 | `<Path>{roots.state}/specdev/changes/{change}/ticket/02-mail-scene-binding.md</Path>` | 邮件场景绑定与热配发送 | T-01 | deep | high | yes | unassigned | AC-005, AC-006 | W2 | ready |
-| T-03 | `<Path>{roots.state}/specdev/changes/{change}/ticket/03-sms-template-binding.md</Path>` | 短信模板码绑定与按账号发送 | T-02 | deep | high | yes | unassigned | AC-004, AC-007 | W3 | ready |
-| T-04 | `<Path>{roots.state}/specdev/changes/{change}/ticket/04-send-quotas.md</Path>` | 三层限额与 YAML 拦截退出 | T-03 | deep | high | yes | unassigned | AC-008, AC-009, AC-010, AC-015 | W4 | ready |
-| T-05 | `<Path>{roots.state}/specdev/changes/{change}/ticket/05-caller-variable-contract.md</Path>` | 调用方只传变量，验证码补 templateCode | T-04 | standard | medium | yes | unassigned | AC-011, AC-012, AC-013 | W5 | ready |
-| T-06 | `<Path>{roots.state}/specdev/changes/{change}/ticket/06-test-send-and-skills.md</Path>` | 测试发送与 Skill/注释同步 | T-05 | standard | medium | yes | unassigned | AC-016, AC-018 | W6 | ready |
+| T-01 | `<Path>{roots.state}/specdev/changes/{change}/ticket/01-channel-account-admin.md</Path>` | 通知配置双 TAB 账号 CRUD/启停，YAML 账号退出 | — | deep | high | yes | unassigned | AC-001, AC-002, AC-003, AC-014, AC-017 | W1 | done |
+| T-02 | `<Path>{roots.state}/specdev/changes/{change}/ticket/02-mail-scene-binding.md</Path>` | 邮件场景绑定与热配发送 | T-01 | deep | high | yes | unassigned | AC-005, AC-006 | W2 | done |
+| T-03 | `<Path>{roots.state}/specdev/changes/{change}/ticket/03-sms-template-binding.md</Path>` | 短信模板码绑定与按账号发送 | T-02 | deep | high | yes | unassigned | AC-004, AC-007 | W3 | done |
+| T-04 | `<Path>{roots.state}/specdev/changes/{change}/ticket/04-send-quotas.md</Path>` | 三层限额与 YAML 拦截退出 | T-03 | deep | high | yes | unassigned | AC-008, AC-009, AC-010, AC-015 | W4 | done |
+| T-05 | `<Path>{roots.state}/specdev/changes/{change}/ticket/05-caller-variable-contract.md</Path>` | 调用方只传变量，验证码补 templateCode | T-04 | standard | medium | yes | unassigned | AC-011, AC-012, AC-013 | W5 | done |
+| T-06 | `<Path>{roots.state}/specdev/changes/{change}/ticket/06-test-send-and-skills.md</Path>` | 测试发送与 Skill/注释同步 | T-05 | standard | medium | yes | unassigned | AC-016, AC-018 | W6 | done |
 
 Ticket frontmatter 是状态、依赖、深度和路径访问契约的权威；本表是同步投影，不得独立修改出另一套真相。
 
 ## 3. 依赖 DAG
 
 ```text
-T-01 [READY] 账号 + YAML 账号退出
-  └─→ T-02 [READY] 邮件绑定/热配
-        └─→ T-03 [READY] 短信模板绑定
-              └─→ T-04 [READY] 限额
-                    └─→ T-05 [READY] 调用方
-                          └─→ T-06 [READY] 试发 + Skill
+T-01 [DONE] 账号 + YAML 账号退出
+  └─→ T-02 [DONE] 邮件绑定/热配
+        └─→ T-03 [DONE] 短信模板绑定
+              └─→ T-04 [DONE] 限额
+                    └─→ T-05 [DONE] 调用方
+                          └─→ T-06 [DONE] 试发 + Skill
 ```
 
 每条边都是真实开始条件：无账号表不能绑定；无 MAIL 场景表不能做 SMS 绑定列/Dispatch 扩展；无限额语义不能宣称 YAML 拦截已退出；无模板路径不能清调用方正文；无完整发送/限额不能提供同语义测试发送。

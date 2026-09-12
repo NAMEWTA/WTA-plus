@@ -38,6 +38,39 @@ describe('通知传输映射', () => {
       method: 'get',
       params: { channel: 'MAIL', pageNum: 1, pageSize: 10 }
     });
+    const mailAccount = {
+      channel: 'MAIL' as const,
+      configKey: 'smtp-ops',
+      enabled: 'Y',
+      host: 'smtp.example.com',
+      port: 465,
+      mailFrom: 'ops@example.com',
+      mailUser: 'ops',
+      mailPass: 'secret',
+      minuteMax: 60
+    };
+    await service.config.addAccount(mailAccount);
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/notify/config/account',
+      method: 'post',
+      data: mailAccount
+    });
+    const smsAccount = {
+      channel: 'SMS' as const,
+      configKey: 'alibaba-ops',
+      enabled: 'Y',
+      supplier: 'alibaba',
+      accessKeyId: 'ak',
+      accessKeySecret: 'sk',
+      signature: 'WTA',
+      minuteMax: 30
+    };
+    await service.config.addAccount(smsAccount);
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/notify/config/account',
+      method: 'post',
+      data: smsAccount
+    });
     await service.config.saveScene({
       sceneCode: 'auth-captcha',
       channel: 'SMS',

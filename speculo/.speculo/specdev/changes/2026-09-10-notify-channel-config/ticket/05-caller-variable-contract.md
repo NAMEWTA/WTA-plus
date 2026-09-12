@@ -4,7 +4,7 @@ artifact: ticket
 change: 2026-09-10-notify-channel-config
 id: T-05
 title: 清除 MAIL/SMS 硬编码正文并补齐验证码与包装模板调用
-status: ready
+status: done
 planning_depth: standard
 planning_depth_reason: 多模块调用方迁移，但不改公共 NotificationCommand 形状；行为已由上游模板路径锁定。
 ready: true
@@ -41,7 +41,7 @@ shared_path_owners: []
 
 实现本 Ticket 时，Lead 与 implementation subagent **必须**按顺序：Goal Plan 第 0 节 → Tickets Map 技能矩阵 → 下列 SKILL.md 全文 → 本 Ticket「必须加载的 Skill」→ 本 Ticket 其余章节。未读完不得改代码。Dispatch Packet 必须列出这些 Skill 路径。
 
-**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`。
+**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`。
 
 ## 1. 战略与来源
 
@@ -72,7 +72,7 @@ shared_path_owners: []
 
 ## 2.1 必须加载的 Skill 与工程基线
 
-- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`。
+- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`。
 - **停止条件：** 在 Java 里新写短信/邮件句子；修改 Dispatch；改 IN_APP 文案热配。
 
 ## 3. 范围边界

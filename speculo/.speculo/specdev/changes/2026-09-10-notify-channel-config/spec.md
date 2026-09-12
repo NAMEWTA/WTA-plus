@@ -225,7 +225,7 @@ sources:
 - **DEC-013**：`notice-published` 与 `workflow-task` 使用包装模板。来源：`ADR-016`。
 - **DEC-014**：配置 HTTP 前缀为 `/notify/config`；查询 GET、变更 POST；每个 POST 使用 `@Log`；权限字符使用 `notify:config:list|query|add|edit|remove|test`。来源：项目 API-005 与现有 notify 权限惯例。
 - **DEC-015**：前端在 `@namewta/domain-notify` 与 `@namewta/web-domain-notify` 注册 `notify/config/index`。来源：`ADR-002`。
-- **DEC-016**：实现必须更新 `<Path>.agents/skills/engineering-standards/references/notification.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/references/modules/notify/index.md</Path>` 及 mail/sms 相关 common Skill 事实，并补齐中文注释。来源：`ADR-003`、用户决定。
+- **DEC-016**：实现必须更新 `<Path>.agents/skills/engineering-standards/references/notification.md</Path>`、`<Path>.agents/skills/wta-module-guide/references/modules/notify/index.md</Path>` 及 mail/sms 相关 common Skill 事实，并补齐中文注释。来源：`ADR-003`、用户决定。
 
 ## 7. 数据、接口与兼容
 

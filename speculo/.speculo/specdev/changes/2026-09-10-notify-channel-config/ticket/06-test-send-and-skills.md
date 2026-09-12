@@ -4,7 +4,7 @@ artifact: ticket
 change: 2026-09-10-notify-channel-config
 id: T-06
 title: 交付测试发送并同步 Skill 与中文注释
-status: ready
+status: done
 planning_depth: standard
 planning_depth_reason: 新增测试发送 API 与权限，并关闭文档/Skill 与实现的权威漂移。
 ready: true
@@ -23,8 +23,8 @@ writable_paths:
   - "<Path>frontend/packages/api-contracts/**</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
   - "<Path>.agents/skills/engineering-standards/**</Path>"
-  - "<Path>.agents/skills/ruoyi-module-guide/**</Path>"
-  - "<Path>.agents/skills/ruoyi-common-modules-guide/**</Path>"
+  - "<Path>.agents/skills/wta-module-guide/**</Path>"
+  - "<Path>.agents/skills/wta-common-modules-guide/**</Path>"
   - "<Path>.agents/skills/namewta-fullstack-development/**</Path>"
 read_only_paths:
   - "<Path>ruoyi-vue-plus-namewta/ruoyi-modules/ruoyi-notify/src/main/java/org/dromara/notify/service/runtime/DispatchNotificationService.java</Path>"
@@ -41,7 +41,7 @@ shared_path_owners: []
 
 实现本 Ticket 时，Lead 与 implementation subagent **必须**按顺序：Goal Plan 第 0 节 → Tickets Map 技能矩阵 → 下列 SKILL.md 全文 → 本 Ticket「必须加载的 Skill」→ 本 Ticket 其余章节。未读完不得改代码。Dispatch Packet 必须列出这些 Skill 路径。
 
-**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>`。
+**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>`。
 
 ## 1. 战略与来源
 
@@ -71,7 +71,7 @@ shared_path_owners: []
 
 ## 2.1 必须加载的 Skill 与工程基线
 
-- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>`。
+- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>`。
 - **停止条件：** 测试发送绕过限额或停用；只改代码不改 Skill。
 
 ## 3. 范围边界

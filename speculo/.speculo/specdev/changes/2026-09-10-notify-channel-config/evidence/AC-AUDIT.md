@@ -2,6 +2,8 @@
 
 对照 shipped 测试、SQL、页面源码与 scratch 日志。全新库用 `50/60`；已有库用 `evidence/upgrade-existing-mysql.sql`（不得重放基座全文）。
 
+I-implement close-out 2026-09-12：T-01..T-06 `result_sha` = `8680fe6b7225950fbe9cdce23d6e38b7e141b189`（batched parent HEAD；实现祖先 `8680fe6b7225950fbe9cdce23d6e38b7e141b189`）。缺口判定 UX 已在盘，未重写 T-01。新增/绑定断言见 `frontend/packages/web-domains/notify/src/index.test.ts` 与 `frontend/packages/domains/notify/src/transport.test.ts`。Live E2E `:4174`/`:18080` 截图 `temp/team/lead/e2e/ncc-*.png`。
+
 | ID | 结果 | 证据 |
 |---|---|---|
 | AC-001 | pass | 菜单 `notify/config/index` + `notify:config:*`；web-domain registration/permissions；`index.test.ts` |

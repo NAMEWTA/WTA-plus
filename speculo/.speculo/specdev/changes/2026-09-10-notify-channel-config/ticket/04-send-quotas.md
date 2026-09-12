@@ -4,7 +4,7 @@ artifact: ticket
 change: 2026-09-10-notify-channel-config
 id: T-04
 title: 交付账号/模板吞吐与按场景的收件人拦截
-status: ready
+status: done
 planning_depth: deep
 planning_depth_reason: 限额改变发送是否调用供应商，涉及 Redis 计数、YAML 全局拦截收缩和失败关闭语义。
 ready: true
@@ -40,7 +40,7 @@ shared_path_owners: []
 
 实现本 Ticket 时，Lead 与 implementation subagent **必须**按顺序：Goal Plan 第 0 节 → Tickets Map 技能矩阵 → 下列 SKILL.md 全文 → 本 Ticket「必须加载的 Skill」→ 本 Ticket 其余章节。未读完不得改代码。Dispatch Packet 必须列出这些 Skill 路径。
 
-**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>`。
+**本 Ticket 必须调用：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>`。
 
 ## 1. 战略与来源
 
@@ -71,7 +71,7 @@ shared_path_owners: []
 
 ## 2.1 必须加载的 Skill 与工程基线
 
-- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/ruoyi-common-modules-guide/SKILL.md</Path>`。
+- **必须加载：** `<Path>.agents/skills/engineering-standards/SKILL.md</Path>`、`<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>`、`<Path>.agents/skills/wta-module-guide/SKILL.md</Path>`、`<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>`。
 - **停止条件：** 超限改选账号或写入 Outbox 延期；保留 YAML 全局拦截作为运行时权威。
 
 ## 3. 范围边界
