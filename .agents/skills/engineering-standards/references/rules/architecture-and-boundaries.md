@@ -58,7 +58,7 @@ Scope: `public-api:wta-api`, HTTP/JSON, SQL/schema, `path:frontend/packages/api-
 
 Level: MUST
 
-Source: `repository-fact` (`plan/update.md`, `docs/upstream/customization-map.md`)
+Source: `repository-fact` (`plan/update.md`, `AGENTS.md`)
 
 Rule: JSON 字段、HTTP 路径、认证 header、数据库 schema 和初始化 SQL 都是兼容合同。跨端变更先形成向后兼容或同步可交付的后端合同，再更新前端消费者；破坏性变更必须给出迁移和回滚。
 

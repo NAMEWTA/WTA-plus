@@ -14,10 +14,10 @@
 ### DEC-001 Canonical 与作用域
 
 - Scope: `repository`
-- Decision: 项目开发 Skill 的唯一根目录是父工作区 `.agents/skills/`；其中 `engineering-standards` 是覆盖父仓库与两个子模块的唯一规范裁决层，其他 Skill 只承载实现导航与模块事实。
+- Decision: 项目开发 Skill 的唯一根目录是本仓 `.agents/skills/`；其中 `engineering-standards` 是覆盖 `backend/` 与 `frontend/` 的唯一规范裁决层，其他 Skill 只承载实现导航与模块事实。
 - Source: `user-decision` + `repository-fact`
-- Rationale: 用户明确要求 Codex Skill 与 Claude Agent 收敛到同一父级目录；仓库以 Submodule 聚合两个独立技术栈，子仓库副本会产生漂移。
-- Migration: 将当前有效内容合并到父级 Skill，删除两个子仓库中的 `.claude`、`.codex` 目录；不创建工具专属兼容入口。
+- Rationale: Skill 收敛到同一目录；前后端合入本 monorepo，不维护工具专属副本。
+- Migration: 有效内容只维护在本仓 Skill；不创建 `.claude` / `.codex` 副本。
 - Verification: 对全部父级 Skill 运行 Skill Creator validator；检查活动项目文档不再引用子仓库 `.claude/.codex`，且 canonical 外不存在重复 Skill 正文。
 
 ### DEC-002 存量采用 Ratchet
@@ -47,23 +47,23 @@
 - Migration: 新模块直接使用 layered；存量只按 Ratchet 收紧。classic -> layered 必须提供旧路径、公开合同、调用方、SQL、测试和回滚映射，不以本决策授权无关重构。
 - Verification: 模块注册表、目录/import 静态检查、五层链路测试、Maven 测试和构建；通过 `validate-module-mode.mjs` 检查 layered 依赖方向。
 
-### DEC-004 上游与产品分支隔离
+### DEC-004 产品分支
 
-- Scope: `repository`, both submodules
-- Decision: `main` 承载产品；后端 `6.X`、前端 `6.X-Vue` 是只允许 fast-forward 的上游镜像；基线标签不移动。
-- Source: `repository-fact`
-- Rationale: `README.md` 与 customization map 明确规定同步模型。
-- Migration: 上游更新先检查重叠面，再将必要提交同步到产品分支；父仓库最后更新指针。
-- Verification: branch/ref review；按 customization map 逐项核对。
+- Scope: `repository`
+- Decision: 本仓 `main` 承载产品；不以 git submodule 或上游镜像分支为默认交付。
+- Source: `repository-fact` (`AGENTS.md`, `README.md`)
+- Rationale: WTA-plus 是单一 monorepo。
+- Migration: 产品变更进入本仓 `main`。
+- Verification: 仓库拓扑 review。
 
 ### DEC-005 NAMEWTA 安全合同优先
 
 - Scope: authentication, authorization, Client, user type, menu, session and registration paths
-- Decision: `docs/upstream/customization-map.md` 中“合并后必须保持”的约束均作为 MUST 合同。
+- Decision: 认证、权限、Client、菜单跨层不变量以 `namewta-fullstack-development` 的 permission-routing、contract-mapping、backend/architecture 与本 Skill 安全/评审规则为 MUST。
 - Source: `repository-fact`
-- Rationale: 这些规则防止跨 Client 权限泄漏、身份混淆和上游同步回归。
+- Rationale: 这些规则防止跨 Client 权限泄漏和身份混淆。
 - Migration: 触及热点时执行前后端和 SQL 契约测试/人工矩阵；不以 UI 隐藏替代服务端授权。
-- Verification: customization map 路径 review；相关回归测试；认证验收矩阵。
+- Verification: 相关回归测试；认证验收矩阵。
 
 ### DEC-006 CRUD 查询 GET、变更 POST 并追踪日志
 

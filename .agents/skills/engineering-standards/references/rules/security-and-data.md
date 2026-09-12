@@ -6,7 +6,7 @@ Scope: authentication, authorization, Client, role, menu, registration and sessi
 
 Level: MUST
 
-Source: `repository-fact` (`docs/upstream/customization-map.md`)
+Source: `repository-fact` (`AGENTS.md`, `engineering-standards`, `namewta-fullstack-development`)
 
 Rule: 权限、路由、角色和会话始终限定当前 Client；缺少 Token `clientPk` 时拒绝而非回退全局数据；超管也不能跨 Client；前端筛选或隐藏不是授权边界。
 
@@ -18,7 +18,7 @@ Scope: backend and frontend Client contracts
 
 Level: MUST
 
-Source: `repository-fact` (`docs/upstream/customization-map.md`)
+Source: `repository-fact` (`AGENTS.md`, `engineering-standards`, `namewta-fullstack-development`)
 
 Rule: 登录/注册 body 与 `clientid` header 的 `clientId` 是 OAuth 字符串；Token extra 的 `clientPk` 以及角色/菜单/RBAC JSON 中的 `clientId` 是 `sys_client.id` Long PK。命名相同不能互换、隐式解析或无证据强转。
 
@@ -42,7 +42,7 @@ Scope: `path:release-artifacts/docker/infrastructure/mysql/init/**`, persistence
 
 Level: MUST
 
-Source: `repository-fact` (`docs/upstream/customization-map.md`)
+Source: `repository-fact` (`AGENTS.md`, `engineering-standards`, `namewta-fullstack-development`)
 
 Rule: 项目只支持 MySQL 8.4；六份完整基座只由父仓库 `release-artifacts/docker/infrastructure/mysql/init/` 拥有并直接修改。`50-namewta-ddl.sql` 只含结构语句，`60-namewta-dml.sql` 只含数据语句；后端仓库不得保存 SQL 副本或其他方言。全新环境按数字前缀执行六份文件；已有环境不得重放基座，必须指定源/目标 Git Tag、完成备份、差异评审和隔离演练。新建项目自有表还必须遵循[数据源事务与建表](../java/persistence-transactions-and-ddl.md)中的命名、主键、基础字段和中文注释合同；破坏性变更提供 expand/migrate/contract 或明确回滚。
 

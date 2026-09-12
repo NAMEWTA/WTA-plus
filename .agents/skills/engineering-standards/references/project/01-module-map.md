@@ -4,7 +4,7 @@
 
 | ID | Path | Language / framework / runtime | Build | Source / test roots | Public entrypoint | Quality gates | Evidence |
 |---|---|---|---|---|---|---|---|
-| `workspace-parent` | `.` | Markdown、Git/Submodule 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | submodule snapshot + frontend/backend/external-services jobs | `README.md`, `.gitmodules`, `.github/workflows/quality-gates.yml`; high |
+| `workspace-parent` | `.` | Markdown、Git 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | frontend/backend/external-services jobs | `README.md`, `.github/workflows/quality-gates.yml`; high |
 | `plus-ui` | `frontend` | TypeScript、Vue 3、Pinia、Browser，可扩展多 App monorepo | pnpm workspace、Vite、Oxlint、Vitest、Playwright | `apps/admin-web/src`、`packages/**/src`、`tooling/**/src`、相邻 `*.test.ts`、`e2e/**` | `apps/admin-web/src/main.ts` | architecture check/test、lint、typecheck、workspace test、双模式 build、按风险 E2E | `package.json`、`pnpm-workspace.yaml`、`tooling/architecture/**`、`playwright.config.ts`; high |
 | `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | 46 Maven projects below; 176 tracked Java test source files | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
 
@@ -64,13 +64,13 @@
 
 ## 依赖方向
 
-- 父仓库只依赖子模块 commit 指针；前后端源码不能通过父仓库路径形成隐式构建依赖。
+- 本仓 `backend/` 与 `frontend/` 合入；前后端源码不能通过隐式路径形成错误的构建依赖。
 - 前端依赖后端 HTTP/JSON 合同，不深耦合 Java 类型或数据库 schema；OpenAPI 生成 transport 位于 `packages/api-contracts`，各 `packages/domains/*` 在边界处映射为领域自有模型。
 - 前端方向为 App -> web-domain -> domain -> platform，以及 App -> adapter/web-kit；App 显式组合所需能力，App 之间不得互相依赖，禁止包深层导入和跨工作区相对导入。
 - 后端 Maven 方向为：聚合/可部署应用 -> `wta-modules`/`wta-api`/`wta-common-*`；业务模块可依赖 `wta-api` 和所需 common 能力，common 不反向依赖业务模块。
 - `wta-api` 是跨业务模块合同面；`wta-common-*` 只承载可复用基础能力，禁止成为绕过业务边界的容器。
 - `wta-admin` 负责组装，不承载可复用领域实现；默认 `bundle-full` 接入 job/ai/demo/workflow/profile，显式 `bundle-core` 保留平台基础依赖及 profile person/enterprise，排除 job/ai/demo/workflow。运行时代码生成器不在 Maven 模块图或任一 bundle 中。
-- 认证/权限/菜单跨层契约以 `docs/upstream/customization-map.md` 为额外硬边界。
+- 认证/权限/菜单跨层契约以 `AGENTS.md`、本 Skill 安全/评审规则，以及 `namewta-fullstack-development` 的 permission-routing、contract-mapping 与 backend/architecture 为准。
 
 ## 实现基线与成熟样例
 
@@ -89,6 +89,6 @@
 - `path:frontend/packages/domains/**`、`packages/web-domains/**`、`packages/api-contracts/**` 或领域 CRUD 页面 -> 追加前端 CRUD/API 实现规范。
 - `path:backend/**` -> 通用相关规则 + Java core；Spring 应用/配置/Web scope 再加 Spring Boot；事务、数据源切换和 DDL/schema scope 追加数据源事务与建表规范。
 - `path:backend/wta-modules/**` 中的 CRUD/mapper/service/controller，以及 `wta-common-mybatis`、`wta-common-translation` -> 追加后端 CRUD/查询实现规范；模板修改单独路由到 `path:docs/fm/**`。
-- `path:docs/upstream/**`、Submodule 指针或上游同步 -> 架构边界 + 安全数据 + 评审交付。
-- SQL/表结构变化 -> 安全数据 + Java/Spring contract + 数据源事务与建表 + customization map；新建项目自有表应用基础字段基线，直接修改父仓库六份 MySQL 8.4 完整基座中的对应文件。
+- `path:docs/fm/**` -> 静态 CRUD 模板规范。
+- SQL/表结构变化 -> 安全数据 + Java/Spring contract + 数据源事务与建表；新建项目自有表应用基础字段基线，直接修改本仓六份 MySQL 8.4 完整基座中的对应文件。
 - 跨前后端 API 变化 -> 同时加载 TypeScript、Java、测试、安全和交付规则，并以后端兼容合同先行。

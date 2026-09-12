@@ -80,6 +80,18 @@ test('upstream-fork-sync skill and docs/upstream workflow tree are absent', () =
   const readme = read('README.md');
   const ruoyiLines = readme.split('\n').filter((line) => line.includes('RuoYi-Vue-Plus'));
   assert.equal(ruoyiLines.length, 1, readme);
+  const skillRoot = path.join(workspaceRoot, '.agents/skills');
+  const dead = walk(skillRoot)
+    .filter((file) => /\.(md|yml|yaml|json|mjs|ts)$/.test(file.rel))
+    .filter((file) => {
+      try {
+        return fs.readFileSync(file.absolute, 'utf8').includes('docs/upstream');
+      } catch {
+        return false;
+      }
+    })
+    .map((file) => file.rel);
+  assert.deepEqual(dead, []);
 });
 
 test('owned filesystem paths use org/namewta not org/dromara', () => {

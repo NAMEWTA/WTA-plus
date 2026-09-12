@@ -30,7 +30,7 @@ Scope: `repository`
 
 Level: MUST
 
-Source: `repository-fact` (`docs/upstream/customization-map.md`, SpecDev ADR/context) + `builder-baseline`
+Source: `repository-fact` (`AGENTS.md`, SpecDev ADR/context) + `builder-baseline`
 
 Rule: 模块边界、public API/协议、数据模型/迁移、部署拓扑、质量门禁、支持版本或长期例外发生变化时，同步对应权威文档、ADR、规范或 customization map。实现注释不得成为跨模块合同的唯一权威。
 

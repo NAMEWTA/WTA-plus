@@ -18,7 +18,7 @@ Scope: authentication, authorization, Client, role, menu, registration, user typ
 
 Level: MUST
 
-Source: `repository-fact` (`docs/upstream/customization-map.md`, `plan/update.md`)
+Source: `repository-fact` (`AGENTS.md`, `plan/update.md`)
 
 Rule: 覆盖多 Client、多登录域、默认/显式角色、超管、缺失 `clientPk`、跨 Client 越权、注册开关、Token 失效和前端伪造字段。只测正常路径不充分。
 

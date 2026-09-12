@@ -1,4 +1,4 @@
-# 评审、上游同步与交付
+# 评审与交付
 
 ### DELIVERY-001 聚焦变更
 
@@ -8,21 +8,21 @@ Level: MUST
 
 Source: `repository-fact` (`plan/update.md`, Git history)
 
-Rule: 一个提交聚焦一个逻辑主题；不混入全仓格式化、依赖升级、lockfile 漂移、生成输出或无关重构。后端合同提交先于对应前端消费者，父仓库指针更新单独可审查。
+Rule: 一个提交聚焦一个逻辑主题；不混入全仓格式化、依赖升级、lockfile 漂移、生成输出或无关重构。后端合同提交先于对应前端消费者。
 
 Verification: `git diff --stat` 与逐文件 review；检查提交边界和两端顺序；运行相应门禁。
 
-### DELIVERY-002 上游同步保护
+### DELIVERY-002 产品不变量保护
 
-Scope: both submodules and `docs/upstream/customization-map.md`
+Scope: `repository`
 
 Level: MUST
 
-Source: `repository-fact`
+Source: `repository-fact` (`AGENTS.md`, `engineering-standards`, `namewta-fullstack-development`)
 
-Rule: 同步上游前检查 `main..upstream/<mirror>` 日志和 merge-base diff；涉及认证、权限、菜单或 Client 的重叠优先审查。镜像分支只 fast-forward，基线标签不移动，合并后逐项保留 customization map 不变量。
+Rule: 认证、权限、菜单或 Client 变更必须按现有 fullstack permission-routing / contract-mapping / backend architecture 与本 Skill 安全规则审查。不以 git submodule 或上游镜像同步作为交付步骤。
 
-Verification: 执行 README/customization map 中的只读 Git 命令；核对 branch/tag；完成热点矩阵与两端构建。
+Verification: 热点矩阵与两端构建；核对权限与 Client 隔离测试。
 
 ### DELIVERY-003 交付证据
 
@@ -44,7 +44,7 @@ Level: MUST
 
 Source: `repository-fact` + `builder-baseline`
 
-Rule: 改变长期不变量时同步对应 README、customization map、SQL README 或本 Skill 的 project facts/decisions；注释解释 WHY、兼容和删除条件，不逐行翻译实现。
+Rule: 改变长期不变量时同步对应 README、本 Skill 的 project facts/decisions 或 SQL README；注释解释 WHY、兼容和删除条件，不逐行翻译实现。
 
 Verification: 文档 diff 与代码合同交叉 review；检查旧说明没有继续宣称已失效事实。
 

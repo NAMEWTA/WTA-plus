@@ -50,4 +50,4 @@ business module A -> wta-api/common SPI <- business module B
 
 ## 安全边界
 
-认证、权限、Client 和菜单是跨端合同。OAuth 字符串 `clientId` 与数据库 Long 主键 `clientId/clientPk` 必须在命名和类型上区分。前端可见性不是授权边界，最终认证、权限、数据范围和 Client 隔离由后端完成；触及这些路径时逐项核对 `docs/upstream/customization-map.md`。
+认证、权限、Client 和菜单是跨端合同。OAuth 字符串 `clientId` 与数据库 Long 主键 `clientId/clientPk` 必须在命名和类型上区分。前端可见性不是授权边界，最终认证、权限、数据范围和 Client 隔离由后端完成；触及这些路径时读取 [permission-routing](../frontend/permission-routing.md)、[contract-mapping](../contract-mapping.md) 与 `engineering-standards` 的安全/评审规则。

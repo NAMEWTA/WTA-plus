@@ -44,7 +44,7 @@ Scope: Sa-Token, authentication, authorization, menu, role and session services
 
 Level: MUST
 
-Source: `repository-fact` (`docs/upstream/customization-map.md`)
+Source: `repository-fact` (`AGENTS.md`, `engineering-standards`)
 
 Rule: controller annotation 只是入口检查；service/mapper 的数据访问仍必须携带当前 Client 上下文。所有五种认证策略统一执行登录域准入并构建含 `clientPk` 的 LoginUser；缺上下文失败关闭，不能 userId-only fallback。
 
