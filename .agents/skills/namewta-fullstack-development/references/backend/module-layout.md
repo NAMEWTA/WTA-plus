@@ -2,12 +2,12 @@
 
 ## 目录主轴
 
-以 `wta-modules/wta-system/src/main/java/org/dromara/system` 的 `controller/domain/mapper/service` 分层和 `src/main/resources/mapper/system` 资源布局为 classic 兼容证据。新业务子模块必须显式选择模式：classic 继续使用既有形态；复杂新增模块使用 layered 形态。
+以 `wta-modules/wta-system/src/main/java/org/namewta/system` 的 `controller/domain/mapper/service` 分层和 `src/main/resources/mapper/system` 资源布局为 classic 兼容证据。新业务子模块必须显式选择模式：classic 继续使用既有形态；复杂新增模块使用 layered 形态。
 
 ```text
 wta-modules/<artifact>/
   pom.xml
-  src/main/java/org/dromara/<module>/<business>/
+  src/main/java/org/namewta/<module>/<business>/
     controller/
       admin/
         <Business>Controller.java
@@ -27,14 +27,14 @@ wta-modules/<artifact>/
         <Business>ServiceImpl.java
   src/main/resources/mapper/<module>/
     <Business>Mapper.xml
-  src/test/java/org/dromara/<module>/<business>/
+  src/test/java/org/namewta/<module>/<business>/
 ```
 
 layered 模块使用以下主轴：
 
 ```text
 wta-modules/<artifact>/
-  src/main/java/org/dromara/<module>/<business>/
+  src/main/java/org/namewta/<module>/<business>/
     controller/{admin,self,anonymous}/
     usecase/
       <Capability>UseCase.java
@@ -85,7 +85,7 @@ wta-modules/<artifact>/
 - VO 承载 Mapper 查询投影、HTTP 响应与导出合同，不把 Entity 直接暴露给 HTTP 或跨模块调用；含敏感或仅供持久化编排的内部查询投影不得被 Controller 直接返回。
 - 只为稳定子领域建立 `domain/<subdomain>`；不能因为文件多就按任意技术动作分散 BO/VO。
 - `domain` 根目录只放持久化 Entity；`bo` 只放入口输入，`vo` 只放 HTTP 输出，`model/read` 只放 Mapper 结果。
-- `policy`、`codec`、`converter` 只能是无状态纯辅助；`event`、`exception` 表达领域事件和失败合同。读模型使用 `<Capability>Row` 或 `<Capability>Projection` 顶层类型，不用含义宽泛的 `*Rows` 容器承载多个嵌套结果。校验器仅对当前 Profile 迁移窗口的 `org/dromara/profile/person/domain/model/read/PersonAdminRows.java` 与 `org/dromara/profile/enterprise/domain/model/read/EnterpriseAdminRows.java` 保留精确兼容例外；该 allowlist 不适用于新模块、新能力或其他路径，完成聚合拆分后应删除。
+- `policy`、`codec`、`converter` 只能是无状态纯辅助；`event`、`exception` 表达领域事件和失败合同。读模型使用 `<Capability>Row` 或 `<Capability>Projection` 顶层类型，不用含义宽泛的 `*Rows` 容器承载多个嵌套结果。校验器仅对当前 Profile 迁移窗口的 `org/namewta/profile/person/domain/model/read/PersonAdminRows.java` 与 `org/namewta/profile/enterprise/domain/model/read/EnterpriseAdminRows.java` 保留精确兼容例外；该 allowlist 不适用于新模块、新能力或其他路径，完成聚合拆分后应删除。
 
 ### UseCase（layered）
 

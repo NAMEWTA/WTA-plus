@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PersonModuleArchitectureTest {
 
     private static final Path MODULE = Path.of(System.getProperty("basedir"));
-    private static final Path JAVA = MODULE.resolve("src/main/java/org/dromara/profile/person");
+    private static final Path JAVA = MODULE.resolve("src/main/java/org/namewta/profile/person");
     private static final Path XML = MODULE.resolve("src/main/resources/mapper/person");
     private static final Pattern MAPPER_METHOD = Pattern.compile(
         "(?ms)^ {4}(?:[\\w<>,.?\\[\\] ]+\\s+)+(\\w+)\\s*\\([^;{}]*?\\);");
@@ -83,7 +83,7 @@ class PersonModuleArchitectureTest {
         try (Stream<Path> files = Files.list(XML)) {
             for (Path xml : files.filter(path -> path.toString().endsWith(".xml")).toList()) {
                 assertThat(Files.readString(xml))
-                    .doesNotMatch("(?s).*org\\.dromara\\.profile\\.person\\.domain\\.vo\\..*(Row|Projection).*");
+                    .doesNotMatch("(?s).*org\\.namewta\\.profile\\.person\\.domain\\.vo\\..*(Row|Projection).*");
             }
         }
     }

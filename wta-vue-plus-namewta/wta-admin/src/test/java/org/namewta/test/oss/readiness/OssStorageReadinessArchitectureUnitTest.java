@@ -15,11 +15,11 @@ class OssStorageReadinessArchitectureUnitTest {
     void productionReadinessDoesNotMutateProviderOrExposeAnonymousEndpoints() throws Exception {
         Path root = repositoryRoot();
         String common = Files.readString(root.resolve(
-            "wta-common/wta-common-oss/src/main/java/org/dromara/common/oss/client/AbstractOssClientImpl.java"));
+            "wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java"));
         String readiness = Files.readString(root.resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/oss/readiness/OssStorageReadinessService.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/OssStorageReadinessService.java"));
         String health = Files.readString(root.resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/oss/readiness/OssStorageReadinessHealthIndicator.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/OssStorageReadinessHealthIndicator.java"));
 
         assertThat(common)
             .contains("getBucketPolicy", "getBucketAcl", "HttpRequest.BodyPublishers.noBody()")

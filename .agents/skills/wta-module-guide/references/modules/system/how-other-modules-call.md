@@ -38,17 +38,17 @@ public class ExampleService {
 
 | 调用方 | POM | 注入 | 代表路径 |
 |---|---|---|---|
-| workflow | `wta-modules/wta-workflow/pom.xml` 依赖 `wta-api`，无 `wta-system` | `UserService`、`TaskAssigneeService`、`DeptService`、`RoleService`、`PostService`、`NotificationApplicationService`；部分类用 `DictService` | `wta-modules/wta-workflow/src/main/java/org/dromara/workflow/service/impl/FlwTaskServiceImpl.java`（`UserService`）；`.../FlwTaskAssigneeServiceImpl.java`（`TaskAssigneeService` + User/Dept/Role/Post）；流程通知统一走 `NotificationApplicationService`；`.../SpelRuleComponent.java`（`DeptService.selectDeptLeaderById`） |
-| demo | `wta-modules/wta-demo/pom.xml` 依赖 `wta-api` | `PushHelper` 仅用于实时演示 | `wta-modules/wta-demo/src/main/java/org/dromara/demo/controller/WebSocketController.java`：在线广播不落通知业务数据 |
-| ai | 使用 `LoginUser` 模型 | 不注入 system Service | `wta-modules/wta-ai/src/main/java/org/dromara/ai/controller/SnailAiController.java` |
+| workflow | `wta-modules/wta-workflow/pom.xml` 依赖 `wta-api`，无 `wta-system` | `UserService`、`TaskAssigneeService`、`DeptService`、`RoleService`、`PostService`、`NotificationApplicationService`；部分类用 `DictService` | `wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwTaskServiceImpl.java`（`UserService`）；`.../FlwTaskAssigneeServiceImpl.java`（`TaskAssigneeService` + User/Dept/Role/Post）；流程通知统一走 `NotificationApplicationService`；`.../SpelRuleComponent.java`（`DeptService.selectDeptLeaderById`） |
+| demo | `wta-modules/wta-demo/pom.xml` 依赖 `wta-api` | `PushHelper` 仅用于实时演示 | `wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/WebSocketController.java`：在线广播不落通知业务数据 |
+| ai | 使用 `LoginUser` 模型 | 不注入 system Service | `wta-modules/wta-ai/src/main/java/org/namewta/ai/controller/SnailAiController.java` |
 | job / gen | 无 `org.namewta.system` 业务调用 | — | gen 仅生成器配置默认包名 `org.namewta.system`，不是运行时调用 |
-| common-translation | 依赖 `wta-api` | `UserService`、`DeptService`、`OssService`、`DictService` | `wta-common/wta-common-translation/src/main/java/org/dromara/common/translation/core/impl/UserNameTranslationImpl.java`（`selectUserNameById`）；同目录 `NicknameTranslationImpl.java`、`DeptNameTranslationImpl.java`、`OssUrlTranslationImpl.java`、`DictTypeTranslationImpl.java` |
-| common-excel | 经 Spring 取 SPI | `DictService` | `wta-common/wta-common-excel/src/main/java/org/dromara/common/excel/convert/ExcelDictConvert.java`；`wta-common/wta-common-excel/src/main/java/org/dromara/common/excel/core/ExcelDownHandler.java`（`SpringUtils.getBean(DictService.class)`） |
-| common-core 校验 | 取 SPI | `DictService` | `wta-common/wta-common-core/src/main/java/org/dromara/common/core/validate/dicts/DictPatternValidator.java`（`SpringUtils.getBean(DictService.class).getDictLabel`） |
-| common-mybatis | 依赖 `wta-api` | `LoginUser` / `RoleDTO`；SpEL `@sdss` | `wta-common/wta-common-mybatis/src/main/java/org/dromara/common/mybatis/handler/PlusDataPermissionHandler.java`；`wta-common/wta-common-mybatis/src/main/java/org/dromara/common/mybatis/handler/InjectionMetaObjectHandler.java`；`wta-common/wta-common-mybatis/src/main/java/org/dromara/common/mybatis/enums/DataScopeType.java` |
-| common-satoken | 模型 | `LoginUser` | `wta-common/wta-common-satoken/src/main/java/org/dromara/common/satoken/core/service/SaPermissionImpl.java`；`wta-common/wta-common-satoken/src/main/java/org/dromara/common/satoken/utils/LoginHelper.java` |
-| common-log | 模型 + 事件 | `LoginUser`；发布 `OperLogEvent` | `wta-common/wta-common-log/src/main/java/org/dromara/common/log/aspect/LogAspect.java` |
-| common-push | DTO | 不直接调 system Service | `wta-api/src/main/java/org/dromara/system/api/domain/PushPayloadDTO.java` |
+| common-translation | 依赖 `wta-api` | `UserService`、`DeptService`、`OssService`、`DictService` | `wta-common/wta-common-translation/src/main/java/org/namewta/common/translation/core/impl/UserNameTranslationImpl.java`（`selectUserNameById`）；同目录 `NicknameTranslationImpl.java`、`DeptNameTranslationImpl.java`、`OssUrlTranslationImpl.java`、`DictTypeTranslationImpl.java` |
+| common-excel | 经 Spring 取 SPI | `DictService` | `wta-common/wta-common-excel/src/main/java/org/namewta/common/excel/convert/ExcelDictConvert.java`；`wta-common/wta-common-excel/src/main/java/org/namewta/common/excel/core/ExcelDownHandler.java`（`SpringUtils.getBean(DictService.class)`） |
+| common-core 校验 | 取 SPI | `DictService` | `wta-common/wta-common-core/src/main/java/org/namewta/common/core/validate/dicts/DictPatternValidator.java`（`SpringUtils.getBean(DictService.class).getDictLabel`） |
+| common-mybatis | 依赖 `wta-api` | `LoginUser` / `RoleDTO`；SpEL `@sdss` | `wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/handler/PlusDataPermissionHandler.java`；`wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/handler/InjectionMetaObjectHandler.java`；`wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/enums/DataScopeType.java` |
+| common-satoken | 模型 | `LoginUser` | `wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/core/service/SaPermissionImpl.java`；`wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/utils/LoginHelper.java` |
+| common-log | 模型 + 事件 | `LoginUser`；发布 `OperLogEvent` | `wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java` |
+| common-push | DTO | 不直接调 system Service | `wta-api/src/main/java/org/namewta/system/api/domain/PushPayloadDTO.java` |
 
 `PostService` / `RoleService` 的外部调用目前集中在 workflow 办理人回显。`ConfigService` 外部注入未证实（system 内导入用户用的是 `ISysConfigService.selectConfigByKey`，不是 api）。
 
@@ -70,10 +70,10 @@ public class ExampleService {
 
 | 类 | 路径 | 注入 |
 |---|---|---|
-| `SysLoginService` | `wta-admin/src/main/java/org/dromara/web/service/SysLoginService.java` | `ISysPermissionService`、`ISysSocialService`、`ISysRoleService`、`ISysDeptService`、`ISysPostService`、`SysUserMapper` |
-| `SysRegisterService` | `wta-admin/src/main/java/org/dromara/web/service/SysRegisterService.java` | `ISysUserService`、`ISysClientService`、`ISysUserTypeService`、`ISysUserTypeRelService`。注册时按客户端 `userTypeId` 写入登录域关系 |
-| `AuthController` | `wta-admin/src/main/java/org/dromara/web/controller/AuthController.java` | `ISysClientService`、`ISysSocialService`；`@RequestMapping("/auth")` |
-| `PasswordAuthStrategy`（Sms/Email/Social/Xcx 同类） | `wta-admin/src/main/java/org/dromara/web/service/impl/PasswordAuthStrategy.java` | `SysUserMapper`、`ClientUserTypeAccessService`；读取 `SysUser` / `SysUserVo` / `SysClientVo`。登录成功前调 `clientUserTypeAccessService.requireLoginAccess(userId, client)` |
+| `SysLoginService` | `wta-admin/src/main/java/org/namewta/web/service/SysLoginService.java` | `ISysPermissionService`、`ISysSocialService`、`ISysRoleService`、`ISysDeptService`、`ISysPostService`、`SysUserMapper` |
+| `SysRegisterService` | `wta-admin/src/main/java/org/namewta/web/service/SysRegisterService.java` | `ISysUserService`、`ISysClientService`、`ISysUserTypeService`、`ISysUserTypeRelService`。注册时按客户端 `userTypeId` 写入登录域关系 |
+| `AuthController` | `wta-admin/src/main/java/org/namewta/web/controller/AuthController.java` | `ISysClientService`、`ISysSocialService`；`@RequestMapping("/auth")` |
+| `PasswordAuthStrategy`（Sms/Email/Social/Xcx 同类） | `wta-admin/src/main/java/org/namewta/web/service/impl/PasswordAuthStrategy.java` | `SysUserMapper`、`ClientUserTypeAccessService`；读取 `SysUser` / `SysUserVo` / `SysClientVo`。登录成功前调 `clientUserTypeAccessService.requireLoginAccess(userId, client)` |
 
 登录准入必须走 `ClientUserTypeAccessService.requireLoginAccess(userId, client)`（admin 策略内）。权限与菜单查询必须带客户端主键。
 

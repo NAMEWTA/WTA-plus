@@ -73,7 +73,7 @@ class EnterpriseModuleArchitectureTest {
 
     @Test
     void enforcesTheFiveLayerDependencyDirection() throws IOException {
-        Path serviceRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/dromara/profile/enterprise/service");
+        Path serviceRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/namewta/profile/enterprise/service");
         Path moduleRoot = serviceRoot.getParent();
         assertThat(moduleRoot.resolve("usecase")).isDirectory();
         assertThat(moduleRoot.resolve("dao")).isDirectory();
@@ -115,7 +115,7 @@ class EnterpriseModuleArchitectureTest {
 
     @Test
     void readModelsHaveDedicatedPackageAndStayOutOfHttpBoundary() throws IOException {
-        Path moduleRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/dromara/profile/enterprise");
+        Path moduleRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/namewta/profile/enterprise");
         Path readRoot = moduleRoot.resolve("domain/model/read");
         assertThat(readRoot).isDirectory();
         try (var files = Files.walk(readRoot)) {
@@ -137,7 +137,7 @@ class EnterpriseModuleArchitectureTest {
         try (var files = Files.list(xmlRoot)) {
             for (Path xml : files.filter(path -> path.toString().endsWith(".xml")).toList()) {
                 assertThat(Files.readString(xml))
-                    .doesNotMatch("(?s).*org\\.dromara\\.profile\\.enterprise\\.domain\\.vo\\..*(Row|Projection).*");
+                    .doesNotMatch("(?s).*org\\.namewta\\.profile\\.enterprise\\.domain\\.vo\\..*(Row|Projection).*");
             }
         }
     }
@@ -152,7 +152,7 @@ class EnterpriseModuleArchitectureTest {
 
     @Test
     void serviceImplementationDoesNotReintroduceDataSupportForwarders() throws IOException {
-        Path serviceRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/dromara/profile/enterprise/service");
+        Path serviceRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/namewta/profile/enterprise/service");
         try (var files = Files.walk(serviceRoot)) {
             assertThat(files.filter(Files::isRegularFile).map(path -> path.getFileName().toString()))
                 .noneMatch(name -> name.endsWith("DataSupport.java"));
@@ -162,7 +162,7 @@ class EnterpriseModuleArchitectureTest {
     @Test
     void controllersUseOnlyExplicitAccessSurfacePackages() {
         assertThat(CONTROLLERS).allSatisfy(controller -> assertThat(controller.getPackageName())
-            .matches("org\\.dromara\\.profile\\.enterprise\\.controller\\.(admin|self|anonymous)"));
+            .matches("org\\.namewta\\.profile\\.enterprise\\.controller\\.(admin|self|anonymous)"));
         CONTROLLERS.forEach(controller -> Arrays.stream(controller.getDeclaredMethods())
             .filter(method -> method.isAnnotationPresent(SaIgnore.class))
             .forEach(method -> {
@@ -181,7 +181,7 @@ class EnterpriseModuleArchitectureTest {
                     .map(Annotation::annotationType)
                     .noneMatch(forbidden::contains)).as(mapper.getSimpleName() + "." + method.getName()).isTrue());
         });
-        Path mapperRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/dromara/profile/enterprise/mapper");
+        Path mapperRoot = Path.of(System.getProperty("basedir"), "src/main/java/org/namewta/profile/enterprise/mapper");
         try (var files = Files.list(mapperRoot)) {
             files.filter(path -> path.toString().endsWith("Mapper.java")).forEach(path -> {
                 try {

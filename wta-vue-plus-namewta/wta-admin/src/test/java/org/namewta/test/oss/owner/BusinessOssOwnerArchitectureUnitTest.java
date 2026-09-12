@@ -62,7 +62,7 @@ class BusinessOssOwnerArchitectureUnitTest {
         assertFalse(publicMethods.contains("unbind"));
 
         String implementation = Files.readString(repositoryRoot().resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/service/impl/SysOssServiceImpl.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssServiceImpl.java"));
         assertFalse(implementation.contains("public OssReferenceState bind("));
         assertFalse(implementation.contains("public OssReferenceState unbind("));
     }

@@ -17,7 +17,7 @@ class NotifyConfigControllerContractTest {
 
     @Test
     void mutationsArePostWithLogAndDoNotSaveSecretBodies() throws Exception {
-        String source = Files.readString(Path.of("src/main/java/org/dromara/notify/controller/admin/NotifyConfigController.java"));
+        String source = Files.readString(Path.of("src/main/java/org/namewta/notify/controller/admin/NotifyConfigController.java"));
         assertTrue(source.contains("@RequestMapping(\"/notify/config\")"));
         assertTrue(source.contains("@GetMapping(\"/account/list\")"));
         assertTrue(source.contains("@GetMapping(\"/account/{accountId}\")"));

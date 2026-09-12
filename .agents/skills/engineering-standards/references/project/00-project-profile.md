@@ -18,7 +18,7 @@
 - `plus-ui-namewta/tooling/architecture/**`：使用 AST/SFC/YAML 结构化检查工作区、公开入口、依赖方向、终端纯度、占位目录和基线漂移。
 - `docs/fm/**`：与已删除的运行时代码生成器解耦的静态 CRUD 模板资产，是 AI 与开发者实现 Java、Vue、React、MyBatis XML、MySQL 菜单片段、树结构、状态/排序和前后端合同时的当前参考基线；SQL 模板只支持 MySQL。
 - `wta-vue-plus-namewta/pom.xml`、`mvnw`、各模块 `pom.xml`：Java 21、Spring Boot 4.1.0、Maven Wrapper、46 个 POM 描述符；根 reactor 构建 46 projects，`bundle-full/core` 控制最终 admin fat jar 的业务模块集合。
-- `wta-vue-plus-namewta/wta-admin/src/main/java/org/dromara/DromaraApplication.java`、`wta-modules/wta-demo/**` 及 `wta-modules/wta-system/**`：Spring MVC、BO/VO/entity、service、mapper、Bean Validation、数据权限、事务和 Sa-Token 主导实践。
+- `wta-vue-plus-namewta/wta-admin/src/main/java/org/namewta/DromaraApplication.java`、`wta-modules/wta-demo/**` 及 `wta-modules/wta-system/**`：Spring MVC、BO/VO/entity、service、mapper、Bean Validation、数据权限、事务和 Sa-Token 主导实践。
 - `wta-vue-plus-namewta/pom.xml`、`wta-common/wta-common-mybatis/**`：dynamic-datasource 4.5.0、`@DSTransactional`、`BaseEntity` 自动填充字段、VO mapper 与链式查询的公共基础设施合同。
 - `release-artifacts/docker/infrastructure/mysql/init/10-wta-base.sql` 的 `test_demo`、`wta-modules/wta-demo/**/TestDemo*`：新建项目自有业务表的乐观锁、审计字段、逻辑删除及 entity 映射基线。
 - `wta-vue-plus-namewta/wta-common/wta-common-translation/**`：批量翻译和 JSON 响应增强的公共基础设施合同。

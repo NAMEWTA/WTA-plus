@@ -17,7 +17,7 @@
 ## Entry Points
 
 - `pom.xml`：模块构建和依赖入口。
-- `src/main/java/org/dromara/profile/person`：生产代码入口。
+- `src/main/java/org/namewta/profile/person`：生产代码入口。
 - `src/main/resources/mapper/person`：Mapper XML 入口。
 
 ## Dependencies

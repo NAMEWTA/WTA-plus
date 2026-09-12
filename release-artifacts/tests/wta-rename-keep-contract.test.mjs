@@ -68,6 +68,50 @@ test('first-party backend POM groupId is org.namewta and owned modules are wta-*
   assert.equal(fs.existsSync(path.join(workspaceRoot, 'ruoyi-vue-plus-namewta')), false);
 });
 
+test('owned filesystem paths use org/namewta not org/dromara', () => {
+  const files = walk(workspaceRoot).filter((file) =>
+    /\.(java|json|md|mjs|sh|yml|yaml|xml|vue|ts)$/.test(file.rel),
+  );
+  const leftovers = [];
+  for (const file of files) {
+    let text;
+    try {
+      text = fs.readFileSync(file.absolute, 'utf8');
+    } catch {
+      continue;
+    }
+    const owned = text
+      .replaceAll('org/dromara/sms4j', '')
+      .replaceAll('org/dromara/warm', '')
+      .replaceAll('org/dromara/easy-es', '')
+      .replaceAll('org/dromara/mica-mqtt', '')
+      .replaceAll('org\\dromara\\sms4j', '')
+      .replaceAll('org\\dromara\\warm', '')
+      .replaceAll('org\\dromara\\easy-es', '')
+      .replaceAll('org\\dromara\\mica-mqtt', '');
+    if (/org[/\\]dromara[/\\]/.test(owned)) leftovers.push(file.rel);
+  }
+  assert.deepEqual(leftovers, []);
+});
+
+test('live admin home and docs widget do not depend on dromara product URLs', () => {
+  const index = read('plus-ui-namewta/apps/admin-web/src/views/index.vue');
+  const doc = read('plus-ui-namewta/apps/admin-web/src/components/WTADoc/index.vue');
+  assert.match(index, /https:\/\/github\.com\/NAMEWTA\/WTA-plus/);
+  assert.doesNotMatch(index, /plus-doc\.dromara\.org/);
+  assert.doesNotMatch(index, /github\.com\/dromara/);
+  assert.doesNotMatch(doc, /plus-doc\.dromara\.org/);
+  assert.match(doc, /https:\/\/github\.com\/NAMEWTA\/WTA-plus/);
+});
+
+test('README clones the WTA-plus monorepo without git submodule delivery', () => {
+  const readme = read('README.md');
+  assert.match(readme, /git clone https:\/\/github\.com\/NAMEWTA\/WTA-plus\.git/);
+  assert.doesNotMatch(readme, /recurse-submodules/);
+  assert.doesNotMatch(readme, /git submodule update/);
+  assert.doesNotMatch(readme, /wta-vue-plus-docs\.git/);
+});
+
 test('shipped Nacos runtime reads only the new data-id (hard-cut, no dual-read loader)', () => {
   const constants = read(
     'wta-vue-plus-namewta/wta-common/wta-common-nacos/src/main/java/org/namewta/common/nacos/NacosConfigConstants.java',

@@ -82,8 +82,8 @@ assert_system_jar_unresolved() {
   fi
 }
 
-unix_system_jar='/home/u/.m2/repository/org/dromara/wta-system/6.0.0/wta-system-6.0.0.jar'
-windows_system_jar='D:\repo\org\dromara\wta-system\6.0.0\wta-system-6.0.0.jar'
+unix_system_jar='/home/u/.m2/repository/org/namewta/wta-system/6.0.0/wta-system-6.0.0.jar'
+windows_system_jar='D:\repo\org\namewta\wta-system\6.0.0\wta-system-6.0.0.jar'
 windows_other_jar='D:\repo\other-1.0.0.jar'
 windows_sources_jar='C:\cache\wta-system-6.0.0-sources.jar'
 
@@ -97,7 +97,7 @@ assert_system_jar "windows single drive-letter path" \
   "${windows_system_jar}" \
   "$(dev_runtime_canonicalize_path "${windows_system_jar}")"
 assert_system_jar "newline classpath" \
-  $'D:\\repo\\org\\dromara\\wta-system\\6.0.0\\wta-system-6.0.0.jar\nD:\\repo\\other-1.0.0.jar' \
+  $'D:\\repo\\org\\namewta\\wta-system\\6.0.0\\wta-system-6.0.0.jar\nD:\\repo\\other-1.0.0.jar' \
   "$(dev_runtime_canonicalize_path "${windows_system_jar}")"
 assert_system_jar_unresolved "empty classpath" ""
 assert_system_jar_unresolved "sources-only classpath" "${windows_sources_jar}"

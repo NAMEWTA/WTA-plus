@@ -62,29 +62,22 @@ WTA-plus/
 
 ## 获取项目
 
-递归克隆父仓库及两个子模块：
+本仓是单一 monorepo（前后端与文档合入，**不是** git submodule 交付）：
 
 ```bash
-git clone --recurse-submodules https://github.com/NAMEWTA/wta-vue-plus-docs.git
-cd wta-vue-plus-docs
+git clone https://github.com/NAMEWTA/WTA-plus.git
+cd WTA-plus
 ```
 
-若已克隆父仓库但子模块为空：
-
-```bash
-git submodule update --init --recursive
-```
-
-前端要求 Node.js `>=20.19.0`、pnpm `>=10.0.0`；后端要求 Java 21，并通过仓库内 Maven Wrapper 构建。具体启动、构建和验证命令分别见前后端 README。
+前端在 `plus-ui-namewta/`，后端在 `wta-vue-plus-namewta/`。前端要求 Node.js `>=20.19.0`、pnpm `>=10.0.0`；后端要求 Java 21，并通过仓库内 Maven Wrapper 构建。具体启动、构建和验证命令分别见前后端 README。
 
 ## 分支与上游关系
 
-- 三个仓库的 `main` 都是 NAMEWTA 产品分支。
-- 后端 `6.X`、前端 `6.X-Vue` 是只读上游镜像，只允许 fast-forward，不承载 NAMEWTA 业务提交。
-- 上游更新用于发现新能力、修复和安全变化；实际代码按当前本地 owner boundary 适配，不要求恢复上游目录结构。
-- 父仓库只记录子模块 commit。前后端提交完成并验证后，才推进父仓库 gitlink。
+- 本仓 `main` 是 NAMEWTA 产品分支；默认交付不再使用 git submodule。
+- 上游 RuoYi-Vue-Plus / Plus-UI 仅作能力发现；不要求本地目录与上游路径同构，也不把上游 URL 当作运行依赖。
+- 旧三仓 `ruoyi-vue-plus-namewta` / `plus-ui-namewta` / `ruoyi-vue-plus-docs` 按 freeze 语义只读备份，不在本仓内 `gitlink` 推进。
 
-长期约束见 [上游能力治理](docs/upstream/README.md)与 [定制边界](docs/upstream/customization-map.md)。历史变化直接通过各仓库 Git 日志查看，文档只维护当前有效状态。
+长期约束见 [上游能力治理](docs/upstream/README.md)与 [定制边界](docs/upstream/customization-map.md)。历史变化直接通过本仓 Git 日志查看，文档只维护当前有效状态。
 
 ## 许可证与上游
 

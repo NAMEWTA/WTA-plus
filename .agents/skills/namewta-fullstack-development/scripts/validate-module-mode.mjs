@@ -195,8 +195,8 @@ const observedImports = new Map(requiredChain.map(([from]) => [from, false]));
 
 // 仅保留 Profile 当前迁移窗口的两个聚合读模型兼容路径；不把例外扩展到新模块。
 const legacyReadModelAllowList = new Set([
-  'org/dromara/profile/person/domain/model/read/PersonAdminRows.java',
-  'org/dromara/profile/enterprise/domain/model/read/EnterpriseAdminRows.java',
+  'org/namewta/profile/person/domain/model/read/PersonAdminRows.java',
+  'org/namewta/profile/enterprise/domain/model/read/EnterpriseAdminRows.java',
 ]);
 
 /**

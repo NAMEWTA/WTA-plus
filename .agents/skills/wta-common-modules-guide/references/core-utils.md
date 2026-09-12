@@ -2,7 +2,7 @@
 
 条目不够明确时，按路径读取源码，不得凭空推断。路径相对工作区，前缀 `wta-vue-plus-namewta/`。职责取各类 JavaDoc 首句。未逐方法展开 API；方法语义以源码为准。
 
-模块根：`wta-common/wta-common-core/src/main/java/org/dromara/common/core/`。Maven：`wta-common/wta-common-core/pom.xml`。
+模块根：`wta-common/wta-common-core/src/main/java/org/namewta/common/core/`。Maven：`wta-common/wta-common-core/pom.xml`。
 
 ## 目录
 
@@ -23,7 +23,7 @@
 | `org.namewta.common.core.domain.PageResult` | 表格分页数据对象 | `.../core/domain/PageResult.java`。本仓库无旧名 `TableDataInfo`。 |
 | `org.namewta.common.core.exception.ServiceException` | 通用业务异常，支持使用占位符拼接错误信息。 | `.../core/exception/ServiceException.java` |
 
-`...` = `wta-common/wta-common-core/src/main/java/org/dromara/common`。
+`...` = `wta-common/wta-common-core/src/main/java/org/namewta/common`。
 
 ## 跨模块 SPI（实现不在 core）
 
@@ -36,7 +36,7 @@
 
 ## org.namewta.common.core.utils（13）
 
-目录：`wta-common/wta-common-core/src/main/java/org/dromara/common/core/utils/`。
+目录：`wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/`。
 
 | FQN | 职责 | 继承 / 备注 | 路径 |
 |---|---|---|---|

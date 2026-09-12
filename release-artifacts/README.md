@@ -1,6 +1,6 @@
 # NAMEWTA Release Artifacts
 
-本目录是 `wta-vue-plus-docs` 前后端的发布事实源，包含可复现构建、四类 Docker Compose、Nginx 多 App 入口、运行配置样例、可观测配置与配套 Skill。
+本目录是 WTA-plus monorepo 的发布事实源，包含可复现构建、四类 Docker Compose、Nginx 多 App 入口、运行配置样例、可观测配置与配套 Skill。
 
 ## 目录职责
 
@@ -50,7 +50,7 @@ bash release-artifacts/scripts/release-manage.sh stage-mysql
 bash release-artifacts/scripts/release-manage.sh bundle --env prod
 ```
 
-构建目录内的 `release-manifest.json` 记录父仓库及两个子模块 SHA、环境、产物和 SHA-256，便于追溯。
+构建目录内的 `release-manifest.json` 记录本 monorepo HEAD SHA、环境、产物和 SHA-256，便于追溯。
 
 提交或交付前执行发布目录自检；本机有 Docker Compose 时会额外解析四份 Compose：
 

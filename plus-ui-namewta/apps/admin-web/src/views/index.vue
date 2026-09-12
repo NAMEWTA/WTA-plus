@@ -9,7 +9,7 @@
         </p>
         <div class="hero-actions">
           <el-button type="primary" @click="goTarget('https://github.com/NAMEWTA/WTA-plus')">查看源码</el-button>
-          <el-button plain @click="goTarget('https://plus-doc.dromara.org/#/wta-vue-plus/changlog')">
+          <el-button plain @click="goTarget('https://github.com/NAMEWTA/WTA-plus')">
             更新日志
           </el-button>
         </div>
@@ -72,19 +72,19 @@ const products = [
     summary: '面向分布式集群场景的后台管理系统，保持现有业务接口与权限逻辑，适合先完成前端壳升级。',
     tags: ['Vue 3', 'Element Plus', 'Spring Boot', 'Sa-Token'],
     primaryLabel: '访问 GitHub',
-    primaryUrl: 'https://github.com/dromara/WTA-Plus',
+    primaryUrl: 'https://github.com/NAMEWTA/WTA-plus',
     secondaryLabel: '查看更新日志',
-    secondaryUrl: 'https://plus-doc.dromara.org/#/wta-vue-plus/changlog'
+    secondaryUrl: 'https://github.com/NAMEWTA/WTA-plus'
   },
   {
-    name: 'WTA-Cloud-Plus',
+    name: 'NAMEWTA 多 App',
     version: 'v6.0.0',
-    summary: '微服务通用权限管理系统，适合更复杂的服务治理场景，也可以沿用同样的前端升级思路。',
-    tags: ['Spring Cloud', 'Gateway', 'Nacos', 'Dubbo'],
+    summary: '同一 monorepo 内的 Admin 与用户中心，按 domain/web-domain 组合，不依赖上游独立仓。',
+    tags: ['Vue 3', 'pnpm workspace', '@namewta', 'Admin / home-web'],
     primaryLabel: '访问 GitHub',
-    primaryUrl: 'https://github.com/dromara/WTA-Cloud-Plus',
-    secondaryLabel: '查看更新日志',
-    secondaryUrl: 'https://plus-doc.dromara.org/#/wta-cloud-plus/changlog'
+    primaryUrl: 'https://github.com/NAMEWTA/WTA-plus',
+    secondaryLabel: '查看文档',
+    secondaryUrl: 'https://github.com/NAMEWTA/WTA-plus'
   }
 ];
 

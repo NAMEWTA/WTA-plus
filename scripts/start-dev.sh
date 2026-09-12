@@ -148,11 +148,11 @@ verify_system_artifacts() {
   local system_classes="${backend_dir}/wta-modules/wta-system/target/classes"
   local target_system_jar
   local sentinels=(
-    org/dromara/system/domain/vo/SysClientVo.class
-    org/dromara/system/mapper/SysUserMapper.class
-    org/dromara/system/password/PasswordPolicyService.class
-    org/dromara/system/service/ISysClientService.class
-    org/dromara/system/temporarypassword/TemporaryPasswordService.class
+    org/namewta/system/domain/vo/SysClientVo.class
+    org/namewta/system/mapper/SysUserMapper.class
+    org/namewta/system/password/PasswordPolicyService.class
+    org/namewta/system/service/ISysClientService.class
+    org/namewta/system/temporarypassword/TemporaryPasswordService.class
   )
 
   target_system_jar=$(resolve_target_system_jar) || fail "无法唯一定位 wta-system target JAR，请停止并发构建后重新启动。"

@@ -23,7 +23,7 @@ Source: `repository-fact` + `user-decision` (`DEC-003`)
 Rule: 前端保持 `apps`、`packages/domains`、`packages/web-domains`、`packages/platform`、`packages/adapters`、`packages/web-kit`、`packages/api-contracts` 与 `tooling` 的所有权主轴。后端目录主轴由模块模式登记表裁决：classic 存量模块保持以下兼容形态；layered 新模块使用后续五层形态。不能为单个用例任意发明平级 `application/repository/manager/facade` 等目录：
 
 ```text
-src/main/java/org/dromara/<module>/<business>/
+src/main/java/org/namewta/<module>/<business>/
   controller/
     admin/          # 真实管理端受保护接口
     anonymous/      # 真实 @SaIgnore 匿名接口
@@ -40,7 +40,7 @@ src/main/java/org/dromara/<module>/<business>/
 layered 新模块主轴为：
 
 ```text
-src/main/java/org/dromara/<module>/<business>/
+src/main/java/org/namewta/<module>/<business>/
   controller/{admin,anonymous}/
   listener/                    # 事件入口，只调用 UseCase
   port/                        # 外部端口合同

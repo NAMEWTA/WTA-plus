@@ -51,8 +51,8 @@ sys_dict_data(dict_type, dict_value, dict_label, list_class, css_class)
 
 相关源码：
 
-- `wta-vue-plus-namewta/wta-modules/wta-system/src/main/java/org/dromara/system/service/impl/SysDictTypeServiceImpl.java`
-- `wta-vue-plus-namewta/wta-modules/wta-system/src/main/java/org/dromara/system/controller/system/SysDictDataController.java`
+- `wta-vue-plus-namewta/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysDictTypeServiceImpl.java`
+- `wta-vue-plus-namewta/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictDataController.java`
 - `plus-ui-namewta/apps/admin-web/src/utils/dict.ts`
 - `plus-ui-namewta/apps/admin-web/src/components/DictTag/index.vue`
 - `plus-ui-namewta/packages/web-domains/system/src/runtime.ts`

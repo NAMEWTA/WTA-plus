@@ -8,12 +8,12 @@
 
 | 层 | 路径 |
 |---|---|
-| 实体 `test_leave`，含 `status` | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/dromara/workflow/domain/TestLeave.java` |
-| BO（含可选 `flowCode`） | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/dromara/workflow/domain/bo/TestLeaveBo.java` |
+| 实体 `test_leave`，含 `status` | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/domain/TestLeave.java` |
+| BO（含可选 `flowCode`） | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/domain/bo/TestLeaveBo.java` |
 | Mapper XML | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/resources/mapper/workflow/TestLeaveMapper.xml` |
-| 服务实现 | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/dromara/workflow/service/impl/TestLeaveServiceImpl.java` |
-| 服务接口 | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/dromara/workflow/service/ITestLeaveService.java` |
-| HTTP | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/dromara/workflow/controller/TestLeaveController.java`（`@RequestMapping("/workflow/leave")`） |
+| 服务实现 | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/TestLeaveServiceImpl.java` |
+| 服务接口 | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/ITestLeaveService.java` |
+| HTTP | `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java`（`@RequestMapping("/workflow/leave")`） |
 | 前端领域资源 | `plus-ui-namewta/packages/domains/workflow/src/leave/index.ts`；service 合同与 transport 位于同包 `src/index.ts` |
 | 前端领域页面 | `plus-ui-namewta/packages/web-domains/workflow/src/leave/LeaveListPage.vue`、`LeaveEditPage.vue` |
 | Web manifest | `plus-ui-namewta/packages/web-domains/workflow/src/index.ts`（注册 `workflow/leave/index` 与 `workflow/leave/leaveEdit`） |
@@ -23,7 +23,7 @@
 
 ## HTTP
 
-路径：`wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/dromara/workflow/controller/TestLeaveController.java`
+路径：`wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java`
 
 | 能力 | HTTP | 权限 |
 |---|---|---|
@@ -58,7 +58,7 @@
 
 SpEL 辅助：`eval(leaveDays)` 返回 `leaveDays <= 2`，供流程定义判断请假天数。路径同 `TestLeaveServiceImpl`。
 
-申请编号常量：`FlowConstant.BUSINESS_CODE`（`"businessCode"`）— `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/dromara/workflow/common/constant/FlowConstant.java`。
+申请编号常量：`FlowConstant.BUSINESS_CODE`（`"businessCode"`）— `wta-vue-plus-namewta/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/common/constant/FlowConstant.java`。
 
 ## 三个监听器
 

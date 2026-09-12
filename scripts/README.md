@@ -103,30 +103,7 @@ scripts/ci/verify-dev-build-guard.sh
 
 ## ci/verify-submodules.sh
 
-### 作用
-
-校验父仓库记录的 Git Submodule 快照与当前检出的子模块完全一致，避免 CI 使用错误、未初始化、
-发生冲突或带有本地修改的前后端代码。
-
-### 校验内容
-
-1. 执行 `git submodule status --recursive`，确认仓库配置了子模块。
-2. 拒绝以下状态标记：
-   - `-`：子模块尚未初始化；
-   - `+`：检出的提交与父仓库记录的 gitlink 不一致；
-   - `U`：子模块存在合并冲突。
-3. 分别比较父仓库 gitlink、`git submodule status` 输出和子模块当前 `HEAD`。
-4. 检查每个子模块工作树，存在已跟踪修改或未跟踪文件时失败。
-5. 全部通过后输出子模块状态。
-
-### 使用方式
-
-```bash
-scripts/ci/verify-submodules.sh
-```
-
-该脚本被 GitHub Actions 的 `snapshot` job 调用。它要求在父仓库的 Git 工作树内执行；脚本会自动定位
-仓库根目录。开发中的本地子模块通常包含未提交修改或尚未更新父仓库指针，此时失败属于预期行为。
+WTA-plus 默认交付是单一 monorepo，**不再**以 git submodule 检出前后端。该脚本是聚合仓时期的遗留校验，不作为本仓克隆/启动步骤。新环境不要运行它来“初始化子模块”。
 
 ## ci/verify-admin-bundle.sh
 

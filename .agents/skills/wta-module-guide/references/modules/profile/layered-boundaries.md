@@ -12,7 +12,7 @@
 ## Profile 目标目录形状
 
 ```text
-<profile-submodule>/src/main/java/org/dromara/profile/<capability>/
+<profile-submodule>/src/main/java/org/namewta/profile/<capability>/
 ├── controller/{admin,self,anonymous}/
 ├── listener/                 # 事件入口，转换后委托 UseCase
 ├── usecase/{<Capability>UseCase.java,impl/<Capability>UseCaseImpl.java}

@@ -15,11 +15,11 @@ class OssAccessUrlArchitectureUnitTest {
     void urlGenerationHasOneClassificationPathAndNoAnonymousDiscoveryRoute() throws Exception {
         Path root = repositoryRoot();
         String service = Files.readString(root.resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/service/impl/SysOssServiceImpl.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssServiceImpl.java"));
         String lifecycle = Files.readString(root.resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/oss/service/OssLifecycleManager.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/oss/service/OssLifecycleManager.java"));
         String controller = Files.readString(root.resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/controller/system/SysOssController.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssController.java"));
 
         assertThat(service)
             .contains("lifecycleManager.resolveAccessUrl")

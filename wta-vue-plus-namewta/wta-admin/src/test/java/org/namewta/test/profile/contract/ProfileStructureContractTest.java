@@ -46,7 +46,7 @@ class ProfileStructureContractTest {
     private static final Pattern SQL_ANNOTATION = Pattern.compile(
         "@(?:Select|Insert|Update|Delete)(?:Provider)?\\b");
     private static final Pattern SERVICE_IMPL_DEPENDENCY = Pattern.compile(
-        "\\bprivate\\s+final\\s+\\w+ServiceImpl\\b|import\\s+org\\.dromara\\.profile\\.[^;]+\\.service\\.impl\\.\\w+ServiceImpl;");
+        "\\bprivate\\s+final\\s+\\w+ServiceImpl\\b|import\\s+org\\.namewta\\.profile\\.[^;]+\\.service\\.impl\\.\\w+ServiceImpl;");
     private static final Pattern STRING_CONSTANT = Pattern.compile(
         "(?m)^\\s*(?:(?:public|protected|private|static|final)\\s+)*String\\s+\\w+\\s*=");
     private static final Pattern TABLE_NAME = Pattern.compile("@TableName\\(\"(profile_[a-z0-9_]+)\"\\)");

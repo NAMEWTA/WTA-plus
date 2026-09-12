@@ -13,13 +13,13 @@ class NotifyCallerMigrationContractUnitTest {
 
     @Test
     void notificationCallersUseApplicationServiceAndDeclareApiDependency() throws Exception {
-        String captcha = source("wta-admin/src/main/java/org/dromara/web/controller/CaptchaController.java");
-        String workflow = source("wta-modules/wta-workflow/src/main/java/org/dromara/workflow/service/impl/FlwCommonServiceImpl.java");
-        String mailDemo = source("wta-modules/wta-demo/src/main/java/org/dromara/demo/controller/MailSendController.java");
-        String smsDemo = source("wta-modules/wta-demo/src/main/java/org/dromara/demo/controller/SmsController.java");
-        String rebind = source("wta-modules/wta-profile/wta-profile-person/src/main/java/org/dromara/profile/person/service/PersonRebindNotificationService.java");
-        String transfer = source("wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/dromara/profile/enterprise/service/EnterpriseTransferService.java");
-        String notice = source("wta-modules/wta-notify/src/main/java/org/dromara/notify/service/NotifyNoticePublisherService.java");
+        String captcha = source("wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java");
+        String workflow = source("wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwCommonServiceImpl.java");
+        String mailDemo = source("wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java");
+        String smsDemo = source("wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java");
+        String rebind = source("wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindNotificationService.java");
+        String transfer = source("wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java");
+        String notice = source("wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticePublisherService.java");
 
         assertAll(
             () -> assertTrue(captcha.contains("NotificationApplicationService")),

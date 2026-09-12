@@ -28,7 +28,7 @@
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.redis.utils.RedisUtils` | redis 工具类。公开方法含限流、发布/订阅、对象/List/Set/Map/Hash 缓存、原子值、扫描删除。内部取 `RedissonClient` | `src/main/java/org/dromara/common/redis/utils/RedisUtils.java` |
+| `org.namewta.common.redis.utils.RedisUtils` | redis 工具类。公开方法含限流、发布/订阅、对象/List/Set/Map/Hash 缓存、原子值、扫描删除。内部取 `RedissonClient` | `src/main/java/org/namewta/common/redis/utils/RedisUtils.java` |
 | `org.namewta.common.redis.utils.CacheUtils` | 缓存操作工具类。按 `cacheNames` + key 走 Spring `CacheManager` | `.../redis/utils/CacheUtils.java` |
 | `org.namewta.common.redis.utils.QueueUtils` | 分布式队列工具。JavaDoc：轻量级队列；重量级数据量请使用 MQ；要求 redis 5.X 以上 | `.../redis/utils/QueueUtils.java` |
 | `org.namewta.common.redis.utils.SequenceUtils` | 发号器工具类。委托 Redisson `RIdGenerator` | `.../redis/utils/SequenceUtils.java` |
@@ -44,19 +44,19 @@
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.json.utils.JsonUtils` | JSON 工具类。内部用 Jackson `JsonMapper`（`tools.jackson`）；无 Spring 测试上下文时使用内部 fallback，容器 Bean 可用后优先使用 Bean | `wta-common/wta-common-json/src/main/java/org/dromara/common/json/utils/JsonUtils.java` |
+| `org.namewta.common.json.utils.JsonUtils` | JSON 工具类。内部用 Jackson `JsonMapper`（`tools.jackson`）；无 Spring 测试上下文时使用内部 fallback，容器 Bean 可用后优先使用 Bean | `wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/JsonUtils.java` |
 
 ## encrypt
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.encrypt.utils.EncryptUtils` | 安全相关工具类（RSA/SM2/Base64 等，以源码方法为准） | `wta-common/wta-common-encrypt/src/main/java/org/dromara/common/encrypt/utils/EncryptUtils.java` |
+| `org.namewta.common.encrypt.utils.EncryptUtils` | 安全相关工具类（RSA/SM2/Base64 等，以源码方法为准） | `wta-common/wta-common-encrypt/src/main/java/org/namewta/common/encrypt/utils/EncryptUtils.java` |
 
 ## social
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.social.utils.SocialUtils` | 认证授权工具类。import `me.zhyd.oauth.*`；回调走 `AuthRedisStateCache` | `wta-common/wta-common-social/src/main/java/org/dromara/common/social/utils/SocialUtils.java` |
+| `org.namewta.common.social.utils.SocialUtils` | 认证授权工具类。import `me.zhyd.oauth.*`；回调走 `AuthRedisStateCache` | `wta-common/wta-common-social/src/main/java/org/namewta/common/social/utils/SocialUtils.java` |
 
 ## mybatis
 
@@ -64,7 +64,7 @@
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.mybatis.utils.IdGeneratorUtil` | ID 生成工具类。优先委托 MyBatis-Plus `IdentifierGenerator`，无 Spring 测试上下文时回退 `IdWorker`；业务代码不得直连底层实现 | `src/main/java/org/dromara/common/mybatis/utils/IdGeneratorUtil.java` |
+| `org.namewta.common.mybatis.utils.IdGeneratorUtil` | ID 生成工具类。优先委托 MyBatis-Plus `IdentifierGenerator`，无 Spring 测试上下文时回退 `IdWorker`；业务代码不得直连底层实现 | `src/main/java/org/namewta/common/mybatis/utils/IdGeneratorUtil.java` |
 | `org.namewta.common.mybatis.helper.DataPermissionHelper` | 数据权限助手。Sa-Token Storage 键 `data:permission` | `.../mybatis/helper/DataPermissionHelper.java` |
 | `org.namewta.common.mybatis.helper.DataBaseHelper` | 数据库助手。动态数据源 / 库类型 | `.../mybatis/helper/DataBaseHelper.java` |
 | `org.namewta.common.mybatis.core.query.AggregateSelectUtils` | 聚合查询字段 SQL 构造工具。 | `.../mybatis/core/query/AggregateSelectUtils.java` |
@@ -73,7 +73,7 @@
 
 ## satoken / LoginHelper
 
-路径：`wta-common/wta-common-satoken/src/main/java/org/dromara/common/satoken/utils/LoginHelper.java`。
+路径：`wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/utils/LoginHelper.java`。
 
 FQN：`org.namewta.common.satoken.utils.LoginHelper`。JavaDoc「登录鉴权助手」：`user_type` 为用户类型（同一用户表可有 pc/app 等）；`device` 为设备类型（web/ios 等）；可组成多用户体系。依赖 `org.namewta.system.api.model.LoginUser`。
 
@@ -91,13 +91,13 @@ FQN：`org.namewta.common.satoken.utils.LoginHelper`。JavaDoc「登录鉴权助
 
 常量含 `LOGIN_USER_KEY`、`USER_KEY`、`CLIENT_KEY`、`CLIENT_PK_KEY`、`USER_TYPE_KEY` 等，见类字段。
 
-配套：`config/SaTokenConfig.java`、`core/service/SaPermissionImpl.java`、`core/dao/PlusSaTokenDao.java`（同模块 `src/main/java/org/dromara/common/satoken/`）。
+配套：`config/SaTokenConfig.java`、`core/service/SaPermissionImpl.java`、`core/dao/PlusSaTokenDao.java`（同模块 `src/main/java/org/namewta/common/satoken/`）。
 
 ## push
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.push.helper.PushHelper` | 统一消息推送工具。指定用户/广播文本或自定义消息体；开关读 `message.enabled` | `wta-common/wta-common-push/src/main/java/org/dromara/common/push/helper/PushHelper.java` |
+| `org.namewta.common.push.helper.PushHelper` | 统一消息推送工具。指定用户/广播文本或自定义消息体；开关读 `message.enabled` | `wta-common/wta-common-push/src/main/java/org/namewta/common/push/helper/PushHelper.java` |
 
 配套：`dto/PushDTO.java`、`controller/SseController.java`（同模块 `.../common/push/`）。
 
@@ -105,7 +105,7 @@ FQN：`org.namewta.common.satoken.utils.LoginHelper`。JavaDoc「登录鉴权助
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.liteflow.utils.LiteFlowUtils` | LiteFlow 执行工具。`execute(chainId, context)` 调 `FlowExecutor.execute2Resp` | `wta-common/wta-common-liteflow/src/main/java/org/dromara/common/liteflow/utils/LiteFlowUtils.java` |
+| `org.namewta.common.liteflow.utils.LiteFlowUtils` | LiteFlow 执行工具。`execute(chainId, context)` 调 `FlowExecutor.execute2Resp` | `wta-common/wta-common-liteflow/src/main/java/org/namewta/common/liteflow/utils/LiteFlowUtils.java` |
 
 ## oss
 
@@ -113,7 +113,7 @@ FQN：`org.namewta.common.satoken.utils.LoginHelper`。JavaDoc「登录鉴权助
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.oss.util.BucketUrlUtil` | 桶链接工具类。路径风格 / virtual-host 风格 URL | `src/main/java/org/dromara/common/oss/util/BucketUrlUtil.java` |
+| `org.namewta.common.oss.util.BucketUrlUtil` | 桶链接工具类。路径风格 / virtual-host 风格 URL | `src/main/java/org/namewta/common/oss/util/BucketUrlUtil.java` |
 | `org.namewta.common.oss.factory.OssFactory` | S3存储客户端工厂 | `.../oss/factory/OssFactory.java` |
 | `org.namewta.common.oss.client.OssClient` | S3 存储客户端接口。`bucketXxx(...)` 显式桶 + 无前缀默认桶两套 API | `.../oss/client/OssClient.java` |
 
@@ -125,7 +125,7 @@ FQN：`org.namewta.common.satoken.utils.LoginHelper`。JavaDoc「登录鉴权助
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.excel.utils.ExcelBuilder` | Excel 导出构造器。底层 `org.apache.fesod.sheet` | `src/main/java/org/dromara/common/excel/utils/ExcelBuilder.java` |
+| `org.namewta.common.excel.utils.ExcelBuilder` | Excel 导出构造器。底层 `org.apache.fesod.sheet` | `src/main/java/org/namewta/common/excel/utils/ExcelBuilder.java` |
 | `org.namewta.common.excel.utils.ExcelWriterWrapper` | ExcelWriterWrapper Excel写出包装器。与 ExcelWriter 一一对应，避免直接关闭 IO | `.../excel/utils/ExcelWriterWrapper.java` |
 | `org.namewta.common.excel.core.ExcelResult` | excel返回对象 | `.../excel/core/ExcelResult.java` |
 
@@ -135,4 +135,4 @@ FQN：`org.namewta.common.satoken.utils.LoginHelper`。JavaDoc「登录鉴权助
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.mail.core.MailBuilder` | 邮件发送构建器。运行时 SMTP 账户由通知配置解析后传入，不从 YAML 发件人读取。 | `wta-common/wta-common-mail/src/main/java/org/dromara/common/mail/core/MailBuilder.java` |
+| `org.namewta.common.mail.core.MailBuilder` | 邮件发送构建器。运行时 SMTP 账户由通知配置解析后传入，不从 YAML 发件人读取。 | `wta-common/wta-common-mail/src/main/java/org/namewta/common/mail/core/MailBuilder.java` |

@@ -77,7 +77,7 @@ class ProfileCrossModuleBoundaryContractTest {
             .isInstanceOf(IllegalArgumentException.class);
 
         String source = Files.readString(backendRoot().resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/service/impl/SysUserServiceImpl.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysUserServiceImpl.java"));
         assertThat(source)
             .contains("public UserDTO lockActiveById(Long userId)")
             .contains(".eq(SysUser::getUserId, userId)")

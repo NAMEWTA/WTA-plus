@@ -169,14 +169,14 @@ class RbacOpenApiSessionInvalidationTest {
 
     private static String source(String fileName) throws IOException {
         Path repository = Path.of(System.getProperty("user.dir")).getParent();
-        return Files.readString(repository.resolve("wta-modules/wta-system/src/main/java/org/dromara/system/service/impl")
+        return Files.readString(repository.resolve("wta-modules/wta-system/src/main/java/org/namewta/system/service/impl")
             .resolve(fileName));
     }
 
     private static String controllerSource() throws IOException {
         Path repository = Path.of(System.getProperty("user.dir")).getParent();
         return Files.readString(repository.resolve(
-            "wta-modules/wta-system/src/main/java/org/dromara/system/controller/system/SysRoleController.java"));
+            "wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java"));
     }
 
     private static <T> T service(Class<T> type) {

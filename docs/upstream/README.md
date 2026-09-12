@@ -14,7 +14,7 @@ NAMEWTA 相较上游的当前产品增强见 [增强说明](../namewta-enhanceme
 
 1. 先从 release、commit、PR 或安全公告识别能力，再映射到本地 owner。
 2. 上游实现不符合本地边界时采用本地化适配，不恢复已经退役的目录或门面。
-3. 同步评估只产生证据，不自动授权 merge、push、tag 或子模块推进。
-4. 实际集成必须经过独立子仓库验证，最后再推进父仓库 gitlink。
+3. 同步评估只产生证据，不自动授权 merge、push、tag。
+4. 实际集成在本 monorepo 内验证；默认交付不再推进 git submodule gitlink。
 
 具体命令与状态合同由 `.agents/skills/upstream-fork-sync/` 维护。

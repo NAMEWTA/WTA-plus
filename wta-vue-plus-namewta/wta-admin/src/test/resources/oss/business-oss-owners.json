@@ -14,8 +14,8 @@
       "updateStrategy": "reconcile persisted avatar to requested avatar after update",
       "deleteStrategy": "reconcile persisted avatar to empty set before logical delete",
       "restoreStrategy": "not supported; deleted users are not restored",
-      "carrierSource": "wta-modules/wta-system/src/main/java/org/dromara/system/domain/SysUser.java",
-      "contractTest": "wta-admin/src/test/java/org/dromara/test/oss/owner/system/SystemUserAvatarOssOwnerUnitTest.java"
+      "carrierSource": "wta-modules/wta-system/src/main/java/org/namewta/system/domain/SysUser.java",
+      "contractTest": "wta-admin/src/test/java/org/namewta/test/oss/owner/system/SystemUserAvatarOssOwnerUnitTest.java"
     },
     {
       "id": "workflow-history-task-attachments",
@@ -31,7 +31,7 @@
       "deleteStrategy": "reconcile each persisted history ext to empty set before instance history deletion",
       "restoreStrategy": "not supported; deleted workflow history is not restored",
       "carrierSource": "release-artifacts/docker/infrastructure/mysql/init/30-ry-workflow.sql",
-      "contractTest": "wta-admin/src/test/java/org/dromara/test/oss/owner/workflow/WorkflowHistoryOssOwnerUnitTest.java"
+      "contractTest": "wta-admin/src/test/java/org/namewta/test/oss/owner/workflow/WorkflowHistoryOssOwnerUnitTest.java"
     },
     {
       "id": "profile-material-reference",
@@ -46,8 +46,8 @@
       "updateStrategy": "material OSS references are immutable; metadata and tags are snapshot fields",
       "deleteStrategy": "reconcile the persisted OSS id to empty set when mutable working evidence is logically detached",
       "restoreStrategy": "not supported; detached evidence is retained and a new reference is attached instead",
-      "carrierSource": "wta-modules/wta-profile/wta-profile-person/src/main/java/org/dromara/profile/person/domain/material/MaterialReference.java",
-      "contractTest": "wta-modules/wta-profile/wta-profile-person/src/test/java/org/dromara/profile/person/service/impl/ProfileMaterialServiceTest.java"
+      "carrierSource": "wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/domain/material/MaterialReference.java",
+      "contractTest": "wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/ProfileMaterialServiceTest.java"
     },
     {
       "id": "demo-rich-text-content",
@@ -62,8 +62,8 @@
       "updateStrategy": "optimistic update then reconcile previous and current canonical references",
       "deleteStrategy": "reconcile persisted references to empty set during logical delete",
       "restoreStrategy": "not supported",
-      "carrierSource": "wta-modules/wta-demo/src/main/java/org/dromara/demo/domain/TestRichText.java",
-      "contractTest": "wta-admin/src/test/java/org/dromara/test/oss/owner/demo/TestRichTextOssOwnerUnitTest.java"
+      "carrierSource": "wta-modules/wta-demo/src/main/java/org/namewta/demo/domain/TestRichText.java",
+      "contractTest": "wta-admin/src/test/java/org/namewta/test/oss/owner/demo/TestRichTextOssOwnerUnitTest.java"
     }
   ],
   "carrierAllowlist": [

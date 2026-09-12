@@ -6,9 +6,9 @@
 
 | 仓库 | 产品分支 | 上游镜像 | 本地责任 |
 |---|---|---|---|
-| 父仓库 | `main` | 无 | 文档、工程规范、Speculo 状态和两个子模块 gitlink |
-| 后端 | `main` | `6.X` | Spring Boot 服务、权限与数据访问实现；不拥有发布 SQL |
-| 前端 | `main` | `6.X-Vue` | 多 App monorepo、领域包、终端适配与界面组合 |
+| WTA-plus monorepo | `main` | 无 | 文档、工程规范、Speculo、发布资产与合入的前后端子树 |
+| 后端子树 `wta-vue-plus-namewta/` | 同仓 | 历史 `6.X` 仅发现 | Spring Boot 服务、权限与数据访问实现；不拥有发布 SQL |
+| 前端子树 `plus-ui-namewta/` | 同仓 | 历史 `6.X-Vue` 仅发现 | 多 App 领域包、终端适配与界面组合 |
 
 镜像分支只允许快进；产品变更只进入 `main`；`namewta-base-upstream-6x` 与 `namewta-base-upstream-6x-vue` 不移动。
 
