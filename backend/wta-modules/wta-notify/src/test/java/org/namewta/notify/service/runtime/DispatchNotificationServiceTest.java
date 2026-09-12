@@ -197,6 +197,39 @@ class DispatchNotificationServiceTest {
     }
 
     @Test
+    void laterLayerFailureDoesNotLeakAccountQuota() {
+        MemoryQuota quota = new MemoryQuota();
+        Fixture exhaustTemplate = fixture("MAIL", quota);
+        Fixture leakedAttempt = fixture("MAIL", quota);
+        Fixture retry = fixture("MAIL", quota);
+        NotifyChannelAccount high = mailAccount(99L, "smtp-high", "Y");
+        high.setMinuteMax(60);
+        NotifyChannelAccount tight = mailAccount(11L, "smtp-main", "Y");
+        tight.setMinuteMax(1);
+        NotifySceneBinding highBinding = binding(99L, "MAIL", "${code}", "${expireMinutes}");
+        highBinding.setTemplateMinuteMax(1);
+        NotifySceneBinding tightBinding = binding(11L, "MAIL", "${code}", "${expireMinutes}");
+        tightBinding.setTemplateMinuteMax(1);
+        when(exhaustTemplate.configDao.findBinding("auth-captcha", "MAIL")).thenReturn(highBinding);
+        when(exhaustTemplate.configDao.findAccount(99L)).thenReturn(high);
+        when(leakedAttempt.configDao.findBinding("auth-captcha", "MAIL")).thenReturn(tightBinding);
+        when(leakedAttempt.configDao.findAccount(11L)).thenReturn(tight);
+        when(retry.configDao.findBinding("auth-captcha", "MAIL")).thenReturn(tightBinding);
+        when(retry.configDao.findAccount(11L)).thenReturn(tight);
+        when(exhaustTemplate.notifyClient.send(any())).thenReturn(accepted("smtp-high", NotifyChannel.MAIL));
+
+        exhaustTemplate.service.dispatch(exhaustTemplate.outbox);
+        leakedAttempt.service.dispatch(leakedAttempt.outbox);
+        retry.service.dispatch(retry.outbox);
+
+        verify(exhaustTemplate.notifyClient).send(any());
+        verify(leakedAttempt.notifyClient, never()).send(any());
+        verify(retry.notifyClient, never()).send(any());
+        assertEquals("TEMPLATE_QUOTA", leakedAttempt.delivery.getErrorCode());
+        assertEquals("TEMPLATE_QUOTA", retry.delivery.getErrorCode());
+    }
+
+    @Test
     void noticePublishedMailRendersWrapperNotCallerSnapshot() {
         Fixture fixture = fixture("MAIL");
         fixture.intent.setSceneCode("notice-published");
@@ -317,7 +350,19 @@ class DispatchNotificationServiceTest {
                 return true;
             }
             int value = counts.computeIfAbsent(key, ignored -> new AtomicInteger()).incrementAndGet();
-            return value <= limit;
+            if (value <= limit) {
+                return true;
+            }
+            counts.get(key).decrementAndGet();
+            return false;
+        }
+
+        @Override
+        public void release(String key) {
+            AtomicInteger counter = counts.get(key);
+            if (counter != null && counter.get() > 0) {
+                counter.decrementAndGet();
+            }
         }
     }
 }

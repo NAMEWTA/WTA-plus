@@ -3,13 +3,14 @@
   "artifact": "change-status",
   "change": "2026-09-10-notify-channel-config",
   "change_status": "active",
-  "current_work": "specdev/C-code-review",
+  "current_work": null,
   "works_run": [
     "specdev/G-grill-with-docs",
     "specdev/S-spec",
     "specdev/T-tickets",
     "specdev/P-goal-plan",
-    "specdev/I-implement"
+    "specdev/I-implement",
+    "specdev/C-code-review"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
@@ -39,7 +40,7 @@
     "history": []
   },
   "created_at": "2026-09-10T14:49:31+08:00",
-  "updated_at": "2026-09-12T16:45:00+08:00",
+  "updated_at": "2026-09-12T18:10:00+08:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -122,7 +123,7 @@
         "e2e": {
           "required": true,
           "status": "passed",
-          "reason": "MAIL \u573a\u666f\u7ed1\u5b9a dialog with ${code} tokens captured.",
+          "reason": "MAIL 场景绑定 dialog with ${code} tokens captured.",
           "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-02.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-02.md</Path>",
@@ -165,7 +166,7 @@
         "e2e": {
           "required": true,
           "status": "passed",
-          "reason": "SMS TAB and \u573a\u666f\u7ed1\u5b9a with vendor template code, no free-text body.",
+          "reason": "SMS TAB and 场景绑定 with vendor template code, no free-text body.",
           "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-03.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-03.md</Path>",
@@ -294,7 +295,7 @@
         "e2e": {
           "required": true,
           "status": "passed",
-          "reason": "Config page \u8bd5\u53d1 buttons visible on MAIL/SMS account and scene rows.",
+          "reason": "Config page 试发 buttons visible on MAIL/SMS account and scene rows.",
           "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-06.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-10-notify-channel-config/evidence/T-06.md</Path>",

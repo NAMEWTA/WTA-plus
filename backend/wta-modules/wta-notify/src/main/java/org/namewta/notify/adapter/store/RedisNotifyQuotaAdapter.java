@@ -29,6 +29,23 @@ public class RedisNotifyQuotaAdapter implements NotifyQuotaPort {
         if (value == 1) {
             RedisUtils.expire(key, window);
         }
-        return value <= limit;
+        if (value <= limit) {
+            return true;
+        }
+        RedisUtils.decrAtomicValue(key);
+        return false;
+    }
+
+    /**
+     * 回滚一次成功占用。
+     *
+     * @param key 计数键
+     */
+    @Override
+    public void release(String key) {
+        if (key == null || key.isBlank()) {
+            return;
+        }
+        RedisUtils.decrAtomicValue(key);
     }
 }

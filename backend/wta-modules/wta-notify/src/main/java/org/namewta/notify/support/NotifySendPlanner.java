@@ -5,11 +5,16 @@ import org.namewta.notify.domain.entity.NotifyChannelAccount;
 import org.namewta.notify.domain.entity.NotifySceneBinding;
 import org.namewta.notify.port.NotifyQuotaPort;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -95,33 +100,71 @@ public final class NotifySendPlanner {
                                String channel, String target, NotifyQuotaPort quotaPort, boolean mail,
                                String subject, String body, boolean html, String smsTemplateCode,
                                Map<String, String> smsParams) {
-        if (!tryQuota(quotaPort, "acct:" + account.getAccountId(), account.getMinuteMax(), Duration.ofMinutes(1))) {
+        List<String> held = new ArrayList<>();
+        if (!acquireQuota(quotaPort, held, "acct:" + account.getAccountId(), account.getMinuteMax(), Duration.ofMinutes(1))) {
             return Plan.fail("ACCOUNT_QUOTA", "账号每分钟发送上限已用尽");
         }
         int templateMax = binding.getTemplateMinuteMax() == null ? account.getMinuteMax() : binding.getTemplateMinuteMax();
-        if (!tryQuota(quotaPort, "tpl:" + sceneCode + ":" + channel, templateMax, Duration.ofMinutes(1))) {
+        if (!acquireQuota(quotaPort, held, "tpl:" + sceneCode + ":" + channel, templateMax, Duration.ofMinutes(1))) {
+            releaseHeld(quotaPort, held);
             return Plan.fail("TEMPLATE_QUOTA", "模板每分钟发送上限已用尽");
         }
         if ("Y".equals(binding.getRestricted()) && target != null && !target.isBlank()) {
             int minute = binding.getRecipientMinuteMax() == null ? 0 : binding.getRecipientMinuteMax();
             int day = binding.getRecipientDayMax() == null ? 0 : binding.getRecipientDayMax();
-            String safeTarget = Integer.toHexString(target.hashCode());
-            if (!tryQuota(quotaPort, "rcpt-m:" + sceneCode + ":" + channel + ":" + safeTarget, minute, Duration.ofMinutes(1))) {
+            String safeTarget = recipientQuotaToken(target);
+            if (!acquireQuota(quotaPort, held, "rcpt-m:" + sceneCode + ":" + channel + ":" + safeTarget, minute, Duration.ofMinutes(1))) {
+                releaseHeld(quotaPort, held);
                 return Plan.fail("RECIPIENT_MINUTE_QUOTA", "收件人每分钟拦截上限已用尽");
             }
-            if (!tryQuota(quotaPort, "rcpt-d:" + sceneCode + ":" + channel + ":" + safeTarget + ":"
+            if (!acquireQuota(quotaPort, held, "rcpt-d:" + sceneCode + ":" + channel + ":" + safeTarget + ":"
                 + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE), day, Duration.ofDays(1))) {
+                releaseHeld(quotaPort, held);
                 return Plan.fail("RECIPIENT_DAY_QUOTA", "收件人每天拦截上限已用尽");
             }
         }
         return new Plan(true, null, null, account.getConfigKey(), mail, subject, body, html, smsTemplateCode, smsParams);
     }
 
-    private static boolean tryQuota(NotifyQuotaPort quotaPort, String key, int limit, Duration window) {
-        if (quotaPort == null) {
+    /**
+     * 收件人限额键：规范化后取 SHA-256 前 16 个十六进制字符，避免 hashCode 碰撞与跨 JVM 不稳定。
+     *
+     * @param target 邮箱或手机号
+     * @return 稳定摘要
+     */
+    public static String recipientQuotaToken(String target) {
+        String normalized = target == null ? "" : target.trim().toLowerCase(Locale.ROOT).replaceAll("\\s+", "");
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(normalized.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder(16);
+            for (int i = 0; i < 8; i++) {
+                hex.append(String.format("%02x", digest[i] & 0xff));
+            }
+            return hex.toString();
+        } catch (NoSuchAlgorithmException exception) {
+            throw new IllegalStateException("SHA-256 is unavailable", exception);
+        }
+    }
+
+    private static boolean acquireQuota(NotifyQuotaPort quotaPort, List<String> held, String key, int limit, Duration window) {
+        if (quotaPort == null || limit <= 0) {
             return true;
         }
-        return quotaPort.tryAcquire(key, limit, window);
+        if (!quotaPort.tryAcquire(key, limit, window)) {
+            return false;
+        }
+        held.add(key);
+        return true;
+    }
+
+    private static void releaseHeld(NotifyQuotaPort quotaPort, List<String> held) {
+        if (quotaPort == null) {
+            return;
+        }
+        for (int i = held.size() - 1; i >= 0; i--) {
+            quotaPort.release(held.get(i));
+        }
+        held.clear();
     }
 
     private static Map<String, String> mapping(String json) {

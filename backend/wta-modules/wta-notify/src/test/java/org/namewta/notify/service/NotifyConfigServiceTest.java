@@ -85,6 +85,9 @@ class NotifyConfigServiceTest {
         bo.setConfigKey("smtp-main");
         bo.setEnabled("Y");
         bo.setMinuteMax(30);
+        bo.setHost("smtp.example.com");
+        bo.setPort(465);
+        bo.setMailFrom("ops@example.com");
         bo.setMailPass("");
         bo.setAccessKeySecret(" ");
         service.updateAccount(bo);
@@ -163,6 +166,50 @@ class NotifyConfigServiceTest {
         assertEquals(1, service.saveBinding(moved));
     }
 
+    @Test
+    void cannotEnableMailAccountWithoutSecret() {
+        NotifyConfigDao dao = mock(NotifyConfigDao.class);
+        NotifyConfigService service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
+        when(dao.findAccount("MAIL", "smtp-empty")).thenReturn(null);
+
+        NotifyChannelAccountBo bo = new NotifyChannelAccountBo();
+        bo.setChannel("MAIL");
+        bo.setConfigKey("smtp-empty");
+        bo.setEnabled("Y");
+        bo.setMinuteMax(10);
+        bo.setHost("smtp.example.com");
+        bo.setPort(465);
+        bo.setMailFrom("ops@example.com");
+        ServiceException add = assertThrows(ServiceException.class, () -> service.addAccount(bo));
+        assertTrue(add.getMessage().contains("密码"));
+        verify(dao, never()).insert(any(NotifyChannelAccount.class));
+
+        NotifyChannelAccount current = account();
+        current.setMailPass("");
+        when(dao.findAccount(8L)).thenReturn(current);
+        ServiceException enable = assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
+        assertTrue(enable.getMessage().contains("密码"));
+        verify(dao, never()).update(any(NotifyChannelAccount.class));
+    }
+
+    @Test
+    void cannotEnableSmsAccountWithoutSecret() {
+        NotifyConfigDao dao = mock(NotifyConfigDao.class);
+        NotifyConfigService service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
+        when(dao.findAccount("SMS", "ali-empty")).thenReturn(null);
+
+        NotifyChannelAccountBo bo = new NotifyChannelAccountBo();
+        bo.setChannel("SMS");
+        bo.setConfigKey("ali-empty");
+        bo.setEnabled("Y");
+        bo.setMinuteMax(10);
+        bo.setSupplier("alibaba");
+        bo.setAccessKeyId("ak");
+        ServiceException add = assertThrows(ServiceException.class, () -> service.addAccount(bo));
+        assertTrue(add.getMessage().contains("密钥"));
+        verify(dao, never()).insert(any(NotifyChannelAccount.class));
+    }
+
     private NotifyChannelAccount account() {
         NotifyChannelAccount account = new NotifyChannelAccount();
         account.setAccountId(8L);
@@ -170,6 +217,10 @@ class NotifyConfigServiceTest {
         account.setConfigKey("smtp-main");
         account.setEnabled("Y");
         account.setMinuteMax(30);
+        account.setHost("smtp.example.com");
+        account.setPort(465);
+        account.setMailFrom("ops@example.com");
+        account.setMailPass("keep-me");
         return account;
     }
 }

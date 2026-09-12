@@ -103,6 +103,7 @@ public class NotifyConfigService implements MailAccountResolver {
         if (entity.getMinuteMax() == null || entity.getMinuteMax() < 1) {
             throw new ServiceException("账号每分钟上限必须大于 0");
         }
+        validateEnabledCredentials(entity);
         int rows = dao.insert(entity);
         registerSms(entity);
         return rows;
@@ -134,6 +135,7 @@ public class NotifyConfigService implements MailAccountResolver {
         if (entity.getMinuteMax() == null || entity.getMinuteMax() < 1) {
             throw new ServiceException("账号每分钟上限必须大于 0");
         }
+        validateEnabledCredentials(entity);
         int rows = dao.update(entity);
         registerSms(dao.findAccount(entity.getAccountId()));
         return rows;
@@ -152,6 +154,7 @@ public class NotifyConfigService implements MailAccountResolver {
         }
         NotifyChannelAccount current = requireAccount(accountId);
         current.setEnabled(enabled);
+        validateEnabledCredentials(current);
         int rows = dao.update(current);
         registerSms(current);
         return rows;
@@ -314,6 +317,27 @@ public class NotifyConfigService implements MailAccountResolver {
     private void validateChannel(String channel) {
         if (!"MAIL".equals(channel) && !"SMS".equals(channel)) {
             throw new ServiceException("渠道仅支持 MAIL 或 SMS");
+        }
+    }
+
+    /**
+     * 启用中的账号必须已具备渠道密钥与连接字段，避免把失败推迟到供应商。
+     *
+     * @param account 账号
+     */
+    private void validateEnabledCredentials(NotifyChannelAccount account) {
+        if (account == null || !"Y".equals(account.getEnabled())) {
+            return;
+        }
+        if ("MAIL".equals(account.getChannel())) {
+            if (isBlank(account.getHost()) || account.getPort() == null
+                || isBlank(account.getMailFrom()) || isBlank(account.getMailPass())) {
+                throw new ServiceException("启用邮件账号必须填写 SMTP 主机、端口、发件人和密码");
+            }
+            return;
+        }
+        if (isBlank(account.getSupplier()) || isBlank(account.getAccessKeyId()) || isBlank(account.getAccessKeySecret())) {
+            throw new ServiceException("启用短信账号必须填写厂商、AccessKey 和密钥");
         }
     }
 

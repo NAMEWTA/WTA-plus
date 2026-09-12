@@ -7,14 +7,14 @@ I-implement close-out 2026-09-12：T-01..T-06 `result_sha` = `3a86dfe9973bd01815
 | ID | 结果 | 证据 |
 |---|---|---|
 | AC-001 | pass | 菜单 `notify/config/index` + `notify:config:*`；web-domain registration/permissions；`index.test.ts` |
-| AC-002 | pass | 配置 API 新增账号；`NotifyConfigServiceTest.accountVoOmitsSecretFields` |
+| AC-002 | pass | 配置 API 新增账号；`NotifyConfigServiceTest.accountVoOmitsSecretFields`；CR-002：`cannotEnableMailAccountWithoutSecret` / `cannotEnableSmsAccountWithoutSecret` 无密钥不可启用 |
 | AC-003 | pass | `disabledAccountFailsClosedWithoutProviderSend`；`changeStatus(N)` 对 SMS 走 `smsBlendRegistry.remove`，`disablingSmsAccountUnregistersBlend` |
 | AC-004 | pass | `boundSmsUsesVendorTemplateOnBoundAccountOnly`；`Sms4jBlendRegistryTest` 对 alibaba/tencent 真实 `upsert`，blend 按 configKey 可取，无 CCE |
 | AC-005 | pass | unbound MAIL/SMS Dispatch 测试，无 `NotifyClient.send` |
 | AC-006 | pass | `mailBindingRejectsRenamedRequiredTokenAndAcceptsMovedToken` |
 | AC-007 | pass | SMS `NotifyTemplateContent` Dispatch 测试 |
-| AC-008 | pass | `secondSendWithinAccountMinuteCapFailsClosed` |
-| AC-009 | pass | `recipientMinuteCapIsIsolatedByScene` |
+| AC-008 | pass | `secondSendWithinAccountMinuteCapFailsClosed`；CR-002：`laterLayerFailureDoesNotLeakAccountQuota` 后续层失败回滚账号计数，不误报 `ACCOUNT_QUOTA` |
+| AC-009 | pass | `recipientMinuteCapIsIsolatedByScene`；收件人键改为规范化 SHA-256 截断，`NotifySendPlannerTest.recipientQuotaTokenIsStableDigestNotHashCode` |
 | AC-010 | pass | `templateMinuteMaxCannotExceedAccountCap` |
 | AC-011 | pass | `NotifyCallerMigrationContractUnitTest` 覆盖 captcha/换绑/企业转移/workflow/notice；SMS 只传变量；IN_APP SAFE_TEXT 不在本期 MAIL/SMS 范围 |
 | AC-012 | pass | Captcha `templateCode=auth-captcha` + `code` |
