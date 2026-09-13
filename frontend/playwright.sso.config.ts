@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
-  testMatch: 'sso-three-gates.spec.ts',
+  testMatch: ['sso-three-gates.spec.ts', 'sso-admin-config.spec.ts'],
   outputDir: './tests/e2e/reports/sso-results',
   fullyParallel: false,
   workers: 1,

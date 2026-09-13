@@ -9,16 +9,22 @@
     <el-form class="identity-login__form" label-position="top" @submit.prevent="submit">
       <div class="identity-login__sso">
         <p class="identity-login__social-label">第三方登录</p>
-        <el-button
-          v-if="ssoEnabled"
-          data-testid="sso-first-provider"
-          type="primary"
-          native-type="button"
-          :disabled="!ready"
-          @click="startSso"
-        >
-          WTA SSO
-        </el-button>
+        <div class="identity-login__social-row">
+          <el-button
+            v-if="ssoEnabled"
+            circle
+            data-testid="sso-first-provider"
+            native-type="button"
+            :disabled="!ready"
+            title="WTA SSO"
+            aria-label="WTA SSO"
+            @click="startSso"
+          >
+            <svg class="identity-login__sso-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M1.5 4h4.2l3.5 12.2L12 8.6l2.8 7.6L18.3 4H22.5L16.8 21h-4.1L12 14.7 11.3 21H7.2L1.5 4z" />
+            </svg>
+          </el-button>
+        </div>
       </div>
       <el-form-item v-if="authMode !== 'sso'" label="用户名">
         <el-input v-model="form.username" name="username" autocomplete="username" :disabled="!ready || submitting" />
@@ -134,6 +140,24 @@ onUnmounted(state.dispose);
   border-radius: var(--client-radius);
   background: var(--client-surface);
   box-shadow: var(--client-shadow);
+}
+
+.identity-login__social-label {
+  margin: 0 0 10px;
+  color: var(--client-text-muted);
+  font-size: 13px;
+}
+
+.identity-login__social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.identity-login__sso-icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
 }
 
 .identity-login__submit {

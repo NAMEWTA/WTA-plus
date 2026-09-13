@@ -39,6 +39,13 @@ test.describe('SSO three hard gates', () => {
     await page.goto(`${adminUrl}/login`);
     const firstProvider = page.getByTestId('sso-first-provider');
     await expect(firstProvider).toBeVisible({ timeout: 20_000 });
+    await expect(firstProvider).toHaveClass(/is-circle/);
+    await expect(firstProvider.locator('svg')).toBeVisible();
+    await expect(page.locator('.social-actions .el-button').first()).toHaveAttribute(
+      'data-testid',
+      'sso-first-provider'
+    );
+    await expect(firstProvider).not.toHaveText(/^\s*WTA SSO\s*$/);
     await page.screenshot({ path: shot('sso-ac001-default-provider-path.png'), fullPage: true });
 
     let adminClientFromApi = '';
@@ -90,6 +97,8 @@ test.describe('SSO three hard gates', () => {
     await home.goto(`${homeUrl}/login`);
     const homeSso = home.getByTestId('sso-first-provider');
     await expect(homeSso).toBeVisible({ timeout: 20_000 });
+    await expect(homeSso).toHaveClass(/is-circle/);
+    await expect(homeSso.locator('svg')).toBeVisible();
     await homeSso.click();
     await home.waitForURL(/127\.0\.0\.1:4176/, { timeout: 20_000 });
     await expect(home.locator('input[name="password"]')).toHaveCount(0);

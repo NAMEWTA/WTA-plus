@@ -82,13 +82,14 @@
           <div class="social-actions">
             <el-button
               v-if="ssoEnabled"
+              circle
               data-testid="sso-first-provider"
-              type="primary"
               :disabled="!loginEnabled"
               title="WTA SSO"
+              aria-label="WTA SSO"
               @click="doSsoLogin"
             >
-              WTA SSO
+              <svg-icon icon-class="wta" />
             </el-button>
             <el-button
               circle
