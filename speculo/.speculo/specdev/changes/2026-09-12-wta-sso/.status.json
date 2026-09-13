@@ -7,7 +7,8 @@
   "works_run": [
     "specdev/P-goal-plan",
     "specdev/G-grill-with-docs",
-    "specdev/S-spec"
+    "specdev/S-spec",
+    "specdev/T-tickets"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
@@ -37,13 +38,14 @@
     "history": []
   },
   "created_at": "2026-09-12T17:26:04+08:00",
-  "updated_at": "2026-09-13T08:58:00+08:00",
+  "updated_at": "2026-09-13T09:07:10+08:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
-    "S-spec drafted ready_for_tickets=true; next=T-tickets (not started)",
-    "implementation_commit still not-authorized unless separately granted"
+    "T-tickets formal map+6 tickets written; all tickets blocked/ready=false (blocked-by-auth)",
+    "implementation_commit still not-authorized; do not open I-implement or flip authorization",
+    "三门硬验收 AC-001/002/003 未授权实施；禁止假 Evidence"
   ],
   "deviations": [],
   "worktrees": []

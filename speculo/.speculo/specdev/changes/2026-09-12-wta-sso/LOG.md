@@ -432,3 +432,16 @@
 - **来源：** Lead→秘书：CTO 授权派 RVP·规格开 S-spec；外脑 Research
 - **结论：** 门禁放开至 `specdev/S-spec`；`ready_for_execution` 仍 false；不实现
 - **后续：** Lead 派 RVP·规格；Research 待命接外脑
+
+## LOG-033 — 2026-09-13T09:07:10+08:00 — T-tickets 正式拆票完成（blocked-by-auth）
+- **设计树节点：** 不适用
+- **轮次与依赖：** LOG-032 / S-spec ready_for_tickets / Lead 派 RVP·拆票
+- **状态：** confirmed
+- **问题：** 是否写入正式 T-01…T-06 与 tickets-map
+- **事实与来源：** Spec `ready`/`ready_for_tickets=true`；`implementation_commit=not-authorized`
+- **结论：** 已写入 6 张正式票 + 重写 tickets-map（status=blocked，plan_revision:1，requested_deliverables=[]）。全部票 `status: blocked` / `ready: false`，正文含 **blocked-by-auth** 与产品冻结。覆盖 AC-001…023；三门由 T-06 汇合。未改产品代码、未 push、未翻转授权、未造假 Evidence、未碰 notify 归档。
+- **影响工件：** `ticket/01`…`06`、`tickets-map.md`、`.status.json`（works_run+=specdev/T-tickets）、便签 `temp/team/tickets/2026-09-12-wta-sso.md`
+- **约束或不变量：** 不可开 I；D-111=B；三门未实施
+- **后续：** validate --stage tickets + ticket-control --map；待命 CTO 授权后再 ready
+- **替代/被替代：** 替代 outline-only tickets-map（旧 draft 投影）
+
