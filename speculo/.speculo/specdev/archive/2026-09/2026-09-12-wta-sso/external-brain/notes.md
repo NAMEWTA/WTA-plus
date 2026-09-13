@@ -35,3 +35,9 @@
   - 该报告结论 PASS_WITH_NOTES（开 I 前 Spec/票审）；本 CR 用其 8 条硬核对点对照 Round4 I 实现产物。
 - **禁止**将旧 `reply.md` / ChatGPT pack 标为外脑通过。
 - 权威 CR：`reviews/CR-001.md`（approve-with-notes）。
+
+## 归档 dry-run（2026-09-13T20:18:00+08:00）
+
+- 归档 dry-run 外脑跳过；不走 ChatGPT；未标通过。
+- 本轮优先跳过 Research；不假装任何外脑通道通过。
+- CR-001 NOTES（AC-002/003 同图证据卫生等）已由 Lead/CTO 接受并派归档。

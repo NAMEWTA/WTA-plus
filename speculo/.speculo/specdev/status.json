@@ -1,11 +1,7 @@
 {
   "schema_version": 5,
   "workflow": "specdev",
-  "active": [
-    {
-      "change": "2026-09-12-wta-sso"
-    }
-  ],
+  "active": [],
   "archived": [
     "2026-08-24-notify-eli5",
     "2026-08-24-oss-eli5",
@@ -19,6 +15,7 @@
     "2026-09-11-notify-outbox-wake-poll",
     "2026-09-12-richtext-list-automapper",
     "2026-09-12-rename-ruoyi-dromara-to-wta",
-    "2026-09-10-notify-channel-config"
+    "2026-09-10-notify-channel-config",
+    "2026-09-12-wta-sso"
   ]
 }

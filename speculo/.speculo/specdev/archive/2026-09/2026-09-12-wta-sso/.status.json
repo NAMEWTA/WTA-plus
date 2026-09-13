@@ -2,7 +2,7 @@
   "schema_version": 6,
   "artifact": "change-status",
   "change": "2026-09-12-wta-sso",
-  "change_status": "active",
+  "change_status": "archived",
   "current_work": null,
   "works_run": [
     "specdev/P-goal-plan",
@@ -10,7 +10,8 @@
     "specdev/S-spec",
     "specdev/T-tickets",
     "specdev/I-implement",
-    "specdev/C-code-review"
+    "specdev/C-code-review",
+    "specdev/A-archive-and-consolidate"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
@@ -40,15 +41,16 @@
     "history": []
   },
   "created_at": "2026-09-12T17:26:04+08:00",
-  "updated_at": "2026-09-13T20:03:00+08:00",
-  "completed_at": null,
-  "archived": false,
-  "archive_path": null,
-  "blockers": [
-    "CR-001 approve-with-notes: AC-002/003 PNG identical — isolation gate OK via API code!==200; screenshot hygiene residual",
-    "CR-001 note: SSO list 密钥未配置 + 拿配置 coexistence OK for public/PKCE; optional DB spot-check sso_secret_hash after create",
-    "Push/archive still Lead+CTO gated; do not treat superseded-r3 or historical sso-admin-config-*.png as done"
+  "updated_at": "2026-09-13T20:49:00+08:00",
+  "completed_at": "2026-09-13T20:18:00+08:00",
+  "archived": true,
+  "archive_path": "<Path>{roots.state}/specdev/archive/2026-09/2026-09-12-wta-sso</Path>",
+  "blockers": [],
+  "deviations": [
+    "waived: CR-001-notes-ac002-ac003-png-hygiene — AC-002/003 PNG identical; isolation gate OK via API code!==200; screenshot hygiene residual. Lead/CTO accepted NOTES. Evidence: reviews/CR-001.md",
+    "waived: CR-001-note-secret-unconfigured-coexistence — SSO list 密钥未配置 + 拿配置 OK for public/PKCE. Lead/CTO accepted. Evidence: reviews/CR-001.md",
+    "waived: evidence-hygiene-no-superseded-r3 — Do not treat superseded-r3 or historical sso-admin-config-*.png as done; Round4 evidence authoritative. Lead/CTO accepted.",
+    "waived: archive-dry-run-external-brain-skipped — 归档 dry-run 外脑跳过；不走 ChatGPT；未标通过。Evidence: external-brain/notes.md"
   ],
-  "deviations": [],
   "worktrees": []
 }
