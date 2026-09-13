@@ -90,6 +90,51 @@ public class SysClient extends BaseEntity {
     private Long defaultRoleId;
 
     /**
+     * 是否启用 SSO 接入
+     */
+    private Boolean ssoEnabled;
+
+    /**
+     * 登录模式 local / sso / both
+     */
+    private String ssoAuthMode;
+
+    /**
+     * OAuth 客户端类型 public / confidential
+     */
+    private String ssoClientKind;
+
+    /**
+     * SSO 精确回调白名单
+     */
+    private String ssoRedirectUris;
+
+    /**
+     * 是否强制 PKCE
+     */
+    private Boolean ssoPkceRequired;
+
+    /**
+     * 是否自动同意
+     */
+    private Boolean ssoAutoConsent;
+
+    /**
+     * SSO 默认 scope
+     */
+    private String ssoScope;
+
+    /**
+     * SSO 客户端密钥哈希
+     */
+    private String ssoSecretHash;
+
+    /**
+     * SSO 密钥最近轮换时间
+     */
+    private java.time.LocalDateTime ssoSecretRotatedAt;
+
+    /**
      * 状态（0正常 1停用）
      */
     private String status;

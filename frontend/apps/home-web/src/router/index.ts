@@ -4,6 +4,7 @@ import { resolveHomeWebRegistration } from './homeManifestRegistry';
 import HomeShell from '@/layout/HomeShell.vue';
 import PortalPage from '@/views/PortalPage.vue';
 import RegisterPage from '@/views/RegisterPage.vue';
+import SsoCallbackPage from '@/views/SsoCallbackPage.vue';
 import { useUserStore } from '@/store/user';
 import { isHandledRequestError } from '@/application/http';
 import { getToken } from '@/application/session';
@@ -12,13 +13,13 @@ import { restoreProtectedNavigation } from '@namewta/platform-app-runtime';
 
 const loginRegistration = resolveHomeWebRegistration('identity-access/login/index', 'identity-access');
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: HomeShell, name: 'Home', children: [{ path: '', component: PortalPage, name: 'Portal' }, { path: 'login', component: loginRegistration?.load ?? PortalPage, name: 'Login' }, { path: 'register', component: RegisterPage, name: 'Register' }] },
+  { path: '/', component: HomeShell, name: 'Home', children: [{ path: '', component: PortalPage, name: 'Portal' }, { path: 'login', component: loginRegistration?.load ?? PortalPage, name: 'Login' }, { path: 'register', component: RegisterPage, name: 'Register' }, { path: 'sso/callback', component: SsoCallbackPage, name: 'SsoCallback' }] },
   { path: '/:pathMatch(.*)*', component: HomeShell, children: [{ path: '', component: PortalPage }] }
 ];
 const router = createRouter({ history: createWebHistory(import.meta.env.VITE_APP_CONTEXT_PATH), routes, scrollBehavior: () => ({ top: 0 }) });
 router.beforeEach(async to => {
   const user = useUserStore();
-  if (!getToken()) { if (to.path === '/login' || to.path === '/register' || to.path === '/') return true; return { path: '/', query: { redirect: to.fullPath } }; }
+  if (!getToken()) { if (to.path === '/login' || to.path === '/register' || to.path === '/' || to.path === '/sso/callback') return true; return { path: '/', query: { redirect: to.fullPath } }; }
   if (to.path === '/login' || to.path === '/register' || to.path === '/') return { path: '/profile' };
   if (user.roles.length === 0) {
     try {

@@ -26,4 +26,19 @@ public class AuthClientContextVo {
      */
     private PasswordPolicyProjection passwordPolicy;
 
+    /**
+     * 当前 Client 是否启用第一方 SSO。
+     */
+    private Boolean ssoEnabled;
+
+    /**
+     * sso-web 授权页 URL。
+     */
+    private String ssoAuthorizeUrl;
+
+    /**
+     * 登录模式 local / sso / both。
+     */
+    private String authMode;
+
 }

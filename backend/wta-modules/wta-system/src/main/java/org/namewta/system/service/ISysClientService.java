@@ -63,4 +63,12 @@ public interface ISysClientService {
      * @return 结果
      */
     boolean checkClickKeyUnique(SysClientBo client);
+
+    /**
+     * 轮换 SSO 密钥，明文只返回一次。
+     *
+     * @param id 客户端主键
+     * @return 含一次性明文的视图
+     */
+    SysClientVo rotateSsoSecret(Long id);
 }

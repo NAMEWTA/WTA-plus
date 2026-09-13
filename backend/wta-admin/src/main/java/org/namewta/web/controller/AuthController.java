@@ -32,6 +32,7 @@ import org.namewta.system.domain.vo.SysClientVo;
 import org.namewta.system.password.PasswordPolicyService;
 import org.namewta.system.service.ISysClientService;
 import org.namewta.system.service.ISysSocialService;
+import org.namewta.sso.config.SsoProperties;
 import org.namewta.web.domain.vo.AuthClientContextVo;
 import org.namewta.web.domain.vo.LoginVo;
 import org.namewta.web.service.IAuthStrategy;
@@ -61,6 +62,7 @@ public class AuthController {
     private final ISysClientService clientService;
     private final NotificationApplicationService notificationService;
     private final PasswordPolicyService passwordPolicyService;
+    private final SsoProperties ssoProperties;
 
 
     /**
@@ -183,6 +185,8 @@ public class AuthController {
         AuthClientContextVo vo = new AuthClientContextVo();
         vo.setClientEnabled(false);
         vo.setRegisterEnabled(false);
+        vo.setSsoEnabled(false);
+        vo.setAuthMode("local");
         String resolvedClientId = StringUtils.isNotBlank(clientId) ? clientId : clientIdHeader;
         if (StringUtils.isBlank(resolvedClientId)) {
             return R.ok(vo);
@@ -194,6 +198,17 @@ public class AuthController {
         boolean clientEnabled = SystemConstants.NORMAL.equals(client.getStatus());
         vo.setClientEnabled(clientEnabled);
         vo.setRegisterEnabled(clientEnabled && Boolean.TRUE.equals(client.getRegisterEnabled()));
+        String authMode = StringUtils.blankToDefault(client.getSsoAuthMode(), "both");
+        vo.setAuthMode(authMode);
+        boolean ssoEnabled = clientEnabled && ssoProperties.isEnabled() && Boolean.TRUE.equals(client.getSsoEnabled());
+        vo.setSsoEnabled(ssoEnabled);
+        if (ssoEnabled && StringUtils.isNotBlank(ssoProperties.getWebOrigin())) {
+            String origin = StringUtils.trim(ssoProperties.getWebOrigin());
+            if (origin.endsWith("/")) {
+                origin = origin.substring(0, origin.length() - 1);
+            }
+            vo.setSsoAuthorizeUrl(origin + "/authorize");
+        }
         if (clientEnabled) {
             vo.setPasswordPolicy(passwordPolicyService.publicProjection());
         }

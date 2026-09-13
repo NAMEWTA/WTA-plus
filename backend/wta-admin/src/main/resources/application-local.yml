@@ -57,6 +57,12 @@ oss:
 captcha:
   enable: false
 
+namewta:
+  sso:
+    enabled: true
+    web-origin: http://127.0.0.1:4176
+    cookie-name: Sso-Token
+
 # redisson 配置
 redisson:
   # redis key前缀

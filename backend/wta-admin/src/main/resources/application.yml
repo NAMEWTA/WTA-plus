@@ -25,6 +25,14 @@ captcha:
   # 字符验证码长度
   charLength: 4
 
+namewta:
+  sso:
+    enabled: true
+    web-origin: ${SSO_WEB_ORIGIN:http://127.0.0.1:4176}
+    cookie-name: Sso-Token
+    code-ttl: 5m
+    session-ttl: 8h
+
 # 可选 Nacos 稀疏配置覆盖。关闭时不创建客户端或监听器。
 nacos:
   config:
@@ -275,6 +283,8 @@ security:
     - /warm-flow-ui/config
     - /snail-chat/**
     - /api/snail/chat/**
+    - /sso/**
+    - /sso/oauth2/**
 
 # MyBatisPlus配置
 # https://baomidou.com/config/

@@ -95,6 +95,18 @@ export interface ClientVO {
    * 默认角色名称
    */
   defaultRoleName?: string;
+
+  ssoEnabled?: boolean;
+  ssoAuthMode?: 'local' | 'sso' | 'both';
+  ssoClientKind?: 'public' | 'confidential';
+  ssoRedirectUris?: string;
+  ssoRedirectUriList?: string[];
+  ssoPkceRequired?: boolean;
+  ssoAutoConsent?: boolean;
+  ssoScope?: string;
+  ssoSecretConfigured?: boolean;
+  ssoSecretOnce?: string;
+  ssoSecretRotatedAt?: string;
 }
 
 export interface ClientForm extends BaseEntity {
@@ -177,6 +189,16 @@ export interface ClientForm extends BaseEntity {
    * 默认角色ID
    */
   defaultRoleId?: string | number;
+
+  ssoEnabled?: boolean;
+  ssoAuthMode?: 'local' | 'sso' | 'both';
+  ssoClientKind?: 'public' | 'confidential';
+  ssoRedirectUris?: string;
+  ssoRedirectUriList?: string[];
+  ssoPkceRequired?: boolean;
+  ssoAutoConsent?: boolean;
+  ssoScope?: string;
+  ssoSecret?: string;
 }
 
 export interface ClientQuery extends PageQuery {

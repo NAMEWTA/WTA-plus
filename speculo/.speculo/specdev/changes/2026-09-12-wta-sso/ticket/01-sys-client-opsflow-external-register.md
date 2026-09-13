@@ -14,10 +14,10 @@ artifact: ticket
 change: 2026-09-12-wta-sso
 id: T-01
 title: 扩展 sys_client SSO 字段与 OpsFlow；外部 App 管理面可登记
-status: blocked
+status: done
 planning_depth: deep
 planning_depth_reason: 扩展一层应用目录 schema/管理面/密钥哈希与 OpsFlow；改变共享 Client 契约，后续 OAuth/context 依赖其稳定；含迁移与密钥安全。
-ready: false
+ready: true
 risk: high
 blocked_by: []
 contract_ids: [AC-017, AC-018, AC-019, AC-023]

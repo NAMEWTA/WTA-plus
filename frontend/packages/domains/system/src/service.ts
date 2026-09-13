@@ -61,6 +61,7 @@ export interface SystemService {
   readonly clients: CrudService<ClientQuery, ClientForm, ClientVO, [query?: ClientQuery]> & {
     changeStatus(clientId: string, status: string): Promise<ApiResponse>;
     options(): Promise<ClientVO[]>;
+    rotateSsoSecret(id: Identifier): Promise<ApiResponse<ClientVO>>;
   };
   readonly userTypes: CrudService<UserTypeQuery, UserTypeForm, UserTypeVO, [query?: UserTypeQuery]> & {
     options(): Promise<ApiResponse<UserTypeVO[]>>;
@@ -122,6 +123,8 @@ export function createSystemService(http: HttpClient): SystemService {
     delete: (ids: IdentifierList) => request({ url: '/system/client/' + segment(ids), method: 'delete' }),
     changeStatus: (clientId: string, status: string) =>
       request({ url: '/system/client/changeStatus', method: 'put', data: { clientId, status } }),
+    rotateSsoSecret: (id: Identifier) =>
+      request<ClientVO>({ url: '/system/client/sso/rotate-secret', method: 'post', data: { id } }),
     options: async () => (await clients.list({ pageNum: 1, pageSize: 1000 })).data?.rows ?? []
   });
   const userTypes = Object.freeze({

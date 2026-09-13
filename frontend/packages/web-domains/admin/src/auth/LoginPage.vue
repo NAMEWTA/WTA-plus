@@ -7,10 +7,23 @@
     </div>
 
     <el-form class="identity-login__form" label-position="top" @submit.prevent="submit">
-      <el-form-item label="用户名">
+      <div class="identity-login__sso">
+        <p class="identity-login__social-label">第三方登录</p>
+        <el-button
+          v-if="ssoEnabled"
+          data-testid="sso-first-provider"
+          type="primary"
+          native-type="button"
+          :disabled="!ready"
+          @click="startSso"
+        >
+          WTA SSO
+        </el-button>
+      </div>
+      <el-form-item v-if="authMode !== 'sso'" label="用户名">
         <el-input v-model="form.username" name="username" autocomplete="username" :disabled="!ready || submitting" />
       </el-form-item>
-      <el-form-item label="密码">
+      <el-form-item v-if="authMode !== 'sso'" label="密码">
         <el-input
           v-model="form.password"
           name="password"
@@ -20,7 +33,7 @@
           :disabled="!ready || submitting"
         />
       </el-form-item>
-      <el-form-item v-if="verification?.captchaEnabled" label="验证码">
+      <el-form-item v-if="authMode !== 'sso' && verification?.captchaEnabled" label="验证码">
         <div class="identity-login__captcha">
           <el-input v-model="form.code" name="code" :disabled="!ready || submitting" />
           <img :src="captchaImage" alt="验证码图片" />
@@ -37,6 +50,7 @@
       </el-form-item>
       <p v-if="errorMessage" class="identity-login__error" role="alert">{{ errorMessage }}</p>
       <el-button
+        v-if="authMode !== 'sso'"
         class="identity-login__submit"
         type="primary"
         native-type="submit"
@@ -61,7 +75,25 @@ import { requireIdentityAccessWebRuntime } from '../runtime';
 const props = defineProps<{ runtime: IdentityAccessWebRuntime }>();
 const runtime = requireIdentityAccessWebRuntime(props.runtime);
 const state = createIdentityLoginState(runtime);
-const { captchaImage, errorMessage, form, prepare, preparing, ready, submit, submitting, verification } = state;
+const {
+  authMode,
+  captchaImage,
+  errorMessage,
+  form,
+  prepare,
+  preparing,
+  ready,
+  ssoAuthorizeUrl,
+  ssoEnabled,
+  submit,
+  submitting,
+  verification
+} = state;
+
+const startSso = async () => {
+  if (!ssoAuthorizeUrl.value) return;
+  await runtime.startSsoLogin?.({ authorizeUrl: ssoAuthorizeUrl.value });
+};
 
 onMounted(prepare);
 onUnmounted(state.dispose);

@@ -17,6 +17,7 @@
 |---|---|---|---|
 | `layered` | `wta-modules/wta-profile` | 新增 Profile 业务试点，person/enterprise 使用五层 | 作为新模块参考实现；新增能力必须保持五层和中文 Javadoc |
 | `layered` | `wta-modules/wta-notify` | 统一通知控制面，含公告、收件箱、Outbox 和通知配置 | 新增能力必须保持五层；邮件/短信账号运行时以数据库为准 |
+| `layered` | `wta-modules/wta-sso` | 第一方 SSO Authorization Code + PKCE | 新增能力必须保持五层；仅经 wta-api 读取用户与 Client |
 | `classic` | `wta-modules/wta-system` | 既有用户、组织、权限、资源和监控能力 | 保持现状；只在触及文件按 Ratchet 收紧，不发动无关重构 |
 | `classic` | `wta-modules/wta-workflow` | 既有 Warm-Flow 流程能力 | 保持现状；通过公开 Workflow API 接入，不改内部层次 |
 | `classic` | `wta-modules/wta-job` | 既有任务业务能力 | 保持现状；新增独立业务能力需另行登记为 layered |

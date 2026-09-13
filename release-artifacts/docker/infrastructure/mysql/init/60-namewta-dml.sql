@@ -1332,3 +1332,49 @@ values
 
 insert ignore into sys_role_menu (role_id, menu_id)
 select 1761300000000000001, menu_id from sys_menu where menu_id between 2100800000000000001 and 2100800000000000015;
+
+-- ============================================================================
+-- 变更标识：NAMEWTA-SSO-DSL-001
+-- 变更内容：预置 admin/home SSO 接入、SSO 中心 Client，并授予超管用户端登录域
+-- ============================================================================
+
+update sys_client
+set sso_enabled = 1,
+    sso_auth_mode = 'both',
+    sso_client_kind = 'public',
+    sso_redirect_uris = 'http://127.0.0.1:4174/sso/callback,http://127.0.0.1:4173/sso/callback',
+    sso_pkce_required = 1,
+    sso_auto_consent = 1,
+    sso_scope = 'profile'
+where id = 1762000000000000001;
+
+update sys_client
+set sso_enabled = 1,
+    sso_auth_mode = 'both',
+    sso_client_kind = 'public',
+    sso_redirect_uris = 'http://127.0.0.1:4175/sso/callback',
+    sso_pkce_required = 1,
+    sso_auto_consent = 1,
+    sso_scope = 'profile'
+where id = 1762000000000000002;
+
+insert into sys_client (
+    id, client_id, client_key, client_secret, grant_type, device_type, access_path, ip_whitelist,
+    active_timeout, timeout, user_type_id, register_enabled, default_role_id,
+    sso_enabled, sso_auth_mode, sso_client_kind, sso_redirect_uris, sso_pkce_required, sso_auto_consent, sso_scope,
+    status, del_flag, create_dept, create_by, create_time, update_by, update_time)
+select 1762000000000000005, '0ae7adbebb81e87a9735ed0fba0a1135', 'sso', 'sso123', 'password', 'pc', null, null,
+       1800, 604800, 1762100000000000001, 0, null,
+       0, 'local', 'public', null, 1, 1, null,
+       '0', '0', 1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()
+from dual
+where not exists (select 1 from sys_client where id = 1762000000000000005);
+
+insert into sys_user_type_rel (rel_id, user_id, user_type_id, grant_source, status, create_dept, create_by, create_time, update_by, update_time)
+select 1762200000000000008, 1761100000000000001, 1762100000000000002, 'SYSTEM_INIT', '0',
+       1761000000000000103, 1761100000000000001, sysdate(), null, null
+from dual
+where not exists (
+    select 1 from sys_user_type_rel
+    where user_id = 1761100000000000001 and user_type_id = 1762100000000000002
+);

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "@namewta/sso-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "NAMEWTA first-party SSO login origin",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build --mode production",
+    "dev": "vite serve --mode development",
+    "lint": "oxlint src vite.config.ts",
+    "preview": "vite preview --host 127.0.0.1 --port 4176 --strictPort",
+    "test": "vitest run src",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/compiler-sfc": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vite": "^8.1.5",
+    "vitest": "4.1.10",
+    "vue-tsc": "^3.3.8"
+  },
+  "engines": {
+    "node": ">=20.19.0",
+    "pnpm": ">=10.0.0"
+  }
+}

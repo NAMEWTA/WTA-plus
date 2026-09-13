@@ -22,9 +22,12 @@ export interface PasswordPolicy {
 }
 
 export interface ClientAuthContext {
+  authMode?: 'local' | 'sso' | 'both';
   clientEnabled: boolean;
   passwordPolicy?: PasswordPolicy;
   registerEnabled: boolean;
+  ssoAuthorizeUrl?: string;
+  ssoEnabled?: boolean;
 }
 
 export interface PasswordPolicyViolation {

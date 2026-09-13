@@ -316,6 +316,47 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-divider content-position="left">SSO 接入</el-divider>
+        <el-form-item label="启用 SSO" prop="ssoEnabled">
+          <el-switch v-model="form.ssoEnabled" />
+        </el-form-item>
+        <el-form-item label="登录模式" prop="ssoAuthMode">
+          <el-select v-model="form.ssoAuthMode" placeholder="local / sso / both">
+            <el-option label="本地登录" value="local" />
+            <el-option label="仅 SSO" value="sso" />
+            <el-option label="本地与 SSO 并存" value="both" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="客户端类型" prop="ssoClientKind">
+          <el-select v-model="form.ssoClientKind">
+            <el-option label="public（第一方 SPA）" value="public" />
+            <el-option label="confidential（外部登记）" value="confidential" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="精确回调" prop="ssoRedirectUris">
+          <el-input
+            v-model="form.ssoRedirectUris"
+            type="textarea"
+            :rows="3"
+            placeholder="禁止 *，每行一个完整 http(s) 回调"
+          />
+        </el-form-item>
+        <el-form-item label="强制 PKCE">
+          <el-switch v-model="form.ssoPkceRequired" />
+        </el-form-item>
+        <el-form-item label="自动同意">
+          <el-switch v-model="form.ssoAutoConsent" />
+        </el-form-item>
+        <el-form-item label="Scope" prop="ssoScope">
+          <el-input v-model="form.ssoScope" placeholder="例如 profile" />
+        </el-form-item>
+        <el-form-item v-if="form.ssoClientKind === 'confidential'" label="SSO 密钥" prop="ssoSecret">
+          <el-input v-model="form.ssoSecret" type="password" show-password placeholder="留空则创建时生成；明文只显示一次" />
+          <div class="form-item-tip">已配置：{{ form.id && secretConfigured ? '是' : '否' }}。登记成功不等于 confidential 运行时已通。</div>
+        </el-form-item>
+        <el-form-item v-if="form.id" label="轮换密钥">
+          <el-button type="warning" plain @click="handleRotateSecret">轮换 SSO 密钥</el-button>
+        </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -330,6 +371,7 @@
 <script setup name="Client" lang="ts">
 import type { ClientForm, ClientQuery, ClientVO, RoleQuery, RoleVO, UserTypeVO } from '@namewta/domain-system';
 import type { FormInstance as ElFormInstance } from 'element-plus';
+import { ElMessageBox } from 'element-plus';
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import type { SystemWebRuntime } from '../runtime';
 import { useFormDialog, useLoading, useSearchReset, useSearchToggle, useTableSelection } from '../composables';
@@ -341,7 +383,8 @@ const {
   delete: delClient,
   add: addClient,
   update: updateClient,
-  changeStatus
+  changeStatus,
+  rotateSsoSecret
 } = runtime.service.clients;
 const listRole = runtime.service.roles.list;
 const listUserTypeOptions = runtime.service.userTypes.options;
@@ -381,7 +424,15 @@ const initFormData: ClientForm = {
   status: '0',
   userTypeId: undefined,
   registerEnabled: false,
-  defaultRoleId: undefined
+  defaultRoleId: undefined,
+  ssoEnabled: false,
+  ssoAuthMode: 'local',
+  ssoClientKind: 'public',
+  ssoRedirectUris: undefined,
+  ssoPkceRequired: true,
+  ssoAutoConsent: true,
+  ssoScope: undefined,
+  ssoSecret: undefined
 };
 const data = reactive<PageData<ClientForm, ClientQuery>>({
   form: { ...initFormData },
@@ -411,6 +462,7 @@ const data = reactive<PageData<ClientForm, ClientQuery>>({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+const secretConfigured = ref(false);
 const { dialog, resetForm, openDialog, showDialog, closeDialog } = useFormDialog({
   form,
   formRef: clientFormRef,
@@ -482,7 +534,15 @@ const handleQuery = () => {
 /** 新增按钮操作 */
 const handleAdd = () => {
   defaultRoleOptions.value = [];
+  secretConfigured.value = false;
   openDialog('添加客户端管理');
+};
+
+const handleRotateSecret = async () => {
+  if (!form.value.id) return;
+  await modal.confirm('轮换后旧 SSO 密钥立即失效，且明文只显示一次。登记成功不等于 confidential 运行时已通。');
+  const res = await rotateSsoSecret(form.value.id);
+  await revealSecretOnce(res.data?.ssoSecretOnce);
 };
 
 /** 修改按钮操作 */
@@ -491,8 +551,16 @@ const handleUpdate = async (row?: Partial<ClientVO>) => {
   const clientId = row?.id || ids.value[0];
   const res = await getClient(clientId);
   Object.assign(form.value, res.data);
+  form.value.ssoSecret = undefined;
+  secretConfigured.value = Boolean(res.data?.ssoSecretConfigured);
   await getDefaultRoleOptions(form.value.id);
   showDialog('修改客户端管理');
+};
+
+const revealSecretOnce = async (secret?: string) => {
+  if (!secret) return;
+  secretConfigured.value = true;
+  await ElMessageBox.alert(secret, '请立即保存 SSO 密钥（只显示一次）', { confirmButtonText: '已复制/已保存' });
 };
 
 /** 提交按钮 */
@@ -500,13 +568,10 @@ const submitForm = () => {
   clientFormRef.value?.validate(async (valid: boolean) => {
     if (valid) {
       await withButtonLoading(async () => {
-        if (form.value.id) {
-          await updateClient(form.value);
-        } else {
-          await addClient(form.value);
-        }
+        const saved = form.value.id ? await updateClient(form.value) : await addClient(form.value);
+        await revealSecretOnce((saved as { data?: ClientVO }).data?.ssoSecretOnce);
       });
-      modal.msgSuccess('修改成功');
+      modal.msgSuccess('保存成功');
       closeDialog();
       await getList();
     }

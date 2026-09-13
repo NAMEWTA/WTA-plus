@@ -111,6 +111,56 @@ public class SysClientBo implements Serializable {
     private Long defaultRoleId;
 
     /**
+     * 是否启用 SSO 接入
+     */
+    private Boolean ssoEnabled;
+
+    /**
+     * 登录模式 local / sso / both
+     */
+    private String ssoAuthMode;
+
+    /**
+     * OAuth 客户端类型 public / confidential
+     */
+    private String ssoClientKind;
+
+    /**
+     * SSO 精确回调白名单
+     */
+    private String ssoRedirectUris;
+
+    /**
+     * SSO 精确回调列表
+     */
+    private List<String> ssoRedirectUriList;
+
+    /**
+     * 是否强制 PKCE
+     */
+    private Boolean ssoPkceRequired;
+
+    /**
+     * 是否自动同意
+     */
+    private Boolean ssoAutoConsent;
+
+    /**
+     * SSO 默认 scope
+     */
+    private String ssoScope;
+
+    /**
+     * 写入时的 SSO 密钥明文，不会回读
+     */
+    private String ssoSecret;
+
+    /**
+     * 仅本次响应可回显的明文密钥
+     */
+    private String ssoSecretOnce;
+
+    /**
      * 状态（0正常 1停用）
      */
     private String status;

@@ -12,6 +12,9 @@ export function createIdentityLoginState(runtime: IdentityAccessWebRuntime) {
   const errorMessage = ref('');
   const verification = ref<LoginVerification>();
   const form = reactive({ username: '', password: '', code: '' });
+  const ssoEnabled = ref(false);
+  const ssoAuthorizeUrl = ref('');
+  const authMode = ref<'local' | 'sso' | 'both'>('both');
   let active = true;
   let preparation: Promise<void> | undefined;
 
@@ -27,6 +30,10 @@ export function createIdentityLoginState(runtime: IdentityAccessWebRuntime) {
       .then(result => {
         if (!active) return;
         verification.value = result.verification;
+        ssoEnabled.value = result.context.ssoEnabled === true;
+        ssoAuthorizeUrl.value = result.context.ssoAuthorizeUrl ?? '';
+        authMode.value =
+          result.context.authMode === 'sso' || result.context.authMode === 'local' ? result.context.authMode : 'both';
         ready.value = true;
       })
       .catch(error => {
@@ -65,9 +72,12 @@ export function createIdentityLoginState(runtime: IdentityAccessWebRuntime) {
     dispose: () => {
       active = false;
     },
+    authMode,
     errorMessage,
     form,
     prepare,
+    ssoAuthorizeUrl,
+    ssoEnabled,
     preparing,
     ready,
     submit,

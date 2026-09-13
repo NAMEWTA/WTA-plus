@@ -4,6 +4,7 @@ import { composeAppRuntime, AppRuntimeError, type WebComponentRegistration } fro
 import { createAdminWebDomain } from '@namewta/web-domain-admin';
 import { createProfileSelfWebDomain } from '@namewta/web-domain-profile';
 import { identityAccessService, profileService } from '@/application/services';
+import { homeSso, homeSsoRedirectUri } from '@/application/sso';
 import { hasPermission } from '@/application/access';
 import { getToken } from '@/application/session';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -12,6 +13,12 @@ const identityManifest = createAdminWebDomain({
   service: identityAccessService,
   title: '用户登录',
   description: '登录用户中心，完成个人或企业认证。',
+  startSsoLogin: ({ authorizeUrl }) =>
+    homeSso.startSsoLogin({
+      authorizeUrl,
+      clientId: import.meta.env.VITE_APP_CLIENT_ID,
+      redirectUri: homeSsoRedirectUri()
+    }),
   onAuthenticated: () => {
     window.location.href = `${import.meta.env.VITE_APP_CONTEXT_PATH}profile`;
   }

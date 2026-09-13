@@ -165,7 +165,15 @@ function parseClientAuthContext(value: unknown): ClientAuthContext {
     throw clientContextError();
   }
   if (!context.clientEnabled) throw clientContextError();
-  return Object.freeze(projectClientAuthContextTransport(context as ClientAuthContextTransport));
+  const projected = projectClientAuthContextTransport(context as ClientAuthContextTransport);
+  const authMode = context.authMode === 'local' || context.authMode === 'sso' || context.authMode === 'both' ? context.authMode : undefined;
+  const ssoAuthorizeUrl = typeof context.ssoAuthorizeUrl === 'string' ? context.ssoAuthorizeUrl.trim() : '';
+  return Object.freeze({
+    ...projected,
+    ...(authMode ? { authMode } : {}),
+    ...(context.ssoEnabled === true ? { ssoEnabled: true } : {}),
+    ...(ssoAuthorizeUrl ? { ssoAuthorizeUrl } : {})
+  });
 }
 
 function parseVerification(value: unknown): LoginVerification {

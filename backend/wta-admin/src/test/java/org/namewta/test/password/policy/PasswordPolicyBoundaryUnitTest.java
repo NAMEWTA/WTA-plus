@@ -11,6 +11,7 @@ import org.namewta.system.password.PasswordPolicyProjection;
 import org.namewta.system.password.PasswordPolicyService;
 import org.namewta.system.service.ISysClientService;
 import org.namewta.system.service.impl.SysConfigServiceImpl;
+import org.namewta.sso.config.SsoProperties;
 import org.namewta.web.controller.AuthController;
 import org.namewta.web.domain.vo.AuthClientContextVo;
 import org.junit.jupiter.api.Tag;
@@ -64,7 +65,9 @@ class PasswordPolicyBoundaryUnitTest {
         client.setStatus(SystemConstants.NORMAL);
         client.setRegisterEnabled(true);
         when(clientService.queryByClientId("web-client")).thenReturn(client);
-        AuthController controller = new AuthController(null, null, null, null, clientService, null, policyService);
+        SsoProperties ssoProperties = new SsoProperties();
+        ssoProperties.setEnabled(true);
+        AuthController controller = new AuthController(null, null, null, null, clientService, null, policyService, ssoProperties);
 
         AuthClientContextVo context = controller.clientContext("web-client", null).getData();
 
@@ -74,9 +77,9 @@ class PasswordPolicyBoundaryUnitTest {
         String json = JsonMapper.builder().build().writeValueAsString(context);
         assertTrue(json.contains("\"minimumLength\":8"));
         assertTrue(json.contains("\"requiredCharacterClasses\":[\"UPPERCASE\",\"LOWERCASE\",\"DIGIT\",\"SPECIAL\"]"));
-        assertFalse(json.contains("mode"));
         assertFalse(json.contains("fixedValue"));
         assertFalse(json.contains("generator"));
+        assertFalse(json.contains("FIXED"));
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         String response = mockMvc.perform(get("/auth/client/context").param("clientId", "web-client"))

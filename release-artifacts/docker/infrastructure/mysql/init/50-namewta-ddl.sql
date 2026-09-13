@@ -1511,3 +1511,42 @@ create table notify_scene_binding (
     unique key uk_notify_scene_binding (scene_code, channel),
     key idx_notify_scene_binding_account (account_id)
 ) engine=innodb comment='通知场景渠道绑定';
+
+-- ============================================================================
+-- 变更标识：NAMEWTA-SSO-DDL-001
+-- 变更内容：sys_client SSO 分组字段与一次性授权码表
+-- ============================================================================
+
+alter table sys_client
+    add column sso_enabled tinyint(1) default 0 comment '是否启用 SSO 接入（0否 1是）' after default_role_id,
+    add column sso_auth_mode varchar(16) default 'local' comment '登录模式 local/sso/both' after sso_enabled,
+    add column sso_client_kind varchar(16) default 'public' comment 'OAuth 客户端类型 public/confidential' after sso_auth_mode,
+    add column sso_redirect_uris varchar(2000) default null comment 'SSO 精确回调白名单' after sso_client_kind,
+    add column sso_pkce_required tinyint(1) default 1 comment '是否强制 PKCE（0否 1是）' after sso_redirect_uris,
+    add column sso_auto_consent tinyint(1) default 1 comment '是否自动同意（0否 1是）' after sso_pkce_required,
+    add column sso_scope varchar(255) default null comment 'SSO 默认 scope' after sso_auto_consent,
+    add column sso_secret_hash varchar(255) default null comment 'SSO 客户端密钥哈希' after sso_scope,
+    add column sso_secret_rotated_at datetime default null comment 'SSO 密钥最近轮换时间' after sso_secret_hash;
+
+create table sso_authorization_code (
+    authorization_code_id bigint(20) not null comment '授权码主键',
+    authorization_code varchar(128) not null comment '一次性授权码',
+    client_id varchar(64) not null comment '目标业务客户端标识',
+    redirect_uri varchar(1000) not null comment '绑定的回调地址',
+    code_challenge varchar(128) not null comment 'PKCE S256 挑战',
+    state varchar(128) default null comment 'CSRF state',
+    user_id bigint(20) not null comment '已认证用户主键',
+    username varchar(64) not null comment '已认证用户名',
+    consumed tinyint(1) not null default 0 comment '是否已消费（0否 1是）',
+    expire_time datetime not null comment '过期时间',
+    version int default 0 comment '乐观锁版本',
+    create_dept bigint(20) default null comment '创建部门',
+    create_by bigint(20) default null comment '创建者',
+    create_time datetime default null comment '创建时间',
+    update_by bigint(20) default null comment '更新者',
+    update_time datetime default null comment '更新时间',
+    del_flag char(1) default '0' comment '删除标志（0代表存在 1代表删除）',
+    primary key (authorization_code_id),
+    unique key uk_sso_authorization_code (authorization_code),
+    key idx_sso_authorization_code_expire (expire_time)
+) engine=innodb comment='SSO 一次性授权码';

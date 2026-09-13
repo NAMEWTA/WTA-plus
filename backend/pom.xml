@@ -474,6 +474,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- 第一方 SSO -->
+            <dependency>
+                <groupId>org.namewta</groupId>
+                <artifactId>wta-sso</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!--  api模块  -->
             <dependency>
                 <groupId>org.namewta</groupId>

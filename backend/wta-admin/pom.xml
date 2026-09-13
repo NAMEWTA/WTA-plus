@@ -110,6 +110,12 @@
             <artifactId>wta-notify</artifactId>
         </dependency>
 
+        <!-- 第一方 SSO -->
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-sso</artifactId>
+        </dependency>
+
         <!-- Spring Boot Admin 客户端 -->
         <dependency>
             <groupId>de.codecentric</groupId>

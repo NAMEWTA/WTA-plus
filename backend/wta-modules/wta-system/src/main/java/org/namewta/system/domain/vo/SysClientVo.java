@@ -1,5 +1,6 @@
 package org.namewta.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import org.apache.fesod.sheet.annotation.ExcelIgnoreUnannotated;
@@ -135,6 +136,71 @@ public class SysClientVo implements Serializable {
      */
     @ExcelProperty(value = "默认角色")
     private String defaultRoleName;
+
+    /**
+     * 是否启用 SSO 接入
+     */
+    @ExcelProperty(value = "SSO 接入", converter = ExcelDictConvert.class)
+    @ExcelDictFormat(readConverterExp = "true=开启,false=关闭")
+    private Boolean ssoEnabled;
+
+    /**
+     * 登录模式 local / sso / both
+     */
+    @ExcelProperty(value = "登录模式")
+    private String ssoAuthMode;
+
+    /**
+     * OAuth 客户端类型 public / confidential
+     */
+    @ExcelProperty(value = "SSO 客户端类型")
+    private String ssoClientKind;
+
+    /**
+     * SSO 精确回调白名单
+     */
+    private String ssoRedirectUris;
+
+    /**
+     * SSO 精确回调列表
+     */
+    private List<String> ssoRedirectUriList;
+
+    /**
+     * 是否强制 PKCE
+     */
+    private Boolean ssoPkceRequired;
+
+    /**
+     * 是否自动同意
+     */
+    private Boolean ssoAutoConsent;
+
+    /**
+     * SSO 默认 scope
+     */
+    private String ssoScope;
+
+    /**
+     * 是否已配置 SSO 密钥哈希
+     */
+    private Boolean ssoSecretConfigured;
+
+    /**
+     * 仅创建或轮换时回显一次的明文密钥
+     */
+    private String ssoSecretOnce;
+
+    /**
+     * 密钥最近轮换时间
+     */
+    private java.time.LocalDateTime ssoSecretRotatedAt;
+
+    /**
+     * 查询映射用，响应前清除
+     */
+    @JsonIgnore
+    private String ssoSecretHash;
 
     /**
      * 状态（0正常 1停用）

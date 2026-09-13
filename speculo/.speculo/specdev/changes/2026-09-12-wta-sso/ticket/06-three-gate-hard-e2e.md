@@ -16,10 +16,10 @@ artifact: ticket
 change: 2026-09-12-wta-sso
 id: T-06
 title: 三门硬 E2E：默认提供方路径 + SSO 复用 + Client 隔离
-status: blocked
+status: done
 planning_depth: deep
 planning_depth_reason: change 级硬验收汇合；跨 Origin/双 App/Token 隔离，需发布恢复与 Lead E2E。
-ready: false
+ready: true
 risk: critical
 blocked_by: [T-05]
 contract_ids: [AC-001, AC-002, AC-003]
@@ -141,9 +141,9 @@ shared_path_owners:
 
 ## 10. 验收标准
 
-- [ ] `AC-001`、`AC-002`、`AC-003` 同场证据。
-- [ ] blocked-by-auth 直至授权；不造假 Evidence。
-- [ ] 未放宽隔离；未用共享 Token 伪 SSO。
+- [x] `AC-001`、`AC-002`、`AC-003` 同场证据。
+- [x] blocked-by-auth 直至授权；不造假 Evidence。
+- [x] 未放宽隔离；未用共享 Token 伪 SSO。
 
 ## 11. SKILL 调用计划
 

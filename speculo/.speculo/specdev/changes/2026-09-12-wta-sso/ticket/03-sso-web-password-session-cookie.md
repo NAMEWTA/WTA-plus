@@ -14,10 +14,10 @@ artifact: ticket
 change: 2026-09-12-wta-sso
 id: T-03
 title: 交付 sso-web（仅密码）与后端 SSO 域 Set-Cookie 会话
-status: blocked
+status: done
 planning_depth: standard
 planning_depth_reason: 独立 Origin 登录页 + 后端 Set-Cookie 两层会话；需完整实现契约与验证，决策已锁定。
-ready: false
+ready: true
 risk: high
 blocked_by: [T-02]
 contract_ids: [AC-016, AC-020]

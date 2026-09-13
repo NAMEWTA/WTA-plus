@@ -19,10 +19,10 @@ artifact: ticket
 change: 2026-09-12-wta-sso
 id: T-02
 title: 新建 wta-sso：authorize/token/revoke + PKCE 负向 + 模块边界
-status: blocked
+status: done
 planning_depth: deep
 planning_depth_reason: 新模块与 OAuth 公共接缝、PKCE/code 安全负向全进 P0、Token extras 不变量与模块边界硬约束。
-ready: false
+ready: true
 risk: critical
 blocked_by: [T-01]
 contract_ids: [AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-021, AC-022]

@@ -84,14 +84,19 @@ public class SysClientController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:client:add")
-    @Log(title = "客户端管理", businessType = BusinessType.INSERT)
+    @Log(title = "客户端管理", businessType = BusinessType.INSERT, excludeParamNames = {"ssoSecret", "ssoSecretOnce", "clientSecret"})
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysClientBo bo) {
+    public R<SysClientVo> add(@Validated(AddGroup.class) @RequestBody SysClientBo bo) {
         if (!sysClientService.checkClickKeyUnique(bo)) {
             return R.fail("新增客户端'" + bo.getClientKey() + "'失败，客户端key已存在");
         }
-        return toAjax(sysClientService.insertByBo(bo));
+        if (!sysClientService.insertByBo(bo)) {
+            return R.fail("新增客户端失败");
+        }
+        SysClientVo vo = sysClientService.queryById(bo.getId());
+        vo.setSsoSecretOnce(bo.getSsoSecretOnce());
+        return R.ok(vo);
     }
 
     /**
@@ -101,14 +106,36 @@ public class SysClientController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:client:edit")
-    @Log(title = "客户端管理", businessType = BusinessType.UPDATE)
+    @Log(title = "客户端管理", businessType = BusinessType.UPDATE, excludeParamNames = {"ssoSecret", "ssoSecretOnce", "clientSecret"})
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysClientBo bo) {
+    public R<SysClientVo> edit(@Validated(EditGroup.class) @RequestBody SysClientBo bo) {
         if (!sysClientService.checkClickKeyUnique(bo)) {
             return R.fail("修改客户端'" + bo.getClientKey() + "'失败，客户端key已存在");
         }
-        return toAjax(sysClientService.updateByBo(bo));
+        if (!sysClientService.updateByBo(bo)) {
+            return R.fail("修改客户端失败");
+        }
+        SysClientVo vo = sysClientService.queryById(bo.getId());
+        vo.setSsoSecretOnce(bo.getSsoSecretOnce());
+        return R.ok(vo);
+    }
+
+    /**
+     * 轮换 SSO 密钥，明文只返回一次。
+     *
+     * @param bo 仅使用主键
+     * @return 含一次性明文的客户端视图
+     */
+    @SaCheckPermission("system:client:edit")
+    @Log(title = "客户端SSO密钥轮换", businessType = BusinessType.UPDATE, isSaveResponseData = false)
+    @RepeatSubmit()
+    @PostMapping("/sso/rotate-secret")
+    public R<SysClientVo> rotateSsoSecret(@RequestBody SysClientBo bo) {
+        if (bo.getId() == null) {
+            return R.fail("主键不能为空");
+        }
+        return R.ok(sysClientService.rotateSsoSecret(bo.getId()));
     }
 
     /**

@@ -24,6 +24,7 @@
         <module>wta-profile</module>
         <module>wta-third</module>
         <module>wta-notify</module>
+        <module>wta-sso</module>
     </modules>
 
 </project>

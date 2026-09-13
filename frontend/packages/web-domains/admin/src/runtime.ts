@@ -3,6 +3,7 @@ import type { IdentityAccessService, IdentitySession } from '@namewta/domain-adm
 export interface IdentityAccessWebRuntime {
   onAuthenticated(session: IdentitySession): Promise<void> | void;
   service: IdentityAccessService;
+  startSsoLogin?: (input: { authorizeUrl: string }) => Promise<void> | void;
   title?: string;
   description?: string;
 }

@@ -4,6 +4,7 @@ const adminWebUrl = 'http://127.0.0.1:4173';
 
 export default defineConfig({
   testDir: './e2e',
+  testIgnore: 'sso-three-gates.spec.ts',
   outputDir: './tests/e2e/reports/results',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),

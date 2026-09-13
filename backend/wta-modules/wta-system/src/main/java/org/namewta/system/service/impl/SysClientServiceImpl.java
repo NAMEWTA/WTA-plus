@@ -29,6 +29,7 @@ import org.namewta.system.mapper.SysUserTypeRelMapper;
 import org.namewta.system.service.ClientSessionService;
 import org.namewta.system.service.ISysClientService;
 import org.namewta.system.service.ISysUserTypeService;
+import org.namewta.system.sso.SsoClientFieldsSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -148,6 +149,7 @@ public class SysClientServiceImpl implements ISysClientService {
     @Override
     @DSTransactional
     public Boolean insertByBo(SysClientBo bo) {
+        SsoClientFieldsSupport.validate(bo);
         SysClient add = MapstructUtils.convert(bo, SysClient.class);
         validClientPolicy(add, true);
         if (ObjectUtil.isNull(add.getRegisterEnabled())) {
@@ -156,6 +158,7 @@ public class SysClientServiceImpl implements ISysClientService {
         add.setGrantType(CollUtil.join(bo.getGrantTypeList(), StringUtils.SEPARATOR));
         add.setAccessPath(resolveRuleValue(bo.getAccessPath(), bo.getAccessPathList(), this::normalizeAccessPath));
         add.setIpWhitelist(resolveRuleValue(bo.getIpWhitelist(), bo.getIpWhitelistList(), UnaryOperator.identity()));
+        String ssoSecretOnce = SsoClientFieldsSupport.apply(bo, add, null);
         // 生成clientid
         String clientKey = bo.getClientKey();
         String clientSecret = bo.getClientSecret();
@@ -163,6 +166,7 @@ public class SysClientServiceImpl implements ISysClientService {
         boolean flag = clientMapper.insert(add) > 0;
         if (flag) {
             bo.setId(add.getId());
+            bo.setSsoSecretOnce(ssoSecretOnce);
             invalidateUsersForUserTypes(List.of(add.getUserTypeId()));
         }
         return flag;
@@ -178,6 +182,7 @@ public class SysClientServiceImpl implements ISysClientService {
     @Override
     @DSTransactional
     public Boolean updateByBo(SysClientBo bo) {
+        SsoClientFieldsSupport.validate(bo);
         SysClient db = clientMapper.selectById(bo.getId());
         SysClient update = MapstructUtils.convert(bo, SysClient.class);
         validClientPolicy(update, false);
@@ -187,7 +192,12 @@ public class SysClientServiceImpl implements ISysClientService {
         update.setGrantType(StringUtils.joinComma(bo.getGrantTypeList()));
         update.setAccessPath(resolveRuleValue(bo.getAccessPath(), bo.getAccessPathList(), this::normalizeAccessPath));
         update.setIpWhitelist(resolveRuleValue(bo.getIpWhitelist(), bo.getIpWhitelistList(), UnaryOperator.identity()));
+        String existingHash = ObjectUtil.isNull(db) ? null : db.getSsoSecretHash();
+        String ssoSecretOnce = SsoClientFieldsSupport.apply(bo, update, existingHash);
         boolean flag = clientMapper.updateById(update) > 0;
+        if (flag) {
+            bo.setSsoSecretOnce(ssoSecretOnce);
+        }
         if (flag && shouldKickClientSessions(db, update)) {
             clientSessionService.kickoutClient(db.getId());
         }
@@ -242,6 +252,26 @@ public class SysClientServiceImpl implements ISysClientService {
     }
 
     /**
+     * 轮换 SSO 密钥，明文只返回一次。
+     *
+     * @param id 客户端主键
+     * @return 含一次性明文的视图
+     */
+    @Override
+    @DSTransactional
+    public SysClientVo rotateSsoSecret(Long id) {
+        SysClient db = clientMapper.selectById(id);
+        if (ObjectUtil.isNull(db)) {
+            throw new ServiceException("客户端不存在");
+        }
+        String issued = SsoClientFieldsSupport.rotate(db);
+        clientMapper.updateById(db);
+        SysClientVo vo = queryById(id);
+        vo.setSsoSecretOnce(issued);
+        return vo;
+    }
+
+    /**
      * 校验客户端key是否唯一
      *
      * @param client 客户端信息
@@ -268,6 +298,8 @@ public class SysClientServiceImpl implements ISysClientService {
         vo.setGrantTypeList(StringUtils.splitList(vo.getGrantType()));
         vo.setAccessPathList(parseRuleList(vo.getAccessPath(), this::normalizeAccessPath));
         vo.setIpWhitelistList(parseRuleList(vo.getIpWhitelist(), UnaryOperator.identity()));
+        boolean hashed = StringUtils.isNotBlank(vo.getSsoSecretHash());
+        SsoClientFieldsSupport.fillView(vo, hashed);
         fillUserTypeAndDefaultRole(vo);
     }
 

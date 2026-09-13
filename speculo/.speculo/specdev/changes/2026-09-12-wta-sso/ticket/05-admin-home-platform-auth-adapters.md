@@ -16,10 +16,10 @@ artifact: ticket
 change: 2026-09-12-wta-sso
 id: T-05
 title: admin-web/home-web 经 platform/auth 合同接入 SSO
-status: blocked
+status: done
 planning_depth: standard
 planning_depth_reason: 双 App 消费方迁移与纯合同/adapters 分层；需跨包路径所有权与回归。
-ready: false
+ready: true
 risk: medium
 blocked_by: [T-03, T-04]
 contract_ids: [AC-001, AC-014]

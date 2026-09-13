@@ -30,7 +30,7 @@
           <lang-select />
         </div>
 
-        <el-form-item prop="username">
+        <el-form-item v-if="authMode !== 'sso'" prop="username">
           <el-input
             v-model="loginForm.username"
             type="text"
@@ -42,7 +42,7 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item prop="password">
+        <el-form-item v-if="authMode !== 'sso'" prop="password">
           <el-input
             v-model="loginForm.password"
             type="password"
@@ -55,7 +55,7 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item v-if="captchaEnabled" prop="code" class="captcha-row">
+        <el-form-item v-if="authMode !== 'sso' && captchaEnabled" prop="code" class="captcha-row">
           <el-input
             v-model="loginForm.code"
             size="large"
@@ -80,6 +80,16 @@
         <div class="social-panel">
           <span class="social-label">第三方登录</span>
           <div class="social-actions">
+            <el-button
+              v-if="ssoEnabled"
+              data-testid="sso-first-provider"
+              type="primary"
+              :disabled="!loginEnabled"
+              title="WTA SSO"
+              @click="doSsoLogin"
+            >
+              WTA SSO
+            </el-button>
             <el-button
               circle
               :disabled="!loginEnabled"
@@ -123,7 +133,7 @@
           </div>
         </div>
 
-        <el-form-item class="submit-row">
+        <el-form-item v-if="authMode !== 'sso'" class="submit-row">
           <el-button
             :loading="loading || authContextState === 'loading'"
             :disabled="!loginEnabled"
@@ -150,6 +160,7 @@ import { identityAccessWebMessages } from '@namewta/web-domain-admin';
 import { to } from 'await-to-js';
 import { useI18n } from 'vue-i18n';
 import { identityAccessService } from '@/application/services';
+import { adminSso, adminSsoRedirectUri } from '@/application/sso';
 import { type AdminLoginInput, useUserStore } from '@/store/modules/user';
 
 const title = import.meta.env.VITE_APP_TITLE;
@@ -202,6 +213,9 @@ const captchaEnabled = ref(true);
 const register = ref(false);
 const authContextState = ref<'loading' | 'available' | 'unavailable'>('loading');
 const loginEnabled = computed(() => authContextState.value === 'available');
+const ssoEnabled = ref(false);
+const ssoAuthorizeUrl = ref('');
+const authMode = ref<'local' | 'sso' | 'both'>('both');
 const redirect = ref('/');
 const loginRef = ref<ElFormInstance>();
 
@@ -276,6 +290,15 @@ const getLoginData = () => {
   } as AdminLoginInput;
 };
 
+const doSsoLogin = async () => {
+  if (!loginEnabled.value || !ssoAuthorizeUrl.value) return;
+  await adminSso.startSsoLogin({
+    authorizeUrl: ssoAuthorizeUrl.value,
+    clientId: import.meta.env.VITE_APP_CLIENT_ID,
+    redirectUri: adminSsoRedirectUri()
+  });
+};
+
 const doSocialLogin = async (type: string) => {
   if (!loginEnabled.value) {
     return;
@@ -296,6 +319,9 @@ const loadClientAuthContext = async () => {
     }
     authContextState.value = 'available';
     register.value = context.registerEnabled;
+    ssoEnabled.value = context.ssoEnabled === true;
+    ssoAuthorizeUrl.value = context.ssoAuthorizeUrl ?? '';
+    authMode.value = context.authMode === 'sso' || context.authMode === 'local' ? context.authMode : 'both';
   } catch {
     authContextState.value = 'unavailable';
     register.value = false;

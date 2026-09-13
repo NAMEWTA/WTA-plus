@@ -61,6 +61,7 @@
 | `wta-modules/wta-system` | 用户、Client、角色、菜单、权限等核心系统能力 | controller/service/mapper contracts | none |
 | `wta-modules/wta-workflow` | WarmFlow 工作流能力 | controller/service contracts | none |
 | `wta-modules/wta-third` | 第三方 HTTP Provider/Endpoint 管理、凭据安全、RestClient Gateway、显式适配器 SPI、限流与出站观测 | `org.namewta.third.api.ThirdPartyGateway`；管理 API 位于 `org.namewta.third.controller.admin` | `src/test/java`; crypto/path security tests; external MySQL/Redis/HTTP/browser gates are recorded by the change release evidence |
+| `wta-modules/wta-sso` | 第一方 SSO Authorization Code + PKCE、SSO 域会话 | `controller/anonymous` authorize/token/revoke/login | `src/test/java`; layered module; `validate-module-mode` required |
 
 ## 依赖方向
 

@@ -14,10 +14,10 @@ artifact: ticket
 change: 2026-09-12-wta-sso
 id: T-04
 title: 接通 FirstPartySsoProvider 槽位、client context 与 authMode
-status: blocked
+status: done
 planning_depth: standard
 planning_depth_reason: 改变登录入口默认 UX 与 /auth/client/context 公共合同；决策已由 Spec 锁定。
-ready: false
+ready: true
 risk: high
 blocked_by: [T-01, T-02]
 contract_ids: [AC-001, AC-014, AC-015, AC-023]
