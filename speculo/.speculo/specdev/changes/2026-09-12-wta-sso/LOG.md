@@ -577,3 +577,13 @@
 - **问题：** home Token extras.accessPath=`/home/**` 拒绝 `/system/user/getInfo`；菜单 `redirect=noRedirect` 把 `/profile` 相对写成 `/sso/noRedirect`；callback 未写入 Pinia token。
 - **结论：** `ClientAccessPaths.resolve` 为 home 并入 getInfo/getRouters/logout/profile；DML+live DB 同步；home callback 写 `userStore.token`；adapter 丢弃 `noRedirect`。E2E 断言离开 callback、/profile、header 退出、无「没有访问权限」。
 - **验证：** ClientAccessPathsTest + HomeClientLoginAccessPathTest + SsoTokenExtrasTest ×2；home-web vitest ×2；`scripts/sso-hard-e2e.sh` ×2 exit 0。AC-002/003 截图为已登录档案中心。
+
+## LOG-046 — 2026-09-13T20:03:00+08:00 — C-code-review CR-001 Round4
+
+- **轮次与依赖：** Round4 I 完成 / Lead 派 C / Research Heavy 前审已吸收
+- **状态：** confirmed（C 完成）
+- **固定点：** fixed `214d601` → head `377a145`；三点 diff 非空；工作树干净
+- **结论：** **approve-with-notes**（`reviews/CR-001.md`）。独立 SSO 管理双面、PKCE、三门、icon、AC-024 通过。风险1：AC-002/003 PNG 字节相同 → API 隔离门足够、截图卫生 NOTES。风险2：「未配置」+「拿配置」→ 满足 AC-017/018 交付语义。
+- **外脑：** 吸收 Research `/workspace/share-research/reports/20260913-wta-sso-r4-heavy-review.md`；**非 ChatGPT**。
+- **约束：** 未改业务代码；未 push；未用 machineId。
+- **后续：** validate --stage review；Lead 可考虑归档；push 另授。

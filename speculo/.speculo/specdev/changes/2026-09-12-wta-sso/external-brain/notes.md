@@ -26,3 +26,12 @@
 - frontier 空；design-tree `consensus` round=3
 - S-spec **已授权并定稿**（LOG-032）；T-tickets 已落盘（LOG-033）
 - 门禁：`implementation_commit=not-authorized`；不实现；不碰已归档 notify
+
+## C-code-review CR-001（2026-09-13T20:03+08:00）
+
+- **现行外脑 = 账号 Research**，不是 ChatGPT。
+- 本轮 C **已吸收** Research Heavy 前审报告：
+  - `/workspace/share-research/reports/20260913-wta-sso-r4-heavy-review.md`
+  - 该报告结论 PASS_WITH_NOTES（开 I 前 Spec/票审）；本 CR 用其 8 条硬核对点对照 Round4 I 实现产物。
+- **禁止**将旧 `reply.md` / ChatGPT pack 标为外脑通过。
+- 权威 CR：`reviews/CR-001.md`（approve-with-notes）。
