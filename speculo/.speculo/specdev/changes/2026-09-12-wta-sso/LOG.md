@@ -237,3 +237,198 @@
 - **后续：** 若需否决原因细节再问 Lead/CTO；无 Round3 除非新派单
 - **替代/被替代：** 强化 LOG-016
 
+## LOG-018 — 2026-09-13T08:04:00+08:00 — BRIEF 重开 Grill（grill-me）
+- **设计树节点：** D-100…D-104
+- **轮次与依赖：** round 3 / CTO-BRIEF-20260913
+- **状态：** confirmed（启动）；决策未拍
+- **问题：** 最新产品口径与旧 consensus 冲突如何处理
+- **事实与来源：** Lead PRIORITY；BRIEF `/workspace/share-research/inbox/CTO-BRIEF-20260913.md`（t155u）；禁 ChatGPT，外脑走 Research/Grok Heavy
+- **选项：** 保留旧 consensus 叙事 / 以 BRIEF 为准作废冲突旧表述并开 Round3
+- **推荐：** 后者
+- **结论：** design-tree 重回 `active` round 3；新增 D-100…104；旧「无外置 IdP」等冲突措辞作废；CONTEXT 改为最新态；**不进 S**；不实现；等 Research 报告后再晋升 goal-plan/ADR 全文
+- **原因：** BRIEF 权威 > change 内冲突旧表述
+- **影响工件：** design-tree / CONTEXT / 开放表 / `.status.json`
+- **约束或不变量：** 不保留历史演变叙事；不碰已归档 notify；不假装外脑通过
+- **后续：** 私信 Research；抛 Round3 frontier 给 Lead→CTO
+- **替代/被替代：** 部分替代 D-001 答案中「无外置 IdP」；替代「Grill 已永久收口」状态
+
+
+## LOG-EB-002 — 2026-09-13T08:17:00+08:00 — Research/Grok Heavy grill 评审已晋升（最新态）
+
+- **状态：** confirmed（外脑已跑）；产品口径 **部分符合**
+- **事实：** CTO t155u BRIEF；zip `share-research/inbox/2026-09-12-wta-sso-change.zip`；报告 `share-research/reports/20260913-wta-sso-grill-report.md`
+- **结论：** 协议/模块脊柱可保留；产品定位须改为「第三方登录目录默认第一提供方」；外部系统 App 入接入范围；默认接通合同补齐；旧 NoExternalIdP 产品口号废止
+- **影响工件：** `CONTEXT.md`（替换最新态）、`external-brain/reply-research-grok-heavy.md`、`external-brain/notes.md`、`goal-plan-latest-snippets.md`、`open-questions-grill.md`
+- **后续：** Lead 继续 G-grill；按 snippets 收敛 goal-plan；勿进 S-spec
+
+## LOG-019 — 2026-09-13T08:17:00+08:00 — 晋升 Research Round3 材料
+- **设计树节点：** D-110…D-116
+- **轮次与依赖：** round 3 / Research 交付
+- **状态：** confirmed（晋升）；决策未拍
+- **问题：** 是否按 BRIEF+Research 改写最新态文档
+- **事实与来源：** Research 报告 `reports/20260913-wta-sso-grill-report.md`；runs/20260913-wta-sso-grill/；符合度「部分符合」
+- **选项：** 晋升 / 等待 CTO
+- **推荐：** 先晋升 CONTEXT/goal-plan/ADR 叙事；开放题换为 P0-1…P0-7
+- **结论：** CONTEXT 已替换；goal-plan 关键段已更新；ADR 定位改 FirstPartySsoProvider；D-100…104 deferred；新 frontier D-110…116；旧 Q1–Q4 不再 Pending；**不可进 S**
+- **原因：** Lead 要求 Research 到后协助晋升
+- **影响工件：** CONTEXT / goal-plan / ADR / design-tree / external-brain/notes.md
+- **约束或不变量：** 不实现；不催 S；不保留 NoExternalIdP 产品口号
+- **后续：** Lead→CTO 拍 D-110…116
+- **替代/被替代：** 替代 LOG-018 临时开放题 D-100…104
+
+## LOG-020 — 2026-09-13T08:19:00+08:00 — Lead 晋升指令对齐（秘书 CONTEXT 已在）
+- **设计树节点：** D-100 / D-101 / D-110…116
+- **轮次与依赖：** round 3 / Lead PRIORITY 晋升
+- **状态：** confirmed
+- **问题：** Research 到后如何收敛
+- **事实与来源：** Lead 两条 PRIORITY；秘书已写 CONTEXT + external-brain；runs 含 open-questions-grill
+- **结论：** 确认晋升清单；D-100/D-101 重新标 open 等 CTO；D-110…116 为 Research 细问；旧 ChatGPT reply 非产品权威；不进 S
+- **影响工件：** design-tree / 开放表 / external-brain/notes.md / open-questions-grill.md
+- **后续：** CTO 拍 D-100/101（及细问）
+- **替代/被替代：** 无
+
+
+## LOG-CTO-D100-D101 — 2026-09-13T08:36:45+08:00 — CTO 拍板 D-100 / D-101
+
+- **设计树节点：** D-100、D-101
+- **状态：** confirmed
+- **来源：** CTO 当面答复（秘书 t161 widget）：`D-100=A；D-101=A`
+- **结论：**
+  - **D-100=A**：自建 SSO 属于「第三方登录」体系的一种提供方——自建实现、默认已接通、列表排最前；与 Mask/GitHub 等外接 social 并存。旧文「NoExternalIdP / 仅第一方、无外置 IdP」产品口号作废。
+  - **D-101=A**：自有前端各 App **与** 外部系统 App 均可接入（注册为 OAuth Client，走 Authorization Code）。
+- **影响工件：** `design-tree.json`；CONTEXT 最新态已与此一致；goal-plan 由访谈继续收敛
+- **后续：** 继续 Grill 其余开放问题（P0-1…）；仍不进 S-spec / 不实现
+
+## LOG-021 — 2026-09-13T08:36:00+08:00 — 锁定 D-100/D-101 并收敛 goal-plan
+- **设计树节点：** D-100、D-101（及导出 D-102、D-103）
+- **轮次与依赖：** round 3 / LOG-CTO-D100-D101
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-100=A；D-101=A；秘书已写 LOG-CTO-D100-D101
+- **结论：** 扩展 design-tree 答案全文；CONTEXT 已确认段；goal-plan Pending 仅留 D-110…116；D-102/D-103 由 BRIEF+拍板导出锁定
+- **影响工件：** design-tree / CONTEXT / goal-plan / 开放表
+- **约束或不变量：** 不进 S；不实现；D-110…116 仍开放
+- **后续：** 等 CTO 拍 D-110…116
+- **替代/被替代：** 无
+
+## LOG-022 — 2026-09-13T08:36:45+08:00 — 锁定 D-100=A / D-101=A
+- **设计树节点：** D-100、D-101
+- **轮次与依赖：** round 3 / 无
+- **状态：** confirmed
+- **问题：** FirstPartySsoProvider 定位；接入范围
+- **事实与来源：** Lead【CTO 拍板】；秘书 LOG-CTO-D100-D101；当面 widget D-100=A；D-101=A
+- **选项：** 见节点
+- **推荐：** A / A
+- **结论：** D-100=A；D-101=A（全文见 design-tree）。
+- **原因：** CTO via Lead/秘书
+- **影响工件：** CONTEXT / goal-plan / design-tree
+- **约束或不变量：** 不进 S
+- **后续：** D-110…116
+- **替代/被替代：** 无
+
+## LOG-023 — 2026-09-13T08:41:00+08:00 — D-110=C
+- **设计树节点：** D-110
+- **轮次与依赖：** round 3 / 无
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板｜D-110…116】D-110=C
+- **结论：** 第一按钮 + 走 sso-web；默认接通三义都要。
+- **影响工件：** CONTEXT / goal-plan / Spec 产品合同
+- **后续：** 无
+
+## LOG-024 — 2026-09-13T08:41:00+08:00 — D-111=B
+- **设计树节点：** D-111
+- **轮次与依赖：** round 3 / 无
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-111=B
+- **结论：** 管理面可登记外部；运行时先自有 App。
+- **影响工件：** goal-plan Non-goals / D-116
+- **后续：** 解锁 D-116
+
+## LOG-025 — 2026-09-13T08:41:00+08:00 — D-112=A
+- **设计树节点：** D-112
+- **轮次与依赖：** round 3 / 无
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-112=A
+- **结论：** sso-web 只本仓密码；social 在业务 App 页且排后。
+- **后续：** 无
+
+## LOG-026 — 2026-09-13T08:41:00+08:00 — D-113=A
+- **设计树节点：** D-113
+- **轮次与依赖：** round 3 / 无
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-113=A 且 ≠共享 Token
+- **结论：** 归一 sys_user 密码 + 自建 SSO；账号归一 ≠ 共享 Sa-Token。
+- **后续：** 无
+
+## LOG-027 — 2026-09-13T08:41:00+08:00 — D-114 同目录 + context
+- **设计树节点：** D-114
+- **轮次与依赖：** round 3 / 无
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-114=与 social 同目录 + context 读配置
+- **结论：** 默认接通落在与 social 同目录第一槽；自有 App 读 /auth/client/context。
+- **后续：** 无
+
+## LOG-028 — 2026-09-13T08:41:00+08:00 — D-115=A
+- **设计树节点：** D-115
+- **轮次与依赖：** round 3 / 无
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-115=A
+- **结论：** 产品硬验收升格，与工程两门并列。
+- **后续：** 无
+
+## LOG-029 — 2026-09-13T08:41:00+08:00 — D-116=B
+- **设计树节点：** D-116
+- **轮次与依赖：** round 3 / D-111
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-116=B（随 D-111）
+- **结论：** confidential 运行时后置；管理面字段可建。
+- **后续：** 无
+
+## LOG-030 — 2026-09-13T08:41:00+08:00 — D-104=A（F 合同续用）
+- **设计树节点：** D-104
+- **轮次与依赖：** round 3 / D-100, D-101
+- **状态：** confirmed
+- **事实与来源：** BRIEF 兼容项 + Round3 收口
+- **结论：** D-010…016 继续有效。
+- **后续：** 无
+
+## LOG-031 — 2026-09-13T08:41:00+08:00 — Round3 frontier 清空 / grill consensus
+- **设计树节点：** 不适用
+- **轮次与依赖：** round 3 / 全部开放节点
+- **状态：** confirmed
+- **问题：** 是否可标 grill consensus；是否进 S
+- **事实与来源：** design-tree 无 open；Lead 要求回报；CTO 仍否决进 S unless 另令
+- **结论：** design-tree=`consensus`（Round3 决策收口）。**仍不可进 S-spec**（除非 CTO 另令）。不实现。
+- **影响工件：** design-tree.status / 开放表 / goal-plan Pending
+- **后续：** 方案层待命；不催 RVP·规格
+- **替代/被替代：** 无
+
+
+
+## LOG-CTO-ROUND3-ANSWERS — 2026-09-13T08:42:55+08:00 — Lead 转述完整答案表已同步 design-tree
+
+- **来源：** Lead→秘书完整答案表（访谈 LOG-023…031；frontier 空；consensus）
+- **结论表：** D-100=A；D-101=A；D-102/103 由 BRIEF 导出锁定；D-104=A；D-110=C；D-111=B；D-112=A；D-113=A；D-114=与 social 同目录+context；D-115=A；D-116=B
+- **门禁：** 仍不可进 S-spec；不实现
+- **开放表：** `temp/team/grill/2026-09-12-wta-sso-open-decisions.md`
+
+## LOG-032 — 2026-09-13T08:54:00+08:00 — CTO 授权进入 S-spec
+- **设计树节点：** 不适用
+- **轮次与依赖：** LOG-031 / Lead
+- **状态：** confirmed
+- **问题：** 是否开放下游 S-spec
+- **事实与来源：** Lead【CTO 已授权进 S】；规格岗接手；访谈岗本 change Grill 可收束
+- **选项：** 维持否决 / 开放 S
+- **推荐：** 开放 S（遵从 CTO）
+- **结论：** **授权进入 S-spec**。访谈岗不自启 S；有规格追问再配合。此前 LOG-016/017「不可进 S」被本条覆盖。
+- **原因：** CTO via Lead
+- **影响工件：** 开放表 / `.status.json` blockers
+- **约束或不变量：** 仍不实现产品代码，除非另有 I 授权
+- **后续：** RVP·规格；访谈待命答疑
+- **替代/被替代：** 替代 LOG-016/017 关于否决进 S 的门禁结论（否决历史保留）
+
+
+## LOG-CTO-S-SPEC-AUTH — 2026-09-13T08:54:36+08:00 — CTO 授权进入 S-spec
+
+- **来源：** Lead→秘书：CTO 授权派 RVP·规格开 S-spec；外脑 Research
+- **结论：** 门禁放开至 `specdev/S-spec`；`ready_for_execution` 仍 false；不实现
+- **后续：** Lead 派 RVP·规格；Research 待命接外脑

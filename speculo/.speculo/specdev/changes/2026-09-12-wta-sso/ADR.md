@@ -1,7 +1,12 @@
 # Change Architecture Decisions — 2026-09-12-wta-sso
 
+> **Authority:** CTO BRIEF `/workspace/share-research/inbox/CTO-BRIEF-20260913.md` > 本文件。
+> Round3 进行中：与 BRIEF 冲突的旧「NoExternalIdP」表述**作废**；其余 accepted 安全/部署条目待 D-104 确认是否原样保留。
+> ChatGPT 外脑旧 reply **不得**冒充本轮通过；本轮外脑 = Research / Grok Heavy。
+
 > **Status legend:** Grill consensus 后下列条目为 **accepted**（change-local；非永久 ADR 毕业）。  
 > ChatGPT 外脑仅为候选；正式拍板来源为 CTO via Lead + design-tree/LOG。
+> Round3 已晋升 Research：`FirstPartySsoProvider`；旧 ChatGPT 产品句不作权威。
 
 ## ADR-001: 协议选型 — Authorization Code + PKCE S256
 
@@ -15,7 +20,7 @@
 
 ### Decision（proposed）
 
-采用 **OAuth 2.0 Authorization Code + PKCE（S256）**。禁止 Implicit、OAuth password grant、SAML。OIDC discovery / id_token / userinfo **延期 P1**。不引入外置 IdP。
+采用 **OAuth 2.0 Authorization Code + PKCE（S256）**。禁止 Implicit、OAuth password grant、SAML。OIDC discovery / id_token / userinfo **延期 P1**。产品定位：**FirstPartySsoProvider**——自建 SSO 是第三方登录目录的默认第一提供方（与 Mask/GitHub 等同槽、排最前）；身份真相源仍在本仓。禁止把用户目录外包给 Keycloak / Casdoor / Logto / Hydra。废止「NoExternalIdP / 仅第一方」产品口号。
 
 ### Consequences
 
@@ -102,7 +107,7 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 - **P0：** authorize + token + PKCE + sso-web + Client 扩展 + 可选统一登录 + 本地并存  
 - **P1：** OIDC / refresh / SLO / 同意页  
-- **P2：** 外部第三方 / 独立进程 / MFA 收敛  
+- **P2：** 独立进程 / MFA 收敛  
 
 对外域名/callback：环境级矩阵（D-002=A，可占位）。生产：**同进程** + **`sso-web` 独立 Web Origin**（D-004=A1+B2）。独立后端进程维持 P2。
 
@@ -120,4 +125,4 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 ### Decision（proposed）
 
-本 change 在 G→S→T 完成且 CTO/用户书面授权前：`implementation_commit=not-authorized`，`ready_for_execution=false`。禁止 push/PR；禁止触碰 `2026-09-10-notify-channel-config`；禁止假票糊 validate。**2026-09-12：** CTO 否决此时进入 S-spec（LOG-016）；即使 Grill 决策 consensus，亦不得催派 RVP·规格，直至 CTO 另行开放。
+本 change 在 G→S→T 完成且 CTO/用户书面授权前：`implementation_commit=not-authorized`，`ready_for_execution=false`。禁止 push/PR；禁止触碰 `2026-09-10-notify-channel-config`；禁止假票糊 validate。**2026-09-12：** 曾否决此时进 S（LOG-016）。**2026-09-13：** CTO 已授权进 S（LOG-032）；由规格岗执行，访谈岗不自启。

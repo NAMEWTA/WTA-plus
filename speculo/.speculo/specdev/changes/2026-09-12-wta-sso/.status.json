@@ -6,7 +6,8 @@
   "current_work": null,
   "works_run": [
     "specdev/P-goal-plan",
-    "specdev/G-grill-with-docs"
+    "specdev/G-grill-with-docs",
+    "specdev/S-spec"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
@@ -36,15 +37,13 @@
     "history": []
   },
   "created_at": "2026-09-12T17:26:04+08:00",
-  "updated_at": "2026-09-12T18:34:30+08:00",
+  "updated_at": "2026-09-13T08:58:00+08:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
-    "CTO t181u: must NOT enter S-spec; Grill consensus ≠ S authorization",
-    "LOG-016/017: S-spec handoff closed; do not dispatch RVP·规格",
-    "ready_for_execution=false; no I-implement",
-    "Do not touch 2026-09-10-notify-channel-config"
+    "S-spec drafted ready_for_tickets=true; next=T-tickets (not started)",
+    "implementation_commit still not-authorized unless separately granted"
   ],
   "deviations": [],
   "worktrees": []

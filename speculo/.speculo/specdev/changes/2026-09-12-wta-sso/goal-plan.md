@@ -17,8 +17,10 @@ ready_for_execution: false
 
 # Goal Plan: WTA SSO（OAuth2 Authorization Code + PKCE）
 
+> **Authority:** CTO BRIEF 2026-09-13 + Research 20260913。旧 Q1–Q4 已答；Round3 已拍。**已授权 S-spec**（LOG-032）；由规格执行定稿。仍 `ready_for_execution=false`。
+
 - **Goal Plan：** `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/goal-plan.md</Path>`
-- **Spec：** `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/spec.md</Path>`（尚未创建；待 G-grill → S-spec）
+- **Spec：** `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/spec.md</Path>`（S-spec 已定稿；`ready_for_tickets=true`）
 - **Tickets Map：** `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/tickets-map.md</Path>`（outline only；无正式票）
 - **Ticket 目录：** `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/ticket/</Path>`
 - **Evidence 目录：** `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/evidence/</Path>`
@@ -40,41 +42,47 @@ ready_for_execution: false
 | Baseline | CTO：`main @ b06d161`；冻结时 HEAD：`d1ce372`（祖先含 `b06d161`） |
 | 禁止 | 改产品代码；push/PR；触碰 `2026-09-10-notify-channel-config`；造假票糊 validate |
 
-## 1. Outcome and Authority
+## 1. Outcome
 
-### Outcome
-
-在 WTA-plus 交付**第一方 SSO**：统一登录页认出人，换票后仍签发**现有 Sa-Token**，且 Token extras 绑定**目标业务 Client**（非 SSO 中心 Client）。
+在 WTA-plus 的「第三方登录」体系中交付 **FirstPartySsoProvider**（自建、默认已接通、排序最前、默认路径可走通）：自有前端各 App + 外部系统 App 均可接入；同一套本仓账号密码多端登录；P0 只实现 Authorization Code + PKCE；换票后仍签发**目标业务 Client** 的现有 Sa-Token（账号归一 ≠ Token 共用）。
 
 P0 可观察结果：
 
-1. 协议：`OAuth 2.0 Authorization Code + PKCE (S256)`；无外置 IdP；禁 Implicit / password grant / SAML；OIDC → P1。
-2. 模块：`backend/wta-modules/wta-sso` + `frontend/apps/sso-web`；扩展 `sys_client`（一层应用目录，不另建平行 OAuth 应用表）。
-3. 端点：`GET /oauth2/authorize`、`POST /oauth2/token`（仅 `authorization_code` + PKCE S256）、`POST /oauth2/revoke`。
-4. 登录模式并存：按 Client 配置 `local` / `sso` / `both`；保留 `POST /auth/login`。
-5. **硬验收**：同一浏览器先 SSO 进 `admin-web`，再进 `home-web`；两张 Token 的 `clientid` **必须不同**；互打接口 **必须被拒**。
+1. 协议：`OAuth 2.0 Authorization Code + PKCE (S256)`；禁 Implicit / password grant / SAML；OIDC → P1。身份真相源仍在本仓，不引入 Keycloak / Casdoor / Logto / Hydra 替代用户目录。
+2. 产品槽位：自建 SSO 作为第三方登录目录第一提供方，默认已接通、默认路径可走通；Mask / GitHub 等同目录其后，不互斥。
+3. 模块：`backend/wta-modules/wta-sso` + `frontend/apps/sso-web`；扩展 `sys_client` 为一层应用目录（不另建平行 OAuth 应用表）。
+4. 接入流程：(a) 创建应用 (b) 精确回调白名单（禁 `*`） (c) 交付 client/密钥；自有 App 可直接读配置（`/auth/client/context` 或等价面）。
+5. 登录模式并存：按 Client 配置 `local` / `sso` / `both`；保留 `POST /auth/login`。
+6. 工程不变量：同一浏览器 SSO → `admin-web` → `home-web`；两张 Token 的 `clientid` **必须不同**，互打接口 **必须被拒**；第二次业务 App 授权不得再要本仓密码（SSO-REUSE）。
+7. 产品验收（待 Grill 确认是否升格为硬门）：默认第三方登录入口不经额外开通即可走完授权码主路径。
+
 
 ### Success and False Completion
 
-**Success（规划阶段）：** Intake 冻结；Outcome / 分期 / 模块落地 / 开放问题 / Authorization Matrix 落盘；下一 Work 明确为 G-grill；`ready_for_execution=false`。
+**Success（本阶段）：** 最新口径写入 CONTEXT / Goal Plan；Grill 开放问题（提供方 UX、外部 App P0 深度、social 同槽、账号边界、配置面、验收升格、confidential）有书面答或明确 defer；下一 Work 仍为 G-grill 收口或 CTO 另行开放 S-spec；`ready_for_execution=false`。
 
 **False completion（禁止宣称完成）：**
 
-- 声称 SSO「已上线」或「可执行」但无 CTO 开放问题答复、无 Ready Spec/Tickets、无实现授权
-- 用根域 Cookie / 复用 Admin-Token 做伪 SSO（Client 隔离会拒）
+- 声称可进 S-spec / 可执行 / 已上线（Grill 收口 ≠ S 授权）
+- 用根域 Cookie / 复用 Admin-Token 做伪 SSO
 - 签发 extras=`sso` 中心 Client 而非目标业务 Client
-- 引入 Keycloak/Casdoor/Logto/Hydra 等外置 IdP 作为身份源
+- 把本仓用户目录外包给 Keycloak / Casdoor / Logto / Hydra
+- 把「禁止外包身份源」写成「系统不得存在任何第三方登录」
+- 把本期写成「仅第一方 / NoExternalIdP / 与第三方登录无关」或「P0 禁止外部系统 App 接入」
 - 采用 Implicit / password grant / SAML
-- 造假 `ticket/*.md` 糊绿 `validate --stage goal-plan`
-- 声称外脑已通过（父进程负责）
-- 改 `2026-09-10-notify-channel-config` 或推送/PR
+- 造假 `ticket/*.md` 糊绿 validate
+- 改 `2026-09-10-notify-channel-config` 或推送 / PR
+
 
 ### Non-goals（本 change 规划边界）
 
-- 本期**不**改业务/产品代码、不 push、不 PR
-- P0 **不做** OIDC discovery / id_token / userinfo、refresh、SLO、完整同意页（→ P1）
-- P0 **不做** 真正外部第三方、独立 SSO 进程（部署形态待 CTO-Q4）、MFA 收敛到 SSO（→ P2）
-- 不替换现有 Sa-Token 为纯无状态 JWT；不关闭业务 App Header Bearer 模型
+- 本期不改业务/产品代码、不 push、不 PR；不催派 RVP·规格
+- P0 不做 OIDC discovery / id_token / userinfo、refresh、SLO、完整同意页（→ P1）
+- P0 不把用户目录外包给外置 IdP 产品；不替换现有 Sa-Token；不关闭业务 App Header Bearer
+- 外部系统 App 的 **运行时深度**（confidential token 鉴权是否 P0 必须跑通）待 Grill，不在本文写成「P0 不做外部第三方」
+- social IdP（Mask / GitHub）已存在，P0 不重做、不拆除；只要求自建 SSO 进入同一目录并排第一
+- 独立 SSO 进程、MFA 收敛到 SSO → P2
+
 
 ### Authoritative Inputs
 
@@ -123,13 +131,17 @@ P0 可观察结果：
 
 | Phase | Scope |
 |---|---|
-| **P0** | authorize + token + PKCE + `sso-web` + Client 管理扩展 + admin/home 可选统一登录 + 本地登录并存 |
+| **P0** | Authorization Code + PKCE + `sso-web` + 默认提供方槽位接通 + 应用接入 (a)(b)(c) + Client 管理扩展 + admin/home 可走通 + 本地登录并存 |
 | **P1** | OIDC discovery / id_token / userinfo、refresh、SLO、同意页 |
-| **P2** | 真正外部第三方、独立进程、MFA 收敛到 SSO |
+| **P2** | 独立进程、MFA 收敛 |
+
 
 ### P0 hard acceptance
 
-同一浏览器：SSO → `admin-web` → 再 → `home-web`；两 Token `clientid` 不同且互打被拒。
+- **工程：** 同一浏览器 SSO → `admin-web` → `home-web`；两 Token `clientid` 不同且互拒；第二次业务 App 授权不得再要本仓密码（`P0-SSO-REUSE` + `P0-CLIENT-ISOLATION`）。
+- **产品（待 Grill P0-6 确认是否升格硬门）：** 默认第三方登录入口不经额外开通即可走通授权码主路径（`P0-DEFAULT-PROVIDER-PATH`）。
+- **目标句：** 登录归一化——同一套本仓账号密码，多端登录；账号归一 ≠ Token 共用。
+
 
 ## 3. Execution Graph（planning-only；no formal tickets）
 
@@ -283,14 +295,12 @@ subagent 只返回候选事实与 commit；Lead 独立核对并写 Evidence、�
 | Implementation | not-authorized |
 | External brain | 占位；待父进程 |
 
-### Pending Decisions and Blockers（CTO 4 开放问题）
+### Pending Decisions and Blockers
 
-1. **CTO-Q1：** P0 是否就按「授权码 + PKCE + sso-web + 扩展 sys_client + 本地登录并存」来做  
-2. **CTO-Q2：** SSO 对外域名和各环境 callback URL  
-3. **CTO-Q3：** admin-web / home-web 默认用 `both` 还是部分入口直接 `sso`  
-4. **CTO-Q4：** 生产是否先同进程附带，还是一开始就给 `sso-web` 独立域名  
+**Round3 决策已收口**（D-100…116）。无产品 Pending。
 
-另：外脑待父进程；正式票待 T-tickets。
+**门禁：** **已授权 S-spec**（LOG-032）；不可进 I-implement（除非另令）。`ready_for_execution=false`；不实现。
+
 
 ### Resume Protocol
 

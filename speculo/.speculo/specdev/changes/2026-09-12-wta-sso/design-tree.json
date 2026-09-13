@@ -3,7 +3,7 @@
   "artifact": "design-tree",
   "change": "2026-09-12-wta-sso",
   "status": "consensus",
-  "round": 2,
+  "round": 3,
   "nodes": [
     {
       "id": "D-001",
@@ -141,6 +141,159 @@
       "round": 2,
       "answer": "A。P0 POST /oauth2/revoke 仅撤销提交的那个令牌对应会话；不等于全 App SLO；跨 App 登出→P1。",
       "log_ref": "LOG-014"
+    },
+    {
+      "id": "D-100",
+      "title": "产品定位：FirstPartySsoProvider（BRIEF）",
+      "question": "按 CTO BRIEF + Research：自建 SSO 是否确认为「第三方登录」目录中的默认第一提供方（FirstPartySsoProvider：自建、默认已接通、排最前、默认路径可走通；与 Mask/GitHub 同槽并存；身份真相源仍在本仓；废止 NoExternalIdP 产品口号）？\nA. 确认\nB. 否（请给替代口径）",
+      "depends_on": [],
+      "recommendation": "A。BRIEF 权威。",
+      "status": "answered",
+      "round": 3,
+      "answer": "A",
+      "log_ref": "LOG-022",
+      "answer_note": "自建 SSO=第三方登录默认最前提供方"
+    },
+    {
+      "id": "D-101",
+      "title": "接入范围：自有 App + 外部系统 App（BRIEF）",
+      "question": "接入范围是否确认为：自有前端各 App **与** 外部系统 App 均可按同一套 (a)(b)(c)+Authorization Code 接入？\nA. 确认（外部 App 的 P0 运行时深度另见 D-111）\nB. 仅自有 App\nC. 其它",
+      "depends_on": [],
+      "recommendation": "A。BRIEF 第1条；深度用 D-111。",
+      "status": "answered",
+      "round": 3,
+      "answer": "A",
+      "log_ref": "LOG-022",
+      "answer_note": "自有+外部均可接入"
+    },
+    {
+      "id": "D-102",
+      "title": "运营流程：建应用→回调→交凭证",
+      "question": "P0 管理/接入流程是否锁定为？\nA. (1) 创建应用 (2) 配置回调/返回地址 (3) 下发 client/密钥给应用配置；**自有 App 可直接读配置**（不必手工抄密钥到前端包——密钥仍不进 browser）。\nB. 仅手工交付凭证，自有 App 也不读配置。\nC. 流程细节留给实现，本轮不锁。",
+      "depends_on": [
+        "D-101"
+      ],
+      "recommendation": "A。对齐 BRIEF 操作流程；public SPA 仍禁 browser secret（与 D-015 不冲突：读配置≠打包 secret）。",
+      "status": "answered",
+      "round": 3,
+      "answer": "LOCKED_FROM_BRIEF",
+      "log_ref": "LOG-021",
+      "answer_note": "由 BRIEF+D-100/101 导出锁定"
+    },
+    {
+      "id": "D-103",
+      "title": "协议与模块（BRIEF 下重申）",
+      "question": "在 BRIEF 定位下，P0 技术包是否仍为？\nA. 新建子模块 + 先主流 Authorization Code 类（延续 Code+PKCE S256、sso-web、扩展 sys_client、本地登录并存、A1+B2 部署等**不与 BRIEF 冲突**的已拍项）；废除「无外置 IdP」措辞。\nB. 推倒重来，另选协议。\nC. 去掉 sso-web，只做 API。",
+      "depends_on": [
+        "D-100"
+      ],
+      "recommendation": "A。BRIEF 要的是定位与接入范围修正，不是换协议。",
+      "status": "answered",
+      "round": 3,
+      "answer": "LOCKED_FROM_BRIEF",
+      "log_ref": "LOG-021",
+      "answer_note": "由 BRIEF+D-100/101 导出锁定"
+    },
+    {
+      "id": "D-104",
+      "title": "与已拍 F 合同的关系",
+      "question": "D-010…016（PKCE 负向 AC、SSO-REUSE、API/Port、Cookie、platform/adapters、SPA=public、revoke≠SLO）在 BRIEF 下？\nA. **继续有效**，纳入最新态合同（仅改产品叙事与接入范围）。\nB. 全部作废重谈。\nC. 仅作废与「外部 Client」冲突的项（请点名）。",
+      "depends_on": [
+        "D-101",
+        "D-103"
+      ],
+      "recommendation": "A。安全/分层合同与 BRIEF 不冲突；外部 Client 仍走同一 Code+PKCE。",
+      "status": "answered",
+      "round": 3,
+      "answer": "A",
+      "log_ref": "LOG-030",
+      "answer_note": "续用工程 F 合同（旧 D-002…016 脊柱）"
+    },
+    {
+      "id": "D-110",
+      "title": "默认第一提供方 UX（P0-1）",
+      "question": "「排在第三方登录最前、默认路径走通」用户看见的是？\nA. 各 App 登录页第三方登录区第一项按钮（与 Mask/GitHub 并列，自建 SSO 第一）\nB. 各 App 入口整页跳转 sso-web 做授权码\nC. A+B：登录页第一按钮，点下去走授权码到 sso-web\nD. 其它\n并请书面确认「默认已接通」最小含义：预置 Provider 且默认启用 / 自有 App 免配读配置 / 用户免选直达 / 三者都要？",
+      "depends_on": [],
+      "recommendation": "C + 三者都要（可观察默认路径）。若嫌重，至少「预置启用 + 自有读配置」。",
+      "status": "answered",
+      "round": 3,
+      "answer": "C",
+      "log_ref": "LOG-023",
+      "answer_note": "C 第一按钮+走 sso-web；默认接通三义都要"
+    },
+    {
+      "id": "D-111",
+      "title": "外部系统 App 的 P0 深度（P0-2）",
+      "question": "「外部系统 App 都可接入」本期最小可观察结果？\nA. P0 必须让仓外系统走完 (a)(b)(c)+Authorization Code（含 confidential token 鉴权）\nB. P0 只保证管理面可登记；运行时先打通自有 App\nC. P0 连登记模型都不做（等于改写 BRIEF 第1条，需明示）",
+      "depends_on": [],
+      "recommendation": "B 作为最小；若 CTO 坚持「都可接入」可观察，选 A。",
+      "status": "answered",
+      "round": 3,
+      "answer": "B",
+      "log_ref": "LOG-024",
+      "answer_note": "B 管理面可登记外部；运行时先自有 App"
+    },
+    {
+      "id": "D-112",
+      "title": "sso-web 与 Mask/GitHub（P0-3）",
+      "question": "sso-web 上可以出现什么？\nA. 只收本仓账号密码（social 仍在各业务 App 登录页，排在自建 SSO 之后）\nB. sso-web 本身也展示 Mask/GitHub，自建 SSO 是外壳\nC. 自建 SSO 与 social 平级槽位，但不共享同一登录页\nD. 其它",
+      "depends_on": [],
+      "recommendation": "A。先锁统一认人页；social 同目录后续槽位即可。",
+      "status": "answered",
+      "round": 3,
+      "answer": "A",
+      "log_ref": "LOG-025",
+      "answer_note": "A sso-web 只收本仓账密"
+    },
+    {
+      "id": "D-113",
+      "title": "账号边界（P0-4）",
+      "question": "登录归一化的「账号密码」是否 = 现有 sys_user 密码？\n请同时书面确认：账号归一 **不等于** 各 App 共用一张 Sa-Token。\nA. 是，本期归一 password + 自建 SSO；仅 social/无密码用户策略另述\nB. 含 sms/email/xcx/social 全策略归一\nC. 其它（请写）",
+      "depends_on": [],
+      "recommendation": "A + 书面确认 ≠ 共享 Token。",
+      "status": "answered",
+      "round": 3,
+      "answer": "A",
+      "log_ref": "LOG-026",
+      "answer_note": "A 账号=sys_user 密码归一；≠共享 Token"
+    },
+    {
+      "id": "D-114",
+      "title": "默认接通配置面与 authMode（P0-5）",
+      "question": "「默认已接通、排序第一」写在哪？\nA. 现有 social/IdP 配置表（与 Mask/GitHub 同目录）\nB. sys_client 的 SSO 开关 + 排序字段\nC. 新建 provider 目录\nD. 硬编码第一槽位\n当 authMode=both 时：本地密码框是否仍在主路径？自建 SSO 如何仍算「默认路径最前」？\n自有 App「直接读配置」是否即扩展 GET /auth/client/context（无需密钥进前端）？",
+      "depends_on": [],
+      "recommendation": "A 或 C 二选一做目录；both 时本地框可在，但第三方区第一项默认通；读配置=client/context。",
+      "status": "answered",
+      "round": 3,
+      "answer": "SOCIAL_DIR+CONTEXT",
+      "log_ref": "LOG-027",
+      "answer_note": "与 social 同目录 + context 读配置"
+    },
+    {
+      "id": "D-115",
+      "title": "产品验收是否升格（P0-6）",
+      "question": "是否把下列升为 P0 产品硬验收，与工程两门并列？\n1) 同一套本仓账号可在 admin/home（及演示外部 App 若 D-111=A）完成登录\n2) 默认第三方登录入口不经额外开通即可走通授权码主路径\nA. 是，升格为硬门 P0-DEFAULT-PROVIDER-PATH 等\nB. 否，仅工程两门\nC. 只升格其中一条（请指明）",
+      "depends_on": [],
+      "recommendation": "A。",
+      "status": "answered",
+      "round": 3,
+      "answer": "A",
+      "log_ref": "LOG-028",
+      "answer_note": "A 产品验收升格"
+    },
+    {
+      "id": "D-116",
+      "title": "confidential 是否服务外部 App（P0-7）",
+      "question": "D-015「第一方 SPA=public」保持。请拍：\nA. P0 必须跑通 confidential client 的 token 鉴权（服务外部系统 App）\nB. P0 管理面可建 confidential 字段，运行时后置\nC. 其它",
+      "depends_on": [
+        "D-111"
+      ],
+      "recommendation": "若 D-111=A 则本项倾向 A；若 D-111=B 则本项可 B。",
+      "status": "answered",
+      "round": 3,
+      "answer": "B",
+      "log_ref": "LOG-029",
+      "answer_note": "B 随 D-111（管理面 confidential 字段，运行时后置）"
     }
   ]
 }
