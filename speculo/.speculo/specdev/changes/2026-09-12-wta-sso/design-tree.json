@@ -3,7 +3,7 @@
   "artifact": "design-tree",
   "change": "2026-09-12-wta-sso",
   "status": "consensus",
-  "round": 3,
+  "round": 4,
   "nodes": [
     {
       "id": "D-001",
@@ -295,6 +295,58 @@
       "answer": "B",
       "log_ref": "LOG-029",
       "answer_note": "B 随 D-111（管理面 confidential 字段，运行时后置）"
+    },
+    {
+      "id": "D-200",
+      "title": "独立「SSO 管理」模块/菜单（CTO t297u）",
+      "question": "应用注册与拿配置放在哪里？\nA. 系统管理下独立「SSO 管理」模块/菜单：创建应用、获取配置（面向自有与外部应用注册）。**禁止**把创建应用塞进现有「客户端管理」凑合。\nB. 继续只在「客户端管理」加 SSO 分组（旧 Spec/ADR-003）。\nC. 其它",
+      "depends_on": [],
+      "recommendation": "A。CTO t297u 权威。",
+      "status": "answered",
+      "round": 4,
+      "answer": "A。系统管理下独立「SSO 管理」模块/菜单：创建应用、获取配置。不是把创建应用塞进现有「客户端管理」。",
+      "log_ref": "LOG-033"
+    },
+    {
+      "id": "D-201",
+      "title": "双面分工：SSO 管理 vs 客户端管理（CTO t297u）",
+      "question": "两套管理面如何分工？\nA. **SSO 管理**：创建应用 + 拿配置（自有与外部应用注册）。**客户端管理**：仅 **自有 App** 做 SSO 接入配置；外部平台自配置。\nB. 全部配置集中在客户端管理。\nC. 其它",
+      "depends_on": [
+        "D-200"
+      ],
+      "recommendation": "A。CTO t297u。",
+      "status": "answered",
+      "round": 4,
+      "answer": "A。SSO 管理 = 创建应用 + 拿配置（自有与外部注册）；客户端管理 = 仅自有 App 的 SSO 接入配置；外部平台自配置。",
+      "log_ref": "LOG-034"
+    },
+    {
+      "id": "D-202",
+      "title": "持久化：是否仍扩展 sys_client",
+      "question": "独立 SSO 管理面下，应用目录数据落在哪？\nA. **仍扩展 `sys_client` 作一层应用目录**（短寿命 code/consent 可新表）；UI 必须走独立 SSO 管理模块，客户端管理不再承担「创建应用/拿配置」主路径。\nB. 新建平行「OAuth 应用表」，与 sys_client 脱钩。\nC. 本轮不锁，留给新 S-spec。",
+      "depends_on": [
+        "D-200",
+        "D-201"
+      ],
+      "recommendation": "A。保留一层目录不变量，纠正的是管理面错位而非必拆表。",
+      "status": "answered",
+      "round": 4,
+      "answer": "A。数据仍扩展 `sys_client` 作一层应用目录（短寿命 code/consent 可新表）；UI 主路径必须独立「SSO 管理」（创建应用/拿配置）；自有 App 的 SSO 接入配置在「客户端管理」；外部平台自配置。",
+      "log_ref": "LOG-037"
+    },
+    {
+      "id": "D-203",
+      "title": "废止旧 DEC：配置全在客户端管理",
+      "question": "是否废止下列旧表述？\n- Spec/ADR「客户端管理页增加 SSO 分组」作为创建应用主路径\n- 「配置全在 Client 管理」「只扩展 sys_client 且 UI 等同客户端管理」的产品句\nA. 废止；以 D-200/D-201 为准；新 S-spec 必须重写相关 DEC/AC/票。\nB. 保留旧 DEC，仅补丁说明。\nC. 其它",
+      "depends_on": [
+        "D-200",
+        "D-201"
+      ],
+      "recommendation": "A。现实现/E2E 管理面错位即旧合同副作用。",
+      "status": "answered",
+      "round": 4,
+      "answer": "A。废止「创建应用/拿配置主路径 = 客户端管理」及冲突 DEC；以独立 SSO 管理 + 双面分工为准；新 S-spec/拆票须重出相关合同。",
+      "log_ref": "LOG-035"
     }
   ]
 }

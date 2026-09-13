@@ -23,14 +23,6 @@ public final class SsoClientFieldsSupport {
     }
 
     /**
-     * 把管理面输入应用到实体。
-     *
-     * @param bo           输入
-     * @param entity       待写入实体
-     * @param existingHash 更新前已存哈希，新增时为空
-     * @return 仅本次可回显的明文密钥；未签发时为空
-     */
-    /**
      * 在持久化映射前校验 SSO 输入。
      *
      * @param bo 管理面输入

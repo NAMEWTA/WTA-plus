@@ -1,9 +1,9 @@
 # WTA SSO — 领域上下文
 
-> **Status:** Grill-confirmed / S-spec ready（已对齐 BRIEF t155u + D-100…116；术语已晋升）。  
-> **Authority:** CTO 书面决定（含 2026-09-13 t155u）> 本 CONTEXT > Spec > Goal Plan。  
-> 阶段：`specdev/S-spec` 已定稿；`specdev/T-tickets` 已落盘（全部 blocked-by-auth）。仍禁止 I-implement / 产品代码。  
-> 冲突以 CTO 最新口径为准。旧词 `NoExternalIdP` /「仅第一方」已废止，由 FirstPartySsoProvider 取代。
+> **Status:** Grill-confirmed（含 Round4 t297u）/ **S-spec Round4 重出 ready**（对齐 BRIEF t155u + D-100…116 + D-200…203）。  
+> **Authority:** CTO 书面决定（含 2026-09-13 t155u / t297u）> 本 CONTEXT > Spec > Goal Plan。  
+> 阶段：Round4 后须重出 Spec/票 — **权威 Spec 已按 Round4 重写**；旧 `ticket/*.md` 相对过时，由 Lead 派 T 作废/重出。本派单不实现产品代码；不翻转 execution_authorization。  
+> 冲突以 CTO 最新口径为准。旧词 `NoExternalIdP` /「仅第一方」已废止，由 FirstPartySsoProvider 取代。旧「创建应用=客户端管理」已废止（D-203 / ADR-007）。
 
 ## Glossary
 
@@ -38,7 +38,7 @@
 
 **TokenInvariant：** `access_token` **就是**现有 Sa-Token；换票不得签发「SSO 中心 Client」的业务票。
 
-**SingleAppDirectory：** P0 扩展 `sys_client`（回调白名单、public/confidential、SSO 开关、PKCE、自动同意、scope、密钥轮换）；一次性 code / refresh / consent 才可新表。外部系统 App 与自有 App 共用这一层目录。
+**SsoAdminDualSurface：** 系统管理下独立「SSO 管理」负责创建应用与拿配置（自有+外部注册）；「客户端管理」仅配置**自有 App** 的 SSO 接入；外部平台自配置。应用目录数据**仍扩展 `sys_client`**（D-202=A）；**UI 主路径不得塞进客户端管理**。
 
 **Phasing：** P0 = Authorization Code + sso-web + 应用接入（a 创建应用 / b 回调 / c 交付或读取 client 配置）+ 默认提供方槽位走通 + 本地登录并存；P1 = OIDC / refresh / SLO / 同意；P2 = 独立进程 / MFA 收敛。不把「外部第三方」单列为本期禁区。
 
@@ -54,6 +54,13 @@
 - `/auth/login` **不**校验 `client_secret` 作为 OAuth secret
 - Baseline：CTO intake 引用 `main @ b06d161`；规划冻结时 HEAD `d1ce372`（祖先含 `b06d161`）。**Lead 现声明仓 HEAD 可能为 `677d9a9`，冻结声明可能过时；实现前以仓内实际 HEAD 为准，不以过时 hash 当代码锚。本 change 不改产品代码。**
 
+## Round4 已确认（CTO t297u · grill consensus）
+
+- **D-200=A：** 独立「SSO 管理」模块/菜单（创建应用、拿配置）。
+- **D-201=A：** SSO 管理 vs 客户端管理双面分工（外部自配置）。
+- **D-202=A：** 数据仍扩展 `sys_client`；UI 主路径必须独立 SSO 管理；自有 App 接入配置在客户端管理。
+- **D-203=A：** 废止「创建应用/拿配置=客户端管理」旧 DEC。
+
 ## 开放语义
 
-Round3 已拍（D-100…116 / D-001…016）；高影响开放已清空。S-spec 权威行为见 `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/spec.md</Path>`。低影响占位（Origin/callback 字面量、Cookie 名/Domain）进环境矩阵，上线前填真值。
+无（Round4 frontier 空）。**可以进新 S-spec**（Lead 派规格重出）；访谈不实现。

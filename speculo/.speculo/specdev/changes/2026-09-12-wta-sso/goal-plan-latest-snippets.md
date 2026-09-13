@@ -1,3 +1,5 @@
+> **⚠️ 已过期（Round3 / 6 票投影）。** 禁止据此派工或判定完成。Round4 权威见 `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/goal-plan.md</Path>`（正式 7 票、独立 SSO 管理、AC-024、blocked-by-auth）。
+
 > **已被 Ready Spec 取代（2026-09-13）。** 本文件为历史晋升稿；勿当现行 Pending。最新态以 `goal-plan.md` + `spec.md` + `design-tree.json` 为准。无产品 Pending。
 
 ## Outcome

@@ -59,9 +59,17 @@ export interface SystemService {
     updateProfile(data: UserProfileForm): Promise<ApiResponse>;
   };
   readonly clients: CrudService<ClientQuery, ClientForm, ClientVO, [query?: ClientQuery]> & {
+    bindSsoAccess(id: Identifier, ssoAuthMode?: string): Promise<ApiResponse<ClientVO>>;
     changeStatus(clientId: string, status: string): Promise<ApiResponse>;
     options(): Promise<ClientVO[]>;
     rotateSsoSecret(id: Identifier): Promise<ApiResponse<ClientVO>>;
+  };
+  readonly ssoApps: {
+    add(data: ClientForm): Promise<ApiResponse<ClientVO>>;
+    get(id: Identifier): Promise<ApiResponse<ClientVO>>;
+    list(params?: ClientQuery): Promise<ApiResponse<PageResult<ClientVO>>>;
+    rotateSecret(id: Identifier): Promise<ApiResponse<ClientVO>>;
+    update(data: ClientForm): Promise<ApiResponse<ClientVO>>;
   };
   readonly userTypes: CrudService<UserTypeQuery, UserTypeForm, UserTypeVO, [query?: UserTypeQuery]> & {
     options(): Promise<ApiResponse<UserTypeVO[]>>;
@@ -125,7 +133,18 @@ export function createSystemService(http: HttpClient): SystemService {
       request({ url: '/system/client/changeStatus', method: 'put', data: { clientId, status } }),
     rotateSsoSecret: (id: Identifier) =>
       request<ClientVO>({ url: '/system/client/sso/rotate-secret', method: 'post', data: { id } }),
+    bindSsoAccess: (id: Identifier, ssoAuthMode?: string) =>
+      request<ClientVO>({ url: '/system/client/sso/bind', method: 'post', data: { id, ssoAuthMode } }),
     options: async () => (await clients.list({ pageNum: 1, pageSize: 1000 })).data?.rows ?? []
+  });
+  const ssoApps = Object.freeze({
+    list: (params?: ClientQuery) =>
+      request<PageResult<ClientVO>>({ url: '/system/ssoApp/list', method: 'get', params }),
+    get: (id: Identifier) => request<ClientVO>({ url: '/system/ssoApp/' + segment(id), method: 'get' }),
+    add: (data: ClientForm) => request<ClientVO>({ url: '/system/ssoApp', method: 'post', data }),
+    update: (data: ClientForm) => request<ClientVO>({ url: '/system/ssoApp/update', method: 'post', data }),
+    rotateSecret: (id: Identifier) =>
+      request<ClientVO>({ url: '/system/ssoApp/rotateSecret', method: 'post', data: { id } })
   });
   const userTypes = Object.freeze({
     list: (params?: UserTypeQuery) =>
@@ -166,6 +185,7 @@ export function createSystemService(http: HttpClient): SystemService {
     }),
     resources: createSystemResourceService(http),
     clients,
+    ssoApps,
     publicUsers,
     userTypes,
     roles,

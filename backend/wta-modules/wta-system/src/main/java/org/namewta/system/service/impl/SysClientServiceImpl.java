@@ -29,6 +29,7 @@ import org.namewta.system.mapper.SysUserTypeRelMapper;
 import org.namewta.system.service.ClientSessionService;
 import org.namewta.system.service.ISysClientService;
 import org.namewta.system.service.ISysUserTypeService;
+import org.namewta.system.sso.SsoAccessSupport;
 import org.namewta.system.sso.SsoClientFieldsSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -269,6 +270,24 @@ public class SysClientServiceImpl implements ISysClientService {
         SysClientVo vo = queryById(id);
         vo.setSsoSecretOnce(issued);
         return vo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @CacheEvict(cacheNames = CacheNames.SYS_CLIENT, allEntries = true)
+    @DSTransactional
+    public SysClientVo bindSsoAccess(Long id, String authMode) {
+        SysClient db = clientMapper.selectById(id);
+        SsoAccessSupport.requireRegistered(db);
+        String mode = SsoAccessSupport.requireBindMode(authMode);
+        clientMapper.lambda()
+            .set(SysClient::getSsoEnabled, Boolean.TRUE)
+            .set(SysClient::getSsoAuthMode, mode)
+            .eq(SysClient::getId, id)
+            .updateCount();
+        return queryById(id);
     }
 
     /**

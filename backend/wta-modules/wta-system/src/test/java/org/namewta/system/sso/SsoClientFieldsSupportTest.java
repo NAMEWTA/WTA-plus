@@ -53,6 +53,21 @@ class SsoClientFieldsSupportTest {
     }
 
     @Test
+    void publicOwnAppPersistsExactRedirectsWithoutPlaintextSecret() {
+        SysClientBo bo = baseBo();
+        bo.setSsoEnabled(true);
+        bo.setSsoClientKind("public");
+        bo.setSsoRedirectUris("http://127.0.0.1:4174/sso/callback");
+        SysClient entity = new SysClient();
+        String issued = SsoClientFieldsSupport.apply(bo, entity, null);
+        assertNull(issued);
+        assertNull(entity.getSsoSecretHash());
+        assertTrue(Boolean.TRUE.equals(entity.getSsoEnabled()));
+        assertEquals("http://127.0.0.1:4174/sso/callback", entity.getSsoRedirectUris());
+        assertEquals("public", entity.getSsoClientKind());
+    }
+
+    @Test
     void confidentialWithoutSecretGetsGeneratedHash() {
         SysClientBo bo = baseBo();
         bo.setSsoEnabled(true);

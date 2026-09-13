@@ -457,3 +457,116 @@
 - **后续：** validate --stage spec（及 tickets 若可用）；父代理负责 commit
 - **替代/被替代：** 替代 goal-plan / CONTEXT / ADR 中「Grill precursor / 待 Grill / Round3 进行中」过期叙事（历史 LOG 保留）
 
+## LOG-033 — 2026-09-13T13:32:00+08:00 — D-200 独立 SSO 管理（CTO t297u）
+- **设计树节点：** D-200
+- **轮次与依赖：** round 4 / 无
+- **状态：** confirmed
+- **事实与来源：** Lead PRIORITY 产品纠偏；CTO t297u
+- **结论：** A。系统管理下独立「SSO 管理」：创建应用、拿配置。
+- **影响工件：** CONTEXT / ADR-007 / 新 S-spec
+- **后续：** D-201
+
+## LOG-034 — 2026-09-13T13:32:00+08:00 — D-201 双面分工
+- **设计树节点：** D-201
+- **轮次与依赖：** round 4 / D-200
+- **状态：** confirmed
+- **事实与来源：** CTO t297u via Lead
+- **结论：** A。SSO 管理=注册+配置；客户端管理=仅自有 App 接入；外部自配置。
+- **影响工件：** CONTEXT / ADR-007
+- **后续：** D-202/D-203
+
+## LOG-035 — 2026-09-13T13:32:00+08:00 — D-203 废止旧客户端管理主路径 DEC
+- **设计树节点：** D-203
+- **轮次与依赖：** round 4 / D-200, D-201
+- **状态：** confirmed
+- **事实与来源：** CTO t297u；现 E2E 管理面错位
+- **结论：** A。废止冲突旧 DEC；新 S/票重出。
+- **影响工件：** ADR-003 UI 句 superseded / ADR-007
+- **后续：** 等 D-202；收口后报可否新 S
+
+## LOG-036 — 2026-09-13T13:32:00+08:00 — 启动 Round4 产品纠偏 Grill
+- **设计树节点：** D-200…203
+- **轮次与依赖：** Lead PRIORITY
+- **状态：** confirmed（启动）
+- **结论：** design-tree `active` round 4；D-200/201/203 已按 CTO 锁定；D-202 开放（荐仍扩展 sys_client）；不实现；不碰 notify
+- **后续：** CTO/Lead 拍 D-202 或按荐锁定后报可否新 S-spec
+
+## LOG-037 — 2026-09-13T14:06:00+08:00 — D-202=A 仍扩展 sys_client
+- **设计树节点：** D-202
+- **轮次与依赖：** round 4 / D-200, D-201
+- **状态：** confirmed
+- **事实与来源：** Lead【CTO 拍板】D-202=A
+- **结论：** 数据仍扩展 sys_client；UI 主路径独立 SSO 管理；自有 App 接入在客户端管理。
+- **影响工件：** CONTEXT / ADR-007 / 新 S-spec
+- **后续：** Round4 收口
+
+## LOG-038 — 2026-09-13T14:06:00+08:00 — Round4 收口 / 可进新 S-spec
+- **设计树节点：** D-200…203
+- **轮次与依赖：** round 4 / 全部 answered
+- **状态：** confirmed
+- **问题：** Round4 是否收口；可否进新 S-spec
+- **事实与来源：** frontier 空；CTO t297u + D-202=A；Lead 将派规格重出 Spec+票
+- **结论：** design-tree=`consensus`（含 Round4 产品纠偏）。**可以进新 S-spec**（由 Lead 派 RVP·规格重出 Spec，再拆票）。访谈岗不自启 S、不实现。
+- **影响工件：** 开放表 / `.status.json`
+- **约束或不变量：** 旧「客户端管理创建应用」DEC 已废；新 Spec 必须体现独立 SSO 管理 + 双面分工 + sys_client 扩展
+- **后续：** Lead 派 S→T
+- **替代/被替代：** 无
+
+## LOG-039 — 2026-09-13T14:12:00+08:00 — S-spec Round4 重出（CTO t297u）
+- **设计树节点：** D-200…203（+ 续用 D-001…016 / D-100…116）
+- **轮次与依赖：** round 4 / LOG-038 consensus / Lead 派 RVP·规格
+- **状态：** confirmed
+- **问题：** 是否按 Round4 产品纠偏重写权威 Ready Spec
+- **事实与来源：** 开放表 Round4 全锁；ADR-007；Lead NOTE t297u；派单禁改 ticket / 禁实现 / 不翻 execution_authorization
+- **结论：** 已重写 `spec.md`（`status=ready` / `ready_for_tickets=true`）。主路径改为独立「SSO 管理」创建应用+拿配置；双面分工；数据仍扩展 `sys_client`；废止旧客户端管理创建主路径合同；明示「没有接入」不合格；保留三门硬验收+PKCE+协议脊柱。新增/改写 DEC-200…203 与 AC-017…021/026。未改 `ticket/*.md`、未改产品代码、未触 ChatGPT、未翻授权。
+- **影响工件：** `spec.md`、`CONTEXT.md`（页眉）、`.status.json`、便签 `temp/team/spec/2026-09-12-wta-sso-s-spec-r4.md`
+- **约束或不变量：** 旧票须另派 T 作废/重出；本轮不实现
+- **后续：** validate --stage spec；Lead 可派 T-tickets 重出
+- **替代/被替代：** 替代 Round3 Ready Spec 中「管理面≈客户端管理 OpsFlow」主路径合同（历史 LOG/旧票保留作废依据）
+
+## LOG-040 — 2026-09-13T14:25:00+08:00 — T-tickets Round4 重出（作废旧 6 票）
+- **设计树节点：** D-200…203（承接 LOG-039 Spec）
+- **轮次与依赖：** round 4 / LOG-039 Ready Spec / Lead 派 RVP·拆票
+- **状态：** confirmed
+- **问题：** Round3 票 `status: done` + 残缺 Evidence 与 Round4 Spec（独立 SSO 管理 / 双面分工 / AC-024）冲突，需作废并重出
+- **事实与来源：** 派单禁改产品代码、禁翻 `execution_authorization`、禁授权 I、禁 commit/push、禁动 notify、禁用 ChatGPT 外脑；权威 Spec Round4 ready
+- **结论：** 旧 T-01…06 与旧 Evidence 已移 `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/superseded-r3/</Path>`；新 7 票全部 `blocked`/`ready: false` + `### blocked-by-auth`；`tickets-map.md` plan_revision=2；AC-001…024 全 covered（AC-024 不再 deferred）。**未翻 execution_authorization**；**未实现**；未造假 Evidence。
+- **影响工件：** `ticket/*`（新 7）、`tickets-map.md`、`superseded-r3/`、`.status.json`（仅 blockers/updated_at）、便签 `temp/team/tickets/2026-09-12-wta-sso-r4.md`
+- **约束或不变量：** 本轮仅 SpecDev T 定稿；须 Lead Research 后另派 I；旧 done 不当完成
+- **后续：** validate --stage tickets + ticket-control --map；Lead 可进 Research Heavy
+- **替代/被替代：** 替代 Round3 正式 6 票/map 投影（历史文件保留于 superseded-r3）
+
+## LOG-041 — 2026-09-13T14:37:35+08:00 — Goal Plan Round4 权威回写（7 票 / blocked）
+- **轮次与依赖：** Round4 / LOG-039 Ready Spec + LOG-040 正式 7 票 + Heavy review §2 P0
+- **状态：** confirmed（规划工件回写完成；实现仍 blocked-by-auth）
+- **问题：** 旧 `goal-plan.md` 仍投影 Round3 正式 6 票与「客户端管理页加 SSO 分组」创建主路径，若作为编排权威会按错 DAG 施工并漏 AC-024
+- **结论：** 已将权威 `goal-plan.md` 回写为 schema v6、`status=blocked`、`ready_for_execution=false`、`current` + `direct-parent`；权威 DAG 改为 `T-01→T-02`、`T-01→T-03→T-04`、`T-01+T-03→T-05`、`T-02+T-04+T-05→T-06→T-07`。Module landing 对齐独立 SSO 管理创建配置 / ClientPage 仅自有接入成功 / platform-auth 合同；明确废止旧 6 票、客户端管理创建主路径与 superseded-r3 旧 Evidence 完成性。
+- **授权口径：** **I 须 Lead 另派书面授权，范围 = Round4 T-01…07；不得继承 `.status.json` 里 CTO-t275u 旧 `implementation_commit=authorized` 到新票集；本文件不翻 `execution_authorization`。**
+- **Plan Quality Review：** 背景与边界、Skill/票引用、执行图、AC-001…024 覆盖、权限与恢复均 pass；执行授权轴 block（预期）：Round4 T-01…07 尚无 Lead 另派书面收窄授权，因此全部票与 Goal Plan 保持 blocked。
+- **影响工件：** `goal-plan.md`、`.status.json`（仅 `updated_at` / `blockers`；授权字段未改）、`goal-plan-latest-snippets.md`（过期横幅）、便签 `temp/team/goal-plan/2026-09-12-wta-sso-r4.md`
+- **约束或不变量：** 未改 ticket 合同正文；未改产品代码；未 push；未动 notify change；AC-024 禁止红「没有接入」/只验 Token 隔离伪绿
+- **后续：** 保持 blocked；等 Lead 书面收窄 Round4 T-01…07 授权后才可派 I，不得自启
+- **替代/被替代：** 替代旧 `goal-plan.md` Round3 正式 6 票 / 客户端管理创建主路径施工投影
+
+## LOG-042 — 2026-09-13T17:00:00+08:00 — I Round4 T-01 独立 SSO 管理落地
+
+- **轮次与依赖：** Round4 I / CTO-t316s1 / T-01
+- **状态：** confirmed（T-01 单元+Evidence；活体 E2E 归 T-07）
+- **结论：** 独立「SSO 管理」菜单/页/API `/system/ssoApp` 创建应用+精确回调+拿配置；数据扩展 `sys_client`；`SsoAppRegistration.prepare` 强制启用 SSO 并拒 `*`；明文密钥只一次。客户端管理不是创建主路径。
+- **验证：** `./mvnw … -Dtest=SsoRedirectUrisTest,SsoClientFieldsSupportTest,SysClientServiceSsoUnitTest,SsoAppRegistrationTest,SsoAccessSupportTest` exit 0 ×2（15 tests）；`pnpm --filter @namewta/domain-system test` 70；`@namewta/web-domain-system` 21。Evidence：`evidence/T-01.md`。
+- **约束：** 未 push / 未 CR；未用 superseded-r3 Evidence。
+
+## LOG-043 — 2026-09-13T17:05:00+08:00 — I Round4 T-02 客户端接入成功态
+
+- **轮次与依赖：** Round4 I / T-01 done / T-02
+- **状态：** confirmed（T-02 单元+Evidence；活体截图归 T-07）
+- **结论：** 客户端管理仅自有接入：`已接入`/`没有接入` 可区分；`POST /system/client/sso/bind`；未登记拒绝；去掉客户端管理一次性密钥交付。
+- **验证：** SsoAccessSupportTest + SysClientServiceSsoUnitTest 6 tests ×2 exit 0；domain-system 70 / web-domain-system 21 ×2。Evidence：`evidence/T-02.md`。
+
+## LOG-044 — 2026-09-13T17:18:00+08:00 — I Round4 T-03…07 协议脊柱 + 三门 E2E
+
+- **轮次与依赖：** Round4 I / T-01 T-02 done / T-03…07
+- **状态：** confirmed（正式票 Evidence 已新写；未 push）
+- **结论：** wta-sso PKCE/token extras≠sso；sso-web 仅密码 + HttpOnly `Sso-Token`；FirstParty 槽位 circle W + context authMode；admin/home `createSsoAuth` PKCE。活体 `scripts/sso-hard-e2e.sh` ×2 exit 0：SSO 管理创建+拿配置、客户端 **已接入**、三门+icon。
+- **验证：** T-03 9 tests ×2；T-04 session/cookie + sso-web 3；T-05 AuthClientContext + LoginPage icon；T-06 platform-auth 4 + admin-web 65。E2E logs `sso-r4-e2e-1.log` / `sso-r4-e2e-2.log`。
+- **约束：** 未 push / 未 CR；禁止用 superseded-r3 或红「没有接入」当完成。

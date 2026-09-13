@@ -139,6 +139,23 @@ public class SysClientController extends BaseController {
     }
 
     /**
+     * 完成自有 App SSO 接入（须已在 SSO 管理登记精确回调）。
+     *
+     * @param bo 主键与 authMode
+     * @return 接入后的视图
+     */
+    @SaCheckPermission("system:client:edit")
+    @Log(title = "客户端SSO接入", businessType = BusinessType.UPDATE)
+    @RepeatSubmit()
+    @PostMapping("/sso/bind")
+    public R<SysClientVo> bindSso(@RequestBody SysClientBo bo) {
+        if (bo.getId() == null) {
+            return R.fail("主键不能为空");
+        }
+        return R.ok(sysClientService.bindSsoAccess(bo.getId(), bo.getSsoAuthMode()));
+    }
+
+    /**
      * 修改客户端启停状态。
      *
      * @param bo 客户端状态信息

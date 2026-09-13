@@ -90,6 +90,12 @@ export type {
 } from './resource-types';
 
 export type { ClientForm, ClientQuery, ClientVO } from './client/types';
+export {
+  isSsoRegistered,
+  ssoAccessState,
+  systemSsoAppResource,
+  type SsoAccessState
+} from './client';
 export type { DeptForm, DeptQuery, DeptTreeVO, DeptVO } from './dept/types';
 export type {
   MenuForm,

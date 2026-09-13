@@ -2,6 +2,7 @@ package org.namewta.system.service.impl;
 
 import org.namewta.common.core.constant.SystemConstants;
 import org.namewta.common.core.exception.ServiceException;
+import org.namewta.system.domain.SysClient;
 import org.namewta.system.domain.bo.SysClientBo;
 import org.namewta.system.domain.vo.SysUserTypeVo;
 import org.namewta.system.mapper.SysClientMapper;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,8 +42,20 @@ class SysClientServiceSsoUnitTest {
         assertThrows(ServiceException.class, () -> fixture.service.insertByBo(bo));
     }
 
+    @Test
+    void bindSsoAccessRejectsUnregisteredClient() {
+        Fixture fixture = new Fixture();
+        SysClient db = new SysClient();
+        db.setId(9L);
+        db.setSsoRedirectUris(" ");
+        when(fixture.clientMapper.selectById(9L)).thenReturn(db);
+        ServiceException exception = assertThrows(ServiceException.class,
+            () -> fixture.service.bindSsoAccess(9L, "both"));
+        assertTrue(exception.getMessage().contains("SSO 管理"));
+    }
+
     private static final class Fixture {
-        private final SysClientMapper clientMapper = mock(SysClientMapper.class);
+        final SysClientMapper clientMapper = mock(SysClientMapper.class);
         private final SysRoleMapper roleMapper = mock(SysRoleMapper.class);
         private final ISysUserTypeService userTypeService = mock(ISysUserTypeService.class);
         private final ClientSessionService clientSessionService = mock(ClientSessionService.class);

@@ -8,21 +8,22 @@
     "specdev/P-goal-plan",
     "specdev/G-grill-with-docs",
     "specdev/S-spec",
-    "specdev/T-tickets"
+    "specdev/T-tickets",
+    "specdev/I-implement"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
     "implementation_commit": {
       "status": "authorized",
-      "source": "CTO-t275u + Lead PRIORITY I-implement 2026-09-13",
-      "granted_at": "2026-09-13T10:03:34+08:00",
-      "scope": "Ticket implementation commits on current workspace/main; push product code only after reporting Lead"
+      "source": "CTO-t316s1 widget 2026-09-13: authorize I Round4 T-01…07; Herdr xhigh; real E2E; no push/CR until pass",
+      "granted_at": "2026-09-13T16:35:49+08:00",
+      "scope": "Round4 tickets T-01…07 only on 2026-09-12-wta-sso; must NOT inherit CTO-t275u pre-pivot auth; no push/CR until Lead+CTO accept real E2E screenshots (SSO Admin + client SSO bind + three gates + icon; red 没有接入 fails AC-024)"
     },
     "local_candidate_integration": {
       "status": "authorized",
-      "source": "CTO-t275u + Lead PRIORITY I-implement 2026-09-13",
-      "granted_at": "2026-09-13T10:03:34+08:00",
-      "scope": "Lead-owned local direct-parent verification and parent update; no worktree/candidate-merge"
+      "source": "CTO-t316s1 widget 2026-09-13: authorize I Round4 T-01…07; Herdr xhigh; real E2E; no push/CR until pass",
+      "granted_at": "2026-09-13T16:35:49+08:00",
+      "scope": "Lead-owned local verification only; no push; no candidate-merge beyond local parent update without Lead"
     },
     "source_cleanup": {
       "status": "not-authorized",
@@ -38,11 +39,15 @@
     "history": []
   },
   "created_at": "2026-09-12T17:26:04+08:00",
-  "updated_at": "2026-09-13T10:03:34+08:00",
+  "updated_at": "2026-09-13T16:35:49+08:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
-  "blockers": [],
+  "blockers": [
+    "I authorized for Round4 T-01…07 only (CTO-t316s1); Herdr→Grok --reasoning-effort xhigh required",
+    "Real E2E + screenshots required before any push/CR: independent SSO Admin create/config, client SSO bind success state, three gates, login SSO as icon; red 没有接入 / token-isolation-only fails AC-024",
+    "P1 doc debt remains (AC-024 footnote / CONTEXT header / T-02 visual std) — do not block I but do not treat historical r3 evidence as done"
+  ],
   "deviations": [],
   "worktrees": []
 }

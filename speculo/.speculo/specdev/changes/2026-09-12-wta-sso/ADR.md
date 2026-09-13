@@ -47,7 +47,7 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 ## ADR-003: 模块边界 — wta-sso + sso-web；扩展 sys_client；API/Port 与前端分层
 
-**Status:** accepted
+**Status:** accepted（**UI 主路径部分 superseded by ADR-007**）
 **Source:** LOG-004 / LOG-010 / LOG-012  
 **Source:** CTO intake 模块落地
 
@@ -66,7 +66,7 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 ### Consequences
 
-客户端管理页增加 SSO 分组；回调白名单精确匹配（禁 `*`）；DDL/DML 基座变更进入 P0 票。
+~~客户端管理页增加 SSO 分组（创建应用主路径）~~ → 见 ADR-007。回调白名单精确匹配（禁 `*`）；DDL/DML 基座变更进入 P0 票。
 
 ---
 
@@ -123,3 +123,27 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 ### Decision
 
 本 change 在 G→S→T 完成且 CTO/用户书面授权前：`implementation_commit=not-authorized`，`ready_for_execution=false`。禁止 push/PR；禁止触碰 `2026-09-10-notify-channel-config`；禁止假票糊 validate。**2026-09-12：** 曾否决此时进 S（LOG-016）。**2026-09-13：** CTO 已授权进 S（LOG-032）；由规格岗执行，访谈岗不自启。
+
+
+## ADR-007: 独立 SSO 管理面 + 与客户端管理双面分工
+
+**Status:** accepted
+**Source:** LOG-033 / LOG-034 / LOG-035 / CTO t297u via Lead
+**Supersedes:** ADR-003 中「客户端管理页作为创建应用/拿配置主路径」的产品句
+
+### Context
+现实现/E2E 出现管理面错位与红色「没有接入」。旧合同把应用注册塞进「客户端管理」/仅扩展 sys_client 的同页体验，不符合产品意图。
+
+### Decision
+1. 系统管理下提供**独立「SSO 管理」模块/菜单**：创建应用、获取配置（面向自有与外部应用注册）。
+2. **客户端管理**仅负责**自有 App** 的 SSO 接入配置；外部平台自配置。
+3. 废止「创建应用/拿配置 = 客户端管理凑合」及冲突 DEC；新 S-spec / 拆票必须重写相关 AC 与票。
+4. 数据层**仍扩展 `sys_client`**（D-202=A）；UI 必须独立 SSO 管理。
+
+### Trade-off
+相对「只加 SSO 分组」，多一个管理面，但职责清晰，避免自有 Client CRUD 与应用注册混杂。
+
+### Consequences
+- Spec DEC-103/AC-017 等「管理面」表述须指向 SSO 管理模块。
+- 客户端管理不再展示「给外部建应用」主路径。
+- 现有错误 E2E/实现视为相对旧合同，纠偏以本 ADR + 新 S 为准。

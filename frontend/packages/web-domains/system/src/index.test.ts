@@ -16,6 +16,7 @@ describe('system web manifest', () => {
     const manifest = createSystemWebDomain(runtime);
     expect(manifest.registrations.map(item => [item.componentKey, item.componentName])).toEqual([
       ['system/client/index', 'Client'],
+      ['system/ssoApp/index', 'SsoApp'],
       ['system/user/index', 'User'],
       ['system/user/authRole', 'AuthRole'],
       ['system/userType/index', 'UserType'],
@@ -33,6 +34,7 @@ describe('system web manifest', () => {
     expect(manifest.permissions.flatMap(item => item.permissions)).toEqual(
       expect.arrayContaining([
         'system:client:list',
+        'system:ssoApp:list',
         'system:user:list',
         'system:user:import',
         'system:user:resetPwd',

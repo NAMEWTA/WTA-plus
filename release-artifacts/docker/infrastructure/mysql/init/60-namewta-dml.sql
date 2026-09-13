@@ -1378,3 +1378,39 @@ where not exists (
     select 1 from sys_user_type_rel
     where user_id = 1761100000000000001 and user_type_id = 1762100000000000002
 );
+
+-- ============================================================================
+-- 变更标识：NAMEWTA-SSO-MENU-001
+-- 变更内容：独立「SSO 管理」菜单（创建应用+拿配置），不占用客户端管理创建主路径
+-- ============================================================================
+
+insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
+     menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
+select 2100900000000000100, 1762000000000000001, 'SSO 管理', 1761400000000000001, 15, 'ssoApp', 'system/ssoApp/index', '', 'N', 'Y',
+       'C', '0', '0', 'system:ssoApp:list', 'tabler:key', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '独立 SSO 管理：创建应用与配置交付'
+from dual
+where not exists (select 1 from sys_menu where menu_id = 2100900000000000100);
+
+insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
+     menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
+select 2100900000000000101, 1762000000000000001, 'SSO应用查询', 2100900000000000100, 1, '', '', '', 'N', 'Y', 'F', '0', '0', 'system:ssoApp:query', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), ''
+from dual where not exists (select 1 from sys_menu where menu_id = 2100900000000000101);
+insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
+     menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
+select 2100900000000000102, 1762000000000000001, 'SSO应用新增', 2100900000000000100, 2, '', '', '', 'N', 'Y', 'F', '0', '0', 'system:ssoApp:add', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), ''
+from dual where not exists (select 1 from sys_menu where menu_id = 2100900000000000102);
+insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
+     menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
+select 2100900000000000103, 1762000000000000001, 'SSO应用修改', 2100900000000000100, 3, '', '', '', 'N', 'Y', 'F', '0', '0', 'system:ssoApp:edit', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), ''
+from dual where not exists (select 1 from sys_menu where menu_id = 2100900000000000103);
+insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
+     menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
+select 2100900000000000104, 1762000000000000001, 'SSO应用删除', 2100900000000000100, 4, '', '', '', 'N', 'Y', 'F', '0', '0', 'system:ssoApp:remove', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), ''
+from dual where not exists (select 1 from sys_menu where menu_id = 2100900000000000104);
+
+insert ignore into sys_role_menu (role_id, menu_id)
+values (1761300000000000001, 2100900000000000100),
+       (1761300000000000001, 2100900000000000101),
+       (1761300000000000001, 2100900000000000102),
+       (1761300000000000001, 2100900000000000103),
+       (1761300000000000001, 2100900000000000104);

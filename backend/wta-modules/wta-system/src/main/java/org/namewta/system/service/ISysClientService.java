@@ -71,4 +71,13 @@ public interface ISysClientService {
      * @return 含一次性明文的视图
      */
     SysClientVo rotateSsoSecret(Long id);
+
+    /**
+     * 客户端管理完成自有 App SSO 接入（须已在 SSO 管理登记）。
+     *
+     * @param id       主键
+     * @param authMode sso 或 both
+     * @return 接入后的视图
+     */
+    SysClientVo bindSsoAccess(Long id, String authMode);
 }

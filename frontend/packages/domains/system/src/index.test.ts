@@ -3,6 +3,7 @@ import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 import {
   createSystemService,
   systemDomainModule,
+  systemSsoAppResource,
   type ApiResponse,
   type ClientForm,
   type ClientQuery,
@@ -50,6 +51,18 @@ describe('system transport contracts', () => {
       [
         { url: '/system/client/changeStatus', method: 'put', data: { clientId: 'client-a', status: '1' } },
         () => service.clients.changeStatus('client-a', '1')
+      ],
+      [
+        { url: '/system/client/sso/bind', method: 'post', data: { id: '1', ssoAuthMode: 'both' } },
+        () => service.clients.bindSsoAccess('1', 'both')
+      ],
+      [{ url: '/system/ssoApp/list', method: 'get', params: query }, () => service.ssoApps.list(query)],
+      [{ url: '/system/ssoApp/app%2F1', method: 'get' }, () => service.ssoApps.get('app/1')],
+      [{ url: '/system/ssoApp', method: 'post', data: input }, () => service.ssoApps.add(input)],
+      [{ url: '/system/ssoApp/update', method: 'post', data: input }, () => service.ssoApps.update(input)],
+      [
+        { url: '/system/ssoApp/rotateSecret', method: 'post', data: { id: 'app/1' } },
+        () => service.ssoApps.rotateSecret('app/1')
       ],
 
       [{ url: '/system/user/list', method: 'get', params: query }, () => service.users.list(query)],
@@ -184,7 +197,7 @@ describe('system transport contracts', () => {
 
     for (const [, invoke] of cases) await invoke();
     expect(requests).toEqual(cases.map(([expected]) => expected));
-    expect(cases).toHaveLength(65);
+    expect(cases).toHaveLength(71);
   });
 
   it('keeps table responses at response.data.rows and response.data.total', async () => {
@@ -263,6 +276,13 @@ describe('system transport contracts', () => {
     expectTypeOf(service.menus.list).toEqualTypeOf<(query?: MenuQuery) => Promise<ApiResponse<MenuVO[]>>>();
     expectTypeOf(service.departments.list).toEqualTypeOf<(query?: DeptQuery) => Promise<ApiResponse<DeptVO[]>>>();
     expectTypeOf(service.posts.list).toEqualTypeOf<(query: PostQuery) => Promise<ApiResponse<PageResult<PostVO>>>>();
+  });
+
+  it('publishes the independent SSO 管理 resource on /system/ssoApp', () => {
+    expect(systemSsoAppResource).toEqual({
+      controller: 'SysSsoAppController',
+      basePath: '/system/ssoApp'
+    });
   });
 
   it('publishes the exact system capability identity', () => {
