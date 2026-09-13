@@ -27,7 +27,7 @@ export function adaptServerMenuRoutes(routes: readonly ServerRouteNode<HomeRoute
       ...(route.alwaysShow !== undefined ? { alwaysShow: route.alwaysShow } : {}),
       ...(route.ext !== undefined ? { ext: route.ext } : {}),
       ...(route.permissions !== undefined ? { permissions: [...route.permissions] } : {}),
-      ...(route.redirect ? { redirect: route.redirect } : {}),
+      ...(route.redirect && route.redirect !== 'noRedirect' ? { redirect: route.redirect } : {}),
       ...(route.query ? { query: route.query } : {})
     };
     if (route.children) {

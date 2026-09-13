@@ -6,13 +6,16 @@ import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { homeSso } from '@/application/sso';
 import { session } from '@/application/session';
+import { useUserStore } from '@/store/user';
 
 const router = useRouter();
+const userStore = useUserStore();
 
 onMounted(async () => {
   try {
     const result = await homeSso.handleCallback(window.location.search);
     session.setToken(result.accessToken);
+    userStore.token = result.accessToken;
     await router.replace('/profile');
   } catch {
     await router.replace('/login');

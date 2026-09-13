@@ -62,7 +62,7 @@ set user_type_id     = 1762100000000000002,
     client_secret    = 'home123',
     grant_type       = 'password,sms,social',
     device_type      = 'pc',
-    access_path      = '/home/**'
+    access_path      = '/home/**,/system/user/getInfo,/system/menu/getRouters,/auth/logout,/profile/**'
 where id = 1762000000000000002;
 
 -- ----------------------------

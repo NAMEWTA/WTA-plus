@@ -7,6 +7,7 @@ import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.core.utils.SpringUtils;
 import org.namewta.common.satoken.utils.LoginHelper;
 import org.namewta.system.domain.vo.SysClientVo;
+import org.namewta.system.sso.ClientAccessPaths;
 import org.namewta.web.domain.vo.LoginVo;
 
 import java.util.function.Consumer;
@@ -62,7 +63,8 @@ public interface IAuthStrategy {
         model.setActiveTimeout(client.getActiveTimeout());
         model.setExtra(LoginHelper.CLIENT_KEY, client.getClientId());
         model.setExtra(LoginHelper.CLIENT_PK_KEY, client.getId());
-        model.setExtra(LoginHelper.CLIENT_ACCESS_PATH_KEY, client.getAccessPath());
+        model.setExtra(LoginHelper.CLIENT_ACCESS_PATH_KEY,
+            ClientAccessPaths.resolve(client.getClientKey(), client.getAccessPath()));
         model.setExtra(LoginHelper.CLIENT_IP_WHITELIST_KEY, client.getIpWhitelist());
         if (ObjectUtil.isNotNull(customizer)) {
             customizer.accept(model);

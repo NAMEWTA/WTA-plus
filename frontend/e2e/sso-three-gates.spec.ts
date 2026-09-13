@@ -100,13 +100,36 @@ test.describe('SSO three hard gates', () => {
     await expect(homeSso).toHaveClass(/is-circle/);
     await expect(homeSso.locator('svg')).toBeVisible();
     await homeSso.click();
-    await home.waitForURL(/127\.0\.0\.1:4176/, { timeout: 20_000 });
+    const sawSsoWeb = home
+      .waitForURL(/127\.0\.0\.1:4176/, { timeout: 20_000 })
+      .then(async () => {
+        await expect(home.locator('input[name="password"]')).toHaveCount(0);
+      })
+      .catch(() => undefined);
+    await home.waitForURL(url => {
+      const parsed = new URL(url);
+      return parsed.port === '4175';
+    }, { timeout: 30_000 });
+    await sawSsoWeb;
     await expect(home.locator('input[name="password"]')).toHaveCount(0);
-    await home.screenshot({ path: shot('sso-ac002-reuse-no-password.png'), fullPage: true });
-    await home.waitForURL(/127\.0\.0\.1:4175/, { timeout: 30_000 });
+    await home.waitForURL(url => {
+      const parsed = new URL(url);
+      return (
+        parsed.port === '4175' &&
+        parsed.pathname !== '/login' &&
+        parsed.pathname !== '/sso/callback' &&
+        !parsed.pathname.endsWith('/sso/callback')
+      );
+    }, { timeout: 30_000 });
     await expect
       .poll(async () => home.evaluate(() => window.localStorage.getItem('Home-Token')), { timeout: 20_000 })
       .toBeTruthy();
+    const homeHeader = home.locator('header');
+    await expect(homeHeader.getByRole('button', { name: '退出' })).toBeVisible({ timeout: 20_000 });
+    await expect(homeHeader.getByRole('link', { name: '登录', exact: true })).toHaveCount(0);
+    await expect(home.getByText('没有访问权限')).toHaveCount(0);
+    await expect(home).toHaveURL(/\/profile/);
+    await home.screenshot({ path: shot('sso-ac002-reuse-no-password.png'), fullPage: true });
     const homeToken = String(await home.evaluate(() => window.localStorage.getItem('Home-Token')));
     const homeClient = homeClientFromApi || extraClientId(homeToken);
     expect(adminClient).not.toEqual(homeClient);
@@ -119,6 +142,8 @@ test.describe('SSO three hard gates', () => {
       }
     });
     const crossBody = (await cross.json()) as { code?: number; msg?: string };
+    await expect(homeHeader.getByRole('button', { name: '退出' })).toBeVisible();
+    await expect(home.getByText('没有访问权限')).toHaveCount(0);
     await home.screenshot({ path: shot('sso-ac003-client-isolation.png'), fullPage: true });
     expect(crossBody.code).not.toBe(200);
     expect(adminClient).toBe(adminClientId);

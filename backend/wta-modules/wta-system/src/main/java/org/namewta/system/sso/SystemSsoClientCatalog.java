@@ -40,7 +40,7 @@ public class SystemSsoClientCatalog implements SsoClientCatalog {
         view.setDeviceType(vo.getDeviceType());
         view.setTimeout(vo.getTimeout());
         view.setActiveTimeout(vo.getActiveTimeout());
-        view.setAccessPath(vo.getAccessPath());
+        view.setAccessPath(ClientAccessPaths.resolve(vo.getClientKey(), vo.getAccessPath()));
         view.setIpWhitelist(vo.getIpWhitelist());
         view.setUserTypeId(vo.getUserTypeId());
         return view;

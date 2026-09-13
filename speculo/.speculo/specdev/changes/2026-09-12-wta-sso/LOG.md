@@ -570,3 +570,10 @@
 - **结论：** wta-sso PKCE/token extras≠sso；sso-web 仅密码 + HttpOnly `Sso-Token`；FirstParty 槽位 circle W + context authMode；admin/home `createSsoAuth` PKCE。活体 `scripts/sso-hard-e2e.sh` ×2 exit 0：SSO 管理创建+拿配置、客户端 **已接入**、三门+icon。
 - **验证：** T-03 9 tests ×2；T-04 session/cookie + sso-web 3；T-05 AuthClientContext + LoginPage icon；T-06 platform-auth 4 + admin-web 65。E2E logs `sso-r4-e2e-1.log` / `sso-r4-e2e-2.log`。
 - **约束：** 未 push / 未 CR；禁止用 superseded-r3 或红「没有接入」当完成。
+
+## LOG-045 — 2026-09-13T18:00:00+08:00 — Home SSO 登录完成（access_path + noRedirect）
+
+- **状态：** confirmed
+- **问题：** home Token extras.accessPath=`/home/**` 拒绝 `/system/user/getInfo`；菜单 `redirect=noRedirect` 把 `/profile` 相对写成 `/sso/noRedirect`；callback 未写入 Pinia token。
+- **结论：** `ClientAccessPaths.resolve` 为 home 并入 getInfo/getRouters/logout/profile；DML+live DB 同步；home callback 写 `userStore.token`；adapter 丢弃 `noRedirect`。E2E 断言离开 callback、/profile、header 退出、无「没有访问权限」。
+- **验证：** ClientAccessPathsTest + HomeClientLoginAccessPathTest + SsoTokenExtrasTest ×2；home-web vitest ×2；`scripts/sso-hard-e2e.sh` ×2 exit 0。AC-002/003 截图为已登录档案中心。

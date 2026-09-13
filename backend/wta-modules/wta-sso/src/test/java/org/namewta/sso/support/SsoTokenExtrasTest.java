@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("local")
 @Tag("dev")
@@ -27,6 +28,16 @@ class SsoTokenExtrasTest {
             : parameter.getExtraData().get(LoginHelper.CLIENT_KEY);
         assertEquals("e5cd7e4891bf95d1d19206ce24a7b32e", extra);
         assertNotEquals("sso", extra);
+        SsoClientView home = new SsoClientView();
+        home.setId(2L);
+        home.setClientId("428a8310cd442757ae699df5d894f051");
+        home.setClientKey("home");
+        home.setAccessPath("/home/**,/system/user/getInfo,/system/menu/getRouters,/auth/logout,/profile/**");
+        Object homePath = SsoTokenExtras.bind(home).getExtraData() == null
+            ? null
+            : SsoTokenExtras.bind(home).getExtraData().get(LoginHelper.CLIENT_ACCESS_PATH_KEY);
+        assertTrue(String.valueOf(homePath).contains("/system/user/getInfo"));
+        assertTrue(String.valueOf(homePath).contains("/system/menu/getRouters"));
 
         SsoClientView sso = new SsoClientView();
         sso.setClientId("sso");
