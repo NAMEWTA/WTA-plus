@@ -134,3 +134,5 @@ P0 硬验收：同一浏览器先 SSO 进 `admin-web`，再进 `home-web`，两�
 - 同仓活跃 change `2026-09-10-notify-channel-config` 主题无关；**禁止触碰**。
 - 本轮仅 SpecDev 规划工件；下一 Work=`specdev/G-grill-with-docs`；I-implement 未授权。
 - 外脑由父进程补跑；本 change 不得声称外脑已通过。
+- **Baseline 注记（2026-09-13）：** 冻结时 HEAD=`d1ce372`。Lead 现引 `677d9a9`，声明可能新于冻结点。最新代码锚以仓内实际 HEAD 为准；分期/产品口径以 CONTEXT + spec 为准，不以本 intake 的「P2=真正外部第三方」为现行分期。
+- **阶段注记（2026-09-13）：** 上条「下一 Work=`specdev/G-grill-with-docs`」为冻结时历史句；现态 G/S/T 已跑完，待命 I-implement（`implementation_commit=not-authorized`）。以 CONTEXT / goal-plan / `.status.json` 为准。

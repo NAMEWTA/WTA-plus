@@ -1,12 +1,9 @@
 # Change Architecture Decisions — 2026-09-12-wta-sso
 
-> **Authority:** CTO BRIEF `/workspace/share-research/inbox/CTO-BRIEF-20260913.md` > 本文件。
-> Round3 进行中：与 BRIEF 冲突的旧「NoExternalIdP」表述**作废**；其余 accepted 安全/部署条目待 D-104 确认是否原样保留。
-> ChatGPT 外脑旧 reply **不得**冒充本轮通过；本轮外脑 = Research / Grok Heavy。
-
-> **Status legend:** Grill consensus 后下列条目为 **accepted**（change-local；非永久 ADR 毕业）。  
-> ChatGPT 外脑仅为候选；正式拍板来源为 CTO via Lead + design-tree/LOG。
-> Round3 已晋升 Research：`FirstPartySsoProvider`；旧 ChatGPT 产品句不作权威。
+> **Authority:** CTO BRIEF `/workspace/share-research/inbox/CTO-BRIEF-20260913.md`（t155u）> 本文件。
+> **Status：** accepted（change-local；非永久 ADR 毕业）。Round3 **已收口**（design-tree `status=consensus`）。
+> D-104=A：已拍 F 合同 D-001…016 **原样续用**。旧「NoExternalIdP / 仅第一方」产品口号作废，由 FirstPartySsoProvider 取代。
+> ChatGPT 外脑旧 reply **不得**冒充本轮通过；本轮外脑 = Research / Grok Heavy（产品句以 BRIEF + design-tree 为准）。
 
 ## ADR-001: 协议选型 — Authorization Code + PKCE S256
 
@@ -18,7 +15,7 @@
 
 需要跨 App 统一登录，同时保留每 Client 的 Sa-Token 隔离。Implicit 已废弃；把现有密码登录包装成 password grant 会混淆本地登录与 OAuth 客户端凭证；SAML 超出本期栈。
 
-### Decision（proposed）
+### Decision
 
 采用 **OAuth 2.0 Authorization Code + PKCE（S256）**。禁止 Implicit、OAuth password grant、SAML。OIDC discovery / id_token / userinfo **延期 P1**。产品定位：**FirstPartySsoProvider**——自建 SSO 是第三方登录目录的默认第一提供方（与 Mask/GitHub 等同槽、排最前）；身份真相源仍在本仓。禁止把用户目录外包给 Keycloak / Casdoor / Logto / Hydra。废止「NoExternalIdP / 仅第一方」产品口号。
 
@@ -38,13 +35,13 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 业务安全模型已按 `clientid` / `clientPk` 隔离 RBAC 与会话。替换 Token 形态或签发 SSO 中心 Client 票会破坏隔离或迫使伪 SSO。
 
-### Decision（proposed）
+### Decision
 
 `access_token` **就是**现有 WTA Sa-Token。换票时 extras **必须**写入**目标业务 Client**，禁止写入 `sso` 中心 Client。
 
 ### Consequences
 
-硬验收：admin 与 home 两 Token `clientid` 不同且互打被拒。SSO Cookie 不得被业务 App 当作 API Token。
+硬验收三门并列：`P0-DEFAULT-PROVIDER-PATH` + `P0-SSO-REUSE` + `P0-CLIENT-ISOLATION`（D-115=A / D-011=A）。admin 与 home 两 Token `clientid` 不同且互打被拒。SSO Cookie 不得被业务 App 当作 API Token。
 
 ---
 
@@ -58,7 +55,7 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 需要清晰的第一方 SSO 表面，同时避免平行「OAuth 应用表」与现有客户端管理分叉。
 
-### Decision（proposed）
+### Decision
 
 - 后端新模块 `backend/wta-modules/wta-sso`
 - 前端新应用 `frontend/apps/sso-web`（ClientId=`sso`，会话键=`Sso-Token`）
@@ -83,7 +80,7 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 迁移期不能切断现有 `POST /auth/login`。各入口是否强制 SSO 需产品决定。
 
-### Decision（proposed）
+### Decision
 
 保留本地登录；按 Client 配置 `local` / `sso` / `both`。默认 admin/home 为 `both`；允许部分入口直接 `sso`（CTO-Q3/D-003）。入口级覆盖细节进 Spec。
 
@@ -103,9 +100,9 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 
 协议核心可与 OIDC/SLO/独立进程解耦。域名与是否独立部署影响 cookie 域与回调配置。
 
-### Decision（proposed）
+### Decision
 
-- **P0：** authorize + token + PKCE + sso-web + Client 扩展 + 可选统一登录 + 本地并存  
+- **P0：** authorize + token + PKCE + sso-web + Client 扩展 + **默认第一提供方路径（D-110=C）** + 本地并存 + 外部管理面登记（D-111=B）  
 - **P1：** OIDC / refresh / SLO / 同意页  
 - **P2：** 独立进程 / MFA 收敛  
 
@@ -123,6 +120,6 @@ P0 只实现 authorize / token（authorization_code+PKCE）/ revoke；客户端�
 **Source:** LOG-015 / Lead dispatch  
 **Source:** Lead dispatch 2026-09-12
 
-### Decision（proposed）
+### Decision
 
 本 change 在 G→S→T 完成且 CTO/用户书面授权前：`implementation_commit=not-authorized`，`ready_for_execution=false`。禁止 push/PR；禁止触碰 `2026-09-10-notify-channel-config`；禁止假票糊 validate。**2026-09-12：** 曾否决此时进 S（LOG-016）。**2026-09-13：** CTO 已授权进 S（LOG-032）；由规格岗执行，访谈岗不自启。

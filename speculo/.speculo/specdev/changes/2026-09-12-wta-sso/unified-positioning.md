@@ -14,7 +14,7 @@
 |---|---|---|
 | 自建 SSO 提供方 | 本仓实现的登录提供方（OP） | 默认第一槽位，P0 主交付 |
 | 外接第三方 IdP | Mask / GitHub 等 social | 同目录后续槽位，已存在；不替换、不互斥 |
-| 外部系统 App | 接入本 SSO 的 RP / 业务 Client | 产品范围含之；P0 运行时深度待 Grill |
+| 外部系统 App | 接入本 SSO 的 RP / 业务 Client | 产品范围含之；P0 = 管理面可登记（D-111=B）；运行时 Code 流先自有 App；confidential 后置（D-116=B） |
 | 外置 IdP 产品 | Keycloak / Casdoor / Logto / Hydra | 禁止作为用户目录 / 身份源 |
 
 一句话防误读：**禁止再用「无外置 IdP」否定「可被其他 App 当第三方登录来接」；也禁止把「第三方登录提供方」理解成「用户目录外包」。**

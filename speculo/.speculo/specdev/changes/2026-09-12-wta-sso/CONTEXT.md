@@ -1,8 +1,8 @@
 # WTA SSO — 领域上下文
 
-> **Status:** Grill-confirmed / S-spec 进行中（已对齐 BRIEF；术语已晋升）。  
+> **Status:** Grill-confirmed / S-spec ready（已对齐 BRIEF t155u + D-100…116；术语已晋升）。  
 > **Authority:** CTO 书面决定（含 2026-09-13 t155u）> 本 CONTEXT > Spec > Goal Plan。  
-> 阶段：`specdev/S-spec`（CTO 已授权 LOG-032）；仍禁止 I-implement / 产品代码。  
+> 阶段：`specdev/S-spec` 已定稿；`specdev/T-tickets` 已落盘（全部 blocked-by-auth）。仍禁止 I-implement / 产品代码。  
 > 冲突以 CTO 最新口径为准。旧词 `NoExternalIdP` /「仅第一方」已废止，由 FirstPartySsoProvider 取代。
 
 ## Glossary
@@ -17,7 +17,7 @@
 | **Sa-Token（access_token）** | 现有 JWT Simple + Redis 会话；`loginId=userType:userId`；extra 含 `clientid` 与 `clientPk`。 |
 | **业务 Client** | `sys_client` 行（admin / home / 外部登记应用）；Token extras 必须指向它，而非 SSO 中心 Client。 |
 | **SSO Client** | ClientId=`sso`；会话键=`Sso-Token`；仅 SSO 域会话，**不**作为业务 API Token extras。 |
-| **authMode** | 每 Client：`local` / `sso` / `both`；保留 `POST /auth/login`。与「SSO 排在第三方登录最前」同时成立，具体默认 UX 待 Grill。 |
+| **authMode** | 每 Client：`local` / `sso` / `both`；默认 admin/home=`both`；允许部分入口直接 `sso`；保留 `POST /auth/login`。与「SSO 排在第三方登录最前」同时成立：`both` 时本地密码框仍在主路径，第三方区第一项为自建 SSO（D-110=C：第一按钮 → 授权码到 `sso-web`）。 |
 | **PKCE S256** | Authorization Code 流强制；禁 Implicit / password grant。OIDC → 后期。 |
 | **sso_secret_hash** | OAuth 客户端密钥哈希；**不等于**现有 `client_secret`。自有 App 直接读配置；外部 App 由管理面交付 client/密钥。 |
 | **两层会话** | SSO 域可 HttpOnly Cookie（后端 Set-Cookie）；业务 App 仅 Header Bearer + 自有存储键。 |
@@ -48,12 +48,12 @@
 
 ## 现状锚点（intake）
 
-- 已激活终端：`admin-web` / `home-web`；外部系统 App 为明确接入对象，P0 运行时深度待 Grill
+- 已激活终端：`admin-web` / `home-web`；外部系统 App 为明确接入对象。P0 深度 = **管理面可登记**（D-111=B）；confidential token 鉴权运行时后置（D-116=B）；运行时 Code 流先打通自有 App。不得宣称「外部 App 已跑通 Code 流」。
 - 已有 social：`IAuthStrategy` 含 password / sms / email / social / xcx（Mask、GitHub 等）
 - Cookie 默认关闭；业务走 Bearer
 - `/auth/login` **不**校验 `client_secret` 作为 OAuth secret
-- Baseline：CTO `b06d161`；规划冻结 HEAD `d1ce372`
+- Baseline：CTO intake 引用 `main @ b06d161`；规划冻结时 HEAD `d1ce372`（祖先含 `b06d161`）。**Lead 现声明仓 HEAD 可能为 `677d9a9`，冻结声明可能过时；实现前以仓内实际 HEAD 为准，不以过时 hash 当代码锚。本 change 不改产品代码。**
 
 ## 开放语义
 
-Round3 已拍（D-110…116 等）；高影响开放已清空。S-spec 权威行为见 `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/spec.md</Path>`。低影响占位（Origin/callback 字面量）进环境矩阵。
+Round3 已拍（D-100…116 / D-001…016）；高影响开放已清空。S-spec 权威行为见 `<Path>{roots.state}/specdev/changes/2026-09-12-wta-sso/spec.md</Path>`。低影响占位（Origin/callback 字面量、Cookie 名/Domain）进环境矩阵，上线前填真值。

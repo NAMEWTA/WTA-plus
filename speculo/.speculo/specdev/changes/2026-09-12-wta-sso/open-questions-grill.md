@@ -1,3 +1,5 @@
+> **已收束（2026-09-13）。** P0-1…P0-7 已拍：D-110=C / D-111=B / D-112=A / D-113=A / D-114=SOCIAL_DIR+CONTEXT / D-115=A / D-116=B。D-100=A / D-101=A。本文件不再是 Pending。最新态以 `design-tree.json` + `spec.md` 为准。
+
 ## 4. Grill 开放问题（按优先级）
 
 面向 CTO 可直接问。旧 CTO-Q1…Q4（协议包、域名矩阵、authMode=both、同进程+独立 Origin）已答，不再重复。

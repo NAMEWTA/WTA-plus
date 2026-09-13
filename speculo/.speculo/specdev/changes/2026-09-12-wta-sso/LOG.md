@@ -445,3 +445,15 @@
 - **后续：** validate --stage tickets + ticket-control --map；待命 CTO 授权后再 ready
 - **替代/被替代：** 替代 outline-only tickets-map（旧 draft 投影）
 
+## LOG-034 — 2026-09-13T09:35:47+08:00 — 文档收束（只写最新态；对齐 Ready Spec）
+- **设计树节点：** 不适用
+- **轮次与依赖：** LOG-032/033 / doc-review F-1…F-11
+- **状态：** confirmed
+- **问题：** live 规划面（CONTEXT / goal-plan / ADR / 卫星件）是否仍残留「待 Grill / outline-only / Round3 进行中」过期语义
+- **事实与来源：** `share-research/reports/20260913-wta-sso-doc-review.md` + `runs/.../02-replace-patches.md`；仓 HEAD=`677d9a9`
+- **结论：** 已按 F-1…F-11 回写最新态：三门并列硬验收；G/S/T 已 done；正式票 blocked-by-auth；D-110=C / D-111=B / D-115=A / D-116=B；基线声明加「以仓内实际 HEAD 为准」。**未改产品代码**；**未改 spec AC 结构（F-12 跳过）**；**未翻转 implementation_commit**；未造假 Evidence。T-04/T-05 票正文路径交接由拆票岗另补，本条不覆盖 ticket 文件。
+- **影响工件：** CONTEXT.md、goal-plan.md、ADR.md、open-questions-grill.md、goal-plan-latest-snippets.md、unified-positioning.md、external-brain/notes.md、source.md（仅 Source Comments）、evidence/INTAKE-POINTER.md、tickets-map.md §5、design-tree.json（D-001 answer_note）、.status.json、便签 temp/team/spec/2026-09-12-wta-sso-doc-align.md
+- **约束或不变量：** 仍 not-authorized；禁止 I / push / 假 Evidence
+- **后续：** validate --stage spec（及 tickets 若可用）；父代理负责 commit
+- **替代/被替代：** 替代 goal-plan / CONTEXT / ADR 中「Grill precursor / 待 Grill / Round3 进行中」过期叙事（历史 LOG 保留）
+

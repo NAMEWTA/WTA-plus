@@ -28,6 +28,8 @@ expected_changes:
   - "<Path>frontend/packages/platform/auth/src/index.ts</Path>"
   - "<Path>frontend/apps/admin-web/src/</Path>"
   - "<Path>frontend/apps/home-web/src/</Path>"
+  - "<Path>frontend/apps/home-web/src/router/index.ts</Path>"
+  - "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path>"
 writable_paths:
   - "<Path>frontend/packages/platform/auth/</Path>"
   - "<Path>frontend/packages/adapters/storage-browser/</Path>"
@@ -63,7 +65,7 @@ shared_path_owners:
 ## 1. 战略与来源
 
 - **目标：** 在 `packages/platform/auth` 提供无浏览器依赖的 `startSsoLogin`/`handleCallback`；browser 侧 adapters；admin-web/home-web 调用方接入。
-- **可观察产出：** 两 App 登录页可走默认 SSO 按钮并完成回调换票；both 下本地 login 仍通。
+- **可观察产出：** 两 App 登录页可走默认 SSO 按钮并完成回调换票；both 下本地 login 仍通。home-web 登录页同样暴露第三方区第一 SSO 按钮并完成回调换票（AC-001 调用方）。
 - **来源：** `AC-001`/`AC-014`（调用方）、`DEC-014`/`DEC-015`、`ADR-003`/`ADR-004`。
 - **Planning Depth 原因：** 跨 App 消费迁移。
 
@@ -124,7 +126,8 @@ shared_path_owners:
 
 ## 7. 路径访问契约
 
-- platform/auth 与 admin web-domains owner=T-05（承接 T-04 槽位后的调用方）。
+- platform/auth、admin/home 调用方与 `domains/admin` / `web-domains/admin` 目录 owner=T-05（承接 T-04 槽位后的调用方）。
+- T-04 仅保留 `LoginPage.vue` 原型与 context 契约；home-web 登录槽位在本票完成。
 - 不改 sso-web / 后端。
 
 ## 8. 验证矩阵

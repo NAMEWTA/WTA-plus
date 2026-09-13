@@ -109,7 +109,7 @@ T-01 [BLOCKED-by-auth]
 |---|---|---|---|---|
 | T-01 | T-02 | DDL/DML | 是（T-02→T-01） | 串行；owner=T-01 |
 | T-02 | T-03 | wta-sso 会话包可能交叠 | 是（T-03→T-02） | 串行 |
-| T-04 | T-05 | admin auth/domains | 是（T-05→T-04） | 串行；T-05 承接调用方 |
+| T-04 | T-05 | `frontend/packages/{web-,}domains/admin` | 是（T-05→T-04） | 串行。T-04 只稳定 context 契约 + 槽位种子 + admin 登录页第一按钮原型；调用方/home 接线后 **owner 迁到 T-05**。授权前无写冲突（全部 blocked）。 |
 | T-01 | T-04 | DML 种子 | 是（T-04→T-01） | 种子写尊重 T-01 owner |
 
 ## 6. Gate、Wave 与集成点

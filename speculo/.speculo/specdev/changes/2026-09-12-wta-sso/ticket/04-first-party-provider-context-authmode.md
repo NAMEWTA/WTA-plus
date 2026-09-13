@@ -40,13 +40,11 @@ read_only_paths:
 shared_paths:
   - "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path>"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path>"
-  - "<Path>frontend/packages/domains/admin/src/</Path>"
-  - "<Path>frontend/packages/web-domains/admin/src/auth/</Path>"
+  - "<Path>frontend/packages/web-domains/admin/src/auth/LoginPage.vue</Path>"
 shared_path_owners:
   - "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path> => T-04"
   - "<Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path> => T-01"
-  - "<Path>frontend/packages/domains/admin/src/</Path> => T-04"
-  - "<Path>frontend/packages/web-domains/admin/src/auth/</Path> => T-04"
+  - "<Path>frontend/packages/web-domains/admin/src/auth/LoginPage.vue</Path> => T-04"
 ---
 
 # Ticket T-04: 接通 FirstPartySsoProvider 槽位、client context 与 authMode
@@ -125,7 +123,8 @@ shared_path_owners:
 ## 7. 路径访问契约
 
 - AuthController owner=T-04；DML 种子写时尊重 T-01 owner。
-- T-05 将消费登录页/domains，本票先稳定槽位与 context。
+- T-04 只稳定 context 契约 + 槽位种子 + admin 登录页第一按钮原型（`LoginPage.vue`）。
+- home-web 登录槽位与 platform 调用方归 T-05；本票不把 home App 列入完成条件。调用方/home 接线后 **owner 迁到 T-05**。
 
 ## 8. 验证矩阵
 

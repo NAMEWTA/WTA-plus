@@ -14,7 +14,8 @@
       "status": "answered",
       "round": 1,
       "answer": "A。P0 按 Authorization Code + PKCE S256 + sso-web + 扩展 sys_client + 本地登录并存；禁 Implicit/password/SAML；无外置 IdP；OIDC→P1。",
-      "log_ref": "LOG-004"
+      "log_ref": "LOG-004",
+      "answer_note": "D-001 句中『无外置 IdP』已被 D-100 收窄为『禁止外包用户目录』；产品口号以 FirstPartySsoProvider 为准。历史 answer 字符串保留不改。"
     },
     {
       "id": "D-002",

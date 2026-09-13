@@ -9,3 +9,4 @@
 - **Dispatch:** `temp/team/lead/dispatch-20260912-wta-sso-goal-plan.md`
 - **Git baseline note:** CTO `main @ b06d161`；freeze-time HEAD `d1ce372`（`b06d161` is ancestor）
 - **Product code / push:** none this round
+- **过时注记（2026-09-13）：** 冻结时 HEAD=`d1ce372` / CTO=`b06d161` 为历史锚点。Lead 现引仓 HEAD=`677d9a9`；live 文档声明以仓内实际 HEAD 为准。本 pointer 不翻转、不造假实现 Evidence。
