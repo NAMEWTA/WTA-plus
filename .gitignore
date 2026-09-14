@@ -36,6 +36,7 @@ dist/
 build/
 out/
 target/
+.gradle/
 *.class
 
 # Test and tooling output

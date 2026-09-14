@@ -37,7 +37,7 @@
    - 识别操作型路径：`status.json`、`changes/`、`archive/`。
    - 识别知识型 store：`adr/`、`context/` 及任何标注为"永久"的目录（其内容在 change 完成后提升至此）。
    - 每个路径解析为完整的项目相对路径。
-5. 派生固定路径：`changes_root = state_root/changes`、`archive_root = state_root/archive`；`commands_root` 从公共 `<Path>{roots.state}/commands</Path>` 解析，不放进 workflow 私有 state root。
+5. 派生固定路径：`changes_root = state_root/changes`、`archive_root = state_root/archive`。`commands_root` **必须**解析为公共 `<Path>{roots.state}/commands</Path>`（本仓库 `speculo/.speculo/commands`）。它不是 `{roots.commands}`（命令定义根，本仓库 `speculo/commands`）。「不放进 workflow 私有 state root」只禁止写入 `<Path>{roots.state}/{workflow}/</Path>`，不表示可以写到定义目录。若 `commands_root` 等于 `{roots.commands}`、等于 `speculo/commands`，或不在 `roots.state` 之下，返回 blocked，不写报告。
 6. 读取 `<Path>{roots.config}</Path>`（若存在）；不存在时静默降级为默认值（`language: "en"`、`confirm_before_external_write: true`）。
 7. 对每个已解析路径执行真实路径包含检查；符号链接逃逸或不存在的静态引用阻塞。
 8. 读取 `status.json`；扫描 changes 时校验 change 名称格式 `^\d{4}-\d{2}-\d{2}-[a-z0-9]+(-[a-z0-9]+)*$`，无日期前缀的历史 change 标注遗留但不阻塞。
@@ -110,7 +110,7 @@
 3. 显式标注所有破坏性动作（移动、删除、改写）。
 4. 报告摘要：待归档 change 数、待合并知识项数、待清理候选数、需确认项数。
 5. 呈现给用户并显式声明：**"未修改任何文件。此为 dry-run 计划，请确认后执行。"**
-6. dry-run 到此完成；调用方负责将报告写入 `commands_root/archive-and-consolidate/<YYYY-MM-DD>-<scope>-<topic>[-NN].md`（`<scope>` 为目标 workflow 名，`<topic>` 为 change 名或 `batch`）。
+6. dry-run 到此完成；调用方负责将报告写入 `<Path>{roots.state}/commands/archive-and-consolidate/<YYYY-MM-DD>-<scope>-<topic>[-NN].md</Path>`（`<scope>` 为目标 workflow 名，`<topic>` 为 change 名或 `batch`）。禁止写入 `{roots.commands}/archive-and-consolidate/`。path_context.commands_root 必须等于解析后的 `<Path>{roots.state}/commands</Path>`，写入前再核对一次。
 
 ### Step 7：执行已确认动作
 

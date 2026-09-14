@@ -10,7 +10,21 @@ keywords: [archive, consolidate, learning, topic, cold-archive, 归档, 综合]
 
 ## 报告
 
-统一写入：`<Path>{roots.state}/commands/archive-and-consolidate/{date}-{scope}-{topic}[-NN].md</Path>`。报告记录 workflow、source/root IDs、dry-run 清单、用户确认、relocation manifest、synthesis revision 或 archive locator 和验证结果。
+唯一持久化位置：
+
+```text
+<Path>{roots.state}/commands/archive-and-consolidate/{date}-{scope}-{topic}[-NN].md</Path>
+```
+
+必须通过 `<Path>{roots.state}/workspace.json</Path>` 的 `roots.state` 解析。本仓库即为 `speculo/.speculo/commands/archive-and-consolidate/`。
+
+`{roots.commands}`（本仓库 `speculo/commands/`）只存放命令定义，例如 `archive-and-consolidate.md`。禁止把报告写到定义文件旁边、`speculo/commands/archive-and-consolidate/`、`temp/`、系统临时目录或其他位置。
+
+`commands_root` 永远是 `<Path>{roots.state}/commands</Path>`，不是 `{roots.commands}`。「不放进 workflow 私有 state root」只表示不要写入 `<Path>{roots.state}/{workflow}/</Path>`，报告仍在 `roots.state` 下的公共 `commands/`。
+
+解析后的 `commands_root` 若等于 `{roots.commands}`，或不在 `roots.state` 之下，停止并报告 blocked，不写文件。
+
+报告记录 workflow、source/root IDs、dry-run 清单、用户确认、relocation manifest、synthesis revision 或 archive locator 和验证结果。同日同 scope/topic 冲突时从 `-01` 起取最小未占用编号，禁止覆盖。
 
 ## Learning 路由
 

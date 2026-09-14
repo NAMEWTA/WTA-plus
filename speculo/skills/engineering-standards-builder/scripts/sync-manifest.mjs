@@ -36,13 +36,23 @@ function parseArgs(argv) {
 
 function toPosix(value) { return value.split(path.sep).join('/'); }
 
+const IGNORED_DIRECTORY_NAMES = new Set([
+  '.git', '.hg', '.svn', '.idea', '.vscode',
+  'node_modules', 'bower_components', 'vendor',
+  'dist', 'build', 'out', 'target', 'coverage',
+  '.next', '.nuxt', '.output', '.turbo', '.gradle',
+  '.cache', '.parcel-cache', '.vite', '.svelte-kit',
+  'bin', 'obj', '.venv', 'venv', '__pycache__',
+  '.pytest_cache', '.mypy_cache', '.ruff_cache',
+]);
+
 async function collectFiles(rootReal) {
   const result = [];
   async function visit(directory) {
     const entries = await readdir(directory, { withFileTypes: true });
     entries.sort((a, b) => a.name.localeCompare(b.name, 'en'));
     for (const entry of entries) {
-      if (entry.name === '.DS_Store') continue;
+      if (entry.name === '.DS_Store' || IGNORED_DIRECTORY_NAMES.has(entry.name)) continue;
       const absolute = path.join(directory, entry.name);
       const relative = toPosix(path.relative(rootReal, absolute));
       if (entry.isSymbolicLink()) throw new Error(`symlink is not allowed in the skill package: ${relative}`);

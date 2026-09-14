@@ -18,6 +18,26 @@ keywords: [retro, 复盘, 痛点, feedback, issue, 优化, 反馈]
 - `<topic>` 从复盘范围或用户主题提取，使用小写 kebab-case；无法判断时使用 `speculo`。
 - 禁止把命令报告写入 `temp/`、系统临时目录或工作区内其他非规范位置。
 
+## 证据范围
+
+采集是排他白名单，不是全仓扫描。只读：
+
+- 当前对话与本次激活的 command / workflow
+- `<Path>{roots.state}/commands/**</Path>` 报告
+- `<Path>{roots.state}/{workflow}/status.json</Path>` 与 change `.status.json`
+- 这些 change 目录里的产物正文
+- 各 workflow `INDEX.md` 已经声明的知识 store
+- 上述产物相对 persistence-contract 的路径或命名偏差
+
+禁止进入、禁止执行：
+
+- `<Path>{roots.skills}/**</Path>`（只读 `speculo-retro` 与 `github-npm-ops` 自身）
+- 尤其 `<Path>{roots.skills}/**/examples/**</Path>`
+- 项目源码树（`backend/`、`frontend/` 等）
+- 构建缓存：`.gradle`、`target`、`node_modules`、`build`、`dist`
+
+过程中禁止运行 `gradle`、`mvn`、`npm`、`pnpm`、`cargo`、`go test` 等项目构建。skill fixture 下未跟踪的工具缓存是噪声，不是使用摩擦；git status 不是主信号源，只有 command/workflow 产物写到白名单目录以外时才作为契约落差采集。
+
 ## 调用的 skills
 
 - `<Path>{roots.skills}/speculo-retro/SKILL.md</Path>` — 复盘 Speculo 使用痛点、深度分析并产出去重/分级/根因化的 issue-ready 提案时读取。
@@ -25,7 +45,7 @@ keywords: [retro, 复盘, 痛点, feedback, issue, 优化, 反馈]
 
 ## 执行步骤
 
-1. 读取 `<Path>{roots.skills}/speculo-retro/SKILL.md</Path>`，解析 `<Path>{roots.config}</Path>` 与 `<Path>{roots.state}/workspace.json</Path>`（不存在时以默认值静默降级），采集对话、command 报告、change 状态以及各 `INDEX.md` 声明的知识 store。
+1. 读取 `<Path>{roots.skills}/speculo-retro/SKILL.md</Path>`，解析 `<Path>{roots.config}</Path>` 与 `<Path>{roots.state}/workspace.json</Path>`（不存在时以默认值静默降级）。按上面的排他白名单采集证据；白名单外的路径不走、不执行构建。
 2. 用该 skill 产出规范化复盘结论：去重、分级、根因化的 issue-ready 提案清单，附丢弃/合并说明与每条处置建议。
 3. 创建 command 专属目录 `<Path>{roots.state}/commands/retro/</Path>`，把复盘结论写入带 scope 的 Markdown 报告。
 4. **去重**：调用 `github-npm-ops` 的 `operation=issue-search`，对每条 `disposition: file-issue` 检索；命中语义重复的默认跳过并记录 `dup_of`，仅当用户明确要求才补提。

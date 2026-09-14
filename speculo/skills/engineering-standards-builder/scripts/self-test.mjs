@@ -28,6 +28,16 @@ function parseArgs(argv) {
   return { root: path.resolve(root) };
 }
 
+const IGNORED_DIRECTORY_NAMES = new Set([
+  '.git', '.hg', '.svn', '.idea', '.vscode',
+  'node_modules', 'bower_components', 'vendor',
+  'dist', 'build', 'out', 'target', 'coverage',
+  '.next', '.nuxt', '.output', '.turbo', '.gradle',
+  '.cache', '.parcel-cache', '.vite', '.svelte-kit',
+  'bin', 'obj', '.venv', 'venv', '__pycache__',
+  '.pytest_cache', '.mypy_cache', '.ruff_cache',
+]);
+
 async function findExpectedFiles(root) {
   const result = [];
   async function visit(directory) {
@@ -35,8 +45,10 @@ async function findExpectedFiles(root) {
     entries.sort((a, b) => a.name.localeCompare(b.name, 'en'));
     for (const entry of entries) {
       const abs = path.join(directory, entry.name);
-      if (entry.isDirectory()) await visit(abs);
-      else if (entry.isFile() && entry.name === 'expected.json') result.push(abs);
+      if (entry.isDirectory()) {
+        if (IGNORED_DIRECTORY_NAMES.has(entry.name)) continue;
+        await visit(abs);
+      } else if (entry.isFile() && entry.name === 'expected.json') result.push(abs);
     }
   }
   await visit(root);
@@ -134,6 +146,7 @@ async function main() {
   const scanner = path.join(args.root, 'scripts', 'discover-project.mjs');
   const generatedValidator = path.join(args.root, 'scripts', 'validate-generated-skill.mjs');
   const manifestScript = path.join(args.root, 'scripts', 'sync-manifest.mjs');
+  const builderValidator = path.join(args.root, 'scripts', 'validate-builder.mjs');
   const fixtureRoot = path.join(args.root, 'examples');
   const tempRoots = [];
   try {
@@ -233,6 +246,19 @@ async function main() {
     const badWrapper = runNode(generatedValidator, ['--root', generatedTemp, '--strict']);
     assert(badWrapper.status !== 0, 'validator must reject a multi-line compatibility wrapper');
     process.stdout.write('self-test: generated Skill Set validator OK\n');
+
+    const cacheProbe = await mkdtemp(path.join(os.tmpdir(), 'standards-builder-cache-'));
+    tempRoots.push(cacheProbe);
+    await writeFile(path.join(cacheProbe, 'keep.txt'), 'keep\n');
+    await writeFile(path.join(cacheProbe, 'manifest.txt'), 'keep.txt\n');
+    await mkdir(path.join(cacheProbe, '.gradle', 'empty-subdir'), { recursive: true });
+    await writeFile(path.join(cacheProbe, '.gradle', 'cache.bin'), 'gradle-cache-noise\n');
+    const cachedManifest = runNode(manifestScript, ['--root', cacheProbe, '--check']);
+    assert(cachedManifest.status === 0, `sync-manifest must ignore planted .gradle cache: ${(cachedManifest.stderr || cachedManifest.stdout).trim()}`);
+    const cachedValidate = runNode(builderValidator, ['--root', cacheProbe]);
+    const validateOutput = `${cachedValidate.stderr || ''}\n${cachedValidate.stdout || ''}`;
+    assert(!/\.gradle|cache\.bin|empty-subdir/.test(validateOutput), `validate-builder leaked cache paths: ${validateOutput.trim()}`);
+    process.stdout.write('self-test: cache directory exclusion OK\n');
 
     const manifest = runNode(manifestScript, ['--root', args.root, '--check']);
     assert(manifest.status === 0, `manifest check failed: ${(manifest.stderr || manifest.stdout).trim()}`);

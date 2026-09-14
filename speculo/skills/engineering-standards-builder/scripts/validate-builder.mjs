@@ -30,13 +30,23 @@ function parseArgs(argv) {
 
 function toPosix(value) { return value.split(path.sep).join('/'); }
 
+const IGNORED_DIRECTORY_NAMES = new Set([
+  '.git', '.hg', '.svn', '.idea', '.vscode',
+  'node_modules', 'bower_components', 'vendor',
+  'dist', 'build', 'out', 'target', 'coverage',
+  '.next', '.nuxt', '.output', '.turbo', '.gradle',
+  '.cache', '.parcel-cache', '.vite', '.svelte-kit',
+  'bin', 'obj', '.venv', 'venv', '__pycache__',
+  '.pytest_cache', '.mypy_cache', '.ruff_cache',
+]);
+
 async function collect(rootReal) {
   const files = [];
   const directories = [];
   async function visit(directory) {
     const relDir = toPosix(path.relative(rootReal, directory)) || '.';
     const entries = (await readdir(directory, { withFileTypes: true }))
-      .filter((entry) => entry.name !== '.DS_Store');
+      .filter((entry) => entry.name !== '.DS_Store' && !IGNORED_DIRECTORY_NAMES.has(entry.name));
     entries.sort((a, b) => a.name.localeCompare(b.name, 'en'));
     directories.push({ abs: directory, rel: relDir, entries });
     for (const entry of entries) {
