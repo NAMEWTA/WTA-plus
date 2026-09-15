@@ -118,11 +118,11 @@ src/main/resources/mapper/<module>/<Business>Mapper.xml
 
 NAMEWTA 只支持 MySQL：
 
-- 表、索引、约束等 DDL 合并到 `50-namewta-ddl.sql`。
-- 初始化数据、菜单、权限、字典和数据回填合并到 `60-namewta-dml.sql`。
-- `docs/fm/sql/mysql.sql.ftl` 只是菜单 DML 片段，必须渲染后合并到 `60-namewta-dml.sql`，不能输出 `${businessName}Menu.sql` 一类独立部署文件。
+- 表、索引、约束等 DDL 合并到 `10-cde-base-ddl.sql`。
+- 初始化数据、菜单、权限、字典和数据回填合并到 `50-cde-base-dml.sql`。
+- `docs/fm/sql/mysql.sql.ftl` 只是菜单 DML 片段，必须渲染后合并到 `50-cde-base-dml.sql`，不能输出 `${businessName}Menu.sql` 一类独立部署文件。
 - 不恢复 Oracle、PostgreSQL、SQL Server 模板，不在后端建立 `script/`，不创建模块私有 SQL 副本。
-- 50/60 是当前完整基座，可为保持全新库可重建而整理相关段落；它们不是按日期无限追加的 migration 日志。
+- `10-cde-base-ddl.sql` 与 `50-cde-base-dml.sql` 是当前完整产品基座，直接修改以保持全新库可重建；不是按日期无限追加的 migration 日志。job/workflow/ai/nacos 为上游快照。
 
 全新库顺序为 `10 -> 20 -> 30 -> 40 -> 50 -> 60`。已有库不得直接重放基座：指定源/目标 Git Tag，备份，生成差异 SQL，在隔离副本演练升级和回滚，并记录验证结果。
 

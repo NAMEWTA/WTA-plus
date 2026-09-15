@@ -46,7 +46,7 @@ Scope: every new project-owned `CREATE TABLE` under `path:release-artifacts/dock
 
 Level: MUST
 
-Source: `user-decision` + `repository-fact` (`10-wta-base.sql` 的 `test_demo`, `BaseEntity`)
+Source: `user-decision` + `repository-fact` (`10-cde-base-ddl.sql` 的 `test_demo`, `BaseEntity`)
 
 Rule: 每个新建的项目自有表，包括业务表、关系表、历史/日志表和配置表，均以 `test_demo` 的以下字段集为建表基线；缺少任一字段都必须在实现前取得明确 schema 例外，不能因“只是关系表”自行省略：
 
@@ -60,7 +60,7 @@ Rule: 每个新建的项目自有表，包括业务表、关系表、历史/日�
 | `update_by` | 更新人；由 `BaseEntity.updateBy` 映射/填充 |
 | `del_flag` | 逻辑删除标志，未删除默认值为 `0`；对应 entity 显式字段和 `@TableLogic` |
 
-DDL 中优先保持上述顺序，便于与 `10-wta-base.sql` 的 `test_demo` 逐项核对；字段类型、时间类型和注释使用 MySQL 8.4 语法，并与 Java 类型、MyBatis Plus 配置及同模块成熟表一致，不能机械复制 MySQL display width。项目自有 entity 应继承 `BaseEntity`，只显式声明 `version` 和 `delFlag`；没有 entity 的表仍不得省略 DDL 基础字段。
+DDL 中优先保持上述顺序，便于与 `10-cde-base-ddl.sql` 的 `test_demo` 逐项核对；字段类型、时间类型和注释使用 MySQL 8.4 语法，并与 Java 类型、MyBatis Plus 配置及同模块成熟表一致，不能机械复制 MySQL display width。项目自有 entity 应继承 `BaseEntity`，只显式声明 `version` 和 `delFlag`；没有 entity 的表仍不得省略 DDL 基础字段。
 
 Verification: 对每个新增 `CREATE TABLE` 提供七字段逐项 review 证据；对照 schema/entity/`BaseEntity`，验证 insert 自动填充、update 自动填充、乐观锁冲突和逻辑删除查询；在目标数据库执行 fresh install。存量缺失字段按 `MIG-BE-DDL-BASE` 处理，不把未迁移的旧表当作新表范例。
 
@@ -98,13 +98,18 @@ Level: MUST
 
 Source: `user-decision`
 
-Rule: `release-artifacts/docker/infrastructure/mysql/init/` 是数据库初始化资产的唯一事实源，只允许六份受管 SQL：`10-wta-base.sql`、`20-ry-job.sql`、`30-ry-workflow.sql`、`40-ry-ai.sql`、`50-namewta-ddl.sql`、`60-namewta-dml.sql`。六份文件都是当前完整基座，可以在迭代中直接修改、删除、替换或重排其内部内容；不得再使用 append-only 约束，也不得为单次变化新增版本、功能、临时或备份 SQL。
+Rule: `release-artifacts/docker/infrastructure/mysql/init/` 是数据库初始化资产的唯一事实源，只允许六份受管 SQL：`10-cde-base-ddl.sql`、`20-cde-job.sql`、`30-cde-workflow.sql`、`40-cde-ai.sql`、`50-cde-base-dml.sql`、`60-cde-nacos.sql`。不得存在 `mysql/migrate/`，不得为单次变化新增版本、功能、临时或备份 SQL，不得使用 append-only 迁移日志。
 
-`10` 至 `40` 分别承载 WTA、Job、Workflow、AI 基座；`50-namewta-ddl.sql` 只保存 NAMEWTA 建表、改表、索引和约束等结构语句；`60-namewta-dml.sql` 只保存 NAMEWTA 初始化、回填及其他 `INSERT`、`UPDATE`、`DELETE` 数据语句。DDL 与 DML 不得混入对方文件。所有六份文件必须被 Git 跟踪，不得被 `.gitignore` 排除。
+职责划分：
 
-全新环境固定按文件名前缀 `10 -> 20 -> 30 -> 40 -> 50 -> 60` 执行。已有环境不得重放任一完整基座；升级必须指定源 Git Tag 与目标 Git Tag，备份数据库，基于两 Tag 的六文件差异形成可审计升级 SQL，在隔离副本评审和演练后才能执行。差异 SQL 是部署报告中的临时交付物，不进入基座目录。
+- `10-cde-base-ddl.sql`：业务库 `wta-plus` 的完整最新结构（平台表 + NAMEWTA 表）。产品 DDL 只直接改这个文件。
+- `20-cde-job.sql` / `30-cde-workflow.sql` / `40-cde-ai.sql`：SnailJob / Warm-Flow / Snail AI 上游快照；无产品需求不改。
+- `50-cde-base-dml.sql`：业务库完整最新数据（初始化、菜单、回填）。产品 DML 只直接改这个文件。
+- `60-cde-nacos.sql`：独立库 `nacos` 的结构快照，不得把 Nacos 表建进 `wta-plus`。
 
-Verification: 检查目录中六份 SQL 的精确名称、顺序、非空和 Git 跟踪状态；检查 `50`/`60` 分类及后端 `script/` 不存在；在全新 MySQL 8.4 隔离库执行全部六份文件并验证关键表、菜单和 OSS 配置；存量升级验证源/目标 Tag、备份、差异、演练和回滚证据。
+`10-cde-base-ddl.sql` 与 `50-cde-base-dml.sql` 不得互相混入对方语句类型。全部六份必须被 Git 跟踪。全新环境按文件名前缀 `10 -> 20 -> 30 -> 40 -> 50 -> 60` 执行。已有环境不得重放基座；升级用源/目标 Git Tag 差异 SQL，差异稿不进入基座目录。
+
+Verification: 检查目录中六份 SQL 的精确名称、顺序、非空和 Git 跟踪状态；确认无 `migrate/`；在全新 MySQL 8.4 隔离库执行并验证 `wta-plus` 关键表/菜单/OSS 与 `nacos` 十张表；存量升级验证 Tag 差异、备份、演练和回滚证据。
 
 ### PERSIST-007 DDL 所有权、方言与迁移
 

@@ -11,12 +11,12 @@ MYSQL_CONTAINER="namewta-data-mysql"
 EXPECTED_TABLES=125
 
 readonly SQL_FILES=(
-  "10-wta-base.sql"
-  "20-ry-job.sql"
-  "30-ry-workflow.sql"
-  "40-ry-ai.sql"
-  "50-namewta-ddl.sql"
-  "60-namewta-dml.sql"
+  "10-cde-base-ddl.sql"
+  "20-cde-job.sql"
+  "30-cde-workflow.sql"
+  "40-cde-ai.sql"
+  "50-cde-base-dml.sql"
+  "60-cde-nacos.sql"
 )
 
 info() { printf '[INFO] %s\n' "$*" >&2; }
@@ -27,10 +27,11 @@ usage() {
 Usage:
   init-mysql-container.sh [--env-file PATH] [--sql-dir PATH] [--container NAME]
 
-Creates the single ry-namewta database in an existing MySQL container, imports
-the six ordered SQL files, creates the application account, and updates the
-runtime MinIO rows. The command refuses an existing database or application
-account and removes only objects created by a failed run.
+Creates the single wta-plus database in an existing MySQL container, imports
+the six ordered SQL files (Nacos schema targets database nacos), creates the
+application account, and updates the runtime MinIO rows. The command refuses an
+existing database or application account and removes only objects created by a
+failed run.
 EOF
 }
 
@@ -111,8 +112,8 @@ require_value MINIO_ROOT_PASSWORD "${minio_password}"
 require_value MINIO_ENDPOINT "${minio_endpoint}"
 require_value MINIO_BUCKET "${minio_bucket}"
 
-[[ "${database}" == ry-namewta ]] || {
-  error "refusing database other than ry-namewta: ${database}"
+[[ "${database}" == wta-plus ]] || {
+  error "refusing database other than wta-plus: ${database}"
   exit 1
 }
 [[ "${app_user}" =~ ^[A-Za-z0-9_]+$ ]] || { error "invalid MYSQL_APP_USER"; exit 1; }

@@ -19,13 +19,14 @@ class OssNotifyMigrationUnitTest {
 
     @Test
     void ddlDefinesConservativeOssLifecycleAndProjectOwnedTables() throws IOException {
-        String ddl = readSql("50-namewta-ddl.sql");
+        String ddl = readSql("10-cde-base-ddl.sql");
 
         assertTrue(ddl.contains(DDL_MARKER));
-        assertTrue(ddl.contains("add column is_temp"));
-        assertTrue(ddl.contains("update sys_oss"));
-        assertTrue(ddl.contains("set is_temp = 'n'"));
+        String oss = createTable(ddl, "sys_oss");
+        assertTrue(oss.contains("is_temp"));
+        assertTrue(oss.contains("expire_time"));
         assertTrue(ddl.contains("idx_sys_oss_temp_expire"));
+        assertFalse(ddl.contains("add column is_temp"));
 
         String ossRef = createTable(ddl, "sys_oss_ref");
         assertBaseFields(ossRef);
@@ -55,7 +56,7 @@ class OssNotifyMigrationUnitTest {
 
     @Test
     void dmlDefinesIdempotentNotificationMenusAndPermissions() throws IOException {
-        String dml = readSql("60-namewta-dml.sql");
+        String dml = readSql("50-cde-base-dml.sql");
 
         assertTrue(dml.contains(DSL_MARKER));
         assertTrue(dml.contains("notify/monitor/index"));

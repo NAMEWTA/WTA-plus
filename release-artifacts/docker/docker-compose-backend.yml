@@ -12,7 +12,7 @@ x-admin-environment: &admin-environment
   OPENAPI_ENABLED: "${OPENAPI_ENABLED:-false}"
   OPENAPI_KEK_VERSION: "${OPENAPI_KEK_VERSION:-}"
   OPENAPI_KEK: "${OPENAPI_KEK:-}"
-  SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-ry-namewta}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true"
+  SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-wta-plus}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true"
   SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME: "${MYSQL_APP_USER:?MYSQL_APP_USER is required}"
   SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD: "${MYSQL_APP_PASSWORD:?MYSQL_APP_PASSWORD is required}"
   SPRING_DATA_REDIS_HOST: redis
@@ -95,7 +95,7 @@ services:
       SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
       SPRING_APPLICATION_NAME: namewta-snailjob-server
       JAVA_OPTS: "${JAVA_OPTS:--Xms512m -Xmx1024m}"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-ry-namewta}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-wta-plus}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
       SPRING_DATASOURCE_USERNAME: "${MYSQL_APP_USER:?MYSQL_APP_USER is required}"
       SPRING_DATASOURCE_PASSWORD: "${MYSQL_APP_PASSWORD:?MYSQL_APP_PASSWORD is required}"
       SPRING_BOOT_ADMIN_CLIENT_URL: http://namewta-monitor-admin:9090/admin
@@ -120,7 +120,7 @@ services:
       SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
       SPRING_APPLICATION_NAME: namewta-snailai-server
       JAVA_OPTS: "${JAVA_OPTS:--Xms512m -Xmx1024m}"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-ry-namewta}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-wta-plus}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
       SPRING_DATASOURCE_USERNAME: "${MYSQL_APP_USER:?MYSQL_APP_USER is required}"
       SPRING_DATASOURCE_PASSWORD: "${MYSQL_APP_PASSWORD:?MYSQL_APP_PASSWORD is required}"
       SPRING_BOOT_ADMIN_CLIENT_URL: http://namewta-monitor-admin:9090/admin

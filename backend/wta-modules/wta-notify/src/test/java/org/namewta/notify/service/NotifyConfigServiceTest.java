@@ -41,7 +41,7 @@ class NotifyConfigServiceTest {
         when(dao.listAccounts("SMS")).thenThrow(new BadSqlGrammarException(
             "select",
             "SELECT * FROM notify_channel_account",
-            new SQLSyntaxErrorException("Table 'ry-namewta.notify_channel_account' doesn't exist")));
+            new SQLSyntaxErrorException("Table 'wta-plus.notify_channel_account' doesn't exist")));
         NotifyConfigService service = new NotifyConfigService(dao, registry);
 
         assertDoesNotThrow(service::loadEnabledSmsAccounts);

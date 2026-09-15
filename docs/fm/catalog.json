@@ -16,7 +16,7 @@
     { "source": "java/layered/usecase.java.ftl", "target": "main/java/${packagePath}/usecase/${ClassName}UseCase.java", "lifecycle": ["new"], "architectureModes": ["layered"], "categories": ["layered"] },
     { "source": "java/layered/usecaseImpl.java.ftl", "target": "main/java/${packagePath}/usecase/impl/${ClassName}UseCaseImpl.java", "lifecycle": ["new"], "architectureModes": ["layered"], "categories": ["layered"] },
     { "source": "xml/mapper.xml.ftl", "target": "main/resources/mapper/${moduleName}/${ClassName}Mapper.xml", "lifecycle": ["new", "legacy"], "architectureModes": ["layered", "classic"], "categories": ["crud", "tree"] },
-    { "source": "sql/mysql.sql.ftl", "target": "release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql", "writeMode": "merge", "lifecycle": ["new", "legacy"], "architectureModes": ["layered", "classic"], "categories": ["crud", "tree"] },
+    { "source": "sql/mysql.sql.ftl", "target": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql", "writeMode": "merge", "lifecycle": ["new", "legacy"], "architectureModes": ["layered", "classic"], "categories": ["crud", "tree"] },
     { "source": "agents/backend-module.AGENTS.md.ftl", "target": "${modulePath}/AGENTS.md", "lifecycle": ["new", "legacy"], "categories": ["agent-handbook"] },
     { "source": "agents/frontend-package.AGENTS.md.ftl", "target": "${modulePath}/AGENTS.md", "lifecycle": ["new", "legacy"], "categories": ["agent-handbook"] },
     { "source": "react/api.ts.ftl", "target": "react/api/${moduleName}/${businessName}/index.ts", "lifecycle": ["new", "legacy"], "categories": ["crud", "tree"] },

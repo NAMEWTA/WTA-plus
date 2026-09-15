@@ -9,4 +9,4 @@ Shipped runtime:
 - Docker product services remain `namewta-*`
 - Container workdirs `/wta/...`
 
-Existing-DB login migrate: `release-artifacts/docker/infrastructure/mysql/migrate/`.
+Fresh databases seed login `WTA` from `50-cde-base-dml.sql`. Do not add `mysql/migrate/` files; existing databases upgrade via Git Tag diffs, not baseline replay.

@@ -23,9 +23,9 @@ import java.util.Locale;
  */
 
 @SpringBootApplication
-public class DromaraApplication {
+public class NamewtaApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(DromaraApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(NamewtaApplication.class);
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final long MEGABYTE = 1024L * 1024L;
     private static final long GIGABYTE = MEGABYTE * 1024L;
@@ -37,7 +37,7 @@ public class DromaraApplication {
      */
     public static void main(String[] args) {
         long startupStart = System.nanoTime();
-        SpringApplication application = new SpringApplication(DromaraApplication.class);
+        SpringApplication application = new SpringApplication(NamewtaApplication.class);
         application.setApplicationStartup(new BufferingApplicationStartup(2048));
         ConfigurableApplicationContext applicationContext = application.run(args);
         printRuntimeInfo(applicationContext, System.nanoTime() - startupStart);

@@ -60,6 +60,6 @@ Token 明确区分 OAuth `clientId`、数据库 Client 主键和登录域。角�
 
 `wta-admin` 保持组合入口，业务能力位于 `wta-modules`，跨模块服务与 DTO 通过 `wta-api` 或 common SPI 暴露。默认 full bundle 和 `bundle-core` 都有明确的 Maven profile 与验证方式。
 
-NAMEWTA 当前只支持并验收 MySQL 8.4。数据库初始化资产由父仓库 `release-artifacts/docker/infrastructure/mysql/init/` 统一拥有，六份 SQL 是可直接修改的当前完整基座：`10` 至 `40` 分别承载 WTA、Job、Workflow、AI，`50-namewta-ddl.sql` 承载 NAMEWTA 结构，`60-namewta-dml.sql` 承载 NAMEWTA 数据（包括三方接口管理菜单与权限）。Nacos schema 保持在 `init/nacos/` 独立初始化。后端仓库不再保存 `script/` 或 SQL 副本，也不维护 PostgreSQL、Oracle、SQL Server 方言。
+NAMEWTA 当前只支持并验收 MySQL 8.4。数据库初始化资产由父仓库 `release-artifacts/docker/infrastructure/mysql/init/` 统一拥有。业务库为 `wta-plus`：`10-cde-base-ddl.sql` 承载产品结构，`20-cde-job.sql` / `30-cde-workflow.sql` / `40-cde-ai.sql` 为上游快照，`50-cde-base-dml.sql` 承载产品数据。`60-cde-nacos.sql` 初始化独立库 `nacos`。产品变更只直接修改 base-ddl / base-dml。后端仓库不再保存 `script/`、`migrate/` 或 SQL 副本，也不维护 PostgreSQL、Oracle、SQL Server 方言。
 
 全新环境按文件名前缀顺序执行全部六份基座。已有环境不得重放基座；升级时必须指定源 Git Tag 与目标 Git Tag，备份现场，在隔离库中生成、评审并演练差异 SQL，再执行获批的升级步骤。

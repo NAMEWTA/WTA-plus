@@ -3,8 +3,8 @@ import fs from 'node:fs';
 import test from 'node:test';
 
 const sqlRoot = new URL('../docker/infrastructure/mysql/init/', import.meta.url);
-const ddl = fs.readFileSync(new URL('50-namewta-ddl.sql', sqlRoot), 'utf8');
-const dml = fs.readFileSync(new URL('60-namewta-dml.sql', sqlRoot), 'utf8');
+const ddl = fs.readFileSync(new URL('10-cde-base-ddl.sql', sqlRoot), 'utf8');
+const dml = fs.readFileSync(new URL('50-cde-base-dml.sql', sqlRoot), 'utf8');
 
 // 按 SQL 顶层逗号拆分，保留字符串、JSON 数组和函数参数内的逗号。
 function splitSqlList(source) {

@@ -30,7 +30,7 @@
       "updateStrategy": "reconcile persisted history ext to requested attachment ids for transition-created rows",
       "deleteStrategy": "reconcile each persisted history ext to empty set before instance history deletion",
       "restoreStrategy": "not supported; deleted workflow history is not restored",
-      "carrierSource": "release-artifacts/docker/infrastructure/mysql/init/30-ry-workflow.sql",
+      "carrierSource": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
       "contractTest": "wta-admin/src/test/java/org/namewta/test/oss/owner/workflow/WorkflowHistoryOssOwnerUnitTest.java"
     },
     {

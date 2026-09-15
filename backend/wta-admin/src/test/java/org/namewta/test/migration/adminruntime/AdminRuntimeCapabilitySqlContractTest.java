@@ -18,23 +18,20 @@ class AdminRuntimeCapabilitySqlContractTest {
     private static final String DML_END = "-- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DML-001-END";
 
     @Test
-    void definesReplayableGeneratorSchemaRetirement() throws IOException {
-        String block = block(Files.readString(SqlBaselinePaths.file("50-namewta-ddl.sql")), DDL_START, DDL_END);
+    void baselineOmitsRetiredGeneratorTables() throws IOException {
+        String ddl = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
+        String block = block(ddl, DDL_START, DDL_END);
 
-        assertThat(block)
-            .contains("information_schema.tables")
-            .contains("information_schema.columns")
-            .contains("target_table.table_type <> 'BASE TABLE'")
-            .contains("primary_column.column_key = 'PRI'")
-            .contains("gen_table_column")
-            .contains("gen_table")
-            .contains("drop table if exists gen_table_column")
-            .contains("drop table if exists gen_table");
+        assertThat(block).contains("全新库不再创建 gen_table");
+        assertThat(ddl.toLowerCase())
+            .doesNotContain("create table gen_table ")
+            .doesNotContain("create table gen_table_column")
+            .doesNotContain("drop table if exists gen_table");
     }
 
     @Test
     void convergesMenusWithoutGrantingOrdinaryRoles() throws IOException {
-        String block = block(Files.readString(SqlBaselinePaths.file("60-namewta-dml.sql")), DML_START, DML_END);
+        String block = block(Files.readString(SqlBaselinePaths.file("50-cde-base-dml.sql")), DML_START, DML_END);
 
         assertThat(block)
             .contains("namewta_admin_runtime_reconcile_dml_001_preflight")

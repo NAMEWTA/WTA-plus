@@ -10,12 +10,12 @@ const releaseRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const workspaceRoot = path.resolve(releaseRoot, '..');
 const sqlRoot = path.join(releaseRoot, 'docker/infrastructure/mysql/init');
 const sqlFiles = [
-  '10-wta-base.sql',
-  '20-ry-job.sql',
-  '30-ry-workflow.sql',
-  '40-ry-ai.sql',
-  '50-namewta-ddl.sql',
-  '60-namewta-dml.sql',
+  '10-cde-base-ddl.sql',
+  '20-cde-job.sql',
+  '30-cde-workflow.sql',
+  '40-cde-ai.sql',
+  '50-cde-base-dml.sql',
+  '60-cde-nacos.sql',
 ];
 
 function digest(filename) {

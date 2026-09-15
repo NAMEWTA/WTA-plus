@@ -127,7 +127,7 @@ test('committed env file contains placeholders instead of runtime secrets', () =
   ]) {
     assert.match(env, new RegExp(`^${key}=replace-`, 'm'));
   }
-  assert.match(env, /^MYSQL_DATABASE=ry-namewta$/m);
+  assert.match(env, /^MYSQL_DATABASE=wta-plus$/m);
   assert.match(env, /^MINIO_ROOT_USER=namewta$/m);
   assert.match(env, /^MINIO_ENDPOINT=replace-/m);
   assert.match(env, /^MINIO_BUCKET=wta$/m);
@@ -208,37 +208,29 @@ test('Nacos override requires secrets and enables both admin instances after hea
 });
 
 test('Nacos MySQL schema is pinned and both initialization paths are idempotent', () => {
-  const schema = fs.readFileSync(
-    path.join(releaseRoot, 'docker/infrastructure/mysql/init/nacos/mysql-schema.sql'),
-  );
-  const digest = crypto.createHash('sha256').update(schema.toString('utf8').replace(/\r\n/g, '\n')).digest('hex');
-  assert.equal(digest, '5f8292d8add62e4275ad103cdd5757ec6b2abb77a01e2d06cf0434c3f0b6317d');
-  assert.equal(schema.toString('utf8').match(/^CREATE TABLE/gm)?.length, 10);
-  assert.doesNotMatch(schema.toString('utf8'), /INSERT\s+INTO\s+[`']?users/i);
+  const schema = read('docker/infrastructure/mysql/init/60-cde-nacos.sql');
+  assert.match(schema, /^SET NAMES utf8mb4;/);
+  assert.match(schema, /CREATE DATABASE IF NOT EXISTS `nacos`/);
+  assert.match(schema, /USE `nacos`;/);
+  assert.match(schema, /alibaba\/nacos\/2\.5\.4\/distribution\/conf\/mysql-schema\.sql/);
+  assert.equal(schema.match(/^CREATE TABLE/gm)?.length, 10);
+  assert.doesNotMatch(schema, /INSERT\s+INTO\s+[`']?users/i);
+  assert.match(schema, /config_info_gray/);
 
-  const source = read('docker/infrastructure/mysql/init/nacos/SOURCE.md');
-  assert.match(source, /alibaba\/nacos\/2\.5\.4\/distribution\/conf\/mysql-schema\.sql/);
-  assert.match(source, new RegExp(digest));
-
-  for (const scriptPath of [
-    'docker/infrastructure/mysql/init/15-nacos-init.sh',
-    'scripts/init-nacos-mysql-container.sh',
-  ]) {
-    const script = read(scriptPath);
-    assert.match(script, /CREATE DATABASE IF NOT EXISTS/);
-    assert.match(script, /CREATE USER IF NOT EXISTS/);
-    assert.match(script, /ALTER USER/);
-    assert.match(script, /REVOKE ALL PRIVILEGES, GRANT OPTION/);
-    assert.match(script, /GRANT SELECT, INSERT, UPDATE, DELETE/);
-    assert.match(script, /EXPECTED_TABLES=10/);
-    assert.match(script, /config_info_gray/);
-    assert.match(script, /schema table-name verification failed/);
-    assert.doesNotMatch(script, /DROP DATABASE|DROP USER|GRANT ALL PRIVILEGES/);
-  }
+  const script = read('scripts/init-nacos-mysql-container.sh');
+  assert.match(script, /CREATE DATABASE IF NOT EXISTS/);
+  assert.match(script, /CREATE USER IF NOT EXISTS/);
+  assert.match(script, /ALTER USER/);
+  assert.match(script, /REVOKE ALL PRIVILEGES, GRANT OPTION/);
+  assert.match(script, /GRANT SELECT, INSERT, UPDATE, DELETE/);
+  assert.match(script, /EXPECTED_TABLES=10/);
+  assert.match(script, /schema table-name verification failed/);
+  assert.doesNotMatch(script, /DROP DATABASE|DROP USER|GRANT ALL PRIVILEGES/);
 
   const releaseScript = read('scripts/release-manage.sh');
-  assert.match(releaseScript, /15-nacos-init\.sh/);
-  assert.match(releaseScript, /nacos\/mysql-schema\.sql/);
+  assert.match(releaseScript, /60-cde-nacos\.sql/);
+  assert.doesNotMatch(releaseScript, /15-nacos-init\.sh/);
+  assert.doesNotMatch(releaseScript, /nacos\/mysql-schema\.sql/);
   assert.doesNotMatch(releaseScript, /mysql\/init.*-delete|source_root=.*script\/sql/s);
 });
 
@@ -277,17 +269,13 @@ test('existing-volume Nacos initializer rejects placeholder credentials without 
   }
 });
 
-test('fresh-volume Nacos hook is a no-op unless the optional override enables it', () => {
-  const output = execFileSync(
-    'bash',
-    [path.join(releaseRoot, 'docker/infrastructure/mysql/init/15-nacos-init.sh')],
-    {
-      encoding: 'utf8',
-      env: { ...process.env, NACOS_MYSQL_INIT_ENABLED: 'false' },
-      stdio: ['ignore', 'pipe', 'pipe'],
-    },
-  );
-  assert.equal(output, '');
+test('Nacos schema SQL is not a bash hook and compose still gates the Nacos service', () => {
+  const schema = read('docker/infrastructure/mysql/init/60-cde-nacos.sql');
+  assert.match(schema, /^SET NAMES utf8mb4;/);
+  assert.doesNotMatch(schema, /^#!/);
+  const compose = read('docker/docker-compose-infrastructure.yml');
+  assert.match(compose, /NACOS_MYSQL_INIT_ENABLED/);
+  assert.match(compose, /profiles: \[nacos\]/);
 });
 
 test('stage-mysql validates the canonical SQL baseline without writing it', () => {
@@ -313,7 +301,7 @@ test('stage-mysql validates the canonical SQL baseline without writing it', () =
     ]);
     assert.deepEqual(after, before);
 
-    fs.rmSync(path.join(tempInit, '40-ry-ai.sql'));
+    fs.rmSync(path.join(tempInit, '40-cde-ai.sql'));
     assert.throws(
       () => execFileSync('bash', [path.join(tempRelease, 'scripts/release-manage.sh'), 'stage-mysql']),
       /Command failed/,
@@ -323,19 +311,19 @@ test('stage-mysql validates the canonical SQL baseline without writing it', () =
   }
 });
 
-test('MySQL initialization targets one protected ry-namewta database', () => {
+test('MySQL initialization targets one protected wta-plus database', () => {
   const script = read('scripts/init-mysql-container.sh');
   const releaseScript = read('scripts/release-manage.sh');
   const expectedSql = [
-    '10-wta-base.sql',
-    '20-ry-job.sql',
-    '30-ry-workflow.sql',
-    '40-ry-ai.sql',
-    '50-namewta-ddl.sql',
-    '60-namewta-dml.sql',
+    '10-cde-base-ddl.sql',
+    '20-cde-job.sql',
+    '30-cde-workflow.sql',
+    '40-cde-ai.sql',
+    '50-cde-base-dml.sql',
+    '60-cde-nacos.sql',
 ];
 
-  assert.match(script, /database.*== ry-namewta/);
+  assert.match(script, /database.*== wta-plus/);
   assert.match(script, /refusing existing database/);
   assert.match(script, /EXPECTED_TABLES=125/);
   assert.match(script, /--default-character-set=utf8mb4/);
@@ -352,7 +340,7 @@ test('MySQL initialization targets one protected ry-namewta database', () => {
     'docker/docker-compose-infrastructure.yml',
     'docker/docker-compose-backend.yml',
   ]) {
-    assert.match(read(composeName), /MYSQL_DATABASE:-ry-namewta/);
+    assert.match(read(composeName), /MYSQL_DATABASE:-wta-plus/);
     assert.doesNotMatch(read(composeName), /MYSQL_DATABASE:-ry-vue/);
   }
 });

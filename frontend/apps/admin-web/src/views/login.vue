@@ -177,7 +177,7 @@ const router = useRouter();
 const { t } = useI18n();
 
 const loginForm = ref<AdminLoginInput>({
-  username: 'admin',
+  username: 'WTA',
   password: 'admin123',
   rememberMe: false,
   code: '',

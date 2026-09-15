@@ -47,7 +47,7 @@ sys_dict_data(dict_type, dict_value, dict_label, list_class, css_class)
 1. 先确认 `dictType`、允许的 `dictValue`、标签、排序、启用/默认语义和样式；值需要保持稳定，标签可以按产品文案调整。
 2. 盘点所有 `runtime.dicts()`、`DictTag`、`selectDictLabel`、`@ExcelDictFormat`、`DictTypeTranslationImpl` 和 `@DictPattern` 引用。
 3. 分别验证空值、未加载、匹配值、未匹配值、数字/字符串类型、逗号分隔多值和缓存失效；至少覆盖一个下拉/单选控件与一个表格/详情回显。
-4. 跨前后端变更时同步后端 VO/HTTP、domain transport、web-domain runtime、页面权限和初始化 SQL；初始化字典数据只能进入 `release-artifacts/docker/infrastructure/mysql/init/10-wta-base.sql` 或项目约定的 `60-namewta-dml.sql` owner。
+4. 跨前后端变更时同步后端 VO/HTTP、domain transport、web-domain runtime、页面权限和初始化 SQL；初始化字典数据只能进入 `release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql`。
 
 相关源码：
 

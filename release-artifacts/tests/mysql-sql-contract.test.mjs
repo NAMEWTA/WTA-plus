@@ -18,8 +18,8 @@ function javaFiles(directory) {
 }
 
 test('NAMEWTA structure and data contracts live in the canonical 50 and 60 files', () => {
-  const ddl = fs.readFileSync(path.join(sqlRoot, '50-namewta-ddl.sql'), 'utf8');
-  const dml = fs.readFileSync(path.join(sqlRoot, '60-namewta-dml.sql'), 'utf8');
+  const ddl = fs.readFileSync(path.join(sqlRoot, '10-cde-base-ddl.sql'), 'utf8');
+  const dml = fs.readFileSync(path.join(sqlRoot, '50-cde-base-dml.sql'), 'utf8');
 
   for (const marker of [
     'NAMEWTA-OPENAPI-CREDENTIAL-DDL-001',

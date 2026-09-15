@@ -44,7 +44,7 @@ for (const value of forbidden) {
   if (canonicalText.includes(value)) fail(`Skills 残留过时事实: ${value}`);
 }
 if (!all.includes('wta-notify')) fail('Skills 未登记 wta-notify');
-for (const required of ['BaseMapperPlus', 'WorkflowService', 'NotificationApplicationService', 'UseCase -> Service -> DAO -> Mapper', '50-namewta-ddl.sql', '60-namewta-dml.sql', '需求/菜单', 'domain transport/model/service', 'web-domain 页面/runtime/manifest', 'getInfo -> getRouters -> addRoute -> replace', 'local-name', 'tabler:name', 'sys_menu.icon']) {
+for (const required of ['BaseMapperPlus', 'WorkflowService', 'NotificationApplicationService', 'UseCase -> Service -> DAO -> Mapper', '10-cde-base-ddl.sql', '50-cde-base-dml.sql', '需求/菜单', 'domain transport/model/service', 'web-domain 页面/runtime/manifest', 'getInfo -> getRouters -> addRoute -> replace', 'local-name', 'tabler:name', 'sys_menu.icon']) {
   if (!all.includes(required)) fail(`Skills 缺少当前合同: ${required}`);
 }
 if (!existsSync(join(root, 'temp', 'release'))) fail('缺少统一私密发布目录 temp/release');

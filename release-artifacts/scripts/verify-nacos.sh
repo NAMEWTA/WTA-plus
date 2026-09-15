@@ -22,7 +22,7 @@ command -v docker >/dev/null || die "docker is required"
 command -v node >/dev/null || die "Node.js is required"
 command -v openssl >/dev/null || die "openssl is required"
 [[ -f "${APP_JAR}" ]] || die "application jar not found; set NACOS_E2E_APP_JAR"
-[[ -f "${RELEASE_ROOT}/docker/infrastructure/mysql/init/15-nacos-init.sh" ]] || die "MySQL init assets are incomplete"
+[[ -f "${RELEASE_ROOT}/docker/infrastructure/mysql/init/60-cde-nacos.sql" ]] || die "MySQL init assets are incomplete"
 
 mkdir -p "${WORK_PARENT}"
 WORK_ROOT="$(mktemp -d "${WORK_PARENT%/}/namewta-nacos-e2e-XXXXXX")"
@@ -106,7 +106,7 @@ common_app_args() {
     -e TZ=Asia/Shanghai \
     -e SPRING_PROFILES_ACTIVE=prod \
     -e JAVA_OPTS=-Xms256m\ -Xmx512m \
-    -e SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL="jdbc:mysql://${MYSQL_CONTAINER}:3306/ry-namewta?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true" \
+    -e SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL="jdbc:mysql://${MYSQL_CONTAINER}:3306/wta-plus?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true" \
     -e SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME=namewta_app \
     -e SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD="${MYSQL_APP_PASSWORD}" \
     -e SPRING_DATA_REDIS_HOST="${REDIS_CONTAINER}" \
@@ -145,7 +145,7 @@ info "starting fresh MySQL with the ordered application and Nacos schemas"
 docker run -d --name "${MYSQL_CONTAINER}" --network "${NETWORK}" \
   -e TZ=Asia/Shanghai \
   -e MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}" \
-  -e MYSQL_DATABASE=ry-namewta \
+  -e MYSQL_DATABASE=wta-plus \
   -e MYSQL_USER=namewta_app \
   -e MYSQL_PASSWORD="${MYSQL_APP_PASSWORD}" \
   -e NACOS_MYSQL_INIT_ENABLED=true \

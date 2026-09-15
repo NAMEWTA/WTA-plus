@@ -56,7 +56,7 @@ classic 标准 CRUD 必须按职责使用对应模板，不能把多层职责压
 | Controller | `java/controller.java.ftl` |
 | 自定义 Mapper XML | `xml/mapper.xml.ftl` |
 
-`sql/mysql.sql.ftl` 只提供菜单 DML 片段。NAMEWTA 不生成 Oracle、PostgreSQL 或 SQL Server 脚本，也不生成模块私有 SQL 文件：表结构变更合并到 `release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql`，初始化数据、菜单和回填合并到 `release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql`。
+`sql/mysql.sql.ftl` 只提供菜单 DML 片段。NAMEWTA 不生成 Oracle、PostgreSQL 或 SQL Server 脚本，也不生成模块私有 SQL 文件：表结构变更合并到 `release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql`，初始化数据、菜单和回填合并到 `release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql`。
 
 layered Java 模板位于 `java/layered/`：
 

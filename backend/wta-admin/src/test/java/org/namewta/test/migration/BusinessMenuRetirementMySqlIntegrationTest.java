@@ -81,7 +81,7 @@ class BusinessMenuRetirementMySqlIntegrationTest {
     }
 
     private String migrationSql() throws Exception {
-        String dml = Files.readString(SqlBaselinePaths.file("60-namewta-dml.sql"));
+        String dml = Files.readString(SqlBaselinePaths.file("50-cde-base-dml.sql"));
         int start = dml.indexOf("delete from sys_role_menu", dml.indexOf("NAMEWTA-BASE-DSL-003"));
         int end = dml.indexOf("-- NAMEWTA-BASE-DSL-003-END", start);
         assertTrue(start >= 0 && end > start, "missing NAMEWTA-BASE-DSL-003");

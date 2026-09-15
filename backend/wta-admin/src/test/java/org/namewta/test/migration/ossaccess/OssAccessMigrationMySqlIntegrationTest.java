@@ -222,12 +222,12 @@ class OssAccessMigrationMySqlIntegrationTest {
     }
 
     private String ddlBlock() throws Exception {
-        return rewriteTableNames(block(SqlBaselinePaths.file("50-namewta-ddl.sql"),
+        return rewriteTableNames(block(SqlBaselinePaths.file("10-cde-base-ddl.sql"),
             "-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表"));
     }
 
     private String dmlBlock() throws Exception {
-        return rewriteTableNames(block(SqlBaselinePaths.file("60-namewta-dml.sql"),
+        return rewriteTableNames(block(SqlBaselinePaths.file("50-cde-base-dml.sql"),
             "-- 变更内容：将全部历史OSS访问类型保守回填为PRIVATE"));
     }
 

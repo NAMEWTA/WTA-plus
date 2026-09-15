@@ -60,7 +60,7 @@ const sqlTemplates = catalog.templates.filter(item => item.source.startsWith('sq
 if (sqlTemplates.length !== 1 || sqlTemplates[0]?.source !== 'sql/mysql.sql.ftl') {
   failures.push('SQL 模板只允许 sql/mysql.sql.ftl');
 } else {
-  const expectedTarget = 'release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql';
+  const expectedTarget = 'release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql';
   if (sqlTemplates[0].target !== expectedTarget || sqlTemplates[0].writeMode !== 'merge') {
     failures.push(`sql/mysql.sql.ftl 必须以 merge 方式合并到 ${expectedTarget}`);
   }
@@ -72,7 +72,7 @@ if (templates.some(source => unsupportedDialect.test(source))) {
 }
 
 const mysqlSource = readFileSync(join(root, 'sql/mysql.sql.ftl'), 'utf8');
-for (const token of ['client_id', '${clientPk}', 'query_param', 'active_menu', 'ext', '60-namewta-dml.sql']) {
+for (const token of ['client_id', '${clientPk}', 'query_param', 'active_menu', 'ext', '50-cde-base-dml.sql']) {
   if (!mysqlSource.includes(token)) {
     failures.push(`sql/mysql.sql.ftl 缺少当前 sys_menu 契约字段或合并说明: ${token}`);
   }

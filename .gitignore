@@ -17,11 +17,14 @@ Desktop.ini
 *.swo
 *~
 
-# Local environment and secrets
+# Machine-local secrets only. App Vite catalogs are tracked:
+#   frontend/apps/*/.env.development
+#   frontend/apps/*/.env.production
+# Runtime secrets stay in untracked .env / .env.local / .env.*.local
+# and in release-artifacts/.env (see that directory's gitignore).
 .env
-.env.*
-!.env.example
-!.env.*.example
+.env.local
+.env.*.local
 *.local
 
 # Dependencies and package-manager caches

@@ -17,9 +17,9 @@
 - `frontend/tooling/architecture/**`：使用 AST/SFC/YAML 结构化检查工作区、公开入口、依赖方向、终端纯度、占位目录和基线漂移。
 - `docs/fm/**`：与已删除的运行时代码生成器解耦的静态 CRUD 模板资产，是 AI 与开发者实现 Java、Vue、React、MyBatis XML、MySQL 菜单片段、树结构、状态/排序和前后端合同时的当前参考基线；SQL 模板只支持 MySQL。
 - `backend/pom.xml`、`mvnw`、各模块 `pom.xml`：Java 21、Spring Boot 4.1.0、Maven Wrapper、46 个 POM 描述符；根 reactor 构建 46 projects，`bundle-full/core` 控制最终 admin fat jar 的业务模块集合。
-- `backend/wta-admin/src/main/java/org/namewta/DromaraApplication.java`、`wta-modules/wta-demo/**` 及 `wta-modules/wta-system/**`：Spring MVC、BO/VO/entity、service、mapper、Bean Validation、数据权限、事务和 Sa-Token 主导实践。
+- `backend/wta-admin/src/main/java/org/namewta/NamewtaApplication.java`、`wta-modules/wta-demo/**` 及 `wta-modules/wta-system/**`：Spring MVC、BO/VO/entity、service、mapper、Bean Validation、数据权限、事务和 Sa-Token 主导实践。
 - `backend/pom.xml`、`wta-common/wta-common-mybatis/**`：dynamic-datasource 4.5.0、`@DSTransactional`、`BaseEntity` 自动填充字段、VO mapper 与链式查询的公共基础设施合同。
-- `release-artifacts/docker/infrastructure/mysql/init/10-wta-base.sql` 的 `test_demo`、`wta-modules/wta-demo/**/TestDemo*`：新建项目自有业务表的乐观锁、审计字段、逻辑删除及 entity 映射基线。
+- `release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql` 的 `test_demo`、`wta-modules/wta-demo/**/TestDemo*`：新建项目自有业务表的乐观锁、审计字段、逻辑删除及 entity 映射基线。
 - `backend/wta-common/wta-common-translation/**`：批量翻译和 JSON 响应增强的公共基础设施合同。
 - `plan/update.md`：当前端到端构建命令、提交拆分、前后端顺序和禁止全仓无关格式化的项目决策证据。
 - `.github/workflows/quality-gates.yml`、`scripts/ci/**`：父仓库配置子模块快照校验、前端静态/单元/E2E/构建、后端测试与双 bundle 打包，以及 Redis/MySQL/MinIO 真实服务验收。远程运行记录需在提交推送后由 GitHub Actions 产生。
@@ -51,7 +51,7 @@
 - 前端 `packages/api-contracts` 生成结果由 `tooling/openapi` 与已提交快照维护；`tooling/generators` 当前为 README-only 占位。运行时代码生成器及其前端管理面已从基座物理删除；CRUD 实现参考父仓库 `docs/fm/**` 静态模板，不存在 `wta-gen` classpath 或可编辑运行源码。
 - 产品变更进入本仓 `main`。
 - `release-artifacts/docker/infrastructure/mysql/init/` 是六份 MySQL 8.4 完整初始化基座的唯一事实源；后端仓库不保存 `script/`、SQL 副本或其他数据库方言。
-- NAMEWTA 自有表结构只合并到 `50-namewta-ddl.sql`；初始化数据、菜单和回填只合并到 `60-namewta-dml.sql`。两者是完整可重建基座，不是按时间无限追加的迁移日志。
+- NAMEWTA 自有表结构只合并到 `10-cde-base-ddl.sql`；初始化数据、菜单和回填只合并到 `50-cde-base-dml.sql`。两者是完整可重建基座，不是按时间无限追加的迁移日志。
 - SnailJob、WarmFlow、AI 等上游或第三方拥有的 schema 不是 NAMEWTA 表结构整治目标；只在项目明确接管其 schema 时应用项目自有建表规则。
 
 ## 未知与冲突

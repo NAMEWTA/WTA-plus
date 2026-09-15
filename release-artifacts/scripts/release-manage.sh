@@ -425,24 +425,13 @@ stage_mysql_init() {
   local target_root="${RELEASE_ROOT}/docker/infrastructure/mysql/init"
   local filename index=0
   local sql_files=(
-    "10-wta-base.sql"
-    "20-ry-job.sql"
-    "30-ry-workflow.sql"
-    "40-ry-ai.sql"
-    "50-namewta-ddl.sql"
-    "60-namewta-dml.sql"
+    "10-cde-base-ddl.sql"
+    "20-cde-job.sql"
+    "30-cde-workflow.sql"
+    "40-cde-ai.sql"
+    "50-cde-base-dml.sql"
+    "60-cde-nacos.sql"
   )
-  local nacos_assets=(
-    "15-nacos-init.sh"
-    "nacos/mysql-schema.sql"
-    "nacos/SOURCE.md"
-  )
-  for filename in "${nacos_assets[@]}"; do
-    [[ -r "${target_root}/${filename}" ]] || {
-      error "缺少或无法读取 Nacos 初始化资产: ${target_root}/${filename}"
-      return 1
-    }
-  done
 
   for filename in "${sql_files[@]}"; do
     [[ -s "${target_root}/${filename}" && -r "${target_root}/${filename}" ]] || {

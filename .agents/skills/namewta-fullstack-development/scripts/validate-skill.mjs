@@ -77,8 +77,8 @@ const requiredTokens = [
   'layered',
   'Controller/Listener/API Adapter -> UseCase -> Service -> DAO -> Mapper -> XML',
   'BaseMapperPlus',
-  '50-namewta-ddl.sql',
-  '60-namewta-dml.sql',
+  '10-cde-base-ddl.sql',
+  '50-cde-base-dml.sql',
   'package.json#exports',
   'manifest',
   'pnpm architecture:check',
@@ -143,8 +143,8 @@ const backendAnchors = [
   'backend/pom.xml',
   'backend/wta-modules/wta-system/src/main/java',
   'backend/wta-common',
-  'release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql',
-  'release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql',
+  'release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql',
+  'release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql',
 ];
 for (const anchor of backendAnchors) {
   if (!existsSync(join(workspaceRoot, anchor))) fail(`缺少后端/交付证据: ${anchor}`);

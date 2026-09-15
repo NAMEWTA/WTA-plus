@@ -17,7 +17,7 @@ class NacosMenuContractUnitTest {
 
     @Test
     void definesOneIdempotentMenuWithoutGrantingOrdinaryRoles() throws IOException {
-        String dml = Files.readString(SqlBaselinePaths.file("60-namewta-dml.sql"));
+        String dml = Files.readString(SqlBaselinePaths.file("50-cde-base-dml.sql"));
         String block = block(dml);
 
         assertThat(block)

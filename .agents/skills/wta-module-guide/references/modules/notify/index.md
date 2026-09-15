@@ -34,7 +34,7 @@
 
 `notify_notice` 保存 `recipient_type`、`recipient_ids_json`、`user_type_ids_json`、`channels_json`；`notify_message.notice_type/channels_json` 保留站内消息的类型与渠道快照。完整初始化基座中的公告显式使用 `ALL`、空目标列表和 `["IN_APP"]`，只初始化公告及快照，不生成外部投递任务。
 
-事实入口：`wta-api/src/main/java/org/namewta/system/api/UserService.java`，Notify 的 `service/NotifyNoticeService.java`、`service/NotifyNoticePublisherService.java`、`usecase/NotificationApplicationUseCase.java`、`service/runtime/NotificationApplicationRuntimeService.java`、`dao/NotifyPersistenceDao.java`，以及父仓库的 `50-namewta-ddl.sql`、`60-namewta-dml.sql`。
+事实入口：`wta-api/src/main/java/org/namewta/system/api/UserService.java`，Notify 的 `service/NotifyNoticeService.java`、`service/NotifyNoticePublisherService.java`、`usecase/NotificationApplicationUseCase.java`、`service/runtime/NotificationApplicationRuntimeService.java`、`dao/NotifyPersistenceDao.java`，以及父仓库的 `10-cde-base-ddl.sql`、`50-cde-base-dml.sql`。
 
 ## 统一通知调用规范
 

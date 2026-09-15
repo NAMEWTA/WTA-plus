@@ -46,7 +46,7 @@ docker exec "$mysql_container" mysqladmin ping -h 127.0.0.1 -uroot -pnamewta-ci 
 mysql_env_file="$(mktemp "${TMPDIR:-/tmp}/namewta-ci-mysql.XXXXXX")"
 chmod 0600 "$mysql_env_file"
 printf '%s\n' \
-  'MYSQL_DATABASE=ry-namewta' \
+  'MYSQL_DATABASE=wta-plus' \
   'MYSQL_APP_USER=namewta_ci_app' \
   'MYSQL_APP_PASSWORD=namewtaci123' \
   'MINIO_ROOT_USER=namewta' \

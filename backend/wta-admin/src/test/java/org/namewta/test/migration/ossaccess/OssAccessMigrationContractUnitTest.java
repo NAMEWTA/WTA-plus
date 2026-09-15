@@ -17,7 +17,7 @@ class OssAccessMigrationContractUnitTest {
 
     @Test
     void ddlDefinesTwoAuditableProjectTablesAndSafePhysicalEncoding() throws Exception {
-        String ddl = Files.readString(SqlBaselinePaths.file("50-namewta-ddl.sql"));
+        String ddl = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
         String block = suffixFrom(ddl, "-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表");
         assertThat(occurrences(ddl, DDL_MARKER)).isEqualTo(1);
         assertThat(block).contains("-- 变更标识：2026-09-01_00:14:13")
@@ -43,7 +43,7 @@ class OssAccessMigrationContractUnitTest {
 
     @Test
     void dmlFailsClosedOnBrokenDefaultAndBackfillsEveryHistoricalMeaningToPrivate() throws Exception {
-        String dml = Files.readString(SqlBaselinePaths.file("60-namewta-dml.sql"));
+        String dml = Files.readString(SqlBaselinePaths.file("50-cde-base-dml.sql"));
         String block = suffixFrom(dml, "-- 变更内容：将全部历史OSS访问类型保守回填为PRIVATE");
         assertThat(occurrences(dml, DML_MARKER)).isEqualTo(1);
         assertThat(block).contains("-9223372036854775808, '__oss_preflight__', '0'")
@@ -58,9 +58,9 @@ class OssAccessMigrationContractUnitTest {
 
     @Test
     void upstreamSchemaRemainsFrozenAndSysOssGetsNoAccessTypeColumn() throws Exception {
-        String upstream = Files.readString(SqlBaselinePaths.file("10-wta-base.sql"));
-        assertThat(upstream).doesNotContain(DDL_MARKER).doesNotContain(DML_MARKER);
-        String ddl = Files.readString(SqlBaselinePaths.file("50-namewta-ddl.sql"));
+        String job = Files.readString(SqlBaselinePaths.file("20-cde-job.sql"));
+        assertThat(job).doesNotContain(DDL_MARKER).doesNotContain(DML_MARKER);
+        String ddl = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
         assertThat(ddl.toLowerCase()).doesNotContain("alter table sys_oss add column access_type")
             .doesNotContain("alter table sys_oss add column accesstype");
     }

@@ -106,20 +106,20 @@ bash release-artifacts/scripts/docker-manage.sh up observability --profile metri
 
 ## MySQL 单库初始化
 
-WTA、SnailJob、WarmFlow、AI 与 NAMEWTA 增量统一初始化到 `ry-namewta`，不按模块拆库。初始化顺序固定为：
+WTA、SnailJob、WarmFlow、AI 与 NAMEWTA 统一初始化到业务库 `wta-plus`，不按模块拆业务库。初始化顺序固定为：
 
 ```text
-10-wta-base.sql
-20-ry-job.sql
-30-ry-workflow.sql
-40-ry-ai.sql
-50-namewta-ddl.sql
-60-namewta-dml.sql
+10-cde-base-ddl.sql
+20-cde-job.sql
+30-cde-workflow.sql
+40-cde-ai.sql
+50-cde-base-dml.sql
+60-cde-nacos.sql
 ```
 
-上述目录是项目唯一 SQL 事实源，六份文件均为可直接修改的当前完整 MySQL 8.4 基座，并全部由 Git 跟踪。`50-namewta-ddl.sql` 保存 NAMEWTA 结构，`60-namewta-dml.sql` 保存 NAMEWTA 数据（包括三方接口管理菜单及权限）；Nacos schema 保持在 `init/nacos/` 独立初始化，不并入业务基座。不要新增版本、临时、备份 SQL，也不要在后端仓库恢复 `script/` 或其他数据库方言。
+上述目录是项目唯一 SQL 事实源，全部由 Git 跟踪。产品表结构只直接改 `10-cde-base-ddl.sql`，产品数据只直接改 `50-cde-base-dml.sql`；job/workflow/ai 为上游快照。`60-cde-nacos.sql` 初始化独立库 `nacos`，不把 Nacos 表建进 `wta-plus`。不要新增版本、临时、备份 SQL 或 `migrate/` 目录，也不要在后端仓库恢复 `script/` 或其他数据库方言。
 
-已有共享 MySQL 容器时，先准备 SQL，再运行受保护的初始化脚本。脚本拒绝已存在的数据库或应用账号，失败时只清理本次新建的 `ry-namewta` 和 `namewta_app`：
+已有共享 MySQL 容器时，先准备 SQL，再运行受保护的初始化脚本。脚本拒绝已存在的数据库或应用账号，失败时只清理本次新建的 `wta-plus` 和 `namewta_app`：
 
 ```bash
 bash release-artifacts/scripts/release-manage.sh stage-mysql

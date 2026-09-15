@@ -40,7 +40,7 @@
     "nacos": "/nacos/"
   },
   "services": {
-    "mysqlDatabase": "ry-namewta",
+    "mysqlDatabase": "wta-plus",
     "mysqlUser": "namewta_app",
     "redisDatabase": 0,
     "minioBucket": "wta",

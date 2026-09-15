@@ -279,7 +279,7 @@ class OssStorageMigrationIntegrationTest {
     }
 
     private String migrationDdlBlock() throws Exception {
-        String sql = Files.readString(SqlBaselinePaths.file("50-namewta-ddl.sql"));
+        String sql = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
         String marker = "-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表";
         int start = sql.indexOf(marker);
         assertThat(start).isGreaterThanOrEqualTo(0);

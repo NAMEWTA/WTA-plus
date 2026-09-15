@@ -64,7 +64,7 @@
 
 模板运行器依据 [catalog.json](./catalog.json) 选择模板和目标路径。Vue resource 输出后仍需由所属 domain/web-domain 的公开 exports、service 组合、manifest 与目标 App 显式接入；模板不得通过副作用修改这些共享文件。
 
-`sql/mysql.sql.ftl` 是待合并片段，不生成独立部署脚本。表结构变更合并到 `release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql`；初始化数据、菜单和回填合并到 `release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql`。
+`sql/mysql.sql.ftl` 是待合并片段，不生成独立部署脚本。表结构变更合并到 `release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql`；初始化数据、菜单和回填合并到 `release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql`。
 
 渲染前必须验证：`moduleLifecycle=new` 只能配 `architectureMode=layered`，`moduleLifecycle=legacy` 只能配 `architectureMode=classic`，且两个字段不得缺失。当 `architectureMode=layered` 时，生成结果必须满足：Controller/Listener/API Adapter 只注入 UseCase；UseCase 只编排 Service；UseCase/Service 不导入 `PageQuery` 或 MyBatis `Page`；Service 只依赖自身 DAO 和明确外部 Port；Service 不调用另一个 Service；DAO 只依赖本 owner Mapper；DAO/API Adapter 不跨层调用；Mapper 方法与 XML statement 一一对应。事务命令由 UseCase 持有 `@DSTransactional`。不得生成 `IService`、`ServiceImpl` 继承、`DataSupport` 或 DAO/Repository 双套结构。
 

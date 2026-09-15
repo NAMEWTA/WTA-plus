@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Tag("dev")
-class DromaraApplicationUnitTest {
+class NamewtaApplicationUnitTest {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -40,14 +40,14 @@ class DromaraApplicationUnitTest {
         when(environment.getProperty("server.port", Integer.class, 8080)).thenReturn(0);
         when(environment.getProperty("server.servlet.context-path", "/")).thenReturn("api");
 
-        Logger logger = (Logger) LoggerFactory.getLogger(DromaraApplication.class);
+        Logger logger = (Logger) LoggerFactory.getLogger(NamewtaApplication.class);
         Level originalLevel = logger.getLevel();
         ListAppender<ILoggingEvent> appender = new ListAppender<>();
         appender.start();
         logger.addAppender(appender);
         logger.setLevel(Level.INFO);
         try {
-            DromaraApplication.printRuntimeInfo(applicationContext, 2_500_000_000L);
+            NamewtaApplication.printRuntimeInfo(applicationContext, 2_500_000_000L);
         } finally {
             logger.detachAppender(appender);
             logger.setLevel(originalLevel);

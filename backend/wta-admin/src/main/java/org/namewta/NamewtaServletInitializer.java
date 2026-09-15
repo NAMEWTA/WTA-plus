@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  *
  * @author Lion Li
  */
-public class DromaraServletInitializer extends SpringBootServletInitializer {
+public class NamewtaServletInitializer extends SpringBootServletInitializer {
 
     /**
      * 配置外部 Web 容器启动源。
@@ -18,7 +18,7 @@ public class DromaraServletInitializer extends SpringBootServletInitializer {
      */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(DromaraApplication.class);
+        return application.sources(NamewtaApplication.class);
     }
 
 }

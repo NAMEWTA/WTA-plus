@@ -85,7 +85,7 @@ class PasswordMigrationUnitTest {
     }
 
     private static String readDml() throws IOException {
-        return Files.readString(SqlBaselinePaths.file("60-namewta-dml.sql"))
+        return Files.readString(SqlBaselinePaths.file("50-cde-base-dml.sql"))
             .replace("\r\n", "\n")
             .replace('\r', '\n');
     }

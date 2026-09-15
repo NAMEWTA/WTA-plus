@@ -77,7 +77,7 @@ rg -n '@Log|@RepeatSubmit|@DSTransactional|@Transactional' <module>/src/main/jav
 rg -n '@(Select|Insert|Update|Delete)' <module>/src/main/java
 rg -n 'BaseMapperPlus|QueryBuilder|lambdaJoin|MPJBaseMapper|DataPermission|DataColumn' <module>/src/main/java
 find <module>/src/main/resources/mapper -type f -name '*.xml' -print
-rg -n 'CREATE TABLE|ALTER TABLE|INSERT INTO|UPDATE ' release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql
+rg -n 'CREATE TABLE|ALTER TABLE|INSERT INTO|UPDATE ' release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql
 ```
 
 人工核对注解 SQL 是否确属短静态例外；复杂查询是否在 wrapper/MPJ/XML；namespace/statement/参数/alias 是否一致；数据权限是否覆盖真实 SQL；DDL/DML 是否进入 50/60 且后端无副本。

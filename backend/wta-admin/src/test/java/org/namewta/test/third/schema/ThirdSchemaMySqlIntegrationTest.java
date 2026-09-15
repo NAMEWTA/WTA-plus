@@ -38,7 +38,7 @@ class ThirdSchemaMySqlIntegrationTest {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             try {
                 dropTables(connection, tables);
-                String baseline = Files.readString(SqlBaselinePaths.file("50-namewta-ddl.sql"));
+                String baseline = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
                 String ddl = ThirdSchemaContractTest.block(baseline, "NAMEWTA-THIRD-HTTP-DDL-001");
                 executeBlock(connection, exactSchema ? ddl : isolate(ddl, token));
 

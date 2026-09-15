@@ -48,7 +48,7 @@ description: 实现跨前后端业务垂直切片时使用，覆盖数据库、A
 - 跨业务模块只使用 `wta-api` 或明确 common SPI；不得引用其他模块的 Mapper、Entity、BO、VO、Controller 或实现类。
 - 新模块使用 `Controller/Listener/API Adapter -> UseCase -> Service -> DAO -> Mapper -> XML`；`wta-system`、`wta-workflow` 等登记为 classic 的存量模块保持兼容，不把 classic 结构复制到新模块。
 - CRUD 查询使用 GET，业务变更使用 POST，每个 POST 业务接口有准确、安全的 `@Log`；现有 legacy PUT/DELETE 只在兼容迁移记录中保留。
-- 数据库只支持 MySQL 8.4；NAMEWTA DDL 进入 `50-namewta-ddl.sql`，初始化数据、菜单和回填进入 `60-namewta-dml.sql`，不得恢复模块私有 SQL。
+- 数据库只支持 MySQL 8.4；NAMEWTA DDL 进入 `10-cde-base-ddl.sql`，初始化数据、菜单和回填进入 `50-cde-base-dml.sql`，不得恢复模块私有 SQL。
 - 字典是跨层合同：`dictType + dictValue -> dictLabel`，必须验证真实页面的下拉、单选、表格标签、详情、翻译、Excel 和缓存失效；不能把数字值硬编码成文案。
 - 页面、API、权限、菜单、数据库和测试必须由同一个 owner 负责收口，不能只完成单侧代码后宣称切片完成。
 

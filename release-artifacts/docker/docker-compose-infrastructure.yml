@@ -11,7 +11,7 @@ services:
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}"
-      MYSQL_DATABASE: "${MYSQL_DATABASE:-ry-namewta}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-wta-plus}"
       MYSQL_USER: "${MYSQL_APP_USER:?MYSQL_APP_USER is required}"
       MYSQL_PASSWORD: "${MYSQL_APP_PASSWORD:?MYSQL_APP_PASSWORD is required}"
       NACOS_MYSQL_INIT_ENABLED: "${NACOS_MYSQL_INIT_ENABLED:-false}"

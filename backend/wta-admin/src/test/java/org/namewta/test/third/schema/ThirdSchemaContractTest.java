@@ -13,7 +13,7 @@ class ThirdSchemaContractTest {
 
     @Test
     void baselineOwnsNullSafeCredentialAndStatisticUniqueness() throws Exception {
-        String ddl = Files.readString(SqlBaselinePaths.file("50-namewta-ddl.sql"));
+        String ddl = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
         String block = block(ddl, "NAMEWTA-THIRD-HTTP-DDL-001").toLowerCase();
 
         assertThat(block)

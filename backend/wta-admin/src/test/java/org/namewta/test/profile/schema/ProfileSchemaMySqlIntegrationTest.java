@@ -44,8 +44,8 @@ class ProfileSchemaMySqlIntegrationTest {
         );
         try {
             prepareReferenceTables(dataSource);
-            executeBlock(dataSource, sqlBlock("50-namewta-ddl.sql", "NAMEWTA-PROFILE-DDL-001"));
-            executeBlock(dataSource, sqlBlock("60-namewta-dml.sql", "NAMEWTA-PROFILE-DML-001"));
+            executeBlock(dataSource, sqlBlock("10-cde-base-ddl.sql", "NAMEWTA-PROFILE-DDL-001"));
+            executeBlock(dataSource, sqlBlock("50-cde-base-dml.sql", "NAMEWTA-PROFILE-DML-001"));
             assertEquals("24", scalar(dataSource,
                 "select count(*) from information_schema.tables where table_schema=database() and table_name like 'profile\\_%'"));
             assertEquals("14", scalar(dataSource,

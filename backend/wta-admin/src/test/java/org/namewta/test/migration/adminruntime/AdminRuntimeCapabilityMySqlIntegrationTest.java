@@ -20,8 +20,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Tag("dev")
 class AdminRuntimeCapabilityMySqlIntegrationTest {
 
-    private static final String DDL_START = "-- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DDL-001";
-    private static final String DDL_END = "-- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DDL-001-END";
     private static final String DML_START = "-- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DML-001";
     private static final String DML_END = "-- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DML-001-END";
 
@@ -55,12 +53,10 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
         insertGeneratorMenus();
         insertHistoricalNacosMenu();
 
-        executeBlock("50-namewta-ddl.sql", DDL_START, DDL_END);
-        executeBlock("60-namewta-dml.sql", DML_START, DML_END);
+        executeBlock("50-cde-base-dml.sql", DML_START, DML_END);
         assertFinalState();
 
-        executeBlock("50-namewta-ddl.sql", DDL_START, DDL_END);
-        executeBlock("60-namewta-dml.sql", DML_START, DML_END);
+        executeBlock("50-cde-base-dml.sql", DML_START, DML_END);
         assertFinalState();
     }
 
@@ -70,10 +66,8 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
         insertParentMenus();
         insertHistoricalOpenApiMenus();
         insertHistoricalNacosMenu();
-        execute("drop table gen_table_column", "drop table gen_table");
 
-        executeBlock("50-namewta-ddl.sql", DDL_START, DDL_END);
-        executeBlock("60-namewta-dml.sql", DML_START, DML_END);
+        executeBlock("50-cde-base-dml.sql", DML_START, DML_END);
 
         assertFinalState();
     }
@@ -88,7 +82,7 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
             + "values(2094360621561675776,1762000000000000001,'冲突菜单',1761400000000000001,13,"
             + "'openApi','other/component','C','system:openApi:list')");
 
-        assertThatThrownBy(() -> executeBlock("60-namewta-dml.sql", DML_START, DML_END))
+        assertThatThrownBy(() -> executeBlock("50-cde-base-dml.sql", DML_START, DML_END))
             .isInstanceOf(SQLException.class);
 
         assertThat(queryInt("select count(*) from sys_menu where menu_id in ("
@@ -111,7 +105,7 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
         insertHistoricalNacosMenu();
         execute("update sys_menu set component='other/component' where menu_id=2094360621561675778");
 
-        assertThatThrownBy(() -> executeBlock("60-namewta-dml.sql", DML_START, DML_END))
+        assertThatThrownBy(() -> executeBlock("50-cde-base-dml.sql", DML_START, DML_END))
             .isInstanceOf(SQLException.class);
 
         assertThat(queryInt("select count(*) from sys_menu where menu_id in ("
@@ -131,7 +125,7 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
         insertHistoricalNacosMenu();
         execute("update sys_menu set menu_name='非生成器目录' where menu_id=1761400000000000003");
 
-        assertThatThrownBy(() -> executeBlock("60-namewta-dml.sql", DML_START, DML_END))
+        assertThatThrownBy(() -> executeBlock("50-cde-base-dml.sql", DML_START, DML_END))
             .isInstanceOf(SQLException.class);
 
         assertThat(queryInt("select count(*) from sys_menu where menu_id in ("
@@ -141,32 +135,6 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
             .isEqualTo(9);
         assertThat(queryString("select menu_name from sys_menu where menu_id=1761400000000000003"))
             .isEqualTo("非生成器目录");
-    }
-
-    @Test
-    void rejectsNonEmptyGeneratorTables() throws Exception {
-        createSchema();
-        execute(
-            "insert into gen_table(table_id) values(1)",
-            "insert into gen_table_column(column_id,table_id) values(1,1)"
-        );
-
-        assertThatThrownBy(() -> executeBlock("50-namewta-ddl.sql", DDL_START, DDL_END))
-            .isInstanceOf(SQLException.class);
-
-        assertThat(tableExists("gen_table")).isTrue();
-        assertThat(tableExists("gen_table_column")).isTrue();
-    }
-
-    @Test
-    void rejectsGeneratorTableLookalikeWithoutPrimaryKey() throws Exception {
-        createSchema();
-        execute("drop table gen_table_column", "drop table gen_table", "create table gen_table(table_id bigint)");
-
-        assertThatThrownBy(() -> executeBlock("50-namewta-ddl.sql", DDL_START, DDL_END))
-            .isInstanceOf(SQLException.class);
-
-        assertThat(tableExists("gen_table")).isTrue();
     }
 
     private void assertFinalState() throws SQLException {
@@ -210,9 +178,7 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
                 + "create_dept bigint null, create_by bigint null, create_time datetime null, "
                 + "update_by bigint null, update_time datetime null, remark varchar(500) null)",
             "create table sys_role_menu (role_id bigint not null, menu_id bigint not null, "
-                + "primary key(role_id,menu_id))",
-            "create table gen_table (table_id bigint not null primary key)",
-            "create table gen_table_column (column_id bigint not null primary key, table_id bigint null)"
+                + "primary key(role_id,menu_id))"
         );
     }
 

@@ -44,7 +44,7 @@ Level: MUST
 
 Source: `repository-fact` (`AGENTS.md`, `engineering-standards`, `namewta-fullstack-development`)
 
-Rule: 项目只支持 MySQL 8.4；六份完整基座只由父仓库 `release-artifacts/docker/infrastructure/mysql/init/` 拥有并直接修改。`50-namewta-ddl.sql` 只含结构语句，`60-namewta-dml.sql` 只含数据语句；后端仓库不得保存 SQL 副本或其他方言。全新环境按数字前缀执行六份文件；已有环境不得重放基座，必须指定源/目标 Git Tag、完成备份、差异评审和隔离演练。新建项目自有表还必须遵循[数据源事务与建表](../java/persistence-transactions-and-ddl.md)中的命名、主键、基础字段和中文注释合同；破坏性变更提供 expand/migrate/contract 或明确回滚。
+Rule: 项目只支持 MySQL 8.4；六份完整基座只由父仓库 `release-artifacts/docker/infrastructure/mysql/init/` 拥有并直接修改。`10-cde-base-ddl.sql` 只含结构语句，`50-cde-base-dml.sql` 只含数据语句；后端仓库不得保存 SQL 副本或其他方言。全新环境按数字前缀执行六份文件；已有环境不得重放基座，必须指定源/目标 Git Tag、完成备份、差异评审和隔离演练。新建项目自有表还必须遵循[数据源事务与建表](../java/persistence-transactions-and-ddl.md)中的命名、主键、基础字段和中文注释合同；破坏性变更提供 expand/migrate/contract 或明确回滚。
 
 Verification: 检查六文件精确清单、Git 跟踪、DDL/DML 分类和后端无副本；在隔离数据库验证全新初始化，并按源/目标 Tag 差异验证存量升级和回滚/补偿路径。
 

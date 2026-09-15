@@ -13,8 +13,8 @@ class OpenApiCredentialSqlContractTest {
 
     @Test
     void sqlContainsCredentialSchemaAndPermissions() throws Exception {
-        byte[] ddl = Files.readAllBytes(SqlBaselinePaths.file("50-namewta-ddl.sql"));
-        byte[] dml = Files.readAllBytes(SqlBaselinePaths.file("60-namewta-dml.sql"));
+        byte[] ddl = Files.readAllBytes(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
+        byte[] dml = Files.readAllBytes(SqlBaselinePaths.file("50-cde-base-dml.sql"));
 
         String ddlText = new String(ddl);
         assertThat(ddlText).contains("create table sys_open_api_credential", "open_api_credential_id",

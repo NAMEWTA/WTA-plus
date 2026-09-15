@@ -59,6 +59,10 @@ tooling/                 架构、OpenAPI 与未来脚手架工具
 
 ## 开发命令
 
+各 App 的 Vite 公开参数在 `apps/<app>/.env.development` 与 `.env.production` 中跟踪，作为迁移和上线要改哪些键的清单。`VITE_*` 会进入浏览器产物，不要写入数据库、Redis 或 MinIO 密码。本机私有覆盖用未被跟踪的 `.env.*.local`。发布脚本会覆盖 `VITE_APP_CONTEXT_PATH` 与 `VITE_APP_BASE_API`。
+
+管理端登录页默认账号为基座用户 `WTA` / `admin123`，不是上游的 `admin`。
+
 ```bash
 # 安装锁定依赖
 pnpm install --frozen-lockfile

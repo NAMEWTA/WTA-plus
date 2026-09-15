@@ -1,4 +1,4 @@
--- 合并目标：release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql
+-- 合并目标：release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql
 -- 这是菜单 DML 片段，不是独立部署脚本；clientPk 是 sys_client.id，不是 OAuth clientId。
 insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache, menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
 values(${table.menuIds[0]}, ${clientPk}, '${functionName}', ${parentMenuId}, 1, '${businessName}', '${moduleName}/${businessName}/index', '', 'N', 'Y', 'C', '0', '0', '${permissionPrefix}:list', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '${functionName}菜单');

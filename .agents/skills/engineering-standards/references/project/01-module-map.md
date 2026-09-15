@@ -14,7 +14,7 @@
 
 | ID / path suffix under `backend/` | Role / framework | Public entrypoint | Test / generated notes |
 |---|---|---|---|
-| `wta-admin` | Spring Boot 可部署主应用，组装 api/common/modules | `org.namewta.DromaraApplication` | `src/test/java`; JUnit 示例/基础测试 |
+| `wta-admin` | Spring Boot 可部署主应用，组装 api/common/modules | `org.namewta.NamewtaApplication` | `src/test/java`; JUnit 示例/基础测试 |
 | `wta-api` | 跨业务模块公开 API/DTO 合同 | `org.namewta.system.api.*` | none |
 | `wta-common` | common 聚合 POM | none | no source root |
 | `wta-common/wta-common-bom` | common 版本/BOM 合同 | none | no source root |

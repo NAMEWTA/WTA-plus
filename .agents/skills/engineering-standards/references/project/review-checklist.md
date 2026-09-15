@@ -20,6 +20,6 @@
 - [ ] `target/**`、`.flattened-pom.xml`、自动导入声明和 OpenAPI TypeScript 等生成物未被手改；已删除的运行时代码生成器、菜单、权限和当前合同未被重新引入。
 - [ ] 实际运行的 lint/compile/test/build 命令、working directory、退出码和未验证项已记录。
 - [ ] 未混入 `pnpm fmt` 全仓改写、依赖升级、lockfile 漂移或无关大文件拆分。
-- [ ] 六份 MySQL 8.4 完整基座只位于 `release-artifacts/docker/infrastructure/mysql/init/`，NAMEWTA DDL/DML 分别合并到 `50-namewta-ddl.sql`/`60-namewta-dml.sql`，后端无 SQL 副本、模块私有迁移或其他方言。
+- [ ] 六份 MySQL 8.4 完整基座只位于 `release-artifacts/docker/infrastructure/mysql/init/`，NAMEWTA DDL/DML 分别合并到 `10-cde-base-ddl.sql`/`50-cde-base-dml.sql`，后端无 SQL 副本、模块私有迁移或其他方言。
 - [ ] 当前状态、目标状态、Ratchet、pending decision 与例外没有混写。
 - [ ] UI 变化提供截图/交互证据；数据库/部署变化说明迁移、回滚和可观测性。

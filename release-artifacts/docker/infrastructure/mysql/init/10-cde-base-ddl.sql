@@ -1,8 +1,390 @@
 SET NAMES utf8mb4;
 
+-- NAMEWTA / WTA 业务库结构快照（完整最新基座，直接修改本文件）
+-- 来源：10-wta-base.sql 的 CREATE TABLE + 50-namewta-ddl.sql 的 CREATE（ALTER 已折入平台表）
+
 -- ----------------------------
--- 富文本演示文档
+create table sys_social
+(
+    id                 bigint           not null        comment '主键',
+    user_id            bigint           not null        comment '用户ID',
+    auth_id            varchar(255)     not null        comment '平台+平台唯一id',
+    source             varchar(255)     not null        comment '用户来源',
+    open_id            varchar(255)     default null    comment '平台编号唯一id',
+    user_name          varchar(30)      not null        comment '登录账号',
+    nick_name          varchar(30)      default ''      comment '用户昵称',
+    email              varchar(255)     default ''      comment '用户邮箱',
+    avatar             varchar(500)     default ''      comment '头像地址',
+    access_token       varchar(2000)     not null       comment '用户的授权令牌',
+    expire_in          int              default null    comment '用户的授权令牌的有效期，部分平台可能没有',
+    refresh_token      varchar(2000)     default null    comment '刷新令牌，部分平台可能没有',
+    access_code        varchar(255)     default null    comment '平台的授权信息，部分平台可能没有',
+    union_id           varchar(255)     default null    comment '用户的 unionid',
+    scope              varchar(255)     default null    comment '授予的权限，部分平台可能没有',
+    token_type         varchar(255)     default null    comment '个别平台的授权信息，部分平台可能没有',
+    id_token           varchar(2000)    default null    comment 'id token，部分平台可能没有',
+    mac_algorithm      varchar(255)     default null    comment '小米平台用户的附带属性，部分平台可能没有',
+    mac_key            varchar(255)     default null    comment '小米平台用户的附带属性，部分平台可能没有',
+    code               varchar(255)     default null    comment '用户的授权code，部分平台可能没有',
+    oauth_token        varchar(255)     default null    comment 'Twitter平台用户的附带属性，部分平台可能没有',
+    oauth_token_secret varchar(255)     default null    comment 'Twitter平台用户的附带属性，部分平台可能没有',
+    create_dept        bigint(20)                       comment '创建部门',
+    create_by          bigint(20)                       comment '创建者',
+    create_time        datetime                         comment '创建时间',
+    update_by          bigint(20)                       comment '更新者',
+    update_time        datetime                         comment '更新时间',
+    del_flag           char(1)          default '0'     comment '删除标志（0代表存在 1代表删除）',
+    PRIMARY KEY (id)
+) engine=innodb comment = '社会化关系表';
+
 -- ----------------------------
+create table sys_dept (
+    dept_id           bigint(20)      not null                   comment '部门id',
+    parent_id         bigint(20)      default 0                  comment '父部门id',
+    ancestors         varchar(500)    default ''                 comment '祖级列表',
+    dept_name         varchar(30)     default ''                 comment '部门名称',
+    dept_category     varchar(100)    default null               comment '部门类别编码',
+    order_num         int(4)          default 0                  comment '显示顺序',
+    leader            bigint(20)      default null               comment '负责人',
+    phone             varchar(11)     default null               comment '联系电话',
+    email             varchar(50)     default null               comment '邮箱',
+    status            char(1)         default '0'                comment '部门状态（0正常 1停用）',
+    del_flag          char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
+    create_dept       bigint(20)      default null               comment '创建部门',
+    create_by         bigint(20)      default null               comment '创建者',
+    create_time       datetime                                   comment '创建时间',
+    update_by         bigint(20)      default null               comment '更新者',
+    update_time       datetime                                   comment '更新时间',
+    primary key (dept_id),
+    key idx_sys_dept_parent_id (parent_id)
+) engine=innodb comment = '部门表';
+
+-- ----------------------------
+create table sys_user (
+    user_id           bigint(20)      not null                   comment '用户ID',
+    dept_id           bigint(20)      default null               comment '部门ID',
+    user_name         varchar(30)     not null                   comment '用户账号',
+    nick_name         varchar(30)     not null                   comment '用户昵称',
+    email             varchar(50)     default ''                 comment '用户邮箱',
+    phone_number      varchar(11)     default ''                 comment '手机号码',
+    gender            char(1)         default '0'                comment '用户性别（0男 1女 2未知）',
+    avatar            bigint(20)                                 comment '头像地址',
+    password          varchar(100)    default ''                 comment '密码',
+    status            char(1)         default '0'                comment '账号状态（0正常 1停用）',
+    del_flag          char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
+    login_ip          varchar(128)    default ''                 comment '最后登录IP',
+    login_date        datetime                                   comment '最后登录时间',
+    create_dept       bigint(20)      default null               comment '创建部门',
+    create_by         bigint(20)      default null               comment '创建者',
+    create_time       datetime                                   comment '创建时间',
+    update_by         bigint(20)      default null               comment '更新者',
+    update_time       datetime                                   comment '更新时间',
+    remark            varchar(500)    default null               comment '备注',
+    primary key (user_id),
+    key idx_sys_user_dept_id   (dept_id),
+    key idx_sys_user_create_by (create_by),
+    key idx_sys_user_user_name (user_name),
+    key idx_sys_user_phone     (phone_number)
+) engine=innodb comment = '用户信息表';
+
+-- ----------------------------
+create table sys_post
+(
+    post_id       bigint(20)      not null                   comment '岗位ID',
+    dept_id       bigint(20)      not null                   comment '部门id',
+    post_code     varchar(64)     not null                   comment '岗位编码',
+    post_category varchar(100)    default null               comment '岗位类别编码',
+    post_name     varchar(50)     not null                   comment '岗位名称',
+    post_sort     int(4)          not null                   comment '显示顺序',
+    status        char(1)         not null                   comment '状态（0正常 1停用）',
+    del_flag      char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
+    create_dept   bigint(20)      default null               comment '创建部门',
+    create_by     bigint(20)      default null               comment '创建者',
+    create_time   datetime                                   comment '创建时间',
+    update_by     bigint(20)      default null               comment '更新者',
+    update_time   datetime                                   comment '更新时间',
+    remark        varchar(500)    default null               comment '备注',
+    primary key (post_id),
+    key idx_sys_post_dept_id (dept_id)
+) engine=innodb comment = '岗位信息表';
+
+-- ----------------------------
+create table sys_role (
+    role_id              bigint(20)      not null                   comment '角色ID',
+    client_id            bigint(20)      default null               comment '归属客户端主键',
+    role_name            varchar(30)     not null                   comment '角色名称',
+    role_key             varchar(100)    not null                   comment '角色权限字符串',
+    role_sort            int(4)          not null                   comment '显示顺序',
+    data_scope           char(1)         default '1'                comment '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限 6：部门及以下或本人数据权限）',
+    menu_check_strictly  tinyint(1)      default 1                  comment '菜单树选择项是否关联显示',
+    dept_check_strictly  tinyint(1)      default 1                  comment '部门树选择项是否关联显示',
+    status               char(1)         not null                   comment '角色状态（0正常 1停用）',
+    del_flag             char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
+    create_dept          bigint(20)      default null               comment '创建部门',
+    create_by            bigint(20)      default null               comment '创建者',
+    create_time          datetime                                   comment '创建时间',
+    update_by            bigint(20)      default null               comment '更新者',
+    update_time          datetime                                   comment '更新时间',
+    remark               varchar(500)    default null               comment '备注',
+    primary key (role_id),
+    key idx_sys_role_client_id (client_id),
+    key idx_sys_role_create_dept (create_dept),
+    key idx_sys_role_create_by   (create_by)
+) engine=innodb comment = '角色信息表';
+
+-- ----------------------------
+create table sys_menu (
+    menu_id           bigint(20)      not null                   comment '菜单ID',
+    client_id         bigint(20)      default null               comment '归属客户端主键',
+    menu_name         varchar(50)     not null                   comment '菜单名称',
+    parent_id         bigint(20)      default 0                  comment '父菜单ID',
+    order_num         int(4)          default 0                  comment '显示顺序',
+    path              varchar(200)    default ''                 comment '路由地址',
+    component         varchar(255)    default null               comment '组件路径',
+    query_param       varchar(255)    default null               comment '路由参数',
+    is_frame          char(1)         default 'N'                comment '是否为外链（Y是 N否）',
+    is_cache          char(1)         default 'Y'                comment '是否缓存（Y缓存 N不缓存）',
+    menu_type         char(1)         default ''                 comment '菜单类型（M目录 C菜单 F按钮）',
+    visible           char(1)         default 0                  comment '显示状态（0显示 1隐藏）',
+    status            char(1)         default 0                  comment '菜单状态（0正常 1停用）',
+    perms             varchar(100)    default null               comment '权限标识',
+    icon              varchar(100)    default '#'                comment '菜单图标',
+    active_menu       varchar(255)    default ''                 comment '激活菜单路径',
+    ext               varchar(2000)   default ''                 comment '扩展字段',
+    create_dept       bigint(20)      default null               comment '创建部门',
+    create_by         bigint(20)      default null               comment '创建者',
+    create_time       datetime                                   comment '创建时间',
+    update_by         bigint(20)      default null               comment '更新者',
+    update_time       datetime                                   comment '更新时间',
+    remark            varchar(500)    default ''                 comment '备注',
+    primary key (menu_id),
+    key idx_sys_menu_client_id (client_id)
+) engine=innodb comment = '菜单权限表';
+
+-- ----------------------------
+create table sys_user_role (
+    user_id   bigint(20) not null comment '用户ID',
+    role_id   bigint(20) not null comment '角色ID',
+    primary key(user_id, role_id),
+    key idx_sys_user_role_rid (role_id)
+) engine=innodb comment = '用户和角色关联表';
+
+-- ----------------------------
+create table sys_role_menu (
+    role_id   bigint(20) not null comment '角色ID',
+    menu_id   bigint(20) not null comment '菜单ID',
+    primary key(role_id, menu_id)
+) engine=innodb comment = '角色和菜单关联表';
+
+-- ----------------------------
+create table sys_role_dept (
+    role_id   bigint(20) not null comment '角色ID',
+    dept_id   bigint(20) not null comment '部门ID',
+    primary key(role_id, dept_id)
+) engine=innodb comment = '角色和部门关联表';
+
+-- ----------------------------
+create table sys_user_post
+(
+    user_id   bigint(20) not null comment '用户ID',
+    post_id   bigint(20) not null comment '岗位ID',
+    primary key (user_id, post_id)
+) engine=innodb comment = '用户与岗位关联表';
+
+-- ----------------------------
+create table sys_oper_log (
+    oper_id           bigint(20)      not null                   comment '日志主键',
+    title             varchar(50)     default ''                 comment '模块标题',
+    business_type     int(2)          default 0                  comment '业务类型（0其它 1新增 2修改 3删除）',
+    method            varchar(100)    default ''                 comment '方法名称',
+    request_method    varchar(10)     default ''                 comment '请求方式',
+    operator_type     int(1)          default 0                  comment '操作类别（0其它 1后台用户 2手机端用户）',
+    oper_name         varchar(50)     default ''                 comment '操作人员',
+    user_id           bigint(20)      default null               comment '操作用户ID',
+    dept_id           bigint(20)      default null               comment '操作部门ID',
+    dept_name         varchar(50)     default ''                 comment '部门名称',
+    client_key        varchar(32)     default ''                 comment '客户端',
+    device_type       varchar(32)     default ''                 comment '设备类型',
+    browser           varchar(50)     default ''                 comment '浏览器类型',
+    os                varchar(50)     default ''                 comment '操作系统',
+    oper_url          varchar(255)    default ''                 comment '请求URL',
+    oper_ip           varchar(128)    default ''                 comment '主机地址',
+    oper_location     varchar(255)    default ''                 comment '操作地点',
+    oper_param        varchar(4000)   default ''                 comment '请求参数',
+    json_result       varchar(4000)   default ''                 comment '返回参数',
+    status            int(1)          default 0                  comment '操作状态（0正常 1异常）',
+    error_msg         varchar(4000)   default ''                 comment '错误消息',
+    oper_time         datetime                                   comment '操作时间',
+    cost_time         bigint(20)      default 0                  comment '消耗时间',
+    primary key (oper_id),
+    key idx_sys_oper_log_bt (business_type),
+    key idx_sys_oper_log_uid (user_id),
+    key idx_sys_oper_log_s  (status),
+    key idx_sys_oper_log_ot (oper_time)
+) engine=innodb comment = '操作日志记录';
+
+-- ----------------------------
+create table sys_dict_type
+(
+    dict_id          bigint(20)      not null                   comment '字典主键',
+    dict_name        varchar(100)    default ''                 comment '字典名称',
+    dict_type        varchar(100)    default ''                 comment '字典类型',
+    create_dept      bigint(20)      default null               comment '创建部门',
+    create_by        bigint(20)      default null               comment '创建者',
+    create_time      datetime                                   comment '创建时间',
+    update_by        bigint(20)      default null               comment '更新者',
+    update_time      datetime                                   comment '更新时间',
+    remark           varchar(500)    default null               comment '备注',
+    primary key (dict_id),
+    unique (dict_type)
+) engine=innodb comment = '字典类型表';
+
+-- ----------------------------
+create table sys_dict_data
+(
+    dict_code        bigint(20)      not null                   comment '字典编码',
+    dict_sort        int(4)          default 0                  comment '字典排序',
+    dict_label       varchar(100)    default ''                 comment '字典标签',
+    dict_value       varchar(100)    default ''                 comment '字典键值',
+    dict_type        varchar(100)    default ''                 comment '字典类型',
+    css_class        varchar(100)    default null               comment '样式属性（其他样式扩展）',
+    list_class       varchar(100)    default null               comment '表格回显样式',
+    is_default       char(1)         default 'N'                comment '是否默认（Y是 N否）',
+    create_dept      bigint(20)      default null               comment '创建部门',
+    create_by        bigint(20)      default null               comment '创建者',
+    create_time      datetime                                   comment '创建时间',
+    update_by        bigint(20)      default null               comment '更新者',
+    update_time      datetime                                   comment '更新时间',
+    remark           varchar(500)    default null               comment '备注',
+    primary key (dict_code),
+    key idx_sys_dict_data_type (dict_type)
+) engine=innodb comment = '字典数据表';
+
+-- ----------------------------
+create table sys_config (
+    config_id         bigint(20)      not null                   comment '参数主键',
+    config_name       varchar(100)    default ''                 comment '参数名称',
+    config_key        varchar(100)    default ''                 comment '参数键名',
+    config_value      varchar(500)    default ''                 comment '参数键值',
+    config_type       char(1)         default 'N'                comment '系统内置（Y是 N否）',
+    create_dept       bigint(20)      default null               comment '创建部门',
+    create_by         bigint(20)      default null               comment '创建者',
+    create_time       datetime                                   comment '创建时间',
+    update_by         bigint(20)      default null               comment '更新者',
+    update_time       datetime                                   comment '更新时间',
+    remark            varchar(500)    default null               comment '备注',
+    primary key (config_id)
+) engine=innodb comment = '参数配置表';
+
+-- ----------------------------
+create table sys_login_info (
+    info_id        bigint(20)     not null                  comment '访问ID',
+    user_name      varchar(50)    default ''                comment '用户账号',
+    client_key     varchar(32)    default ''                comment '客户端',
+    device_type    varchar(32)    default ''                comment '设备类型',
+    ipaddr         varchar(128)   default ''                comment '登录IP地址',
+    login_location varchar(255)   default ''                comment '登录地点',
+    browser        varchar(50)    default ''                comment '浏览器类型',
+    os             varchar(50)    default ''                comment '操作系统',
+    status         char(1)        default '0'               comment '登录状态（0正常 1异常）',
+    msg            varchar(255)   default ''                comment '提示消息',
+    login_time     datetime                                 comment '访问时间',
+    primary key (info_id),
+    key idx_sys_login_info_s  (status),
+    key idx_sys_login_info_lt (login_time)
+) engine=innodb comment = '系统访问记录';
+
+-- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DDL-001
+-- 代码生成器物理表已从基座移除：全新库不再创建 gen_table / gen_table_column。
+-- 已有库不得重放本基座；升级使用源/目标 Git Tag 差异 SQL。
+-- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DDL-001-END
+
+-- ----------------------------
+-- NAMEWTA-OSS-NOTIFY-DDL-001
+create table sys_oss (
+    oss_id          bigint(20)   not null                   comment '对象存储主键',
+    file_name       varchar(255) not null default ''        comment '文件名',
+    original_name   varchar(255) not null default ''        comment '原名',
+    file_suffix     varchar(10)  not null default ''        comment '文件后缀名',
+    url             varchar(500) not null                   comment 'URL地址',
+    ext1            text                  default null      comment '扩展字段',
+    create_dept     bigint(20)            default null      comment '创建部门',
+    create_time     datetime              default null      comment '创建时间',
+    create_by       bigint(20)            default null      comment '上传人',
+    update_time     datetime              default null      comment '更新时间',
+    update_by       bigint(20)            default null      comment '更新人',
+    service         varchar(20)  not null default 'minio'   comment '服务商',
+    is_temp         char(1)      not null default 'N'        comment '是否临时对象（Y是 N否）',
+    expire_time     datetime              default null      comment '临时对象过期时间',
+    primary key (oss_id),
+    key idx_sys_oss_temp_expire (is_temp, expire_time)
+) engine=innodb comment ='OSS对象存储表';
+
+-- ----------------------------
+-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表
+-- 变更标识：2026-09-01_00:14:13
+-- 逻辑标识：NAMEWTA-OSS-ACCESS-DDL-001
+create table sys_oss_config (
+    oss_config_id   bigint(20)    not null                  comment '主键',
+    config_key      varchar(20)   not null  default ''      comment '配置key',
+    access_key      varchar(255)            default ''      comment 'accessKey',
+    secret_key      varchar(255)            default ''      comment '秘钥',
+    bucket_name     varchar(255)            default ''      comment '桶名称',
+    prefix          varchar(255)            default ''      comment '前缀',
+    endpoint        varchar(255)            default ''      comment '访问站点',
+    domain_url      varchar(255)            default ''      comment '自定义域名',
+    is_https        char(1)                 default 'N'     comment '是否https（Y=是,N=否）',
+    region          varchar(255)            default ''      comment '域',
+    access_policy char(1) not null default '0' comment '桶权限类型（0=PRIVATE 2=PUBLIC_READ）',
+    status          char(1)                 default 'N'     comment '是否默认（Y=是,N=否）',
+    ext1            varchar(255)            default ''      comment '扩展字段',
+    create_dept     bigint(20)              default null    comment '创建部门',
+    create_by       bigint(20)              default null    comment '创建者',
+    create_time     datetime                default null    comment '创建时间',
+    update_by       bigint(20)              default null    comment '更新者',
+    update_time     datetime                default null    comment '更新时间',
+    remark          varchar(500)            default null    comment '备注',
+    primary key (oss_config_id)
+) engine=innodb comment='对象存储配置表';
+
+-- ----------------------------
+create table sys_client (
+    id                  bigint(20)    not null            comment 'id',
+    client_id           varchar(64)   default null        comment '客户端id',
+    client_key          varchar(32)   default null        comment '客户端key',
+    client_secret       varchar(255)  default null        comment '客户端秘钥',
+    grant_type          varchar(255)  default null        comment '授权类型',
+    device_type         varchar(32)   default null        comment '设备类型',
+    access_path         varchar(2000) default null        comment '允许访问路径',
+    ip_whitelist        varchar(1000) default null        comment 'IP白名单',
+    active_timeout      int(11)       default 1800        comment 'token活跃超时时间',
+    timeout             int(11)       default 604800      comment 'token固定超时',
+    user_type_id        bigint(20)    default null        comment '登录域ID',
+    register_enabled    tinyint(1)    default 0           comment '是否开放公开注册（0否 1是）',
+    default_role_id     bigint(20)    default null        comment '默认角色ID',
+    sso_enabled         tinyint(1)    default 0           comment '是否启用 SSO 接入（0否 1是）',
+    sso_auth_mode       varchar(16)   default 'local'     comment '登录模式 local/sso/both',
+    sso_client_kind     varchar(16)   default 'public'    comment 'OAuth 客户端类型 public/confidential',
+    sso_redirect_uris   varchar(2000) default null        comment 'SSO 精确回调白名单',
+    sso_pkce_required   tinyint(1)    default 1           comment '是否强制 PKCE（0否 1是）',
+    sso_auto_consent    tinyint(1)    default 1           comment '是否自动同意（0否 1是）',
+    sso_scope           varchar(255)  default null        comment 'SSO 默认 scope',
+    sso_secret_hash     varchar(255)  default null        comment 'SSO 客户端密钥哈希',
+    sso_secret_rotated_at datetime    default null        comment 'SSO 密钥最近轮换时间',
+    status              char(1)       default '0'         comment '状态（0正常 1停用）',
+    del_flag            char(1)       default '0'         comment '删除标志（0代表存在 1代表删除）',
+    create_dept         bigint(20)    default null        comment '创建部门',
+    create_by           bigint(20)    default null        comment '创建者',
+    create_time         datetime      default null        comment '创建时间',
+    update_by           bigint(20)    default null        comment '更新者',
+    update_time         datetime      default null        comment '更新时间',
+    primary key (id)
+) engine=innodb comment='系统授权表';
+
+-- ----------------------------
+-- NAMEWTA 自有表
+-- ----------------------------
+
 create table test_rich_text (
     rich_text_id bigint(20) not null comment '富文本文档主键',
     client_pk bigint(20) not null comment '归属客户端主键',
@@ -19,25 +401,6 @@ create table test_rich_text (
     key idx_test_rich_text_owner (client_pk, create_by, del_flag, update_time)
 ) engine=innodb comment='富文本演示文档';
 
--- ============================================================================
--- NAMEWTA 表结构 SQL
--- 本文件是可直接修改的当前完整 MySQL 8.4 结构基座，仅用于全新数据库初始化。
--- 历史变更标识和执行说明只保留追溯语义，不是已有数据库的升级步骤。
--- 已有数据库必须按源/目标 Git Tag 生成并评审差异，禁止重放本文件。
--- ============================================================================
-
--- ============================================================================
--- 变更标识：NAMEWTA-BASE-DDL-001
--- 变更内容：登录域定义、用户登录域关系及用户单值类型列迁移
--- 执行前置：已执行 script/sql/ry_vue.sql
--- 适用范围：全新环境；仅有 ry_vue.sql 基线的升级环境
--- 重复执行：否
--- 回滚方式：先恢复并回填 sys_user.user_type，再删除 sys_user_type_rel、sys_user_type
--- ============================================================================
-
--- ----------------------------
--- 登录域定义表
--- ----------------------------
 create table sys_user_type (
     user_type_id    bigint(20)      not null                   comment '登录域ID',
     user_type_code  varchar(32)     not null                   comment '登录域编码',
@@ -55,9 +418,6 @@ create table sys_user_type (
     unique key uk_sys_user_type_code (user_type_code)
 ) engine=innodb comment = '登录域定义表';
 
--- ----------------------------
--- 用户登录域关系表
--- ----------------------------
 create table sys_user_type_rel (
     rel_id          bigint(20)      not null                   comment '关系ID',
     user_id         bigint(20)      not null                   comment '用户ID',
@@ -74,70 +434,6 @@ create table sys_user_type_rel (
     key idx_sys_user_type_rel_type (user_type_id)
 ) engine=innodb comment = '用户登录域关系表';
 
--- ----------------------------
--- 删除用户单值类型列（登录域改为关系表）
--- ----------------------------
-alter table sys_user drop column user_type;
-
--- ============================================================================
--- 变更标识：NAMEWTA-BASE-DDL-002
--- 变更内容：Client 登录域、注册、默认角色及角色菜单 Client 隔离字段
--- 执行前置：已执行 NAMEWTA-BASE-DDL-001
--- 适用范围：全新环境；已完成 NAMEWTA-BASE-DDL-001 的升级环境
--- 重复执行：否
--- 回滚方式：先停止相关业务，再按依赖逆序删除新增索引与字段
--- ============================================================================
-
-alter table sys_client
-    add column user_type_id      bigint(20)    default null comment '登录域ID' after timeout,
-    add column register_enabled  tinyint(1)    default 0    comment '是否开放公开注册（0否 1是）' after user_type_id,
-    add column default_role_id   bigint(20)    default null comment '默认角色ID' after register_enabled;
-
-alter table sys_role
-    add column client_id bigint(20) default null comment '归属客户端主键' after role_id;
-
-alter table sys_menu
-    add column client_id bigint(20) default null comment '归属客户端主键' after menu_id;
-
-alter table sys_role add key idx_sys_role_client_id (client_id);
-alter table sys_menu add key idx_sys_menu_client_id (client_id);
-
--- ============================================================================
--- 变更标识：NAMEWTA-OSS-NOTIFY-DDL-001
--- 变更内容：OSS TEMP 生命周期、业务引用及通知监控表
--- 执行前置：已执行 NAMEWTA-BASE-DDL-002
--- 适用范围：全新环境；已完成 NAMEWTA-BASE-DDL-002 的升级环境
--- 重复执行：否
--- 回滚方式：应用回滚时保留 additive schema；确需回滚前先备份并确认无新业务数据
--- ============================================================================
-
--- ----------------------------
--- OSS 生命周期扩展
--- 先输出待回填行数；历史对象一律保守回填为非临时对象，避免迁移后被自动清理。
--- ----------------------------
-alter table sys_oss
-    add column is_temp     char(1)  default null comment '是否临时对象（Y是 N否）' after service,
-    add column expire_time datetime default null comment '临时对象过期时间' after is_temp;
-
-select count(*) as sys_oss_history_backfill_count
-from sys_oss
-where is_temp is null;
-
-update sys_oss
-set is_temp = 'N',
-    expire_time = null
-where is_temp is null;
-
-alter table sys_oss
-    modify column is_temp char(1) not null default 'N' comment '是否临时对象（Y是 N否）';
-
-alter table sys_oss
-    add key idx_sys_oss_temp_expire (is_temp, expire_time);
-
--- ----------------------------
--- OSS 业务引用表
--- ref_type 保存实际物理表名，ref_id 保存该表真实主键的字符串表示；不承担 ACL。
--- ----------------------------
 create table sys_oss_ref (
     oss_ref_id    bigint(20)   not null                   comment 'OSS引用主键',
     oss_id        bigint(20)   not null                   comment 'OSS对象存储主键',
@@ -155,12 +451,6 @@ create table sys_oss_ref (
     key idx_sys_oss_ref_reverse (ref_type, ref_id)
 ) engine=innodb comment='OSS业务引用表';
 
--- ----------------------------
--- 通知逻辑日志表
--- client_pk 仅记录请求来源的 sys_client.id，不构成数据隔离或路由条件。
--- ----------------------------
-/* legacy sys_notify_log removed: notify_intent is the canonical notification log */
-/*
 create table sys_notify_log (
     notify_log_id       bigint(20)    not null                   comment '通知日志主键',
     request_id          varchar(64)   not null                   comment '逻辑通知请求ID',
@@ -196,13 +486,7 @@ create table sys_notify_log (
     key idx_sys_notify_log_channel_status_time (channel, status, create_time),
     key idx_sys_notify_log_trace (trace_id)
 ) engine=innodb comment='通知逻辑日志表';
-*/
 
--- ----------------------------
--- 通知目标投递日志表
--- 每行对应一个物理目标的实际 Provider attempt，ACCEPTED 不等同于 DELIVERED。
--- ----------------------------
-/*
 create table sys_notify_delivery_log (
     notify_delivery_log_id bigint(20)    not null                   comment '通知投递日志主键',
     notify_log_id          bigint(20)    not null                   comment '通知逻辑日志主键',
@@ -228,43 +512,10 @@ create table sys_notify_delivery_log (
     key idx_sys_notify_delivery_status_time (status, create_time),
     key idx_sys_notify_delivery_provider_msg (provider_message_id)
 ) engine=innodb comment='通知目标投递日志表';
-*/
-
--- ============================================================================
--- 变更标识：NAMEWTA-OSS-NOTIFY-DDL-002
--- 变更内容：OSS 可重试删除状态；通知请求 ID 改为非唯一审计索引
--- 执行前置：已执行 NAMEWTA-OSS-NOTIFY-DDL-001
--- 适用范围：已完成 NAMEWTA-OSS-NOTIFY-DDL-001 的环境
--- 重复执行：否
--- 回滚方式：确认无 PENDING 对象后删除 delete_state，并恢复 request_id 唯一索引
--- ============================================================================
-
-alter table sys_oss
-    add column delete_state varchar(16) not null default 'ACTIVE'
-        comment '删除状态（ACTIVE正常 PENDING等待供应商删除）' after expire_time;
-
--- ============================================================================
--- 变更标识：NAMEWTA-RUNTIME-GEN-RETIRE-DDL-001
--- 变更内容：永久删除运行时代码生成器元数据表
--- 执行前置：冻结基线已创建 gen_table_column 与 gen_table
--- 适用范围：全新或当前 NAMEWTA 基座初始化
--- 重复执行：否
--- 恢复方式：无；不备份、不归档、不重建兼容表
--- ============================================================================
-
-drop table gen_table_column;
-drop table gen_table;
 
 -- NAMEWTA-OPENAPI-CREDENTIAL-DDL-001
--- ============================================================================
 -- 变更内容：新增每用户唯一的 OpenAPI 凭据表
 -- 变更标识：2026-08-31_22:02:33
--- 执行前置：已完整执行 NAMEWTA 基线 DDL；应用仍保持 openapi.enabled=false
--- 适用范围：全新或当前 NAMEWTA 基座初始化
--- 重复执行：否
--- 回滚方式：停用 OpenAPI 并确认无需保留凭据后 drop table sys_open_api_credential
--- ============================================================================
-
 create table sys_open_api_credential (
     open_api_credential_id bigint(20)    not null                   comment 'OpenAPI凭据主键',
     owner_user_id          bigint(20)    not null                   comment '凭据所属用户主键',
@@ -291,19 +542,6 @@ create table sys_open_api_credential (
     unique key uk_sys_open_api_credential_app_key (app_key),
     key idx_sys_open_api_credential_owner (owner_user_id)
 ) engine=innodb comment='用户OpenAPI凭据表';
-
--- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表
--- 变更标识：2026-09-01_00:14:13
--- 执行前置：已执行 NAMEWTA-OPENAPI-CREDENTIAL-DDL-001；随后必须执行同标识的DML安全回填
--- 适用范围：全新环境；尚未应用本变更的升级环境
--- 重复执行：否
--- 回滚方式：应用回滚时保留additive迁移表；访问类型语义只允许前向修复，不恢复旧public/custom解释
--- 逻辑标识：NAMEWTA-OSS-ACCESS-DDL-001
--- ============================================================================
-
-alter table sys_oss_config
-    modify column access_policy char(1) not null default '0'
-        comment '桶权限类型（0=PRIVATE 2=PUBLIC_READ）';
 
 create table sys_oss_migration_batch (
     oss_migration_batch_id bigint(20)    not null                   comment 'OSS迁移批次主键',
@@ -362,88 +600,7 @@ create table sys_oss_migration_item (
     key idx_sys_oss_migration_item_target (target_config_key)
 ) engine=innodb comment='OSS存储边界迁移明细表';
 
--- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DDL-001
--- ============================================================================
--- 变更内容：在升级环境中幂等删除已退役代码生成器元数据表
--- 执行前置：目标表不存在，或仍匹配冻结生成器主键列且两表均为空；用户已明确接受无备份风险
--- 适用范围：全新初始化或尚未执行生成器表退役的 NAMEWTA 升级环境
--- 重复执行：是
--- 恢复方式：本次无迁移前备份；失败时停止后续发布并前向修复，应用代码不再提供生成器兼容能力
--- ============================================================================
-
-set @namewta_gen_table_rows = 0;
-set @namewta_gen_column_rows = 0;
-
-set @namewta_gen_table_count_sql = if(
-    exists (
-        select 1 from information_schema.tables
-        where table_schema = database() and table_name = 'gen_table'
-    ),
-    'select count(*) into @namewta_gen_table_rows from gen_table',
-    'select 0 into @namewta_gen_table_rows'
-);
-prepare namewta_gen_table_count_stmt from @namewta_gen_table_count_sql;
-execute namewta_gen_table_count_stmt;
-deallocate prepare namewta_gen_table_count_stmt;
-
-set @namewta_gen_column_count_sql = if(
-    exists (
-        select 1 from information_schema.tables
-        where table_schema = database() and table_name = 'gen_table_column'
-    ),
-    'select count(*) into @namewta_gen_column_rows from gen_table_column',
-    'select 0 into @namewta_gen_column_rows'
-);
-prepare namewta_gen_column_count_stmt from @namewta_gen_column_count_sql;
-execute namewta_gen_column_count_stmt;
-deallocate prepare namewta_gen_column_count_stmt;
-
-drop temporary table if exists namewta_admin_runtime_reconcile_ddl_001_preflight;
-create temporary table namewta_admin_runtime_reconcile_ddl_001_preflight (
-    preflight_ok tinyint not null,
-    constraint chk_namewta_admin_runtime_reconcile_ddl_001 check (preflight_ok = 1)
-);
-
-insert into namewta_admin_runtime_reconcile_ddl_001_preflight (preflight_ok)
-select if(
-    @namewta_gen_table_rows = 0
-    and @namewta_gen_column_rows = 0
-    and not exists (
-        select 1
-        from information_schema.tables target_table
-        left join information_schema.columns primary_column
-          on primary_column.table_schema = target_table.table_schema
-         and primary_column.table_name = target_table.table_name
-         and primary_column.column_name = case target_table.table_name
-             when 'gen_table' then 'table_id'
-             when 'gen_table_column' then 'column_id'
-         end
-         and primary_column.column_key = 'PRI'
-        where target_table.table_schema = database()
-          and target_table.table_name in ('gen_table', 'gen_table_column')
-          and (target_table.table_type <> 'BASE TABLE' or primary_column.column_name is null)
-    ),
-    1,
-    0
-);
-
-drop table if exists gen_table_column;
-drop table if exists gen_table;
-
-drop temporary table namewta_admin_runtime_reconcile_ddl_001_preflight;
-
--- NAMEWTA-ADMIN-RUNTIME-RECONCILE-DDL-001-END
-
 -- NAMEWTA-PROFILE-DDL-001
--- ============================================================================
--- 变更内容：新增个人与企业档案、不可变证据、有效绑定、材料及审计全量结构
--- 变更标识：2026-09-01_11:50:00
--- 执行前置：已完整执行此前 NAMEWTA DDL
--- 适用范围：全新环境；尚未应用本变更的升级环境
--- 重复执行：否
--- 回滚方式：上线前可按依赖逆序删除；上线后只允许前向修复且永久保留业务历史
--- ============================================================================
-
 create table profile_identity_guard (
     identity_guard_id bigint(20) not null comment '活动身份守卫主键',
     profile_type varchar(16) not null comment '档案类型（PERSON/ENTERPRISE）',
@@ -1155,8 +1312,8 @@ create table profile_enterprise_transfer_record (
     unique key uk_profile_enterprise_transfer_challenge (challenge_id),
     key idx_profile_enterprise_transfer_profile (enterprise_profile_id, create_time)
 ) engine=innodb comment='企业负责人转移挑战与结果审计表';
+
 -- NAMEWTA-THIRD-HTTP-DDL-001
--- 统一第三方 HTTP Provider、Endpoint、凭据、调用明细和聚合统计。
 create table third_provider (
     provider_id bigint(20) not null comment '供应商主键',
     provider_code varchar(64) not null comment '供应商编码',
@@ -1252,10 +1409,6 @@ create table third_statistic (
     key idx_third_statistic_date(stat_date)
 ) engine=innodb comment='第三方 HTTP 调用聚合统计';
 
--- ============================================================================
--- NAMEWTA-NOTIFY-CONTROL-001：统一通知控制面最终表结构
--- 所有通知事实由 wta-notify 拥有；Provider ACCEPTED 不代表用户已收到。
--- ============================================================================
 create table notify_notice (
     notice_id bigint(20) not null comment '通知公告主键',
     notice_title varchar(50) not null comment '公告标题',
@@ -1512,22 +1665,6 @@ create table notify_scene_binding (
     key idx_notify_scene_binding_account (account_id)
 ) engine=innodb comment='通知场景渠道绑定';
 
--- ============================================================================
--- 变更标识：NAMEWTA-SSO-DDL-001
--- 变更内容：sys_client SSO 分组字段与一次性授权码表
--- ============================================================================
-
-alter table sys_client
-    add column sso_enabled tinyint(1) default 0 comment '是否启用 SSO 接入（0否 1是）' after default_role_id,
-    add column sso_auth_mode varchar(16) default 'local' comment '登录模式 local/sso/both' after sso_enabled,
-    add column sso_client_kind varchar(16) default 'public' comment 'OAuth 客户端类型 public/confidential' after sso_auth_mode,
-    add column sso_redirect_uris varchar(2000) default null comment 'SSO 精确回调白名单' after sso_client_kind,
-    add column sso_pkce_required tinyint(1) default 1 comment '是否强制 PKCE（0否 1是）' after sso_redirect_uris,
-    add column sso_auto_consent tinyint(1) default 1 comment '是否自动同意（0否 1是）' after sso_pkce_required,
-    add column sso_scope varchar(255) default null comment 'SSO 默认 scope' after sso_auto_consent,
-    add column sso_secret_hash varchar(255) default null comment 'SSO 客户端密钥哈希' after sso_scope,
-    add column sso_secret_rotated_at datetime default null comment 'SSO 密钥最近轮换时间' after sso_secret_hash;
-
 create table sso_authorization_code (
     authorization_code_id bigint(20) not null comment '授权码主键',
     authorization_code varchar(128) not null comment '一次性授权码',
@@ -1550,3 +1687,38 @@ create table sso_authorization_code (
     unique key uk_sso_authorization_code (authorization_code),
     key idx_sso_authorization_code_expire (expire_time)
 ) engine=innodb comment='SSO 一次性授权码';
+
+CREATE TABLE test_demo
+(
+    id          bigint(0)    NOT NULL COMMENT '主键',
+    dept_id     bigint(0)    NULL DEFAULT NULL COMMENT '部门id',
+    user_id     bigint(0)    NULL DEFAULT NULL COMMENT '用户id',
+    order_num   int(0)       NULL DEFAULT 0 COMMENT '排序号',
+    test_key    varchar(255) NULL DEFAULT NULL COMMENT 'key键',
+    value       varchar(255) NULL DEFAULT NULL COMMENT '值',
+    version     int(0)       NULL DEFAULT 0 COMMENT '版本',
+    create_dept bigint(0)    NULL DEFAULT NULL COMMENT '创建部门',
+    create_time datetime(0)  NULL DEFAULT NULL COMMENT '创建时间',
+    create_by   bigint(0)    NULL DEFAULT NULL COMMENT '创建人',
+    update_time datetime(0)  NULL DEFAULT NULL COMMENT '更新时间',
+    update_by   bigint(0)    NULL DEFAULT NULL COMMENT '更新人',
+    del_flag    int(0)       NULL DEFAULT 0 COMMENT '删除标志',
+    PRIMARY KEY (id) USING BTREE
+) ENGINE = InnoDB COMMENT = '测试单表';
+
+CREATE TABLE test_tree
+(
+    id          bigint(0)    NOT NULL COMMENT '主键',
+    parent_id   bigint(0)    NULL DEFAULT 0 COMMENT '父id',
+    dept_id     bigint(0)    NULL DEFAULT NULL COMMENT '部门id',
+    user_id     bigint(0)    NULL DEFAULT NULL COMMENT '用户id',
+    tree_name   varchar(255) NULL DEFAULT NULL COMMENT '值',
+    version     int(0)       NULL DEFAULT 0 COMMENT '版本',
+    create_dept bigint(0)    NULL DEFAULT NULL COMMENT '创建部门',
+    create_time datetime(0)  NULL DEFAULT NULL COMMENT '创建时间',
+    create_by   bigint(0)    NULL DEFAULT NULL COMMENT '创建人',
+    update_time datetime(0)  NULL DEFAULT NULL COMMENT '更新时间',
+    update_by   bigint(0)    NULL DEFAULT NULL COMMENT '更新人',
+    del_flag    int(0)       NULL DEFAULT 0 COMMENT '删除标志',
+    PRIMARY KEY (id) USING BTREE
+) ENGINE = InnoDB COMMENT = '测试树表';

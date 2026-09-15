@@ -204,7 +204,7 @@ class ProfileStructureContractTest {
     void profileEntitiesMirrorTheMySqlBaselineFromTheDomainRoot() throws Exception {
         Set<String> ddlTables = new LinkedHashSet<>();
         Matcher ddlMatcher = DDL_PROFILE_TABLE.matcher(Files.readString(
-            SqlBaselinePaths.file("50-namewta-ddl.sql")));
+            SqlBaselinePaths.file("10-cde-base-ddl.sql")));
         while (ddlMatcher.find()) {
             ddlTables.add(ddlMatcher.group(1));
         }

@@ -30,7 +30,7 @@ class ProfileSchemaContractTest {
 
     @Test
     void ddlDefinesTheCompleteAppendOnlyProfileModelWithProjectBaseColumns() throws Exception {
-        String ddl = readSql("50-namewta-ddl.sql");
+        String ddl = readSql("10-cde-base-ddl.sql");
         String block = suffixFrom(ddl, DDL_MARKER);
 
         assertThat(occurrences(ddl, DDL_MARKER)).isEqualTo(1);
@@ -46,7 +46,7 @@ class ProfileSchemaContractTest {
 
     @Test
     void generatedGuardsEnforceActiveIdentityApplicationAndBindingCardinality() throws Exception {
-        String ddl = suffixFrom(readSql("50-namewta-ddl.sql"), DDL_MARKER);
+        String ddl = suffixFrom(readSql("10-cde-base-ddl.sql"), DDL_MARKER);
 
         assertThat(tableDefinition(ddl, "profile_identity_guard"))
             .contains("active_guard_key")
@@ -87,7 +87,7 @@ class ProfileSchemaContractTest {
 
     @Test
     void adminSourcesKeepImmutableStructuredFieldsForVersionPublication() throws Exception {
-        String ddl = suffixFrom(readSql("50-namewta-ddl.sql"), DDL_MARKER);
+        String ddl = suffixFrom(readSql("10-cde-base-ddl.sql"), DDL_MARKER);
 
         assertThat(tableDefinition(ddl, "profile_person_source")).contains(
             "full_name", "document_type_code", "document_number", "identity_key", "gender",
@@ -103,7 +103,7 @@ class ProfileSchemaContractTest {
 
     @Test
     void dmlSeedsClosedRegionalDocumentsProtectedMaterialRulesAndCompleteCapabilities() throws Exception {
-        String dml = readSql("60-namewta-dml.sql");
+        String dml = readSql("50-cde-base-dml.sql");
         String block = suffixFrom(dml, DML_MARKER);
 
         assertThat(occurrences(dml, DML_MARKER)).isEqualTo(1);
@@ -146,10 +146,10 @@ class ProfileSchemaContractTest {
     @Test
     void backendSqlCopiesRemainRetiredAndProfileSqlContainsNoPhysicalHistoryDeletion() throws Exception {
         assertThat(repositoryRoot().resolve("script")).doesNotExist();
-        String upstream = Files.readString(sqlDirectory().resolve("10-wta-base.sql"));
+        String upstream = Files.readString(sqlDirectory().resolve("20-cde-job.sql"));
         assertThat(upstream).doesNotContain(DDL_MARKER).doesNotContain(DML_MARKER);
-        String ddl = suffixFrom(readSql("50-namewta-ddl.sql"), DDL_MARKER).toLowerCase();
-        String dml = suffixFrom(readSql("60-namewta-dml.sql"), DML_MARKER).toLowerCase();
+        String ddl = suffixFrom(readSql("10-cde-base-ddl.sql"), DDL_MARKER).toLowerCase();
+        String dml = suffixFrom(readSql("50-cde-base-dml.sql"), DML_MARKER).toLowerCase();
         assertThat(ddl).doesNotContain("on delete cascade");
         assertThat(dml).doesNotContain("delete from profile_");
     }
