@@ -1,1 +1,14 @@
-PLACEHOLDER_TOO_LARGE_SEE_FOLLOWUP
+{
+  "schema_version": 2,
+  "package_version": "1.0.11",
+  "files": [
+    {
+      "path": ".speculo/baselines/config.json",
+      "bytes": 194,
+      "sha256": "65fca788decb68371fef90e4b4672bc13df23cca49cd8d0905b98d077e73d194",
+      "owner": "core/config",
+      "kind": "baseline",
+      "package_version": "1.0.11"
+    }
+  ]
+}
