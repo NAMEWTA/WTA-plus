@@ -1,10 +1,9 @@
 {
   "schema_version": 3,
-  "package_version": "1.0.10",
+  "package_version": "1.0.11",
   "workflows": [
     "learning",
     "ops",
-    "person",
     "specdev"
   ],
   "managed_manifest": ".speculo/managed.json",
