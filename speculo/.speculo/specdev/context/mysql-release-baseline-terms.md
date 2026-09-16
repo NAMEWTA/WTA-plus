@@ -12,5 +12,5 @@ _Avoid_: 对已有数据库重放完整基座、任意排序执行
 **已有数据库升级**：比较现场 Git Tag 与目标 Git Tag 的六份基座差异，经备份、评审和隔离演练后只执行目标环境所需 DDL/DML，并在私密部署报告中留证。
 _Avoid_: 仓库内第二套 migration 事实源、没有 Tag 或备份就试错
 
-**NAMEWTA DDL/DML 分层**：`50-namewta-ddl.sql` 只承载 NAMEWTA 结构，`60-namewta-dml.sql` 只承载初始化、菜单、字典、配置和回填数据。
+**NAMEWTA DDL/DML 分层**：`10-cde-base-ddl.sql` 只承载 NAMEWTA 结构，`50-cde-base-dml.sql` 只承载初始化、菜单、字典、配置和回填数据。
 _Avoid_: 在 50 写业务数据、在 60 建表改表、恢复非 MySQL 方言

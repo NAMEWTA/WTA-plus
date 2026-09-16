@@ -1,0 +1,1368 @@
+[
+  {
+    "id": "T-01",
+    "slug": "restore-trustworthy-gates",
+    "title": "恢复可信的仓库门禁与治理入口",
+    "findings": [
+      "D-01",
+      "D-07",
+      "D-11",
+      "B-09"
+    ],
+    "paths": [
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "scripts/ci/",
+      "scripts/README.md",
+      ".github/workflows/",
+      "speculo/.speculo/specdev/config.json"
+    ],
+    "steps": [
+      "记录真实命令/cwd/工具版本/失败分类；先保存现有红灯基线，不把检查器误报当产品缺陷",
+      "删除无submodule仍强求快照的死检查与调用映射；明确重建CI为本地候选配置",
+      "模块分层检查以org.namewta自有namespace和词法/AST角色判断，排除Javadoc伪注解，保留第三方org.dromara依赖",
+      "用最小正负夹具覆盖非法Mapper import、错误层事务、合法注释及有意供应商坐标；不通过扩大allowlist变绿",
+      "去掉忽略目录temp/release必须存在的条件，检查ignore规则与输出owner即可",
+      "按真实monorepo cwd更新SpecDev verification，并将外部服务、类型、OpenAPI/架构检查分别登记"
+    ],
+    "checks": [
+      "干净clone不创建temp/release也通过事实检查",
+      "注释中DSTransactional不触发越层误报，真实非法import必须失败",
+      "不存在CI文件时文档不得宣称active；远程required状态有独立证据",
+      "每个声明命令可在对应cwd解析，Maven/前端测试与package分开记录"
+    ],
+    "decision": "是否恢复GitHub Actions由ADR-CR-006待审；全局SpecDev配置属于未来写集，本轮不改。",
+    "blocked_by": [],
+    "depth": "standard",
+    "risk": "medium",
+    "skills": [],
+    "commands": [
+      "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
+      "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-sso --mode layered"
+    ],
+    "contract": "AC-001"
+  },
+  {
+    "id": "T-02",
+    "slug": "unify-log-redaction",
+    "title": "消除HTTP与操作日志中的凭据副本",
+    "findings": [
+      "R-01"
+    ],
+    "paths": [
+      "backend/wta-common/wta-common-log/",
+      "backend/wta-common/wta-common-web/",
+      "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java",
+      "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/"
+    ],
+    "steps": [
+      "先固定换票响应access_token进入OperLogEvent的红灯，以及原queryString泄漏canary的红灯",
+      "立即令凭据签发接口不记录响应正文；保留审计元数据",
+      "由现有common拥有一个日志副本策略，HTTP/操作日志adapter复用；删除原始query输出和未经策略处理的response序列化",
+      "按OAuth路由上下文处理code/verifier/redirectUri，不全局删除业务code字段；处理form/header/非法JSON",
+      "跨事件到数据库落点验证，确保安全修复未改变Servlet原始字节或业务响应"
+    ],
+    "checks": [
+      "canary不出现在HTTP sink、OperLogEvent、数据库或错误日志",
+      "普通字段/操作者/耗时/失败状态仍可观测",
+      "签名、加解密、SSE与正常token响应保持正确",
+      "旧日志处置与凭据轮换另有批准记录，本票不自动删历史数据"
+    ],
+    "decision": "ADR-0025已禁止泄漏；新的默认日志保留策略见ADR-CR-002待审。",
+    "blocked_by": [],
+    "depth": "standard",
+    "risk": "high",
+    "skills": [
+      "wta-common-modules-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-common/wta-common-web,wta-common/wta-common-log,wta-modules/wta-sso,wta-modules/wta-system -am test"
+    ],
+    "contract": "AC-002"
+  },
+  {
+    "id": "T-03",
+    "slug": "bound-request-capture",
+    "title": "统一有界请求体采集与验签缓存",
+    "findings": [
+      "R-02"
+    ],
+    "paths": [
+      "backend/wta-common/wta-common-web/",
+      "backend/wta-common/wta-common-openapi/",
+      "backend/wta-common/wta-common-encrypt/",
+      "backend/wta-admin/src/main/resources/application.yml"
+    ],
+    "steps": [
+      "测量最大合法普通JSON与机器请求，批准请求预算和日志前缀预算",
+      "固定未知长度/chunked超限以及伪签名头大请求的红灯",
+      "构造受限采集owner，Content-Length提前检查且实际读取计数，超限稳定413",
+      "复用精确原始字节，删除无界readAllBytes和不必要全数组复制；日志/解密/XSS顺序独立验证",
+      "验证正常JSON共享wrapper；上传和SSE继续流式，不强行进入普通正文缓存",
+      "记录并发堆峰值、GC和取消资源释放，确认压测只在隔离环境"
+    ],
+    "checks": [
+      "大小边界前/等于/超限一字节结果可判定",
+      "未知长度无法绕过限制，413时业务尚未执行",
+      "OpenAPI签名测试逐字节通过",
+      "同一正文不会因观察者线性增加完整副本，SSE/上传可取消"
+    ],
+    "decision": "建议普通JSON/机器正文2MiB为评估起点，最终以真实最大请求决定；新增413属于待审外部合同。",
+    "blocked_by": [
+      "T-02"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "wta-common-modules-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-common/wta-common-web,wta-common/wta-common-openapi,wta-common/wta-common-encrypt -am test"
+    ],
+    "contract": "AC-003"
+  },
+  {
+    "id": "T-04",
+    "slug": "trusted-client-address",
+    "title": "建立可信代理来源IP合同",
+    "findings": [
+      "R-03"
+    ],
+    "paths": [
+      "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java",
+      "backend/wta-common/wta-common-security/",
+      "backend/wta-common/wta-common-redis/",
+      "release-artifacts/docker/frontend/nginx/"
+    ],
+    "steps": [
+      "先在隔离单/双Nginx链复现伪造XFF影响白名单；若外层已有清洗记录反证再收窄",
+      "列真实peer/proxy/client地址及可信代理CIDR，不按所有私网默认可信",
+      "公网入口覆盖不可信转发头；应用仅在peer可信时按可信hop解析，直连仅用socket peer",
+      "白名单、限流、审计复用来源解析，删多头任意fallback",
+      "分别验证IPv4/IPv6、多级链与部署环境正常用户不误封"
+    ],
+    "checks": [
+      "任意外来XFF不改变直连或正常入口的授权结果",
+      "可信双代理解析一致，非法值失败关闭",
+      "白名单与限流使用同一个规范来源",
+      "未获得环境资料时不得把likely改成已复现越权"
+    ],
+    "decision": "ADR-CR-003需要实际代理CIDR和入口清洗责任；真实环境接管不在本票默认授权内。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "wta-common-modules-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-common/wta-common-security,wta-common/wta-common-redis -am test",
+      "isolated: nginx -t + forged-forwarded-header matrix"
+    ],
+    "contract": "AC-004"
+  },
+  {
+    "id": "T-05",
+    "slug": "repeat-submit-lease",
+    "title": "修复防重键过期后的所有权竞态",
+    "findings": [
+      "R-04"
+    ],
+    "paths": [
+      "backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java",
+      "backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java",
+      "backend/wta-common/wta-common-redis/src/test/"
+    ],
+    "steps": [
+      "复现A超TTL、B取得同名键、A失败删除B、C进入的时序",
+      "把key与随机owner token作为同一lease保存",
+      "失败释放使用原子compare-and-delete，未取得lease不释放",
+      "保留成功防重TTL语义；明确嵌套/异步是否支持并清理线程上下文",
+      "用真实Redis证明比较删除原子性，不宣称业务exactly-once"
+    ],
+    "checks": [
+      "A失败不得删除B的键",
+      "正常失败可重试，正常成功TTL内被拒",
+      "异常/线程复用无ThreadLocal遗留",
+      "DB唯一约束和通知业务幂等不被此注解替代"
+    ],
+    "decision": "不改变防重窗口的业务含义；若引入嵌套支持需单独定界。",
+    "blocked_by": [],
+    "depth": "standard",
+    "risk": "high",
+    "skills": [
+      "wta-common-modules-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-common/wta-common-redis -am test",
+      "isolated Redis: deterministic A/B/C lease test"
+    ],
+    "contract": "AC-005"
+  },
+  {
+    "id": "T-06",
+    "slug": "secure-sso-session",
+    "title": "强化SSO令牌随机性与Cookie安全",
+    "findings": [
+      "B-01",
+      "B-03"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-sso/",
+      "backend/wta-admin/src/main/resources/application.yml",
+      "frontend/apps/sso-web/"
+    ],
+    "steps": [
+      "保留数据库ID生成器，仅替换bearer session/authorization code的随机来源",
+      "统一SecureRandom生成至少32字节opaque值，处理存储唯一冲突，禁止把碰撞测试当密码学安全证明",
+      "明确服务端token保存形式和过期策略；继续验证PKCE、精确redirect和单次consume",
+      "生产Cookie启用Secure/HttpOnly及明确SameSite，开发例外由profile限定",
+      "联查CORS允许origin与SSO cookie：默认credentialed通配不得被误当受信站点",
+      "升级时明确旧会话失效还是按短TTL自然清除，发布操作需另行批准"
+    ],
+    "checks": [
+      "生产实现不含ThreadLocalRandom/雪花ID作为bearer",
+      "已接受的PKCE/client/version/expiry/单次兑换负向测试全部保留",
+      "HTTPS生产Cookie属性成立，开发HTTP例外不可进入prod",
+      "CORS拒绝未知origin，登录不会因Cookie错误进入循环"
+    ],
+    "decision": "ADR-CR-001：推荐强制旧SSO session失效并重新登录；保留业务Sa-Token target Client协议，不顺手改认证体系。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-sso -am test",
+      "frontend: pnpm --filter @namewta/sso-web test"
+    ],
+    "contract": "AC-006"
+  },
+  {
+    "id": "T-07",
+    "slug": "sso-callback-journey",
+    "title": "修复SSO回调编码与可恢复登录旅程",
+    "findings": [
+      "B-02",
+      "F-09"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java",
+      "backend/wta-modules/wta-sso/src/test/",
+      "frontend/apps/admin-web/src/views/sso-callback.vue",
+      "frontend/apps/home-web/src/views/SsoCallbackPage.vue",
+      "frontend/apps/sso-web/",
+      "frontend/packages/domains/admin/",
+      "frontend/e2e/",
+      "frontend/apps/admin-web/src/application/sso.ts",
+      "frontend/apps/home-web/src/application/sso.ts"
+    ],
+    "steps": [
+      "固定包含&/%/Unicode及已有query的state序列化红灯，保留后端精确redirect白名单",
+      "用规范URI构造替代手工拼接；明确fragment/重复参数拒绝语义",
+      "由origin与规范化VITE_APP_CONTEXT_PATH构造callback，验证/admin/与/home/子路径，不能固定origin根/sso/callback",
+      "记录安全的App内returnTo与一次性PKCE状态，不允许外域跳转",
+      "callback展示结构化过期/state/网络错误与重新授权入口，不静默退回登录首页",
+      "避免消费同一code盲目重试；重新授权时生成新state/verifier并清除旧临时状态"
+    ],
+    "checks": [
+      "复杂state往返相等且无重复code/state参数",
+      "过期、错state、错误verifier均失败关闭且用户可重新授权",
+      "成功回到原App内路径，带外域returnTo被拒",
+      "日志与UI不暴露code/verifier/token"
+    ],
+    "decision": "ADR-CR-001/002；后端已精确校验redirect，本票不是虚构开放重定向修复。",
+    "blocked_by": [
+      "T-06"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-sso -am test",
+      "frontend: pnpm test:e2e --grep SSO"
+    ],
+    "contract": "AC-007"
+  },
+  {
+    "id": "T-08",
+    "slug": "complete-sso-release",
+    "title": "补齐SSO独立Origin发布合同",
+    "findings": [
+      "D-02"
+    ],
+    "paths": [
+      "release-artifacts/docker/",
+      "release-artifacts/scripts/release-manage.sh",
+      "release-artifacts/skills/wta-namewta-nginx-config/",
+      "release-artifacts/README.md",
+      "frontend/apps/sso-web/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "将三App的package、prefix、origin、port、API路由、callback、template、shipped状态写入显式发布清单",
+      "移除目录扫描隐式决定发布面的行为；未登记App不得悄悄进入产物",
+      "补SSO Compose服务、Nginx模板、/sso反代、health/env与端口台账",
+      "验证静态部署子路径、HTTPS Cookie和三App独立存储/会话恢复",
+      "在本地隔离环境完成模板/Compose和浏览器验收，真实DNS/TLS/部署留到具体产物批准"
+    ],
+    "checks": [
+      "每个shipped App均有且仅有完整配套，缺项在promotion前失败",
+      "SSO三端跳转、刷新、过期、跨OriginCookie可运行",
+      "已发布current在配置失败时不改变",
+      "发布清单与Compose、Nginx、文档一致"
+    ],
+    "decision": "推荐兑现ADR-0073/0074独立SSO Origin；生产域名与端口仍需用户填定。",
+    "blocked_by": [
+      "T-07",
+      "T-09",
+      "T-10"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "release-artifacts: bash scripts/verify-release.sh",
+      "isolated: docker compose config; nginx -t; three-origin browser SSO"
+    ],
+    "contract": "AC-008"
+  },
+  {
+    "id": "T-09",
+    "slug": "coherent-build-matrix",
+    "title": "统一App模式、bundle与依赖服务验证矩阵",
+    "findings": [
+      "D-04",
+      "D-08",
+      "D-09"
+    ],
+    "paths": [
+      "frontend/package.json",
+      "frontend/apps/*/package.json",
+      "backend/pom.xml",
+      "backend/wta-admin/pom.xml",
+      "scripts/ci/verify-admin-bundle.sh",
+      "scripts/ci/run-external-services.sh",
+      "release-artifacts/scripts/release-manage.sh",
+      "release-artifacts/docker/docker-compose-infrastructure.yml"
+    ],
+    "steps": [
+      "建立三App development/production执行矩阵，每个环境每App仅调用一次对应mode",
+      "删除dev路径中的隐式production递归覆盖；保留工作区依赖构建顺序",
+      "固定full/core required/forbidden artifact，加入Profile两jar断言，核对effective POM和实际jar",
+      "区分-DskipTests仍编译测试与-Dmaven.test.skip=true完全跳过；core构建复用同候选已测试证据，不删除测试或扩大bundle",
+      "统一CI/Compose MySQL/Redis/MinIO镜像与可得digest；不同版本必须显式声明兼容矩阵",
+      "保存两种clean构建及外部服务的证据来源"
+    ],
+    "checks": [
+      "build:dev最终三个App均development，build:prod均production",
+      "core/full产物必需与禁用列表逐项断言",
+      "测试证据与打包候选匹配，不以skip冒充测试通过",
+      "CI与部署镜像版本相同或有明确差异测试"
+    ],
+    "decision": "ADR-CR-005：推荐唯一显式构建清单；镜像升级具体版本以兼容验证决定，不盲追最新。",
+    "blocked_by": [
+      "T-01"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [],
+    "commands": [
+      "frontend: pnpm build:dev; pnpm build:prod",
+      "backend: ./mvnw test; ./mvnw clean package -DskipTests; ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true",
+      "bash scripts/ci/verify-admin-bundle.sh full|core"
+    ],
+    "contract": "AC-009"
+  },
+  {
+    "id": "T-10",
+    "slug": "atomic-release-provenance",
+    "title": "删除混源局部发布并实现原子stage",
+    "findings": [
+      "D-03",
+      "D-10"
+    ],
+    "paths": [
+      "release-artifacts/scripts/release-manage.sh",
+      "release-artifacts/scripts/verify-release.sh",
+      "release-artifacts/scripts/tests/",
+      "release-artifacts/README.md"
+    ],
+    "steps": [
+      "固定旧core后端+新frontend被标当前full/HEAD的红灯",
+      "把frontend-only/backend-only产物降为不可发布cache；完整release显式选择所有artifact及source SHA/digest",
+      "删current复制后局部覆盖仍可promotion的路径",
+      "所有App、JAR、SQL、Nginx、manifest在同一临时stage校验后再单次promotion",
+      "异常只清理本次受控stage，已发布current/context保持字节不变",
+      "增加失败注入、混源拒绝和恢复点；原子目录切换能力在Windows/Linux分别核验"
+    ],
+    "checks": [
+      "manifest每个artifact的digest和source可追溯",
+      "缺模板/坏SQL/坏JAR/中断时current/context SHA256完全不变",
+      "单目标构建不能stage为完整release",
+      "恢复只操作本次stage，不触及他人文件或历史发布"
+    ],
+    "decision": "ADR-CR-005推荐取消partial deployable promotion；若保留混源组合需额外复杂合同，当前不推荐。",
+    "blocked_by": [
+      "T-09"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [],
+    "commands": [
+      "bash release-artifacts/scripts/verify-release.sh",
+      "isolated: failure-injection stage tests + before/after digest comparison"
+    ],
+    "contract": "AC-010"
+  },
+  {
+    "id": "T-11",
+    "slug": "remove-browser-shared-private-key",
+    "title": "删除浏览器共享私钥与ECB传输包装",
+    "findings": [
+      "F-01"
+    ],
+    "paths": [
+      "frontend/packages/adapters/crypto-browser/",
+      "frontend/packages/platform/contracts/",
+      "frontend/packages/platform/http/",
+      "frontend/apps/admin-web/src/application/http.ts",
+      "frontend/apps/home-web/src/application/http.ts",
+      "frontend/apps/*/.env*",
+      "backend/wta-common/wta-common-encrypt/",
+      "backend/wta-admin/src/main/resources/",
+      "release-artifacts/"
+    ],
+    "steps": [
+      "盘点哪些登录/业务请求实际开启VITE_APP_ENCRYPT、服务端@ApiEncrypt及外部消费者",
+      "推荐TLS作为浏览器传输合同，删除共享响应私钥、ECB包装及对应两端env；不替换机器OpenAPI HMAC",
+      "若确有TLS之外威胁模型，另做版本化AEAD协议并说明密钥管理，不把浏览器静态privateKey当保密材料",
+      "跨端同步切换请求/响应解析、错误映射和登录，不留双协议无限兼容",
+      "同步移除无消费者CryptoJS/jsencrypt依赖，锁文件由正常依赖工具生成",
+      "构建扫描不能误删用于测试的公钥/占位说明，针对生产bundle与环境策略验收"
+    ],
+    "checks": [
+      "生产bundle不再携带该共享响应私钥或ECB路径",
+      "正常登录、注册、错误响应及下载可运行",
+      "机器调用HMAC与OSS签名不被删除",
+      "传输切换有前后端原子发布与恢复方案"
+    ],
+    "decision": "ADR-CR-004必须先裁决TLS-only或另有明确AEAD需求；HttpOnly Cookie改造不在本票默认范围。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-common-modules-guide"
+    ],
+    "commands": [
+      "frontend: pnpm lint; pnpm typecheck; pnpm test; pnpm build:prod",
+      "backend: ./mvnw -pl wta-common/wta-common-encrypt,wta-admin -am test"
+    ],
+    "contract": "AC-011"
+  },
+  {
+    "id": "T-12",
+    "slug": "session-navigation-lifecycle",
+    "title": "统一幂等会话清理与导航恢复状态",
+    "findings": [
+      "F-04",
+      "F-05"
+    ],
+    "paths": [
+      "frontend/apps/admin-web/src/store/",
+      "frontend/apps/admin-web/src/permission.ts",
+      "frontend/apps/admin-web/src/application/",
+      "frontend/apps/home-web/src/store/",
+      "frontend/apps/home-web/src/router/",
+      "frontend/packages/web-kit/permission/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "固定logout网络失败后token残留及Home空roles恢复次数红灯",
+      "用identityLoaded/navigationLoaded等状态表达初始化，合法空角色不再表示未登录",
+      "建立幂等local teardown：token、identity、权限投影、addRoute回收、SSE/Push和待处理请求一起清理",
+      "远端logout结果独立记录，本地清理在finally执行；401恢复single-flight避免弹窗/请求风暴",
+      "退出与重新登录不同Client后重建导航，不复用旧角色或路由"
+    ],
+    "checks": [
+      "logout超时/401/离线时本地token和动态路由仍清空",
+      "空角色账户每次恢复最多一次，不循环replace",
+      "切Client无旧菜单/权限残留，服务端授权仍为最终门禁",
+      "并发401只有一次恢复流程并可终止"
+    ],
+    "decision": "ADR-CR-007保留各App路由owner，共享稳定机制；本地退出不伪称远端token已撤销。 Home已有finally清token必须保留，修复其异常后导航和route回收；不再报告Home token残留。",
+    "blocked_by": [
+      "T-07"
+    ],
+    "depth": "standard",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "frontend: pnpm test; pnpm typecheck; pnpm test:e2e"
+    ],
+    "contract": "AC-012"
+  },
+  {
+    "id": "T-13",
+    "slug": "recoverable-registration",
+    "title": "完成Home注册开关与验证码重试交互",
+    "findings": [
+      "F-06"
+    ],
+    "paths": [
+      "frontend/apps/home-web/src/views/RegisterPage.vue",
+      "frontend/apps/home-web/src/router/",
+      "frontend/apps/home-web/src/layout/",
+      "frontend/packages/domains/admin/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "读取Client context后才展示可用注册入口，关闭时显示明确状态且不发送注册",
+      "提供键盘可用的验证码刷新，替换uuid同时清code",
+      "对验证码错/过期/网络失败按错误码恢复，保留非敏感已填字段",
+      "展开单行SFC并给输入label、错误aria-live及loading禁用",
+      "验证并发刷新只应用最新captcha，卸载/重复提交可取消"
+    ],
+    "checks": [
+      "服务端关闭注册时入口与页面均准确，后端仍拒绝直接调用",
+      "验证码错误后无需整页刷新即可再次成功",
+      "慢旧captcha不能覆盖新uuid",
+      "提交/取消/失败后按钮状态恢复"
+    ],
+    "decision": "不改变密码策略和匿名注册权限，仅兑现已存在Client context合同。",
+    "blocked_by": [
+      "T-12"
+    ],
+    "depth": "standard",
+    "risk": "medium",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "frontend: pnpm --filter @namewta/home-web test; pnpm typecheck; pnpm test:e2e"
+    ],
+    "contract": "AC-013"
+  },
+  {
+    "id": "T-14",
+    "slug": "profile-self-materials",
+    "title": "补齐个人与企业自助认证材料闭环",
+    "findings": [
+      "F-02"
+    ],
+    "paths": [
+      "frontend/packages/web-domains/profile/src/self/",
+      "frontend/packages/domains/profile/",
+      "frontend/apps/home-web/src/",
+      "backend/wta-modules/wta-profile/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "从材料目录与基座规则读取必填tag，确认person/enterprise状态及owner",
+      "复用现有材料domain/OSS上传能力，向self runtime显式注入，不复制管理页面",
+      "实现材料列表、上传进度/完成、预览、替换、删除引用及tag级错误",
+      "上传完成并经业务owner登记后才可submit；草稿保存/刷新可恢复",
+      "覆盖企业非法人经办授权书条件；服务端MISSING_REQUIRED_MATERIAL映射到具体tag",
+      "提交期间只锁必要动作，失败保留草稿；审核通过后的只读/修订语义沿用后端"
+    ],
+    "checks": [
+      "新个人CN_RESIDENT_ID上传正反面后完成提交",
+      "企业必填及条件材料齐备时完成提交，缺项定位准确",
+      "取消/失败/过期OSS/刷新不会伪造完成或越owner访问",
+      "后端必填校验不被关闭，真实浏览器+MySQL+OSS验收通过"
+    ],
+    "decision": "沿用现有Profile材料归属与数据库规则，不删除后端门禁换取页面成功。",
+    "blocked_by": [
+      "T-18"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "frontend: pnpm --filter @namewta/web-domain-profile test; pnpm typecheck; pnpm test:e2e",
+      "backend: ./mvnw -pl wta-modules/wta-profile -am test"
+    ],
+    "contract": "AC-014"
+  },
+  {
+    "id": "T-15",
+    "slug": "contract-profile-legacy-bridges",
+    "title": "移除Profile过渡接口与测试构造桥",
+    "findings": [
+      "B-08"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-profile/",
+      "backend/wta-api/",
+      "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+      ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md"
+    ],
+    "steps": [
+      "枚举全部Deprecated default throwing、旧构造、I*兼容接口、codec和调用方，记录方法级删除映射",
+      "将测试fixture迁到正式port与显式userId/operatorId合同，保持所有原有行为断言",
+      "先替换所有仓内消费者，再一次性删除无调用旧签名/default链，调用遗漏应编译失败",
+      "撤销EX-002兼容构造例外并同步真实Skill事实",
+      "确认没有删除公开安全/事务/工作流事件能力，仅减少旧重载和空实现"
+    ],
+    "checks": [
+      "旧入口引用为零且替代能力覆盖完整",
+      "全Profile及主要消费者编译/测试通过",
+      "当前接口不再让缺owner上下文的调用编译通过",
+      "删除清单逐项有替代入口/调用方/验证证据"
+    ],
+    "decision": "ADR-CR-008：用户希望无兼容升级，但Java公共删除门槛是硬约束；移除版本、外部消费者和发布授权待审，不以本票草案视为已批准。",
+    "blocked_by": [
+      "T-14"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "java-api-compatibility",
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-profile,wta-admin -am test",
+      "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-person --mode layered"
+    ],
+    "contract": "AC-015"
+  },
+  {
+    "id": "T-16",
+    "slug": "workflow-task-integrity",
+    "title": "保证流程任务读取和办理对象一致",
+    "findings": [
+      "F-03",
+      "B-10"
+    ],
+    "paths": [
+      "frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue",
+      "frontend/packages/web-domains/workflow/src/",
+      "backend/wta-modules/wta-workflow/",
+      "backend/wta-admin/src/test/java/org/namewta/test/workflow/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "固定A已打开、B加载失败后仍提交A的红灯；并独立验证getNextNodeList/listVariable是否被WarmFlow handler保护",
+      "每次open清空task，generation/AbortController绑定当前taskId，失败禁用所有动作",
+      "所有并发response与complete/back/operation检查当前generation和taskId；提交single-flight",
+      "统一任务详情/节点/变量读取的checkTaskReadAccess，若现有handler已覆盖则保留并补合同测试而不重复授权逻辑",
+      "服务端动作验证当前任务状态/操作者/版本，UI隐藏不替代权限",
+      "保持审批历史/附件/下一节点语义，关闭或切换时清资源"
+    ],
+    "checks": [
+      "B失败绝不发出A的审批请求",
+      "陌生用户读取任务节点/变量被拒，合法办理人/发起人按既有规则可读",
+      "双击/过期任务不重复推进流程",
+      "快速切换、关闭、网络乱序与服务端失败可恢复"
+    ],
+    "decision": "B-10为likely，必须先证实WarmFlow权限行为再决定增补位置；不直接更换工作流引擎。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-module-guide"
+    ],
+    "commands": [
+      "frontend: pnpm test; pnpm test:e2e --grep workflow",
+      "backend: ./mvnw -pl wta-modules/wta-workflow,wta-admin -am test"
+    ],
+    "contract": "AC-016"
+  },
+  {
+    "id": "T-17",
+    "slug": "trusted-designer-messages",
+    "title": "收紧流程设计器消息来源",
+    "findings": [
+      "F-10"
+    ],
+    "paths": [
+      "frontend/packages/web-domains/workflow/src/definition/DesignPage.vue",
+      "frontend/packages/web-domains/workflow/src/designer.ts",
+      "frontend/packages/web-domains/workflow/src/runtime.ts",
+      "frontend/apps/admin-web/src/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "复现非目标iframe或window发送close导致当前标签关闭",
+      "由App提供设计器允许origin，保留iframe WindowProxy作为source",
+      "在接收端精确校验origin/source及消息schema；若上游支持nonce则握手绑定，否则不虚构协议",
+      "只有已知close事件可驱动导航，拒绝未知消息",
+      "卸载移除listener，重新加载iframe时更新身份"
+    ],
+    "checks": [
+      "错误origin、错误source、未知payload不能关闭标签",
+      "合法设计器close仍工作",
+      "设计器刷新/卸载无重复listener",
+      "不把未来save/publish消息自动加入允许列表"
+    ],
+    "decision": "协议nonce支持取决于实际WarmFlow版本；当前必须的origin/source检查不等待扩展协议。",
+    "blocked_by": [],
+    "depth": "standard",
+    "risk": "medium",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "frontend: pnpm test; pnpm typecheck; pnpm test:e2e --grep designer"
+    ],
+    "contract": "AC-017"
+  },
+  {
+    "id": "T-18",
+    "slug": "upload-ownership-lifecycle",
+    "title": "明确上传完成、引用移除和导入失败生命周期",
+    "findings": [
+      "F-07",
+      "F-11"
+    ],
+    "paths": [
+      "frontend/packages/web-kit/file-upload/",
+      "frontend/packages/adapters/oss-upload-browser/",
+      "frontend/packages/web-domains/system/src/user/UserPage.vue",
+      "frontend/packages/web-domains/system/src/runtime.ts",
+      "frontend/apps/admin-web/src/",
+      "frontend/packages/platform/contracts/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "确认F11已证实的是createObjectURL无dispose owner；当前未证明业务引用删除BUG，不将detach/delete风险当已确认缺陷",
+      "现有表单/OSS管理删除行为按调用者保留；仅当T14 self材料接入时明确业务owner引用移除合同，不盲目改变现有UploadClient公共API",
+      "上传状态向表单暴露pending/success/error/cancel，不允许未完成就提交；失败保留可重试信息",
+      "保留globalHeaders来自runtime.uploadHeaders的现有机制，修正创建时token快照、web-domain env URL、error/abort复位与统一HTTP失败语义",
+      "对createObjectURL建立创建/替换/unmount的revoke配对，明确返回URL所有权",
+      "不把业务domain注入web-kit，不建立无真实调用的泛化上传框架"
+    ],
+    "checks": [
+      "object URL替换、移除、卸载均有明确dispose owner，原有管理删除与后端引用保护仍成立",
+      "导入失败/401/取消后可重新提交",
+      "未完成上传阻止业务提交且给出原因",
+      "本地object URL替换/卸载后全部释放",
+      "管理删除仍受后端权限及引用保护"
+    ],
+    "decision": "F11仅object URL资源泄漏confirmed；detach/delete为T14新增使用前的设计约束，必须通过调用者证据决定接口，不默认新增泛化API。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "frontend: pnpm test; pnpm typecheck; pnpm test:e2e",
+      "backend: existing OSS reference lifecycle integration matrix"
+    ],
+    "contract": "AC-018"
+  },
+  {
+    "id": "T-19",
+    "slug": "system-page-state-locality",
+    "title": "收敛System大页面中的异步状态与重复封装",
+    "findings": [
+      "F-08"
+    ],
+    "paths": [
+      "frontend/packages/web-domains/system/src/user/",
+      "frontend/packages/web-domains/system/src/role/",
+      "frontend/packages/web-domains/system/src/menu/",
+      "frontend/packages/web-domains/system/src/composables.ts",
+      "frontend/packages/web-domains/workflow/src/composables.ts",
+      "frontend/packages/web-domains/demo/src/composables.ts",
+      "frontend/packages/web-kit/",
+      "frontend/packages/platform/contracts/",
+      "frontend/packages/adapters/axios-browser/",
+      "frontend/packages/domains/system/"
+    ],
+    "steps": [
+      "分别列User/Role/Menu的查询、表单、权限树、导入与选择状态及其owner",
+      "HttpRequest当前无signal；若需要真实取消，先通过现有platform合同与axios adapter贯通终端中立取消，generation仍单独保护旧结果写入",
+      "先修真实乱序覆盖与loading竞态，不以行数目标机械拆文件",
+      "按query/form/permission/import等可命名职责提取局部module，保留页面组合与业务所有权",
+      "对重复composable做删除测试，只有真实同合同多消费者才提共享primitive；不把所有表单状态塞web-kit",
+      "删除已被新owner替代的旧分支与无用barrel，保留公开exports/manifest"
+    ],
+    "checks": [
+      "快速筛选时旧响应不能覆盖新列表，失败/loading可恢复",
+      "权限树与用户编辑状态相互独立",
+      "提取前后功能/权限/排序/分页行为相同",
+      "每个超过1k行文件有职责删除或保留理由，无同义薄wrapper堆叠"
+    ],
+    "decision": "ADR-CR-007保留domain/web-domain/App主轴；实际竞态需代表页面定向证实。",
+    "blocked_by": [
+      "T-18"
+    ],
+    "depth": "standard",
+    "risk": "medium",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "frontend: pnpm architecture:check; pnpm lint; pnpm typecheck; pnpm test; pnpm build:prod"
+    ],
+    "contract": "AC-019"
+  },
+  {
+    "id": "T-20",
+    "slug": "strict-contract-target",
+    "title": "按边界落实完整TypeScript严格目标",
+    "findings": [
+      "F-12"
+    ],
+    "paths": [
+      "frontend/tsconfig.json",
+      "frontend/packages/platform/",
+      "frontend/packages/adapters/",
+      "frontend/packages/domains/",
+      "frontend/apps/home-web/src/store/",
+      "frontend/apps/admin-web/vite/",
+      "frontend/.oxlintrc.json"
+    ],
+    "steps": [
+      "记录strictNullChecks/noImplicitAny/strictFunctionTypes真实诊断基线与公开输入类型",
+      "优先为user/menu/SSO/OSS/third响应建立unknown narrowing与精确transport映射",
+      "逐包消除真实any/cast根因，禁止as unknown as或新ignore抵消门禁",
+      "消除存量豁免后启用三个严格开关，若不能一波完成则列明确剩余集合及到期门",
+      "删除已过期axios类型例外仅当新版适配已通过；不盲目升级依赖"
+    ],
+    "checks": [
+      "目标三个开关为true且全量typecheck通过",
+      "新边界无无理由any与双cast",
+      "畸形运行时数据在入口被拒，合法空值语义明确",
+      "未通过的包不能被从检查中静默排除"
+    ],
+    "decision": "ADR-CR-008建议本次升级以全严格为终态；迁移中间态Ratchet是施工顺序，不是永久兼容层。",
+    "blocked_by": [
+      "T-12",
+      "T-14",
+      "T-19"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [],
+    "commands": [
+      "frontend: pnpm typecheck; pnpm architecture:check; pnpm lint; pnpm test; pnpm build:prod"
+    ],
+    "contract": "AC-020"
+  },
+  {
+    "id": "T-21",
+    "slug": "accessible-public-apps",
+    "title": "统一公开页面的可访问交互基线",
+    "findings": [
+      "F-13"
+    ],
+    "paths": [
+      "frontend/apps/home-web/src/",
+      "frontend/apps/sso-web/src/",
+      "frontend/packages/web-domains/admin/src/auth/",
+      "frontend/packages/web-domains/profile/src/self/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "保留SSO包裹input的label和Home nav/aside语义；优先补Home登录所需--client-* token fallback与SSO动态status播报",
+      "针对已证实缺项添加status aria-live/可键盘重试；输入关联标签与导航语义作为回归，不重复改已有正确实现",
+      "仅共享稳定的语义表单primitive，各App品牌token保留owner并明确默认值",
+      "拆开不可审查的单行SFC，保持既有品牌布局意图",
+      "在320/768/1440视口、200%缩放、键盘与读屏语义下验收；颜色对比需真实渲染测量"
+    ],
+    "checks": [
+      "只用键盘可完成公开流程，焦点可见且错误能被读屏发现",
+      "移动/放大页面无遮挡必要动作和横向不可达内容",
+      "不同App品牌差异不被当成bug强制同化",
+      "报告记录真实截图/可访问性结果，静态检查不冒充视觉通过"
+    ],
+    "decision": "本票不预设全站换皮；具体视觉调整按用户审核后的设计基线。",
+    "blocked_by": [
+      "T-13",
+      "T-14"
+    ],
+    "depth": "standard",
+    "risk": "medium",
+    "skills": [],
+    "commands": [
+      "frontend: pnpm lint; pnpm test:e2e; pnpm build:prod",
+      "browser: keyboard/zoom/viewport/accessibility checks"
+    ],
+    "contract": "AC-021"
+  },
+  {
+    "id": "T-22",
+    "slug": "atomic-notify-result",
+    "title": "原子提交通知投递结果与lease fence",
+    "findings": [
+      "B-04"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-notify/src/",
+      "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+      "release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql"
+    ],
+    "steps": [
+      "复现provider成功后Delivery更新成功/Attempt插入失败的部分状态，以及旧worker写回",
+      "保持provider I/O在数据库事务外，固化稳定幂等key",
+      "通过正式UseCase短DSTransactional把结果、Attempt、Outbox finish和Intent聚合合为一次提交",
+      "完成入口验证owner/token/期望状态并让所有相关写入遵循同一fence；旧worker只能no-op/失效",
+      "崩溃后reclaim不能把半完成当DONE；设计provider已接受但DB未提交的重试/人工核对语义",
+      "必要唯一索引放50基座，已有环境通过差异演练，不重放初始化"
+    ],
+    "checks": [
+      "任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致",
+      "旧lease不能覆盖新owner结果",
+      "双worker只产生符合合同的结果记录",
+      "provider去重能力不足时风险明确且不宣称exactly-once"
+    ],
+    "decision": "ADR-CR-009保留Outbox/Redis wake，不退回同步发送；外部投递exactly-once不作无法证明承诺。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-module-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-notify,wta-admin -am test",
+      "isolated MySQL/Redis/provider: SQL failure + stale fence + crash matrix"
+    ],
+    "contract": "AC-022"
+  },
+  {
+    "id": "T-23",
+    "slug": "durable-provider-callback",
+    "title": "将供应商回调幂等纳入持久事务",
+    "findings": [
+      "B-05"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-notify/",
+      "release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql",
+      "backend/wta-admin/src/test/java/org/namewta/test/notify/"
+    ],
+    "steps": [
+      "固定事务提交失败后seenEvents仍抑制重试及跨provider事件ID碰撞红灯",
+      "按provider/account/channel与eventId明确唯一业务身份，必要时包括delivery，避免碰撞",
+      "在同事务写事件receipt与状态推进/聚合；唯一冲突按已经完成的结果返回",
+      "删除进程内seenEvents及其过期清理分支",
+      "保留签名校验、单向状态等级和旧事件忽略语义",
+      "定义receipt保留与清理期限及对重放窗口的影响，清理不改变未完成事件"
+    ],
+    "checks": [
+      "回滚后相同事件可重试成功",
+      "跨实例相同事件不重复生效，不同provider同ID互不影响",
+      "乱序/伪签名/迟到回调按现有规则失败关闭或no-op",
+      "重启不丢幂等记录，聚合与delivery一致"
+    ],
+    "decision": "ADR-CR-009推荐MySQL receipt唯一键；唯一身份与保留期需按实际供应商合同审核。",
+    "blocked_by": [
+      "T-22"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-module-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-notify -am test",
+      "isolated MySQL: concurrent callback and commit rollback matrix"
+    ],
+    "contract": "AC-023"
+  },
+  {
+    "id": "T-24",
+    "slug": "recoverable-third-resilience",
+    "title": "恢复Third并发租约并明确限额热更新",
+    "findings": [
+      "B-06",
+      "B-07"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-third/src/",
+      "frontend/packages/web-domains/third/",
+      "backend/wta-admin/src/test/java/org/namewta/test/"
+    ],
+    "steps": [
+      "真实Redis下kill-after-acquire验证permit泄漏，记录B07管理热改是否实际收敛",
+      "替换无租约RSemaphore为具有owner/expiry的permit；调用超时与租约预算一致，必要续租",
+      "释放/回收只针对拥有者，避免旧请求释放新lease",
+      "明确rate/concurrency配置版本切换；推荐有界版本key和旧lease自然排空，禁止全局DEL影响在途请求",
+      "管理UI显示新配置生效时机，缓存evict不能代替Redis限额更新证明",
+      "保留ThirdPartyGateway、凭据加密、SSRF/路径控制和限流fail-closed"
+    ],
+    "checks": [
+      "崩溃后permit在规定上限内恢复，不依赖人工删key",
+      "正常/超时/异常释放正确，旧请求不伤害新租约",
+      "管理阈值变更在声明时机跨实例一致生效",
+      "Redis不可用时按既有失败合同拒绝，日志不回显凭据"
+    ],
+    "decision": "B07为待实测事项；先确认后实现热更新，租约时间须覆盖最大在途调用而非任意常量。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-module-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-third -am test",
+      "isolated Redis/HTTP: kill, timeout, limit hot-change matrix"
+    ],
+    "contract": "AC-024"
+  },
+  {
+    "id": "T-25",
+    "slug": "acyclic-department-moves",
+    "title": "保证部门移动无环且并发一致",
+    "findings": [
+      "B-12"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDeptController.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysDeptServiceImpl.java",
+      "backend/wta-modules/wta-system/src/main/resources/mapper/system/",
+      "backend/wta-admin/src/test/",
+      "frontend/packages/web-domains/system/src/dept/"
+    ],
+    "steps": [
+      "建立A-B-C树，复现A移到B/C和并发相向移动的红灯",
+      "在完整事务内重新读取当前/目标路径，拒绝自父和后代父",
+      "对修改域使用确定顺序锁或同树序列化策略，避免两事务各自校验通过后共同成环",
+      "更新后代ancestors与根节点状态为一次原子动作，失败回滚",
+      "前端父选择排除子树只作为体验优化；服务端负向请求必须独立拒绝",
+      "检查存量异常树并给出修复dry-run，重要数据修复需另行批准"
+    ],
+    "checks": [
+      "自父/后代父/并发互移均不能形成环",
+      "合法跨支移动及根移动保持正确ancestors",
+      "权限数据范围不因错误树扩大",
+      "失败时整个子树维持原状态"
+    ],
+    "decision": "建议后端持久事务保证无环；锁域与最大树规模需据实际数据审核，保持classic目录。",
+    "blocked_by": [],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-system,wta-admin -am test",
+      "isolated MySQL: three-level and concurrent move tests"
+    ],
+    "contract": "AC-025"
+  },
+  {
+    "id": "T-26",
+    "slug": "cut-over-crud-contracts",
+    "title": "按资源合同清除旧CRUD方法并同步客户端",
+    "findings": [
+      "B-11"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-system/",
+      "backend/wta-modules/wta-workflow/",
+      "backend/wta-modules/wta-demo/",
+      "frontend/packages/domains/",
+      "frontend/packages/api-contracts/",
+      "frontend/tooling/openapi/",
+      "docs/fm/",
+      "frontend/e2e/"
+    ],
+    "steps": [
+      "逐条分类本change记录的59个PUT/DELETE/PATCH mapping候选（27文件），区分CRUD和OAuth/第三方协议",
+      "为每个受影响资源建立旧method/path到GET查询或POST变更的精确映射及前端调用/权限/Log/OpenAPI操作ID",
+      "同步Controller/domain transport/生成快照/测试与模板；每个POST业务接口安全Log，敏感响应遵循T02",
+      "删除旧CRUD路由而非长期双读，外部消费者与切换版本先由用户确认",
+      "规范错误/批量删除/排序/状态变更语义，不改合法非CRUD协议"
+    ],
+    "checks": [
+      "每个候选有迁移或保留理由，不遗漏调用者",
+      "已迁移CRUD无旧PUT/PATCH/DELETE可达入口",
+      "前后端method/path/权限/日志与OpenAPI快照一致",
+      "生成/源码门禁和代表资源E2E通过"
+    ],
+    "decision": "ADR-CR-008明确无兼容切换版本及外部消费者；现有Ratchet允许未触及旧代码，本票是主动迁移提案。",
+    "blocked_by": [
+      "T-02",
+      "T-16",
+      "T-25"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "java-api-compatibility"
+    ],
+    "commands": [
+      "frontend: pnpm --filter @namewta/openapi check; pnpm architecture:check; pnpm typecheck; pnpm test",
+      "backend: ./mvnw test",
+      "node docs/fm/scripts/validate.mjs"
+    ],
+    "contract": "AC-026"
+  },
+  {
+    "id": "T-27",
+    "slug": "honest-demo-tree-baseline",
+    "title": "修复Demo树样例并删除误导占位实现",
+    "findings": [
+      "B-14"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-demo/",
+      "frontend/packages/domains/demo/",
+      "frontend/packages/web-domains/demo/",
+      "docs/fm/",
+      "backend/wta-admin/src/test/"
+    ],
+    "steps": [
+      "确认Demo仍是现有bundle-full中的主动示例，不因名称demo直接删产品能力",
+      "推荐实现最小保存/删除不变量并删除TODO分支：合法parent、无环、有子节点删除策略",
+      "明确重复名称是否真业务规则，未声明则不强加唯一性",
+      "使静态模板与示例的树合同一致，新增负向样例供其他AI参考",
+      "若用户选择移出默认bundle，另同步POM/菜单/App与文档，不在此草案默认移除"
+    ],
+    "checks": [
+      "保存/删除路径不再有虚假校验TODO",
+      "非法parent、环、带子节点删除按明确合同处理",
+      "模板代表输出可编译且与前后端树语义一致",
+      "保留演示所需权限/日志，不把示例缺陷推广到System"
+    ],
+    "decision": "ADR-CR-008推荐修好样例；移除demo/default bundle是另一个待审产品选择。",
+    "blocked_by": [
+      "T-26"
+    ],
+    "depth": "standard",
+    "risk": "medium",
+    "skills": [
+      "namewta-fullstack-development"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-demo,wta-admin -am test",
+      "node docs/fm/scripts/validate.mjs",
+      "frontend: pnpm --filter @namewta/domain-demo test"
+    ],
+    "contract": "AC-027"
+  },
+  {
+    "id": "T-28",
+    "slug": "bounded-notify-wake",
+    "title": "让通知提交后唤醒保持短路径",
+    "findings": [
+      "B-13"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisher.java",
+      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java",
+      "backend/wta-modules/wta-notify/src/test/",
+      "backend/wta-admin/src/test/"
+    ],
+    "steps": [
+      "先测默认事件multicaster与提交线程是否同步进入drain/provider，确认likely风险",
+      "推荐删除本地重复wake，复用已存在Redis跨进程wake+慢poll；若必须本地低延迟则仅入有界executor",
+      "明确executor唯一owner、队列上限/合并通知、拒绝策略和shutdown",
+      "保留claim/lease/fence，不因异步改造并行发送同一Outbox",
+      "观测提交耗时、首投延迟、丢wake后的poll恢复与积压"
+    ],
+    "checks": [
+      "慢provider不阻塞业务提交线程",
+      "Redis wake丢失时慢poll仍收敛",
+      "峰值不会创建无限线程/队列",
+      "重复wake不会绕过lease生成重复任务"
+    ],
+    "decision": "ADR-CR-009推荐复用Redis唯一wake通道；若本地wake有测量收益再保留，不能仅搬到无界线程池。",
+    "blocked_by": [
+      "T-22"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-module-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-notify -am test",
+      "isolated: delayed provider + request latency and poll recovery"
+    ],
+    "contract": "AC-028"
+  },
+  {
+    "id": "T-29",
+    "slug": "converge-current-documentation",
+    "title": "清理过时文档与重复AGENTS权威",
+    "findings": [
+      "D-05",
+      "D-06",
+      "B-17"
+    ],
+    "paths": [
+      ".agents/skills/",
+      "README.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "backend/**/AGENTS.md",
+      "frontend/README.md",
+      "frontend/AGENTS.md",
+      "docs/",
+      "scripts/README.md",
+      "release-artifacts/README.md"
+    ],
+    "steps": [
+      "按cleanup-plan与精确清理清单逐文件比对独有内容，不能以31行或旧名称自动删除",
+      "项目事实从POM/package/发布清单生成或验证，Profile/Module Map为导航权威",
+      "合并generic-only AGENTS至最近父owner，保留Profile/Notify/SSO/Third等真实硬约束和模块差异",
+      "重写旧目录、唯一Admin、46POM/176测试、缺失CI/plan/.vscode等current描述；补wta-third模式登记及wta-common-richtext真实模块事实",
+      "README留任务导航与真实命令，不复制易漂移数量/历史完成叙述",
+      "保留许可证、供应商包名/schema、历史archive和有激活门槛的placeholder；永久知识只走归档网关"
+    ],
+    "checks": [
+      "每个删除文件有owner、内容迁移落点和无丢失硬约束证据",
+      "50POM/3App/247后端测试基线与最终源码变化一致（最终重算）",
+      "所有当前引用和cwd命令可解析",
+      "文档不把候选CI、未跑服务或未批准设计写成已完成"
+    ],
+    "decision": "ADR-CR-006：重复事实收敛；本change只提出未来永久知识修订，不越权覆盖现有ADR/context。",
+    "blocked_by": [
+      "T-01"
+    ],
+    "depth": "deep",
+    "risk": "medium",
+    "skills": [],
+    "commands": [
+      "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
+      "node docs/fm/scripts/validate.mjs",
+      "repository: link/command/inventory/owner audit"
+    ],
+    "contract": "AC-029"
+  },
+  {
+    "id": "T-30",
+    "slug": "integrated-upgrade-acceptance",
+    "title": "完成升级整体验收与可审查交付",
+    "findings": [],
+    "paths": [
+      "frontend/e2e/",
+      "backend/wta-admin/src/test/",
+      "scripts/ci/",
+      "release-artifacts/scripts/tests/"
+    ],
+    "steps": [
+      "回读所有已接受Ticket与ADR，未接受项明确移出实施范围并保留理由，不默认为完成",
+      "在同一候选版本运行前端architecture/lint/typecheck/unit/dev-prod与后端测试/full-core构建",
+      "隔离MySQL/Redis/MinIO/双后端验证SSO、Profile材料、workflow动作/权限、通知fence/callback、Third crash/限额、部门树",
+      "校验release artifact source/digest、stage失败不污染、三Origin Nginx/Compose与UI/a11y",
+      "复核所有旧入口/兼容桥删除映射及重要数据迁移dry-run、恢复演练",
+      "交付完整证据、残余风险和具体发布候选，提交/推送/部署均在用户明确批准后执行"
+    ],
+    "checks": [
+      "全部已接受AC均有实际命令/退出码/环境/源码checkpoint",
+      "required E2E与失败注入全部完成，not-run不能被标通过",
+      "未增加安全/类型豁免或删除测试制造绿色",
+      "用户能据artifact digest批准明确候选，未自动发布"
+    ],
+    "decision": "本票是未来实施后的最终验收，不是当前只写change审查任务已执行的验证。",
+    "blocked_by": [
+      "T-01",
+      "T-02",
+      "T-03",
+      "T-04",
+      "T-05",
+      "T-06",
+      "T-07",
+      "T-08",
+      "T-09",
+      "T-10",
+      "T-11",
+      "T-12",
+      "T-13",
+      "T-14",
+      "T-15",
+      "T-16",
+      "T-17",
+      "T-18",
+      "T-19",
+      "T-20",
+      "T-21",
+      "T-22",
+      "T-23",
+      "T-24",
+      "T-25",
+      "T-26",
+      "T-27",
+      "T-28",
+      "T-29",
+      "T-31"
+    ],
+    "depth": "deep",
+    "risk": "high",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-module-guide"
+    ],
+    "commands": [
+      "frontend: pnpm architecture:check; pnpm lint; pnpm typecheck; pnpm test; pnpm test:e2e; pnpm build:dev; pnpm build:prod",
+      "backend: ./mvnw test; ./mvnw clean package -DskipTests; ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true",
+      "bash release-artifacts/scripts/verify-release.sh; bash scripts/ci/run-external-services.sh"
+    ],
+    "contract": "AC-030"
+  },
+  {
+    "id": "T-31",
+    "slug": "enterprise-transfer-queued-contract",
+    "title": "修复企业转移发码的同步/排队合同阻断",
+    "findings": [
+      "B-15"
+    ],
+    "paths": [
+      "backend/wta-modules/wta-profile/wta-profile-enterprise/",
+      "backend/wta-modules/wta-notify/",
+      "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/",
+      "backend/wta-admin/src/test/",
+      "backend/wta-modules/wta-profile/wta-profile-person/",
+      "backend/wta-api/src/main/java/org/namewta/notify/",
+      "backend/wta-admin/src/main/java/org/namewta/web/controller/",
+      "frontend/packages/domains/profile/",
+      "frontend/packages/web-domains/profile/",
+      "frontend/packages/web-domains/notify/",
+      "release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql"
+    ],
+    "steps": [
+      "用真实NotificationApplicationRuntimeService确认SYNC只持久化QUEUED/PENDING/Outbox，建立当前测试stub返回ACCEPTED却掩盖生产语义的红灯",
+      "在Profile transfer contract中明确可靠异步：持久化PENDING_DELIVERY challenge/transfer与Notify intent同事务，按成功/失败事件使challenge ACTIVE/REVOKED",
+      "删除假同步mode或对未支持mode显式失败；不把Provider I/O塞回业务事务，不让测试mock制造不存在的ACCEPTED",
+      "同时核对PersonRebindNotificationService把QUEUED判FAILED、CaptchaController忽略receipt及NotifyTestSendService展示；逐一明确排队/投递/失败，不能全局把QUEUED映射为DELIVERED",
+      "补跨module真实实现contract test、Outbox wake/失败回滚和用户确认窗口；确认短信发送与challenge状态最终一致",
+      "同步前端转移页面的queued/active/failed可观察状态、重试与防重复提交，保留权限、Client和敏感信息规则"
+    ],
+    "checks": [
+      "合法转移send得到可观察QUEUED并最终按Provider结果激活challenge，而不是立即DELIVERY_FAILED",
+      "Notify事务回滚/Provider失败时challenge不可确认且可恢复重试，成功只激活一次",
+      "真实Notify实现与Profile contract test不使用固定ACCEPTED stub绕过队列语义",
+      "用户看到发送中/失败/可重试状态，重复点击不产生多个transfer challenge",
+      "Person rebind和通知测试发送正确显示待投递；验证码已有语义经单独验证，不凭QUEUED推断必然失败"
+    ],
+    "decision": "ADR-CR-009的可靠异步方向；Profile不再把NotificationMode.SYNC当作已发送。外部短信最终一致性和确认窗口需用户审核。 现有challenge可能由Redis存储；DB transfer状态与Redis激活不能假称同一MySQL事务，需Outbox/幂等恢复明确跨存储一致性。",
+    "blocked_by": [
+      "T-22",
+      "T-23"
+    ],
+    "depth": "deep",
+    "risk": "critical",
+    "skills": [
+      "namewta-fullstack-development",
+      "wta-module-guide"
+    ],
+    "commands": [
+      "backend: ./mvnw -pl wta-modules/wta-profile,wta-modules/wta-notify,wta-admin -am test",
+      "isolated MySQL/Redis/provider: transfer queued-to-active matrix"
+    ],
+    "contract": "AC-031"
+  }
+]

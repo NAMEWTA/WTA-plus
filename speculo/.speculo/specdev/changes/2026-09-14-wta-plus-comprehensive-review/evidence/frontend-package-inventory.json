@@ -1,0 +1,547 @@
+[
+  {
+    "path": "frontend/apps/admin-web/package.json",
+    "name": "@namewta/admin-web",
+    "scripts": {
+      "build": "vite build --mode production",
+      "build:dev": "vite build --mode development",
+      "build:prod": "vite build --mode production",
+      "dev": "vite serve --mode development",
+      "fmt": "oxfmt src vite",
+      "lint": "oxlint src vite.config.ts vite",
+      "lint:fix": "oxlint --fix src",
+      "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/adapter-axios-browser": "workspace:*",
+      "@namewta/adapter-crypto-browser": "workspace:*",
+      "@namewta/adapter-oss-upload-browser": "workspace:*",
+      "@namewta/adapter-storage-browser": "workspace:*",
+      "@namewta/domain-admin": "workspace:*",
+      "@namewta/domain-ai": "workspace:*",
+      "@namewta/domain-demo": "workspace:*",
+      "@namewta/domain-notify": "workspace:*",
+      "@namewta/domain-profile": "workspace:*",
+      "@namewta/domain-system": "workspace:*",
+      "@namewta/domain-third": "workspace:*",
+      "@namewta/domain-workflow": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-auth": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*",
+      "@namewta/platform-validation": "workspace:*",
+      "@namewta/platform-permission": "workspace:*",
+      "@namewta/web-domain-admin": "workspace:*",
+      "@namewta/web-domain-ai": "workspace:*",
+      "@namewta/web-domain-demo": "workspace:*",
+      "@namewta/web-domain-notify": "workspace:*",
+      "@namewta/web-domain-profile": "workspace:*",
+      "@namewta/web-domain-system": "workspace:*",
+      "@namewta/web-domain-third": "workspace:*",
+      "@namewta/web-domain-workflow": "workspace:*",
+      "@namewta/web-kit-file-upload": "workspace:*",
+      "@namewta/web-kit-permission": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/apps/home-web/package.json",
+    "name": "@namewta/home-web",
+    "scripts": {
+      "build": "vite build --mode production",
+      "build:dev": "vite build --mode development",
+      "build:prod": "vite build --mode production",
+      "dev": "vite serve --mode development",
+      "lint": "oxlint src vite.config.ts",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/adapter-axios-browser": "workspace:*",
+      "@namewta/adapter-crypto-browser": "workspace:*",
+      "@namewta/adapter-storage-browser": "workspace:*",
+      "@namewta/domain-admin": "workspace:*",
+      "@namewta/domain-profile": "workspace:*",
+      "@namewta/domain-system": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-auth": "workspace:*",
+      "@namewta/platform-permission": "workspace:*",
+      "@namewta/web-domain-admin": "workspace:*",
+      "@namewta/web-domain-profile": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/apps/sso-web/package.json",
+    "name": "@namewta/sso-web",
+    "scripts": {
+      "build": "vite build --mode production",
+      "build:dev": "vite build --mode development",
+      "build:prod": "vite build --mode production",
+      "dev": "vite serve --mode development",
+      "lint": "oxlint src vite.config.ts",
+      "preview": "vite preview --host 127.0.0.1 --port 4176 --strictPort",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {}
+  },
+  {
+    "path": "frontend/package.json",
+    "name": "wta-vue-plus",
+    "scripts": {
+      "architecture:check": "namewta-architecture check --root .",
+      "architecture:test": "pnpm --filter @namewta/architecture test",
+      "build": "pnpm build:prod",
+      "build:dev": "pnpm architecture:check && pnpm --filter @namewta/admin-web build:dev && pnpm --filter @namewta/home-web build:dev && pnpm build:workspace:non-admin",
+      "build:prod": "pnpm build:workspace",
+      "build:workspace": "pnpm architecture:check && pnpm -r --if-present build",
+      "build:workspace:non-admin": "pnpm -r --filter '!@namewta/admin-web' --if-present build",
+      "dev": "pnpm --filter @namewta/admin-web dev",
+      "fmt": "oxfmt apps packages tooling e2e playwright.config.ts vitest.config.ts",
+      "lint": "oxlint e2e playwright.config.ts vitest.config.ts && pnpm lint:workspace",
+      "lint:fix": "pnpm --filter @namewta/admin-web lint:fix",
+      "lint:workspace": "pnpm architecture:check && pnpm -r --if-present lint",
+      "preview": "pnpm --filter @namewta/admin-web preview",
+      "test": "pnpm test:workspace",
+      "test:e2e": "playwright test",
+      "test:workspace": "pnpm architecture:check && pnpm -r --if-present test",
+      "typecheck": "pnpm typecheck:workspace",
+      "typecheck:workspace": "pnpm architecture:check && pnpm -r --if-present typecheck"
+    },
+    "dependencies": {
+      "@namewta/architecture": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/adapters/axios-browser/package.json",
+    "name": "@namewta/adapter-axios-browser",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-contracts": "workspace:*",
+      "@namewta/platform-http": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/adapters/crypto-browser/package.json",
+    "name": "@namewta/adapter-crypto-browser",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/adapters/oss-upload-browser/package.json",
+    "name": "@namewta/adapter-oss-upload-browser",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/adapters/storage-browser/package.json",
+    "name": "@namewta/adapter-storage-browser",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/api-contracts/package.json",
+    "name": "@namewta/api-contracts",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "tsc --noEmit -p tsconfig.json",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {}
+  },
+  {
+    "path": "frontend/packages/domains/admin/package.json",
+    "name": "@namewta/domain-admin",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/api-contracts": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*",
+      "@namewta/platform-validation": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/domains/ai/package.json",
+    "name": "@namewta/domain-ai",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/api-contracts": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/domains/demo/package.json",
+    "name": "@namewta/domain-demo",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/api-contracts": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/domains/notify/package.json",
+    "name": "@namewta/domain-notify",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src"
+    },
+    "dependencies": {
+      "@namewta/api-contracts": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/domains/profile/package.json",
+    "name": "@namewta/domain-profile",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/domains/system/package.json",
+    "name": "@namewta/domain-system",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/api-contracts": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/domains/third/package.json",
+    "name": "@namewta/domain-third",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src --passWithNoTests",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/domains/workflow/package.json",
+    "name": "@namewta/domain-workflow",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/api-contracts": "workspace:*",
+      "@namewta/domain-system": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/platform/app-runtime/package.json",
+    "name": "@namewta/platform-app-runtime",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/architecture": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/platform/auth/package.json",
+    "name": "@namewta/platform-auth",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/platform/contracts/package.json",
+    "name": "@namewta/platform-contracts",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {}
+  },
+  {
+    "path": "frontend/packages/platform/http/package.json",
+    "name": "@namewta/platform-http",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/platform/permission/package.json",
+    "name": "@namewta/platform-permission",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {}
+  },
+  {
+    "path": "frontend/packages/platform/validation/package.json",
+    "name": "@namewta/platform-validation",
+    "scripts": {
+      "build": "tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {}
+  },
+  {
+    "path": "frontend/packages/web-domains/admin/package.json",
+    "name": "@namewta/web-domain-admin",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/domain-admin": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-domains/ai/package.json",
+    "name": "@namewta/web-domain-ai",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/domain-ai": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-domains/demo/package.json",
+    "name": "@namewta/web-domain-demo",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/domain-demo": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*",
+      "@namewta/web-kit-rich-text": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-domains/notify/package.json",
+    "name": "@namewta/web-domain-notify",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src"
+    },
+    "dependencies": {
+      "@namewta/domain-notify": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-domains/profile/package.json",
+    "name": "@namewta/web-domain-profile",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/domain-profile": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-domains/system/package.json",
+    "name": "@namewta/web-domain-system",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/domain-system": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-domains/third/package.json",
+    "name": "@namewta/web-domain-third",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src --passWithNoTests",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/domain-third": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-domains/workflow/package.json",
+    "name": "@namewta/web-domain-workflow",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/domain-workflow": "workspace:*",
+      "@namewta/platform-app-runtime": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-kit/file-upload/package.json",
+    "name": "@namewta/web-kit-file-upload",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-contracts": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-kit/permission/package.json",
+    "name": "@namewta/web-kit-permission",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {
+      "@namewta/platform-permission": "workspace:*"
+    }
+  },
+  {
+    "path": "frontend/packages/web-kit/rich-text/package.json",
+    "name": "@namewta/web-kit-rich-text",
+    "scripts": {
+      "build": "vue-tsc --noEmit -p tsconfig.json",
+      "lint": "oxlint src",
+      "test": "vitest run src",
+      "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "dependencies": {}
+  },
+  {
+    "path": "frontend/tooling/architecture/package.json",
+    "name": "@namewta/architecture",
+    "scripts": {
+      "build": "node --check ./src/index.mjs && node --check ./src/cli.mjs",
+      "check": "node ./src/cli.mjs check --root ../..",
+      "lint": "oxlint src test",
+      "test": "node --test ./test/*.test.mjs",
+      "typecheck": "node --check ./src/index.mjs && node --check ./src/cli.mjs && node --check ./test/architecture.test.mjs"
+    },
+    "dependencies": {}
+  },
+  {
+    "path": "frontend/tooling/openapi/package.json",
+    "name": "@namewta/tooling-openapi",
+    "scripts": {
+      "build": "node --check src/index.mjs && node --check src/cli.mjs",
+      "lint": "oxlint src test",
+      "openapi:check": "node src/cli.mjs check",
+      "openapi:fetch": "node src/cli.mjs fetch",
+      "openapi:generate": "node src/cli.mjs generate",
+      "test": "node --test test/*.test.mjs",
+      "typecheck": "node --check src/index.mjs && node --check src/cli.mjs && node --check test/openapi.test.mjs"
+    },
+    "dependencies": {}
+  }
+]

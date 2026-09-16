@@ -4,7 +4,7 @@
 
 ## 信号来源清单
 
-下列六类是排他白名单。按顺序采集原始摩擦点，每条记录**证据出处**（文件路径或对话节点），后续起草 issue 时要引用。白名单外的路径不打开、不执行。
+按以下顺序采集原始摩擦点，每条记录**证据出处**（文件路径或对话节点），后续起草 issue 时要引用：
 
 1. **当前对话上下文** —— 本次会话激活过的 command / workflow；用户在哪一步卡住、追问、返工；为绕开限制做了哪些手动动作；哪些指令被误解。
 2. **命令产物** —— `<Path>{roots.state}/commands/{command}/*.md</Path>`：其中记录的验证失败、未完成和阻塞点是一手摩擦。
@@ -13,20 +13,9 @@
    - `blocked` —— 卡点，记录阻塞原因
    - `skipped` —— phase 被跳过，可能是冗余或不适用
    - `updated_at` 长期停滞 —— 流程让人不想推进
-4. **change 产物正文** —— 白名单 change 目录中的 `prd.md`、`tdd-*.md`、`slices.md`、`diagnosis.md` 里显式写下的「待澄清」「风险」「TODO」。
-5. **沉淀教训** —— 各 workflow `INDEX.md` 已经声明的 lessons/knowledge store：已记录但尚未转成改进项的教训，用于去重与佐证频率。
-6. **契约落差** —— 白名单内实际产物路径、frontmatter、命名是否偏离 `persistence-contract`：路径散落、缺字段、命名不合 `YYYY-MM-DD-<kebab>` 都是 bug 信号。git status 不是主信号源；只有 command/workflow 产物写到 `<Path>{roots.state}/commands/</Path>` 或对应 change 目录以外时，才作为本项采集。
-
-## 明确排除
-
-不要进入、不要执行：
-
-- `<Path>{roots.skills}/**</Path>`（`speculo-retro` 与 `github-npm-ops` 的入口/SOP 除外）
-- `<Path>{roots.skills}/**/examples/**</Path>` 与任何 skill 自测试 fixture
-- 项目源码树（`backend/`、`frontend/` 等）
-- 构建缓存：`.gradle`、`target`、`node_modules`、`build`、`dist`
-
-禁止为了「看懂项目」去运行 `gradle`、`mvn`、`npm`、`pnpm`、`cargo`、`go test`。skill fixture 下未跟踪的工具缓存（例如 `examples/fallback/kotlin-gradle/.gradle/`）是噪声，不是 Speculo 使用摩擦。
+4. **change 产物正文** —— `prd.md`、`tdd-*.md`、`slices.md`、`diagnosis.md` 中显式写下的「待澄清」「风险」「TODO」。
+5. **沉淀教训** —— 各 workflow 声明的 lessons/knowledge store：已记录但尚未转成改进项的教训，用于去重与佐证频率。
+6. **契约落差** —— 实际产物路径、frontmatter、命名是否偏离 `persistence-contract`：路径散落、缺字段、命名不合 `YYYY-MM-DD-<kebab>` 都是 bug 信号。
 
 ## 摩擦类型分类
 
@@ -59,7 +48,7 @@
 不是每个摩擦点都该变成 issue。按以下规则收敛：
 
 - **合并** —— 语义重复的多条合成一条，频率累加（提升优先级佐证）。
-- **丢弃** —— 纯属本次会话一次性、不可复现、或已被其他提案覆盖的，标注「丢弃」并写明原因。skill fixture 或构建缓存出现在 git status 里的，一律丢弃，不写进报告、不提 issue。
+- **丢弃** —— 纯属本次会话一次性、不可复现、或已被其他提案覆盖的，标注「丢弃」并写明原因。
 - **降级为教训** —— 属于「用法/约定」而非「资产缺陷」的，建议记入 `LESSONS.md` 而非提 issue。
 - **可行动性闸门** —— 无法描述出「改哪个 asset、怎么改、怎么验收」的，先标 `needs-design`，不要凭空提模糊 issue。
 

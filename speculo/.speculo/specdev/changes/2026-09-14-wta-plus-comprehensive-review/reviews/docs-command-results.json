@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "reviewScope": "documentation-delivery-governance",
+  "reviewDate": "2026-09-14",
+  "cwd": "<Path>.</Path>",
+  "productFilesModified": false,
+  "executionCaveat": "verify-dev-build-guard 和 verify-release 的内部测试曾在系统临时目录创建夹具，并由 EXIT trap/finally 清理。这不是纯读取执行，也超出了本次 change 内工件边界。未执行产品安装、构建、部署、服务启动、Git 修改或自动修复；后续检查限定纯读取。工作树最终一致性由 Lead 的 SHA-256 baseline 核验。",
+  "commands": [
+    {
+      "command": "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
+      "cwd": "<Path>.</Path>",
+      "exitCode": 1,
+      "result": "failed",
+      "summary": "ERROR: 缺少统一私密发布目录 temp/release",
+      "temporaryWrites": "none; implementation uses filesystem reads only"
+    },
+    {
+      "command": "bash -n scripts/ci/verify-submodules.sh; if ($LASTEXITCODE -eq 0) { bash scripts/ci/verify-submodules.sh }; exit $LASTEXITCODE",
+      "cwd": "<Path>.</Path>",
+      "exitCode": 1,
+      "result": "failed",
+      "summary": "Shell syntax passed; runtime reports No submodules are configured.",
+      "temporaryWrites": "none; Git metadata reads only"
+    },
+    {
+      "command": "bash -n scripts/ci/verify-dev-build-guard.sh; if ($LASTEXITCODE -eq 0) { bash scripts/ci/verify-dev-build-guard.sh }; exit $LASTEXITCODE",
+      "cwd": "<Path>.</Path>",
+      "exitCode": 1,
+      "result": "failed-before-behavior-fixtures",
+      "summary": "workspace Java auto build must stay disabled to protect Maven target output; missing tracked .vscode/settings.json",
+      "temporaryWrites": "Created a namewta-build-guard-test.* system temporary directory and empty fixture/lock directories before checking settings; EXIT cleanup removed the created temporary directory. No target JAR fixture or Maven invocation reached."
+    },
+    {
+      "command": "bash release-artifacts/scripts/verify-release.sh",
+      "cwd": "<Path>.</Path>",
+      "exitCode": 1,
+      "result": "failed",
+      "tests": { "total": 43, "passed": 42, "failed": 1, "skipped": 0 },
+      "summary": "Release shell syntax passed. release-integration-contract.test.mjs:66 failed with ENOENT reading .github/workflows/quality-gates.yml. The expected missing SQL fixture error belonged to a passing negative test. Nginx Skill list and Docker Compose parsing later in the wrapper were not reached.",
+      "temporaryWrites": "The release-config test suite created its own system temporary fixtures (copied release tree, fake Docker commands, sample App and env/SQL variants), removed them through finally blocks. stage-mysql calls read the canonical SQL and did not rewrite it. No real Docker daemon operations or product build/deployment were invoked."
+    },
+    {
+      "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs",
+      "cwd": "<Path>.</Path>",
+      "exitCode": 0,
+      "result": "passed",
+      "summary": "Validated unified full-stack Skill (19 files, 16 templates).",
+      "temporaryWrites": "none; implementation uses filesystem reads only"
+    },
+    {
+      "command": "node docs/fm/scripts/validate.mjs",
+      "cwd": "<Path>.</Path>",
+      "exitCode": 0,
+      "result": "passed",
+      "summary": "Validated 32 FreeMarker templates. This is a static contract check, not actual FreeMarker rendering or compilation of generated output.",
+      "temporaryWrites": "none; implementation uses filesystem reads only"
+    },
+    {
+      "command": "Read-only Python -B inventory over git ls-files and UTF-8 Markdown inline links",
+      "cwd": "<Path>.</Path>",
+      "exitCode": 0,
+      "result": "passed-limited-scan",
+      "summary": "50 tracked backend POM descriptors; 247 tracked backend src/test/java Java sources; 49 backend AGENTS files, 41 of them share the 31-line generic handbook shape. 3 active frontend App package manifests. 218 current Markdown files scanned; 0 missing literal relative inline-link targets in the supported subset. Plain code-span paths, anchors, glob/variable links, runtime URLs and historical Speculo archive were excluded.",
+      "temporaryWrites": "none"
+    }
+  ],
+  "notRun": [
+    "Maven compile/test/package and effective POM resolution",
+    "pnpm install/lint/typecheck/test/build or browser E2E",
+    "Docker Compose parsing, image pull, Nginx config test, remote CI and branch-protection verification",
+    "Real SSO origin/cookie/callback deployment matrix",
+    "Fresh database import, existing-database migration, object storage or provider integration",
+    "FreeMarker representative output rendering/compilation",
+    "Software composition analysis or dependency vulnerability scan"
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "tracked_total": 4679,
+  "by_top": {
+    ".agents": 101,
+    ".gitignore": 1,
+    "AGENTS.md": 1,
+    "CLAUDE.md": 1,
+    "README.md": 1,
+    "backend": 1933,
+    "docs": 89,
+    "frontend": 905,
+    "release-artifacts": 76,
+    "scripts": 10,
+    "speculo": 1561
+  },
+  "java_main": 1467,
+  "frontend_test_files": 101,
+  "vue_files": 130,
+  "large_files": [
+    {
+      "path": "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java",
+      "lines": 1932
+    },
+    {
+      "path": "backend/wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/core/query/LambdaQueryBuilder.java",
+      "lines": 1392
+    },
+    {
+      "path": "frontend/packages/web-domains/system/src/role/RolePage.vue",
+      "lines": 1272
+    },
+    {
+      "path": "frontend/packages/web-domains/system/src/user/UserPage.vue",
+      "lines": 1217
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysUserServiceImpl.java",
+      "lines": 1192
+    },
+    {
+      "path": "backend/wta-common/wta-common-excel/src/main/java/org/namewta/common/excel/utils/ExcelBuilder.java",
+      "lines": 1110
+    },
+    {
+      "path": "backend/wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/core/query/LambdaJoinQueryBuilder.java",
+      "lines": 984
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseApplicationService.java",
+      "lines": 935
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysRoleServiceImpl.java",
+      "lines": 913
+    },
+    {
+      "path": "backend/wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/core/mapper/LambdaCrudChainWrapper.java",
+      "lines": 909
+    },
+    {
+      "path": "frontend/e2e/workflow-runtime.spec.ts",
+      "lines": 908
+    },
+    {
+      "path": "frontend/packages/web-domains/workflow/src/definition/DefinitionPage.vue",
+      "lines": 904
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindService.java",
+      "lines": 890
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonApplicationService.java",
+      "lines": 865
+    },
+    {
+      "path": "frontend/packages/web-domains/system/src/dict-type/DictPage.vue",
+      "lines": 836
+    },
+    {
+      "path": "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/OssClient.java",
+      "lines": 811
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwTaskServiceImpl.java",
+      "lines": 804
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseAdminService.java",
+      "lines": 801
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonAdminService.java",
+      "lines": 759
+    },
+    {
+      "path": "frontend/apps/admin-web/src/layout/components/TagsView/index.vue",
+      "lines": 740
+    },
+    {
+      "path": "frontend/packages/web-domains/system/src/menu/MenuPage.vue",
+      "lines": 732
+    }
+  ],
+  "pom_count": 50,
+  "package_count": 36,
+  "apps": [
+    {
+      "path": "frontend/apps/admin-web/package.json",
+      "name": "@namewta/admin-web",
+      "scripts": {
+        "build": "vite build --mode production",
+        "build:dev": "vite build --mode development",
+        "build:prod": "vite build --mode production",
+        "dev": "vite serve --mode development",
+        "fmt": "oxfmt src vite",
+        "lint": "oxlint src vite.config.ts vite",
+        "lint:fix": "oxlint --fix src",
+        "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+        "test": "vitest run src",
+        "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+      },
+      "dependencies": {
+        "@namewta/adapter-axios-browser": "workspace:*",
+        "@namewta/adapter-crypto-browser": "workspace:*",
+        "@namewta/adapter-oss-upload-browser": "workspace:*",
+        "@namewta/adapter-storage-browser": "workspace:*",
+        "@namewta/domain-admin": "workspace:*",
+        "@namewta/domain-ai": "workspace:*",
+        "@namewta/domain-demo": "workspace:*",
+        "@namewta/domain-notify": "workspace:*",
+        "@namewta/domain-profile": "workspace:*",
+        "@namewta/domain-system": "workspace:*",
+        "@namewta/domain-third": "workspace:*",
+        "@namewta/domain-workflow": "workspace:*",
+        "@namewta/platform-app-runtime": "workspace:*",
+        "@namewta/platform-auth": "workspace:*",
+        "@namewta/platform-contracts": "workspace:*",
+        "@namewta/platform-validation": "workspace:*",
+        "@namewta/platform-permission": "workspace:*",
+        "@namewta/web-domain-admin": "workspace:*",
+        "@namewta/web-domain-ai": "workspace:*",
+        "@namewta/web-domain-demo": "workspace:*",
+        "@namewta/web-domain-notify": "workspace:*",
+        "@namewta/web-domain-profile": "workspace:*",
+        "@namewta/web-domain-system": "workspace:*",
+        "@namewta/web-domain-third": "workspace:*",
+        "@namewta/web-domain-workflow": "workspace:*",
+        "@namewta/web-kit-file-upload": "workspace:*",
+        "@namewta/web-kit-permission": "workspace:*"
+      }
+    },
+    {
+      "path": "frontend/apps/home-web/package.json",
+      "name": "@namewta/home-web",
+      "scripts": {
+        "build": "vite build --mode production",
+        "build:dev": "vite build --mode development",
+        "build:prod": "vite build --mode production",
+        "dev": "vite serve --mode development",
+        "lint": "oxlint src vite.config.ts",
+        "test": "vitest run src",
+        "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+      },
+      "dependencies": {
+        "@namewta/adapter-axios-browser": "workspace:*",
+        "@namewta/adapter-crypto-browser": "workspace:*",
+        "@namewta/adapter-storage-browser": "workspace:*",
+        "@namewta/domain-admin": "workspace:*",
+        "@namewta/domain-profile": "workspace:*",
+        "@namewta/domain-system": "workspace:*",
+        "@namewta/platform-app-runtime": "workspace:*",
+        "@namewta/platform-auth": "workspace:*",
+        "@namewta/platform-permission": "workspace:*",
+        "@namewta/web-domain-admin": "workspace:*",
+        "@namewta/web-domain-profile": "workspace:*"
+      }
+    },
+    {
+      "path": "frontend/apps/sso-web/package.json",
+      "name": "@namewta/sso-web",
+      "scripts": {
+        "build": "vite build --mode production",
+        "build:dev": "vite build --mode development",
+        "build:prod": "vite build --mode production",
+        "dev": "vite serve --mode development",
+        "lint": "oxlint src vite.config.ts",
+        "preview": "vite preview --host 127.0.0.1 --port 4176 --strictPort",
+        "test": "vitest run src",
+        "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+      },
+      "dependencies": {}
+    }
+  ],
+  "java_by_module": {
+    "backend/wta-admin/src": 21,
+    "backend/wta-api/src": 65,
+    "backend/wta-common/wta-common-ai": 1,
+    "backend/wta-common/wta-common-core": 73,
+    "backend/wta-common/wta-common-doc": 8,
+    "backend/wta-common/wta-common-elasticsearch": 2,
+    "backend/wta-common/wta-common-encrypt": 25,
+    "backend/wta-common/wta-common-excel": 21,
+    "backend/wta-common/wta-common-job": 1,
+    "backend/wta-common/wta-common-json": 13,
+    "backend/wta-common/wta-common-liteflow": 8,
+    "backend/wta-common/wta-common-log": 7,
+    "backend/wta-common/wta-common-mail": 7,
+    "backend/wta-common/wta-common-mcp": 4,
+    "backend/wta-common/wta-common-mqtt": 3,
+    "backend/wta-common/wta-common-mybatis": 34,
+    "backend/wta-common/wta-common-nacos": 21,
+    "backend/wta-common/wta-common-notify": 40,
+    "backend/wta-common/wta-common-openapi": 36,
+    "backend/wta-common/wta-common-oss": 31,
+    "backend/wta-common/wta-common-push": 19,
+    "backend/wta-common/wta-common-redis": 26,
+    "backend/wta-common/wta-common-richtext": 4,
+    "backend/wta-common/wta-common-satoken": 5,
+    "backend/wta-common/wta-common-security": 3,
+    "backend/wta-common/wta-common-sensitive": 5,
+    "backend/wta-common/wta-common-sms": 9,
+    "backend/wta-common/wta-common-social": 5,
+    "backend/wta-common/wta-common-translation": 11,
+    "backend/wta-common/wta-common-web": 27,
+    "backend/wta-extend/wta-monitor-admin": 3,
+    "backend/wta-extend/wta-snailai-server": 3,
+    "backend/wta-extend/wta-snailjob-server": 3,
+    "backend/wta-modules/wta-ai": 1,
+    "backend/wta-modules/wta-demo": 61,
+    "backend/wta-modules/wta-job": 11,
+    "backend/wta-modules/wta-notify": 82,
+    "backend/wta-modules/wta-profile": 298,
+    "backend/wta-modules/wta-sso": 31,
+    "backend/wta-modules/wta-system": 255,
+    "backend/wta-modules/wta-third": 71,
+    "backend/wta-modules/wta-workflow": 111,
+    "speculo/skills/engineering-standards-builder": 2
+  },
+  "java_test_backend": 247,
+  "java_test_all_tracked": 248,
+  "java_main_backend": 1465
+}

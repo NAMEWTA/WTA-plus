@@ -1,0 +1,60 @@
+{
+  "scope": "backend/wta-api, backend/wta-modules and called seams",
+  "date": "2026-09-14",
+  "mode": "read-only product review; only this change written",
+  "commands": [
+    {
+      "cwd": "repository root",
+      "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-person --mode layered",
+      "exitCode": 0,
+      "output": "Validated layered module: backend/wta-modules/wta-profile/wta-profile-person (168 Java files)"
+    },
+    {
+      "cwd": "repository root",
+      "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-enterprise --mode layered",
+      "exitCode": 0,
+      "output": "Validated layered module: backend/wta-modules/wta-profile/wta-profile-enterprise (130 Java files)"
+    },
+    {
+      "cwd": "repository root",
+      "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-notify --mode layered",
+      "exitCode": 1,
+      "output": [
+        "ERROR: org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java: @DSTransactional 事务边界必须位于 UseCase",
+        "ERROR: org/namewta/notify/service/runtime/NotifyOutboxWakePublisher.java: layered service 目录只能放语义明确的 *Service，不得放 ServiceImpl/Provider/Gateway/Store 等适配实现"
+      ],
+      "reviewNote": "First error is a Javadoc match, not a production annotation. Second is a real placement-rule match. Neither proves runtime transaction behavior."
+    },
+    {
+      "cwd": "repository root",
+      "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-sso --mode layered",
+      "exitCode": 1,
+      "output": "ERROR: org/namewta/sso/support/SsoSessionCookie.java: support 层禁止依赖 org.springframework.http.ResponseCookie"
+    },
+    {
+      "cwd": "repository root",
+      "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-third --mode layered",
+      "exitCode": 0,
+      "output": "Validated layered module: backend/wta-modules/wta-third (71 Java files)"
+    },
+    {
+      "cwd": "repository root",
+      "command": "PowerShell regex extract Path tags from backend-review.md; Test-Path resolved paths",
+      "exitCode": 0,
+      "output": "59 unique references; only backend/wta-modules/wta-workflow/src/test missing, explicitly proposed as new test directory"
+    }
+  ],
+  "notRun": [
+    "Maven compile/test/package: would write target outside authorized change",
+    "MySQL/Redis/MinIO/provider HTTP integration",
+    "Warm-Flow and Spring event multicaster runtime",
+    "TLS/cookie/browser E2E",
+    "production exploitation or destructive failure injection"
+  ],
+  "readFailuresResolved": [
+    "Initial PowerShell Get-Content without Encoding UTF8 produced mojibake; substantive reads repeated with Encoding UTF8",
+    "permission-routing reference initially assumed parent directory; located actual references/frontend/permission-routing.md and read",
+    "SSO identity implementation initially searched in system; located backend/wta-admin/src/main/java/org/namewta/web/sso/AdminSsoIdentityService.java",
+    "workflow src/test absent, recorded as new proposed test directory"
+  ]
+}

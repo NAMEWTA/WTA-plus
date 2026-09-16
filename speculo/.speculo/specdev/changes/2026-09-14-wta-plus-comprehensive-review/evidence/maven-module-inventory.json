@@ -1,0 +1,1845 @@
+[
+  {
+    "path": "backend/pom.xml",
+    "artifact": "wta-vue-plus",
+    "packaging": "pom",
+    "dependencies": [
+      {
+        "group": "org.junit.jupiter",
+        "artifact": "junit-jupiter-engine",
+        "scope": "test"
+      }
+    ],
+    "modules": [
+      "wta-admin",
+      "wta-common",
+      "wta-extend",
+      "wta-modules",
+      "wta-api"
+    ]
+  },
+  {
+    "path": "backend/wta-admin/pom.xml",
+    "artifact": "wta-admin",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "com.mysql",
+        "artifact": "mysql-connector-j",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-doc",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-social",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mail",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-nacos",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mcp",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-openapi",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-system",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-third",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-notify",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-sso",
+        "scope": null
+      },
+      {
+        "group": "de.codecentric",
+        "artifact": "spring-boot-admin-starter-client",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-api/pom.xml",
+    "artifact": "wta-api",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.springframework",
+        "artifact": "spring-core",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/pom.xml",
+    "artifact": "wta-common",
+    "packaging": "pom",
+    "dependencies": [],
+    "modules": [
+      "wta-common-bom",
+      "wta-common-social",
+      "wta-common-core",
+      "wta-common-doc",
+      "wta-common-excel",
+      "wta-common-job",
+      "wta-common-log",
+      "wta-common-notify",
+      "wta-common-mail",
+      "wta-common-mybatis",
+      "wta-common-oss",
+      "wta-common-redis",
+      "wta-common-satoken",
+      "wta-common-security",
+      "wta-common-sms",
+      "wta-common-nacos",
+      "wta-common-elasticsearch",
+      "wta-common-web",
+      "wta-common-translation",
+      "wta-common-sensitive",
+      "wta-common-json",
+      "wta-common-encrypt",
+      "wta-common-push",
+      "wta-common-liteflow",
+      "wta-common-mqtt",
+      "wta-common-ai",
+      "wta-common-mcp",
+      "wta-common-openapi",
+      "wta-common-richtext"
+    ]
+  },
+  {
+    "path": "backend/wta-common/wta-common-ai/pom.xml",
+    "artifact": "wta-common-ai",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "com.aizuda",
+        "artifact": "snail-ai-agent-chat-starter",
+        "scope": null
+      },
+      {
+        "group": "com.aizuda",
+        "artifact": "snail-ai-agent-executor-starter",
+        "scope": null
+      },
+      {
+        "group": "com.aizuda",
+        "artifact": "snail-ai-openapi-starter",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-bom/pom.xml",
+    "artifact": "wta-common-bom",
+    "packaging": "pom",
+    "dependencies": [],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-core/pom.xml",
+    "artifact": "wta-common-core",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.springframework",
+        "artifact": "spring-context-support",
+        "scope": null
+      },
+      {
+        "group": "org.springframework",
+        "artifact": "spring-web",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-validation",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-aspectj",
+        "scope": null
+      },
+      {
+        "group": "org.apache.commons",
+        "artifact": "commons-lang3",
+        "scope": null
+      },
+      {
+        "group": "jakarta.servlet",
+        "artifact": "jakarta.servlet-api",
+        "scope": null
+      },
+      {
+        "group": "cn.hutool",
+        "artifact": "hutool-core",
+        "scope": null
+      },
+      {
+        "group": "cn.hutool",
+        "artifact": "hutool-http",
+        "scope": null
+      },
+      {
+        "group": "cn.hutool",
+        "artifact": "hutool-extra",
+        "scope": null
+      },
+      {
+        "group": "org.projectlombok",
+        "artifact": "lombok",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-configuration-processor",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-properties-migrator",
+        "scope": "runtime"
+      },
+      {
+        "group": "io.github.linpeilie",
+        "artifact": "mapstruct-plus-spring-boot-starter",
+        "scope": null
+      },
+      {
+        "group": "org.lionsoul",
+        "artifact": "ip2region",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-doc/pom.xml",
+    "artifact": "wta-common-doc",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-web-server",
+        "scope": null
+      },
+      {
+        "group": "org.springdoc",
+        "artifact": "springdoc-openapi-starter-webmvc-api",
+        "scope": null
+      },
+      {
+        "group": "com.github.therapi",
+        "artifact": "therapi-runtime-javadoc",
+        "scope": null
+      },
+      {
+        "group": "com.fasterxml.jackson.module",
+        "artifact": "jackson-module-kotlin",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-elasticsearch/pom.xml",
+    "artifact": "wta-common-elasticsearch",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.dromara.easy-es",
+        "artifact": "easy-es-boot-starter",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-encrypt/pom.xml",
+    "artifact": "wta-common-encrypt",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.bouncycastle",
+        "artifact": "bcpkix-jdk18on",
+        "scope": null
+      },
+      {
+        "group": "cn.hutool",
+        "artifact": "hutool-crypto",
+        "scope": null
+      },
+      {
+        "group": "org.springframework",
+        "artifact": "spring-webmvc",
+        "scope": null
+      },
+      {
+        "group": "com.baomidou",
+        "artifact": "mybatis-plus-spring-boot4-starter",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-excel/pom.xml",
+    "artifact": "wta-common-excel",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.apache.fesod",
+        "artifact": "fesod-sheet",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-job/pom.xml",
+    "artifact": "wta-common-job",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-autoconfigure",
+        "scope": null
+      },
+      {
+        "group": "com.aizuda",
+        "artifact": "snail-job-client-starter",
+        "scope": null
+      },
+      {
+        "group": "com.aizuda",
+        "artifact": "snail-job-client-job-core",
+        "scope": null
+      },
+      {
+        "group": "org.projectlombok",
+        "artifact": "lombok",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-json/pom.xml",
+    "artifact": "wta-common-json",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-jackson",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-liteflow/pom.xml",
+    "artifact": "wta-common-liteflow",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "com.yomahub",
+        "artifact": "liteflow-spring-boot-starter",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-log/pom.xml",
+    "artifact": "wta-common-log",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-mail/pom.xml",
+    "artifact": "wta-common-mail",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "jakarta.mail",
+        "artifact": "jakarta.mail-api",
+        "scope": null
+      },
+      {
+        "group": "org.eclipse.angus",
+        "artifact": "jakarta.mail",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-mcp/pom.xml",
+    "artifact": "wta-common-mcp",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.ai",
+        "artifact": "spring-ai-starter-mcp-server-webmvc",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.ai",
+        "artifact": "spring-ai-starter-mcp-client",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-mqtt/pom.xml",
+    "artifact": "wta-common-mqtt",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.dromara.mica-mqtt",
+        "artifact": "mica-mqtt-client-spring-boot-starter",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-mybatis/pom.xml",
+    "artifact": "wta-common-mybatis",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "com.baomidou",
+        "artifact": "dynamic-datasource-spring-boot4-starter",
+        "scope": null
+      },
+      {
+        "group": "com.baomidou",
+        "artifact": "mybatis-plus-spring-boot4-starter",
+        "scope": null
+      },
+      {
+        "group": "com.baomidou",
+        "artifact": "mybatis-plus-jsqlparser",
+        "scope": null
+      },
+      {
+        "group": "com.github.yulichang",
+        "artifact": "mybatis-plus-join-boot-starter",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-nacos/pom.xml",
+    "artifact": "wta-common-nacos",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "com.alibaba.nacos",
+        "artifact": "nacos-client",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-autoconfigure",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-actuator",
+        "scope": null
+      },
+      {
+        "group": "org.slf4j",
+        "artifact": "slf4j-api",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-notify/pom.xml",
+    "artifact": "wta-common-notify",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-nacos",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-openapi/pom.xml",
+    "artifact": "wta-common-openapi",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-doc",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-autoconfigure",
+        "scope": null
+      },
+      {
+        "group": "org.springframework",
+        "artifact": "spring-webmvc",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-oss/pom.xml",
+    "artifact": "wta-common-oss",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "software.amazon.awssdk",
+        "artifact": "s3",
+        "scope": null
+      },
+      {
+        "group": "software.amazon.awssdk",
+        "artifact": "netty-nio-client",
+        "scope": null
+      },
+      {
+        "group": "software.amazon.awssdk",
+        "artifact": "s3-transfer-manager",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-push/pom.xml",
+    "artifact": "wta-common-push",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-websocket",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-redis/pom.xml",
+    "artifact": "wta-common-redis",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.redisson",
+        "artifact": "redisson-spring-boot-starter",
+        "scope": null
+      },
+      {
+        "group": "org.redisson",
+        "artifact": "redisson-spring-cache",
+        "scope": null
+      },
+      {
+        "group": "com.baomidou",
+        "artifact": "lock4j-redisson-spring-boot-starter",
+        "scope": null
+      },
+      {
+        "group": "com.github.ben-manes.caffeine",
+        "artifact": "caffeine",
+        "scope": null
+      },
+      {
+        "group": "tools.jackson.core",
+        "artifact": "jackson-databind",
+        "scope": null
+      },
+      {
+        "group": "cn.hutool",
+        "artifact": "hutool-crypto",
+        "scope": null
+      },
+      {
+        "group": "cn.dev33",
+        "artifact": "sa-token-core",
+        "scope": null
+      },
+      {
+        "group": "org.apache.fory",
+        "artifact": "fory-core",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-richtext/pom.xml",
+    "artifact": "wta-common-richtext",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.jsoup",
+        "artifact": "jsoup",
+        "scope": null
+      },
+      {
+        "group": "org.junit.jupiter",
+        "artifact": "junit-jupiter",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-satoken/pom.xml",
+    "artifact": "wta-common-satoken",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.springframework",
+        "artifact": "spring-webmvc",
+        "scope": null
+      },
+      {
+        "group": "cn.dev33",
+        "artifact": "sa-token-spring-boot4-starter",
+        "scope": null
+      },
+      {
+        "group": "cn.dev33",
+        "artifact": "sa-token-jwt",
+        "scope": null
+      },
+      {
+        "group": "com.github.ben-manes.caffeine",
+        "artifact": "caffeine",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-security/pom.xml",
+    "artifact": "wta-common-security",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-sensitive/pom.xml",
+    "artifact": "wta-common-sensitive",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-sms/pom.xml",
+    "artifact": "wta-common-sms",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.dromara.sms4j",
+        "artifact": "sms4j-spring-boot-starter",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-social/pom.xml",
+    "artifact": "wta-common-social",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "io.github.windtool",
+        "artifact": "JustAuth",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-translation/pom.xml",
+    "artifact": "wta-common-translation",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-common/wta-common-web/pom.xml",
+    "artifact": "wta-common-web",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-nacos",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-web",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-jetty",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-actuator",
+        "scope": null
+      },
+      {
+        "group": "cn.hutool",
+        "artifact": "hutool-captcha",
+        "scope": null
+      },
+      {
+        "group": "cn.hutool",
+        "artifact": "hutool-crypto",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-encrypt",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-extend/pom.xml",
+    "artifact": "wta-extend",
+    "packaging": "pom",
+    "dependencies": [],
+    "modules": [
+      "wta-monitor-admin",
+      "wta-snailai-server",
+      "wta-snailjob-server"
+    ]
+  },
+  {
+    "path": "backend/wta-extend/wta-monitor-admin/pom.xml",
+    "artifact": "wta-monitor-admin",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-web",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-jetty",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-security",
+        "scope": null
+      },
+      {
+        "group": "de.codecentric",
+        "artifact": "spring-boot-admin-starter-server",
+        "scope": null
+      },
+      {
+        "group": "de.codecentric",
+        "artifact": "spring-boot-admin-starter-client",
+        "scope": null
+      },
+      {
+        "group": "org.projectlombok",
+        "artifact": "lombok",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-extend/wta-snailai-server/pom.xml",
+    "artifact": "wta-snailai-server",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "com.aizuda",
+        "artifact": "snail-ai-starter",
+        "scope": null
+      },
+      {
+        "group": "co.elastic.clients",
+        "artifact": "elasticsearch-rest5-client",
+        "scope": null
+      },
+      {
+        "group": "co.elastic.clients",
+        "artifact": "elasticsearch-java",
+        "scope": null
+      },
+      {
+        "group": "de.codecentric",
+        "artifact": "spring-boot-admin-starter-client",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-extend/wta-snailjob-server/pom.xml",
+    "artifact": "wta-snailjob-server",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "com.aizuda",
+        "artifact": "snail-job-server-starter",
+        "scope": null
+      },
+      {
+        "group": "org.scala-lang",
+        "artifact": "scala-library",
+        "scope": null
+      },
+      {
+        "group": "de.codecentric",
+        "artifact": "spring-boot-admin-starter-client",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/pom.xml",
+    "artifact": "wta-modules",
+    "packaging": "pom",
+    "dependencies": [],
+    "modules": [
+      "wta-demo",
+      "wta-job",
+      "wta-system",
+      "wta-workflow",
+      "wta-ai",
+      "wta-profile",
+      "wta-third",
+      "wta-notify",
+      "wta-sso"
+    ]
+  },
+  {
+    "path": "backend/wta-modules/wta-ai/pom.xml",
+    "artifact": "wta-ai",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-ai",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-demo/pom.xml",
+    "artifact": "wta-demo",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-richtext",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-openapi",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-doc",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-sms",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-excel",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-translation",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-sensitive",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-encrypt",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-elasticsearch",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-push",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mqtt",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mcp",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-job/pom.xml",
+    "artifact": "wta-job",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-job",
+        "scope": null
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-notify/pom.xml",
+    "artifact": "wta-notify",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mail",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-sms",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-push",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-validation",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-profile/pom.xml",
+    "artifact": "wta-profile",
+    "packaging": "pom",
+    "dependencies": [],
+    "modules": [
+      "wta-profile-bom",
+      "wta-profile-person",
+      "wta-profile-enterprise"
+    ]
+  },
+  {
+    "path": "backend/wta-modules/wta-profile/wta-profile-bom/pom.xml",
+    "artifact": "wta-profile-bom",
+    "packaging": "pom",
+    "dependencies": [],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/pom.xml",
+    "artifact": "wta-profile-enterprise",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-translation",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-doc",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      },
+      {
+        "group": "com.mysql",
+        "artifact": "mysql-connector-j",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-profile/wta-profile-person/pom.xml",
+    "artifact": "wta-profile-person",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-translation",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-doc",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      },
+      {
+        "group": "com.mysql",
+        "artifact": "mysql-connector-j",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-sso/pom.xml",
+    "artifact": "wta-sso",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-satoken",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-validation",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-system/pom.xml",
+    "artifact": "wta-system",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-nacos",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-doc",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-translation",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-oss",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-excel",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-sms",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-sensitive",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-encrypt",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-push",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-openapi",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-third/pom.xml",
+    "artifact": "wta-third",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-core",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-json",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-redis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-validation",
+        "scope": null
+      },
+      {
+        "group": "org.springframework.boot",
+        "artifact": "spring-boot-starter-test",
+        "scope": "test"
+      }
+    ],
+    "modules": []
+  },
+  {
+    "path": "backend/wta-modules/wta-workflow/pom.xml",
+    "artifact": "wta-workflow",
+    "packaging": "jar",
+    "dependencies": [
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-push",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-doc",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-notify",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-mybatis",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-web",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-log",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-excel",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-translation",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-security",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-api",
+        "scope": null
+      },
+      {
+        "group": "org.dromara.warm",
+        "artifact": "warm-flow-mybatis-plus-sb4-starter",
+        "scope": null
+      },
+      {
+        "group": "org.dromara.warm",
+        "artifact": "warm-flow-plugin-ui-sb-web",
+        "scope": null
+      },
+      {
+        "group": "org.namewta",
+        "artifact": "wta-common-liteflow",
+        "scope": null
+      }
+    ],
+    "modules": []
+  }
+]

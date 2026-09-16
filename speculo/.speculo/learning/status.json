@@ -1,6 +1,67 @@
 {
   "schema_version": 2,
   "workflow": "learning",
-  "active": [],
+  "active": [
+    {
+      "change_id": "2026-09-14-namewta-architecture",
+      "kind": "learning",
+      "domain": "namewta",
+      "topic_id": "architecture",
+      "locator": "changes/2026-09-14-namewta-architecture",
+      "parent_change": null,
+      "root_change": "2026-09-14-namewta-architecture",
+      "current_work": null,
+      "works_run": [
+        "learning/assess-and-plan",
+        "learning/lesson"
+      ],
+      "updated_at": "2026-09-14T07:42:38.672Z"
+    },
+    {
+      "change_id": "2026-09-14-wta-sso",
+      "kind": "learning",
+      "domain": "namewta",
+      "topic_id": "sso",
+      "locator": "changes/2026-09-14-wta-sso",
+      "parent_change": null,
+      "root_change": "2026-09-14-wta-sso",
+      "current_work": null,
+      "works_run": [
+        "learning/assess-and-plan",
+        "learning/lesson"
+      ],
+      "updated_at": "2026-09-14T08:03:33.105Z"
+    },
+    {
+      "change_id": "2026-09-14-wta-third",
+      "kind": "learning",
+      "domain": "namewta",
+      "topic_id": "third",
+      "locator": "changes/2026-09-14-wta-third",
+      "parent_change": null,
+      "root_change": "2026-09-14-wta-third",
+      "current_work": null,
+      "works_run": [
+        "learning/assess-and-plan",
+        "learning/lesson"
+      ],
+      "updated_at": "2026-09-14T08:03:33.105Z"
+    },
+    {
+      "change_id": "2026-09-14-wta-notify",
+      "kind": "learning",
+      "domain": "namewta",
+      "topic_id": "notify",
+      "locator": "changes/2026-09-14-wta-notify",
+      "parent_change": null,
+      "root_change": "2026-09-14-wta-notify",
+      "current_work": null,
+      "works_run": [
+        "learning/assess-and-plan",
+        "learning/lesson"
+      ],
+      "updated_at": "2026-09-14T08:03:33.105Z"
+    }
+  ],
   "archived": []
 }

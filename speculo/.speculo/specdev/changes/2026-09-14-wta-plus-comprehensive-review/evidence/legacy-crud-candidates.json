@@ -1,0 +1,474 @@
+[
+  {
+    "file": "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java",
+    "line": 155,
+    "method": "DELETE",
+    "class_mapping": "/auth",
+    "annotation": "@DeleteMapping(value = \"/unlock/{socialId}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/EsCrudController.java",
+    "line": 61,
+    "method": "PUT",
+    "class_mapping": "/es",
+    "annotation": "@PutMapping(\"/update\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/EsCrudController.java",
+    "line": 83,
+    "method": "DELETE",
+    "class_mapping": "/es",
+    "annotation": "@DeleteMapping(\"/delete/{id}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestBatchController.java",
+    "line": 82,
+    "method": "DELETE",
+    "class_mapping": "/demo/batch",
+    "annotation": "@DeleteMapping()",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestDemoController.java",
+    "line": 132,
+    "method": "PUT",
+    "class_mapping": "/demo/demo",
+    "annotation": "@PutMapping()",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestDemoController.java",
+    "line": 144,
+    "method": "DELETE",
+    "class_mapping": "/demo/demo",
+    "annotation": "@DeleteMapping(\"/{ids}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestTreeController.java",
+    "line": 90,
+    "method": "PUT",
+    "class_mapping": "/demo/tree",
+    "annotation": "@PutMapping()",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestTreeController.java",
+    "line": 102,
+    "method": "DELETE",
+    "class_mapping": "/demo/tree",
+    "annotation": "@DeleteMapping(\"/{ids}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysLoginInfoController.java",
+    "line": 73,
+    "method": "DELETE",
+    "class_mapping": "/monitor/loginInfo",
+    "annotation": "@DeleteMapping(\"/{infoIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysLoginInfoController.java",
+    "line": 86,
+    "method": "DELETE",
+    "class_mapping": "/monitor/loginInfo",
+    "annotation": "@DeleteMapping(\"/clean\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysOperlogController.java",
+    "line": 70,
+    "method": "DELETE",
+    "class_mapping": "/monitor/operlog",
+    "annotation": "@DeleteMapping(\"/{operIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysOperlogController.java",
+    "line": 83,
+    "method": "DELETE",
+    "class_mapping": "/monitor/operlog",
+    "annotation": "@DeleteMapping(\"/clean\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysUserOnlineController.java",
+    "line": 88,
+    "method": "DELETE",
+    "class_mapping": "/monitor/online",
+    "annotation": "@DeleteMapping(\"/{tokenId}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysUserOnlineController.java",
+    "line": 128,
+    "method": "DELETE",
+    "class_mapping": "/monitor/online",
+    "annotation": "@DeleteMapping(\"/myself/{tokenId}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysClientController.java",
+    "line": 111,
+    "method": "PUT",
+    "class_mapping": "/system/client",
+    "annotation": "@PutMapping()",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysClientController.java",
+    "line": 166,
+    "method": "PUT",
+    "class_mapping": "/system/client",
+    "annotation": "@PutMapping(\"/changeStatus\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysClientController.java",
+    "line": 179,
+    "method": "DELETE",
+    "class_mapping": "/system/client",
+    "annotation": "@DeleteMapping(\"/{ids}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java",
+    "line": 131,
+    "method": "PUT",
+    "class_mapping": "/system/config",
+    "annotation": "@PutMapping(\"/updateByKey\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java",
+    "line": 145,
+    "method": "DELETE",
+    "class_mapping": "/system/config",
+    "annotation": "@DeleteMapping(\"/{configIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java",
+    "line": 158,
+    "method": "DELETE",
+    "class_mapping": "/system/config",
+    "annotation": "@DeleteMapping(\"/refreshCache\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDeptController.java",
+    "line": 129,
+    "method": "DELETE",
+    "class_mapping": "/system/dept",
+    "annotation": "@DeleteMapping(\"/{deptId}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictDataController.java",
+    "line": 138,
+    "method": "DELETE",
+    "class_mapping": "/system/dict/data",
+    "annotation": "@DeleteMapping(\"/{dictCodes}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictTypeController.java",
+    "line": 120,
+    "method": "DELETE",
+    "class_mapping": "/system/dict/type",
+    "annotation": "@DeleteMapping(\"/{dictIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictTypeController.java",
+    "line": 134,
+    "method": "DELETE",
+    "class_mapping": "/system/dict/type",
+    "annotation": "@DeleteMapping(\"/refreshCache\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysMenuController.java",
+    "line": 179,
+    "method": "DELETE",
+    "class_mapping": "/system/menu",
+    "annotation": "@DeleteMapping(\"/{menuId}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysMenuController.java",
+    "line": 208,
+    "method": "DELETE",
+    "class_mapping": "/system/menu",
+    "annotation": "@DeleteMapping(\"/cascade/{menuIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssController.java",
+    "line": 82,
+    "method": "DELETE",
+    "class_mapping": "/resource/oss",
+    "annotation": "@DeleteMapping(\"/{ossIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssUploadController.java",
+    "line": 53,
+    "method": "DELETE",
+    "class_mapping": "/resource/oss/uploads",
+    "annotation": "@DeleteMapping(\"/{uploadToken}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysPostController.java",
+    "line": 131,
+    "method": "DELETE",
+    "class_mapping": "/system/post",
+    "annotation": "@DeleteMapping(\"/{postIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysProfileController.java",
+    "line": 91,
+    "method": "PUT",
+    "class_mapping": "/system/user/profile",
+    "annotation": "@PutMapping(\"/updatePwd\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+    "line": 143,
+    "method": "PUT",
+    "class_mapping": "/system/role",
+    "annotation": "@PutMapping(\"/permission\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+    "line": 163,
+    "method": "PUT",
+    "class_mapping": "/system/role",
+    "annotation": "@PutMapping(\"/changeStatus\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+    "line": 182,
+    "method": "DELETE",
+    "class_mapping": "/system/role",
+    "annotation": "@DeleteMapping(\"/{roleIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+    "line": 234,
+    "method": "PUT",
+    "class_mapping": "/system/role",
+    "annotation": "@PutMapping(\"/authUser/cancel\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+    "line": 249,
+    "method": "PUT",
+    "class_mapping": "/system/role",
+    "annotation": "@PutMapping(\"/authUser/cancelAll\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+    "line": 264,
+    "method": "PUT",
+    "class_mapping": "/system/role",
+    "annotation": "@PutMapping(\"/authUser/selectAll\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+    "line": 244,
+    "method": "DELETE",
+    "class_mapping": "/system/user",
+    "annotation": "@DeleteMapping(\"/{userIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+    "line": 276,
+    "method": "PUT",
+    "class_mapping": "/system/user",
+    "annotation": "@PutMapping(\"/resetPwd\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+    "line": 295,
+    "method": "PUT",
+    "class_mapping": "/system/user",
+    "annotation": "@PutMapping(\"/changeStatus\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+    "line": 354,
+    "method": "PUT",
+    "class_mapping": "/system/user",
+    "annotation": "@PutMapping(\"/authRole\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserTypeController.java",
+    "line": 121,
+    "method": "PUT",
+    "class_mapping": "/system/userType",
+    "annotation": "@PutMapping(\"/changeStatus\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserTypeController.java",
+    "line": 134,
+    "method": "DELETE",
+    "class_mapping": "/system/userType",
+    "annotation": "@DeleteMapping(\"/{userTypeIds:\\\\d+(?:,\\\\d+)*}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java",
+    "line": 105,
+    "method": "PUT",
+    "class_mapping": "/workflow/category",
+    "annotation": "@PutMapping()",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java",
+    "line": 124,
+    "method": "DELETE",
+    "class_mapping": "/workflow/category",
+    "annotation": "@DeleteMapping(\"/{categoryId}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+    "line": 117,
+    "method": "PUT",
+    "class_mapping": "/workflow/definition",
+    "annotation": "@PutMapping(\"/publish/{id}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+    "line": 131,
+    "method": "PUT",
+    "class_mapping": "/workflow/definition",
+    "annotation": "@PutMapping(\"/unPublish/{id}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+    "line": 146,
+    "method": "DELETE",
+    "class_mapping": "/workflow/definition",
+    "annotation": "@DeleteMapping(\"/{ids}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+    "line": 215,
+    "method": "PUT",
+    "class_mapping": "/workflow/definition",
+    "annotation": "@PutMapping(\"/active/{id}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+    "line": 87,
+    "method": "DELETE",
+    "class_mapping": "/workflow/instance",
+    "annotation": "@DeleteMapping(\"/deleteByBusinessIds/{businessIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+    "line": 100,
+    "method": "DELETE",
+    "class_mapping": "/workflow/instance",
+    "annotation": "@DeleteMapping(\"/deleteByInstanceIds/{instanceIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+    "line": 113,
+    "method": "DELETE",
+    "class_mapping": "/workflow/instance",
+    "annotation": "@DeleteMapping(\"/deleteHisByInstanceIds/{instanceIds}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+    "line": 127,
+    "method": "PUT",
+    "class_mapping": "/workflow/instance",
+    "annotation": "@PutMapping(\"/cancelProcessApply\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+    "line": 142,
+    "method": "PUT",
+    "class_mapping": "/workflow/instance",
+    "annotation": "@PutMapping(\"/active/{id}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+    "line": 193,
+    "method": "PUT",
+    "class_mapping": "/workflow/instance",
+    "annotation": "@PutMapping(\"/updateVariable\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java",
+    "line": 88,
+    "method": "PUT",
+    "class_mapping": "/workflow/spel",
+    "annotation": "@PutMapping()",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java",
+    "line": 101,
+    "method": "DELETE",
+    "class_mapping": "/workflow/spel",
+    "annotation": "@DeleteMapping(\"/{ids}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwTaskController.java",
+    "line": 189,
+    "method": "PUT",
+    "class_mapping": "/workflow/task",
+    "annotation": "@PutMapping(\"/updateAssignee/{userId}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java",
+    "line": 119,
+    "method": "PUT",
+    "class_mapping": "/workflow/leave",
+    "annotation": "@PutMapping()",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  },
+  {
+    "file": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java",
+    "line": 132,
+    "method": "DELETE",
+    "class_mapping": "/workflow/leave",
+    "annotation": "@DeleteMapping(\"/{ids}\")",
+    "review_disposition": "candidate; classify CRUD/protocol and map callers before migration"
+  }
+]

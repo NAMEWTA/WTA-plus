@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "package_version": "1.0.3",
+  "package_version": "1.0.10",
   "workflows": [
     "learning",
     "ops",

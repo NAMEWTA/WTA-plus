@@ -36,6 +36,8 @@
 </PROJECT_SKILLS>
 
 
+
+
 <!-- SPECULO-PERSISTENT-KNOWLEDGE:START -->
 ## Speculo 永久知识
 
@@ -43,12 +45,9 @@
 
 - learning：<Path>{roots.state}/learning/context/INDEX.md</Path>
 - learning：<Path>{roots.state}/learning/context/REVIEW.md</Path>
-- ops：<Path>{roots.state}/ops/context/</Path>
-- ops：<Path>{roots.state}/ops/adr/</Path>
-- ops：<Path>{roots.state}/ops/runbooks/</Path>
-- ops：<Path>{roots.state}/ops/projects/{project_id}/context/</Path>
-- ops：<Path>{roots.state}/ops/projects/{project_id}/adr/</Path>
-- ops：<Path>{roots.state}/ops/projects/{project_id}/runbooks/</Path>
+- ops：<Path>{roots.state}/ops/knowledge/</Path>
+- ops：<Path>{roots.state}/ops/hosts/{host_id}/knowledge/</Path>
+- ops：<Path>{roots.state}/ops/projects/{project_id}/knowledge/</Path>
 - specdev：<Path>{roots.state}/specdev/adr/</Path>
 - specdev：<Path>{roots.state}/specdev/context/</Path>
 <!-- SPECULO-PERSISTENT-KNOWLEDGE:END -->
