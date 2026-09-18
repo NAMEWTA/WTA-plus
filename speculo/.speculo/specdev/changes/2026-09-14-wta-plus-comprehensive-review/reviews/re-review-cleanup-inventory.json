@@ -1,0 +1,348 @@
+{
+  "date": "2026-09-18",
+  "files": [
+    {
+      "path": "backend/AGENTS.md",
+      "sha256": "80046026a390491bc48bfaddbf5e30590d0fde0d3633b411107fcf0462252654",
+      "line_count": 31,
+      "generic": true,
+      "content": "# backend 模块索引\n\n## Scope\n\n本索引覆盖 后端工作区，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 backend 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl 后端工作区 -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-admin/AGENTS.md",
+      "sha256": "629e3376abf61230581e99100a9d6792af7fb5490d3bfa147d0d4e580f2ef21c",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-admin 模块索引\n\n## Scope\n\n本索引覆盖 wta-admin，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-admin 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-admin -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-api/AGENTS.md",
+      "sha256": "0d003ceb18189e8bff029475f6fab942d32796a5e5e70be996534766e15f9c53",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-api 模块索引\n\n## Scope\n\n本索引覆盖 wta-api，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-api 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-api -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/AGENTS.md",
+      "sha256": "36380d8cdbe6ec9520143b434369a777e60514392805b2a82a1e07d263fb7987",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common 模块索引\n\n## Scope\n\n本索引覆盖 wta-common，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-ai/AGENTS.md",
+      "sha256": "2671f5c66fd871a4e12574ef7a5022c5910d36a3d2c1baaaa470e4efb9e35b64",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-ai 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-ai，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-ai 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-ai -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-bom/AGENTS.md",
+      "sha256": "fbdc9047cf85ba7bba1bd6d6162841fd930fb1dd5ffbf798eecad0d9b921d7dc",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-bom 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-bom，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-bom 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-bom -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-core/AGENTS.md",
+      "sha256": "986dc24280d1610b84f7c5d57ff348fc93219330625264ea809f5cfe423cbbcc",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-core 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-core，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-core 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-core -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-doc/AGENTS.md",
+      "sha256": "51bce11116d4cf3f9b4d042c8e91727772c312cd3ae3f7869304cdb87faf47b6",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-doc 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-doc，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-doc 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-doc -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-elasticsearch/AGENTS.md",
+      "sha256": "4a4ea8750ab3d38d6d2e81f5da17edb328c968765518d133516d23badd980bf1",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-elasticsearch 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-elasticsearch，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-elasticsearch 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-elasticsearch -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-encrypt/AGENTS.md",
+      "sha256": "4026515f294d1852abf1ed6aacc4dfd3524b892d6e1a2f0d154401fbfdda78c6",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-encrypt 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-encrypt，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-encrypt 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-encrypt -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-excel/AGENTS.md",
+      "sha256": "f7475591769d9a256c2c141090553d64052723468afb362a7e2ad5fcbfc9cc58",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-excel 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-excel，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-excel 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-excel -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-job/AGENTS.md",
+      "sha256": "c7c59981e9d766fe9b136638417750ac09e9ab141e6179b4c53ad3af47af7394",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-job 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-job，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-job 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-job -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-json/AGENTS.md",
+      "sha256": "c3f5cbeb7e5033d8eff47a409db04c7e627474b821bcf7af592781747750670e",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-json 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-json，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-json 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-json -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-liteflow/AGENTS.md",
+      "sha256": "2182d6838101bcf977cce0c71a6ea272d414f9c72d55f990294369f2fe2f307b",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-liteflow 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-liteflow，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-liteflow 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-liteflow -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-log/AGENTS.md",
+      "sha256": "fc1a3d0f5379aa0d985159034a9f1ee215aa1caef2d3c1d0ee7cb1689bb88cb5",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-log 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-log，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-log 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-log -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mail/AGENTS.md",
+      "sha256": "2be3686552bc1249a44638e1752614020cf278fc46d0c6af82b445ed6d9adc1a",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-mail 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-mail，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-mail 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mail -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mcp/AGENTS.md",
+      "sha256": "de8fbba9b9680a2b949c9394cb9b50b423e0935bf8806ddb87781fe0b0b1470f",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-mcp 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-mcp，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-mcp 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mcp -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mqtt/AGENTS.md",
+      "sha256": "1c55a7ee908a980d35cde41518653ee9f88301c21a958eccd9dbaabf43f4efab",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-mqtt 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-mqtt，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-mqtt 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mqtt -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mybatis/AGENTS.md",
+      "sha256": "04140edf40e6a3cbfa6f4448cec80861adbe74dc6e7dd3a10cc829d08ecc5a5d",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-mybatis 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-mybatis，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-mybatis 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mybatis -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-nacos/AGENTS.md",
+      "sha256": "091288779ed79d033b9a6393a858b4e0723553b59622166a082d1169574f3525",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-nacos 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-nacos，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-nacos 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-nacos -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-notify/AGENTS.md",
+      "sha256": "caf6bafca625a141fc9ce85b2d12ebdb66dfc872286a8c07c8681ff53f46defa",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-notify 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-notify，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-notify 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-notify -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-openapi/AGENTS.md",
+      "sha256": "fc7eb45ea0e3870d2be14c440ffd5f85792a6b6055b3d9f1698d10f61ada0802",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-openapi 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-openapi，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-openapi 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-openapi -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-oss/AGENTS.md",
+      "sha256": "4dd0fd9dd005e311bc7f0db433b75ba1e0e986a14a29e0b1825c73546c9e8ee1",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-oss 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-oss，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-oss 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-oss -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-push/AGENTS.md",
+      "sha256": "6e41cadb041003b6a9dd725a4e18f1638f8cccc1f8e48ebbb117421cee493cb8",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-push 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-push，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-push 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-push -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-redis/AGENTS.md",
+      "sha256": "a83cc598859328222b74794425c4f4d82f0ce392ee8b68d89bce9e264716af2c",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-redis 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-redis，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-redis 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-redis -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-satoken/AGENTS.md",
+      "sha256": "1accda06873ef8d33cb17207e4c43ef947bcdb71742ae0727f0d7a2439a08d9f",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-satoken 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-satoken，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-satoken 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-satoken -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-security/AGENTS.md",
+      "sha256": "f1a38aa28a7a2424ae4ec35086a0e8a06091687611b8bb9e830cde8dd553af6c",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-security 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-security，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-security 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-security -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-sensitive/AGENTS.md",
+      "sha256": "63074f5dfc33d895e51702f9e4ee840707b76241f5fe23dba468cee9a9a104a3",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-sensitive 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-sensitive，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-sensitive 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-sensitive -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-sms/AGENTS.md",
+      "sha256": "dc70f5675e06c2b8d73368aa25e600e2ff06efb0e0af9bfb685e862277dafbf4",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-sms 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-sms，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-sms 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-sms -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-social/AGENTS.md",
+      "sha256": "e83357276f02ae7cbf3dcaacd5e84a11aa17a0a8b28a501da281faa151aedff3",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-social 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-social，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-social 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-social -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-translation/AGENTS.md",
+      "sha256": "329e67acba8c31aec29e2a3898ea5538e961ab8e030a9a2a284559dd2897edab",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-translation 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-translation，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-translation 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-translation -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/AGENTS.md",
+      "sha256": "e812cd5e5bd0dc388236e6b9094d0cb52371a6a7727289d7ecb980512516c6e0",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-common-web 模块索引\n\n## Scope\n\n本索引覆盖 wta-common/wta-common-web，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-common-web 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-common/wta-common-web -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-extend/AGENTS.md",
+      "sha256": "19968c100aab48f3cfb85cd1b040f376c46e60340374403819c4841445d056a8",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-extend 模块索引\n\n## Scope\n\n本索引覆盖 wta-extend，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-extend 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-extend -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-extend/wta-monitor-admin/AGENTS.md",
+      "sha256": "4014a69abe0bd942072cccbe1df9148a4591adf878a7ab73366d1b01b936b446",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-monitor-admin 模块索引\n\n## Scope\n\n本索引覆盖 wta-extend/wta-monitor-admin，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-monitor-admin 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-extend/wta-monitor-admin -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-extend/wta-snailai-server/AGENTS.md",
+      "sha256": "e6a3d0e84f1e26b97afa697b28e507efa8dbce44bdb3ef816869bc0f8247b6ce",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-snailai-server 模块索引\n\n## Scope\n\n本索引覆盖 wta-extend/wta-snailai-server，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-snailai-server 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-extend/wta-snailai-server -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-extend/wta-snailjob-server/AGENTS.md",
+      "sha256": "6e08be30fe42a574e34029d160aff65308dc4ba8e43cb593073f23202713d9d6",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-snailjob-server 模块索引\n\n## Scope\n\n本索引覆盖 wta-extend/wta-snailjob-server，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-snailjob-server 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-extend/wta-snailjob-server -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-modules/AGENTS.md",
+      "sha256": "4f160ae40d8d9b725ab91c503db5e7070d1447ba35765c1ce1fa6ba2a9fd78e9",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-modules 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-modules 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-ai/AGENTS.md",
+      "sha256": "fef3bef3ecd0897dd50777eb43e62e7cc1f549e4ea737b442d38df070a5a7625",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-ai 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-ai，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-ai 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-ai -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/AGENTS.md",
+      "sha256": "650e566b1461d74d32b9235ff13db7d89eb0e21c2f691052fe17d80796cf4476",
+      "line_count": 34,
+      "generic": false,
+      "content": "# wta-demo 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-demo，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-demo 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- `controller/OpenApiDemoController.java`：OpenAPI 注解与机器调用链路演示。\n- `controller/TestRichTextController.java`：富文本规范化、OSS 资源授权与引用对账演示。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n- `docs/rich-text.md`：富文本接口和业务接入说明。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-demo -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-job/AGENTS.md",
+      "sha256": "6e9b18d47385c55fdba1cee585a19d92fd694bf27151255f85d18a8087096ce1",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-job 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-job，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-job 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-job -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/AGENTS.md",
+      "sha256": "be0d873bbc6b67db40f3b04b58b7e0468df7a8941695ca941ac30c534ae0661d",
+      "line_count": 6,
+      "generic": false,
+      "content": "# wta-notify\n\n- 入口：`controller/admin`、`controller/anonymous`；业务调用按 `UseCase -> Service -> DAO -> Mapper` 分层。\n- 所有通知、公告、收件箱、Outbox 和监控数据由本模块拥有；跨模块仅依赖 `wta-api` 与 common SPI。\n- DDL/DML：父仓库 `release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql` 与 `50-cde-base-dml.sql`。\n- 测试：`./mvnw -pl wta-modules/wta-notify -am test`。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/AGENTS.md",
+      "sha256": "760cc4497af1c504b4bad4a64ca478c16051538c0fa455ca59770ba8506104bd",
+      "line_count": 33,
+      "generic": false,
+      "content": "# wta-profile 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-profile，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\nProfile 新增模块聚合入口，承载 person、enterprise 两个隔离子域；本索引只定位组成和合同，具体规则以源码及统一模块 Skill 为准。\n\n## Components\n\n- `wta-profile-person`：个人资料能力。\n- `wta-profile-enterprise`：企业资料能力。\n- `wta-profile-bom`：版本管理；聚合 POM 不承载业务实现。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- 各子模块的 `pom.xml`：构建和依赖入口。\n- 公开跨模块合同位于 `wta-api`；实现模块不互相依赖实现类、Mapper、Entity 或表。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；Profile 只通过 `wta-api`/common SPI 接入 System，通过 Workflow API 合同接入流程；新增业务入口遵循 `Controller|Listener|API Adapter -> UseCase -> Service -> DAO -> Mapper -> XML`。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile -am -DskipTests compile`，再按 person/enterprise 模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录各子模块 `AGENTS.md`、源码包结构、测试和资源，再按任务读取 [统一模块导航](../../../.agents/skills/wta-module-guide/SKILL.md) 及适用工程 Skill。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-bom/AGENTS.md",
+      "sha256": "b6d128b9f8ead8c8d011f27e982479da9b7adac6cc2c1a93a6955fb90534018e",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-profile-bom 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-profile/wta-profile-bom，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-profile-bom 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile/wta-profile-bom -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md",
+      "sha256": "156f92c3e644a9cde70b0c3ea8d0a59cd29cd42059cad80c020dff73e3e35c57",
+      "line_count": 33,
+      "generic": false,
+      "content": "# wta-profile-enterprise 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-profile/wta-profile-enterprise，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n企业申请、认证、材料、档案投影和负责人转移；本索引只说明入口和边界，业务细节以源码为准。\n\n## Components\n\n- `controller/admin|self|anonymous`：HTTP 入口。\n- `usecase`、`service`、`dao`、`mapper`、`domain`：五层主链路及领域模型。\n- `adapter/api|codec|gateway|provider|security|store|time`、`listener`、`port`、`support`：合同适配、外部端口、事件和纯辅助。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main/java/org/namewta/profile/enterprise`：生产代码入口。\n- `src/main/resources/mapper/enterprise`：Mapper XML 入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；enterprise 转移通过 `wta-api` 的 `PersonIdentityLookupService` 查询个人精确身份，不读取 person 实现、Mapper、Entity 或表。入口统一走 `Controller|Listener|API Adapter -> UseCase -> Service -> DAO -> Mapper -> XML`；DAO 只依赖 Mapper。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile/wta-profile-enterprise -am -DskipTests compile`，并运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs wta-modules/wta-profile/wta-profile-enterprise --mode=layered`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录源码包结构、测试和资源，再按任务读取 [Profile 分层边界](../../../../.agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md)。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md",
+      "sha256": "acdb7d8379bfebdeba3d3ecb5479de4e7858b243d20eda62bc95eb8d7bc2edb8",
+      "line_count": 33,
+      "generic": false,
+      "content": "# wta-profile-person 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-profile/wta-profile-person，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n个人申请、认证、材料、档案投影、重新绑定和通知；本索引只说明入口和边界，业务细节以源码为准。\n\n## Components\n\n- `controller/admin|self|anonymous`：HTTP 入口。\n- `usecase`、`service`、`dao`、`mapper`、`domain`：五层主链路及领域模型。\n- `listener`、`event`、`port`、`support`：事件、外部合同和纯辅助；外部实现位于 `adapter/api|codec|gateway|provider|security|time`。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main/java/org/namewta/profile/person`：生产代码入口。\n- `src/main/resources/mapper/person`：Mapper XML 入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；person 不读取 enterprise 实现、Mapper、Entity 或表。入口统一走 `Controller|Listener|API Adapter -> UseCase -> Service -> DAO -> Mapper -> XML`；DAO 只依赖 Mapper。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile/wta-profile-person -am -DskipTests compile`，并运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs wta-modules/wta-profile/wta-profile-person --mode=layered`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录源码包结构、测试和资源，再按任务读取 [Profile 分层边界](../../../../.agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md)。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-sso/AGENTS.md",
+      "sha256": "2d9dce156feef2843c099f0bbd7ab59151b6d279badc7ae820948a665403c54d",
+      "line_count": 11,
+      "generic": false,
+      "content": "# wta-sso\n\n第一方 SSO 模块，提供 Authorization Code + PKCE S256 的 authorize / token / revoke，以及 SSO 域会话。\n\n## Structure\n\n`controller/anonymous -> usecase/impl -> service -> dao -> mapper -> XML`。用户、Client 与登录准入只经 `wta-api` 的 `SsoClientCatalog` / `SsoIdentityService`。业务 Token extras 必须是目标业务 Client，禁止 `sso`。\n\n## 验证\n\n在后端仓库根目录运行 `./mvnw -pl wta-modules/wta-sso -am test`，再运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-sso --mode layered`。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/AGENTS.md",
+      "sha256": "ffc9a8f6a3b87a8e093f2265260c867957601f3fcde52d2cc85c342e1abb2079",
+      "line_count": 48,
+      "generic": false,
+      "content": "# wta-system 调用规范\n\n本文件适用于 `wta-modules/wta-system/**`。上级 `AGENTS.md` 与父工作区工程 Skill 仍然生效；发生冲突时，以更严格的安全、权限和模块边界要求为准。\n\n## 模块边界\n\n- `wta-system` 拥有用户、组织、角色、菜单、权限、Client、系统资源、OSS 和消息等实现。Controller、`ISys*`、Mapper、entity、BO、VO 及实现类均为模块内部合同。\n- 其他业务模块只依赖 `wta-api` 和所需的 `wta-common-*`，通过构造器注入 `org.namewta.system.api.*`。不得依赖 `wta-system`，不得注入 `ISys*`、Mapper，或导入本模块的 domain/BO/VO/Controller。\n- `wta-admin` 只负责应用组装。其穿透调用是部署入口的例外，不得复制为普通业务模块的实现范式。\n- 同一 JVM 内调用公开 Service；不得为调用本模块而新增 Feign、Dubbo，或从后端内部绕行 `/system`、`/resource` HTTP 接口。\n- 跨模块新能力先判断 owner；确需公开时，将最小稳定合同放入 `wta-api`，使用 DTO/record 表达，不泄露持久化对象、Mapper 或可变内部集合。\n\n## 通用接口与权限\n\n- Controller 负责参数校验、`@SaCheckPermission`、传输映射与操作日志；Service 负责业务规则、事务、缓存和关系维护。前端可见性不能替代服务端授权。\n- 只读查询使用 GET；业务变更使用 POST，并添加语义准确且不记录密钥、Token、签名 URL 等敏感信息的 `@Log`。存量接口按触及范围迁移，不得作为新接口样例。\n- 调用公开 Service 前，业务 owner 必须先完成本业务对象的读取/下载/修改权限和数据范围校验。不得提供仅凭外部传入 ID 即可匿名读取系统资源的通用入口。\n- 新建或实质修改的业务事务使用 `@DSTransactional`；缓存、关系和事务事件必须与当前数据源事务保持一致。\n\n## OSS 调用\n\n### 依赖与访问地址\n\n- 其他模块注入 `org.namewta.system.api.OssService`；不得注入 `ISysOssService`、`SysOssMapper`、`OssLifecycleManager` 或直接调用 `OssFactory` 读取业务附件。\n- 业务表只保存 `ossId`，不得保存公共 URL、预签名 URL 或其到期时间作为资源身份。`sys_oss.service` 是对象所属存储配置的权威路由，读取时不得改用当前默认配置。\n- 新代码在业务授权后优先调用 `OssService.resolveAccessUrl(ossId)`：`accessType=PUBLIC` 时 URL 可直接访问且 `expiresAt=null`；`accessType=PRIVATE` 时 URL 为短时签名且必须返回 `expiresAt`。调用方不得缓存私有 URL，不得假设 URL 永久有效。\n- 只有明确需要私有下载语义时才调用 `presignDownload`。公共对象调用该方法会失败；命名策略只能由服务端代码选择，客户端不得提交任意 TTL 或策略名。\n- `selectUrlByIds`、`selectByIds` 仅保留给翻译器和存量调用方兼容。它们会隐藏 PUBLIC/PRIVATE 与到期时间语义，新接口、新业务代码和新 HTTP 合同不得优先使用。\n\n### 上传与引用生命周期\n\n- 浏览器上传复用 `/resource/oss/uploads` 协议或现有前端上传组件。客户端只提交服务端允许的上传策略名和文件元数据；不得提交或覆盖 `configKey`、Bucket、`accessPolicy`、签名 TTL、AccessKey/SecretKey。\n- 上传完成后以返回的 `ossId` 关联业务数据。创建、修改、删除业务记录时，在同一个 `@DSTransactional` 业务事务内调用 `reconcileReferences(refType, refId, previousOssIds, currentOssIds)`。\n- `refType` 必须是真实物理表名，`refId` 必须是真实业务主键；不得使用 Java 类名、显示名称、临时 UUID 或伪造 owner。删除业务数据必须同步解除引用。\n- 不得直接删除仍被业务引用的对象，不得绕过临时对象、引用计数和两阶段删除状态。清理任务默认先 dry-run；迁移、重试、回滚和 cleanup 必须经过显式权限与人工确认，不得在启动时自动执行生产变更。\n\n### 配置与运行状态\n\n- 系统必须且只能存在一个默认 OSS 配置，且默认配置必须为 `PRIVATE`；公共桶使用非默认 `PUBLIC_READ` 配置。`status` 只表示是否为默认配置，不表示启停状态。\n- 已被对象引用的配置不得通过普通编辑修改 `configKey`、Bucket 或 `accessPolicy`；需要变化时使用受控迁移流程。\n- 应用只验证并报告 Bucket、Policy、域名和 Provider 能力的 readiness，不负责创建 Bucket 或修改云端 Policy。readiness 未达到可服务状态时不得签发访问 URL。\n- 下载有效期由 `oss.lifecycle.download-ttl` 及服务端命名策略控制，并受 `download-ttl-min`/`download-ttl-max` 约束；不得从请求参数直接决定有效期。\n\n## 修改与验证\n\n- 修改公开 `wta-api` 合同时，同步 Javadoc、调用方、契约测试和父工作区 `.agents/skills/wta-module-guide/references/modules/system/`。\n- OSS 变更至少运行受影响的 OSS contract/architecture 单元测试和 Maven 编译；涉及 Provider、Redis、MySQL 或 MinIO 的行为时，再运行相应属性门控集成测试并如实记录外部服务条件。\n- 不提交密钥、本地 endpoint、签名 URL、`application-local.yml`、`target/**` 或 `.flattened-pom.xml`。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-third/AGENTS.md",
+      "sha256": "2c724d9042791bd1ae3aff3b15f315626315cecf7f99ee00226cc3baf56bc88b",
+      "line_count": 17,
+      "generic": false,
+      "content": "# wta-third\n\n统一管理第三方 HTTP Provider 和 Endpoint。数据库是配置事实源，业务调用只能依赖 `wta-api` 的 `ThirdPartyGateway` 合同。\n\n## Structure\n\nProduction code follows `controller/admin -> usecase/impl -> service -> dao -> mapper -> XML`; HTTP/SPI adapters and runtime policies remain module-owned ports. Persistence entities, read models, BOs, and VOs are separate; only the stable gateway contract crosses the module boundary. Credential, URI allowlist, cache snapshots, execution pipeline, and observability are module-owned.\n\n## 约束\n\n- Provider 是唯一可信 base URL 与共享策略来源，Endpoint 只能使用经校验的相对 path 和白名单参数。\n- 不使用数据库脚本、SpEL 或任意类名反射；特殊签名、加密、分页和错误映射使用显式 Java SPI。\n- 业务表不保存完整请求/响应和明文凭据；出站日志经过服务端不可关闭的脱敏与大小限制。\n\n## 验证\n\n在后端仓库根目录运行 `mvn -pl wta-modules/wta-third -am -DskipTests compile`，再运行本模块定向测试。\n"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/AGENTS.md",
+      "sha256": "7e69fee4fb081de3e72c43e0efc4232dc9395cda9cdb2ee7d569c9665d79ccfb",
+      "line_count": 31,
+      "generic": true,
+      "content": "# wta-workflow 模块索引\n\n## Scope\n\n本索引覆盖 wta-modules/wta-workflow，以本目录的 pom.xml 和源码为准。\n\n## Purpose\n\n说明 wta-workflow 的职责边界、组成和最小验证入口。\n\n## Components\n\n- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。\n- 具体业务规则、接口与数据结构以源码为准。\n\n## Entry Points\n\n- `pom.xml`：模块构建和依赖入口。\n- `src/main`：生产代码与资源入口。\n\n## Dependencies\n\n依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。\n\n## Verification\n\n在后端仓库根目录执行 `mvn -pl wta-modules/wta-workflow -am -DskipTests compile`，再按模块测试配置执行验证。\n\n## Read Next\n\n先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。\n"
+    }
+  ]
+}

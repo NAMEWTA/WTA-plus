@@ -1,5 +1,8 @@
 # WTA-plus 文档、目录与交付治理审查
 
+> 2026-09-18 已按当前工作树重新核对并修订建议。原报告中的2026-09-14命令属于历史记录；当前命令结果见 [re-review-command-results.json](re-review-command-results.json)，逐票结论见 [re-review.md](re-review.md)。本次单人串行，仅改change；无旧版兼容要求。
+
+
 审查日期：2026-09-14。范围为仓库根、当前 `docs/`、`scripts/`、`release-artifacts/`、前后端索引与 README、`.agents/skills/` 项目治理规则、Maven/pnpm 构建合同、CI/发布脚本和可达的 SpecDev 当前配置。未读取 Speculo 历史 archive，也未修改产品代码、配置、文档或 Git 状态；持久化写入仅限本 change 下的 review 工件。两个验证脚本曾在系统临时目录创建并清理测试夹具，详见命令 JSON，不应将本次执行描述为绝对纯读取。
 
 本报告使用 `module`、`interface`、`depth`、`seam`、`adapter`、`leverage`、`locality` 术语。`confirmed` 表示由当前工作树静态证据直接证明；`likely` 表示代码路径已指出问题但尚未执行相应 runtime；`needs-runtime` 表示需要环境、服务或远程 CI 才能结论。P1 阻止可重复交付或会使安全/产物合同失真，P2 造成维护和验收漂移，P3 为低风险清理候选。
@@ -8,7 +11,7 @@
 
 * `confirmed`：当前产品是单一 monorepo。存在 <Path>frontend/apps/admin-web/package.json</Path>、<Path>frontend/apps/home-web/package.json</Path>、<Path>frontend/apps/sso-web/package.json</Path> 三个可构建 App；<Path>backend/pom.xml</Path> 下实际跟踪 50 个 POM 描述符、247 个 `src/test/java` Java 源文件。项目画像 <Path>.agents/skills/engineering-standards/references/project/01-module-map.md</Path> 第 9 行仍记录“46 projects/176 tests”，第 7 行仍把不存在的 <Path>.github/workflows/quality-gates.yml</Path> 当 high-confidence evidence。这里的 247 是 tracked Java source file 数，不是测试用例数。
 * `confirmed`：<Path>.github/workflows/quality-gates.yml</Path>、<Path>plan/update.md</Path>、<Path>.vscode/settings.json</Path> 均不存在；<Path>scripts/ci/verify-submodules.sh</Path> 因仓库无 submodule 必定失败。<Path>scripts/ci/verify-dev-build-guard.sh</Path> 又要求缺失的 `.vscode/settings.json`，因此不能成为当前门禁。
-* `confirmed`：<Path>release-artifacts/scripts/verify-release.sh</Path> 的 43 个合同测试中 42 通过，唯一失败由读取不存在的 <Path>.github/workflows/quality-gates.yml</Path> 引起；命令、cwd、退出码、测试夹具临时写入与未执行项见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/docs-command-results.json</Path>。
+* `confirmed`：<Path>release-artifacts/scripts/verify-release.sh</Path> 的 2026-09-14记录43个合同测试中42通过；2026-09-18重新运行是41通过、2失败，其中一项由读取不存在的 <Path>.github/workflows/quality-gates.yml</Path> 引起；另一项是产品测试断言Speculo提供的upstream-fork-sync必须不存在；不能据此删除供应商Skill。命令、cwd、退出码、测试夹具临时写入与未执行项见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/docs-command-results.json</Path>。
 * `confirmed`：只读 Markdown 相对链接扫描覆盖 218 个当前 Markdown 文件，未发现支持子集中的失效 literal relative link；此结果不覆盖代码 span、glob/变量路径、runtime URL、历史 archive。`docs/fm/scripts/validate.mjs` 与统一全栈 Skill validator 静态通过，但不等于生成输出、Maven、前端构建或部署通过。
 * 排除：不把上游 `org.dromara` 坐标、SnailJob/WarmFlow/AI schema 或第三方文件仅因名称旧就建议删除；它们属于 KEEP/供应商所有权，需由后端安全审查维护。分层 validator namespace 漏检由后端 B finding 负责，本报告只记录其与交付治理的耦合。
 
@@ -20,11 +23,11 @@
 
 **问题与后果。** 一个已经废弃的 snapshot interface 仍出现在“质量门禁”说明，实际不存在的 workflow 成为错误证据。新成员可能按旧步骤初始化 submodule，CI 若恢复引用会在所有分支稳定失败；画像的 high confidence 使审查和自动化都信任错误事实。
 
-**代码 judo / 删除测试。** 删除 <Path>scripts/ci/verify-submodules.sh</Path> 及其 snapshot 映射后，submodule 复杂性真正消失；将 CI 事实收敛到当前可执行命令清单（或一个只读 manifest）后，任何不存在 workflow 的声明不能再被引用。若组织确实需要检查仓库拓扑，应改为断言 `git ls-files` 中不存在 submodule，而不是保留 checkout/SHA 逻辑。
+**代码 judo / 删除测试。** 删除 <Path>scripts/ci/verify-submodules.sh</Path> 及其 snapshot 映射后，submodule 复杂性真正消失；将 CI 事实收敛到当前可执行命令清单（或现有脚本列表）后，任何不存在 workflow 的声明不能再被引用。若组织确实需要检查仓库拓扑，应改为断言 `git ls-files` 中不存在 submodule，而不是保留 checkout/SHA 逻辑。
 
-**建议。** P1，`D-T01-delivery-gates`：重写 project profile、module map、<Path>scripts/README.md</Path> 和 review checklist 的 active/not-active 表；删除遗留脚本或明确 `retired/` 并从所有 gate 映射移除；由真实 CI 文件（若重新建立）和本地命令矩阵共同成为唯一 interface。验证：`git ls-files .github/workflows .gitmodules`、逐条 shell `bash -n`、CI dry parse；不得声称远程 required check，直到提交后的 Actions 记录与分支保护可见。
+**建议。** P1，`D-T01-delivery-gates`：重写 project profile、module map、<Path>scripts/README.md</Path> 和 review checklist 的 active/not-active 表；删除遗留脚本并从所有gate映射移除，不保留retired兼容副本；由真实 CI 文件（若重新建立）和本地命令矩阵共同成为唯一 interface。验证：`git ls-files .github/workflows .gitmodules`、逐条 shell `bash -n`、CI dry parse；不得声称远程 required check，直到提交后的 Actions 记录与分支保护可见。
 
-**架构卡。** `dependency class: local-substitutable`；`strength: Strong`；`deleted complexity: submodule checkout state, stale snapshot branch and duplicated CI claim`；`ADR conflict: ADR-0053 monorepo`，不是与产品行为冲突。前后：`旧 parent -> submodule status -> snapshot workflow`；`目标 parent -> canonical gate manifest -> local/CI same command`。
+**架构卡。** `dependency class: local-substitutable`；`strength: Strong`；`deleted complexity: submodule checkout state, stale snapshot branch and duplicated CI claim`；`ADR conflict: ADR-0053 monorepo`，不是与产品行为冲突。前后：`旧 parent -> submodule status -> snapshot workflow`；`目标 parent -> 现有可执行命令清单 -> local/CI same command`。
 
 ### D-02 P1 confirmed/needs-runtime：SSO App 已进入源码与构建发现，却断在发布 interface
 
@@ -32,9 +35,9 @@
 
 **问题与后果。** “源码有三个 App”“发布只包含两个 App”“发布脚本自动发现三个 App”互相矛盾。即使跳过 stage，SSO 的独立 origin、`/sso` API 反代、cookie domain、callback 和 health route 没有可发布合同；构建通过不能证明登录能用。
 
-**代码 judo / 删除测试。** 不要让目录扫描决定发布面。删除隐式 `find apps/*/package.json` 作为 release interface，改为显式、版本化、按环境审查的发布 App 清单；清单中的每个 App 必须同时声明 package、prefix、port、Nginx template、API route、callback/origin 与是否 shipped。若 SSO 尚未发布，清单明确排除并使 release 脚本拒绝未登记 App；若发布，补齐 Compose/Nginx/port/env/ADR 矩阵并做真实浏览器验收。删除自动发现后，未登记目录不会悄悄改变发布产物。
+**代码 judo / 删除测试。** 不要让目录扫描决定发布面。删除隐式 `find apps/*/package.json` 作为 release interface，改为显式、版本化、按环境审查的发布 App 清单；清单中的每个 App 必须同时声明 package、prefix、port、Nginx template、API route、callback/origin 与是否 shipped。按已有独立SSO Origin决策补齐 Compose/Nginx/port/env/ADR 矩阵并做真实浏览器验收。删除自动发现后，未登记目录不会悄悄改变发布产物。
 
-**建议。** P1，`D-T02-sso-release-surface`，与前端 SSO ticket 合并；只在用户选定“发布 SSO”或“继续源码-only”后执行。验收：`release-manage build/stage` 在干净 workspace；每个 manifest App 生成且仅生成一套 Nginx/Compose 资产；独立 origin 的 authorize/token/PKCE、cookie、callback、刷新/失败关闭由 Playwright + 双后端 runtime 验证。`needs-runtime`：DNS/TLS、跨 origin cookie、实际 `/sso` upstream。
+**建议。** P1，`D-T02-sso-release-surface`，与前端 SSO ticket 合并；方案按既有独立SSO Origin决策补齐发布资产，不把源码-only作为平行备选。验收：`release-manage build/stage` 在干净 workspace；每个 manifest App 生成且仅生成一套 Nginx/Compose 资产；独立 origin 的 authorize/token/PKCE、cookie、callback、刷新/失败关闭由 Playwright与隔离SSO服务 验证。`needs-runtime`：DNS/TLS、独立Origin的Cookie与反代、实际 `/sso` upstream。
 
 **架构卡。** `dependency class: ports & adapters`；`strength: Strong`；`deleted complexity: implicit directory scan and partial release ownership`；`ADR conflict: ADR-0073/0074`，当前发布文件没有兑现已接受的独立 origin 决策。前后：`旧 apps scan -> build -> stage(template missing)`；`目标 release manifest -> build -> verified App adapter -> atomic stage`。
 
@@ -42,11 +45,11 @@
 
 **证据。** <Path>release-artifacts/scripts/release-manage.sh</Path> 第 169–183 行在 `target != all` 时复制 `current_<env>` 到临时 staging；第 230–270 行只覆盖请求的 frontend 或 backend。第 273–318 行的 `write_manifest` 无论 staging 中文件来自哪次构建，都把当前 parent/backend/frontend HEAD、environment 与 bundle 写入同一 manifest。第 350–360 行对 `frontend`/`backend` 单目标同样写完整清单。
 
-**问题与后果。** 先用 `bundle-core` 构建 backend，再只构建 frontend，新的 manifest 可能标记请求的 `bundle` 参数，而 staging 仍含旧 backend；反向亦然。旧产物没有 commit/digest 对照，partial build 失去可追溯性，回滚和发布批准会看到“当前 HEAD”但部署了其他 revision。<Path>release-artifacts/README.md</Path> 第 61–66 行要求 manifest 可追溯，却没有声明 partial 组合规则。
+**问题与后果。** 先用 `bundle-core` 构建 backend，再只构建 frontend，新的 manifest 可能标记请求的 `bundle` 参数，而 staging 仍含旧 backend；反向亦然。manifest已有文件digest，但旧产物没有独立构建来源对照，partial build 失去可追溯性，回滚和发布批准会看到“当前 HEAD”但部署了其他 revision。<Path>release-artifacts/README.md</Path> 第 61–66 行要求 manifest 可追溯，却没有声明 partial 组合规则。
 
 **代码 judo / 删除测试。** 删除“按目录复制 current 后覆盖一部分”的隐式组合；每次可交付 release 只接受同一 parent/backend/frontend revision 的完整 artifact set。若保留单目标开发命令，它应输出不可发布的局部 cache，不得进入 `current_<env>`、stage 或 bundle。manifest 应记录每个 artifact 的 source SHA 和完整清单，promotion 在全部校验通过后一次完成。
 
-**建议。** P1，`D-T03-release-provenance`。先建立负测试：backend-only 后不得产生 deployable current；frontend-only 只能更新独立 cache；两端完整构建的 manifest source SHA 与产物 digest 一一匹配；stage 对缺失/混源立即失败且不覆盖已发布目录。不要通过复制更多 metadata 来掩盖混源，核心是删除隐式 partial promotion。`dependency class: local-substitutable`；`strength: Strong`；`ADR conflict: ADR-0042` 的“可复现构建”与发布 manifest 合同。
+**建议。** P1，`D-T03-release-provenance`。以同一monorepo源码快照构建完整发布。先建立负测试：backend-only 后不得产生 deployable current；frontend-only 只能更新独立 cache；两端完整构建的 manifest source SHA 与产物 digest 一一匹配；stage 对缺失/混源立即失败且不覆盖已发布目录。不要通过复制更多 metadata 来掩盖混源，核心是删除隐式 partial promotion。`dependency class: local-substitutable`；`strength: Strong`；`ADR conflict: ADR-0042` 的“可复现构建”与发布 manifest 合同。
 
 ### D-04 P2 confirmed/likely：bundle-core 构建参数与必需 artifact 校验漂移
 
@@ -54,7 +57,7 @@
 
 **问题与后果。** “core 排除可选模块”的文字与测试 classpath、profile 依赖和校验列表不是同一 interface。`release-manage.sh` 第 198–200 行用 `-DskipTests` 构建 full/core；core 阶段跳过测试本身合法，但此前是否运行过覆盖排除组合的 compile/test 没有由 release script 强制。遗漏 profile artifact 会使 bundle gate 在错误组合上给绿灯；直接把 admin tests 当 core 运行又可能依赖被排除的 workflow/demo。
 
-**建议。** P2，`D-T04-bundle-contract`：从 effective POM 与实际 JAR 生成唯一 bundle manifest，分别记录 full/core 的 required/forbidden/allowed artifact；补齐 `wta-notify`、profile person/enterprise 的必需项，并保留已存在的 third、sso 校验。项目画像已有 core `-Dmaven.test.skip=true` 规则，而 release 脚本 core 仍使用 `-DskipTests`，后者仍进入 test-compile；admin tests 的 workflow/demo 直接 import 在 core classpath 下的编译失败为 `likely`，本次未运行 Maven。先按当前合同在完整测试通过后用正确 core 打包参数；长期将排除组合测试 scope 独立到能验证该组合的 test module/fixture。验收为两种 clean package、`jar tf` manifest、未跳过的受影响 tests；不以删除 tests 或扩大 core 依赖获得通过。
+**建议。** P2，`D-T04-bundle-contract`：以显式产品组合为预期，分别核对effective POM和实际JAR，不能用待测JAR自生成预期，分别记录 full/core 的 required/forbidden/allowed artifact；补齐 `wta-notify`、profile person/enterprise 的必需项，并保留已存在的 third、sso 校验。项目画像已有 core `-Dmaven.test.skip=true` 规则，而 release 脚本 core 仍使用 `-DskipTests`，后者仍进入 test-compile；admin tests 的 workflow/demo 直接 import 在 core classpath 下的编译失败为 `likely`，本次未运行 Maven。先按当前合同在完整测试通过后用正确 core 打包参数；长期将排除组合测试 scope 独立到能验证该组合的 test module/fixture。验收为两种 clean package、`jar tf` manifest、未跳过的受影响 tests；不以删除 tests 或扩大 core 依赖获得通过。
 
 ### D-05 P2 confirmed：项目画像、模块地图与前后端 README 的数字/拓扑事实过时
 
@@ -72,7 +75,7 @@
 
 **问题与后果。** 这些文件形成 shallow module/interface：复制文本增加维护面，却没有 locality 或导航价值。命令复制错误会使新人得到稳定失败的验证步骤。
 
-**代码 judo / 删除测试。** 删除 41 份无增量事实的正文，保留每个真正有边界/例外/验证差异的模块 README；统一以模板生成短索引，但模板必须输出相对仓根正确的命令（或显式 `cd <Path>backend</Path>`）。不删除有 Profile、Notify、SSO、Third 特殊边界的 6–8 份真实手册，先比较内容和 owner。
+**代码 judo / 删除测试。** 归并无增量正文；保留必要导航和真正有边界/例外/验证差异的手册，不边删除边生成同义索引，但模板必须输出相对仓根正确的命令（或显式 `cd <Path>backend</Path>`）。不删除有 Profile、Notify、SSO、Third 特殊边界的 6–8 份真实手册，先比较内容和 owner。
 
 **建议。** P2，`D-T06-agents-consolidation`：逐文件 hash/语义 diff；generic-only 文件合并到父级导航或删除，特例保留并补齐入口、依赖、验证和 Read Next。验收：所有 README 命令在声明 cwd 下可解析；索引不重复工程规范、不制造第二套 module mode 名单。`dependency class: local-substitutable`；`strength: Strong`；`deleted complexity: 41 duplicate handbooks`。
 
@@ -98,7 +101,7 @@
 
 **问题与后果。** 集成测试通过的 API/签名/CORS 语义不一定是发布运行时语义；未来镜像更新会只改一侧，供应链 provenance 也无法从 manifest 追踪。
 
-**建议。** P2，`D-T09-runtime-image-matrix`：建立单一受审查 image/version manifest，CI 和四类 Compose 仅引用它生成或校验；若 CI 必须与发布镜像不同，明确 compatibility class、差异原因和额外测试。验收：静态版本一致性、镜像 digest（若环境可得）、MinIO OSS readiness/私有匿名拒绝和 Nginx/API smoke。`needs-runtime`：无法在本机 Docker 缺失时证明兼容。
+**建议。** P2，`D-T09-runtime-image-matrix`：以现有Compose镜像为来源，CI读取或用小型校验核对版本，不强制新增manifest/生成器；若 CI 必须与发布镜像不同，明确 compatibility class、差异原因和额外测试。验收：静态版本一致性、镜像 digest（若环境可得）、MinIO OSS readiness/私有匿名拒绝和 Nginx/API smoke。`needs-runtime`：无法在本机 Docker 缺失时证明兼容。
 
 ### D-10 P2 confirmed：发布脚本是非原子、多阶段写入，失败恢复依赖目录副作用
 
@@ -129,47 +132,8 @@
 
 **建议。** P2，合入 `D-T01-delivery-gates` 或独立 `D-T11-skill-validator-preconditions`；增加 clean-clone fixture，验证不创建目录也可通过。`dependency class: local-substitutable`；`strength: Strong`；`ADR conflict: 无`。
 
-## 提案到 tickets / spec / ADR 的写集
+## 实施与验证
 
-这些是供用户审核的 draft 候选，不表示已接受，也不应在本次 review 阶段直接实现：
+修订后的逐票写集、步骤和验收以 [tickets-map](../tickets-map.md) 及对应Ticket为准，不在专项报告中重复维护另一套计划。2026-09-18复核矩阵见 [re-review](re-review.md)，本次运行记录见 [re-review-command-results.json](re-review-command-results.json)。
 
-全部候选的 `interview state = not-started`、`user conclusion = pending-user-review`。所有改造保留当前已接受的安全、MySQL owner 和独立 SSO Origin 契约；用户要求无兼容升级只表示可提硬切方案，不表示已批准上线或删除数据。
-
-| Finding | code-judo / 真正删除的复杂性 | dependency class / strength | ADR 与删除测试 |
-|---|---|---|---|
-| D-01 | 删除 submodule 快照分支与虚假 CI 状态 | local-substitutable / Strong | 兑现 ADR-0053；删除后 monorepo 无需 checkout/SHA 双源 |
-| D-02 | 删除目录扫描隐式激活发布面，收敛显式 release manifest | ports & adapters / Strong | 保留 ADR-0073 独立 Origin；缺 template 在写产物前失败 |
-| D-03 | 删除从 current 复制另一半旧产物的 implicit promotion | local-substitutable / Strong | 与可追溯交付一致；混源不再可产生 deployable current |
-| D-04 | 删除 README/script/POM 三份手工 bundle 名单 | local-substitutable / Strong | 不改变 full/core 产品契约；manifest 派生并检查真实 JAR |
-| D-05 | 删除重复事实数字与失效入口叙述 | local-substitutable / Strong | 与 DEC-000、DOC-003 一致；实际 inventory 一变即可发现漂移 |
-| D-06 | 删除无模块事实的复制手册正文 | local-substitutable / Strong | 保留特例规则；删后 owner/入口仍可在 canonical 导航找到 |
-| D-07 | 删除旧目录和旁路 verification 命令 | local-substitutable / Strong | ADR-0053；执行范围直接来自当前 command matrix |
-| D-08 | 删除 dev 后递归 production 二次构建 | in-process / Strong | 无 ADR 冲突；每 App 每 mode 一次构建 |
-| D-09 | 删除 CI/Compose 两处独立镜像版本选择 | ports & adapters / Strong | 无 ADR 冲突；允许差异须显式记录 compatibility class |
-| D-10 | 删除逐目录原地清空与部分投放分支 | local-substitutable / Strong | 与发布回滚契约一致；失败时旧 context 字节不变 |
-| D-11 | 删除 Skill facts 与可选私密输出目录的耦合 | local-substitutable / Strong | 无 ADR 冲突；clean clone 无需创建任何发布目录 |
-
-| Ticket 候选 | 内容与写集 | 门槛/验收 |
-|---|---|---|
-| `D-T01-delivery-gates` | `spec.md`：CI/local gate matrix；`tickets-map`：命令 owner；ADR 候选：canonical gate interface；重写 profile/module map/scripts README | 先确认是否恢复 `.github` workflow；远程 required check 需 Actions + branch protection 证据 |
-| `D-T02-sso-release-surface` | SSO shipped/compiled/preview scope、origin/callback/cookie/反代矩阵、Compose/Nginx/env 清单；引用 ADR-0073/0074 | 用户决定发布 SSO 或明确源码-only；Playwright + 双后端 runtime |
-| `D-T03-release-provenance` | release manifest source SHA、artifact digest、禁止混源 partial promotion、full staging；更新 `release-artifacts` spec/ADR | backend/frontend 同 revision；失败注入后目标目录 hash 不变 |
-| `D-T04-bundle-contract` | full/core effective POM 与 JAR artifact allow/deny manifest；测试 scope 与 `verify-admin-bundle` | clean 两 profile、受影响 tests 未跳过；不扩大 bundle 以逃避验证 |
-| `D-T05-facts-convergence` | project profile/module map 为唯一事实，README 只导航；删除失效路径描述 | inventory、link、命令矩阵一致 |
-| `D-T06-agents-consolidation` | generic AGENTS 删除/合并，保留真实 boundary docs；模板命令 cwd 修复 | 每份保留文件有独立 owner/dependency/verification |
-| `D-T07-specdev-verification-sync` | 全局 config 命令更新与 evidence schema；本次 review 只记录，不改 config | 用户批准后逐命令执行并记录 exit code |
-| `D-T08-frontend-build-matrix` | build dev/prod 单次 App matrix、静态 mode contract | 产物环境标记、浏览器 smoke |
-| `D-T09-runtime-image-matrix` | CI/Compose 镜像 manifest 与 digest/差异策略 | Docker、OSS readiness、供应链审查 |
-| `D-T10-atomic-staging` | release staging promotion 与 failure injection | 失败不污染目标 context |
-| `D-T11-skill-validator-preconditions` | 与 D-T01 合并：只检私密路径策略，不要求目录存在 | clean-clone fixture；不创建目录也能验证事实 |
-
-## 当前没有问题或尚未验证的面
-
-* literal Markdown 相对链接支持子集无失效项；FreeMarker 清单/SQL/CRUD method/Javadoc 静态 validator 通过。
-* <Path>release-artifacts/docker/infrastructure/mysql/init/</Path> 六份 SQL 的 owner、顺序和 MySQL-only 规则已有多处一致描述，未发现应因“旧内容”删除的第三方 schema。
-* 未验证 Maven effective dependency、Java compile/test、pnpm install/lint/typecheck/unit/build、Playwright、Docker Compose/Nginx、真实 MinIO/MySQL/Redis、SSO callback/cookie、远程 GitHub Actions/branch protection、覆盖率/依赖漏洞扫描、FreeMarker 代表性渲染。它们均是 `needs-runtime` 或 `not-run`，不能写 passed。
-* UI/UX 本轮只审查交付与文档可达性，没有把图片预览当作当前交互通过证据；Admin/Home/SSO 真实登录、动态菜单、权限负向和 API error state 需要独立浏览器票据。
-
-## 最佳推荐
-
-唯一最佳推荐是先审查 `D-T01-delivery-gates`。随后处理 `D-T03-release-provenance`，再决定 `D-T02-sso-release-surface`。这条顺序删除隐式 gate、混源产物和重复事实，提升 interface depth、leverage 与 locality；其余文档合并、镜像矩阵和 UI/runtime 验证在前两个基础合同稳定后按 tickets-map 排期。当前没有对产品代码的改写，也没有把任何候选视为用户已接受。
+confirmed表示源码链成立，不代表线上事故已复现。未运行Maven/pnpm/浏览器或真实数据库、Redis、Provider；不得将计划验收写成通过。仅修改本change，产品实现未开始。

@@ -1,0 +1,65 @@
+[
+  {
+    "command": "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "ERROR: 缺少统一私密发布目录 temp/release\n"
+  },
+  {
+    "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "stdout": "Validated unified full-stack Skill (19 files, 16 templates).\n",
+    "stderr": ""
+  },
+  {
+    "command": "node docs/fm/scripts/validate.mjs",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "stdout": "Validated 32 FreeMarker templates.\n",
+    "stderr": ""
+  },
+  {
+    "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-person --mode layered",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "stdout": "Validated layered module: backend/wta-modules/wta-profile/wta-profile-person (168 Java files)\n",
+    "stderr": ""
+  },
+  {
+    "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-enterprise --mode layered",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "stdout": "Validated layered module: backend/wta-modules/wta-profile/wta-profile-enterprise (130 Java files)\n",
+    "stderr": ""
+  },
+  {
+    "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-notify --mode layered",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "ERROR: org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java: @DSTransactional 事务边界必须位于 UseCase\nERROR: org/namewta/notify/service/runtime/NotifyOutboxWakePublisher.java: layered service 目录只能放语义明确的 *Service，不得放 ServiceImpl/Provider/Gateway/Store 等适配实现\n"
+  },
+  {
+    "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-sso --mode layered",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "ERROR: org/namewta/sso/support/SsoSessionCookie.java: support 层禁止依赖 org.springframework.http.ResponseCookie\n"
+  },
+  {
+    "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-third --mode layered",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "stdout": "Validated layered module: backend/wta-modules/wta-third (71 Java files)\n",
+    "stderr": ""
+  },
+  {
+    "command": "bash release-artifacts/scripts/verify-release.sh",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 1,
+    "stdout": "[INFO] MySQL 基座校验通过：六份 SQL 由 release-artifacts 直接维护，未执行复制或改写\n[INFO] MySQL 基座校验通过：六份 SQL 由 release-artifacts 直接维护，未执行复制或改写\n✔ the six ordered MySQL files are non-empty UTF-8 baselines tracked by Git (8.797868ms)\n✔ stage-mysql is idempotent and never rewrites the canonical SQL files (77.108402ms)\n✔ release secrets and generated artifacts remain ignored (78.072391ms)\n✔ NAMEWTA structure and data contracts live in the canonical 50 and 60 files (3.328786ms)\n✔ backend SQL consumers use the explicit canonical baseline seam (11.160796ms)\n✔ HTTP and TLS load balancers proxy the complete Nacos context path (0.973144ms)\n✔ Nacos proxy keeps authentication and frame policy owned by Nacos (0.419591ms)\n✔ HTTP and TLS expose the same Nacos route contract (0.274409ms)\n✔ 公告发送范围和站内消息快照字段由唯一 MySQL 基座完整定义 (1.798831ms)\n✔ 初始化公告显式面向全部用户且只选择站内渠道，不产生额外目标或外部投递 (2.00909ms)\n✔ 通知渠道字典与公告可选站内信、短信、邮件合同一致 (0.480339ms)\n✔ 通知菜单权限覆盖管理动作与收件箱阅读动作 (0.934181ms)\n✔ 清理旧通知菜单不会删除当前通知监控路由 (0.477958ms)\n[INFO] MySQL 基座校验通过：六份 SQL 由 release-artifacts 直接维护，未执行复制或改写\n[ERROR] 缺少、为空或无法读取数据库初始化文件: /tmp/namewta-stage-mysql-test-b7NXpG/release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql\n✔ deployment is split into exactly four compose categories (1.428591ms)\n✔ runtime resources use the namewta prefix (0.619307ms)\n✔ frontend compose provides LB, TLS profile, and independent app nginx (0.225413ms)\n✔ nginx templates preserve prefix stripping and protect actuator (0.238537ms)\n✔ both load balancers serve the internal no-cache maintenance page for upstream errors (0.37258ms)\n✔ committed env file contains placeholders instead of runtime secrets (0.386393ms)\n✔ both admin instances inherit a default-off OpenAPI secret contract (0.512734ms)\n✔ Nacos infrastructure is optional, pinned, authenticated, and locally bound (1.146788ms)\n✔ Nacos override requires secrets and enables both admin instances after health (0.724318ms)\n✔ Nacos MySQL schema is pinned and both initialization paths are idempotent (0.989898ms)\n✔ existing-volume Nacos initializer rejects placeholder credentials without leaking them (27.957312ms)\n✔ Nacos schema SQL is not a bash hook and compose still gates the Nacos service (0.371929ms)\n✔ stage-mysql validates the canonical SQL baseline without writing it (65.722968ms)\n✔ MySQL initialization targets one protected wta-plus database (0.691164ms)\n✔ admin instances receive the private MinIO readiness canary contract (0.316041ms)\n✔ reserved ingress routes cannot be used as an app prefix (0.463292ms)\n✔ add_app.py registers a buildable app across compose and both LBs (131.94728ms)\n✔ docker manager forwards an optional logs service on macOS-compatible bash (13.555483ms)\n✔ 发布资产是当前唯一的 MySQL 与工作流事实源 (7.78833ms)\n✔ 当前治理声明直接维护基座并要求按标签升级已有库 (1.133528ms)\n✖ CI 复用受保护初始化器并把唯一 SQL 根传给后端测试 (0.429078ms)\n✔ 私密发布报告目录保持未跟踪 (6.621033ms)\n✔ the six leave workflow assets are exact, parseable, and tracked (8.349259ms)\n✔ KEEP third-party dromara coordinates still occur as Maven groupIds and Java imports (95.526072ms)\n✔ first-party backend POM groupId is org.namewta and owned modules are wta-* (0.619871ms)\n✖ upstream-fork-sync skill and docs/upstream workflow tree are absent (0.875937ms)\n✔ owned filesystem paths use org/namewta not org/dromara (110.490782ms)\n✔ live admin home and docs widget do not depend on dromara product URLs (0.272172ms)\n✔ README clones the WTA-plus monorepo without git submodule delivery (0.238352ms)\n✔ shipped Nacos runtime reads only the new data-id (hard-cut, no dual-read loader) (0.398397ms)\nℹ tests 43\nℹ suites 0\nℹ pass 41\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 518.964625\n\n✖ failing tests:\n\ntest at release-artifacts/tests/release-integration-contract.test.mjs:66:1\n✖ CI 复用受保护初始化器并把唯一 SQL 根传给后端测试 (0.429078ms)\n  Error: ENOENT: no such file or directory, open '/srv/WTA-plus/.github/workflows/quality-gates.yml'\n      at Object.readFileSync (node:fs:483:20)\n      at read (file:///srv/WTA-plus/release-artifacts/tests/release-integration-contract.test.mjs:22:13)\n      at TestContext.<anonymous> (file:///srv/WTA-plus/release-artifacts/tests/release-integration-contract.test.mjs:68:20)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    errno: -2,\n    code: 'ENOENT',\n    syscall: 'open',\n    path: '/srv/WTA-plus/.github/workflows/quality-gates.yml'\n  }\n\ntest at release-artifacts/tests/wta-rename-keep-contract.test.mjs:74:1\n✖ upstream-fork-sync skill and docs/upstream workflow tree are absent (0.875937ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  true !== false\n  \n      at TestContext.<anonymous> (file:///srv/WTA-plus/release-artifacts/tests/wta-rename-keep-contract.test.mjs:76:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: true,\n    expected: false,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+    "stderr": "[INFO] 校验 Shell 语法\n[INFO] 执行全部发布合同测试\n"
+  }
+]

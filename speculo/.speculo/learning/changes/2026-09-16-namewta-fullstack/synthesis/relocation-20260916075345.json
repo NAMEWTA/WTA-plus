@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "artifact": "learning-relocation-manifest",
+  "parent_change": "2026-09-16-namewta-fullstack",
+  "created_at": "2026-09-16T07:53:45.456Z",
+  "moves": [
+    {
+      "id": "2026-09-14-namewta-architecture",
+      "from": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-14-namewta-architecture",
+      "to": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-16-namewta-fullstack/children/2026-09-14-namewta-architecture",
+      "from_locator": "changes/2026-09-14-namewta-architecture",
+      "to_locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-namewta-architecture",
+      "content_hash": "8c85e5af51e5215a6c94a28caf044acaa25a0acd5d3066445abd38b661be91ef"
+    },
+    {
+      "id": "2026-09-14-wta-sso",
+      "from": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-14-wta-sso",
+      "to": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-sso",
+      "from_locator": "changes/2026-09-14-wta-sso",
+      "to_locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-sso",
+      "content_hash": "083f72540612640cfae5fb7d94b841e48d1e16a6998f8449084cbd00e19d7c23"
+    },
+    {
+      "id": "2026-09-14-wta-notify",
+      "from": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-14-wta-notify",
+      "to": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-notify",
+      "from_locator": "changes/2026-09-14-wta-notify",
+      "to_locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-notify",
+      "content_hash": "2066905cb7ad149dde59641dd21f71b827272176602132e0d34ef6b6481d2a4f"
+    },
+    {
+      "id": "2026-09-14-wta-third",
+      "from": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-14-wta-third",
+      "to": "/srv/WTA-plus/speculo/.speculo/learning/changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-third",
+      "from_locator": "changes/2026-09-14-wta-third",
+      "to_locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-third",
+      "content_hash": "b6957a6cc75b728dd9dc37a5c14a89883acc719faf431aa249ff90d10d7e23ed"
+    }
+  ]
+}

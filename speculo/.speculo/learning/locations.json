@@ -4,39 +4,76 @@
   "entries": [
     {
       "change_id": "2026-09-14-namewta-architecture",
-      "locator": "changes/2026-09-14-namewta-architecture",
-      "parent_change": null,
-      "root_change": "2026-09-14-namewta-architecture",
-      "content_hash": "6fc4c772ba1b92b44c36000928bb9e23662a0a37bf6e0b80d20fce968ecd32a5",
-      "previous": [],
-      "updated_at": "2026-09-14T07:42:38.672Z"
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-namewta-architecture",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
+      "content_hash": "8c85e5af51e5215a6c94a28caf044acaa25a0acd5d3066445abd38b661be91ef",
+      "previous": [
+        {
+          "locator": "changes/2026-09-14-namewta-architecture",
+          "moved_at": "2026-09-16T07:53:45.456Z",
+          "reason": "consolidate",
+          "content_hash": "8c85e5af51e5215a6c94a28caf044acaa25a0acd5d3066445abd38b661be91ef"
+        }
+      ],
+      "updated_at": "2026-09-16T07:53:45.456Z"
     },
     {
       "change_id": "2026-09-14-wta-sso",
-      "locator": "changes/2026-09-14-wta-sso",
-      "parent_change": null,
-      "root_change": "2026-09-14-wta-sso",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-sso",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
       "content_hash": "083f72540612640cfae5fb7d94b841e48d1e16a6998f8449084cbd00e19d7c23",
-      "previous": [],
-      "updated_at": "2026-09-14T08:03:33.105Z"
+      "previous": [
+        {
+          "locator": "changes/2026-09-14-wta-sso",
+          "moved_at": "2026-09-16T07:53:45.456Z",
+          "reason": "consolidate",
+          "content_hash": "083f72540612640cfae5fb7d94b841e48d1e16a6998f8449084cbd00e19d7c23"
+        }
+      ],
+      "updated_at": "2026-09-16T07:53:45.456Z"
     },
     {
       "change_id": "2026-09-14-wta-third",
-      "locator": "changes/2026-09-14-wta-third",
-      "parent_change": null,
-      "root_change": "2026-09-14-wta-third",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-third",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
       "content_hash": "b6957a6cc75b728dd9dc37a5c14a89883acc719faf431aa249ff90d10d7e23ed",
-      "previous": [],
-      "updated_at": "2026-09-14T08:03:33.105Z"
+      "previous": [
+        {
+          "locator": "changes/2026-09-14-wta-third",
+          "moved_at": "2026-09-16T07:53:45.456Z",
+          "reason": "consolidate",
+          "content_hash": "b6957a6cc75b728dd9dc37a5c14a89883acc719faf431aa249ff90d10d7e23ed"
+        }
+      ],
+      "updated_at": "2026-09-16T07:53:45.456Z"
     },
     {
       "change_id": "2026-09-14-wta-notify",
-      "locator": "changes/2026-09-14-wta-notify",
-      "parent_change": null,
-      "root_change": "2026-09-14-wta-notify",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-notify",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
       "content_hash": "2066905cb7ad149dde59641dd21f71b827272176602132e0d34ef6b6481d2a4f",
+      "previous": [
+        {
+          "locator": "changes/2026-09-14-wta-notify",
+          "moved_at": "2026-09-16T07:53:45.456Z",
+          "reason": "consolidate",
+          "content_hash": "2066905cb7ad149dde59641dd21f71b827272176602132e0d34ef6b6481d2a4f"
+        }
+      ],
+      "updated_at": "2026-09-16T07:53:45.456Z"
+    },
+    {
+      "change_id": "2026-09-16-namewta-fullstack",
+      "locator": "changes/2026-09-16-namewta-fullstack",
+      "parent_change": null,
+      "root_change": "2026-09-16-namewta-fullstack",
+      "content_hash": "1a5007f36add3aca92a5d51edf47e7e6f3d71cd27b26022864b4f36e20431280",
       "previous": [],
-      "updated_at": "2026-09-14T08:03:33.105Z"
+      "updated_at": "2026-09-16T07:53:45.456Z"
     }
   ]
 }

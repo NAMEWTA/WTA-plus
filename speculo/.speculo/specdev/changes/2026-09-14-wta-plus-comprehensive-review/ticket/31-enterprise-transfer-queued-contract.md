@@ -1,114 +1,131 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-skill_scan: "已扫描 .agents/skills/**/SKILL.md；执行前继续按命中scope展开"
-skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "ef0588daecab40e12e49e99d29a12bf107e887ab432e10a790bbc893fc42b0cf", "phase": "plan", "operation": "bind-cross-module-state-and-verification-contract", "inputs": ["B-15真实Notify返回与Profile调用链"], "outputs": ["跨存储状态/失败恢复与调用者映射"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "dd3e42720caa894bcb31ba1503b8211f669b3bbc2bb9ea3e40590a3a9edea395", "phase": "plan", "operation": "bind-cross-module-state-and-verification-contract", "inputs": ["B-15真实Notify返回与Profile调用链"], "outputs": ["跨存储状态/失败恢复与调用者映射"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "f2e7e020552795c02285df65a941609fcd93692298951c012adbc555c20ac87f", "phase": "plan", "operation": "bind-cross-module-state-and-verification-contract", "inputs": ["B-15真实Notify返回与Profile调用链"], "outputs": ["跨存储状态/失败恢复与调用者映射"], "required": true, "on_failure": "block-ticket"}]
-resource_claims: ["finding:B-15","contract:AC-031"]
+skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>"], "outputs": ["T-31的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>"], "outputs": ["T-31的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "441de2ccc513e09820ed3d7d2faf559eeaa7466202e4fbb0c8dd3eabf09510c9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>"], "outputs": ["T-31的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
+resource_claims: ["workspace:current-exclusive", "finding:B-15", "contract:AC-031"]
 artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-31
 title: 修复企业转移发码的同步/排队合同阻断
-status: draft
-planning_depth: deep
-planning_depth_reason: "跨 Profile/Notify 状态机、短信外部副作用和测试合同；需真实服务验收"
-ready: false
+status: "ready"
+planning_depth: "deep"
+planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：修复企业转移发码的同步/排队合同阻断"
+ready: true
 risk: critical
-blocked_by: ["T-22", "T-23"]
+blocked_by: ["T-22"]
 contract_ids: [AC-031]
-owner: user-review
-expected_changes: ["<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-person/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>frontend/packages/domains/profile/</Path>", "<Path>frontend/packages/web-domains/profile/</Path>", "<Path>frontend/packages/web-domains/notify/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>frontend/e2e/</Path>"]
-writable_paths: ["<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-person/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>frontend/packages/domains/profile/</Path>", "<Path>frontend/packages/web-domains/profile/</Path>", "<Path>frontend/packages/web-domains/notify/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-namewta-ddl.sql</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>frontend/e2e/</Path>"]
+owner: single-agent
+expected_changes: ["<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-person/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>frontend/packages/domains/profile/</Path>", "<Path>frontend/packages/web-domains/profile/</Path>", "<Path>frontend/packages/web-domains/notify/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>frontend/e2e/</Path>"]
+writable_paths: ["<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-person/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>frontend/packages/domains/profile/</Path>", "<Path>frontend/packages/web-domains/profile/</Path>", "<Path>frontend/packages/web-domains/notify/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>frontend/e2e/</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>","<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: []
-shared_path_owners: []
+shared_paths: ["<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path>", "<Path>backend/wta-modules/wta-notify/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-person/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>frontend/packages/domains/profile/</Path>", "<Path>frontend/packages/web-domains/profile/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>frontend/e2e/</Path>"]
+shared_path_owners: ["<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-modules/wta-notify/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-modules/wta-profile/wta-profile-person/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-api/src/main/java/org/namewta/notify/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java</Path> => single-agent (Lead; serial T-31 turn)", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path> => single-agent (Lead; serial T-31 turn)", "<Path>frontend/packages/domains/profile/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>frontend/packages/web-domains/profile/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; serial T-31 turn)", "<Path>frontend/packages/api-contracts/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>frontend/tooling/openapi/</Path> => single-agent (Lead; serial T-31 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-31 turn)"]
 ---
 
 # T-31：修复企业转移发码的同步/排队合同阻断
 
-> 仅为用户审核的实施计划；本轮不修改产品代码。
+Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
+唯一执行者先读Map，再按Skill矩阵读取适用入口/引用，再读本票。禁止任何implementation/review/research子代理。Ready仅表示计划合同就绪，不表示已经授权实施或已验证通过。
 
 ## 1. 战略与来源
 
-- **Finding：** B-15 confirmed；生产Notify返回QUEUED，Profile transfer只接受ACCEPTED/DELIVERED，合法send被撤销并回滚。
-- **目标：** 让Profile与Notify共享一个真实、可恢复的异步状态合同。
+- 目标与可观察产出：真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交。
+- 来源：B-15；AC-031；USER-DECISION: 全面完善计划、无兼容、单人串行。
+- 当前事实与调用链：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/re-review.md</Path>中T-31行及对应专项报告；源码导航为frontmatter预计修改点。
+- 规划深度：deep；安全/鉴权、公共合同、数据一致性或共享核心路径变更：修复企业转移发码的同步/排队合同阻断。
 
 ## 2. 决策状态
 
-- **状态：** draft/ready=false。ADR-CR-009的可靠异步方向；Profile不再把NotificationMode.SYNC当作已发送。外部短信最终一致性和确认窗口需用户审核。
-- **未决：** 用户是否接受最终一致性、短信失败恢复及确认窗口；未批准前不得改为同步网络调用。
+### 已锁定决策
+
+修正假同步合同，复用Notify公开query按需核验投递状态；不预设新增Profile事件总线、投影Outbox或持久验证码副本。
+
+### 已采用的低影响假设
+
+沿用当前仓库版本与既有模块命名；实施前回读实际源码，路径变化由本票修订，不猜测不存在的实现。
+
+### 未决问题
+
+无。
 
 ## 3. 范围边界
 
 | IN | REUSE | OUT |
 |---|---|---|
-| Profile transfer 与 Notify intent/outbox/challenge 状态、真实跨模块测试、前端状态反馈 | 已有权限、Client、PKCE/敏感数据、Outbox wake/lease/fence、Provider adapter | 将短信Provider I/O放进业务事务、删除失败重试、隐藏QUEUED或以测试stub代表生产 |
+| transfer+notification同事务→QUEUED+challengeId→Notify.query→confirm | 现有Redis PENDING_DELIVERY/ACTIVE、DB CAS、Notify公开query；无额外Outbox/OTP副本 | 本票之外的模块重写、兼容桥、远程发布与重要数据操作 |
 
-## 4. 实现契约
+## 4. 要构建什么
 
-- **入口/seam：** <Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/impl/EnterpriseTransferUseCaseImpl.java</Path> 与 NotificationApplicationService。
-- **不变量：** MySQL transfer record、Notify intent、delivery/outbox 在同一业务事务中原子落库；Redis challenge 只是带 TTL 的幂等投影，必须携带 transfer/challenge 版本和消费 token，不能宣称与 MySQL 同事务。challenge 只有可证明的 ACTIVE 才能确认；QUEUED/PENDING_DELIVERY 不可立即确认；同一 transfer/通知幂等；跨 Client/权限不变。
-- **错误：** Provider失败、Outbox回滚、超时和重复点击均给出稳定可重试状态，不吞错误；REVOKED/EXPIRED 必须在 MySQL transfer 状态中可追踪，Redis 撤销采用删除或短 TTL 失效并可由状态重放恢复，不能只靠 Redis key 消失推断业务结果。
+transfer+notification同事务→QUEUED+challengeId→Notify.query→confirm。调用者可观察到：真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交。失败时：仅已提交归属记录、有效OTP及ACCEPTED/DELIVERED激活；失败/过期可重新发码。
 
-## 5. 执行路线
+## 5. 实现契约
 
-1. 用真实 <Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java</Path> 确认 SYNC 与 ASYNC 当前都只持久化 QUEUED/PENDING/Outbox，建立当前测试 stub 返回 ACCEPTED 却掩盖生产语义的红灯。
-2. 在 Profile transfer contract 中明确可靠异步：将当前仅在发送成功后调用 `recordChallenge` 的时序前移为同一 MySQL 事务持久化 transfer record、Notify intent、recipient/delivery 和 outbox；事务提交前不得激活或消费 Redis challenge，提交后由 outbox/事件驱动 Redis challenge 投影从 PENDING_DELIVERY 激活或撤销；Redis 写失败可由可重放事件恢复，不能把 Redis challenge 与 MySQL 宣称为同一事务。
-3. 删除假同步 mode 或对未支持 mode 显式失败；不把 Provider I/O 塞回业务事务，不让测试 mock 制造不存在的 ACCEPTED。同步检查所有仓内 SYNC 消费者：<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java</Path>、<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindNotificationService.java</Path>、<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyTestSendService.java</Path>、<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java</Path> 和 <Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>，逐一决定其排队、验证码缓存和用户提示语义。
-4. 同时核对PersonRebindNotificationService把QUEUED判FAILED、CaptchaController忽略receipt及NotifyTestSendService展示；逐一明确排队/投递/失败，不能全局把QUEUED映射为DELIVERED。
-5. 补跨 module 真实实现 contract test、Outbox wake/失败回滚、Redis 投影重放/过期及用户确认窗口；确认短信发送、MySQL transfer 状态和 Redis challenge 状态最终一致，并覆盖 Provider 成功后投影失败的恢复序列。
-6. 同步前端转移页面的queued/active/failed可观察状态、重试与防重复提交，保留权限、Client和敏感信息规则。
+- 入口、输入输出与数据流：transfer+notification同事务→QUEUED+challengeId→Notify.query→confirm。
+- 不变量及失败语义：仅已提交归属记录、有效OTP及ACCEPTED/DELIVERED激活；失败/过期可重新发码。
+- 公共合同：本票只按以上行为及执行路线变更；同步全部仓内调用/生成物，沿用已有权限/Client/owner校验。未列出的接口保持原语义。
+- 兼容：用户明确无需旧版兼容；仓内一次切换，不加双路由/版本等待。实际供应商协议仍须遵守。
+- 安全与隐私：凭据不进入日志/UI证据；越权/过期/无owner拒绝；数据库与资源约束不能为前端成功而放宽。
 
-## 6. 路径与所有权
+原方案新增事件、投影Outbox和MySQL挑战副本缺少必要性。Notify已有query入口，按需读取即可保持原先“供应商接受后激活”的安全语义。Profile不能直接访问Notify表/实现；notificationId归属由服务端关联决定，不接受前端任意替换。新字段只修改10-cde-base-ddl.sql；不要求存量迁移或兼容适配。
 
-- 仅用户批准后写入 frontmatter paths；Notify shared semantic resources由T-22/T-23 owner协调。
-- 发现状态/DDL/接口交集时停止并更新Map，不抢占其他票。
+## 6. 执行路线
 
-## 7. 验证矩阵
+1. 真实Profile→NotificationApplicationService提交应返回QUEUED；确认receipt.queued当前还受mode==ASYNC影响，同步删除假SYNC语义及全部仓内消费者。
+2. 保留现有Redis challenge的PENDING_DELIVERY/ACTIVE/失效机制。在同一MySQL事务保存transfer记录及Notify intent/outbox，并记录notificationId关联；只有提交成功的transfer记录才可进入后续确认。
+3. send返回排队结果和challengeId。用户查看状态或提交验证码时，通过Notify公开query核验该notificationId；QUEUED提示等待，ACCEPTED/DELIVERED才幂等激活且沿用原到期时间，终态失败撤销并允许重新发码。不等待供应商必定提供DELIVERED回执。
+4. confirm必须核对当前用户、transfer记录、绑定版本、有效期及Notify状态；未知或未提交transfer拒绝。复用现有DB条件更新与Redis消费token，成功后重复确认不再转移。
+5. MySQL回滚而Redis已stage时仅残留不可确认且有TTL的挑战；验证码已消费但确认事务失败时提供重新发码恢复，不声称跨存储原子，也不默认为此建设可重放验证码投影。
+6. PersonRebind的排队日志、Captcha的验证码缓存和Notify测试发送分别沿用自身业务语义；不把QUEUED统一改成DELIVERED。前端显示排队/失败/过期及可重试状态。
 
-| 风险 | 方法 | 预期 | Evidence |
+## 7. 路径访问契约
+
+预计点、可写范围、只读上下文及共享项以frontmatter为唯一权威。共享owner固定single-agent；只有当前票轮次可写，下一票须回读前一结果。跨模块目录只允许本票行为必需的文件，目录授权不意味着重写全部模块。新增测试位于同模块测试目录；未覆盖的新路径先修订本票/Map再写。
+保留当前用户未提交改动、永久ADR/context、供应商源码与运行数据；生成物通过正式工具更新。
+
+## 8. 验证矩阵
+
+| 行为或风险 | 验证接缝/步骤 | 预期结果 | Evidence |
 |---|---|---|---|
-| AC-031.1 | 真实 Profile→Notify seam、MySQL/Redis/Provider隔离服务与浏览器 | 合法转移send得到可观察QUEUED并最终按Provider结果激活challenge，而不是立即DELIVERY_FAILED | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
-| AC-031.2 | 真实 Profile→Notify seam、MySQL/Redis/Provider隔离服务与浏览器 | Notify事务回滚/Provider失败时challenge不可确认且可恢复重试，成功只激活一次 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
-| AC-031.3 | 真实 Profile→Notify seam、MySQL/Redis/Provider隔离服务与浏览器 | 真实Notify实现与Profile contract test不使用固定ACCEPTED stub绕过队列语义 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
-| AC-031.4 | 真实 Profile→Notify seam、MySQL/Redis/Provider隔离服务与浏览器 | 用户看到发送中/失败/可重试状态，重复点击不产生多个transfer challenge | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
+| 正常路径 | transfer+notification同事务→QUEUED+challengeId→Notify.query→confirm；执行下列定向命令及对应场景 | 真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
+| 失败路径 | 仅已提交归属记录、有效OTP及ACCEPTED/DELIVERED激活；失败/过期可重新发码；固定时序/故障注入，记录输入与最终可观察状态 | 无越权、错误状态或部分提交；可按定义恢复 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
+| 回归 | 运行所属包原有测试及受影响调用者；逐项核对下列AC | 只有匹配用户、已提交transfer、有效验证码及ACCEPTED/DELIVERED通知可以确认；QUEUED/失败/过期不可确认；发送或确认事务失败后无错误绑定，Redis残留不可越权且可重新发码恢复；真实跨模块测试不固定mock ACCEPTED；重复确认不重复转移，PersonRebind/Captcha/TestSend状态各自准确 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
 
-- **Workspace checks：** 见 §12 的实际工作目录、命令和隔离验收边界；本轮全部为计划，未执行 Maven、构建或外部服务测试。
-- **E2E：** required；由Lead在parent-candidate/current workspace按实际模式执行。
-
-## 8. 迁移、发布与恢复
-
-- 先建立 MySQL transfer 状态迁移与回滚/dry-run，再收缩 SYNC 假合同；旧未完成 challenge 需明确失效或前向恢复，Redis 投影可由 outbox 重放重建。
-- Provider成功但数据库失败的重试/人工核对必须可追踪；不承诺外部exactly-once。
-
-## 9. 验收标准
-
-- [ ] 合法转移send得到可观察QUEUED并最终按Provider结果激活challenge，而不是立即DELIVERY_FAILED。
-- [ ] Notify事务回滚/Provider失败时challenge不可确认且可恢复重试，成功只激活一次；MySQL 提交失败时 Redis 投影与消费均不发生或可由 outbox 补偿，不能产生“已确认但 transfer 未落库”。
-- [ ] 真实Notify实现与Profile contract test不使用固定ACCEPTED stub绕过队列语义。
-- [ ] 用户看到发送中/失败/可重试状态，重复点击不产生多个transfer challenge。
-- [ ] 真实实现contract test不固定mock成ACCEPTED。
-- [ ] Evidence、Map、Spec、ADR状态一致且本票仍由用户批准后再Ready。
-
-## 10. Skill与停止
-
-- 需要读取 `namewta-fullstack-development`、`wta-module-guide` 入口及Notify/Profile事务、通知、API references；入口缺失或验证不可用即block-ticket。
-- 任一权限/事务/数据状态不明、环境缺失或测试stub与生产不一致即停止。
-
-## 11. 完成出口
-
-- 只有真实跨模块/E2E/失败回滚证据齐全、父分支结果可回读且无未批准偏差才可done；当前保持draft。
-
-## 12. 最新证据校正与具体检查
-
-ADR-CR-009的可靠异步方向；Profile不再把 NotificationMode.SYNC 当作已发送。外部短信最终一致性和确认窗口需用户审核。当前 challenge 由 Redis 存储；MySQL transfer/Notify intent/outbox 负责事实与恢复，Redis 仅作带版本和消费 token 的幂等投影，必须通过可重放 outbox 明确跨存储一致性。
-
-- 合法转移send得到可观察QUEUED并最终按Provider结果激活challenge，而不是立即DELIVERY_FAILED。
-- Notify事务回滚/Provider失败时challenge不可确认且可恢复重试，成功只激活一次。
-- 真实Notify实现与Profile contract test不使用固定ACCEPTED stub绕过队列语义。
-- 用户看到发送中/失败/可重试状态，重复点击不产生多个transfer challenge。
-- Person rebind和通知测试发送正确显示待投递；验证码已有语义经单独验证，不凭QUEUED推断必然失败。
-
-实际命令候选（实施前对照script重新解析，当前not-run）：
+Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该目录，其他命令cwd为仓根，逐条串行执行。新增用例实施时登记精确选择器、实际测试数与跳过项，零测试/required跳过不算通过。
 
 - `backend: ./mvnw -pl wta-modules/wta-profile,wta-modules/wta-notify,wta-admin -am test`
-- `isolated MySQL/Redis/provider: transfer queued-to-active matrix`
+
+- E2E disposition：required: 真Profile→Notify QUEUED、worker受理→确认及DB/Redis部分失败、重复确认/错用户/绑定变更。
+- E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+
+## 9. 发布、迁移与恢复
+
+- 顺序：前置票产生已验证合同后实施本票；源码、仓内消费者、测试和生成物同批交付。涉及DDL只编辑10-cde-base-ddl.sql，新环境按六文件基座初始化；不增加存量迁移工程。
+- 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
+- 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
+- 恢复：保留原到期时间；已消费但DB回滚允许重新发码；不重放已成功企业转移。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
+
+## 10. 验收标准
+
+- [ ] `AC-031`：真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交。
+- [ ] `AC-031`：只有匹配用户、已提交transfer、有效验证码及ACCEPTED/DELIVERED通知可以确认；QUEUED/失败/过期不可确认。
+- [ ] `AC-031`：发送或确认事务失败后无错误绑定，Redis残留不可越权且可重新发码恢复。
+- [ ] `AC-031`：真实跨模块测试不固定mock ACCEPTED；重复确认不重复转移，PersonRebind/Captcha/TestSend状态各自准确。
+- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path>，未执行不得标通过。
+- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+
+## 11. SKILL 调用计划
+
+frontmatter绑定的项目Skill在implementation阶段接收本票路径和上游合同，产出适用分层、权限、数据/资源边界及实现diff；engineering-standards在verify阶段根据本节命令选择受影响门禁并输出AC/退出码/E2E记录。按入口scope展开引用，不以“已读”代替实际操作。
+必需入口缺失或sha256漂移时阻塞本票；Lead回读差异后更新绑定及Map，不能自动接受新摘要。实际记录归<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path>的`## Skill Execution Records`，本次规划不伪造实现调用记录。
+
+## 12. 停止、检查点与交付
+
+交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
+依赖：T-22。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。

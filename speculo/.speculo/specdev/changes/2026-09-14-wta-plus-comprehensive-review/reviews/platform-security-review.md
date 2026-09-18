@@ -1,5 +1,8 @@
 # 公共模块、安全与资源生命周期审查
 
+> 2026-09-18 已按当前工作树重新核对并修订建议。原报告中的2026-09-14命令属于历史记录；当前命令结果见 [re-review-command-results.json](re-review-command-results.json)，逐票结论见 [re-review.md](re-review.md)。本次单人串行，仅改change；无旧版兼容要求。
+
+
 审查人：Lead/root。基线：`19620c745bb341b0e19fd5872ce02f01f50f9471`，当前 main 工作树，2026-09-14。全部为审查意见，未实施。
 
 本报告直接深读 Web 日志、操作日志、机器调用入口、Client 来源 IP、Redis 防重和 OSS 客户端等 module。P1 表示高优先级安全/关键功能问题；P2 表示可靠性、协议或维护性问题。`confirmed` 说明源码链成立，不表示已在生产复现。真实 HTTP、Redis、代理环境均未在本轮启动。
@@ -46,12 +49,12 @@
   - <Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogProperties.java</Path>：1 MiB 仅限制输出前缀；<Path>release-artifacts/docker/frontend/nginx/apps/nginx-admin-web.conf.template</Path> 等入口允许 100m 正文。
 - **触发与后果：** 大 JSON、chunked 请求或只携带五个伪签名头的请求，可在身份验证前占用完整正文内存；经过日志和签名路径时还可能出现多份缓存。并发请求会放大堆、GC 与线程占用。未声称已经测出 OOM 阈值。
 - **反证：** multipart 的 20MB 限制不是普通 JSON 的界限；日志 `maxBodySize` 只控制前缀；Nginx 100m 是边缘单请求约束，不能替代 JVM 或直连入口的预算。
-- **结构问题：** 两个 replay wrapper 重复拥有 request-body 缓存，调用方承担一致性、容量和失败语义。
-- **代码 judo / 删除复杂性：** 一个有硬上限的正文采集 module 拥有原始字节及超限行为，日志只观察受限前缀、签名 adapter 复用已采集字节；删掉无界读体与不必要整数组复制。
+- **结构问题：** 普通过滤器已复用RepeatedlyRequestWrapper；OpenAPI另有replay缓存与OpenApiRequest防御性复制，解密/XSS还拥有变换视图，调用方承担一致性、容量和失败语义。
+- **代码 judo / 删除复杂性：** 复用现有common中的有界读取和原始正文缓存能力 拥有原始字节及超限行为，日志只观察受限前缀、签名 adapter 复用已采集字节；删掉无界读体与不必要整数组复制。
 - **逐项改造：**
   1. 明确普通 JSON、机器调用、上传各自预算（建议起点 JSON/机器正文 2 MiB，须结合最大真实业务请求裁决），日志前缀预算独立。
   2. Content-Length 提前拒绝，同时对未知长度/chunked 累计计数，不能只相信 header。
-  3. 在读取前完成廉价的协议头格式、路由资格检查；读到超过预算立即以稳定 413 失败，不能静默截断后进入业务。
+  3. 在读取前完成廉价的协议头格式、路由资格检查；读到超过预算立即以稳定413失败，不能静默截断或被SysLogFilter.prepareRequest的catch吞掉后进入业务。
   4. 保持验签使用收到的精确字节；JSON 解析/XSS 处理与日志副本不得改变签名输入。
   5. 明确同步/异步 dispatcher 的 owner、超时、取消和内存释放；现有 SSE/上传不能为了复用而被整流缓冲。
 - **删除测试：** 替换两个无界缓存 owner 后，容量与复制问题消失在一个 seam 内；若只把 `readAllBytes` 挪到 helper，候选不算完成。
@@ -88,10 +91,10 @@
 - **触发时序：** A 获得键且执行超过防重 TTL → 键过期 → B 获得同名键 → A 失败/返回失败结果 → A 删除 B 所拥有的键 → C 在 B 防重窗口内再次进入。
 - **后果：** 注解承诺的防重窗口失效，调用方不得把它当 exactly-once；是否形成业务重复还取决于数据库唯一约束和用例幂等，不能自动推断所有操作都重复落库。
 - **反证：** `finally KEY_CACHE.remove()` 已清理线程上下文，但 Redis key 仍没有所有权标识；成功保留键直到 TTL 并不能保护旧失败请求。
-- **结构问题 / 代码 judo：** 请求只持有字符串 key，缺少 lease identity；将 token 与键生命周期合为内部 module，获取写随机 owner token，失败释放用 Redis 原子 compare-and-delete，删除无条件释放分支。
+- **结构问题 / 代码 judo：** 请求只持有字符串 key，缺少 lease identity；将 token 与键生命周期合为内部 module，获取写随机 owner token，失败释放用 Redis 原子 compare-and-delete，删除无条件释放分支；不新增租约框架或自动续期。
 - **具体修改：**
   1. 仅释放当前请求真正取得的 lease；没有取得 key 的请求不能删除任何 key。
-  2. TTL 过期不拥有后继请求的 lease；嵌套调用如继续支持则使用明确栈/局部上下文，避免单 ThreadLocal 被覆盖。
+  2. TTL 过期不拥有后继请求的 lease；现有注解消费者以HTTP入口为主；优先用around局部上下文持有本次owner，不新增没有消费者的嵌套/异步支持。
   3. 成功保留 TTL 的现有业务语义是否保留写入合同；防重和持久幂等明确分开，不引入全局重型事务框架。
   4. 复用 RedisUtils 所属模块内的 Redis 原子能力，不让业务层绕过公共入口。
 - **删除测试：** 删除无 owner 的 delete 后，释放正确性集中到一个 seam；没有把防重知识推给每个 Controller。

@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-18",
+  "errors": [],
+  "planned_missing_paths": [
+    {
+      "ticket": "T-01",
+      "planned_path": ".agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs"
+    },
+    {
+      "ticket": "T-01",
+      "planned_path": ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs"
+    },
+    {
+      "ticket": "T-01",
+      "planned_path": ".github/workflows/quality-gates.yml"
+    },
+    {
+      "ticket": "T-05",
+      "planned_path": "backend/wta-common/wta-common-redis/src/test/"
+    }
+  ],
+  "outside_change_modified": [],
+  "outside_change_tracked_files_checked": 4702,
+  "ticket_count": 31,
+  "execution_order": [
+    "T-01",
+    "T-02",
+    "T-03",
+    "T-04",
+    "T-05",
+    "T-06",
+    "T-07",
+    "T-09",
+    "T-10",
+    "T-08",
+    "T-11",
+    "T-12",
+    "T-13",
+    "T-18",
+    "T-14",
+    "T-15",
+    "T-16",
+    "T-17",
+    "T-19",
+    "T-20",
+    "T-21",
+    "T-22",
+    "T-23",
+    "T-28",
+    "T-31",
+    "T-24",
+    "T-25",
+    "T-26",
+    "T-27",
+    "T-29",
+    "T-30"
+  ],
+  "checks": [
+    "JSON parse",
+    "ticket metadata/plan-data consistency",
+    "AC coverage",
+    "acyclic dependencies",
+    "serial topological order",
+    "relative links",
+    "mojibake",
+    "outside-change SHA-256"
+  ]
+}

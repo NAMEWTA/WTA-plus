@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "artifact": "learning-change-status",
+  "change_id": "2026-09-16-namewta-fullstack",
+  "kind": "learning",
+  "domain": "namewta",
+  "domain_type": "project",
+  "topic_id": "fullstack",
+  "parent_change": null,
+  "root_change": "2026-09-16-namewta-fullstack",
+  "locator": "changes/2026-09-16-namewta-fullstack",
+  "lifecycle": "active",
+  "phase": "planning",
+  "current_work": null,
+  "works_run": [
+    "learning/assess-and-plan",
+    "learning/goal"
+  ],
+  "created_at": "2026-09-16T06:56:05.000Z",
+  "updated_at": "2026-09-16T08:47:16.000Z",
+  "closed_at": null,
+  "archived_at": null,
+  "closure_reason": null,
+  "archive_path": null,
+  "homework": {
+    "status": "none",
+    "latest_id": null,
+    "submitted_at": null
+  },
+  "mastery": {
+    "overall": "unverified",
+    "immediate": "not_attempted",
+    "retention": "not_scheduled",
+    "critical_objectives": "not_attempted",
+    "transfer": "not_attempted",
+    "blocking_misconceptions": [],
+    "evidence": [],
+    "next_review_at": null
+  },
+  "children": [
+    {
+      "change_id": "2026-09-14-namewta-architecture",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-namewta-architecture",
+      "content_hash": "8c85e5af51e5215a6c94a28caf044acaa25a0acd5d3066445abd38b661be91ef",
+      "effective_at": "2026-09-16T07:53:45.456Z",
+      "lifecycle": "active"
+    },
+    {
+      "change_id": "2026-09-14-wta-sso",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-sso",
+      "content_hash": "083f72540612640cfae5fb7d94b841e48d1e16a6998f8449084cbd00e19d7c23",
+      "effective_at": "2026-09-16T07:53:45.456Z",
+      "lifecycle": "active"
+    },
+    {
+      "change_id": "2026-09-14-wta-notify",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-notify",
+      "content_hash": "2066905cb7ad149dde59641dd21f71b827272176602132e0d34ef6b6481d2a4f",
+      "effective_at": "2026-09-16T07:53:45.456Z",
+      "lifecycle": "active"
+    },
+    {
+      "change_id": "2026-09-14-wta-third",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-third",
+      "content_hash": "b6957a6cc75b728dd9dc37a5c14a89883acc719faf431aa249ff90d10d7e23ed",
+      "effective_at": "2026-09-16T07:53:45.456Z",
+      "lifecycle": "active"
+    }
+  ],
+  "blockers": []
+}

@@ -1,143 +1,135 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 1
-requested_deliverables: [{"name":"architecture-review","count":1},{"name":"专项审查报告","count":4},{"name":"spec","count":1},{"name":"ADR提案集","count":1},{"name":"tickets-map","count":1},{"name":"计划型Ticket","count":31},{"name":"清理清单","count":1},{"name":"审查证据与交接说明","count":1}]
-deliverable_policy: "用户明确要求完整review报告、方案、ticket/tickets-map/spec/ADR等必要文档；数量按实际工件核对"
+plan_revision: 3
+requested_deliverables: [{"name":"完整Tickets Map","count":1},{"name":"Goal Plan","count":1}]
+deliverable_policy: "用户请求完整完善既有change；保留31票追溯编号，未将31误写为用户指定数量；T/P各交付一份完整主工件。"
 artifact: tickets-map
 change: 2026-09-14-wta-plus-comprehensive-review
 status: draft
 ---
 
-# Tickets Map：WTA-plus 全面升级审查提案
+# Tickets Map
 
-- **Map：** <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>
-- **Spec：** <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>
-- **Ticket 目录：** <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>
-- **Evidence 目录：** <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>
-- **状态：** draft；所有Ticket均ready=false；本Map不授权实现。
-
-## 1. 总体目标与拆分策略
-
-把静态审查发现转换为可独立验收的垂直改造：先恢复事实/gate与安全边界，再按SSO/Profile/Workflow/Upload/Notify/Third/System树与CRUD分域，最后收敛发布、文档和整体验收。每票拥有完整行为、失败、路径、Skill和Evidence契约；不按“前端/后端/测试”制造空价值票。Spec中的AC-001–AC-031分别由同号Ticket覆盖。
-
-## 2. 项目 Skill 读取矩阵
-
-| Applies To | Project Skill | 触发 | 时机 |
-|---|---|---|---|
-| ALL | <Path>.agents/skills/engineering-standards/SKILL.md</Path> | 所有代码/目录/测试/交付路径 | Map后、Ticket前 |
-| frontend | <Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path> | App/domain/web-domain/API/权限/上传/SSO/UI | 规划与实现前 |
-| backend common | <Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path> | common、Redis、日志、OSS/OpenAPI入口 | 规划与实现前 |
-| backend modules | <Path>.agents/skills/wta-module-guide/SKILL.md</Path> | Profile/Notify/Workflow/Third/System事实 | 规划与实现前 |
-| public Java contracts | <Path>.agents/skills/java-api-compatibility/SKILL.md</Path> | B-08/B-11/CRUD/API删除 | 兼容影响与实现前 |
-
-每票frontmatter绑定为最低集合；实际命中新的scope/reference时由Lead更新Map并重验。部署/远程写入仍需另行激活部署入口，不由本Map授予。
-
-## 3. 执行清单与依赖 DAG
-
-| ID | 主题 | Findings | Blocked By | Depth | Risk | Ready | Status |
-|---|---|---|---|---|---|---|---|
-| T-01 | 恢复可信的仓库门禁与治理入口 | D-01, D-07, D-11, B-09 | — | standard | medium | no | draft |
-| T-02 | 消除HTTP与操作日志中的凭据副本 | R-01 | — | standard | high | no | draft |
-| T-03 | 统一有界请求体采集与验签缓存 | R-02 | T-02 | deep | high | no | draft |
-| T-04 | 建立可信代理来源IP合同 | R-03 | — | deep | high | no | draft |
-| T-05 | 修复防重键过期后的所有权竞态 | R-04 | — | standard | high | no | draft |
-| T-06 | 强化SSO令牌随机性与Cookie安全 | B-01, B-03 | — | deep | high | no | draft |
-| T-07 | 修复SSO回调编码与可恢复登录旅程 | B-02, F-09 | T-06 | deep | high | no | draft |
-| T-08 | 补齐SSO独立Origin发布合同 | D-02 | T-07, T-09, T-10 | deep | high | no | draft |
-| T-09 | 统一App模式、bundle与依赖服务验证矩阵 | D-04, D-08, D-09 | T-01 | deep | high | no | draft |
-| T-10 | 删除混源局部发布并实现原子stage | D-03, D-10 | T-09 | deep | high | no | draft |
-| T-11 | 删除浏览器共享私钥与ECB传输包装 | F-01 | — | deep | high | no | draft |
-| T-12 | 统一幂等会话清理与导航恢复状态 | F-04, F-05 | T-07 | standard | high | no | draft |
-| T-13 | 完成Home注册开关与验证码重试交互 | F-06 | T-12 | standard | medium | no | draft |
-| T-14 | 补齐个人与企业自助认证材料闭环 | F-02 | T-18 | deep | high | no | draft |
-| T-15 | 移除Profile过渡接口与测试构造桥 | B-08 | T-14 | deep | high | no | draft |
-| T-16 | 保证流程任务读取和办理对象一致 | F-03, B-10 | — | deep | high | no | draft |
-| T-17 | 收紧流程设计器消息来源 | F-10 | — | standard | medium | no | draft |
-| T-18 | 明确上传完成、引用移除和导入失败生命周期 | F-07, F-11 | — | deep | high | no | draft |
-| T-19 | 收敛System大页面中的异步状态与重复封装 | F-08 | T-18 | standard | medium | no | draft |
-| T-20 | 按边界落实完整TypeScript严格目标 | F-12 | T-12, T-14, T-19 | deep | high | no | draft |
-| T-21 | 统一公开页面的可访问交互基线 | F-13 | T-13, T-14 | standard | medium | no | draft |
-| T-22 | 原子提交通知投递结果与lease fence | B-04 | — | deep | high | no | draft |
-| T-23 | 将供应商回调幂等纳入持久事务 | B-05 | T-22 | deep | high | no | draft |
-| T-24 | 恢复Third并发租约并明确限额热更新 | B-06, B-07 | — | deep | high | no | draft |
-| T-25 | 保证部门移动无环且并发一致 | B-12 | — | deep | high | no | draft |
-| T-26 | 按资源合同清除旧CRUD方法并同步客户端 | B-11 | T-02, T-16, T-25 | deep | high | no | draft |
-| T-27 | 修复Demo树样例并删除误导占位实现 | B-14 | T-26 | standard | medium | no | draft |
-| T-28 | 让通知提交后唤醒保持短路径 | B-13 | T-22 | deep | high | no | draft |
-| T-29 | 清理过时文档与重复AGENTS权威 | D-05, D-06, B-17 | T-01 | deep | medium | no | draft |
-| T-30 | 完成升级整体验收与可审查交付 | 整体验收 | T-01, T-02, T-03, T-04, T-05, T-06, T-07, T-08, T-09, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-31 | deep | high | no | draft |
-| T-31 | 修复企业转移发码的同步/排队合同阻断 | B-15 | T-22, T-23 | deep | critical | no | draft |
-
-
-依赖以单票frontmatter为权威，以上是投影。主要顺序：T-01 gate事实 → T-02/T-03日志与正文；T-06/T-07 SSO → T-08/T-09/T-10发布；T-12/T-13会话注册；T-14/T-15 Profile；T-16/T-17 Workflow；T-18/T-19/T-20/T-21前端；T-22/T-23/T-24/T-28/T-31通知与第三方；T-25/T-26/T-27树/CRUD/Demo；T-29文档；T-30整体验收。存在跨资源交集时Lead必须串行化，不能依据表格并行写 shared semantic resource。
-
-## 4. 合同覆盖矩阵
-
-| Contract | Ticket | 主要接缝 | 状态 |
-|---|---|---|---|
-| AC-001 | T-01 | 见该票验证矩阵 | draft |
-| AC-002 | T-02 | 见该票验证矩阵 | draft |
-| AC-003 | T-03 | 见该票验证矩阵 | draft |
-| AC-004 | T-04 | 见该票验证矩阵 | draft |
-| AC-005 | T-05 | 见该票验证矩阵 | draft |
-| AC-006 | T-06 | 见该票验证矩阵 | draft |
-| AC-007 | T-07 | 见该票验证矩阵 | draft |
-| AC-008 | T-08 | 见该票验证矩阵 | draft |
-| AC-009 | T-09 | 见该票验证矩阵 | draft |
-| AC-010 | T-10 | 见该票验证矩阵 | draft |
-| AC-011 | T-11 | 见该票验证矩阵 | draft |
-| AC-012 | T-12 | 见该票验证矩阵 | draft |
-| AC-013 | T-13 | 见该票验证矩阵 | draft |
-| AC-014 | T-14 | 见该票验证矩阵 | draft |
-| AC-015 | T-15 | 见该票验证矩阵 | draft |
-| AC-016 | T-16 | 见该票验证矩阵 | draft |
-| AC-017 | T-17 | 见该票验证矩阵 | draft |
-| AC-018 | T-18 | 见该票验证矩阵 | draft |
-| AC-019 | T-19 | 见该票验证矩阵 | draft |
-| AC-020 | T-20 | 见该票验证矩阵 | draft |
-| AC-021 | T-21 | 见该票验证矩阵 | draft |
-| AC-022 | T-22 | 见该票验证矩阵 | draft |
-| AC-023 | T-23 | 见该票验证矩阵 | draft |
-| AC-024 | T-24 | 见该票验证矩阵 | draft |
-| AC-025 | T-25 | 见该票验证矩阵 | draft |
-| AC-026 | T-26 | 见该票验证矩阵 | draft |
-| AC-027 | T-27 | 见该票验证矩阵 | draft |
-| AC-028 | T-28 | 见该票验证矩阵 | draft |
-| AC-029 | T-29 | 见该票验证矩阵 | draft |
-| AC-030 | T-30 | 见该票验证矩阵 | draft |
-| AC-031 | T-31 | 见该票验证矩阵 | draft |
-
-
-## 5. 并行、路径所有权与失败停止
-
-当前只读审查已完成；实施阶段最多按 config 的 implementation agent 上限派遣，Lead独占状态、Evidence与父分支。不同写集可并行，但以下语义资源必须由专票owner：日志凭据规则(T-02)、请求正文(T-03)、SSO身份(T-06/T-07)、Notify状态(T-22/T-23/T-31)、release manifest(T-08/T-09/T-10)、Project facts/Skill规则(T-01/T-29)。任一候选未获用户选择、运行验证失败、父分支漂移、路径越界、数据/兼容决策不明时阻塞对应票和下游。
-
-## 6. Gate 与整体验收
-
-所有票保持draft。未来进入T-30前必须完成适用单元/集成、浏览器、真实MySQL/Redis/MinIO/HTTP、失败注入、构建和发布验证；not-run必须保留原因。T-30不替代各票Evidence；它只汇总最终Map revision、所有AC、跨change合同、artifact digest、E2E disposition、偏差与残余风险。
-
-## 7. 同步规则
-
-Ticket frontmatter是状态/写集/依赖权威；Map只投影。任何Finding编号、路径、强度、ADR或验收改变时递增`plan_revision`，保留原审查证据并重算依赖闭包。用户接受某一架构候选后才调用 Grill；没有用户结论不把Strong候选转Ready。
-
-
-## 9. 总控与恢复
+## 1. 目标与拆分策略
 
 ### 总体实施背景
-本 Map 将静态审查发现映射为 31 个待审核 Ticket；所有实现、迁移和发布均须用户逐项接受。
+
+以2026-09-18当前源码复核为依据，修复安全、状态、通知、树与交付真实问题。保留31票可观察行为及现有编号；不因无兼容要求削弱供应商协议、权限或数据不变量。T-01是可信门禁准备，T-09是发布构建准备，其余按行为跨最小层次闭环，不拆成纯前端/后端/SQL水平票。
+
+29票计划Ready；T-03、T-23真实参数未闭合保持blocked。Ready表示决策完备，不表示依赖已Done、产品验证通过或实施授权成立。Spec总体仍draft，Goal执行Gate关闭。本轮用户已授权自主完善计划，无需为发布这些文档重复确认。
+
+唯一执行者按Map→适用Skill入口及命中引用→Ticket读取；禁止所有子代理，任何命令/实现/验证严格串行。当前工作树含用户未提交内容，不能直接创建干净源码发布候选或混入implementation commit。
 
 ### 项目 Skill 读取矩阵
-项目 Skill 绑定见第 2 节；执行前按实际 scope 重新读取并记录版本。
+
+| Applies To | Project Skill | Trigger / Scope | Read Timing | Purpose |
+|---|---|---|---|---|
+| ALL | <Path>.agents/skills/engineering-standards/SKILL.md</Path> | 架构、分层、API、事务、SQL和质量门禁 | Map后、本票实现前；验证时复用适用规范 | 架构、分层、API、事务、SQL和质量门禁 |
+| T-02, T-03, T-04, T-05, T-11 | <Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path> | 日志/正文/IP/防重/加密的现有common入口 | Map后、本票实现前；验证时复用适用规范 | 日志/正文/IP/防重/加密的现有common入口 |
+| T-06, T-07, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-30, T-31 | <Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path> | 业务切片、权限、App组合与数据边界 | Map后、本票实现前；验证时复用适用规范 | 业务切片、权限、App组合与数据边界 |
+| T-14, T-15, T-16, T-22, T-23, T-24, T-25, T-28, T-30, T-31 | <Path>.agents/skills/wta-module-guide/SKILL.md</Path> | Profile/System/Workflow/Notify/Third公开API事实 | Map后、本票实现前；验证时复用适用规范 | Profile/System/Workflow/Notify/Third公开API事实 |
+
+矩阵是最低集合；真实调用、入口摘要、阶段、输入输出与失败动作由单票frontmatter拥有。无兼容演进，不绑定java-api-compatibility；本轮无部署，不激活环境接管技能。Skill更新先由唯一Lead核对影响再更新受影响票绑定。
 
 ## 2. 执行清单
 
-执行清单见第 3 节表格，Ticket frontmatter 为唯一状态来源。
+| ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | AC | 顺序 | Status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| T-01 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/01-restore-trustworthy-gates.md</Path> | 干净clone不创建temp/release也通过事实检查 | — | standard | medium | true | single-agent | AC-001 | 01 | ready |
+| T-02 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path> | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | — | deep | high | true | single-agent | AC-002 | 02 | ready |
+| T-03 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/03-bound-request-capture.md</Path> | 大小边界前/等于/超限一字节结果可判定 | T-02 | deep | high | false | single-agent | AC-003 | 03 | blocked |
+| T-04 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/04-trusted-client-address.md</Path> | 任意外来XFF不改变直连或正常入口的授权结果 | — | deep | high | true | single-agent | AC-004 | 04 | ready |
+| T-05 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/05-repeat-submit-lease.md</Path> | A失败不得删除B的键 | — | deep | high | true | single-agent | AC-005 | 05 | ready |
+| T-06 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/06-secure-sso-session.md</Path> | 生产实现不含ThreadLocalRandom/雪花ID作为bearer | — | deep | high | true | single-agent | AC-006 | 06 | ready |
+| T-07 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/07-sso-callback-journey.md</Path> | 复杂state往返相等且无重复code/state参数 | T-06 | deep | high | true | single-agent | AC-007 | 07 | ready |
+| T-08 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/08-complete-sso-release.md</Path> | 每个shipped App均有且仅有完整配套，缺项在promotion前失败 | T-07, T-09, T-10 | deep | high | true | single-agent | AC-008 | 10 | ready |
+| T-09 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/09-coherent-build-matrix.md</Path> | build:dev最终三个App均development，build:prod均production | T-01 | deep | high | true | single-agent | AC-009 | 08 | ready |
+| T-10 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/10-atomic-release-provenance.md</Path> | manifest每个artifact的digest和source可追溯 | T-09 | deep | high | true | single-agent | AC-010 | 09 | ready |
+| T-11 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/11-remove-browser-shared-private-key.md</Path> | 生产bundle不再携带该共享响应私钥或ECB路径 | — | deep | high | true | single-agent | AC-011 | 11 | ready |
+| T-12 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/12-session-navigation-lifecycle.md</Path> | logout超时/401/离线时本地token和动态路由仍清空 | T-07 | standard | high | true | single-agent | AC-012 | 12 | ready |
+| T-13 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/13-recoverable-registration.md</Path> | 服务端关闭注册时入口与页面均准确，后端仍拒绝直接调用 | T-12 | standard | medium | true | single-agent | AC-013 | 13 | ready |
+| T-14 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path> | 新个人CN_RESIDENT_ID上传正反面后完成提交 | T-18 | deep | high | true | single-agent | AC-014 | 15 | ready |
+| T-15 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/15-contract-profile-legacy-bridges.md</Path> | 旧入口引用为零且替代能力覆盖完整 | — | deep | high | true | single-agent | AC-015 | 16 | ready |
+| T-16 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/16-workflow-task-integrity.md</Path> | B失败绝不发出A的审批请求 | — | deep | high | true | single-agent | AC-016 | 17 | ready |
+| T-17 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/17-trusted-designer-messages.md</Path> | 错误origin、错误source、未知payload不能关闭标签 | — | standard | medium | true | single-agent | AC-017 | 18 | ready |
+| T-18 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/18-upload-ownership-lifecycle.md</Path> | 下载URL失败不生成无人回收的Blob URL，也不把已完成上传误报失败 | — | deep | high | true | single-agent | AC-018 | 14 | ready |
+| T-19 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/19-system-page-state-locality.md</Path> | 快速筛选时旧响应不能覆盖新列表，失败/loading可恢复 | T-18 | standard | medium | true | single-agent | AC-019 | 19 | ready |
+| T-20 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/20-strict-contract-target.md</Path> | 受影响边界类型检查通过，nullable与非法transport样本有明确处理 | T-12, T-14, T-19 | deep | medium | true | single-agent | AC-020 | 20 | ready |
+| T-21 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/21-accessible-public-apps.md</Path> | 只用键盘可完成公开流程，焦点可见且错误能被读屏发现 | T-13 | standard | medium | true | single-agent | AC-021 | 21 | ready |
+| T-22 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path> | 任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致 | — | deep | high | true | single-agent | AC-022 | 22 | ready |
+| T-23 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/23-durable-provider-callback.md</Path> | 回滚后相同事件可重试成功 | T-22 | deep | high | false | single-agent | AC-023 | 23 | blocked |
+| T-24 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/24-recoverable-third-resilience.md</Path> | 崩溃后permit在规定上限内恢复，不依赖人工删key | — | deep | high | true | single-agent | AC-024 | 26 | ready |
+| T-25 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/25-acyclic-department-moves.md</Path> | 自父/后代父/并发互移均不能形成环 | — | deep | high | true | single-agent | AC-025 | 27 | ready |
+| T-26 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path> | 每个候选有迁移或保留理由，不遗漏调用者 | T-02, T-16, T-25 | deep | high | true | single-agent | AC-026 | 28 | ready |
+| T-27 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path> | 保存/删除路径不再有虚假校验TODO | T-26 | standard | medium | true | single-agent | AC-027 | 29 | ready |
+| T-28 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/28-bounded-notify-wake.md</Path> | 慢provider不阻塞业务提交线程 | T-22 | deep | high | true | single-agent | AC-028 | 24 | ready |
+| T-29 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/29-converge-current-documentation.md</Path> | 每个删除文件有owner、内容迁移落点和无丢失硬约束证据 | T-01 | deep | medium | true | single-agent | AC-029 | 30 | ready |
+| T-30 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path> | 全部已接受AC均有实际命令/退出码/环境/源码checkpoint | T-01, T-02, T-03, T-04, T-05, T-06, T-07, T-08, T-09, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-31 | deep | high | true | single-agent | AC-030 | 31 | ready |
+| T-31 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md</Path> | 真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交 | T-22 | deep | critical | true | single-agent | AC-031 | 25 | ready |
 
 ## 3. 依赖 DAG
 
-依赖关系以各 Ticket 的 blocked_by 为准；本 Map 仅作投影，禁止绕过阻塞条件。
+blocked_by权威见各Ticket，上表为完整边表。以下为串行调度顺序，不额外制造代码依赖：
+
+T-01 → T-02 → T-03 → T-04 → T-05 → T-06 → T-07 → T-09 → T-10 → T-08 → T-11 → T-12 → T-13 → T-18 → T-14 → T-15 → T-16 → T-17 → T-19 → T-20 → T-21 → T-22 → T-23 → T-28 → T-31 → T-24 → T-25 → T-26 → T-27 → T-29 → T-30
+
+T-15不依赖T-14；T-31只依赖T-22，不要求callback receipt先完成。T-30汇合其余30票。T-03阻塞闭包为T-03/T-30；T-23为T-23/T-30，其他票局部可规划，但全局执行Gate仍关闭。按边数最长链为T-06→T-07→T-12→T-13→T-21→T-30（不是工时估计）；current策略使全部执行串行。
+
+## 4. 合同覆盖矩阵
+
+| Contract ID | Ticket | 验证接缝 | 状态 | Evidence（未来） |
+|---|---|---|---|---|
+| AC-001 | T-01 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01.md</Path> |
+| AC-002 | T-02 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path> |
+| AC-003 | T-03 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03.md</Path> |
+| AC-004 | T-04 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-04.md</Path> |
+| AC-005 | T-05 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-05.md</Path> |
+| AC-006 | T-06 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-06.md</Path> |
+| AC-007 | T-07 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-07.md</Path> |
+| AC-008 | T-08 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-08.md</Path> |
+| AC-009 | T-09 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-09.md</Path> |
+| AC-010 | T-10 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-10.md</Path> |
+| AC-011 | T-11 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-11.md</Path> |
+| AC-012 | T-12 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12.md</Path> |
+| AC-013 | T-13 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-13.md</Path> |
+| AC-014 | T-14 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path> |
+| AC-015 | T-15 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-15.md</Path> |
+| AC-016 | T-16 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16.md</Path> |
+| AC-017 | T-17 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-17.md</Path> |
+| AC-018 | T-18 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-18.md</Path> |
+| AC-019 | T-19 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-19.md</Path> |
+| AC-020 | T-20 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path> |
+| AC-021 | T-21 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21.md</Path> |
+| AC-022 | T-22 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-22.md</Path> |
+| AC-023 | T-23 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23.md</Path> |
+| AC-024 | T-24 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-24.md</Path> |
+| AC-025 | T-25 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-25.md</Path> |
+| AC-026 | T-26 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26.md</Path> |
+| AC-027 | T-27 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path> |
+| AC-028 | T-28 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-28.md</Path> |
+| AC-029 | T-29 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29.md</Path> |
+| AC-030 | T-30 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30.md</Path> |
+| AC-031 | T-31 | 本票第8节正常/失败/回归矩阵 | covered；尚未实现 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
 
 ## 5. 并行与路径所有权
 
-共享语义资源（日志、SSO、Notify、release manifest、facts）由专票 owner 串行修改；路径冲突时 Lead 停止并重排。
+当前只有single-agent，最大实际并发1、子代理0。各票声明所有与其他票相交的shared_paths及唯一owner；由同一Lead在当前票轮次内写入，下一票回读前一结果。没有并行消费者，不为顺序互斥新增虚假blocked_by。目录级写集仅覆盖本票必需修改；不能借宽路径重写模块。
+
+共享热点包括common-web/json、SSO、Profile、Notify、全局DDL、App路由、前端manifest/lock/OpenAPI、release与测试。精确交集由各票frontmatter和规划检查证据保存。所有票声明workspace:current-exclusive语义资源；跨票改公共合同须同步消费者与验证，不能以不同文件名声称无冲突。
+
+## 6. Gate、Wave 与集成点
+
+<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>拥有G-plan/G-authorize/G-ticket/G-integration/G-release；Map不复制Gate状态。每票一个串行slot，阶段分组只服务阅读，不允许并发。
+
+## 7. 横切契约与风险
+
+基座直接切换，无双路由、旧桥、存量兼容等待；所有仓内调用与生成物同批更新。日志副本不得改变签名原文。Provider I/O不进入数据库长事务。SQL编辑源仅六文件基座，新增DDL归10、DML归50。产物指针原子性不等于多容器运行时原子性。
+
+## 8. 同步规则
+
+状态/依赖/路径/绑定由Ticket拥有；Map和plan-data.json仅投影。变化递增plan_revision，复核依赖闭包和共享路径。Goal拥有调度/授权，不覆盖行为合同。永久ADR/context本轮只读。
+
+## 9. 总控与恢复
+
+先回读Goal、Map、当前Ticket、change状态和最新Evidence。运行ticket-control的--map只读检查；没有ready frontier是当前Gate的正确输出，不应绕过。恢复所需源基线见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/planning-baseline.json</Path>。T/P本轮只完成计划文档，产品票不得Done。下一步先补两项决策证据及核对授权/干净工作区，再进入I-implement；本轮不自动开始。

@@ -1,0 +1,16 @@
+[
+  {
+    "command": "node speculo/workflows/specdev/common/tools/validate-specdev.mjs --repo /srv/WTA-plus speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "stdout": "Summary: 0 error(s), 0 warning(s)\n",
+    "stderr": ""
+  },
+  {
+    "command": "git diff --check -- speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review",
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

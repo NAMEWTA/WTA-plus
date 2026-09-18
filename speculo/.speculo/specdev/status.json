@@ -1,7 +1,11 @@
 {
   "schema_version": 5,
   "workflow": "specdev",
-  "active": [],
+  "active": [
+    {
+      "change": "2026-09-14-wta-plus-comprehensive-review"
+    }
+  ],
   "archived": [
     "2026-08-24-notify-eli5",
     "2026-08-24-oss-eli5",

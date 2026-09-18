@@ -1,0 +1,2862 @@
+[
+  {
+    "left": "T-01",
+    "right": "T-08",
+    "paths": [
+      [
+        "release-artifacts/tests/release-integration-contract.test.mjs",
+        "release-artifacts/tests/"
+      ],
+      [
+        "release-artifacts/tests/wta-rename-keep-contract.test.mjs",
+        "release-artifacts/tests/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-01",
+    "right": "T-09",
+    "paths": [
+      [
+        "release-artifacts/tests/release-integration-contract.test.mjs",
+        "release-artifacts/tests/"
+      ],
+      [
+        "release-artifacts/tests/wta-rename-keep-contract.test.mjs",
+        "release-artifacts/tests/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-01",
+    "right": "T-10",
+    "paths": [
+      [
+        "release-artifacts/tests/release-integration-contract.test.mjs",
+        "release-artifacts/tests/"
+      ],
+      [
+        "release-artifacts/tests/wta-rename-keep-contract.test.mjs",
+        "release-artifacts/tests/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-01",
+    "right": "T-29",
+    "paths": [
+      [
+        "scripts/README.md",
+        "scripts/README.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-01",
+    "right": "T-30",
+    "paths": [
+      [
+        "scripts/ci/verify-submodules.sh",
+        "scripts/ci/"
+      ],
+      [
+        "scripts/ci/verify-dev-build-guard.sh",
+        "scripts/ci/"
+      ],
+      [
+        "release-artifacts/tests/release-integration-contract.test.mjs",
+        "release-artifacts/tests/"
+      ],
+      [
+        "release-artifacts/tests/wta-rename-keep-contract.test.mjs",
+        "release-artifacts/tests/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-03",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/"
+      ],
+      [
+        "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java",
+        "backend/wta-common/wta-common-core/src/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-04",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-06",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java"
+      ],
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java"
+      ],
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/test/"
+      ],
+      [
+        "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java",
+        "backend/wta-modules/wta-sso/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-15",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-16",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-22",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-23",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-24",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-25",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-26",
+    "paths": [
+      [
+        "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java",
+        "backend/wta-modules/wta-system/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-log/",
+        "backend/wta-common/wta-common-log/AGENTS.md"
+      ],
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-02",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-03",
+    "right": "T-04",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/"
+      ],
+      [
+        "backend/wta-admin/src/main/resources/application.yml",
+        "backend/wta-admin/src/main/resources/application.yml"
+      ],
+      [
+        "backend/wta-common/wta-common-core/src/",
+        "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java"
+      ],
+      [
+        "backend/wta-common/wta-common-core/src/",
+        "backend/wta-common/wta-common-core/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-03",
+    "right": "T-06",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java"
+      ],
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java"
+      ],
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/src/test/"
+      ],
+      [
+        "backend/wta-admin/src/main/resources/application.yml",
+        "backend/wta-admin/src/main/resources/application.yml"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-03",
+    "right": "T-11",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-encrypt/",
+        "backend/wta-common/wta-common-encrypt/"
+      ],
+      [
+        "backend/wta-admin/src/main/resources/application.yml",
+        "backend/wta-admin/src/main/resources/application.yml"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-03",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-web/",
+        "backend/wta-common/wta-common-web/AGENTS.md"
+      ],
+      [
+        "backend/wta-common/wta-common-openapi/",
+        "backend/wta-common/wta-common-openapi/AGENTS.md"
+      ],
+      [
+        "backend/wta-common/wta-common-encrypt/",
+        "backend/wta-common/wta-common-encrypt/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-04",
+    "right": "T-05",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-redis/",
+        "backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java"
+      ],
+      [
+        "backend/wta-common/wta-common-redis/",
+        "backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java"
+      ],
+      [
+        "backend/wta-common/wta-common-redis/",
+        "backend/wta-common/wta-common-redis/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-04",
+    "right": "T-06",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-web/src/",
+        "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java"
+      ],
+      [
+        "backend/wta-common/wta-common-web/src/",
+        "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java"
+      ],
+      [
+        "backend/wta-common/wta-common-web/src/",
+        "backend/wta-common/wta-common-web/src/test/"
+      ],
+      [
+        "backend/wta-admin/src/main/resources/application.yml",
+        "backend/wta-admin/src/main/resources/application.yml"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-04",
+    "right": "T-08",
+    "paths": [
+      [
+        "release-artifacts/docker/frontend/nginx/",
+        "release-artifacts/docker/frontend/nginx/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-04",
+    "right": "T-11",
+    "paths": [
+      [
+        "backend/wta-admin/src/main/resources/application.yml",
+        "backend/wta-admin/src/main/resources/application.yml"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-04",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-security/",
+        "backend/wta-common/wta-common-security/AGENTS.md"
+      ],
+      [
+        "backend/wta-common/wta-common-redis/",
+        "backend/wta-common/wta-common-redis/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-06",
+    "right": "T-07",
+    "paths": [
+      [
+        "backend/wta-modules/wta-sso/",
+        "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java"
+      ],
+      [
+        "backend/wta-modules/wta-sso/",
+        "backend/wta-modules/wta-sso/src/test/"
+      ],
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/src/ssoApi.ts"
+      ],
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/src/ssoApi.test.ts"
+      ],
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/src/views/AuthorizePage.vue"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-06",
+    "right": "T-08",
+    "paths": [
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-06",
+    "right": "T-09",
+    "paths": [
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/package.json"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-06",
+    "right": "T-11",
+    "paths": [
+      [
+        "backend/wta-admin/src/main/resources/application.yml",
+        "backend/wta-admin/src/main/resources/application.yml"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-06",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/src/views/AuthorizePage.vue"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-06",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-modules/wta-sso/",
+        "backend/wta-modules/wta-sso/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-08",
+    "paths": [
+      [
+        "frontend/apps/sso-web/src/ssoApi.ts",
+        "frontend/apps/sso-web/"
+      ],
+      [
+        "frontend/apps/sso-web/src/ssoApi.test.ts",
+        "frontend/apps/sso-web/"
+      ],
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/apps/sso-web/src/views/AuthorizePage.vue",
+        "frontend/apps/sso-web/"
+      ],
+      [
+        "frontend/playwright.sso.config.ts",
+        "frontend/playwright.sso.config.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-12",
+    "paths": [
+      [
+        "frontend/apps/admin-web/src/application/sso.ts",
+        "frontend/apps/admin-web/src/application/"
+      ],
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-13",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-16",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-17",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/apps/home-web/src/views/SsoCallbackPage.vue",
+        "frontend/apps/home-web/src/views/SsoCallbackPage.vue"
+      ],
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/apps/sso-web/src/views/AuthorizePage.vue",
+        "frontend/apps/sso-web/src/views/AuthorizePage.vue"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-07",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/sso-three-gates.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-09",
+    "paths": [
+      [
+        "release-artifacts/scripts/release-manage.sh",
+        "release-artifacts/scripts/release-manage.sh"
+      ],
+      [
+        "release-artifacts/tests/",
+        "release-artifacts/tests/"
+      ],
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/package.json"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-10",
+    "paths": [
+      [
+        "release-artifacts/docker/docker-compose-frontend.yml",
+        "release-artifacts/docker/docker-compose-frontend.yml"
+      ],
+      [
+        "release-artifacts/scripts/release-manage.sh",
+        "release-artifacts/scripts/release-manage.sh"
+      ],
+      [
+        "release-artifacts/tests/",
+        "release-artifacts/tests/"
+      ],
+      [
+        "release-artifacts/README.md",
+        "release-artifacts/README.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-12",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-13",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-14",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/profile-management.spec.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/profile-self-materials.spec.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-16",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-17",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/apps/sso-web/",
+        "frontend/apps/sso-web/src/views/AuthorizePage.vue"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-29",
+    "paths": [
+      [
+        "release-artifacts/README.md",
+        "release-artifacts/README.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-30",
+    "paths": [
+      [
+        "release-artifacts/tests/",
+        "release-artifacts/tests/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-08",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-09",
+    "right": "T-10",
+    "paths": [
+      [
+        "release-artifacts/scripts/release-manage.sh",
+        "release-artifacts/scripts/release-manage.sh"
+      ],
+      [
+        "release-artifacts/tests/",
+        "release-artifacts/tests/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-09",
+    "right": "T-11",
+    "paths": [
+      [
+        "frontend/package.json",
+        "frontend/package.json"
+      ],
+      [
+        "frontend/apps/admin-web/package.json",
+        "frontend/apps/admin-web/package.json"
+      ],
+      [
+        "frontend/apps/home-web/package.json",
+        "frontend/apps/home-web/package.json"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-09",
+    "right": "T-14",
+    "paths": [
+      [
+        "frontend/apps/home-web/package.json",
+        "frontend/apps/home-web/package.json"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-09",
+    "right": "T-30",
+    "paths": [
+      [
+        "scripts/ci/verify-admin-bundle.sh",
+        "scripts/ci/"
+      ],
+      [
+        "scripts/ci/run-external-services.sh",
+        "scripts/ci/"
+      ],
+      [
+        "release-artifacts/tests/",
+        "release-artifacts/tests/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-10",
+    "right": "T-29",
+    "paths": [
+      [
+        "release-artifacts/README.md",
+        "release-artifacts/README.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-10",
+    "right": "T-30",
+    "paths": [
+      [
+        "release-artifacts/tests/",
+        "release-artifacts/tests/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-11",
+    "right": "T-12",
+    "paths": [
+      [
+        "frontend/apps/admin-web/src/application/http.ts",
+        "frontend/apps/admin-web/src/application/"
+      ],
+      [
+        "frontend/apps/admin-web/src/application/services.ts",
+        "frontend/apps/admin-web/src/application/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-11",
+    "right": "T-14",
+    "paths": [
+      [
+        "frontend/apps/home-web/src/application/services.ts",
+        "frontend/apps/home-web/src/application/services.ts"
+      ],
+      [
+        "frontend/apps/home-web/package.json",
+        "frontend/apps/home-web/package.json"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-11",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/packages/platform/contracts/src/index.ts",
+        "frontend/packages/platform/contracts/src/index.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-11",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/packages/adapters/axios-browser/",
+        "frontend/packages/adapters/axios-browser/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-11",
+    "right": "T-20",
+    "paths": [
+      [
+        "frontend/packages/adapters/axios-browser/",
+        "frontend/packages/adapters/axios-browser/"
+      ],
+      [
+        "frontend/packages/platform/http/",
+        "frontend/packages/platform/http/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-11",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-common/wta-common-encrypt/",
+        "backend/wta-common/wta-common-encrypt/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-11",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java",
+        "backend/wta-admin/src/main/java/org/namewta/web/controller/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-13",
+    "paths": [
+      [
+        "frontend/apps/home-web/src/router/",
+        "frontend/apps/home-web/src/router/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-14",
+    "paths": [
+      [
+        "frontend/apps/home-web/src/router/",
+        "frontend/apps/home-web/src/router/homeManifestRegistry.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/profile-management.spec.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/profile-self-materials.spec.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-16",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-17",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/apps/admin-web/src/router/",
+        "frontend/apps/admin-web/src/router/adminManifestRegistry.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/apps/admin-web/src/router/",
+        "frontend/apps/admin-web/src/router/adminManifestRegistry.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-20",
+    "paths": [
+      [
+        "frontend/apps/home-web/src/store/",
+        "frontend/apps/home-web/src/store/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-12",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-14",
+    "paths": [
+      [
+        "frontend/apps/home-web/src/router/",
+        "frontend/apps/home-web/src/router/homeManifestRegistry.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/profile-management.spec.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/profile-self-materials.spec.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-16",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-17",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-20",
+    "paths": [
+      [
+        "frontend/packages/domains/admin/",
+        "frontend/packages/domains/admin/src/transport.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/apps/home-web/src/views/RegisterPage.vue",
+        "frontend/apps/home-web/src/views/RegisterPage.vue"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/packages/domains/admin/",
+        "frontend/packages/domains/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-13",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-15",
+    "paths": [
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-16",
+    "paths": [
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-17",
+    "paths": [
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-20",
+    "paths": [
+      [
+        "frontend/packages/domains/profile/src/person/application/service.ts",
+        "frontend/packages/domains/profile/src/person/application/service.ts"
+      ],
+      [
+        "frontend/packages/domains/profile/src/enterprise/application/service.ts",
+        "frontend/packages/domains/profile/src/enterprise/application/service.ts"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/packages/domains/profile/src/person/application/service.ts",
+        "frontend/packages/domains/"
+      ],
+      [
+        "frontend/packages/domains/profile/src/enterprise/application/service.ts",
+        "frontend/packages/domains/"
+      ],
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-bom/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-14",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/packages/web-domains/profile/src/self/",
+        "frontend/packages/web-domains/profile/"
+      ],
+      [
+        "frontend/packages/web-domains/profile/src/self/runtime.ts",
+        "frontend/packages/web-domains/profile/"
+      ],
+      [
+        "frontend/packages/domains/profile/src/person/application/service.ts",
+        "frontend/packages/domains/profile/"
+      ],
+      [
+        "frontend/packages/domains/profile/src/enterprise/application/service.ts",
+        "frontend/packages/domains/profile/"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-person/"
+      ],
+      [
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/"
+      ],
+      [
+        "frontend/e2e/profile-self-materials.spec.ts",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-16",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+        "backend/wta-admin/src/test/java/org/namewta/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-24",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+        "backend/wta-admin/src/test/java/org/namewta/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-25",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-bom/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md"
+      ],
+      [
+        "backend/wta-api/",
+        "backend/wta-api/AGENTS.md"
+      ],
+      [
+        ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md",
+        ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-15",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/"
+      ],
+      [
+        "backend/wta-modules/wta-profile/",
+        "backend/wta-modules/wta-profile/wta-profile-person/"
+      ],
+      [
+        "backend/wta-api/",
+        "backend/wta-api/src/main/java/org/namewta/notify/"
+      ],
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-17",
+    "paths": [
+      [
+        "frontend/packages/web-domains/workflow/src/",
+        "frontend/packages/web-domains/workflow/src/definition/DesignPage.vue"
+      ],
+      [
+        "frontend/packages/web-domains/workflow/src/",
+        "frontend/packages/web-domains/workflow/src/designer.ts"
+      ],
+      [
+        "frontend/packages/web-domains/workflow/src/",
+        "frontend/packages/web-domains/workflow/src/runtime.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/packages/web-domains/workflow/src/",
+        "frontend/packages/web-domains/workflow/src/composables.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-22",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-23",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-24",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/java/org/namewta/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-25",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-26",
+    "paths": [
+      [
+        "backend/wta-modules/wta-workflow/",
+        "backend/wta-modules/wta-workflow/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-modules/wta-workflow/",
+        "backend/wta-modules/wta-workflow/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-16",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-17",
+    "right": "T-18",
+    "paths": [
+      [
+        "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+        "frontend/apps/admin-web/src/router/adminManifestRegistry.ts"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-17",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-17",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-17",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-17",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-17",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-18",
+    "right": "T-19",
+    "paths": [
+      [
+        "frontend/packages/web-domains/system/src/user/UserPage.vue",
+        "frontend/packages/web-domains/system/src/user/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-18",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-18",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-18",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-18",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-19",
+    "right": "T-20",
+    "paths": [
+      [
+        "frontend/packages/adapters/axios-browser/",
+        "frontend/packages/adapters/axios-browser/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-19",
+    "right": "T-21",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-19",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-19",
+    "right": "T-27",
+    "paths": [
+      [
+        "frontend/packages/web-domains/demo/src/composables.ts",
+        "frontend/packages/web-domains/demo/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-19",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-19",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-20",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/packages/domains/profile/src/person/application/service.ts",
+        "frontend/packages/domains/"
+      ],
+      [
+        "frontend/packages/domains/profile/src/enterprise/application/service.ts",
+        "frontend/packages/domains/"
+      ],
+      [
+        "frontend/packages/domains/admin/src/transport.ts",
+        "frontend/packages/domains/"
+      ],
+      [
+        "frontend/packages/domains/system/src/transport.ts",
+        "frontend/packages/domains/"
+      ],
+      [
+        "frontend/packages/domains/third/src/index.ts",
+        "frontend/packages/domains/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-20",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/packages/domains/profile/src/person/application/service.ts",
+        "frontend/packages/domains/profile/"
+      ],
+      [
+        "frontend/packages/domains/profile/src/enterprise/application/service.ts",
+        "frontend/packages/domains/profile/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-21",
+    "right": "T-26",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-21",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-21",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-22",
+    "right": "T-23",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java"
+      ],
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/"
+      ],
+      [
+        "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+        "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotificationApplicationUseCase.java",
+        "backend/wta-modules/wta-notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-22",
+    "right": "T-24",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/java/org/namewta/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-22",
+    "right": "T-25",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-22",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-22",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisher.java"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/src/test/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/"
+      ],
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-22",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-22",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/src/",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ],
+      [
+        "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+        "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotificationApplicationUseCase.java",
+        "backend/wta-modules/wta-notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-23",
+    "right": "T-24",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/java/org/namewta/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-23",
+    "right": "T-25",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-23",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-23",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisher.java"
+      ],
+      [
+        "backend/wta-modules/wta-notify/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java"
+      ],
+      [
+        "backend/wta-modules/wta-notify/",
+        "backend/wta-modules/wta-notify/src/test/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/",
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/"
+      ],
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-23",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/",
+        "backend/wta-modules/wta-notify/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-23",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-23",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+        "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql"
+      ],
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+        "backend/wta-admin/src/test/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java",
+        "backend/wta-modules/wta-notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-24",
+    "right": "T-25",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-24",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-24",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-24",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-24",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/java/org/namewta/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-25",
+    "right": "T-26",
+    "paths": [
+      [
+        "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDeptController.java",
+        "backend/wta-modules/wta-system/"
+      ],
+      [
+        "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysDeptServiceImpl.java",
+        "backend/wta-modules/wta-system/"
+      ],
+      [
+        "backend/wta-modules/wta-system/src/main/java/org/namewta/system/mapper/SysDeptMapper.java",
+        "backend/wta-modules/wta-system/"
+      ],
+      [
+        "backend/wta-modules/wta-system/src/main/resources/mapper/system/",
+        "backend/wta-modules/wta-system/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-25",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-25",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-25",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-25",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-26",
+    "right": "T-27",
+    "paths": [
+      [
+        "backend/wta-modules/wta-demo/",
+        "backend/wta-modules/wta-demo/"
+      ],
+      [
+        "frontend/packages/domains/",
+        "frontend/packages/domains/demo/"
+      ],
+      [
+        "docs/fm/",
+        "docs/fm/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-26",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-modules/wta-system/",
+        "backend/wta-modules/wta-system/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-workflow/",
+        "backend/wta-modules/wta-workflow/AGENTS.md"
+      ],
+      [
+        "backend/wta-modules/wta-demo/",
+        "backend/wta-modules/wta-demo/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-26",
+    "right": "T-30",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-26",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-modules/wta-demo/",
+        "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java"
+      ],
+      [
+        "backend/wta-modules/wta-demo/",
+        "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java"
+      ],
+      [
+        "frontend/packages/domains/",
+        "frontend/packages/domains/profile/"
+      ],
+      [
+        "frontend/packages/api-contracts/",
+        "frontend/packages/api-contracts/"
+      ],
+      [
+        "frontend/tooling/openapi/",
+        "frontend/tooling/openapi/"
+      ],
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-27",
+    "right": "T-28",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-27",
+    "right": "T-29",
+    "paths": [
+      [
+        "backend/wta-modules/wta-demo/",
+        "backend/wta-modules/wta-demo/AGENTS.md"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-27",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-27",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-modules/wta-demo/",
+        "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java"
+      ],
+      [
+        "backend/wta-modules/wta-demo/",
+        "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java"
+      ],
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-28",
+    "right": "T-30",
+    "paths": [
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-28",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisher.java",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/test/",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ],
+      [
+        "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/",
+        "backend/wta-modules/wta-notify/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-29",
+    "right": "T-31",
+    "paths": [
+      [
+        "backend/wta-modules/wta-notify/AGENTS.md",
+        "backend/wta-modules/wta-notify/"
+      ],
+      [
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md",
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/"
+      ],
+      [
+        "backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md",
+        "backend/wta-modules/wta-profile/wta-profile-person/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  },
+  {
+    "left": "T-30",
+    "right": "T-31",
+    "paths": [
+      [
+        "frontend/e2e/",
+        "frontend/e2e/"
+      ],
+      [
+        "backend/wta-admin/src/test/",
+        "backend/wta-admin/src/test/"
+      ]
+    ],
+    "owner": "single-agent",
+    "resolution": "current-workspace exclusive serial slot; never parallel"
+  }
+]

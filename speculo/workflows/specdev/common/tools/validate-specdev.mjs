@@ -66,6 +66,57 @@ const VALID_TICKET_STATUS = new Set([
   "deviated",
   "cancelled",
 ]);
+const VALID_TICKET_KIND = new Set([
+  "bug",
+  "feature",
+  "refactor",
+  "investigation",
+  "operations",
+  "documentation",
+  "review",
+]);
+const VALID_TRIAGE_MODE = new Set(["intake", "reconcile", "publish"]);
+const VALID_PUBLISH_ACTION = new Set([
+  "not-requested",
+  "pending",
+  "published",
+  "publish-failed",
+  "waived",
+]);
+const VALID_PUBLISH_ROW_STATE = new Set([
+  "planned",
+  "created",
+  "commented",
+  "closed",
+  "skipped:cancelled",
+  "skipped:excluded",
+  "failed",
+]);
+const FORBIDDEN_PUBLISH_LABELS = new Set([
+  "needs-triage",
+  "needs-info",
+  "ready-for-agent",
+  "ready-for-human",
+  "wontfix",
+  "duplicate",
+  "invalid",
+  "stale",
+]);
+const COUNTED_PUBLISH_STATES = new Set(["closed", "created", "commented"]);
+const VALID_CAPTURE_ROW_STATE = new Set([
+  "planned",
+  "open",
+  "skipped:duplicate",
+  "intaken",
+  "waived",
+  "failed",
+]);
+const FORBIDDEN_CAPTURE_LABELS = new Set([
+  ...FORBIDDEN_PUBLISH_LABELS,
+  "specdev:published",
+  "specdev:change",
+]);
+const COUNTED_CAPTURE_REMOTE_STATES = new Set(["open", "intaken"]);
 const VALID_DEPTH = new Set(["lite", "standard", "deep"]);
 const VALID_RISK = new Set(["low", "medium", "high", "critical"]);
 const VALID_PLAN_MODES = new Set([
@@ -175,6 +226,8 @@ const STATE_ARTIFACT_BASENAMES = new Set([
   "status.json",
   ".status.json",
   "triage.md",
+  "publish.md",
+  "capture.md",
   "diagnosis.md",
   "source.md",
   "architecture-review.md",
@@ -973,7 +1026,7 @@ function capabilityChecks(root) {
       "triage",
       [
         join(root, "T-triage", "T-triage.md"),
-        ["source.md", "intake", "reconcile", "唯一权威", "远程写入为零"],
+        ["source.md", "intake", "reconcile", "publish", "publish.md", "specdev:published", "capture", "capture.md", "specdev:captured", "唯一权威", "远程写入为零"],
       ],
     ],
     [
@@ -1061,7 +1114,7 @@ function capabilityChecks(root) {
       "archive",
       [
         join(root, "A-archive-and-consolidate", "A-archive-and-consolidate.md"),
-        ["archive-single", "dry-run", "external_action", "consolidate-from-code", "archive-and-consolidate"],
+        ["archive-single", "dry-run", "external_action", "publish_action", "consolidate-from-code", "archive-and-consolidate"],
       ],
     ],
     [
@@ -1102,6 +1155,11 @@ function capabilityChecks(root) {
     "common/rules/parent-implementation-orchestration.md",
     "common/schemas/implementation-map.schema.json",
     "common/schemas/implementation-plan.schema.json",
+    "common/schemas/capture.schema.json",
+    "T-triage/capture-protocol.md",
+    "T-triage/capture-template.md",
+    "T-triage/issue-record-template.md",
+    "T-triage/tools/capture-status.mjs",
   ]) {
     if (!isFile(join(root, required))) errors.push(`missing architecture/wayfinding contract ${required}`);
   }
@@ -1327,7 +1385,7 @@ function validateTriage(path, expectedChange, errors) {
     errors.push("triage.md: artifact/schema_version must be triage/1");
   }
   if (meta.change !== expectedChange) errors.push("triage.md: change must equal directory name");
-  if (!new Set(["intake", "reconcile"]).has(meta.mode)) errors.push(`triage.md: invalid mode ${meta.mode}`);
+  if (!VALID_TRIAGE_MODE.has(meta.mode)) errors.push(`triage.md: invalid mode ${meta.mode}`);
   if (!VALID_RISK.has(meta.risk)) errors.push(`triage.md: invalid risk ${meta.risk}`);
   if (typeof meta.route !== "string" || !meta.route.startsWith("specdev/")) {
     errors.push("triage.md: route must be a specdev work id");
@@ -1338,13 +1396,221 @@ function validateTriage(path, expectedChange, errors) {
   if (!new Set(["not-applicable", "pending-close", "closed", "close-failed", "waived"]).has(meta.external_action)) {
     errors.push(`triage.md: invalid external_action ${meta.external_action}`);
   }
+  const publishAction = meta.publish_action == null || meta.publish_action === ""
+    ? "not-requested"
+    : meta.publish_action;
+  if (!VALID_PUBLISH_ACTION.has(publishAction)) {
+    errors.push(`triage.md: invalid publish_action ${meta.publish_action}`);
+  }
+  meta.publish_action = publishAction;
   if (!String(meta.source ?? "").includes("/source.md</Path>")) {
     errors.push("triage.md: source must reference the local source.md artifact");
   }
   for (const heading of ["## 当前判定", "## 未知项", "## 路由", "## 外部动作"]) {
     if (!body.includes(heading)) errors.push(`triage.md: missing '${heading}'`);
   }
+  if (publishAction !== "not-requested" && !body.includes("## 发布投影")) {
+    errors.push("triage.md: missing '## 发布投影'");
+  }
   return { path, meta, body };
+}
+
+function parsePublishLedger(body) {
+  const rows = [];
+  for (const line of body.split(/\r?\n/)) {
+    if (!/^\|/.test(line) || /^\|\s*-+/.test(line) || /^\|\s*ticket\s*\|/i.test(line)) continue;
+    const cells = line.split("|").map((cell) => cell.trim());
+    const inner = cells.slice(1, cells.length - 1);
+    if (inner.length < 8) continue;
+    rows.push({
+      ticket: inner[0],
+      kind: inner[1],
+      labels: inner[2],
+      number: inner[3],
+      url: inner[4],
+      marker: inner[5],
+      sha256: inner[6],
+      state: inner[7],
+    });
+  }
+  return rows;
+}
+
+function validatePublish(path, expectedChange, triage, errors) {
+  if (!isFile(path)) {
+    errors.push("missing publish.md ledger");
+    return null;
+  }
+  const { meta, body } = parseFrontmatter(path);
+  const required = [
+    "schema_version",
+    "artifact",
+    "change",
+    "mode",
+    "repo",
+    "publish_action",
+    "include_cancelled",
+    "origin",
+    "updated_at",
+  ];
+  const missing = required.filter((key) => !(key in meta));
+  if (missing.length) errors.push(`publish.md: missing keys ${JSON.stringify(missing)}`);
+  if (meta.schema_version !== 1 || meta.artifact !== "publish") {
+    errors.push("publish.md: artifact/schema_version must be publish/1");
+  }
+  if (meta.change !== expectedChange) errors.push("publish.md: change must equal directory name");
+  if (meta.mode !== "publish") errors.push(`publish.md: invalid mode ${meta.mode}`);
+  if (!new Set(["pending", "published", "publish-failed", "waived"]).has(meta.publish_action)) {
+    errors.push(`publish.md: invalid publish_action ${meta.publish_action}`);
+  }
+  if (!new Set(["local", "intake"]).has(meta.origin)) {
+    errors.push(`publish.md: invalid origin ${meta.origin}`);
+  }
+  if (typeof meta.repo !== "string" || !/.+\/.+/.test(meta.repo)) {
+    errors.push("publish.md: repo must be owner/repo");
+  }
+  for (const heading of ["## 发布计划", "## 账本", "## 计数", "## 重试"]) {
+    if (!body.includes(heading)) errors.push(`publish.md: missing '${heading}'`);
+  }
+  const rows = parsePublishLedger(body);
+  if (!rows.length) errors.push("publish.md: ledger table has no ticket rows");
+  const mixed = triage && triage.meta.classification === "mixed";
+  for (const row of rows) {
+    if (!/^T-\d{2,}$/.test(row.ticket)) {
+      errors.push(`publish.md: invalid ticket id ${row.ticket}`);
+    }
+    if (!VALID_PUBLISH_ROW_STATE.has(row.state)) {
+      errors.push(`publish.md: ${row.ticket}: invalid state ${row.state}`);
+    }
+    const labels = row.labels.split(",").map((item) => item.trim()).filter(Boolean);
+    for (const label of labels) {
+      if (FORBIDDEN_PUBLISH_LABELS.has(label)) {
+        errors.push(`publish.md: ${row.ticket}: forbidden label ${label}`);
+      }
+    }
+    const skipped = row.state.startsWith("skipped:");
+    if (!skipped && !VALID_TICKET_KIND.has(row.kind)) {
+      errors.push(`publish.md: ${row.ticket}: invalid kind ${row.kind}`);
+    }
+    if (mixed && !skipped && !VALID_TICKET_KIND.has(row.kind)) {
+      errors.push(`publish.md: mixed change requires kind on ${row.ticket}`);
+    }
+    if (COUNTED_PUBLISH_STATES.has(row.state) || row.state === "closed") {
+      if (!/^\d+$/.test(row.number)) {
+        errors.push(`publish.md: ${row.ticket}: ${row.state} row requires issue number`);
+      }
+      if (!String(row.url).startsWith("https://github.com/")) {
+        errors.push(`publish.md: ${row.ticket}: ${row.state} row requires GitHub url`);
+      }
+      const expectedMarker = `specdev:${expectedChange}:${row.ticket}:published`;
+      if (row.marker !== expectedMarker) {
+        errors.push(`publish.md: ${row.ticket}: marker must be ${expectedMarker}`);
+      }
+    }
+    if (row.state === "closed" || row.state === "created" || row.state === "commented") {
+      if (!labels.includes("specdev:published")) {
+        errors.push(`publish.md: ${row.ticket}: missing specdev:published`);
+      }
+      const originLabel = meta.origin === "intake" ? "origin:intake" : "origin:local";
+      if (!labels.includes(originLabel)) {
+        errors.push(`publish.md: ${row.ticket}: missing ${originLabel}`);
+      }
+    }
+  }
+  return { path, meta, body, rows };
+}
+
+function parseCaptureLedger(body) {
+  const rows = [];
+  for (const line of body.split(/\r?\n/)) {
+    if (!/^\|/.test(line) || /^\|\s*-+/.test(line) || /^\|\s*id\s*\|/i.test(line)) continue;
+    const cells = line.split("|").map((cell) => cell.trim());
+    const inner = cells.slice(1, cells.length - 1);
+    if (inner.length < 9) continue;
+    rows.push({
+      id: inner[0],
+      kind: inner[1],
+      title: inner[2],
+      labels: inner[3],
+      number: inner[4],
+      url: inner[5],
+      marker: inner[6],
+      sha256: inner[7],
+      state: inner[8],
+    });
+  }
+  return rows;
+}
+
+function validateCapture(path, errors) {
+  if (!isFile(path)) {
+    errors.push("missing capture.md ledger");
+    return null;
+  }
+  const { meta, body } = parseFrontmatter(path);
+  const required = [
+    "schema_version",
+    "artifact",
+    "mode",
+    "repo",
+    "updated_at",
+  ];
+  const missing = required.filter((key) => !(key in meta));
+  if (missing.length) errors.push(`capture.md: missing keys ${JSON.stringify(missing)}`);
+  if (meta.schema_version !== 1 || meta.artifact !== "capture-index") {
+    errors.push("capture.md: artifact/schema_version must be capture-index/1");
+  }
+  if (meta.mode !== "capture") errors.push(`capture.md: invalid mode ${meta.mode}`);
+  if (typeof meta.repo !== "string" || !/.+\/.+/.test(meta.repo)) {
+    errors.push("capture.md: repo must be owner/repo");
+  }
+  for (const heading of ["## 捕获计划", "## 账本", "## 计数", "## 重试"]) {
+    if (!body.includes(heading)) errors.push(`capture.md: missing '${heading}'`);
+  }
+  const rows = parseCaptureLedger(body);
+  for (const row of rows) {
+    if (!CHANGE_NAME.test(row.id)) {
+      errors.push(`capture.md: invalid id ${row.id}`);
+    }
+    if (!VALID_CAPTURE_ROW_STATE.has(row.state)) {
+      errors.push(`capture.md: ${row.id}: invalid state ${row.state}`);
+    }
+    const labels = row.labels.split(",").map((item) => item.trim()).filter(Boolean);
+    for (const label of labels) {
+      if (FORBIDDEN_CAPTURE_LABELS.has(label)) {
+        errors.push(`capture.md: ${row.id}: forbidden label ${label}`);
+      }
+    }
+    const skipped = row.state.startsWith("skipped:") || row.state === "waived" || row.state === "planned" || row.state === "failed";
+    if (!skipped && !VALID_TICKET_KIND.has(row.kind)) {
+      errors.push(`capture.md: ${row.id}: invalid kind ${row.kind}`);
+    }
+    if (COUNTED_CAPTURE_REMOTE_STATES.has(row.state)) {
+      if (!VALID_TICKET_KIND.has(row.kind)) {
+        errors.push(`capture.md: ${row.id}: invalid kind ${row.kind}`);
+      }
+      if (!/^\d+$/.test(row.number)) {
+        errors.push(`capture.md: ${row.id}: ${row.state} row requires issue number`);
+      }
+      if (!String(row.url).startsWith("https://github.com/")) {
+        errors.push(`capture.md: ${row.id}: ${row.state} row requires GitHub url`);
+      }
+      const expectedMarker = `specdev:capture:${row.id}`;
+      if (row.marker !== expectedMarker) {
+        errors.push(`capture.md: ${row.id}: marker must be ${expectedMarker}`);
+      }
+      if (!labels.includes("specdev:captured")) {
+        errors.push(`capture.md: ${row.id}: missing specdev:captured`);
+      }
+      if (!labels.includes("origin:local")) {
+        errors.push(`capture.md: ${row.id}: missing origin:local`);
+      }
+      if (labels.includes("origin:intake")) {
+        errors.push(`capture.md: ${row.id}: capture origin must be local`);
+      }
+    }
+  }
+  return { path, meta, body, rows };
 }
 
 function validateDiagnosis(path, expectedChange, errors) {
@@ -2048,6 +2314,9 @@ function validateTicket(path, errors) {
   const ticketId = String(meta.id);
   if (!/^T-\d{2,}$/.test(ticketId)) errors.push(`${basename(path)}: invalid Ticket id ${ticketId}`);
   if (!VALID_TICKET_STATUS.has(meta.status)) errors.push(`${basename(path)}: invalid status ${meta.status}`);
+  if (meta.kind != null && meta.kind !== "" && !VALID_TICKET_KIND.has(meta.kind)) {
+    errors.push(`${basename(path)}: invalid kind ${meta.kind}`);
+  }
   if (!VALID_DEPTH.has(meta.planning_depth)) {
     errors.push(`${basename(path)}: invalid planning_depth ${meta.planning_depth}`);
   }
@@ -3001,6 +3270,9 @@ function validateChange(change, stage = null, repoRoot = null) {
   if (isFile(join(change, "source-issue.md"))) {
     errors.push("obsolete source-issue.md is forbidden; use source.md without compatibility fallback");
   }
+  if (isFile(join(change, "capture.md"))) {
+    errors.push("capture.md is workspace-owned at specdev/capture.md; change-level copies are forbidden");
+  }
   const sourceRequired = stage === "triage";
   const sourcePath = join(change, "source.md");
   const source = isFile(sourcePath) || sourceRequired
@@ -3010,6 +3282,13 @@ function validateChange(change, stage = null, repoRoot = null) {
   const triage = isFile(triagePath) || sourceRequired
     ? validateTriage(triagePath, basename(change), errors)
     : null;
+  const publishPath = join(change, "publish.md");
+  const publishRequired = Boolean(
+    triage && new Set(["pending", "published", "publish-failed", "waived"]).has(triage.meta.publish_action),
+  );
+  if (isFile(publishPath) || publishRequired) {
+    validatePublish(publishPath, basename(change), triage, errors);
+  }
   const diagnosisPath = join(change, "diagnosis.md");
   if (isFile(diagnosisPath) || stage === "diagnosis") {
     validateDiagnosis(diagnosisPath, basename(change), errors);
@@ -3298,6 +3577,13 @@ function validateChange(change, stage = null, repoRoot = null) {
   ) {
     errors.push(`complete stage cannot archive external_action=${triage.meta.external_action}`);
   }
+  if (
+    stage === "complete" &&
+    triage &&
+    new Set(["pending", "publish-failed"]).has(triage.meta.publish_action)
+  ) {
+    errors.push(`complete stage cannot archive publish_action=${triage.meta.publish_action}`);
+  }
 
   for (const path of walk(change).filter((item) => isFile(item) && extname(item) === ".md")) {
     const text = readText(path);
@@ -3325,7 +3611,7 @@ function printResults(errors, warnings) {
 }
 
 function usage() {
-  console.error("Usage: node validate-specdev.mjs [--stage <stage>] [--repo <project-root>] <change-directory> | --self-check");
+  console.error("Usage: node validate-specdev.mjs [--stage <stage>] [--repo <project-root>] <change-directory> | --self-check | --capture <capture.md>");
   return 2;
 }
 
@@ -3333,6 +3619,7 @@ function main(argv) {
   let selfCheckRequested = false;
   let stage = null;
   let repoRoot = null;
+  let capturePath = null;
   const positional = [];
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -3348,6 +3635,11 @@ function main(argv) {
       index += 1;
     } else if (arg.startsWith("--repo=")) {
       repoRoot = arg.slice("--repo=".length);
+    } else if (arg === "--capture") {
+      capturePath = argv[index + 1] ?? null;
+      index += 1;
+    } else if (arg.startsWith("--capture=")) {
+      capturePath = arg.slice("--capture=".length);
     } else if (arg.startsWith("--")) {
       return usage();
     } else {
@@ -3356,11 +3648,17 @@ function main(argv) {
   }
   if (stage !== null && !VALID_STAGES.has(stage)) return usage();
   if (selfCheckRequested) {
-    if (positional.length || stage !== null) return usage();
+    if (positional.length || stage !== null || capturePath) return usage();
     const scriptDirectory = dirname(fileURLToPath(import.meta.url));
     const root = resolve(scriptDirectory, "..", "..");
     const result = selfCheck(root);
     return printResults(result.errors, result.warnings);
+  }
+  if (capturePath) {
+    if (positional.length || stage !== null || repoRoot) return usage();
+    const errors = [];
+    validateCapture(resolve(capturePath), errors);
+    return printResults(errors, []);
   }
   if (positional.length === 1) {
     const result = validateChange(resolve(positional[0]), stage, repoRoot);
@@ -3369,7 +3667,7 @@ function main(argv) {
   return usage();
 }
 
-export { parseFrontmatter, validateChange, validateTicket, validateMap, pathsOverlap, findCycle };
+export { parseFrontmatter, validateChange, validateTicket, validateMap, pathsOverlap, findCycle, validateCapture };
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try { process.exitCode = main(process.argv.slice(2)); }

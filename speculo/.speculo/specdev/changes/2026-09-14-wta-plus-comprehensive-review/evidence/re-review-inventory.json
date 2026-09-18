@@ -1,0 +1,363 @@
+{
+  "date": "2026-09-18",
+  "head": "e285d0800c530fcb6b90790a8aab5dcc3162d3bd",
+  "backend_poms": 50,
+  "backend_java_test_sources": 247,
+  "app_packages": [
+    "frontend/apps/admin-web/package.json",
+    "frontend/apps/home-web/package.json",
+    "frontend/apps/sso-web/package.json"
+  ],
+  "legacy_mapping_candidates": [
+    {
+      "path": "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java",
+      "line": 155,
+      "mapping": "@DeleteMapping(value = \"/unlock/{socialId}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/EsCrudController.java",
+      "line": 61,
+      "mapping": "@PutMapping(\"/update\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/EsCrudController.java",
+      "line": 83,
+      "mapping": "@DeleteMapping(\"/delete/{id}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestBatchController.java",
+      "line": 82,
+      "mapping": "@DeleteMapping()"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestDemoController.java",
+      "line": 132,
+      "mapping": "@PutMapping()"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestDemoController.java",
+      "line": 144,
+      "mapping": "@DeleteMapping(\"/{ids}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestTreeController.java",
+      "line": 90,
+      "mapping": "@PutMapping()"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestTreeController.java",
+      "line": 102,
+      "mapping": "@DeleteMapping(\"/{ids}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysLoginInfoController.java",
+      "line": 73,
+      "mapping": "@DeleteMapping(\"/{infoIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysLoginInfoController.java",
+      "line": 86,
+      "mapping": "@DeleteMapping(\"/clean\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysOperlogController.java",
+      "line": 70,
+      "mapping": "@DeleteMapping(\"/{operIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysOperlogController.java",
+      "line": 83,
+      "mapping": "@DeleteMapping(\"/clean\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysUserOnlineController.java",
+      "line": 88,
+      "mapping": "@DeleteMapping(\"/{tokenId}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysUserOnlineController.java",
+      "line": 128,
+      "mapping": "@DeleteMapping(\"/myself/{tokenId}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysClientController.java",
+      "line": 111,
+      "mapping": "@PutMapping()"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysClientController.java",
+      "line": 166,
+      "mapping": "@PutMapping(\"/changeStatus\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysClientController.java",
+      "line": 179,
+      "mapping": "@DeleteMapping(\"/{ids}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java",
+      "line": 113,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java",
+      "line": 131,
+      "mapping": "@PutMapping(\"/updateByKey\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java",
+      "line": 145,
+      "mapping": "@DeleteMapping(\"/{configIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java",
+      "line": 158,
+      "mapping": "@DeleteMapping(\"/refreshCache\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDeptController.java",
+      "line": 103,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDeptController.java",
+      "line": 129,
+      "mapping": "@DeleteMapping(\"/{deptId}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictDataController.java",
+      "line": 121,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictDataController.java",
+      "line": 138,
+      "mapping": "@DeleteMapping(\"/{dictCodes}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictTypeController.java",
+      "line": 103,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictTypeController.java",
+      "line": 120,
+      "mapping": "@DeleteMapping(\"/{dictIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictTypeController.java",
+      "line": 134,
+      "mapping": "@DeleteMapping(\"/refreshCache\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysMenuController.java",
+      "line": 156,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysMenuController.java",
+      "line": 179,
+      "mapping": "@DeleteMapping(\"/{menuId}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysMenuController.java",
+      "line": 208,
+      "mapping": "@DeleteMapping(\"/cascade/{menuIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssController.java",
+      "line": 82,
+      "mapping": "@DeleteMapping(\"/{ossIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssUploadController.java",
+      "line": 53,
+      "mapping": "@DeleteMapping(\"/{uploadToken}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysPostController.java",
+      "line": 110,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysPostController.java",
+      "line": 131,
+      "mapping": "@DeleteMapping(\"/{postIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysProfileController.java",
+      "line": 63,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysProfileController.java",
+      "line": 91,
+      "mapping": "@PutMapping(\"/updatePwd\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+      "line": 117,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+      "line": 143,
+      "mapping": "@PutMapping(\"/permission\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+      "line": 163,
+      "mapping": "@PutMapping(\"/changeStatus\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+      "line": 182,
+      "mapping": "@DeleteMapping(\"/{roleIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+      "line": 234,
+      "mapping": "@PutMapping(\"/authUser/cancel\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+      "line": 249,
+      "mapping": "@PutMapping(\"/authUser/cancelAll\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java",
+      "line": 264,
+      "mapping": "@PutMapping(\"/authUser/selectAll\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+      "line": 221,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+      "line": 244,
+      "mapping": "@DeleteMapping(\"/{userIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+      "line": 276,
+      "mapping": "@PutMapping(\"/resetPwd\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+      "line": 295,
+      "mapping": "@PutMapping(\"/changeStatus\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+      "line": 354,
+      "mapping": "@PutMapping(\"/authRole\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserTypeController.java",
+      "line": 108,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserTypeController.java",
+      "line": 121,
+      "mapping": "@PutMapping(\"/changeStatus\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserTypeController.java",
+      "line": 134,
+      "mapping": "@DeleteMapping(\"/{userTypeIds:\\\\d+(?:,\\\\d+)*}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java",
+      "line": 105,
+      "mapping": "@PutMapping()"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java",
+      "line": 124,
+      "mapping": "@DeleteMapping(\"/{categoryId}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+      "line": 102,
+      "mapping": "@PutMapping"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+      "line": 117,
+      "mapping": "@PutMapping(\"/publish/{id}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+      "line": 131,
+      "mapping": "@PutMapping(\"/unPublish/{id}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+      "line": 146,
+      "mapping": "@DeleteMapping(\"/{ids}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java",
+      "line": 215,
+      "mapping": "@PutMapping(\"/active/{id}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+      "line": 87,
+      "mapping": "@DeleteMapping(\"/deleteByBusinessIds/{businessIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+      "line": 100,
+      "mapping": "@DeleteMapping(\"/deleteByInstanceIds/{instanceIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+      "line": 113,
+      "mapping": "@DeleteMapping(\"/deleteHisByInstanceIds/{instanceIds}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+      "line": 127,
+      "mapping": "@PutMapping(\"/cancelProcessApply\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+      "line": 142,
+      "mapping": "@PutMapping(\"/active/{id}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java",
+      "line": 193,
+      "mapping": "@PutMapping(\"/updateVariable\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java",
+      "line": 88,
+      "mapping": "@PutMapping()"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java",
+      "line": 101,
+      "mapping": "@DeleteMapping(\"/{ids}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwTaskController.java",
+      "line": 189,
+      "mapping": "@PutMapping(\"/updateAssignee/{userId}\")"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java",
+      "line": 119,
+      "mapping": "@PutMapping()"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java",
+      "line": 132,
+      "mapping": "@DeleteMapping(\"/{ids}\")"
+    }
+  ]
+}

@@ -7,60 +7,75 @@
       "kind": "learning",
       "domain": "namewta",
       "topic_id": "architecture",
-      "locator": "changes/2026-09-14-namewta-architecture",
-      "parent_change": null,
-      "root_change": "2026-09-14-namewta-architecture",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-namewta-architecture",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
       "current_work": null,
       "works_run": [
         "learning/assess-and-plan",
         "learning/lesson"
       ],
-      "updated_at": "2026-09-14T07:42:38.672Z"
+      "updated_at": "2026-09-16T07:53:45.456Z"
     },
     {
       "change_id": "2026-09-14-wta-sso",
       "kind": "learning",
       "domain": "namewta",
       "topic_id": "sso",
-      "locator": "changes/2026-09-14-wta-sso",
-      "parent_change": null,
-      "root_change": "2026-09-14-wta-sso",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-sso",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
       "current_work": null,
       "works_run": [
         "learning/assess-and-plan",
         "learning/lesson"
       ],
-      "updated_at": "2026-09-14T08:03:33.105Z"
+      "updated_at": "2026-09-16T07:53:45.456Z"
     },
     {
       "change_id": "2026-09-14-wta-third",
       "kind": "learning",
       "domain": "namewta",
       "topic_id": "third",
-      "locator": "changes/2026-09-14-wta-third",
-      "parent_change": null,
-      "root_change": "2026-09-14-wta-third",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-third",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
       "current_work": null,
       "works_run": [
         "learning/assess-and-plan",
         "learning/lesson"
       ],
-      "updated_at": "2026-09-14T08:03:33.105Z"
+      "updated_at": "2026-09-16T07:53:45.456Z"
     },
     {
       "change_id": "2026-09-14-wta-notify",
       "kind": "learning",
       "domain": "namewta",
       "topic_id": "notify",
-      "locator": "changes/2026-09-14-wta-notify",
-      "parent_change": null,
-      "root_change": "2026-09-14-wta-notify",
+      "locator": "changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-notify",
+      "parent_change": "2026-09-16-namewta-fullstack",
+      "root_change": "2026-09-16-namewta-fullstack",
       "current_work": null,
       "works_run": [
         "learning/assess-and-plan",
         "learning/lesson"
       ],
-      "updated_at": "2026-09-14T08:03:33.105Z"
+      "updated_at": "2026-09-16T07:53:45.456Z"
+    },
+    {
+      "change_id": "2026-09-16-namewta-fullstack",
+      "kind": "learning",
+      "domain": "namewta",
+      "topic_id": "fullstack",
+      "locator": "changes/2026-09-16-namewta-fullstack",
+      "parent_change": null,
+      "root_change": "2026-09-16-namewta-fullstack",
+      "current_work": null,
+      "works_run": [
+        "learning/assess-and-plan",
+        "learning/goal"
+      ],
+      "updated_at": "2026-09-16T08:47:16.000Z"
     }
   ],
   "archived": []

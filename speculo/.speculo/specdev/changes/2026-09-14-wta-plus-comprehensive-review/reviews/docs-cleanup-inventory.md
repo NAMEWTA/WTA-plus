@@ -1,3 +1,5 @@
+> 历史分类清单；2026-09-18当前SHA与全文见[re-review-cleanup-inventory.json](re-review-cleanup-inventory.json)，删除前以当前内容复核。
+
 # D-06 文档清理逐文件清单
 
 状态：draft / pending-user-review。候选依据：41 份 31 行通用手册形状；执行前须逐文件 diff，不能只按行数删除。精确 SHA-256、原文 snippet、父 owner 和保留项见同目录 JSON。

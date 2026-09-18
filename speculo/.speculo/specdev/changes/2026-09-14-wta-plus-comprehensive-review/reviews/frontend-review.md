@@ -1,5 +1,8 @@
 # 前端架构、目录与用户流程审查
 
+> 2026-09-18 已按当前工作树重新核对并修订建议。原报告中的2026-09-14命令属于历史记录；当前命令结果见 [re-review-command-results.json](re-review-command-results.json)，逐票结论见 [re-review.md](re-review.md)。本次单人串行，仅改change；无旧版兼容要求。
+
+
 - 审查范围：`frontend/apps/{admin-web,home-web,sso-web}`、`frontend/packages/{domains,web-domains,platform,adapters,web-kit}`、前端依赖/构建配置、动态路由、权限认证、SSO、上传、通知、工作流、档案认证及可静态确认的 UI/UX/a11y。
 - 审查方式：只读源码、POM/SQL/规则/ADR 交叉核对；未运行浏览器、E2E 或真实服务。涉及视觉断点、跨 Origin Cookie、OSS CORS、后端响应形态的结论标注 needs-runtime。
 - 术语：使用 module/interface/depth/seam/adapter/leverage/locality。以下结论服务于无兼容性的升级方案，均为待用户审核的 proposed target，不代表已接受变更。
@@ -12,7 +15,7 @@
 | Admin App | application/http、services、session、sso；permission；user/navigation store；manifest；Navbar | F-01、F-04、F-07、F-09；保留显式 App composition 和当前权限 evaluator |
 | Home App | router/homeManifestRegistry、user/navigation store、RegisterPage、HomeShell、SSO callback | F-02、F-05、F-06、F-09、F-13；当前 App 已真实激活，不能按旧画像删除 |
 | SSO App | main、ssoApi、AuthorizePage、ssoApi.test | F-09/F-13；生产独立 Origin 是 ADR-0073 已接受契约，不能误合并进 Admin |
-| platform | contracts、auth、app-runtime 及 navigationRecovery、permission、validation | 保留终端纯投影与权限失败关闭；导航恢复需要 explicit loaded/route transaction；HTTP 合同缺取消传播见 F-08 |
+| platform | contracts、auth、app-runtime 及 navigationRecovery、permission、validation | 保留终端纯投影与权限失败关闭；导航恢复需要 explicit loaded/route transaction；HTTP目前无取消传播，是否扩展由实际资源需求决定 |
 | adapters | axios-browser、crypto-browser、storage-browser、oss-upload-browser（client/transport/resume-store） | F-01/F-11；保留 storage 外部删除语义、OSS 分片重签名及 gateway 校验；不以包多为由合并 |
 | system domain/web-domain | system service、menu、open-api、monitor、User/Role/Menu/Oss 页面、runtime/composables | F-07/F-08/F-12；OpenAPI 生成 transport 与 domain-owned 模型是有 leverage 的 seam |
 | profile domain/web-domain | self/person/enterprise/application、self 三页面、管理端创建/审核组件测试、材料后端/SQL | F-02；管理端材料上传存在是重要反证；self 不得仅凭 registration 测试宣称可交付 |
@@ -31,15 +34,15 @@
 - 证据：<Path>frontend/apps/admin-web/src/application/http.ts</Path> (lines 23-31)、<Path>frontend/apps/home-web/src/application/http.ts</Path> (lines 9-12) 将 `import.meta.env.VITE_APP_RSA_PRIVATE_KEY` 传给 <Path>frontend/packages/adapters/crypto-browser/src/index.ts</Path> (lines 7-16,34-43)；同文件 30、41 行以 AES-ECB 解密/加密。
 - 触发与影响：启用该加密模式时，任何访问 Admin/Home 静态资源的人可读取 Vite 注入的响应私钥；该密钥不能提供对浏览器之外观察者的独立保密边界。ECB 无随机 IV、缺认证标签，泄漏块模式。此处不等同于已经获得服务器私钥，也不证明攻击者能越过后端授权。SSO token、PKCE code_verifier 请求显式 `isEncrypt:false`，普通登录请求会走该路径；跨端日志仍需与根安全审查联动。
 - 反证/边界：公钥放客户端是可接受的；真正的边界问题是 privateKey 和 ECB 组合。若生产构建始终关闭 `VITE_APP_ENCRYPT`，需通过构建矩阵证实，当前源码仍允许误开。
-- 修改意见：建议在本轮 proposed ADR 裁决后删除浏览器固定 privateKey 和 `decryptResponse` 责任，明确 HTTPS 是传输保密边界；若确有应用层加密需求，先建威胁模型再采用能验证消息完整性的协议，禁止把共享响应解密私钥描述为秘密。HttpOnly Cookie 是可选会话方案，需要一并裁决 CSRF、同源/SameSite、OAuth 既有 token 合同，不能由此 finding 直接切换。配置 schema/构建检查禁止误注入服务端私钥；保留 public key 仅在有明确协议消费者时。
+- 修改意见：按用户要求以HTTPS完成硬切，同步删除浏览器共享privateKey、ECB与无消费者包装/依赖。保留Sa-Token、机器HMAC和数据库加密。本问题不引入AEAD备选协议或HttpOnly会话迁移。当前仅证实可注入代码，生产bundle是否含实际私钥未构建验证。
 - 删除复杂性：删掉 browser decrypt 分支、私钥 env、CryptoJS ECB 包装和两端重复配置；减少 interface 深度而增加真实安全 seam。
 - dependency class: ports & adapters; strength: Strong; certainty: confirmed. Security boundary and adjacent ADRs require proposed decision.
 
-### F-02 [P1][confirmed] Home 个人/企业认证页没有必填材料上传，提交必然被后端材料门禁拒绝
+### F-02 [P1][confirmed] Home 新申请缺少必填材料上传，无法完成自助提交
 
 - 证据：<Path>frontend/packages/web-domains/profile/src/self/PersonVerificationPage.vue</Path> (lines 11-30,83-122)、<Path>frontend/packages/web-domains/profile/src/self/EnterpriseVerificationPage.vue</Path> (lines 11-40,50-61) 只有身份表单及 save/submit，没有 `runtime.fileUpload`、材料树或材料 service。<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path> (lines 3-15) 也未注入材料能力。对应 domain service 仅调用 application save/submit：<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path> (lines 5-19)、<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path> (lines 5-23)。
 - 反证：管理端档案页具备 tagged upload（组件契约测试断言 `runtime.fileUpload`、`materialNodeId`）；故不是后端不支持，而是 self web-domain 纵切片断裂。
-- 跨层事实：<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonApplicationService.java</Path> (lines 134-153) 调 `materials.validateRequired(...)`；企业同名 service:151-175 校验必需材料。基座 DML <Path>release-artifacts/docker/infrastructure/mysql/init/60-namewta-dml.sql</Path> (lines 1008-1036) 登记 PERSON CN_RESIDENT_ID 人像/国徽各 1 件；ENTERPRISE `*` ALWAYS 营业执照、法人身份证明各 1 件，非法人经办还需授权委托书。<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/ProfileMaterialService.java</Path> (lines 232-242) 按附属材料计数，缺失抛 `MISSING_REQUIRED_MATERIAL:<tag>`。
+- 跨层事实：<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonApplicationService.java</Path> (lines 134-153) 调 `materials.validateRequired(...)`；企业同名 service:151-175 校验必需材料。基座 DML <Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path> (lines 1008-1036) 登记 PERSON CN_RESIDENT_ID 人像/国徽各 1 件；ENTERPRISE `*` ALWAYS 营业执照、法人身份证明各 1 件，非法人经办还需授权委托书。<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/ProfileMaterialService.java</Path> (lines 232-242) 按附属材料计数，缺失抛 `MISSING_REQUIRED_MATERIAL:<tag>`。
 - 触发与影响：用户填写完整身份并点“提交认证”时，后端返回缺材料错误；当前页面没有上传入口、材料缺失逐项提示或恢复路径，核心用户旅程不可完成。
 - 修改意见：把材料目录/当前材料/上传/删除/预览/必填校验作为 Profile self interface；Person/Enterprise 页面按 domain material owner 显式组合。提交前显示缺失 tag，上传完成才允许 submit；服务端错误映射到字段/tag。新增跨层合同测试（空材料、半材料、完整材料、取消上传、过期 OSS）。
 - 删除复杂性：不要复制管理端页面；提取最小 self material capability，保留业务 owner 和 App adapter locality。
@@ -49,7 +52,7 @@
 
 - 证据：<Path>frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue</Path> (lines 181-203) 每次 `open(taskId)` 清部分字段并并发请求，但没有 generation、AbortSignal 或 taskId guard；失败只写 `failure`，<Path>frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue</Path> (lines 258-285) 的 `complete` 仍以 `task.value` 执行。关闭后再次打开、快速切换任务或第二次请求失败时，旧 `task.value` 未清空。
 - 触发与影响：用户先打开任务 A、关闭或快速打开 B，B 加载失败，弹窗仍可显示/提交 A 的审批意见、附件和下一节点；产生错误审批或错误任务操作，属于数据完整性阻塞。权限是否可被越过需以后端合同另行验证，本 finding 不声称越权。
-- 修改意见：open 开始立即 `task.value=undefined`；为每次打开分配 generation 与 AbortController，所有 response 仅在 generation/taskId 匹配时写入；加载失败禁用所有 footer action；提交 payload 绑定当前 task id/version 并由后端做 optimistic check。为 complete/back/operation 加重复提交锁和取消语义。
+- 修改意见：open清空task/节点与附属动作并递增generation；旧response/catch/finally不能更新新弹窗。提交同步加single-flight并捕获taskId/payload，await确认后复核generation，关闭/卸载使其失效。复用后端现有锁和状态校验，不新增taskVersion协议；HTTP尚无signal，不强制扩展全链取消接口。
 - 验收：A→B 快速切换、B 失败、卸载中响应、重复点击提交均不得调用 A；成功路径仍只提交 B。
 - dependency class: in-process; strength: Strong; certainty: confirmed. Workflow state seam.
 
@@ -65,7 +68,7 @@
 - 证据：<Path>frontend/apps/home-web/src/router/index.ts</Path> (lines 20-39) 在每次受保护导航以 `user.roles.length===0` 判断未初始化；<Path>frontend/apps/home-web/src/store/user.ts</Path> (lines 14-21) 将服务端 roles 原样赋值，允许合法空数组。Admin 特意补 `ROLE_DEFAULT`（<Path>frontend/apps/admin-web/src/store/modules/user.ts</Path> (lines 35-42)），Home 没有等价状态位。
 - 触发与影响：合法但无角色的用户访问 /profile 时，每次 replace 后 guard 再次 getInfo/getMenus；可产生重复请求、菜单重建或死循环。需要浏览器/后端零角色账户确认次数。
 - 后端反查：<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysPermissionServiceImpl.java</Path> (lines 37-44) 从空 HashSet 加载当前 Client 角色，普通无角色用户结果仍为空；<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java</Path> (lines 126-137) 原样返回会话 rolePermission。没有找到“角色非空才允许 getInfo”的合同，不能依赖这个隐式不变量。
-- 修改意见：使用 `identityLoaded/navigationLoaded/restoreAttempt` 独立状态，而不是业务 roles；恢复成功即使 roles 空也只执行一次；失败清理并失败关闭。
+- 修改意见：以独立loaded/restoring状态表达恢复，不叠加无用状态位；空roles成功恢复也只执行一次。保持getInfo→菜单→注册→replace顺序，失败清理。
 - dependency class: in-process; strength: Strong; certainty: confirmed static (loop count needs-runtime). Navigation state.
 
 ### F-06 [P2][confirmed] Home 注册验证码没有刷新/重试状态，注册入口不按 registrationEnabled 失败关闭
@@ -81,17 +84,17 @@
 
 - 证据：<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path> (lines 481-508) 直接把 `upload.url + ?updateSupport` 和 headers 交给 Element Upload；<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path> (lines 1010-1031) 只在 progress/success 设置状态，没有 `on-error` 或 finally reset。`globalHeaders` 在 595 行正确来自 `runtime.uploadHeaders`，这一点应保留；但 629 行仅在组件创建时读取一次，631 行仍在 web-domain 读取 env 构造 URL，请求/业务错误不经统一 adapter。
 - 触发与影响：导入网络/业务失败后对话框永久禁用；凭据、重试、错误语义与 OSS/HTTP adapter 分散，无法统一取消/401/错误映射。
-- 修改意见：定义 system import port（上传 URL、headers、错误/响应解析、AbortSignal），由 App 注入；失败/取消统一复位并保留可重试文件；不要在 web-domain 读取 env 或构造全局 headers。
+- 修改意见：在现有runtime/HTTP上传机制上补error/abort终态、动态读取headers与业务错误映射，删除web-domain的env拼URL；如确需新增方法仅提供最小导入能力，不建立新的上传框架。
 - 验收：失败、401、取消、重复提交后按钮可恢复；错误消息不回显敏感响应。
 - dependency class: ports & adapters; strength: Strong; certainty: confirmed. Upload/import boundary.
 
 ### F-08 [P2][confirmed] System 列表请求可被过期结果覆盖，巨型 SFC 与重复 loading helper 放大修复面
 
 - 证据：<Path>frontend/packages/web-domains/system/src/role/RolePage.vue</Path> 1272 行，<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path> 1217 行，另有 <Path>frontend/packages/web-domains/workflow/src/definition/DefinitionPage.vue</Path> 904 行、MenuPage 732 行。多个包各自复制 `useLoading/useDialogState/useFormDialog/useSearchReset`（system/composables、workflow/composables、demo/composables、admin hooks）。
-- 触发与影响：<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path> (lines 889-894)、<Path>frontend/packages/web-domains/system/src/role/RolePage.vue</Path> (lines 859-869)、<Path>frontend/packages/web-domains/system/src/menu/MenuPage.vue</Path> (lines 547-558) 的 getList 每次请求成功后直接覆盖列表，没有 generation/取消；快速切换 Client A→B 后 A 慢响应可覆盖 B 列表。<Path>frontend/packages/web-domains/system/src/composables.ts</Path> (lines 12-24) 的布尔 withLoading 在任一并行请求结束即关闭。角色编辑/菜单操作若随后针对旧行进行，会给用户造成 Client/数据不一致。审查准则将 1k lines 视为拆分压力，但真正 finding 是可证明的 async owner 缺失。
-- 修改意见：按领域职责拆为 query/table/form/permission/upload composables，保留页面编排；只提取有真实消费者的纯 platform/web-kit state primitive，删除三份 identity wrapper；为每个 async owner 加 generation/AbortSignal。禁止为凑行数创建无语义组件。
-- 公共合同补充：<Path>frontend/packages/platform/contracts/src/index.ts</Path> (lines 21-29) 的 HttpRequest 目前没有 signal，domain 无法把取消交给 axios-browser；先增加终端中立的 cancellation seam 或与现有 AbortSignal 方案一致的明确合同，避免每页加一个不下传的假取消参数。Generation 防止旧结果写入，取消释放资源，两者不能互相替代。
-- 验收：代表页面请求成功/空/失败/取消/快速切换/卸载覆盖；architecture check 保持 domain->web-domain->App 方向。
+- 触发与影响：UserPage.getList、RolePage.getList和MenuPage.getList都直接应用响应，没有generation；筛选A慢/B快会使旧数据覆盖新列表，布尔withLoading还可能提前结束loading。当前未证明这些页面支持不卸载的Client切换，因此不把跨Client泄漏作为已确认后果。
+- 修改意见：先在实际query owner加generation保护list/error/loading，关闭/卸载使其失效。只有职责和重复语义清晰时提局部composable，不要求巨型SFC统一拆成query/table/form目录。
+- 公共合同补充：HttpRequest目前无signal。generation已足够阻止过期结果写入；只有资源取消确有必要且端口实际透传时才扩展signal，不为本票提前改造全部domain/adapter。
+- 验收：代表页面请求成功/空/失败/取消/快速切换/卸载覆盖；architecture check 保持 App -> web-domain -> domain -> platform 方向。
 - dependency class: in-process; strength: Strong; certainty: confirmed static (A/B timing needs-runtime). Module depth and request state.
 
 ### F-09 [P2][confirmed] SSO 丢失部署子路径与 returnTo，callback/authorize 失败缺可恢复交互
@@ -105,20 +108,20 @@
 
 - 证据：<Path>frontend/packages/web-domains/workflow/src/definition/DesignPage.vue</Path> (lines 17-28) 把任意 `window.message` 的 data 交给 controller；<Path>frontend/packages/web-domains/workflow/src/designer.ts</Path> (lines 9-17) 只判断 `data.method === 'close'`，无 event.origin、event.source、nonce 或 iframe WindowProxy 比对。
 - 触发与影响：同页面任意 iframe/扩展/恶意脚本可发送 `{method:'close'}`，关闭当前流程设计标签；若未来加入保存/发布消息，边界会升级为业务操作注入。
-- 修改意见：runtime.designUrl 返回允许 origin/nonce；记录 iframe ref；仅接受 `event.source===iframe.contentWindow`、origin 精确匹配、schema/nonce 匹配的消息；未知消息静默丢弃并可一次性诊断。设计器消息测试覆盖伪造 source/origin。
+- 修改意见：在iframe owner校验event.source===iframe.contentWindow和由designUrl得到的精确origin，只接受close payload；保留现有第三方消息协议，不新增nonce握手或未来save/publish动作。
 - dependency class: ports & adapters; strength: Strong; certainty: confirmed. Browser security seam.
 
 ### F-11 [P2][confirmed] OSS 上传的本地预览 URL 没有释放 owner，长会话可持续保留 File
 
 - 证据：<Path>frontend/packages/web-kit/file-upload/src/FileUpload.vue</Path> (lines 131-138)、<Path>frontend/packages/web-kit/file-upload/src/ImageUpload.vue</Path> (lines 134-143) 删除 UI 行时直接调用 `client.remove(ossId)`；<Path>frontend/packages/adapters/oss-upload-browser/src/client.ts</Path> (lines 76-82) 下载 URL 不可用时使用 `URL.createObjectURL(file)`，未保存/撤销 URL。
 - 触发与影响：上传完成但下载 URL 请求失败时，每次 fallback 新建 object URL；FileUpload/ImageUpload 没有 revoke 或归属记录，replace/remove/unmount 均不能释放它，SPA 长会话上传大文件会保留对应 Blob。内存量需浏览器测量；创建/未释放链静态确认。
-- 修改意见：adapter 不隐式创建无人接管的 object URL；预览 component 获得 File 后创建并维护 URL，在替换/移除/unmount 后 revoke，或 UploadResult 返回明确 dispose 责任。业务对象删除仍遵循 ADR-0010：现有调用者多为新附件/OSS 管理，未证实“有引用对象删除”在当前业务编辑中可达，因此不把 detach/delete 风险计为 confirmed bug；若新 self material 页面复用该组件，要先由业务 Owner 明确移除引用语义。
+- 修改意见：优先删除adapter隐式createObjectURL fallback，上传成功但预览不可用时保留文件名并提示/重取URL，不能误报上传失败。确需本地预览才由预览组件创建并释放URL；不新增通用dispose合同。detach/delete仅为新self材料接入时的owner约束，不是已确认误删缺陷。
 - dependency class: ports & adapters; strength: Strong; certainty: confirmed (leak scale needs-runtime). Resource lifecycle.
 
 ### F-12 [P3][confirmed] 前端 strict 类型约束被关闭，边界 cast/any 形成长期 contract 漂移
 
 - 证据：<Path>frontend/tsconfig.json</Path> (lines 10-24) 开启 strict 却关闭 `noImplicitAny`、`strictFunctionTypes`、`strictNullChecks`；<Path>frontend/apps/admin-web/vite/plugins/index.ts</Path> (lines 11-12)、<Path>frontend/apps/admin-web/vite/plugins/check-transition.ts</Path> (lines 16-107) 大量 `any`；<Path>frontend/apps/home-web/src/store/user.ts</Path> (lines 17-21) 将 unknown user 强 cast 为 UserVO；<Path>frontend/apps/home-web/src/store/navigation.ts</Path> (lines 18-22) 将菜单强 cast。
-- 修改意见：分期 Ratchet：先在 platform/domain/public adapter 边界开启 strictNullChecks/noImplicitAny，新增 parser 类型守卫；再逐包收紧。禁止通过 `as unknown as` 穿透动态菜单、用户、OSS 和 SSO 合同。存量例外需到期清单，不全仓无关重写。
+- 修改意见：先运行受影响包的真实严格诊断，收紧本change已触及的公共边界。全仓三开关硬切没有工作量与必要性证据，不作为所有安全修复的验收前提。不以重复parser、双cast、ignore或移出检查消除诊断。
 - dependency class: in-process; strength: Worth exploring; certainty: confirmed. Type boundary ratchet.
 
 ### F-13 [P3][confirmed] Home 登录缺所需主题 token，SSO 动态错误未播报，注册页压成单行 SFC
@@ -128,45 +131,8 @@
 - 修改意见：为 Home 注入登录页实际需要的主题 token 或在组件提供明确 fallback；SSO status 采用适当的 `aria-live`/`role=alert` 并将重试动作纳入键盘顺序；格式化注册页为可审阅 SFC。仅在实际重复交互证实后提取表单 primitive。视觉对比/焦点是否不合格必须实测，不能从静态差异臆断。
 - dependency class: in-process; strength: Worth exploring; certainty: confirmed static (visual/focus needs-runtime). UI accessibility.
 
-## 建议 ticket 分组
+## 实施与验证
 
-- T-SEC-FRONTEND：F-01、F-09、F-10（浏览器密钥/SSO/iframe 安全；先冻结 public contract，再更新 proposed ADR）。
-- T-PROFILE-SELF-VERTICAL-SLICE：F-02（材料目录、上传、引用、认证提交与 E2E）。
-- T-WORKFLOW-ACTION-INTEGRITY：F-03（task generation、取消、版本绑定、重复提交）。
-- T-SESSION-NAVIGATION-LIFECYCLE：F-04、F-05（本地 teardown、动态 route reset、独立 loaded 状态）。
-- T-AUTH-REGISTRATION-UX：F-06、F-09（验证码 refresh、注册开关、SSO 可恢复错误）。
-- T-UPLOAD-ADAPTER-BOUNDARY：F-07、F-11（导入 port、OSS detach/delete、object URL 资源）。
-- T-FRONTEND-MODULE-RATCHET：F-08、F-12、F-13（SFC 拆分、重复 helper、类型收紧、a11y/design tokens）。
+修订后的逐票写集、步骤和验收以 [tickets-map](../tickets-map.md) 及对应Ticket为准，不在专项报告中重复维护另一套计划。2026-09-18复核矩阵见 [re-review](re-review.md)，本次运行记录见 [re-review-command-results.json](re-review-command-results.json)。
 
-## 删除复杂性与实现交接矩阵
-
-| Finding | 应删除/替换 | 必须保留 | 最小可执行验收 |
-| --- | --- | --- | --- |
-| F-01 | browser privateKey、ECB 分支与误导性安全表述（待 ADR） | TLS、服务端最终鉴权、Client 隔离、OpenAPI HMAC 相邻合同 | dev/prod bundle 不含服务端私钥；token/业务请求授权不退化；必要加密协议篡改失败关闭 |
-| F-02 | 只有身份字段却声称可提交的断裂流程 | 材料 tag/requirement、OSS owner 事务、版本校验 | 新普通用户上传两份身份证或企业必填材料后完成提交；缺失 tag 明确阻止；非法人经办额外授权委托书 |
-| F-03 | 上次 task 遗留状态、无归属异步响应、读取可变 task 的提交闭包 | 服务端任务参与人权限和动作语义 | A/B 交错返回、B 拒绝、关闭后重开、重复提交均只可能处理当前已加载 task |
-| F-04/F-05 | roles 充当 initialized、logout 成功才清理、残留动态路由 | Home 已有 finally、requestRelogin 单次提示、manifest-only 注册 | logout 超时/401仍清 token；A退出B登录时A独有路由不存在；零角色只恢复一次并显示无授权入口 |
-| F-06 | 固定一次 captcha、注册已关闭仍呈现有效表单 | 后端验证码一次性消费、密码策略与 registerEnabled | 首次输错→刷新→成功，失败不清用户名/密码以外的必要草稿；registerEnabled=false 无提交动作 |
-| F-07 | 原生上传旁路状态、snapshotted headers、声明 XHR 却返回 undefined | 后端导入验证、操作权限、安全结果摘要 | 用户导入/流程导入成功、业务错误、HTTP500、401、abort 每条路径进入终态并可重试 |
-| F-08 | 各页重复的旧响应覆盖/布尔 loading、无语义拆分 | 领域 ownership、App 私有机制、真实有用的资源 slice | 手动控制 promise A慢/B快，B列表/Client不被A覆盖；unmount 后零状态写入 |
-| F-09 | origin根 callback、固定首页跳转、失败死路 | 后端 exact redirect/PKCE S256/state、独立 SSO Origin | /admin/和/home/子路径；深链接query/hash；state错/过期/授权暂时失败可安全重试 |
-| F-10 | 不区分来源的 data-only message interface | iframe 正常 close action、onBeforeUnmount 清理 | 外域/同域错误 iframe/source/null origin 消息均零导航；真实 designer close 一次 |
-| F-11 | 无 owner 的 createObjectURL fallback | OSS 直接字节交换、短期 URL、临时对象回收、业务引用事务 | 故意让 downloadUrl 失败；替换/删除/卸载后 spy revokeObjectURL 每 URL 恰一次；长会话 heap 回落 |
-| F-12 | 新边界 any/unknown 双 cast、无期限 strict 例外 | 生成 transport 不手改、纯 domain model、类型安全 parser | 以真实 nullable/错误 transport fixture证明拒绝；受影响包 strict 开启且 public consumer编译通过 |
-| F-13 | 缺失 token 依赖、静默 status、单行 SFC | App 独立品牌、已有 label/nav landmark | Home login computed style有明确边框/背景；屏幕阅读器播报SSO错误；Tab顺序/重试/移动视口人工验收 |
-
-矩阵中的候选改名或搬文件只有在删掉实际分支/重复状态后才成立。F-12/F-13 的具体共享 primitive 仍为 Worth exploring；不得为了统一目录创建新的 shallow module。
-
-## 建议 spec/ADR 与验收顺序
-
-1. 先写 proposed ADR：浏览器不持有私钥；TLS/HttpOnly 或 AEAD server boundary；SSO/iframe origin 与日志脱敏。
-2. 冻结 Profile material self 合同和 OSS owner 事务，再实现 F-02。
-3. 冻结 session/navigation teardown 与 workflow task version contract，再实现 F-03/F-04/F-05。
-4. 为 upload/import 分离业务引用与对象删除，补失败/取消/过期测试。
-5. 最后按 Ratchet 拆大 SFC、删重复 composables、逐包收紧 TypeScript 与 a11y/design token，并运行 architecture/lint/typecheck/unit/build/E2E。
-
-## 未验证项
-
-- 未运行 pnpm/Vitest/Playwright，未连接浏览器、Redis/MySQL/MinIO、SSO 独立 Origin 或 Warm-Flow iframe；上述 needs-runtime 条目必须在真实环境验收。
-- 未修改任何代码、依赖、生成文件或构建输出。
-- 已执行只读证据命令：`rg --files`、`rg -n`、UTF-8 Get-Content、Python pathlib 统计 SFC 行数与 Path 标签存在性，成功命令 exit 0；若候选文件路径不存在，先用 rg 定位真实路径后再审阅。一次报告文本替换 PowerShell 解析失败、未产生写入，已通过 apply_patch 完成修订。最终 Path 存在性检查通过。没有把静态阅读报告成编译、单测或 UI 通过。
+confirmed表示源码链成立，不代表线上事故已复现。未运行Maven/pnpm/浏览器或真实数据库、Redis、Provider；不得将计划验收写成通过。仅修改本change，产品实现未开始。
