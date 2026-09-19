@@ -6,9 +6,6 @@
       "change": "2026-09-14-wta-plus-comprehensive-review"
     },
     {
-      "change": "2026-09-19-remote-issues-phone-ai"
-    },
-    {
       "change": "2026-09-19-go-python-ai-platform"
     }
   ],
@@ -26,6 +23,7 @@
     "2026-09-12-richtext-list-automapper",
     "2026-09-12-rename-ruoyi-dromara-to-wta",
     "2026-09-10-notify-channel-config",
-    "2026-09-12-wta-sso"
+    "2026-09-12-wta-sso",
+    "2026-09-19-remote-issues-phone-ai"
   ]
 }

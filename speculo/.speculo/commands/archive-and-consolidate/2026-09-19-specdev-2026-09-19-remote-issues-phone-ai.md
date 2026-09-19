@@ -88,3 +88,71 @@ _Avoid_: cde-common-ai（来源旧称）
 ## 确认边界
 
 归档移动1个change、新建1文件/2术语、既有知识清理0。本报告只准备具体计划，不执行目录移动或永久知识写入。按archive-and-consolidate入口“预执行完整计划 → 用户显式确认 → 执行”，需用户确认这份计划后才进入confirmed。确认不包含push/部署、关闭#3或改写其他change。
+
+## 执行后补遗（confirmed）
+
+用户明确答复“确认执行归档计划（推荐）”；确认时间 2026-09-19T14:34:25.401912+00:00。复验所有计划指纹和三条远程状态均无漂移。已按计划原子移动49个本地文件，仅.status更新终态，其余字节摘要一致；索引只移出本change；新建1个context/2术语，87个既有知识文件保持字节不变，清理0。其他两个change内容未改，产品result保持不变。
+
+```json
+{
+  "mode": "executed",
+  "scope": "archive-single",
+  "knowledge_policy": "generic",
+  "confirmed_at": "2026-09-19T14:34:25.401912+00:00",
+  "authorization": "USER: 确认执行归档计划（推荐）",
+  "source": "speculo/.speculo/specdev/changes/2026-09-19-remote-issues-phone-ai",
+  "target": "speculo/.speculo/specdev/archive/2026-09/2026-09-19-remote-issues-phone-ai",
+  "steps": [
+    "atomic-rename",
+    "archive-status",
+    "global-index",
+    "create-context-two-terms",
+    "reread-verified"
+  ],
+  "source_files_preserved": 49,
+  "source_digest_except_status": "6add4d4c231ae9300e978160cc7fb50d6ac2391b041e15fa522fe0670a96b0d1",
+  "archive_status_sha256": "0b8f39f3f1f216a4699070ef16d7263e1f589a32c4f77da3826308edb252ce1e",
+  "existing_knowledge_files_unchanged": 87,
+  "new_knowledge": {
+    "path": "speculo/.speculo/specdev/context/ai-placeholder-terms.md",
+    "terms": 2,
+    "sha256": "6ee9019644ddf7ed5852c78ff7389165f357489006c2e98fb6ef740c35d7a4c6"
+  },
+  "cleanup_count": 0,
+  "remote_reread": [
+    {
+      "number": 1,
+      "url": "https://github.com/NAMEWTA/WTA-plus/issues/1",
+      "state": "CLOSED",
+      "updated_at": "2026-09-19T14:24:24Z"
+    },
+    {
+      "number": 2,
+      "url": "https://github.com/NAMEWTA/WTA-plus/issues/2",
+      "state": "CLOSED",
+      "updated_at": "2026-09-19T14:24:32Z"
+    },
+    {
+      "number": 3,
+      "url": "https://github.com/NAMEWTA/WTA-plus/issues/3",
+      "state": "OPEN",
+      "updated_at": "2026-09-17T11:29:56Z"
+    }
+  ],
+  "product_results": {
+    "T-01": "ccd9d98fe288fc90a16de25d1145a60c7222827f",
+    "T-02": "b394c60bf6b1087b755cf0ed02a435183fa256f2",
+    "T-03": "723e8514cbaeba13094415ba5f1071de31b2241c"
+  },
+  "verification": {
+    "re_read_passed": true,
+    "inconsistencies": [],
+    "verdict": "verified"
+  },
+  "git_validation": "pending local archive receipt commit"
+}
+```
+
+归档目录现只读；后续验证记录只补在本报告。含--repo的最终complete将在授权本地治理提交后执行。
+
+提交前检查：实际archive目录执行validate-specdev --stage complete（未带--repo）exit0/0errors/0warnings；--self-check exit0/0errors/0warnings；git diff --check exit0。写集核对仅本change移动、归档.status、全局索引、新术语与本报告。
