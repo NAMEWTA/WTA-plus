@@ -345,6 +345,7 @@ public class FlwTaskServiceImpl implements IFlwTaskService {
         if (ObjectUtil.isNull(task)) {
             throw new ServiceException("任务不存在！");
         }
+        checkTaskReadAccess(task);
         List<Node> nodeCodes = nodeService.getByNodeCodes(Collections.singletonList(nowNodeCode), task.getDefinitionId());
         if (!CollUtil.isNotEmpty(nodeCodes)) {
             return nodeCodes;
@@ -573,6 +574,7 @@ public class FlwTaskServiceImpl implements IFlwTaskService {
         if (ObjectUtil.isNull(task)) {
             throw new ServiceException("任务不存在！");
         }
+        checkTaskReadAccess(task);
         Instance instance = insService.getById(task.getInstanceId());
         if (ObjectUtil.isNull(instance)) {
             throw new ServiceException("流程实例不存在");
