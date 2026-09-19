@@ -1,4 +1,6 @@
-# Archive and Consolidate Dry-Run Report
+# Archive and Consolidate Report
+
+当前状态：executed / verified。下方保留原 dry-run 计划；确认、执行与最终验证见末尾补遗。
 
 生成：2026-09-19T14:27:41.971042+00:00；Workflow specdev；archive-single；generic；状态 dry-run，尚未移动或写永久知识，等待本计划确认。
 
@@ -156,3 +158,15 @@ _Avoid_: cde-common-ai（来源旧称）
 归档目录现只读；后续验证记录只补在本报告。含--repo的最终complete将在授权本地治理提交后执行。
 
 提交前检查：实际archive目录执行validate-specdev --stage complete（未带--repo）exit0/0errors/0warnings；--self-check exit0/0errors/0warnings；git diff --check exit0。写集核对仅本change移动、归档.status、全局索引、新术语与本报告。
+
+## 最终提交后验证
+
+时间 2026-09-19T14:35:42.005555+00:00；归档提交 2e6c162bdc8711a6c53cc830fe7e1f532148e8e4。
+
+- 实际归档目标执行 `node speculo/workflows/specdev/common/tools/validate-specdev.mjs --stage complete --repo /srv/WTA-plus speculo/.speculo/specdev/archive/2026-09/2026-09-19-remote-issues-phone-ai`：exit0，0errors/0warnings。
+- 包级 `node speculo/workflows/specdev/common/tools/validate-specdev.mjs --self-check`：exit0，0errors/0warnings。
+- Git tracked与未忽略untracked均clean；源目录不存在，目标完整，历史字节摘要及87个既有知识摘要再次一致；永久术语文件实际回读与批准内容一致。
+- #1/#2复核CLOSED，#3OPEN；本次confirmed阶段远程写入0（关闭已在前轮授权reconcile完成）。无push、部署或既有知识删除。
+- 本报告是唯一后置补遗写入；归档目录不再修改。报告收据提交后再次运行同一complete与self-check，保持工作区干净。
+
+最终结论：verified。
