@@ -12,9 +12,11 @@
 
 ## 当前合同来源
 
-激活快照包含Profile的50条路径。domain在资源边界映射生成transport，不将生成类型直接用作页面状态。第一方System/Workflow/Demo变更接口使用POST，查询使用GET；SnailAI第三方接口保留供应商方法。
+当前快照来自已提交后端 `2ca03718757b3af3109a32601cd53c24c8a7e926` 的真实 full JAR，在任务专属 MySQL/Redis/MinIO 上以 prod 配置启动后读取完整 `/v3/api-docs`，包含 433 条路径、444 个 schema。provenance 保存真实 HTTP 来源和后端提交，历史 revisions 保持不变。
 
-当前快照由历史schema与实际编译后的Spring MVC映射核对后，经正式fetch/generate/check生成。provenance记录未提交工作树来源、base HEAD与证据摘要；base HEAD不表示本轮实现已提交，也不代表全量live /v3/api-docs采集。Easy-ES条件关闭时不在该来源快照内。
+注册 `RegisterBody.phoneNumber` 已必填；当前合同无 Snail AI 路径或 schema，NAMEWTA `/system/openApi/**` 管理合同保留。机器调用网关使用业务 URL 上的签名头，不以 `/openapi` 前缀判断是否存在。domain 在资源边界映射 transport，不直接用作页面状态；生成器从该不可变 source 正式生成并检查。
+
+本次运行关闭 SnailJob 客户端、Nacos 和 Monitor 客户端；Easy-ES 等条件关闭的接口不会被 Springdoc 枚举。快照描述该真实运行组合，不能推导所有可选能力均已启动。
 
 ## 验证
 

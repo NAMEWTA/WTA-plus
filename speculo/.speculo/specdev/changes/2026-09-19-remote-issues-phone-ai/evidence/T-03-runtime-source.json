@@ -1,0 +1,85 @@
+{
+  "backend_commit": "2ca03718757b3af3109a32601cd53c24c8a7e926",
+  "backend_tree": "c327b0e3c87ed13d10d6ed52143061973d1f6431",
+  "artifact_sha256": "931b5d71ad8be1176c35588dac51f7dca98724a69ddd1287403f680922c5f773",
+  "historical_schema_commit": "dea1754fb1cae6d8d32fcc1ed19a91d6610ea5cd",
+  "fresh_business_tables": 103,
+  "fresh_ai_tables": 0,
+  "nacos_tables": 10,
+  "fresh_ai_tables_after_boot": 0,
+  "retained_openapi_gateway": {
+    "status": 401,
+    "msg": "OPENAPI_AUTHENTICATION_FAILED"
+  },
+  "legacy_http": {
+    "/snail-ai/user/register": {
+      "status": 200,
+      "code": 404
+    },
+    "/snail-chat/chat": {
+      "status": 200,
+      "code": 404
+    },
+    "/api/snail/chat/chat": {
+      "status": 200,
+      "code": 404
+    }
+  },
+  "legacy_table_names": [
+    "sai_agent",
+    "sai_agent_conversation",
+    "sai_agent_conversation_record",
+    "sai_agent_mcp_server",
+    "sai_agent_skill",
+    "sai_agent_usage_stat",
+    "sai_app",
+    "sai_client_node",
+    "sai_mcp_server",
+    "sai_model_config",
+    "sai_model_provider",
+    "sai_model_usage_stat",
+    "sai_openapi_user",
+    "sai_rag",
+    "sai_rag_chunk",
+    "sai_rag_document",
+    "sai_rag_document_image",
+    "sai_resource",
+    "sai_skill",
+    "sai_skill_file",
+    "sai_store_instance",
+    "sai_user",
+    "sai_user_agent"
+  ],
+  "legacy_ai_tables": 23,
+  "legacy_before_sha256": "e83909a92d9cc1e917ab8f24ab42ae5927803a6218a7fca2d69cf8ec8e524e7d",
+  "legacy_after_sha256": "e83909a92d9cc1e917ab8f24ab42ae5927803a6218a7fca2d69cf8ec8e524e7d",
+  "fresh_path_count": 433,
+  "legacy_path_count": 433,
+  "register_required": [
+    "clientId",
+    "grantType",
+    "phoneNumber",
+    "username"
+  ],
+  "fresh_boot": "passed",
+  "legacy_boot": "passed",
+  "openapi_sha256": "4bd1621938e9dc4e43f4e072332d28e14fbbeb1fe2fd28957d2fc169d0c12327",
+  "existing_baseline_refused": true,
+  "owner": "phone-ai-dbab93aa9c58afc227d5",
+  "owned_resources": [
+    {
+      "id": "105ebc83dfdbe9c561239c3b92d3e7a8ae66cef0d37c2430a4fe5a50952c201f",
+      "removed": true
+    },
+    {
+      "id": "ca5cf3086d5176336732d536af35e5a68ce0037afac9a5ca1d7b045fd3cf0594",
+      "removed": true
+    },
+    {
+      "id": "48fad67c8d2ca41271155553e805df145fbc09e46e5ce0b9b21f3dc8b545f50a",
+      "removed": true
+    }
+  ],
+  "cleanup_errors": [],
+  "owned_resources_removed": true
+}
