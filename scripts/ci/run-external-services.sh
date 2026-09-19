@@ -2,34 +2,68 @@
 set -euo pipefail
 
 workspace_root=$(git rev-parse --show-toplevel)
-run_suffix=${GITHUB_RUN_ID:-$$}
+run_suffix="${GITHUB_RUN_ID:-local}-$$-$RANDOM"
 run_suffix=${run_suffix//[^a-zA-Z0-9]/}
 network="namewta-ci-$run_suffix"
 redis_container="namewta-redis-$run_suffix"
 mysql_container="namewta-mysql-$run_suffix"
 minio_container="namewta-minio-$run_suffix"
-redis_port=${NAMEWTA_CI_REDIS_PORT:-16379}
-mysql_port=${NAMEWTA_CI_MYSQL_PORT:-13306}
-minio_port=${NAMEWTA_CI_MINIO_PORT:-19000}
+redis_port=${NAMEWTA_CI_REDIS_PORT:-}
+mysql_port=${NAMEWTA_CI_MYSQL_PORT:-}
+minio_port=${NAMEWTA_CI_MINIO_PORT:-}
 mysql_env_file=""
+network_id=""
+created_containers=()
+
+for port in "$redis_port" "$mysql_port" "$minio_port"; do
+  if [[ -n "$port" ]] && { [[ ! "$port" =~ ^[0-9]{1,5}$ ]] || (( 10#$port < 1 || 10#$port > 65535 )); }; then
+    echo "CI service port must be empty or between 1 and 65535" >&2
+    exit 2
+  fi
+done
 
 cleanup() {
+  local status=$?
+  trap - EXIT
   if [[ -n "$mysql_env_file" && -f "$mysql_env_file" ]]; then
     rm -f "$mysql_env_file"
   fi
-  docker rm -f "$redis_container" "$mysql_container" "$minio_container" >/dev/null 2>&1 || true
-  docker network rm "$network" >/dev/null 2>&1 || true
+  # 只清理本轮成功create后取得的ID；名称冲突或start失败都不误删已有资源。
+  if (( ${#created_containers[@]} > 0 )); then
+    docker rm -fv "${created_containers[@]}" >/dev/null || status=1
+  fi
+  if [[ -n "$network_id" ]]; then
+    docker network rm "$network_id" >/dev/null || status=1
+  fi
+  exit "$status"
 }
 trap cleanup EXIT
 
-docker network create "$network" >/dev/null
-docker run -d --name "$redis_container" --network "$network" -p "$redis_port:6379" redis:8.6.3 >/dev/null
-docker run -d --name "$mysql_container" --network "$network" -p "$mysql_port:3306" \
+create_container() {
+  local output_variable="$1" container_id
+  shift
+  container_id=$(docker create --label namewta.test.owner=external-services "$@")
+  created_containers+=("$container_id")
+  printf -v "$output_variable" '%s' "$container_id"
+  docker start "$container_id" >/dev/null
+}
+
+network_id=$(docker network create --label namewta.test.owner=external-services "$network")
+create_container redis_container --name "$redis_container" --network "$network_id" -p "127.0.0.1:$redis_port:6379" \
+  redis:8.6.3 redis-server --save '' --appendonly no
+create_container mysql_container --name "$mysql_container" --network "$network_id" -p "127.0.0.1:$mysql_port:3306" \
   -e MYSQL_ROOT_PASSWORD=namewta-ci mysql:8.4.9 \
-  --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci >/dev/null
-docker run -d --name "$minio_container" --network "$network" -p "$minio_port:9000" \
+  --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+create_container minio_container --name "$minio_container" --network "$network_id" --network-alias namewta-minio -p "127.0.0.1:$minio_port:9000" \
   -e MINIO_ROOT_USER=namewta -e MINIO_ROOT_PASSWORD=namewta123 \
-  pgsty/minio:RELEASE.2026-08-04T00-00-00Z server --address ':9000' /data >/dev/null
+  pgsty/minio:RELEASE.2026-04-17T00-00-00Z server --address ':9000' /data
+
+redis_port=$(docker port "$redis_container" 6379/tcp)
+redis_port=${redis_port##*:}
+mysql_port=$(docker port "$mysql_container" 3306/tcp)
+mysql_port=${mysql_port##*:}
+minio_port=$(docker port "$minio_container" 9000/tcp)
+minio_port=${minio_port##*:}
 
 for _ in {1..60}; do
   docker exec "$redis_container" redis-cli ping 2>/dev/null | grep -q PONG && break
@@ -69,8 +103,15 @@ done
 curl --fail --silent "http://127.0.0.1:$minio_port/minio/health/ready" >/dev/null
 
 cd "$workspace_root/backend"
+integration_tests=(
+  RedisNotifyIdempotencyStoreIntegrationTest RedisOssUploadTicketStoreIntegrationTest
+  NotifyMonitorMySqlIntegrationTest MinioOssClientIntegrationTest
+  BusinessMenuRetirementMySqlIntegrationTest ThirdSchemaMySqlIntegrationTest ThirdRedisIntegrationTest
+)
+test_selector=$(IFS=,; echo "${integration_tests[*]}")
+test_started_ns=$(python3 -c 'import time; print(time.time_ns())')
 ./mvnw -Pdev -pl wta-admin -am test \
-  -Dtest=RedisNotifyIdempotencyStoreIntegrationTest,RedisOssUploadTicketStoreIntegrationTest,NotifyMonitorMySqlIntegrationTest,MinioOssClientIntegrationTest,BusinessMenuRetirementMySqlIntegrationTest,ThirdSchemaMySqlIntegrationTest,ThirdRedisIntegrationTest \
+  -Dtest="$test_selector" \
   -Dsurefire.failIfNoSpecifiedTests=false \
   -Dnotify.redis.integration.port="$redis_port" \
   -Doss.upload.redis.integration.port="$redis_port" \
@@ -86,3 +127,5 @@ cd "$workspace_root/backend"
   -Doss.minio.integration.access-key=namewta \
   -Doss.minio.integration.secret-key=namewta123 \
   -Dnamewta.sql.root="$workspace_root/release-artifacts/docker/infrastructure/mysql/init"
+python3 "$workspace_root/scripts/ci/verify-external-tests.py" \
+  "$workspace_root/backend" "$test_started_ns" "${integration_tests[@]}"

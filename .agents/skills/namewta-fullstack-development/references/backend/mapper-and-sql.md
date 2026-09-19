@@ -85,11 +85,14 @@ src/main/resources/mapper/<module>/<Business>Mapper.xml
 
 当前 system 中可阅读的自定义 XML 证据包括：
 
-- `SysNotifyLogMapper.xml`、`SysNotifyDeliveryLogMapper.xml`：通知日志查询。
 - `SysOssMapper.xml`、`SysOssRefMapper.xml`：OSS 查询和引用关系。
 - `SysOpenApiAuthorizationMapper.xml`：OpenAPI 授权复杂查询。
 
 许多 system XML 只有 namespace 骨架，表示对应查询已迁到 wrapper/MPJ；空骨架不是“所有 Mapper 必须有 XML”的依据。
+
+通知监控由 `wta-notify` 的 `NotifyNotificationDao.monitorDeliveries` 经 `NotifyDeliveryMapper` 查询
+`notify_delivery`，使用 wrapper；旧 System 通知日志 XML 已不存在。该模块的自定义锁定/更新 SQL
+位于 `mapper/notify/NotifyOutboxMapper.xml`，事务和租约语义仍须按当前调用链与测试验收。
 
 ## 数据权限
 
