@@ -6,7 +6,6 @@ import org.namewta.common.core.utils.StringUtils;
 import org.namewta.common.satoken.utils.LoginHelper;
 import org.namewta.sso.api.SsoClientView;
 import org.namewta.sso.port.SsoBusinessTokenPort;
-import org.namewta.sso.support.SsoTokenExtras;
 import org.namewta.system.api.model.LoginUser;
 import org.springframework.stereotype.Component;
 

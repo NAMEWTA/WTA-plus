@@ -76,7 +76,7 @@ public class SsoOAuthController {
      * @param bo 换票参数
      * @return 业务 Token
      */
-    @Log(title = "SSO换票", businessType = BusinessType.OTHER, excludeParamNames = {"code", "codeVerifier", "code_verifier"})
+    @Log(title = "SSO换票", businessType = BusinessType.OTHER, excludeParamNames = {"code", "codeVerifier", "code_verifier"}, isSaveResponseData = false)
     @PostMapping("/token")
     public R<SsoTokenVo> token(@RequestBody SsoTokenBo bo) {
         SsoBusinessTokenPort.IssuedToken issued = oauthUseCase.exchange(new SsoOAuthCommands.TokenCommand(

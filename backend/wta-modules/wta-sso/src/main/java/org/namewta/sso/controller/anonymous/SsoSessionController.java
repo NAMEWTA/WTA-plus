@@ -12,7 +12,7 @@ import org.namewta.common.log.enums.BusinessType;
 import org.namewta.sso.api.SsoAuthenticatedUser;
 import org.namewta.sso.config.SsoProperties;
 import org.namewta.sso.domain.bo.SsoLoginBo;
-import org.namewta.sso.support.SsoSessionCookie;
+import org.namewta.sso.adapter.http.SsoSessionCookie;
 import org.namewta.sso.usecase.SsoSessionUseCase;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpHeaders;
@@ -87,7 +87,7 @@ public class SsoSessionController {
     }
 
     private void writeCookie(HttpServletResponse response, String value, Duration maxAge) {
-        ResponseCookie cookie = SsoSessionCookie.create(properties.getCookieName(), value, maxAge);
+        ResponseCookie cookie = SsoSessionCookie.create(properties.getCookieName(), value, maxAge, properties.isCookieSecure());
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 

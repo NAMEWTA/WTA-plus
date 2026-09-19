@@ -61,7 +61,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
     public CorsFilter corsFilter(CorsProperties corsProperties) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(corsProperties.getAllowCredentials());
-        config.setAllowedOriginPatterns(corsProperties.getAllowedOriginPatterns());
+        config.setAllowedOrigins(corsProperties.validatedOrigins());
         config.setAllowedHeaders(corsProperties.getAllowedHeaders());
         config.setAllowedMethods(corsProperties.getAllowedMethods());
         config.setMaxAge(corsProperties.getMaxAge());
