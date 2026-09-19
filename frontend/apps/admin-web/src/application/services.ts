@@ -43,7 +43,6 @@ export const ossUploadClient = createOssUploadClient({
 
 export const identityAccessService = createIdentityAccessService({
   client: { clientId: import.meta.env.VITE_APP_CLIENT_ID },
-  encryptLoginRequest: import.meta.env.VITE_APP_ENCRYPT === 'true',
   http: domainHttp,
   identity: systemService.identity,
   session

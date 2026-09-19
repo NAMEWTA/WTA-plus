@@ -19,9 +19,6 @@ interface ImportMetaEnv {
   VITE_APP_SNAILAI_ADMIN: string;
   VITE_APP_NACOS_ADMIN: string;
   VITE_APP_ENV: string;
-  VITE_APP_ENCRYPT: string;
-  VITE_APP_RSA_PUBLIC_KEY: string;
-  VITE_APP_RSA_PRIVATE_KEY: string;
   VITE_APP_CLIENT_ID: string;
   VITE_APP_MESSAGE_ENABLED: string;
   VITE_APP_MESSAGE_TRANSPORT: string;
