@@ -6,7 +6,7 @@
       <p>{{ runtime.description ?? '登录客户工作台，查看服务资料并处理示例业务。' }}</p>
     </div>
 
-    <el-form class="identity-login__form" label-position="top" @submit.prevent="submit">
+    <el-form class="identity-login__form" label-position="top" :aria-busy="preparing || submitting" @submit.prevent="submit">
       <div class="identity-login__sso">
         <p class="identity-login__social-label">第三方登录</p>
         <div class="identity-login__social-row">
@@ -55,6 +55,7 @@
         </div>
       </el-form-item>
       <p v-if="errorMessage" class="identity-login__error" role="alert">{{ errorMessage }}</p>
+      <el-button v-if="!ready && !preparing" native-type="button" @click="prepare">重新检查登录入口</el-button>
       <el-button
         v-if="authMode !== 'sso'"
         class="identity-login__submit"
@@ -135,7 +136,9 @@ onUnmounted(state.dispose);
 }
 
 .identity-login__form {
-  padding: 30px;
+  --el-border-color: #7b8794;
+  min-width: 0;
+  padding: clamp(12px, 4vw, 30px);
   border: 1px solid var(--client-line);
   border-radius: var(--client-radius);
   background: var(--client-surface);
@@ -162,6 +165,7 @@ onUnmounted(state.dispose);
 
 .identity-login__submit {
   width: 100%;
+  margin-left: 0;
   min-height: 42px;
 }
 
@@ -174,9 +178,22 @@ onUnmounted(state.dispose);
 
 .identity-login__captcha img {
   width: 112px;
+  max-width: 100%;
   height: 38px;
   border: 1px solid var(--client-line);
   object-fit: contain;
+}
+
+.identity-login__form :deep(.el-button) {
+  max-width: 100%;
+  height: auto;
+  min-height: 32px;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+.identity-login__form :deep(.identity-login__submit) {
+  min-height: 42px;
 }
 
 .identity-login__error {
