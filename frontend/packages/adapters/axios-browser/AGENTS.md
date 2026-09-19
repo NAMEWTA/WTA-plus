@@ -4,7 +4,7 @@
 `@namewta/adapter-axios-browser`。
 
 ## Purpose
-在浏览器中实现平台 HTTP 合同，处理地址、Client、令牌、加密、错误和取消。
+在浏览器中实现平台 HTTP 合同，处理地址、Client、令牌、错误和取消；浏览器传输使用HTTPS，不持有共享响应私钥。
 
 ## Components
 入口与请求链位于 `src/index.ts`、`src/axios-chain.test.ts`。

@@ -69,11 +69,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.namewta</groupId>
-            <artifactId>wta-common-encrypt</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

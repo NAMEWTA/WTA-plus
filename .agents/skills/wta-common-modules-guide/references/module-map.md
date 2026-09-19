@@ -185,8 +185,8 @@
 
 - POM：`wta-common/wta-common-encrypt/pom.xml`，description「wta-common-encrypt 数据加解密模块」。显式 common：`wta-common-core`。
 - 源码根：`wta-common/wta-common-encrypt/src/main/java/org/namewta/common/encrypt/`
-- AutoConfiguration.imports：`config/EncryptorAutoConfiguration.java`、`config/ApiDecryptAutoConfiguration.java`
-- 入口：`utils/EncryptUtils.java`（「安全相关工具类」）；`annotation/EncryptField.java`；`annotation/ApiEncrypt.java`；`core/IEncryptor.java`
+- AutoConfiguration.imports：`config/EncryptorAutoConfiguration.java`（数据库字段加密）。浏览器 API 加解密过滤器已退役，浏览器传输使用 HTTPS。
+- 入口：`utils/EncryptUtils.java`（「安全相关工具类」）；`annotation/EncryptField.java`；`core/IEncryptor.java`。数据库加密、机器 HMAC 与 OSS 签名不属于浏览器传输协议。
 
 ### 22. wta-common-push
 
