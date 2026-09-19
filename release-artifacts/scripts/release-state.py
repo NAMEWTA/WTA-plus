@@ -29,7 +29,6 @@ BACKENDS = {
     'wta-admin': 'wta-admin/target/wta-admin.jar',
     'wta-monitor-admin': 'wta-extend/wta-monitor-admin/target/wta-monitor-admin.jar',
     'wta-snailjob-server': 'wta-extend/wta-snailjob-server/target/wta-snailjob-server.jar',
-    'wta-snailai-server': 'wta-extend/wta-snailai-server/target/wta-snailai-server.jar',
 }
 SQL_FILES = ('10-cde-base-ddl.sql', '20-cde-job.sql', '30-cde-workflow.sql',
              '40-cde-ai.sql', '50-cde-base-dml.sql', '60-cde-nacos.sql')

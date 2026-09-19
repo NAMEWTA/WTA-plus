@@ -13,7 +13,6 @@
 
     <modules>
         <module>wta-monitor-admin</module>
-        <module>wta-snailai-server</module>
         <module>wta-snailjob-server</module>
     </modules>
 

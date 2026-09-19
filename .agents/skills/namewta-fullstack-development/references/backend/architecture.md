@@ -10,10 +10,10 @@
 | `wta-modules/wta-system` | 用户、Client、角色、菜单、权限、组织、资源和监控 | 其他业务模块的私有用例 |
 | `wta-modules/wta-workflow` | 流程定义、任务、实例和业务审批 | 业务模块状态的最终所有权 |
 | `wta-modules/wta-profile` | profile 聚合 POM 与 BOM；person/enterprise 是可组装业务 jar | 部署入口和跨模块内部调用捷径 |
-| `wta-modules/{wta-demo,wta-ai,wta-job}` | 示例、AI 和任务业务能力 | 通用基础设施容器 |
-| `wta-extend` | Monitor、SnailJob、SnailAI 等独立部署应用 | admin 内嵌业务模块 |
+| `wta-modules/{wta-demo,wta-job}` | 示例和任务业务能力 | 通用基础设施容器 |
+| `wta-extend` | Monitor、SnailJob 独立部署应用 | admin 内嵌业务模块 |
 
-根 Maven reactor 当前包含 46 个项目。`bundle-full` 组装 job/ai/demo/workflow/profile；`bundle-core` 保留平台基础与 profile person/enterprise，排除 job/ai/demo/workflow。调整模块时同时核对根 POM、聚合 POM、BOM、`wta-admin/pom.xml` 和双 bundle 验证脚本。
+根 Maven reactor 当前包含 49 个项目。`bundle-full` 组装 job/ai/demo/workflow/profile；`bundle-core` 保留平台基础与 profile person/enterprise，排除 job/ai/demo/workflow。调整模块时同时核对根 POM、聚合 POM、BOM、`wta-admin/pom.xml` 和双 bundle 验证脚本。
 
 ## 依赖方向
 
@@ -51,3 +51,5 @@ business module A -> wta-api/common SPI <- business module B
 ## 安全边界
 
 认证、权限、Client 和菜单是跨端合同。OAuth 字符串 `clientId` 与数据库 Long 主键 `clientId/clientPk` 必须在命名和类型上区分。前端可见性不是授权边界，最终认证、权限、数据范围和 Client 隔离由后端完成；触及这些路径时读取 [permission-routing](../frontend/permission-routing.md)、[contract-mapping](../contract-mapping.md) 与 `engineering-standards` 的安全/评审规则。
+
+`wta-modules/wta-ai` 与 `wta-common/wta-common-ai` 仅保留 Maven 占位，前者只依赖后者，无业务源码或 vendor starter；full/core 保持原 artifact 选择。

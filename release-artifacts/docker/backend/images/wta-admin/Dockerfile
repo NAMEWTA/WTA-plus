@@ -8,7 +8,6 @@ WORKDIR /wta/server
 
 ENV SERVER_PORT=8080 \
     SNAIL_JOB_PORT=28080 \
-    SNAIL_AI_PORT=38080 \
     SPRING_PROFILES_ACTIVE=prod \
     JAVA_OPTS="" \
     LANG=C.UTF-8 \
@@ -16,6 +15,6 @@ ENV SERVER_PORT=8080 \
 
 COPY app.jar ./app.jar
 
-EXPOSE 8080 28080 38080
+EXPOSE 8080 28080
 
-ENTRYPOINT ["/bin/bash", "-c", "exec java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -Dserver.port=${SERVER_PORT} -Dsnail-job.port=${SNAIL_JOB_PORT} -Dsnail-ai.port=${SNAIL_AI_PORT} -XX:+HeapDumpOnOutOfMemoryError -XX:+UseZGC -jar app.jar --spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
+ENTRYPOINT ["/bin/bash", "-c", "exec java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -Dserver.port=${SERVER_PORT} -Dsnail-job.port=${SNAIL_JOB_PORT} -XX:+HeapDumpOnOutOfMemoryError -XX:+UseZGC -jar app.jar --spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]

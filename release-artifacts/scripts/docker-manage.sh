@@ -122,7 +122,6 @@ PYTHON
   export NAMEWTA_ADMIN_IMAGE="namewta/namewta-admin:${RELEASE_VERSION##*/}"
   export NAMEWTA_MONITOR_IMAGE="namewta/namewta-monitor-admin:${RELEASE_VERSION##*/}"
   export NAMEWTA_SNAILJOB_IMAGE="namewta/namewta-snailjob-server:${RELEASE_VERSION##*/}"
-  export NAMEWTA_SNAILAI_IMAGE="namewta/namewta-snailai-server:${RELEASE_VERSION##*/}"
   info "使用发布版本: ${RELEASE_VERSION##*/}"
 }
 

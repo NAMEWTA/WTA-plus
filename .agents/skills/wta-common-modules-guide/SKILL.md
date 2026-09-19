@@ -31,7 +31,7 @@ description: 选择 wta-common-* 依赖、SPI 或公共工具入口时使用；�
 - `JsonUtils`、`IdGeneratorUtil` 在无 Spring 测试上下文时提供内部 fallback，但这不改变业务层的调用约束；业务代码仍不得自行创建 `JsonMapper`/`ObjectMapper`、直连 `IdWorker` 或缓存容器 Bean。
 - layered 业务模块中，DAO 只持有 Mapper；Redis/OSS/Notify 等外部能力只能由 Service 使用明确的 Gateway/Provider/Store 端口，或由提交后 support listener 适配，不能由 UseCase 直连实现类，也不能由 DAO 绕过 Mapper 调用。
 - 多数 core `*Utils` 继承 Hutool / Commons Lang。项目约定优先用这些 FQN，不要直接调 Hutool 同名类（除非本仓库没有对应封装）。
-- `job` / `ai` / `elasticsearch` 是第三方 starter 的薄包装。业务 API 在 SnailJob / SnailAi / Easy-Es，不要把本模块 1–2 个 `@Configuration` 当成完整 API。
+- `job` / `elasticsearch` 是第三方 starter 的薄包装。业务 API 在 SnailJob / Easy-Es，不要把本模块 1–2 个 `@Configuration` 当成完整 API。
 
 ## 先选依赖
 
@@ -58,6 +58,6 @@ description: 选择 wta-common-* 依赖、SPI 或公共工具入口时使用；�
 
 - 未执行 `mvn dependency:tree`：admin 运行时 common 并集是 POM 图推断。个别 optional/profile 边界未用 Maven 解析交叉验证。
 - `wta-common-excel` POM description 仅为 `wta-common-excel`；职责以 `ExcelBuilder` JavaDoc 与 fesod 依赖为准。
-- `wta-common-job` / `wta-common-ai` 各仅 1 个配置类；SnailJob / SnailAi 的外部方法表未展开。
+- `wta-common-job` 仅 1 个配置类，SnailJob 的外部方法表未展开；`wta-common-ai` 仅保留 Maven 占位，无生产依赖、源码或自动配置。
 - Easy-Es 如何与本工程数据源对齐未在本模块 2 个 Java 类中展开。
 - oss / excel 无 `AutoConfiguration.imports`。Oss 配置类是否另被包扫描拾取未逐文件确认。

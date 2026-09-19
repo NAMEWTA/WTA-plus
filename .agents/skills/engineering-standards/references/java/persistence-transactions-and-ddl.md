@@ -103,7 +103,8 @@ Rule: `release-artifacts/docker/infrastructure/mysql/init/` 是数据库初始�
 职责划分：
 
 - `10-cde-base-ddl.sql`：业务库 `wta-plus` 的完整最新结构（平台表 + NAMEWTA 表）。产品 DDL 只直接改这个文件。
-- `20-cde-job.sql` / `30-cde-workflow.sql` / `40-cde-ai.sql`：SnailJob / Warm-Flow / Snail AI 上游快照；无产品需求不改。
+- `20-cde-job.sql` / `30-cde-workflow.sql`：SnailJob / Warm-Flow 上游快照；无产品需求不改。
+- `40-cde-ai.sql`：退役后的合法占位，仅 `SET NAMES utf8mb4;`，不得创建 vendor 表；已有 AI 数据保留且不迁移，禁止向已有库重放初始化基座。
 - `50-cde-base-dml.sql`：业务库完整最新数据（初始化、菜单、回填）。产品 DML 只直接改这个文件。
 - `60-cde-nacos.sql`：独立库 `nacos` 的结构快照，不得把 Nacos 表建进 `wta-plus`。
 

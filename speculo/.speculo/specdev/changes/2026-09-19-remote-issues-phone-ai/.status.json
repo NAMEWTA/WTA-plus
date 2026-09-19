@@ -136,6 +136,49 @@
       },
       "status": "integrated",
       "updated_at": "2026-09-19T11:17:35.885146+00:00"
+    },
+    {
+      "ticket_id": "T-03",
+      "owner": "codex-root",
+      "implementation_owner": "codex-root",
+      "integration_owner": "codex-root",
+      "provider": "git",
+      "base_sha": "31259eb2d728836f6d3110934c718532f48adb32",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": null,
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "31259eb2d728836f6d3110934c718532f48adb32",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-03.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
+      },
+      "status": "active",
+      "updated_at": "2026-09-19T11:18:18.126761+00:00"
     }
   ]
 }

@@ -61,7 +61,7 @@ bash release-artifacts/scripts/docker-manage.sh up frontend
 2. LB `proxy_pass http://app_xxx/;` 保留尾斜杠，负责剥离 App 前缀。
 3. 业务 App Nginx 根路径服务 LB 请求，带前缀路径服务独立端口请求。SSO 根路径返回404，子路径经内部 SPA 回退，不能跳到根 location。
 4. 业务 TLS 在 LB 终止；SSO 有独立 TLS 服务，使用 NAMEWTA_CERT_ROOT/sso-web。证书和私钥不入库，生产浏览器 Origin 必须 HTTPS。
-5. `/admin/`、`/snail-job/`、`/snail-ai/` 和 actuator 规则是保留路由。
+5. `/admin/`、`/snail-job/` 和 actuator 规则是保留路由；退役的 `snail-ai` 仍禁止作为 App 前缀，以免旧链接指向新业务，不再注册 upstream 或服务路由。
 6. 管理端私有前缀不得由根路径跳转公开。
 7. manifest 保存精确 Origin/入口矩阵，运行参数必须匹配；SSO 与业务 hostname 必须不同（端口不能隔离 Cookie）。SSO 入口仅接受自身 Origin 或无 Origin 的 API 请求。
 8. access log 省略查询参数；不把这项规则外推为所有 error log 已脱敏。health 不写 access log。

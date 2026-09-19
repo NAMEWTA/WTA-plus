@@ -32,7 +32,7 @@ wta-admin/       主应用与模块组装
 wta-api/         跨业务模块公开服务和 DTO
 wta-common/      可按需依赖的通用基础能力
 wta-modules/     system、workflow、demo、profile、notify、ai、job、third、sso 业务模块
-wta-extend/      monitor、SnailJob、SnailAI 等独立应用
+wta-extend/      monitor、SnailJob 独立应用
 ```
 
 `wta-admin` 只负责组装。跨模块调用应通过 `wta-api` 或明确的 common SPI，禁止依赖其他业务模块的 mapper、entity 或内部实现。

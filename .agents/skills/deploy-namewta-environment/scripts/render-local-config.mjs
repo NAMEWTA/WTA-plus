@@ -46,7 +46,6 @@ try {
     nacosNamespace: profile.services.nacosNamespace,
     monitorRoute: profile.routes.monitor,
     snailJobRoute: profile.routes.snailJob,
-    snailAiRoute: profile.routes.snailAi,
     nacosRoute: profile.routes.nacos,
     adminImage: profile.release?.images?.admin ?? '',
     frontendContextPath,

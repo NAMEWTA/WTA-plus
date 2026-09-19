@@ -12,7 +12,7 @@
 6. Redis 连接与选用的数据库，不遍历无关业务键。
 7. MinIO 健康、桶、匿名策略和私有探针。
 8. Nacos 命名空间、分组、Data ID、启用用户与配置摘要，不输出配置正文。
-9. 前端、API、监控、SnailJob、SnailAI、Nacos 的入口状态。
+9. 前端、API、监控、SnailJob、Nacos 的入口状态。
 10. 当前发布清单、镜像摘要、备份与回滚命令。
 
 Compose 身份必须形成一个不可拆分快照：project、按命令实际顺序排列的全部 `-f` 文件、`--env-file`、service 名、容器 Compose labels、当前镜像标签/image ID 和 bind host。目录名、容器名前缀或仓库样例都不能单独证明 project 身份。

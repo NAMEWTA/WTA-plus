@@ -18,7 +18,7 @@
 | `wta-api` | 跨业务模块公开 API/DTO 合同 | `src/main/java/org/namewta/**/api` 及共享 DTO/SPI | none |
 | `wta-common` | common 聚合 POM | none | no source root |
 | `wta-common/wta-common-bom` | common 版本/BOM 合同 | none | no source root |
-| `wta-common/wta-common-ai` | AI 公共配置/适配 | package surface | none |
+| `wta-common/wta-common-ai` | AI Maven 占位，无生产依赖或自动配置 | POM / README | none |
 | `wta-common/wta-common-core` | Spring 核心类型、配置、通用合同 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-common/wta-common-doc` | SpringDoc/Javadoc 适配 | package surface | none |
 | `wta-common/wta-common-elasticsearch` | Elasticsearch 适配 | package surface | none |
@@ -48,10 +48,9 @@
 | `wta-common/wta-common-web` | Spring MVC、错误映射、Actuator 基础 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-extend` | 独立应用聚合 POM | none | no source root |
 | `wta-extend/wta-monitor-admin` | Spring Boot Monitor 可部署应用 | `MonitorAdminApplication` | none |
-| `wta-extend/wta-snailai-server` | Spring Boot SnailAI 可部署应用 | `SnailAiServerApplication` | none |
 | `wta-extend/wta-snailjob-server` | Spring Boot SnailJob 可部署应用 | `SnailJobServerApplication` | none |
 | `wta-modules` | 业务模块聚合 POM | none | no source root |
-| `wta-modules/wta-ai` | AI 业务能力 | package surface | none |
+| `wta-modules/wta-ai` | AI Maven 占位，仅依赖 wta-common-ai | POM / README | none |
 | `wta-modules/wta-demo` | 示例/集成演示能力 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-modules/wta-job` | 业务任务执行器 | package surface | none |
 | `wta-modules/wta-notify` | 通知公告、收件箱、渠道投递编排和通知配置 | `controller/admin`、`controller/anonymous`、`usecase` | `src/test/java`; layered module; `validate-module-mode` required |

@@ -92,7 +92,7 @@ NACOS_E2E_CONFIRM=1 \
 |---|---|---|
 | 基础设施 | `docker-compose-infrastructure.yml` | MySQL、Redis、MinIO；可选 Elasticsearch |
 | 日志监控 | `docker-compose-observability.yml` | Monitor Admin、Loki、Alloy、Grafana；可选 Prometheus/exporters |
-| 后端 | `docker-compose-backend.yml` | 双实例 Admin、SnailJob、SnailAI |
+| 后端 | `docker-compose-backend.yml` | 双实例 Admin、SnailJob |
 | 前端 | `docker-compose-frontend.yml` | 业务 App LB、各 App 独立 Nginx、可选 LB/独立 SSO TLS |
 
 四类 Compose 共享 external bridge network `namewta-network`，管理脚本会在启动前幂等创建。默认宿主机端口只绑定 `127.0.0.1`；需要内网访问时显式设置 `NAMEWTA_BIND_HOST`。
@@ -214,4 +214,4 @@ TTL 会即时生效；其他允许键只记录为需重启，`nacos.config.*` �
 
 ## 外部依赖
 
-SnailAI 的 Docling 与 PaddleOCR 地址通过 env 注入，本目录不伪造未在当前仓库维护的镜像。SMTP、短信、第三方 OSS 等集成同样由目标环境配置提供。
+Snail AI 服务及其 Docling/PaddleOCR 接入已退出；两份 Java Maven 占位保留。40-cde-ai.sql 仅声明字符集，六份 SQL 初始化新业务库103张表，已有 AI 数据保留且不迁移，禁止重放基座。SMTP、短信、第三方 OSS 等集成同样由目标环境配置提供。

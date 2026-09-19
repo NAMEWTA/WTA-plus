@@ -50,8 +50,8 @@ if os.environ.get('BUILD_WAIT'):
  while not Path(os.environ['BUILD_WAIT']+'.continue').exists(): time.sleep(.02)
 marker=(root.parent/'marker.txt').read_bytes()
 base=['wta-system','wta-common-notify','wta-common-oss','wta-third','wta-sso','wta-notify','wta-profile-person','wta-profile-enterprise']
-extra=[] if any('bundle-core' in v for v in __import__('sys').argv) else ['wta-job','wta-ai','wta-demo','wta-workflow']
-for name in ['wta-admin','wta-monitor-admin','wta-snailjob-server','wta-snailai-server']:
+extra=[] if any('bundle-core' in v for v in __import__('sys').argv) else ['wta-job','wta-ai','wta-common-ai','wta-demo','wta-workflow']
+for name in ['wta-admin','wta-monitor-admin','wta-snailjob-server']:
  p=root/('' if name=='wta-admin' else 'wta-extend')/name/'target'/(name+'.jar');p.parent.mkdir(parents=True,exist_ok=True)
  with zipfile.ZipFile(p,'w') as z:
   z.writestr('META-INF/MANIFEST.MF','Main-Class: org.springframework.boot.loader.launch.JarLauncher\\nStart-Class: fixture.Main\\n')

@@ -8,7 +8,6 @@ HTTP/TLS
        /<prefix>/ -> nginx-<app>:80（剥离 prefix）
        /admin/     -> namewta-monitor-admin:9090
        /snail-job/ -> namewta-snailjob-server:8800
-       /snail-ai/  -> namewta-snailai-server:8900
 
 nginx-<app>:80
   /                     -> SPA 静态文件

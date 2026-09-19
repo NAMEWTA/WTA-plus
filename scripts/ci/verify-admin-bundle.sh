@@ -24,7 +24,7 @@ fi
 
 entries=$(jar tf "$artifact")
 required=(wta-system wta-common-notify wta-common-oss wta-third wta-sso wta-notify wta-profile-person wta-profile-enterprise)
-optional=(wta-job wta-ai wta-demo wta-workflow)
+optional=(wta-job wta-ai wta-common-ai wta-demo wta-workflow)
 
 contains_artifact() {
   local entry pattern="^BOOT-INF/lib/$1-[0-9][^/]*\\.jar$"
@@ -51,5 +51,10 @@ for name in "${optional[@]}"; do
     exit 1
   fi
 done
+
+if [[ "$entries" =~ BOOT-INF/lib/snail-ai- ]]; then
+  echo "$mode bundle unexpectedly contains retired Snail AI vendor artifacts" >&2
+  exit 1
+fi
 
 echo "$mode bundle contents verified"

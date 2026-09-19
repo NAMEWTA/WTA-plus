@@ -72,10 +72,10 @@ done
 docker exec "$redis_container" redis-cli ping | grep -q PONG
 
 for _ in {1..90}; do
-  docker exec "$mysql_container" mysqladmin ping -h 127.0.0.1 -uroot -pnamewta-ci --silent && break
+  docker exec "$mysql_container" mysql --protocol=TCP -h 127.0.0.1 -uroot -pnamewta-ci --execute "SELECT 1" && break
   sleep 1
 done
-docker exec "$mysql_container" mysqladmin ping -h 127.0.0.1 -uroot -pnamewta-ci --silent
+docker exec "$mysql_container" mysql --protocol=TCP -h 127.0.0.1 -uroot -pnamewta-ci --execute "SELECT 1"
 
 mysql_env_file="$(mktemp "${TMPDIR:-/tmp}/namewta-ci-mysql.XXXXXX")"
 chmod 0600 "$mysql_env_file"
@@ -107,12 +107,16 @@ integration_tests=(
   RedisNotifyIdempotencyStoreIntegrationTest RedisOssUploadTicketStoreIntegrationTest
   NotifyMonitorMySqlIntegrationTest MinioOssClientIntegrationTest
   BusinessMenuRetirementMySqlIntegrationTest ThirdSchemaMySqlIntegrationTest ThirdRedisIntegrationTest
+  AiRetirementMySqlIntegrationTest
 )
 test_selector=$(IFS=,; echo "${integration_tests[*]}")
 test_started_ns=$(python3 -c 'import time; print(time.time_ns())')
 ./mvnw -Pdev -pl wta-admin -am test \
   -Dtest="$test_selector" \
   -Dsurefire.failIfNoSpecifiedTests=false \
+  -Dai.retirement.mysql.url="jdbc:mysql://127.0.0.1:$mysql_port/wta-plus?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai" \
+  -Dai.retirement.mysql.username=root \
+  -Dai.retirement.mysql.password=namewta-ci \
   -Dnotify.redis.integration.port="$redis_port" \
   -Doss.upload.redis.integration.port="$redis_port" \
   -Dthird.redis.integration.port="$redis_port" \

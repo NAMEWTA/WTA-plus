@@ -23,7 +23,7 @@
 | `classic` | `wta-modules/wta-workflow` | 既有 Warm-Flow 流程能力 | 保持现状；通过公开 Workflow API 接入，不改内部层次 |
 | `classic` | `wta-modules/wta-job` | 既有任务业务能力 | 保持现状；新增独立业务能力需另行登记为 layered |
 | `classic` | `wta-modules/wta-demo` | 示例和集成演示 | 保持现有示例可运行；不得作为新模块 layered 反例 |
-| `classic` | `wta-modules/wta-ai` | 既有 AI 业务能力 | 保持现状；第三方 starter 适配遵守模块边界 |
+| `classic` | `wta-modules/wta-ai` | Maven 占位，无业务源码 | 保留 artifact 和 POM；新业务能力另立变更 |
 
 `wta-admin`、`wta-api`、`wta-extend`、聚合 POM 和 `wta-common-*` 不属于业务五层登记范围，按各自模块职责和依赖规则执行。若将其中某个模块改造成业务实现，必须先补充本表条目和迁移说明。
 

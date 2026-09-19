@@ -40,11 +40,19 @@ const forbidden = [
   'wta-' + 'system-module-guide',
   'wta-' + 'workflow-module-guide',
   'client-web',
+  'wta-extend/wta-snailai-server',
+  'controller/SnailAiController.java',
+  'config/SnailAiConfig.java',
 ];
 for (const value of forbidden) {
   if (canonicalText.includes(value)) fail(`Skills 残留过时事实: ${value}`);
 }
 if (!all.includes('wta-notify')) fail('Skills 未登记 wta-notify');
+for (const module of ['wta-modules/wta-ai', 'wta-common/wta-common-ai']) {
+  const map = readFileSync(join(skillRoot, 'engineering-standards/references/project/01-module-map.md'), 'utf8');
+  const row = map.split('\n').find(line => line.includes('`' + module + '`'));
+  if (!row?.includes('Maven 占位')) fail(`Skills 未登记 AI 占位合同: ${module}`);
+}
 for (const required of ['BaseMapperPlus', 'WorkflowService', 'NotificationApplicationService', 'UseCase -> Service -> DAO -> Mapper', '10-cde-base-ddl.sql', '50-cde-base-dml.sql', '需求/菜单', 'domain transport/model/service', 'web-domain 页面/runtime/manifest', 'getInfo -> getRouters -> addRoute -> replace', 'local-name', 'tabler:name', 'sys_menu.icon']) {
   if (!all.includes(required)) fail(`Skills 缺少当前合同: ${required}`);
 }

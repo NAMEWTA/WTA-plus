@@ -195,7 +195,7 @@ try {
     ['监控平台', secrets.monitorUsername ?? '未记录', credential(secrets.monitorPassword)],
     ['Grafana', secrets.grafanaUsername ?? '未记录', credential(secrets.grafanaPassword)],
     ['业务管理端', '由 sys_user 管理', '密码为不可逆摘要，不在部署文件保存明文'],
-    ['SnailJob / SnailAI', '由各服务运行配置管理', '当前发布 env 未提供独立控制台密码，生产交付前必须核对']
+    ['SnailJob', '由各服务运行配置管理', '当前发布 env 未提供独立控制台密码，生产交付前必须核对']
   ].map((row) => `| ${row.map(markdownCell).join(' | ')} |`);
 
   const values = {

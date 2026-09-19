@@ -251,7 +251,6 @@ class TrustedClientAddressIntegrationTest {
         return source.replace("namewta-nginx-home-web:80", "127.0.0.1:" + backendPort)
             .replace("namewta-monitor-admin:9090", "127.0.0.1:" + backendPort)
             .replace("namewta-snailjob-server:8800", "127.0.0.1:" + backendPort)
-            .replace("namewta-snailai-server:8900", "127.0.0.1:" + backendPort)
             .replace("nacos:8848", "127.0.0.1:" + backendPort);
     }
 

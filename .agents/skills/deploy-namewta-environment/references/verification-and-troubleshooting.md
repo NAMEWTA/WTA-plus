@@ -3,7 +3,7 @@
 | 范围 | 必需证据 |
 |---|---|
 | 容器 | 必需服务运行/健康，镜像/image ID、restart count、环境摘要与挂载正确 |
-| 入口 | 前端、API、监控、SnailJob、SnailAI、Nacos 路径状态正确 |
+| 入口 | 前端、API、监控、SnailJob、Nacos 路径状态正确 |
 | 后端 | 双实例健康且零异常重启，直连与 LB 的 HTTP/业务码、登录/验证码和一个鉴权业务请求通过 |
 | MySQL | 数据库、表数量、迁移状态和 OSS 不变量正确 |
 | Redis | 认证 PING 与应用选定数据库正确 |

@@ -211,9 +211,9 @@
 
 ### 25. wta-common-ai
 
-- POM：`wta-common/wta-common-ai/pom.xml`，description「wta-common-ai AI公共模块」。显式 common：`wta-common-core`。第三方：`com.aizuda:snail-ai-agent-chat-starter`、`snail-ai-agent-executor-starter`、`snail-ai-openapi-starter`。
-- 源码根：`wta-common/wta-common-ai/src/main/java/org/namewta/common/ai/`
-- Java 仅 1 类：`config/SnailAiConfig.java`（JavaDoc「Snail AI 自动配置」；`@ConditionalOnProperty(prefix = "snail-ai", name = "enabled", havingValue = "true")` + `@EnableSnailAiAgent` + `@EnableSnailAiOpenApi`）。AutoConfiguration.imports 只列该类。业务 API 在 SnailAi starter，本模块未展开。
+- POM：`wta-common/wta-common-ai/pom.xml`；仅保留 Maven 占位，无生产依赖、Java 源码或 AutoConfiguration.imports。
+- `wta-modules/wta-ai` 只依赖该占位；Admin full 包含两 artifact，core 保持排除。
+- Snail AI 已退出当前源码和发布；历史数据保留且不迁移，后续替代平台另立 change。
 
 ### 26. wta-common-mcp
 

@@ -64,7 +64,7 @@ rg --files backend -g '**/src/test/java/**/*.java' -g '!**/target/**'
 - 产品变更进入本仓 `main`。
 - `release-artifacts/docker/infrastructure/mysql/init/` 是六份 MySQL 8.4 完整初始化基座的唯一事实源；后端仓库不保存 `script/`、SQL 副本或其他数据库方言。
 - NAMEWTA 自有表结构只合并到 `10-cde-base-ddl.sql`；初始化数据、菜单和回填只合并到 `50-cde-base-dml.sql`。两者是完整可重建基座，不是按时间无限追加的迁移日志。
-- SnailJob、WarmFlow、AI 等上游或第三方拥有的 schema 不是 NAMEWTA 表结构整治目标；只在项目明确接管其 schema 时应用项目自有建表规则。
+- SnailJob、WarmFlow 等上游或第三方拥有的 schema 不是 NAMEWTA 表结构整治目标；只在项目明确接管其 schema 时应用项目自有建表规则。
 
 ## 发布产物合同
 
@@ -81,3 +81,5 @@ rg --files backend -g '**/src/test/java/**/*.java' -g '!**/target/**'
 SSO 发布验证入口：`bash scripts/sso-hard-e2e.sh --release-origin --evidence <新JSON路径>` 串行构建三 App并使用临时 Nginx/Redis/MySQL/Chrome；SSO是真实实现，System身份/菜单与业务token签发是显式fixture。普通 `pnpm test:e2e` 不覆盖该专用配置。
 
 Admin/Home 浏览器传输统一为 HTTPS 上的普通 JSON/二进制合同；不再包含共享响应私钥、ECB 包装、crypto-browser 适配器或后端 API 加解密过滤器。机器 HMAC、OSS 签名与数据库字段加密保持各自合同。前后端须使用同一发布版本，切换与恢复需先隔离流量，不承诺跨容器原子热更新。
+
+当前 AI 退出边界：wta-ai / wta-common-ai 仅保留 Maven 占位；三个可部署 Java 应用为 Admin、Monitor、SnailJob。六份 SQL 中 40-cde-ai.sql 仅 SET NAMES utf8mb4;；新业务库 103 张表，旧 AI 数据保留，不重放基座或迁移。

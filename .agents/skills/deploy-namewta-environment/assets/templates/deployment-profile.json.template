@@ -36,7 +36,6 @@
     "adminPrefix": "namewta",
     "monitor": "/admin/applications",
     "snailJob": "/snail-job/",
-    "snailAi": "/snail-ai/",
     "nacos": "/nacos/"
   },
   "services": {
@@ -51,8 +50,7 @@
     "nacosNamespace": "prod",
     "nacosGroup": "DEFAULT_GROUP",
     "nacosDataId": "wta-namewta.yml",
-    "snailJobEnabled": true,
-    "snailAiEnabled": true
+    "snailJobEnabled": true
   },
   "ownership": {
     "composeProjects": ["namewta-data", "namewta-backend", "namewta-observability", "namewta-frontend"],

@@ -11,7 +11,7 @@ test('public entry replaces forwarding chains while internal app proxies append'
     const source = fs.readFileSync(path.join(root, `docker/frontend/nginx/lb/nginx-lb-${kind}.conf.template`), 'utf8');
     const routes = [...source.matchAll(/location[^\n]*\{([\s\S]*?)\n    \}/g)]
       .filter(([, route]) => route.includes('proxy_pass'));
-    assert.equal(routes.length, 6);
+    assert.equal(routes.length, 5);
     for (const [, route] of routes) {
       assert.match(route, /proxy_set_header X-Forwarded-For \$remote_addr;/);
       assert.match(route, /proxy_set_header Forwarded "";/);

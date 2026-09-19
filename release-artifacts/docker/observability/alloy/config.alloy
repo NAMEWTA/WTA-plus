@@ -4,7 +4,6 @@ local.file_match "namewta_logs" {
     { "__path__" = "/var/log/wta/server2/*.log", "service" = "namewta-admin", "instance" = "server2", "job" = "namewta" },
     { "__path__" = "/var/log/wta/monitor/**/*.log", "service" = "namewta-monitor-admin", "instance" = "monitor", "job" = "namewta" },
     { "__path__" = "/var/log/wta/snailjob/**/*.log", "service" = "namewta-snailjob-server", "instance" = "snailjob", "job" = "namewta" },
-    { "__path__" = "/var/log/wta/snailai/**/*.log", "service" = "namewta-snailai-server", "instance" = "snailai", "job" = "namewta" },
   ]
 }
 

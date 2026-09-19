@@ -31,9 +31,6 @@ x-admin-environment: &admin-environment
   SNAIL_JOB_ENABLED: "${SNAIL_JOB_ENABLED:-false}"
   SNAIL_JOB_SERVER_HOST: namewta-snailjob-server
   SNAIL_JOB_SERVER_PORT: 17888
-  SNAIL_AI_ENABLED: "${SNAIL_AI_ENABLED:-false}"
-  SNAIL_AI_SERVER_HOST: namewta-snailai-server
-  SNAIL_AI_SERVER_PORT: 18888
 
 services:
   namewta-server1:
@@ -45,12 +42,10 @@ services:
       <<: *admin-environment
       SERVER_PORT: 8080
       SNAIL_JOB_PORT: 28080
-      SNAIL_AI_PORT: 38080
       LOG_PATH: /wta/server/logs
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:48080:8080"
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:42080:28080"
-      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:43080:38080"
     volumes:
       - "${NAMEWTA_DATA_ROOT:-./runtime}/logs/server1:/wta/server/logs"
     healthcheck:
@@ -72,12 +67,10 @@ services:
       <<: *admin-environment
       SERVER_PORT: 8080
       SNAIL_JOB_PORT: 28080
-      SNAIL_AI_PORT: 38080
       LOG_PATH: /wta/server/logs
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:48081:8080"
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:42081:28080"
-      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:43081:38080"
     volumes:
       - "${NAMEWTA_DATA_ROOT:-./runtime}/logs/server2:/wta/server/logs"
     healthcheck:
@@ -111,37 +104,6 @@ services:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:47888:17888"
     volumes:
       - "${NAMEWTA_DATA_ROOT:-./runtime}/logs/snailjob:/wta/snailjob/logs"
-    logging: *default-logging
-    restart: unless-stopped
-    networks: [namewta]
-
-  namewta-snailai-server:
-    image: "${NAMEWTA_SNAILAI_IMAGE:-namewta/namewta-snailai-server:6.0.0}"
-    build:
-      context: ./backend/images/wta-snailai-server
-    container_name: namewta-snailai-server
-    environment:
-      TZ: Asia/Shanghai
-      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
-      SPRING_APPLICATION_NAME: namewta-snailai-server
-      JAVA_OPTS: "${JAVA_OPTS:--Xms512m -Xmx1024m}"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-wta-plus}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
-      SPRING_DATASOURCE_USERNAME: "${MYSQL_APP_USER:?MYSQL_APP_USER is required}"
-      SPRING_DATASOURCE_PASSWORD: "${MYSQL_APP_PASSWORD:?MYSQL_APP_PASSWORD is required}"
-      SPRING_BOOT_ADMIN_CLIENT_URL: http://namewta-monitor-admin:9090/admin
-      SPRING_BOOT_ADMIN_CLIENT_USERNAME: "${MONITOR_USERNAME:?MONITOR_USERNAME is required}"
-      SPRING_BOOT_ADMIN_CLIENT_PASSWORD: "${MONITOR_PASSWORD:?MONITOR_PASSWORD is required}"
-      SNAIL_AI_RAG_DOCLING_ENABLED: "${SNAIL_AI_RAG_DOCLING_ENABLED:-false}"
-      SNAIL_AI_RAG_DOCLING_URL: "${SNAIL_AI_RAG_DOCLING_URL:-http://host.docker.internal:5100}"
-      SNAIL_AI_RAG_DOCLING_PADDLE_OCR_ENABLED: "${SNAIL_AI_RAG_DOCLING_PADDLE_OCR_ENABLED:-false}"
-      SNAIL_AI_RAG_DOCLING_PADDLE_OCR_URL: "${SNAIL_AI_RAG_DOCLING_PADDLE_OCR_URL:-http://host.docker.internal:8866/ocr}"
-    ports:
-      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:48900:8900"
-      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:48888:18888"
-    volumes:
-      - "${NAMEWTA_DATA_ROOT:-./runtime}/logs/snailai:/wta/snailai/logs"
-    extra_hosts:
-      - host.docker.internal:host-gateway
     logging: *default-logging
     restart: unless-stopped
     networks: [namewta]

@@ -12,7 +12,6 @@
 | SSO TLS | `SSO_WEB_HTTPS_PORT` | 41483 | 443 | 独立 Origin，`tls` profile |
 | Monitor Admin | 固定映射 | 49090 | 9090 | `/admin/` |
 | SnailJob | 固定映射 | 48800 | 8800 | `/snail-job/` |
-| SnailAI | 固定映射 | 48900 | 8900 | `/snail-ai/` |
 | 后端实例 | 固定映射 | 48080/48081 | 8080 | App Nginx 内部 upstream |
 
 ## 分配规则
@@ -20,7 +19,7 @@
 1. 新 App 独立宿主机端口从 41080 起选择未占用值，不能占用已有 4xxxx 端口。
 2. 业务 App 和 HTTP SSO 内部监听80，TLS SSO 监听443并保留仅内部80健康端口；业务 LB 使用 Docker 服务名寻址，禁止加入 SSO。
 3. 前缀只允许字母、数字和连字符，不含首尾斜杠。
-4. `admin`、`monitor`、`snail-job`、`snail-ai`、`dev-api`、`prod-api`、`actuator` 是保留前缀；SSO 另禁止静态 prefix 为 `sso`。
+4. `admin`、`monitor`、`snail-job`、`snail-ai`、`dev-api`、`prod-api`、`actuator` 是保留前缀（snail-ai 仅防止退役路径复用，不表示服务仍运行）；SSO 另禁止静态 prefix 为 `sso`。
 5. App 名 `foo-bar` 对应 `FOO_BAR_PREFIX`、`FOO_BAR_PORT` 与 `FOO_BAR_ORIGIN`。
 6. 敏感管理端使用随机前缀，真实值只写忽略的 `.env`。
 

@@ -141,7 +141,7 @@ def main():
                     arguments += ['-v', f'{cert}:/etc/nginx/cert/{tls_dir}:ro']
                 for key, value in bindings.items():
                     arguments += ['-e', key + '=' + value]
-                for host in ['namewta-monitor-admin', 'namewta-snailjob-server', 'namewta-snailai-server', 'nacos']:
+                for host in ['namewta-monitor-admin', 'namewta-snailjob-server', 'nacos']:
                     arguments += ['--add-host', host + ':' + gateway]
                 identifier = container(name, [*arguments, IMAGES['nginx']])
                 record.setdefault('templates', {})[str(template.relative_to(ROOT))] = hashlib.sha256(template.read_bytes()).hexdigest()

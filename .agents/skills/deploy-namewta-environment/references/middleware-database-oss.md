@@ -6,7 +6,7 @@
 2. MySQL、Redis、MinIO。
 3. Schema 与账号准备完成后的可选 Nacos。
 4. 可观测服务。
-5. 后端双实例及可选 SnailJob/SnailAI。
+5. 后端双实例及可选 SnailJob。
 6. 前端应用 Nginx 与统一入口。
 
 依赖服务通过健康检查后才能启动调用方。

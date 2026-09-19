@@ -10,7 +10,7 @@
 | HTTP 请求打到 TLS 端口出现 400 | 协议/端口映射错误 | 使用 HTTPS，或通过 HTTP LB 端口访问；不要把公网 HTTP 转到容器 443 |
 | 跳转包含内部端口 | Nginx 生成绝对重定向 | 保留 redirect 三件套，跳转使用显式路径，不使用 `$server_port` |
 | TLS 容器反复重启 | 缺 `fullchain.pem`/`privkey.pem` 或证书不可读 | 检查 NAMEWTA_CERT_ROOT 下 `lb/` 或 `sso-web/`，先用非 TLS LB 验证其他链路 |
-| `/admin/`、`/snail-job/`、`/snail-ai/` 不通 | 对应后端服务未启动或路径被 App 前缀覆盖 | 检查保留路由顺序和 observability/backend Compose |
+| `/admin/`、`/snail-job/` 不通 | 对应后端服务未启动或路径被 App 前缀覆盖 | 检查保留路由顺序和 observability/backend Compose |
 
 ## 检查顺序
 

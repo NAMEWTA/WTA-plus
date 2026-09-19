@@ -40,7 +40,7 @@ public class ExampleService {
 |---|---|---|---|
 | workflow | `wta-modules/wta-workflow/pom.xml` 依赖 `wta-api`，无 `wta-system` | `UserService`、`TaskAssigneeService`、`DeptService`、`RoleService`、`PostService`、`NotificationApplicationService`；部分类用 `DictService` | `wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwTaskServiceImpl.java`（`UserService`）；`.../FlwTaskAssigneeServiceImpl.java`（`TaskAssigneeService` + User/Dept/Role/Post）；流程通知统一走 `NotificationApplicationService`；`.../SpelRuleComponent.java`（`DeptService.selectDeptLeaderById`） |
 | demo | `wta-modules/wta-demo/pom.xml` 依赖 `wta-api` | `PushHelper` 仅用于实时演示 | `wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/WebSocketController.java`：在线广播不落通知业务数据 |
-| ai | 使用 `LoginUser` 模型 | 不注入 system Service | `wta-modules/wta-ai/src/main/java/org/namewta/ai/controller/SnailAiController.java` |
+| ai | Maven 占位，无 System 调用 | 无运行时入口 | `wta-modules/wta-ai/pom.xml` |
 | job / gen | 无 `org.namewta.system` 业务调用 | — | gen 仅生成器配置默认包名 `org.namewta.system`，不是运行时调用 |
 | common-translation | 依赖 `wta-api` | `UserService`、`DeptService`、`OssService`、`DictService` | `wta-common/wta-common-translation/src/main/java/org/namewta/common/translation/core/impl/UserNameTranslationImpl.java`（`selectUserNameById`）；同目录 `NicknameTranslationImpl.java`、`DeptNameTranslationImpl.java`、`OssUrlTranslationImpl.java`、`DictTypeTranslationImpl.java` |
 | common-excel | 经 Spring 取 SPI | `DictService` | `wta-common/wta-common-excel/src/main/java/org/namewta/common/excel/convert/ExcelDictConvert.java`；`wta-common/wta-common-excel/src/main/java/org/namewta/common/excel/core/ExcelDownHandler.java`（`SpringUtils.getBean(DictService.class)`） |

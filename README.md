@@ -132,7 +132,7 @@ Client 是身份边界：登录域、注册开关、默认角色、SSO 接入状
 
 ### 系统监控
 
-在线用户按 Client 与会话展示；缓存监控读取 Redis 运行时指标。Spring Boot Admin、SnailJob、SnailAI、Nacos 控制台在本次预览环境不可达，见文末。
+在线用户按 Client 与会话展示；缓存监控读取 Redis 运行时指标。Spring Boot Admin、SnailJob、Nacos 控制台在本次预览环境不可达，见文末。
 
 ![在线用户](docs/image/admin-monitor-online.png)
 
@@ -199,7 +199,7 @@ Home 是独立 Client：门户介绍认证价值，登录页同样露出第一�
 未能截到的页面（环境暂不可达，未编造）：
 
 - **登录日志**（`/system/log/logininfo`）：打开后会话被踢回登录页，未能稳定停留。
-- **Admin 监控 / 任务调度中心 / AI 控制台 / Nacos 配置中心**：内嵌控制台持续 loading。本地 `application-local` 中 SnailJob / SnailAI 默认关闭，Nacos 控制台未作为本次预览依赖。
+- **Admin 监控 / 任务调度中心 / Nacos 配置中心**：内嵌控制台持续 loading。本地 `application-local` 中 SnailJob 默认关闭，Nacos 控制台未作为本次预览依赖。
 - **AI 会话**：页面报「加载 AI 聊天失败」。
 - **旧路径** `/system/notice`：404，公告已归通知中心 `/notify/notice`。
 
@@ -251,3 +251,5 @@ cd ../backend
 ## 许可证
 
 使用、分发与二次开发时，请遵守本仓前后端 `LICENSE` 及其依赖许可证。
+
+当前版本要求新增账号填写有效手机号；旧空号账号仍可登录，在资料写入时补齐。Snail AI 入口及服务已退出，Java 两模块仅保留 Maven 占位，已有 AI 数据保留且不迁移。

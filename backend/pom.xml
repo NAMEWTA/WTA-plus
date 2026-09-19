@@ -44,7 +44,6 @@
         <redisson.version>4.6.1</redisson.version>
         <lock4j.version>2.2.7</lock4j.version>
         <snailjob.version>2.0.2</snailjob.version>
-        <snailai.version>1.1.1</snailai.version>
 
         <!-- 通用工具、编译增强与代码生成相关依赖版本 -->
         <hutool.version>5.8.47</hutool.version>
@@ -319,27 +318,6 @@
                 <groupId>com.aizuda</groupId>
                 <artifactId>snail-job-client-job-core</artifactId>
                 <version>${snailjob.version}</version>
-            </dependency>
-
-            <!-- Snail AI Agent 聊天室 -->
-            <dependency>
-                <groupId>com.aizuda</groupId>
-                <artifactId>snail-ai-agent-chat-starter</artifactId>
-                <version>${snailai.version}</version>
-            </dependency>
-
-            <!-- Snail AI Agent 执行器 -->
-            <dependency>
-                <groupId>com.aizuda</groupId>
-                <artifactId>snail-ai-agent-executor-starter</artifactId>
-                <version>${snailai.version}</version>
-            </dependency>
-
-            <!-- Snail AI OpenAPI 启动器 -->
-            <dependency>
-                <groupId>com.aizuda</groupId>
-                <artifactId>snail-ai-openapi-starter</artifactId>
-                <version>${snailai.version}</version>
             </dependency>
 
             <!-- 加密包引入 -->

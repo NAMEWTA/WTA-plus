@@ -25,10 +25,6 @@ upstream snailjob_server {
     server namewta-snailjob-server:8800;
 }
 
-upstream snailai_server {
-    server namewta-snailai-server:8900;
-}
-
 upstream nacos_server {
     server nacos:8848;
     keepalive 16;
@@ -123,20 +119,6 @@ server {
         proxy_set_header X-Forwarded-Proto https;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
-        proxy_buffering off;
-    }
-
-    location /snail-ai/ {
-        proxy_pass http://snailai_server/snail-ai/;
-        proxy_http_version 1.1;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Forwarded "";
-        proxy_set_header X-Forwarded-Proto https;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
-        proxy_read_timeout 86400s;
         proxy_buffering off;
     }
 

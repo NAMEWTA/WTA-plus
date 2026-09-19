@@ -158,3 +158,7 @@ I 实施中以隔离 Git fixture 复现：产品提交后写 Evidence 必然使�
 ## LOG-013 — T-02 本地验收
 
 Lead 接受 T-02 result b394c60；标准轴pass，规范S-001白名单修复并复审pass，固定点clean/MVC2/browser9全部通过。无远程写入，T-03现在可开始。
+
+## LOG-014 — T-03 事实与摘要同步
+
+Common AI 入口已按当前空 POM/无源码事实修订；Lead 复读并检查 common 不反向依赖业务、MCP/Spring AI 保留，T-03 实际绑定更新为 d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c。T-01/T-02 为已完成历史调用，按 validator done 语义保留原 hash；不重写历史。真实 reactor 为49（旧文档46已过时），frontend33。

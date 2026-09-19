@@ -8,7 +8,7 @@ import test from 'node:test';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const required = ['wta-system', 'wta-common-notify', 'wta-common-oss', 'wta-third', 'wta-sso', 'wta-notify', 'wta-profile-person', 'wta-profile-enterprise'];
-const optional = ['wta-job', 'wta-ai', 'wta-demo', 'wta-workflow'];
+const optional = ['wta-job', 'wta-ai','wta-common-ai', 'wta-demo', 'wta-workflow'];
 
 function verify(mode, modules, outsideRepository = false) {
   const directory = mkdtempSync(path.join(tmpdir(), 'namewta-bundle-test-'));
@@ -46,6 +46,15 @@ for (const module of optional) {
 
 test('a similarly prefixed library cannot impersonate a required module', () => {
   assert.notEqual(verify('core', [...required.filter(name => name !== 'wta-system'), 'wta-system-impostor']).status, 0);
+});
+
+test('neither bundle may include retired vendor starters', () => {
+  for (const mode of ['full', 'core']) {
+    const modules = [...required, ...(mode === 'full' ? optional : []), 'snail-ai-openapi-starter'];
+    const result = verify(mode, modules);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /retired Snail AI vendor/);
+  }
 });
 
 test('external service test images match the current deployment Compose contract', () => {

@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 7
+plan_revision: 8
 requested_deliverables: [{"name": "Java AI Maven占位模块", "count": 2}, {"name": "MySQL初始化基座文件", "count": 6}]
 deliverable_policy: "用户最终共识明确保留两个Java占位和六份SQL；两项业务目标由Spec覆盖；无指定Ticket数，不从票数推断业务产物数。"
 artifact: "tickets-map"
@@ -45,7 +45,7 @@ Lead/implementation owner始终先读完整Map，再读匹配Skill入口和scope
 |---|---|---|---|---|---|---|---|---|---|---|
 | T-01 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/01-required-phone-write-paths.md</Path> | 注册、管理新增/编辑、个人资料与新增/覆盖导入形成一致手机号写入合同，旧空号用户仍可登录。 | — | deep | high | yes | codex-root | AC-001, AC-002, AC-003, AC-004, AC-005 | W1/G-phone | done |
 | T-02 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/02-retire-snail-ai-business-surface.md</Path> | Admin 不再呈现聊天/控制台，也不访问旧注册桥；Java 两个 AI artifact 仅保留可构建占位。 | — | deep | high | yes | codex-root | AC-006, AC-007, AC-008 | W1/G-ai | done |
-| T-03 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/03-remove-snail-ai-release-and-baseline.md</Path> | 最终源码与本地发布候选不产出或启动SnailAI；新库无vendor表，旧数据原样保留，当前API/基座/文档与两个前置切片一致。 | T-01, T-02 | deep | high | yes | codex-root | AC-009, AC-010, AC-011, AC-012 | W2/G-final | ready |
+| T-03 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/03-remove-snail-ai-release-and-baseline.md</Path> | 最终源码与本地发布候选不产出或启动SnailAI；新库无vendor表，旧数据原样保留，当前API/基座/文档与两个前置切片一致。 | T-01, T-02 | deep | high | yes | codex-root | AC-009, AC-010, AC-011, AC-012 | W2/G-final | in_progress |
 
 Ticket frontmatter是状态、依赖、路径与绑定权威；本表仅投影。
 
@@ -128,3 +128,19 @@ node <Path>{roots.workflows}/specdev/common/tools/ticket-control.mjs</Path> --ma
 ### Revision 7 — T-02 退役专属 E2E
 
 现有 frontend/e2e/ai-domain.spec.ts 仅验证将被删除的AI页面。归 T-02，在新 snail-ai-retirement.spec.ts 真实浏览器退出合同通过后删除；保留其他生命周期和未知菜单测试。
+
+### Revision 8 — T-03 精确事实闭包
+
+Lead 将以下当前源码事实 owner 纳入 T-03；只同步 SnailAI 退役，不执行部署或改真实环境配置：
+
+- <Path>.agents/skills/engineering-standards/references/java/persistence-transactions-and-ddl.md</Path> => T-03
+- <Path>.agents/skills/namewta-fullstack-development/references/backend/architecture.md</Path> => T-03
+- <Path>.agents/skills/wta-module-guide/references/modules/system/how-other-modules-call.md</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/assets/templates/admin-web.env.production.local.template</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/assets/templates/admin-web.env.development.local.template</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/assets/templates/deployment-profile.json.template</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/references/existing-site-takeover.md</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/references/middleware-database-oss.md</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/references/verification-and-troubleshooting.md</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/scripts/render-local-config.mjs</Path> => T-03
+- <Path>.agents/skills/deploy-namewta-environment/scripts/generate-deployment-report.mjs</Path> => T-03

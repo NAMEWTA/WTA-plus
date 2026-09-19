@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -63,4 +63,22 @@ test('missing report output owner is rejected', t => {
   const result = validate(directory);
   assert.equal(result.status, 1);
   assert.match(result.stderr, /部署工具 owner/);
+});
+
+test('retired AI source references cannot return to the module map', t => {
+  const directory = fixture(t);
+  const map = join(directory, '.agents/skills/engineering-standards/references/project/01-module-map.md');
+  writeFileSync(map, readFileSync(map, 'utf8') + '\n`wta-extend/wta-snailai-server`\n');
+  const result = validate(directory);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /过时事实/);
+});
+
+test('both AI placeholder responsibilities must remain documented', t => {
+  const directory = fixture(t);
+  const map = join(directory, '.agents/skills/engineering-standards/references/project/01-module-map.md');
+  writeFileSync(map, readFileSync(map, 'utf8').split('\n').filter(line => !line.includes('`wta-common/wta-common-ai`')).join('\n'));
+  const result = validate(directory);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /AI 占位合同: wta-common\/wta-common-ai/);
 });
