@@ -1,5 +1,4 @@
 import { adminDomainModule, requirePasswordPolicy, validatePassword } from '@namewta/domain-admin';
-import { aiDomainModule } from '@namewta/domain-ai';
 import { demoDomainModule } from '@namewta/domain-demo';
 import { notifyDomainModule } from '@namewta/domain-notify';
 import { createNotifyWebDomain } from '@namewta/web-domain-notify';
@@ -15,7 +14,6 @@ import {
   type WebDomainManifest
 } from '@namewta/platform-app-runtime';
 import { createAdminWebDomain } from '@namewta/web-domain-admin';
-import { createAiWebDomain, type AiWebRuntime } from '@namewta/web-domain-ai';
 import { createDemoWebDomain, type DemoWebRuntime } from '@namewta/web-domain-demo';
 import { createProfileWebDomain, type ProfileWebRuntime } from '@namewta/web-domain-profile';
 import { createLiveMonitorDictRefs, createMonitorWebDomain, type MonitorWebRuntime } from '@namewta/web-domain-system';
@@ -26,7 +24,6 @@ import { getActivePinia } from 'pinia';
 import { defineAsyncComponent, defineComponent, h, type Component } from 'vue';
 import { createAdminAccessEvaluator } from '@/application/access';
 import {
-  aiService,
   demoService,
   identityAccessService,
   monitorService,
@@ -38,42 +35,12 @@ import {
   notificationService,
   notificationDirectory
 } from '@/application/services';
-import { getToken } from '@/application/session';
 import WorkflowTreePanel from '@/components/TreePanel/index.vue';
 import { sanitizeHtml } from '@/utils/sanitize';
 
 const WorkflowFileUpload = defineAsyncComponent(() => import('@/components/FileUpload/index.vue'));
 const SystemEditor = defineAsyncComponent(() => import('@/components/Editor/index.vue'));
 const SystemImagePreview = defineAsyncComponent(() => import('@/components/ImagePreview/index.vue'));
-
-async function cancelUnreadResponseBody(response: Response | undefined): Promise<void> {
-  const body = response?.body;
-  if (!body || response.bodyUsed || body.locked) return;
-  try {
-    await body.cancel();
-  } catch {
-    // Probe outcome must not be replaced by a best-effort transport cleanup failure.
-  }
-}
-
-export const adminAiWebRuntime: AiWebRuntime = {
-  baseUrl: () => import.meta.env.VITE_APP_BASE_API,
-  probeFrame: async ({ signal, url }) => {
-    let response: Response | undefined;
-    try {
-      response = await fetch(url, { credentials: 'same-origin', method: 'GET', redirect: 'error', signal });
-      const contentType = response.headers.get('content-type')?.split(';', 1)[0].trim().toLowerCase();
-      if (!response.ok || (contentType !== 'text/html' && contentType !== 'application/xhtml+xml')) {
-        throw new Error('AI chat probe failed');
-      }
-    } finally {
-      await cancelUnreadResponseBody(response);
-    }
-  },
-  service: aiService,
-  trustedCredential: () => getToken() ?? null
-};
-const aiManifest = createAiWebDomain(adminAiWebRuntime);
 
 const demoRuntime: DemoWebRuntime = {
   service: demoService,
@@ -317,7 +284,6 @@ const AdminExternalMonitorPage = defineAsyncComponent(() => import('@/views/moni
 const adminExternalMonitorRegistrations = [
   ['admin-monitor-admin', 'monitor/admin/index', 'MonitorAdmin', 'monitor-admin'],
   ['admin-monitor-snailjob', 'monitor/snailjob/index', 'SnailJob', 'snail-job'],
-  ['admin-monitor-snailai', 'monitor/snailai/index', 'SnailAi', 'snail-ai'],
   ['admin-monitor-nacos', 'monitor/nacos/index', 'Nacos', 'nacos']
 ] as const;
 const adminExternalMonitorManifest: WebDomainManifest<Component> = Object.freeze({
@@ -349,7 +315,6 @@ const runtime = composeAppRuntime<Component>({
     demoDomainModule,
     workflowDomainModule,
     systemDomainModule,
-    aiDomainModule,
     profileDomainModule,
     thirdDomainModule,
     notifyDomainModule
@@ -364,20 +329,18 @@ const runtime = composeAppRuntime<Component>({
     createDemoWebDomain(demoRuntime),
     workflowManifest,
     systemManifest,
-    aiManifest,
     monitorManifest,
     profileManifest,
     adminExternalMonitorManifest,
     thirdManifest,
     notifyManifest
   ],
-  selectedDomainIds: ['admin', 'demo', 'workflow', 'system', 'ai', 'profile', 'third', 'notify'],
+  selectedDomainIds: ['admin', 'demo', 'workflow', 'system', 'profile', 'third', 'notify'],
   selectedManifestIds: [
     'web-domain-admin',
     'web-domain-demo',
     'web-domain-workflow',
     'web-domain-system',
-    'web-domain-ai',
     'web-domain-system-monitor',
     'web-domain-profile',
     'admin-external-monitor',

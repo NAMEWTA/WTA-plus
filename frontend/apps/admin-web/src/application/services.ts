@@ -1,6 +1,5 @@
 import { createOssUploadClient, transferToOss, type OssTransfer } from '@namewta/adapter-oss-upload-browser';
 import { createIdentityAccessService } from '@namewta/domain-admin';
-import { createAiService } from '@namewta/domain-ai';
 import { createDemoService, createRichTextService, type RichTextAssetAccess, type RichTextAssetKind } from '@namewta/domain-demo';
 import { createNotificationService } from '@namewta/domain-notify';
 import { createProfileService } from '@namewta/domain-profile';
@@ -86,5 +85,4 @@ export const notificationDirectory = {
   userTypes: () => systemService.userTypes.options()
 };
 export const monitorService = createMonitorService(domainHttp);
-export const aiService = createAiService(domainHttp);
 export const thirdService = createThirdService(domainHttp);

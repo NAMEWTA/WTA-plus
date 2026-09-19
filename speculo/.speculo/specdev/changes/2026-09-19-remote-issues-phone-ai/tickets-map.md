@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 5
+plan_revision: 7
 requested_deliverables: [{"name": "Java AI Maven占位模块", "count": 2}, {"name": "MySQL初始化基座文件", "count": 6}]
 deliverable_policy: "用户最终共识明确保留两个Java占位和六份SQL；两项业务目标由Spec覆盖；无指定Ticket数，不从票数推断业务产物数。"
 artifact: "tickets-map"
@@ -44,7 +44,7 @@ Lead/implementation owner始终先读完整Map，再读匹配Skill入口和scope
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
 | T-01 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/01-required-phone-write-paths.md</Path> | 注册、管理新增/编辑、个人资料与新增/覆盖导入形成一致手机号写入合同，旧空号用户仍可登录。 | — | deep | high | yes | codex-root | AC-001, AC-002, AC-003, AC-004, AC-005 | W1/G-phone | done |
-| T-02 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/02-retire-snail-ai-business-surface.md</Path> | Admin 不再呈现聊天/控制台，也不访问旧注册桥；Java 两个 AI artifact 仅保留可构建占位。 | — | deep | high | yes | codex-root | AC-006, AC-007, AC-008 | W1/G-ai | ready |
+| T-02 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/02-retire-snail-ai-business-surface.md</Path> | Admin 不再呈现聊天/控制台，也不访问旧注册桥；Java 两个 AI artifact 仅保留可构建占位。 | — | deep | high | yes | codex-root | AC-006, AC-007, AC-008 | W1/G-ai | in_progress |
 | T-03 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/03-remove-snail-ai-release-and-baseline.md</Path> | 最终源码与本地发布候选不产出或启动SnailAI；新库无vendor表，旧数据原样保留，当前API/基座/文档与两个前置切片一致。 | T-01, T-02 | deep | high | yes | codex-root | AC-009, AC-010, AC-011, AC-012 | W2/G-final | ready |
 
 Ticket frontmatter是状态、依赖、路径与绑定权威；本表仅投影。
@@ -120,3 +120,11 @@ node <Path>{roots.workflows}/specdev/common/tools/ticket-control.mjs</Path> --ma
 实施修订 revision 4：原默认Playwright配置明确忽略registration/transport专项；T-01修正为真实专项入口，增加phone双App配置并从默认配置排除其用例，两个配置路径归T-01。不得把默认零发现当E2E通过。
 
 实施修订 revision 5：T-01 纳入既有 PasswordAuthStrategyTemporaryUnitTest 单文件，把原无手机号成功认证用例显式参数化为 null/空串/空白；保持真实 authenticate 边界与原密码和授权断言。pnpm 根脚本会调用裸 pnpm，验证时通过任务专属 Corepack shim PATH 保证子进程同为 10.34.5，不修改系统安装。
+
+### Revision 6 — T-02 生成声明归属
+
+定向测试扫描期间，真实 Vitest/Vite auto-import 插件自动移除 admin-web/src/types/auto-imports.d.ts 的四项 Element Plus 生成声明。该文件精确归 T-02，保留生成结果，不手改生成声明。其他票所有权不变。
+
+### Revision 7 — T-02 退役专属 E2E
+
+现有 frontend/e2e/ai-domain.spec.ts 仅验证将被删除的AI页面。归 T-02，在新 snail-ai-retirement.spec.ts 真实浏览器退出合同通过后删除；保留其他生命周期和未知菜单测试。

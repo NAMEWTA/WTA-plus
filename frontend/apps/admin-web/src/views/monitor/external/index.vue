@@ -15,7 +15,6 @@ const props = defineProps<{ target: ExternalMonitorTarget }>();
 const externalUrls: Readonly<Record<ExternalMonitorTarget, string | undefined>> = Object.freeze({
   'monitor-admin': import.meta.env.VITE_APP_MONITOR_ADMIN,
   'snail-job': import.meta.env.VITE_APP_SNAILJOB_ADMIN,
-  'snail-ai': import.meta.env.VITE_APP_SNAILAI_ADMIN,
   nacos: import.meta.env.VITE_APP_NACOS_ADMIN
 });
 const failure = ref('');

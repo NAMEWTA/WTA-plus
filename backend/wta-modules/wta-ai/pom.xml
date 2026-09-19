@@ -11,36 +11,12 @@
     <packaging>jar</packaging>
     <artifactId>wta-ai</artifactId>
 
-    <description>
-        ai模块
-    </description>
+    <description>AI module reserved artifact; no runtime business implementation</description>
 
     <dependencies>
-
-        <!-- 核心模块 -->
-        <dependency>
-            <groupId>org.namewta</groupId>
-            <artifactId>wta-common-core</artifactId>
-        </dependency>
-        <!-- api模块 -->
-        <dependency>
-            <groupId>org.namewta</groupId>
-            <artifactId>wta-api</artifactId>
-        </dependency>
-        <!-- ai模块 -->
         <dependency>
             <groupId>org.namewta</groupId>
             <artifactId>wta-common-ai</artifactId>
-        </dependency>
-        <!-- satoken -->
-        <dependency>
-            <groupId>org.namewta</groupId>
-            <artifactId>wta-common-satoken</artifactId>
-        </dependency>
-        <!-- web服务 -->
-        <dependency>
-            <groupId>org.namewta</groupId>
-            <artifactId>wta-common-web</artifactId>
         </dependency>
     </dependencies>
 

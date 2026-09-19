@@ -5,11 +5,10 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const workspaceRoot = join(dirname(fileURLToPath(import.meta.url)), '../../..');
-const canonicalDomains = ['admin', 'ai', 'demo', 'notify', 'profile', 'system', 'third', 'workflow'];
-const removedDomains = ['identity-access', 'system-admin', 'devtools', 'operations', 'gen'];
+const canonicalDomains = ['admin', 'demo', 'notify', 'profile', 'system', 'third', 'workflow'];
+const removedDomains = ['ai', 'identity-access', 'system-admin', 'devtools', 'operations', 'gen'];
 const backendModules = {
   admin: 'wta-admin',
-  ai: 'wta-ai',
   demo: 'wta-demo',
   notify: 'wta-notify',
   profile: 'wta-profile',
@@ -22,9 +21,6 @@ const domainResources = {
   admin: {
     auth: ['AuthController', '/auth'],
     captcha: ['CaptchaController', '/auth/code']
-  },
-  ai: {
-    'snail-ai': ['SnailAiController', '/snail-ai']
   },
   demo: {
     'test-demo': ['TestDemoController', '/demo/demo'],
@@ -81,7 +77,6 @@ const domainResources = {
 
 const webResources = {
   admin: ['auth'],
-  ai: ['snail-ai'],
   demo: ['test-demo', 'test-tree'],
   notify: ['monitor', 'notice', 'inbox'],
   profile: ['material-tag', 'person', 'enterprise'],

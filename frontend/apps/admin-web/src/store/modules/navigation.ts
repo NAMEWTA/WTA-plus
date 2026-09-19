@@ -1,9 +1,6 @@
-import type { RouteRecordRaw } from 'vue-router';
 import type { ServerMenuMeta, ServerMenuNode } from '@namewta/domain-admin';
-import {
-  findDuplicateRouteNames,
-  projectServerRoutes
-} from '@namewta/platform-app-runtime';
+import type { RouteRecordRaw } from 'vue-router';
+import { findDuplicateRouteNames, projectServerRoutes } from '@namewta/platform-app-runtime';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { identityAccessService } from '@/application/services';
@@ -15,6 +12,19 @@ import { resolveAdminWebRegistration } from '@/router/adminManifestRegistry';
 import { createManifestRouteDiagnostic, presentDuplicateRouteNameDiagnostics } from '@/router/manifestDiagnostic';
 import { adaptServerMenuRoutes, type AdminRouteComponent } from '@/router/serverMenuAdapter';
 import store from '@/store';
+
+const retiredAiComponents = new Set(['ai/chat/index', 'monitor/snailai/index']);
+
+function removeRetiredAiMenus(menus: readonly ServerMenuNode[]): ServerMenuNode[] {
+  return menus.flatMap(menu => {
+    if (menu.component && retiredAiComponents.has(menu.component)) return [];
+    if (!menu.children?.length) return [menu];
+    const children = removeRetiredAiMenus(menu.children);
+    // 只裁掉退役后留下的空目录；其他页面仍需正常解析或呈现未知键诊断。
+    if (!children.length && (menu.component === 'Layout' || menu.component === 'ParentView')) return [];
+    return [{ ...menu, children }];
+  });
+}
 
 function projectMenus(menus: readonly ServerMenuNode[], flattenParentView = false): RouteRecordRaw[] {
   const projected = projectServerRoutes<AdminRouteComponent, ServerMenuMeta>({
@@ -55,7 +65,9 @@ export const useNavigationStore = defineStore('navigation', () => {
     removeRoutes.push(install(route));
   };
 
-  const finishRecovery = () => { navigationLoaded.value = true; };
+  const finishRecovery = () => {
+    navigationLoaded.value = true;
+  };
 
   const getRoutes = (): RouteRecordRaw[] => routes.value as RouteRecordRaw[];
   const getDefaultRoutes = (): RouteRecordRaw[] => defaultRoutes.value as RouteRecordRaw[];
@@ -78,7 +90,7 @@ export const useNavigationStore = defineStore('navigation', () => {
   const generateRoutes = async (): Promise<RouteRecordRaw[]> => {
     resetRoutes();
     const current = generation;
-    const menus = await identityAccessService.getMenus();
+    const menus = removeRetiredAiMenus(await identityAccessService.getMenus());
     if (current !== generation) throw new Error('Session changed during menu recovery');
     const sidebarRoutes = projectMenus(menus);
     const rewriteRoutes = projectMenus(menus, true);
@@ -88,12 +100,7 @@ export const useNavigationStore = defineStore('navigation', () => {
     setSidebarRouters(constantRoutes.concat(sidebarRoutes));
     setDefaultRoutes(sidebarRoutes);
     setTopbarRoutes(projectedDefaultRoutes);
-    presentDuplicateRouteNameDiagnostics(
-      findDuplicateRouteNames([
-        constantRoutes,
-        sidebarRoutes
-      ])
-    );
+    presentDuplicateRouteNameDiagnostics(findDuplicateRouteNames([constantRoutes, sidebarRoutes]));
     return rewriteRoutes;
   };
 

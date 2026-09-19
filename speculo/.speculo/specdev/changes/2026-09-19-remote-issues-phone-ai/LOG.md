@@ -150,3 +150,7 @@ T-01 的本地修改、定向 red/green、全量测试、真实 MySQL、full/cor
 I 实施中以隔离 Git fixture 复现：产品提交后写 Evidence 必然使工作区暂时 dirty，收据另行提交后 HEAD 又不等于旧票 result；两票串行时不能同时令父 HEAD 等于两个不同 result。这是治理校验缺陷，与前次四处路由恢复不同。Lead 在用户授权的本地完成范围内修复：result 固定在非空实现 commit，历史校验使用真实祖先关系；Lead 验收时仍捕获精确 HEAD/tree 与完整 clean 状态，最终 completed 和 release clean_source 保持严格干净门。不得以空实现、证据提交冒充 result 或改写旧票 SHA 通过。治理独立提交，AI facts 仅写指定 workflow/tool 文件；产品与 change 状态仍由 Lead 独占。
 
 标准/规范双轴完成 T-01 初审，见 evidence/T-01-review.md。测试隔离和验证码观察点按发现修复；OpenAPI 同步按原归属留 T-03；不扩张已确认导入唯一性策略。
+
+## LOG-013 — T-02 局部生成声明写集
+
+导航测试触发 Vite auto-import 插件，按本次局部扫描自动删除四项 Element Plus 声明；完整构建后再核对最终生成结果。Lead 将 frontend/apps/admin-web/src/types/auto-imports.d.ts 精确归 T-02；Map revision 6，重验 tickets 后恢复实施。没有手改生成文件或接管 API 合同生成物。

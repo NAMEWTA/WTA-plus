@@ -46,9 +46,6 @@ snail-job:
   namespace: local
   port: 2${server.port}
 
-snail-ai:
-  enabled: false
-
 oss:
   readiness:
     diagnostic-objects:

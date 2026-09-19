@@ -18,7 +18,7 @@ import type {
 
 export * from './types';
 
-export type ExternalMonitorTarget = 'monitor-admin' | 'snail-job' | 'snail-ai' | 'nacos';
+export type ExternalMonitorTarget = 'monitor-admin' | 'snail-job' | 'nacos';
 export interface NavigationIntent {
   readonly target: ExternalMonitorTarget | 'notify-attachment';
   readonly url: string;
@@ -39,7 +39,6 @@ export class MonitorSecurityError extends Error {
 const targetPermissions: Readonly<Record<ExternalMonitorTarget, string>> = Object.freeze({
   'monitor-admin': 'monitor:admin:list',
   'snail-job': 'monitor:snailjob:list',
-  'snail-ai': 'monitor:snailai:list',
   nacos: 'system:nacos:console'
 });
 const segment = (value: IdentifierList) =>

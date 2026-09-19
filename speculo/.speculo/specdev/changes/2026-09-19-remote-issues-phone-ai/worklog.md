@@ -8,7 +8,7 @@
 
 ## Current status
 
-用户已按 LOG-011 批准基线修复和本地提交。T-01 done，固定 result ccd9d98，双轴和 Lead 验收通过；下一步 T-02→T-03 严格串行。产品与状态唯一 writer=codex-root；无部署、推送或远程 Issue 回写。
+用户已按 LOG-011 批准基线修复和本地提交。T-01 done，固定 result ccd9d98，双轴和 Lead 验收通过；T-02 正在实施，随后 T-03 严格串行。产品与状态唯一 writer=codex-root；无部署、推送或远程 Issue 回写。
 
 ## Decisions
 
@@ -68,3 +68,5 @@ T-01 本地实现/验证全部通过，Ticket 与 current workspace 记录为 bl
 用户已批准 preflight 方案和本 change main 本地提交；基线 dea1754、T-01 初始实现 241a96a 均已提交。固定点双轴初审完成；产品规范通过，测试安全修复与复审进行中，后续 T-02/T-03 尚未开工。current 串行 Git 校验缺陷以独立治理修复处理。仍无 push、部署或真实数据修改。
 
 T-01 已验收：ccd9d98，双轴通过，最终同tree28真实服务/安全/登录及10浏览器均通过；result不可变。接着串行T-02；OpenAPI S2留T-03必闭合。
+
+T-02 产品退出及非E2E通过：907后端发现/785执行/122属性skip，前端594+101+7（另补1导航边界），full/core产物验证，最终Client7+退役2浏览器通过。下一步不可变提交、隔离双轴审查、Lead固定点复核；独立server/发布/SQL/OpenAPI尚待T-03。

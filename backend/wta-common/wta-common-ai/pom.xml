@@ -11,35 +11,6 @@
 
     <artifactId>wta-common-ai</artifactId>
 
-    <description>
-        wta-common-ai AI公共模块
-    </description>
+    <description>AI common reserved artifact; no vendor dependencies or auto-configuration</description>
 
-    <dependencies>
-
-        <!-- 核心模块 -->
-        <dependency>
-            <groupId>org.namewta</groupId>
-            <artifactId>wta-common-core</artifactId>
-        </dependency>
-
-        <!-- Snail AI Agent 聊天室 -->
-        <dependency>
-            <groupId>com.aizuda</groupId>
-            <artifactId>snail-ai-agent-chat-starter</artifactId>
-        </dependency>
-
-        <!-- Snail AI Agent 执行器 -->
-        <dependency>
-            <groupId>com.aizuda</groupId>
-            <artifactId>snail-ai-agent-executor-starter</artifactId>
-        </dependency>
-
-        <!-- Snail AI OpenAPI 启动器 -->
-        <dependency>
-            <groupId>com.aizuda</groupId>
-            <artifactId>snail-ai-openapi-starter</artifactId>
-        </dependency>
-
-    </dependencies>
 </project>

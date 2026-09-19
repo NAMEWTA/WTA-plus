@@ -40,7 +40,7 @@
     "history": []
   },
   "created_at": "2026-09-19T08:03:45.271401Z",
-  "updated_at": "2026-09-19T10:53:22.574649+00:00",
+  "updated_at": "2026-09-19T10:54:33.802118+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -93,6 +93,49 @@
       },
       "status": "integrated",
       "updated_at": "2026-09-19T10:53:22.574649+00:00"
+    },
+    {
+      "ticket_id": "T-02",
+      "owner": "codex-root",
+      "implementation_owner": "codex-root",
+      "integration_owner": "codex-root",
+      "provider": "git",
+      "base_sha": "2853e45c2b094311a6df28511c261822ae5623a4",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": null,
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "2853e45c2b094311a6df28511c261822ae5623a4",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-02.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
+      },
+      "status": "active",
+      "updated_at": "2026-09-19T10:54:33.802118+00:00"
     }
   ]
 }

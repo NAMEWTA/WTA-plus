@@ -44,7 +44,7 @@ Go/Python 新平台归独立暂缓 change；不删除/迁移真实旧数据，�
 |---|---|---|
 | 1 | 用户已确认决定，记录于 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/LOG.md</Path> LOG-003–007 | 手机号、暂缓、数据保留、最终范围和 current；新决定先更新真正 owner |
 | 2 | 本 change 的 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/CONTEXT.md</Path> 与 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ADR.md</Path> | 领域与架构边界；无额外接受的 ADR，不补造决定 |
-| 3 | Spec 与三张 Ticket / Map revision 5 | 外部合同与局部施工；Goal 只编排，不改写 AC |
+| 3 | Spec 与三张 Ticket / Map revision 7 | 外部合同与局部施工；Goal 只编排，不改写 AC |
 | 4 | <Path>AGENTS.md</Path>、匹配的项目 Skill、当前源码和 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/grounding.md</Path> | 约束与实际调用/路径；摘要冲突以真实代码为准并修正父事实 |
 | 5 | 独立来源快照与 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/issue-index.md</Path> | #1/#2 当前归属，#3 已转移；冻结来源不改写 |
 
@@ -196,7 +196,7 @@ T-01 固定手机号合同；T-02 退出 AI 消费者并保留两个 Java 占位
 
 ### Current Status
 
-S Ready，T-01 done / G-phone passed，固定 result ccd9d98；T-02/T-03 Ready。Map revision 5；下一步 T-02 串行实施。G-contract/G-final 尚未完成。
+S Ready，T-01 done / G-phone passed，固定 result ccd9d98；T-02/T-03 Ready。Map revision 7；下一步 T-02 串行实施。G-contract/G-final 尚未完成。
 
 规划质量与实际 validator/controller 结果归 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/planning-review.md</Path>；它不能代替三张执行 Evidence。Go/Python 仍在 <Path>{roots.state}/specdev/changes/2026-09-19-go-python-ai-platform/</Path> 暂缓。
 

@@ -16,7 +16,6 @@ interface ImportMetaEnv {
   VITE_APP_CONTEXT_PATH: string;
   VITE_APP_MONITOR_ADMIN: string;
   VITE_APP_SNAILJOB_ADMIN: string;
-  VITE_APP_SNAILAI_ADMIN: string;
   VITE_APP_NACOS_ADMIN: string;
   VITE_APP_ENV: string;
   VITE_APP_CLIENT_ID: string;

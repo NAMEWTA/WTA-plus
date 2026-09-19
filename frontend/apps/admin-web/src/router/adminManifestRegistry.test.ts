@@ -1,10 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import {
-  adminAiWebRuntime,
-  adminProfileWebRuntime,
-  adminSystemWebRuntime,
-  resolveAdminWebRegistration
-} from './adminManifestRegistry';
+import { adminProfileWebRuntime, adminSystemWebRuntime, resolveAdminWebRegistration } from './adminManifestRegistry';
 
 vi.mock('@/application/services', () => {
   const createService = () => {
@@ -17,8 +12,7 @@ vi.mock('@/application/services', () => {
   const personEligibleUsers = vi.fn();
   const enterpriseEligibleUsers = vi.fn();
   const completeTask = vi.fn();
-  const methods = (names: readonly string[]) =>
-    Object.fromEntries(names.map(name => [name, vi.fn()]));
+  const methods = (names: readonly string[]) => Object.fromEntries(names.map(name => [name, vi.fn()]));
   const archiveMethods = [
     'assign',
     'create',
@@ -33,7 +27,6 @@ vi.mock('@/application/services', () => {
     'revoke'
   ];
   return {
-    aiService: createService(),
     demoService: createService(),
     identityAccessService: new Proxy(createService(), {
       get: (target, property) => (property === 'getClientContext' ? getClientContext : Reflect.get(target, property))
@@ -59,6 +52,14 @@ vi.mock('@/application/access', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 describe('admin selected manifest registry', () => {
+  it('does not register retired AI pages while keeping unrelated monitor registrations', () => {
+    expect(resolveAdminWebRegistration('ai/chat/index', 'ai')).toBeUndefined();
+    expect(resolveAdminWebRegistration('monitor/snailai/index', 'system')).toBeUndefined();
+    expect(resolveAdminWebRegistration('monitor/snailjob/index', 'system')).toMatchObject({
+      componentName: 'SnailJob'
+    });
+    expect(resolveAdminWebRegistration('monitor/nacos/index', 'system')).toMatchObject({ componentName: 'Nacos' });
+  });
   it('adapts the admin identity policy and browser clipboard through explicit system runtime ports', async () => {
     const services = await import('@/application/services');
     vi.mocked(services.identityAccessService.getClientContext).mockResolvedValue({
@@ -104,11 +105,10 @@ describe('admin selected manifest registry', () => {
     expect(resolveAdminWebRegistration('system/oss/index', 'system')).toMatchObject({ componentName: 'Oss' });
     expect(resolveAdminWebRegistration('system/dict/index', 'system')).toMatchObject({ componentName: 'Dict' });
     expect(resolveAdminWebRegistration('system/openApi/index', 'system')).toMatchObject({ componentName: 'OpenApi' });
-    expect(resolveAdminWebRegistration('third/provider/index', 'third')).toMatchObject({ componentName: 'ThirdProvider' });
-    expect(resolveAdminWebRegistration('system/devtools/index', 'system')).toBeUndefined();
-    expect(resolveAdminWebRegistration('ai/chat/index', 'ai')).toMatchObject({
-      componentName: 'AiChatPage'
+    expect(resolveAdminWebRegistration('third/provider/index', 'third')).toMatchObject({
+      componentName: 'ThirdProvider'
     });
+    expect(resolveAdminWebRegistration('system/devtools/index', 'system')).toBeUndefined();
     expect(resolveAdminWebRegistration('ai/model/index', 'ai')).toBeUndefined();
     expect(resolveAdminWebRegistration('monitor/online/index', 'system')).toMatchObject({
       componentName: 'Online'
@@ -123,7 +123,6 @@ describe('admin selected manifest registry', () => {
     expect(resolveAdminWebRegistration('monitor/snailjob/index', 'system')).toMatchObject({
       componentName: 'SnailJob'
     });
-    expect(resolveAdminWebRegistration('monitor/snailai/index', 'system')).toMatchObject({ componentName: 'SnailAi' });
     expect(resolveAdminWebRegistration('monitor/nacos/index', 'system')).toMatchObject({ componentName: 'Nacos' });
     expect(resolveAdminWebRegistration('monitor/report/index', 'system')).toBeUndefined();
     expect(resolveAdminWebRegistration('profile/materialTag/index', 'profile')).toMatchObject({
@@ -177,86 +176,5 @@ describe('admin selected manifest registry', () => {
       message: 'checked',
       variables: { profileDecision: 'APPROVE' }
     });
-  });
-
-  it('probes the same-origin chat document with an abortable HTML request', async () => {
-    const fetch = vi.fn(async () =>
-      Promise.resolve(new Response('<!doctype html>', { headers: { 'content-type': 'text/html; charset=utf-8' } }))
-    );
-    vi.stubGlobal('fetch', fetch);
-    const controller = new AbortController();
-
-    await expect(
-      adminAiWebRuntime.probeFrame({
-        signal: controller.signal,
-        url: '/prod-api/snail-chat/?openId=user&trustedCredential=redacted'
-      })
-    ).resolves.toBeUndefined();
-    expect(fetch).toHaveBeenCalledWith('/prod-api/snail-chat/?openId=user&trustedCredential=redacted', {
-      credentials: 'same-origin',
-      method: 'GET',
-      redirect: 'error',
-      signal: controller.signal
-    });
-  });
-
-  it.each([
-    new Response('down', { status: 503, headers: { 'content-type': 'text/html' } }),
-    new Response('{}', { headers: { 'content-type': 'application/json' } })
-  ])('fails closed when the chat probe is not a successful HTML document', async response => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async () => response)
-    );
-
-    await expect(
-      adminAiWebRuntime.probeFrame({ signal: new AbortController().signal, url: '/prod-api/snail-chat/' })
-    ).rejects.toThrow('AI chat probe failed');
-  });
-
-  it.each([
-    { bodyUsed: false, locked: false, outcome: 'success' as const, shouldCancel: true },
-    { bodyUsed: false, locked: false, outcome: 'failure' as const, shouldCancel: true },
-    { bodyUsed: false, locked: true, outcome: 'success' as const, shouldCancel: false },
-    { bodyUsed: true, locked: false, outcome: 'success' as const, shouldCancel: false }
-  ])('releases only unread and unlocked probe bodies: $outcome/$bodyUsed/$locked', async entry => {
-    const cancel = vi.fn(async () => undefined);
-    const response = {
-      body: { cancel, locked: entry.locked },
-      bodyUsed: entry.bodyUsed,
-      headers: new Headers({ 'content-type': 'text/html' }),
-      ok: entry.outcome === 'success'
-    } as unknown as Response;
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async () => response)
-    );
-
-    const result = adminAiWebRuntime.probeFrame({
-      signal: new AbortController().signal,
-      url: '/prod-api/snail-chat/'
-    });
-    if (entry.outcome === 'success') await expect(result).resolves.toBeUndefined();
-    else await expect(result).rejects.toThrow('AI chat probe failed');
-    expect(cancel).toHaveBeenCalledTimes(entry.shouldCancel ? 1 : 0);
-  });
-
-  it('accepts a successful probe without a response body', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(
-        async () =>
-          ({
-            body: null,
-            bodyUsed: false,
-            headers: new Headers({ 'content-type': 'text/html' }),
-            ok: true
-          }) as Response
-      )
-    );
-
-    await expect(
-      adminAiWebRuntime.probeFrame({ signal: new AbortController().signal, url: '/prod-api/snail-chat/' })
-    ).resolves.toBeUndefined();
   });
 });
