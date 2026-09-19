@@ -213,10 +213,9 @@ test('login restores the selected manifest route without re-filtering the server
   expect(state.getRoutersRequests).toBe(1);
   expect(state.logoutRequests).toBe(0);
   expect(state.loginClientHeader).toBe(productionClientId);
-  expect(state.loginEncryptKey).not.toBe('');
+  expect(state.loginEncryptKey).toBe('');
   expect(state.loginPostData).not.toBe('');
-  expect(state.loginPostData).not.toContain(productionClientId);
-  expect(state.loginPostData).not.toContain('clientId');
+  expect(JSON.parse(state.loginPostData)).toMatchObject({ clientId: productionClientId, grantType: 'password' });
   expect(state.unknownRequests).toEqual([]);
 });
 

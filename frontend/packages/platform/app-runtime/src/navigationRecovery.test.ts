@@ -26,3 +26,19 @@ describe('protected navigation recovery', () => {
     expect(result).toEqual({ path: '/internal', replace: true });
   });
 });
+
+describe('navigation invalidation', () => {
+  it('does not register or replace after the session changes during menu loading', async () => {
+    let current = true;
+    const events: string[] = [];
+    await expect(restoreProtectedNavigation({
+      loadIdentity: async () => { events.push('identity'); },
+      loadRoutes: async () => { current = false; return [{ path: '/old' }]; },
+      isCurrent: () => current,
+      isExternal: () => false,
+      addRoute: () => { events.push('add'); },
+      createReplacement: () => { events.push('replace'); }
+    })).rejects.toThrow('Session changed');
+    expect(events).toEqual(['identity']);
+  });
+});

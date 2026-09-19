@@ -29,6 +29,7 @@ async function installAdminApi(page: Page, permissions: string[]) {
     if (path === '/notify/inbox')
       return json(route, { code: 200, data: [] });
     if (path === '/resource/message/close') return json(route, { code: 200, data: null });
+    if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
     unknown.push(`${request.method()} ${path}`);
     return route.abort('failed');

@@ -1,15 +1,10 @@
 import { createAxiosBrowserAdapter, extractAxiosErrorMessage, isHandledError } from '@namewta/adapter-axios-browser';
-import { createBrowserCryptoAdapter } from '@namewta/adapter-crypto-browser';
 import { requestRelogin } from '@namewta/platform-auth';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import router from '@/router';
-import { getToken, removeToken, session } from './session';
+import { getToken, removeToken } from './session';
 
 const errorCodes: Record<string, string> = { '401': '认证失败，请重新登录', default: '请求失败，请稍后重试' };
-const encryptionEnabled = import.meta.env.VITE_APP_ENCRYPT === 'true';
-const crypto = encryptionEnabled
-  ? createBrowserCryptoAdapter({ publicKey: import.meta.env.VITE_APP_RSA_PUBLIC_KEY, privateKey: import.meta.env.VITE_APP_RSA_PRIVATE_KEY })
-  : undefined;
 const serializeParams = (params: unknown) => {
   if (!params || typeof params !== 'object') return '';
   const search = new URLSearchParams();
@@ -20,7 +15,8 @@ const serializeParams = (params: unknown) => {
   });
   return search.toString();
 };
-const relogin = { show: false };
+// Navigation bootstrap owns failure cleanup; it must not compete with the expiry dialog.
+export const relogin = { show: false, navigationPending: false };
 const presenter = {
   confirmSessionExpired: () => ElMessageBox.confirm('登录状态已过期，是否重新登录？', '系统提示').then(() => undefined),
   present: ({ message }: { message: string }) => ElMessage.error(message)
@@ -29,15 +25,16 @@ const presenter = {
 const service = createAxiosBrowserAdapter({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   client: { clientId: import.meta.env.VITE_APP_CLIENT_ID },
-  crypto,
-  encryptionEnabled,
   errorPresenter: presenter,
   getLanguage: () => 'zh-CN',
   getToken,
-  onUnauthorized: () => requestRelogin({
+  onUnauthorized: () => relogin.navigationPending ? undefined : requestRelogin({
     state: relogin,
     presenter,
-    session: { logout: async () => session.clear() },
+    session: { logout: async () => {
+      const { useUserStore } = await import('@/store/user');
+      await useUserStore().logout();
+    } },
     navigation: {
       currentLocation: () => router.currentRoute.value.fullPath || '/',
       replaceWithLogin: async redirect => {

@@ -10,18 +10,36 @@ import { adaptServerMenuRoutes, type HomeRouteComponent } from '@/router/serverM
 
 export const useNavigationStore = defineStore('home-navigation', () => {
   const routes = ref<RouteRecordRaw[]>([]);
+  const navigationLoaded = ref(false);
+  let generation = 0;
+  const removeRoutes: Array<() => void> = [];
+
+  const resetRoutes = () => {
+    generation++;
+    navigationLoaded.value = false;
+    for (const remove of removeRoutes.splice(0).toReversed()) remove();
+    routes.value = [];
+  };
+  const registerRoute = (route: RouteRecordRaw, install: (route: RouteRecordRaw) => () => void) => {
+    removeRoutes.push(install(route));
+  };
+  const finishRecovery = () => { navigationLoaded.value = true; };
 
   const generateRoutes = async () => {
+    resetRoutes();
+    const current = generation;
     const menus = await identityAccessService.getMenus();
+    if (current !== generation) throw new Error('Session changed during menu recovery');
     const projected = projectServerRoutes<HomeRouteComponent, ServerMenuMeta>({
       appId: 'home-web',
       routes: menus as readonly ServerMenuNode[],
       resolveRegistration: ({ componentKey, domainId }) => resolveHomeWebRegistration(componentKey, domainId),
       createDiagnostic: createHomeManifestDiagnostic
     });
-    routes.value = adaptServerMenuRoutes(projected);
-    return routes.value;
+    const generated = adaptServerMenuRoutes(projected);
+    routes.value = generated;
+    return generated;
   };
 
-  return { routes, generateRoutes };
+  return { routes, navigationLoaded, generateRoutes, resetRoutes, registerRoute, finishRecovery };
 });

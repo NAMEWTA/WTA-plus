@@ -37,6 +37,25 @@ export const useNavigationStore = defineStore('navigation', () => {
   const defaultRoutes = ref<RouteRecordRaw[]>([]);
   const topbarRouters = ref<RouteRecordRaw[]>([]);
   const sidebarRouters = ref<RouteRecordRaw[]>([]);
+  const navigationLoaded = ref(false);
+  let generation = 0;
+  const removeRoutes: Array<() => void> = [];
+
+  const resetRoutes = () => {
+    generation++;
+    navigationLoaded.value = false;
+    for (const remove of removeRoutes.splice(0).toReversed()) remove();
+    routes.value = [];
+    defaultRoutes.value = [];
+    topbarRouters.value = [];
+    sidebarRouters.value = [];
+  };
+
+  const registerRoute = (route: RouteRecordRaw, install: (route: RouteRecordRaw) => () => void) => {
+    removeRoutes.push(install(route));
+  };
+
+  const finishRecovery = () => { navigationLoaded.value = true; };
 
   const getRoutes = (): RouteRecordRaw[] => routes.value as RouteRecordRaw[];
   const getDefaultRoutes = (): RouteRecordRaw[] => defaultRoutes.value as RouteRecordRaw[];
@@ -57,7 +76,10 @@ export const useNavigationStore = defineStore('navigation', () => {
   };
 
   const generateRoutes = async (): Promise<RouteRecordRaw[]> => {
+    resetRoutes();
+    const current = generation;
     const menus = await identityAccessService.getMenus();
+    if (current !== generation) throw new Error('Session changed during menu recovery');
     const sidebarRoutes = projectMenus(menus);
     const rewriteRoutes = projectMenus(menus, true);
     const projectedDefaultRoutes = projectMenus(menus);
@@ -76,6 +98,10 @@ export const useNavigationStore = defineStore('navigation', () => {
   };
 
   return {
+    navigationLoaded,
+    resetRoutes,
+    registerRoute,
+    finishRecovery,
     routes,
     topbarRouters,
     sidebarRouters,

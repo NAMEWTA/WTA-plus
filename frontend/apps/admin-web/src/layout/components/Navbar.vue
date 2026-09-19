@@ -106,7 +106,6 @@
 <script setup lang="ts">
 import type { ElMessageBoxOptions } from 'element-plus';
 import { CaretBottom } from '@element-plus/icons-vue';
-import tab from '@/application/host/navigation';
 import appLogo from '@/assets/logo/logo.png';
 import { NavTypeEnum } from '@/enums/NavTypeEnum';
 import router from '@/router';
@@ -149,15 +148,14 @@ const logout = async () => {
     cancelButtonText: '取消',
     type: 'warning'
   } as ElMessageBoxOptions);
-  userStore.logout().then(() => {
-    router.replace({
-      path: '/login',
-      query: {
-        redirect: encodeURIComponent(router.currentRoute.value.fullPath || '/')
-      }
-    });
-    tab.closeAllPage();
-  });
+  const redirect = encodeURIComponent(router.currentRoute.value.fullPath || '/');
+  try {
+    await userStore.logout();
+  } catch {
+    // The HTTP boundary reports remote failure; local logout still completes.
+  } finally {
+    await router.replace({ path: '/login', query: { redirect } });
+  }
 };
 
 const emits = defineEmits(['setLayout']);

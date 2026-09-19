@@ -63,6 +63,7 @@ async function installAdminApi(page: Page, state: AiProofState) {
       return json(route, { code: 200, data: [] });
     }
     if (path === '/resource/message/close') return json(route, { code: 200, data: null });
+    if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
     if (path === '/snail-ai/user/register' && method === 'POST') {
       state.registrations += 1;

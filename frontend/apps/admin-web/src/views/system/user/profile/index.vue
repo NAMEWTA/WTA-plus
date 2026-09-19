@@ -95,7 +95,7 @@
   </div>
 </template>
 
-<script setup name="Profile" lang="ts">
+<script setup name="AccountProfile" lang="ts">
 import type { UserVO } from '@namewta/domain-system';
 import { monitorService, systemService } from '@/application/services';
 import OnlineDevice from './onlineDevice.vue';

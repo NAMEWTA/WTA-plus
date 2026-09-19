@@ -100,6 +100,7 @@ async function installAdminApi(page: Page, state: AdminState, messageBoxCode = 2
       });
     }
     if (path === '/resource/message/close') return fulfillJson(route, { code: 200, data: null });
+    if (path === '/resource/message/ticket') return fulfillJson(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
     if (path === '/system/dept/treeselect') return fulfillJson(route, { code: 200, data: [] });
     if (path === '/system/user/list') return fulfillJson(route, { code: 200, rows: [], total: 0 });
@@ -120,7 +121,7 @@ test('invalid Client context reaches terminal fail-close before code or login', 
   expect(state.unknownRequests).toEqual([]);
 });
 
-test('registration applies the public policy before sending the encrypted write', async ({ page }, testInfo) => {
+test('registration applies the public policy before sending the JSON write', async ({ page }, testInfo) => {
   const state = adminState();
   await installAdminApi(page, state);
   await page.goto('/register');
@@ -147,7 +148,7 @@ test('registration fails closed when an enabled Client omits the password policy
   await page.goto('/register');
   await expect(page).toHaveURL(/\/login$/);
   await expect(page.locator('.submit-button')).toBeEnabled();
-  expect(state.networkOrder).toEqual(['clientContext', 'clientContext', 'code']);
+  await expect.poll(() => state.networkOrder).toEqual(['clientContext', 'clientContext', 'code']);
   expect(state.registerRequests).toBe(0);
 });
 

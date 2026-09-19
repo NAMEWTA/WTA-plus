@@ -1,4 +1,4 @@
-import { restoreProtectedNavigation } from '@namewta/platform-app-runtime';
+import { findDuplicateRouteNames, restoreProtectedNavigation } from '@namewta/platform-app-runtime';
 import { ElMessage } from 'element-plus/es';
 import * as NProgressModule from 'nprogress';
 import 'nprogress/nprogress.css';
@@ -19,58 +19,56 @@ const isWhiteList = (path: string) => {
   return whiteList.some(pattern => isPathMatch(pattern, path));
 };
 
-router.beforeEach(async (to, from) => {
+let recovery: { token: string; generation: number; promise: Promise<void> } | undefined;
+
+router.beforeEach(async to => {
   NProgress.start();
-  if (getToken()) {
-    to.meta.title && useSettingsStore().setTitle(to.meta.title as string);
-    /* has token*/
-    if (to.path === '/login') {
-      NProgress.done();
-      return { path: '/' };
-    } else if (isWhiteList(to.path)) {
-      return true;
-    } else {
-      if (useUserStore().roles.length === 0) {
-        isRelogin.show = true;
-        try {
-          return await restoreProtectedNavigation({
-            loadIdentity: () => useUserStore().getInfo(),
-            loadRoutes: () => useNavigationStore().generateRoutes(),
-            isExternal: route => isHttp(route.path),
-            addRoute: route => router.addRoute(route),
-            createReplacement: () => {
-              isRelogin.show = false;
-              return {
-                path: to.path,
-                replace: true,
-                params: to.params,
-                query: to.query,
-                hash: to.hash,
-                name: to.name as string
-              };
-            }
-          });
-        } catch (err) {
-          await useUserStore().logout();
-          if (!isHandledRequestError(err)) {
-            ElMessage.error(err instanceof Error ? err.message : String(err));
-          }
-          return { path: '/' };
-        }
-      } else {
-        return true;
+  const user = useUserStore();
+  const navigation = useNavigationStore();
+  const token = getToken();
+  if (!token) {
+    if (isWhiteList(to.path)) return true;
+    NProgress.done();
+    return { path: '/login', query: { redirect: encodeURIComponent(to.fullPath || '/') } };
+  }
+  if (to.meta.title) useSettingsStore().setTitle(to.meta.title as string);
+  if (to.path === '/login') { NProgress.done(); return { path: '/' }; }
+  if (isWhiteList(to.path)) return true;
+  if (user.identityLoaded && navigation.navigationLoaded && user.token === token) return true;
+  const generation = user.sessionGeneration;
+  const isCurrent = () => getToken() === token && user.sessionGeneration === generation;
+  if (!recovery || recovery.token !== token || recovery.generation !== generation) {
+    isRelogin.navigationPending = true;
+    const promise = restoreProtectedNavigation({
+      loadIdentity: () => user.getInfo(),
+      loadRoutes: () => navigation.generateRoutes(),
+      isCurrent,
+      isExternal: route => isHttp(route.path),
+      addRoute: route => {
+        const existing = router.getRoutes().map(value => ({ name: value.name }));
+        if (findDuplicateRouteNames([existing, [route]]).length) throw new Error('菜单路由名称冲突');
+        navigation.registerRoute(route, value => router.addRoute(value));
+      },
+      createReplacement: () => { navigation.finishRecovery(); }
+    }).finally(() => {
+      if (recovery?.promise === promise) {
+        isRelogin.navigationPending = false;
+        recovery = undefined;
       }
-    }
-  } else {
-    // 没有token
-    if (isWhiteList(to.path)) {
-      // 在免登录白名单，直接进入
-      return true;
-    } else {
-      const redirect = encodeURIComponent(to.fullPath || '/');
-      NProgress.done();
-      return `/login?redirect=${redirect}`; // 否则全部重定向到登录页
-    }
+    });
+    recovery = { token, generation, promise };
+  }
+  try {
+    await recovery.promise;
+    if (!isCurrent()) return false;
+    return { path: to.path, query: to.query, hash: to.hash, replace: true };
+  } catch (error) {
+    if (!isCurrent()) return false;
+    await user.logout().catch(() => undefined);
+    if (!isHandledRequestError(error)) ElMessage.error(error instanceof Error ? error.message : String(error));
+    return { path: '/login', query: { redirect: encodeURIComponent(to.fullPath || '/') } };
+  } finally {
+    NProgress.done();
   }
 });
 

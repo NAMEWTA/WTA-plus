@@ -89,7 +89,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: 'profile',
         component: () => import('@/views/system/user/profile/index.vue'),
-        name: 'Profile',
+        name: 'AccountProfile',
         meta: { title: '个人中心', icon: 'user' }
       }
     ]

@@ -16,6 +16,14 @@ router guard / restoreProtectedNavigation
 
 后端菜单已经按 Client 和服务端权限裁剪。前端只组合当前 App 已选择的 domain/web-domain，不重新授权或补偿跨 Client 菜单。身份、菜单、投影或注册任一步失败时，不得继续替换到未注册目标。
 
+## 会话与路由生命周期
+
+- Admin/Home 分别以 `identityLoaded`、`navigationLoaded` 表达恢复完成；合法空角色数组不触发重复恢复，也不补造默认角色。同一 token/会话代次共用一次恢复，旧身份和菜单响应不得写回新会话。
+- App navigation Store 保存自己 `addRoute` 返回的移除回调；退出清空投影并调用回调，保留静态路由。注册前检查已有名称，禁止静默覆盖静态或已注册菜单。
+- Admin 静态个人中心路径为 `/user/profile`，route 与 SFC 名称为 `AccountProfile`；服务端档案目录保留 `Profile`，两者不能混用。SFC 与路由名称同步，以保留原有 KeepAlive 合同。
+- 远端 logout 有 10 秒上限；两 App 在 `finally` 清理本地 token、身份、权限、动态路由与待处理 HTTP；Admin 同时关闭 Push/SSE、通知与页签缓存。重复退出合并为一次请求；旧退出结果不得清除新登录 token。
+- 导航恢复失败由守卫负责收束，`navigationPending` 与过期弹窗的 `show` 分开维护。已加载页面的并发 401 共用一次确认/退出/跳转；取消、远端失败和导航失败均结束恢复状态。本地清理不代表服务端 token 已撤销。
+
 ## 源码地图
 
 - 导航恢复守卫：`apps/admin-web/src/permission.ts`

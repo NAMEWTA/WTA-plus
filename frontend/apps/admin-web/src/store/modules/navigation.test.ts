@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
+import { createMemoryHistory, createRouter } from 'vue-router';
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { identityAccessService } from '@/application/services';
@@ -108,5 +109,25 @@ describe('admin navigation store', () => {
         domainId: 'unselected'
       }
     });
+  });
+
+  it('removes only its installed routes and invalidates a late menu response', async () => {
+    const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/constant', name: 'Constant', component: {} }] });
+    vi.mocked(identityAccessService.getMenus).mockResolvedValue([{ path: '/owned', name: 'Owned', component: 'demo/demo/index' }]);
+    const navigation = useNavigationStore();
+    for (const route of await navigation.generateRoutes()) navigation.registerRoute(route, value => router.addRoute(value));
+    navigation.finishRecovery();
+    expect(router.hasRoute('Owned')).toBe(true);
+    expect(navigation.navigationLoaded).toBe(true);
+    navigation.resetRoutes(); navigation.resetRoutes();
+    expect(router.hasRoute('Owned')).toBe(false);
+    expect(router.hasRoute('Constant')).toBe(true);
+    expect(navigation.navigationLoaded).toBe(false);
+    let finish!: (value: never[]) => void;
+    vi.mocked(identityAccessService.getMenus).mockReturnValue(new Promise(resolve => { finish = resolve; }));
+    const pending = navigation.generateRoutes().catch(error => error);
+    navigation.resetRoutes(); finish([]);
+    expect(await pending).toBeInstanceOf(Error);
+    expect(navigation.routes).toEqual([]);
   });
 });

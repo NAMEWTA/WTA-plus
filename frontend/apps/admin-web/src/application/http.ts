@@ -5,7 +5,6 @@ import {
   extractAxiosErrorMessage,
   isHandledError
 } from '@namewta/adapter-axios-browser';
-import { createBrowserCryptoAdapter } from '@namewta/adapter-crypto-browser';
 import { requestRelogin } from '@namewta/platform-auth';
 import cache from '@/application/host/cache';
 import { getToken } from '@/application/session';
@@ -17,16 +16,10 @@ import { blobValidate, tansParams } from '@/utils/wta';
 import { saveBlob } from '@/utils/save';
 
 let downloadLoadingInstance: LoadingInstance | undefined;
-export const isRelogin = { show: false };
+// Navigation bootstrap owns failure cleanup; it must not compete with the expiry dialog.
+export const isRelogin = { show: false, navigationPending: false };
 
 const resolveErrorCode = (code: unknown) => errorCode[String(code)];
-const encryptionEnabled = import.meta.env.VITE_APP_ENCRYPT === 'true';
-const crypto = encryptionEnabled
-  ? createBrowserCryptoAdapter({
-      publicKey: import.meta.env.VITE_APP_RSA_PUBLIC_KEY,
-      privateKey: import.meta.env.VITE_APP_RSA_PRIVATE_KEY
-    })
-  : undefined;
 
 const errorPresenter = {
   confirmSessionExpired: () =>
@@ -49,13 +42,11 @@ const errorPresenter = {
 const service = createAxiosBrowserAdapter({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   client: { clientId: import.meta.env.VITE_APP_CLIENT_ID },
-  crypto,
-  encryptionEnabled,
   errorPresenter,
   getLanguage,
   getToken,
   onUnauthorized: () =>
-    requestRelogin({
+    isRelogin.navigationPending ? undefined : requestRelogin({
       state: isRelogin,
       presenter: errorPresenter,
       session: {
