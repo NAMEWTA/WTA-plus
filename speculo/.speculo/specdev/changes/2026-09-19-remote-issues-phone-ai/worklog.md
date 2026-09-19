@@ -8,7 +8,7 @@
 
 ## Current status
 
-用户已按 LOG-011 批准基线修复和本地提交。T-01 done，固定 result ccd9d98，双轴和 Lead 验收通过；T-02 done，result b394c60，双轴与固定点MVC2/浏览器9通过；接着 T-03 严格串行。产品与状态唯一 writer=codex-root；无部署、推送或远程 Issue 回写。
+本地change已完成；T-01/T-02/T-03全部done并通过独立双轴与Lead验收，result为ccd9d98 / b394c60 / 723e8514cbaeba13094415ba5f1071de31b2241c。最终prod/full/all真实发布、实际verify、新旧库/保留服务和浏览器回归通过。详细证据见 evidence/T-03.md 与 T-03-acceptance.json。后续收据提交保持产品result不变；未push、部署、修改真实AI数据或关闭远程Issue。
 
 ## Decisions
 
@@ -24,7 +24,7 @@
 
 ## Remaining work
 
-继续 T-02→T-03，完成 Snail AI 退出、当前 OpenAPI、六份 SQL 与旧数据保留验证、同源发布候选和最终 SpecDev 门。#3 继续独立暂缓。
+本Goal无剩余实现工作。Go/Python仍归独立暂缓change；生产部署与远程reconcile不在本次授权范围。下文为各历史检查点记录，不代表当前仍阻塞。
 
 ## Verification
 
@@ -38,7 +38,7 @@
 - 工件叙述中的 69 处实际路径引用存在性检查通过；G 状态保留 current_work，works_run 仅包含已完成的 triage。
 - 产品测试、构建和部署：本次规划阶段尚未执行。
 
-### 当前规划验证
+### 历史规划验证
 
 - stage spec首次exit 1：未决问题章节格式已修正；当前validator在S提前要求Ticket覆盖，保留已有用户改动并用真实T草稿补齐，重跑exit 0。
 - stage tickets（真实draft）：exit 0，0 errors / 0 warnings；Ready发布仍等待计划质量评审。
@@ -59,7 +59,7 @@
 - 前端全量 test、typecheck、lint exit 0；两端注册 UI 2 pass；HTTPS 注册恢复 10 pass；个人资料 UI pass，管理新增/编辑浏览器夹具定位已修正待重跑。
 - 无本地提交；无远程、部署或运行库操作。任务临时 MySQL 属于本任务，收尾须销毁。
 
-### 当前恢复点
+### 历史恢复点（已由LOG-011授权及后续实施解除）
 
 T-01 本地实现/验证全部通过，Ticket 与 current workspace 记录为 blocked，仅等待本地提交及受保护基线处理方案确认。34 个浏览器用例、默认后端 772 executed / 121 gated skip、真实 MySQL 4、前端 729、full/core 打包均有真实记录；详见 T-01 Evidence。临时 MySQL 已销毁。待确认后先应用可审查 validator 修复和基线提交，取得 T-01 implementation commit、固定点双轴 review/direct-parent，再按 T-02→T-03；没有开始其他产品票。
 
@@ -74,3 +74,9 @@ T-02 产品退出及非E2E通过：907后端发现/785执行/122属性skip，前
 T-02验收 b394c60：两轮隔离双轴pass，S-001旧聊天白名单修复；固定点clean前后MVC2/浏览器9再次exit0。进入T-03。
 
 T-03开工：base 31259eb2d728836f6d3110934c718532f48adb32；Map revision8，事实闭包精确增加12路径；先退出服务/release与SQL，后真实启动/正式生成/同源发布。
+
+## 最终本地验收
+
+T-03已完成；release与运行摘要见evidence/T-03-release.json、T-03-runtime-final.json、T-03-retained-services.json。最终浏览器53pass/1既有外部Nacos条件skip，手机号专项10pass，release123pass；必需场景均实际执行。产品固定723e851，干净验收后仅提交治理收据。
+
+提交前结构校验：validate-specdev --stage implement（不含--repo）exit0/0errors/0warnings。首次completed结构检查要求goal-delivery数量证据，已补实际2/6清单并重跑通过；提交前controller明确报告receipt dirty，未将其算作完整通过。下一步提交后执行含--repo的complete和controller真实检查。

@@ -1,0 +1,17 @@
+{
+  "release_id": "prod-723e8514cbae-7e3a9227bffe08dcd95845bac75c1c4f8bf01c639d056bf2b5541d5e86d146db",
+  "owner": "retained-bd32a87a41f386aa4eef7f7b",
+  "services": {
+    "wta-monitor-admin": {
+      "health": "UP",
+      "jar_sha256": "75650b0783409b77348015475593a6c5edf11cb7a30370d9ad357090b53e45f4",
+      "started_marker": "Started MonitorAdminApplication"
+    },
+    "wta-snailjob-server": {
+      "health": "UP",
+      "jar_sha256": "3b2d2a175e07738029b2ae6357cb5f4b5acd6a160bf925223388769b537ed2ee",
+      "started_marker": "Started SnailJobServerApplication"
+    }
+  },
+  "container_removed": "14f7f30274608662e5e2dbde57a4ff51d78d77a95e0d282f8495f2e4c3fd5aaf"
+}

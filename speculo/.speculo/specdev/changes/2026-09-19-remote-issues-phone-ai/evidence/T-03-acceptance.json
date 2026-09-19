@@ -1,0 +1,120 @@
+{
+  "ticket_id": "T-03",
+  "lead": "codex-root",
+  "parent_before_sha": "31259eb2d728836f6d3110934c718532f48adb32",
+  "implementation_commit": "723e8514cbaeba13094415ba5f1071de31b2241c",
+  "verified_tree_sha": "586771b3aa7623537f87e31f34ecbfb9d5bf8919",
+  "observed_head_before": "723e8514cbaeba13094415ba5f1071de31b2241c",
+  "porcelain_before": "",
+  "started_at": "2026-09-19T11:53:09.393987+00:00",
+  "observed_head_after": "723e8514cbaeba13094415ba5f1071de31b2241c",
+  "porcelain_after": "",
+  "completed_at": "2026-09-19T12:01:36.027841+00:00",
+  "verification": [
+    {
+      "command": "release build prod/full/all",
+      "cwd": "root",
+      "exit_code": 0,
+      "passed": null,
+      "skipped": null,
+      "log": "/tmp/wta-ai-real-release-final.log",
+      "log_sha256": "757fcd4b6240206a66559ba2827bdf27853876d17a5e69caba8dd24b445f0204"
+    },
+    {
+      "command": "release-state.py verify()",
+      "cwd": "root",
+      "exit_code": 0,
+      "passed": null,
+      "skipped": null
+    },
+    {
+      "command": "bash release-artifacts/scripts/verify-release.sh",
+      "cwd": "root",
+      "exit_code": 0,
+      "passed": 123,
+      "skipped": 0,
+      "log": "/tmp/wta-ai-final-release-contracts.log",
+      "log_sha256": "b00a0c4dd2203c6477d23f10034d93072f8679104d52333de31d0c6c715ac63f"
+    },
+    {
+      "command": "Playwright default; Chrome; MESSAGE_ENABLED=true/NACOS_ADMIN=/nacos//MONITOR_ADMIN=/admin/applications",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "passed": 53,
+      "skipped": 1,
+      "log": "/tmp/wta-ai-final-default-browser-green.log",
+      "log_sha256": "0bcae221f81d680f273e6fe2f6b7cc82706e86e204cdd9e13d0eab6602468e78"
+    },
+    {
+      "command": "Playwright required-phone.spec.ts; Chrome; Admin+Home",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "passed": 10,
+      "skipped": 0,
+      "log": "/tmp/wta-ai-final-phone-browser-final.log",
+      "log_sha256": "17668cbce15080295c718bd2f2e8e43a6645f4ccbf7364ee114ee13a2b173c2c"
+    },
+    {
+      "command": "run-t03-owned-runtime.py --backend-commit 723e8514cbaeba13094415ba5f1071de31b2241c",
+      "cwd": "root",
+      "exit_code": 0,
+      "passed": null,
+      "skipped": 0,
+      "log": "/tmp/wta-ai-runtime-final.log",
+      "log_sha256": "28eb9900b5ca404b60ec61eeec1a6dfe2d248319804bda1a52137592bd2244c8"
+    },
+    {
+      "command": "run-t03-retained-services.py FINAL_RELEASE OUTPUT",
+      "cwd": "root",
+      "exit_code": 0,
+      "passed": 2,
+      "skipped": 0,
+      "log": "/tmp/wta-ai-retained-final.log",
+      "log_sha256": "5048040148556537bb577b625fbae599f309dd77eea4019e0df32f53685901ac"
+    }
+  ],
+  "backend_full_suite": {
+    "tested_commit": "2ca03718757b3af3109a32601cd53c24c8a7e926",
+    "final_diff_paths": [
+      "backend/wta-extend/AGENTS.md"
+    ],
+    "scope_equivalence": "Only extension AGENTS count wording differs; Java/POM/runtime/test inputs unchanged. Final release rebuilt all from final Git archive.",
+    "counts": {
+      "discovered": 908,
+      "passed": 785,
+      "gated_skipped": 123
+    }
+  },
+  "frontend_source_tree": "8763d8e11906e33c8f92f6f51292e83bd1def822",
+  "frontend_gates_commit": "9c0e11b2afc850256311b3a900be6c20ad0b447b",
+  "openapi": {
+    "revision": "b36ef1c512d1af0e1196e3867dc836af692e5f15873617e168fbf166e140f0a8",
+    "backend_commit": "2ca03718757b3af3109a32601cd53c24c8a7e926",
+    "final_runtime_semantic_match": true,
+    "canonical_json_sha256_without_servers": "b85a7a1360a6929a98dc343d8580c9fe0381cbe69e3b28e517ff6f5ae1bf40db",
+    "paths": 433,
+    "schemas": 444,
+    "register_required": [
+      "clientId",
+      "grantType",
+      "phoneNumber",
+      "username"
+    ]
+  },
+  "release_id": "prod-723e8514cbae-7e3a9227bffe08dcd95845bac75c1c4f8bf01c639d056bf2b5541d5e86d146db",
+  "release_evidence": "T-03-release.json",
+  "runtime_evidence": "T-03-runtime-final.json",
+  "retained_services_evidence": "T-03-retained-services.json",
+  "required_scenarios_skipped": 0,
+  "optional_not_run": [
+    "Existing NACOS_LIVE_BASE_URL browser scenario; no live Nacos deployment requested."
+  ],
+  "pointers_before": {
+    "current_prod": null,
+    "current_dev": null
+  },
+  "pointers_after": {
+    "current_prod": null,
+    "current_dev": null
+  }
+}

@@ -162,3 +162,9 @@ Lead 接受 T-02 result b394c60；标准轴pass，规范S-001白名单修复并�
 ## LOG-014 — T-03 事实与摘要同步
 
 Common AI 入口已按当前空 POM/无源码事实修订；Lead 复读并检查 common 不反向依赖业务、MCP/Spring AI 保留，T-03 实际绑定更新为 d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c。T-01/T-02 为已完成历史调用，按 validator done 语义保留原 hash；不重写历史。真实 reactor 为49（旧文档46已过时），frontend33。
+
+## LOG-015 — T-03审查、最终同源发布与本地完成
+
+Lead唯一writer完成T-03；规范模块地图finding与extend导读数量修正，最终两轴packet-3均pass。固定产品723e8514cbaeba13094415ba5f1071de31b2241c，先前后端受测源只差导读文字，正式OpenAPI与最终运行整文档语义核对一致。源归档clean、prod/full/all实际build和verify exit0；最终release prod-723e8514cbae-7e3a9227bffe08dcd95845bac75c1c4f8bf01c639d056bf2b5541d5e86d146db。六SQL/两个占位、隔离新库AI0、旧23表结构/内容不变及Admin/Monitor/SnailJob启动全部通过。
+
+首轮浏览器四失败由用例所需功能配置缺失导致，未改生产默认，以显式测试环境重建后默认53pass/1既有外部Nacos条件skip，手机号专项10pass；release123pass/0skip。详见T-03 Evidence，不把skip计通过。三票状态/Map/Goal同步完成，结果提交固定不被治理收据替代。用户LOG-011授权覆盖本地收据提交，仍未push、部署或远程Issue写回。

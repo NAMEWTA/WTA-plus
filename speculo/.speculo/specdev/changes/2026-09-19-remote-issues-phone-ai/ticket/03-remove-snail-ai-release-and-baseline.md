@@ -8,11 +8,11 @@ artifact: "ticket"
 change: "2026-09-19-remote-issues-phone-ai"
 id: "T-03"
 title: "退出 Snail AI 服务与发布资产并验证最终候选"
-status: "in_progress"
+status: "done"
 kind: "refactor"
 planning_depth: "deep"
 planning_depth_reason: "独立运行面退出涉及构建、不可变产物manifest、六份SQL与历史数据保护，以及两票共享生成合同。"
-ready: true
+ready: false
 risk: "high"
 blocked_by: ["T-01", "T-02"]
 contract_ids: ["AC-009", "AC-010", "AC-011", "AC-012"]
@@ -37,7 +37,7 @@ Lead/implementation owner 按 Map → 适用项目 Skill → 当前 Ticket 的�
 
 - **目标与可观察产出：** 最终源码与本地发布候选不产出或启动SnailAI；新库无vendor表，旧数据原样保留，当前API/基座/文档与两个前置切片一致。
 - **来源：** AC-009, AC-010, AC-011, AC-012；LOG-003/004/005/006；<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/grounding.md</Path>。
-- **当前事实：** release-state固定四个Java JAR和六个SQL，AI基座有23张sai_*表；40文件strip后须以分号结束。新旧应用入口已由前置票退出，才能安全收缩独立server。
+- **规划基线事实（已由本票收缩）：** release-state原固定四个Java JAR和六个SQL，原AI基座有23张sai_*表；最终保留三个Java应用、六SQL，40为合法无vendor占位。新旧应用入口已由前置票退出，才能安全收缩独立server。
 - **Planning Depth 原因：** 独立运行面退出涉及构建、不可变产物manifest、六份SQL与历史数据保护，以及两票共享生成合同。
 
 ## 2. 决策状态
@@ -106,7 +106,7 @@ T-01/T-02不得修改T-03拥有的API生成物或SQL；交回有来源的合同�
 4. 用 Python `importlib.util.spec_from_file_location` 加载 <Path>release-artifacts/scripts/release-state.py</Path>，对步骤3返回的目录调用实际存在的 `verify(Path("release-artifacts/builds/versions") / release_id, "prod")`，记录返回值和退出码；不存在 verify CLI，不调用虚构子命令，也不通过 stage/resolve 借道验证。核对真实 manifest 的来源/摘要、现存 Java 应用、两个占位、六个 SQL，以及不存在 SnailAI 产物/启动声明。
 5. Evidence 保存版本 ID、源码 SHA、manifest 定位和摘要、构建/verify 退出码、工具链版本、负向库存检查，以及 current 未改变的前后观测。环境文件内容和凭据不进入 Evidence。构建失败保留失败位置及隔离临时目录定位；不得修改历史版本来补齐。
 
-所有命令为执行计划，当前尚未运行。frontend cwd固定使用corepack pnpm 10.34.5（已实测）；系统默认pnpm 9不能作为执行入口。精确新增测试名在实现形成后冻结并重验实际发现数；Maven reactor上无匹配模块可跳过，但负责该合同的模块不得零测试。
+本节保留原执行计划；实际运行、命令/退出码和同源发布验收见 evidence/T-03.md，所有必需门禁已完成。frontend cwd固定使用corepack pnpm 10.34.5（已实测）；系统默认pnpm 9不能作为执行入口。精确新增测试名在实现形成后冻结并重验实际发现数；Maven reactor上无匹配模块可跳过，但负责该合同的模块不得零测试。
 
 - **Workspace checks：** current-workspace执行非E2E检查；父分支main，单writer串行。
 - **E2E disposition：** required：Lead在current-workspace验证最终浏览器、真实MySQL新/旧库及保留服务启动边界；不得把配置静态检查等同真实初始化。
@@ -121,15 +121,15 @@ T-01/T-02不得修改T-03拥有的API生成物或SQL；交回有来源的合同�
 
 ## 10. 验收标准
 
-- [ ] AC-009：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-010：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-011：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-012：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] 已按Map→Skill→Ticket调用真实项目Skill，并在Evidence记录匹配phase/operation/hash。
-- [ ] 正常、失败、回归与E2E实际执行，含cwd、版本、命令、退出码、用例/skip数量及失败分类。
-- [ ] 所有写入在授权路径，shared path由指定owner修改。
-- [ ] 已获相应执行授权并形成非空implementation commit；Lead的current-workspace direct-parent验收通过，父分支result可回读。
-- [ ] 未完成项/残余风险如实记录；不把未实施、无修改或仅Evidence票标Done。
+- [x] AC-009：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-010：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-011：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-012：Spec对应可观察结果由本票验证矩阵证明。
+- [x] 已按Map→Skill→Ticket调用真实项目Skill，并在Evidence记录匹配phase/operation/hash。
+- [x] 正常、失败、回归与E2E实际执行，含cwd、版本、命令、退出码、用例/skip数量及失败分类。
+- [x] 所有写入在授权路径，shared path由指定owner修改。
+- [x] 已获相应执行授权并形成非空implementation commit；Lead的current-workspace direct-parent验收通过，父分支result可回读。
+- [x] 未完成项/残余风险如实记录；不把未实施、无修改或仅Evidence票标Done。
 
 ## 11. SKILL 调用计划
 

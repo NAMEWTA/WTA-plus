@@ -6,7 +6,7 @@ requested_deliverables: [{"name": "Java AI Maven占位模块", "count": 2}, {"na
 deliverable_policy: "用户最终共识明确保留两个Java占位和六份SQL；两项业务目标由Spec覆盖；无指定Ticket数，不从票数推断业务产物数。"
 artifact: "tickets-map"
 change: "2026-09-19-remote-issues-phone-ai"
-status: "in_progress"
+status: "completed"
 ---
 
 # Tickets Map: 手机号必填与 Snail AI 退出
@@ -43,9 +43,9 @@ Lead/implementation owner始终先读完整Map，再读匹配Skill入口和scope
 
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| T-01 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/01-required-phone-write-paths.md</Path> | 注册、管理新增/编辑、个人资料与新增/覆盖导入形成一致手机号写入合同，旧空号用户仍可登录。 | — | deep | high | yes | codex-root | AC-001, AC-002, AC-003, AC-004, AC-005 | W1/G-phone | done |
-| T-02 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/02-retire-snail-ai-business-surface.md</Path> | Admin 不再呈现聊天/控制台，也不访问旧注册桥；Java 两个 AI artifact 仅保留可构建占位。 | — | deep | high | yes | codex-root | AC-006, AC-007, AC-008 | W1/G-ai | done |
-| T-03 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/03-remove-snail-ai-release-and-baseline.md</Path> | 最终源码与本地发布候选不产出或启动SnailAI；新库无vendor表，旧数据原样保留，当前API/基座/文档与两个前置切片一致。 | T-01, T-02 | deep | high | yes | codex-root | AC-009, AC-010, AC-011, AC-012 | W2/G-final | in_progress |
+| T-01 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/01-required-phone-write-paths.md</Path> | 注册、管理新增/编辑、个人资料与新增/覆盖导入形成一致手机号写入合同，旧空号用户仍可登录。 | — | deep | high | no | codex-root | AC-001, AC-002, AC-003, AC-004, AC-005 | W1/G-phone | done |
+| T-02 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/02-retire-snail-ai-business-surface.md</Path> | Admin 不再呈现聊天/控制台，也不访问旧注册桥；Java 两个 AI artifact 仅保留可构建占位。 | — | deep | high | no | codex-root | AC-006, AC-007, AC-008 | W1/G-ai | done |
+| T-03 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/03-remove-snail-ai-release-and-baseline.md</Path> | 最终源码与本地发布候选不产出或启动SnailAI；新库无vendor表，旧数据原样保留，当前API/基座/文档与两个前置切片一致。 | T-01, T-02 | deep | high | no | codex-root | AC-009, AC-010, AC-011, AC-012 | W2/G-final | done |
 
 Ticket frontmatter是状态、依赖、路径与绑定权威；本表仅投影。
 
@@ -63,18 +63,18 @@ T-03必须等待手机号实际合同与AI消费者退出稳定后，才能统�
 
 | Contract ID | 覆盖 Ticket | 验证接缝 | 状态 | 说明 |
 |---|---|---|---|---|
-| AC-001 | T-01 | S1/S2 | covered | 计划覆盖，不代表执行通过 |
-| AC-002 | T-01 | S1/S2 | covered | 计划覆盖，不代表执行通过 |
-| AC-003 | T-01 | S1/S2 | covered | 计划覆盖，不代表执行通过 |
-| AC-004 | T-01 | S1/S2 | covered | 计划覆盖，不代表执行通过 |
-| AC-005 | T-01 | S1/S2 | covered | 计划覆盖，不代表执行通过 |
-| AC-006 | T-02 | S1/S2/S3/S4 | covered | 计划覆盖，不代表执行通过 |
-| AC-007 | T-02 | S1/S2/S3/S4 | covered | 计划覆盖，不代表执行通过 |
-| AC-008 | T-02 | S1/S2/S3/S4 | covered | 计划覆盖，不代表执行通过 |
-| AC-009 | T-03 | S1–S5 | covered | 计划覆盖，不代表执行通过 |
-| AC-010 | T-03 | S1–S5 | covered | 计划覆盖，不代表执行通过 |
-| AC-011 | T-03 | S1–S5 | covered | 计划覆盖，不代表执行通过 |
-| AC-012 | T-03 | S1–S5 | covered | 计划覆盖，不代表执行通过 |
+| AC-001 | T-01 | S1/S2 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-002 | T-01 | S1/S2 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-003 | T-01 | S1/S2 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-004 | T-01 | S1/S2 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-005 | T-01 | S1/S2 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-006 | T-02 | S1/S2/S3/S4 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-007 | T-02 | S1/S2/S3/S4 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-008 | T-02 | S1/S2/S3/S4 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-009 | T-03 | S1–S5 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-010 | T-03 | S1–S5 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-011 | T-03 | S1–S5 | passed | 见对应Ticket Evidence与最终T-03验收 |
+| AC-012 | T-03 | S1–S5 | passed | 见对应Ticket Evidence与最终T-03验收 |
 
 ## 5. 并行与路径所有权
 
@@ -111,7 +111,7 @@ T-03必须等待手机号实际合同与AI消费者退出稳定后，才能统�
 node <Path>{roots.workflows}/specdev/common/tools/ticket-control.mjs</Path> --map <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/tickets-map.md</Path> --repo <project-root>
 ```
 
-随后按<Path>{roots.workflows}/specdev/P-goal-plan/P-goal-plan.md</Path>选择plan/run/resume/replan/verify。控制器只读，不执行也不授予权限。本次只plan；实现、commit和父分支推进待真实授权，缺失时不自动进入I。
+随后按<Path>{roots.workflows}/specdev/P-goal-plan/P-goal-plan.md</Path>选择plan/run/resume/replan/verify。控制器只读，不执行也不授予权限。本次已按LOG-009/011完成I及本地提交；三票done，G-final通过。远程写入/部署仍需独立授权。
 
 恢复需重读Spec/Map/当前票/Goal/状态/最新Evidence、Git与Skill摘要；不得接管旧comprehensive-review或Go/Python暂缓change。每票完成仍须非空commit、current-workspace direct-parent验证和result；全部done仍须G-final及两个明确数量验收。无修改票应cancelled，不伪造empty commit。
 

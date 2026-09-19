@@ -1,0 +1,39 @@
+{
+  "release_id": "prod-723e8514cbae-7e3a9227bffe08dcd95845bac75c1c4f8bf01c639d056bf2b5541d5e86d146db",
+  "release_path": "/srv/WTA-plus/release-artifacts/builds/versions/prod-723e8514cbae-7e3a9227bffe08dcd95845bac75c1c4f8bf01c639d056bf2b5541d5e86d146db",
+  "manifest_sha256": "7e3a9227bffe08dcd95845bac75c1c4f8bf01c639d056bf2b5541d5e86d146db",
+  "source": {
+    "revision": "723e8514cbaeba13094415ba5f1071de31b2241c",
+    "tree": "586771b3aa7623537f87e31f34ecbfb9d5bf8919",
+    "archiveSha256": "0c8749bb45046c761cb346d791406949f0127f19cb5e5ff19df135f10b27def3",
+    "clean": true
+  },
+  "build_exit_code": 0,
+  "verify_exit_code": 0,
+  "backend_apps": [
+    "wta-admin",
+    "wta-monitor-admin",
+    "wta-snailjob-server"
+  ],
+  "java_placeholders": [
+    "BOOT-INF/lib/wta-ai-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-ai-6.0.0.jar"
+  ],
+  "sql_files": [
+    "10-cde-base-ddl.sql",
+    "20-cde-job.sql",
+    "30-cde-workflow.sql",
+    "40-cde-ai.sql",
+    "50-cde-base-dml.sql",
+    "60-cde-nacos.sql"
+  ],
+  "admin_jar_sha256": "9c8dc6aa5fe9cc1fe1e774f3946da5834db10aa5b3efd418dfd012ba6b675363",
+  "pointers_before": {
+    "current_prod": null,
+    "current_dev": null
+  },
+  "pointers_after": {
+    "current_prod": null,
+    "current_dev": null
+  }
+}

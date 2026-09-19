@@ -2,8 +2,8 @@
   "schema_version": 6,
   "artifact": "change-status",
   "change": "2026-09-19-remote-issues-phone-ai",
-  "change_status": "active",
-  "current_work": "specdev/implement",
+  "change_status": "completed",
+  "current_work": null,
   "works_run": [
     "specdev/triage",
     "specdev/grill-with-docs",
@@ -40,8 +40,8 @@
     "history": []
   },
   "created_at": "2026-09-19T08:03:45.271401Z",
-  "updated_at": "2026-09-19T11:17:35.885146+00:00",
-  "completed_at": null,
+  "updated_at": "2026-09-19T12:01:36.108879+00:00",
+  "completed_at": "2026-09-19T12:01:36.108879+00:00",
   "archived": false,
   "archive_path": null,
   "blockers": [],
@@ -147,38 +147,38 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": null,
+      "source_checkpoint": "723e8514cbaeba13094415ba5f1071de31b2241c",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "31259eb2d728836f6d3110934c718532f48adb32",
-        "source_sha": null,
+        "source_sha": "723e8514cbaeba13094415ba5f1071de31b2241c",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "723e8514cbaeba13094415ba5f1071de31b2241c",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-03.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-03.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-03.md</Path>",
-        "attempts": 0,
-        "promotion_status": "pending"
+        "attempts": 2,
+        "promotion_status": "applied"
       },
-      "status": "active",
-      "updated_at": "2026-09-19T11:18:18.126761+00:00"
+      "status": "integrated",
+      "updated_at": "2026-09-19T12:01:36.108879+00:00"
     }
   ]
 }

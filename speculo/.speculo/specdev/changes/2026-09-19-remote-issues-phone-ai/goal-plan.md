@@ -2,7 +2,7 @@
 schema_version: 6
 artifact: goal-plan
 change: 2026-09-19-remote-issues-phone-ai
-status: in_progress
+status: completed
 modes: ["migration", "high-assurance", "release-coordination"]
 orchestration: lead-directed
 lead: codex-root
@@ -10,7 +10,7 @@ implementation_agent_limit: 1
 integration_attempt_limit: 3
 ticket_workspace_policy: current
 integration_gate: direct-parent
-ready_for_execution: true
+ready_for_execution: false
 ---
 
 # Goal Plan: 手机号必填与 Snail AI 退出
@@ -20,7 +20,7 @@ ready_for_execution: true
 - **Tickets Map：** <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/tickets-map.md</Path>
 - **Ticket / Evidence：** <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/</Path>；<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/</Path>
 
-用户已通过 LOG-009 激活 I，并在 LOG-011 明确批准具体基线处理与三票 main 本地提交。T-01 本地实现已验证，当前建立不可变提交并审查；随后 T-02→T-03 严格串行。current/direct-parent 策略不变。
+用户已通过 LOG-009 激活 I，并在 LOG-011 明确批准具体基线处理与三票 main 本地提交。T-01→T-02→T-03 已严格串行完成，三票固定result与G-final均通过。current/direct-parent 策略不变。
 
 ## 1. Outcome and Authority
 
@@ -79,7 +79,7 @@ G-plan ── T-01 ── G-phone ──┐
 | T-02 | AI 页面/桥退出、两个 Java 占位 | — | current | codex-root；同上 | required：旧菜单、未知菜单诊断、无旧请求/iframe | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-02.md</Path> |
 | T-03 | 最终无 AI 服务/产物，新库无 vendor 表且旧数据不变 | T-01, T-02 | current | codex-root；同上 | required：最终浏览器、真实隔离 MySQL 与保留服务启动 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-03.md</Path> |
 
-上述 Evidence 路径是未来执行输出，当前未创建空文件冒充结果。
+上述 Evidence 均已有真实执行、审查和不可变验收记录。
 
 ## 3. Gates and Completion Evidence
 
@@ -105,8 +105,8 @@ G-plan ── T-01 ── G-phone ──┐
 |---|---|---|---|---|
 | AC-001–005 | T-01 | S1/S2，真实校验、写入无副作用、页面与旧登录 | T-01 执行 Evidence / acceptance JSON | passed，result ccd9d98 |
 | AC-006–008 | T-02 | S1–S4，退役导航/桥、包依赖、占位构建 | T-02 执行 Evidence / acceptance JSON | passed，result b394c60 |
-| AC-009–012 | T-03 | S1–S5，生成合同、双 bundle、真实发布与隔离数据 | T-03 执行 Evidence及 G-final 聚合 | planned，未运行 |
-| 项目硬约束与明确交付数量 | 全部，T-03 最终聚合 | 每票真实 Skill 调用、owner/回归、2/6 实物核验 | 各票 phase/operation/hash 与最终清单 | 绑定已核验，实施调用未运行 |
+| AC-009–012 | T-03 | S1–S5，生成合同、双 bundle、真实发布与隔离数据 | T-03 执行 Evidence及 G-final 聚合 | passed，result 723e851 |
+| 项目硬约束与明确交付数量 | 全部，T-03 最终聚合 | 每票真实 Skill 调用、owner/回归、2/6 实物核验 | 各票 phase/operation/hash 与最终清单 | passed，实际调用与2/6实物核验完成 |
 
 具体命令采用 Ticket 的验证矩阵；前端统一 frontend cwd 的 corepack pnpm 10.34.5，release 裸 pnpm 通过任务专用 shim 固定。release 合同 fixture 不能代替 T-03 §8 的真实 build + verify 路线。
 
@@ -122,7 +122,7 @@ G-plan ── T-01 ── G-phone ──┐
 | Read-only agents | 无 SpecDev 数字上限，受宿主能力约束且不竞争可变测试资源 | review/research/test-observation 只读 |
 | Dispatch | execution-time dynamic | provider/模型/具体实现者在执行期按 Ticket 选择，不在本计划预分配 |
 
-已按 <Path>{roots.workflows}/specdev/common/skills/subagent-delivery/SKILL.md</Path> 的 operation=plan 形成合同，记录于 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/planning-review.md</Path>；未派遣实现。
+已按 <Path>{roots.workflows}/specdev/common/skills/subagent-delivery/SKILL.md</Path> 的 operation=plan 形成合同，记录于 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/planning-review.md</Path>；Lead自行完成实施，未派遣产品writer。
 
 未来 Dispatch Packet 必含 Map→Skill→Ticket 读取顺序、真实 base/result、授权范围、单 writer 租约、writable/shared owner、Skill 实际 hash/phase/operation、非 E2E 命令、停止条件和返回格式。子代理不写 SpecDev 或授予权限，不直接运行 Lead 所有的 E2E。Lead 验收后才写正式 Evidence/状态。
 
@@ -132,7 +132,7 @@ G-plan ── T-01 ── G-phone ──┐
 |---|---|---|---|---|---|---|
 | T-01 | main / dea1754 | 当前仓库/main | 通过，见 T-01 Evidence | ccd9d98（初始241a96a，审查修复后固定） | G-phone passed，28服务/10浏览器最终复核 | ccd9d98 |
 | T-02 | main / 2853e45 | 当前仓库/main | 通过，见 T-02 Evidence | b394c60（初始51a9ad6） | G-ai passed，MVC2/浏览器9 | b394c60 |
-| T-03 | T-02 result，且包含 T-01 | 当前仓库/main | 本票及最终生成/构建合同 | 尚无；必要的后端来源与最终生成提交均记录 | Lead 当前工作区 G-contract/G-final | 最终已验收 implementation commit |
+| T-03 | main / 31259eb，含两票result | 当前仓库/main | 通过；真实当前OpenAPI与最终归档release | 723e851（实现2ca0371，生成9c0e11b，文档修正9284/723） | G-contract/G-final passed；最终新旧库/服务/浏览器 | 723e851 |
 
 严格单 writer，不创建 source/candidate worktree。每票实现者先运行非 E2E，取得具体提交授权后形成 commit，Lead 在相同 main/current-workspace 执行集成和 required E2E。授权提交本身会移动当前 HEAD；失败时不标 accepted、不开始下一票、不擅自 reset，保留该未验收 checkpoint并修复。不得照搬 candidate 模式“父 HEAD 始终未动”的表述。
 
@@ -168,7 +168,7 @@ Lead 比对验收前后 HEAD 和工作区内容，result 必须对应实际受�
 
 不通过移除失败测试、空 validator、降低 fixture/安全断言、零用例、未经批准 skip 或借旧 change 结果获得绿色。每票中间点也必须本票可构建、行为可验证；若生成合同滞后使其失败，先 replan owner/切片，不等 T-03 悄悄补救。
 
-规划只核验脚本/来源/工具链，未运行产品门禁。当前工作树 validator 在 stage goal-plan 无条件要求多 change 的 implementation-map/plan，实际 exit 1（2 errors）。已定位为本轮开始前的用户修改；保持原样。当前 validator 的无 stage 工件检查与 Git HEAD 原版的 stage goal-plan 均 exit 0，独立 review pass；不能把它们写成当前 stage 命令已通过。当前 config 的 gate_fixtures 引用了用户已删除的 validator test；执行前必须让该改动所属 owner 提供有效门禁或恢复依据，不擅自还原、不删命令宣称通过。完整 release 的 clean_source 还要求受管修改和非忽略未跟踪文件均为空，包含待处理的用户改动与规划文件；未解决时阻塞真实构建，不偷偷 stash 或打包脏树。
+规划时的validator误路由与缺失测试按LOG-011授权恢复；current串行历史result检查另按LOG-012修复，35真实fixtures通过。原AGENTS空行/config重排按现状纳入基线，没有stash或打包脏树。最终723e851的完整Git归档干净，实际prod/full/all release及verify通过；后续仅写验收收据，不改变受测产品result。
 
 ### Migration or Release Sequence
 
@@ -196,17 +196,17 @@ T-01 固定手机号合同；T-02 退出 AI 消费者并保留两个 Java 占位
 
 ### Current Status
 
-S Ready，T-01 done / G-phone passed，固定 result ccd9d98；T-02 done / G-ai passed，result b394c60；T-03 Ready。Map revision 8；T-03 正在串行实施。G-contract/G-final 尚未完成。
+S Ready；三票done，result依次ccd9d98、b394c60、723e851。Map revision8；G-plan/G-phone/G-ai/G-contract/G-final全部passed，本地Goal完成。
 
 规划质量与实际 validator/controller 结果归 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/planning-review.md</Path>；它不能代替三张执行 Evidence。Go/Python 仍在 <Path>{roots.state}/specdev/changes/2026-09-19-go-python-ai-platform/</Path> 暂缓。
 
 ### Pending Decisions and Blockers
 
-产品范围无待决定项。本地实施与提交出口授权已由 LOG-009/011 确认，受保护原改动按用户方案保留；validator 四处路由与缺失的 11 场景测试已恢复并通过。剩余工作是逐票不可变检查点、双轴审查和正式产品/发布验收。
+产品范围无待决定项。本地实施与提交出口授权已由 LOG-009/011 确认，受保护原改动按用户方案保留；validator 四处路由与缺失的 11 场景测试已恢复并通过。不可变检查点、双轴审查和正式产品/发布验收均已闭合；没有本Goal剩余实施工作。
 
 ### Resume Protocol
 
-以后从 Map 进入 P 的 run/resume：回读本计划、Spec、当前 frontier Ticket、状态和最新 Evidence；只读运行 ticket-control，核对 config/Skill摘要、main HEAD、工作区与授权来源。从真实已验收 result 或未完成 checkpoint 恢复；当前首次 frontier 为 T-01，满足 G-plan 前不派单。用户已答过 current，不重复询问，不自动打开新工作树，也不接管另外两个 change。
+以后从 Map 进入 P 的 run/resume：回读本计划、Spec、当前 frontier Ticket、状态和最新 Evidence；只读运行 ticket-control，核对 config/Skill摘要、main HEAD、工作区与授权来源。从真实已验收 result 或未完成 checkpoint 恢复；当前无未完成frontier；如后续新增工作须按真实新请求建立范围。用户已答过 current，不重复询问，不自动打开新工作树，也不接管另外两个 change。
 
 ## Assumptions
 
