@@ -25,9 +25,10 @@
     </div>
     <transition-group class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
       <li v-for="(file, index) in fileList" :key="file.uid" class="el-upload-list__item ele-upload-list__item-content">
-        <el-link :href="file.url" underline="never" target="_blank">
+        <el-link v-if="file.url" :href="file.url" underline="never" target="_blank">
           <span class="el-icon-document">{{ getFileName(file.name) }}</span>
         </el-link>
+        <span v-else>{{ getFileName(file.name) }}（预览暂不可用）<el-button link @click="retryPreview(file.id)">重试预览</el-button></span>
         <div v-if="!disabled" class="ele-upload-list__item-content-action">
           <el-button type="danger" link @click="handleDelete(index)">删除</el-button>
         </div>
@@ -39,7 +40,7 @@
 <script setup lang="ts">
 import type { UploadResult } from '@namewta/platform-contracts';
 import type { UploadRequestHandler } from 'element-plus';
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { createUploadRequest } from './upload-request';
 import { isUploadIdentifier, normalizeUploadValue, serializeUploadItems, withUploadUid } from './normalize';
 import type { FileUploadProps, UploadItem } from './types';
@@ -60,18 +61,23 @@ const emit = defineEmits<{
   change: [items: readonly UploadItem[]];
   success: [result: UploadResult];
   error: [error: unknown];
+  busy: [value: boolean];
 }>();
 
 const fileList = ref<Array<UploadItem & { uid: number }>>([]);
 const pending = ref(0);
+const uploadOwner = new AbortController();
+let active = true;
+onBeforeUnmount(() => { active = false; generation.value++; uploadOwner.abort(); });
 const generation = ref(0);
 const fileAccept = computed(() => props.fileType.map(type => `.${type}`).join(','));
 const showTip = computed(() => props.isShowTip && (props.fileType.length > 0 || props.fileSize > 0));
 const uploadRequest: UploadRequestHandler = createUploadRequest(props.client, props.policy, delta => {
   pending.value = Math.max(0, pending.value + delta);
+  emit('busy', pending.value > 0);
   if (delta > 0) props.feedback?.loading('正在上传文件，请稍候...');
   if (delta < 0 && pending.value === 0) props.feedback?.closeLoading();
-});
+}, uploadOwner.signal);
 
 watch(
   () => props.modelValue,
@@ -82,9 +88,16 @@ watch(
       fileList.value = [];
       return;
     }
-    const resolved = normalized.items.length === normalized.ids.length ? normalized.items : await props.client.resolve(normalized.ids);
-    if (currentGeneration !== generation.value) return;
-    fileList.value = resolved.map(withUploadUid);
+    try {
+      const resolved = normalized.items.length === normalized.ids.length ? normalized.items : await props.client.resolve(normalized.ids);
+      if (!active || currentGeneration !== generation.value) return;
+      fileList.value = resolved.map(withUploadUid);
+    } catch {
+      if (!active || currentGeneration !== generation.value) return;
+      // 预览查询失败仍保留已完成的引用和文件名，不触发重复上传。
+      fileList.value = normalized.ids.map((id, index) => withUploadUid(
+        fileList.value.find(item => String(item.id) === String(id)) ?? { id, name: String(id), url: '' }, index));
+    }
   },
   { deep: true, immediate: true }
 );
@@ -104,6 +117,20 @@ function handleBeforeUpload(file: File): boolean {
     return false;
   }
   return true;
+}
+
+async function retryPreview(id: UploadItem['id']) {
+  if (!isUploadIdentifier(id)) return;
+  const currentGeneration = generation.value;
+  try {
+    const items = await props.client.resolve([id]);
+    if (!active || currentGeneration !== generation.value) return;
+    const resolved = items.find(item => String(item.id) === String(id));
+    if (!resolved?.url) throw new Error('预览暂不可用，请稍后重试');
+    fileList.value = fileList.value.map(item => String(item.id) === String(id) ? { ...item, ...resolved, uid: item.uid } : item);
+  } catch {
+    if (active && currentGeneration === generation.value) props.feedback?.error('预览暂不可用，请稍后重试');
+  }
 }
 
 function handleExceed() {

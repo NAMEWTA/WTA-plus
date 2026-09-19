@@ -187,16 +187,16 @@
       />
     </el-card>
     <!-- 添加或修改OSS对象存储对话框 -->
-    <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body>
+    <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body destroy-on-close>
       <el-form ref="ossFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="文件名">
-          <fileUpload v-if="type === 0" v-model="form.file" />
-          <imageUpload v-if="type === 1" v-model="form.file" />
+          <fileUpload v-if="type === 0" v-model="form.file" @busy="uploadBusy = $event" />
+          <imageUpload v-if="type === 1" v-model="form.file" @busy="uploadBusy = $event" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
+          <el-button :loading="buttonLoading || uploadBusy" :disabled="uploadBusy" type="primary" @click="submitForm">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
         </div>
       </template>
@@ -234,6 +234,7 @@ const referenceSummary = (oss: any) =>
 const ossList = ref<OssVO[]>([]);
 const showTable = ref(true);
 const buttonLoading = ref(false);
+const uploadBusy = ref(false);
 const { loading, setLoading, withLoading } = useLoading(true);
 const { showSearch } = useSearchToggle();
 const total = ref(0);
@@ -387,6 +388,7 @@ const handleImage = () => {
 };
 /** 提交按钮 */
 const submitForm = () => {
+  if (uploadBusy.value) return;
   closeDialog();
   getList();
 };

@@ -55,7 +55,7 @@ export interface SystemWebRuntime {
     validate(policy: SystemPasswordPolicy, password: string): readonly SystemPasswordViolation[];
   };
   copyText(value: string): Promise<void>;
-  uploadHeaders(): Readonly<Record<string, string>>;
+  importUsers(file: File, updateSupport: boolean, signal: AbortSignal): Promise<string>;
 }
 
 export function createLiveSystemDictRefs(

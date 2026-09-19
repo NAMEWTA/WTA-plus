@@ -7,14 +7,6 @@ declare global {
     visible: boolean;
     children?: FieldOption[];
   }
-  interface ImportOption {
-    headers: Record<string, string>;
-    url: string;
-    open: boolean;
-    title: string;
-    isUploading: boolean;
-    updateSupport: number;
-  }
   interface PageData<T, D> {
     form: T;
     queryParams: D;

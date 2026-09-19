@@ -79,7 +79,8 @@ async function resolveUploadResult(
   ossId: string
 ): Promise<UploadResult> {
   const download = await gateway.downloadUrl(ossId).catch(() => undefined);
-  return { id: ossId, name: file.name, url: download?.data?.url || URL.createObjectURL(file) };
+  // 完成接口已登记对象归属；预览失败不能变成上传失败，也不能创建无人回收的本地 URL。
+  return { id: ossId, name: file.name, url: download?.data?.url || '' };
 }
 
 async function safeRemoveResume(store: OssUploadBrowserDependencies['resumeStore'], key: string) {
@@ -293,7 +294,13 @@ export function createOssUploadClient(options: OssUploadBrowserOptions): UploadC
     async resolve(ids: readonly UploadIdentifier[]): Promise<readonly UploadItem[]> {
       if (!ids.length) return [];
       const response = await gateway.listByIds(ids);
-      return response.data.map(item => ({ id: item.ossId, name: item.originalName, url: item.url }));
+      // 私有对象的列表元数据不含访问地址；独立解析失败只影响预览，不丢失引用。
+      const items: UploadItem[] = [];
+      for (const item of response.data) {
+        const access = item.url ? undefined : await gateway.downloadUrl(item.ossId).catch(() => undefined);
+        items.push({ id: item.ossId, name: item.originalName, url: item.url || access?.data?.url || '' });
+      }
+      return items;
     },
     async remove(id: UploadIdentifier): Promise<void> {
       const normalized = requireOssId(id, '删除文件缺少 ossId');

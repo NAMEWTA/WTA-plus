@@ -49,6 +49,45 @@ function createFixture() {
 describe('OSS browser upload adapter', () => {
   beforeEach(() => vi.restoreAllMocks());
 
+  it('resolves private previews independently and keeps references when an address is unavailable', async () => {
+    const fixture = createFixture();
+    vi.mocked(fixture.gateway.listByIds).mockResolvedValue({ data: [
+      { ossId: '1', originalName: 'public.txt', url: 'https://oss.test/public' },
+      { ossId: '2', originalName: 'private.txt', url: '' },
+      { ossId: '3', originalName: 'unavailable.txt', url: '' }
+    ] });
+    vi.mocked(fixture.gateway.downloadUrl).mockResolvedValueOnce({ data: { url: 'https://oss.test/private' } })
+      .mockRejectedValueOnce(new Error('address unavailable'));
+    await expect(fixture.client.resolve(['1', '2', '3'])).resolves.toEqual([
+      { id: '1', name: 'public.txt', url: 'https://oss.test/public' },
+      { id: '2', name: 'private.txt', url: 'https://oss.test/private' },
+      { id: '3', name: 'unavailable.txt', url: '' }
+    ]);
+    expect(vi.mocked(fixture.gateway.downloadUrl).mock.calls).toEqual([['2'], ['3']]);
+    expect(fixture.gateway.initUpload).not.toHaveBeenCalled();
+    expect(fixture.gateway.delete).not.toHaveBeenCalled();
+  });
+
+  it('keeps a completed upload when preview resolution fails without creating an unowned Blob URL', async () => {
+    const fixture = createFixture();
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:unowned');
+    vi.mocked(fixture.gateway.initUpload).mockResolvedValue({
+      data: { uploadToken: 'preview-failure', mode: 'SINGLE', expiresAt: '2099-01-01T00:00:00Z', presignedRequest: signedPart(1) }
+    });
+    vi.mocked(fixture.gateway.completeUpload).mockResolvedValue({ data: '9004' });
+    vi.mocked(fixture.gateway.downloadUrl).mockRejectedValue(new Error('owned URL service unavailable'));
+
+    await expect(fixture.client.upload(file(), { signal: new AbortController().signal })).resolves.toEqual({
+      id: '9004', name: 'archive.bin', url: ''
+    });
+    expect(createObjectURL).not.toHaveBeenCalled();
+    expect(fixture.gateway.completeUpload).toHaveBeenCalledOnce();
+    expect(fixture.transfer).toHaveBeenCalledOnce();
+    expect(fixture.gateway.abortUpload).not.toHaveBeenCalled();
+    expect(fixture.gateway.delete).not.toHaveBeenCalled();
+    expect(fixture.records.size).toBe(0);
+  });
+
   it('uploads multipart files and maps the result to the shared client contract', async () => {
     const fixture = createFixture();
     vi.mocked(fixture.gateway.initUpload).mockResolvedValue({

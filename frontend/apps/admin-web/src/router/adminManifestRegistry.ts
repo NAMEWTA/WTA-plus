@@ -236,10 +236,19 @@ export const adminSystemWebRuntime: SystemWebRuntime = {
     if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
     await navigator.clipboard.writeText(value);
   },
-  uploadHeaders: () => ({
-    Authorization: `Bearer ${getToken()}`,
-    clientid: import.meta.env.VITE_APP_CLIENT_ID
-  })
+  importUsers: async (file, updateSupport, signal) => {
+    const { adminHttp: request } = await import('@/application/http');
+    const data = new FormData();
+    data.append('file', file);
+    const response = await request.request<unknown>({
+      url: '/system/user/importData', method: 'post', data, params: { updateSupport }, signal,
+      headers: { repeatSubmit: false }
+    });
+    if (!response || typeof response !== 'object' || !('msg' in response) || typeof response.msg !== 'string') {
+      throw new Error('导入结果格式不完整');
+    }
+    return response.msg;
+  }
 };
 const systemManifest = createSystemWebDomain(adminSystemWebRuntime);
 const adminThirdWebRuntime: ThirdWebRuntime = {

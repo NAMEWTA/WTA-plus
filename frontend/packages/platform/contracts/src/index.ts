@@ -25,21 +25,13 @@ export interface HttpRequest {
   params?: unknown;
   responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
   timeout?: number;
+  /** 调用者取消只结束本次请求；宿主退出还可取消整个会话范围。 */
+  signal?: AbortSignal;
   url: string;
 }
 
 export interface HttpClient {
   request<T>(request: HttpRequest): Promise<T>;
-}
-
-export interface EncryptedRequest {
-  data: string;
-  encryptedKey: string;
-}
-
-export interface CryptoPort {
-  decryptResponse(data: string, encryptedKey: string): unknown;
-  encryptRequest(data: string): EncryptedRequest;
 }
 
 export type ErrorKind = 'business' | 'network' | 'server' | 'warning';
@@ -82,6 +74,7 @@ export interface UploadItem {
 export interface UploadResult {
   id: string;
   name: string;
+  /** 空串表示对象已完成上传，但暂时无法获取预览地址；可通过 resolve 重试。 */
   url: string;
 }
 

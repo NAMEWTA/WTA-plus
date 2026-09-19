@@ -245,6 +245,7 @@
     <!-- 部署文件 -->
     <el-dialog v-if="uploadDialog.visible" v-model="uploadDialog.visible" :title="uploadDialog.title" width="30%">
       <div v-loading="uploadDialogLoading">
+        <p v-if="importError" role="alert">{{ importError }}</p>
         <div class="mb5">
           <el-text class="mx-1" size="large">
             <span class="text-danger">*</span>
@@ -264,7 +265,8 @@
         <el-upload
           class="upload-demo"
           drag
-          multiple
+          :limit="1"
+          :disabled="uploadDialogLoading"
           accept="application/json,application/text"
           :before-upload="handlerBeforeUpload"
           :http-request="handlerImportDefinition"
@@ -348,7 +350,7 @@ import {
   type TabsPaneContext,
   type UploadRequestOptions
 } from 'element-plus';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { WorkflowWebRuntime } from '../runtime';
 import {
@@ -373,6 +375,10 @@ const treePanelRef = ref<{ setCurrentKey(key?: string): void }>();
 const { loading, setLoading, withLoading } = useLoading(true);
 const total = ref(0);
 const uploadDialogLoading = ref(false);
+const importError = ref('');
+let importController: AbortController | undefined;
+const cancelImport = () => { importController?.abort(); importController = undefined; uploadDialogLoading.value = false; };
+onBeforeUnmount(cancelImport);
 const processDefinitionList = ref<FlowDefinitionVo[]>([]);
 const categoryOptions = ref<CategoryTreeVO[]>([]);
 const { treeCollapsed } = useTreeCollapsed();
@@ -428,6 +434,7 @@ const {
   openDialog: openUploadDialog,
   closeDialog: closeUploadDialog
 } = useDialogState('部署流程文件');
+watch(() => uploadDialog.visible, visible => { if (!visible) cancelImport(); });
 const {
   dialog: modelDialog,
   resetForm: reset,
@@ -589,23 +596,44 @@ const handlerBeforeUpload = () => {
 };
 //部署文件
 const handlerImportDefinition = (data: UploadRequestOptions): XMLHttpRequest => {
+  const handle = new XMLHttpRequest();
+  if (uploadDialogLoading.value) return handle;
+  const controller = new AbortController();
+  importController = controller;
+  const current = () => importController === controller && !controller.signal.aborted;
+  handle.abort = () => { if (current()) cancelImport(); };
   const formData = new FormData();
   uploadDialogLoading.value = true;
+  importError.value = '';
   formData.append('file', data.file);
   formData.append('category', selectCategory.value);
-  runtime.service
-    .importDefinition(formData)
-    .then(() => {
-      closeUploadDialog();
-      runtime.success('部署成功');
-      activeName.value = '1';
-      handleQuery();
-    })
-    .finally(() => {
-      uploadDialogLoading.value = false;
-    });
-  return;
+  void (async () => {
+    let result;
+    try {
+      result = await runtime.service.importDefinition(formData, controller.signal);
+    } catch (error) {
+      if (current()) {
+        importError.value = error instanceof Error ? error.message : '流程导入失败，请重试';
+        // Element Plus 会记录回调错误；只传展示消息，不透传请求或凭据。
+        data.onError(Object.assign(new Error(importError.value), {
+          status: 0, method: 'post', url: '/workflow/definition/importDef'
+        }));
+      }
+      return;
+    } finally {
+      if (current()) uploadDialogLoading.value = false;
+    }
+    if (!current()) return;
+    data.onSuccess(result);
+    importController = undefined;
+    closeUploadDialog();
+    runtime.success('部署成功');
+    activeName.value = '1';
+    void handleQuery();
+  })();
+  return handle;
 };
+
 /**
  * 设计流程
  * @param row
