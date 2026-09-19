@@ -9,4 +9,7 @@ public interface ThirdResiliencePort {
     ThirdLimitLease acquire(ThirdProvider provider, ThirdEndpoint endpoint);
 
     int maxAttempts(ThirdEndpoint endpoint);
+
+    /** Apply committed configuration on existing quota keys, without acquiring a permit. */
+    void refresh(ThirdProvider provider, ThirdEndpoint endpoint);
 }

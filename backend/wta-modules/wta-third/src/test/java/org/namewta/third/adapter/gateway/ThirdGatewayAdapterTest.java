@@ -104,6 +104,9 @@ class ThirdGatewayAdapterTest {
             }
 
             @Override
+            public void refresh(ThirdProvider provider, ThirdEndpoint endpoint) { }
+
+            @Override
             public int maxAttempts(ThirdEndpoint endpoint) {
                 return 1;
             }
@@ -153,6 +156,9 @@ class ThirdGatewayAdapterTest {
                 throw new org.namewta.third.support.ThirdRejectedException(ThirdPartyFailureCategory.RATE_LIMITED,
                     "rate limited");
             }
+
+            @Override
+            public void refresh(ThirdProvider provider, ThirdEndpoint endpoint) { }
 
             @Override
             public int maxAttempts(ThirdEndpoint endpoint) {

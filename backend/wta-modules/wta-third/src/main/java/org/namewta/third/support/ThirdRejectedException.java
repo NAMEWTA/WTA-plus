@@ -13,4 +13,9 @@ public class ThirdRejectedException extends RuntimeException {
     public ThirdPartyFailureCategory category() {
         return category;
     }
+
+    public ThirdRejectedException(ThirdPartyFailureCategory category, String message, Throwable cause) {
+        super(message, cause);
+        this.category = category;
+    }
 }

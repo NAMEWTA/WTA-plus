@@ -36,6 +36,9 @@ public class ThirdEndpointService {
         ThirdEndpoint entity = bo.getEndpointId() == null ? new ThirdEndpoint() : required(bo.getEndpointId());
         String providerCode = ThirdEndpointSecurity.validateIdentifier(bo.getProviderCode(), "Provider code");
         String endpointCode = ThirdEndpointSecurity.validateIdentifier(bo.getEndpointCode(), "Endpoint code");
+        if (entity.getEndpointId() != null && !entity.getEndpointCode().equals(endpointCode)) {
+            throw new ServiceException("Endpoint code cannot be changed");
+        }
         if (!provider.getProviderCode().equals(providerCode)) throw new ServiceException("Provider code does not match provider id");
         if (entity.getProviderId() != null && !provider.getProviderId().equals(entity.getProviderId())) throw new ServiceException("Endpoint does not belong to provider");
         if (endpointDao.existsCode(providerCode, endpointCode, bo.getEndpointId())) throw new ServiceException("Endpoint code already exists for provider");

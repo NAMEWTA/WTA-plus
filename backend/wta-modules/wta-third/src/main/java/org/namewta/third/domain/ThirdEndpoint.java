@@ -2,6 +2,7 @@ package org.namewta.third.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.namewta.common.mybatis.core.domain.BaseEntity;
@@ -32,6 +33,6 @@ public class ThirdEndpoint extends BaseEntity {
     private Integer retryCount;
     private String sensitiveFieldsJson;
     private String adapterCode;
-    private Integer version;
+    @Version private Integer version;
     private String delFlag;
 }

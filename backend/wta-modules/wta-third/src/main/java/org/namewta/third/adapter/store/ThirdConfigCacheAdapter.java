@@ -1,5 +1,6 @@
 package org.namewta.third.adapter.store;
 
+import com.baomidou.dynamic.datasource.tx.TransactionContext;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.namewta.common.core.exception.ServiceException;
@@ -13,7 +14,9 @@ import org.namewta.third.port.ThirdConfigSnapshot;
 import org.namewta.third.port.ThirdConfigSnapshotPort;
 import org.namewta.third.port.ThirdEndpointConfigStore;
 import org.namewta.third.port.ThirdProviderConfigStore;
+import org.namewta.third.port.ThirdResiliencePort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionSynchronization;
 
 import java.time.Duration;
 import java.util.Map;
@@ -26,15 +29,18 @@ public class ThirdConfigCacheAdapter implements ThirdConfigSnapshotPort {
     private final ThirdProviderConfigStore providerStore;
     private final ThirdEndpointConfigStore endpointStore;
     private final ClusterCacheInvalidationCoordinator invalidationCoordinator;
+    private final ThirdResiliencePort resilience;
     private final Map<String, String> knownKeys = new ConcurrentHashMap<>();
     private AutoCloseable invalidationRegistration;
 
     public ThirdConfigCacheAdapter(ThirdProviderConfigStore providerStore,
                                    ThirdEndpointConfigStore endpointStore,
-                                   ClusterCacheInvalidationCoordinator invalidationCoordinator) {
+                                   ClusterCacheInvalidationCoordinator invalidationCoordinator,
+                                   ThirdResiliencePort resilience) {
         this.providerStore = providerStore;
         this.endpointStore = endpointStore;
         this.invalidationCoordinator = invalidationCoordinator;
+        this.resilience = resilience;
     }
 
     @PostConstruct
@@ -93,6 +99,17 @@ public class ThirdConfigCacheAdapter implements ThirdConfigSnapshotPort {
     }
 
     public void evict(String providerCode, String endpointCode) {
+        if (TransactionContext.getXID() != null) {
+            TransactionContext.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() { evictCommitted(providerCode, endpointCode); }
+            });
+        } else {
+            evictCommitted(providerCode, endpointCode);
+        }
+    }
+
+    private void evictCommitted(String providerCode, String endpointCode) {
         try {
             if (providerCode != null && endpointCode != null) {
                 RedisUtils.deleteObject(key(providerCode, endpointCode));
@@ -105,6 +122,15 @@ public class ThirdConfigCacheAdapter implements ThirdConfigSnapshotPort {
             } else {
                 knownKeys.clear();
                 invalidationCoordinator.clear(INVALIDATION_NAMESPACE);
+            }
+            // Read committed versions, not the mutable pre-save entity. Requests also repair a failed Redis update.
+            if (providerCode != null) {
+                ThirdProvider provider = providerStore.findActiveByCode(providerCode);
+                if (provider != null) {
+                    ThirdEndpoint endpoint = endpointCode == null ? null
+                        : endpointStore.findActiveByProviderAndCode(provider.getProviderId(), endpointCode);
+                    resilience.refresh(provider, endpoint);
+                }
             }
         } catch (RuntimeException e) {
             throw unavailable(e);

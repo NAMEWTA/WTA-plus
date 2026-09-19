@@ -317,6 +317,9 @@ class ThirdGatewayApplicationContextTest {
         }
 
         @Override
+        public void refresh(ThirdProvider provider, ThirdEndpoint endpoint) { }
+
+        @Override
         public int maxAttempts(ThirdEndpoint endpoint) {
             return Boolean.TRUE.equals(endpoint.getIdempotent())
                 ? 1 + Math.min(Math.max(endpoint.getRetryCount(), 0), 3) : 1;
