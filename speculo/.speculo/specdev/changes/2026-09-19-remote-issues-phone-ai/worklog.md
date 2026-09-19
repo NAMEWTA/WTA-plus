@@ -80,3 +80,5 @@ T-03开工：base 31259eb2d728836f6d3110934c718532f48adb32；Map revision8，事
 T-03已完成；release与运行摘要见evidence/T-03-release.json、T-03-runtime-final.json、T-03-retained-services.json。最终浏览器53pass/1既有外部Nacos条件skip，手机号专项10pass，release123pass；必需场景均实际执行。产品固定723e851，干净验收后仅提交治理收据。
 
 提交前结构校验：validate-specdev --stage implement（不含--repo）exit0/0errors/0warnings。首次completed结构检查要求goal-delivery数量证据，已补实际2/6清单并重跑通过；提交前controller明确报告receipt dirty，未将其算作完整通过。下一步提交后执行含--repo的complete和controller真实检查。
+
+最终完成检查已实际执行于收据提交c696a8cecf6df5c417e4416091e51eb5df2cd843：validate-specdev --stage complete --repo /srv/WTA-plus exit0，0errors/0warnings；controller exit0，errors/validation_errors均空，三票done、frontier/in_flight/blocked/invalidated均空，eligible_for_final_verification=true；完整Git状态clean。实际机器可读输出见evidence/completion-check.json。本条为纯治理收据，受测产品result仍723e851；记录提交后再次运行同一complete检查。

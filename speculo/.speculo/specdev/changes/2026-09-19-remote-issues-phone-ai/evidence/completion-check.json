@@ -1,0 +1,42 @@
+{
+  "verified_receipt_commit": "c696a8cecf6df5c417e4416091e51eb5df2cd843",
+  "product_result": "723e8514cbaeba13094415ba5f1071de31b2241c",
+  "checked_at": "2026-09-19T12:04:03.188942+00:00",
+  "repository_status": "clean",
+  "complete_command": "node speculo/workflows/specdev/common/tools/validate-specdev.mjs --stage complete --repo /srv/WTA-plus speculo/.speculo/specdev/changes/2026-09-19-remote-issues-phone-ai",
+  "complete_exit_code": 0,
+  "complete_errors": 0,
+  "complete_warnings": 0,
+  "controller": {
+    "schema_version": 1,
+    "scope": "2026-09-19-remote-issues-phone-ai",
+    "mode": "read-only-analysis",
+    "authorization_checked": false,
+    "transaction_gateway_checked": false,
+    "workspace_policy": "current",
+    "implementation_limit": 1,
+    "input_digest": "41fe4046f1046461ed12060cd796895dd20fddf8a92cbace2e807377cddc46a9",
+    "goal_contract_digest": "0697a9678f73077dad83c961418db0e3ac6688383a33ef25bb5cef7010a42726",
+    "contract_digests": {
+      "T-01": "a0f5e94eaf0985fdb916bb6f6dda98e8b4ed793ec50d7ecc3d3bd4cc02a28abb",
+      "T-02": "1f6dfd3fcc9d197a57673e0baa1b9b890e02845110176ce3ff267da28d0ea103",
+      "T-03": "43d96bca005a0afa53e901c30f00a0dfb93f5337a0a3735bed353c5c07fedd26"
+    },
+    "frontier": [],
+    "deferred": [],
+    "in_flight": [],
+    "done": [
+      "T-01",
+      "T-02",
+      "T-03"
+    ],
+    "cancelled": [],
+    "blocked": [],
+    "invalidated": [],
+    "eligible_for_final_verification": true,
+    "validation_errors": [],
+    "errors": [],
+    "warnings": [],
+    "next": "Lead must verify real authorization, existing transaction/ownership gateways, Skill execution and Goal acceptance; this output does not execute anything."
+  }
+}
