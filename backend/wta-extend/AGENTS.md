@@ -1,6 +1,6 @@
 # 独立应用导航
 
-[pom.xml](pom.xml) 聚合三个独立 Spring Boot 应用，具体版本、依赖、启动类和测试入口以各模块 POM/源码及[模块地图](../../.agents/skills/engineering-standards/references/project/01-module-map.md)为准：
+[pom.xml](pom.xml) 聚合两个独立 Spring Boot 应用，具体版本、依赖、启动类和测试入口以各模块 POM/源码及[模块地图](../../.agents/skills/engineering-standards/references/project/01-module-map.md)为准：
 
 - [wta-monitor-admin](wta-monitor-admin/pom.xml)：Monitor Admin。
 - [wta-snailjob-server](wta-snailjob-server/pom.xml)：SnailJob 服务。
