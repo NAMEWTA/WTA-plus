@@ -3,6 +3,7 @@ package org.namewta.system.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.base.MPJBaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.namewta.common.core.utils.StreamUtils;
 import org.namewta.common.mybatis.annotation.DataColumn;
 import org.namewta.common.mybatis.annotation.DataPermission;
@@ -26,6 +27,19 @@ import static org.namewta.common.core.constant.SystemConstants.NORMAL;
  * @author Lion Li
  */
 public interface SysDeptMapper extends BaseMapperPlus<SysDept, SysDeptVo>, MPJBaseMapper<SysDept> {
+
+    /** Internal structure read; locking reads must run under the department mutation transaction. */
+    SysDept selectStructure(@Param("deptId") Long deptId, @Param("locking") boolean locking);
+
+    /** Lock existing tree roots in primary-key order, shared by insert, move and delete. */
+    List<Long> lockTreeRoots(@Param("rootIds") List<Long> rootIds);
+
+    /** Traverse actual parent edges, including descendants whose stored ancestors may be corrupt. */
+    List<SysDept> selectChildrenForUpdate(@Param("parentIds") List<Long> parentIds);
+
+    /** Recheck the existing data-scope policy using a current read after structural locks are held. */
+    @DataPermission({@DataColumn(key = "deptName", value = "dept_id")})
+    Long selectVisibleDeptForUpdate(@Param("deptId") Long deptId);
 
     /**
      * 查询部门管理数据

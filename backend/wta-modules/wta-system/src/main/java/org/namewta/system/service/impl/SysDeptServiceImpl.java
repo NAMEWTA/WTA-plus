@@ -7,6 +7,8 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.baomidou.dynamic.datasource.tx.TransactionContext;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.constant.CacheNames;
 import org.namewta.common.core.constant.SystemConstants;
@@ -29,11 +31,9 @@ import org.namewta.system.mapper.SysDeptMapper;
 import org.namewta.system.mapper.SysRoleMapper;
 import org.namewta.system.mapper.SysUserMapper;
 import org.namewta.system.service.ISysDeptService;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
 
 import java.util.*;
 
@@ -306,20 +306,22 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      * @param bo 部门信息
      * @return 结果
      */
-    @CacheEvict(cacheNames = CacheNames.SYS_DEPT_AND_CHILD, allEntries = true)
     @Override
+    @DSTransactional
     public int insertDept(SysDeptBo bo) {
-        SysDept info = deptMapper.selectById(bo.getParentId());
-        // 如果父节点不存在或不为正常状态,则不允许新增子节点
-        if (ObjectUtil.isNull(info)) {
-            throw new ServiceException("父部门不存在");
-        }
-        if (!SystemConstants.NORMAL.equals(info.getStatus())) {
+        requireParentId(bo.getParentId());
+        if (bo.getDeptId() != null && bo.getDeptId() <= 0) throw new ServiceException("部门ID必须大于0");
+        List<SysDept> parentPath = lockStructure(null, bo.getParentId()).parentPath();
+        checkParentScope(bo.getParentId(), true);
+        if (!parentPath.isEmpty() && !SystemConstants.NORMAL.equals(parentPath.getLast().getStatus())) {
             throw new ServiceException("部门停用，不允许新增");
         }
         SysDept dept = MapstructUtils.convert(bo, SysDept.class);
-        dept.setAncestors(info.getAncestors() + StringUtils.SEPARATOR + dept.getParentId());
-        return deptMapper.insert(dept);
+        dept.setAncestors(ancestors(parentPath));
+        int result = deptMapper.insert(dept);
+        requireChanged(result);
+        evictAfterCommit(Set.of(dept.getDeptId()));
+        return result;
     }
 
     /**
@@ -328,39 +330,41 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      * @param bo 部门信息
      * @return 结果
      */
-    @Caching(evict = {
-        @CacheEvict(cacheNames = CacheNames.SYS_DEPT, key = "#bo.deptId"),
-        @CacheEvict(cacheNames = CacheNames.SYS_DEPT_AND_CHILD, allEntries = true)
-    })
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional
     public int updateDept(SysDeptBo bo) {
-        SysDept dept = MapstructUtils.convert(bo, SysDept.class);
-        SysDept oldDept = deptMapper.selectById(dept.getDeptId());
-        if (ObjectUtil.isNull(oldDept)) {
-            throw new ServiceException("部门不存在，无法修改");
+        requireParentId(bo.getParentId());
+        if (bo.getDeptId() == null || bo.getDeptId() <= 0) throw new ServiceException("部门不存在，无法修改");
+        if (bo.getDeptId().equals(bo.getParentId())) throw new ServiceException("上级部门不能是自己");
+        LockedStructure structure = lockStructure(bo.getDeptId(), bo.getParentId());
+        SysDept oldDept = structure.current();
+        checkDataScopeLocked(bo.getDeptId());
+        checkParentScope(bo.getParentId(), !oldDept.getParentId().equals(bo.getParentId()));
+        if (structure.parentPath().stream().anyMatch(node -> node.getDeptId().equals(bo.getDeptId()))) {
+            throw new ServiceException("上级部门不能是当前部门的子部门");
         }
-        if (!oldDept.getParentId().equals(dept.getParentId())) {
-            // 如果是新父部门 则校验是否具有新父部门权限 避免越权
-            this.checkDeptDataScope(dept.getParentId());
-            SysDept newParentDept = deptMapper.selectById(dept.getParentId());
-            if (ObjectUtil.isNotNull(newParentDept)) {
-                String newAncestors = newParentDept.getAncestors() + StringUtils.SEPARATOR + newParentDept.getDeptId();
-                String oldAncestors = oldDept.getAncestors();
-                dept.setAncestors(newAncestors);
-                updateDeptChildren(dept.getDeptId(), newAncestors, oldAncestors);
+        List<SysDept> children = descendants(oldDept);
+        if (SystemConstants.DISABLE.equals(bo.getStatus())) {
+            if (children.stream().anyMatch(node -> SystemConstants.NORMAL.equals(node.getStatus()))) {
+                throw new ServiceException("该部门包含未停用的子部门!");
             }
-        } else {
-            dept.setAncestors(oldDept.getAncestors());
+            if (checkDeptExistUser(bo.getDeptId())) throw new ServiceException("该部门下存在已分配用户，不能禁用!");
         }
+        SysDept dept = MapstructUtils.convert(bo, SysDept.class);
+        dept.setAncestors(ancestors(structure.parentPath()));
+        Set<Long> changedIds = new HashSet<>(); changedIds.add(dept.getDeptId());
+        if (!oldDept.getParentId().equals(dept.getParentId())) updateDeptChildren(dept, children, changedIds);
         int result = deptMapper.updateById(dept);
+        requireChanged(result);
         // 如果部门状态为启用，且部门祖级列表不为空，且部门祖级列表不等于根部门祖级列表（如果部门祖级列表不等于根部门祖级列表，则说明存在上级部门）
         if (SystemConstants.NORMAL.equals(dept.getStatus())
             && StringUtils.isNotEmpty(dept.getAncestors())
             && !StringUtils.equals(SystemConstants.ROOT_DEPT_ANCESTORS, dept.getAncestors())) {
             // 如果该部门是启用状态，则启用该部门的所有上级部门
             updateParentDeptStatusNormal(dept);
+            structure.parentPath().forEach(node -> changedIds.add(node.getDeptId()));
         }
+        evictAfterCommit(changedIds);
         return result;
     }
 
@@ -381,23 +385,18 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
     /**
      * 修改子元素关系
      *
-     * @param deptId       被修改的部门ID
-     * @param newAncestors 新的父ID集合
-     * @param oldAncestors 旧的父ID集合
+     * @param moved 被移动部门的新路径
+     * @param children 已按父先子后的顺序读取且验证的子树
+     * @param changedIds 提交后失效的缓存ID
      */
-    private void updateDeptChildren(Long deptId, String newAncestors, String oldAncestors) {
-        List<SysDept> children = deptMapper.lambda().findInSet(deptId, SysDept::getAncestors).list();
-        List<SysDept> list = new ArrayList<>();
+    private void updateDeptChildren(SysDept moved, List<SysDept> children, Set<Long> changedIds) {
+        Map<Long, String> paths = new HashMap<>(); paths.put(moved.getDeptId(), moved.getAncestors());
         for (SysDept child : children) {
             SysDept dept = new SysDept();
             dept.setDeptId(child.getDeptId());
-            dept.setAncestors(StringUtils.replaceOnce(child.getAncestors(), oldAncestors, newAncestors));
-            list.add(dept);
-        }
-        if (CollUtil.isNotEmpty(list)) {
-            if (deptMapper.updateBatchById(list)) {
-                list.forEach(dept -> CacheUtils.evict(CacheNames.SYS_DEPT, dept.getDeptId()));
-            }
+            dept.setAncestors(paths.get(child.getParentId()) + "," + child.getParentId());
+            requireChanged(deptMapper.updateById(dept));
+            paths.put(dept.getDeptId(), dept.getAncestors()); changedIds.add(dept.getDeptId());
         }
     }
 
@@ -407,14 +406,120 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      * @param deptId 部门ID
      * @return 结果
      */
-    @Caching(evict = {
-        @CacheEvict(cacheNames = CacheNames.SYS_DEPT, key = "#deptId"),
-        @CacheEvict(cacheNames = CacheNames.SYS_DEPT_AND_CHILD, allEntries = true)
-    })
     @Override
+    @DSTransactional
     public int deleteDeptById(Long deptId) {
-        return deptMapper.deleteById(deptId);
+        if (deptId == null || deptId <= 0) throw new ServiceException("部门不存在，无法删除");
+        lockStructure(deptId, 0L);
+        checkDataScopeLocked(deptId);
+        if (SystemConstants.DEFAULT_DEPT_ID.equals(deptId)) throw new ServiceException("默认部门,不允许删除");
+        if (!deptMapper.selectChildrenForUpdate(List.of(deptId)).isEmpty()) throw new ServiceException("存在下级部门,不允许删除");
+        if (checkDeptExistUser(deptId)) throw new ServiceException("部门存在用户,不允许删除");
+        int result = deptMapper.deleteById(deptId);
+        requireChanged(result); evictAfterCommit(Set.of(deptId)); return result;
     }
+
+    /** Determine lock domains from parent edges, then re-read under the ordered tree-root locks. */
+    private LockedStructure lockStructure(Long currentId, Long parentId) {
+        if (TransactionContext.getXID() == null) throw new IllegalStateException("Department mutations require a transaction");
+        List<SysDept> currentPath = currentId == null ? List.of() : path(currentId, false);
+        List<SysDept> parentPath = parentId == 0 ? List.of() : path(parentId, false);
+        Set<Long> roots = new TreeSet<>();
+        if (!currentPath.isEmpty()) roots.add(currentPath.getFirst().getDeptId());
+        if (!parentPath.isEmpty()) roots.add(parentPath.getFirst().getDeptId());
+        if (currentId != null && parentId == 0) roots.add(currentId);
+        if (!roots.isEmpty() && deptMapper.lockTreeRoots(new ArrayList<>(roots)).size() != roots.size()) {
+            throw new ServiceException("部门结构已变化，请刷新后重试");
+        }
+        List<SysDept> lockedCurrent = currentId == null ? List.of() : path(currentId, true);
+        List<SysDept> lockedParent = parentId == 0 ? List.of() : path(parentId, true);
+        if (!sameRoot(currentPath, lockedCurrent) || !sameRoot(parentPath, lockedParent)) {
+            throw new ServiceException("部门结构已变化，请刷新后重试");
+        }
+        return new LockedStructure(lockedCurrent.isEmpty() ? null : lockedCurrent.getLast(), lockedParent);
+    }
+
+    private List<SysDept> path(Long id, boolean locking) {
+        List<SysDept> nodes = new ArrayList<>(); Set<Long> seen = new HashSet<>();
+        while (id != null && id > 0) {
+            if (!seen.add(id)) throw new ServiceException("部门层级存在循环，请先修复");
+            SysDept node = deptMapper.selectStructure(id, locking);
+            if (node == null) throw new ServiceException("部门或父部门不存在");
+            nodes.add(node); id = node.getParentId();
+        }
+        if (id == null || id != 0 || nodes.isEmpty()) throw new ServiceException("部门层级数据异常，请先修复");
+        Collections.reverse(nodes);
+        String expected = SystemConstants.ROOT_DEPT_ANCESTORS;
+        for (SysDept node : nodes) {
+            if (!expected.equals(node.getAncestors())) throw new ServiceException("部门层级数据异常，请先修复");
+            expected += "," + node.getDeptId();
+        }
+        return nodes;
+    }
+
+    private List<SysDept> descendants(SysDept root) {
+        List<SysDept> result = new ArrayList<>();
+        Map<Long, String> paths = new HashMap<>(); paths.put(root.getDeptId(), root.getAncestors());
+        List<Long> parents = List.of(root.getDeptId());
+        while (!parents.isEmpty()) {
+            List<SysDept> children = deptMapper.selectChildrenForUpdate(parents);
+            List<Long> next = new ArrayList<>();
+            for (SysDept child : children) {
+                String expected = paths.get(child.getParentId()) + "," + child.getParentId();
+                if (paths.containsKey(child.getDeptId()) || !expected.equals(child.getAncestors())) {
+                    throw new ServiceException("部门层级数据异常，请先修复");
+                }
+                paths.put(child.getDeptId(), expected); next.add(child.getDeptId()); result.add(child);
+            }
+            parents = next;
+        }
+        return result;
+    }
+
+    private void checkDataScopeLocked(Long deptId) {
+        if (!LoginHelper.isSuperAdmin() && deptMapper.selectVisibleDeptForUpdate(deptId) == null) {
+            throw new ServiceException("没有权限访问部门数据！");
+        }
+    }
+
+    private void checkParentScope(Long parentId, boolean changed) {
+        if (!changed) return;
+        if (parentId == 0) {
+            if (changed && !LoginHelper.isSuperAdmin()) throw new ServiceException("只有超级管理员可以设置根部门");
+        } else {
+            checkDataScopeLocked(parentId);
+        }
+    }
+
+    private static String ancestors(List<SysDept> parentPath) {
+        return parentPath.isEmpty() ? SystemConstants.ROOT_DEPT_ANCESTORS
+            : parentPath.getLast().getAncestors() + "," + parentPath.getLast().getDeptId();
+    }
+
+    private static boolean sameRoot(List<SysDept> before, List<SysDept> after) {
+        return before.isEmpty() ? after.isEmpty() : !after.isEmpty() && before.getFirst().getDeptId().equals(after.getFirst().getDeptId());
+    }
+
+    private static void requireParentId(Long parentId) {
+        if (parentId == null || parentId < 0) throw new ServiceException("上级部门不能为空，根部门请使用0");
+    }
+
+    private static void requireChanged(int changed) {
+        if (changed != 1) throw new ServiceException("部门数据已变化，请刷新后重试");
+    }
+
+    private void evictAfterCommit(Set<Long> changedIds) {
+        Set<Long> ids = Set.copyOf(changedIds);
+        TransactionContext.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                CacheUtils.clear(CacheNames.SYS_DEPT_AND_CHILD);
+                ids.forEach(id -> CacheUtils.evict(CacheNames.SYS_DEPT, id));
+            }
+        });
+    }
+
+    private record LockedStructure(SysDept current, List<SysDept> parentPath) { }
 
 
     /**
