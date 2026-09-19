@@ -55,7 +55,8 @@ describe('通知 Web Domain', () => {
     const smsSceneStart = page.lastIndexOf('<template v-else>');
     const smsSceneBlock = page.slice(smsSceneStart, page.indexOf('</template>', smsSceneStart));
     expect(smsSceneBlock).toContain('smsTemplateCode');
-    expect(smsSceneBlock).toContain('映射到供应商参数名');
+    expect(smsSceneBlock).toContain('阿里云填参数名');
+    expect(smsSceneBlock).toContain('腾讯云填模板中的位置');
     expect(smsSceneBlock).toContain('禁止自由正文');
     expect(smsSceneBlock).not.toContain('type="textarea"');
     expect(smsSceneBlock).not.toContain('mailBody');

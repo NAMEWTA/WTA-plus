@@ -22,16 +22,19 @@
         <el-table-column v-if="channel === 'MAIL'" prop="mailFrom" label="发件人" min-width="180" />
         <el-table-column v-if="channel === 'SMS'" prop="supplier" label="厂商" min-width="120" />
         <el-table-column prop="minuteMax" label="每分钟上限" width="120" />
+        <!-- @vue-generic {NotifyChannelAccount} -->
         <el-table-column label="启用" width="90">
           <template #default="{ row }">
             <el-tag :type="row.enabled === 'Y' ? 'success' : 'info'">{{ row.enabled === 'Y' ? '是' : '否' }}</el-tag>
           </template>
         </el-table-column>
+        <!-- @vue-generic {NotifyChannelAccount} -->
         <el-table-column label="密钥" width="90">
           <template #default="{ row }">
             {{ channel === 'MAIL' ? (row.mailPassSet ? '已设置' : '未设置') : row.accessKeySecretSet ? '已设置' : '未设置' }}
           </template>
         </el-table-column>
+        <!-- @vue-generic {NotifyChannelAccount} -->
         <el-table-column label="操作" width="280" fixed="right">
           <template #default="{ row }">
             <el-button
@@ -85,16 +88,19 @@
       <el-table v-loading="sceneLoading" :data="scenes" border>
         <el-table-column prop="title" label="场景" min-width="140" />
         <el-table-column prop="sceneCode" label="编码" min-width="160" />
+        <!-- @vue-generic {NotifySceneBinding} -->
         <el-table-column label="绑定账号" min-width="140">
           <template #default="{ row }">{{ row.accountConfigKey || '未绑定' }}</template>
         </el-table-column>
         <el-table-column v-if="channel === 'MAIL'" prop="mailSubject" label="邮件主题" min-width="180" />
         <el-table-column v-if="channel === 'SMS'" prop="smsTemplateCode" label="供应商模板码" min-width="160" />
+        <!-- @vue-generic {NotifySceneBinding} -->
         <el-table-column label="变量" min-width="180">
           <template #default="{ row }">
             {{ row.variables.map(item => '${' + item.name + '}').join(' ') || '无' }}
           </template>
         </el-table-column>
+        <!-- @vue-generic {NotifySceneBinding} -->
         <el-table-column label="操作" width="180" fixed="right">
           <template #default="{ row }">
             <el-button
@@ -120,6 +126,13 @@
 
     <el-dialog v-model="accountVisible" :title="accountForm.accountId ? '编辑账号' : '新增账号'" width="640px">
       <el-form :model="accountForm" label-width="120px">
+        <el-form-item v-if="!accountForm.accountId" label="供应商预设">
+          <el-select v-model="presetKey" aria-label="供应商预设" @change="applyPreset">
+            <el-option label="手动配置" value="" />
+            <el-option v-for="item in availablePresets" :key="item.key" :label="item.label" :value="item.key" />
+          </el-select>
+          <div class="text-sm">切换预设会重置尚未保存的账号信息。</div>
+        </el-form-item>
         <el-form-item label="配置标识" required>
           <el-input v-model="accountForm.configKey" :disabled="Boolean(accountForm.accountId)" />
         </el-form-item>
@@ -133,13 +146,13 @@
           <el-form-item label="SMTP 主机"><el-input v-model="accountForm.host" /></el-form-item>
           <el-form-item label="端口"><el-input-number v-model="accountForm.port" :min="1" /></el-form-item>
           <el-form-item label="发件人"><el-input v-model="accountForm.mailFrom" /></el-form-item>
-          <el-form-item label="用户名"><el-input v-model="accountForm.mailUser" /></el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="用户名"><el-input v-model="accountForm.mailUser" placeholder="完整邮箱地址" /></el-form-item>
+          <el-form-item label="SMTP 授权密码">
             <el-input
               v-model="accountForm.mailPass"
               type="password"
               show-password
-              :placeholder="accountForm.mailPassSet ? '留空保持原密码' : '请输入密码'"
+              :placeholder="accountForm.mailPassSet ? '留空保持原密码' : '邮箱开通 SMTP 后生成的授权码或客户端专用密码'"
             />
           </el-form-item>
           <el-form-item label="SSL">
@@ -150,7 +163,7 @@
           </el-form-item>
         </template>
         <template v-else>
-          <el-form-item label="厂商"><el-input v-model="accountForm.supplier" placeholder="alibaba / tencent" /></el-form-item>
+          <el-form-item label="厂商"><el-input v-model="accountForm.supplier" :disabled="supplierLocked" placeholder="alibaba / tencent" /></el-form-item>
           <el-form-item label="AccessKey"><el-input v-model="accountForm.accessKeyId" /></el-form-item>
           <el-form-item label="密钥">
             <el-input
@@ -160,8 +173,8 @@
               :placeholder="accountForm.accessKeySecretSet ? '留空保持原密钥' : '请输入密钥'"
             />
           </el-form-item>
-          <el-form-item label="签名"><el-input v-model="accountForm.signature" /></el-form-item>
-          <el-form-item label="应用 ID"><el-input v-model="accountForm.sdkAppId" /></el-form-item>
+          <el-form-item label="签名"><el-input v-model="accountForm.signature" placeholder="供应商审核通过的短信签名" /></el-form-item>
+          <el-form-item label="应用 ID"><el-input v-model="accountForm.sdkAppId" placeholder="腾讯云必填 SMS SDK AppID；阿里云无需填写" /></el-form-item>
         </template>
         <el-form-item label="备注"><el-input v-model="accountForm.remark" /></el-form-item>
       </el-form>
@@ -218,7 +231,7 @@
           <el-form-item v-for="item in sceneForm.variables" :key="item.name" :label="item.name">
             <el-input
               v-model="sceneForm.smsParamMapping![item.name]"
-              :placeholder="'映射到供应商参数名，样例 ' + (item.example || item.name)"
+              placeholder="阿里云填参数名；腾讯云填模板中的位置 1、2、3…"
             />
           </el-form-item>
         </template>
@@ -258,6 +271,7 @@ import type { NotifyChannelAccount, NotifyConfigChannel, NotifySceneBinding } fr
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { computed, onMounted, ref } from 'vue';
 import type { NotifyWebRuntime } from './runtime';
+import { accountFromPreset, accountPresets } from './config/account-presets';
 
 const { runtime } = defineProps<{ runtime: NotifyWebRuntime }>();
 const channel = ref<NotifyConfigChannel>('MAIL');
@@ -278,6 +292,9 @@ const testTarget = ref('');
 const testAccountId = ref<string | number | undefined>();
 const testSceneCode = ref('');
 const accountForm = ref<NotifyChannelAccount>(emptyAccount());
+const presetKey = ref('');
+const supplierLocked = ref(false);
+const availablePresets = computed(() => accountPresets.filter(item => item.channel === channel.value));
 const sceneForm = ref<NotifySceneBinding | null>(null);
 
 const enabledAccounts = computed(() => accounts.value.filter(item => item.enabled === 'Y'));
@@ -288,16 +305,11 @@ const occupiedTokens = computed(() => {
 });
 
 function emptyAccount(): NotifyChannelAccount {
-  return {
-    channel: channel.value,
-    configKey: '',
-    enabled: 'N',
-    minuteMax: 60,
-    sslEnable: 'N',
-    starttlsEnable: 'N',
-    mailPass: '',
-    accessKeySecret: ''
-  };
+  return accountFromPreset(channel.value);
+}
+
+function applyPreset() {
+  accountForm.value = accountFromPreset(channel.value, presetKey.value);
 }
 
 function showError(error: unknown, fallback: string) {
@@ -335,6 +347,8 @@ async function reload() {
 }
 
 function openAccount(row?: NotifyChannelAccount) {
+  presetKey.value = '';
+  supplierLocked.value = Boolean(row?.supplier?.trim());
   accountForm.value = row
     ? { ...row, channel: channel.value, mailPass: '', accessKeySecret: '' }
     : emptyAccount();
@@ -372,7 +386,7 @@ async function toggleAccount(row: NotifyChannelAccount) {
 
 async function removeAccount(row: NotifyChannelAccount) {
   if (!row.accountId) return;
-  await ElMessageBox.confirm('确认删除该渠道账号？', '提示');
+  await ElMessageBox.confirm('确认删除该渠道账号？删除后配置标识仍将保留，请勿重复使用。', '提示');
   try {
     await runtime.service.config.removeAccount(row.accountId);
     await reload();
@@ -384,7 +398,7 @@ async function removeAccount(row: NotifyChannelAccount) {
 function openScene(row: NotifySceneBinding) {
   sceneForm.value = {
     ...row,
-    smsParamMapping: { ...(row.smsParamMapping ?? {}) },
+    smsParamMapping: { ...row.smsParamMapping },
     templateMinuteMax: row.templateMinuteMax ?? 60,
     restricted: row.restricted ?? 'N',
     recipientMinuteMax: row.recipientMinuteMax ?? 0,
@@ -458,7 +472,10 @@ async function submitTest() {
             channel: channel.value,
             target: testTarget.value
           });
-    ElMessage.success(`测试提交：${result.data ?? 'OK'}`);
+    if (result.data === 'QUEUED' || result.data === 'PROCESSING') ElMessage.info('测试通知已排队，请在通知监控中查看投递结果');
+    else if (result.data === 'ACCEPTED') ElMessage.success('供应商已受理测试通知，送达结果请查看通知监控');
+    else if (result.data === 'DELIVERED') ElMessage.success('测试通知已送达');
+    else ElMessage.warning(`测试通知状态：${result.data ?? 'UNKNOWN'}`);
     testVisible.value = false;
   } catch (error) {
     showError(error, '测试发送失败');
