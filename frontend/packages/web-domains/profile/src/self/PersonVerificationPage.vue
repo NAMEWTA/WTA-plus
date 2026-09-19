@@ -8,7 +8,7 @@
       </div>
       <el-tag v-if="form.status" :type="statusType">{{ statusText }}</el-tag>
     </header>
-    <el-form :model="form" label-position="top" class="verification-form">
+    <el-form :disabled="locked || materialBusy || materialPending || !editable" :model="form" label-position="top" class="verification-form">
       <div class="form-grid">
         <el-form-item label="姓名"><el-input v-model="form.fullName" maxlength="100" /></el-form-item>
         <el-form-item label="证件类型">
@@ -18,17 +18,19 @@
         </el-form-item>
         <el-form-item label="证件号码"><el-input v-model="form.documentNumber" maxlength="128" /></el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="form.gender"><el-option label="男" value="0" /><el-option label="女" value="1" /></el-select>
+          <el-select v-model="form.gender"><el-option label="男" value="MALE" /><el-option label="女" value="FEMALE" /><el-option label="未知" value="UNKNOWN" /></el-select>
         </el-form-item>
         <el-form-item label="出生日期"><el-date-picker v-model="form.birthDate" type="date" value-format="YYYY-MM-DD" /></el-form-item>
         <el-form-item label="有效期起"><el-date-picker v-model="form.validFrom" type="date" value-format="YYYY-MM-DD" /></el-form-item>
         <el-form-item label="有效期止"><el-date-picker v-model="form.validUntil" type="date" value-format="YYYY-MM-DD" /></el-form-item>
       </div>
-      <div class="form-actions">
-        <el-button :loading="saving" @click="save">保存草稿</el-button>
-        <el-button type="primary" :loading="submitting" @click="submit">提交认证</el-button>
-      </div>
     </el-form>
+    <SelfMaterials v-if="loaded" ref="materialSection" :runtime="runtime" profile-type="PERSON" :owner-id="application?.personApplicationId" :document-type-code="form.documentTypeCode" :handler-is-legal-representative="true" :editable="editable" :locked="locked" @busy="materialBusy = $event" @pending="materialPending = $event" />
+    <div v-if="editable" class="form-actions">
+      <el-button :loading="saving" :disabled="locked || materialBusy || materialPending || !loaded" @click="save">保存草稿</el-button>
+      <el-button type="primary" :loading="submitting" :disabled="locked || materialBusy || materialPending || !loaded" @click="submit">提交认证</el-button>
+    </div>
+    <el-button v-if="!loaded && !loading" @click="load">重新加载申请</el-button>
   </main>
 </template>
 
@@ -36,12 +38,19 @@
 import type { PersonApplication, PersonIdentity } from '@namewta/domain-profile';
 import { computed, onMounted, reactive, ref } from 'vue';
 import type { ProfileSelfWebRuntime } from './runtime';
+import SelfMaterials from './SelfMaterials.vue';
 
 const { runtime } = defineProps<{ runtime: ProfileSelfWebRuntime }>();
 const loading = ref(false);
 const saving = ref(false);
 const submitting = ref(false);
 const application = ref<PersonApplication | null>(null);
+const loaded = ref(false);
+const materialBusy = ref(false);
+const materialPending = ref(false);
+const materialSection = ref<InstanceType<typeof SelfMaterials>>();
+const locked = computed(() => loading.value || saving.value || submitting.value);
+const editable = computed(() => !form.status || ['DRAFT', 'BACK', 'CANCEL'].includes(form.status));
 const emptyIdentity = (): PersonIdentity => ({
   birthDate: '',
   documentNumber: '',
@@ -73,6 +82,7 @@ async function load() {
   loading.value = true;
   try {
     setApplication((await runtime.service.person.application.current()).data ?? null);
+    loaded.value = true;
   } catch (error) {
     runtime.error(error instanceof Error ? error.message : '认证资料加载失败');
   } finally {
@@ -90,7 +100,7 @@ function valid() {
 }
 
 async function save() {
-  if (!valid()) return;
+  if (!loaded.value || !editable.value || locked.value || materialBusy.value || materialPending.value) return;
   saving.value = true;
   try {
     const result = await runtime.service.person.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion });
@@ -104,10 +114,10 @@ async function save() {
 }
 
 async function submit() {
-  if (!valid()) return;
-  await runtime.confirm('提交后资料将进入审核，确认继续吗？');
+  if (!loaded.value || !editable.value || locked.value || materialBusy.value || materialPending.value || !valid() || !materialSection.value?.validate()) return;
   submitting.value = true;
   try {
+    try { await runtime.confirm('提交后资料将进入审核，确认继续吗？'); } catch { return; }
     const saved = await runtime.service.person.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion });
     const version = saved.data?.version ?? form.expectedVersion;
     setApplication(saved.data ?? null);
@@ -115,7 +125,7 @@ async function submit() {
     setApplication(result.data ?? null);
     runtime.success('个人认证已提交');
   } catch (error) {
-    runtime.error(error instanceof Error ? error.message : '提交失败，请稍后重试');
+    runtime.error(materialSection.value?.showError(error) ?? '提交失败，请稍后重试');
   } finally {
     submitting.value = false;
   }

@@ -8,6 +8,7 @@ const runtime = (): ProfileSelfWebRuntime => ({
   hasPermission: () => true,
   service: {} as ProfileSelfWebRuntime['service'],
   success: vi.fn(),
+  uploadMaterial: vi.fn(),
   warning: vi.fn()
 });
 

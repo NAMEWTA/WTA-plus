@@ -8,7 +8,7 @@
       </div>
       <el-tag v-if="form.status" :type="statusType">{{ statusText }}</el-tag>
     </header>
-    <el-form :model="form" label-position="top" class="verification-form">
+    <el-form :disabled="locked || materialBusy || materialPending || !editable" :model="form" label-position="top" class="verification-form">
       <el-divider content-position="left">企业主体</el-divider>
       <div class="form-grid">
         <el-form-item label="企业名称"><el-input v-model="form.enterpriseName" /></el-form-item>
@@ -36,8 +36,13 @@
         <el-form-item label="行业编码"><el-input v-model="form.industryCode" /></el-form-item>
         <el-form-item label="企业网站"><el-input v-model="form.website" /></el-form-item>
       </div>
-      <div class="form-actions"><el-button :loading="saving" @click="save">保存草稿</el-button><el-button type="primary" :loading="submitting" @click="submit">提交认证</el-button></div>
     </el-form>
+    <SelfMaterials v-if="loaded" ref="materialSection" :runtime="runtime" profile-type="ENTERPRISE" :owner-id="application?.enterpriseApplicationId" :document-type-code="'*'" :handler-is-legal-representative="form.handlerIsLegalRepresentative" :editable="editable" :locked="locked" @busy="materialBusy = $event" @pending="materialPending = $event" />
+    <div v-if="editable" class="form-actions">
+      <el-button :loading="saving" :disabled="locked || materialBusy || materialPending || !loaded" @click="save">保存草稿</el-button>
+      <el-button type="primary" :loading="submitting" :disabled="locked || materialBusy || materialPending || !loaded" @click="submit">提交认证</el-button>
+    </div>
+    <el-button v-if="!loaded && !loading" @click="load">重新加载申请</el-button>
   </main>
 </template>
 
@@ -45,19 +50,66 @@
 import type { EnterpriseApplication, EnterpriseIdentity } from '@namewta/domain-profile';
 import { computed, onMounted, reactive, ref } from 'vue';
 import type { ProfileSelfWebRuntime } from './runtime';
+import SelfMaterials from './SelfMaterials.vue';
 
 const { runtime } = defineProps<{ runtime: ProfileSelfWebRuntime }>();
-const loading = ref(false); const saving = ref(false); const submitting = ref(false);
+const loading = ref(false);
+const saving = ref(false);
+const submitting = ref(false);
+const application = ref<EnterpriseApplication | null>(null);
+const loaded = ref(false);
+const materialBusy = ref(false);
+const materialPending = ref(false);
+const materialSection = ref<InstanceType<typeof SelfMaterials>>();
+const locked = computed(() => loading.value || saving.value || submitting.value);
+const editable = computed(() => !form.status || ['DRAFT', 'BACK', 'CANCEL'].includes(form.status));
 const emptyIdentity = (): EnterpriseIdentity => ({ businessScope: '', businessTermFrom: '', businessTermUntil: '', contactName: '', contactPhone: '', email: '', enterpriseName: '', enterpriseType: '', establishedDate: '', industryCode: '', legalDocumentNumber: '', legalDocumentTypeCode: 'CN_RESIDENT_ID', legalRepresentativeName: '', registeredAddress: '', registeredCapital: 0, unifiedCreditCode: '', website: '' });
 const form = reactive({ ...emptyIdentity(), handlerIsLegalRepresentative: true, expectedVersion: 0, status: '' });
 const documentTypes = [['居民身份证', 'CN_RESIDENT_ID'], ['香港居民身份证', 'HK_RESIDENT_ID'], ['澳门居民身份证', 'MO_RESIDENT_ID'], ['台湾居民身份证', 'TW_RESIDENT_ID'], ['中国护照', 'CN_PASSPORT']].map(([label, value]) => ({ label, value }));
 const statusText = computed(() => ({ DRAFT: '草稿', BACK: '已退回', WAITING: '审核中', FINISH: '已完成' })[form.status] ?? form.status);
 const statusType = computed(() => (form.status === 'FINISH' ? 'success' : form.status === 'WAITING' ? 'warning' : 'info'));
-function setApplication(value: EnterpriseApplication | null) { if (value) Object.assign(form, value, { expectedVersion: value.version }); }
-async function load() { loading.value = true; try { setApplication((await runtime.service.enterprise.application.current()).data ?? null); } catch (error) { runtime.error(error instanceof Error ? error.message : '认证资料加载失败'); } finally { loading.value = false; } }
-function valid() { const required = [form.enterpriseName, form.unifiedCreditCode, form.enterpriseType, form.legalRepresentativeName, form.legalDocumentTypeCode, form.legalDocumentNumber, form.establishedDate, form.registeredAddress, form.businessScope, form.contactName, form.contactPhone]; if (required.some(value => !String(value).trim())) { runtime.warning('请完整填写企业认证资料'); return false; } return true; }
-async function save() { if (!valid()) return; saving.value = true; try { const result = await runtime.service.enterprise.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion }); setApplication(result.data ?? null); runtime.success('企业认证草稿已保存'); } catch (error) { runtime.error(error instanceof Error ? error.message : '保存失败，请稍后重试'); } finally { saving.value = false; } }
-async function submit() { if (!valid()) return; await runtime.confirm('提交后资料将进入审核，确认继续吗？'); submitting.value = true; try { const saved = await runtime.service.enterprise.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion }); const version = saved.data?.version ?? form.expectedVersion; setApplication(saved.data ?? null); const result = await runtime.service.enterprise.application.submit(version); setApplication(result.data ?? null); runtime.success('企业认证已提交'); } catch (error) { runtime.error(error instanceof Error ? error.message : '提交失败，请稍后重试'); } finally { submitting.value = false; } }
+function setApplication(value: EnterpriseApplication | null) {
+  application.value = value;
+  if (value) Object.assign(form, value, { expectedVersion: value.version });
+}
+async function load() {
+  loading.value = true;
+  try {
+    setApplication((await runtime.service.enterprise.application.current()).data ?? null);
+    loaded.value = true;
+  } catch (error) {
+    runtime.error(error instanceof Error ? error.message : '认证资料加载失败');
+  } finally { loading.value = false; }
+}
+function valid() {
+  const required = [form.enterpriseName, form.unifiedCreditCode, form.enterpriseType, form.legalRepresentativeName, form.legalDocumentTypeCode, form.legalDocumentNumber, form.establishedDate, form.registeredAddress, form.businessScope, form.contactName, form.contactPhone];
+  if (required.some(value => !String(value).trim())) { runtime.warning('请完整填写企业认证资料'); return false; }
+  return true;
+}
+async function save() {
+  if (!loaded.value || !editable.value || locked.value || materialBusy.value || materialPending.value) return;
+  saving.value = true;
+  try {
+    const result = await runtime.service.enterprise.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion });
+    setApplication(result.data ?? null);
+    runtime.success('企业认证草稿已保存');
+  } catch (error) { runtime.error(error instanceof Error ? error.message : '保存失败，请稍后重试'); }
+  finally { saving.value = false; }
+}
+async function submit() {
+  if (!loaded.value || !editable.value || locked.value || materialBusy.value || materialPending.value || !valid() || !materialSection.value?.validate()) return;
+  submitting.value = true;
+  try {
+    try { await runtime.confirm('提交后资料将进入审核，确认继续吗？'); } catch { return; }
+    const saved = await runtime.service.enterprise.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion });
+    const version = saved.data?.version ?? form.expectedVersion;
+    setApplication(saved.data ?? null);
+    const result = await runtime.service.enterprise.application.submit(version);
+    setApplication(result.data ?? null);
+    runtime.success('企业认证已提交');
+  } catch (error) { runtime.error(materialSection.value?.showError(error) ?? '提交失败，请稍后重试'); }
+  finally { submitting.value = false; }
+}
 onMounted(load);
 </script>
 

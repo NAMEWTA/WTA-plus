@@ -1,5 +1,5 @@
 export { createMaterialTagService, type MaterialTagService } from './service';
-export type { MaterialNode, MaterialNodeCommand, MaterialNodeType, MaterialScope } from './types';
+export type { MaterialNode, MaterialNodeCommand, MaterialNodeType, MaterialRequirement, MaterialScope } from './types';
 
 export const profileMaterialTagsResource = Object.freeze({
   controller: 'MaterialTagController',
