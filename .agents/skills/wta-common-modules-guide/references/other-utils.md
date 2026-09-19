@@ -28,7 +28,7 @@
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.redis.utils.RedisUtils` | redis 工具类。公开方法含限流、发布/订阅、对象/List/Set/Map/Hash 缓存、原子值、扫描删除。内部取 `RedissonClient` | `src/main/java/org/namewta/common/redis/utils/RedisUtils.java` |
+| `org.namewta.common.redis.utils.RedisUtils` | redis 工具类。公开方法含限流、发布/订阅、对象/List/Set/Map/Hash 缓存、原子值、扫描删除及`deleteObjectIfEquals`所有权比较删除。内部取 `RedissonClient` | `src/main/java/org/namewta/common/redis/utils/RedisUtils.java` |
 | `org.namewta.common.redis.utils.CacheUtils` | 缓存操作工具类。按 `cacheNames` + key 走 Spring `CacheManager` | `.../redis/utils/CacheUtils.java` |
 | `org.namewta.common.redis.utils.QueueUtils` | 分布式队列工具。JavaDoc：轻量级队列；重量级数据量请使用 MQ；要求 redis 5.X 以上 | `.../redis/utils/QueueUtils.java` |
 | `org.namewta.common.redis.utils.SequenceUtils` | 发号器工具类。委托 Redisson `RIdGenerator` | `.../redis/utils/SequenceUtils.java` |
@@ -37,7 +37,7 @@
 
 | FQN | 职责 | 路径 |
 |---|---|---|
-| `org.namewta.common.redis.annotation.RepeatSubmit` | 自定义注解防止表单重复提交 | `.../redis/annotation/RepeatSubmit.java` |
+| `org.namewta.common.redis.annotation.RepeatSubmit` | 同步短时防重；随机owner租约、失败原子比较删除、成功保留TTL；不替代业务持久幂等 | `.../redis/annotation/RepeatSubmit.java` |
 | `org.namewta.common.redis.annotation.RateLimiter` | 限流注解。`key` 支持 Spring EL | `.../redis/annotation/RateLimiter.java` |
 
 ## json

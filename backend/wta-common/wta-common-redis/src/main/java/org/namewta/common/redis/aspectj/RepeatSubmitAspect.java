@@ -6,11 +6,9 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.namewta.common.core.constant.GlobalConstants;
 import org.namewta.common.core.constant.HttpStatus;
 import org.namewta.common.core.domain.R;
@@ -29,6 +27,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 /**
  * 防止重复提交(参考美团GTIS防重系统)
@@ -38,16 +37,17 @@ import java.util.StringJoiner;
 @Aspect
 public class RepeatSubmitAspect {
 
-    private static final ThreadLocal<String> KEY_CACHE = new ThreadLocal<>();
-
     /**
-     * 请求进入前校验是否重复提交。
+     * 在单次同步调用作用域持有租约；成功保留原窗口，失败只释放自己的值。
+     * 未取得租约的调用不会执行释放，线程复用不依赖ThreadLocal清理。
      *
      * @param point        切点
      * @param repeatSubmit 防重复提交注解
+     * @return 原业务返回值
+     * @throws Throwable 原业务异常；释放失败作为suppressed保留，不覆盖原异常
      */
-    @Before("@annotation(repeatSubmit)")
-    public void doBefore(JoinPoint point, RepeatSubmit repeatSubmit) throws Throwable {
+    @Around("@annotation(repeatSubmit)")
+    public Object doAround(ProceedingJoinPoint point, RepeatSubmit repeatSubmit) throws Throwable {
         // 如果注解不为0 则使用注解数值
         long interval = repeatSubmit.timeUnit().toMillis(repeatSubmit.interval());
 
@@ -66,60 +66,33 @@ public class RepeatSubmitAspect {
         submitKey = SecureUtil.md5(submitKey + StringUtils.COLON + nowParams);
         // 唯一标识（指定key + url + 消息头）
         String cacheRepeatKey = GlobalConstants.REPEAT_SUBMIT_KEY + url + submitKey;
-        if (RedisUtils.setObjectIfAbsent(cacheRepeatKey, "", Duration.ofMillis(interval))) {
-            KEY_CACHE.set(cacheRepeatKey);
-        } else {
+        String owner = UUID.randomUUID().toString();
+        if (!RedisUtils.setObjectIfAbsent(cacheRepeatKey, owner, Duration.ofMillis(interval))) {
             String message = repeatSubmit.message();
             if (StringUtils.startsWith(message, "{") && StringUtils.endsWith(message, "}")) {
                 message = MessageUtils.message(StringUtils.substring(message, 1, message.length() - 1));
             }
             throw new ServiceException(message);
         }
-    }
 
-    /**
-     * 处理完请求后执行
-     *
-     * @param joinPoint 切点
-     */
-    @AfterReturning(pointcut = "@annotation(repeatSubmit)", returning = "jsonResult")
-    public void doAfterReturning(JoinPoint joinPoint, RepeatSubmit repeatSubmit, Object jsonResult) {
+        Object result;
         try {
-            if (jsonResult instanceof R<?> r) {
-                // 成功则不删除redis数据 保证在有效时间内无法重复提交
-                if (r.getCode() == HttpStatus.SUCCESS) {
-                    return;
+            result = point.proceed();
+        } catch (Throwable failure) {
+            try {
+                RedisUtils.deleteObjectIfEquals(cacheRepeatKey, owner);
+            } catch (RuntimeException releaseFailure) {
+                if (releaseFailure != failure) {
+                    failure.addSuppressed(releaseFailure);
                 }
-                deleteRepeatKey();
             }
-        } finally {
-            KEY_CACHE.remove();
+            throw failure;
         }
-    }
-
-    /**
-     * 拦截异常操作
-     *
-     * @param joinPoint 切点
-     * @param e         异常
-     */
-    @AfterThrowing(value = "@annotation(repeatSubmit)", throwing = "e")
-    public void doAfterThrowing(JoinPoint joinPoint, RepeatSubmit repeatSubmit, Exception e) {
-        try {
-            deleteRepeatKey();
-        } finally {
-            KEY_CACHE.remove();
+        if (result instanceof R<?> r && r.getCode() != HttpStatus.SUCCESS) {
+            RedisUtils.deleteObjectIfEquals(cacheRepeatKey, owner);
         }
-    }
-
-    /**
-     * 删除当前请求写入的防重键。
-     */
-    private void deleteRepeatKey() {
-        String key = KEY_CACHE.get();
-        if (StringUtils.isNotBlank(key)) {
-            RedisUtils.deleteObject(key);
-        }
+        // 非R结果（包括null）沿用成功留TTL语义，不刷新防重窗口。
+        return result;
     }
 
     /**

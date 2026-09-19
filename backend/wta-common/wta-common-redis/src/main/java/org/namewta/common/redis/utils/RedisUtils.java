@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -268,6 +269,23 @@ public class RedisUtils {
             return false;
         }
         return CLIENT.getBucket(key).delete();
+    }
+
+    /**
+     * 仅在当前值仍等于调用者持有值时删除键；比较和删除在Redis内原子执行。
+     * 使用与setObjectIfAbsent相同的codec和NameMapper，不能用GET后DEL替代。
+     *
+     * @param key 缓存键
+     * @param expectedValue 已获得的所有权值，不得为null
+     * @param <T> 值类型
+     * @return 成功删除为true，键缺失或已由其他调用者持有为false
+     */
+    public static <T> boolean deleteObjectIfEquals(final String key, final T expectedValue) {
+        Objects.requireNonNull(key, "key");
+        Objects.requireNonNull(expectedValue, "expectedValue");
+        RBucket<T> bucket = CLIENT.getBucket(key);
+        // Redisson 4.6.1将非null -> null CAS执行为单个比较值后DEL的Lua脚本。
+        return bucket.compareAndSet(expectedValue, null);
     }
 
     /**

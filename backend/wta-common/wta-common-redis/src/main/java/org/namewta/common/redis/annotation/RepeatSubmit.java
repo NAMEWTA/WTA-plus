@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 自定义注解防止表单重复提交
+ * <p>仅保护同步调用的短时提交窗口；成功保留原TTL，失败按随机owner原子释放。
+ * 不提供跨嵌套调用或异步完成协议，不替代数据库唯一约束、业务幂等或持久exactly-once。</p>
  *
  * @author Lion Li
  */
