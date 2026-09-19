@@ -19,7 +19,7 @@ services:
     volumes:
       - ./frontend/nginx/lb/nginx-lb-http.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./frontend/nginx/html/nginx-lb:/usr/share/nginx/html/nginx-lb:ro
-      - ./frontend/nginx/log/lb:/var/log/nginx
+      - ${NAMEWTA_DATA_ROOT:-./runtime}/nginx/log/lb:/var/log/nginx
     logging: *nginx-logging
     restart: unless-stopped
     networks: [namewta]
@@ -38,9 +38,9 @@ services:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${LB_HTTPS_PORT:-40443}:443"
     volumes:
       - ./frontend/nginx/lb/nginx-lb-tls.conf.template:/etc/nginx/templates/default.conf.template:ro
-      - ./frontend/nginx/cert/lb:/etc/nginx/cert/lb:ro
+      - ${NAMEWTA_CERT_ROOT:-./frontend/nginx/cert}/lb:/etc/nginx/cert/lb:ro
       - ./frontend/nginx/html/nginx-lb:/usr/share/nginx/html/nginx-lb:ro
-      - ./frontend/nginx/log/lb-tls:/var/log/nginx
+      - ${NAMEWTA_DATA_ROOT:-./runtime}/nginx/log/lb-tls:/var/log/nginx
     logging: *nginx-logging
     restart: unless-stopped
     networks: [namewta]
@@ -51,13 +51,15 @@ services:
     environment:
       TZ: Asia/Shanghai
       APP_PREFIX: "${ADMIN_WEB_PREFIX:?ADMIN_WEB_PREFIX is required}"
+      BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${ADMIN_WEB_PORT:-41080}:80"
     volumes:
       - ./frontend/nginx/apps/nginx-admin-web.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./frontend/nginx/html/admin-web:/usr/share/nginx/html:ro
-      - ./frontend/nginx/log/admin-web:/var/log/nginx
+      - ${NAMEWTA_DATA_ROOT:-./runtime}/nginx/log/admin-web:/var/log/nginx
     logging: *nginx-logging
     restart: unless-stopped
     networks: [namewta]
@@ -68,13 +70,67 @@ services:
     environment:
       TZ: Asia/Shanghai
       APP_PREFIX: "${HOME_WEB_PREFIX:?HOME_WEB_PREFIX is required}"
+      BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${HOME_WEB_PORT:-41082}:80"
     volumes:
       - ./frontend/nginx/apps/nginx-home-web.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./frontend/nginx/html/home-web:/usr/share/nginx/html:ro
-      - ./frontend/nginx/log/home-web:/var/log/nginx
+      - ${NAMEWTA_DATA_ROOT:-./runtime}/nginx/log/home-web:/var/log/nginx
+    logging: *nginx-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  namewta-nginx-sso-web:
+    image: "${NGINX_IMAGE:-nginx:1.31.1}"
+    container_name: namewta-nginx-sso-web
+    environment:
+      TZ: Asia/Shanghai
+      APP_PREFIX: "${SSO_WEB_PREFIX:?SSO_WEB_PREFIX is required}"
+      APP_ORIGIN: "${SSO_WEB_ORIGIN:?SSO_WEB_ORIGIN is required}"
+      BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
+      NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${SSO_WEB_PORT:-41083}:80"
+    volumes:
+      - ./frontend/nginx/apps/nginx-sso-web.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./frontend/nginx/html/sso-web:/usr/share/nginx/html:ro
+      - ${NAMEWTA_DATA_ROOT:-./runtime}/nginx/log/sso-web:/var/log/nginx
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    logging: *nginx-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  namewta-nginx-sso-web-tls:
+    image: "${NGINX_IMAGE:-nginx:1.31.1}"
+    container_name: namewta-nginx-sso-web-tls
+    profiles: [tls]
+    environment:
+      TZ: Asia/Shanghai
+      APP_PREFIX: "${SSO_WEB_PREFIX:?SSO_WEB_PREFIX is required}"
+      APP_ORIGIN: "${SSO_WEB_ORIGIN:?SSO_WEB_ORIGIN is required}"
+      BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
+      NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${SSO_WEB_HTTPS_PORT:-41483}:443"
+    volumes:
+      - ./frontend/nginx/apps/nginx-sso-web-tls.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./frontend/nginx/html/sso-web:/usr/share/nginx/html:ro
+      - ${NAMEWTA_CERT_ROOT:-./frontend/nginx/cert}/sso-web:/etc/nginx/cert/sso-web:ro
+      - ${NAMEWTA_DATA_ROOT:-./runtime}/nginx/log/sso-web-tls:/var/log/nginx
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
     logging: *nginx-logging
     restart: unless-stopped
     networks: [namewta]

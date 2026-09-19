@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [[ "${1:-}" == --release-origin ]]; then
+  shift
+  exec python3 "${ROOT}/release-artifacts/tests/fixtures/sso-release-origin.py" "$@"
+fi
 # Same-session three-gate launcher for AC-001/002/003.
 # Requires live MySQL, Redis, backend 18080, admin 4174, home 4175, sso-web 4176.
 

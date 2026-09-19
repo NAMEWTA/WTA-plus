@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RELEASE_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DOCKER_ROOT="${RELEASE_ROOT}/docker"
+RELEASE_VERSION=""
+WITH_NACOS=false
 ENV_FILE="${RELEASE_ENV_FILE:-${RELEASE_ROOT}/.env}"
 
 readonly START_ORDER=(infrastructure observability backend frontend)
@@ -16,10 +18,10 @@ error() { printf '[ERROR] %s\n' "$*" >&2; }
 usage() {
   cat <<'EOF'
 Usage:
-  docker-manage.sh config <category|all> [--profile <name>]
-  docker-manage.sh up <category|all> [--profile <name>]
-  docker-manage.sh down <category|all> [--profile <name>]
-  docker-manage.sh ps <category|all> [--profile <name>]
+  docker-manage.sh config <category|all> [--profile <name>] [--nacos]
+  docker-manage.sh up <category|all> [--profile <name>] [--nacos]
+  docker-manage.sh down <category|all> [--profile <name>] [--nacos]
+  docker-manage.sh ps <category|all> [--profile <name>] [--nacos]
   docker-manage.sh logs <category> [service]
   docker-manage.sh build-images
   docker-manage.sh menu
@@ -28,6 +30,7 @@ Categories: infrastructure, observability, backend, frontend
 Profiles: ai (Elasticsearch), tls (LB HTTPS), metrics (Prometheus/Linux exporters)
 
 通过 RELEASE_ENV_FILE 指定 env 文件，默认 release-artifacts/.env。
+RELEASE_ENV 默认为 prod。每条命令固定已校验版本；up 显式 build/recreate。
 EOF
 }
 
@@ -67,13 +70,65 @@ env_value() {
   local key="$1"
   local fallback="$2"
   local value
-  value="$(awk -F= -v wanted="${key}" '$1 == wanted { sub(/^[^=]*=/, ""); print; exit }' "${ENV_FILE}")"
+  value="$(python3 - "${ENV_FILE}" "${key}" <<'PYTHON'
+import re
+import sys
+from pathlib import Path
+for line in Path(sys.argv[1]).read_text().splitlines():
+    match = re.fullmatch(r'\s*(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=\s*(.*?)\s*', line)
+    if match and match[1] == sys.argv[2]:
+        print(match[2].strip("'\""))
+        break
+PYTHON
+)"
   printf '%s' "${value:-${fallback}}"
+}
+
+
+select_release() {
+  # Resolve once per operation, including all categories: later pointer switches cannot mix paths.
+  RELEASE_VERSION="$(python3 "${SCRIPT_DIR}/release-state.py" resolve \
+    --env "${RELEASE_ENV:-prod}" --env-file "${ENV_FILE}")"
+  local data_root cert_root
+  data_root="${NAMEWTA_DATA_ROOT:-$(env_value NAMEWTA_DATA_ROOT "${RELEASE_ROOT}/docker/runtime")}"
+  cert_root="${NAMEWTA_CERT_ROOT:-$(env_value NAMEWTA_CERT_ROOT "${RELEASE_ROOT}/docker/frontend/nginx/cert")}"
+  [[ "${data_root}" == /* ]] || data_root="${RELEASE_ROOT}/docker/${data_root}"
+  [[ "${cert_root}" == /* ]] || cert_root="${RELEASE_ROOT}/docker/${cert_root}"
+  export NAMEWTA_DATA_ROOT="${data_root}" NAMEWTA_CERT_ROOT="${cert_root}"
+  DOCKER_ROOT="${RELEASE_VERSION}/docker"
+  # TLS terminates at Nginx; the backend still needs the exact approved browser Origins.
+  # Read the already resolved version, never resolve current again during this operation.
+  local value origin_values=()
+  while IFS= read -r value; do origin_values+=("${value}"); done < <(
+    python3 - "${RELEASE_VERSION}" <<'PYTHON'
+import json
+import sys
+from pathlib import Path
+version = Path(sys.argv[1])
+manifest = json.loads((version / 'release-manifest.json').read_text())
+registry = json.loads((version / 'apps.json').read_text())
+print(','.join(sorted(set(manifest['appOrigins'].values()))))
+sso = [app for app in registry['apps'] if app['shipped'] and app['apiKind'] == 'sso']
+if len(sso) != 1:
+    raise SystemExit('exactly one shipped SSO App is required')
+print(manifest['appOrigins'][sso[0]['id']])
+print('/' + manifest['apps'][sso[0]['id']] + '/')
+PYTHON
+  )
+  [[ ${#origin_values[@]} -eq 3 ]] || { error "无法读取固定版本的Origin矩阵"; return 1; }
+  export WEB_CORS_ALLOWED_ORIGINS="${origin_values[0]}" SSO_WEB_ORIGIN="${origin_values[1]}"
+  export SSO_WEB_BASE_PATH="${origin_values[2]}"
+  # Per-version tags prevent a failed/partial image build from retagging the running release.
+  export NAMEWTA_ADMIN_IMAGE="namewta/namewta-admin:${RELEASE_VERSION##*/}"
+  export NAMEWTA_MONITOR_IMAGE="namewta/namewta-monitor-admin:${RELEASE_VERSION##*/}"
+  export NAMEWTA_SNAILJOB_IMAGE="namewta/namewta-snailjob-server:${RELEASE_VERSION##*/}"
+  export NAMEWTA_SNAILAI_IMAGE="namewta/namewta-snailai-server:${RELEASE_VERSION##*/}"
+  info "使用发布版本: ${RELEASE_VERSION##*/}"
 }
 
 ensure_network() {
   local network_name
-  network_name="$(env_value NAMEWTA_NETWORK namewta-network)"
+  network_name="${NAMEWTA_NETWORK:-$(env_value NAMEWTA_NETWORK namewta-network)}"
   if ! docker network inspect "${network_name}" >/dev/null 2>&1; then
     info "创建共享网络: ${network_name}"
     docker network create "${network_name}" >/dev/null
@@ -83,11 +138,15 @@ ensure_network() {
 compose_command() {
   local category="$1"
   shift
+  local override=()
+  if [[ "${WITH_NACOS}" == true && "${category}" == backend ]]; then
+    override=(-f "${DOCKER_ROOT}/overrides/nacos-enabled.yml")
+  fi
   docker compose \
     --env-file "${ENV_FILE}" \
     -p "namewta-${category}" \
     -f "$(compose_file "${category}")" \
-    "$@"
+    "${override[@]}" "$@"
 }
 
 run_for_category() {
@@ -102,7 +161,7 @@ run_for_category() {
   info "${action}: ${category}${profile:+ (profile=${profile})}"
   case "${action}" in
     config) compose_command "${category}" "${args[@]}" config --quiet ;;
-    up) compose_command "${category}" "${args[@]}" up -d --remove-orphans ;;
+    up) compose_command "${category}" "${args[@]}" up -d --build --force-recreate --remove-orphans ;;
     down) compose_command "${category}" "${args[@]}" down --remove-orphans ;;
     ps) compose_command "${category}" "${args[@]}" ps ;;
     *) error "不支持的操作: ${action}"; return 1 ;;
@@ -166,6 +225,10 @@ NAMEWTA Docker 管理
 EOF
     read -r -p '请选择 [0-7]: ' choice || return 0
     case "${choice}" in
+      0) return 0 ;;
+      *) select_release ;;
+    esac
+    case "${choice}" in
       1) run_category_or_all config all ;;
       2) ensure_network; run_category_or_all up all ;;
       3) run_category_or_all down all ;;
@@ -208,6 +271,7 @@ main() {
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      --nacos) WITH_NACOS=true; shift ;;
       --profile)
         [[ -n "${2:-}" ]] || { error "--profile 缺少值"; return 2; }
         profile="$2"
@@ -222,12 +286,14 @@ main() {
     -h|--help|help) usage; return 0 ;;
     menu) require_docker; interactive_menu ;;
     config|up|down|ps)
+      validate_category "${category}"
       require_docker
+      select_release
       [[ "${action}" != up ]] || ensure_network
       run_category_or_all "${action}" "${category}" "${profile}"
       ;;
-    build-images) require_docker; ensure_network; build_images ;;
-    logs) require_docker; show_logs "${category}" "${service}" ;;
+    build-images) require_docker; select_release; ensure_network; build_images ;;
+    logs) require_docker; select_release; show_logs "${category}" "${service}" ;;
     *) error "未知命令: ${action}"; usage; return 2 ;;
   esac
 }

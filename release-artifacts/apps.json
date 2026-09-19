@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "apps": [
+    {
+      "id": "admin-web",
+      "package": "@namewta/admin-web",
+      "shipped": true,
+      "prefixEnv": "ADMIN_WEB_PREFIX",
+      "originEnv": "ADMIN_WEB_ORIGIN",
+      "portEnv": "ADMIN_WEB_PORT",
+      "defaultPort": 41080,
+      "apiKind": "business",
+      "callbackPath": "/sso/callback",
+      "composeService": "namewta-nginx-admin-web",
+      "nginxTemplate": "docker/frontend/nginx/apps/nginx-admin-web.conf.template",
+      "ingress": "lb",
+      "healthPath": "/healthz",
+      "apiPath": "/{prefix}/{environment}-api"
+    },
+    {
+      "id": "home-web",
+      "package": "@namewta/home-web",
+      "shipped": true,
+      "prefixEnv": "HOME_WEB_PREFIX",
+      "originEnv": "HOME_WEB_ORIGIN",
+      "portEnv": "HOME_WEB_PORT",
+      "defaultPort": 41082,
+      "apiKind": "business",
+      "callbackPath": "/sso/callback",
+      "composeService": "namewta-nginx-home-web",
+      "nginxTemplate": "docker/frontend/nginx/apps/nginx-home-web.conf.template",
+      "ingress": "lb",
+      "healthPath": "/healthz",
+      "apiPath": "/{prefix}/{environment}-api"
+    },
+    {
+      "id": "sso-web",
+      "package": "@namewta/sso-web",
+      "shipped": true,
+      "prefixEnv": "SSO_WEB_PREFIX",
+      "originEnv": "SSO_WEB_ORIGIN",
+      "portEnv": "SSO_WEB_PORT",
+      "defaultPort": 41083,
+      "apiKind": "sso",
+      "authorizePath": "/authorize",
+      "composeService": "namewta-nginx-sso-web",
+      "nginxTemplate": "docker/frontend/nginx/apps/nginx-sso-web.conf.template",
+      "ingress": "dedicated",
+      "healthPath": "/healthz",
+      "tls": {
+        "composeService": "namewta-nginx-sso-web-tls",
+        "portEnv": "SSO_WEB_HTTPS_PORT",
+        "defaultPort": 41483,
+        "nginxTemplate": "docker/frontend/nginx/apps/nginx-sso-web-tls.conf.template"
+      },
+      "apiPath": "/sso"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+# This service owns an independent Web Origin. Never add it to the shared App LB.
+log_format sso_access '$remote_addr $request_method $uri $status';
+
+# Other first-party Apps may be approved by the shared backend CORS policy. They
+# still must not make credentialed cross-Origin requests to the SSO cookie owner.
+map $http_origin $sso_origin_allowed {
+    default 0;
+    '' 1;
+    '${APP_ORIGIN}' 1;
+}
+
+upstream backend_server {
+    ip_hash;
+    server ${BACKEND_SERVER1} max_fails=3 fail_timeout=10s;
+    server ${BACKEND_SERVER2} max_fails=3 fail_timeout=10s;
+    keepalive 32;
+}
+
+server {
+    # Port 80 is only used by the container-local health probe; Compose publishes 443.
+    listen 80 default_server;
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/cert/sso-web/fullchain.pem;
+    ssl_certificate_key /etc/nginx/cert/sso-web/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    server_name _;
+    server_tokens off;
+    add_header X-Frame-Options DENY always;
+    add_header Referrer-Policy no-referrer always;
+    add_header X-Content-Type-Options nosniff always;
+    absolute_redirect off;
+    port_in_redirect off;
+    root /usr/share/nginx/html;
+    index index.html;
+    access_log /var/log/nginx/access.log sso_access;
+
+    location = /healthz {
+        access_log off;
+        default_type text/plain;
+        return 200 'ok\n';
+    }
+
+    location ~ ^(/[^/]*)?/actuator(?:/.*)?$ {
+        return 403;
+    }
+
+    # VITE_SSO_API is empty: cookies and /sso API calls stay on this Origin.
+    location ^~ /sso/ {
+        if ($sso_origin_allowed = 0) { return 403; }
+        proxy_pass http://backend_server;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Forwarded '';
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_cache off;
+        add_header Cache-Control 'no-store' always;
+    }
+
+    location = /${APP_PREFIX} {
+        return 302 /${APP_PREFIX}/;
+    }
+
+    location /${APP_PREFIX}/ {
+        rewrite ^/${APP_PREFIX}/(.*)$ /$1 break;
+        try_files $uri $uri/ @sso_spa;
+    }
+
+    location @sso_spa {
+        try_files /index.html =404;
+    }
+
+    location / {
+        return 404;
+    }
+}

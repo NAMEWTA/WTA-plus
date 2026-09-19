@@ -12,12 +12,32 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Tag("local")
 @Tag("dev")
 class AuthClientContextSsoUnitTest {
+
+    @Test
+    void publishedBasePathIsIncludedInTheActualClientContext() {
+        ISysClientService clientService = mock(ISysClientService.class);
+        SysClientVo client = new SysClientVo();
+        client.setStatus(SystemConstants.NORMAL);
+        client.setSsoEnabled(true);
+        when(clientService.queryByClientId("home")).thenReturn(client);
+        SsoProperties properties = new SsoProperties();
+        properties.setWebOrigin("https://sso.example.invalid/");
+        properties.setWebBasePath("/sso-app/");
+        AuthController controller = new AuthController(null, null, null, null, clientService, null,
+            mock(PasswordPolicyService.class), properties);
+
+        assertEquals("https://sso.example.invalid/sso-app/authorize", controller.clientContext("home", null).getData().getSsoAuthorizeUrl());
+        for (String invalid : new String[]{"//foreign/", "/../", "/sso?next=/", "sso-app", "/sso-app", "/nested/path/"}) {
+            assertThrows(IllegalArgumentException.class, () -> properties.setWebBasePath(invalid));
+        }
+    }
 
     @Test
     void exposesSsoContextFieldsWhenEnabled() {

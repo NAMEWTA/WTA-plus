@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import secrets
 import string
@@ -98,18 +99,19 @@ def parse_env(path: Path) -> dict[str, str]:
     return result
 
 
-def used_ports(repo: Path) -> set[int]:
+def used_ports(repo: Path, exclude_key: str | None = None) -> set[int]:
     text = compose_path(repo).read_text(encoding="utf-8")
     values = {
         int(value)
-        for value in re.findall(r"\$\{[A-Z0-9_]+:-([0-9]+)\}:[0-9]+", text)
+        for key, value in re.findall(r"\$\{([A-Z0-9_]+):-([0-9]+)\}:[0-9]+", text)
+        if key != exclude_key
     }
     return values | RESERVED_PORTS
 
 
 def allocate_port(repo: Path) -> int:
     used = used_ports(repo)
-    port = max((value for value in used if 41080 <= value < 42000), default=41080) + 1
+    port = 41080
     while port in used:
         port += 1
     if port >= 42000:
@@ -118,11 +120,8 @@ def allocate_port(repo: Path) -> int:
 
 
 def configured_apps(repo: Path) -> list[str]:
-    config_dir = nginx_root(repo) / "apps"
-    return sorted(
-        path.name[len("nginx-"):-len(".conf.template")]
-        for path in config_dir.glob("nginx-*.conf.template")
-    )
+    document = json.loads((release_root(repo) / "apps.json").read_text())
+    return sorted(app['id'] for app in document['apps'] if app['shipped'])
 
 
 class Writer:
@@ -162,14 +161,14 @@ def upsert_env(path: Path, key: str, value: str, writer: Writer) -> None:
     writer.write(path, updated)
 
 
-def patch_compose(repo: Path, app: str, port: int, writer: Writer) -> None:
+def patch_compose(repo: Path, app: str, port: int, registration: dict, writer: Writer) -> None:
     path = compose_path(repo)
     text = path.read_text(encoding="utf-8")
     prefix_key = env_key(app, "PREFIX")
     port_key = env_key(app, "PORT")
     lb_env_key = f"APP_{prefix_key}"
 
-    if f"      {lb_env_key}:" not in text:
+    if registration['ingress'] == 'lb' and f"      {lb_env_key}:" not in text:
         anchor = '      APP_ADMIN_WEB_PREFIX: "${ADMIN_WEB_PREFIX:?ADMIN_WEB_PREFIX is required}"'
         if text.count(anchor) != 2:
             raise ValueError("Compose LB env 锚点数量异常，拒绝自动修改")
@@ -187,18 +186,80 @@ def patch_compose(repo: Path, app: str, port: int, writer: Writer) -> None:
     environment:
       TZ: Asia/Shanghai
       APP_PREFIX: "${{{prefix_key}:?{prefix_key} is required}}"
+      BACKEND_SERVER1: "${{BACKEND_SERVER1:-namewta-server1:8080}}"
+      BACKEND_SERVER2: "${{BACKEND_SERVER2:-namewta-server2:8080}}"
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${{NAMEWTA_BIND_HOST:-127.0.0.1}}:${{{port_key}:-{port}}}:80"
     volumes:
       - ./frontend/nginx/apps/nginx-{app}.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./frontend/nginx/html/{app}:/usr/share/nginx/html:ro
-      - ./frontend/nginx/log/{app}:/var/log/nginx
+      - ${{NAMEWTA_DATA_ROOT:-./runtime}}/nginx/log/{app}:/var/log/nginx
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
     logging: *nginx-logging
     restart: unless-stopped
     networks: [namewta]
 '''
         text = text.replace(marker, f"{service}{marker}", 1)
+
+    tls = registration.get('tls')
+    if tls and f"  {tls['composeService']}:\n" not in text:
+        service = f'''
+  {tls['composeService']}:
+    image: "${{NGINX_IMAGE:-nginx:1.31.1}}"
+    container_name: {tls['composeService']}
+    profiles: [tls]
+    environment:
+      TZ: Asia/Shanghai
+      APP_PREFIX: "${{{prefix_key}:?{prefix_key} is required}}"
+      BACKEND_SERVER1: "${{BACKEND_SERVER1:-namewta-server1:8080}}"
+      BACKEND_SERVER2: "${{BACKEND_SERVER2:-namewta-server2:8080}}"
+      NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
+    ports:
+      - "${{NAMEWTA_BIND_HOST:-127.0.0.1}}:${{{tls['portEnv']}:-{tls['defaultPort']}}}:443"
+    volumes:
+      - ./{tls['nginxTemplate'].removeprefix('docker/')}:/etc/nginx/templates/default.conf.template:ro
+      - ./frontend/nginx/html/{app}:/usr/share/nginx/html:ro
+      - ${{NAMEWTA_CERT_ROOT:-./frontend/nginx/cert}}/{app}:/etc/nginx/cert/{app}:ro
+      - ${{NAMEWTA_DATA_ROOT:-./runtime}}/nginx/log/{app}-tls:/var/log/nginx
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    logging: *nginx-logging
+    restart: unless-stopped
+    networks: [namewta]
+'''
+        text = text.replace('\nnetworks:\n', service + '\nnetworks:\n', 1)
+
+    def bind_app_environment(match: re.Match) -> str:
+        block = match[0]
+        if not re.search(r'^      APP_PREFIX:', block, re.M):
+            return block
+        bindings = {'BACKEND_SERVER1': '"${BACKEND_SERVER1:-namewta-server1:8080}"',
+                    'BACKEND_SERVER2': '"${BACKEND_SERVER2:-namewta-server2:8080}"'}
+        if registration['apiKind'] == 'sso' and f'${{{prefix_key}:?' in block:
+            bindings['APP_ORIGIN'] = f'"${{{registration["originEnv"]}:?{registration["originEnv"]} is required}}"'
+        for key, default in bindings.items():
+            pattern = re.compile(r'^      ' + key + r': ([^\n]+)\n', re.M)
+            existing = pattern.findall(block)
+            if len(set(existing)) > 1:
+                raise ValueError(f'Compose contains conflicting {key} bindings')
+            # Normalize only this known binding; preserve an existing operator-supplied expression.
+            value = existing[0] if existing else default
+            block = pattern.sub('', block)
+            block = re.sub(r'(^      APP_PREFIX: [^\n]+\n)',
+                           lambda item: item[0] + f'      {key}: {value}\n', block, count=1, flags=re.M)
+        return block
+
+    text = re.sub(r'^  namewta-nginx-[a-z0-9-]+:\n.*?(?=^  [a-z0-9-]+:\n|^networks:\n|\Z)',
+                  bind_app_environment, text, flags=re.M | re.S)
+    text = re.sub(re.escape('${' + port_key + ':-') + r'\d+}', '${' + port_key + ':-' + str(port) + '}', text)
 
     writer.write(path, text)
 
@@ -232,7 +293,8 @@ def patch_lb_template(path: Path, app: str, writer: Writer) -> None:
             "        proxy_http_version 1.1;\n"
             "        proxy_set_header Host $http_host;\n"
             "        proxy_set_header X-Real-IP $remote_addr;\n"
-            "        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n"
+            "        proxy_set_header X-Forwarded-For $remote_addr;\n"
+            "        proxy_set_header Forwarded \"\";\n"
             "        proxy_set_header X-Forwarded-Proto $scheme;\n"
             f"        proxy_set_header X-Forwarded-Prefix /${{{lb_prefix_key}}};\n"
             "        proxy_set_header Upgrade $http_upgrade;\n"
@@ -257,6 +319,36 @@ def create_app_assets(repo: Path, app: str, writer: Writer) -> None:
     writer.write(nginx / "html" / app / ".gitignore", gitignore)
     writer.write(nginx / "cert" / app / ".gitignore", gitignore)
     writer.ensure_dir(nginx / "log" / app)
+
+
+def update_template_contracts(repo: Path, registry: dict, writer: Writer) -> None:
+    # All registered business Apps share the same transport contract; retain their own routes.
+    for app in registry['apps']:
+        template = release_root(repo) / app['nginxTemplate']
+        if app['apiKind'] != 'business' or not template.is_file():
+            continue
+        text = template.read_text()
+        text = text.replace('server namewta-server1:8080', 'server ${BACKEND_SERVER1}')
+        text = text.replace('server namewta-server2:8080', 'server ${BACKEND_SERVER2}')
+        if 'log_format app_access ' not in text:
+            text = "log_format app_access '$remote_addr $request_method $uri $status';\n\n" + text
+            text = text.replace('    index index.html;', '    index index.html;\n    access_log /var/log/nginx/access.log app_access;')
+        if 'location = /healthz' not in text:
+            text = text.replace('    location ~ ^(/[^/]*)?/actuator', '''    location = /healthz {
+        access_log off;
+        default_type text/plain;
+        return 200 'ok\\n';
+    }
+
+    location ~ ^(/[^/]*)?/actuator''')
+        writer.write(template, text)
+    # OAuth callback queries contain one-time codes; access logs retain only the URI path.
+    for template in lb_templates(repo):
+        text = template.read_text()
+        if 'log_format lb_access ' not in text:
+            text = "log_format lb_access '$remote_addr $request_method $uri $status';\n\n" + text
+            text = text.replace('    server_tokens off;', '    server_tokens off;\n    access_log /var/log/nginx/access.log lb_access;')
+        writer.write(template, text)
 
 
 def check_prefix_collision(repo: Path, prefix: str, current_key: str) -> None:
@@ -321,30 +413,55 @@ def main() -> None:
     prefix_key = env_key(args.app, "PREFIX")
     port_key = env_key(args.app, "PORT")
     check_prefix_collision(repo, prefix, prefix_key)
-    port = args.port or allocate_port(repo)
-    if not 41080 <= port < 42000 or port in used_ports(repo):
+    registry_file = release_root(repo) / 'apps.json'
+    registry = json.loads(registry_file.read_text())
+    registration = next((row for row in registry['apps'] if row['id'] == args.app), None)
+    port = args.port or (registration['defaultPort'] if registration else allocate_port(repo))
+    if not 41080 <= port < 42000 or port in used_ports(repo, port_key):
         parser.error(f"端口 {port} 不可用；App 端口必须位于 41080-41999 且未占用")
+    if registration is None:
+        package = json.loads(package_json.read_text())
+        registration = {'id': args.app, 'package': package['name'], 'shipped': True,
+                        'prefixEnv': prefix_key, 'originEnv': env_key(args.app, 'ORIGIN'), 'portEnv': port_key,
+                        'defaultPort': port, 'apiKind': 'business', 'callbackPath': '/sso/callback',
+                        'composeService': 'namewta-nginx-' + args.app,
+                        'nginxTemplate': f'docker/frontend/nginx/apps/nginx-{args.app}.conf.template',
+                        'ingress': 'lb', 'healthPath': '/healthz'}
+        registry['apps'].append(registration)
+    registration['defaultPort'] = port
+    for row in registry['apps']:
+        row['apiPath'] = '/sso' if row['apiKind'] == 'sso' else '/{prefix}/{environment}-api'
+    if registration['apiKind'] == 'sso' and prefix == 'sso':
+        parser.error('SSO static prefix cannot collide with the /sso API namespace')
+    if registration['apiKind'] == 'sso':
+        for endpoint in [registration] + ([registration['tls']] if registration.get('tls') else []):
+            if not (release_root(repo) / endpoint['nginxTemplate']).is_file():
+                parser.error('SSO 专用模板缺失：先恢复已登记模板，不能用业务 App 模板代替')
 
     print(
         f"App={args.app} prefix=/{prefix}/ port={port} "
         f"env={prefix_key},{port_key}{' [sensitive]' if args.sensitive else ''}"
     )
     writer = Writer(args.dry_run)
+    writer.write(registry_file, json.dumps(registry, ensure_ascii=False, indent=2) + '\n')
+    update_template_contracts(repo, registry, writer)
     create_app_assets(repo, args.app, writer)
-    patch_compose(repo, args.app, port, writer)
-    for template in lb_templates(repo):
-        patch_lb_template(template, args.app, writer)
+    patch_compose(repo, args.app, port, registration, writer)
+    if registration['ingress'] == 'lb':
+        for template in lb_templates(repo):
+            patch_lb_template(template, args.app, writer)
 
     example_prefix = "replace-with-private-prefix" if args.sensitive else prefix
     upsert_env(release_root(repo) / ".env.example", prefix_key, example_prefix, writer)
     upsert_env(release_root(repo) / ".env.example", port_key, str(port), writer)
-
-    local_env = release_root(repo) / ".env"
-    if local_env.exists():
-        upsert_env(local_env, prefix_key, prefix, writer)
-        upsert_env(local_env, port_key, str(port), writer)
-    else:
-        print(f"[NEXT] 在 {local_env} 中设置 {prefix_key}={prefix} 和 {port_key}={port}")
+    for row in registry['apps']:
+        example = parse_env(release_root(repo) / '.env.example')
+        if row['originEnv'] not in example:
+            upsert_env(release_root(repo) / '.env.example', row['originEnv'], f'https://{row["id"]}.example.invalid', writer)
+        if row.get('tls'):
+            upsert_env(release_root(repo) / '.env.example', row['tls']['portEnv'], str(row['tls']['defaultPort']), writer)
+    # Runtime configuration is operator-owned; registering an App must never rewrite it.
+    print(f"[NEXT] 在未入库的运行 env 中设置 {prefix_key}、{port_key} 和 {registration['originEnv']}")
 
     print(f"完成：{len(writer.changes)} 个文件需要变更")
     print("下一步：运行 release-artifacts/scripts/verify-release.sh 和 Compose config")
