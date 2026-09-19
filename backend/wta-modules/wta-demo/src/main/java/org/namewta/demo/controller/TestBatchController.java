@@ -1,11 +1,12 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.web.core.BaseController;
 import org.namewta.demo.domain.TestDemo;
 import org.namewta.demo.mapper.TestDemoMapper;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,7 @@ public class TestBatchController extends BaseController {
      */
     @PostMapping("/add")
 //    @DS("slave")
+    @Log(title = "批量演示", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> add() {
         List<TestDemo> list = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
@@ -55,6 +57,7 @@ public class TestBatchController extends BaseController {
      */
     @PostMapping("/addOrUpdate")
 //    @DS("slave")
+    @Log(title = "批量演示", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> addOrUpdate() {
         List<TestDemo> list = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
@@ -79,8 +82,9 @@ public class TestBatchController extends BaseController {
     /**
      * 删除批量方法
      */
-    @DeleteMapping()
+    @PostMapping
 //    @DS("slave")
+    @Log(title = "批量演示", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> remove() {
         return toAjax(testDemoMapper.lambda()
             .eq(TestDemo::getOrderNum, -1L)

@@ -1,5 +1,7 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.constant.CacheNames;
@@ -9,6 +11,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,7 +58,8 @@ public class RedisCacheController {
      * cacheNames 命名规则 查看 {@link CacheNames} 注释 支持多参数
      */
     @CachePut(cacheNames = CacheNames.DEMO_CACHE, key = "#key", condition = "#key != null")
-    @GetMapping("/test2")
+    @PostMapping("/test2")
+    @Log(title = "缓存写入演示", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<String> test2(String key, String value) {
         return R.data(value);
     }
@@ -69,7 +73,8 @@ public class RedisCacheController {
      * cacheNames 命名规则 查看 {@link CacheNames} 注释 支持多参数
      */
     @CacheEvict(cacheNames = CacheNames.DEMO_CACHE, key = "#key", condition = "#key != null")
-    @GetMapping("/test3")
+    @PostMapping("/test3")
+    @Log(title = "缓存删除演示", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<String> test3(String key, String value) {
         return R.data(value);
     }
@@ -79,7 +84,8 @@ public class RedisCacheController {
      * 手动设置过期时间10秒
      * 11秒后获取 判断是否相等
      */
-    @GetMapping("/test6")
+    @PostMapping("/test6")
+    @Log(title = "缓存过期演示", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Boolean> test6(String key, String value) {
         RedisUtils.setCacheObject(key, value);
         boolean flag = RedisUtils.expire(key, Duration.ofSeconds(10));

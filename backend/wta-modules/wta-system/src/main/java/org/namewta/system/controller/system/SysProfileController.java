@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.core.utils.StringUtils;
-import org.namewta.common.encrypt.annotation.ApiEncrypt;
 import org.namewta.common.log.annotation.Log;
 import org.namewta.common.log.enums.BusinessType;
 import org.namewta.common.mybatis.helper.DataPermissionHelper;
@@ -59,8 +58,8 @@ public class SysProfileController extends BaseController {
      * @return 操作结果
      */
     @RepeatSubmit
-    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @Log(title = "个人信息", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping
     public R<Void> updateProfile(@Validated @RequestBody SysUserProfileBo profile) {
         SysUserBo user = BeanUtil.toBean(profile, SysUserBo.class);
         user.setUserId(LoginHelper.getUserId());
@@ -85,10 +84,9 @@ public class SysProfileController extends BaseController {
      * @return 操作结果
      */
     @RepeatSubmit
-    @ApiEncrypt
     @Log(title = "个人信息", businessType = BusinessType.UPDATE,
         isSaveRequestData = false, isSaveResponseData = false)
-    @PutMapping("/updatePwd")
+    @PostMapping("/updatePwd")
     public R<Void> updatePwd(@Validated @RequestBody SysUserPasswordBo bo) {
         SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
         String password = user.getPassword();

@@ -1,5 +1,7 @@
 package org.namewta.system.controller.system;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -24,12 +26,14 @@ public class SysOssUploadController {
 
     @SaCheckPermission("system:oss:upload")
     @PostMapping
+    @Log(title = "OSS上传初始化", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public R<InitResponse> init(@Valid @RequestBody InitRequest request) {
         return R.ok(uploadService.init(request));
     }
 
     @SaCheckPermission("system:oss:upload")
     @PostMapping("/{uploadToken}/parts/sign")
+    @Log(title = "OSS上传分片签名", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     public R<SignPartsResponse> signParts(@PathVariable String uploadToken,
                                          @Valid @RequestBody SignPartsRequest request) {
         return R.ok(uploadService.signParts(uploadToken, request));
@@ -44,13 +48,15 @@ public class SysOssUploadController {
 
     @SaCheckPermission("system:oss:upload")
     @PostMapping("/{uploadToken}/complete")
+    @Log(title = "OSS上传完成", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<String> complete(@PathVariable String uploadToken,
                               @Valid @RequestBody(required = false) CompleteRequest request) {
         return R.data(uploadService.complete(uploadToken, request));
     }
 
     @SaCheckPermission("system:oss:upload")
-    @DeleteMapping("/{uploadToken}")
+    @PostMapping("/{uploadToken}")
+    @Log(title = "OSS上传取消", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> abort(@PathVariable String uploadToken) {
         uploadService.abort(uploadToken);
         return R.ok();

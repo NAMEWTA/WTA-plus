@@ -1,11 +1,13 @@
 package org.namewta.demo.controller.queue;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import cn.hutool.core.util.RandomUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.redis.utils.QueueUtils;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +33,8 @@ public class PriorityQueueController {
      *
      * @param queueName 队列名
      */
-    @GetMapping("/add")
+    @PostMapping("/add")
+    @Log(title = "优先队列重建", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> add(String queueName) {
         // 用完了一定要销毁 否则会一直存在
         boolean b = QueueUtils.destroyPriorityQueue(queueName);
@@ -58,7 +61,8 @@ public class PriorityQueueController {
      * @param name      对象名
      * @param orderNum  排序号
      */
-    @GetMapping("/remove")
+    @PostMapping("/remove")
+    @Log(title = "优先队列删除", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> remove(String queueName, String name, Integer orderNum) {
         PriorityDemo data = new PriorityDemo();
         data.setName(name);
@@ -76,7 +80,8 @@ public class PriorityQueueController {
      *
      * @param queueName 队列名
      */
-    @GetMapping("/get")
+    @PostMapping("/get")
+    @Log(title = "优先队列消费", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> get(String queueName) {
         PriorityDemo data;
         do {

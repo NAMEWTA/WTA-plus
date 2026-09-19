@@ -78,8 +78,8 @@ public class SysOssController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:oss:remove")
-    @Log(title = "OSS对象存储", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ossIds}")
+    @Log(title = "OSS对象存储", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/{ossIds}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ossIds) {
         return toAjax(ossService.deleteWithValidByIds(List.of(ossIds), true));

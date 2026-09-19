@@ -100,7 +100,7 @@ public class SysDeptController extends BaseController {
     @SaCheckPermission("system:dept:edit")
     @Log(title = "部门管理", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping
+    @PostMapping("/update")
     public R<Void> edit(@Validated @RequestBody SysDeptBo dept) {
         Long deptId = dept.getDeptId();
         deptService.checkDeptDataScope(deptId);
@@ -126,7 +126,7 @@ public class SysDeptController extends BaseController {
      */
     @SaCheckPermission("system:dept:remove")
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{deptId}")
+    @PostMapping("/{deptId}")
     public R<Void> remove(@PathVariable Long deptId) {
         if (SystemConstants.DEFAULT_DEPT_ID.equals(deptId)) {
             return R.warn("默认部门,不允许删除");

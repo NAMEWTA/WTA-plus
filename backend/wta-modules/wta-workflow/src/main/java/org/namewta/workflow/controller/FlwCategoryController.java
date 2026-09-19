@@ -102,7 +102,7 @@ public class FlwCategoryController extends BaseController {
     @SaCheckPermission("workflow:category:edit")
     @Log(title = "流程分类", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping()
+    @PostMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody FlowCategoryBo category) {
         Long categoryId = category.getCategoryId();
         if (!flwCategoryService.checkCategoryNameUnique(category)) {
@@ -121,7 +121,7 @@ public class FlwCategoryController extends BaseController {
      */
     @SaCheckPermission("workflow:category:remove")
     @Log(title = "流程分类", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{categoryId}")
+    @PostMapping("/{categoryId}")
     public R<Void> remove(@PathVariable Long categoryId) {
         if (FlowConstant.FLOW_CATEGORY_ID.equals(categoryId)) {
             return R.warn("默认流程分类,不允许删除");

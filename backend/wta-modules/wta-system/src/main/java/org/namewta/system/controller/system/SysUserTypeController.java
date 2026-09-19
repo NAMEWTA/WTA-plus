@@ -105,7 +105,7 @@ public class SysUserTypeController extends BaseController {
     @SaCheckPermission("system:userType:edit")
     @Log(title = "登录域管理", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping
+    @PostMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysUserTypeBo bo) {
         return toAjax(userTypeService.updateByBo(bo));
     }
@@ -118,7 +118,7 @@ public class SysUserTypeController extends BaseController {
      */
     @SaCheckPermission("system:userType:edit")
     @Log(title = "登录域管理", businessType = BusinessType.UPDATE)
-    @PutMapping("/changeStatus")
+    @PostMapping("/changeStatus")
     public R<Void> changeStatus(@RequestBody SysUserTypeBo bo) {
         return toAjax(userTypeService.updateStatus(bo.getUserTypeId(), bo.getStatus()));
     }
@@ -131,7 +131,7 @@ public class SysUserTypeController extends BaseController {
      */
     @SaCheckPermission("system:userType:remove")
     @Log(title = "登录域管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userTypeIds:\\d+(?:,\\d+)*}")
+    @PostMapping("/{userTypeIds:\\d+(?:,\\d+)*}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] userTypeIds) {
         return toAjax(userTypeService.deleteWithValidByIds(List.of(userTypeIds)));

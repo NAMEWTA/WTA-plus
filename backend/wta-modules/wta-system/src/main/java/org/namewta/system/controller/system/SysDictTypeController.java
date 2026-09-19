@@ -100,7 +100,7 @@ public class SysDictTypeController extends BaseController {
     @SaCheckPermission("system:dict:edit")
     @Log(title = "字典类型", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping
+    @PostMapping("/update")
     public R<Void> edit(@Validated @RequestBody SysDictTypeBo dict) {
         if (!dictTypeService.checkDictTypeUnique(dict)) {
             return R.fail("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
@@ -117,7 +117,7 @@ public class SysDictTypeController extends BaseController {
      */
     @SaCheckPermission("system:dict:remove")
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{dictIds}")
+    @PostMapping("/{dictIds}")
     public R<Void> remove(@PathVariable Long[] dictIds) {
         dictTypeService.deleteDictTypeByIds(Arrays.asList(dictIds));
         return R.ok();
@@ -131,7 +131,7 @@ public class SysDictTypeController extends BaseController {
     @SaCheckPermission("system:dict:remove")
     @Log(title = "字典类型", businessType = BusinessType.CLEAN)
     @Lock4j
-    @DeleteMapping("/refreshCache")
+    @PostMapping("/refreshCache")
     public R<Void> refreshCache() {
         dictTypeService.resetDictCache();
         return R.ok();

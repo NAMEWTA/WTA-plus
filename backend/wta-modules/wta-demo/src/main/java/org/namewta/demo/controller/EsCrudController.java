@@ -1,5 +1,7 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.R;
 import org.namewta.demo.domain.Document;
@@ -51,6 +53,7 @@ public class EsCrudController {
      * 插入
      */
     @PostMapping("/insert")
+    @Log(title = "搜索文档", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public Integer insert(@RequestBody Document document) {
         return documentMapper.insert(document);
     }
@@ -58,7 +61,8 @@ public class EsCrudController {
     /**
      * 更新
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
+    @Log(title = "搜索文档", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> update(@RequestBody Document document) {
         // 测试更新 更新有两种情况 分别演示如下:
         // case1: 已知id, 根据id更新 (为了演示方便,此id是从上一步查询中复制过来的,实际业务可以自行查询)
@@ -80,7 +84,8 @@ public class EsCrudController {
      *
      * @param id 主键
      */
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
+    @Log(title = "搜索文档", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Integer> delete(@PathVariable String id) {
         // 测试删除数据 删除有两种情况:根据id删或根据条件删
         return R.ok(documentMapper.deleteById(id));

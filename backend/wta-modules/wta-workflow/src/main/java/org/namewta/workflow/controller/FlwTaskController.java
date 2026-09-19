@@ -4,6 +4,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.PageResult;
 import org.namewta.common.core.domain.R;
+import org.namewta.common.core.exception.ServiceException;
+import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.common.core.validate.AddGroup;
 import org.namewta.common.log.annotation.Log;
 import org.namewta.common.log.enums.BusinessType;
@@ -44,7 +46,7 @@ public class FlwTaskController extends BaseController {
      * @param startProcessBo 启动流程参数
      * @return 启动结果及后续流程信息
      */
-    @Log(title = "任务管理", businessType = BusinessType.INSERT)
+    @Log(title = "任务管理", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping("/startWorkFlow")
     public R<StartProcessReturnDTO> startWorkFlow(@Validated(AddGroup.class) @RequestBody StartProcessBo startProcessBo) {
@@ -58,7 +60,7 @@ public class FlwTaskController extends BaseController {
      * @param completeTaskBo 办理任务参数
      * @return 操作结果
      */
-    @Log(title = "任务管理", businessType = BusinessType.INSERT)
+    @Log(title = "任务管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping("/completeTask")
     public R<Void> completeTask(@Validated(AddGroup.class) @RequestBody CompleteTaskBo completeTaskBo) {
@@ -141,11 +143,24 @@ public class FlwTaskController extends BaseController {
     /**
      * 获取流程下一节点信息。
      *
-     * @param bo 参数
+     * @param taskId 当前任务ID，仍由服务层校验读取权限
+     * @param variables JSON对象查询参数，保留嵌套值和数值/布尔类型；不接收GET正文
      * @return 下一节点列表
      */
-    @PostMapping("/getNextNodeList")
-    public R<List<FlowNode>> getNextNodeList(@RequestBody FlowNextNodeBo bo) {
+    @GetMapping("/getNextNodeList")
+    public R<List<FlowNode>> getNextNodeList(@RequestParam Long taskId,
+                                            @RequestParam(required = false) String variables) {
+        FlowNextNodeBo bo = new FlowNextNodeBo();
+        bo.setTaskId(taskId);
+        if (variables != null) {
+            try {
+                var parsed = JsonUtils.parseMap(variables);
+                if (parsed == null) throw new ServiceException("流程变量必须是JSON对象");
+                bo.setVariables(parsed);
+            } catch (tools.jackson.core.JacksonException failure) {
+                throw new ServiceException("流程变量必须是JSON对象", failure);
+            }
+        }
         return R.ok(flwTaskService.getNextNodeList(bo));
     }
 
@@ -155,7 +170,7 @@ public class FlwTaskController extends BaseController {
      * @param bo 参数
      * @return 处理结果
      */
-    @Log(title = "任务管理", businessType = BusinessType.INSERT)
+    @Log(title = "任务管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping("/terminationTask")
     public R<Boolean> terminationTask(@RequestBody FlowTerminationBo bo) {
@@ -169,7 +184,7 @@ public class FlwTaskController extends BaseController {
      * @param taskOperation 操作类型，委派 delegateTask、转办 transferTask、加签 addSignature、减签 reductionSignature
      * @return 操作结果
      */
-    @Log(title = "任务管理", businessType = BusinessType.UPDATE)
+    @Log(title = "任务管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit
     @PostMapping("/taskOperation/{taskOperation}")
     public R<Void> taskOperation(@Validated @RequestBody TaskOperationBo bo, @PathVariable String taskOperation) {
@@ -183,10 +198,10 @@ public class FlwTaskController extends BaseController {
      * @param userId     办理人id
      * @return 操作结果
      */
-    @Log(title = "任务管理", businessType = BusinessType.UPDATE)
+    @Log(title = "任务管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @SaCheckPermission("workflow:task:edit")
-    @PutMapping("/updateAssignee/{userId}")
+    @PostMapping("/updateAssignee/{userId}")
     public R<Void> updateAssignee(@RequestBody List<Long> taskIdList, @PathVariable String userId) {
         return toAjax(flwTaskService.updateAssignee(taskIdList, userId));
     }
@@ -197,7 +212,7 @@ public class FlwTaskController extends BaseController {
      * @param bo 参数
      * @return 操作结果
      */
-    @Log(title = "任务管理", businessType = BusinessType.INSERT)
+    @Log(title = "任务管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping("/backProcess")
     public R<Void> backProcess(@Validated({AddGroup.class}) @RequestBody BackProcessBo bo) {
@@ -234,7 +249,7 @@ public class FlwTaskController extends BaseController {
      * @return 结果
      */
     @PostMapping("/urgeTask")
-    @Log(title = "任务管理", businessType = BusinessType.INSERT)
+    @Log(title = "任务管理", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:task:edit")
     public R<Void> urgeTask(@RequestBody FlowUrgeTaskBo bo) {
         return toAjax(flwTaskService.urgeTask(bo));

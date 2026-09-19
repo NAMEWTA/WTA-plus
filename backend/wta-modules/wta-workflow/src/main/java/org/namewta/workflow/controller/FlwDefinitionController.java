@@ -83,7 +83,7 @@ public class FlwDefinitionController extends BaseController {
      * @param flowDefinition 流程定义信息
      * @return 操作结果
      */
-    @Log(title = "流程定义", businessType = BusinessType.INSERT)
+    @Log(title = "流程定义", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     @PostMapping
     @RepeatSubmit()
     @Transactional(rollbackFor = Exception.class)
@@ -98,8 +98,8 @@ public class FlwDefinitionController extends BaseController {
      * @param flowDefinition 流程定义信息
      * @return 操作结果
      */
-    @Log(title = "流程定义", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @Log(title = "流程定义", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/update")
     @RepeatSubmit()
     @Transactional(rollbackFor = Exception.class)
     @SaCheckPermission("workflow:definition:edit")
@@ -113,8 +113,8 @@ public class FlwDefinitionController extends BaseController {
      * @param id 流程定义id
      * @return 发布结果
      */
-    @Log(title = "流程定义", businessType = BusinessType.INSERT)
-    @PutMapping("/publish/{id}")
+    @Log(title = "流程定义", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/publish/{id}")
     @RepeatSubmit()
     @SaCheckPermission("workflow:definition:publish")
     public R<Boolean> publish(@PathVariable Long id) {
@@ -127,8 +127,8 @@ public class FlwDefinitionController extends BaseController {
      * @param id 流程定义id
      * @return 操作结果
      */
-    @Log(title = "流程定义", businessType = BusinessType.INSERT)
-    @PutMapping("/unPublish/{id}")
+    @Log(title = "流程定义", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/unPublish/{id}")
     @RepeatSubmit()
     @Transactional(rollbackFor = Exception.class)
     @SaCheckPermission("workflow:definition:publish")
@@ -142,8 +142,8 @@ public class FlwDefinitionController extends BaseController {
      * @param ids 流程定义ID集合
      * @return 操作结果
      */
-    @Log(title = "流程定义", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @Log(title = "流程定义", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/{ids}")
     @SaCheckPermission("workflow:definition:remove")
     public R<Void> remove(@PathVariable List<Long> ids) {
         return toAjax(flwDefinitionService.removeDef(ids));
@@ -155,7 +155,7 @@ public class FlwDefinitionController extends BaseController {
      * @param id 流程定义id
      * @return 复制结果
      */
-    @Log(title = "流程定义", businessType = BusinessType.INSERT)
+    @Log(title = "流程定义", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     @PostMapping("/copy/{id}")
     @RepeatSubmit()
     @Transactional(rollbackFor = Exception.class)
@@ -171,7 +171,7 @@ public class FlwDefinitionController extends BaseController {
      * @param category 分类
      * @return 导入结果
      */
-    @Log(title = "流程定义", businessType = BusinessType.IMPORT)
+    @Log(title = "流程定义", businessType = BusinessType.IMPORT, isSaveRequestData = false, isSaveResponseData = false)
     @PostMapping("/importDef")
     @SaCheckPermission("workflow:definition:import")
     public R<Boolean> importDef(MultipartFile file, String category) {
@@ -185,7 +185,7 @@ public class FlwDefinitionController extends BaseController {
      * @param response 响应
      * @throws IOException 异常
      */
-    @Log(title = "流程定义", businessType = BusinessType.EXPORT)
+    @Log(title = "流程定义", businessType = BusinessType.EXPORT, isSaveRequestData = false, isSaveResponseData = false)
     @PostMapping("/exportDef/{id}")
     @SaCheckPermission("workflow:definition:export")
     public void exportDef(@PathVariable Long id, HttpServletResponse response) throws IOException {
@@ -212,9 +212,9 @@ public class FlwDefinitionController extends BaseController {
      * @return 处理结果
      */
     @RepeatSubmit()
-    @PutMapping("/active/{id}")
+    @PostMapping("/active/{id}")
     @Transactional(rollbackFor = Exception.class)
-    @Log(title = "流程定义", businessType = BusinessType.UPDATE)
+    @Log(title = "流程定义", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:definition:active")
     public R<Boolean> active(@PathVariable Long id, @RequestParam boolean active) {
         return R.ok(active ? defService.active(id) : defService.unActive(id));

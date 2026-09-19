@@ -57,7 +57,7 @@ public class SysClientController extends BaseController {
      * @param response 响应流
      */
     @SaCheckPermission("system:client:export")
-    @Log(title = "客户端管理", businessType = BusinessType.EXPORT)
+    @Log(title = "客户端管理", businessType = BusinessType.EXPORT, isSaveRequestData = false, isSaveResponseData = false)
     @PostMapping("/export")
     public void export(SysClientBo bo, HttpServletResponse response) {
         List<SysClientVo> list = sysClientService.queryList(bo);
@@ -84,7 +84,7 @@ public class SysClientController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:client:add")
-    @Log(title = "客户端管理", businessType = BusinessType.INSERT, excludeParamNames = {"ssoSecret", "ssoSecretOnce", "clientSecret"})
+    @Log(title = "客户端管理", businessType = BusinessType.INSERT, excludeParamNames = {"ssoSecret", "ssoSecretOnce", "clientSecret"}, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping()
     public R<SysClientVo> add(@Validated(AddGroup.class) @RequestBody SysClientBo bo) {
@@ -106,9 +106,9 @@ public class SysClientController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:client:edit")
-    @Log(title = "客户端管理", businessType = BusinessType.UPDATE, excludeParamNames = {"ssoSecret", "ssoSecretOnce", "clientSecret"})
+    @Log(title = "客户端管理", businessType = BusinessType.UPDATE, excludeParamNames = {"ssoSecret", "ssoSecretOnce", "clientSecret"}, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @PutMapping()
+    @PostMapping("/update")
     public R<SysClientVo> edit(@Validated(EditGroup.class) @RequestBody SysClientBo bo) {
         if (!sysClientService.checkClickKeyUnique(bo)) {
             return R.fail("修改客户端'" + bo.getClientKey() + "'失败，客户端key已存在");
@@ -128,7 +128,7 @@ public class SysClientController extends BaseController {
      * @return 含一次性明文的客户端视图
      */
     @SaCheckPermission("system:client:edit")
-    @Log(title = "客户端SSO密钥轮换", businessType = BusinessType.UPDATE, isSaveResponseData = false)
+    @Log(title = "客户端SSO密钥轮换", businessType = BusinessType.UPDATE, isSaveResponseData = false, isSaveRequestData = false)
     @RepeatSubmit()
     @PostMapping("/sso/rotate-secret")
     public R<SysClientVo> rotateSsoSecret(@RequestBody SysClientBo bo) {
@@ -145,7 +145,7 @@ public class SysClientController extends BaseController {
      * @return 接入后的视图
      */
     @SaCheckPermission("system:client:edit")
-    @Log(title = "客户端SSO接入", businessType = BusinessType.UPDATE)
+    @Log(title = "客户端SSO接入", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping("/sso/bind")
     public R<SysClientVo> bindSso(@RequestBody SysClientBo bo) {
@@ -162,8 +162,8 @@ public class SysClientController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:client:edit")
-    @Log(title = "客户端管理", businessType = BusinessType.UPDATE)
-    @PutMapping("/changeStatus")
+    @Log(title = "客户端管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/changeStatus")
     public R<Void> changeStatus(@RequestBody SysClientBo bo) {
         return toAjax(sysClientService.updateClientStatus(bo.getClientId(), bo.getStatus()));
     }
@@ -175,8 +175,8 @@ public class SysClientController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:client:remove")
-    @Log(title = "客户端管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @Log(title = "客户端管理", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
         return toAjax(sysClientService.deleteWithValidByIds(List.of(ids), true));

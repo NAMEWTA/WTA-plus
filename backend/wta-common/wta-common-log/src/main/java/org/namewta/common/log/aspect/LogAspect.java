@@ -11,11 +11,10 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.namewta.common.core.constant.SystemConstants;
 import org.namewta.common.core.utils.ServletUtils;
 import org.namewta.common.core.utils.SpringUtils;
 import org.namewta.common.core.utils.StringUtils;
-import org.namewta.common.json.utils.JsonUtils;
+import org.namewta.common.json.utils.LogSanitizer;
 import org.namewta.common.log.annotation.Log;
 import org.namewta.common.log.enums.BusinessStatus;
 import org.namewta.common.log.event.OperLogEvent;
@@ -25,6 +24,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.http.HttpMethod;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerMapping;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -95,9 +95,12 @@ public class LogAspect {
             // 请求的地址
             String ip = ServletUtils.getClientIP();
             operLog.setOperIp(ip);
-            operLog.setOperUrl(limit(request.getRequestURI(), MAX_URL_LENGTH));
+            // 路径变量可能是上传/会话令牌；审计保存服务端路由模板，不复制原始URI。
+            Object route = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+            operLog.setOperUrl(limit(route == null ? "[unmapped]" : route.toString(), MAX_URL_LENGTH));
             operLog.setClientKey(limit(request.getHeader(LoginHelper.CLIENT_KEY), MAX_CLIENT_KEY_LENGTH));
-            LoginUser loginUser = LoginHelper.getLoginUser();
+            // Sa-Token 对空 token 的会话读取会抛异常；匿名签发同样必须留下审计事件。
+            LoginUser loginUser = LoginHelper.isLogin() ? LoginHelper.getLoginUser() : null;
             if (ObjectUtil.isNotNull(loginUser)) {
                 operLog.setOperName(loginUser.getUsername());
                 operLog.setUserId(loginUser.getUserId());
@@ -113,7 +116,7 @@ public class LogAspect {
 
             if (e != null) {
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
-                operLog.setErrorMsg(limit(e.getMessage(), MAX_CONTENT_LENGTH));
+                operLog.setErrorMsg(LogSanitizer.failure(e));
             }
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
@@ -130,7 +133,7 @@ public class LogAspect {
             SpringUtils.context().publishEvent(operLog);
         } catch (Exception exp) {
             // 记录本地异常日志
-            log.error("记录操作日志异常", exp);
+            log.error("记录操作日志异常，异常类型={}", LogSanitizer.failure(exp));
         }
     }
 
@@ -156,8 +159,8 @@ public class LogAspect {
             setRequestValue(joinPoint, operLog, log.excludeParamNames());
         }
         // 是否需要保存response，参数和值
-        if (log.isSaveResponseData() && ObjectUtil.isNotNull(jsonResult)) {
-            operLog.setJsonResult(limit(JsonUtils.toJsonString(jsonResult), MAX_CONTENT_LENGTH));
+        if (log.isSaveResponseData() && ObjectUtil.isNotNull(jsonResult) && !LogSanitizer.omitResponseBody(requestPath())) {
+            operLog.setJsonResult(limit(LogSanitizer.object(jsonResult, requestPath(), log.excludeParamNames()), MAX_CONTENT_LENGTH));
         }
     }
 
@@ -170,15 +173,13 @@ public class LogAspect {
      * @throws Exception 异常
      */
     private void setRequestValue(JoinPoint joinPoint, OperLogEvent operLog, String[] excludeParamNames) throws Exception {
-        Map<String, String> paramsMap = ServletUtils.getParamMap(ServletUtils.getRequest());
+        Map<String, String[]> paramsMap = ServletUtils.getRequest().getParameterMap();
         String requestMethod = operLog.getRequestMethod();
         if (MapUtil.isEmpty(paramsMap) && StringUtils.equalsAny(requestMethod, HttpMethod.PUT.name(), HttpMethod.POST.name(), HttpMethod.DELETE.name())) {
             String params = argsArrayToString(joinPoint.getArgs(), excludeParamNames);
             operLog.setOperParam(limit(params, MAX_CONTENT_LENGTH));
         } else {
-            MapUtil.removeAny(paramsMap, SystemConstants.EXCLUDE_PROPERTIES);
-            MapUtil.removeAny(paramsMap, excludeParamNames);
-            operLog.setOperParam(limit(JsonUtils.toJsonString(paramsMap), MAX_CONTENT_LENGTH));
+            operLog.setOperParam(limit(LogSanitizer.object(paramsMap, requestPath(), excludeParamNames), MAX_CONTENT_LENGTH));
         }
     }
 
@@ -190,14 +191,13 @@ public class LogAspect {
      * @return 参数字符串
      */
     private String argsArrayToString(Object[] paramsArray, String[] excludeParamNames) {
-        StringJoiner params = new StringJoiner(" ");
+        StringJoiner params = new StringJoiner(",", "[", "]");
         if (ArrayUtil.isEmpty(paramsArray)) {
             return params.toString();
         }
-        String[] exclude = ArrayUtil.addAll(excludeParamNames, SystemConstants.EXCLUDE_PROPERTIES);
         for (Object o : paramsArray) {
             if (ObjectUtil.isNotNull(o) && !isFilterObject(o)) {
-                params.add(serializeArg(o, exclude));
+                params.add(serializeArg(o, excludeParamNames));
             }
         }
         return params.toString();
@@ -211,7 +211,18 @@ public class LogAspect {
      * @return 参数日志字符串
      */
     private String serializeArg(Object arg, String[] exclude) {
-        return JsonUtils.toJsonStringExcludeFields(arg, exclude);
+        return LogSanitizer.object(arg, requestPath(), exclude);
+    }
+
+    /** 获取应用内路径，避免 context-path 影响 OAuth 凭据策略。 */
+    private String requestPath() {
+        HttpServletRequest request = ServletUtils.getRequest();
+        if (request == null) {
+            return null;
+        }
+        String servletPath = request.getServletPath();
+        return servletPath == null || servletPath.isEmpty()
+            ? request.getRequestURI().substring(request.getContextPath().length()) : servletPath;
     }
 
     /**

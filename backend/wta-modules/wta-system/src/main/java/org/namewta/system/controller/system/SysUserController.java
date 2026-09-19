@@ -14,7 +14,6 @@ import org.namewta.common.core.domain.PageResult;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.core.utils.StreamUtils;
 import org.namewta.common.core.utils.StringUtils;
-import org.namewta.common.encrypt.annotation.ApiEncrypt;
 import org.namewta.common.excel.core.ExcelResult;
 import org.namewta.common.excel.utils.ExcelBuilder;
 import org.namewta.common.log.annotation.Log;
@@ -83,7 +82,7 @@ public class SysUserController extends BaseController {
      * @param user     用户查询条件
      * @param response HTTP 响应
      */
-    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
+    @Log(title = "用户管理", businessType = BusinessType.EXPORT, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("system:user:export")
     @PostMapping("/export")
     public void export(SysUserBo user, HttpServletResponse response) {
@@ -97,7 +96,7 @@ public class SysUserController extends BaseController {
      * @param file          导入文件
      * @param updateSupport 是否更新已存在数据
      */
-    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    @Log(title = "用户管理", businessType = BusinessType.IMPORT, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("system:user:import")
     @PostMapping(value = "/importData", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public R<Void> importData(@RequestPart("file") MultipartFile file, boolean updateSupport) throws Exception {
@@ -114,6 +113,7 @@ public class SysUserController extends BaseController {
      * @param response HTTP 响应
      */
     @PostMapping("/importTemplate")
+    @Log(title = "用户导入模板", businessType = BusinessType.EXPORT, isSaveRequestData = false, isSaveResponseData = false)
     public void importTemplate(HttpServletResponse response) {
         ExcelBuilder.of(new ArrayList<>(), SysUserImportVo.class).sheetName("用户数据").toResponse(response);
     }
@@ -191,7 +191,7 @@ public class SysUserController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:user:add")
-    @Log(title = "用户管理", businessType = BusinessType.INSERT, excludeParamNames = "password")
+    @Log(title = "用户管理", businessType = BusinessType.INSERT, excludeParamNames = "password", isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysUserBo user) {
@@ -216,9 +216,9 @@ public class SysUserController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:user:edit")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE, excludeParamNames = "password")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE, excludeParamNames = "password", isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @PutMapping
+    @PostMapping("/update")
     public R<Void> edit(@Validated @RequestBody SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
@@ -240,8 +240,8 @@ public class SysUserController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:user:remove")
-    @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userIds}")
+    @Log(title = "用户管理", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/{userIds}")
     public R<Void> remove(@PathVariable Long[] userIds) {
         if (ArrayUtil.contains(userIds, LoginHelper.getUserId())) {
             return R.fail("当前用户不能删除");
@@ -269,11 +269,10 @@ public class SysUserController extends BaseController {
      * @param user 用户参数
      * @return 操作结果
      */
-    @ApiEncrypt
     @SaCheckPermission("system:user:resetPwd")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE, excludeParamNames = "password")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE, excludeParamNames = "password", isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @PutMapping("/resetPwd")
+    @PostMapping("/resetPwd")
     public R<Void> resetPwd(@RequestBody SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
@@ -290,9 +289,9 @@ public class SysUserController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:user:edit")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @PutMapping("/changeStatus")
+    @PostMapping("/changeStatus")
     public R<Void> changeStatus(@RequestBody SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
@@ -306,9 +305,9 @@ public class SysUserController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:user:edit")
-    @Log(title = "用户解锁", businessType = BusinessType.OTHER)
+    @Log(title = "用户解锁", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @GetMapping("/unlock/{userId}")
+    @PostMapping("/unlock/{userId}")
     public R<Void> unlock(@PathVariable Long userId) {
         SysUserVo user = userService.selectUserById(userId);
         if (ObjectUtil.isNull(user)) {
@@ -349,9 +348,9 @@ public class SysUserController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("system:user:edit")
-    @Log(title = "用户管理", businessType = BusinessType.GRANT)
+    @Log(title = "用户管理", businessType = BusinessType.GRANT, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @PutMapping("/authRole")
+    @PostMapping("/authRole")
     public R<Void> insertAuthRole(Long userId, Long[] roleIds, Long clientId) {
         userService.checkUserDataScope(userId);
         userService.insertUserAuth(userId, roleIds, clientId);

@@ -32,10 +32,10 @@
 | 详情 | `GET /workflow/leave/{id}` | `workflow:leave:query` |
 | 新增草稿 | `POST /workflow/leave` | `workflow:leave:add` |
 | 提交并启动 | `POST /workflow/leave/submitAndFlowStart` | `workflow:leave:add` |
-| 修改 | `PUT /workflow/leave` | `workflow:leave:edit` |
-| 删除 | `DELETE /workflow/leave/{ids}` | `workflow:leave:remove` |
+| 修改 | `POST /workflow/leave/update` | `workflow:leave:edit` |
+| 删除 | `POST /workflow/leave/{ids}` | `workflow:leave:remove` |
 
-上表是当前 `TestLeaveController` 的真实存量合同，其中修改和删除仍使用 PUT/DELETE，属于工程规范 `MIG-CRUD-METHOD-LOG` 的待迁移状态。新增业务或实质修改该合同时必须改为 POST，并同步 controller、前端 transport、测试和 `@Log`；不要把样例的存量方法照抄为新接口。
+上表与当前 `TestLeaveController`、domain transport及生成合同一致：查询GET、变更POST且记录安全操作日志，不保留旧PUT/DELETE入口。
 
 ## 提交并启动
 
@@ -104,10 +104,10 @@ public void processDeleteHandler(ProcessDeleteEvent processDeleteEvent)
 | `getLeave` | `GET /workflow/leave/{id}` |
 | `addLeave` | `POST /workflow/leave` |
 | `submitLeave` | `POST /workflow/leave/submitAndFlowStart` |
-| `updateLeave` | `PUT /workflow/leave` |
-| `deleteLeaves` | `DELETE /workflow/leave/{ids}` |
+| `updateLeave` | `POST /workflow/leave/update` |
+| `deleteLeaves` | `POST /workflow/leave/{ids}` |
 
-前端 PUT/DELETE 同样只是与当前后端存量合同对齐，不是新实现模板。
+前端与后端同步使用上述GET/POST合同。
 
 待办打开业务页使用任务的 `formPath`，query 携带业务 `id` / `taskId`，不是请假 service 自己查询待办。当前入口位于 `frontend/packages/web-domains/workflow/src/task/TaskListPage.vue`，实例入口位于 `src/instance/{InstancePage,MyDocumentPage}.vue`；导航由 workflow web-domain 通过 App runtime 执行。
 
@@ -121,5 +121,5 @@ public void processDeleteHandler(ProcessDeleteEvent processDeleteEvent)
 - `flowCode` 改为已发布定义编码，监听条件改为精确匹配。
 - `eval(leaveDays)` 换成自己的 SpEL Bean 方法，或不用。
 - 前端：在所属 domain 增加业务服务，在对应 web-domain 增加页面/manifest，并由目标 App 显式组合；流程定义的 `formPath` 指向注册路由。
-- HTTP 变更统一使用 POST 并配置准确、安全的 `@Log`；业务事务使用 `@DSTransactional`。不要复制本样例仍待迁移的 PUT/DELETE 和 Spring `@Transactional`。
+- HTTP 变更统一使用 POST 并配置准确、安全的 `@Log`；业务事务使用 `@DSTransactional`。不要恢复旧PUT/DELETE，也不要复制存量事务链中的Spring `@Transactional`。
 - 不要把 `ITestLeaveService` 当公共门面，不要把请假 Controller 留在 `wta-workflow` 当新业务入口。

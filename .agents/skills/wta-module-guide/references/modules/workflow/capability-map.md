@@ -106,7 +106,7 @@ DTO（`backend/wta-api/src/main/java/org/namewta/workflow/api/domain/`）：
 | `IFlwSpelService` | SpEL 定义 CRUD、`selectSpelByTaskAssigneeList`、`selectRemarksBySpels` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/IFlwSpelService.java` |
 | `ITestLeaveService` | 请假示例：`queryById` / `insertByBo` / `submitAndFlowStart` / `updateByBo` / `deleteWithValidByIds`。不是公共门面 | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/ITestLeaveService.java` |
 
-定义管理控制器同时直接注入 Warm-Flow `DefService`：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java`。实例激活/挂起走 `InsService`：`FlwInstanceController.active`（`PUT /workflow/instance/active/{id}?active=`）。这是分层选择，不是第二套公开 API。
+定义管理控制器同时直接注入 Warm-Flow `DefService`：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java`。实例激活/挂起走 `InsService`：`FlwInstanceController.active`（`POST /workflow/instance/active/{id}?active=`）。这是分层选择，不是第二套公开 API。
 
 任务操作编码：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/common/enums/TaskOperationEnum.java` — `delegateTask` / `transferTask` / `addSignature` / `reductionSignature`。
 
@@ -124,14 +124,14 @@ DTO（`backend/wta-api/src/main/java/org/namewta/workflow/api/domain/`）：
 | 未发布列表 | `GET /unPublishList` | `workflow:definition:list` |
 | 详情 | `GET /{id}` | `workflow:definition:query` |
 | 新增 | `POST` | `workflow:definition:add` |
-| 修改 | `PUT` | `workflow:definition:edit` |
-| 发布 / 取消发布 | `PUT /publish/{id}`、`PUT /unPublish/{id}` | `workflow:definition:publish` |
-| 删除 | `DELETE /{ids}` | `workflow:definition:remove` |
+| 修改 | `POST /update` | `workflow:definition:edit` |
+| 发布 / 取消发布 | `POST /publish/{id}`、`POST /unPublish/{id}` | `workflow:definition:publish` |
+| 删除 | `POST /{ids}` | `workflow:definition:remove` |
 | 复制 | `POST /copy/{id}` | `workflow:definition:copy` |
 | 导入 | `POST /importDef` | `workflow:definition:import` |
 | 导出 | `POST /exportDef/{id}` | `workflow:definition:export` |
 | XML 字符串 | `GET /xmlString/{id}` | `workflow:definition:query` |
-| 激活 | `PUT /active/{id}` | `workflow:definition:active` |
+| 激活 | `POST /active/{id}` | `workflow:definition:active` |
 
 大量方法直接调 `DefService`。
 
@@ -143,11 +143,11 @@ DTO（`backend/wta-api/src/main/java/org/namewta/workflow/api/domain/`）：
 |---|---|
 | 运行中 / 已结束 / 我的发起 | `GET /pageByRunning`、`GET /pageByFinish`、`GET /pageByCurrent` |
 | 按业务 id 详情 | `GET /getInfo/{businessId}` |
-| 删实例 | `DELETE /deleteByBusinessIds/{businessIds}`、`DELETE /deleteByInstanceIds/{instanceIds}`、`DELETE /deleteHisByInstanceIds/{instanceIds}` |
-| 撤销 | `PUT /cancelProcessApply` |
-| 激活或挂起 | `PUT /active/{id}?active=`（`true` → `insService.active`，`false` → `insService.unActive`） |
+| 删实例 | `POST /deleteByBusinessIds/{businessIds}`、`POST /deleteByInstanceIds/{instanceIds}`、`POST /deleteHisByInstanceIds/{instanceIds}` |
+| 撤销 | `POST /cancelProcessApply` |
+| 激活或挂起 | `POST /active/{id}?active=`（`true` → `insService.active`，`false` → `insService.unActive`） |
 | 历史轨迹 | `GET /flowHisTaskList/{businessId}` |
-| 变量 | `GET /instanceVariable/{instanceId}`、`PUT /updateVariable` |
+| 变量 | `GET /instanceVariable/{instanceId}`、`POST /updateVariable` |
 | 作废 | `POST /invalid` |
 
 ### `/workflow/task` — `FlwTaskController`
@@ -164,10 +164,10 @@ DTO（`backend/wta-api/src/main/java/org/namewta/workflow/api/domain/`）：
 | 全部已办 | `GET /pageByAllTaskFinish` | `workflow:task:list` |
 | 抄送 | `GET /pageByTaskCopy` | |
 | 任务详情 | `GET /getTask/{taskId}` | |
-| 下一节点 | `POST /getNextNodeList` | |
+| 下一节点 | `GET /getNextNodeList?taskId=&variables=`（variables为JSON对象字符串） | |
 | 终止 | `POST /terminationTask` | |
 | 委派/转办/加减签 | `POST /taskOperation/{taskOperation}` | |
-| 改办理人 | `PUT /updateAssignee/{userId}` | `workflow:task:edit` |
+| 改办理人 | `POST /updateAssignee/{userId}` | `workflow:task:edit` |
 | 驳回 | `POST /backProcess` | |
 | 可驳回节点 | `GET /getBackTaskNode/{taskId}/{nowNodeCode}` | |
 | 当前办理人 | `GET /currentTaskAllUser/{taskId}` | |
@@ -181,8 +181,8 @@ DTO（`backend/wta-api/src/main/java/org/namewta/workflow/api/domain/`）：
 
 | 前缀 | 控制器 | 路径 | HTTP 要点 |
 |---|---|---|---|
-| `/workflow/category` | `FlwCategoryController` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java` | `GET /list`、`POST /export`、`GET /{categoryId}`、`POST`、`PUT`、`DELETE /{categoryId}`、`GET /categoryTree` |
-| `/workflow/spel` | `FlwSpelController` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java` | `GET /list`、`GET /{id}`、`POST`、`PUT`、`DELETE /{ids}` |
+| `/workflow/category` | `FlwCategoryController` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java` | `GET /list`、`POST /export`、`GET /{categoryId}`、`POST`、`POST /update`、`POST /{categoryId}`、`GET /categoryTree` |
+| `/workflow/spel` | `FlwSpelController` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java` | `GET /list`、`GET /{id}`、`POST`、`POST /update`、`POST /{ids}` |
 | `/workflow/leave` | `TestLeaveController` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java` | 见 [leave-sample.md](leave-sample.md)；提交入口 `POST /submitAndFlowStart` |
 
 Warm-Flow UI 插件自带 `/warm-flow*` 控制器来自第三方 jar，本仓库无源码。安全排除：`backend/wta-admin/src/main/resources/application.yml` 含 `/warm-flow-ui/config` 与 `/warm-flow/save-json`。

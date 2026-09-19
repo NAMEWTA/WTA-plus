@@ -70,7 +70,7 @@ public class SysLoginInfoController extends BaseController {
      */
     @SaCheckPermission("monitor:logininfo:remove")
     @Log(title = "登录日志", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{infoIds}")
+    @PostMapping("/{infoIds}")
     public R<Void> remove(@PathVariable Long[] infoIds) {
         return toAjax(loginInfoService.deleteLoginInfoByIds(infoIds));
     }
@@ -83,7 +83,7 @@ public class SysLoginInfoController extends BaseController {
     @SaCheckPermission("monitor:logininfo:remove")
     @Log(title = "登录日志", businessType = BusinessType.CLEAN)
     @Lock4j
-    @DeleteMapping("/clean")
+    @PostMapping("/clean")
     public R<Void> clean() {
         loginInfoService.cleanLoginInfo();
         return R.ok();
@@ -98,7 +98,7 @@ public class SysLoginInfoController extends BaseController {
     @SaCheckPermission("monitor:logininfo:unlock")
     @Log(title = "账户解锁", businessType = BusinessType.OTHER)
     @RepeatSubmit()
-    @GetMapping("/unlock/{userName}")
+    @PostMapping("/unlock/{userName}")
     public R<Void> unlock(@PathVariable("userName") String userName) {
         String loginName = CacheNames.PWD_ERR_CNT_KEY + userName;
         if (RedisUtils.hasKey(loginName)) {

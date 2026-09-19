@@ -1,5 +1,7 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import org.namewta.common.core.domain.R;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ public class Swagger3DemoController {
      * @param file 文件
      */
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Log(title = "文件上传演示", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public R<String> upload(@RequestPart("file") MultipartFile file) {
         return R.data(file.getOriginalFilename());
     }

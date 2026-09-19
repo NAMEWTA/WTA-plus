@@ -1,5 +1,7 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import cn.hutool.core.collection.CollUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -152,6 +154,7 @@ public class TestExcelController {
      * 导入表格
      */
     @PostMapping(value = "/importWithOptions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Log(title = "Excel导入演示", businessType = BusinessType.IMPORT, isSaveRequestData = false, isSaveResponseData = false)
     public List<ExportDemoVo> importWithOptions(@RequestPart("file") MultipartFile file) throws Exception {
         // 处理解析结果
         ExcelResult<ExportDemoVo> excelResult = ExcelBuilder.read(file.getInputStream(), ExportDemoVo.class)

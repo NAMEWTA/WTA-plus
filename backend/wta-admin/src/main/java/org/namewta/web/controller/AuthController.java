@@ -1,5 +1,7 @@
 package org.namewta.web.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -15,7 +17,6 @@ import org.namewta.common.core.domain.model.LoginBody;
 import org.namewta.common.core.utils.MessageUtils;
 import org.namewta.common.core.utils.StringUtils;
 import org.namewta.common.core.utils.ValidatorUtils;
-import org.namewta.common.encrypt.annotation.ApiEncrypt;
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.common.satoken.utils.LoginHelper;
 import org.namewta.common.social.config.properties.SocialLoginConfigProperties;
@@ -71,8 +72,8 @@ public class AuthController {
      * @param body 登录信息
      * @return 结果
      */
-    @ApiEncrypt
     @PostMapping("/login")
+    @Log(title = "用户登录", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     public R<LoginVo> login(@RequestBody String body) {
         LoginBody loginBody = JsonUtils.parseObject(body, LoginBody.class);
         ValidatorUtils.validate(loginBody);
@@ -129,6 +130,7 @@ public class AuthController {
      * @return 操作结果
      */
     @PostMapping("/social/callback")
+    @Log(title = "社交账号绑定", businessType = BusinessType.GRANT, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> socialCallback(@RequestBody SocialLoginBody loginBody) {
         // 校验token
         StpUtil.checkLogin();
@@ -152,7 +154,8 @@ public class AuthController {
      * @param socialId socialId
      * @return 操作结果
      */
-    @DeleteMapping(value = "/unlock/{socialId}")
+    @PostMapping("/unlock/{socialId}")
+    @Log(title = "社交账号解绑", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> unlockSocial(@PathVariable Long socialId) {
         // 校验token
         StpUtil.checkLogin();
@@ -165,6 +168,7 @@ public class AuthController {
      * 退出登录
      */
     @PostMapping("/logout")
+    @Log(title = "用户退出", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> logout() {
         loginService.logout();
         return R.ok("退出成功");
@@ -207,7 +211,7 @@ public class AuthController {
             if (origin.endsWith("/")) {
                 origin = origin.substring(0, origin.length() - 1);
             }
-            vo.setSsoAuthorizeUrl(origin + "/authorize");
+            vo.setSsoAuthorizeUrl(origin + ssoProperties.getWebBasePath() + "authorize");
         }
         if (clientEnabled) {
             vo.setPasswordPolicy(passwordPolicyService.publicProjection());
@@ -221,8 +225,8 @@ public class AuthController {
      * @param user 注册信息
      * @return 操作结果
      */
-    @ApiEncrypt
     @PostMapping("/register")
+    @Log(title = "用户注册", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> register(@Validated @RequestBody RegisterBody user) {
         registerService.register(user);
         return R.ok();

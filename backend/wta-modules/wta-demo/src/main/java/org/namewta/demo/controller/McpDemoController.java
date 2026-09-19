@@ -1,11 +1,14 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.mcp.core.McpResourceReadResult;
 import org.namewta.demo.mcp.McpDemoClientService;
 import org.namewta.demo.mcp.McpDemoClientService.McpDemoHandleResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +25,7 @@ import java.util.Map;
  * 调用示例：
  * <ul>
  *     <li>`GET /demo/mcp/tools`：查看已连接 MCP Server 的工具列表</li>
- *     <li>`GET /demo/mcp/receive?toolName=demo_get_data&amp;id=1`：调用外部工具并模拟业务处理</li>
+ *     <li>`POST /demo/mcp/receive?toolName=demo_get_data&amp;id=1`：调用外部工具并模拟业务处理</li>
  *     <li>`GET /demo/mcp/resource?uri=demo://summary`：读取外部 MCP 资源</li>
  * </ul>
  * 当 `spring.ai.mcp.client.enabled=false` 时，接口会返回提示，不影响应用启动。
@@ -51,7 +54,8 @@ public class McpDemoController {
     /**
      * 调用外部 MCP 工具并模拟业务处理。
      */
-    @GetMapping("/receive")
+    @PostMapping("/receive")
+    @Log(title = "MCP工具调用演示", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     public R<McpDemoHandleResult> receive(@RequestParam(defaultValue = "demo_get_data") String toolName,
                                           @RequestParam(defaultValue = "1") String id) {
         try {

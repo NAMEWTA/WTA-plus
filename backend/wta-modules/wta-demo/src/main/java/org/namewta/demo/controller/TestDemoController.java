@@ -129,7 +129,7 @@ public class TestDemoController extends BaseController {
     @SaCheckPermission("demo:demo:edit")
     @Log(title = "测试单表", businessType = BusinessType.UPDATE)
     @RepeatSubmit
-    @PutMapping()
+    @PostMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody TestDemoBo bo) {
         return toAjax(testDemoService.updateByBo(bo));
     }
@@ -141,7 +141,7 @@ public class TestDemoController extends BaseController {
      */
     @SaCheckPermission("demo:demo:remove")
     @Log(title = "测试单表", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @PostMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
         return toAjax(testDemoService.deleteWithValidByIds(Arrays.asList(ids), true));

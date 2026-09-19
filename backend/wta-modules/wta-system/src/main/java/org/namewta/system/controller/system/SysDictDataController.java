@@ -118,7 +118,7 @@ public class SysDictDataController extends BaseController {
     @SaCheckPermission("system:dict:edit")
     @Log(title = "字典数据", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping
+    @PostMapping("/update")
     public R<Void> edit(@Validated @RequestBody SysDictDataBo dict) {
         if (!dictDataService.checkDictDataUnique(dict)) {
             return R.fail("修改字典数据'" + dict.getDictValue() + "'失败，字典键值已存在");
@@ -135,7 +135,7 @@ public class SysDictDataController extends BaseController {
      */
     @SaCheckPermission("system:dict:remove")
     @Log(title = "字典数据", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{dictCodes}")
+    @PostMapping("/{dictCodes}")
     public R<Void> remove(@PathVariable Long[] dictCodes) {
         dictDataService.deleteDictDataByIds(Arrays.asList(dictCodes));
         return R.ok();

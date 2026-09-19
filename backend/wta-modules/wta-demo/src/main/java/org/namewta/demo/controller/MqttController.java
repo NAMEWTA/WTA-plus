@@ -1,5 +1,7 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.namewta.demo.domain.TestDemo;
@@ -10,7 +12,7 @@ import org.dromara.mica.mqtt.core.deserialize.MqttJsonDeserializer;
 import org.dromara.mica.mqtt.spring.client.MqttClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +43,8 @@ public class MqttController {
      *
      * @return 是否发送成功
      */
-    @GetMapping("/send")
+    @PostMapping("/send")
+    @Log(title = "MQTT演示发送", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     public boolean send() {
         client.publish("/test/client", "测试测试".getBytes(StandardCharsets.UTF_8));
         return true;

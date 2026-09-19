@@ -1,9 +1,11 @@
 package org.namewta.demo.controller;
 
+import org.namewta.common.log.enums.BusinessType;
+import org.namewta.common.log.annotation.Log;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.redis.utils.RedisUtils;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +25,8 @@ public class RedisPubSubController {
      * @param key   通道Key
      * @param value 发送内容
      */
-    @GetMapping("/pub")
+    @PostMapping("/pub")
+    @Log(title = "Redis消息发布", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> pub(String key, String value) {
         RedisUtils.publish(key, value, consumer -> {
             System.out.println("发布通道 => " + key + ", 发送值 => " + value);
@@ -36,7 +39,8 @@ public class RedisPubSubController {
      *
      * @param key 通道Key
      */
-    @GetMapping("/sub")
+    @PostMapping("/sub")
+    @Log(title = "Redis消息订阅", businessType = BusinessType.OTHER, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> sub(String key) {
         RedisUtils.subscribe(key, String.class, msg -> {
             System.out.println("订阅通道 => " + key + ", 接收值 => " + msg);

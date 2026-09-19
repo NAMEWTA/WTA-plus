@@ -10,11 +10,11 @@
 
 生成目录由工具维护，不应手工编辑。仅从 `package.json` 声明的公开入口消费。
 
-## 当前 Profile 状态
+## 当前合同来源
 
-`openapi/current.json` 当前不包含 `/profile/**`，`generated/openapi.ts` 因此没有 Profile 传输类型。Profile domain 暂以资源内的类型化 HTTP service 固定已核实的 URL、方法和字段，并在边界映射为领域模型；页面不得直接引用 generated 文件。
+激活快照包含Profile的50条路径。domain在资源边界映射生成transport，不将生成类型直接用作页面状态。第一方System/Workflow/Demo变更接口使用POST，查询使用GET；SnailAI第三方接口保留供应商方法。
 
-待后端快照纳入 Profile 后，使用 `tooling/openapi` 的 `openapi:fetch`、`openapi:generate`、`openapi:check` 更新和校验合同，禁止手工编辑生成结果。迁移完成后删除 Profile service 的暂态合同分支。
+当前快照由历史schema与实际编译后的Spring MVC映射核对后，经正式fetch/generate/check生成。provenance记录未提交工作树来源、base HEAD与证据摘要；base HEAD不表示本轮实现已提交，也不代表全量live /v3/api-docs采集。Easy-ES条件关闭时不在该来源快照内。
 
 ## 验证
 

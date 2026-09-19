@@ -84,8 +84,8 @@ public class FlwInstanceController extends BaseController {
      * @param businessIds 业务id
      * @return 操作结果
      */
-    @DeleteMapping("/deleteByBusinessIds/{businessIds}")
-    @Log(title = "流程实例管理", businessType = BusinessType.DELETE)
+    @PostMapping("/deleteByBusinessIds/{businessIds}")
+    @Log(title = "流程实例管理", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:instance:remove")
     public R<Void> deleteByBusinessIds(@PathVariable List<Long> businessIds) {
         return toAjax(flwInstanceService.deleteByBusinessIds(StreamUtils.toList(businessIds, Convert::toStr)));
@@ -97,8 +97,8 @@ public class FlwInstanceController extends BaseController {
      * @param instanceIds 实例id
      * @return 操作结果
      */
-    @DeleteMapping("/deleteByInstanceIds/{instanceIds}")
-    @Log(title = "流程实例管理", businessType = BusinessType.DELETE)
+    @PostMapping("/deleteByInstanceIds/{instanceIds}")
+    @Log(title = "流程实例管理", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:instance:remove")
     public R<Void> deleteByInstanceIds(@PathVariable List<Long> instanceIds) {
         return toAjax(flwInstanceService.deleteByInstanceIds(instanceIds));
@@ -110,8 +110,8 @@ public class FlwInstanceController extends BaseController {
      * @param instanceIds 实例id
      * @return 操作结果
      */
-    @DeleteMapping("/deleteHisByInstanceIds/{instanceIds}")
-    @Log(title = "流程实例管理", businessType = BusinessType.DELETE)
+    @PostMapping("/deleteHisByInstanceIds/{instanceIds}")
+    @Log(title = "流程实例管理", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:instance:remove")
     public R<Void> deleteHisByInstanceIds(@PathVariable List<Long> instanceIds) {
         return toAjax(flwInstanceService.deleteHisByInstanceIds(instanceIds));
@@ -124,8 +124,8 @@ public class FlwInstanceController extends BaseController {
      * @return 操作结果
      */
     @RepeatSubmit()
-    @PutMapping("/cancelProcessApply")
-    @Log(title = "流程实例管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/cancelProcessApply")
+    @Log(title = "流程实例管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:instance:cancel")
     public R<Void> cancelProcessApply(@RequestBody FlowCancelBo bo) {
         return toAjax(flwInstanceService.cancelProcessApply(bo));
@@ -139,8 +139,8 @@ public class FlwInstanceController extends BaseController {
      * @return 处理结果
      */
     @RepeatSubmit()
-    @PutMapping("/active/{id}")
-    @Log(title = "流程实例管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/active/{id}")
+    @Log(title = "流程实例管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:instance:active")
     public R<Boolean> active(@PathVariable Long id, @RequestParam boolean active) {
         return R.ok(active ? insService.active(id) : insService.unActive(id));
@@ -190,8 +190,8 @@ public class FlwInstanceController extends BaseController {
      * @return 操作结果
      */
     @RepeatSubmit()
-    @PutMapping("/updateVariable")
-    @Log(title = "流程实例管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateVariable")
+    @Log(title = "流程实例管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @SaCheckPermission("workflow:instance:variable")
     public R<Void> updateVariable(@Validated @RequestBody FlowVariableBo bo) {
         return toAjax(flwInstanceService.updateVariable(bo));
@@ -203,7 +203,7 @@ public class FlwInstanceController extends BaseController {
      * @param bo 参数
      * @return 处理结果
      */
-    @Log(title = "流程实例管理", businessType = BusinessType.INSERT)
+    @Log(title = "流程实例管理", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping("/invalid")
     @SaCheckPermission("workflow:instance:invalid")

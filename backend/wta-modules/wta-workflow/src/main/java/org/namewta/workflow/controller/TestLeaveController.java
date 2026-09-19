@@ -59,7 +59,7 @@ public class TestLeaveController extends BaseController {
      * @param response 响应流
      */
     @SaCheckPermission("workflow:leave:export")
-    @Log(title = "请假", businessType = BusinessType.EXPORT)
+    @Log(title = "请假", businessType = BusinessType.EXPORT, isSaveRequestData = false, isSaveResponseData = false)
     @PostMapping("/export")
     public void export(TestLeaveBo bo, HttpServletResponse response) {
         List<TestLeaveVo> list = testLeaveService.queryList(bo);
@@ -86,7 +86,7 @@ public class TestLeaveController extends BaseController {
      * @return 新增后的请假单
      */
     @SaCheckPermission("workflow:leave:add")
-    @Log(title = "请假", businessType = BusinessType.INSERT)
+    @Log(title = "请假", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping()
     public R<TestLeaveVo> add(@Validated(AddGroup.class) @RequestBody TestLeaveBo bo) {
@@ -100,7 +100,7 @@ public class TestLeaveController extends BaseController {
      * @return 提交后的请假单
      */
     @SaCheckPermission("workflow:leave:add")
-    @Log(title = "请假", businessType = BusinessType.INSERT)
+    @Log(title = "请假", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
     @PostMapping("/submitAndFlowStart")
     public R<TestLeaveVo> submitAndFlowStart(@Validated(AddGroup.class) @RequestBody TestLeaveBo bo) {
@@ -114,9 +114,9 @@ public class TestLeaveController extends BaseController {
      * @return 修改后的请假单
      */
     @SaCheckPermission("workflow:leave:edit")
-    @Log(title = "请假", businessType = BusinessType.UPDATE)
+    @Log(title = "请假", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @PutMapping()
+    @PostMapping("/update")
     public R<TestLeaveVo> edit(@Validated(EditGroup.class) @RequestBody TestLeaveBo bo) {
         return R.ok(testLeaveService.updateByBo(bo));
     }
@@ -128,8 +128,8 @@ public class TestLeaveController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("workflow:leave:remove")
-    @Log(title = "请假", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @Log(title = "请假", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
         return toAjax(testLeaveService.deleteWithValidByIds(List.of(ids)));

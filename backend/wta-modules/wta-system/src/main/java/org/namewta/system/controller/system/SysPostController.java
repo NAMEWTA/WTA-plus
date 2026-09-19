@@ -107,7 +107,7 @@ public class SysPostController extends BaseController {
     @SaCheckPermission("system:post:edit")
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping
+    @PostMapping("/update")
     public R<Void> edit(@Validated @RequestBody SysPostBo post) {
         if (!postService.checkPostNameUnique(post)) {
             return R.fail("修改岗位'" + post.getPostName() + "'失败，岗位名称已存在");
@@ -128,7 +128,7 @@ public class SysPostController extends BaseController {
      */
     @SaCheckPermission("system:post:remove")
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{postIds}")
+    @PostMapping("/{postIds}")
     public R<Void> remove(@PathVariable Long[] postIds) {
         return toAjax(postService.deletePostByIds(Arrays.asList(postIds)));
     }

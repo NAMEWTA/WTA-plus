@@ -67,7 +67,7 @@ public class SysOperlogController extends BaseController {
      */
     @Log(title = "操作日志", businessType = BusinessType.DELETE)
     @SaCheckPermission("monitor:operlog:remove")
-    @DeleteMapping("/{operIds}")
+    @PostMapping("/{operIds}")
     public R<Void> remove(@PathVariable Long[] operIds) {
         return toAjax(operLogService.deleteOperLogByIds(operIds));
     }
@@ -80,7 +80,7 @@ public class SysOperlogController extends BaseController {
     @Log(title = "操作日志", businessType = BusinessType.CLEAN)
     @SaCheckPermission("monitor:operlog:remove")
     @Lock4j
-    @DeleteMapping("/clean")
+    @PostMapping("/clean")
     public R<Void> clean() {
         operLogService.cleanOperLog();
         return R.ok();

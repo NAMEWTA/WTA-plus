@@ -83,9 +83,9 @@ public class SysUserOnlineController extends BaseController {
      * @return 操作结果
      */
     @SaCheckPermission("monitor:online:forceLogout")
-    @Log(title = "在线用户", businessType = BusinessType.FORCE)
+    @Log(title = "在线用户", businessType = BusinessType.FORCE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @DeleteMapping("/{tokenId}")
+    @PostMapping("/{tokenId}")
     public R<Void> forceLogout(@PathVariable String tokenId) {
         try {
             StpUtil.kickoutByTokenValue(tokenId);
@@ -123,9 +123,9 @@ public class SysUserOnlineController extends BaseController {
      * @param tokenId token值
      * @return 操作结果
      */
-    @Log(title = "在线设备", businessType = BusinessType.FORCE)
+    @Log(title = "在线设备", businessType = BusinessType.FORCE, isSaveRequestData = false, isSaveResponseData = false)
     @RepeatSubmit()
-    @DeleteMapping("/myself/{tokenId}")
+    @PostMapping("/myself/{tokenId}")
     public R<Void> remove(@PathVariable("tokenId") String tokenId) {
         try {
             // 获取指定账号 id 的 token 集合

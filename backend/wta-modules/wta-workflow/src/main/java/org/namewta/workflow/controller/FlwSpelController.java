@@ -85,7 +85,7 @@ public class FlwSpelController extends BaseController {
     @SaCheckPermission("workflow:spel:edit")
     @Log(title = "流程spel表达式定义", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping()
+    @PostMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody FlowSpelBo bo) {
         return toAjax(flwSpelService.updateByBo(bo));
     }
@@ -98,7 +98,7 @@ public class FlwSpelController extends BaseController {
      */
     @SaCheckPermission("workflow:spel:remove")
     @Log(title = "流程spel表达式定义", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @PostMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return toAjax(flwSpelService.deleteWithValidByIds(List.of(ids), true));
     }

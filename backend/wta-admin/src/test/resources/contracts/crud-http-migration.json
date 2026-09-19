@@ -1,0 +1,730 @@
+[
+  {
+    "controller": "org.namewta.web.controller.AuthController",
+    "operation": "unlockSocial",
+    "oldMethod": "DELETE",
+    "oldPath": "/auth/unlock/{socialId}",
+    "newMethod": "POST",
+    "newPath": "/auth/unlock/{socialId}"
+  },
+  {
+    "controller": "org.namewta.demo.controller.EsCrudController",
+    "operation": "update",
+    "oldMethod": "PUT",
+    "oldPath": "/es/update",
+    "newMethod": "POST",
+    "newPath": "/es/update"
+  },
+  {
+    "controller": "org.namewta.demo.controller.EsCrudController",
+    "operation": "delete",
+    "oldMethod": "DELETE",
+    "oldPath": "/es/delete/{id}",
+    "newMethod": "POST",
+    "newPath": "/es/delete/{id}"
+  },
+  {
+    "controller": "org.namewta.demo.controller.TestBatchController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/demo/batch",
+    "newMethod": "POST",
+    "newPath": "/demo/batch"
+  },
+  {
+    "controller": "org.namewta.demo.controller.TestDemoController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/demo/demo",
+    "newMethod": "POST",
+    "newPath": "/demo/demo/update"
+  },
+  {
+    "controller": "org.namewta.demo.controller.TestDemoController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/demo/demo/{ids}",
+    "newMethod": "POST",
+    "newPath": "/demo/demo/{ids}"
+  },
+  {
+    "controller": "org.namewta.demo.controller.TestTreeController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/demo/tree",
+    "newMethod": "POST",
+    "newPath": "/demo/tree/update"
+  },
+  {
+    "controller": "org.namewta.demo.controller.TestTreeController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/demo/tree/{ids}",
+    "newMethod": "POST",
+    "newPath": "/demo/tree/{ids}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.TestLeaveController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/leave",
+    "newMethod": "POST",
+    "newPath": "/workflow/leave/update"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.TestLeaveController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/workflow/leave/{ids}",
+    "newMethod": "POST",
+    "newPath": "/workflow/leave/{ids}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwInstanceController",
+    "operation": "deleteByBusinessIds",
+    "oldMethod": "DELETE",
+    "oldPath": "/workflow/instance/deleteByBusinessIds/{businessIds}",
+    "newMethod": "POST",
+    "newPath": "/workflow/instance/deleteByBusinessIds/{businessIds}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwInstanceController",
+    "operation": "deleteByInstanceIds",
+    "oldMethod": "DELETE",
+    "oldPath": "/workflow/instance/deleteByInstanceIds/{instanceIds}",
+    "newMethod": "POST",
+    "newPath": "/workflow/instance/deleteByInstanceIds/{instanceIds}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwInstanceController",
+    "operation": "deleteHisByInstanceIds",
+    "oldMethod": "DELETE",
+    "oldPath": "/workflow/instance/deleteHisByInstanceIds/{instanceIds}",
+    "newMethod": "POST",
+    "newPath": "/workflow/instance/deleteHisByInstanceIds/{instanceIds}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwInstanceController",
+    "operation": "cancelProcessApply",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/instance/cancelProcessApply",
+    "newMethod": "POST",
+    "newPath": "/workflow/instance/cancelProcessApply"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwInstanceController",
+    "operation": "active",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/instance/active/{id}",
+    "newMethod": "POST",
+    "newPath": "/workflow/instance/active/{id}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwInstanceController",
+    "operation": "updateVariable",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/instance/updateVariable",
+    "newMethod": "POST",
+    "newPath": "/workflow/instance/updateVariable"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwTaskController",
+    "operation": "updateAssignee",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/task/updateAssignee/{userId}",
+    "newMethod": "POST",
+    "newPath": "/workflow/task/updateAssignee/{userId}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwDefinitionController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/definition",
+    "newMethod": "POST",
+    "newPath": "/workflow/definition/update"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwDefinitionController",
+    "operation": "publish",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/definition/publish/{id}",
+    "newMethod": "POST",
+    "newPath": "/workflow/definition/publish/{id}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwDefinitionController",
+    "operation": "unPublish",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/definition/unPublish/{id}",
+    "newMethod": "POST",
+    "newPath": "/workflow/definition/unPublish/{id}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwDefinitionController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/workflow/definition/{ids}",
+    "newMethod": "POST",
+    "newPath": "/workflow/definition/{ids}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwDefinitionController",
+    "operation": "active",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/definition/active/{id}",
+    "newMethod": "POST",
+    "newPath": "/workflow/definition/active/{id}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwSpelController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/spel",
+    "newMethod": "POST",
+    "newPath": "/workflow/spel/update"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwSpelController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/workflow/spel/{ids}",
+    "newMethod": "POST",
+    "newPath": "/workflow/spel/{ids}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwCategoryController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/workflow/category",
+    "newMethod": "POST",
+    "newPath": "/workflow/category/update"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwCategoryController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/workflow/category/{categoryId}",
+    "newMethod": "POST",
+    "newPath": "/workflow/category/{categoryId}"
+  },
+  {
+    "controller": "org.namewta.system.controller.monitor.SysOperlogController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/monitor/operlog/{operIds}",
+    "newMethod": "POST",
+    "newPath": "/monitor/operlog/{operIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.monitor.SysOperlogController",
+    "operation": "clean",
+    "oldMethod": "DELETE",
+    "oldPath": "/monitor/operlog/clean",
+    "newMethod": "POST",
+    "newPath": "/monitor/operlog/clean"
+  },
+  {
+    "controller": "org.namewta.system.controller.monitor.SysLoginInfoController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/monitor/loginInfo/{infoIds}",
+    "newMethod": "POST",
+    "newPath": "/monitor/loginInfo/{infoIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.monitor.SysLoginInfoController",
+    "operation": "clean",
+    "oldMethod": "DELETE",
+    "oldPath": "/monitor/loginInfo/clean",
+    "newMethod": "POST",
+    "newPath": "/monitor/loginInfo/clean"
+  },
+  {
+    "controller": "org.namewta.system.controller.monitor.SysUserOnlineController",
+    "operation": "forceLogout",
+    "oldMethod": "DELETE",
+    "oldPath": "/monitor/online/{tokenId}",
+    "newMethod": "POST",
+    "newPath": "/monitor/online/{tokenId}"
+  },
+  {
+    "controller": "org.namewta.system.controller.monitor.SysUserOnlineController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/monitor/online/myself/{tokenId}",
+    "newMethod": "POST",
+    "newPath": "/monitor/online/myself/{tokenId}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysDictDataController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/dict/data",
+    "newMethod": "POST",
+    "newPath": "/system/dict/data/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysDictDataController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/dict/data/{dictCodes}",
+    "newMethod": "POST",
+    "newPath": "/system/dict/data/{dictCodes}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysRoleController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/role",
+    "newMethod": "POST",
+    "newPath": "/system/role/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysRoleController",
+    "operation": "editPermission",
+    "oldMethod": "PUT",
+    "oldPath": "/system/role/permission",
+    "newMethod": "POST",
+    "newPath": "/system/role/permission"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysRoleController",
+    "operation": "changeStatus",
+    "oldMethod": "PUT",
+    "oldPath": "/system/role/changeStatus",
+    "newMethod": "POST",
+    "newPath": "/system/role/changeStatus"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysRoleController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/role/{roleIds}",
+    "newMethod": "POST",
+    "newPath": "/system/role/{roleIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysRoleController",
+    "operation": "cancelAuthUser",
+    "oldMethod": "PUT",
+    "oldPath": "/system/role/authUser/cancel",
+    "newMethod": "POST",
+    "newPath": "/system/role/authUser/cancel"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysRoleController",
+    "operation": "cancelAuthUserAll",
+    "oldMethod": "PUT",
+    "oldPath": "/system/role/authUser/cancelAll",
+    "newMethod": "POST",
+    "newPath": "/system/role/authUser/cancelAll"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysRoleController",
+    "operation": "selectAuthUserAll",
+    "oldMethod": "PUT",
+    "oldPath": "/system/role/authUser/selectAll",
+    "newMethod": "POST",
+    "newPath": "/system/role/authUser/selectAll"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysProfileController",
+    "operation": "updateProfile",
+    "oldMethod": "PUT",
+    "oldPath": "/system/user/profile",
+    "newMethod": "POST",
+    "newPath": "/system/user/profile"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysProfileController",
+    "operation": "updatePwd",
+    "oldMethod": "PUT",
+    "oldPath": "/system/user/profile/updatePwd",
+    "newMethod": "POST",
+    "newPath": "/system/user/profile/updatePwd"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysMenuController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/menu",
+    "newMethod": "POST",
+    "newPath": "/system/menu/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysMenuController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/menu/{menuId}",
+    "newMethod": "POST",
+    "newPath": "/system/menu/{menuId}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysMenuController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/menu/cascade/{menuIds}",
+    "newMethod": "POST",
+    "newPath": "/system/menu/cascade/{menuIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysDictTypeController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/dict/type",
+    "newMethod": "POST",
+    "newPath": "/system/dict/type/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysDictTypeController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/dict/type/{dictIds}",
+    "newMethod": "POST",
+    "newPath": "/system/dict/type/{dictIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysDictTypeController",
+    "operation": "refreshCache",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/dict/type/refreshCache",
+    "newMethod": "POST",
+    "newPath": "/system/dict/type/refreshCache"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysOssController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/resource/oss/{ossIds}",
+    "newMethod": "POST",
+    "newPath": "/resource/oss/{ossIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysClientController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/client",
+    "newMethod": "POST",
+    "newPath": "/system/client/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysClientController",
+    "operation": "changeStatus",
+    "oldMethod": "PUT",
+    "oldPath": "/system/client/changeStatus",
+    "newMethod": "POST",
+    "newPath": "/system/client/changeStatus"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysClientController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/client/{ids}",
+    "newMethod": "POST",
+    "newPath": "/system/client/{ids}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysOssUploadController",
+    "operation": "abort",
+    "oldMethod": "DELETE",
+    "oldPath": "/resource/oss/uploads/{uploadToken}",
+    "newMethod": "POST",
+    "newPath": "/resource/oss/uploads/{uploadToken}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserTypeController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/userType",
+    "newMethod": "POST",
+    "newPath": "/system/userType/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserTypeController",
+    "operation": "changeStatus",
+    "oldMethod": "PUT",
+    "oldPath": "/system/userType/changeStatus",
+    "newMethod": "POST",
+    "newPath": "/system/userType/changeStatus"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserTypeController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/userType/{userTypeIds:\\d+(?:,\\d+)*}",
+    "newMethod": "POST",
+    "newPath": "/system/userType/{userTypeIds:\\d+(?:,\\d+)*}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysDeptController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/dept",
+    "newMethod": "POST",
+    "newPath": "/system/dept/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysDeptController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/dept/{deptId}",
+    "newMethod": "POST",
+    "newPath": "/system/dept/{deptId}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysPostController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/post",
+    "newMethod": "POST",
+    "newPath": "/system/post/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysPostController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/post/{postIds}",
+    "newMethod": "POST",
+    "newPath": "/system/post/{postIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysConfigController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/config",
+    "newMethod": "POST",
+    "newPath": "/system/config/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysConfigController",
+    "operation": "updateByKey",
+    "oldMethod": "PUT",
+    "oldPath": "/system/config/updateByKey",
+    "newMethod": "POST",
+    "newPath": "/system/config/updateByKey"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysConfigController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/config/{configIds}",
+    "newMethod": "POST",
+    "newPath": "/system/config/{configIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysConfigController",
+    "operation": "refreshCache",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/config/refreshCache",
+    "newMethod": "POST",
+    "newPath": "/system/config/refreshCache"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserController",
+    "operation": "edit",
+    "oldMethod": "PUT",
+    "oldPath": "/system/user",
+    "newMethod": "POST",
+    "newPath": "/system/user/update"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserController",
+    "operation": "remove",
+    "oldMethod": "DELETE",
+    "oldPath": "/system/user/{userIds}",
+    "newMethod": "POST",
+    "newPath": "/system/user/{userIds}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserController",
+    "operation": "resetPwd",
+    "oldMethod": "PUT",
+    "oldPath": "/system/user/resetPwd",
+    "newMethod": "POST",
+    "newPath": "/system/user/resetPwd"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserController",
+    "operation": "changeStatus",
+    "oldMethod": "PUT",
+    "oldPath": "/system/user/changeStatus",
+    "newMethod": "POST",
+    "newPath": "/system/user/changeStatus"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserController",
+    "operation": "insertAuthRole",
+    "oldMethod": "PUT",
+    "oldPath": "/system/user/authRole",
+    "newMethod": "POST",
+    "newPath": "/system/user/authRole"
+  },
+  {
+    "controller": "org.namewta.demo.controller.WebSocketController",
+    "operation": "send",
+    "oldMethod": "GET",
+    "oldPath": "/demo/websocket/send",
+    "newMethod": "POST",
+    "newPath": "/demo/websocket/send"
+  },
+  {
+    "controller": "org.namewta.demo.controller.MailSendController",
+    "operation": "sendSimpleMessage",
+    "oldMethod": "GET",
+    "oldPath": "/demo/mail/sendSimpleMessage",
+    "newMethod": "POST",
+    "newPath": "/demo/mail/sendSimpleMessage"
+  },
+  {
+    "controller": "org.namewta.demo.controller.MailSendController",
+    "operation": "sendMessageWithAttachment",
+    "oldMethod": "GET",
+    "oldPath": "/demo/mail/sendMessageWithAttachment",
+    "newMethod": "POST",
+    "newPath": "/demo/mail/sendMessageWithAttachment"
+  },
+  {
+    "controller": "org.namewta.demo.controller.MailSendController",
+    "operation": "sendMessageWithAttachments",
+    "oldMethod": "GET",
+    "oldPath": "/demo/mail/sendMessageWithAttachments",
+    "newMethod": "POST",
+    "newPath": "/demo/mail/sendMessageWithAttachments"
+  },
+  {
+    "controller": "org.namewta.demo.controller.McpDemoController",
+    "operation": "receive",
+    "oldMethod": "GET",
+    "oldPath": "/demo/mcp/receive",
+    "newMethod": "POST",
+    "newPath": "/demo/mcp/receive"
+  },
+  {
+    "controller": "org.namewta.demo.controller.MqttController",
+    "operation": "send",
+    "oldMethod": "GET",
+    "oldPath": "/demo/mqtt/send",
+    "newMethod": "POST",
+    "newPath": "/demo/mqtt/send"
+  },
+  {
+    "controller": "org.namewta.demo.controller.RedisCacheController",
+    "operation": "test2",
+    "oldMethod": "GET",
+    "oldPath": "/demo/cache/test2",
+    "newMethod": "POST",
+    "newPath": "/demo/cache/test2"
+  },
+  {
+    "controller": "org.namewta.demo.controller.RedisCacheController",
+    "operation": "test3",
+    "oldMethod": "GET",
+    "oldPath": "/demo/cache/test3",
+    "newMethod": "POST",
+    "newPath": "/demo/cache/test3"
+  },
+  {
+    "controller": "org.namewta.demo.controller.RedisCacheController",
+    "operation": "test6",
+    "oldMethod": "GET",
+    "oldPath": "/demo/cache/test6",
+    "newMethod": "POST",
+    "newPath": "/demo/cache/test6"
+  },
+  {
+    "controller": "org.namewta.demo.controller.RedisPubSubController",
+    "operation": "pub",
+    "oldMethod": "GET",
+    "oldPath": "/demo/redis/pubsub/pub",
+    "newMethod": "POST",
+    "newPath": "/demo/redis/pubsub/pub"
+  },
+  {
+    "controller": "org.namewta.demo.controller.RedisPubSubController",
+    "operation": "sub",
+    "oldMethod": "GET",
+    "oldPath": "/demo/redis/pubsub/sub",
+    "newMethod": "POST",
+    "newPath": "/demo/redis/pubsub/sub"
+  },
+  {
+    "controller": "org.namewta.demo.controller.SmsController",
+    "operation": "sendAliyun",
+    "oldMethod": "GET",
+    "oldPath": "/demo/sms/sendAliyun",
+    "newMethod": "POST",
+    "newPath": "/demo/sms/sendAliyun"
+  },
+  {
+    "controller": "org.namewta.demo.controller.SmsController",
+    "operation": "sendTencent",
+    "oldMethod": "GET",
+    "oldPath": "/demo/sms/sendTencent",
+    "newMethod": "POST",
+    "newPath": "/demo/sms/sendTencent"
+  },
+  {
+    "controller": "org.namewta.demo.controller.SmsController",
+    "operation": "addBlacklist",
+    "oldMethod": "GET",
+    "oldPath": "/demo/sms/addBlacklist",
+    "newMethod": "POST",
+    "newPath": "/demo/sms/addBlacklist"
+  },
+  {
+    "controller": "org.namewta.demo.controller.SmsController",
+    "operation": "removeBlacklist",
+    "oldMethod": "GET",
+    "oldPath": "/demo/sms/removeBlacklist",
+    "newMethod": "POST",
+    "newPath": "/demo/sms/removeBlacklist"
+  },
+  {
+    "controller": "org.namewta.demo.controller.queue.PriorityQueueController",
+    "operation": "add",
+    "oldMethod": "GET",
+    "oldPath": "/demo/queue/priority/add",
+    "newMethod": "POST",
+    "newPath": "/demo/queue/priority/add"
+  },
+  {
+    "controller": "org.namewta.demo.controller.queue.PriorityQueueController",
+    "operation": "remove",
+    "oldMethod": "GET",
+    "oldPath": "/demo/queue/priority/remove",
+    "newMethod": "POST",
+    "newPath": "/demo/queue/priority/remove"
+  },
+  {
+    "controller": "org.namewta.demo.controller.queue.PriorityQueueController",
+    "operation": "get",
+    "oldMethod": "GET",
+    "oldPath": "/demo/queue/priority/get",
+    "newMethod": "POST",
+    "newPath": "/demo/queue/priority/get"
+  },
+  {
+    "controller": "org.namewta.system.controller.monitor.SysLoginInfoController",
+    "operation": "unlock",
+    "oldMethod": "GET",
+    "oldPath": "/monitor/loginInfo/unlock/{userName}",
+    "newMethod": "POST",
+    "newPath": "/monitor/loginInfo/unlock/{userName}"
+  },
+  {
+    "controller": "org.namewta.system.controller.system.SysUserController",
+    "operation": "unlock",
+    "oldMethod": "GET",
+    "oldPath": "/system/user/unlock/{userId}",
+    "newMethod": "POST",
+    "newPath": "/system/user/unlock/{userId}"
+  },
+  {
+    "controller": "org.namewta.workflow.controller.FlwTaskController",
+    "operation": "getNextNodeList",
+    "oldMethod": "POST",
+    "oldPath": "/workflow/task/getNextNodeList",
+    "newMethod": "GET",
+    "newPath": "/workflow/task/getNextNodeList"
+  }
+]

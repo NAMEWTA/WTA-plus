@@ -87,7 +87,7 @@ public class TestTreeController extends BaseController {
     @SaCheckPermission("demo:tree:edit")
     @Log(title = "测试树表", businessType = BusinessType.UPDATE)
     @RepeatSubmit
-    @PutMapping()
+    @PostMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody TestTreeBo bo) {
         return toAjax(testTreeService.updateByBo(bo));
     }
@@ -99,7 +99,7 @@ public class TestTreeController extends BaseController {
      */
     @SaCheckPermission("demo:tree:remove")
     @Log(title = "测试树表", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @PostMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
         return toAjax(testTreeService.deleteWithValidByIds(Arrays.asList(ids), true));

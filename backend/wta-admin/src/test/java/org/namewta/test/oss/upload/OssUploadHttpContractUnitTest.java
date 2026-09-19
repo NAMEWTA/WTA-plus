@@ -39,7 +39,8 @@ class OssUploadHttpContractUnitTest {
         assertEquals("/{uploadToken}/parts/sign", path("signParts", PostMapping.class));
         assertEquals("/{uploadToken}/parts", path("parts", GetMapping.class));
         assertEquals("/{uploadToken}/complete", path("complete", PostMapping.class));
-        assertEquals("/{uploadToken}", path("abort", DeleteMapping.class));
+        assertEquals("/{uploadToken}", path("abort", PostMapping.class));
+        assertNull(method("abort").getAnnotation(DeleteMapping.class));
         assertTrue(method("complete").getGenericReturnType().getTypeName().contains("R<java.lang.String>"));
     }
 
@@ -87,9 +88,6 @@ class OssUploadHttpContractUnitTest {
             return mapping.value().length == 0 ? "" : mapping.value()[0];
         }
         if (annotation instanceof GetMapping mapping) {
-            return mapping.value()[0];
-        }
-        if (annotation instanceof DeleteMapping mapping) {
             return mapping.value()[0];
         }
         throw new IllegalStateException("unsupported mapping");
