@@ -24,7 +24,6 @@ public class SysLogEventWriter implements SysLogEventSink {
         Map.entry("requestId", "请求标识"),
         Map.entry("method", "请求方法"),
         Map.entry("path", "请求路径"),
-        Map.entry("queryString", "查询字符串"),
         Map.entry("parameters", "请求参数"),
         Map.entry("requestHeaders", "请求头"),
         Map.entry("responseHeaders", "响应头"),
@@ -46,6 +45,7 @@ public class SysLogEventWriter implements SysLogEventSink {
     );
     private static final Map<String, String> BODY_OMISSION_REASONS = Map.ofEntries(
         Map.entry("NO_BODY", "无正文"),
+        Map.entry("CREDENTIAL_RESPONSE", "凭据签发仅记录元数据"),
         Map.entry("CONTENT_TYPE_MISSING", "未提供内容类型"),
         Map.entry("INVALID_CONTENT_TYPE", "内容类型无效"),
         Map.entry("MULTIPART", "多部分表单"),

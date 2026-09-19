@@ -9,6 +9,7 @@ import org.namewta.common.core.utils.MapstructUtils;
 import org.namewta.common.core.utils.StringUtils;
 import org.namewta.common.core.utils.ip.AddressUtils;
 import org.namewta.common.log.event.OperLogEvent;
+import org.namewta.common.json.utils.LogSanitizer;
 import org.namewta.common.mybatis.core.page.PageQuery;
 import org.namewta.common.mybatis.core.query.QueryBuilder;
 import org.namewta.system.domain.SysOperLog;
@@ -105,6 +106,13 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     @Override
     public void insertOperlog(SysOperLogBo bo) {
         SysOperLog operLog = MapstructUtils.convert(bo, SysOperLog.class);
+        // 事件外的内部调用也必须经过相同副本策略，不能直接落原始正文。
+        operLog.setOperParam(LogSanitizer.json(operLog.getOperParam(), operLog.getOperUrl()));
+        operLog.setJsonResult(LogSanitizer.omitResponseBody(operLog.getOperUrl()) ? null
+            : LogSanitizer.json(operLog.getJsonResult(), operLog.getOperUrl()));
+        if (StringUtils.isNotBlank(operLog.getErrorMsg())) {
+            operLog.setErrorMsg(LogSanitizer.REDACTED);
+        }
         operLog.setOperTime(LocalDateTime.now());
         operLogMapper.insert(operLog);
     }

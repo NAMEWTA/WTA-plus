@@ -16,6 +16,7 @@ import org.namewta.common.core.exception.base.BaseException;
 import org.namewta.common.core.utils.SpringUtils;
 import org.namewta.common.core.utils.StreamUtils;
 import org.namewta.common.json.utils.JsonUtils;
+import org.namewta.common.json.utils.LogSanitizer;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -63,7 +64,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ServiceException.class)
     public R<?> handleServiceException(ServiceException e, HttpServletRequest request) {
-        log.error(e.getMessage());
+        log.error("请求处理失败，异常类型={}", LogSanitizer.failure(e));
         Integer code = e.getCode();
         R<Object> response = ObjectUtil.isNotNull(code) ? R.fail(code, e.getMessage()) : R.fail(e.getMessage());
         response.setData(e.getData());
@@ -77,7 +78,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SseException.class)
     public String handleNotLoginException(SseException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.debug("请求地址'{}',认证失败'{}',无法访问系统资源", requestURI, e.getMessage());
+        log.debug("请求地址'{}',认证失败'{}',无法访问系统资源", requestURI, LogSanitizer.failure(e));
         return JsonUtils.toJsonString(R.fail(HttpStatus.HTTP_UNAUTHORIZED, "认证失败，无法访问系统资源"));
     }
 
@@ -87,7 +88,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServletException.class)
     public R<Void> handleServletException(ServletException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生未知异常.", requestURI, e);
+        log.error("请求地址'{}',发生未知异常，类型={}", requestURI, LogSanitizer.failure(e));
         return R.fail("发生未知异常，请联系管理员");
     }
 
@@ -96,7 +97,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BaseException.class)
     public R<Void> handleBaseException(BaseException e, HttpServletRequest request) {
-        log.error(e.getMessage());
+        log.error("请求处理失败，异常类型={}", LogSanitizer.failure(e));
         return R.fail(e.getMessage());
     }
 
@@ -142,7 +143,7 @@ public class GlobalExceptionHandler {
             // sse 经常性连接中断 例如关闭浏览器 直接屏蔽
             return;
         }
-        log.error("请求地址'{}',连接中断", requestURI, e);
+        log.error("请求地址'{}',连接中断，类型={}", requestURI, LogSanitizer.failure(e));
     }
 
     /**
@@ -159,7 +160,7 @@ public class GlobalExceptionHandler {
     public R<Void> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String errorId = RandomUtil.randomNumbers(8);
-        log.error("请求地址'{}',发生未知异常, 错误编号: {}", requestURI, errorId, e);
+        log.error("请求地址'{}',发生未知异常, 错误编号: {}，类型={}", requestURI, errorId, LogSanitizer.failure(e));
         return R.fail("发生未知异常，请联系管理员 [错误编号: " + errorId + "]");
     }
 
@@ -170,7 +171,7 @@ public class GlobalExceptionHandler {
     public R<Void> handleException(Exception e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String errorId = RandomUtil.randomNumbers(8);
-        log.error("请求地址'{}',发生系统异常, 错误编号: {}", requestURI, errorId, e);
+        log.error("请求地址'{}',发生系统异常, 错误编号: {}，类型={}", requestURI, errorId, LogSanitizer.failure(e));
         return R.fail("发生系统异常，请联系管理员 [错误编号: " + errorId + "]");
     }
 
@@ -179,7 +180,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BindException.class)
     public R<Void> handleBindException(BindException e) {
-        log.error(e.getMessage());
+        log.error("请求处理失败，异常类型={}", LogSanitizer.failure(e));
         String message = StreamUtils.join(e.getAllErrors(), DefaultMessageSourceResolvable::getDefaultMessage, ", ");
         R<Void> response = R.fail(message);
         response.setError(errorInfo(e.getAllErrors().stream().map(error -> new R.ErrorInfo(
@@ -192,7 +193,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public R<Void> constraintViolationException(ConstraintViolationException e) {
-        log.error(e.getMessage());
+        log.error("请求处理失败，异常类型={}", LogSanitizer.failure(e));
         String message = StreamUtils.join(e.getConstraintViolations(), ConstraintViolation::getMessage, ", ");
         R<Void> response = R.fail(message);
         response.setError(errorInfo(e.getConstraintViolations().stream().map(v -> new R.ErrorInfo(
@@ -205,7 +206,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public R<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage());
+        log.error("请求处理失败，异常类型={}", LogSanitizer.failure(e));
         String message = StreamUtils.join(e.getBindingResult().getAllErrors(), DefaultMessageSourceResolvable::getDefaultMessage, ", ");
         R<Void> response = R.fail(message);
         response.setError(errorInfo(e.getBindingResult().getAllErrors().stream().map(error -> new R.ErrorInfo(
@@ -218,7 +219,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HandlerMethodValidationException.class)
     public R<Void> handlerMethodValidationException(HandlerMethodValidationException e) {
-        log.error(e.getMessage());
+        log.error("请求处理失败，异常类型={}", LogSanitizer.failure(e));
         String message = StreamUtils.join(e.getAllErrors(), MessageSourceResolvable::getDefaultMessage, ", ");
         R<Void> response = R.fail(message);
         response.setError(errorInfo(e.getAllErrors().stream().map(error -> new R.ErrorInfo(
@@ -256,7 +257,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(JsonParseException.class)
     public R<Void> handleJsonParseException(JsonParseException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}' 发生 JSON 解析异常: {}", requestURI, e.getMessage());
+        log.error("请求地址'{}' 发生 JSON 解析异常: {}", requestURI, LogSanitizer.failure(e));
         return R.fail(HttpStatus.HTTP_BAD_REQUEST, "请求数据格式错误");
     }
 
@@ -265,7 +266,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public R<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request) {
-        log.error("请求地址'{}', 参数解析失败: {}", request.getRequestURI(), e.getMessage());
+        log.error("请求地址'{}', 参数解析失败: {}", request.getRequestURI(), LogSanitizer.failure(e));
         return R.fail(HttpStatus.HTTP_BAD_REQUEST, "请求参数格式错误");
     }
 
@@ -274,7 +275,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ExpressionException.class)
     public R<Void> handleSpelException(ExpressionException e, HttpServletRequest request) {
-        log.error("请求地址'{}'，SpEL解析异常: {}", request.getRequestURI(), e.getMessage());
+        log.error("请求地址'{}'，SpEL解析异常: {}", request.getRequestURI(), LogSanitizer.failure(e));
         return R.fail(HttpStatus.HTTP_INTERNAL_ERROR, "SpEL解析失败：" + e.getMessage());
     }
 
