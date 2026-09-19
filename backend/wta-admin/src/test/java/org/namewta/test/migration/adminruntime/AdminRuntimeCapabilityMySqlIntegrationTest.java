@@ -239,7 +239,7 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
         execute("insert into sys_menu(menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,"
             + "is_frame,is_cache,menu_type,visible,status,perms,icon,active_menu,ext) "
             + "values(2094360621561675790,1762000000000000001,'配置中心',1761400000000000001,14,"
-            + "'nacos','monitor/nacos/index','','N','Y','C','0','0','system:nacos:console','server','','')");
+            + "'nacos','monitor/nacos/index','','N','Y','C','0','0','system:nacos:console','tabler:server','','')");
     }
 
     private String generatorMenu(long id, String name, long parentId, String path, String type,
@@ -251,7 +251,7 @@ class AdminRuntimeCapabilityMySqlIntegrationTest {
 
     private String openApiMenu(long id, String name, long parentId, int order, String path,
                                String component, String type, String permission) {
-        String icon = "C".equals(type) ? "api" : "#";
+        String icon = "C".equals(type) ? "tabler:api" : "#";
         return "insert into sys_menu(menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,"
             + "is_frame,is_cache,menu_type,visible,status,perms,icon,active_menu,ext) "
             + "values(" + id + ",1762000000000000001,'" + name + "'," + parentId + "," + order

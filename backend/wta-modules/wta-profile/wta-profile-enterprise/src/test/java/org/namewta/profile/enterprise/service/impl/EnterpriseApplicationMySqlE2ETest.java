@@ -1,6 +1,5 @@
 package org.namewta.profile.enterprise.service.impl;
 
-import org.namewta.profile.enterprise.service.impl.EnterpriseVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.enterprise.adapter.codec.EnterpriseVerificationEvidenceCodec;
 
@@ -36,7 +35,6 @@ import org.mockito.MockedStatic;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -186,7 +184,9 @@ class EnterpriseApplicationMySqlE2ETest {
     private long save(Fixture fixture, String creditCode, boolean legalHandler) throws Exception {
         fixture.mvc().perform(post("/profile/enterprise/application")
                 .contentType(MediaType.APPLICATION_JSON).content(draft(creditCode, legalHandler)))
-            .andExpect(status().isOk()).andExpect(jsonPath("$.data.status").value("DRAFT"));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value(200))
+            .andExpect(jsonPath("$.data.status").value("DRAFT"));
         return Long.parseLong(scalar(fixture.session(),
             "select enterprise_application_id from profile_enterprise_application"
                 + " where applicant_user_id=" + LoginHelper.getUserId()
@@ -212,22 +212,20 @@ class EnterpriseApplicationMySqlE2ETest {
         event.setBusinessId(String.valueOf(applicationId));
         event.setStatus("finish");
         event.setParams(Map.of("snapshotVersion", snapshotVersion));
-        service.handleProcessEvent(event);
+        new org.namewta.profile.enterprise.listener.EnterpriseApplicationProcessListener(service).handle(event);
     }
 
     private Fixture fixture(SqlSession session) {
-        JsonMapper json = JsonMapper.builder().build();
         EnterpriseApplicationMapper applicationMapper = session.getMapper(EnterpriseApplicationMapper.class);
         EnterpriseVerificationAttemptMapper attemptMapper =
             session.getMapper(EnterpriseVerificationAttemptMapper.class);
-        EnterpriseVerificationEvidenceCodec evidenceCodec = new EnterpriseVerificationEvidenceCodec(json);
+        EnterpriseVerificationEvidenceCodec evidenceCodec = new EnterpriseVerificationEvidenceCodec();
         EnterpriseVerificationProviderProperties properties = new EnterpriseVerificationProviderProperties();
         properties.setEnabledProviders(java.util.Set.of("manual"));
         EnterpriseVerificationProviderRegistry providers = new EnterpriseVerificationProviderRegistry(
             List.of(new EnterpriseManualVerificationProvider()), properties);
         EnterpriseVerificationAttemptService attempts = new EnterpriseVerificationAttemptService(
-            providers, new EnterpriseVerificationAttemptDao(attemptMapper), evidenceCodec,
-            new EnterpriseVerificationSecurityAuditRecorder(new EnterpriseVerificationAttemptDao(attemptMapper)));
+            providers, new EnterpriseVerificationAttemptDao(attemptMapper), evidenceCodec);
         ConfigService config = mock(ConfigService.class);
         when(config.getConfigValue("profile.enterprise.provider.default")).thenReturn("manual");
         when(config.getConfigValue("profile.enterprise.flowCode")).thenReturn("profile_enterprise_verification");
@@ -235,7 +233,7 @@ class EnterpriseApplicationMySqlE2ETest {
         when(materials.snapshotImmutable(any(), any())).thenReturn(List.of());
         RecordingWorkflowGateway workflow = new RecordingWorkflowGateway();
         EnterpriseApplicationServiceImpl service = new EnterpriseApplicationServiceImpl(
-            applicationMapper, json, materials, providers, attempts, workflow, config,
+            applicationMapper, materials, providers, attempts, workflow, config,
             Clock.fixed(NOW, ZoneOffset.UTC));
         MockMvc mvc = MockMvcBuilders.standaloneSetup(new EnterpriseApplicationController(service))
             .setControllerAdvice(new EnterpriseApplicationExceptionHandler()).build();
@@ -313,7 +311,15 @@ class EnterpriseApplicationMySqlE2ETest {
     }
 
     private String credit(int suffix) {
-        return "91310000ABCDEF" + String.format("%04d", suffix);
+        // 合成身份固定包含现有校验合同要求的校验位，避免在目标业务断言之前被拒绝。
+        return switch (suffix) {
+            case 1 -> "91310000ABCDEF001Q";
+            case 11 -> "91310000ABCDEF011H";
+            case 21 -> "91310000ABCDEF021A";
+            case 22 -> "91310000ABCDEF0229";
+            case 23 -> "91310000ABCDEF0238";
+            default -> throw new IllegalArgumentException("Unknown enterprise fixture identity: " + suffix);
+        };
     }
 
     private void execute(SqlSession session, String sql) throws Exception {
@@ -341,6 +347,13 @@ class EnterpriseApplicationMySqlE2ETest {
     }
 
     private static final class RecordingWorkflowGateway implements EnterpriseWorkflowGateway {
+        @Override public void terminate(String businessId, String reason) {
+            throw new AssertionError("This fixture only exercises process start and explicit snapshot events");
+        }
+        @Override public Integer persistedSnapshotVersionByInstanceId(Long instanceId) {
+            throw new AssertionError("This fixture supplies snapshotVersion in every process event");
+        }
+
         private long applicationId;
         private boolean fail;
 

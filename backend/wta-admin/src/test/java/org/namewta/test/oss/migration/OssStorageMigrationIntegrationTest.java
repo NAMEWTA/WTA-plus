@@ -25,7 +25,7 @@ import org.namewta.system.oss.migration.mapper.SysOssMigrationItemMapper;
 import org.namewta.system.oss.readiness.OssStorageReadinessEntry;
 import org.namewta.system.oss.readiness.OssStorageReadinessProperties;
 import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
-import org.namewta.test.support.SqlBaselinePaths;
+import org.namewta.test.support.SqlBaselineScripts;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -52,7 +51,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -204,21 +202,9 @@ class OssStorageMigrationIntegrationTest {
 
     private void prepareDatabase(PooledDataSource dataSource, String cleanupKey, String rollbackKey) throws Exception {
         dropTables(dataSource);
-        execute(dataSource, "create table sys_oss_config (oss_config_id bigint not null,"
-            + "config_key varchar(20) not null, access_policy char(1) not null default '0',"
-            + "primary key(oss_config_id)) engine=innodb");
-        execute(dataSource, "create table sys_oss (oss_id bigint not null,file_name varchar(255) not null default '',"
-            + "original_name varchar(255) not null default '',file_suffix varchar(10) not null default '',"
-            + "url varchar(500) not null,ext1 text default null,create_dept bigint default null,"
-            + "create_time datetime default null,create_by bigint default null,update_time datetime default null,"
-            + "update_by bigint default null,service varchar(20) not null,is_temp char(1) not null default 'N',"
-            + "expire_time datetime default null,delete_state varchar(16) not null default 'ACTIVE',"
-            + "primary key(oss_id)) engine=innodb");
-        execute(dataSource, "create table sys_oss_ref (oss_ref_id bigint not null,oss_id bigint not null,"
-            + "ref_type varchar(64) not null,ref_id varchar(64) not null,version int default 0,"
-            + "create_dept bigint default null,create_time datetime default null,create_by bigint default null,"
-            + "update_time datetime default null,update_by bigint default null,del_flag char(1) default '0',"
-            + "primary key(oss_ref_id)) engine=innodb");
+        for (String table : List.of("sys_oss_config", "sys_oss", "sys_oss_ref")) {
+            executeBlock(dataSource, SqlBaselineScripts.createTable(table));
+        }
         executeBlock(dataSource, migrationDdlBlock());
         execute(dataSource, "insert into sys_oss(oss_id,file_name,original_name,file_suffix,url,service) values"
             + "(101,'" + cleanupKey + "','cleanup.txt','txt','private://cleanup','" + PRIVATE_ROUTE + "'),"
@@ -279,22 +265,12 @@ class OssStorageMigrationIntegrationTest {
     }
 
     private String migrationDdlBlock() throws Exception {
-        String sql = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
-        String marker = "-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表";
-        int start = sql.indexOf(marker);
-        assertThat(start).isGreaterThanOrEqualTo(0);
-        return sql.substring(start);
+        return SqlBaselineScripts.createTable("sys_oss_migration_batch") + "\n"
+            + SqlBaselineScripts.createTable("sys_oss_migration_item");
     }
 
     private void executeBlock(PooledDataSource dataSource, String sql) throws Exception {
-        String executable = Arrays.stream(sql.split("\\R"))
-            .filter(line -> !line.stripLeading().startsWith("--"))
-            .collect(Collectors.joining("\n"));
-        for (String statement : executable.split(";")) {
-            if (!statement.isBlank()) {
-                execute(dataSource, statement);
-            }
-        }
+        SqlBaselineScripts.execute(dataSource, sql);
     }
 
     private static void execute(PooledDataSource dataSource, String sql) throws Exception {

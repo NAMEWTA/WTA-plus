@@ -16,6 +16,7 @@ import org.namewta.system.domain.bo.SysOssConfigBo;
 import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.service.impl.SysOssConfigServiceImpl;
 import org.namewta.test.support.SqlBaselinePaths;
+import org.namewta.test.support.SqlBaselineScripts;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -23,14 +24,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import tools.jackson.databind.json.JsonMapper;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -96,8 +94,8 @@ class OssAccessMigrationMySqlIntegrationTest {
             + "(oss_config_id,config_key,access_policy,status) values"
             + "(11,'private-old','0','Y'),(12,'legacy-public','1','N'),"
             + "(13,'legacy-custom','2','N'),(14,'unknown','9','N')");
-        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service) values"
-            + "(101,'private-old'),(102,'legacy-public'),(103,'unknown')");
+        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service,url) values"
+            + "(101,'private-old',''),(102,'legacy-public',''),(103,'unknown','')");
         executeBlock(dataSource, ddlBlock());
         executeBlock(dataSource, dmlBlock());
 
@@ -135,7 +133,7 @@ class OssAccessMigrationMySqlIntegrationTest {
             + "(oss_config_id,config_key,access_key,secret_key,bucket_name,endpoint,is_https,access_policy,status)"
             + " values(31,'private-main','old-access','old-secret','private-bucket','old.endpoint','Y','0','N'),"
             + "(32,'private-default','default-access','default-secret','default-bucket','default.endpoint','Y','0','Y')");
-        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service) values(301,'private-main')");
+        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service,url) values(301,'private-main','')");
         SqlSessionFactory factory = sqlSessionFactory(dataSource);
         try (SqlSession session = factory.openSession(true)) {
             SysOssConfigMapper mapper = session.getMapper(SysOssConfigMapper.class);
@@ -181,19 +179,8 @@ class OssAccessMigrationMySqlIntegrationTest {
 
     private void prepareBaseline(PooledDataSource dataSource) throws Exception {
         dropTables(dataSource);
-        execute(dataSource, "create table " + CONFIG_TABLE + " ("
-            + "oss_config_id bigint not null,config_key varchar(20) not null default '',"
-            + "access_key varchar(255) default '',secret_key varchar(255) default '',"
-            + "bucket_name varchar(255) default '',prefix varchar(255) default '',"
-            + "endpoint varchar(255) default '',domain_url varchar(255) default '',"
-            + "is_https char(1) default 'N',region varchar(255) default '',"
-            + "access_policy char(1) not null default '1',status char(1) default 'N',"
-            + "ext1 varchar(255) default '',create_dept bigint default null,create_by bigint default null,"
-            + "create_time datetime default null,update_by bigint default null,update_time datetime default null,"
-            + "remark varchar(500) default null,"
-            + "primary key(oss_config_id)) engine=innodb comment='OSS测试配置表'");
-        execute(dataSource, "create table " + OSS_TABLE + " ("
-            + "oss_id bigint not null,service varchar(20) not null,primary key(oss_id)) engine=innodb");
+        executeBlock(dataSource, SqlBaselineScripts.createTable(CONFIG_TABLE));
+        executeBlock(dataSource, SqlBaselineScripts.createTable(OSS_TABLE));
     }
 
     private SqlSessionFactory sqlSessionFactory(PooledDataSource dataSource) {
@@ -222,37 +209,19 @@ class OssAccessMigrationMySqlIntegrationTest {
     }
 
     private String ddlBlock() throws Exception {
-        return rewriteTableNames(block(SqlBaselinePaths.file("10-cde-base-ddl.sql"),
-            "-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表"));
+        return SqlBaselineScripts.createTable(BATCH_TABLE) + "\n" + SqlBaselineScripts.createTable(ITEM_TABLE);
     }
 
     private String dmlBlock() throws Exception {
-        return rewriteTableNames(block(SqlBaselinePaths.file("50-cde-base-dml.sql"),
-            "-- 变更内容：将全部历史OSS访问类型保守回填为PRIVATE"));
-    }
-
-    private static String block(Path path, String marker) throws Exception {
-        String sql = Files.readString(path);
-        int start = sql.indexOf(marker);
-        assertTrue(start >= 0, marker);
-        return sql.substring(start);
-    }
-
-    private static String rewriteTableNames(String sql) {
-        return sql.replace("sys_oss_migration_batch", BATCH_TABLE)
-            .replace("sys_oss_migration_item", ITEM_TABLE)
-            .replace("sys_oss_config", CONFIG_TABLE);
+        String sql = Files.readString(SqlBaselinePaths.file("50-cde-base-dml.sql"));
+        int start = sql.indexOf("-- 变更内容：将全部历史OSS访问类型保守回填为PRIVATE");
+        int end = sql.indexOf("-- NAMEWTA-NACOS-CONSOLE-DML-001", start);
+        assertTrue(start >= 0 && end > start, "OSS访问类型回填片段边界");
+        return sql.substring(start, end);
     }
 
     private static void executeBlock(PooledDataSource dataSource, String sql) throws Exception {
-        String executable = Arrays.stream(sql.split("\\R"))
-            .filter(line -> !line.stripLeading().startsWith("--"))
-            .collect(Collectors.joining("\n"));
-        for (String statement : executable.split(";")) {
-            if (!statement.isBlank()) {
-                execute(dataSource, statement);
-            }
-        }
+        SqlBaselineScripts.execute(dataSource, sql);
     }
 
     private static void execute(PooledDataSource dataSource, String sql) throws Exception {

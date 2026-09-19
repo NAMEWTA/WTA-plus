@@ -4,16 +4,16 @@ import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.namewta.test.support.SqlBaselinePaths;
+import org.namewta.test.support.SqlBaselineScripts;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,17 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("dev")
 class ProfileSchemaMySqlIntegrationTest {
-
-    private static final List<String> PROFILE_TABLES = List.of(
-        "profile_enterprise_transfer_record", "profile_notification_audit", "profile_operation_audit",
-        "profile_decision_record", "profile_verification_attempt", "profile_material_ref",
-        "profile_enterprise_binding_event", "profile_enterprise_binding", "profile_enterprise_source",
-        "profile_enterprise_submission", "profile_enterprise_application", "profile_enterprise_version",
-        "profile_enterprise", "profile_person_binding_event", "profile_person_binding",
-        "profile_person_source", "profile_person_submission", "profile_person_application",
-        "profile_person_version", "profile_person", "profile_material_requirement", "profile_material_node",
-        "profile_document_type", "profile_identity_guard"
-    );
 
     @Test
     void freshSchemaAndSeedsEnforceReleaseAndRecreateSemantics() throws Exception {
@@ -42,14 +31,28 @@ class ProfileSchemaMySqlIntegrationTest {
             System.getProperty("profile.schema.mysql.integration.username", "root"),
             System.getProperty("profile.schema.mysql.integration.password", "")
         );
+        boolean ownsSchema = false;
         try {
-            prepareReferenceTables(dataSource);
-            executeBlock(dataSource, sqlBlock("10-cde-base-ddl.sql", "NAMEWTA-PROFILE-DDL-001"));
-            executeBlock(dataSource, sqlBlock("50-cde-base-dml.sql", "NAMEWTA-PROFILE-DML-001"));
+            assertTrue(scalar(dataSource, "select database()").startsWith("namewta_profile_schema_test_"),
+                "必须使用本测试专属数据库");
+            assertEquals("0", scalar(dataSource,
+                "select count(*) from information_schema.tables where table_schema=database()"));
+            ownsSchema = true;
+            // 完整业务基座是唯一事实源；不复制简化表，也不把字面量内分号当作语句边界。
+            for (String file : List.of("10-cde-base-ddl.sql", "20-cde-job.sql", "30-cde-workflow.sql",
+                "40-cde-ai.sql", "50-cde-base-dml.sql")) {
+                SqlBaselineScripts.execute(dataSource, Files.readString(SqlBaselinePaths.file(file)));
+            }
             assertEquals("24", scalar(dataSource,
                 "select count(*) from information_schema.tables where table_schema=database() and table_name like 'profile\\_%'"));
             assertEquals("14", scalar(dataSource,
-                "select count(*) from sys_menu where perms like 'profile:%'"));
+                "select count(*) from sys_menu where client_id=1762000000000000001 and perms like 'profile:%'"));
+            assertEquals("4", scalar(dataSource,
+                "select count(*) from sys_menu where client_id=1762000000000000002 and perms like 'profile:%'"));
+            assertEquals("0", scalar(dataSource,
+                "select count(*) from sys_menu where client_id=1762000000000000002 and perms like 'profile:%'"
+                    + " and perms not in ('profile:person:apply','profile:person:material',"
+                    + "'profile:enterprise:apply','profile:enterprise:material')"));
             assertEquals("12", scalar(dataSource, "select count(*) from profile_document_type"));
             assertEquals("8", scalar(dataSource,
                 "select count(*) from profile_material_node where node_type='TAG' and system_required='Y'"));
@@ -83,8 +86,13 @@ class ProfileSchemaMySqlIntegrationTest {
             assertSingleActiveMaterialTag(dataSource);
             assertMaterialTreeShape(dataSource);
         } finally {
-            dropTables(dataSource);
-            dataSource.forceCloseAll();
+            try {
+                if (ownsSchema) {
+                    dropTables(dataSource);
+                }
+            } finally {
+                dataSource.forceCloseAll();
+            }
         }
     }
 
@@ -182,63 +190,6 @@ class ProfileSchemaMySqlIntegrationTest {
             + "(99,2100200000000000011,'TAG',4,'PERSON','INVALID_DEPTH','非法深度','N','0',99)"));
     }
 
-    private static void prepareReferenceTables(PooledDataSource dataSource) throws Exception {
-        dropTables(dataSource);
-        execute(dataSource, "create table sys_menu (menu_id bigint not null,client_id bigint null,"
-            + "menu_name varchar(50) not null,parent_id bigint default 0,order_num int default 0,path varchar(200) default '',"
-            + "component varchar(255),query_param varchar(255),is_frame char(1),is_cache char(1),menu_type char(1),"
-            + "visible char(1),status char(1),perms varchar(100),icon varchar(100),active_menu varchar(255),"
-            + "ext varchar(2000),create_dept bigint,create_by bigint,create_time datetime,update_by bigint,"
-            + "update_time datetime,remark varchar(500),primary key(menu_id)) engine=innodb");
-        execute(dataSource, "create table sys_config (config_id bigint not null,config_name varchar(100),"
-            + "config_key varchar(100),config_value varchar(500),config_type char(1),create_dept bigint,create_by bigint,"
-            + "create_time datetime,update_by bigint,update_time datetime,remark varchar(500),primary key(config_id)) engine=innodb");
-        execute(dataSource, "create table sys_dict_type (dict_id bigint not null,dict_name varchar(100),"
-            + "dict_type varchar(100),create_dept bigint,create_by bigint,create_time datetime,update_by bigint,"
-            + "update_time datetime,remark varchar(500),primary key(dict_id),unique key uk_test_dict_type(dict_type)) engine=innodb");
-        execute(dataSource, "create table sys_dict_data (dict_code bigint not null,dict_sort int,dict_label varchar(100),"
-            + "dict_value varchar(100),dict_type varchar(100),css_class varchar(100),list_class varchar(100),"
-            + "is_default char(1),create_dept bigint,create_by bigint,create_time datetime,update_by bigint,"
-            + "update_time datetime,remark varchar(500),primary key(dict_code)) engine=innodb");
-        execute(dataSource, "create table flow_definition (id bigint not null,flow_code varchar(40) not null,"
-            + "flow_name varchar(100) not null,model_value varchar(40),category varchar(100),version varchar(20) not null,"
-            + "is_publish tinyint not null,form_custom char(1),form_path varchar(100),activity_status tinyint not null,"
-            + "listener_type varchar(100),listener_path varchar(400),ext varchar(500),create_time datetime,"
-            + "create_by varchar(64),update_time datetime,update_by varchar(64),del_flag char(1),tenant_id varchar(40),"
-            + "primary key(id)) engine=innodb");
-        execute(dataSource, "create table flow_node (id bigint not null,node_type tinyint not null,"
-            + "definition_id bigint not null,node_code varchar(100) not null,node_name varchar(100),"
-            + "permission_flag varchar(200),node_ratio varchar(200),coordinate varchar(100),any_node_skip varchar(100),"
-            + "listener_type varchar(100),listener_path varchar(400),form_custom char(1),form_path varchar(100),"
-            + "version varchar(20) not null,create_time datetime,create_by varchar(64),update_time datetime,"
-            + "update_by varchar(64),ext text,del_flag char(1),tenant_id varchar(40),primary key(id)) engine=innodb");
-        execute(dataSource, "create table flow_skip (id bigint not null,definition_id bigint not null,"
-            + "now_node_code varchar(100) not null,now_node_type tinyint,next_node_code varchar(100) not null,"
-            + "next_node_type tinyint,skip_name varchar(100),skip_type varchar(40),skip_condition varchar(200),"
-            + "coordinate varchar(100),create_time datetime,create_by varchar(64),update_time datetime,"
-            + "update_by varchar(64),del_flag char(1),tenant_id varchar(40),primary key(id)) engine=innodb");
-    }
-
-    private static String sqlBlock(String file, String marker) throws Exception {
-        String sql = Files.readString(sqlDirectory().resolve(file));
-        int markerIndex = sql.indexOf(marker);
-        assertTrue(markerIndex >= 0, marker);
-        int start = sql.lastIndexOf("--", markerIndex);
-        assertTrue(start >= 0, marker + " comment start");
-        return sql.substring(start);
-    }
-
-    private static void executeBlock(PooledDataSource dataSource, String sql) throws Exception {
-        String executable = Arrays.stream(sql.split("\\R"))
-            .filter(line -> !line.stripLeading().startsWith("--"))
-            .collect(Collectors.joining("\n"));
-        for (String statement : executable.split(";")) {
-            if (!statement.isBlank()) {
-                execute(dataSource, statement);
-            }
-        }
-    }
-
     private static void execute(PooledDataSource dataSource, String sql) throws Exception {
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             statement.execute(sql);
@@ -254,36 +205,18 @@ class ProfileSchemaMySqlIntegrationTest {
     }
 
     private static void dropTables(PooledDataSource dataSource) throws Exception {
-        for (String table : PROFILE_TABLES) {
-            execute(dataSource, "drop table if exists " + table);
-        }
-        execute(dataSource, "drop table if exists sys_menu");
-        execute(dataSource, "drop table if exists sys_config");
-        execute(dataSource, "drop table if exists sys_dict_data");
-        execute(dataSource, "drop table if exists sys_dict_type");
-        execute(dataSource, "drop table if exists flow_skip");
-        execute(dataSource, "drop table if exists flow_node");
-        execute(dataSource, "drop table if exists flow_definition");
-    }
-
-    private static Path repositoryRoot() {
-        Path current = Path.of(System.getProperty("user.dir"));
-        return current.getFileName().toString().equals("wta-admin") ? current.getParent() : current;
-    }
-
-    private static Path sqlDirectory() {
-        String configuredRoot = System.getProperty("profile.schema.sql.root");
-        if (configuredRoot != null && !configuredRoot.isBlank()) {
-            return Path.of(configuredRoot).resolve("release-artifacts/docker/infrastructure/mysql/init");
-        }
-        Path current = repositoryRoot();
-        while (current != null) {
-            Path directory = current.resolve("release-artifacts/docker/infrastructure/mysql/init");
-            if (Files.isDirectory(directory)) {
-                return directory;
+        // 只有验证过为空且归本测试所有的 schema 才会进入清理；不处理其他数据库。
+        List<String> tables = new ArrayList<>();
+        try (var connection = dataSource.getConnection(); var statement = connection.createStatement();
+             var result = statement.executeQuery(
+                 "select table_name from information_schema.tables where table_schema=database()")) {
+            while (result.next()) {
+                tables.add(result.getString(1));
             }
-            current = current.getParent();
         }
-        throw new IllegalStateException("Cannot locate the aggregate MySQL initialization directory");
+        for (String table : tables) {
+            assertTrue(table.matches("[a-zA-Z0-9_]+"), "基座表名只能包含字母、数字与下划线");
+            execute(dataSource, "drop table `" + table + "`");
+        }
     }
 }
