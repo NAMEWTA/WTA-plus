@@ -72,6 +72,7 @@ async function installAdminApi(page: Page, state: AdminState) {
       return json(route, { code: 200, data: [] });
     }
     if (path === '/resource/message/close') return json(route, { code: 200, data: null });
+    if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
     if (path.startsWith('/system/dict/data/type/')) return json(route, { code: 200, data: [] });
 
@@ -233,7 +234,7 @@ test('admin runs Client-scoped governance queries and an authorized role mutatio
       }),
       expect.objectContaining({
         body: { roleId: 77, status: '1' },
-        method: 'PUT',
+        method: 'POST',
         path: '/system/role/changeStatus'
       })
     ])
@@ -248,7 +249,7 @@ test('a rejected Client-scoped user query stays visible and does not invent fall
 
   await page.goto(`${adminUrl}/system-user`);
 
-  await expect(page.getByText('跨 Client 用户查询被拒绝', { exact: true })).toBeVisible();
+  await expect(page.locator('#app').getByText('跨 Client 用户查询被拒绝', { exact: true })).toBeVisible();
   await expect(page.getByText('scoped-user', { exact: true })).toHaveCount(0);
   expect(state.governanceRequests.filter(item => item.path === '/system/user/list')).toHaveLength(1);
   expect(state.unknownRequests).toEqual([]);
@@ -317,6 +318,7 @@ test('admin edits the server reset candidate while weak input sends no password 
 
   await page.goto(`${adminUrl}/system-user`);
   await page.getByRole('button', { name: '重置密码' }).evaluate(button => {
+    if (!(button instanceof HTMLButtonElement)) throw new Error('Expected the password reset button');
     button.click();
     button.click();
   });
@@ -346,7 +348,7 @@ test('admin edits the server reset candidate while weak input sends no password 
   expect(state.credentialRequests).toEqual(
     expect.arrayContaining([
       expect.objectContaining({ method: 'POST', path: '/system/user/resetPwd/candidate' }),
-      expect.objectContaining({ method: 'PUT', path: '/system/user/resetPwd' })
+      expect.objectContaining({ method: 'POST', path: '/system/user/resetPwd' })
     ])
   );
   expect(state.unknownRequests).toEqual([]);

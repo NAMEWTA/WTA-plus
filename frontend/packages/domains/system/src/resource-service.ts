@@ -121,8 +121,8 @@ function createDictDataService(request: Request) {
       request<PageResult<DictDataVO>>({ url: '/system/dict/data/list', method: 'get', params }),
     get: (id: ResourceIdentifier) => request<DictDataVO>({ url: '/system/dict/data/' + segment(id), method: 'get' }),
     add: (data: DictDataForm) => request({ url: '/system/dict/data', method: 'post', data }),
-    update: (data: DictDataForm) => request({ url: '/system/dict/data', method: 'put', data }),
-    delete: (ids: ResourceIdentifierList) => request({ url: '/system/dict/data/' + segment(ids), method: 'delete' })
+    update: (data: DictDataForm) => request({ url: '/system/dict/data/update', method: 'post', data }),
+    delete: (ids: ResourceIdentifierList) => request({ url: '/system/dict/data/' + segment(ids), method: 'post' })
   });
 }
 
@@ -132,9 +132,9 @@ function createDictTypeService(request: Request) {
       request<PageResult<DictTypeVO>>({ url: '/system/dict/type/list', method: 'get', params }),
     get: (id: ResourceIdentifier) => request<DictTypeVO>({ url: '/system/dict/type/' + segment(id), method: 'get' }),
     add: (data: DictTypeForm) => request({ url: '/system/dict/type', method: 'post', data }),
-    update: (data: DictTypeForm) => request({ url: '/system/dict/type', method: 'put', data }),
-    delete: (ids: ResourceIdentifierList) => request({ url: '/system/dict/type/' + segment(ids), method: 'delete' }),
-    refreshCache: () => request({ url: '/system/dict/type/refreshCache', method: 'delete' }),
+    update: (data: DictTypeForm) => request({ url: '/system/dict/type/update', method: 'post', data }),
+    delete: (ids: ResourceIdentifierList) => request({ url: '/system/dict/type/' + segment(ids), method: 'post' }),
+    refreshCache: () => request({ url: '/system/dict/type/refreshCache', method: 'post' }),
     options: () => request<DictTypeVO[]>({ url: '/system/dict/type/optionselect', method: 'get' })
   });
 }
@@ -145,11 +145,11 @@ function createConfigService(request: Request) {
     get: (id: ResourceIdentifier) => request<ConfigVO>({ url: '/system/config/' + segment(id), method: 'get' }),
     byKey: (key: string) => request<string>({ url: '/system/config/configKey/' + segment(key), method: 'get' }),
     add: (data: ConfigForm) => request({ url: '/system/config', method: 'post', data }),
-    update: (data: ConfigForm) => request({ url: '/system/config', method: 'put', data }),
+    update: (data: ConfigForm) => request({ url: '/system/config/update', method: 'post', data }),
     updateByKey: (key: string, value: unknown) =>
-      request({ url: '/system/config/updateByKey', method: 'put', data: { configKey: key, configValue: value } }),
-    delete: (ids: ResourceIdentifierList) => request({ url: '/system/config/' + segment(ids), method: 'delete' }),
-    refreshCache: () => request({ url: '/system/config/refreshCache', method: 'delete' })
+      request({ url: '/system/config/updateByKey', method: 'post', data: { configKey: key, configValue: value } }),
+    delete: (ids: ResourceIdentifierList) => request({ url: '/system/config/' + segment(ids), method: 'post' }),
+    refreshCache: () => request({ url: '/system/config/refreshCache', method: 'post' })
   });
 }
 
@@ -201,9 +201,9 @@ function createOssService(request: Request) {
     },
     completeUpload: (token: string, parts: OssCompletedPart[] = []) =>
       request<string>({ url: `/resource/oss/uploads/${segment(token)}/complete`, method: 'post', data: { parts } }),
-    abortUpload: (token: string) => request({ url: `/resource/oss/uploads/${segment(token)}`, method: 'delete' }),
+    abortUpload: (token: string) => request({ url: `/resource/oss/uploads/${segment(token)}`, method: 'post' }),
     downloadUrl,
-    delete: (ids: ResourceIdentifierList) => request({ url: '/resource/oss/' + segment(ids), method: 'delete' })
+    delete: (ids: ResourceIdentifierList) => request({ url: '/resource/oss/' + segment(ids), method: 'post' })
   });
 }
 

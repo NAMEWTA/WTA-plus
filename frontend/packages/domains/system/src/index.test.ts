@@ -43,13 +43,13 @@ describe('system transport contracts', () => {
       [{ url: '/system/client/list', method: 'get', params: query }, () => service.clients.list(query)],
       [{ url: '/system/client/client%2F1', method: 'get' }, () => service.clients.get('client/1')],
       [{ url: '/system/client', method: 'post', data: input }, () => service.clients.add(input)],
-      [{ url: '/system/client', method: 'put', data: input }, () => service.clients.update(input)],
+      [{ url: '/system/client/update', method: 'post', data: input }, () => service.clients.update(input)],
       [
-        { url: '/system/client/client%2F1,client%2F2', method: 'delete' },
+        { url: '/system/client/client%2F1,client%2F2', method: 'post' },
         () => service.clients.delete(['client/1', 'client/2'])
       ],
       [
-        { url: '/system/client/changeStatus', method: 'put', data: { clientId: 'client-a', status: '1' } },
+        { url: '/system/client/changeStatus', method: 'post', data: { clientId: 'client-a', status: '1' } },
         () => service.clients.changeStatus('client-a', '1')
       ],
       [
@@ -76,29 +76,29 @@ describe('system transport contracts', () => {
       ],
       [{ url: '/system/user/', method: 'get', params: undefined }, () => service.users.get()],
       [{ url: '/system/user', method: 'post', data: input }, () => service.users.add(input)],
-      [{ url: '/system/user', method: 'put', data: input }, () => service.users.update(input)],
-      [{ url: '/system/user/user%2F1,user%2F2', method: 'delete' }, () => service.users.delete(['user/1', 'user/2'])],
+      [{ url: '/system/user/update', method: 'post', data: input }, () => service.users.update(input)],
+      [{ url: '/system/user/user%2F1,user%2F2', method: 'post' }, () => service.users.delete(['user/1', 'user/2'])],
       [
         {
           url: '/system/user/resetPwd',
-          method: 'put',
-          headers: { isEncrypt: true, repeatSubmit: false },
+          method: 'post',
+          headers: { repeatSubmit: false },
           data: { userId: 'user/1', password: 'secret' }
         },
         () => service.users.resetPassword('user/1', 'secret')
       ],
       [
-        { url: '/system/user/changeStatus', method: 'put', data: { userId: 'user/1', status: '0' } },
+        { url: '/system/user/changeStatus', method: 'post', data: { userId: 'user/1', status: '0' } },
         () => service.users.changeStatus('user/1', '0')
       ],
-      [{ url: '/system/user/unlock/user%2F1', method: 'get' }, () => service.users.unlock('user/1')],
+      [{ url: '/system/user/unlock/user%2F1', method: 'post' }, () => service.users.unlock('user/1')],
       [{ url: '/system/user/profile', method: 'get' }, () => service.users.profile()],
-      [{ url: '/system/user/profile', method: 'put', data: input }, () => service.users.updateProfile(input)],
+      [{ url: '/system/user/profile', method: 'post', data: input }, () => service.users.updateProfile(input)],
       [
         {
           url: '/system/user/profile/updatePwd',
-          method: 'put',
-          headers: { isEncrypt: true, repeatSubmit: false },
+          method: 'post',
+          headers: { repeatSubmit: false },
           data: { oldPassword: 'old', newPassword: 'new' }
         },
         () => service.users.updatePassword('old', 'new')
@@ -107,7 +107,7 @@ describe('system transport contracts', () => {
         { url: '/system/user/authRole/user%2F1', method: 'get', params: { clientId: 'client/1' } },
         () => service.users.authRoles('user/1', 'client/1')
       ],
-      [{ url: '/system/user/authRole', method: 'put', params: input }, () => service.users.updateAuthRoles(input)],
+      [{ url: '/system/user/authRole', method: 'post', params: input }, () => service.users.updateAuthRoles(input)],
       [{ url: '/system/user/list/dept/dept%2F1', method: 'get' }, () => service.users.listByDepartment('dept/1')],
       [{ url: '/system/user/deptTree', method: 'get' }, () => service.users.departmentTree()],
 
@@ -115,9 +115,9 @@ describe('system transport contracts', () => {
       [{ url: '/system/userType/type%2F1', method: 'get' }, () => service.userTypes.get('type/1')],
       [{ url: '/system/userType/options', method: 'get' }, () => service.userTypes.options()],
       [{ url: '/system/userType', method: 'post', data: input }, () => service.userTypes.add(input)],
-      [{ url: '/system/userType', method: 'put', data: input }, () => service.userTypes.update(input)],
+      [{ url: '/system/userType/update', method: 'post', data: input }, () => service.userTypes.update(input)],
       [
-        { url: '/system/userType/type%2F1,type%2F2', method: 'delete' },
+        { url: '/system/userType/type%2F1,type%2F2', method: 'post' },
         () => service.userTypes.delete(['type/1', 'type/2'])
       ],
 
@@ -128,13 +128,13 @@ describe('system transport contracts', () => {
       ],
       [{ url: '/system/role/role%2F1', method: 'get' }, () => service.roles.get('role/1')],
       [{ url: '/system/role', method: 'post', data: input }, () => service.roles.add(input)],
-      [{ url: '/system/role', method: 'put', data: input }, () => service.roles.update(input)],
-      [{ url: '/system/role/permission', method: 'put', data: input }, () => service.roles.updatePermission(input)],
+      [{ url: '/system/role/update', method: 'post', data: input }, () => service.roles.update(input)],
+      [{ url: '/system/role/permission', method: 'post', data: input }, () => service.roles.updatePermission(input)],
       [
-        { url: '/system/role/changeStatus', method: 'put', data: { roleId: 'role/1', status: '0' } },
+        { url: '/system/role/changeStatus', method: 'post', data: { roleId: 'role/1', status: '0' } },
         () => service.roles.changeStatus('role/1', '0')
       ],
-      [{ url: '/system/role/role%2F1,role%2F2', method: 'delete' }, () => service.roles.delete(['role/1', 'role/2'])],
+      [{ url: '/system/role/role%2F1,role%2F2', method: 'post' }, () => service.roles.delete(['role/1', 'role/2'])],
       [
         { url: '/system/role/authUser/allocatedList', method: 'get', params: query },
         () => service.roles.allocatedUsers(query)
@@ -143,13 +143,13 @@ describe('system transport contracts', () => {
         { url: '/system/role/authUser/unallocatedList', method: 'get', params: query },
         () => service.roles.unallocatedUsers(query)
       ],
-      [{ url: '/system/role/authUser/cancel', method: 'put', data: input }, () => service.roles.cancelUser(input)],
+      [{ url: '/system/role/authUser/cancel', method: 'post', data: input }, () => service.roles.cancelUser(input)],
       [
-        { url: '/system/role/authUser/cancelAll', method: 'put', params: input },
+        { url: '/system/role/authUser/cancelAll', method: 'post', params: input },
         () => service.roles.cancelUsers(input)
       ],
       [
-        { url: '/system/role/authUser/selectAll', method: 'put', params: input },
+        { url: '/system/role/authUser/selectAll', method: 'post', params: input },
         () => service.roles.selectUsers(input)
       ],
       [{ url: '/system/role/deptTree/role%2F1', method: 'get' }, () => service.roles.departmentTree('role/1')],
@@ -162,10 +162,10 @@ describe('system transport contracts', () => {
       ],
       [{ url: '/system/menu/roleMenuTreeselect/role%2F1', method: 'get' }, () => service.menus.roleTree('role/1')],
       [{ url: '/system/menu', method: 'post', data: input }, () => service.menus.add(input)],
-      [{ url: '/system/menu', method: 'put', data: input }, () => service.menus.update(input)],
-      [{ url: '/system/menu/menu%2F1', method: 'delete' }, () => service.menus.delete('menu/1')],
+      [{ url: '/system/menu/update', method: 'post', data: input }, () => service.menus.update(input)],
+      [{ url: '/system/menu/menu%2F1', method: 'post' }, () => service.menus.delete('menu/1')],
       [
-        { url: '/system/menu/cascade/menu%2F1,menu%2F2', method: 'delete' },
+        { url: '/system/menu/cascade/menu%2F1,menu%2F2', method: 'post' },
         () => service.menus.cascadeDelete(['menu/1', 'menu/2'])
       ],
 
@@ -180,8 +180,8 @@ describe('system transport contracts', () => {
       ],
       [{ url: '/system/dept/dept%2F1', method: 'get' }, () => service.departments.get('dept/1')],
       [{ url: '/system/dept', method: 'post', data: input }, () => service.departments.add(input)],
-      [{ url: '/system/dept', method: 'put', data: input }, () => service.departments.update(input)],
-      [{ url: '/system/dept/dept%2F1', method: 'delete' }, () => service.departments.delete('dept/1')],
+      [{ url: '/system/dept/update', method: 'post', data: input }, () => service.departments.update(input)],
+      [{ url: '/system/dept/dept%2F1', method: 'post' }, () => service.departments.delete('dept/1')],
 
       [{ url: '/system/post/list', method: 'get', params: query }, () => service.posts.list(query)],
       [{ url: '/system/post/post%2F1', method: 'get' }, () => service.posts.get('post/1')],
@@ -190,8 +190,8 @@ describe('system transport contracts', () => {
         () => service.posts.options('dept/1', ['post/1'])
       ],
       [{ url: '/system/post', method: 'post', data: input }, () => service.posts.add(input)],
-      [{ url: '/system/post', method: 'put', data: input }, () => service.posts.update(input)],
-      [{ url: '/system/post/post%2F1,post%2F2', method: 'delete' }, () => service.posts.delete(['post/1', 'post/2'])],
+      [{ url: '/system/post/update', method: 'post', data: input }, () => service.posts.update(input)],
+      [{ url: '/system/post/post%2F1,post%2F2', method: 'post' }, () => service.posts.delete(['post/1', 'post/2'])],
       [{ url: '/system/post/deptTree', method: 'get' }, () => service.posts.departmentTree()]
     ];
 

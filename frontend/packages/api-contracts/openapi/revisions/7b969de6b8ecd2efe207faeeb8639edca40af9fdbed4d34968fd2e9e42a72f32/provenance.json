@@ -1,0 +1,13 @@
+{
+  "backendCommit": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "backendRepository": "NAMEWTA/WTA-plus working-tree-uncommitted",
+  "generator": "openapi-typescript@7.13.0",
+  "openapiVersion": "3.1.0",
+  "rawSha256": "e63f642a4d781973e691a3daab6bd4be32300fd804f99df329e68f849549fc96",
+  "runtimeEndpoint": "baseline-plus-compiled-Spring-MVC-mappings:T-26",
+  "totals": {
+    "paths": 415,
+    "schemas": 442,
+    "tags": 73
+  }
+}

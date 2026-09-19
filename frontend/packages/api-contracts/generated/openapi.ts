@@ -1,24 +1,4 @@
 export interface paths {
-    "/workflow/task/updateAssignee/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 批量修改任务办理人。
-         * @description 批量修改任务办理人。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:task:edit`<br><br>
-         */
-        put: operations["updateAssignee"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/workflow/spel": {
         parameters: {
             query?: never;
@@ -27,11 +7,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改流程 SpEL 表达式定义。
-         * @description 修改流程 SpEL 表达式定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:spel:edit`<br><br>
-         */
-        put: operations["edit"];
+        put?: never;
         /**
          * 新增流程 SpEL 表达式定义。
          * @description 新增流程 SpEL 表达式定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:spel:add`<br><br>
@@ -51,76 +27,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改请假单。
-         * @description 修改请假单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:leave:edit`<br><br>
-         */
-        put: operations["edit_1"];
+        put?: never;
         /**
          * 新增请假单。
          * @description 新增请假单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:leave:add`<br><br>
          */
         post: operations["add_1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/instance/updateVariable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 修改流程变量。
-         * @description 修改流程变量。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:variable`<br><br>
-         */
-        put: operations["updateVariable"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/instance/cancelProcessApply": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 撤销当前申请人发起的流程。
-         * @description 撤销当前申请人发起的流程。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:cancel`<br><br>
-         */
-        put: operations["cancelProcessApply"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/instance/active/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 激活或挂起流程实例。
-         * @description 激活或挂起流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:active`<br><br>
-         */
-        put: operations["active"];
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -135,76 +47,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改流程定义。
-         * @description 修改流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:edit`<br><br>
-         */
-        put: operations["edit_2"];
+        put?: never;
         /**
          * 新增流程定义并执行格式校验。
          * @description 新增流程定义并执行格式校验。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:add`<br><br>
          */
         post: operations["add_2"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/definition/unPublish/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 取消发布流程定义。
-         * @description 取消发布流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:publish`<br><br>
-         */
-        put: operations["unPublish"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/definition/publish/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 发布流程定义，使其进入可用状态。
-         * @description 发布流程定义，使其进入可用状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:publish`<br><br>
-         */
-        put: operations["publish"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/definition/active/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 激活或挂起流程定义。
-         * @description 激活或挂起流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:active`<br><br>
-         */
-        put: operations["active_1"];
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -219,11 +67,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改流程分类，并校验名称唯一及父子关系合法性。
-         * @description 修改流程分类，并校验名称唯一及父子关系合法性。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:category:edit`<br><br>
-         */
-        put: operations["edit_3"];
+        put?: never;
         /**
          * 新增流程分类，并校验分类名称唯一性。
          * @description 新增流程分类，并校验分类名称唯一性。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:category:add`<br><br>
@@ -243,11 +87,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改用户。
-         * @description 修改用户。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
-         */
-        put: operations["edit_4"];
+        put?: never;
         /**
          * 新增用户。
          * @description 新增用户。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:add`<br><br>
@@ -267,56 +107,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改登录域名称、状态、排序与备注。编码不可改。
-         * @description 修改登录域名称、状态、排序与备注。编码不可改。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:edit`<br><br>
-         */
-        put: operations["edit_5"];
+        put?: never;
         /**
          * 新增登录域。编码创建后只读。
          * @description 新增登录域。编码创建后只读。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:add`<br><br>
          */
         post: operations["add_5"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/userType/changeStatus": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 修改登录域启停状态。
-         * @description 修改登录域启停状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:edit`<br><br>
-         */
-        put: operations["changeStatus"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/user/resetPwd": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 重置指定用户密码。
-         * @description 重置指定用户密码。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:resetPwd`<br><br>
-         */
-        put: operations["resetPwd"];
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -335,72 +131,12 @@ export interface paths {
          * @description 获取当前登录用户的个人中心信息。
          */
         get: operations["profile"];
+        put?: never;
         /**
          * 修改当前登录用户的个人资料。
          * @description 修改当前登录用户的个人资料。
          */
-        put: operations["updateProfile"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/user/profile/updatePwd": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 重置密码
-         * @description 重置密码
-         */
-        put: operations["updatePwd"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/user/changeStatus": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 修改用户状态。
-         * @description 修改用户状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
-         */
-        put: operations["changeStatus_1"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/user/authRole": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 用户授权角色
-         * @description 用户授权角色<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
-         */
-        put: operations["insertAuthRole"];
-        post?: never;
+        post: operations["updateProfile"];
         delete?: never;
         options?: never;
         head?: never;
@@ -415,116 +151,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改角色基础信息（不包含菜单权限、数据权限）。
-         * @description 修改角色基础信息（不包含菜单权限、数据权限）。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
-         */
-        put: operations["edit_6"];
+        put?: never;
         /**
          * 新增角色。
          * @description 新增角色。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:add`<br><br>
          */
         post: operations["add_6"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/role/permission": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 修改角色权限信息（菜单权限 + 数据权限）。
-         * @description 修改角色权限信息（菜单权限 + 数据权限）。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
-         */
-        put: operations["editPermission"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/role/changeStatus": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 修改角色状态。
-         * @description 修改角色状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
-         */
-        put: operations["changeStatus_2"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/role/authUser/selectAll": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 批量选择用户授权
-         * @description 批量选择用户授权<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
-         */
-        put: operations["selectAuthUserAll"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/role/authUser/cancel": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 取消授权用户。
-         * @description 取消授权用户。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
-         */
-        put: operations["cancelAuthUser"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/role/authUser/cancelAll": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 批量取消授权用户
-         * @description 批量取消授权用户<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
-         */
-        put: operations["cancelAuthUserAll"];
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -539,11 +171,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改岗位。
-         * @description 修改岗位。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:post:edit`<br><br>
-         */
-        put: operations["edit_7"];
+        put?: never;
         /**
          * 新增岗位。
          * @description 新增岗位。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:post:add`<br><br>
@@ -563,11 +191,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改菜单。
-         * @description 修改菜单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:menu:edit`<br><br>**角色校验：**<br><br>- `superadmin`<br>
-         */
-        put: operations["edit_8"];
+        put?: never;
         /**
          * 新增菜单。
          * @description 新增菜单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:menu:add`<br><br>**角色校验：**<br><br>- `superadmin`<br>
@@ -587,11 +211,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改字典类型。
-         * @description 修改字典类型。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:edit`<br><br>
-         */
-        put: operations["edit_9"];
+        put?: never;
         /**
          * 新增字典类型。
          * @description 新增字典类型。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:add`<br><br>
@@ -611,11 +231,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改字典数据。
-         * @description 修改字典数据。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:edit`<br><br>
-         */
-        put: operations["edit_10"];
+        put?: never;
         /**
          * 新增字典数据。
          * @description 新增字典数据。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:add`<br><br>
@@ -635,11 +251,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改部门。
-         * @description 修改部门。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dept:edit`<br><br>
-         */
-        put: operations["edit_11"];
+        put?: never;
         /**
          * 新增部门。
          * @description 新增部门。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dept:add`<br><br>
@@ -659,36 +271,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改参数配置。
-         * @description 修改参数配置。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:edit`<br><br>
-         */
-        put: operations["edit_12"];
+        put?: never;
         /**
          * 新增参数配置。
          * @description 新增参数配置。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:add`<br><br>
          */
         post: operations["add_12"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/config/updateByKey": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 根据参数键名修改参数配置。
-         * @description 根据参数键名修改参数配置。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:edit`<br><br>
-         */
-        put: operations["updateByKey"];
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -703,36 +291,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改客户端配置，避免重复占用同一个客户端 key。
-         * @description 修改客户端配置，避免重复占用同一个客户端 key。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:client:edit`<br><br>
-         */
-        put: operations["edit_13"];
+        put?: never;
         /**
          * 新增客户端配置，入库前先校验客户端 key 是否唯一。
          * @description 新增客户端配置，入库前先校验客户端 key 是否唯一。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:client:add`<br><br>
          */
         post: operations["add_13"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/client/changeStatus": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 修改客户端启停状态。
-         * @description 修改客户端启停状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:client:edit`<br><br>
-         */
-        put: operations["changeStatus_3"];
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -747,11 +311,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改测试树表
-         * @description 修改测试树表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:tree:edit`<br><br>
-         */
-        put: operations["edit_14"];
+        put?: never;
         /**
          * 新增测试树表
          * @description 新增测试树表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:tree:add`<br><br>
@@ -771,11 +331,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * 修改测试单表
-         * @description 修改测试单表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:demo:edit`<br><br>
-         */
-        put: operations["edit_15"];
+        put?: never;
         /**
          * 新增测试单表
          * @description 新增测试单表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:demo:add`<br><br>
@@ -890,13 +446,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
         /**
          * 获取流程下一节点信息。
          * @description 获取流程下一节点信息。
          */
-        post: operations["getNextNodeList"];
+        get: operations["getNextNodeList"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -3646,12 +3202,12 @@ export interface paths {
          */
         get: operations["getInfo_4"];
         put?: never;
-        post?: never;
         /**
          * 删除流程分类，删除前校验默认分类、子节点和绑定流程定义。
          * @description 删除流程分类，删除前校验默认分类、子节点和绑定流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:category:remove`<br><br>
          */
-        delete: operations["remove_5"];
+        post: operations["remove_5"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -4112,26 +3668,6 @@ export interface paths {
          * @description 分页查询登录域列表。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:list`<br><br>
          */
         get: operations["list_9"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/user/unlock/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 解锁用户
-         * @description 解锁用户<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
-         */
-        get: operations["unlock"];
         put?: never;
         post?: never;
         delete?: never;
@@ -4652,12 +4188,12 @@ export interface paths {
          */
         get: operations["getInfo_11"];
         put?: never;
-        post?: never;
         /**
          * 删除菜单
          * @description 删除菜单<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:menu:remove`<br><br>**角色校验：**<br><br>- `superadmin`<br>
          */
-        delete: operations["remove_6"];
+        post: operations["remove_6"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -4876,12 +4412,12 @@ export interface paths {
          */
         get: operations["getInfo_14"];
         put?: never;
-        post?: never;
         /**
          * 删除部门
          * @description 删除部门<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dept:remove`<br><br>
          */
-        delete: operations["remove_7"];
+        post: operations["remove_7"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -5808,26 +5344,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/monitor/loginInfo/unlock/{userName}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 清除指定用户的登录失败锁定状态。
-         * @description 清除指定用户的登录失败锁定状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:logininfo:unlock`<br><br>
-         */
-        get: operations["unlock_1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/monitor/loginInfo/list": {
         parameters: {
             query?: never;
@@ -5860,26 +5376,6 @@ export interface paths {
          * @description 获取 Redis 缓存监控信息。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:cache:list`<br><br>
          */
         get: operations["getInfo_19"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/websocket/send": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发布消息
-         * @description 发布消息
-         */
-        get: operations["send_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -5940,86 +5436,6 @@ export interface paths {
          * @description 导出测试树表列表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:tree:export`<br><br>
          */
         get: operations["export_13"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/sms/sendTencent": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发送短信Tencent
-         * @description 发送短信Tencent
-         */
-        get: operations["sendTencent"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/sms/sendAliyun": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发送短信Aliyun
-         * @description 发送短信Aliyun
-         */
-        get: operations["sendAliyun"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/sms/removeBlacklist": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 移除黑名单
-         * @description 移除黑名单
-         */
-        get: operations["removeBlacklist"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/sms/addBlacklist": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 添加黑名单
-         * @description 添加黑名单
-         */
-        get: operations["addBlacklist"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6424,46 +5840,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/demo/redis/pubsub/sub": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 订阅消息
-         * @description 订阅消息
-         */
-        get: operations["sub"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/redis/pubsub/pub": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发布消息
-         * @description 发布消息
-         */
-        get: operations["pub"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/demo/rateLimiter/testip": {
         parameters: {
             query?: never;
@@ -6554,66 +5930,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/demo/queue/priority/remove": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 删除队列数据
-         * @description 删除队列数据
-         */
-        get: operations["remove_8"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/queue/priority/get": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 获取队列数据
-         * @description 获取队列数据
-         */
-        get: operations["get_3"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/queue/priority/add": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 添加队列数据
-         * @description 添加队列数据
-         */
-        get: operations["add_20"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/demo/openapi/echo": {
         parameters: {
             query?: never;
@@ -6626,26 +5942,6 @@ export interface paths {
          * @description 回显调用方传入的消息，用于验证 OpenAPI 接口目录和签名调用。
          */
         get: operations["echo"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/mqtt/send": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发布一条 MQTT 测试消息。
-         * @description 发布一条 MQTT 测试消息。
-         */
-        get: operations["send_2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6686,86 +5982,6 @@ export interface paths {
          * @description 读取外部 MCP 资源。
          */
         get: operations["resource"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/mcp/receive": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 调用外部 MCP 工具并模拟业务处理。
-         * @description 调用外部 MCP 工具并模拟业务处理。
-         */
-        get: operations["receive"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/mail/sendSimpleMessage": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发送邮件
-         * @description 发送邮件
-         */
-        get: operations["sendSimpleMessage"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/mail/sendMessageWithAttachments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发送邮件（多附件）
-         * @description 发送邮件（多附件）<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:download`<br><br>
-         */
-        get: operations["sendMessageWithAttachments"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/mail/sendMessageWithAttachment": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 发送邮件（带附件）
-         * @description 发送邮件（带附件）<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:download`<br><br>
-         */
-        get: operations["sendMessageWithAttachment"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7026,80 +6242,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/demo/cache/test6": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 测试设置过期时间
-         *      手动设置过期时间10秒
-         *      11秒后获取 判断是否相等
-         * @description 测试设置过期时间
-         *      手动设置过期时间10秒
-         *      11秒后获取 判断是否相等
-         */
-        get: operations["test6"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/cache/test3": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 测试 @CacheEvict
-         * @description 测试 @CacheEvict
-         *      <p>
-         *      使用了CacheEvict注解的方法,会清空指定缓存
-         *      「一般用在删除的方法上」
-         *      <p>
-         *      cacheNames 命名规则 查看 {@link CacheNames CacheNames} 注释 支持多参数
-         */
-        get: operations["test3"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/cache/test2": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 测试 @CachePut
-         * @description 测试 @CachePut
-         *      <p>
-         *      加了@CachePut注解的方法,会把方法的返回值put到缓存里面缓存起来,供其它地方使用
-         *      它「通常用在新增或者实时更新方法上」
-         *      <p>
-         *      cacheNames 命名规则 查看 {@link CacheNames CacheNames} 注释 支持多参数
-         */
-        get: operations["test2_1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/demo/cache/test1": {
         parameters: {
             query?: never;
@@ -7309,7 +6451,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/workflow/spel/{ids}": {
+    "/auth/unlock/{socialId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -7318,529 +6460,12 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post?: never;
         /**
-         * 批量删除流程 SpEL 表达式定义。
-         * @description 批量删除流程 SpEL 表达式定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:spel:remove`<br><br>
+         * 取消当前用户的社交账号授权。
+         * @description 取消当前用户的社交账号授权。<br><h3>访问权限</h3><br>> **权限策略**：忽略权限检查<br>
          */
-        delete: operations["remove_9"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/leave/{ids}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 批量删除请假单。
-         * @description 批量删除请假单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:leave:remove`<br><br>
-         */
-        delete: operations["remove_10"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/instance/deleteHisByInstanceIds/{instanceIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 按实例 id 批量删除已完成的流程实例。
-         * @description 按实例 id 批量删除已完成的流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:remove`<br><br>
-         */
-        delete: operations["deleteHisByInstanceIds"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/instance/deleteByInstanceIds/{instanceIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 按实例 id 批量删除流程实例。
-         * @description 按实例 id 批量删除流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:remove`<br><br>
-         */
-        delete: operations["deleteByInstanceIds"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/instance/deleteByBusinessIds/{businessIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 按业务 id 批量删除流程实例。
-         * @description 按业务 id 批量删除流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:remove`<br><br>
-         */
-        delete: operations["deleteByBusinessIds"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/workflow/definition/{ids}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 批量删除流程定义。
-         * @description 批量删除流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:remove`<br><br>
-         */
-        delete: operations["remove_11"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/userType/{userTypeIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 批量删除登录域。仍被引用时拒绝删除。
-         * @description 批量删除登录域。仍被引用时拒绝删除。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:remove`<br><br>
-         */
-        delete: operations["remove_12"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/user/{userIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除用户
-         * @description 删除用户<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:remove`<br><br>
-         */
-        delete: operations["remove_13"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/role/{roleIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除角色
-         * @description 删除角色<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:remove`<br><br>
-         */
-        delete: operations["remove_14"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/post/{postIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除岗位
-         * @description 删除岗位<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:post:remove`<br><br>
-         */
-        delete: operations["remove_15"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/menu/cascade/{menuIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 批量级联删除菜单
-         * @description 批量级联删除菜单<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:menu:remove`<br><br>**角色校验：**<br><br>- `superadmin`<br>
-         */
-        delete: operations["remove_16"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/dict/type/{dictIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除字典类型
-         * @description 删除字典类型<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:remove`<br><br>
-         */
-        delete: operations["remove_17"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/dict/type/refreshCache": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 刷新字典缓存。
-         * @description 刷新字典缓存。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:remove`<br><br>
-         */
-        delete: operations["refreshCache"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/dict/data/{dictCodes}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除字典数据
-         * @description 删除字典数据<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:remove`<br><br>
-         */
-        delete: operations["remove_18"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/config/{configIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除参数配置
-         * @description 删除参数配置<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:remove`<br><br>
-         */
-        delete: operations["remove_19"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/config/refreshCache": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 刷新参数缓存。
-         * @description 刷新参数缓存。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:remove`<br><br>
-         */
-        delete: operations["refreshCache_1"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/client/{ids}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 批量删除客户端配置。
-         * @description 批量删除客户端配置。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:client:remove`<br><br>
-         */
-        delete: operations["remove_20"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/resource/oss/{ossIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除OSS对象存储
-         * @description 删除OSS对象存储<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:remove`<br><br>
-         */
-        delete: operations["remove_21"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/resource/oss/uploads/{uploadToken}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:upload`<br><br> */
-        delete: operations["abort"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/monitor/operlog/{operIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 批量删除操作日志记录
-         * @description 批量删除操作日志记录<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:operlog:remove`<br><br>
-         */
-        delete: operations["remove_22"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/monitor/operlog/clean": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 清空操作日志记录。
-         * @description 清空操作日志记录。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:operlog:remove`<br><br>
-         */
-        delete: operations["clean"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/monitor/online/{tokenId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 按 token 强制用户下线，适用于管理员踢除异常会话。
-         * @description 按 token 强制用户下线，适用于管理员踢除异常会话。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:online:forceLogout`<br><br>
-         */
-        delete: operations["forceLogout"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/monitor/online/myself/{tokenId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 强退当前账号下指定在线设备，避免误踢其他账号的会话。
-         * @description 强退当前账号下指定在线设备，避免误踢其他账号的会话。
-         */
-        delete: operations["remove_23"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/monitor/loginInfo/{infoIds}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 批量删除登录日志
-         * @description 批量删除登录日志<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:logininfo:remove`<br><br>
-         */
-        delete: operations["remove_24"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/monitor/loginInfo/clean": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 清空系统访问记录。
-         * @description 清空系统访问记录。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:logininfo:remove`<br><br>
-         */
-        delete: operations["clean_1"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/tree/{ids}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除测试树表
-         * @description 删除测试树表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:tree:remove`<br><br>
-         */
-        delete: operations["remove_25"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/demo/demo/{ids}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 删除测试单表
-         * @description 删除测试单表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:demo:remove`<br><br>
-         */
-        delete: operations["remove_26"];
+        post: operations["unlockSocial"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -7855,18 +6480,18 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post?: never;
         /**
          * 删除批量方法
          * @description 删除批量方法
          */
-        delete: operations["remove_27"];
+        post: operations["remove_27"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/auth/unlock/{socialId}": {
+    "/demo/demo/update": {
         parameters: {
             query?: never;
             header?: never;
@@ -7875,12 +6500,1643 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post?: never;
         /**
-         * 取消当前用户的社交账号授权。
-         * @description 取消当前用户的社交账号授权。<br><h3>访问权限</h3><br>> **权限策略**：忽略权限检查<br>
+         * 修改测试单表
+         * @description 修改测试单表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:demo:edit`<br><br>
          */
-        delete: operations["unlockSocial"];
+        post: operations["edit_15"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/demo/{ids}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除测试单表
+         * @description 删除测试单表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:demo:remove`<br><br>
+         */
+        post: operations["remove_26"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/tree/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改测试树表
+         * @description 修改测试树表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:tree:edit`<br><br>
+         */
+        post: operations["edit_14"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/tree/{ids}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除测试树表
+         * @description 删除测试树表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:tree:remove`<br><br>
+         */
+        post: operations["remove_25"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/leave/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改请假单。
+         * @description 修改请假单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:leave:edit`<br><br>
+         */
+        post: operations["edit_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/leave/{ids}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量删除请假单。
+         * @description 批量删除请假单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:leave:remove`<br><br>
+         */
+        post: operations["remove_10"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/instance/deleteByBusinessIds/{businessIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 按业务 id 批量删除流程实例。
+         * @description 按业务 id 批量删除流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:remove`<br><br>
+         */
+        post: operations["deleteByBusinessIds"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/instance/deleteByInstanceIds/{instanceIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 按实例 id 批量删除流程实例。
+         * @description 按实例 id 批量删除流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:remove`<br><br>
+         */
+        post: operations["deleteByInstanceIds"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/instance/deleteHisByInstanceIds/{instanceIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 按实例 id 批量删除已完成的流程实例。
+         * @description 按实例 id 批量删除已完成的流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:remove`<br><br>
+         */
+        post: operations["deleteHisByInstanceIds"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/instance/cancelProcessApply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 撤销当前申请人发起的流程。
+         * @description 撤销当前申请人发起的流程。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:cancel`<br><br>
+         */
+        post: operations["cancelProcessApply"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/instance/active/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 激活或挂起流程实例。
+         * @description 激活或挂起流程实例。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:active`<br><br>
+         */
+        post: operations["active"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/instance/updateVariable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改流程变量。
+         * @description 修改流程变量。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:instance:variable`<br><br>
+         */
+        post: operations["updateVariable"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/task/updateAssignee/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量修改任务办理人。
+         * @description 批量修改任务办理人。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:task:edit`<br><br>
+         */
+        post: operations["updateAssignee"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/definition/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改流程定义。
+         * @description 修改流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:edit`<br><br>
+         */
+        post: operations["edit_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/definition/publish/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发布流程定义，使其进入可用状态。
+         * @description 发布流程定义，使其进入可用状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:publish`<br><br>
+         */
+        post: operations["publish"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/definition/unPublish/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 取消发布流程定义。
+         * @description 取消发布流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:publish`<br><br>
+         */
+        post: operations["unPublish"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/definition/{ids}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量删除流程定义。
+         * @description 批量删除流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:remove`<br><br>
+         */
+        post: operations["remove_11"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/definition/active/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 激活或挂起流程定义。
+         * @description 激活或挂起流程定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:definition:active`<br><br>
+         */
+        post: operations["active_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/spel/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改流程 SpEL 表达式定义。
+         * @description 修改流程 SpEL 表达式定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:spel:edit`<br><br>
+         */
+        post: operations["edit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/spel/{ids}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量删除流程 SpEL 表达式定义。
+         * @description 批量删除流程 SpEL 表达式定义。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:spel:remove`<br><br>
+         */
+        post: operations["remove_9"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workflow/category/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改流程分类，并校验名称唯一及父子关系合法性。
+         * @description 修改流程分类，并校验名称唯一及父子关系合法性。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `workflow:category:edit`<br><br>
+         */
+        post: operations["edit_3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/monitor/operlog/{operIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量删除操作日志记录
+         * @description 批量删除操作日志记录<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:operlog:remove`<br><br>
+         */
+        post: operations["remove_22"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/monitor/operlog/clean": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 清空操作日志记录。
+         * @description 清空操作日志记录。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:operlog:remove`<br><br>
+         */
+        post: operations["clean"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/monitor/loginInfo/{infoIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量删除登录日志
+         * @description 批量删除登录日志<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:logininfo:remove`<br><br>
+         */
+        post: operations["remove_24"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/monitor/loginInfo/clean": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 清空系统访问记录。
+         * @description 清空系统访问记录。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:logininfo:remove`<br><br>
+         */
+        post: operations["clean_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/monitor/online/{tokenId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 按 token 强制用户下线，适用于管理员踢除异常会话。
+         * @description 按 token 强制用户下线，适用于管理员踢除异常会话。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:online:forceLogout`<br><br>
+         */
+        post: operations["forceLogout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/monitor/online/myself/{tokenId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 强退当前账号下指定在线设备，避免误踢其他账号的会话。
+         * @description 强退当前账号下指定在线设备，避免误踢其他账号的会话。
+         */
+        post: operations["remove_23"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/dict/data/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改字典数据。
+         * @description 修改字典数据。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:edit`<br><br>
+         */
+        post: operations["edit_10"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/dict/data/{dictCodes}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除字典数据
+         * @description 删除字典数据<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:remove`<br><br>
+         */
+        post: operations["remove_18"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/role/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改角色基础信息（不包含菜单权限、数据权限）。
+         * @description 修改角色基础信息（不包含菜单权限、数据权限）。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
+         */
+        post: operations["edit_6"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/role/permission": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改角色权限信息（菜单权限 + 数据权限）。
+         * @description 修改角色权限信息（菜单权限 + 数据权限）。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
+         */
+        post: operations["editPermission"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/role/changeStatus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改角色状态。
+         * @description 修改角色状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
+         */
+        post: operations["changeStatus_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/role/{roleIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除角色
+         * @description 删除角色<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:remove`<br><br>
+         */
+        post: operations["remove_14"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/role/authUser/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 取消授权用户。
+         * @description 取消授权用户。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
+         */
+        post: operations["cancelAuthUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/role/authUser/cancelAll": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量取消授权用户
+         * @description 批量取消授权用户<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
+         */
+        post: operations["cancelAuthUserAll"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/role/authUser/selectAll": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量选择用户授权
+         * @description 批量选择用户授权<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:role:edit`<br><br>
+         */
+        post: operations["selectAuthUserAll"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/user/profile/updatePwd": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 重置密码
+         * @description 重置密码
+         */
+        post: operations["updatePwd"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/menu/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改菜单。
+         * @description 修改菜单。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:menu:edit`<br><br>**角色校验：**<br><br>- `superadmin`<br>
+         */
+        post: operations["edit_8"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/menu/cascade/{menuIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量级联删除菜单
+         * @description 批量级联删除菜单<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:menu:remove`<br><br>**角色校验：**<br><br>- `superadmin`<br>
+         */
+        post: operations["remove_16"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/dict/type/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改字典类型。
+         * @description 修改字典类型。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:edit`<br><br>
+         */
+        post: operations["edit_9"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/dict/type/{dictIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除字典类型
+         * @description 删除字典类型<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:remove`<br><br>
+         */
+        post: operations["remove_17"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/dict/type/refreshCache": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 刷新字典缓存。
+         * @description 刷新字典缓存。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dict:remove`<br><br>
+         */
+        post: operations["refreshCache"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/oss/{ossIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除OSS对象存储
+         * @description 删除OSS对象存储<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:remove`<br><br>
+         */
+        post: operations["remove_21"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/client/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改客户端配置，避免重复占用同一个客户端 key。
+         * @description 修改客户端配置，避免重复占用同一个客户端 key。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:client:edit`<br><br>
+         */
+        post: operations["edit_13"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/client/changeStatus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改客户端启停状态。
+         * @description 修改客户端启停状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:client:edit`<br><br>
+         */
+        post: operations["changeStatus_3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/client/{ids}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量删除客户端配置。
+         * @description 批量删除客户端配置。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:client:remove`<br><br>
+         */
+        post: operations["remove_20"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/oss/uploads/{uploadToken}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:upload`<br><br> */
+        post: operations["abort"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/userType/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改登录域名称、状态、排序与备注。编码不可改。
+         * @description 修改登录域名称、状态、排序与备注。编码不可改。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:edit`<br><br>
+         */
+        post: operations["edit_5"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/userType/changeStatus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改登录域启停状态。
+         * @description 修改登录域启停状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:edit`<br><br>
+         */
+        post: operations["changeStatus"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/userType/{userTypeIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 批量删除登录域。仍被引用时拒绝删除。
+         * @description 批量删除登录域。仍被引用时拒绝删除。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:userType:remove`<br><br>
+         */
+        post: operations["remove_12"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/dept/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改部门。
+         * @description 修改部门。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:dept:edit`<br><br>
+         */
+        post: operations["edit_11"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/post/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改岗位。
+         * @description 修改岗位。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:post:edit`<br><br>
+         */
+        post: operations["edit_7"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/post/{postIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除岗位
+         * @description 删除岗位<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:post:remove`<br><br>
+         */
+        post: operations["remove_15"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/config/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改参数配置。
+         * @description 修改参数配置。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:edit`<br><br>
+         */
+        post: operations["edit_12"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/config/updateByKey": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 根据参数键名修改参数配置。
+         * @description 根据参数键名修改参数配置。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:edit`<br><br>
+         */
+        post: operations["updateByKey"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/config/{configIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除参数配置
+         * @description 删除参数配置<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:remove`<br><br>
+         */
+        post: operations["remove_19"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/config/refreshCache": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 刷新参数缓存。
+         * @description 刷新参数缓存。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:config:remove`<br><br>
+         */
+        post: operations["refreshCache_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/user/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改用户。
+         * @description 修改用户。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
+         */
+        post: operations["edit_4"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/user/{userIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除用户
+         * @description 删除用户<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:remove`<br><br>
+         */
+        post: operations["remove_13"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/user/resetPwd": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 重置指定用户密码。
+         * @description 重置指定用户密码。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:resetPwd`<br><br>
+         */
+        post: operations["resetPwd"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/user/changeStatus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 修改用户状态。
+         * @description 修改用户状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
+         */
+        post: operations["changeStatus_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/user/authRole": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 用户授权角色
+         * @description 用户授权角色<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
+         */
+        post: operations["insertAuthRole"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/websocket/send": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发布消息
+         * @description 发布消息
+         */
+        post: operations["send_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/mail/sendSimpleMessage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发送邮件
+         * @description 发送邮件
+         */
+        post: operations["sendSimpleMessage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/mail/sendMessageWithAttachment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发送邮件（带附件）
+         * @description 发送邮件（带附件）<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:download`<br><br>
+         */
+        post: operations["sendMessageWithAttachment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/mail/sendMessageWithAttachments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发送邮件（多附件）
+         * @description 发送邮件（多附件）<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:download`<br><br>
+         */
+        post: operations["sendMessageWithAttachments"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/mcp/receive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 调用外部 MCP 工具并模拟业务处理。
+         * @description 调用外部 MCP 工具并模拟业务处理。
+         */
+        post: operations["receive"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/mqtt/send": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发布一条 MQTT 测试消息。
+         * @description 发布一条 MQTT 测试消息。
+         */
+        post: operations["send_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/cache/test2": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 测试 @CachePut
+         * @description 测试 @CachePut
+         *      <p>
+         *      加了@CachePut注解的方法,会把方法的返回值put到缓存里面缓存起来,供其它地方使用
+         *      它「通常用在新增或者实时更新方法上」
+         *      <p>
+         *      cacheNames 命名规则 查看 {@link CacheNames CacheNames} 注释 支持多参数
+         */
+        post: operations["test2_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/cache/test3": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 测试 @CacheEvict
+         * @description 测试 @CacheEvict
+         *      <p>
+         *      使用了CacheEvict注解的方法,会清空指定缓存
+         *      「一般用在删除的方法上」
+         *      <p>
+         *      cacheNames 命名规则 查看 {@link CacheNames CacheNames} 注释 支持多参数
+         */
+        post: operations["test3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/cache/test6": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 测试设置过期时间
+         *      手动设置过期时间10秒
+         *      11秒后获取 判断是否相等
+         * @description 测试设置过期时间
+         *      手动设置过期时间10秒
+         *      11秒后获取 判断是否相等
+         */
+        post: operations["test6"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/redis/pubsub/pub": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发布消息
+         * @description 发布消息
+         */
+        post: operations["pub"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/redis/pubsub/sub": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 订阅消息
+         * @description 订阅消息
+         */
+        post: operations["sub"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/sms/sendAliyun": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发送短信Aliyun
+         * @description 发送短信Aliyun
+         */
+        post: operations["sendAliyun"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/sms/sendTencent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 发送短信Tencent
+         * @description 发送短信Tencent
+         */
+        post: operations["sendTencent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/sms/addBlacklist": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 添加黑名单
+         * @description 添加黑名单
+         */
+        post: operations["addBlacklist"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/sms/removeBlacklist": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 移除黑名单
+         * @description 移除黑名单
+         */
+        post: operations["removeBlacklist"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/queue/priority/add": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 添加队列数据
+         * @description 添加队列数据
+         */
+        post: operations["add_20"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/queue/priority/remove": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 删除队列数据
+         * @description 删除队列数据
+         */
+        post: operations["remove_8"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/demo/queue/priority/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 获取队列数据
+         * @description 获取队列数据
+         */
+        post: operations["get_3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/monitor/loginInfo/unlock/{userName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 清除指定用户的登录失败锁定状态。
+         * @description 清除指定用户的登录失败锁定状态。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:logininfo:unlock`<br><br>
+         */
+        post: operations["unlock_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/user/unlock/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 解锁用户
+         * @description 解锁用户<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:user:edit`<br><br>
+         */
+        post: operations["unlock"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -10335,7 +10591,7 @@ export interface components {
              * @description 执行模式
              * @enum {string}
              */
-            mode?: "SYNC" | "ASYNC";
+            mode?: "ASYNC";
             /**
              * Format: int32
              * @description 优先级
@@ -14883,77 +15139,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    updateAssignee: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 办理人id */
-                userId: string;
-            };
-            cookie?: never;
-        };
-        /** @description 任务id */
-        requestBody: {
-            content: {
-                "application/json": number[];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 表达式信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FlowSpelBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add: {
         parameters: {
             query?: never;
@@ -14975,40 +15160,6 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 请假信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TestLeaveBo"];
-            };
-        };
-        responses: {
-            /** @description 修改后的请假单 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RTestLeaveVo"];
                 };
             };
             /** @description Unauthorized */
@@ -15056,143 +15207,6 @@ export interface operations {
             };
         };
     };
-    updateVariable: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FlowVariableBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    cancelProcessApply: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FlowCancelBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    active: {
-        parameters: {
-            query: {
-                /** @description 激活/挂起 */
-                active: boolean;
-            };
-            header?: never;
-            path: {
-                /** @description 流程实例id */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 处理结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RBoolean"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 流程定义信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FlowDefinition"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RBoolean"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_2: {
         parameters: {
             query?: never;
@@ -15227,139 +15241,6 @@ export interface operations {
             };
         };
     };
-    unPublish: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 流程定义id */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RBoolean"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    publish: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 流程定义id */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 发布结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RBoolean"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    active_1: {
-        parameters: {
-            query: {
-                /** @description 激活/挂起 */
-                active: boolean;
-            };
-            header?: never;
-            path: {
-                /** @description 流程定义id */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 处理结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RBoolean"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_3: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 分类信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FlowCategoryBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_3: {
         parameters: {
             query?: never;
@@ -15371,40 +15252,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["FlowCategoryBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_4: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 用户编辑参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysUserBo"];
             };
         };
         responses: {
@@ -15462,40 +15309,6 @@ export interface operations {
             };
         };
     };
-    edit_5: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 登录域信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysUserTypeBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_5: {
         parameters: {
             query?: never;
@@ -15507,74 +15320,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["SysUserTypeBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    changeStatus: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 登录域状态信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysUserTypeBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    resetPwd: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 用户参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysUserBo"];
             };
         };
         responses: {
@@ -15661,144 +15406,6 @@ export interface operations {
             };
         };
     };
-    updatePwd: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 新旧密码 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysUserPasswordBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    changeStatus_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 用户参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysUserBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    insertAuthRole: {
-        parameters: {
-            query: {
-                /** @description 用户Id */
-                userId: number;
-                /** @description 角色ID串，空表示撤销当前客户端显式角色 */
-                roleIds: number[];
-                /** @description 客户端主键 */
-                clientId: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_6: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 角色参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysRoleBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_6: {
         parameters: {
             query?: never;
@@ -15810,210 +15417,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["SysRoleBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    editPermission: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 角色参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysRoleBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    changeStatus_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 角色参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysRoleBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    selectAuthUserAll: {
-        parameters: {
-            query: {
-                /** @description 角色ID */
-                roleId: number;
-                /** @description 用户ID串 */
-                userIds: number[];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    cancelAuthUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 用户角色关系 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysUserRole"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    cancelAuthUserAll: {
-        parameters: {
-            query: {
-                /** @description 角色ID */
-                roleId: number;
-                /** @description 用户ID串 */
-                userIds: number[];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_7: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 岗位参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysPostBo"];
             };
         };
         responses: {
@@ -16071,40 +15474,6 @@ export interface operations {
             };
         };
     };
-    edit_8: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 菜单参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysMenuBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_8: {
         parameters: {
             query?: never;
@@ -16116,40 +15485,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["SysMenuBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_9: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 字典类型参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysDictTypeBo"];
             };
         };
         responses: {
@@ -16207,40 +15542,6 @@ export interface operations {
             };
         };
     };
-    edit_10: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 字典数据参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysDictDataBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_10: {
         parameters: {
             query?: never;
@@ -16252,40 +15553,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["SysDictDataBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_11: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 部门参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysDeptBo"];
             };
         };
         responses: {
@@ -16343,40 +15610,6 @@ export interface operations {
             };
         };
     };
-    edit_12: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 参数配置 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysConfigBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_12: {
         parameters: {
             query?: never;
@@ -16388,74 +15621,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["SysConfigBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    updateByKey: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 参数配置 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysConfigBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_13: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 客户端信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysClientBo"];
             };
         };
         responses: {
@@ -16513,73 +15678,6 @@ export interface operations {
             };
         };
     };
-    changeStatus_3: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 客户端状态信息 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysClientBo"];
-            };
-        };
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_14: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TestTreeBo"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     add_14: {
         parameters: {
             query?: never;
@@ -16590,39 +15688,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["TestTreeBo"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    edit_15: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TestDemoBo"];
             };
         };
         responses: {
@@ -16951,17 +16016,17 @@ export interface operations {
     };
     getNextNodeList: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 当前任务ID；服务层校验读取权限 */
+                taskId: number;
+                /** @description 可选JSON对象；保留嵌套值和数值/布尔类型，不接收GET正文 */
+                variables?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description 参数 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FlowNextNodeBo"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description 下一节点列表 */
             200: {
@@ -22707,38 +21772,6 @@ export interface operations {
             };
         };
     };
-    unlock: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 用户ID */
-                userId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     optionselect: {
         parameters: {
             query?: {
@@ -25517,38 +24550,6 @@ export interface operations {
             };
         };
     };
-    unlock_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 用户名 */
-                userName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     list_26: {
         parameters: {
             query: {
@@ -25616,40 +24617,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-        };
-    };
-    send_1: {
-        parameters: {
-            query: {
-                /** @description 目标用户 */
-                userId: number;
-                /** @description 发送内容 */
-                message: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
             };
         };
     };
@@ -25733,138 +24700,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    sendTencent: {
-        parameters: {
-            query: {
-                /** @description 电话号 */
-                phones: string;
-                /** @description 模板ID */
-                templateId: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RObject"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    sendAliyun: {
-        parameters: {
-            query: {
-                /** @description 电话号 */
-                phones: string;
-                /** @description 模板ID */
-                templateId: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RObject"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    removeBlacklist: {
-        parameters: {
-            query: {
-                /** @description 手机号 */
-                phone: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RObject"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    addBlacklist: {
-        parameters: {
-            query: {
-                /** @description 手机号 */
-                phone: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RObject"];
-                };
             };
             /** @description Unauthorized */
             401: {
@@ -26434,72 +25269,6 @@ export interface operations {
             };
         };
     };
-    sub: {
-        parameters: {
-            query: {
-                /** @description 通道Key */
-                key: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    pub: {
-        parameters: {
-            query: {
-                /** @description 通道Key */
-                key: string;
-                /** @description 发送内容 */
-                value: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     testip: {
         parameters: {
             query: {
@@ -26624,106 +25393,6 @@ export interface operations {
             };
         };
     };
-    remove_8: {
-        parameters: {
-            query: {
-                /** @description 队列名 */
-                queueName: string;
-                /** @description 对象名 */
-                name: string;
-                /** @description 排序号 */
-                orderNum: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    get_3: {
-        parameters: {
-            query: {
-                /** @description 队列名 */
-                queueName: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    add_20: {
-        parameters: {
-            query: {
-                /** @description 队列名 */
-                queueName: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     echo: {
         parameters: {
             query?: {
@@ -26743,35 +25412,6 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["RString"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    send_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 是否发送成功 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": boolean;
                 };
             };
             /** @description Unauthorized */
@@ -26832,148 +25472,6 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["RMapStringMcpResourceReadResult"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    receive: {
-        parameters: {
-            query?: {
-                toolName?: string;
-                id?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RMcpDemoHandleResult"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    sendSimpleMessage: {
-        parameters: {
-            query: {
-                /** @description 接收人 */
-                to: string;
-                /** @description 标题 */
-                subject: string;
-                /** @description 内容 */
-                text: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    sendMessageWithAttachments: {
-        parameters: {
-            query: {
-                /** @description 接收人 */
-                to: string;
-                /** @description 标题 */
-                subject: string;
-                /** @description 内容 */
-                text: string;
-                ossIds: number[];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    sendMessageWithAttachment: {
-        parameters: {
-            query: {
-                /** @description 接收人 */
-                to: string;
-                /** @description 标题 */
-                subject: string;
-                /** @description 内容 */
-                text: string;
-                ossId: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
                 };
             };
             /** @description Unauthorized */
@@ -27346,102 +25844,6 @@ export interface operations {
             };
         };
     };
-    test6: {
-        parameters: {
-            query: {
-                key: string;
-                value: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RBoolean"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    test3: {
-        parameters: {
-            query: {
-                key: string;
-                value: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RString"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    test2_1: {
-        parameters: {
-            query: {
-                key: string;
-                value: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RString"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
     test1_1: {
         parameters: {
             query: {
@@ -27783,13 +26185,13 @@ export interface operations {
             };
         };
     };
-    remove_9: {
+    unlockSocial: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description 主键串 */
-                ids: number[];
+                /** @description socialId */
+                socialId: number;
             };
             cookie?: never;
         };
@@ -27802,6 +26204,199 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_27: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TestDemoBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_26: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 测试ID串 */
+                ids: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TestTreeBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_25: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 测试树ID串 */
+                ids: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 请假信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TestLeaveBo"];
+            };
+        };
+        responses: {
+            /** @description 修改后的请假单 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RTestLeaveVo"];
                 };
             };
             /** @description Unauthorized */
@@ -27822,70 +26417,6 @@ export interface operations {
             path: {
                 /** @description 主键串 */
                 ids: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    deleteHisByInstanceIds: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 实例id */
-                instanceIds: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    deleteByInstanceIds: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 实例id */
-                instanceIds: number[];
             };
             cookie?: never;
         };
@@ -27943,6 +26474,308 @@ export interface operations {
             };
         };
     };
+    deleteByInstanceIds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 实例id */
+                instanceIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    deleteHisByInstanceIds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 实例id */
+                instanceIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    cancelProcessApply: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FlowCancelBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    active: {
+        parameters: {
+            query: {
+                /** @description 激活/挂起 */
+                active: boolean;
+            };
+            header?: never;
+            path: {
+                /** @description 流程实例id */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 处理结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RBoolean"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    updateVariable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FlowVariableBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    updateAssignee: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 办理人id */
+                userId: string;
+            };
+            cookie?: never;
+        };
+        /** @description 任务id */
+        requestBody: {
+            content: {
+                "application/json": number[];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 流程定义信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FlowDefinition"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RBoolean"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    publish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 流程定义id */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 发布结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RBoolean"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    unPublish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 流程定义id */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RBoolean"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
     remove_11: {
         parameters: {
             query?: never;
@@ -27975,25 +26808,28 @@ export interface operations {
             };
         };
     };
-    remove_12: {
+    active_1: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 激活/挂起 */
+                active: boolean;
+            };
             header?: never;
             path: {
-                /** @description 主键串 */
-                userTypeIds: number[];
+                /** @description 流程定义id */
+                id: number;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description 操作结果 */
+            /** @description 处理结果 */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["RVoid"];
+                    "*/*": components["schemas"]["RBoolean"];
                 };
             };
             /** @description Unauthorized */
@@ -28007,174 +26843,19 @@ export interface operations {
             };
         };
     };
-    remove_13: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 用户ID数组 */
-                userIds: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    remove_14: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 角色ID串 */
-                roleIds: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    remove_15: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 岗位ID串 */
-                postIds: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    remove_16: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 菜单ID串 */
-                menuIds: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    remove_17: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 字典ID串 */
-                dictIds: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    refreshCache: {
+    edit: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        /** @description 表达式信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FlowSpelBo"];
+            };
+        };
         responses: {
             /** @description 操作结果 */
             200: {
@@ -28196,100 +26877,7 @@ export interface operations {
             };
         };
     };
-    remove_18: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 字典code串 */
-                dictCodes: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    remove_19: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 参数ID串 */
-                configIds: number[];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    refreshCache_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    remove_20: {
+    remove_9: {
         parameters: {
             query?: never;
             header?: never;
@@ -28321,50 +26909,21 @@ export interface operations {
             };
         };
     };
-    remove_21: {
+    edit_3: {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                /** @description OSS对象ID串 */
-                ossIds: number[];
-            };
+            path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        /** @description 分类信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FlowCategoryBo"];
+            };
+        };
         responses: {
             /** @description 操作结果 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RVoid"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
-                };
-            };
-        };
-    };
-    abort: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                uploadToken: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -28417,6 +26976,67 @@ export interface operations {
         };
     };
     clean: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_24: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 日志ids */
+                infoIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    clean_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -28509,13 +27129,47 @@ export interface operations {
             };
         };
     };
-    remove_24: {
+    edit_10: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 字典数据参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysDictDataBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_18: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description 日志ids */
-                infoIds: number[];
+                /** @description 字典code串 */
+                dictCodes: number[];
             };
             cookie?: never;
         };
@@ -28541,7 +27195,409 @@ export interface operations {
             };
         };
     };
-    clean_1: {
+    edit_6: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 角色参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysRoleBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    editPermission: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 角色参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysRoleBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    changeStatus_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 角色参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysRoleBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 角色ID串 */
+                roleIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    cancelAuthUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 用户角色关系 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserRole"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    cancelAuthUserAll: {
+        parameters: {
+            query: {
+                /** @description 角色ID */
+                roleId: number;
+                /** @description 用户ID串 */
+                userIds: number[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    selectAuthUserAll: {
+        parameters: {
+            query: {
+                /** @description 角色ID */
+                roleId: number;
+                /** @description 用户ID串 */
+                userIds: number[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    updatePwd: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 新旧密码 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserPasswordBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_8: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 菜单参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysMenuBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 菜单ID串 */
+                menuIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_9: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 字典类型参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysDictTypeBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_17: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 字典ID串 */
+                dictIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    refreshCache: {
         parameters: {
             query?: never;
             header?: never;
@@ -28570,13 +27626,144 @@ export interface operations {
             };
         };
     };
-    remove_25: {
+    remove_21: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description 测试树ID串 */
+                /** @description OSS对象ID串 */
+                ossIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_13: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 客户端信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysClientBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    changeStatus_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 客户端状态信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysClientBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_20: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 主键串 */
                 ids: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    abort: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uploadToken: string;
             };
             cookie?: never;
         };
@@ -28602,19 +27789,21 @@ export interface operations {
             };
         };
     };
-    remove_26: {
+    edit_5: {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                /** @description 测试ID串 */
-                ids: number[];
-            };
+            path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        /** @description 登录域信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserTypeBo"];
+            };
+        };
         responses: {
-            /** @description OK */
+            /** @description 操作结果 */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -28634,9 +27823,479 @@ export interface operations {
             };
         };
     };
-    remove_27: {
+    changeStatus: {
         parameters: {
             query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 登录域状态信息 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserTypeBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 主键串 */
+                userTypeIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 部门参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysDeptBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_7: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 岗位参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysPostBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 岗位ID串 */
+                postIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 参数配置 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysConfigBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    updateByKey: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 参数配置 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysConfigBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_19: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 参数ID串 */
+                configIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    refreshCache_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    edit_4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 用户编辑参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_13: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 用户ID数组 */
+                userIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    resetPwd: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 用户参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    changeStatus_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description 用户参数 */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserBo"];
+            };
+        };
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    insertAuthRole: {
+        parameters: {
+            query: {
+                /** @description 用户Id */
+                userId: number;
+                /** @description 角色ID串，空表示撤销当前客户端显式角色 */
+                roleIds: number[];
+                /** @description 客户端主键 */
+                clientId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    send_1: {
+        parameters: {
+            query: {
+                /** @description 目标用户 */
+                userId: number;
+                /** @description 发送内容 */
+                message: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -28663,13 +28322,610 @@ export interface operations {
             };
         };
     };
-    unlockSocial: {
+    sendSimpleMessage: {
+        parameters: {
+            query: {
+                /** @description 接收人 */
+                to: string;
+                /** @description 标题 */
+                subject: string;
+                /** @description 内容 */
+                text: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    sendMessageWithAttachment: {
+        parameters: {
+            query: {
+                /** @description 接收人 */
+                to: string;
+                /** @description 标题 */
+                subject: string;
+                /** @description 内容 */
+                text: string;
+                ossId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    sendMessageWithAttachments: {
+        parameters: {
+            query: {
+                /** @description 接收人 */
+                to: string;
+                /** @description 标题 */
+                subject: string;
+                /** @description 内容 */
+                text: string;
+                ossIds: number[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    receive: {
+        parameters: {
+            query?: {
+                toolName?: string;
+                id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RMcpDemoHandleResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    send_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 是否发送成功 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": boolean;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    test2_1: {
+        parameters: {
+            query: {
+                key: string;
+                value: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RString"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    test3: {
+        parameters: {
+            query: {
+                key: string;
+                value: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RString"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    test6: {
+        parameters: {
+            query: {
+                key: string;
+                value: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RBoolean"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    pub: {
+        parameters: {
+            query: {
+                /** @description 通道Key */
+                key: string;
+                /** @description 发送内容 */
+                value: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    sub: {
+        parameters: {
+            query: {
+                /** @description 通道Key */
+                key: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    sendAliyun: {
+        parameters: {
+            query: {
+                /** @description 电话号 */
+                phones: string;
+                /** @description 模板ID */
+                templateId: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RObject"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    sendTencent: {
+        parameters: {
+            query: {
+                /** @description 电话号 */
+                phones: string;
+                /** @description 模板ID */
+                templateId: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RObject"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    addBlacklist: {
+        parameters: {
+            query: {
+                /** @description 手机号 */
+                phone: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RObject"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    removeBlacklist: {
+        parameters: {
+            query: {
+                /** @description 手机号 */
+                phone: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RObject"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    add_20: {
+        parameters: {
+            query: {
+                /** @description 队列名 */
+                queueName: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    remove_8: {
+        parameters: {
+            query: {
+                /** @description 队列名 */
+                queueName: string;
+                /** @description 对象名 */
+                name: string;
+                /** @description 排序号 */
+                orderNum: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    get_3: {
+        parameters: {
+            query: {
+                /** @description 队列名 */
+                queueName: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    unlock_1: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description socialId */
-                socialId: number;
+                /** @description 用户名 */
+                userName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 操作结果 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    unlock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 用户ID */
+                userId: number;
             };
             cookie?: never;
         };

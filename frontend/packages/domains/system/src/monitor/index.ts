@@ -111,18 +111,18 @@ export function createMonitorService(http: HttpClient): MonitorService {
     loginInfo: Object.freeze({
       list: (params: LoginInfoQuery) =>
         request<PageResult<LoginInfoVO>>({ url: '/monitor/loginInfo/list', method: 'get', params }),
-      delete: (ids: IdentifierList) => request({ url: '/monitor/loginInfo/' + segment(ids), method: 'delete' }),
+      delete: (ids: IdentifierList) => request({ url: '/monitor/loginInfo/' + segment(ids), method: 'post' }),
       unlock: (names: string | readonly string[]) =>
-        request({ url: '/monitor/loginInfo/unlock/' + segment(names), method: 'get' }),
-      clean: () => request({ url: '/monitor/loginInfo/clean', method: 'delete' })
+        request({ url: '/monitor/loginInfo/unlock/' + segment(names), method: 'post' }),
+      clean: () => request({ url: '/monitor/loginInfo/clean', method: 'post' })
     }),
     online: Object.freeze({
       list: (params: OnlineQuery) =>
         request<PageResult<OnlineVO>>({ url: '/monitor/online/list', method: 'get', params }),
-      forceLogout: (tokenId: string) => request({ url: '/monitor/online/' + segment(tokenId), method: 'delete' }),
+      forceLogout: (tokenId: string) => request({ url: '/monitor/online/' + segment(tokenId), method: 'post' }),
       current: () => request<PageResult<OnlineVO>>({ url: '/monitor/online', method: 'get' }),
       removeCurrent: (tokenId: string) =>
-        request({ url: '/monitor/online/myself/' + segment(tokenId), method: 'delete' })
+        request({ url: '/monitor/online/myself/' + segment(tokenId), method: 'post' })
     }),
     operationLogs: Object.freeze({
       list: async (params: OperLogQuery) => {
@@ -140,8 +140,8 @@ export function createMonitorService(http: HttpClient): MonitorService {
           }
         };
       },
-      delete: (ids: IdentifierList) => request({ url: '/monitor/operlog/' + segment(ids), method: 'delete' }),
-      clean: () => request({ url: '/monitor/operlog/clean', method: 'delete' })
+      delete: (ids: IdentifierList) => request({ url: '/monitor/operlog/' + segment(ids), method: 'post' }),
+      clean: () => request({ url: '/monitor/operlog/clean', method: 'post' })
     }),
     externalIntent(target: ExternalMonitorTarget, rawUrl: string | undefined, allowed: boolean) {
       requirePermission(allowed);

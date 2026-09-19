@@ -8,12 +8,12 @@ describe('monitor transport and security contracts', () => {
     await service.loginInfo.delete(['a/b', 2]);
     await service.online.removeCurrent('token/value');
     expect(request.mock.calls.map(([value]) => value)).toEqual([
-      { url: '/monitor/loginInfo/a%2Fb,2', method: 'delete' },
-      { url: '/monitor/online/myself/token%2Fvalue', method: 'delete' }
+      { url: '/monitor/loginInfo/a%2Fb,2', method: 'post' },
+      { url: '/monitor/online/myself/token%2Fvalue', method: 'post' }
     ]);
   });
 
-  it('binds the complete monitor surface to its legacy HTTP methods', async () => {
+  it('binds the complete monitor surface to its GET reads and POST mutations', async () => {
     const request = vi.fn().mockResolvedValue({ data: { rows: [], total: 0 } });
     const service = createMonitorService({ request });
     const page = { pageNum: 1, pageSize: 10 } as never;
@@ -30,14 +30,14 @@ describe('monitor transport and security contracts', () => {
     expect(request.mock.calls.map(([value]) => `${value.method.toUpperCase()} ${value.url}`)).toEqual([
       'GET /monitor/cache',
       'GET /monitor/loginInfo/list',
-      'GET /monitor/loginInfo/unlock/user',
-      'DELETE /monitor/loginInfo/clean',
+      'POST /monitor/loginInfo/unlock/user',
+      'POST /monitor/loginInfo/clean',
       'GET /monitor/online/list',
-      'DELETE /monitor/online/token',
+      'POST /monitor/online/token',
       'GET /monitor/online',
       'GET /monitor/operlog/list',
-      'DELETE /monitor/operlog/1',
-      'DELETE /monitor/operlog/clean'
+      'POST /monitor/operlog/1',
+      'POST /monitor/operlog/clean'
     ]);
   });
 

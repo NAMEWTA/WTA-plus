@@ -395,7 +395,7 @@ test('social list is rendered and binding/unlock failures remain Client scoped a
   ).toEqual([
     `${adminClientId} GET /system/social/list`,
     `${adminClientId} GET /auth/binding/github`,
-    `${adminClientId} DELETE /auth/unlock/42`
+    `${adminClientId} POST /auth/unlock/42`
   ]);
   expect(state.unknown).toEqual([]);
 });

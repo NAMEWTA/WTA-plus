@@ -3,6 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { createWorkflowDefinitionService } from './index';
 
 describe('workflow definition transport contract', () => {
+  it('forwards an import cancellation signal without changing the file payload', async () => {
+    const requests: HttpRequest[] = [];
+    const service = createWorkflowDefinitionService({ request: async config => { requests.push(config); return { code: 200 } as never; } });
+    const signal = new AbortController().signal; const data = new FormData();
+    await service.importDefinition(data, signal);
+    expect(requests[0]).toMatchObject({ url: '/workflow/definition/importDef', method: 'post', data, signal });
+  });
+
   it('preserves every legacy category, definition and SpEL request', async () => {
     const requests: HttpRequest[] = [];
     const service = createWorkflowDefinitionService({
@@ -41,8 +49,8 @@ describe('workflow definition transport contract', () => {
       { url: '/workflow/category/list', method: 'get', params: { categoryName: '审批' } },
       { url: '/workflow/category/1', method: 'get' },
       { url: '/workflow/category', method: 'post', data: form },
-      { url: '/workflow/category', method: 'put', data: form },
-      { url: '/workflow/category/1,2', method: 'delete' },
+      { url: '/workflow/category/update', method: 'post', data: form },
+      { url: '/workflow/category/1,2', method: 'post' },
       { url: '/workflow/category/categoryTree', method: 'get', params: form },
       { url: '/workflow/definition/list', method: 'get', params: { category: '1', pageNum: 1, pageSize: 10 } },
       {
@@ -51,26 +59,26 @@ describe('workflow definition transport contract', () => {
         params: { category: '1', pageNum: 1, pageSize: 10 }
       },
       { url: '/workflow/definition/definitionXml/d1', method: 'get' },
-      { url: '/workflow/definition/d1,d2', method: 'delete' },
-      { url: '/workflow/definition/active/d1', method: 'put', params: { active: true } },
+      { url: '/workflow/definition/d1,d2', method: 'post' },
+      { url: '/workflow/definition/active/d1', method: 'post', params: { active: true } },
       {
         url: '/workflow/definition/importDef',
         method: 'post',
         data: form,
         headers: { repeatSubmit: false }
       },
-      { url: '/workflow/definition/publish/d1', method: 'put' },
-      { url: '/workflow/definition/unPublish/d1', method: 'put' },
+      { url: '/workflow/definition/publish/d1', method: 'post' },
+      { url: '/workflow/definition/unPublish/d1', method: 'post' },
       { url: '/workflow/definition/xmlString/d1', method: 'get' },
       { url: '/workflow/definition', method: 'post', data: form },
-      { url: '/workflow/definition', method: 'put', data: form },
+      { url: '/workflow/definition/update', method: 'post', data: form },
       { url: '/workflow/definition/d1', method: 'get' },
       { url: '/workflow/definition/copy/d1', method: 'post' },
       { url: '/workflow/spel/list', method: 'get', params: { componentName: 'owner' } },
       { url: '/workflow/spel/s1', method: 'get' },
       { url: '/workflow/spel', method: 'post', data: form },
-      { url: '/workflow/spel', method: 'put', data: form },
-      { url: '/workflow/spel/s1,s2', method: 'delete' }
+      { url: '/workflow/spel/update', method: 'post', data: form },
+      { url: '/workflow/spel/s1,s2', method: 'post' }
     ]);
   });
 
@@ -133,7 +141,8 @@ describe('workflow definition transport contract', () => {
     await service.getBackTaskNodes('task/1', 'node/a');
     await service.operateTask(data, 'transferTask');
     const currentUsers = await service.currentTaskUsers('task/1');
-    await service.getNextNodes(data);
+    const nextVariables = { amount: 12.5, approved: true, nested: { names: ['甲', '乙'], nullable: null } };
+    await service.getNextNodes({ ...data, variables: nextVariables });
     const urge = { taskIdList: ['task/1'], message: '请尽快办理', messageType: ['1'] };
     await service.urgeTask(urge);
     await service.pageRunningInstances(query);
@@ -165,32 +174,36 @@ describe('workflow definition transport contract', () => {
       'post /workflow/task/completeTask',
       'post /workflow/task/backProcess',
       'get /workflow/task/getTask/task%2F1',
-      'put /workflow/task/updateAssignee/user%2F1',
+      'post /workflow/task/updateAssignee/user%2F1',
       'post /workflow/task/terminationTask',
       'get /workflow/task/getBackTaskNode/task%2F1/node%2Fa',
       'post /workflow/task/taskOperation/transferTask',
       'get /workflow/task/currentTaskAllUser/task%2F1',
-      'post /workflow/task/getNextNodeList',
+      'get /workflow/task/getNextNodeList',
       'post /workflow/task/urgeTask',
       'get /workflow/instance/pageByRunning',
       'get /workflow/instance/pageByFinish',
       'get /workflow/instance/pageByCurrent',
       'get /workflow/instance/flowHisTaskList/business%2F1',
-      'put /workflow/instance/cancelProcessApply',
+      'post /workflow/instance/cancelProcessApply',
       'get /workflow/instance/instanceVariable/instance%2F1',
-      'delete /workflow/instance/deleteByInstanceIds/instance%2F1,instance%202',
-      'delete /workflow/instance/deleteHisByInstanceIds/instance%2F1',
+      'post /workflow/instance/deleteByInstanceIds/instance%2F1,instance%202',
+      'post /workflow/instance/deleteHisByInstanceIds/instance%2F1',
       'post /workflow/instance/invalid',
-      'put /workflow/instance/active/instance%2F1',
-      'put /workflow/instance/updateVariable',
+      'post /workflow/instance/active/instance%2F1',
+      'post /workflow/instance/updateVariable',
       'get /workflow/leave/list',
       'get /workflow/leave/leave%2F1',
       'post /workflow/leave',
       'post /workflow/leave/submitAndFlowStart',
-      'put /workflow/leave',
-      'delete /workflow/leave/leave%2F1,leave%202'
+      'post /workflow/leave/update',
+      'post /workflow/leave/leave%2F1,leave%202'
     ]);
     expect(requests.find(request => request.url === '/workflow/task/urgeTask')?.data).toEqual(urge);
+    expect(requests.find(request => request.url === '/workflow/task/getNextNodeList')).toEqual({
+      url: '/workflow/task/getNextNodeList', method: 'get',
+      params: { taskId: data.taskId, variables: JSON.stringify(nextVariables) }
+    });
     expect(requests.find(request => request.url === '/workflow/task/terminationTask')?.data).toEqual({
       taskId: 'task/1',
       comment: '终止原因'

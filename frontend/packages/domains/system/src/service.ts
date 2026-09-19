@@ -127,10 +127,10 @@ export function createSystemService(http: HttpClient): SystemService {
       request<PageResult<ClientVO>>({ url: '/system/client/list', method: 'get', params }),
     get: (id: Identifier) => request<ClientVO>({ url: '/system/client/' + segment(id), method: 'get' }),
     add: (data: ClientForm) => request({ url: '/system/client', method: 'post', data }),
-    update: (data: ClientForm) => request({ url: '/system/client', method: 'put', data }),
-    delete: (ids: IdentifierList) => request({ url: '/system/client/' + segment(ids), method: 'delete' }),
+    update: (data: ClientForm) => request({ url: '/system/client/update', method: 'post', data }),
+    delete: (ids: IdentifierList) => request({ url: '/system/client/' + segment(ids), method: 'post' }),
     changeStatus: (clientId: string, status: string) =>
-      request({ url: '/system/client/changeStatus', method: 'put', data: { clientId, status } }),
+      request({ url: '/system/client/changeStatus', method: 'post', data: { clientId, status } }),
     rotateSsoSecret: (id: Identifier) =>
       request<ClientVO>({ url: '/system/client/sso/rotate-secret', method: 'post', data: { id } }),
     bindSsoAccess: (id: Identifier, ssoAuthMode?: string) =>
@@ -152,8 +152,8 @@ export function createSystemService(http: HttpClient): SystemService {
     get: (id: Identifier) => request<UserTypeVO>({ url: '/system/userType/' + segment(id), method: 'get' }),
     options: () => request<UserTypeVO[]>({ url: '/system/userType/options', method: 'get' }),
     add: (data: UserTypeForm) => request({ url: '/system/userType', method: 'post', data }),
-    update: (data: UserTypeForm) => request({ url: '/system/userType', method: 'put', data }),
-    delete: (ids: IdentifierList) => request({ url: '/system/userType/' + segment(ids), method: 'delete' })
+    update: (data: UserTypeForm) => request({ url: '/system/userType/update', method: 'post', data }),
+    delete: (ids: IdentifierList) => request({ url: '/system/userType/' + segment(ids), method: 'post' })
   });
   const roles = Object.freeze({
     list: (params: RoleQuery) => request<PageResult<RoleVO>>({ url: '/system/role/list', method: 'get', params }),
@@ -161,20 +161,20 @@ export function createSystemService(http: HttpClient): SystemService {
       request<RoleVO[]>({ url: '/system/role/optionselect?roleIds=' + segment(ids), method: 'get' }),
     get: (id: Identifier) => request<RoleVO>({ url: '/system/role/' + segment(id), method: 'get' }),
     add: (data: RoleForm) => request({ url: '/system/role', method: 'post', data }),
-    update: (data: RoleForm) => request({ url: '/system/role', method: 'put', data }),
-    updatePermission: (data: RoleForm) => request({ url: '/system/role/permission', method: 'put', data }),
+    update: (data: RoleForm) => request({ url: '/system/role/update', method: 'post', data }),
+    updatePermission: (data: RoleForm) => request({ url: '/system/role/permission', method: 'post', data }),
     changeStatus: (roleId: Identifier, status: string) =>
-      request({ url: '/system/role/changeStatus', method: 'put', data: { roleId, status } }),
-    delete: (ids: IdentifierList) => request({ url: '/system/role/' + segment(ids), method: 'delete' }),
+      request({ url: '/system/role/changeStatus', method: 'post', data: { roleId, status } }),
+    delete: (ids: IdentifierList) => request({ url: '/system/role/' + segment(ids), method: 'post' }),
     allocatedUsers: (params: UserQuery) =>
       request<PageResult<UserVO>>({ url: '/system/role/authUser/allocatedList', method: 'get', params }),
     unallocatedUsers: (params: UserQuery) =>
       request<PageResult<UserVO>>({ url: '/system/role/authUser/unallocatedList', method: 'get', params }),
-    cancelUser: (data: RoleUserCancellation) => request({ url: '/system/role/authUser/cancel', method: 'put', data }),
+    cancelUser: (data: RoleUserCancellation) => request({ url: '/system/role/authUser/cancel', method: 'post', data }),
     cancelUsers: (params: RoleUserAssignment) =>
-      request({ url: '/system/role/authUser/cancelAll', method: 'put', params }),
+      request({ url: '/system/role/authUser/cancelAll', method: 'post', params }),
     selectUsers: (params: RoleUserAssignment) =>
-      request({ url: '/system/role/authUser/selectAll', method: 'put', params }),
+      request({ url: '/system/role/authUser/selectAll', method: 'post', params }),
     departmentTree: (id: Identifier) =>
       request<RoleDeptTree>({ url: '/system/role/deptTree/' + segment(id), method: 'get' })
   });
@@ -200,13 +200,13 @@ export function createSystemService(http: HttpClient): SystemService {
           params: clientId === undefined ? undefined : { clientId }
         }),
       add: (data: UserForm) => request({ url: '/system/user', method: 'post', data }),
-      update: (data: UserForm) => request({ url: '/system/user', method: 'put', data }),
-      delete: (ids: IdentifierList) => request({ url: '/system/user/' + segment(ids), method: 'delete' }),
+      update: (data: UserForm) => request({ url: '/system/user/update', method: 'post', data }),
+      delete: (ids: IdentifierList) => request({ url: '/system/user/' + segment(ids), method: 'post' }),
       resetPassword: (userId: Identifier, password: string) =>
         request({
           url: '/system/user/resetPwd',
-          method: 'put',
-          headers: { isEncrypt: true, repeatSubmit: false },
+          method: 'post',
+          headers: { repeatSubmit: false },
           data: { userId, password }
         }),
       passwordResetCandidate: async (userId: Identifier) => {
@@ -228,15 +228,15 @@ export function createSystemService(http: HttpClient): SystemService {
         return { ...response, data: projectTemporaryPasswordTransport(response.data) };
       },
       changeStatus: (userId: Identifier, status: string) =>
-        request({ url: '/system/user/changeStatus', method: 'put', data: { userId, status } }),
-      unlock: (id: Identifier) => request({ url: '/system/user/unlock/' + segment(id), method: 'get' }),
+        request({ url: '/system/user/changeStatus', method: 'post', data: { userId, status } }),
+      unlock: (id: Identifier) => request({ url: '/system/user/unlock/' + segment(id), method: 'post' }),
       profile: () => request<UserProfileInfoVO>({ url: '/system/user/profile', method: 'get' }),
-      updateProfile: (data: UserProfileForm) => request({ url: '/system/user/profile', method: 'put', data }),
+      updateProfile: (data: UserProfileForm) => request({ url: '/system/user/profile', method: 'post', data }),
       updatePassword: (oldPassword: string, newPassword: string) =>
         request({
           url: '/system/user/profile/updatePwd',
-          method: 'put',
-          headers: { isEncrypt: true, repeatSubmit: false },
+          method: 'post',
+          headers: { repeatSubmit: false },
           data: { oldPassword, newPassword }
         }),
       authRoles: (id: Identifier, clientId: Identifier) =>
@@ -245,7 +245,7 @@ export function createSystemService(http: HttpClient): SystemService {
           method: 'get',
           params: { clientId }
         }),
-      updateAuthRoles: (params: UserRoleAssignment) => request({ url: '/system/user/authRole', method: 'put', params }),
+      updateAuthRoles: (params: UserRoleAssignment) => request({ url: '/system/user/authRole', method: 'post', params }),
       listByDepartment: (id: Identifier) =>
         request<UserVO[]>({ url: '/system/user/list/dept/' + segment(id), method: 'get' }),
       departmentTree: () => request<DeptTreeVO[]>({ url: '/system/user/deptTree', method: 'get' })
@@ -258,10 +258,10 @@ export function createSystemService(http: HttpClient): SystemService {
       roleTree: (id: Identifier) =>
         request<RoleMenuTree>({ url: '/system/menu/roleMenuTreeselect/' + segment(id), method: 'get' }),
       add: (data: MenuForm) => request({ url: '/system/menu', method: 'post', data }),
-      update: (data: MenuForm) => request({ url: '/system/menu', method: 'put', data }),
-      delete: (id: Identifier) => request({ url: '/system/menu/' + segment(id), method: 'delete' }),
+      update: (data: MenuForm) => request({ url: '/system/menu/update', method: 'post', data }),
+      delete: (id: Identifier) => request({ url: '/system/menu/' + segment(id), method: 'post' }),
       cascadeDelete: (ids: readonly Identifier[]) =>
-        request({ url: '/system/menu/cascade/' + segment(ids), method: 'delete' })
+        request({ url: '/system/menu/cascade/' + segment(ids), method: 'post' })
     }),
     departments: Object.freeze({
       list: (params?: DeptQuery) => request<DeptVO[]>({ url: '/system/dept/list', method: 'get', params }),
@@ -271,8 +271,8 @@ export function createSystemService(http: HttpClient): SystemService {
         request<DeptVO[]>({ url: '/system/dept/list/exclude/' + segment(id), method: 'get' }),
       get: (id: Identifier) => request<DeptVO>({ url: '/system/dept/' + segment(id), method: 'get' }),
       add: (data: DeptForm) => request({ url: '/system/dept', method: 'post', data }),
-      update: (data: DeptForm) => request({ url: '/system/dept', method: 'put', data }),
-      delete: (id: Identifier) => request({ url: '/system/dept/' + segment(id), method: 'delete' })
+      update: (data: DeptForm) => request({ url: '/system/dept/update', method: 'post', data }),
+      delete: (id: Identifier) => request({ url: '/system/dept/' + segment(id), method: 'post' })
     }),
     posts: Object.freeze({
       list: (params: PostQuery) => request<PageResult<PostVO>>({ url: '/system/post/list', method: 'get', params }),
@@ -280,8 +280,8 @@ export function createSystemService(http: HttpClient): SystemService {
       options: (deptId?: Identifier, postIds?: readonly Identifier[]) =>
         request<PostVO[]>({ url: '/system/post/optionselect', method: 'get', params: { deptId, postIds } }),
       add: (data: PostForm) => request({ url: '/system/post', method: 'post', data }),
-      update: (data: PostForm) => request({ url: '/system/post', method: 'put', data }),
-      delete: (ids: IdentifierList) => request({ url: '/system/post/' + segment(ids), method: 'delete' }),
+      update: (data: PostForm) => request({ url: '/system/post/update', method: 'post', data }),
+      delete: (ids: IdentifierList) => request({ url: '/system/post/' + segment(ids), method: 'post' }),
       departmentTree: () => request<DeptTreeVO[]>({ url: '/system/post/deptTree', method: 'get' })
     })
   });

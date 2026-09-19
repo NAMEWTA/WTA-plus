@@ -26,6 +26,10 @@ export interface PageQuery {
   pageNum?: number;
   pageSize?: number;
 }
+export interface NextNodesQuery {
+  taskId: string | number;
+  variables?: Record<string, unknown>;
+}
 export interface BaseEntity {
   createBy?: string;
   createTime?: string;
@@ -269,7 +273,7 @@ export interface WorkflowDefinitionService {
   getDefinition(id: Identifier): Promise<ApiResponse<FlowDefinitionVO>>;
   getDefinitionXmlString(id: string): Promise<ApiResponse<string>>;
   getSpel(id: Identifier): Promise<ApiResponse<SpelVO>>;
-  importDefinition(data: unknown): Promise<ApiResponse>;
+  importDefinition(data: unknown, signal?: AbortSignal): Promise<ApiResponse>;
   legacyDefinitionXml(id: string): Promise<ApiResponse<DefinitionXmlVO>>;
   listCategories(query?: CategoryQuery): Promise<ApiResponse<CategoryVO[]>>;
   listDefinitions(query: FlowDefinitionQuery): Promise<ApiResponse<PageResult<FlowDefinitionVO>>>;
@@ -296,7 +300,7 @@ export interface WorkflowDefinitionService {
   getBackTaskNodes(taskId: Identifier, nodeCode: string): Promise<ApiResponse<Record<string, unknown>[]>>;
   operateTask(data: TaskOperationPayload, operation: string): Promise<ApiResponse>;
   currentTaskUsers(taskId: Identifier): Promise<ApiResponse<UserSummary[]>>;
-  getNextNodes(data: WorkflowPayload): Promise<ApiResponse<Record<string, unknown>[]>>;
+  getNextNodes(data: NextNodesQuery): Promise<ApiResponse<Record<string, unknown>[]>>;
   urgeTask(data: UrgeTaskPayload): Promise<ApiResponse>;
   pageRunningInstances(query: InstanceQuery): Promise<ApiResponse<PageResult<WorkflowInstance>>>;
   pageFinishedInstances(query: InstanceQuery): Promise<ApiResponse<PageResult<WorkflowInstance>>>;
@@ -338,8 +342,8 @@ export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefin
     listCategories: query => request<CategoryVO[]>({ url: '/workflow/category/list', method: 'get', params: query }),
     getCategory: id => request<CategoryVO>({ url: '/workflow/category/' + segment(id), method: 'get' }),
     addCategory: data => request({ url: '/workflow/category', method: 'post', data }),
-    updateCategory: data => request({ url: '/workflow/category', method: 'put', data }),
-    deleteCategory: id => request({ url: '/workflow/category/' + segment(id), method: 'delete' }),
+    updateCategory: data => request({ url: '/workflow/category/update', method: 'post', data }),
+    deleteCategory: id => request({ url: '/workflow/category/' + segment(id), method: 'post' }),
     categoryTree: query =>
       request<CategoryTreeVO[]>({ url: '/workflow/category/categoryTree', method: 'get', params: query }),
     listDefinitions: query =>
@@ -352,24 +356,24 @@ export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefin
       }),
     legacyDefinitionXml: id =>
       request<DefinitionXmlVO>({ url: '/workflow/definition/definitionXml/' + segment(id), method: 'get' }),
-    deleteDefinition: id => request({ url: '/workflow/definition/' + segment(id), method: 'delete' }),
+    deleteDefinition: id => request({ url: '/workflow/definition/' + segment(id), method: 'post' }),
     setDefinitionActive: (id, active) =>
-      request({ url: '/workflow/definition/active/' + segment(id), method: 'put', params: { active } }),
-    importDefinition: data =>
-      request({ url: '/workflow/definition/importDef', method: 'post', data, headers: { repeatSubmit: false } }),
-    publishDefinition: id => request({ url: '/workflow/definition/publish/' + segment(id), method: 'put' }),
-    unpublishDefinition: id => request({ url: '/workflow/definition/unPublish/' + segment(id), method: 'put' }),
+      request({ url: '/workflow/definition/active/' + segment(id), method: 'post', params: { active } }),
+    importDefinition: (data, signal) =>
+      request({ url: '/workflow/definition/importDef', method: 'post', data, headers: { repeatSubmit: false }, ...(signal ? { signal } : {}) }),
+    publishDefinition: id => request({ url: '/workflow/definition/publish/' + segment(id), method: 'post' }),
+    unpublishDefinition: id => request({ url: '/workflow/definition/unPublish/' + segment(id), method: 'post' }),
     getDefinitionXmlString: id =>
       request<string>({ url: '/workflow/definition/xmlString/' + segment(id), method: 'get' }),
     addDefinition: data => request({ url: '/workflow/definition', method: 'post', data }),
-    updateDefinition: data => request({ url: '/workflow/definition', method: 'put', data }),
+    updateDefinition: data => request({ url: '/workflow/definition/update', method: 'post', data }),
     getDefinition: id => request<FlowDefinitionVO>({ url: '/workflow/definition/' + segment(id), method: 'get' }),
     copyDefinition: id => request({ url: '/workflow/definition/copy/' + segment(id), method: 'post' }),
     listSpel: query => request<PageResult<SpelVO>>({ url: '/workflow/spel/list', method: 'get', params: query }),
     getSpel: id => request<SpelVO>({ url: '/workflow/spel/' + segment(id), method: 'get' }),
     addSpel: data => request({ url: '/workflow/spel', method: 'post', data }),
-    updateSpel: data => request({ url: '/workflow/spel', method: 'put', data }),
-    deleteSpel: id => request({ url: '/workflow/spel/' + segment(id), method: 'delete' }),
+    updateSpel: data => request({ url: '/workflow/spel/update', method: 'post', data }),
+    deleteSpel: id => request({ url: '/workflow/spel/' + segment(id), method: 'post' }),
     pageTaskWaiting: async query =>
       projectTaskPage(
         await request<PageResult<WorkflowTaskTransport>>({
@@ -421,7 +425,7 @@ export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefin
         })
       ),
     updateAssignee: (taskIds, userId) =>
-      request({ url: '/workflow/task/updateAssignee/' + segment(userId), method: 'put', data: taskIds }),
+      request({ url: '/workflow/task/updateAssignee/' + segment(userId), method: 'post', data: taskIds }),
     terminateTask: data => request({ url: '/workflow/task/terminationTask', method: 'post', data }),
     getBackTaskNodes: (taskId, nodeCode) =>
       request<Record<string, unknown>[]>({
@@ -442,7 +446,11 @@ export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefin
       }) ?? [] };
     },
     getNextNodes: data =>
-      request<Record<string, unknown>[]>({ url: '/workflow/task/getNextNodeList', method: 'post', data }),
+      request<Record<string, unknown>[]>({
+        url: '/workflow/task/getNextNodeList',
+        method: 'get',
+        params: { taskId: data.taskId, ...(data.variables === undefined ? {} : { variables: JSON.stringify(data.variables) }) }
+      }),
     urgeTask: data => request({ url: '/workflow/task/urgeTask', method: 'post', data }),
     pageRunningInstances: query =>
       request<PageResult<WorkflowInstance>>({ url: '/workflow/instance/pageByRunning', method: 'get', params: query }),
@@ -452,26 +460,26 @@ export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefin
       request<PageResult<WorkflowInstance>>({ url: '/workflow/instance/pageByCurrent', method: 'get', params: query }),
     flowHistory: businessId =>
       request<WorkflowHistory>({ url: '/workflow/instance/flowHisTaskList/' + segment(businessId), method: 'get' }),
-    cancelProcess: data => request({ url: '/workflow/instance/cancelProcessApply', method: 'put', data }),
+    cancelProcess: data => request({ url: '/workflow/instance/cancelProcessApply', method: 'post', data }),
     instanceVariables: instanceId =>
       request<Record<string, unknown>>({
         url: '/workflow/instance/instanceVariable/' + segment(instanceId),
         method: 'get'
       }),
     deleteInstances: instanceIds =>
-      request({ url: '/workflow/instance/deleteByInstanceIds/' + segment(instanceIds), method: 'delete' }),
+      request({ url: '/workflow/instance/deleteByInstanceIds/' + segment(instanceIds), method: 'post' }),
     deleteHistoricInstances: instanceIds =>
-      request({ url: '/workflow/instance/deleteHisByInstanceIds/' + segment(instanceIds), method: 'delete' }),
+      request({ url: '/workflow/instance/deleteHisByInstanceIds/' + segment(instanceIds), method: 'post' }),
     invalidateInstance: data => request({ url: '/workflow/instance/invalid', method: 'post', data }),
     setInstanceActive: (id, active) =>
-      request({ url: '/workflow/instance/active/' + segment(id), method: 'put', params: { active } }),
-    updateInstanceVariables: data => request({ url: '/workflow/instance/updateVariable', method: 'put', data }),
+      request({ url: '/workflow/instance/active/' + segment(id), method: 'post', params: { active } }),
+    updateInstanceVariables: data => request({ url: '/workflow/instance/updateVariable', method: 'post', data }),
     listLeaves: query =>
       request<PageResult<LeaveRecord>>({ url: '/workflow/leave/list', method: 'get', params: query }),
     getLeave: id => request<LeaveRecord>({ url: '/workflow/leave/' + segment(id), method: 'get' }),
     addLeave: data => request<LeaveRecord>({ url: '/workflow/leave', method: 'post', data }),
     submitLeave: data => request<LeaveRecord>({ url: '/workflow/leave/submitAndFlowStart', method: 'post', data }),
-    updateLeave: data => request<LeaveRecord>({ url: '/workflow/leave', method: 'put', data }),
-    deleteLeaves: ids => request({ url: '/workflow/leave/' + segment(ids), method: 'delete' })
+    updateLeave: data => request<LeaveRecord>({ url: '/workflow/leave/update', method: 'post', data }),
+    deleteLeaves: ids => request({ url: '/workflow/leave/' + segment(ids), method: 'post' })
   });
 }

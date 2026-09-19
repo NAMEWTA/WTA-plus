@@ -7,7 +7,7 @@ import {
   type ClientAuthContext,
   type PasswordPolicyViolation
 } from './password-policy';
-import { projectClientAuthContextTransport, type ClientAuthContextTransport } from './transport';
+import { projectClientAuthContextTransport } from './transport';
 
 export * from './password-policy';
 export * from './transport';
@@ -87,6 +87,8 @@ export interface ServerMenuNode {
 }
 
 export type IdentityAccessErrorCode =
+  | 'preparation-superseded'
+  | 'session-invalidated'
   | 'client-context-unavailable'
   | 'invalid-credentials'
   | 'invalid-login-response'
@@ -132,7 +134,6 @@ export interface IdentityAccessManagementService extends IdentityAccessService {
 
 export interface IdentityAccessServiceOptions {
   client: ClientContext;
-  encryptLoginRequest?: boolean;
   http: HttpClient;
   identity: {
     loadInfo(): Promise<unknown>;
@@ -165,7 +166,7 @@ function parseClientAuthContext(value: unknown): ClientAuthContext {
     throw clientContextError();
   }
   if (!context.clientEnabled) throw clientContextError();
-  const projected = projectClientAuthContextTransport(context as ClientAuthContextTransport);
+  const projected = projectClientAuthContextTransport(context);
   const authMode = context.authMode === 'local' || context.authMode === 'sso' || context.authMode === 'both' ? context.authMode : undefined;
   const ssoAuthorizeUrl = typeof context.ssoAuthorizeUrl === 'string' ? context.ssoAuthorizeUrl.trim() : '';
   return Object.freeze({
@@ -331,31 +332,55 @@ export function createClientSessionKey(appId: string, clientId: string): string 
 
 export function createIdentityAccessService({
   client: clientInput,
-  encryptLoginRequest = true,
   http,
   identity,
   session
 }: IdentityAccessServiceOptions): IdentityAccessManagementService {
   const client = Object.freeze(requireClientContext(clientInput));
   let prepared = false;
+  let sessionGeneration = 0;
+  let preparationGeneration = 0;
+  let verificationGeneration = 0;
+  let currentVerification: LoginVerification | undefined;
+  let contextAttempt: { generation: number; promise: Promise<ClientAuthContext> } | undefined;
+  const assertSessionCurrent = (generation: number) => {
+    if (generation !== sessionGeneration) throw new IdentityAccessError('session-invalidated', '会话已结束，请重新登录');
+  };
   let context: ClientAuthContext | undefined;
 
-  const loadClientContext = async () => {
+  const loadClientContext = () => {
+    // 页头与表单可以同时读取公开配置，共用本次请求，避免互相清除准备状态。
+    if (contextAttempt?.generation === sessionGeneration) return contextAttempt.promise;
+    const generation = sessionGeneration;
+    const preparation = ++preparationGeneration;
+    verificationGeneration++;
     prepared = false;
+    currentVerification = undefined;
     context = undefined;
-    const contextResponse = await http.request<ApiResponse<ClientAuthContextTransport>>({
-      url: '/auth/client/context',
-      method: 'get',
-      headers: { isToken: false }
-    });
-    context = parseClientAuthContext(contextResponse.data);
-    return context;
+    const promise = (async () => {
+      const contextResponse = await http.request<ApiResponse<unknown>>({
+        url: '/auth/client/context',
+        method: 'get',
+        headers: { isToken: false }
+      });
+      assertSessionCurrent(generation);
+      if (preparation !== preparationGeneration) throw new IdentityAccessError('preparation-superseded', '认证准备已更新，请重试');
+      context = parseClientAuthContext(contextResponse.data);
+      return context;
+    })();
+    contextAttempt = { generation, promise };
+    void promise.finally(() => { if (contextAttempt?.promise === promise) contextAttempt = undefined; }).catch(() => undefined);
+    return promise;
   };
 
   const ensureClientContext = async () => context ?? loadClientContext();
 
   const loadVerification = async () => {
+    const generation = sessionGeneration;
+    const preparation = preparationGeneration;
+    const verificationVersion = ++verificationGeneration;
     prepared = false;
+    currentVerification = undefined;
     if (!context) throw clientContextError();
     const verificationResponse = await http.request<ApiResponse<unknown>>({
       url: '/auth/code',
@@ -363,12 +388,17 @@ export function createIdentityAccessService({
       headers: { isToken: false },
       timeout: 20000
     });
+    assertSessionCurrent(generation);
+    if (preparation !== preparationGeneration || verificationVersion !== verificationGeneration) {
+      throw new IdentityAccessError('preparation-superseded', '验证码已更新，请重新输入');
+    }
     const verification = parseVerification(verificationResponse.data);
+    currentVerification = verification;
     prepared = true;
     return verification;
   };
 
-  return Object.freeze({
+  return Object.freeze<IdentityAccessManagementService>({
     client,
     social: Object.freeze({
       bindingUrl: (source: string) =>
@@ -379,7 +409,7 @@ export function createIdentityAccessService({
       unlock: (socialId: string | number) =>
         http.request<ApiResponse>({
           url: '/auth/unlock/' + encodeURIComponent(String(socialId)),
-          method: 'delete'
+          method: 'post'
         })
     }),
     getClientContext: loadClientContext,
@@ -391,12 +421,13 @@ export function createIdentityAccessService({
       return Object.freeze({ context: loadedContext, verification });
     },
     async login(input) {
+      const generation = ++sessionGeneration;
       if (!prepared) throw clientContextError();
       const credentials = requireCredentials(input);
       const response = await http.request<ApiResponse<unknown>>({
         url: '/auth/login',
         method: 'post',
-        headers: { isToken: false, isEncrypt: encryptLoginRequest, repeatSubmit: false },
+        headers: { isToken: false, repeatSubmit: false },
         data: {
           username: credentials.username,
           password: credentials.password,
@@ -406,6 +437,7 @@ export function createIdentityAccessService({
           grantType: 'password'
         }
       });
+      assertSessionCurrent(generation);
       const accessToken = parseAccessToken(response.data);
       session.setToken(accessToken);
       return Object.freeze({ accessToken });
@@ -429,10 +461,15 @@ export function createIdentityAccessService({
       if (input.confirmPassword !== undefined && input.confirmPassword !== input.password) {
         throw new IdentityAccessError('invalid-credentials', '两次输入的密码不一致');
       }
+      // 后端先消费一次性验证码再校验其他注册条件；失败或网络结果不明也必须换一张。
+      if (currentVerification?.captchaEnabled) {
+        prepared = false;
+        currentVerification = undefined;
+      }
       await http.request<ApiResponse<unknown>>({
         url: '/auth/register',
         method: 'post',
-        headers: { isToken: false, isEncrypt: encryptLoginRequest, repeatSubmit: false },
+        headers: { isToken: false, repeatSubmit: false },
         data: {
           username: credentials.username,
           password: credentials.password,
@@ -449,12 +486,14 @@ export function createIdentityAccessService({
       return parseMenus(await identity.loadMenus());
     },
     async socialCallback(input) {
+      const generation = ++sessionGeneration;
       await ensureClientContext();
       const response = await http.request<ApiResponse<unknown>>({
         url: '/auth/social/callback',
         method: 'post',
         data: { ...input, clientId: client.clientId, grantType: 'social' }
       });
+      assertSessionCurrent(generation);
       let accessToken: string | undefined;
       if (response.data && typeof response.data === 'object' && !Array.isArray(response.data)) {
         const candidate = (response.data as Record<string, unknown>).access_token;
@@ -469,22 +508,34 @@ export function createIdentityAccessService({
       });
     },
     async socialLogin(input) {
+      const generation = ++sessionGeneration;
       await ensureClientContext();
       const response = await http.request<ApiResponse<unknown>>({
         url: '/auth/login',
         method: 'post',
-        headers: { isToken: false, isEncrypt: encryptLoginRequest, repeatSubmit: false },
+        headers: { isToken: false, repeatSubmit: false },
         data: { ...input, clientId: client.clientId, grantType: 'social' }
       });
+      assertSessionCurrent(generation);
       const accessToken = parseAccessToken(response.data);
       session.setToken(accessToken);
       return Object.freeze({ accessToken });
     },
     async logout() {
-      await http.request<ApiResponse<unknown>>({ url: '/auth/logout', method: 'post' });
-      session.clear();
+      const generation = ++sessionGeneration;
+      const previousToken = session.getToken();
       prepared = false;
+      preparationGeneration++;
+      verificationGeneration++;
+      currentVerification = undefined;
       context = undefined;
+      try {
+        await http.request<ApiResponse<unknown>>({ url: '/auth/logout', method: 'post', timeout: 10000,
+          headers: { repeatSubmit: false } });
+      } finally {
+        // A late logout must not erase a session established by a later login.
+        if (generation === sessionGeneration && session.getToken() === previousToken) session.clear();
+      }
     }
   });
 }

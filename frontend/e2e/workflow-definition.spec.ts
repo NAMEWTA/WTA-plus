@@ -66,7 +66,7 @@ async function installApi(page: Page, state: State, permissions: string[]) {
     const request = route.request();
     const path = new URL(request.url()).pathname.replace('/prod-api', '');
     const method = request.method();
-    if (path.startsWith('/warm-flow-ui/')) return route.fulfill({ contentType: 'text/html', body: '<html></html>' });
+    if (path.startsWith('/warm-flow-ui/')) return route.fulfill({ contentType: 'text/html; charset=utf-8', body: '<!doctype html><html><body><button onclick="window.parent.postMessage({method: \'close\'}, \'*\')">关闭设计器</button></body></html>' });
     if (path === '/auth/client/context')
       return json(route, { code: 200, data: { clientEnabled: true, registerEnabled: true } });
     if (path === '/auth/code') return json(route, { code: 200, data: { captchaEnabled: false } });
@@ -132,7 +132,7 @@ async function installApi(page: Page, state: State, permissions: string[]) {
       state.categories.push({ ...body, categoryId: 'c2', createTime: '', children: [] });
       return json(route, { code: 200, data: null });
     }
-    if (path === '/workflow/definition/publish/d1' && method === 'PUT') {
+    if (path === '/workflow/definition/publish/d1' && method === 'POST') {
       state.mutations.push({ method, path, body: null });
       state.definitionRequests.push(method + ' ' + path);
       const published = state.unpublishedDefinitions.find(item => item.id === 'd1');
@@ -169,6 +169,7 @@ async function installApi(page: Page, state: State, permissions: string[]) {
     }
     if (path === '/notify/inbox')
       return json(route, { code: 200, data: [] });
+    if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
     state.unknown.push(method + ' ' + path);
     return json(route, { code: 200, data: null });
@@ -257,9 +258,10 @@ test('selected workflow manifest completes category, definition, designer and Sp
   const iframe = page.locator('iframe[title="流程设计"]');
   await expect(iframe).toHaveAttribute('src', /id=d1&onlyDesignShow=false/);
   const iframeUrl = new URL((await iframe.getAttribute('src'))!, page.url());
-  expect(iframeUrl.searchParams.get('Authorization')).toBe('Bearer workflow-token');
+  // The frame is an explicit HTML fixture; this only verifies the credential-free URL contract.
+  expect(iframeUrl.searchParams.get('Authorization')).toBeNull();
   expect(iframeUrl.searchParams.get('clientid')).toBe('e5cd7e4891bf95d1d19206ce24a7b32e');
-  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { method: 'close' } })));
+  await page.frameLocator('iframe[title="流程设计"]').getByRole('button', { name: '关闭设计器' }).click();
   await expect(page).toHaveURL(/\/workflow\/processDefinition(?:\?.*)?$/);
   await page.getByRole('button', { name: '发布流程' }).click();
   await page.getByRole('button', { name: '确定' }).click();
@@ -305,11 +307,11 @@ test('selected workflow manifest completes category, definition, designer and Sp
 
   expect(state.mutations).toEqual([
     { method: 'POST', path: '/workflow/category', body: { categoryName: '财务审批', parentId: 'c1', orderNum: 0 } },
-    { method: 'PUT', path: '/workflow/definition/publish/d1', body: null },
+    { method: 'POST', path: '/workflow/definition/publish/d1', body: null },
     expectedSpelMutation
   ]);
   const unpublishedIndex = state.definitionRequests.indexOf('GET /workflow/definition/unPublishList');
-  const publishIndex = state.definitionRequests.indexOf('PUT /workflow/definition/publish/d1');
+  const publishIndex = state.definitionRequests.indexOf('POST /workflow/definition/publish/d1');
   const refreshedPublishedIndex = state.definitionRequests.indexOf('GET /workflow/definition/list', publishIndex);
   expect(unpublishedIndex).toBeGreaterThan(-1);
   expect(publishIndex).toBeGreaterThan(unpublishedIndex);
@@ -355,4 +357,97 @@ test('workflow permissions hide mutations without filtering selected server menu
   await expect(page.getByRole('button', { name: '新增' })).toHaveCount(0);
   expect(state.mutations).toEqual([]);
   expect(state.unknown).toEqual([]);
+});
+
+
+async function openOwnedDesigner(page: Page) {
+  const state = createState();
+  await installApi(page, state, ['*:*:*']);
+  await page.goto('/login?redirect=%2Fworkflow%2FprocessDefinition');
+  await page.locator('.submit-button').click();
+  await expect(page.getByText('既有已发布流程', { exact: true })).toBeVisible();
+  await page.getByRole('tab', { name: '未发布' }).click();
+  await page.getByRole('row').filter({ hasText: '请假审批' }).getByRole('button', { name: '流程设计' }).click();
+  await expect(page.frameLocator('iframe[title="流程设计"]').getByRole('button', { name: '关闭设计器' })).toBeVisible();
+}
+
+async function expectDesignerStillOpen(page: Page) {
+  // Observe the asynchronous navigation boundary, including the lazy host import.
+  await expect(page.waitForURL(/\/workflow\/processDefinition(?:\?.*)?$/, { timeout: 400 })).rejects.toThrow(/Timeout/);
+  await expect(page.locator('iframe[title="流程设计"]')).toBeVisible();
+}
+
+test('designer rejects foreign origin, other windows and unknown payloads', async ({ page }) => {
+  await openOwnedDesigner(page);
+  const iframe = page.locator('iframe[title="流程设计"]');
+  const originalUrl = (await iframe.getAttribute('src'))!;
+
+  await page.evaluate(() => window.postMessage({ method: 'close' }, window.location.origin));
+  await expectDesignerStillOpen(page);
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { method: 'close' } })));
+  await expectDesignerStillOpen(page);
+
+  // An actual same-origin sibling window has the right origin but the wrong source.
+  await page.evaluate(() => {
+    const sibling = document.createElement('iframe'); sibling.id = 'foreign-designer';
+    sibling.style.cssText = 'position:fixed;right:0;top:0;width:320px;height:80px;z-index:2147483647';
+    sibling.src = '/prod-api/warm-flow-ui/other.html'; document.body.append(sibling);
+  });
+  await page.frameLocator('#foreign-designer').getByRole('button', { name: '关闭设计器' }).click();
+  await expectDesignerStillOpen(page);
+  await page.locator('#foreign-designer').evaluate(element => element.remove());
+
+  // Navigate the owned frame itself: right WindowProxy, wrong origin.
+  await page.route('http://127.0.0.1:4174/untrusted-designer', route => route.fulfill({
+    contentType: 'text/html; charset=utf-8', body: '<button onclick="parent.postMessage({method: \'close\'}, \'*\')">伪造关闭</button>'
+  }));
+  await iframe.evaluate(element => { (element as HTMLIFrameElement).src = 'http://127.0.0.1:4174/untrusted-designer'; });
+  await page.frameLocator('iframe[title="流程设计"]').getByRole('button', { name: '伪造关闭' }).click();
+  await expectDesignerStillOpen(page);
+  await iframe.evaluate((element, url) => { (element as HTMLIFrameElement).src = url; }, originalUrl);
+  await expect(page.frameLocator('iframe[title="流程设计"]').getByRole('button', { name: '关闭设计器' })).toBeVisible();
+  const ownedFrame = page.frames().find(frame => frame.url().includes('/warm-flow-ui/index.html'))!;
+  for (const payload of [null, 'close', { method: 'save' }, { method: 'publish' }, { method: 1 }, [{ method: 'close' }]]) {
+    await ownedFrame.evaluate(data => window.parent.postMessage(data, '*'), payload);
+    await expectDesignerStillOpen(page);
+  }
+  await page.frameLocator('iframe[title="流程设计"]').getByRole('button', { name: '关闭设计器' }).click();
+  await expect(page).toHaveURL(/\/workflow\/processDefinition(?:\?.*)?$/);
+});
+
+test('designer refresh replaces its window and releases message listeners after closing', async ({ page }) => {
+  await page.addInitScript(() => {
+    const listeners = new Set<EventListenerOrEventListenerObject>();
+    const add = window.addEventListener; const remove = window.removeEventListener;
+    window.addEventListener = function (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) {
+      if (type === 'message' && listener) listeners.add(listener);
+      add.call(this, type, listener, options);
+    };
+    window.removeEventListener = function (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) {
+      if (type === 'message' && listener) listeners.delete(listener);
+      remove.call(this, type, listener, options);
+    };
+    Object.defineProperty(window, '__ownedMessageListenerCount', { get: () => listeners.size });
+  });
+  await openOwnedDesigner(page);
+  const count = () => page.evaluate(() => Reflect.get(window, '__ownedMessageListenerCount') as number);
+  const activeCount = await count();
+  expect(activeCount).toBeGreaterThan(0);
+  const oldWindow = await page.locator('iframe[title="流程设计"]').evaluateHandle(element => (element as HTMLIFrameElement).contentWindow);
+  await page.getByTitle('刷新页面', { exact: true }).click();
+  await expect.poll(() => page.locator('iframe[title="流程设计"]').evaluate((element, previous) => (element as HTMLIFrameElement).contentWindow !== previous, oldWindow)).toBe(true);
+  await expect(page.frameLocator('iframe[title="流程设计"]').getByRole('button', { name: '关闭设计器' })).toBeVisible();
+  await expect.poll(count).toBe(activeCount);
+  await page.evaluate(previous => window.dispatchEvent(new MessageEvent('message', {
+    source: previous, origin: window.location.origin, data: { method: 'close' }
+  })), oldWindow);
+  await expectDesignerStillOpen(page);
+  await oldWindow.dispose();
+  await page.frameLocator('iframe[title="流程设计"]').getByRole('button', { name: '关闭设计器' }).click();
+  await expect(page).toHaveURL(/\/workflow\/processDefinition(?:\?.*)?$/);
+  await expect.poll(count).toBe(activeCount - 1);
+  await page.locator('.sidebar-container').getByText('流程表达式', { exact: true }).click();
+  await expect(page).toHaveURL(/\/workflow\/spel$/);
+  await page.evaluate(() => window.postMessage({ method: 'close' }, window.location.origin));
+  await expect(page.waitForURL(/\/workflow\/processDefinition(?:\?.*)?$/, { timeout: 400 })).rejects.toThrow(/Timeout/);
 });

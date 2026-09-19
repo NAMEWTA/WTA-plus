@@ -36,6 +36,64 @@ const createHarness = (responses: Readonly<Record<string, unknown>>) => {
   return { http, identity, identityCalls, requests, session };
 };
 
+describe('registration preparation lifecycle', () => {
+  const context = { code: 200, data: { clientEnabled: true, registerEnabled: true, passwordPolicy } };
+  const challenge = (uuid: string) => ({ code: 200, data: { captchaEnabled: true, img: 'owned-image', uuid } });
+  const deferred = () => {
+    let resolve!: (value: unknown) => void;
+    let reject!: (error: Error) => void;
+    const promise = new Promise<unknown>((success, failure) => { resolve = success; reject = failure; });
+    return { promise, resolve, reject };
+  };
+  const fixture = () => {
+    const harness = createHarness({});
+    const request = vi.fn().mockResolvedValue(context);
+    const service = createIdentityAccessService({ ...harness, client: { clientId: 'registration-proof' }, http: { request } });
+    return { request, service };
+  };
+
+  it('shares an in-flight Client context read between public entry and form preparation', async () => {
+    const { request, service } = fixture(); const pending = deferred(); request.mockReturnValue(pending.promise);
+    const first = service.getClientContext(); const second = service.getClientContext();
+    pending.resolve(context); await first; await second;
+    expect(request).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects a slow older captcha after a newer challenge is ready', async () => {
+    const { request, service } = fixture(); await service.getClientContext();
+    const older = deferred(); const newer = deferred();
+    request.mockReturnValueOnce(older.promise).mockReturnValueOnce(newer.promise);
+    const first = service.getVerification().then(value => ({ value }), error => ({ error }));
+    const second = service.getVerification();
+    newer.resolve(challenge('new')); await expect(second).resolves.toMatchObject({ uuid: 'new' });
+    older.resolve(challenge('old'));
+    await expect(first).resolves.toMatchObject({ error: { code: 'preparation-superseded' } });
+  });
+
+  it('does not let an older success reopen registration after the latest captcha failed', async () => {
+    const { request, service } = fixture(); await service.getClientContext();
+    const older = deferred(); const newer = deferred();
+    request.mockReturnValueOnce(older.promise).mockReturnValueOnce(newer.promise);
+    const first = service.getVerification().catch(() => undefined);
+    const second = service.getVerification().catch(() => undefined);
+    newer.reject(new Error('owned network failure')); await second;
+    older.resolve(challenge('old')); await first;
+    await expect(service.register({ username: 'owned', password: 'OwnedPass!9', code: '1234', uuid: 'old' }))
+      .rejects.toMatchObject({ code: 'client-context-unavailable' });
+  });
+
+  it('requires a new one-time captcha after a remote registration attempt failed', async () => {
+    const { request, service } = fixture(); await service.getClientContext();
+    request.mockResolvedValueOnce(challenge('consumed')); await service.getVerification();
+    request.mockRejectedValueOnce(new Error('owned rejected attempt'));
+    const input = { username: 'owned', password: 'OwnedPass!9', code: '1234', uuid: 'consumed' };
+    await service.register(input).catch(() => undefined);
+    const sent = request.mock.calls.length;
+    await expect(service.register(input)).rejects.toMatchObject({ code: 'client-context-unavailable' });
+    expect(request).toHaveBeenCalledTimes(sent);
+  });
+});
+
 describe('identity access domain', () => {
   it('publishes frozen headless metadata', () => {
     expect(adminDomainModule).toEqual({
@@ -164,7 +222,6 @@ describe('identity access domain', () => {
     });
     const service = createIdentityAccessService({
       client: { clientId: ' client-proof ' },
-      encryptLoginRequest: false,
       http: harness.http,
       identity: harness.identity,
       session: harness.session
@@ -177,7 +234,7 @@ describe('identity access domain', () => {
     expect(harness.requests.at(-1)).toEqual({
       url: '/auth/login',
       method: 'post',
-      headers: { isToken: false, isEncrypt: false, repeatSubmit: false },
+      headers: { isToken: false, repeatSubmit: false },
       data: { username: 'user', password: 'secret', clientId: 'client-proof', grantType: 'password' }
     });
     expect(harness.session.setToken).toHaveBeenCalledWith('client-token');
@@ -431,7 +488,7 @@ describe('identity access domain', () => {
       {
         url: '/auth/login',
         method: 'post',
-        headers: { isToken: false, isEncrypt: true, repeatSubmit: false },
+        headers: { isToken: false, repeatSubmit: false },
         data: {
           socialCode: 'code',
           socialState: 'state',
@@ -460,7 +517,7 @@ describe('identity access domain', () => {
 
     expect(harness.requests).toEqual([
       { url: '/auth/binding/github', method: 'get' },
-      { url: '/auth/unlock/auth%2F1', method: 'delete' }
+      { url: '/auth/unlock/auth%2F1', method: 'post' }
     ]);
   });
 
@@ -519,5 +576,50 @@ describe('identity access domain', () => {
       message: 'linked'
     });
     expect(harness.session.setToken).toHaveBeenCalledWith('rotated-token');
+  });
+});
+
+describe('auth session invalidation', () => {
+  const setup = () => {
+    const harness = createHarness({
+      '/auth/client/context': { code: 200, data: { clientEnabled: true, registerEnabled: false } },
+      '/auth/code': { code: 200, data: { captchaEnabled: false } }
+    });
+    const service = createIdentityAccessService({ client: { clientId: 'owned-client' }, ...harness });
+    return { harness, service };
+  };
+
+  it('clears the same session on a bounded failed logout and invalidates prepared login state', async () => {
+    const { harness, service } = setup();
+    await service.prepareLogin();
+    const request = vi.spyOn(harness.http, 'request').mockRejectedValue(new Error('owned timeout'));
+    await expect(service.logout()).rejects.toThrow('owned timeout');
+    expect(harness.session.clear).toHaveBeenCalledOnce();
+    expect(request).toHaveBeenCalledWith(expect.objectContaining({ url: '/auth/logout', timeout: 10000 }));
+    await expect(service.login({ username: 'owned', password: 'owned' })).rejects.toMatchObject({ code: 'client-context-unavailable' });
+  });
+
+  it('does not install a login token whose response arrives after logout', async () => {
+    const { harness, service } = setup();
+    await service.prepareLogin();
+    let complete!: (value: unknown) => void;
+    vi.spyOn(harness.http, 'request').mockImplementation(config => config.url === '/auth/login'
+      ? new Promise(resolve => { complete = resolve; }) : Promise.resolve({ code: 200 } as never));
+    const login = service.login({ username: 'owned', password: 'owned' }).catch(error => error);
+    await service.logout();
+    complete({ code: 200, data: { access_token: 'owned-stale-token' } });
+    expect(await login).toMatchObject({ code: 'session-invalidated' });
+    expect(harness.session.setToken).not.toHaveBeenCalled();
+  });
+
+  it('does not clear a newer token when an old logout finishes', async () => {
+    const { harness, service } = setup();
+    let token = 'old-owned-token';
+    vi.mocked(harness.session.getToken).mockImplementation(() => token);
+    let complete!: (value: unknown) => void;
+    vi.spyOn(harness.http, 'request').mockImplementation(() => new Promise(resolve => { complete = resolve; }));
+    const logout = service.logout();
+    token = 'new-owned-token'; complete({ code: 200 }); await logout;
+    expect(harness.session.clear).not.toHaveBeenCalled();
   });
 });

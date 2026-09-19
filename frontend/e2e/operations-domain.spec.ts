@@ -36,6 +36,7 @@ async function installApi(page: Page, permissions: string[], state: ApiState) {
         }
       });
     if (path === '/system/menu/getRouters') return json(route, { code: 200, data: menus });
+    if (['/system/dict/data/type/notify_channel', '/system/dict/data/type/notify_delivery_status'].includes(path)) return json(route, { code: 200, data: [] });
     if (path === '/system/dict/data/type/sys_device_type') return json(route, { code: 200, data: [] });
     if (path === '/monitor/online/list' && request.method() === 'GET')
       return json(route, {
@@ -56,7 +57,7 @@ async function installApi(page: Page, permissions: string[], state: ApiState) {
           total: 1
         }
       });
-    if (path === '/monitor/online/session-1' && request.method() === 'DELETE')
+    if (path === '/monitor/online/session-1' && request.method() === 'POST')
       return json(route, { code: 200, data: null });
     if (path === '/notify/monitor/deliveries' && request.method() === 'GET')
       return json(route, {
@@ -71,6 +72,7 @@ async function installApi(page: Page, permissions: string[], state: ApiState) {
     if (path === '/notify/inbox')
       return json(route, { code: 200, data: [] });
     if (path === '/resource/message/close') return json(route, { code: 200, data: null });
+    if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
     state.unknown.push(request.method() + ' ' + path);
     return route.abort('failed');

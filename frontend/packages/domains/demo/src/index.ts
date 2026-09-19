@@ -130,12 +130,12 @@ export function createDemoService(http: HttpClient, richText?: RichTextService):
         : (response as ApiResponse<DemoVO>);
     },
     addDemo: data => http.request({ url: '/demo/demo', method: 'post', data }),
-    updateDemo: data => http.request({ url: '/demo/demo', method: 'put', data }),
-    deleteDemo: id => http.request({ url: `/demo/demo/${encodeIds(id)}`, method: 'delete' }),
+    updateDemo: data => http.request({ url: '/demo/demo/update', method: 'post', data }),
+    deleteDemo: id => http.request({ url: `/demo/demo/${encodeIds(id)}`, method: 'post' }),
     listTree: query => http.request({ url: '/demo/tree/list', method: 'get', params: query }),
     getTree: id => http.request({ url: `/demo/tree/${encodeId(id)}`, method: 'get' }),
     addTree: data => http.request({ url: '/demo/tree', method: 'post', data }),
-    updateTree: data => http.request({ url: '/demo/tree', method: 'put', data }),
-    deleteTree: id => http.request({ url: `/demo/tree/${encodeIds(id)}`, method: 'delete' })
+    updateTree: data => http.request({ url: '/demo/tree/update', method: 'post', data }),
+    deleteTree: id => http.request({ url: `/demo/tree/${encodeIds(id)}`, method: 'post' })
   });
 }

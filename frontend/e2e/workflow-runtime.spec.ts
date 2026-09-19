@@ -211,7 +211,7 @@ async function installRuntimeApi(page: Page, state: RuntimeState) {
         }
       });
     }
-    if (path === '/workflow/task/getNextNodeList' && method === 'POST')
+    if (path === '/workflow/task/getNextNodeList' && method === 'GET')
       return json(route, {
         code: 200,
         data: [{ nodeCode: 'review', nodeName: '部门复核', permissionFlag: '7' }]
@@ -267,7 +267,7 @@ async function installRuntimeApi(page: Page, state: RuntimeState) {
     }
     if (path === '/workflow/instance/instanceVariable/instance-1' && method === 'GET')
       return json(route, { code: 200, data: { variable: { amount: '100' } } });
-    if (path === '/workflow/instance/updateVariable' && method === 'PUT') {
+    if (path === '/workflow/instance/updateVariable' && method === 'POST') {
       state.variableBodies?.push(request.postDataJSON());
       return json(route, { code: 200 });
     }
@@ -294,7 +294,7 @@ async function installRuntimeApi(page: Page, state: RuntimeState) {
           total: 1
         }
       });
-    if (path === '/workflow/instance/cancelProcessApply' && method === 'PUT') {
+    if (path === '/workflow/instance/cancelProcessApply' && method === 'POST') {
       state.cancelBodies?.push(request.postDataJSON());
       return json(route, { code: 200 });
     }
@@ -437,6 +437,7 @@ async function installRuntimeApi(page: Page, state: RuntimeState) {
       return json(route, {
         code: 200,
         data: {
+          accessType: 'PRIVATE',
           url: 'http://127.0.0.1:4173/workflow-runtime-upload',
           fileName: 'approval.txt',
           expiresAt: '2099-01-01'
@@ -444,6 +445,7 @@ async function installRuntimeApi(page: Page, state: RuntimeState) {
       });
     if (path === '/notify/inbox' && method === 'GET')
       return json(route, { code: 200, data: [] });
+    if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message' && method === 'GET')
       return route.fulfill({ contentType: 'text/event-stream', body: '' });
     state.unknown.push(`${method} ${path}`);
@@ -493,6 +495,7 @@ test('admin selected workflow completes a task through the public user seam', as
     buffer: Buffer.from('workflow attachment')
   });
   await expect(processDialog.getByRole('link', { name: 'approval.txt' }).first()).toBeVisible();
+  await expect(processDialog.getByRole('link', { name: 'approval.txt' }).first()).toHaveAttribute('href', 'http://127.0.0.1:4173/workflow-runtime-upload');
   await processDialog.getByRole('button', { name: '选择', exact: true }).click();
   const selector = page.getByRole('dialog', { name: '选择用户' });
   await expect(selector.getByRole('cell', { name: '流程负责人' })).toBeVisible();
@@ -739,6 +742,7 @@ test('task back uploads a real attachment and preserves the exact payload', asyn
     buffer: Buffer.from('back attachment')
   });
   await expect(backDialog.getByRole('link', { name: 'approval.txt' }).first()).toBeVisible();
+  await expect(backDialog.getByRole('link', { name: 'approval.txt' }).first()).toHaveAttribute('href', 'http://127.0.0.1:4173/workflow-runtime-upload');
   await backDialog.getByRole('button', { name: '确认退回', exact: true }).click();
   await page.getByRole('button', { name: '确定', exact: true }).click();
   await expect(backDialog.getByText('退回任务失败', { exact: true })).toBeVisible();
