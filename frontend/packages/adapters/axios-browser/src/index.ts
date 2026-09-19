@@ -1,4 +1,4 @@
-import type { ClientContext, CryptoPort, ErrorPresenter, HttpClient, HttpRequest } from '@namewta/platform-contracts';
+import type { ClientContext, ErrorPresenter, HttpClient, HttpRequest } from '@namewta/platform-contracts';
 import { requireClientContext } from '@namewta/platform-contracts';
 import {
   createTransportError,
@@ -7,44 +7,38 @@ import {
   normalizeTransportMessage,
   payloadErrorMessage
 } from '@namewta/platform-http';
-import axiosModule from 'axios';
+import axios, { type AxiosHeaderValue, type AxiosInstance, type AxiosRequestConfig, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 
-interface AxiosBrowserRequest {
-  data?: unknown;
-  headers: Record<string, unknown>;
-  method?: string;
-  params?: unknown;
-  responseType?: string;
-  url?: string;
-}
-
-interface AxiosBrowserResponse {
-  config?: AxiosBrowserRequest;
-  data: unknown;
-  headers: Record<string, unknown>;
-  request?: { responseType?: string };
-}
+type AxiosBrowserRequest = HttpRequest & Pick<AxiosRequestConfig<unknown>, 'adapter' | 'transformRequest'>;
+type AxiosBrowserPostOptions = Omit<AxiosBrowserRequest, 'url' | 'method' | 'data'>;
 
 interface AxiosBrowserClient extends HttpClient {
-  (config: unknown): Promise<unknown>;
-  interceptors: {
-    request: {
-      use(fulfilled: (config: AxiosBrowserRequest) => AxiosBrowserRequest | Promise<never>): unknown;
-    };
-    response: {
-      use(fulfilled: (response: AxiosBrowserResponse) => unknown, rejected: (error: unknown) => unknown): unknown;
-    };
-  };
-  post(url: string, data: unknown, config: unknown): Promise<unknown>;
-  request<T>(config: HttpRequest): Promise<T>;
+  cancelPending(): void;
+  (config: AxiosBrowserRequest): Promise<unknown>;
+  interceptors: AxiosInstance['interceptors'];
+  post(url: string, data: unknown, config?: AxiosBrowserPostOptions): Promise<unknown>;
+  request<T>(config: AxiosBrowserRequest): Promise<T>;
 }
 
-interface AxiosBrowserFactory {
-  create(config: unknown): AxiosBrowserClient;
+function transportRecord(value: unknown): Record<string, unknown> | undefined {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
 }
 
-const axios = axiosModule as unknown as AxiosBrowserFactory;
-const encryptHeader = 'encrypt-key';
+function axiosRequest(config: AxiosBrowserRequest): AxiosRequestConfig<unknown> {
+  const headers: Partial<Record<string, AxiosHeaderValue>> = {};
+  for (const [name, value] of Object.entries(config.headers ?? {})) {
+    if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number') {
+      headers[name] = value;
+    } else if (value === null || value === undefined) {
+      headers[name] = value === null ? null : undefined;
+    } else if (Array.isArray(value) && value.every((item: unknown) => typeof item === 'string')) {
+      headers[name] = value;
+    } else {
+      throw new Error('请求头格式不可用');
+    }
+  }
+  return { ...config, headers };
+}
 
 export interface RepeatSubmission {
   data: unknown;
@@ -60,8 +54,6 @@ export interface RepeatSubmissionStore {
 export interface AxiosBrowserOptions {
   baseURL: string;
   client: ClientContext;
-  crypto?: CryptoPort;
-  encryptionEnabled: boolean;
   errorPresenter: ErrorPresenter;
   getLanguage(): string;
   getToken(): string | null;
@@ -94,9 +86,10 @@ export async function extractAxiosErrorMessage(
   resolveCode: (code: unknown) => string | undefined
 ): Promise<string | undefined> {
   if (isTransportError(error)) return error.message;
-  const candidate = error as { message?: string; response?: { data?: unknown } };
+  const candidate = transportRecord(error);
   return (
-    (await responseDataMessage(candidate.response?.data, resolveCode)) ?? normalizeTransportMessage(candidate.message)
+    (await responseDataMessage(transportRecord(candidate?.response)?.data, resolveCode)) ??
+    normalizeTransportMessage(typeof candidate?.message === 'string' ? candidate.message : undefined)
   );
 }
 
@@ -118,7 +111,7 @@ function recoverUnauthorizedSafely(recover: () => Promise<void> | void): boolean
   try {
     const result = recover();
     if (result) {
-      void result.catch(() => undefined);
+      void result.catch((): void => undefined);
       return false;
     }
     return true;
@@ -128,15 +121,9 @@ function recoverUnauthorizedSafely(recover: () => Promise<void> | void): boolean
   }
 }
 
-function encryptionError(message: string, cause?: unknown) {
-  return createTransportError({ kind: 'encryption', message, cause });
-}
-
 export function createAxiosBrowserAdapter(options: AxiosBrowserOptions): AxiosBrowserClient {
+  let requestScope = new AbortController();
   const client = requireClientContext(options.client);
-  if (options.encryptionEnabled && !options.crypto) {
-    throw new Error('CryptoPort is required when encryption is enabled');
-  }
   const service = axios.create({
     baseURL: options.baseURL,
     timeout: options.timeout ?? 50000,
@@ -144,8 +131,10 @@ export function createAxiosBrowserAdapter(options: AxiosBrowserOptions): AxiosBr
     transitional: { clarifyTimeoutError: true }
   });
 
-  service.interceptors.request.use(config => {
-    const headers = config.headers as unknown as Record<string, unknown>;
+  service.interceptors.request.use((config: InternalAxiosRequestConfig<unknown>) => {
+    const headers = config.headers;
+    // 浏览器为 FormData 写入带 boundary 的 multipart 头，不能沿用默认 JSON。
+    if (typeof FormData !== 'undefined' && config.data instanceof FormData) headers['Content-Type'] = undefined;
     headers['Content-Language'] = options.getLanguage();
     const token = options.getToken();
     if (token && headers.isToken !== false && headers.isToken !== 'false') headers.Authorization = `Bearer ${token}`;
@@ -171,52 +160,24 @@ export function createAxiosBrowserAdapter(options: AxiosBrowserOptions): AxiosBr
         return Promise.reject(new Error('数据正在处理，请勿重复提交'));
       options.repeatSubmissions.set(current);
     }
-    const shouldEncrypt = String(headers.isEncrypt) === 'true';
-    if (options.encryptionEnabled && shouldEncrypt && (config.method === 'post' || config.method === 'put')) {
-      try {
-        const encrypted = options.crypto.encryptRequest(
-          typeof config.data === 'object' ? JSON.stringify(config.data) : String(config.data)
-        );
-        headers[encryptHeader] = encrypted.encryptedKey;
-        config.data = encrypted.data;
-      } catch (cause) {
-        throw encryptionError('Unable to encrypt request', cause);
-      }
-    }
     if (typeof FormData !== 'undefined' && config.data instanceof FormData) delete headers['Content-Type'];
     return config;
   });
 
   service.interceptors.response.use(
-    response => {
-      const headers = response.headers as Record<string, unknown>;
-      const responseType =
-        (response.request as { responseType?: string } | undefined)?.responseType ?? response.config?.responseType;
-      const encryptedKey = headers[encryptHeader];
-      const hasEncryptedKey = encryptedKey !== undefined;
-      if (hasEncryptedKey) {
-        if (responseType === 'blob' || responseType === 'arraybuffer') {
-          throw encryptionError('Encrypted binary responses are unsupported');
-        }
-        if (typeof encryptedKey !== 'string' || !encryptedKey.trim()) {
-          throw encryptionError('Encrypted response key is required');
-        }
-        if (typeof response.data !== 'string') throw encryptionError('Encrypted response payload is malformed');
-        if (!options.crypto) throw encryptionError('CryptoPort is required for encrypted responses');
-        try {
-          response.data = options.crypto.decryptResponse(response.data, encryptedKey);
-        } catch (cause) {
-          throw encryptionError('Unable to decrypt response', cause);
-        }
+    (response: AxiosResponse<unknown>) => {
+      if (response.config?.signal?.aborted) {
+        return Promise.reject(createTransportError({ kind: 'network', message: '请求已取消', code: 'ERR_CANCELED', handled: true }));
       }
-      const data = response.data as Record<string, unknown>;
+      const responseType = transportRecord(response.request)?.responseType ?? response.config?.responseType;
+      const data = transportRecord(response.data);
       const code = Number(data?.code || options.successCode);
       const message =
         (typeof data?.msg === 'string' && data.msg) ||
         options.resolveErrorCode(code) ||
         options.resolveErrorCode('default') ||
         '';
-      if (responseType === 'blob' || responseType === 'arraybuffer') return response.data;
+      if (responseType === 'blob' || responseType === 'arraybuffer') return response;
       if (code === 401) {
         const handled = recoverUnauthorizedSafely(options.onUnauthorized);
         return Promise.reject(createTransportError({ kind: 'unauthorized', message, code, handled }));
@@ -227,19 +188,61 @@ export function createAxiosBrowserAdapter(options: AxiosBrowserOptions): AxiosBr
         const error = createTransportError({ kind, message, code, handled });
         return Promise.reject(error);
       }
-      return response.data;
+      return response;
     },
-    async error => {
+    async (error: unknown) => {
       if (isTransportError(error)) return Promise.reject(error);
+      const candidate = transportRecord(error);
+      if (candidate?.code === 'ERR_CANCELED') {
+        return Promise.reject(createTransportError({ kind: 'network', message: '请求已取消', code: 'ERR_CANCELED', handled: true }));
+      }
+      if (transportRecord(candidate?.response)?.status === 401) {
+        const handled = recoverUnauthorizedSafely(options.onUnauthorized);
+        return Promise.reject(createTransportError({ kind: 'unauthorized', message: '登录状态已过期', code: 401, cause: error, handled }));
+      }
       const message =
         (await extractAxiosErrorMessage(error, options.resolveErrorCode)) || options.resolveErrorCode('default') || '';
-      const code = (error as { code?: number | string } | undefined)?.code;
+      const code = typeof candidate?.code === 'string' || typeof candidate?.code === 'number' ? candidate.code : undefined;
       const handled = presentSafely(options.errorPresenter, 'network', message);
       const transportError = createTransportError({ kind: 'network', message, code, cause: error, handled });
       return Promise.reject(transportError);
     }
   );
-  return service;
+  const withRequestScope = <T>(config: AxiosBrowserRequest, send: (value: AxiosBrowserRequest) => Promise<T>): Promise<T> => {
+    const scope = requestScope.signal;
+    const caller = config.signal;
+    if (!caller) return send({ ...config, signal: scope });
+    // 两个 owner 都能取消；完成后移除监听，不要求浏览器提供 AbortSignal.any。
+    const combined = new AbortController();
+    const abort = () => combined.abort();
+    scope.addEventListener('abort', abort, { once: true });
+    caller.addEventListener('abort', abort, { once: true });
+    if (scope.aborted || caller.aborted) combined.abort();
+    const release = () => {
+      scope.removeEventListener('abort', abort);
+      caller.removeEventListener('abort', abort);
+    };
+    try {
+      return send({ ...config, signal: combined.signal }).finally(release);
+    } catch (error) {
+      release();
+      return Promise.reject(error);
+    }
+  };
+  // Axios 拦截器保留响应合同，平台适配器在出口统一取 data。
+  const request = <T>(config: AxiosBrowserRequest): Promise<T> =>
+    withRequestScope(config, async value => (await service.request<T, AxiosResponse<T>, unknown>(axiosRequest(value))).data);
+  return Object.assign((config: AxiosBrowserRequest) => request(config), {
+    interceptors: service.interceptors,
+    request,
+    post: (url: string, data: unknown, config: AxiosBrowserPostOptions = {}) =>
+      withRequestScope({ ...config, url, data, method: 'post' }, async value =>
+        (await service.post<unknown, AxiosResponse<unknown>, unknown>(url, data, axiosRequest(value))).data),
+    cancelPending: () => {
+      requestScope.abort();
+      requestScope = new AbortController();
+    }
+  });
 }
 
 export { isHandledError };
@@ -258,20 +261,31 @@ export interface DownloadOptions {
   url: string;
 }
 
+function downloadBlob(data: unknown): Blob {
+  if (data instanceof Blob) return data;
+  if (typeof data === 'string' || data instanceof ArrayBuffer) return new Blob([data]);
+  if (ArrayBuffer.isView(data)) {
+    const bytes = new Uint8Array(data.byteLength);
+    bytes.set(new Uint8Array(data.buffer, data.byteOffset, data.byteLength));
+    return new Blob([bytes]);
+  }
+  throw new Error('下载响应不可用');
+}
+
 export async function downloadWithAxios(options: DownloadOptions): Promise<void> {
   try {
-    const data = (await options.client.post(options.url, options.params, {
-      transformRequest: [params => options.serializeParams(params)],
+    const data = await options.client.post(options.url, options.params, {
+      transformRequest: [(params: unknown) => options.serializeParams(params)],
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       responseType: 'blob'
-    })) as unknown;
-    const blob = new Blob([data as BlobPart]);
+    });
+    const blob = downloadBlob(data);
     if (options.isValid(data)) options.save(blob, options.fileName);
     else {
-      const payload = JSON.parse(await blob.text()) as Record<string, unknown>;
+      const payload = transportRecord(JSON.parse(await blob.text()));
       options.presentError(
-        options.resolveErrorCode(payload.code) ||
-          (typeof payload.msg === 'string' ? payload.msg : '') ||
+        options.resolveErrorCode(payload?.code) ||
+          (typeof payload?.msg === 'string' ? payload.msg : '') ||
           options.resolveErrorCode('default') ||
           '系统未知错误'
       );

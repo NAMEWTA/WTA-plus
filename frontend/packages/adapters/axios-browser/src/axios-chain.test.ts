@@ -1,18 +1,8 @@
-import type { CryptoPort, ErrorPresenter } from '@namewta/platform-contracts';
-import axiosModule from 'axios';
+import type { ErrorPresenter } from '@namewta/platform-contracts';
+import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { describe, expect, it, vi } from 'vitest';
 import type { AxiosBrowserOptions, RepeatSubmission } from './index';
 import { createAxiosBrowserAdapter } from './index';
-
-type AxiosChainClient = {
-  request<T>(config: Record<string, unknown>): Promise<T>;
-};
-
-const AxiosErrorConstructor = (
-  axiosModule as unknown as {
-    AxiosError: new (message: string, code: string, config: unknown) => Error;
-  }
-).AxiosError;
 
 function chainOptions(overrides: Partial<AxiosBrowserOptions> = {}): AxiosBrowserOptions {
   let repeatSubmission: RepeatSubmission | null = null;
@@ -23,7 +13,6 @@ function chainOptions(overrides: Partial<AxiosBrowserOptions> = {}): AxiosBrowse
   return {
     baseURL: '/prod-api',
     client: { clientId: 'client-a' },
-    encryptionEnabled: false,
     errorPresenter: presenter,
     getLanguage: () => 'zh-CN',
     getToken: () => 'secret-token',
@@ -41,42 +30,26 @@ function chainOptions(overrides: Partial<AxiosBrowserOptions> = {}): AxiosBrowse
   };
 }
 
-function requestThrough(options: AxiosBrowserOptions, config: Record<string, unknown>) {
-  const client = createAxiosBrowserAdapter(options) as unknown as AxiosChainClient;
+function requestThrough(options: AxiosBrowserOptions, config: Parameters<ReturnType<typeof createAxiosBrowserAdapter>['request']>[0]) {
+  const client = createAxiosBrowserAdapter(options);
   return client.request(config);
 }
 
 describe('axios production interceptor chain', () => {
-  it('preserves request encryption errors without network reclassification or presentation', async () => {
-    const crypto: CryptoPort = {
-      decryptResponse: vi.fn(),
-      encryptRequest: vi.fn(() => {
-        throw new Error('key wrapping failed');
-      })
-    };
-    const errorPresenter = { confirmSessionExpired: vi.fn(), present: vi.fn() };
-
-    await expect(
-      requestThrough(chainOptions({ crypto, encryptionEnabled: true, errorPresenter }), {
-        adapter: vi.fn(),
-        data: { password: 'secret' },
-        headers: { isEncrypt: true, repeatSubmit: false },
-        method: 'post',
-        url: '/auth/login'
-      })
-    ).rejects.toMatchObject({
-      kind: 'encryption',
-      message: 'Unable to encrypt request',
-      cause: { message: 'key wrapping failed', name: 'Error' },
-      isHandled: false
-    });
-    expect(errorPresenter.present).not.toHaveBeenCalled();
+  it('sanitizes a failed login request without retaining its password or transport config', async () => {
+    const error = await requestThrough(chainOptions(), {
+      adapter: (config: InternalAxiosRequestConfig<unknown>) => Promise.reject(new AxiosError('Network Error', 'ERR_NETWORK', config)),
+      data: { password: 'owned-password-canary' }, headers: { repeatSubmit: false }, method: 'post', url: '/auth/login'
+    }).catch(value => value);
+    expect(error).toMatchObject({ kind: 'network', code: 'ERR_NETWORK', isHandled: true });
+    expect(JSON.stringify(error)).not.toContain('owned-password-canary');
+    expect((error as { cause?: unknown }).cause).not.toHaveProperty('config');
   });
 
   it('does not expose authorization headers through a network error cause', async () => {
     const error = await requestThrough(chainOptions(), {
-      adapter: (config: Record<string, unknown>) =>
-        Promise.reject(new AxiosErrorConstructor('Network Error', 'ERR_NETWORK', config)),
+      adapter: (config: InternalAxiosRequestConfig<unknown>) =>
+        Promise.reject(new AxiosError('Network Error', 'ERR_NETWORK', config)),
       method: 'get',
       url: '/private'
     }).catch(value => value);
@@ -92,95 +65,50 @@ describe('axios production interceptor chain', () => {
     expect(JSON.stringify(cause)).not.toContain('Authorization');
   });
 
-  it('allows a legacy encryption header when response encryption is globally disabled', async () => {
-    await expect(
-      requestThrough(chainOptions({ encryptionEnabled: false }), {
-        adapter: (config: Record<string, unknown>) =>
-          Promise.resolve({
-            config,
-            data: { code: 200, value: 'plain' },
-            headers: {},
-            status: 200,
-            statusText: 'OK'
-          }),
-        headers: { isEncrypt: true },
-        method: 'get',
-        url: '/legacy'
-      })
-    ).resolves.toEqual({ code: 200, value: 'plain' });
+  it('preserves server errors and reports them once', async () => {
+    const errorPresenter = { confirmSessionExpired: vi.fn(), present: vi.fn() };
+    const error = await requestThrough(chainOptions({ errorPresenter }), {
+      adapter: (config: InternalAxiosRequestConfig<unknown>) => Promise.resolve({
+        config, data: { code: 500, msg: 'request failed' }, headers: {}, status: 200, statusText: 'OK'
+      }), method: 'post', url: '/auth/register', data: { username: 'owned-user' }
+    }).catch(value => value);
+    expect(error).toMatchObject({ kind: 'server', message: 'request failed', isHandled: true });
+    expect(errorPresenter.present).toHaveBeenCalledOnce();
   });
 
-  it('accepts a plaintext JSON response to an encrypted request', async () => {
-    const requestAdapter = vi.fn((config: Record<string, unknown>) =>
-      Promise.resolve({
-        config,
-        data: { code: 200, value: 'plain' },
-        headers: {},
-        status: 200,
-        statusText: 'OK'
-      })
-    );
-    const crypto: CryptoPort = {
-      decryptResponse: vi.fn(),
-      encryptRequest: vi.fn(() => ({ data: 'ciphertext', encryptedKey: 'wrapped-key' }))
-    };
-
-    await expect(
-      requestThrough(chainOptions({ crypto, encryptionEnabled: true }), {
-        adapter: requestAdapter,
-        data: { password: 'secret' },
-        headers: { isEncrypt: true, repeatSubmit: false },
-        method: 'post',
-        url: '/auth/login'
-      })
-    ).resolves.toEqual({ code: 200, value: 'plain' });
-    const sentRequest = requestAdapter.mock.calls[0]?.[0] as {
-      data?: unknown;
-      headers?: Record<string, unknown>;
-    };
-    expect(sentRequest.headers).toEqual(expect.objectContaining({ 'encrypt-key': 'wrapped-key' }));
-    expect(String(sentRequest.data)).toContain('ciphertext');
-    expect(String(sentRequest.data)).not.toContain('secret');
-    expect(crypto.decryptResponse).not.toHaveBeenCalled();
+  it('sends ordinary JSON and accepts an ordinary JSON response', async () => {
+    const requestAdapter = vi.fn((config: InternalAxiosRequestConfig<unknown>) => Promise.resolve({
+      config, data: { code: 200, value: 'plain' }, headers: {}, status: 200, statusText: 'OK'
+    }));
+    const body = { password: 'owned-password-canary' };
+    await expect(requestThrough(chainOptions(), {
+      adapter: requestAdapter, data: body, headers: { repeatSubmit: false }, method: 'post', url: '/auth/login'
+    })).resolves.toEqual({ code: 200, value: 'plain' });
+    const sentRequest = requestAdapter.mock.calls[0]![0];
+    expect(typeof sentRequest.data).toBe('string');
+    expect(JSON.parse(String(sentRequest.data))).toEqual(body);
+    expect(sentRequest.headers).not.toHaveProperty('encrypt-key');
+    expect(sentRequest.headers).not.toHaveProperty('isEncrypt');
+    expect(sentRequest.headers.Authorization).toBe('Bearer secret-token');
   });
 
-  it('rejects response-key-marked binary payloads without exposing their content', async () => {
-    const crypto: CryptoPort = {
-      decryptResponse: vi.fn(),
-      encryptRequest: vi.fn()
-    };
+  it('returns binary downloads unchanged', async () => {
     for (const [data, responseType] of [
-      [new Blob(['sensitive-blob']), 'blob'],
-      [new TextEncoder().encode('sensitive-buffer').buffer, 'arraybuffer']
+      [new Blob(['owned-download']), 'blob'],
+      [new TextEncoder().encode('owned-download').buffer, 'arraybuffer']
     ] as const) {
-      const error = await requestThrough(chainOptions({ crypto, encryptionEnabled: true }), {
-        adapter: (config: Record<string, unknown>) =>
-          Promise.resolve({
-            config,
-            data,
-            headers: { 'encrypt-key': 'wrapped-key' },
-            status: 200,
-            statusText: 'OK'
-          }),
-        method: 'get',
-        responseType,
-        url: '/download'
-      }).catch(value => value);
-
-      expect(error).toMatchObject({
-        kind: 'encryption',
-        message: 'Encrypted binary responses are unsupported',
-        isHandled: false
-      });
-      expect(JSON.stringify(error)).not.toContain('sensitive');
+      await expect(requestThrough(chainOptions(), {
+        adapter: (config: InternalAxiosRequestConfig<unknown>) => Promise.resolve({
+          config, data, headers: {}, status: 200, statusText: 'OK'
+        }), method: 'get', responseType, url: '/download'
+      })).resolves.toBe(data);
     }
-    expect(crypto.decryptResponse).not.toHaveBeenCalled();
   });
 
   it('reports an asynchronously rejected unauthorized recovery as unhandled', async () => {
     const onUnauthorized = vi.fn(() => Promise.reject(new Error('logout failed')));
     const error = await requestThrough(chainOptions({ onUnauthorized }), {
-      adapter: (config: Record<string, unknown>) =>
+      adapter: (config: InternalAxiosRequestConfig<unknown>) =>
         Promise.resolve({ config, data: { code: 401 }, headers: {}, status: 200, statusText: 'OK' }),
       method: 'get',
       url: '/private'
@@ -188,5 +116,71 @@ describe('axios production interceptor chain', () => {
 
     expect(error).toMatchObject({ kind: 'unauthorized', code: 401, isHandled: false });
     expect(onUnauthorized).toHaveBeenCalledOnce();
+  });
+});
+
+describe('session request cancellation', () => {
+  it('cancels an already queued request before dispatch without a notification', async () => {
+    const options = chainOptions();
+    const client = createAxiosBrowserAdapter(options);
+    const adapter = vi.fn();
+    const config = { adapter, method: 'get' as const, url: '/owned-queued' };
+    const pending = client.request(config).catch(error => error);
+    client.cancelPending();
+    expect(await pending).toMatchObject({ code: 'ERR_CANCELED', isHandled: true });
+    expect(adapter).not.toHaveBeenCalled();
+    expect(options.errorPresenter.present).not.toHaveBeenCalled();
+  });
+
+  it('prevents an old response from triggering recovery and allows the new request scope', async () => {
+    const options = chainOptions();
+    const client = createAxiosBrowserAdapter(options);
+    let started!: () => void;
+    let finish!: (value: AxiosResponse<unknown>) => void;
+    let requestConfig!: InternalAxiosRequestConfig<unknown>;
+    const ready = new Promise<void>(resolve => { started = resolve; });
+    const pending = client.request({
+      method: 'get', url: '/owned-old',
+      adapter: (config: InternalAxiosRequestConfig<unknown>) => {
+        requestConfig = config; started(); return new Promise<AxiosResponse<unknown>>(resolve => { finish = resolve; });
+      }
+    }).catch(error => error);
+    await ready;
+    client.cancelPending();
+    finish({ config: requestConfig, data: { code: 401 }, headers: {}, status: 200, statusText: 'OK' });
+    expect(await pending).toMatchObject({ code: 'ERR_CANCELED', isHandled: true });
+    expect(options.onUnauthorized).not.toHaveBeenCalled();
+    expect(options.errorPresenter.present).not.toHaveBeenCalled();
+    const fresh = { method: 'get' as const, url: '/owned-new',
+      adapter: (config: InternalAxiosRequestConfig<unknown>) => Promise.resolve({ config, data: { code: 200 }, headers: {}, status: 200, statusText: 'OK' }) };
+    await expect(client.request(fresh)).resolves.toEqual({ code: 200 });
+  });
+});
+
+
+describe('typed Axios request adaptation', () => {
+  it('preserves valid header values and typed response unwrapping', async () => {
+    const client = createAxiosBrowserAdapter(chainOptions());
+    const adapter = vi.fn(async (config: InternalAxiosRequestConfig<unknown>) => ({
+      config, data: { code: 200, result: 'owned' }, headers: {}, status: 200, statusText: 'OK'
+    }));
+    const response = await client.request<{ code: number; result: string }>({
+      method: 'get', url: '/headers', adapter,
+      headers: { optional: undefined, omitted: null, disabled: false, count: 7, enabled: true, multi: ['first', 'second'] }
+    });
+    expect(response).toEqual({ code: 200, result: 'owned' });
+    expect(adapter.mock.calls[0]![0].headers).toMatchObject({ count: '7', enabled: 'true', multi: ['first', 'second'], disabled: false });
+  });
+
+  it.each([{}, ['valid', 7]])('rejects invalid headers before dispatch: %j', async value => {
+    const client = createAxiosBrowserAdapter(chainOptions()); const adapter = vi.fn();
+    await expect(client.request({ method: 'get', url: '/headers', adapter, headers: { invalid: value } })).rejects.toThrow('请求头格式不可用');
+    expect(adapter).not.toHaveBeenCalled();
+  });
+
+  it.each([null, 'plain text', { code: 200, data: null }])('preserves legal response payload %j', async data => {
+    await expect(requestThrough(chainOptions(), {
+      method: 'get', url: '/nullable', adapter: async config => ({ config, data, headers: {}, status: 200, statusText: 'OK' })
+    })).resolves.toEqual(data);
   });
 });

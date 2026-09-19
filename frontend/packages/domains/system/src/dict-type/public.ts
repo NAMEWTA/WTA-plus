@@ -31,7 +31,7 @@ export function createDictQueryPort(http: HttpClient): DictQueryPort {
 }
 
 export function createDictTypeCatalogPort(http: HttpClient): DictTypeCatalogPort {
-  return Object.freeze({
+  return Object.freeze<DictTypeCatalogPort>({
     async list(clientId) {
       const response = await http.request<{ data: Array<{ dictName: string; dictType: string }> }>({
         url: '/system/dict/type/optionselect',

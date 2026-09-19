@@ -302,7 +302,7 @@ export function composeAppRuntime<View = unknown>({
   const frozenPermissions = Object.freeze(permissionContributions);
   const frozenRegistrations = Object.freeze(registrations);
 
-  return Object.freeze({
+  return Object.freeze<AppRuntime<View>>({
     appId,
     componentKeys: () => orderedStrings(components.keys()),
     messages: () => frozenMessages,

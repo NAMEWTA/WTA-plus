@@ -1,1 +1,12 @@
-{ "extends": "../../../tsconfig.json", "include": ["src/**/*.ts", "src/**/*.vue"] }
+{
+  "extends": "../../../tsconfig.json",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue"
+  ],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
+  }
+}

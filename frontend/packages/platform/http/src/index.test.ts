@@ -23,8 +23,15 @@ describe('platform http errors', () => {
       isHandled: true
     });
     expect(JSON.stringify(error.cause)).not.toContain('secret-token');
-    expect(createTransportError({ kind: 'encryption', message: 'not presented' }).isHandled).toBe(false);
+    expect(createTransportError({ kind: 'business', message: 'not presented' }).isHandled).toBe(false);
     expect(normalizeTransportMessage('Network Error')).toBe('后端接口连接异常');
     expect(normalizeTransportMessage('timeout of 50000ms exceeded')).toBe('系统接口请求超时');
+  });
+});
+
+
+describe('handled error narrowing', () => {
+  it.each([null, undefined, 1, 'failure', { isHandled: true }, { isHandled: 'false' }])('does not narrow foreign values into TransportError: %j', value => {
+    expect(isHandledError(value)).toBe(false);
   });
 });

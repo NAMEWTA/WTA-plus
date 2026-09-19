@@ -1,5 +1,12 @@
 {
   "extends": "../../../tsconfig.json",
-  "compilerOptions": { "composite": false },
-  "include": ["src/**/*.ts"]
+  "compilerOptions": {
+    "composite": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
 }

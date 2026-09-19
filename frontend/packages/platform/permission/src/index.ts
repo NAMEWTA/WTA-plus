@@ -40,7 +40,7 @@ export function createAccessEvaluator(snapshot: AccessSnapshot): AccessEvaluator
     return Boolean(required) && (isSuperAdmin || roles.includes(required));
   };
 
-  return Object.freeze({
+  return Object.freeze<AccessEvaluator>({
     hasPermission,
     hasRole,
     hasAnyPermission(required) {

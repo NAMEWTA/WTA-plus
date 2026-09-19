@@ -1,6 +1,6 @@
 import type { ErrorKind } from '@namewta/platform-contracts';
 
-export type TransportErrorKind = ErrorKind | 'encryption' | 'unauthorized';
+export type TransportErrorKind = ErrorKind | 'unauthorized';
 export type TransportErrorCode = number | string;
 
 export interface TransportErrorCause {
@@ -56,7 +56,7 @@ export function createHandledError(message: string): HandledError {
 }
 
 export function isHandledError(error: unknown): error is HandledError {
-  return Boolean((error as { isHandled?: boolean } | undefined)?.isHandled);
+  return isTransportError(error) && error.isHandled === true;
 }
 
 export function isTransportError(error: unknown): error is TransportError {

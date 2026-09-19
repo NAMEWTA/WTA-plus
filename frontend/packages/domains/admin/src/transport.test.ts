@@ -19,7 +19,7 @@ describe('identity OpenAPI transport boundary', () => {
         fixedValue: 'must-not-cross-the-boundary',
         mode: 'FIXED'
       }
-    } as unknown as ClientAuthContextTransport;
+    };
 
     expect(projectClientAuthContextTransport(transport)).toEqual({
       clientEnabled: true,
@@ -31,5 +31,16 @@ describe('identity OpenAPI transport boundary', () => {
         allowedSpecialCharacters: '@$!%*?&'
       }
     });
+  });
+});
+
+
+describe('malformed auth context transport', () => {
+  it.each([null, undefined, [], 'context', { clientEnabled: 'true' }, { registerEnabled: null }])('rejects invalid optional flags %j', value => {
+    expect(() => projectClientAuthContextTransport(value)).toThrow('客户端认证配置不可用');
+  });
+  it('keeps absent policy optional but rejects an invalid policy', () => {
+    expect(projectClientAuthContextTransport({})).toEqual({ clientEnabled: false, registerEnabled: false });
+    expect(() => projectClientAuthContextTransport({ passwordPolicy: null })).toThrow();
   });
 });

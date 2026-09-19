@@ -42,7 +42,7 @@ export interface PersonMaterialOption {
   materialNodeId: MaterialNode['materialNodeId'];
 }
 
-export function flattenPersonMaterialOptions(nodes: readonly MaterialNode[], parents: readonly string[] = []) {
+export function flattenPersonMaterialOptions(nodes: readonly MaterialNode[], parents: readonly string[] = []): PersonMaterialOption[] {
   return nodes.flatMap<PersonMaterialOption>(node => {
     const path = [...parents, node.nodeName];
     const current =

@@ -44,7 +44,7 @@
           <el-switch
             :model-value="row.enabled"
             :disabled="!canManage || !canChangeMaterialLifecycle(row as MaterialNode)"
-            @change="value => changeStatus(row as MaterialNode, Boolean(value))"
+            @change="(value: string | number | boolean) => changeStatus(row as MaterialNode, Boolean(value))"
           />
         </template>
       </el-table-column>

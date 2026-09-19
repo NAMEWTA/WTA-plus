@@ -1,1 +1,11 @@
-{ "extends": "../../../tsconfig.json", "include": ["src/**/*.ts"] }
+{
+  "extends": "../../../tsconfig.json",
+  "include": [
+    "src/**/*.ts"
+  ],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
+  }
+}

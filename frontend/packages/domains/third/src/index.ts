@@ -38,7 +38,7 @@ const id = (value: string | number) => encodeURIComponent(String(value));
 
 export function createThirdService(http: HttpClient): ThirdService {
   const call = <T>(config: Parameters<HttpClient['request']>[0]) => http.request<ApiResponse<T>>(config);
-  return Object.freeze({
+  return Object.freeze<ThirdService>({
     listProviders: keyword => call<Provider[]>({ url: '/third/provider/list', method: 'get', params: { keyword } }),
     getProvider: value => call<Provider>({ url: `/third/provider/${id(value)}`, method: 'get' }),
     saveProvider: data => call<void>({ url: '/third/provider', method: 'post', data }),

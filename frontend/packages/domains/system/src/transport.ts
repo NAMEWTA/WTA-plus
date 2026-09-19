@@ -7,24 +7,24 @@ export type { SystemUserTransport } from './user/public';
 export type ResetPasswordCandidateTransport = OpenApiSchema<'ResetPasswordCandidateVo'>;
 export type TemporaryPasswordTransport = OpenApiSchema<'TemporaryPasswordVo'>;
 
-const unavailable = (): never => {
+function unavailable(): never {
   throw new Error('用户凭据响应不可用');
-};
+}
 
 const requiredPassword = (value: unknown): string =>
   typeof value === 'string' && value.length > 0 ? value : unavailable();
 
 export function projectResetPasswordCandidateTransport(value: unknown): ResetPasswordCandidate {
   if (!value || typeof value !== 'object' || Array.isArray(value)) unavailable();
-  return Object.freeze({ password: requiredPassword((value as ResetPasswordCandidateTransport).password) });
+  return Object.freeze({ password: requiredPassword('password' in value ? value.password : undefined) });
 }
 
 export function projectTemporaryPasswordTransport(value: unknown): TemporaryPassword {
   if (!value || typeof value !== 'object' || Array.isArray(value)) unavailable();
-  const transport = value as TemporaryPasswordTransport;
-  if (!Number.isInteger(transport.expiresInSeconds) || (transport.expiresInSeconds as number) <= 0) unavailable();
+  const expiresInSeconds = 'expiresInSeconds' in value ? value.expiresInSeconds : undefined;
+  if (typeof expiresInSeconds !== 'number' || !Number.isInteger(expiresInSeconds) || expiresInSeconds <= 0) unavailable();
   return Object.freeze({
-    password: requiredPassword(transport.password),
-    expiresInSeconds: transport.expiresInSeconds as number
+    password: requiredPassword('password' in value ? value.password : undefined),
+    expiresInSeconds
   });
 }

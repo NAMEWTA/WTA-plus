@@ -51,32 +51,60 @@ export interface UserQueryPort {
 const identifiers = (values: readonly (string | number)[]) =>
   values.map(value => encodeURIComponent(String(value))).join(',');
 
-export const projectUserSummary = (source: SystemUserTransport): UserSummary => {
+function userRecord(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('用户响应不可用');
+  return value as Record<string, unknown>;
+}
+
+function optionalUserText(value: unknown): string | undefined {
+  if (value === null || value === undefined) return undefined;
+  if (typeof value !== 'string') throw new Error('用户响应不可用');
+  return value;
+}
+
+export const projectUserSummary = (value: unknown): UserSummary => {
+  const source = userRecord(value);
+  const userId = source.userId;
+  if (!(typeof userId === 'string' && userId.trim()) && !(typeof userId === 'number' && Number.isFinite(userId))) {
+    throw new Error('用户响应不可用');
+  }
   return {
-    userId: source.userId ?? '',
-    userName: source.userName,
-    nickName: source.nickName ?? '',
-    phoneNumber: source.phoneNumber,
-    deptName: source.deptName,
-    status: source.status
+    userId,
+    userName: optionalUserText(source.userName),
+    nickName: optionalUserText(source.nickName) ?? '',
+    phoneNumber: optionalUserText(source.phoneNumber),
+    deptName: optionalUserText(source.deptName),
+    status: optionalUserText(source.status)
   };
 };
 
+function userResponse(value: unknown): UserQueryResponse<unknown> {
+  const response = userRecord(value);
+  const code = response.code;
+  if (code !== undefined && (typeof code !== 'number' || !Number.isFinite(code))) throw new Error('用户响应不可用');
+  return { code: typeof code === 'number' ? code : undefined, msg: optionalUserText(response.msg), data: response.data };
+}
+
 export function createUserQueryPort(http: HttpClient): UserQueryPort {
-  return Object.freeze({
+  return Object.freeze<UserQueryPort>({
     list: async query => {
-      const response = await http.request<UserQueryResponse<{ rows: SystemUserTransport[]; total: number }>>({
+      const response = userResponse(await http.request<unknown>({
         url: '/system/user/list',
         method: 'get',
         params: query
-      });
-      return { ...response, data: { ...response.data, rows: response.data.rows.map(projectUserSummary) } };
+      }));
+      const data = userRecord(response.data);
+      if (!Array.isArray(data.rows) || typeof data.total !== 'number' || !Number.isInteger(data.total) || data.total < 0) {
+        throw new Error('用户响应不可用');
+      }
+      return { ...response, data: { total: data.total, rows: data.rows.map(projectUserSummary) } };
     },
     options: async userIds => {
-      const response = await http.request<UserQueryResponse<SystemUserTransport[]>>({
+      const response = userResponse(await http.request<unknown>({
         url: '/system/user/optionselect?userIds=' + identifiers(userIds),
         method: 'get'
-      });
+      }));
+      if (!Array.isArray(response.data)) throw new Error('用户响应不可用');
       return { ...response, data: response.data.map(projectUserSummary) };
     },
     departmentTree: () =>

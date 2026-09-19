@@ -116,8 +116,16 @@ describe('request 401 baseline', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     isRelogin.show = false;
+    isRelogin.navigationPending = false;
     runtime.logout.mockResolvedValue(undefined);
     runtime.replace.mockResolvedValue(undefined);
+  });
+
+  it('leaves bootstrap 401 cleanup to the navigation owner without opening a modal', async () => {
+    isRelogin.navigationPending = true;
+    await expect(getResponseFulfilled()(unauthorizedResponse())).rejects.toMatchObject({ kind: 'unauthorized', code: 401 });
+    expect(runtime.confirm).not.toHaveBeenCalled();
+    expect(runtime.logout).not.toHaveBeenCalled();
   });
 
   it('shows one relogin prompt while concurrent 401 responses are pending', async () => {
@@ -198,7 +206,7 @@ describe('Admin HTTP adapter', () => {
     const close = vi.fn();
     runtime.loadingService.mockReturnValue({ close });
     utilityHarness.blobValidate.mockReturnValue(false);
-    axiosHarness.service.post.mockResolvedValueOnce(new Blob(['{"code":499}']));
+    axiosHarness.service.post.mockResolvedValueOnce({ data: new Blob(['{"code":499}']) });
     await download('/report', {}, 'report.xlsx');
     expect(runtime.message.error).toHaveBeenCalledWith('系统未知错误，请反馈给管理员');
     expect(close).toHaveBeenCalledOnce();
@@ -220,9 +228,9 @@ describe('login request configuration baseline', () => {
     vi.stubEnv('VITE_APP_CLIENT_ID', 'e5cd7e4891bf95d1d19206ce24a7b32e');
     axiosHarness.service.mockClear();
     axiosHarness.service
-      .mockResolvedValueOnce({ code: 200, data: { clientEnabled: true, registerEnabled: true } })
-      .mockResolvedValueOnce({ code: 200, data: { captchaEnabled: false } })
-      .mockResolvedValueOnce({ code: 200, data: { access_token: 'baseline-token' } });
+      .mockResolvedValueOnce({ data: { code: 200, data: { clientEnabled: true, registerEnabled: true } } })
+      .mockResolvedValueOnce({ data: { code: 200, data: { captchaEnabled: false } } })
+      .mockResolvedValueOnce({ data: { code: 200, data: { access_token: 'baseline-token' } } });
 
     try {
       const { identityAccessService } = await import('@/application/services');
@@ -237,9 +245,9 @@ describe('login request configuration baseline', () => {
       ]);
       expect(axiosHarness.service).toHaveBeenNthCalledWith(3, {
         url: '/auth/login',
+        signal: expect.any(AbortSignal),
         headers: {
           isToken: false,
-          isEncrypt: false,
           repeatSubmit: false
         },
         method: 'post',

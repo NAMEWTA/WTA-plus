@@ -34,3 +34,18 @@ describe('system public menu seam', () => {
     ]);
   });
 });
+
+
+describe('untrusted menu transport', () => {
+  it.each([null, {}, { data: null }, { data: [null] }, { data: [{ id: null, label: 'menu' }] }, { data: [{ id: 1, label: 2 }] }, { data: [{ id: 1, label: 'menu', children: {} }] }, { data: [{ id: 1, label: 'menu', children: [null] }] }])('rejects malformed tree %j', async value => {
+    const port = createMenuQueryPort({ request: async <T>() => value as T });
+    await expect(port.options()).rejects.toThrow('菜单响应不可用');
+  });
+
+  it('accepts nullable child collections and an empty tree', async () => {
+    const port = createMenuQueryPort({ request: async <T>() => ({ data: [{ id: 0, label: 'root', children: null }] }) as T });
+    await expect(port.options()).resolves.toEqual([{ id: 0, label: 'root' }]);
+    const empty = createMenuQueryPort({ request: async <T>() => ({ data: [] }) as T });
+    await expect(empty.options()).resolves.toEqual([]);
+  });
+});

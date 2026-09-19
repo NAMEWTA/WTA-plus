@@ -91,3 +91,23 @@ describe('system public user seam', () => {
     await expect(port.list({})).rejects.toBe(failure);
   });
 });
+
+
+describe('untrusted user transport', () => {
+  it.each([null, undefined, [], {}, { userId: null }, { userId: '' }, { userId: {} }, { userId: 7, nickName: 123 }, { userId: 7, phoneNumber: [] }])('rejects malformed user %j', async user => {
+    const port = createUserQueryPort({ request: async <T>() => ({ data: [user] }) as T });
+    await expect(port.options([7])).rejects.toThrow('用户响应不可用');
+  });
+
+  it('keeps nullable optional fields and the empty page legitimate', async () => {
+    const port = createUserQueryPort({ request: async <T>() => ({ data: [{ userId: 0, nickName: null, userName: null, phoneNumber: null, deptName: null, status: null }] }) as T });
+    await expect(port.options([0])).resolves.toEqual({ data: [{ userId: 0, nickName: '' }] });
+    const empty = createUserQueryPort({ request: async <T>() => ({ data: { rows: [], total: 0 } }) as T });
+    await expect(empty.list({})).resolves.toEqual({ data: { rows: [], total: 0 } });
+  });
+
+  it.each([null, {}, { data: null }, { data: { rows: null, total: 0 } }, { data: { rows: [], total: '0' } }, { data: { rows: [], total: -1 } }])('rejects malformed page %j', async value => {
+    const port = createUserQueryPort({ request: async <T>() => value as T });
+    await expect(port.list({})).rejects.toThrow('用户响应不可用');
+  });
+});
