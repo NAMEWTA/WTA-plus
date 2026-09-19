@@ -111,7 +111,7 @@ Ticket 模式中，Lead 以 `operation=accept` 调用 subagent-delivery，重读
 
 Direct Spec 模式由 Lead 在 current workspace 运行轻量合同要求的定向非 E2E 检查，审计获批可写范围，并在获得 implementation commit 授权后创建引用 change 的非空 commit；无需改动时记录事实并取消直接实现，不创建 empty commit。记录实施前基线、最终 checkpoint、dirty 状态、实际路径、命令结果、未运行项和恢复条件。
 
-**完成标准**：required 模式 Ticket worktree clean 且 `source_checkpoint` 精确等于 branch tip；current 模式 workspace clean 且 Ticket `result_sha` 精确等于父分支上的 implementation commit；或 Direct Spec 的 current workspace checkpoint、路径和轻量合同一致。
+**完成标准**：required 模式 Ticket worktree clean 且 `source_checkpoint` 精确等于 branch tip；current 模式在 Lead 接收/验收时 workspace clean，`source_checkpoint` 与最终 `result_sha` 指向父分支上该票的非空 implementation commit；或 Direct Spec 的 current workspace checkpoint、路径和轻量合同一致。尚未开工的 ready Ticket 不需要虚构 execution record；进入 in_progress/review/blocked/deviated/done 后必须有可恢复记录。
 
 ### 6. 双轴审查
 
@@ -139,13 +139,17 @@ E2E 是否需要由 Ticket/Goal Plan 的实际跨边界风险决定，不限于 
 
 `current` Ticket 模式跳过 source worktree、candidate merge 和 candidate checkout。Lead 在当前 workspace 运行 Ticket 要求的适用集成/回归与 E2E，记录运行环境、命令、退出码和摘要；E2E 不得派给其他 agent。失败时不声明完成，保留 Ticket commit、父 HEAD 和恢复条件。全部通过后重读父 HEAD/tree 并记录 `result_sha`。Direct Spec 模式同样跳过 source worktree、candidate merge 和父分支推进。
 
+current 验收是时点事实：Lead 在验证前后记录完整 commit SHA、`git rev-parse HEAD^{tree}` 和 `git status --porcelain=v1 --untracked-files=all` 的实际输出及退出码；两次 HEAD 必须等于本票 implementation commit，tree 不漂移，tracked/untracked 均 clean。先将运行输出保存在仓库外或已获准的忽略产物目录，完成核对后再写 Evidence/状态，不能排除用户改动来制造 clean。历史测试只在实际输入与该 commit/tree 可证明一致时复用；Git 只能验证提交、tree 和包含关系，不能追溯证明曾运行测试或曾经 clean，这些事实必须来自 Lead 当场捕获的命令证据。
+
+Evidence/状态可在后续治理提交中保存，只引用已验收产品提交，不要求记录承载证据提交自身的 SHA。以后本票 `result_sha = source_checkpoint = source_sha` 保持不变，并且 `base_sha → parent_before_sha → result_sha → 当前父分支` 的祖先关系成立；各票实现区间不得重叠或共用累计 result。result 自身提交及 parent_before..result 的净差异都必须包含本票 writable_paths 内、当前 change 治理目录外的真实实现；合法文档修改也可作为实现。后续产品修改仍需相应验证，不能把旧票证据当作当前 HEAD 已验收。历史票不因下一票 dirty 而失效；当前验收、最终 completed 和发布仍各自执行完整 clean 门禁。
+
 无论失败发生在 implementation、review、direct-parent 还是 parent-candidate，同一 Ticket 反复返回相同 blocker、下一轮没有产生新证据，或 integration attempts 达到有效 Plan 上限时，都停止自动退回原 implementation owner。Lead 保留当前 workspace/worktree、implementation/source commit、旧 candidate 和失败命令，在 Ticket Evidence 记录失败历史，并将 Ticket/worktree 标为 `blocked`。当前 change 属于父实现时返回父 O Lead；否则返回 Goal Plan Lead，或无 Goal Plan 时的当前 I Lead。Lead 按 lead-orchestration 完成最小复盘并形成有实质变化的新 Dispatch Packet 后，才可重置 attempts 和重新派发；契约已失效则返回真正 owner。
 
 ### 8. Evidence、状态与完成
 
 Lead 使用 `<Path>{roots.workflows}/specdev/I-implement/evidence-template.md</Path>` 写入 Ticket Evidence；Direct Spec 按该模板的 Direct Spec 适配说明写 `<Path>{roots.state}/specdev/changes/{change}/evidence/direct-spec.md</Path>`。Ticket Evidence 按策略记录 implementation/source、适用 candidate/result SHA、派单/返回、两层验证、双轴审查、E2E disposition、路径审计、失败历史与适用 Lead 复盘、偏差和残余风险；Direct Spec Evidence 使用实施前基线与 current workspace 最终 checkpoint，不伪造 Ticket/worktree/candidate 字段。
 
-Ticket 正常状态：`ready → in_progress → review → done`。`required` 的 `done` 要求 change worktree 已完成集成（`integrated` 或 `removed`）、父 HEAD=result SHA 且包含 source commit；`current` 的 `done` 要求 current workspace clean、direct-parent 验证通过且父 HEAD=result SHA。阻塞使用 `blocked`，契约偏差使用 `deviated`，无需改动使用 `cancelled`。Direct Spec 由当前 I-implement owner 按 `<Path>{roots.workflows}/specdev/common/rules/change-completion.md</Path>` 关闭 change。
+Ticket 正常状态：`ready → in_progress → review → done`。`required` 的 `done` 要求 change worktree 已完成集成（`integrated` 或 `removed`）、父 HEAD=result SHA 且包含 source commit；`current` 的 `done` 要求 Lead 在上述 clean/精确 HEAD 时点完成 direct-parent 验证，随后保存不可变 result 及验收证据。历史 current result 必须仍被父分支包含，不要求永久等于最新 HEAD。阻塞使用 `blocked`，契约偏差使用 `deviated`，无需改动使用 `cancelled`。Direct Spec 由当前 I-implement owner 按 `<Path>{roots.workflows}/specdev/common/rules/change-completion.md</Path>` 关闭 change。
 
 按存在和当前模式同步 Ticket、Tickets Map、Goal Plan、`<Path>{roots.state}/specdev/changes/{change}/.status.json</Path>` 和全局状态；Direct Spec 不创建缺失的 Ticket/Map/Goal Plan。最后一个计划内 Ticket 完成后，Goal Plan 的 Lead 按 change completion 关闭；无 Goal Plan 的当前 I owner 承担同一门禁。需要远程 reconcile 或把已完成 Ticket 投影为 GitHub Issue 时返回 T-triage，否则进入 Archive。
 
@@ -171,7 +175,7 @@ Ticket 模式返回 Ticket/change 状态、Evidence 完整路径、workspace loc
 - Lead 独立核对并写全部 SpecDev 工件；
 - Lead 与任何 implementation subagent 都已先读 Tickets Map、再读当前 Ticket 适用的项目 Skill；实现中发现的新匹配 Skill 已同步回 Map 并通过校验；
 - 重复失败或 integration attempt 上限只触发 Lead 复盘；没有 Evidence 中的原因、改变和 owner 决定，不得重置 attempts 或重复派发；
-- current Ticket 父分支只推进到通过的 direct-parent 验证 commit；required Ticket 父分支只推进到通过的 candidate；两者 Ticket Done 都必须与实际 Git 一致；Direct Spec 的完成状态与 current workspace 最终 checkpoint 一致；
+- current Ticket Done 只引用通过 direct-parent 验证的 implementation commit，失败 checkpoint 保留但不算已验收；required Ticket 父分支只推进到通过的 candidate；两者 Ticket Done 都必须与实际 Git 一致；Direct Spec 的完成状态与 current workspace 最终 checkpoint 一致；
 - 实际路径、验证、偏差和状态可由 Evidence 恢复；
 - validator 无 error。
 

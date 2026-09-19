@@ -2749,9 +2749,10 @@ function validateCurrentWorkspaceExecution(changeStatus, goalPlan, errors) {
   }
 }
 
-function gitOutput(repoRoot, args) {
+function gitOutput(repoRoot, args, trim = true) {
   try {
-    return execFileSync("git", ["-C", repoRoot, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+    const output = execFileSync("git", ["-C", repoRoot, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+    return trim ? output.trim() : output;
   } catch {
     return null;
   }
@@ -2770,7 +2771,7 @@ function gitSucceeds(repoRoot, args) {
   }
 }
 
-function validateGitEvidence(repoRoot, changeStatus, errors) {
+function validateGitEvidence(repoRoot, change, changeStatus, tickets, errors) {
   if (!repoRoot) return;
   const resolvedRoot = resolve(repoRoot);
   if (gitOutput(resolvedRoot, ["rev-parse", "--is-inside-work-tree"]) !== "true") {
@@ -2778,8 +2779,18 @@ function validateGitEvidence(repoRoot, changeStatus, errors) {
     return;
   }
   const currentBranch = gitOutput(resolvedRoot, ["branch", "--show-current"]);
+  const governanceRoot = `${toPosix(relative(resolvedRoot, change))}/`;
+  const completedCurrent = [];
+  // Cleanliness is a live completion gate, not a permanent property of old Tickets.
+  const status = gitOutput(resolvedRoot, ["status", "--porcelain=v1", "--untracked-files=all"]);
+  if (status === null) errors.push("cannot read Git working tree status");
+  if (changeStatus?.change_status === "completed" && status !== "") {
+    errors.push("completed change requires a clean repository (tracked and untracked files)");
+  }
   for (const worktree of Array.isArray(changeStatus?.worktrees) ? changeStatus.worktrees : []) {
     const label = String(worktree.ticket_id ?? "worktree");
+    const currentWorkspace = worktree.workspace_ref === "current";
+    const completed = new Set(["integrated", "removed"]).has(worktree.status);
     for (const [name, sha] of [
       ["base_sha", worktree.base_sha],
       ["source_checkpoint", worktree.source_checkpoint],
@@ -2791,11 +2802,44 @@ function validateGitEvidence(repoRoot, changeStatus, errors) {
       if (sha !== null && sha !== undefined && sha !== "" && !gitCommitExists(resolvedRoot, sha)) {
         errors.push(`${label}: ${name} is not a resolvable Git commit: ${sha}`);
       }
+      if (currentWorkspace && sha !== null && sha !== undefined && sha !== "" && (
+        !/^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(sha) ||
+        gitOutput(resolvedRoot, ["rev-parse", "--verify", `${sha}^{commit}`]) !== sha
+      )) {
+        errors.push(`${label}: ${name} must be a canonical full commit SHA`);
+      }
     }
-    if (worktree.workspace_ref === "current") {
+    if (currentWorkspace) {
       if (currentBranch !== worktree.parent_branch) errors.push(`${label}: current branch ${currentBranch ?? "<detached>"} must equal ${worktree.parent_branch}`);
-      if (new Set(["integrated", "removed"]).has(worktree.status) && worktree.integration?.result_sha && gitOutput(resolvedRoot, ["rev-parse", worktree.parent_branch]) !== worktree.integration.result_sha) {
-        errors.push(`${label}: parent branch HEAD must equal recorded result_sha`);
+      if (completed && worktree.integration?.result_sha) {
+        const result = worktree.integration.result_sha;
+        const before = worktree.integration.parent_before_sha;
+        if (!gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", result, `refs/heads/${worktree.parent_branch}`])) {
+          errors.push(`${label}: result_sha must be an ancestor of parent branch`);
+        }
+        if (before) {
+          if (!gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", worktree.base_sha, before])) {
+            errors.push(`${label}: parent_before_sha must descend from base_sha`);
+          }
+          if (!gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", before, result])) {
+            errors.push(`${label}: parent_before_sha must be an ancestor of result_sha`);
+          }
+          const writable = tickets.get(worktree.ticket_id)?.meta.writable_paths ?? [];
+          const hasImplementation = (paths) => paths !== null && paths.split("\0").some((path) =>
+            path && !path.startsWith(governanceRoot) && writable.some((owned) => pathsOverlap(path, owned)));
+          const delta = gitOutput(resolvedRoot, ["diff", "--name-only", "--no-renames", "-z", before, result, "--"], false);
+          const checkpoint = gitOutput(resolvedRoot, ["diff-tree", "--root", "--no-commit-id", "--name-only", "--no-renames", "-r", "-z", result, "--"], false);
+          if (!hasImplementation(delta) || !hasImplementation(checkpoint)) {
+            errors.push(`${label}: result_sha requires a non-empty implementation diff within Ticket writable_paths outside change governance`);
+          }
+          for (const previous of completedCurrent) {
+            if (!gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", previous.result, before]) &&
+                !gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", result, previous.before])) {
+              errors.push(`${previous.label}/${label}: current Ticket implementation intervals must be serial`);
+            }
+          }
+          completedCurrent.push({ label, before, result });
+        }
       }
       if (worktree.integration?.source_sha && worktree.base_sha && !gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", worktree.base_sha, worktree.integration.source_sha])) {
         errors.push(`${label}: source_sha must descend from base_sha`);
@@ -2803,7 +2847,7 @@ function validateGitEvidence(repoRoot, changeStatus, errors) {
     } else if (worktree.integration?.source_sha && worktree.base_sha && !gitSucceeds(resolvedRoot, ["merge-base", "--is-ancestor", worktree.base_sha, worktree.integration.source_sha])) {
       errors.push(`${label}: source_sha must descend from base_sha`);
     }
-    if (new Set(["integrated", "removed"]).has(worktree.status) && gitOutput(resolvedRoot, ["status", "--porcelain"])) {
+    if (!currentWorkspace && completed && status !== "") {
       errors.push(`${label}: repository is dirty while Ticket is recorded as ${worktree.status}`);
     }
   }
@@ -3396,7 +3440,7 @@ function validateChange(change, stage = null, repoRoot = null) {
         .map((entry) => [String(entry.ticket_id), entry]),
     );
     for (const [ticketId, artifact] of tickets) {
-      if (new Set(["draft", "cancelled"]).has(artifact.meta.status)) continue;
+      if (new Set(["draft", "ready", "cancelled"]).has(artifact.meta.status)) continue;
       if (!worktreesByTicket.has(ticketId)) {
         errors.push(`${ticketId}: Implement stage requires one Ticket workspace execution record`);
       }
@@ -3419,7 +3463,7 @@ function validateChange(change, stage = null, repoRoot = null) {
     }
     validateCurrentWorkspaceExecution(changeStatus, goalPlan, errors);
   }
-  validateGitEvidence(repoRoot, changeStatus, errors);
+  validateGitEvidence(repoRoot, change, changeStatus, tickets, errors);
 
   if (spec) {
     const declaredContracts = new Set(spec.body.match(/\bAC-\d+\b/g) ?? []);

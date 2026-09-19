@@ -13,9 +13,11 @@
 - [ ] writable/shared paths 有唯一 owner；current 模式的 Ticket 顺序已固定且没有其他 active implementation writer。
 - [ ] implementation commit 与当前策略对应的 direct-parent 或 local candidate integration/父分支更新已授权；push/PR/remote/deploy 等保持独立。
 - [ ] required 模式的 dev-worktree 记录 schema v6，`base_sha`、父分支、owners、branch、`workspace_ref`、integration 与 E2E disposition 完整；current 模式的 current workspace 记录使用 `workspace_ref: current`、`branch: parent_branch` 和 direct-parent integration。
+- [ ] 尚未开工的 ready Ticket 不强造 execution record；已进入执行生命周期的 Ticket 必须有记录。历史 current result 使用完整不可变 SHA、仍被父分支包含且实现区间串行；历史票通过不代表当前 dirty 工作区通过验收。
 - [ ] implementation subagent 若被派遣，Packet 绑定唯一 Ticket workspace 或 current workspace/checkpoint；subagent 不写 SpecDev 状态。
 - [ ] current 模式 source 检查在 current workspace 且不宣称 E2E；required 模式 source 检查明确为非 E2E，required E2E 有 parent-candidate 场景与预期。
 - [ ] 验证命令/环境可用，关键静默失败风险有受控反向验证。
+- [ ] current 的 Lead 验收前后精确 HEAD/tree 与完整 tracked/untracked clean 输出有保存位置；先捕获再写 Evidence/状态，后续治理提交不改产品 result。最终 completed 与发布仍要求全仓 clean，不忽略用户改动或降低 release clean-source。
 - [ ] Deep Ticket 批准点已满足。
 - [ ] 若属于父 Implementation Map：父 revision 与 Plan source revision 一致，组合 Ticket 在 tasks/frontier 中，dependency Gate 已满足，serialization lock 可用，派单未重复，workspace 策略一致，全部成员 active implementation 数未超过父上限。
 

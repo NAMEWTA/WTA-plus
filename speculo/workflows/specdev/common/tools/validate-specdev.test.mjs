@@ -216,3 +216,256 @@ test('partial parent remains invalid outside goal-plan stage', t => {
     'tickets-map.md: goal-tickets-map missing real implementation-map.md',
   ]);
 });
+
+function gitFixture(t) {
+  const directory = single(workspace(t));
+  const root = resolve(directory, '../../../..');
+  const git = (...args) => {
+    const result = spawnSync('git', ['-C', root, ...args], { encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout.trim();
+  };
+  git('init', '-b', 'main');
+  git('config', 'user.name', 'SpecDev fixture');
+  git('config', 'user.email', 'fixture@example.invalid');
+  git('config', 'commit.gpgsign', 'false');
+  const commit = message => {
+    git('add', '.');
+    git('commit', '-m', message);
+    return git('rev-parse', 'HEAD');
+  };
+  const product = join(root, basename(directory), 'file.txt');
+  write(product, 'baseline\n');
+  const base = commit('fixture baseline');
+  const ticketPath = join(directory, 'ticket/01-example.md');
+  const ticketSource = readFileSync(ticketPath, 'utf8');
+  const record = (entries, completed = false) => {
+    const value = JSON.parse(readFileSync(join(directory, '.status.json'), 'utf8'));
+    Object.assign(value, {
+      worktrees: entries, change_status: completed ? 'completed' : 'active',
+      current_work: completed ? null : 'specdev/implement', completed_at: completed ? timestamp : null,
+    });
+    write(join(directory, '.status.json'), JSON.stringify(value));
+  };
+  const finishTicket = (id = 'T-01', source = ticketSource) => {
+    const path = id === 'T-01' ? ticketPath : join(directory, `ticket/${id.slice(2)}-example.md`);
+    write(path, source.replace(/^status: .*$/m, 'status: "done"').replace(/^ready: .*$/m, 'ready: false'));
+    if (id !== 'T-01') {
+      const map = join(directory, 'tickets-map.md');
+      write(map, readFileSync(map, 'utf8') + `\n${id}\n`);
+    }
+    const headings = ['## 2. Lead Dispatch And Candidate Return', '## 3. 修改范围与路径所有权',
+      '## 4. 验收与合同映射', '## 5. Workspace Verification', '## 6. 双轴审查',
+      '## 7. Integration Verification', '## 8. 偏差与决策', '## 9. 残余风险与交付定位'];
+    write(join(directory, `evidence/${id}.md`), headings.map(heading => `${heading}\ncurrent-workspace\n`).join('\n'));
+  };
+  const entry = (before, result, id = 'T-01') => ({
+    ticket_id: id, owner: 'test-lead', implementation_owner: 'test-lead', integration_owner: 'test-lead',
+    provider: 'git', base_sha: before, parent_branch: 'main', branch: 'main', workspace_ref: 'current',
+    source_checkpoint: result, status: 'integrated', updated_at: timestamp,
+    integration: {
+      status: 'passed', parent_ref: 'main', parent_before_sha: before, source_sha: result,
+      candidate_sha: null, candidate_tree_sha: null, candidate_branch: null, candidate_workspace_ref: null,
+      result_sha: result, method: 'direct-parent', conflict_paths: [], verification: 'passed',
+      full_suite: { required: false, status: 'not-required', reason: 'Git fixture only', evidence: null },
+      e2e: { required: false, status: 'not-required', reason: 'Git fixture only', evidence: null },
+      evidence: `<Path>{roots.state}/specdev/changes/${basename(directory)}/evidence/${id}.md</Path>`,
+      attempts: 1, promotion_status: 'applied',
+    },
+  });
+  const implement = () => {
+    write(product, 'implemented\n');
+    return commit('T-01 implementation');
+  };
+  return { directory, root, git, commit, base, product, ticketPath, ticketSource, record, finishTicket, entry, implement,
+    check: (stage = 'implement') => validate(directory, stage, root).errors };
+}
+
+test('current historical result survives tracked evidence, governance commits and the next Ticket edits', t => {
+  const f = gitFixture(t);
+  const result = f.implement();
+  f.finishTicket();
+  f.record([f.entry(f.base, result)]);
+  assert.deepEqual(f.check(), []);
+  f.commit('record acceptance without changing implementation SHA');
+  assert.notEqual(f.git('rev-parse', 'HEAD'), result);
+  assert.deepEqual(f.check(), []);
+  write(f.product, 'next Ticket work\n');
+  write(join(f.root, 'next-ticket-untracked.txt'), 'next Ticket fixture\n');
+  assert.deepEqual(f.check(), []);
+});
+
+test('two serial current Tickets retain distinct immutable implementation results', t => {
+  const f = gitFixture(t);
+  const first = f.implement();
+  f.finishTicket();
+  f.record([f.entry(f.base, first)]);
+  const before = f.commit('T-01 acceptance');
+  const secondSource = f.ticketSource.replaceAll('T-01', 'T-02').replaceAll('/file.txt', '/second.txt');
+  write(join(f.directory, 'ticket/02-example.md'), secondSource);
+  write(join(f.root, basename(f.directory), 'second.txt'), 'second implementation\n');
+  const second = f.commit('T-02 implementation');
+  f.finishTicket('T-02', secondSource);
+  f.record([f.entry(f.base, first), f.entry(before, second, 'T-02')]);
+  f.commit('T-02 acceptance');
+  assert.deepEqual(f.check(), []);
+});
+
+for (const checkpoint of ['main', 'short']) {
+  test(`current execution rejects ${checkpoint} instead of an immutable full commit SHA`, t => {
+    const f = gitFixture(t);
+    const result = f.implement();
+    f.finishTicket();
+    f.record([f.entry(f.base, checkpoint === 'short' ? result.slice(0, 12) : checkpoint)]);
+    assert.ok(f.check().some(error => /canonical full commit SHA/.test(error)));
+  });
+}
+
+test('current history rejects a result absent from the parent branch', t => {
+  const f = gitFixture(t);
+  f.git('switch', '-c', 'unintegrated');
+  const result = f.implement();
+  f.git('switch', 'main');
+  f.finishTicket();
+  f.record([f.entry(f.base, result)]);
+  assert.ok(f.check().some(error => /result_sha must be an ancestor of parent branch/.test(error)));
+});
+
+test('current history rejects a parent-before checkpoint after its result', t => {
+  const f = gitFixture(t);
+  const result = f.implement();
+  write(f.product, 'later\n');
+  const later = f.commit('later change');
+  f.finishTicket();
+  const entry = f.entry(f.base, result);
+  entry.integration.parent_before_sha = later;
+  f.record([entry]);
+  assert.ok(f.check().some(error => /parent_before_sha must be an ancestor of result_sha/.test(error)));
+});
+
+for (const kind of ['same checkpoint', 'empty commit', 'Evidence only', 'outside writable paths']) {
+  test(`current history rejects a non-implementation result: ${kind}`, t => {
+    const f = gitFixture(t);
+    let result = f.base;
+    if (kind === 'empty commit') {
+      f.git('commit', '--allow-empty', '-m', 'empty');
+      result = f.git('rev-parse', 'HEAD');
+    } else if (kind === 'Evidence only') {
+      write(join(f.directory, 'evidence/T-01.md'), 'governance only\n');
+      result = f.commit('evidence only');
+    } else if (kind === 'outside writable paths') {
+      write(join(f.root, 'unowned.txt'), 'unrelated change\n');
+      result = f.commit('unrelated');
+    }
+    f.finishTicket();
+    f.record([f.entry(f.base, result)]);
+    assert.ok(f.check().some(error => /non-empty implementation diff/.test(error)));
+  });
+}
+
+test('current Tickets cannot claim the same cumulative result for separate serial implementations', t => {
+  const f = gitFixture(t);
+  const first = f.implement();
+  const secondSource = f.ticketSource.replaceAll('T-01', 'T-02').replaceAll('/file.txt', '/second.txt');
+  write(join(f.root, basename(f.directory), 'second.txt'), 'second implementation\n');
+  const second = f.commit('second product');
+  f.finishTicket();
+  f.finishTicket('T-02', secondSource);
+  f.record([f.entry(f.base, second), f.entry(first, second, 'T-02')]);
+  assert.ok(f.check().some(error => /current Ticket implementation intervals must be serial/.test(error)));
+});
+
+for (const kind of ['empty', 'governance']) {
+  test(`current result cannot replace its product commit with a later ${kind} commit`, t => {
+    const f = gitFixture(t);
+    f.implement();
+    if (kind === 'empty') f.git('commit', '--allow-empty', '-m', 'empty suffix');
+    else {
+      write(join(f.directory, 'evidence/T-01.md'), 'record product\n');
+      f.commit('governance suffix');
+    }
+    f.finishTicket();
+    f.record([f.entry(f.base, f.git('rev-parse', 'HEAD'))]);
+    assert.ok(f.check().some(error => /non-empty implementation diff/.test(error)));
+  });
+}
+
+test('current documentation Tickets have a real implementation without application source changes', t => {
+  const f = gitFixture(t);
+  const source = f.ticketSource.replaceAll(`${basename(f.directory)}/file.txt`, 'docs/guide.md');
+  write(f.ticketPath, source);
+  write(join(f.root, 'docs/guide.md'), 'Document the actual product contract.\n');
+  const result = f.commit('documentation implementation');
+  f.finishTicket('T-01', source);
+  f.record([f.entry(f.base, result)]);
+  assert.deepEqual(f.check(), []);
+});
+
+test('current result still must equal its implementation source checkpoint', t => {
+  const f = gitFixture(t);
+  const result = f.implement();
+  f.finishTicket();
+  const entry = f.entry(f.base, result);
+  entry.integration.source_sha = f.base;
+  f.record([entry]);
+  assert.ok(f.check().some(error => /source_sha must equal source_checkpoint/.test(error)));
+});
+
+test('Git status read failures cannot stand in for a clean completion', t => {
+  const f = gitFixture(t);
+  const result = f.implement();
+  f.finishTicket();
+  f.record([f.entry(f.base, result)], true);
+  f.commit('completed fixture');
+  write(join(f.root, '.git/index'), 'invalid index');
+  assert.ok(f.check('complete').includes('cannot read Git working tree status'));
+});
+
+test('completed change requires clean tracked and untracked files after the status commit', t => {
+  const f = gitFixture(t);
+  const result = f.implement();
+  f.finishTicket();
+  f.record([f.entry(f.base, result)], true);
+  assert.ok(f.check('complete').some(error => /completed change requires a clean repository/.test(error)));
+  f.commit('completed status and evidence');
+  assert.deepEqual(f.check('complete'), []);
+  write(join(f.root, 'untracked.txt'), 'untracked\n');
+  assert.ok(f.check('complete').some(error => /completed change requires a clean repository/.test(error)));
+  rmSync(join(f.root, 'untracked.txt'));
+  write(f.product, 'dirty tracked\n');
+  assert.ok(f.check('complete').some(error => /completed change requires a clean repository/.test(error)));
+});
+
+test('required workspace records retain their existing dirty repository gate', t => {
+  const f = gitFixture(t);
+  const result = f.implement();
+  f.finishTicket();
+  const entry = f.entry(f.base, result);
+  entry.workspace_ref = `specdev-worktree/${basename(f.directory)}/T-01`;
+  entry.branch = 'ticket-branch';
+  Object.assign(entry.integration, { method: 'fast-forward', candidate_sha: result,
+    candidate_tree_sha: f.git('rev-parse', `${result}^{tree}`), candidate_branch: `speculo/integration/${basename(f.directory)}/T-01`,
+    candidate_workspace_ref: `specdev-worktree/.integration/${basename(f.directory)}/T-01` });
+  f.record([entry]);
+  const goal = join(f.directory, 'goal-plan.md');
+  write(goal, readFileSync(goal, 'utf8').replace('ticket_workspace_policy: "current"', 'ticket_workspace_policy: "required"')
+    .replace('integration_gate: "direct-parent"', 'integration_gate: "candidate-merge"'));
+  assert.ok(f.check().some(error => /repository is dirty while Ticket is recorded as integrated/.test(error)));
+  f.commit('required fixture record');
+  assert.deepEqual(f.check(), []);
+});
+
+test('implement stage does not invent execution records for unstarted ready Tickets', t => {
+  const directory = single(workspace(t));
+  assert.deepEqual(validateChange(directory, 'implement').errors, []);
+});
+
+for (const phase of ['in_progress', 'review', 'blocked', 'deviated', 'done']) {
+  test(`implement stage still requires an execution record for ${phase}`, t => {
+    const directory = single(workspace(t));
+    const path = join(directory, 'ticket/01-example.md');
+    write(path, readFileSync(path, 'utf8').replace('status: "ready"', `status: "${phase}"`)
+      .replace('ready: true', 'ready: false'));
+    assert.ok(validateChange(directory, 'implement').errors.includes('T-01: Implement stage requires one Ticket workspace execution record'));
+  });
+}

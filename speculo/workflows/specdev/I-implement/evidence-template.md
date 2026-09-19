@@ -88,8 +88,15 @@ subagent 不写本 Evidence；以上内容由 Lead 从实际 workspace、Git 和
 | E2E disposition | required / not-required: reason |
 | E2E result | pending / passed / failed / not-required；场景与证据 |
 | Parent result/re-read | `<sha>`；HEAD/tree/ancestor 核对 |
+| Current acceptance time/Lead | 实际捕获时间与 Lead；其他策略 not-applicable |
+| Current verified tree | implementation commit 的真实 tree SHA；验证输入等价证据 |
+| Current HEAD before/after | 两次完整 SHA 均等于 implementation commit；命令/退出码 |
+| Current clean before/after | `git status --porcelain=v1 --untracked-files=all` 两次实际空输出及退出码；不可省略用户文件 |
+| Historical current containment | base → parent_before → immutable result → 当前父分支；不同票区间串行 |
 
 集成失败时明确父 HEAD 是否推进、失败命令、旧 SHA 和恢复条件。
+
+current 先在固定产品 commit 上捕获验证前后的 HEAD/tree/clean 和实际测试结果，再写本 Evidence/状态；记录可由后续治理提交保存，产品 result 不随证据提交或下一票变更。不要让证据自引用承载它的提交 SHA，也不要把所有票指向最终 HEAD。Git 可复核提交/tree/祖先与记录内容，不能单独证明历史 clean 或测试确已运行；该事实由 Lead 的时点命令证据负责。后续修改不自动继承通过结论，最终 completed 与 release clean-source 门保持全仓严格检查。
 
 ### Failure History And Lead Recovery
 

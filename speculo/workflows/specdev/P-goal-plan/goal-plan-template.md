@@ -92,6 +92,8 @@ ready_for_execution: false
 
 当 `ticket_workspace_policy: current` 时，Ticket 必须严格串行。Lead 每次只允许一个 implementation owner 写入当前 workspace；完成非 E2E 检查并形成 commit 后，Lead 在同一父分支/current workspace 运行适用集成检查和 E2E，验证通过后将该 Ticket 的 `result_sha` 记录为其 implementation commit，再开始下一个 Ticket。不得创建 source/candidate worktree。
 
+精确 HEAD/tree 与完整 tracked/untracked clean 是 Lead 验收时点的门禁，须在写入 Evidence/状态前捕获。历史 result 保持完整不可变产品 SHA，允许父分支随后承载治理提交和下一票，但必须保持祖先关系、非空实现和各票区间串行；不能把所有 result 改成最终 HEAD。历史验收不证明当前修改已通过。最终 completed 的治理记录提交后重新执行全仓 clean 校验，发布仍遵守项目原有 clean-source 门禁。
+
 当 `ticket_workspace_policy: required` 时，Ticket 使用独立 source worktree；source worktree 不运行 E2E，Lead 在最新父分支的 candidate 状态运行集成检查和适用 E2E，通过且父 HEAD 未漂移后才推进父分支。
 
 ### Authorization Matrix
