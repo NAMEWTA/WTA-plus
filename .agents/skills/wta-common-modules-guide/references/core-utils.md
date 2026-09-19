@@ -45,7 +45,7 @@
 | `TreeBuildUtils` | 扩展 hutool TreeUtil 封装系统树构建 | extends Hutool `TreeUtil` | `utils/TreeBuildUtils.java` |
 | `StringUtils` | 字符串工具类 | extends Apache Commons `StringUtils` | `utils/StringUtils.java` |
 | `MapstructUtils` | Mapstruct 工具类（JavaDoc 另给 mapstruct-plus 文档链接） | 内部 `SpringUtils.getBean(Converter.class)` | `utils/MapstructUtils.java` |
-| `ServletUtils` | 客户端工具类，提供获取请求参数、响应处理、头部信息等常用操作 | extends Hutool `JakartaServletUtil` | `utils/ServletUtils.java` |
+| `ServletUtils` | 客户端工具类，提供获取请求参数、响应处理、头部信息等常用操作 | extends Hutool `JakartaServletUtil`；`getClientIP`读取web入口固定的可信地址，缺入口时仅用socket peer，自定义转发头拒绝 | `utils/ServletUtils.java` |
 | `StreamUtils` | stream 流工具类 | 无父 Util | `utils/StreamUtils.java` |
 | `ValidatorUtils` | Validator 校验框架工具 | Jakarta Validator | `utils/ValidatorUtils.java` |
 | `ThreadUtils` | 线程工具 | 无父 Util | `utils/ThreadUtils.java` |
@@ -79,3 +79,7 @@
 ## 未列入本表
 
 同目录 `utils/regex/RegexValidator.java` JavaDoc「正则字段校验器」——不是 `*Utils`，未计入 21。需要时直接读该类，不要与 `RegexUtils` 混用。
+
+## 可信来源地址
+
+`utils/ip/ClientAddressResolver`仅按显式CIDR解析XFF，默认无可信代理；web的`ClientAddressFilter`写入server-only request attribute，白名单、限流与操作审计通过ServletUtils读取同一值。配置为`namewta.web.client-address.trusted-proxies`，主应用通过`TRUSTED_PROXY_CIDRS`注入；`server.forward-headers-strategy=none`保留socket peer。数字字面量和容器IPv6 peer解析由NetUtils提供，CIDR/白名单不做DNS解析。详见当前源码及release-artifacts/docker/frontend/nginx/CLIENT-ADDRESS.md。

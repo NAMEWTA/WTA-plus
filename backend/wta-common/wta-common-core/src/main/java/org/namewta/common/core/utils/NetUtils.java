@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 /**
  * 增强网络相关工具类
@@ -108,7 +109,11 @@ public class NetUtils extends NetUtil {
                 .replace("?", ".");
             return clientIp.matches(regex);
         }
-        return false;
+        try {
+            return Arrays.equals(parseIpLiteral(ipRule).getAddress(), parseIpLiteral(clientIp).getAddress());
+        } catch (IllegalArgumentException ignored) {
+            return false;
+        }
     }
 
     /**
@@ -124,8 +129,8 @@ public class NetUtils extends NetUtil {
             if (parts.length != 2) {
                 return false;
             }
-            InetAddress networkAddress = InetAddress.getByName(parts[0]);
-            InetAddress currentAddress = InetAddress.getByName(clientIp);
+            InetAddress networkAddress = parseIpLiteral(parts[0]);
+            InetAddress currentAddress = parseIpLiteral(clientIp);
             byte[] networkBytes = networkAddress.getAddress();
             byte[] currentBytes = currentAddress.getAddress();
             if (networkBytes.length != currentBytes.length) {
@@ -142,9 +147,65 @@ public class NetUtils extends NetUtil {
             BigInteger network = new BigInteger(1, networkBytes);
             BigInteger current = new BigInteger(1, currentBytes);
             return network.and(mask).equals(current.and(mask));
-        } catch (UnknownHostException | NumberFormatException e) {
-            log.debug("IP白名单CIDR规则解析失败: {}", cidr, e);
+        } catch (IllegalArgumentException e) {
             return false;
+        }
+    }
+
+    /**
+     * 解析不含端口、括号、zone或主机名的IP字面量，不执行DNS查询。
+     * IPv4仅接受四段十进制，IPv4映射IPv6统一为IPv4字节表示。
+     *
+     * @param value 数字IP字面量
+     * @return 地址字节及规范文本
+     * @throws IllegalArgumentException 输入不是明确的IP字面量
+     */
+    public static InetAddress parseIpLiteral(String value) {
+        if (value == null || value.isEmpty() || value.length() > 45) {
+            throw new IllegalArgumentException("Invalid IP literal");
+        }
+        if (value.indexOf(':') < 0) {
+            validateIpv4(value);
+        } else {
+            // 带冒号且仅含这些字符的输入只可能进入JDK的数字IPv6解析器。
+            if (!value.matches("[0-9A-Fa-f:.]+")) {
+                throw new IllegalArgumentException("Invalid IP literal");
+            }
+            if (value.indexOf('.') >= 0) {
+                validateIpv4(value.substring(value.lastIndexOf(':') + 1));
+            }
+        }
+        try {
+            return InetAddress.getByName(value);
+        } catch (UnknownHostException e) {
+            throw new IllegalArgumentException("Invalid IP literal");
+        }
+    }
+
+    /**
+     * 解析Servlet容器给出的socket peer；Jetty用方括号包围IPv6地址。
+     * 此入口只用于getRemoteAddr，外来XFF仍使用严格字面量解析。
+     *
+     * @param peer Servlet容器提供的peer
+     * @return 规范地址
+     * @throws IllegalArgumentException 非数字地址或含端口等额外内容
+     */
+    public static InetAddress parseSocketPeer(String peer) {
+        if (peer != null && peer.startsWith("[") && peer.endsWith("]") && peer.indexOf(':') >= 0) {
+            return parseIpLiteral(peer.substring(1, peer.length() - 1));
+        }
+        return parseIpLiteral(peer);
+    }
+
+    private static void validateIpv4(String value) {
+        String[] parts = value.split("\\.", -1);
+        if (parts.length != 4) {
+            throw new IllegalArgumentException("Invalid IPv4 literal");
+        }
+        for (String part : parts) {
+            if (!part.matches("0|[1-9][0-9]{0,2}") || Integer.parseInt(part) > 255) {
+                throw new IllegalArgumentException("Invalid IPv4 literal");
+            }
         }
     }
 

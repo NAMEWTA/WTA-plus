@@ -32,7 +32,7 @@ test('HTTP and TLS load balancers proxy the complete Nacos context path', () => 
     assert.match(location, /proxy_http_version 1\.1;/);
     assert.match(location, /proxy_set_header Host \$http_host;/);
     assert.match(location, /proxy_set_header X-Real-IP \$remote_addr;/);
-    assert.match(location, /proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;/);
+    assert.match(location, /proxy_set_header X-Forwarded-For \$remote_addr;/);
     assert.match(location, new RegExp(`proxy_set_header X-Forwarded-Proto ${forwardedProto.replace('$', '\\$')};`));
     assert.match(location, /proxy_set_header Upgrade \$http_upgrade;/);
     assert.match(location, /proxy_set_header Connection \$connection_upgrade;/);

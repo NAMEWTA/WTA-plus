@@ -1,7 +1,6 @@
 package org.namewta.common.core.utils;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.hutool.http.HttpStatus;
 import jakarta.servlet.ServletRequest;
@@ -34,6 +33,9 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class ServletUtils extends JakartaServletUtil {
+
+    /** 仅由服务端入口过滤器写入的规范来源地址；不能从HTTP头或参数复制。 */
+    public static final String CLIENT_IP_ATTRIBUTE = "org.namewta.web.clientAddress";
 
     /**
      * 获取指定名称的 String 类型的请求参数
@@ -270,18 +272,29 @@ public class ServletUtils extends JakartaServletUtil {
     }
 
     /**
-     * 获取客户端 IP 地址
+     * 读取入口解析的可信客户端地址；未经入口过滤器处理时仅使用 socket peer。
      *
+     * @param request 当前请求；无请求时返回空字符串
+     * @param otherHeaderNames 不再接受自定义转发头；非空时拒绝调用
      * @return 客户端 IP 地址
+     * @throws IllegalArgumentException 传入自定义转发头时抛出
      */
     public static String getClientIP(HttpServletRequest request, String... otherHeaderNames) {
-        String[] headers = {"X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"};
-        if (ArrayUtil.isNotEmpty(otherHeaderNames)) {
-            headers = ArrayUtil.addAll(otherHeaderNames, headers);
+        if (otherHeaderNames != null && otherHeaderNames.length != 0) {
+            throw new IllegalArgumentException("Custom client address headers are not supported");
         }
-
-        String ip = getClientIPByHeader(request, headers);
-        return StringUtils.strip(ip, "[]");
+        if (request == null) {
+            return StringUtils.EMPTY;
+        }
+        Object resolved = request.getAttribute(CLIENT_IP_ATTRIBUTE);
+        if (resolved instanceof String address) {
+            return address;
+        }
+        try {
+            return NetUtils.parseSocketPeer(request.getRemoteAddr()).getHostAddress();
+        } catch (IllegalArgumentException ignored) {
+            return StringUtils.EMPTY;
+        }
     }
 
     /**
