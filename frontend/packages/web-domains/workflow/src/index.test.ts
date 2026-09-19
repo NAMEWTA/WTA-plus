@@ -121,7 +121,7 @@ describe('workflow designer controller', () => {
     );
     await expect(controller.url()).resolves.toBe('/designer');
     expect(designUrl).toHaveBeenCalledWith('definition/a', true);
-    await controller.onMessage({ method: 'close' });
+    await controller.close();
     expect(closeDesigner).toHaveBeenCalledWith('1');
   });
 });

@@ -1,31 +1,65 @@
 <template>
   <div class="warm-flow-designer-page">
-    <iframe :src="iframeUrl" frameborder="0" class="warm-flow-designer-page__iframe" title="流程设计"></iframe>
+    <iframe v-if="iframeUrl" :key="generation" ref="designerFrame" :src="iframeUrl" frameborder="0" class="warm-flow-designer-page__iframe" title="流程设计"></iframe>
   </div>
 </template>
 
 <script setup name="WarmFlow" lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onActivated, onBeforeUnmount, onDeactivated, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import type { WorkflowWebRuntime } from '../runtime';
-import { createDesignerController } from '../designer';
+import { createDesignerController, isDesignerCloseMessage } from '../designer';
 
 const { runtime } = defineProps<{ runtime: WorkflowWebRuntime }>();
 const route = useRoute();
 const iframeUrl = ref('');
+const designerFrame = ref<HTMLIFrameElement>();
+const generation = ref(0);
 const controller = createDesignerController(runtime, route.query);
-const onDesignerMessage = (event: MessageEvent) => {
-  void controller.onMessage(event.data);
+let active = false;
+let disposed = false;
+let closing = false;
+const onDesignerMessage = async (event: MessageEvent<unknown>) => {
+  if (!active || closing || !isDesignerCloseMessage(event, designerFrame.value?.contentWindow, iframeUrl.value, window.location.href)) return;
+  closing = true;
+  try {
+    await controller.close();
+  } catch (error: unknown) {
+    if (active) runtime.error(error instanceof Error ? error.message : '设计器关闭失败');
+  } finally {
+    closing = false;
+  }
 };
 const open = async (definitionId: unknown, disabled: unknown) => {
-  iframeUrl.value = await runtime.designUrl(String(definitionId ?? ''), String(disabled) === 'true');
+  if (disposed) return;
+  const owner = ++generation.value;
+  iframeUrl.value = '';
+  try {
+    const url = await runtime.designUrl(String(definitionId ?? ''), String(disabled) === 'true');
+    if (!disposed && owner === generation.value) iframeUrl.value = url;
+  } catch (error: unknown) {
+    if (!disposed && owner === generation.value) runtime.error(error instanceof Error ? error.message : '设计器加载失败');
+  }
 };
-
-onMounted(async () => {
+const listen = () => {
+  active = true;
   window.addEventListener('message', onDesignerMessage);
-  iframeUrl.value = await controller.url();
+};
+const stopListening = () => {
+  active = false;
+  window.removeEventListener('message', onDesignerMessage);
+};
+onMounted(() => {
+  listen();
+  void open(route.query.definitionId, route.query.disabled);
 });
-onBeforeUnmount(() => window.removeEventListener('message', onDesignerMessage));
+onActivated(listen);
+onDeactivated(stopListening);
+onBeforeUnmount(() => {
+  disposed = true;
+  generation.value++;
+  stopListening();
+});
 defineExpose({ open });
 </script>
 
