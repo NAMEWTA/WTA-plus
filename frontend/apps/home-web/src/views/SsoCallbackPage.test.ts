@@ -9,6 +9,6 @@ describe('home SSO callback', () => {
   it('writes the business token into both session and the user store', () => {
     expect(source).toContain('session.setToken(result.accessToken)');
     expect(source).toContain('userStore.token = result.accessToken');
-    expect(source).toContain("router.replace('/profile')");
+    expect(source).toContain('router.replace(result.returnTo)');
   });
 });
