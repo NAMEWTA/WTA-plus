@@ -168,3 +168,14 @@ Common AI 入口已按当前空 POM/无源码事实修订；Lead 复读并检查
 Lead唯一writer完成T-03；规范模块地图finding与extend导读数量修正，最终两轴packet-3均pass。固定产品723e8514cbaeba13094415ba5f1071de31b2241c，先前后端受测源只差导读文字，正式OpenAPI与最终运行整文档语义核对一致。源归档clean、prod/full/all实际build和verify exit0；最终release prod-723e8514cbae-7e3a9227bffe08dcd95845bac75c1c4f8bf01c639d056bf2b5541d5e86d146db。六SQL/两个占位、隔离新库AI0、旧23表结构/内容不变及Admin/Monitor/SnailJob启动全部通过。
 
 首轮浏览器四失败由用例所需功能配置缺失导致，未改生产默认，以显式测试环境重建后默认53pass/1既有外部Nacos条件skip，手机号专项10pass；release123pass/0skip。详见T-03 Evidence，不把skip计通过。三票状态/Map/Goal同步完成，结果提交固定不被治理收据替代。用户LOG-011授权覆盖本地收据提交，仍未push、部署或远程Issue写回。
+
+## LOG-016 — 用户授权来源Issue关闭与归档预检
+
+用户在本次明确激活A和T并要求“关闭已完成的issue”。先在干净104a6d3上复核complete exit0，再读三条远程来源。#1/#2完成评论经脱敏，明确无公开commit/PR、未推送部署；显示准确repo/目标/全文/reason后，按该本轮授权调用github-npm-ops的幂等comment-close。远程重读均CLOSED且各1条marker；#3仍OPEN且无变化。回执见evidence/reconcile.json。
+
+归档前清空status.deviations中的历史已接受决定/已解决校验记录：原记录如下，均已有LOG-003–008/011/012的授权或关闭证据，不存在新偏差裁决。
+- USER-DECISION: 本次把三个捕获事项集中于一个 change，替代逐条创建 change 的默认路由；每条仍独立冻结来源，不覆盖历史。
+- USER-DECISION: G Q2明确将Issue #3另建2026-09-19-go-python-ai-platform并暂缓；本change实施范围收敛#1/#2。
+- HISTORICAL-RESOLVED: 当前工作树stage goal-plan受既有用户validator修改误判多change而exit1；保留失败和原改动，当前无stage/HEAD原版P/controller均exit0，规划质量review通过。详见evidence/planning-review.md与LOG-008。；已按LOG-011授权恢复并通过当前校验。
+
+归档仅待完整dry-run计划确认：原子移动本change、全局/终态索引、新建含两个AI占位术语的context；不删除知识，不改业务产品result。归档校验器终态矛盾以隔离测试修复，详见归档报告。

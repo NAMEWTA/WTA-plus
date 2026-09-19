@@ -3,7 +3,7 @@
   "artifact": "change-status",
   "change": "2026-09-19-remote-issues-phone-ai",
   "change_status": "completed",
-  "current_work": null,
+  "current_work": "specdev/archive-and-consolidate",
   "works_run": [
     "specdev/triage",
     "specdev/grill-with-docs",
@@ -40,16 +40,12 @@
     "history": []
   },
   "created_at": "2026-09-19T08:03:45.271401Z",
-  "updated_at": "2026-09-19T12:01:36.108879+00:00",
+  "updated_at": "2026-09-19T14:28:26.557961+00:00",
   "completed_at": "2026-09-19T12:01:36.108879+00:00",
   "archived": false,
   "archive_path": null,
   "blockers": [],
-  "deviations": [
-    "USER-DECISION: 本次把三个捕获事项集中于一个 change，替代逐条创建 change 的默认路由；每条仍独立冻结来源，不覆盖历史。",
-    "USER-DECISION: G Q2明确将Issue #3另建2026-09-19-go-python-ai-platform并暂缓；本change实施范围收敛#1/#2。",
-    "HISTORICAL-RESOLVED: 当前工作树stage goal-plan受既有用户validator修改误判多change而exit1；保留失败和原改动，当前无stage/HEAD原版P/controller均exit0，规划质量review通过。详见evidence/planning-review.md与LOG-008。；已按LOG-011授权恢复并通过当前校验。"
-  ],
+  "deviations": [],
   "worktrees": [
     {
       "ticket_id": "T-01",

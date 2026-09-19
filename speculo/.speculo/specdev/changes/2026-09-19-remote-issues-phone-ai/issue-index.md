@@ -16,6 +16,10 @@
 
 | Issue | 原始标题 | Locator | 冻结来源 | Content SHA-256 | External action |
 |---|---|---|---|---|---|
-| 1 | bug: 手机号应为必填项，当前仍为选填 | <Url>https://github.com/NAMEWTA/WTA-plus/issues/1</Url> | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/sources/issue-1.md</Path> | 26a9c457fab27c0985192d162488451c2d05fd9f855731d8773413f45d5d9c28 | pending-close |
-| 2 | refactor: 完整移除 snail-ai，仅保留 cde-ai 与 cde-common-ai 占位 | <Url>https://github.com/NAMEWTA/WTA-plus/issues/2</Url> | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/sources/issue-2.md</Path> | 325836639794829b4d9164556cb6520b52a4bda9f9381f53b03d4bfeedbc19dd | pending-close |
+| 1 | bug: 手机号应为必填项，当前仍为选填 | <Url>https://github.com/NAMEWTA/WTA-plus/issues/1</Url> | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/sources/issue-1.md</Path> | 26a9c457fab27c0985192d162488451c2d05fd9f855731d8773413f45d5d9c28 | closed |
+| 2 | refactor: 完整移除 snail-ai，仅保留 cde-ai 与 cde-common-ai 占位 | <Url>https://github.com/NAMEWTA/WTA-plus/issues/2</Url> | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/sources/issue-2.md</Path> | 325836639794829b4d9164556cb6520b52a4bda9f9381f53b03d4bfeedbc19dd | closed |
 | 3 | feature: 在 backend/wta-extend 新起 Go 网关 + Python 智能体独立服务，由 cde-ai / cde-common-ai 经 OpenAPI 引用 | <Url>https://github.com/NAMEWTA/WTA-plus/issues/3</Url> | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/sources/issue-3.md</Path> | d9eaf812bc332c676aeaeb367f69fa43a91800727892ea6d757a94823f01e059 | pending-close |
+
+## Reconcile — 2026-09-19T14:25:47.627545+00:00
+
+#1/#2已按本轮明确授权评论并以completed原因关闭，远程重读确认CLOSED且各仅1条本change完成marker。#3仍OPEN、正文/评论/updatedAt未变，责任属于独立暂缓change。完整远程回执见 evidence/reconcile.json。聚合conversation source保持不变，逐条GitHub来源冻结hash未修改。

@@ -2,7 +2,7 @@
 schema_version: 1
 artifact: triage
 change: 2026-09-19-remote-issues-phone-ai
-mode: intake
+mode: reconcile
 source: <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/source.md</Path>
 classification: mixed
 risk: high
@@ -11,7 +11,7 @@ ready_for_implementation: false
 external_action: not-applicable
 publish_action: not-requested
 publish: null
-updated_at: 2026-09-19T08:03:45Z
+updated_at: 2026-09-19T14:25:47.627545+00:00
 ---
 
 # Triage: 手机号必填与独立 AI 服务
@@ -58,3 +58,7 @@ updated_at: 2026-09-19T08:03:45Z
 - **publish_action：** not-requested。
 - **账本：** 未创建；没有发布投影请求。
 - **origin：** 聚合授权 local；三条独立快照 intake。
+
+## 已完成来源的远程核对
+
+本次用户明确要求关闭已完成Issue。按独立冻结GitHub来源逐条执行#1/#2的reconcile，dry-run、完整公开评论展示、幂等marker评论关闭和执行后重读均已完成；结果均closed。聚合conversation source无关闭对象，frontmatter external_action仍not-applicable，逐条责任由issue-index和evidence/reconcile.json持有。#3转移至Go/Python暂缓change，仍open；未请求publish，不创建票级Issue。
