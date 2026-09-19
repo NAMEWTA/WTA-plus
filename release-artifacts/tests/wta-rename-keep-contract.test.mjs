@@ -71,9 +71,9 @@ test('first-party backend POM groupId is org.namewta and owned modules are wta-*
   assert.equal(fs.existsSync(path.join(workspaceRoot, 'plus-ui-namewta')), false);
 });
 
-test('upstream-fork-sync skill and docs/upstream workflow tree are absent', () => {
+test('product-owned upstream-fork-sync skill and docs/upstream workflow tree are absent', () => {
   assert.equal(fs.existsSync(path.join(workspaceRoot, '.agents/skills/upstream-fork-sync')), false);
-  assert.equal(fs.existsSync(path.join(workspaceRoot, 'speculo/skills/upstream-fork-sync')), false);
+  // speculo/skills is vendor-owned tooling, outside the product namespace cutover.
   assert.equal(fs.existsSync(path.join(workspaceRoot, 'docs/upstream')), false);
   const agents = read('AGENTS.md');
   assert.doesNotMatch(agents, /upstream-fork-sync/);

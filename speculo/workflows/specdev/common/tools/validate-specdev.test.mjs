@@ -1,0 +1,218 @@
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { basename, dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import test from 'node:test';
+import { validateChange as validate } from './validate-specdev.mjs';
+
+const validator = fileURLToPath(new URL('./validate-specdev.mjs', import.meta.url));
+const statusTemplate = JSON.parse(readFileSync(new URL('../../I-init-setup/change-status-template.json', import.meta.url)));
+const configTemplate = JSON.parse(readFileSync(new URL('../../I-init-setup/config-template.json', import.meta.url)));
+const timestamp = '2026-09-18T00:00:00.000Z';
+
+function validateChange(directory, stage = null) {
+  const originalDirectory = process.cwd();
+  try {
+    // Resolve the synthetic legacy workspace without discovering the caller's repository.
+    process.chdir(resolve(directory, '../../../..'));
+    return validate(directory, stage);
+  } finally {
+    process.chdir(originalDirectory);
+  }
+}
+
+function write(file, content) {
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, content);
+}
+function artifact(file, meta, body = '') {
+  write(file, `---\n${Object.entries(meta).map(([key, value]) => `${key}: ${JSON.stringify(value)}`).join('\n')}\n---\n\n${body}\n`);
+}
+function status(directory, work) {
+  const value = structuredClone(statusTemplate);
+  Object.assign(value, { change: basename(directory), current_work: work, created_at: timestamp, updated_at: timestamp });
+  Object.assign(value.leadership, { current: 'test-lead', assigned_at: timestamp });
+  write(join(directory, '.status.json'), JSON.stringify(value));
+}
+function workspace(t) {
+  const root = mkdtempSync(join(tmpdir(), 'specdev-goal-routing-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  write(join(root, '.speculo/specdev/config.json'), JSON.stringify(configTemplate));
+  return join(root, '.speculo/specdev/changes');
+}
+function single(root, name = '2026-09-18-single') {
+  const directory = join(root, name);
+  status(directory, 'specdev/goal-plan');
+  artifact(join(directory, 'spec.md'), {
+    schema_version: 3, artifact: 'spec', change: name, status: 'ready', ready_for_tickets: true,
+    sources: ['USER-DECISION: test fixture'],
+  }, `## 1. 问题与目标\nVerify goal routing.\n## 2. 解决方案与外部行为\nCheck artifacts.\n## 4. 验收合同\nAC-001\n## 5. 范围\nLocal fixture.\n## 9. 验证策略\nUnit tests.`);
+  artifact(join(directory, 'tickets-map.md'), {
+    schema_version: 3, artifact: 'tickets-map', change: name, status: 'ready', plan_contract_version: 1,
+    plan_revision: 1, requested_deliverables: [], deliverable_policy: 'Verify routing without a requested artifact count.',
+  }, `### 总体实施背景
+Validate a fixture.
+### 项目 Skill 读取矩阵
+| Applies To | Project Skill | Trigger / Scope | Read Timing | Purpose |
+|---|---|---|---|---|
+| ALL | 无；已扫描fixture目录 | fixture only | before test | no project Skill in synthetic repository |
+## 2. 执行清单
+T-01
+## 3. 依赖 DAG
+T-01
+## 4. 合同覆盖矩阵
+AC-001 T-01
+## 5. 并行与路径所有权
+Single writer.
+## 9. 总控与恢复
+Read the fixture.`);
+  artifact(join(directory, 'ticket/01-example.md'), {
+    schema_version: 3, artifact: 'ticket', change: name, id: 'T-01', title: 'Routing fixture',
+    status: 'ready', planning_depth: 'lite', planning_depth_reason: 'Unit fixture only', ready: true, risk: 'low',
+    blocked_by: [], contract_ids: ['AC-001'], owner: 'test-lead', expected_changes: [`<Path>${name}/file.txt</Path>`],
+    writable_paths: [`<Path>${name}/file.txt</Path>`], read_only_paths: [], shared_paths: [], shared_path_owners: [],
+    plan_contract_version: 1, skill_scan: 'Synthetic repository scanned; no project skills.', skill_bindings: [], resource_claims: [],
+  }, `## 1. 战略与来源
+AC-001 routing fixture
+## 2. 决策状态
+### 未决问题
+无。
+## 3. 范围边界
+Local fixture
+## 4. 要构建什么
+Validate goal routing
+## 7. 路径访问契约
+Single writer
+## 8. 验证矩阵
+| case | expected |
+|---|---|
+| E2E disposition: not-required, current-workspace | unit fixture passes |
+## 10. 验收标准
+- [ ] AC-001 passes
+## 11. SKILL 调用计划
+No skills in synthetic repository.
+## 12. 停止、检查点与交付
+No side effects.`);
+  artifact(join(directory, 'goal-plan.md'), {
+    schema_version: 6, artifact: 'goal-plan', change: name, status: 'blocked', modes: [],
+    orchestration: 'lead-directed', lead: 'test-lead', implementation_agent_limit: 1, integration_attempt_limit: 3,
+    ticket_workspace_policy: 'current', integration_gate: 'direct-parent', ready_for_execution: false,
+  });
+  return directory;
+}
+function parent(t) {
+  const root = workspace(t);
+  const members = ['2026-09-18-member-a', '2026-09-18-member-b'];
+  for (const member of members) {
+    const child = single(root, member);
+    status(child, 'specdev/implement');
+  }
+  const directory = join(root, '2026-09-18-parent');
+  status(directory, 'specdev/goal-plan');
+  const map = {
+    schema_version: 1, artifact: 'implementation-map', change: basename(directory), status: 'blocked', revision: 1,
+    members, tasks: members.map(name => `${name}::T-01`), dependencies: [], serializations: [],
+  };
+  const mapBody = ['## 1. Members and Source Authority', '## 2. Composite Ticket Inventory',
+    '## 3. Implementation Super-DAG', '## 4. Conflict and Serialization',
+    '## 5. Contract and Path Coverage', '## 6. Revision Log'].join('\n');
+  const plan = {
+    schema_version: 1, artifact: 'implementation-plan', change: basename(directory), status: 'blocked', source_map_revision: 1,
+    orchestration: 'lead-directed', lead: 'test-lead', implementation_agent_limit: 1, integration_attempt_limit: 3,
+    ticket_workspace_policy: 'current', integration_gate: 'direct-parent', ready_for_execution: false,
+  };
+  const planBody = ['## 1. Outcome and Authority', '## 2. Ready Frontier and Waves',
+    '## 3. Workspace and Dispatch Contract', '## 4. Repository Integration Queue',
+    '## 5. Gates and Aggregate Verification', '## 6. Conflict, Drift and Recovery', '## 7. Progress and Decisions'].join('\n');
+  artifact(join(directory, 'implementation-map.md'), map, mapBody);
+  artifact(join(directory, 'implementation-plan.md'), plan, planBody);
+  artifact(join(directory, 'tickets-map.md'), {
+    schema_version: 1, artifact: 'goal-tickets-map', change: basename(directory),
+    implementation_map: `<Path>{roots.state}/specdev/changes/${basename(directory)}/implementation-map.md</Path>`,
+    implementation_plan: `<Path>{roots.state}/specdev/changes/${basename(directory)}/implementation-plan.md</Path>`,
+  });
+  return { directory, root, map, mapBody, plan, planBody };
+}
+
+test('single-change goal-plan accepts only its own Spec, Tickets Map, Tickets and Goal', t => {
+  const directory = single(workspace(t));
+  const result = validateChange(directory, 'goal-plan');
+  assert.deepEqual(result.errors, []);
+  const cli = spawnSync(process.execPath, [validator, '--stage', 'goal-plan', directory], {
+    encoding: 'utf8', cwd: resolve(directory, '../../../..'),
+  });
+  assert.equal(cli.status, 0, cli.stderr);
+});
+
+test('single-change goal-plan rejects a missing Goal rather than silently accepting null', t => {
+  const directory = single(workspace(t));
+  rmSync(join(directory, 'goal-plan.md'));
+  assert.deepEqual(validateChange(directory, 'goal-plan').errors, ['goal-plan stage requires goal-plan.md for a single change']);
+});
+
+test('single-change planning still rejects missing Tickets Map and Ticket directory', t => {
+  const directory = single(workspace(t));
+  rmSync(join(directory, 'tickets-map.md'));
+  rmSync(join(directory, 'ticket'), { recursive: true });
+  const errors = validateChange(directory, 'goal-plan').errors;
+  assert.ok(errors.includes('missing Tickets Map'), errors.join('\n'));
+  assert.ok(errors.includes('missing Ticket directory'), errors.join('\n'));
+  assert.ok(!errors.some(error => /requires implementation-/.test(error)), errors.join('\n'));
+});
+
+test('parent accepts two ready members without inventing a single-change Goal', t => {
+  const { directory } = parent(t);
+  assert.deepEqual(validateChange(directory, 'goal-plan').errors, []);
+});
+
+for (const missing of ['implementation-map.md', 'implementation-plan.md']) {
+  test(`parent rejects missing ${missing} even without a goal-map entry`, t => {
+    const { directory } = parent(t);
+    rmSync(join(directory, missing));
+    rmSync(join(directory, 'tickets-map.md'));
+    assert.deepEqual(validateChange(directory, 'goal-plan').errors, [`goal-plan stage requires ${missing}`]);
+  });
+}
+
+test('parent goal-map entry cannot bypass both missing implementation artifacts', t => {
+  const { directory } = parent(t);
+  rmSync(join(directory, 'implementation-map.md'));
+  rmSync(join(directory, 'implementation-plan.md'));
+  assert.deepEqual(validateChange(directory, 'goal-plan').errors, [
+    'goal-plan stage requires implementation-map.md', 'goal-plan stage requires implementation-plan.md',
+    'tickets-map.md: goal-tickets-map missing real implementation-map.md',
+    'tickets-map.md: goal-tickets-map missing real implementation-plan.md',
+  ]);
+});
+
+test('parent member readiness is still enforced', t => {
+  const { directory, root, map } = parent(t);
+  const file = join(root, map.members[0], 'spec.md');
+  write(file, readFileSync(file, 'utf8').replace('ready_for_tickets: true', 'ready_for_tickets: false'));
+  assert.ok(validateChange(directory, 'goal-plan').errors.some(error => /Spec must have status=ready/.test(error)));
+});
+
+test('parent cycle detection remains active', t => {
+  const { directory, map, mapBody } = parent(t);
+  map.dependencies = [`${map.tasks[0]} <- ${map.tasks[1]}`, `${map.tasks[1]} <- ${map.tasks[0]}`];
+  artifact(join(directory, 'implementation-map.md'), map, mapBody);
+  assert.ok(validateChange(directory, 'goal-plan').errors.some(error => /cycle/i.test(error)));
+});
+
+test('parent configured agent cap remains active', t => {
+  const { directory, plan, planBody } = parent(t);
+  plan.implementation_agent_limit = 4;
+  artifact(join(directory, 'implementation-plan.md'), plan, planBody);
+  assert.ok(validateChange(directory, 'goal-plan').errors.some(error => /exceeds config max_implementation_agents/.test(error)));
+});
+
+test('partial parent remains invalid outside goal-plan stage', t => {
+  const { directory } = parent(t);
+  rmSync(join(directory, 'implementation-map.md'));
+  assert.deepEqual(validateChange(directory).errors, [
+    'goal-plan stage requires implementation-map.md',
+    'tickets-map.md: goal-tickets-map missing real implementation-map.md',
+  ]);
+});

@@ -2809,11 +2809,19 @@ function validateGitEvidence(repoRoot, changeStatus, errors) {
   }
 }
 
+function isParentImplementationChange(change) {
+  if (isFile(join(change, "implementation-map.md")) || isFile(join(change, "implementation-plan.md"))) return true;
+  const entry = join(change, "tickets-map.md");
+  return isFile(entry) && parseFrontmatter(entry).meta.artifact === "goal-tickets-map";
+}
+
 function validateParentImplementation(change, parentStatus, stage, errors, warnings, repoRoot = null) {
+  // Both single-change and parent planning use this stage. The artifacts own
+  // the mode; a partial parent must still fail its missing-artifact checks.
+  if (!isParentImplementationChange(change)) return null;
   const required = stage === "goal-plan";
   const mapPath = join(change, "implementation-map.md");
   const planPath = join(change, "implementation-plan.md");
-  if (!required && !isFile(mapPath) && !isFile(planPath)) return null;
   if (!isFile(mapPath)) errors.push("goal-plan stage requires implementation-map.md");
   if (!isFile(planPath)) errors.push("goal-plan stage requires implementation-plan.md");
   if (!isFile(mapPath) || !isFile(planPath)) return null;
@@ -3297,7 +3305,7 @@ function validateChange(change, stage = null, repoRoot = null) {
   validatePrototypes(change, stage === "prototype", errors);
   validateChangeLearning(change, stage === "learn-change", errors);
 
-  const isParentImplementation = isFile(join(change, "implementation-map.md"));
+  const isParentImplementation = isParentImplementationChange(change);
   const specRequired = new Set(["spec", "tickets", "goal-plan", "implement", "complete"]).has(stage) && !isParentImplementation;
   const specPath = join(change, "spec.md");
   const spec = isFile(specPath) || specRequired
@@ -3308,7 +3316,10 @@ function validateChange(change, stage = null, repoRoot = null) {
   const mapPath = join(change, "tickets-map.md");
   const ticketsMap = isFile(mapPath) || mapRequired ? validateMap(mapPath, errors, repoRoot) : null;
   const goalPlanPath = join(change, "goal-plan.md");
-  const goalPlan = isFile(goalPlanPath) || stage === "goal-plan"
+  if (stage === "goal-plan" && !isParentImplementation && !isFile(goalPlanPath)) {
+    errors.push("goal-plan stage requires goal-plan.md for a single change");
+  }
+  const goalPlan = isFile(goalPlanPath)
     ? validateGoalPlan(goalPlanPath, errors)
     : null;
   validateDesignTree(join(change, "design-tree.json"), change, errors);

@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -47,7 +48,15 @@ if (!all.includes('wta-notify')) fail('Skills 未登记 wta-notify');
 for (const required of ['BaseMapperPlus', 'WorkflowService', 'NotificationApplicationService', 'UseCase -> Service -> DAO -> Mapper', '10-cde-base-ddl.sql', '50-cde-base-dml.sql', '需求/菜单', 'domain transport/model/service', 'web-domain 页面/runtime/manifest', 'getInfo -> getRouters -> addRoute -> replace', 'local-name', 'tabler:name', 'sys_menu.icon']) {
   if (!all.includes(required)) fail(`Skills 缺少当前合同: ${required}`);
 }
-if (!existsSync(join(root, 'temp', 'release'))) fail('缺少统一私密发布目录 temp/release');
+// 私密报告由部署工具按需创建；干净 clone 不应包含这个目录。
+const ignored = spawnSync('git', ['check-ignore', '--no-index', '--quiet', '--', 'temp/release/deployment.md'], { cwd: root });
+if (ignored.status !== 0) fail('私密发布目录 temp/release 必须受 Git ignore 保护');
+const tracked = spawnSync('git', ['ls-files', '--', 'temp/release'], { cwd: root, encoding: 'utf8' });
+if (tracked.status !== 0 || tracked.stdout.trim()) fail('私密发布目录 temp/release 不得包含跟踪文件');
+const outputOwner = join(skillRoot, 'deploy-namewta-environment', 'scripts', 'lib.mjs');
+if (!existsSync(outputOwner) || !/mkdirSync\(path\.dirname\(file\)/.test(readFileSync(outputOwner, 'utf8'))) {
+  fail('缺少按需创建私密报告父目录的部署工具 owner');
+}
 if (existsSync(join(root, 'temp', 'relase'))) fail('旧私密发布目录 temp/relase 仍存在');
 if (failures.length) {
   for (const failure of failures) process.stderr.write(`ERROR: ${failure}\n`);

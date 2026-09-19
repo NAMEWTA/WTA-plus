@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { dirname, extname, join, relative, resolve } from 'node:path';
+import { extname, join, relative, resolve } from 'node:path';
 import process from 'node:process';
 
 /**
@@ -57,13 +57,20 @@ if (modeArg !== 'layered') {
 if (!existsSync(resourcesRoot)) fail(`layered 模块缺少资源目录: ${resourcesRoot}`);
 
 const javaFiles = collectJavaFiles(javaRoot);
+// 只检查 Java 代码 token，避免注释、字符串和文本块伪装成 import/注解。
+// 保留换行和字符位置，以便诊断仍能对应原始源码。
+function codeOnly(source) {
+  return source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\r\n]*|"""(?:\\[\s\S]|(?!""")[^\\])*"""|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'/g,
+    token => token.replace(/[^\r\n]/g, ' '));
+}
+const sources = new Map(javaFiles.map(file => [file, codeOnly(readFileSync(file, 'utf8'))]));
 const packageLines = javaFiles
-  .map(file => readFileSync(file, 'utf8').match(/^package\s+([\w.]+);/m)?.[1])
+  .map(file => sources.get(file).match(/^\s*package\s+([\w.]+);/m)?.[1])
   .filter(Boolean);
 const packageSegments = packageLines.map(value => value.split('.'));
 const baseSegments = packageSegments.length > 0 ? [...packageSegments[0]] : [];
 for (const segments of packageSegments.slice(1)) {
-  while (baseSegments.length > 0 && segments[baseSegments.length - 1] !== baseSegments[baseSegments.length - 1]) {
+  while (baseSegments.length > 0 && !baseSegments.every((segment, index) => segments[index] === segment)) {
     baseSegments.pop();
   }
 }
@@ -85,9 +92,9 @@ const forbiddenByLayer = {
     /\.mapper\./,
     /\.service\./,
     /\.domain\.model\.read\./,
-    /org\.dromara\.system\.api\./,
-    /org\.dromara\.workflow\.api\.WorkflowService/,
-    /org\.dromara\.common\.(json|redis|notify|oss)\./,
+    /org\.namewta\.system\.api\./,
+    /org\.namewta\.workflow\.api\.WorkflowService/,
+    /org\.namewta\.common\.(json|redis|notify|oss)\./,
   ],
   usecase: [
     /\.dao\./,
@@ -96,12 +103,12 @@ const forbiddenByLayer = {
     /\.store\./,
     /\.provider\./,
     /\.service\.impl\./,
-    /org\.dromara\.common\.mybatis\./,
+    /org\.namewta\.common\.mybatis\./,
     /com\.baomidou\.(?!dynamic\.datasource\.annotation\.DSTransactional\b)/,
     /tools\.jackson\./,
-    /org\.dromara\.system\.api\./,
-    /org\.dromara\.workflow\.api\./,
-    /org\.dromara\.common\.(satoken|redis|notify|oss|log)\./,
+    /org\.namewta\.system\.api\./,
+    /org\.namewta\.workflow\.api\./,
+    /org\.namewta\.common\.(satoken|redis|notify|oss|log)\./,
   ],
   service: [
     /\.service\./,
@@ -111,7 +118,7 @@ const forbiddenByLayer = {
     /\bIService\b/,
     /\bServiceImpl\b/,
     /\.service\.impl\./,
-    /org\.dromara\.common\.mybatis\.(?!utils\.IdGeneratorUtil\b)/,
+    /org\.namewta\.common\.mybatis\.(?!utils\.IdGeneratorUtil\b)/,
     /tools\.jackson\./,
   ],
   dao: [
@@ -121,8 +128,8 @@ const forbiddenByLayer = {
     /\.gateway\./,
     /\.store\./,
     /\.provider\./,
-    /org\.dromara\.system\.api\./,
-    /org\.dromara\.workflow\.api\./,
+    /org\.namewta\.system\.api\./,
+    /org\.namewta\.workflow\.api\./,
   ],
   mapper: [
     /\.dao\./,
@@ -143,7 +150,7 @@ const forbiddenByLayer = {
     /org\.springframework\./,
     /com\.baomidou\./,
     /org\.mybatis\./,
-    /org\.dromara\.common\.(mybatis|redis|notify|oss|satoken|web)\./,
+    /org\.namewta\.common\.(mybatis|redis|notify|oss|satoken|web)\./,
   ],
   adapter: [
     /\.controller\./,
@@ -167,8 +174,8 @@ const forbiddenByLayer = {
     /org\.springframework\./,
     /com\.baomidou\.(mybatis|dynamic)/,
     /org\.mybatis\./,
-    /org\.dromara\.common\.mybatis\./,
-    /org\.dromara\.common\.(redis|notify|oss|satoken|web)\./,
+    /org\.namewta\.common\.mybatis\./,
+    /org\.namewta\.common\.(redis|notify|oss|satoken|web)\./,
   ],
   domain: [
     /\.controller\./,
@@ -180,8 +187,8 @@ const forbiddenByLayer = {
     /org\.springframework\./,
     /com\.baomidou\.mybatisplus\.(core|extension)\./,
     /org\.mybatis\./,
-    /org\.dromara\.common\.mybatis\.(?!core\.domain\.BaseEntity)/,
-    /org\.dromara\.common\.(redis|notify|oss|satoken|web)\./,
+    /org\.namewta\.common\.mybatis\.(?!core\.domain\.BaseEntity)/,
+    /org\.namewta\.common\.(redis|notify|oss|satoken|web)\./,
   ],
 };
 
@@ -205,7 +212,7 @@ const legacyReadModelAllowList = new Set([
  */
 function isBoundaryImport(imported) {
   return Boolean(basePackage && imported.startsWith(`${basePackage}.`))
-    || /^(org\.dromara\.(system|workflow|common)\.|com\.baomidou\.|org\.mybatis\.|org\.springframework\.|tools\.jackson\.)/.test(imported);
+    || /^(org\.namewta\.|com\.baomidou\.|org\.mybatis\.|org\.springframework\.|tools\.jackson\.)/.test(imported);
 }
 
 const serviceTypeNames = new Set(
@@ -215,12 +222,12 @@ const serviceTypeNames = new Set(
       const segments = path.split('/');
       return segments.length === packageSegmentCount + 2 && segments[packageSegmentCount] === 'service';
     })
-    .map(file => readFileSync(file, 'utf8').match(/\b(?:class|interface|record|enum)\s+(\w+)/)?.[1])
+    .map(file => sources.get(file).match(/\b(?:class|interface|record|enum)\s+(\w+)/)?.[1])
     .filter(Boolean),
 );
 
 for (const file of javaFiles) {
-  const source = readFileSync(file, 'utf8');
+  const source = sources.get(file);
   const relativePath = relative(javaRoot, file).replaceAll('\\', '/');
   const segments = relativePath.split('/');
   const root = segments[packageSegmentCount];
@@ -234,10 +241,7 @@ for (const file of javaFiles) {
     if (!/Service\.java$/.test(filename) || /ServiceImpl\.java$/.test(filename)) {
       fail(`${relativePath}: layered service 目录只能放语义明确的 *Service，不得放 ServiceImpl/Provider/Gateway/Store 等适配实现`);
     }
-    const sourceWithoutComments = source
-      .replace(/\/\*[\s\S]*?\*\//g, '')
-      .replace(/^\s*\/\/.*$/gm, '');
-    const sourceWithoutImports = sourceWithoutComments.replace(/^import\s+[^;]+;\s*$/gm, '');
+    const sourceWithoutImports = source.replace(/^\s*import\s+[^;]+;\s*$/gm, '');
     for (const serviceType of serviceTypeNames) {
       if (serviceType !== filename.replace(/\.java$/, '')
           && new RegExp(`\\b${serviceType}\\s+\\w+\\b`).test(sourceWithoutImports)) {
@@ -263,16 +267,16 @@ for (const file of javaFiles) {
   }
 
   if (['entry', 'service', 'dao', 'mapper', 'support', 'port', 'adapter', 'domain'].includes(layer)
-      && /@DSTransactional\b/.test(source)) {
+      && /@(?:com\.baomidou\.dynamic\.datasource\.annotation\.)?DSTransactional\b/.test(source)) {
     fail(`${relativePath}: @DSTransactional 事务边界必须位于 UseCase`);
   }
-  if (/@Transactional\b/.test(source)) {
+  if (/@(?:org\.springframework\.transaction\.annotation\.)?Transactional\b/.test(source)) {
     fail(`${relativePath}: 必须使用 @DSTransactional，Spring @Transactional 不属于 layered 新模块事务合同`);
   }
 
   if (!patterns) continue;
 
-  const imports = [...source.matchAll(/^import\s+([^;]+);/gm)].map(match => match[1].trim());
+  const imports = [...source.matchAll(/^\s*import\s+(?:static\s+)?([^;]+);/gm)].map(match => match[1].trim());
   for (const [from, , pattern] of requiredChain) {
     if (layer === from && imports.some(imported => basePackage && imported.startsWith(`${basePackage}.`) && pattern.test(imported))) {
       observedImports.set(from, true);

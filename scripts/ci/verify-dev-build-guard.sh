@@ -4,7 +4,6 @@ set -euo pipefail
 workspace_root=$(git rev-parse --show-toplevel)
 guard_module="${workspace_root}/scripts/lib/backend-build-guard.sh"
 dev_runtime="${workspace_root}/scripts/lib/dev-runtime.sh"
-vscode_settings="${workspace_root}/.vscode/settings.json"
 test_root=$(mktemp -d "${TMPDIR:-/tmp}/namewta-build-guard-test.XXXXXX")
 backend_fixture="${test_root}/backend"
 lock_root="${test_root}/locks"
@@ -36,15 +35,7 @@ if [[ ! -r "${dev_runtime}" ]]; then
   echo "dev runtime module is unavailable: ${dev_runtime}" >&2
   exit 1
 fi
-if [[ ! -r "${vscode_settings}" ]] ||
-  ! grep -Eq '"java\.autobuild\.enabled"[[:space:]]*:[[:space:]]*false' "${vscode_settings}"; then
-  echo "workspace Java auto build must stay disabled to protect Maven target output" >&2
-  exit 1
-fi
-if git -C "${workspace_root}" check-ignore -q .vscode/settings.json; then
-  echo "workspace Java auto-build protection is ignored and cannot be delivered" >&2
-  exit 1
-fi
+# 构建锁与 JAR 完整性是可执行合同，不以开发者是否使用某个编辑器为前提。
 # shellcheck source=../lib/backend-build-guard.sh
 source "${guard_module}"
 # shellcheck source=../lib/dev-runtime.sh
@@ -429,4 +420,4 @@ if [[ "${tracked_config_output}" != *"正在刷新后端本地 Maven reactor"* ]
   exit 1
 fi
 
-echo "workspace Java auto build, backend lock lifecycle, Windows classpath parsing, and module JAR class-set verification passed"
+echo "backend lock lifecycle, Windows classpath parsing, and module JAR class-set verification passed"
