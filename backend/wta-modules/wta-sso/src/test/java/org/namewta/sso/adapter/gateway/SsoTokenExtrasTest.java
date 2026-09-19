@@ -1,4 +1,4 @@
-package org.namewta.sso.support;
+package org.namewta.sso.adapter.gateway;
 
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import org.namewta.common.core.exception.ServiceException;

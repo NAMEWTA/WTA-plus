@@ -18,7 +18,11 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Base64;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -67,12 +71,45 @@ class SsoAuthorizationServiceTest {
     }
 
     @Test
+    void callbackPreservesOpaqueStateAndAlreadyEncodedRegisteredQuery() {
+        String redirect = REDIRECT + "?tenant=a%26b&hint=hello+world";
+        var catalog = client(ADMIN_CLIENT);
+        catalog.setRedirectUris(List.of(redirect));
+        var subject = new SsoAuthorizationService(store, ignored -> catalog, new StubIdentity(), tokens, clock, Duration.ofMinutes(5));
+        String state = "  +&%中文/雪=尾部  ";
+        var result = subject.authorize(new SsoOAuthCommands.AuthorizeCommand("code", ADMIN_CLIENT, redirect,
+            state, PkceS256.challenge(VERIFIER), "S256", new SsoAuthenticatedUser(1L, "WTA")));
+        String query = URI.create(result.redirectUri()).getRawQuery();
+        assertTrue(query.startsWith("tenant=a%26b&hint=hello+world&"));
+        assertEquals(4, query.split("&").length);
+        String code = extractCode(result.redirectUri());
+        assertEquals(state, URLDecoder.decode(query.substring(query.indexOf("&state=") + 7), StandardCharsets.UTF_8));
+        assertEquals(state, store.findByCode(code).getState());
+        assertEquals(ADMIN_CLIENT, subject.exchange(new SsoOAuthCommands.TokenCommand(
+            "authorization_code", code, redirect, ADMIN_CLIENT, VERIFIER)).clientId());
+    }
+
+    @Test
+    void rejectsFragmentsAndReservedResponseParametersEvenWhenRegistered() {
+        for (String suffix : List.of("#fragment", "#", "?code=old", "?state=old", "?%73tate=old", "?error=old", "?error_description=old", "?error_uri=old")) {
+            String redirect = REDIRECT + suffix;
+            var catalog = client(ADMIN_CLIENT);
+            catalog.setRedirectUris(List.of(redirect));
+            var subject = new SsoAuthorizationService(store, ignored -> catalog, new StubIdentity(), tokens, clock, Duration.ofMinutes(5));
+            assertThrows(ServiceException.class, () -> subject.authorize(new SsoOAuthCommands.AuthorizeCommand(
+                "code", ADMIN_CLIENT, redirect, "state", PkceS256.challenge(VERIFIER), "S256", new SsoAuthenticatedUser(1L, "WTA"))), suffix);
+        }
+    }
+
+    @Test
     void successfulExchangeUsesBusinessClientNotSsoAndRejectsNegatives() {
         SsoAuthenticatedUser user = new SsoAuthenticatedUser(1L, "WTA");
         SsoOAuthCommands.AuthorizeResult authorized = service.authorize(new SsoOAuthCommands.AuthorizeCommand(
             "code", ADMIN_CLIENT, REDIRECT, "csrf-state", PkceS256.challenge(VERIFIER), "S256", user));
         assertFalse(authorized.loginRequired());
         String code = extractCode(authorized.redirectUri());
+        assertEquals(32, Base64.getUrlDecoder().decode(code).length);
+        assertTrue(code.matches("[A-Za-z0-9_-]{43}"));
 
         assertThrows(ServiceException.class, () -> service.exchange(new SsoOAuthCommands.TokenCommand(
             "authorization_code", code, REDIRECT, ADMIN_CLIENT, VERIFIER + "nope")));

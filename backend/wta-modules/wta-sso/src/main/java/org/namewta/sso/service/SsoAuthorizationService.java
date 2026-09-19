@@ -12,14 +12,19 @@ import org.namewta.sso.port.SsoBusinessTokenPort;
 import org.namewta.sso.port.SsoClientCatalogPort;
 import org.namewta.sso.port.SsoIdentityPort;
 import org.namewta.sso.support.PkceS256;
+import org.namewta.sso.support.SsoBearerTokens;
 import org.namewta.system.api.model.LoginUser;
+import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.UriUtils;
 
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Set;
 
 /**
  * Authorization Code + PKCE 核心协议：签发、换票与负向拒绝。
@@ -83,18 +88,18 @@ public class SsoAuthorizationService {
         identityPort.assertClientAccess(command.user().getUserId(), client.getClientId());
         SsoAuthorizationCode code = new SsoAuthorizationCode();
         code.setAuthorizationCodeId(IdGeneratorUtil.nextLongId());
-        code.setAuthorizationCode(newCode());
+        code.setAuthorizationCode(SsoBearerTokens.create());
         code.setClientId(client.getClientId());
         code.setRedirectUri(command.redirectUri().trim());
         code.setCodeChallenge(command.codeChallenge().trim());
-        code.setState(command.state().trim());
+        code.setState(command.state());
         code.setUserId(command.user().getUserId());
         code.setUsername(command.user().getUsername());
         code.setConsumed(Boolean.FALSE);
         code.setExpireTime(LocalDateTime.now(clock).plus(codeTtl));
         code.setVersion(0);
         codeDao.insert(code);
-        return SsoOAuthCommands.AuthorizeResult.redirect(appendQuery(command.redirectUri().trim(), code.getAuthorizationCode(), command.state().trim()));
+        return SsoOAuthCommands.AuthorizeResult.redirect(appendQuery(command.redirectUri().trim(), code.getAuthorizationCode(), command.state()));
     }
 
     /**
@@ -173,17 +178,32 @@ public class SsoAuthorizationService {
         if (allowed == null || allowed.stream().noneMatch(value::equals)) {
             throw new ServiceException("回调地址未登记");
         }
-    }
-
-    private static String newCode() {
-        byte[] bytes = new byte[32];
-        ThreadLocalRandom.current().nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        try {
+            URI uri = URI.create(value);
+            if (uri.getRawFragment() != null || uri.getHost() == null || uri.getUserInfo() != null
+                || !("https".equalsIgnoreCase(uri.getScheme()) || "http".equalsIgnoreCase(uri.getScheme()))) {
+                throw new IllegalArgumentException();
+            }
+            // 注册URL已有的普通query保持原编码，但响应保留字段不能被预置或重复。
+            if (uri.getRawQuery() != null) {
+                Set<String> reserved = Set.of("code", "state", "error", "error_description", "error_uri");
+                for (String parameter : uri.getRawQuery().split("&")) {
+                    String name = URLDecoder.decode(parameter.split("=", 2)[0], StandardCharsets.UTF_8);
+                    if (reserved.contains(name)) throw new IllegalArgumentException();
+                }
+            }
+        } catch (IllegalArgumentException failure) {
+            throw new ServiceException("SSO回调地址格式无效或包含保留参数");
+        }
     }
 
     private static String appendQuery(String redirectUri, String code, String state) {
-        String separator = redirectUri.contains("?") ? "&" : "?";
-        return redirectUri + separator + "code=" + code + "&state=" + state;
+        // fromUri保留注册URL的raw组件；仅对新值编码一次，避免已有%xx被双重编码。
+        URI callback = URI.create(URI.create(redirectUri).toASCIIString());
+        return UriComponentsBuilder.fromUri(callback)
+            .queryParam("code", UriUtils.encode(code, StandardCharsets.UTF_8))
+            .queryParam("state", UriUtils.encode(state, StandardCharsets.UTF_8))
+            .build(true).toUriString();
     }
 
 }
