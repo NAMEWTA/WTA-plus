@@ -43,7 +43,7 @@ Lead/implementation owner始终先读完整Map，再读匹配Skill入口和scope
 
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| T-01 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/01-required-phone-write-paths.md</Path> | 注册、管理新增/编辑、个人资料与新增/覆盖导入形成一致手机号写入合同，旧空号用户仍可登录。 | — | deep | high | yes | codex-root | AC-001, AC-002, AC-003, AC-004, AC-005 | W1/G-phone | in_progress |
+| T-01 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/01-required-phone-write-paths.md</Path> | 注册、管理新增/编辑、个人资料与新增/覆盖导入形成一致手机号写入合同，旧空号用户仍可登录。 | — | deep | high | yes | codex-root | AC-001, AC-002, AC-003, AC-004, AC-005 | W1/G-phone | done |
 | T-02 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/02-retire-snail-ai-business-surface.md</Path> | Admin 不再呈现聊天/控制台，也不访问旧注册桥；Java 两个 AI artifact 仅保留可构建占位。 | — | deep | high | yes | codex-root | AC-006, AC-007, AC-008 | W1/G-ai | ready |
 | T-03 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/ticket/03-remove-snail-ai-release-and-baseline.md</Path> | 最终源码与本地发布候选不产出或启动SnailAI；新库无vendor表，旧数据原样保留，当前API/基座/文档与两个前置切片一致。 | T-01, T-02 | deep | high | yes | codex-root | AC-009, AC-010, AC-011, AC-012 | W2/G-final | ready |
 

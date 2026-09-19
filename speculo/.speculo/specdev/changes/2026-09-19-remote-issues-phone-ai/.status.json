@@ -9,7 +9,8 @@
     "specdev/grill-with-docs",
     "specdev/spec",
     "specdev/tickets",
-    "specdev/goal-plan"
+    "specdev/goal-plan",
+    "specdev/implement"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
@@ -39,7 +40,7 @@
     "history": []
   },
   "created_at": "2026-09-19T08:03:45.271401Z",
-  "updated_at": "2026-09-19T10:33:11.939574+00:00",
+  "updated_at": "2026-09-19T10:53:22.574649+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -47,7 +48,7 @@
   "deviations": [
     "USER-DECISION: 本次把三个捕获事项集中于一个 change，替代逐条创建 change 的默认路由；每条仍独立冻结来源，不覆盖历史。",
     "USER-DECISION: G Q2明确将Issue #3另建2026-09-19-go-python-ai-platform并暂缓；本change实施范围收敛#1/#2。",
-    "VALIDATION-LIMIT: 当前工作树stage goal-plan受既有用户validator修改误判多change而exit1；保留失败和原改动，当前无stage/HEAD原版P/controller均exit0，规划质量review通过。详见evidence/planning-review.md与LOG-008。"
+    "HISTORICAL-RESOLVED: 当前工作树stage goal-plan受既有用户validator修改误判多change而exit1；保留失败和原改动，当前无stage/HEAD原版P/controller均exit0，规划质量review通过。详见evidence/planning-review.md与LOG-008。；已按LOG-011授权恢复并通过当前校验。"
   ],
   "worktrees": [
     {
@@ -60,38 +61,38 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": null,
+      "source_checkpoint": "ccd9d98fe288fc90a16de25d1145a60c7222827f",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "dea1754fb1cae6d8d32fcc1ed19a91d6610ea5cd",
-        "source_sha": null,
+        "source_sha": "ccd9d98fe288fc90a16de25d1145a60c7222827f",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "ccd9d98fe288fc90a16de25d1145a60c7222827f",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-01.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-01.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-01.md</Path>",
-        "attempts": 0,
-        "promotion_status": "pending"
+        "attempts": 1,
+        "promotion_status": "applied"
       },
-      "status": "active",
-      "updated_at": "2026-09-19T10:33:11.939574+00:00"
+      "status": "integrated",
+      "updated_at": "2026-09-19T10:53:22.574649+00:00"
     }
   ]
 }

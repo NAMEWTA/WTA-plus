@@ -13,4 +13,4 @@
 | S4 / P2 | 初始化 URL 失败会将 Spring 全局状态清空 | 接受并修复。显式 capturedSpringState 标志仅恢复已接管快照；sentinel factory/context 测试验证早期失败不改变原引用。 |
 | S5 / P3 | 关闭验证码的测试无法保护消费顺序 | 接受并修复。单元路径启用验证码；另在隔离 MySQL/Redis 通过真实注册/RedisUtils 检查非法号保留 challenge、合法号消费并提交。临时错误顺序 mutation 会使验证失败，测试后恢复。 |
 
-修复复审和最终 SHA 待 Lead 补录。标准轴结论不被改写为初审 pass；S2 必须在 T-03 闭合，S3 作为已有合同边界保留。
+复审固定 ccd9d98fe288fc90a16de25d1145a60c7222827f：标准轴 packet phone-ai-T01-standards-2 pass（本轮修复及独立runner边界），规范轴 packet phone-ai-T01-specification-2 pass。标准轴结论不被改写为初审 pass；S2 必须在 T-03 闭合，S3 作为已有合同边界保留。

@@ -8,11 +8,11 @@ artifact: "ticket"
 change: "2026-09-19-remote-issues-phone-ai"
 id: "T-01"
 title: "手机号在注册与资料写入时必填，保留存量登录"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "涉及公开 DTO/HTTP、资料部分更新、导入持久化、权限与敏感字段。"
-ready: true
+ready: false
 risk: "high"
 blocked_by: []
 contract_ids: ["AC-001", "AC-002", "AC-003", "AC-004", "AC-005"]
@@ -108,16 +108,16 @@ T-01/T-02不得修改T-03拥有的API生成物或SQL；交回有来源的合同�
 
 ## 10. 验收标准
 
-- [ ] AC-001：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-002：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-003：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-004：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-005：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] 已按Map→Skill→Ticket调用真实项目Skill，并在Evidence记录匹配phase/operation/hash。
-- [ ] 正常、失败、回归与E2E实际执行，含cwd、版本、命令、退出码、用例/skip数量及失败分类。
-- [ ] 所有写入在授权路径，shared path由指定owner修改。
-- [ ] 已获相应执行授权并形成非空implementation commit；Lead的current-workspace direct-parent验收通过，父分支result可回读。
-- [ ] 未完成项/残余风险如实记录；不把未实施、无修改或仅Evidence票标Done。
+- [x] AC-001：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-002：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-003：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-004：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-005：Spec对应可观察结果由本票验证矩阵证明。
+- [x] 已按Map→Skill→Ticket调用真实项目Skill，并在Evidence记录匹配phase/operation/hash。
+- [x] 正常、失败、回归与E2E实际执行，含cwd、版本、命令、退出码、用例/skip数量及失败分类。
+- [x] 所有写入在授权路径，shared path由指定owner修改。
+- [x] 已获相应执行授权并形成非空implementation commit；Lead的current-workspace direct-parent验收通过，父分支result可回读。
+- [x] 未完成项/残余风险如实记录；不把未实施、无修改或仅Evidence票标Done。
 
 ## 11. SKILL 调用计划
 

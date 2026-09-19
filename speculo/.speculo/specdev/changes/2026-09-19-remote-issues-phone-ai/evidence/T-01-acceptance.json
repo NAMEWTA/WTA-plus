@@ -1,0 +1,29 @@
+{
+  "ticket_id": "T-01",
+  "lead": "codex-root",
+  "parent_before_sha": "dea1754fb1cae6d8d32fcc1ed19a91d6610ea5cd",
+  "implementation_commit": "ccd9d98fe288fc90a16de25d1145a60c7222827f",
+  "verified_tree_sha": "68a6e76e224c6fa68e7a6440fb0a9d85d8746a1f",
+  "observed_head_before": "ccd9d98fe288fc90a16de25d1145a60c7222827f",
+  "porcelain_before": "",
+  "started_at": "2026-09-19T10:49:53.678630+00:00",
+  "observed_head_after": "ccd9d98fe288fc90a16de25d1145a60c7222827f",
+  "porcelain_after": "",
+  "completed_at": "2026-09-19T10:51:43.531351+00:00",
+  "verification": [
+    {
+      "command": "python3 evidence/run-t01-owned-mysql.py",
+      "exit_code": 0,
+      "passed": 28,
+      "skipped": 0,
+      "negative": "wrong owner fails; sentinel unchanged; containers removed"
+    },
+    {
+      "command": "PATH=/tmp/wta-phone-tool-bin:$PATH corepack pnpm exec playwright test --config playwright.phone.config.ts",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "passed": 10,
+      "skipped": 0
+    }
+  ]
+}

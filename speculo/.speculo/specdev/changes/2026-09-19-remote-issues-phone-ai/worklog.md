@@ -2,13 +2,13 @@
 
 ## Goal
 
-获取当前 remote 全部待处理 Issue 并完成来源冻结。按用户最新决定，#1 手机号必填与 #2 移除 Snail AI 在本 change 内完成 T-triage → G → S → T → P；#3 Go/Python 已另建暂缓 change，等待用户想清楚。
+获取当前 remote 全部待处理 Issue 并完成来源冻结。按用户最新决定，#1 手机号必填与 #2 移除 Snail AI 在本 change 内完成 T-triage → G → S → T → P → I；#3 Go/Python 已另建暂缓 change，等待用户想清楚。
 
 完成标准：3 条来源分别完整冻结并可校验 hash；G 高影响决策有用户答案和明确共识；S 的可观察验收合同 Ready；T 的票据、依赖、Skill 绑定和 Map Ready；P 的目标、Gate、workspace 策略和恢复入口完整。各阶段运行实际校验并回读真实工件。规划工件不代表产品实现已完成。
 
 ## Current status
 
-用户已激活 I 并要求完成 change，T-01 本地实现与验证已完成，当前等待本地提交/基线方案确认；单一产品 writer=codex-root。原有4项用户改动保留，先完成可审查差异和本地验证，再确认必要提交动作；尚未提交或运行产品部署。提交/集成出口不以文档标记自授权。
+用户已按 LOG-011 批准基线修复和本地提交。T-01 done，固定 result ccd9d98，双轴和 Lead 验收通过；下一步 T-02→T-03 严格串行。产品与状态唯一 writer=codex-root；无部署、推送或远程 Issue 回写。
 
 ## Decisions
 
@@ -24,7 +24,7 @@
 
 ## Remaining work
 
-用户已要求实施。当前完成 T-01 本地实现/回归和 Lead 浏览器验收；提交方案等待已发出的异步确认。完成本票不可变提交与双轴审查后，按 T-02→T-03 严格串行继续，最后执行整体发布候选、数据保留与 SpecDev 完成门。#3 继续独立暂缓。
+继续 T-02→T-03，完成 Snail AI 退出、当前 OpenAPI、六份 SQL 与旧数据保留验证、同源发布候选和最终 SpecDev 门。#3 继续独立暂缓。
 
 ## Verification
 
@@ -66,3 +66,5 @@ T-01 本地实现/验证全部通过，Ticket 与 current workspace 记录为 bl
 ## 2026-09-19 授权后进展
 
 用户已批准 preflight 方案和本 change main 本地提交；基线 dea1754、T-01 初始实现 241a96a 均已提交。固定点双轴初审完成；产品规范通过，测试安全修复与复审进行中，后续 T-02/T-03 尚未开工。current 串行 Git 校验缺陷以独立治理修复处理。仍无 push、部署或真实数据修改。
+
+T-01 已验收：ccd9d98，双轴通过，最终同tree28真实服务/安全/登录及10浏览器均通过；result不可变。接着串行T-02；OpenAPI S2留T-03必闭合。
