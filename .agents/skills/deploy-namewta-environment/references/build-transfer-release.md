@@ -6,11 +6,11 @@
 bash release-artifacts/scripts/verify-release.sh
 bash release-artifacts/scripts/release-manage.sh build \
   --target all --env prod --env-file release-artifacts/.env
-bash release-artifacts/scripts/release-manage.sh stage --env prod
+bash release-artifacts/scripts/release-manage.sh stage --env prod --release <完整build输出的ID>
 bash release-artifacts/scripts/release-manage.sh bundle --env prod
 ```
 
-发布清单必须记录父仓库与子模块修订、环境、文件和 SHA-256。不得打包 `.env`、`application-local.yml`、前端 `*.local`、证书私钥或其他密钥。
+发布清单 schema 2 记录单一干净 monorepo source revision/tree/归档摘要、环境，以及每文件的 sourceRevision、大小、可执行位和 SHA-256。完整 build 从该 Git 归档生成不可变版本，局部构建不能晋升；stage 只原子替换一个 current 指针，不覆盖源 Docker 上下文。消费端必须一次解析并固定版本路径；已运行容器需要显式重建，不会自动跟随 symlink。不得打包 `.env`、`application-local.yml`、前端 `*.local`、证书私钥或其他密钥。
 
 前端生产构建必须从 profile 注入 `VITE_APP_CONTEXT_PATH` 与 `VITE_APP_BASE_API`。构建完成后运行 `scripts/verify-frontend-artifact.mjs`，确认 `index.html` 中 JavaScript/CSS 使用预期 `assetPrefix`；错误根 `/` 构建不得进入传输阶段。
 
@@ -27,9 +27,9 @@ bash release-artifacts/scripts/release-manage.sh bundle --env prod
 5. 启动或验证基础设施。
 6. 启动可选 Nacos，并验证稀疏配置摘要。
 7. 逐个替换后端实例，每次都验证健康。
-8. 发布前端资产并重载入口。
+8. 用固定版本路径重建前端容器并验证入口。
 9. 验证 API、UI、OSS、监控和日志。
-10. 提升活动指针并保留上一版本。
+10. 记录实际容器镜像与固定版本；保留上一版本。脚本的 stage 指针仅选择产物，不表示所有服务已健康切换。
 
 本机缺少 Docker 时只能把 Compose 校验报告为 skipped；目标机必须使用现场精确 project/files/env 补齐 `config --quiet`，否则不能开始滚动。完整 Gate 和逐实例失败恢复见[全栈滚动发布运行手册](rolling-full-stack-release.md)。
 
