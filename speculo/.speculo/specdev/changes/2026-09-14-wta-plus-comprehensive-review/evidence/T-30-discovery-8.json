@@ -1,0 +1,199 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.transport.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.transport.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/transport-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "browser-https-transport.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "browser-https-transport.spec.ts",
+      "file": "browser-https-transport.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T-11 admin registers, logs in and reloads using ordinary HTTPS JSON",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6d33ecbdb1fb5ee4ca9c-2c7958dce5f9bdb417e5",
+          "file": "browser-https-transport.spec.ts",
+          "line": 73,
+          "column": 3
+        },
+        {
+          "title": "T-11 admin preserves ordinary JSON login failures without creating a session",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6d33ecbdb1fb5ee4ca9c-7503120e0a1dc257f56b",
+          "file": "browser-https-transport.spec.ts",
+          "line": 102,
+          "column": 3
+        },
+        {
+          "title": "T-11 home registers, logs in and reloads using ordinary HTTPS JSON",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6d33ecbdb1fb5ee4ca9c-9213cdb9db4be775fa6c",
+          "file": "browser-https-transport.spec.ts",
+          "line": 73,
+          "column": 3
+        },
+        {
+          "title": "T-11 home preserves ordinary JSON login failures without creating a session",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6d33ecbdb1fb5ee4ca9c-ded37d0a6820c9cdcefa",
+          "file": "browser-https-transport.spec.ts",
+          "line": 102,
+          "column": 3
+        },
+        {
+          "title": "T-11 Admin download preserves binary bytes and displays a JSON download failure",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6d33ecbdb1fb5ee4ca9c-f6640de7415320e6b697",
+          "file": "browser-https-transport.spec.ts",
+          "line": 111,
+          "column": 1
+        },
+        {
+          "title": "T-11 real Auth MVC rejects unknown Client and malformed registration without writing users",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6d33ecbdb1fb5ee4ca9c-2c747e95685388f2a857",
+          "file": "browser-https-transport.spec.ts",
+          "line": 128,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T01:54:59.400Z",
+    "duration": 31.38299999999998,
+    "expected": 0,
+    "skipped": 6,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

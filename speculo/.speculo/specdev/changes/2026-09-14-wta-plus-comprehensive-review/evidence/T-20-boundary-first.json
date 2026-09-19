@@ -1,0 +1,67 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/platform-http",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.73,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-first-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.93,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-first-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-system",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.23,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-first-3.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-admin",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.82,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-first-4.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.27,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-first-5.log"
+  }
+]

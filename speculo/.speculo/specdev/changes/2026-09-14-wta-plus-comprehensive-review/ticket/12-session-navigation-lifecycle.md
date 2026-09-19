@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-12
 title: 统一幂等会话清理与导航恢复状态
-status: "ready"
+status: "review"
 planning_depth: "standard"
 planning_depth_reason: "沿用现有模块的多文件行为修复：统一幂等会话清理与导航恢复状态"
 ready: true
@@ -16,11 +16,11 @@ risk: high
 blocked_by: ["T-07"]
 contract_ids: [AC-012]
 owner: single-agent
-expected_changes: ["<Path>frontend/apps/admin-web/src/store/</Path>", "<Path>frontend/apps/admin-web/src/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/application/</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/apps/home-web/src/router/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/</Path>", "<Path>frontend/apps/home-web/src/application/session.ts</Path>"]
-writable_paths: ["<Path>frontend/apps/admin-web/src/store/</Path>", "<Path>frontend/apps/admin-web/src/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/application/</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/apps/home-web/src/router/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/</Path>", "<Path>frontend/apps/home-web/src/application/session.ts</Path>"]
+expected_changes: ["<Path>frontend/apps/admin-web/src/store/</Path>", "<Path>frontend/apps/admin-web/src/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/application/</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/apps/home-web/src/router/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/</Path>", "<Path>frontend/apps/home-web/src/application/session.ts</Path>", "<Path>frontend/apps/home-web/src/application/http.ts</Path>", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path>", "<Path>frontend/apps/admin-web/src/layout/components/Navbar.vue</Path>", "<Path>frontend/packages/domains/admin/src/index.ts</Path>", "<Path>frontend/packages/domains/admin/src/index.test.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/</Path>", "<Path>frontend/packages/platform/auth/src/index.ts</Path>", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.test.ts</Path>", "<Path>frontend/playwright.lifecycle.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>frontend/apps/admin-web/src/views/system/user/profile/index.vue</Path>", "<Path>.agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md</Path>"]
+writable_paths: ["<Path>frontend/apps/admin-web/src/store/</Path>", "<Path>frontend/apps/admin-web/src/permission.ts</Path>", "<Path>frontend/apps/admin-web/src/application/</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/apps/home-web/src/router/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/</Path>", "<Path>frontend/apps/home-web/src/application/session.ts</Path>", "<Path>frontend/apps/home-web/src/application/http.ts</Path>", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path>", "<Path>frontend/apps/admin-web/src/layout/components/Navbar.vue</Path>", "<Path>frontend/packages/domains/admin/src/index.ts</Path>", "<Path>frontend/packages/domains/admin/src/index.test.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/</Path>", "<Path>frontend/packages/platform/auth/src/index.ts</Path>", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.test.ts</Path>", "<Path>frontend/playwright.lifecycle.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>frontend/apps/admin-web/src/views/system/user/profile/index.vue</Path>", "<Path>.agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>frontend/apps/admin-web/src/application/</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/apps/home-web/src/router/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/</Path>"]
-shared_path_owners: ["<Path>frontend/apps/admin-web/src/application/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/home-web/src/store/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/home-web/src/router/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/admin-web/src/router/</Path> => single-agent (Lead; serial T-12 turn)"]
+shared_paths: ["<Path>frontend/apps/admin-web/src/application/</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/apps/home-web/src/router/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/</Path>", "<Path>frontend/apps/home-web/src/application/http.ts</Path>", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path>", "<Path>frontend/apps/admin-web/src/layout/components/Navbar.vue</Path>", "<Path>frontend/packages/domains/admin/src/index.ts</Path>", "<Path>frontend/packages/domains/admin/src/index.test.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/</Path>", "<Path>frontend/packages/platform/auth/src/index.ts</Path>", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.test.ts</Path>", "<Path>frontend/playwright.lifecycle.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>frontend/apps/admin-web/src/views/system/user/profile/index.vue</Path>", "<Path>.agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md</Path>"]
+shared_path_owners: ["<Path>frontend/apps/admin-web/src/application/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/home-web/src/store/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/home-web/src/router/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/admin-web/src/router/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/home-web/src/application/http.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/admin-web/src/layout/components/Navbar.vue</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/packages/domains/admin/src/index.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/packages/domains/admin/src/index.test.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/packages/adapters/axios-browser/</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/packages/platform/auth/src/index.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/packages/platform/app-runtime/src/navigationRecovery.test.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/playwright.lifecycle.config.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/playwright.config.ts</Path> => single-agent (Lead; serial T-12 turn)", "<Path>frontend/apps/admin-web/src/views/system/user/profile/index.vue</Path> => single-agent (Lead; serial T-12 turn)", "<Path>.agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md</Path> => single-agent (Lead; serial T-12 turn)"]
 ---
 
 # T-12：统一幂等会话清理与导航恢复状态
@@ -98,8 +98,8 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - `frontend: pnpm test:e2e`
 
 - E2E disposition：required: 离线/超时logout、并发401、空角色恢复和切Client重登。
-- E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- E2E owner/environment：single-agent（Lead）/current-workspace；本票无数据库/缓存/OSS合同修改：使用独占HTTPS两Origin、真实构建与Chrome，API身份/故障由显式fixture控制；SSE另用真实保持连接的HTTPS端点，并回归真实Spring MVC HTTPS旅程。禁止连生产，不以fixture声称真实数据库或服务端授权通过。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。实际产品与验证结果见 evidence/T-12.md；全部提交暂缓，implementation/result SHA为空。
 
 ## 9. 发布、迁移与恢复
 
@@ -107,20 +107,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：恢复App整包后清本地会话重新登录；不得恢复过期身份缓存。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；用户已授权全部本地可逆实现和验证，所有提交/推送/部署继续暂缓。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-012`：logout超时/401/离线时本地token和动态路由仍清空。
-- [ ] `AC-012`：空角色账户每次恢复最多一次，不循环replace。
-- [ ] `AC-012`：切Client无旧菜单/权限残留，服务端授权仍为最终门禁。
-- [ ] `AC-012`：并发401只有一次恢复流程并可终止。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-012`：logout超时/401/离线时本地token和动态路由仍清空。
+- [x] `AC-012`：空角色账户每次恢复最多一次，不循环replace。
+- [x] `AC-012`：切Client无旧菜单/权限残留，服务端授权仍为最终门禁。
+- [x] `AC-012`：并发401只有一次恢复流程并可终止。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -131,3 +131,13 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：T-07。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+Revision48：核对最新上游197个路径hash后进入本票。源码确认Admin远端退出失败跳过本地清理；Home保留finally清token但未回收route/昵称，空roles仍作为恢复判据。尚未修改产品，先建立失败用例。
+
+Revision50：真实DML档案目录生成Profile，冲突检查揭示静态个人中心同名。静态route改AccountProfile，登记对应SFC name同步和父级路由事实；URL保持/user/profile。默认浏览器51通过/1独立Nacos环境skip，专用20/20；继续最终核验，不提交。
+
+Revision51：T-12达到本地review；44路径checkpoint、20/20专用与51/1skip默认浏览器、541前端测试、1Java/6Chrome真实HTTPS及最终79/8回归。提交仍暂缓，0Done；详见T-12.md。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`ae21ca00686e0065044e6e3b4a9eff01308498ff`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

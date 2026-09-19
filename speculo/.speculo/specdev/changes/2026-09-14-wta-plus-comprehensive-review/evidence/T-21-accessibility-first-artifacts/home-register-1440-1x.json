@@ -1,0 +1,50 @@
+{
+  "dimensions": {
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "dpr": 1
+  },
+  "contrasts": [
+    {
+      "selector": ".register-intro p",
+      "color": "rgb(100, 116, 139)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 4.4672928174139255
+    },
+    {
+      "selector": ".status",
+      "color": "rgb(100, 116, 139)",
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 4.758842787868666
+    },
+    {
+      "selector": ".submit",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        77,
+        156,
+        172
+      ],
+      "ratio": 3.150005794820479
+    },
+    {
+      "selector": "footer",
+      "color": "rgb(100, 116, 139)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 4.4672928174139255
+    }
+  ],
+  "zoomMethod": "CDP CSS viewport / zoom, DPR=zoom; equivalent desktop reflow, not CSS zoom"
+}

@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-09-18T07:42:40.074016+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "worktree_mode": "current",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java": "692c887d34478721e79aa50597e517b0f893fd59886c032fef3011b27bf2ede7",
+    "backend/wta-admin/src/test/java/org/namewta/test/logging/OperationLogRedactionTest.java": "d3a1874bec7e9044645d331584c8b110c19a35a2732d50c8b9ec59a472968c3d",
+    "backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java": "e12b9024f2e5fa523ad8548bd8a20e6cd4e90f70dbfb9ca41d2078b8f2cc9905",
+    "backend/wta-common/wta-common-json/src/test/java/org/namewta/common/json/utils/LogSanitizerTest.java": "3d1d701b1b9f670a1e728926ff366a73ff186521edd32199e1e120745a3a1350",
+    "backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java": "a0fb90268518a6b8bf10fd87cb0e1aafc854a41e561c9305fae429b60686990b",
+    "backend/wta-common/wta-common-log/src/test/java/org/namewta/common/log/aspect/LogAspectRedactionTest.java": "688971e34af258e32cd8800c6c1c9b5a2aa04ceb55a774d1df55bdbe60423c14",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/handler/GlobalExceptionHandler.java": "930958d5b146db3b85ec5e3c29d7b237e1f5054f91dfb6ace6763adf5e8f0073",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogBodySanitizer.java": "085feec42dc843c9c48ee9e233de819ab9f03f2ee15d95c5d0d13d9dcd63c1f5",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogEventWriter.java": "870d79b871fa061e9926597bf47f280737818bc148be3376e28e1af714b9637d",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java": "bd96dd311f507e450ab52c87acae43ff97e0973f8d3521bb23e252b9bc4cfd62",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java": "f4520b6ad633942ea657952c64e39c0fd3f76169b2140ab652d85788b057f8da",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java": "57c8cc0849ccf26ad5e7c7b94888a54ad3bf01c2d3641071f6f5ac798ec37aae",
+    "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java": "d8241ea3f4fe517557a720d37830f5baed23678c7de34e155f874ec9c6a5c99f",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java": "dc1efa65302b70250ffc4b2e21b42a3b619db97e5074bd1ddbe60a912ccc994a"
+  }
+}

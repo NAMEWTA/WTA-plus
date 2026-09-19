@@ -1,5 +1,7 @@
 # 接续说明
 
+当前执行以 goal-plan.md、tickets-map.md 和 worklog.md 最新 revision 为准。用户已授权全部本地可逆工作并明确暂缓所有提交；截至 revision59，13票本地review、16票ready、2票规划blocked、0Done。下文“尚未实施/plan-only”等是历史规划快照，不再代表当前授权。
+
 本次T/P只运行plan：31票文档已完善，29票局部Ready、2票blocked。Spec总体draft、Goal blocked/ready_for_execution=false；这与“规划产物已交付”并不矛盾。0票实施、0票Done，没有commit/集成/产品测试或发布结果。
 
 恢复入口：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path> → <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path> → 适用项目Skill → 当前Ticket → change状态/最新Evidence。必须保持单人单并发，禁止所有子代理。

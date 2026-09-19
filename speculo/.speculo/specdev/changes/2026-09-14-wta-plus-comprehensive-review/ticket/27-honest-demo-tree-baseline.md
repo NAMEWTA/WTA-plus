@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-27
 title: 修复Demo树样例并删除误导占位实现
-status: "ready"
+status: "review"
 planning_depth: "standard"
 planning_depth_reason: "沿用现有模块的多文件行为修复：修复Demo树样例并删除误导占位实现"
 ready: true
@@ -16,11 +16,11 @@ risk: medium
 blocked_by: ["T-26"]
 contract_ids: [AC-027]
 owner: single-agent
-expected_changes: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>"]
-writable_paths: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>"]
+expected_changes: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
+writable_paths: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>"]
-shared_path_owners: ["<Path>backend/wta-modules/wta-demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>frontend/packages/domains/demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>frontend/packages/web-domains/demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>docs/fm/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; serial T-27 turn)"]
+shared_paths: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
+shared_path_owners: ["<Path>backend/wta-modules/wta-demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>frontend/packages/domains/demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>frontend/packages/web-domains/demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>docs/fm/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; serial T-27 turn)"]
 ---
 
 # T-27：修复Demo树样例并删除误导占位实现
@@ -97,7 +97,7 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 - E2E disposition：required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本地工作树验证完成，见evidence；implementation_commit/result_sha/candidate为空，提交暂缓。
 
 ## 9. 发布、迁移与恢复
 
@@ -105,20 +105,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：事务失败保留原树；仅清本次测试数据，不移除Demo产品能力。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮实现与本地验证已授权，用户要求全部提交暂缓。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-027`：保存/删除路径不再有虚假校验TODO。
-- [ ] `AC-027`：非法parent、环、带子节点删除按明确合同处理。
-- [ ] `AC-027`：模板代表输出可编译且与前后端树语义一致。
-- [ ] `AC-027`：保留演示所需权限/日志，不把示例缺陷推广到System。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-027`：保存/删除路径不再有虚假校验TODO。
+- [x] `AC-027`：非法parent、环、带子节点删除按明确合同处理。
+- [x] `AC-027`：模板代表输出可编译且与前后端树语义一致。
+- [x] `AC-027`：保留演示所需权限/日志，不把示例缺陷推广到System。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -129,3 +129,13 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：T-26。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+Revision104：T-27开始，515条上游最新哈希均一致。TestTree保存/删除校验确为TODO；父0为根，无名称唯一约束。按实际父边定位根并排序加锁，锁后current read重验父链/权限，结构不变量不能被isValid=false跳过；批删有子节点整批拒绝。同步classic树模板的无ancestors分支与事务/删除校验，并实际渲染编译/负向测试；保留Demo bundle，不扩展普通表领域规则。26review/1in_progress/2ready/2blocked/0Done，全部提交暂缓。
+
+Revision105：T-27真实MySQL红灯3/3失败、零skip，已复现孤儿插入、后代成环和有子节点删除。源码test_tree仅PRIMARY，无parent_id索引；为直接子节点current-read/行锁避免全表扫描，登记六文件基座10-cde-base-ddl.sql精确写集，仅新增test_tree(parent_id)索引，不建表、不新增迁移脚本、不操作现有环境。
+
+Revision106：T-27本地review。15真实MySQL、6真实HTTP、21实际模板渲染/编译/MySQL场景全部零skip；695默认后端通过/97环境skip、4 Demo前端、full/core打包及清单、6静态命令通过。15路径checkpoint、513上游非重叠不变/2重叠登记，累计528。27review/2ready/2blocked/0Done；全部提交继续暂缓，下一票T-29。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`9c3bba7242e9fb165d96395ffc101f564fb2283d`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

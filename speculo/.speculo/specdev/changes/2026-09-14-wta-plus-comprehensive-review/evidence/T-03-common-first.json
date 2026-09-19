@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-web,wta-common/wta-common-openapi",
+    "-am",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-19T02:24:12.546602+00:00",
+  "exit_code": 0,
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-common-first.log"
+}

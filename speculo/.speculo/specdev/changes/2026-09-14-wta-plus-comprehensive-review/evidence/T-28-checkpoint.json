@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-09-18T22:12:26.324128+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "candidate": null,
+  "files": {
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisher.java": null,
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisher.java": "0ca034d53b95167b70b480d432c0f0e55114c4009d13bf3c771e7f3c1eef18df",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java": "108f17bb9061becbe55b9c5f5ac98533c5ba49468b1cb3d972fbf85ba2f6ac0d",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java": "8fffd75a8e8b7a3b1867acad4947634253d70ac05143727e0bd9c9271ee6e111",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisherTest.java": null,
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java": "7675a205dc41608ab34cffcfe1bfc3174e58e97aef935748b8b3ddf498bc1dcc",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/worker/NotifyOutboxWorkerWakePollTest.java": "d43ce6185b07620fe7add69568b34394a1c78da8e27ac43e7bbea7093b7b43d3",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyWakeIntegrationTest.java": "159dc82f58a71e009ef18e0c1581338fb9e790cf2568aeacf808d374686149aa"
+  },
+  "upstream_nonoverlap_count": 406,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisherTest.java"
+  ]
+}

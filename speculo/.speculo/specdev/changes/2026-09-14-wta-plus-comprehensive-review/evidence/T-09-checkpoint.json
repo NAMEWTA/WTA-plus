@@ -1,0 +1,26 @@
+{
+  "captured_at": "2026-09-18T11:54:58.566489+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "frontend/package.json": "a6d3d94441f21fc2be29a9181776a6dd594fa1b82ec0b63a5a8ee4f3e1003bc7",
+    "frontend/apps/admin-web/vite.config.ts": "32d6d167aaf477ee02879291c686fedb600d272608b322c428bfad11d4c1bb85",
+    "frontend/apps/home-web/vite.config.ts": "5e21c8ed71d853ea309f1409de87e2d816ac761ce417246d3ad5d7b93b019662",
+    "frontend/apps/sso-web/vite.config.ts": "abfa5ef8aefdece11e0912ac15656ea9be62526f1886102b3a9b06a2c94e2d2b",
+    "frontend/packages/web-domains/system/src/sso-app/SsoAppPage.vue": "7aed5b89c7a22693bb4f53487c9f0f098df2284d80fb65dfb02e14a808284285",
+    "frontend/packages/web-domains/notify/src/ConfigPage.vue": "75071cbf539c4fcf13a0da639041f1029ac60feeae52d8f295c3af7bf03a7ca4",
+    "scripts/ci/verify-admin-bundle.sh": "55b9ba8177756658ee27e243c27c3175ce5e2dbbc2a53c75799e78c8cff1025a",
+    "scripts/ci/run-external-services.sh": "cfc1430352f04f8885d06b6427caa4242497ad8785914ba0c7d2d18664783d1d",
+    "scripts/ci/verify-external-tests.py": "97402e4cb3c7e87190d812ee862cadf0f7159e0a0550ce435106e9c3c253f0a3",
+    "scripts/README.md": "e09ac4e39691c99808ad87941cfdc3a0c66f84876b1ed601e93a476994d33311",
+    "release-artifacts/scripts/release-manage.sh": "42c03feb2bc76cdbbf86620df5797071c276d6db2e5435723479f1e80b37bead",
+    "release-artifacts/tests/build-matrix.test.mjs": "df7c0a8c382ff6e575280d82dd9a1eddf230e51433bf9dfabdb28b38e1c73e90",
+    "release-artifacts/tests/external-service-reports.test.mjs": "4a2d000e8dade6b7c4aaa801808643a8154ab9d4953c36289e07e80e82775282",
+    "release-artifacts/tests/notify-baseline-contract.test.mjs": "f59652b73589b2f00bb2e766de09bbb27d182cef8612ffbc69f772abed643326",
+    "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql": "64529b9a1f6e30266d0b7255bca24f856b668227d21551daccea0f750f197dde",
+    "backend/wta-admin/src/test/java/org/namewta/test/migration/BusinessMenuRetirementMySqlIntegrationTest.java": "6d9d2f411f5a96485e60ac14762d58aa66bf7e5a5b4e7d82bb963c87b757fb94",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/monitor/NotifyMonitorMySqlIntegrationTest.java": "5431fee9d75e50809ef0770aec8b9433ec53bd7a6897cade2d12398dc0b91eee",
+    ".agents/skills/namewta-fullstack-development/references/backend/mapper-and-sql.md": "2312edc383eb4adf64e7108f8f792db024e44bcc8763bbc1ae32c3d16186fb6e"
+  }
+}

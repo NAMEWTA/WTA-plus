@@ -1,0 +1,9 @@
+{
+  "observed_exit_code": 143,
+  "time": "2026-09-18T21:09:09.792256+00:00",
+  "cause": "unknown; runner terminated after lint/typecheck passed and before test result was recorded",
+  "child_process_check": "ps found no pnpm/vitest/run-t21 process remaining",
+  "shim_cleanup": [
+    "/srv/WTA-plus/temp/team/lead/t21-pnpm-32jumnfs"
+  ]
+}

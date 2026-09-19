@@ -1,0 +1,272 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "wta-modules/wta-notify",
+      "-am",
+      "test"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 17.24,
+    "source_fingerprint": "1e521a7b30a01a49a27f00f6c7778ae01f7696f4d74460dad6acd3112deb25e7",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-tagged-tests-1.log",
+    "counts": {
+      "tests": 152,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suites": [
+      {
+        "name": "org.namewta.common.core.utils.ServletUtilsClientAddressTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.json.utils.LogSanitizerTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.nacos.NacosConfigAutoConfigurationTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.nacos.NacosConfigBootstrapTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.nacos.NacosConfigManagerTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.nacos.NacosConfigSettingsTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.nacos.NacosPropertySourceRegistrarTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.nacos.NacosSnapshotPolicyUnitTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest",
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.sms.notify.SmsDeliveryQueryClientTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.config.ClientAddressConfigTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.config.CorsPolicyTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.config.SysLogConfigTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.filter.ClientAddressFilterTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.filter.RequestBodyLimitTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.logging.SysLogEventWriterTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.common.web.logging.SysLogFilterTest",
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.NotifyOutboxWakeScopeGateTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest",
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.adapter.provider.Sms4jReceiptTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.controller.admin.NotifyConfigControllerContractTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.domain.policy.NoticeAudiencePolicyTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.domain.policy.NotificationAggregatePolicyTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.service.NotifyConfigServiceTest",
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.service.NotifyNoticePublisherServiceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.service.NotifyNoticeServiceTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.service.NotifyTestSendServiceTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.support.NotifySendPlannerTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "org.namewta.notify.usecase.NotifyNoticeUseCaseTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  }
+]

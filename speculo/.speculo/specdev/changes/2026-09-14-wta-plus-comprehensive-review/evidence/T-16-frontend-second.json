@@ -1,0 +1,35 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 5.83,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-frontend-second-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 55.05,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-frontend-second-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 28.28,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-frontend-second-3.log"
+  }
+]

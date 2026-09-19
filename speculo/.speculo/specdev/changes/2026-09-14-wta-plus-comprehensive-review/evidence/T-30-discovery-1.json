@@ -1,0 +1,1270 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [
+          "/enterprise-transfer-queue\\.spec\\.ts/",
+          "/public-accessibility\\.spec\\.ts/",
+          "/workflow-task-integrity\\.spec\\.ts/",
+          "/sso-(three-gates|admin-config|callback-journey|release-origin)\\.spec\\.ts/",
+          "/browser-https-transport\\.spec\\.ts/",
+          "/session-navigation-lifecycle\\.spec\\.ts/",
+          "/recoverable-registration\\.spec\\.ts/",
+          "/upload-import-lifecycle\\.spec\\.ts/",
+          "/profile-self-materials\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm build:prod && pnpm --filter @namewta/admin-web preview",
+      "url": "http://127.0.0.1:4173/login",
+      "reuseExistingServer": true,
+      "timeout": 180000
+    }
+  },
+  "suites": [
+    {
+      "title": "ai-domain.spec.ts",
+      "file": "ai-domain.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "admin selects the permission-neutral AI manifest and loads the embedded chat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1203dccf7a032529317a-fdf9be75588d94494193",
+          "file": "ai-domain.spec.ts",
+          "line": 123,
+          "column": 1
+        },
+        {
+          "title": "failed and hanging probes keep the sensitive URL private and remain retryable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1203dccf7a032529317a-cb66beeabb2e26b6b205",
+          "file": "ai-domain.spec.ts",
+          "line": 149,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "app-runtime-baseline.spec.ts",
+      "file": "app-runtime-baseline.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "client context request failure keeps authentication fail-closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d49738c26c0ef9742d59-b0d8db71431ff55cbe38",
+          "file": "app-runtime-baseline.spec.ts",
+          "line": 178,
+          "column": 1
+        },
+        {
+          "title": "client context missing a required field keeps authentication fail-closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d49738c26c0ef9742d59-58427c982d4ce3665fef",
+          "file": "app-runtime-baseline.spec.ts",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "login restores the selected manifest route without re-filtering the server menu",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d49738c26c0ef9742d59-6cfe31ec77e22e6d17d1",
+          "file": "app-runtime-baseline.spec.ts",
+          "line": 196,
+          "column": 1
+        },
+        {
+          "title": "captcha refresh failure is handled and disables authentication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d49738c26c0ef9742d59-2a06ae1e82671c8f27dd",
+          "file": "app-runtime-baseline.spec.ts",
+          "line": 222,
+          "column": 1
+        },
+        {
+          "title": "unknown server component fails closed with stable manifest diagnostics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d49738c26c0ef9742d59-31d4cb5a9414fbcfcbcb",
+          "file": "app-runtime-baseline.spec.ts",
+          "line": 238,
+          "column": 1
+        },
+        {
+          "title": "an authenticated 401 logs out and preserves the protected route as redirect",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d49738c26c0ef9742d59-7b73edeb0bc44b31a371",
+          "file": "app-runtime-baseline.spec.ts",
+          "line": 257,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "client-auth-context.spec.ts",
+      "file": "client-auth-context.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "invalid Client context reaches terminal fail-close before code or login",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3708234a5e5b4d07f7fb-7e0f6e551a579c18d7bb",
+          "file": "client-auth-context.spec.ts",
+          "line": 112,
+          "column": 1
+        },
+        {
+          "title": "registration applies the public policy before sending the JSON write",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3708234a5e5b4d07f7fb-2eedafcf2354c4920771",
+          "file": "client-auth-context.spec.ts",
+          "line": 124,
+          "column": 1
+        },
+        {
+          "title": "registration fails closed when an enabled Client omits the password policy",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3708234a5e5b4d07f7fb-58b778a44497761113d6",
+          "file": "client-auth-context.spec.ts",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "profile password change reuses the same policy and blocks weak writes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3708234a5e5b4d07f7fb-2b2b0a86c354139eeb5d",
+          "file": "client-auth-context.spec.ts",
+          "line": 155,
+          "column": 1
+        },
+        {
+          "title": "dynamic recovery uses server menu order and exposes a true no-facade typo diagnostic",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3708234a5e5b4d07f7fb-1838caa7ff0de3e243ea",
+          "file": "client-auth-context.spec.ts",
+          "line": 176,
+          "column": 1
+        },
+        {
+          "title": "permission wildcard allows controls while an unrelated permission fails closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3708234a5e5b4d07f7fb-a52b5b5b4b95797fdf62",
+          "file": "client-auth-context.spec.ts",
+          "line": 202,
+          "column": 1
+        },
+        {
+          "title": "a protected 401 presents one recovery and performs one logout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3708234a5e5b4d07f7fb-7f1c5f940f556a38eb96",
+          "file": "client-auth-context.spec.ts",
+          "line": 230,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "demo-manifest.spec.ts",
+      "file": "demo-manifest.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "selected demo registry routes survive a keep-alive menu round trip",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "085117be0df8d75b4e18-606e75d83b907c7e33e1",
+          "file": "demo-manifest.spec.ts",
+          "line": 100,
+          "column": 1
+        },
+        {
+          "title": "shared manifest diagnostic renders a stable missing-key error",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "085117be0df8d75b4e18-bc6f344222dd2732b701",
+          "file": "demo-manifest.spec.ts",
+          "line": 127,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "nacos-console.spec.ts",
+      "file": "nacos-console.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "authorized WTA user gets a same-origin Nacos frame without credential injection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "70bca0cf261abe358b40-cce2bb58ab32b090edac",
+          "file": "nacos-console.spec.ts",
+          "line": 40,
+          "column": 1
+        },
+        {
+          "title": "WTA permission denial creates no Nacos frame or request",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "70bca0cf261abe358b40-4d018ca04d4f274681e7",
+          "file": "nacos-console.spec.ts",
+          "line": 62,
+          "column": 1
+        },
+        {
+          "title": "live proxy loads official login in a same-origin iframe and keeps API authentication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "70bca0cf261abe358b40-76589bd7af02366e4d54",
+          "file": "nacos-console.spec.ts",
+          "line": 78,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "operations-domain.spec.ts",
+      "file": "operations-domain.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "admin selects operations, queries a real monitor seam and enforces the configured URL boundary",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2d029f134219b8ccdae3-55ae817e3f0017917bdf",
+          "file": "operations-domain.spec.ts",
+          "line": 84,
+          "column": 1
+        },
+        {
+          "title": "permission denial renders no external frame",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2d029f134219b8ccdae3-37367ecc29c7c29d00b1",
+          "file": "operations-domain.spec.ts",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "notification monitor uses the current notify contract and renders delivery status",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2d029f134219b8ccdae3-a96b3e19113a71cf9a36",
+          "file": "operations-domain.spec.ts",
+          "line": 127,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "oss-config-access-policy.spec.ts",
+      "file": "oss-config-access-policy.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "OSS config exposes two policies, enforces public constraints and uses POST commands",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "18b27ae6aad1039c50be-1576da484bc5f402d576",
+          "file": "oss-config-access-policy.spec.ts",
+          "line": 128,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "profile-management.spec.ts",
+      "file": "profile-management.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "profile manifests resolve all management surfaces and submit a workflow rejection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a7d7f1f0d3b02e98f5d3-a1b3196f6b66df7e8381",
+          "file": "profile-management.spec.ts",
+          "line": 202,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "system-identity.spec.ts",
+      "file": "system-identity.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "admin runs Client-scoped governance queries and an authorized role mutation while unrelated controls fail closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-0314af2966b33ce50538",
+          "file": "system-identity.spec.ts",
+          "line": 193,
+          "column": 1
+        },
+        {
+          "title": "a rejected Client-scoped user query stays visible and does not invent fallback rows",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-001a996f5765f4a9dcb5",
+          "file": "system-identity.spec.ts",
+          "line": 245,
+          "column": 1
+        },
+        {
+          "title": "credential permissions remain independent and fail closed in the user row",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-a226cf896fa0dee2f032",
+          "file": "system-identity.spec.ts",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "new user form adopts the server candidate and rejects a weak edit without legacy config",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-d621c34eff0939f4cef6",
+          "file": "system-identity.spec.ts",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "admin edits the server reset candidate while weak input sends no password write",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-1c12f88f9fba4bd011b1",
+          "file": "system-identity.spec.ts",
+          "line": 308,
+          "column": 1
+        },
+        {
+          "title": "temporary password is copied once, removed on close and reissued as a new value",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-46a5b0d9dd84573f2e6c",
+          "file": "system-identity.spec.ts",
+          "line": 357,
+          "column": 1
+        },
+        {
+          "title": "clipboard failure is visible without dismissing the one-time value",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-01c73cdd1f49bca2f7f2",
+          "file": "system-identity.spec.ts",
+          "line": 405,
+          "column": 1
+        },
+        {
+          "title": "credential request failures close loading dialogs without exposing empty values",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "db0ce206aadaffcbbde4-845a08c9f828dc2df521",
+          "file": "system-identity.spec.ts",
+          "line": 429,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "system-resources.spec.ts",
+      "file": "system-resources.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "admin selects resource manifests and keeps message/config/dict/OSS requests Client scoped",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "725f3d00d00c4f2f9b2c-9deaf4d01258d4220bab",
+          "file": "system-resources.spec.ts",
+          "line": 267,
+          "column": 1
+        },
+        {
+          "title": "resource permission denial hides mutations and a Client query failure never invents fallback data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "725f3d00d00c4f2f9b2c-9d8d85db5f86f70351b2",
+          "file": "system-resources.spec.ts",
+          "line": 340,
+          "column": 1
+        },
+        {
+          "title": "social list is rendered and binding/unlock failures remain Client scoped and visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "725f3d00d00c4f2f9b2c-cf9848880e9ade299a48",
+          "file": "system-resources.spec.ts",
+          "line": 363,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "third-party-management.spec.ts",
+      "file": "third-party-management.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "admin projects all third pages and keeps outbound management requests Client scoped",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "865c92ef917caa582527-5988de054557f82a1cfb",
+          "file": "third-party-management.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "list-only permission hides every mutation and direct ungranted route fails closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "865c92ef917caa582527-60ca5ceaa049666c8c91",
+          "file": "third-party-management.spec.ts",
+          "line": 279,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "workflow-definition.spec.ts",
+      "file": "workflow-definition.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "selected workflow manifest completes category, definition, designer and SpEL mutations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "00353001121981d6d7be-37a77bee0ddd2a466e93",
+          "file": "workflow-definition.spec.ts",
+          "line": 224,
+          "column": 1
+        },
+        {
+          "title": "workflow business failure stays visible without false success or loading lock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "00353001121981d6d7be-9f427cfae67bc0773e40",
+          "file": "workflow-definition.spec.ts",
+          "line": 330,
+          "column": 1
+        },
+        {
+          "title": "workflow permissions hide mutations without filtering selected server menus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "00353001121981d6d7be-6f3106625bbe3e36c43e",
+          "file": "workflow-definition.spec.ts",
+          "line": 351,
+          "column": 1
+        },
+        {
+          "title": "designer rejects foreign origin, other windows and unknown payloads",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "00353001121981d6d7be-2a20036fe1d1f46d30e0",
+          "file": "workflow-definition.spec.ts",
+          "line": 380,
+          "column": 1
+        },
+        {
+          "title": "designer refresh replaces its window and releases message listeners after closing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "00353001121981d6d7be-6f282bc96dfbec3a1a4c",
+          "file": "workflow-definition.spec.ts",
+          "line": 418,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "workflow-runtime.spec.ts",
+      "file": "workflow-runtime.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "admin selected workflow completes a task through the public user seam",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-e4ad203fc8cfc944d4c2",
+          "file": "workflow-runtime.spec.ts",
+          "line": 475,
+          "column": 1
+        },
+        {
+          "title": "user and task failures remain visible without clearing approval input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-df5736fed87d1f3ea881",
+          "file": "workflow-runtime.spec.ts",
+          "line": 529,
+          "column": 1
+        },
+        {
+          "title": "participant actions execute delegate transfer add-sign and reduce-sign contracts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-60e487031f5f7e4d5b13",
+          "file": "workflow-runtime.spec.ts",
+          "line": 560,
+          "column": 1
+        },
+        {
+          "title": "task edit controls fail closed when the permission contribution is absent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-45f7604a8f6864944bbf",
+          "file": "workflow-runtime.spec.ts",
+          "line": 627,
+          "column": 1
+        },
+        {
+          "title": "all-task runtime separates finished work and sends exact urge payload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-b600cf6efcef4a2d7bf8",
+          "file": "workflow-runtime.spec.ts",
+          "line": 650,
+          "column": 1
+        },
+        {
+          "title": "instance invalidation requires a reason and posts exact FlowInvalidBo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-664644fbf22070d27dfd",
+          "file": "workflow-runtime.spec.ts",
+          "line": 694,
+          "column": 1
+        },
+        {
+          "title": "task back uploads a real attachment and preserves the exact payload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-7dc6e045dd87bf0becc9",
+          "file": "workflow-runtime.spec.ts",
+          "line": 719,
+          "column": 1
+        },
+        {
+          "title": "instance variables can be updated under the exact permission and payload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-a6602feb175daf4f5124",
+          "file": "workflow-runtime.spec.ts",
+          "line": 772,
+          "column": 1
+        },
+        {
+          "title": "my document cancellation keeps the backend cancellation reason",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-31abc4d4b4f14bd2c261",
+          "file": "workflow-runtime.spec.ts",
+          "line": 800,
+          "column": 1
+        },
+        {
+          "title": "leave controls follow exact state and permission gates",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-b9606a6efb4ba56cd5eb",
+          "file": "workflow-runtime.spec.ts",
+          "line": 824,
+          "column": 1
+        },
+        {
+          "title": "leave add calculates days, starts workflow and closes after task completion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "88867913c32b40505bc9-eb5d2bdc24c9f1b87d2c",
+          "file": "workflow-runtime.spec.ts",
+          "line": 850,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T01:54:53.754Z",
+    "duration": 92.36899999999997,
+    "expected": 0,
+    "skipped": 54,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

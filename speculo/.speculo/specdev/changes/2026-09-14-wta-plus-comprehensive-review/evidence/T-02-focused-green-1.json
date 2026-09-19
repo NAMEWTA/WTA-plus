@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-json,wta-common/wta-common-web,wta-common/wta-common-log",
+    "-am",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 0,
+  "captured_at": "2026-09-18T07:18:58.321128+00:00",
+  "log": "T-02-focused-green-1.log"
+}

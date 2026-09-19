@@ -1,0 +1,19 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/home-web",
+    "build:prod"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "env_overrides": {
+    "VITE_APP_CONTEXT_PATH": "/home/",
+    "VITE_APP_BASE_API": "/api",
+    "VITE_APP_ENCRYPT": "false",
+    "VITE_APP_MESSAGE_ENABLED": "false"
+  },
+  "captured_at": "2026-09-18T09:21:10.498368+00:00",
+  "exit_code": 0,
+  "log": "T-07-home-build-2.log"
+}

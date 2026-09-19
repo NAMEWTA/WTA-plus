@@ -1,0 +1,12 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/home-web",
+    "lint"
+  ],
+  "cwd": "frontend",
+  "exit_code": 0,
+  "seconds": 0.45
+}

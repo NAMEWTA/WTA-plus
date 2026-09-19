@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-web,wta-modules/wta-sso",
+    "-am",
+    "test",
+    "-Dtest=CorsPolicyTest,Sso*Test,PkceS256Test",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 0,
+  "captured_at": "2026-09-18T08:32:39.991280+00:00",
+  "log": "T-06-focused-1.log"
+}

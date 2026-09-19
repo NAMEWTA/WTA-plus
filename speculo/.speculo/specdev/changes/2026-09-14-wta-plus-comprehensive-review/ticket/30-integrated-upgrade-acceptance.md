@@ -2,13 +2,13 @@
 schema_version: 3
 plan_contract_version: 1
 skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
-skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>"], "outputs": ["T-30的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>"], "outputs": ["T-30的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "441de2ccc513e09820ed3d7d2faf559eeaa7466202e4fbb0c8dd3eabf09510c9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>"], "outputs": ["T-30的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path>"], "outputs": ["T-30的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path>"], "outputs": ["T-30的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path>"], "outputs": ["T-30的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
 resource_claims: ["workspace:current-exclusive", "contract:AC-030"]
 artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-30
 title: 完成升级整体验收与可审查交付
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：完成升级整体验收与可审查交付"
 ready: true
@@ -16,11 +16,11 @@ risk: high
 blocked_by: ["T-01", "T-02", "T-03", "T-04", "T-05", "T-06", "T-07", "T-08", "T-09", "T-10", "T-11", "T-12", "T-13", "T-14", "T-15", "T-16", "T-17", "T-18", "T-19", "T-20", "T-21", "T-22", "T-23", "T-24", "T-25", "T-26", "T-27", "T-28", "T-29", "T-31"]
 contract_ids: [AC-030]
 owner: single-agent
-expected_changes: ["<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>scripts/ci/</Path>", "<Path>release-artifacts/tests/</Path>"]
-writable_paths: ["<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>scripts/ci/</Path>", "<Path>release-artifacts/tests/</Path>"]
+expected_changes: ["<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>scripts/ci/</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path>"]
+writable_paths: ["<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>scripts/ci/</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>scripts/ci/</Path>", "<Path>release-artifacts/tests/</Path>"]
-shared_path_owners: ["<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-30 turn)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; serial T-30 turn)", "<Path>scripts/ci/</Path> => single-agent (Lead; serial T-30 turn)", "<Path>release-artifacts/tests/</Path> => single-agent (Lead; serial T-30 turn)"]
+shared_paths: ["<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>scripts/ci/</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path>"]
+shared_path_owners: ["<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-30 turn)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; serial T-30 turn)", "<Path>scripts/ci/</Path> => single-agent (Lead; serial T-30 turn)", "<Path>release-artifacts/tests/</Path> => single-agent (Lead; serial T-30 turn)", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path> => single-agent (Lead; serial T-30 turn)"]
 ---
 
 # T-30：完成升级整体验收与可审查交付
@@ -39,7 +39,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 已锁定决策
 
-本票是未来实施后的最终验收，不是当前只写change审查任务已执行的验证。
+本票已完成全部责任票本地合同闭合后的可逆整体验收；654累计路径与3577源码路径核对一致，完整覆盖见T-30-coverage-final.json。用户保持提交暂缓，正式Done及可发布版本出口未关闭。
 
 ### 已采用的低影响假设
 
@@ -67,7 +67,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 - 兼容：用户明确无需旧版兼容；仓内一次切换，不加双路由/版本等待。实际供应商协议仍须遵守。
 - 安全与隐私：凭据不进入日志/UI证据；越权/过期/无owner拒绝；数据库与资源约束不能为前端成功而放宽。
 
-最终验收使用同一源码候选和完整产物；full JAR在core clean前验证。默认Playwright不含SSO专用用例，单列playwright.sso.config.ts与新增self材料用例；现有profile-management测试不能自动代表新self流程。本change仅完成计划复核，所有产品验收保持not-run。
+最终验收使用同一源码候选和完整产物；full JAR在core clean前验证。默认Playwright不含SSO专用用例，单列playwright.sso.config.ts与新增self材料用例；现有profile-management测试不能自动代表新self流程。各责任票已分别保存本地验证；本轮按当前源码指纹完整运行实际门禁；历史结果保留，未执行的新门禁不算通过。
 
 ## 6. 执行路线
 
@@ -111,7 +111,7 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 - E2E disposition：required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本票本地整体验收已完成review；源码哈希和验证结果不产生implementation commit或结果SHA。
 
 ## 9. 发布、迁移与恢复
 
@@ -119,20 +119,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：保留失败候选与日志；回到责任票修复再重跑受影响闭包，不自动部署。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮实现和本地检查已授权；用户要求全部提交暂缓，不推送或部署。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-030`：全部已接受AC均有实际命令/退出码/环境/源码checkpoint。
-- [ ] `AC-030`：required E2E与失败注入全部完成，not-run不能被标通过。
-- [ ] `AC-030`：未增加安全/类型豁免或删除测试制造绿色。
+- [x] `AC-030`：全部已接受AC均有实际命令/退出码/环境/源码checkpoint。
+- [x] `AC-030`：required E2E与失败注入全部完成，not-run不能被标通过。
+- [x] `AC-030`：未增加安全/类型豁免或删除测试制造绿色。
 - [ ] `AC-030`：用户能据artifact digest批准明确候选，未自动发布。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -143,3 +143,25 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：T-01, T-02, T-03, T-04, T-05, T-06, T-07, T-08, T-09, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-31。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+Revision113：T-30可逆准备完成，正式整体验收not-run/AC未勾选。589上游路径一致，3549源码路径指纹保存；10份Playwright配置最终枚举163用例（仅list，产品执行0），workflow专用临时配置另列；16核心门禁及真实服务追加矩阵已保存。17源文件刷新T-03/T-23事实，缺业务/供应商依据仍阻塞。28review/1ready/2blocked/0Done；无暂存/提交/推送/部署。
+
+Revision128：T-30进入同一工作树候选整体验收。30个前置票已完成本地review，648累计路径全部核对；计划T/P与ticket-control均0error，T-03/T-23原未知关闭。源码88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0，重建正式门禁/环境/浏览器矩阵，旧准备日志保留不覆盖。30review/1in_progress/0Done；提交/推送/部署全部暂缓，正式交付出口仍未完成。
+
+Revision129：T-30真实依赖门禁发现T-23新增receipt表未同步受保护初始化器：实际126表/预期125，测试尚未开始即exit1，owned资源已恢复。回到T-23补修，先登记初始化脚本及两份发布合同测试精确写集；T-30暂停为ready，29review/1in_progress/1ready/0Done。保留旧源码88a5a9a的通过与失败证据；修正后重新冻结输入并运行受影响发布/真实服务门禁。全部提交继续暂缓。
+
+Revision130：T-23初始化补修完成review：受保护六文件初始化实际126表，发布117项及真实MySQL/Redis/MinIO八项均零skip通过，资源恢复；仅初始化脚本和两处旧计数断言变化。T-23-checkpoint-v2共50路径，累计649路径；源码1dff1a345e1979d809bb547f3060645d86b4508f3df3aad5fd227de53ab2c504。T-30继续整体验收，30review/1in_progress/0Done；未受影响的前端/后端源树逐文件相同，旧验证证据按明确输入等价关系关联，受影响release/external已重跑。全部提交暂缓。
+
+Revision131：T-30补跑默认环境skip发现5个夹具错误：Admin菜单使用失效裸图标，两个OSS测试从旧标记截取至EOF导致重复建表，Profile以分号直接切SQL破坏坐标字面量且截取后续无关域。在本票既有admin测试写集内登记4测试及1共用SQL执行工具：复用真实基座DDL、限定片段、使用Spring SQL脚本解析，Profile在owned空数据库完整初始化五份业务基座并清理全部所建表；保留所有权限/数据/失败关闭断言，生产SQL不放宽。保留T-30-extra-services-v1的15项/5错误，修复后重跑受影响闭包；30review/1in_progress/0Done，全部提交暂缓。
+
+Revision132：T-30补查全部环境门控/Tag发现9个Profile e2e类未被默认Maven选择；真实MySQL补跑15项，13通过/2失败/零skip。企业申请夹具credit(suffix)拼接任意末位，不满足当前统一社会信用代码校验码合同，save在业务入口即被拒绝。先追加该EnterpriseApplicationMySqlE2ETest.java精确写集，仅修正合成合法身份数据并增加响应code断言，保留发布/重新认证/唯一约束/工作流回滚断言及生产校验。浏览器163项及额外10工作流弹窗已实际通过；30review/1in_progress/0Done，全部提交暂缓。
+
+Revision133：T-30本地整体验收完成review。最终源码bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba，3577源码/654累计owned路径；6测试修复、1上游重叠/648非重叠不变。18核心门禁通过，前端722、浏览器163+工作流10=173；默认后端740通过/117环境skip均有专项零skip闭合，46环境类/264测试源逐类对应，额外非默认选集53通过/1既有教学Disabled占位。最终full/core构建/清单、117发布合同、真实依赖与发布恢复、五分层/facts检查器通过。全部31票review、0Done；仅本地产物可审查，干净提交/正式发布candidate/direct-parent出口因用户全change提交暂缓保持未完成。最终治理结果见T-30-final-governance.json。
+
+本地JAR/三App摘要已提供，但正式可发布candidate依赖干净提交，依用户指令继续暂缓；相应验收项保持未勾选，不冒充发布完成。
+
+Revision134：完成逐票出口复核与本地产物重新验hash，3577源码/654owned路径无漂移，两JAR及三App保留副本一致、HEAD不变且index为空。T-01/T-02/T-04/T-05早期验收勾选尚未承接最终实际证据，已按各项源码/测试报告补齐并注明旧失败由后续票关闭；T-02历史日志处置/凭据轮换属于OUT且无批准，继续明确未执行。31review/0Done；非空implementation/result、direct-parent和干净正式发布候选仍受用户全change不提交约束。没有新产品改动，不重跑已证明输入未变的业务测试。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`91d4c2ea6356c74d3174f63f2665485484f0a103`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

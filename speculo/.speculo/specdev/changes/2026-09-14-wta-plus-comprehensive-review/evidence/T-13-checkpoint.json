@@ -1,0 +1,22 @@
+{
+  "captured_at": "2026-09-18T16:20:30.795078+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "backend/wta-admin/src/test/java/org/namewta/web/service/SysRegisterServiceRegistrationUnitTest.java": "33d27ce39842ac994bec03a0c11629ba0ce66e885fa1bf0410f16df7dedfa76b",
+    "frontend/apps/admin-web/src/views/login.vue": "9200070a189ccfcee0ff33069c9145158a1d7c8d5426b31cc25e998bfdaf8386",
+    "frontend/apps/admin-web/src/views/register.vue": "a9a13fb32fe642051fa415c92db35972f8c4cd024644a4fb0ffcb9099bab48d3",
+    "frontend/apps/home-web/src/layout/HomeShell.vue": "f86651bf697940d4282042bc7c4acd3712386a101375b325603340aab70c7cc6",
+    "frontend/apps/home-web/src/store/registrationAvailability.test.ts": "ceaa6c2a8707bbb356ccce0acce9a796a4ffbdaacbb924a29aa586a79b9097ea",
+    "frontend/apps/home-web/src/store/registrationAvailability.ts": "723f3f5ead1c483b9c60b29508852497b436cf9152cd1fe980ad8dcb4f285bc6",
+    "frontend/apps/home-web/src/views/PortalPage.vue": "36748098ab7f1bbe99b7cbe5e80ba53507f4060834b7466cfa9c78aea86cc500",
+    "frontend/apps/home-web/src/views/RegisterPage.vue": "04e6516c417d37ba4e93aadb11a896b8febd41a189f2ab92191f44a9dfd3b6d9",
+    "frontend/e2e/recoverable-registration.spec.ts": "bc0338037b6e258a1f16536b377f96ef20bec19cd6e693be2ebbdcdf65a249c2",
+    "frontend/packages/domains/admin/src/index.test.ts": "40f882800356f67d262ef79c9d98d7ad206ba6c62ac129d6af21123b1e2c65fa",
+    "frontend/packages/domains/admin/src/index.ts": "98e6ed80f50f729a9c0664b6afa92c431142b65621b6be275ac8c5b578320baa",
+    "frontend/playwright.config.ts": "0309c4d9269e464dc0a368a8ef7c5485ab0dd19674462f358aa6b283c1426ca8",
+    "frontend/playwright.registration.config.ts": "5409a06eb20d44a28ec31308d03a12f0c5672cb24e9fdb202c916cf1fd64103f"
+  },
+  "upstream_nonoverlap_unchanged": true
+}

@@ -1,0 +1,1906 @@
+--- before/backend/README.md
++++ after/backend/README.md
+@@ -72,6 +72,20 @@
+ 
+ `@Log` 记录具体业务操作，完整 HTTP 系统日志记录通用请求/响应交换，两者用途不同且可以同时存在。系统日志正文具有字节上限和媒体类型策略，不应把凭据、密钥、Token 或不受控大正文写入日志。
+ 
++### 请求正文预算
++
++普通 JSON（含 `+json`）和 OpenAPI 机器调用默认各允许 **2 MiB（2,097,152 字节）**。这是尚无业务样本和目标内存/并发预算时的初始配置，部署后应按合法业务请求与容量测量调整。
++
++| 配置 | 环境变量 | 默认值 | 范围 |
++|---|---|---|---|
++| `namewta.web.request-body.max-size` | `REQUEST_BODY_MAX_SIZE` | `2MB` | 普通 JSON，以及 HTTP 日志需捕获的文本正文 |
++| `openapi.max-body-size` | `OPENAPI_MAX_BODY_SIZE` | `2MB` | 机器签名调用的原始正文，独立于普通请求预算 |
++| `sys.log.max-body-size` | — | `1MB` | 日志正文前缀；不代替入口预算 |
++
++入口预算按收到的字节计数，固定长度声明和实际读取都检查；chunked 请求同样受限。超限直接返回 HTTP `413` 和 `REQUEST_BODY_TOO_LARGE`，不进入业务逻辑。零、负数、非法单位及超出 JVM 字节数组范围的配置会阻止启动。
++
++机器验签使用未改写的原始字节；日志和重复读取共享同一份只读缓存，XSS 使用独立视图。验签合同保留必要的防御性副本。普通 multipart 上传、二进制流和 SSE 不进入此正文缓存，继续遵循各自的上传/流式处理约束；上述 2 MiB 不是所有 HTTP 上传的统一上限。
++
+ ## SQL
+ 
+ 数据库初始化与发布资产由仓根 `release-artifacts/docker/infrastructure/mysql/init/` 统一维护，本仓库不再保留 `script/` 或 SQL 副本。后端 SQL 合同测试默认从 monorepo 定位该目录；为隔离验证显式提供其他基座副本时，通过 `-Dnamewta.sql.root=/绝对路径/release-artifacts/docker/infrastructure/mysql/init` 显式指定六文件基座目录。
+--- before/backend/wta-admin/src/main/resources/application.yml
++++ after/backend/wta-admin/src/main/resources/application.yml
+@@ -29,6 +29,9 @@
+ 
+ namewta:
+   web:
++    request-body:
++      # 普通JSON及需要缓存的文本正文；与日志前缀和机器签名正文分开计限。
++      max-size: ${REQUEST_BODY_MAX_SIZE:2MB}
+     client-address:
+       # 逗号分隔的IPv4/IPv6 CIDR；默认空，只信socket peer。发布前按拓扑实测。
+       trusted-proxies: ${TRUSTED_PROXY_CIDRS:}
+@@ -64,6 +67,8 @@
+ 
+ # OpenAPI 机器调用网关。默认开启；KEK 只能由部署密钥系统注入。
+ openapi:
++  # 机器请求按原始字节限额；超限HTTP 413，不进入认证后业务。
++  max-body-size: ${OPENAPI_MAX_BODY_SIZE:2MB}
+   enabled: ${OPENAPI_ENABLED:true}
+   clock-skew: ${OPENAPI_CLOCK_SKEW:60s}
+   nonce-ttl: ${OPENAPI_NONCE_TTL:60s}
+--- before/backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java
++++ after/backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java
+@@ -126,7 +126,7 @@
+             AuditController audit = proxy(new AuditController());
+             ServletContextHandler handler = new ServletContextHandler();
+             handler.setContextPath("/");
+-            handler.addFilter(new FilterHolder(new SysLogFilter(8192, httpEvents::add)), "/*", EnumSet.of(DispatcherType.REQUEST));
++            handler.addFilter(new FilterHolder(new SysLogFilter(8192, 2 * 1024 * 1024, httpEvents::add)), "/*", EnumSet.of(DispatcherType.REQUEST));
+             handler.addServlet(new ServletHolder(new HttpServlet() {
+                 @Override
+                 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+--- before/backend/wta-admin/src/test/java/org/namewta/test/openapi/assembly/OpenApiAssemblyContextTest.java
++++ after/backend/wta-admin/src/test/java/org/namewta/test/openapi/assembly/OpenApiAssemblyContextTest.java
+@@ -125,6 +125,27 @@
+     }
+ 
+     @Test
++    void machineBodyBudgetHasIndependentDefaultOverrideAndRejectsUnboundedValues() {
++        dependencies(runner).withPropertyValues(validProperties()).run(context -> {
++            assertThat(context).hasNotFailed();
++            assertThat(context.getBean(org.namewta.common.openapi.config.properties.OpenApiProperties.class).maxBodyBytes())
++                .isEqualTo(2 * 1024 * 1024);
++            assertThat(context.getBean("openApiGatewayFilterRegistration", FilterRegistrationBean.class).getOrder())
++                .isEqualTo(org.springframework.core.Ordered.HIGHEST_PRECEDENCE + 1);
++        });
++        dependencies(runner).withPropertyValues(validProperties()).withPropertyValues("openapi.max-body-size=3MB")
++            .run(context -> {
++                assertThat(context).hasNotFailed();
++                assertThat(context.getBean(org.namewta.common.openapi.config.properties.OpenApiProperties.class).maxBodyBytes())
++                    .isEqualTo(3 * 1024 * 1024);
++            });
++        for (String value : new String[]{"0B", "-1B", "3GB", "invalid"}) {
++            dependencies(runner).withPropertyValues(validProperties()).withPropertyValues("openapi.max-body-size=" + value)
++                .run(context -> assertThat(context).hasFailed());
++        }
++    }
++
++    @Test
+     void failsClosedWhenCredentialSpiIsAmbiguous() {
+         dependencies(runner)
+             .withBean("secondCredentialResolver", OpenApiCredentialResolver.class, OpenApiAssemblyContextTest::credentialResolver)
+--- before/backend/wta-admin/src/test/java/org/namewta/test/requestbody/RequestBodyHttpIntegrationTest.java
++++ after/backend/wta-admin/src/test/java/org/namewta/test/requestbody/RequestBodyHttpIntegrationTest.java
+@@ -0,0 +1,480 @@
++package org.namewta.test.requestbody;
++
++import cn.dev33.satoken.annotation.SaCheckPermission;
++import jakarta.servlet.DispatcherType;
++import jakarta.servlet.Filter;
++import jakarta.servlet.http.HttpServlet;
++import jakarta.servlet.http.HttpServletRequest;
++import jakarta.servlet.http.HttpServletResponse;
++import org.eclipse.jetty.ee11.servlet.FilterHolder;
++import org.eclipse.jetty.ee11.servlet.ServletContextHandler;
++import org.eclipse.jetty.ee11.servlet.ServletHolder;
++import org.eclipse.jetty.server.Server;
++import org.eclipse.jetty.server.ServerConnector;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.namewta.common.core.http.CapturedRequestBody;
++import org.namewta.common.json.utils.JsonUtils;
++import org.namewta.common.openapi.annotation.OpenApi;
++import org.namewta.common.openapi.config.properties.OpenApiProperties;
++import org.namewta.common.openapi.gateway.OpenApiGatewayFilter;
++import org.namewta.common.openapi.protocol.OpenApiCanonicalizer;
++import org.namewta.common.openapi.protocol.OpenApiHeaders;
++import org.namewta.common.openapi.protocol.OpenApiRequest;
++import org.namewta.common.openapi.protocol.OpenApiSigner;
++import org.namewta.common.openapi.registry.OpenApiAuthorizationMatcher;
++import org.namewta.common.openapi.registry.OpenApiOperationRegistry;
++import org.namewta.common.openapi.registry.SpringDocOperationSchemaResolver;
++import org.namewta.common.openapi.session.OpenApiMachineSessionBridge;
++import org.namewta.common.openapi.session.OpenApiMachineSessionOperations;
++import org.namewta.common.openapi.session.VerifiedOpenApiIdentity;
++import org.namewta.common.openapi.spi.OpenApiCredential;
++import org.namewta.common.web.config.properties.XssProperties;
++import org.namewta.common.web.filter.RepeatableFilter;
++import org.namewta.common.web.filter.XssFilter;
++import org.namewta.common.web.logging.SysLogFilter;
++import org.namewta.system.api.model.LoginUser;
++import org.springframework.context.annotation.Bean;
++import org.springframework.context.annotation.Configuration;
++import org.springframework.util.unit.DataSize;
++import org.springframework.web.bind.annotation.PostMapping;
++import org.springframework.web.bind.annotation.RequestBody;
++import org.springframework.web.bind.annotation.RestController;
++import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
++import org.springframework.web.servlet.DispatcherServlet;
++import org.springframework.web.servlet.config.annotation.EnableWebMvc;
++import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
++
++import java.io.ByteArrayInputStream;
++import java.io.IOException;
++import java.net.InetSocketAddress;
++import java.net.Socket;
++import java.net.URI;
++import java.net.http.HttpClient;
++import java.net.http.HttpRequest;
++import java.net.http.HttpResponse;
++import java.nio.charset.StandardCharsets;
++import java.security.MessageDigest;
++import java.time.Clock;
++import java.time.Duration;
++import java.time.Instant;
++import java.time.ZoneOffset;
++import java.util.Base64;
++import java.util.EnumSet;
++import java.util.HexFormat;
++import java.util.Map;
++import java.util.Set;
++import java.util.UUID;
++import java.util.concurrent.ConcurrentHashMap;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.Executors;
++import java.util.concurrent.ScheduledFuture;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicBoolean;
++import java.util.concurrent.atomic.AtomicInteger;
++import java.util.concurrent.atomic.AtomicReference;
++import java.util.function.Supplier;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++/** 真实Jetty/MVC与生产Filter/签名实现；凭据、nonce和机器会话存储为确定性内存夹具。 */
++@Tag("dev")
++class RequestBodyHttpIntegrationTest {
++    private static final int DEFAULT_LIMIT = 2 * 1024 * 1024;
++    private static final Instant NOW = Instant.parse("2026-09-19T00:00:00Z");
++    private static final String APP_KEY = "YXBwLWtleS13aXRoLTEyOC1iaXRzLW1pbmltdW0";
++    private static final String APP_SECRET = "c2VjcmV0LXdpdGgtMjU2LWJpdHMtbWluaW11bS1rZXktbWF0ZXJpYWw";
++    private static final OpenApiSigner SIGNER = new OpenApiSigner(new OpenApiCanonicalizer());
++
++    @Test
++    void ordinaryFixedAndChunkedRequestsRespectDefaultBoundary() throws Exception {
++        try (Fixture fixture = new Fixture(DEFAULT_LIMIT, DEFAULT_LIMIT)) {
++            for (boolean chunked : new boolean[]{false, true}) {
++                for (int size : new int[]{DEFAULT_LIMIT - 1, DEFAULT_LIMIT, DEFAULT_LIMIT + 1}) {
++                    int before = fixture.controller.calls.get();
++                    var response = fixture.send("/body", json(size), chunked, false, false, "application/json");
++                    assertEquals(size > DEFAULT_LIMIT ? 413 : 200, response.statusCode(), response.body());
++                    assertEquals(before + (size > DEFAULT_LIMIT ? 0 : 1), fixture.controller.calls.get());
++                    if (size <= DEFAULT_LIMIT) assertEquals(chunked, fixture.chunked.get());
++                }
++            }
++        }
++    }
++
++    @Test
++    void signedFixedAndChunkedRequestsRespectDefaultBoundary() throws Exception {
++        try (Fixture fixture = new Fixture(DEFAULT_LIMIT, DEFAULT_LIMIT)) {
++            for (boolean chunked : new boolean[]{false, true}) {
++                for (int size : new int[]{DEFAULT_LIMIT - 1, DEFAULT_LIMIT, DEFAULT_LIMIT + 1}) {
++                    int before = fixture.controller.calls.get();
++                    var response = fixture.send("/machine", json(size), chunked, true, false, "application/json");
++                    assertEquals(size > DEFAULT_LIMIT ? 413 : 200, response.statusCode(), response.body());
++                    assertEquals(before + (size > DEFAULT_LIMIT ? 0 : 1), fixture.controller.calls.get());
++                }
++            }
++        }
++    }
++
++    @Test
++    void invalidSignatureWithLargeBodyIsRejectedBeforeBusinessForBothFramings() throws Exception {
++        try (Fixture fixture = new Fixture(64, 128)) {
++            for (boolean chunked : new boolean[]{false, true}) {
++                assertEquals(413, fixture.send("/machine", json(129), chunked, true, true, "application/json").statusCode());
++                assertEquals(401, fixture.send("/machine", json(32), chunked, true, true, "application/json").statusCode());
++            }
++            assertEquals(0, fixture.controller.calls.get());
++        }
++    }
++
++    @Test
++    void machineBudgetCanBeLargerOrSmallerThanOrdinaryBudget() throws Exception {
++        try (Fixture fixture = new Fixture(64, 128)) {
++            assertEquals(413, fixture.send("/body", json(96), false, false, false, "application/json").statusCode());
++            assertEquals(200, fixture.send("/machine", json(96), true, true, false, "application/json").statusCode());
++        }
++        try (Fixture fixture = new Fixture(128, 64)) {
++            assertEquals(200, fixture.send("/body", json(96), true, false, false, "application/json").statusCode());
++            assertEquals(413, fixture.send("/machine", json(96), false, true, false, "application/json").statusCode());
++        }
++    }
++
++    @Test
++    void signatureUsesExactUtf8WhitespaceAndTagsBeforeTheIndependentXssView() throws Exception {
++        try (Fixture fixture = new Fixture(128, 128)) {
++            byte[] raw = " \r\n{\"data\":\"<b>中</b>\"} \n".getBytes(StandardCharsets.UTF_8);
++            var response = fixture.send("/machine", raw, true, true, false, "application/problem+json");
++            assertEquals(200, response.statusCode(), response.body());
++            Map<String, Object> result = JsonUtils.parseMap(response.body());
++            assertEquals(hash(raw), result.get("rawHash"));
++            assertEquals(hash("{\"data\":\"中\"}".getBytes(StandardCharsets.UTF_8)), result.get("viewHash"));
++        }
++    }
++
++    @Test
++    void loggingFallbackAndStructuredJsonSuffixCannotBypassLimit() throws Exception {
++        try (Fixture fixture = new Fixture(64, 128)) {
++            for (String contentType : new String[]{"text/plain", "application/problem+json"}) {
++                assertEquals(413, fixture.send("/body", json(65), true, false, false, contentType).statusCode());
++            }
++            assertEquals(0, fixture.controller.calls.get());
++        }
++    }
++
++    @Test
++    void ordinaryUploadRemainsStreamingBeyondTheJsonBudget() throws Exception {
++        try (Fixture fixture = new Fixture(64, 128)) {
++            byte[] content = ("--owned\r\nContent-Disposition: form-data; name=\"file\"; filename=\"data.txt\"\r\n\r\n"
++                + "x".repeat(DEFAULT_LIMIT) + "\r\n--owned--\r\n").getBytes(StandardCharsets.UTF_8);
++            var response = fixture.send("/upload", content, true, false, false, "multipart/form-data; boundary=owned");
++            assertEquals(200, response.statusCode(), response.body());
++            assertEquals(Integer.toString(content.length), response.body());
++            assertFalse(fixture.uploadCached.get());
++        }
++    }
++
++    @Test
++    void cancelledJsonReadDoesNotRunBusinessOrPoisonTheNextRequest() throws Exception {
++        try (Fixture fixture = new Fixture(1024, 1024)) {
++            try (Socket socket = new Socket("127.0.0.1", fixture.port)) {
++                socket.getOutputStream().write(("POST /body HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\n"
++                    + "Content-Length: 1000\r\n\r\n{\"data\":\"short").getBytes(StandardCharsets.UTF_8));
++                socket.getOutputStream().flush();
++                assertTrue(fixture.started.await(5, TimeUnit.SECONDS));
++            }
++            assertTrue(fixture.finished.await(5, TimeUnit.SECONDS));
++            assertEquals(0, fixture.controller.calls.get());
++            assertEquals(200, fixture.send("/body", json(32), false, false, false, "application/json").statusCode());
++        }
++    }
++
++    @Test
++    void cancelledUploadReleasesTheHandlerWithoutInstallingABodyCache() throws Exception {
++        try (Fixture fixture = new Fixture(64, 128)) {
++            try (Socket socket = new Socket("127.0.0.1", fixture.port)) {
++                socket.getOutputStream().write(("POST /upload HTTP/1.1\r\nHost: localhost\r\n"
++                    + "Content-Type: multipart/form-data; boundary=owned\r\nContent-Length: 1000\r\n\r\n--owned\r\n")
++                    .getBytes(StandardCharsets.UTF_8));
++                socket.getOutputStream().flush();
++                assertTrue(fixture.started.await(5, TimeUnit.SECONDS));
++            }
++            assertTrue(fixture.finished.await(5, TimeUnit.SECONDS));
++            assertFalse(fixture.uploadCached.get());
++            assertEquals(200, fixture.send("/upload", new byte[128], true, false, false,
++                "application/octet-stream").statusCode());
++        }
++    }
++
++    @Test
++    void sseFlushesBeforeCompletionAndStopsOnClientCancellation() throws Exception {
++        try (Fixture fixture = new Fixture(32, 32)) {
++            try (Socket socket = new Socket("127.0.0.1", fixture.port)) {
++                socket.setSoTimeout(5000);
++                socket.getOutputStream().write("GET /events HTTP/1.1\r\nHost: localhost\r\nAccept: text/event-stream\r\n\r\n"
++                    .getBytes(StandardCharsets.UTF_8));
++                socket.getOutputStream().flush();
++                var reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
++                boolean received = false;
++                for (int i = 0; i < 30; i++) {
++                    String line = reader.readLine();
++                    if (line != null && line.startsWith("data:")) { received = true; break; }
++                }
++                assertTrue(received, "SSE must flush before the response completes");
++                assertEquals(1, fixture.streamStopped.getCount());
++            }
++            assertTrue(fixture.streamStopped.await(5, TimeUnit.SECONDS));
++            assertTrue(fixture.streamDisconnected.get());
++        }
++    }
++
++    @Test
++    void concurrentBodiesRemainIsolatedWhileRawAndXssViewsAreHeld() throws Exception {
++        int concurrency = Integer.getInteger("namewta.body-probe.concurrency", 4);
++        int size = Integer.getInteger("namewta.body-probe.bytes", 64 * 1024);
++        assertTrue(concurrency > 0 && concurrency <= 16);
++        assertTrue(size >= 32 && size <= DEFAULT_LIMIT);
++        var memory = java.lang.management.ManagementFactory.getMemoryMXBean();
++        var collectors = java.lang.management.ManagementFactory.getGarbageCollectorMXBeans();
++        long gcCount = collectors.stream().mapToLong(bean -> Math.max(0, bean.getCollectionCount())).sum();
++        long gcMillis = collectors.stream().mapToLong(bean -> Math.max(0, bean.getCollectionTime())).sum();
++        long baseline = memory.getHeapMemoryUsage().getUsed();
++        var peak = new java.util.concurrent.atomic.AtomicLong(baseline);
++        var sampler = Executors.newSingleThreadScheduledExecutor();
++        long started = System.nanoTime();
++        long heldHeap = 0;
++        try (Fixture fixture = new Fixture(DEFAULT_LIMIT, DEFAULT_LIMIT);
++             var clients = Executors.newVirtualThreadPerTaskExecutor()) {
++            sampler.scheduleAtFixedRate(() -> peak.accumulateAndGet(memory.getHeapMemoryUsage().getUsed(), Math::max),
++                0, 5, TimeUnit.MILLISECONDS);
++            for (int round = 0; round < 2; round++) {
++                CountDownLatch arrived = new CountDownLatch(concurrency);
++                CountDownLatch release = new CountDownLatch(1);
++                fixture.controller.arrived = arrived;
++                fixture.controller.release = release;
++                var requests = new java.util.ArrayList<java.util.concurrent.Future<HttpResponse<String>>>();
++                var hashes = new java.util.ArrayList<String>();
++                try {
++                    for (int i = 0; i < concurrency; i++) {
++                        byte[] bytes = json(size);
++                        bytes[9] = (byte) ('a' + i + round);
++                        hashes.add(hash(bytes));
++                        boolean signed = i % 2 == 0;
++                        boolean chunked = i % 3 == 0;
++                        requests.add(clients.submit(() -> fixture.send(signed ? "/machine" : "/body",
++                            bytes, chunked, signed, false, "application/json")));
++                    }
++                    assertTrue(arrived.await(10, TimeUnit.SECONDS), "all request bodies must be held simultaneously");
++                    heldHeap = Math.max(heldHeap, memory.getHeapMemoryUsage().getUsed());
++                } finally {
++                    release.countDown();
++                }
++                for (int i = 0; i < requests.size(); i++) {
++                    var response = requests.get(i).get(10, TimeUnit.SECONDS);
++                    assertEquals(200, response.statusCode(), response.body());
++                    var result = JsonUtils.parseMap(response.body());
++                    assertEquals(hashes.get(i), result.get("rawHash"));
++                    assertEquals(hashes.get(i), result.get("viewHash"));
++                }
++            }
++            assertEquals(2 * concurrency, fixture.controller.calls.get());
++        } finally {
++            sampler.shutdownNow();
++            assertTrue(sampler.awaitTermination(5, TimeUnit.SECONDS));
++        }
++        String reportPath = System.getProperty("namewta.body-probe.report");
++        if (reportPath != null) {
++            Map<String, Object> report = new java.util.LinkedHashMap<>();
++            report.put("scope", "single JVM including Jetty, Spring, HTTP client, signature and XSS; not production capacity");
++            report.put("java", System.getProperty("java.version"));
++            report.put("processors", Runtime.getRuntime().availableProcessors());
++            report.put("heapMaxBytes", memory.getHeapMemoryUsage().getMax());
++            report.put("concurrency", concurrency);
++            report.put("requestBytes", size);
++            report.put("logPrefixBytes", Integer.getInteger("namewta.body-probe.log-bytes", 32));
++            report.put("requests", 2 * concurrency);
++            report.put("baselineHeapBytes", baseline);
++            report.put("sampledPeakHeapBytes", peak.get());
++            report.put("heldHeapBytes", heldHeap);
++            report.put("gcCollections", collectors.stream().mapToLong(bean -> Math.max(0, bean.getCollectionCount())).sum() - gcCount);
++            report.put("gcMillis", collectors.stream().mapToLong(bean -> Math.max(0, bean.getCollectionTime())).sum() - gcMillis);
++            report.put("elapsedMillis", TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started));
++            java.nio.file.Files.writeString(java.nio.file.Path.of(reportPath), JsonUtils.toJsonString(report));
++            long expectedHeap = Long.getLong("namewta.body-probe.expected-heap", 0L);
++            if (expectedHeap > 0) {
++                assertTrue(memory.getHeapMemoryUsage().getMax() <= expectedHeap,
++                    "the probe JVM must actually use the requested heap ceiling");
++            }
++        }
++    }
++
++    static byte[] json(int length) {
++        byte[] bytes = ("{\"data\":\"" + "x".repeat(length - 11) + "\"}").getBytes(StandardCharsets.UTF_8);
++        assertEquals(length, bytes.length);
++        return bytes;
++    }
++
++    static String hash(byte[] bytes) {
++        try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes)); }
++        catch (java.security.NoSuchAlgorithmException impossible) { throw new IllegalStateException(impossible); }
++    }
++
++    @Configuration
++    @EnableWebMvc
++    static class WebConfiguration {
++        @Bean BodyController bodyController() { return new BodyController(); }
++    }
++
++    @RestController
++    static class BodyController {
++        final AtomicInteger calls = new AtomicInteger();
++        volatile CountDownLatch arrived;
++        volatile CountDownLatch release;
++        @PostMapping(value = "/body", produces = "application/json")
++        String body(@RequestBody byte[] bytes, HttpServletRequest request) { return result(bytes, request); }
++        @OpenApi("Bounded exact body")
++        @SaCheckPermission("body:read")
++        @PostMapping(value = "/machine", produces = "application/json")
++        String machine(@RequestBody byte[] bytes, HttpServletRequest request) { return result(bytes, request); }
++        private String result(byte[] bytes, HttpServletRequest request) {
++            calls.incrementAndGet();
++            if (arrived != null) {
++                arrived.countDown();
++                try {
++                    if (!release.await(12, TimeUnit.SECONDS)) throw new IllegalStateException("owned body probe timed out");
++                } catch (InterruptedException exception) {
++                    Thread.currentThread().interrupt();
++                    throw new IllegalStateException("owned body probe interrupted", exception);
++                }
++            }
++            return JsonUtils.toJsonString(Map.of("rawHash", hash(CapturedRequestBody.find(request).copy()),
++                "viewHash", hash(bytes), "length", bytes.length));
++        }
++    }
++
++    static final class Fixture implements AutoCloseable {
++        final Server server = new Server(new InetSocketAddress("127.0.0.1", 0));
++        final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
++        final HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
++        final java.util.concurrent.ScheduledExecutorService streamWriter = Executors.newSingleThreadScheduledExecutor();
++        final AtomicBoolean chunked = new AtomicBoolean();
++        final AtomicBoolean uploadCached = new AtomicBoolean();
++        final AtomicBoolean streamDisconnected = new AtomicBoolean();
++        final CountDownLatch started = new CountDownLatch(1);
++        final CountDownLatch finished = new CountDownLatch(1);
++        final CountDownLatch streamStopped = new CountDownLatch(1);
++        final BodyController controller;
++        final int port;
++
++        Fixture(int ordinaryLimit, int machineLimit) throws Exception {
++            try {
++                ServletContextHandler handler = new ServletContextHandler();
++                handler.setContextPath("/");
++                context.setServletContext(handler.getServletContext());
++                context.register(WebConfiguration.class);
++                context.refresh();
++                controller = context.getBean(BodyController.class);
++                var mappings = context.getBean(RequestMappingHandlerMapping.class);
++                var registry = new OpenApiOperationRegistry(mappings, new SpringDocOperationSchemaResolver());
++                registry.afterPropertiesSet();
++                var sessions = new Sessions();
++                var bridge = new OpenApiMachineSessionBridge(userId -> sessions.user(), sessions, Duration.ofHours(1));
++                OpenApiProperties properties = new OpenApiProperties();
++                properties.setMaxBodySize(DataSize.ofBytes(machineLimit));
++                Set<String> nonces = ConcurrentHashMap.newKeySet();
++                var gateway = new OpenApiGatewayFilter(mappings, registry,
++                    key -> new OpenApiCredential(7L, 9L, APP_KEY, APP_SECRET, NOW.plusSeconds(3600)), SIGNER,
++                    (key, nonce, ttl) -> nonces.add(key + nonce), (scope, limit, interval) -> true,
++                    bridge, new OpenApiAuthorizationMatcher(), event -> { }, properties,
++                    Clock.fixed(NOW, ZoneOffset.UTC), sessions.current::get);
++                add(handler, (request, response, chain) -> {
++                    chunked.set(request.getContentLengthLong() < 0);
++                    started.countDown();
++                    try { chain.doFilter(request, response); } finally { finished.countDown(); }
++                });
++                add(handler, gateway);
++                add(handler, new RepeatableFilter(ordinaryLimit));
++                add(handler, new SysLogFilter(Integer.getInteger("namewta.body-probe.log-bytes", 32), ordinaryLimit, event -> { }));
++                add(handler, new XssFilter(new XssProperties(), ordinaryLimit));
++                handler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/");
++                handler.addServlet(new ServletHolder(new HttpServlet() {
++                    @Override protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
++                        uploadCached.set(CapturedRequestBody.find(request) != null);
++                        long count = request.getInputStream().transferTo(java.io.OutputStream.nullOutputStream());
++                        response.getWriter().write(Long.toString(count));
++                    }
++                }), "/upload");
++                ServletHolder events = new ServletHolder(new HttpServlet() {
++                    @Override protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
++                        response.setContentType("text/event-stream");
++                        var async = request.startAsync(request, response);
++                        async.setTimeout(8000);
++                        AtomicReference<ScheduledFuture<?>> future = new AtomicReference<>();
++                        future.set(streamWriter.scheduleAtFixedRate(() -> {
++                            try {
++                                response.getOutputStream().write(("data: " + "x".repeat(1024) + "\n\n").getBytes(StandardCharsets.UTF_8));
++                                response.getOutputStream().flush();
++                            } catch (IOException failure) {
++                                streamDisconnected.set(true);
++                                ScheduledFuture<?> task = future.get();
++                                if (task != null) task.cancel(false);
++                                try { async.complete(); } finally { streamStopped.countDown(); }
++                            }
++                        }, 10, 10, TimeUnit.MILLISECONDS));
++                    }
++                });
++                events.setAsyncSupported(true);
++                handler.addServlet(events, "/events");
++                server.setHandler(handler);
++                server.start();
++                port = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
++            } catch (Exception failure) {
++                close();
++                throw failure;
++            }
++        }
++
++        private static void add(ServletContextHandler handler, Filter filter) {
++            FilterHolder holder = new FilterHolder(filter);
++            holder.setAsyncSupported(true);
++            handler.addFilter(holder, "/*", EnumSet.of(DispatcherType.REQUEST));
++        }
++
++        HttpResponse<String> send(String path, byte[] bytes, boolean chunked, boolean signed, boolean invalid, String type) throws Exception {
++            var publisher = chunked ? HttpRequest.BodyPublishers.ofInputStream(() -> new ByteArrayInputStream(bytes))
++                : HttpRequest.BodyPublishers.ofByteArray(bytes);
++            var builder = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + path))
++                .timeout(Duration.ofSeconds(15)).header("Content-Type", type).POST(publisher);
++            if (signed) {
++                String timestamp = Long.toString(NOW.getEpochSecond());
++                String nonce = Base64.getUrlEncoder().withoutPadding().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
++                String signature = SIGNER.sign(new OpenApiRequest(APP_KEY, timestamp, nonce, "POST", path, "",
++                    invalid ? new byte[]{1} : bytes), APP_SECRET);
++                builder.header(OpenApiHeaders.VERSION, "v1").header(OpenApiHeaders.APP_KEY, APP_KEY)
++                    .header(OpenApiHeaders.TIMESTAMP, timestamp).header(OpenApiHeaders.NONCE, nonce)
++                    .header(OpenApiHeaders.SIGNATURE, signature);
++            }
++            return client.send(builder.build(), HttpResponse.BodyHandlers.ofString());
++        }
++
++        @Override public void close() throws Exception {
++            streamWriter.shutdownNow();
++            try { server.stop(); } finally { context.close(); client.close(); }
++            assertTrue(streamWriter.awaitTermination(5, TimeUnit.SECONDS));
++        }
++    }
++
++    static final class Sessions implements OpenApiMachineSessionOperations {
++        final ThreadLocal<LoginUser> current = new ThreadLocal<>();
++        private LoginUser stored;
++        LoginUser user() {
++            LoginUser user = new LoginUser(); user.setUserId(9L); user.setUserType("openapi");
++            user.setMenuPermission(Set.of("body:read")); user.setRolePermission(Set.of()); return user;
++        }
++        @Override public LoginUser find(VerifiedOpenApiIdentity identity) { return stored; }
++        @Override public void create(VerifiedOpenApiIdentity identity, LoginUser user, Duration ttl) { stored = user; }
++        @Override public <T> T inRequestScope(VerifiedOpenApiIdentity identity, Supplier<T> callback) {
++            current.set(stored); try { return callback.get(); } finally { current.remove(); }
++        }
++        @Override public <T> T withUserLock(Long userId, Supplier<T> callback) { return callback.get(); }
++        @Override public int invalidateByUserId(Long userId) { stored = null; return 1; }
++    }
++}
+--- before/backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java
++++ after/backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java
+@@ -122,8 +122,8 @@
+                 chain.doFilter(request, response);
+                 if (((HttpServletResponse) response).getHeader("encrypt-key") != null) violations.add("retired response header");
+             }), "/prod-api/*", EnumSet.of(DispatcherType.REQUEST));
+-            handler.addFilter(new FilterHolder(new RepeatableFilter()), "/prod-api/*", EnumSet.of(DispatcherType.REQUEST));
+-            handler.addFilter(new FilterHolder(new SysLogFilter(1024 * 1024, events::add)), "/prod-api/*", EnumSet.of(DispatcherType.REQUEST));
++            handler.addFilter(new FilterHolder(new RepeatableFilter(2 * 1024 * 1024)), "/prod-api/*", EnumSet.of(DispatcherType.REQUEST));
++            handler.addFilter(new FilterHolder(new SysLogFilter(1024 * 1024, 2 * 1024 * 1024, events::add)), "/prod-api/*", EnumSet.of(DispatcherType.REQUEST));
+             var mvc = new ServletHolder(new DispatcherServlet(context));
+             mvc.setInitOrder(1);
+             handler.addServlet(mvc, "/prod-api/*");
+--- before/backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/exception/RequestBodyTooLargeException.java
++++ after/backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/exception/RequestBodyTooLargeException.java
+@@ -0,0 +1,12 @@
++package org.namewta.common.core.exception;
++
++import java.io.IOException;
++
++/** 正文字节预算已耗尽；入口必须映射为413，不能作为日志失败降级后继续业务。 */
++public final class RequestBodyTooLargeException extends IOException {
++    public static final String ERROR_CODE = "REQUEST_BODY_TOO_LARGE";
++
++    public RequestBodyTooLargeException() {
++        super(ERROR_CODE);
++    }
++}
+--- before/backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/http/CapturedRequestBody.java
++++ after/backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/http/CapturedRequestBody.java
+@@ -0,0 +1,123 @@
++package org.namewta.common.core.http;
++
++import jakarta.servlet.ReadListener;
++import jakarta.servlet.ServletInputStream;
++import jakarta.servlet.http.HttpServletRequest;
++import org.namewta.common.core.exception.RequestBodyTooLargeException;
++import org.springframework.http.InvalidMediaTypeException;
++import org.springframework.http.MediaType;
++
++import java.io.ByteArrayInputStream;
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.nio.charset.StandardCharsets;
++import java.util.Arrays;
++
++/** 每次请求唯一的有界原始正文所有者；只提供独立读取游标或防御性副本。 */
++public final class CapturedRequestBody {
++    public static final int DEFAULT_MAX_BYTES = 2 * 1024 * 1024;
++    public static final int MAX_CONFIGURED_BYTES = Integer.MAX_VALUE - 8;
++    private static final String ATTRIBUTE = CapturedRequestBody.class.getName();
++    private final byte[] bytes;
++    private final int limit;
++
++    private CapturedRequestBody(byte[] ownedBytes, int limit) {
++        this.bytes = ownedBytes;
++        this.limit = limit;
++    }
++
++    /** 返回已由入口捕获的原始正文；包装器的属性委托不会复制字节。 */
++    public static CapturedRequestBody find(HttpServletRequest request) {
++        return request.getAttribute(ATTRIBUTE) instanceof CapturedRequestBody body ? body : null;
++    }
++
++    /**
++     * 校验声明长度并至多读取预算加一字节；流由Servlet容器拥有，异常原样向上游传播。
++     * 已有缓存仍检查调用方预算；下游观察者应直接复用find结果，不另设认证入口预算。
++     */
++    public static CapturedRequestBody capture(HttpServletRequest request, int maxBytes) throws IOException {
++        requireLimit(maxBytes);
++        CapturedRequestBody previous = find(request);
++        if (previous != null) {
++            if (previous.length() > maxBytes) throw new RequestBodyTooLargeException();
++            return previous;
++        }
++        if (request.getContentLengthLong() > maxBytes) throw new RequestBodyTooLargeException();
++        ByteArrayOutputStream output = new ByteArrayOutputStream(Math.min(8192, maxBytes));
++        byte[] buffer = new byte[Math.min(8192, maxBytes + 1)];
++        InputStream input = request.getInputStream();
++        int total = 0;
++        while (true) {
++            int count = input.read(buffer, 0, Math.min(buffer.length, maxBytes - total + 1));
++            if (count < 0) break;
++            if (count == 0) {
++                int value = input.read();
++                if (value < 0) break;
++                if (total == maxBytes) throw new RequestBodyTooLargeException();
++                output.write(value);
++                total++;
++            } else {
++                if (count > maxBytes - total) throw new RequestBodyTooLargeException();
++                output.write(buffer, 0, count);
++                total += count;
++            }
++        }
++        CapturedRequestBody body = new CapturedRequestBody(output.toByteArray(), maxBytes);
++        request.setAttribute(ATTRIBUTE, body);
++        return body;
++    }
++
++    /** 视图拥有自己的有界UTF-8字节，永不替换请求属性中的原始验签正文。 */
++    public CapturedRequestBody utf8View(String value) throws RequestBodyTooLargeException {
++        if (value.length() > limit) throw new RequestBodyTooLargeException();
++        byte[] view = value.getBytes(StandardCharsets.UTF_8);
++        if (view.length > limit) throw new RequestBodyTooLargeException();
++        return new CapturedRequestBody(view, limit);
++    }
++
++    /** 拒绝零、负值或超出JVM数组边界的配置，不提供无界模式。 */
++    public static void requireLimit(int maxBytes) {
++        if (maxBytes <= 0 || maxBytes > MAX_CONFIGURED_BYTES) {
++            throw new IllegalArgumentException("请求正文字节上限必须为正数且在JVM数组范围内");
++        }
++    }
++
++    /** JSON及结构化+json使用相同字节预算，不以字符串前缀误判其他媒体类型。 */
++    public static boolean isJsonContentType(String contentType) {
++        if (contentType == null || contentType.isBlank()) return false;
++        try {
++            MediaType type = MediaType.parseMediaType(contentType);
++            return "json".equalsIgnoreCase(type.getSubtype())
++                || type.getSubtype().toLowerCase(java.util.Locale.ROOT).endsWith("+json");
++        } catch (InvalidMediaTypeException exception) {
++            return false;
++        }
++    }
++
++    public int length() { return bytes.length; }
++    public String utf8() { return new String(bytes, StandardCharsets.UTF_8); }
++
++    /** 供不可变签名合同使用的防御性副本；日志应只取有界prefix。 */
++    public byte[] copy() { return Arrays.copyOf(bytes, bytes.length); }
++
++    public byte[] prefix(int maxLength) {
++        if (maxLength < 0) throw new IllegalArgumentException("前缀长度不能为负");
++        return Arrays.copyOf(bytes, Math.min(bytes.length, maxLength));
++    }
++
++    /** 独立游标不复制底层数组；仅供同步MVC消费，异步上传不进入此缓存。 */
++    public ServletInputStream openStream() {
++        ByteArrayInputStream input = new ByteArrayInputStream(bytes);
++        return new ServletInputStream() {
++            @Override public int read() { return input.read(); }
++            @Override public int read(byte[] target, int offset, int length) { return input.read(target, offset, length); }
++            @Override public int available() { return input.available(); }
++            @Override public boolean isFinished() { return input.available() == 0; }
++            @Override public boolean isReady() { return true; }
++            @Override public void setReadListener(ReadListener listener) {
++                throw new UnsupportedOperationException("缓存正文使用同步读取");
++            }
++        };
++    }
++}
+--- before/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/OpenApiAutoConfiguration.java
++++ after/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/OpenApiAutoConfiguration.java
+@@ -129,7 +129,8 @@
+         registration.addUrlPatterns("/*");
+         registration.setDispatcherTypes(DispatcherType.REQUEST);
+         registration.setAsyncSupported(true);
+-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 10);
++        // 在普通正文/日志/XSS之前完成原始字节验签，后续观察者复用已验证的独立预算。
++        registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
+         return registration;
+     }
+ }
+--- before/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/OpenApiStartupValidator.java
++++ after/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/OpenApiStartupValidator.java
+@@ -25,6 +25,7 @@
+ 
+     @Override
+     public void afterPropertiesSet() {
++        properties.maxBodyBytes();
+         validateKekVersion(properties.getKekVersion());
+         validateKek(properties.getKek());
+         requirePositive(properties.getClockSkew(), "openapi.clock-skew");
+--- before/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/properties/OpenApiProperties.java
++++ after/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/properties/OpenApiProperties.java
+@@ -1,6 +1,8 @@
+ package org.namewta.common.openapi.config.properties;
+ 
+ import org.springframework.boot.context.properties.ConfigurationProperties;
++import org.springframework.util.unit.DataSize;
++import org.namewta.common.core.http.CapturedRequestBody;
+ 
+ import java.time.Duration;
+ 
+@@ -11,6 +13,7 @@
+ public class OpenApiProperties {
+ 
+     private boolean enabled;
++    private DataSize maxBodySize = DataSize.ofBytes(CapturedRequestBody.DEFAULT_MAX_BYTES);
+     private Duration clockSkew = Duration.ofSeconds(60);
+     private Duration nonceTtl = Duration.ofSeconds(60);
+     private int appRateLimitPerMinute = 1000;
+@@ -21,6 +24,18 @@
+ 
+     public boolean isEnabled() {
+         return enabled;
++    }
++
++    /** 机器签名正文的独立上限，不受普通JSON或日志前缀配置覆盖。 */
++    public DataSize getMaxBodySize() { return maxBodySize; }
++    public void setMaxBodySize(DataSize maxBodySize) { this.maxBodySize = maxBodySize; }
++
++    public int maxBodyBytes() {
++        if (maxBodySize == null || maxBodySize.toBytes() <= 0
++            || maxBodySize.toBytes() > CapturedRequestBody.MAX_CONFIGURED_BYTES) {
++            throw new IllegalArgumentException("openapi.max-body-size 必须为正数且在JVM数组范围内");
++        }
++        return Math.toIntExact(maxBodySize.toBytes());
+     }
+ 
+     public void setEnabled(boolean enabled) {
+--- before/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/OpenApiGatewayFilter.java
++++ after/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/OpenApiGatewayFilter.java
+@@ -28,6 +28,7 @@
+ import org.namewta.system.api.model.LoginUser;
+ import org.springframework.web.method.HandlerMethod;
+ import org.springframework.web.filter.OncePerRequestFilter;
++import org.namewta.common.core.exception.RequestBodyTooLargeException;
+ import org.springframework.web.servlet.HandlerExecutionChain;
+ import org.springframework.web.servlet.HandlerMapping;
+ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+@@ -127,7 +128,7 @@
+             if (presentHeaders != SIGNATURE_HEADERS.size() || hasBrowserAuthentication(request)) {
+                 throw new OpenApiAuthenticationException();
+             }
+-            ReplayableOpenApiRequest replayable = new ReplayableOpenApiRequest(request);
++            ReplayableOpenApiRequest replayable = new ReplayableOpenApiRequest(request, properties.maxBodyBytes());
+             invocation.operation = resolveOperation(replayable);
+             invocation.credential = authenticate(replayable);
+             enforceReplayAndRates(replayable, invocation.operation);
+@@ -155,6 +156,8 @@
+             }
+         } catch (DownstreamException exception) {
+             downstreamFailure = exception.getCause();
++        } catch (RequestBodyTooLargeException exception) {
++            writeError(response, 413, RequestBodyTooLargeException.ERROR_CODE);
+         } catch (OpenApiAuthenticationException exception) {
+             writeError(response, 401, OpenApiAuthenticationException.ERROR_CODE);
+         } catch (OpenApiGatewayException exception) {
+--- before/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/ReplayableOpenApiRequest.java
++++ after/backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/ReplayableOpenApiRequest.java
+@@ -1,43 +1,28 @@
+ package org.namewta.common.openapi.gateway;
+ 
+-import jakarta.servlet.ReadListener;
+ import jakarta.servlet.ServletInputStream;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletRequestWrapper;
++import org.namewta.common.core.http.CapturedRequestBody;
+ 
+ import java.io.BufferedReader;
+-import java.io.ByteArrayInputStream;
+ import java.io.IOException;
+ import java.io.InputStreamReader;
+ import java.nio.charset.Charset;
+ import java.nio.charset.StandardCharsets;
+-import java.util.Arrays;
+ 
+-/**
+- * Preserves exact request bytes after signing so MVC can consume the same body.
+- */
++/** 机器入口有界捕获原始字节；验签与MVC使用同一正文，后续观察者复用只读缓存。 */
+ final class ReplayableOpenApiRequest extends HttpServletRequestWrapper {
++    private final CapturedRequestBody body;
+ 
+-    private final byte[] body;
+-
+-    ReplayableOpenApiRequest(HttpServletRequest request) throws IOException {
++    ReplayableOpenApiRequest(HttpServletRequest request, int maxBodyBytes) throws IOException {
+         super(request);
+-        body = request.getInputStream().readAllBytes();
++        body = CapturedRequestBody.capture(request, maxBodyBytes);
+     }
+ 
+-    byte[] body() {
+-        return Arrays.copyOf(body, body.length);
+-    }
+-
+-    @Override
+-    public int getContentLength() {
+-        return body.length;
+-    }
+-
+-    @Override
+-    public long getContentLengthLong() {
+-        return body.length;
+-    }
++    byte[] body() { return body.copy(); }
++    @Override public int getContentLength() { return body.length(); }
++    @Override public long getContentLengthLong() { return body.length(); }
+ 
+     @Override
+     public BufferedReader getReader() {
+@@ -46,34 +31,5 @@
+         return new BufferedReader(new InputStreamReader(getInputStream(), charset));
+     }
+ 
+-    @Override
+-    public ServletInputStream getInputStream() {
+-        ByteArrayInputStream input = new ByteArrayInputStream(body);
+-        return new ServletInputStream() {
+-            @Override
+-            public int read() {
+-                return input.read();
+-            }
+-
+-            @Override
+-            public int available() {
+-                return input.available();
+-            }
+-
+-            @Override
+-            public boolean isFinished() {
+-                return input.available() == 0;
+-            }
+-
+-            @Override
+-            public boolean isReady() {
+-                return true;
+-            }
+-
+-            @Override
+-            public void setReadListener(ReadListener readListener) {
+-                // Synchronous Servlet request bodies are sufficient for the v1 gateway.
+-            }
+-        };
+-    }
++    @Override public ServletInputStream getInputStream() { return body.openStream(); }
+ }
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/FilterConfig.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/FilterConfig.java
+@@ -2,6 +2,7 @@
+ 
+ import jakarta.servlet.DispatcherType;
+ import org.namewta.common.web.config.properties.XssProperties;
++import org.namewta.common.web.config.properties.RequestBodyProperties;
+ import org.namewta.common.web.filter.RepeatableFilter;
+ import org.namewta.common.web.filter.XssFilter;
+ import org.springframework.boot.autoconfigure.AutoConfiguration;
+@@ -17,13 +18,14 @@
+  * @author Lion Li
+  */
+ @AutoConfiguration
+-@EnableConfigurationProperties(XssProperties.class)
++@EnableConfigurationProperties({XssProperties.class, RequestBodyProperties.class})
+ public class FilterConfig {
+ 
+     /**
+      * 注册 XSS 过滤器。
+      *
+      * @param xssProperties XSS 配置
++     * @param bodyProperties 未由机器入口捕获正文时使用的字节预算
+      * @return XSS 请求过滤器实例
+      */
+     @Bean
+@@ -31,27 +33,30 @@
+     @FilterRegistration(
+         name = "xssFilter",
+         urlPatterns = "/*",
+-        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 3,
++        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 4,
++        asyncSupported = true,
+         dispatcherTypes = DispatcherType.REQUEST
+     )
+-    public XssFilter xssFilter(XssProperties xssProperties) {
+-        return new XssFilter(xssProperties);
++    public XssFilter xssFilter(XssProperties xssProperties, RequestBodyProperties bodyProperties) {
++        return new XssFilter(xssProperties, bodyProperties.maxBytes());
+     }
+ 
+     /**
+      * 注册可重复读取请求体过滤器。
+      *
++     * @param bodyProperties 普通 JSON 入口的字节预算
+      * @return 请求包装过滤器实例
+      */
+     @Bean
+     @FilterRegistration(
+         name = "repeatableFilter",
+         urlPatterns = "/*",
+-        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 1,
++        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 2,
++        asyncSupported = true,
+         dispatcherTypes = DispatcherType.REQUEST
+     )
+-    public RepeatableFilter repeatableFilter() {
+-        return new RepeatableFilter();
++    public RepeatableFilter repeatableFilter(RequestBodyProperties bodyProperties) {
++        return new RepeatableFilter(bodyProperties.maxBytes());
+     }
+ 
+ }
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogConfig.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogConfig.java
+@@ -3,6 +3,7 @@
+ import jakarta.servlet.DispatcherType;
+ import org.namewta.common.web.logging.SysLogEventWriter;
+ import org.namewta.common.web.logging.SysLogFilter;
++import org.namewta.common.web.config.properties.RequestBodyProperties;
+ import org.springframework.boot.autoconfigure.AutoConfiguration;
+ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+ import org.springframework.boot.context.properties.EnableConfigurationProperties;
+@@ -15,13 +16,14 @@
+  * 系统 HTTP 日志自动配置。
+  */
+ @AutoConfiguration
+-@EnableConfigurationProperties(SysLogProperties.class)
++@EnableConfigurationProperties({SysLogProperties.class, RequestBodyProperties.class})
+ public class SysLogConfig {
+ 
+     /**
+      * 在 repeatable 包装之后、XSS 改写之前记录并脱敏 Filter 所见数据。
+      *
+      * @param properties 系统日志配置
++     * @param bodyProperties 日志需要捕获且尚未缓存的请求正文预算
+      * @param jsonMapper 项目统一 JSON 映射器
+      * @return 系统 HTTP 日志过滤器
+      */
+@@ -30,11 +32,12 @@
+     @FilterRegistration(
+         name = "sysLogFilter",
+         urlPatterns = "/*",
+-        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 2,
++        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 3,
+         asyncSupported = true,
+         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.ASYNC}
+     )
+-    public SysLogFilter sysLogFilter(SysLogProperties properties, JsonMapper jsonMapper) {
+-        return new SysLogFilter(properties.maxBodyBytes(), new SysLogEventWriter(jsonMapper));
++    public SysLogFilter sysLogFilter(SysLogProperties properties, RequestBodyProperties bodyProperties,
++                                     JsonMapper jsonMapper) {
++        return new SysLogFilter(properties.maxBodyBytes(), bodyProperties.maxBytes(), new SysLogEventWriter(jsonMapper));
+     }
+ }
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/RequestBodyProperties.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/RequestBodyProperties.java
+@@ -0,0 +1,33 @@
++package org.namewta.common.web.config.properties;
++
++import jakarta.validation.constraints.AssertTrue;
++import jakarta.validation.constraints.NotNull;
++import lombok.Data;
++import org.namewta.common.core.http.CapturedRequestBody;
++import org.springframework.boot.context.properties.ConfigurationProperties;
++import org.springframework.boot.convert.DataSizeUnit;
++import org.springframework.util.unit.DataSize;
++import org.springframework.util.unit.DataUnit;
++import org.springframework.validation.annotation.Validated;
++
++/** 普通JSON及可记录正文的入口缓存预算；独立于机器入口及日志前缀。 */
++@Data
++@Validated
++@ConfigurationProperties(prefix = "namewta.web.request-body")
++public class RequestBodyProperties {
++    @NotNull
++    @DataSizeUnit(DataUnit.BYTES)
++    private DataSize maxSize = DataSize.ofBytes(CapturedRequestBody.DEFAULT_MAX_BYTES);
++
++    @AssertTrue(message = "namewta.web.request-body.max-size 必须为正数且在JVM数组范围内")
++    public boolean isMaxSizeValid() {
++        return maxSize != null && maxSize.toBytes() > 0
++            && maxSize.toBytes() <= CapturedRequestBody.MAX_CONFIGURED_BYTES;
++    }
++
++    public int maxBytes() {
++        int value = Math.toIntExact(maxSize.toBytes());
++        CapturedRequestBody.requireLimit(value);
++        return value;
++    }
++}
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatableFilter.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatableFilter.java
+@@ -1,59 +1,51 @@
+ package org.namewta.common.web.filter;
+ 
+-import jakarta.servlet.*;
++import jakarta.servlet.Filter;
++import jakarta.servlet.FilterChain;
++import jakarta.servlet.ServletException;
++import jakarta.servlet.ServletRequest;
++import jakarta.servlet.ServletResponse;
+ import jakarta.servlet.http.HttpServletRequest;
+-import org.namewta.common.core.utils.StringUtils;
+-import org.springframework.http.MediaType;
++import jakarta.servlet.http.HttpServletResponse;
++import org.namewta.common.core.domain.R;
++import org.namewta.common.core.exception.RequestBodyTooLargeException;
++import org.namewta.common.core.http.CapturedRequestBody;
++import org.namewta.common.json.utils.JsonUtils;
+ 
+ import java.io.IOException;
++import java.nio.charset.StandardCharsets;
+ 
+-/**
+- * 可重复读取请求体的过滤器，仅对 JSON 请求包装可重复消费的请求对象。
+- *
+- * @author wta
+- */
++/** 为普通JSON建立唯一有界缓存，上传与持续流继续使用容器原始流。 */
+ public class RepeatableFilter implements Filter {
++    private final int maxBodyBytes;
+ 
+-    /**
+-     * 过滤器初始化入口，当前无额外初始化逻辑。
+-     *
+-     * @param filterConfig 过滤器配置
+-     * @throws ServletException 过滤器初始化异常
+-     */
+-    @Override
+-    public void init(FilterConfig filterConfig) throws ServletException {
+-
++    public RepeatableFilter(int maxBodyBytes) {
++        CapturedRequestBody.requireLimit(maxBodyBytes);
++        this.maxBodyBytes = maxBodyBytes;
+     }
+ 
+-    /**
+-     * 为 JSON 请求创建可重复读取的包装器，便于日志、验签等场景多次读取请求体。
+-     *
+-     * @param request  原始请求
+-     * @param response 当前响应
+-     * @param chain    过滤器链
+-     * @throws IOException      IO 异常
+-     * @throws ServletException Servlet 异常
+-     */
+     @Override
+     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+         throws IOException, ServletException {
+-        ServletRequest requestWrapper = null;
+-        if (request instanceof HttpServletRequest
+-            && StringUtils.startsWithIgnoreCase(request.getContentType(), MediaType.APPLICATION_JSON_VALUE)) {
+-            requestWrapper = new RepeatedlyRequestWrapper((HttpServletRequest) request, response);
++        ServletRequest effective = request;
++        if (request instanceof HttpServletRequest httpRequest
++            && response instanceof HttpServletResponse httpResponse
++            && CapturedRequestBody.isJsonContentType(request.getContentType())) {
++            try {
++                effective = new RepeatedlyRequestWrapper(httpRequest, response, maxBodyBytes);
++            } catch (RequestBodyTooLargeException exception) {
++                rejectTooLarge(httpResponse);
++                return;
++            }
+         }
+-        if (null == requestWrapper) {
+-            chain.doFilter(request, response);
+-        } else {
+-            chain.doFilter(requestWrapper, response);
+-        }
++        chain.doFilter(effective, response);
+     }
+ 
+-    /**
+-     * 过滤器销毁入口，当前无额外资源需要释放。
+-     */
+-    @Override
+-    public void destroy() {
+-
++    /** 在业务执行前映射真实413；不使用会重置为200的通用renderString。 */
++    public static void rejectTooLarge(HttpServletResponse response) throws IOException {
++        response.setStatus(413);
++        response.setContentType("application/json");
++        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
++        response.getWriter().write(JsonUtils.toJsonString(R.fail(413, RequestBodyTooLargeException.ERROR_CODE)));
+     }
+ }
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatedlyRequestWrapper.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatedlyRequestWrapper.java
+@@ -1,137 +1,50 @@
+ package org.namewta.common.web.filter;
+ 
+-import cn.hutool.core.io.IoUtil;
+-import jakarta.servlet.ReadListener;
+ import jakarta.servlet.ServletInputStream;
+ import jakarta.servlet.ServletResponse;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletRequestWrapper;
+ import org.namewta.common.core.constant.Constants;
++import org.namewta.common.core.http.CapturedRequestBody;
+ 
+ import java.io.BufferedReader;
+-import java.io.ByteArrayInputStream;
+ import java.io.IOException;
+ import java.io.InputStreamReader;
+ import java.nio.charset.StandardCharsets;
+-import java.util.Arrays;
+ 
+-/**
+- * 构建可重复读取输入流的请求包装器，缓存请求体以支持多次读取。
+- *
+- * @author wta
+- */
++/** 可重复读取原始正文；观察者共享入口缓存，不因新增包装器复制完整数组。 */
+ public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper {
+-    /**
+-     * 请求体字节数据。
+-     */
+-    private final byte[] body;
++    private final CapturedRequestBody body;
+ 
+     /**
+-     * 读取原始请求体并缓存到内存，统一设置请求与响应编码。
+-     *
+-     * @param request  原始请求
++     * 首个缓存入口决定预算；机器入口已验过其独立预算时，只复用已捕获原文。
++     * @param request 原始或已包装请求
+      * @param response 当前响应
+-     * @throws IOException 读取请求体异常
++     * @param maxBodyBytes 普通正文缓存上限
++     * @throws IOException 读取失败或正文超限
+      */
+-    public RepeatedlyRequestWrapper(HttpServletRequest request, ServletResponse response) throws IOException {
++    public RepeatedlyRequestWrapper(HttpServletRequest request, ServletResponse response, int maxBodyBytes)
++        throws IOException {
+         super(request);
++        CapturedRequestBody.requireLimit(maxBodyBytes);
+         request.setCharacterEncoding(Constants.UTF8);
+         response.setCharacterEncoding(Constants.UTF8);
+-
+-        body = IoUtil.readBytes(request.getInputStream(), false);
++        CapturedRequestBody existing = CapturedRequestBody.find(request);
++        body = existing != null ? existing : CapturedRequestBody.capture(request, maxBodyBytes);
+     }
+ 
+-    /**
+-     * 基于缓存的请求体构造字符读取器。
+-     *
+-     * @return 可重复读取的字符流
+-     * @throws IOException IO 异常
+-     */
+     @Override
+-    public BufferedReader getReader() throws IOException {
++    public BufferedReader getReader() {
+         return new BufferedReader(new InputStreamReader(getInputStream(), StandardCharsets.UTF_8));
+     }
+ 
+-    /**
+-     * 返回基于缓存请求体重新生成的输入流。
+-     *
+-     * @return 可重复读取的输入流
+-     * @throws IOException IO 异常
+-     */
+-    @Override
+-    public ServletInputStream getInputStream() throws IOException {
+-        final ByteArrayInputStream bais = new ByteArrayInputStream(body);
+-        return new ServletInputStream() {
+-            /**
+-             * 读取缓存请求体的下一个字节。
+-             *
+-             * @return 下一个字节
+-             * @throws IOException IO 异常
+-             */
+-            @Override
+-            public int read() throws IOException {
+-                return bais.read();
+-            }
++    @Override public ServletInputStream getInputStream() { return body.openStream(); }
++    @Override public int getContentLength() { return body.length(); }
++    @Override public long getContentLengthLong() { return body.length(); }
+ 
+-            /**
+-             * 返回缓存请求体剩余可读字节数。
+-             *
+-             * @return 剩余字节数
+-             * @throws IOException IO 异常
+-             */
+-            @Override
+-            public int available() throws IOException {
+-                return bais.available();
+-            }
++    /** 返回原始正文实际字节数。 */
++    public int getBodyLength() { return body.length(); }
+ 
+-            /**
+-             * 判断缓存请求体是否已读取完毕。
+-             *
+-             * @return 是否读取完毕
+-             */
+-            @Override
+-            public boolean isFinished() {
+-                return bais.available() == 0;
+-            }
+-
+-            /**
+-             * 判断输入流是否可读。
+-             *
+-             * @return 固定为 true
+-             */
+-            @Override
+-            public boolean isReady() {
+-                return true;
+-            }
+-
+-            /**
+-             * 设置异步读取监听器。
+-             *
+-             * @param readListener 读取监听器
+-             */
+-            @Override
+-            public void setReadListener(ReadListener readListener) {
+-
+-            }
+-        };
+-    }
+-
+-    /**
+-     * 返回请求体的实际 UTF-8 字节数。
+-     *
+-     * @return 请求体字节数
+-     */
+-    public int getBodyLength() {
+-        return body.length;
+-    }
+-
+-    /**
+-     * 复制不超过指定上限的请求体前缀，避免日志截断再复制完整大正文。
+-     *
+-     * @param maxLength 最大字节数
+-     * @return 请求体前缀
+-     */
+-    public byte[] getBodyPrefix(int maxLength) {
+-        return Arrays.copyOf(body, Math.min(body.length, maxLength));
+-    }
++    /** 日志只复制所需前缀，保留业务与验签字节不变。 */
++    public byte[] getBodyPrefix(int maxLength) { return body.prefix(maxLength); }
+ }
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/XssFilter.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/XssFilter.java
+@@ -6,6 +6,7 @@
+ import lombok.RequiredArgsConstructor;
+ import org.namewta.common.core.utils.StringUtils;
+ import org.namewta.common.web.config.properties.XssProperties;
++import org.namewta.common.core.exception.RequestBodyTooLargeException;
+ import org.springframework.http.HttpMethod;
+ 
+ import java.io.IOException;
+@@ -25,6 +26,7 @@
+     private final List<String> excludes = new ArrayList<>();
+ 
+     private final XssProperties properties;
++    private final int maxBodyBytes;
+ 
+     /**
+      * 初始化过滤器并加载配置中的排除路径。
+@@ -57,7 +59,13 @@
+             chain.doFilter(request, response);
+             return;
+         }
+-        XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest) request);
++        XssHttpServletRequestWrapper xssRequest;
++        try {
++            xssRequest = new XssHttpServletRequestWrapper(req, maxBodyBytes);
++        } catch (RequestBodyTooLargeException exception) {
++            RepeatableFilter.rejectTooLarge(resp);
++            return;
++        }
+         chain.doFilter(xssRequest, response);
+     }
+ 
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/XssHttpServletRequestWrapper.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/XssHttpServletRequestWrapper.java
+@@ -1,20 +1,16 @@
+ package org.namewta.common.web.filter;
+ 
+-import cn.hutool.core.io.IoUtil;
+ import cn.hutool.core.map.MapUtil;
+ import cn.hutool.core.util.ArrayUtil;
+-import cn.hutool.core.util.StrUtil;
+ import cn.hutool.http.HtmlUtil;
+-import jakarta.servlet.ReadListener;
+ import jakarta.servlet.ServletInputStream;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletRequestWrapper;
+-import org.namewta.common.core.utils.StringUtils;
+-import org.springframework.http.HttpHeaders;
+-import org.springframework.http.MediaType;
++import org.namewta.common.core.http.CapturedRequestBody;
+ 
+-import java.io.ByteArrayInputStream;
++import java.io.BufferedReader;
+ import java.io.IOException;
++import java.io.InputStreamReader;
+ import java.nio.charset.StandardCharsets;
+ import java.util.HashMap;
+ import java.util.Map;
+@@ -25,14 +21,24 @@
+  * @author wta
+  */
+ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
++    private final CapturedRequestBody view;
+ 
+     /**
+      * 使用原始请求构造 XSS 包装器。
+      *
+      * @param request 原始请求
++     * @param maxBodyBytes 未捕获正文的默认上限
++     * @throws IOException 读取或视图字节预算失败，必须在进入业务前处理
+      */
+-    public XssHttpServletRequestWrapper(HttpServletRequest request) {
++    public XssHttpServletRequestWrapper(HttpServletRequest request, int maxBodyBytes) throws IOException {
+         super(request);
++        if (isJsonRequest()) {
++            CapturedRequestBody raw = CapturedRequestBody.find(request);
++            if (raw == null) raw = CapturedRequestBody.capture(request, maxBodyBytes);
++            view = raw.utf8View(HtmlUtil.cleanHtmlTag(raw.utf8()).trim());
++        } else {
++            view = null;
++        }
+     }
+ 
+     /**
+@@ -108,74 +114,17 @@
+      */
+     @Override
+     public ServletInputStream getInputStream() throws IOException {
+-        // 非json类型，直接返回
+-        if (!isJsonRequest()) {
+-            return super.getInputStream();
+-        }
++        return view == null ? super.getInputStream() : view.openStream();
++    }
+ 
+-        // 为空，直接返回
+-        String json = StrUtil.str(IoUtil.readBytes(super.getInputStream(), false), StandardCharsets.UTF_8);
+-        if (StringUtils.isEmpty(json)) {
+-            return super.getInputStream();
+-        }
++    @Override
++    public BufferedReader getReader() throws IOException {
++        return view == null ? super.getReader()
++            : new BufferedReader(new InputStreamReader(view.openStream(), StandardCharsets.UTF_8));
++    }
+ 
+-        // xss过滤
+-        json = HtmlUtil.cleanHtmlTag(json).trim();
+-        byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
+-        final ByteArrayInputStream bis = IoUtil.toStream(jsonBytes);
+-        return new ServletInputStream() {
+-            /**
+-             * 判断清洗后的 JSON 流是否已读取完毕。
+-             *
+-             * @return 是否读取完毕
+-             */
+-            @Override
+-            public boolean isFinished() {
+-                return true;
+-            }
+-
+-            /**
+-             * 判断清洗后的 JSON 流是否可读。
+-             *
+-             * @return 固定为 true
+-             */
+-            @Override
+-            public boolean isReady() {
+-                return true;
+-            }
+-
+-            /**
+-             * 返回清洗后的 JSON 字节数。
+-             *
+-             * @return JSON 字节数
+-             * @throws IOException IO 异常
+-             */
+-            @Override
+-            public int available() throws IOException {
+-                return jsonBytes.length;
+-            }
+-
+-            /**
+-             * 设置异步读取监听器。
+-             *
+-             * @param readListener 读取监听器
+-             */
+-            @Override
+-            public void setReadListener(ReadListener readListener) {
+-            }
+-
+-            /**
+-             * 读取清洗后的 JSON 流下一个字节。
+-             *
+-             * @return 下一个字节
+-             * @throws IOException IO 异常
+-             */
+-            @Override
+-            public int read() throws IOException {
+-                return bis.read();
+-            }
+-        };
+-    }
++    @Override public int getContentLength() { return view == null ? super.getContentLength() : view.length(); }
++    @Override public long getContentLengthLong() { return view == null ? super.getContentLengthLong() : view.length(); }
+ 
+     /**
+      * 判断当前请求是否为 JSON 请求。
+@@ -183,7 +132,6 @@
+      * @return true 表示 JSON 请求
+      */
+     public boolean isJsonRequest() {
+-        String header = super.getHeader(HttpHeaders.CONTENT_TYPE);
+-        return StringUtils.startsWithIgnoreCase(header, MediaType.APPLICATION_JSON_VALUE);
++        return CapturedRequestBody.isJsonContentType(super.getContentType());
+     }
+ }
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java
+@@ -11,6 +11,9 @@
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletResponse;
+ import org.namewta.common.web.filter.RepeatedlyRequestWrapper;
++import org.namewta.common.web.filter.RepeatableFilter;
++import org.namewta.common.core.exception.RequestBodyTooLargeException;
++import org.namewta.common.core.http.CapturedRequestBody;
+ import org.namewta.common.json.utils.LogSanitizer;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+@@ -40,13 +43,16 @@
+     private static final Logger FAILURE_LOG = LoggerFactory.getLogger(SysLogFilter.class);
+ 
+     private final int maxBodyBytes;
++    private final int maxRequestBytes;
+     private final SysLogEventSink eventSink;
+ 
+-    public SysLogFilter(int maxBodyBytes, SysLogEventSink eventSink) {
++    public SysLogFilter(int maxBodyBytes, int maxRequestBytes, SysLogEventSink eventSink) {
+         if (maxBodyBytes <= 0) {
+             throw new IllegalArgumentException("正文日志字节上限必须大于 0");
+         }
+         this.maxBodyBytes = maxBodyBytes;
++        CapturedRequestBody.requireLimit(maxRequestBytes);
++        this.maxRequestBytes = maxRequestBytes;
+         this.eventSink = eventSink;
+     }
+ 
+@@ -63,7 +69,12 @@
+         HttpServletRequest effectiveRequest = httpRequest;
+         boolean initialDispatch = state == null;
+         if (initialDispatch) {
+-            effectiveRequest = prepareRequest(httpRequest, httpResponse);
++            try {
++                effectiveRequest = prepareRequest(httpRequest, httpResponse);
++            } catch (RequestBodyTooLargeException exception) {
++                RepeatableFilter.rejectTooLarge(httpResponse);
++                return;
++            }
+             state = new ExchangeState(effectiveRequest, maxBodyBytes);
+             effectiveRequest.setAttribute(STATE_ATTRIBUTE, state);
+             httpResponse.setHeader(REQUEST_ID_HEADER, state.requestId());
+@@ -91,13 +102,16 @@
+         }
+     }
+ 
+-    private HttpServletRequest prepareRequest(HttpServletRequest request, HttpServletResponse response) {
++    private HttpServletRequest prepareRequest(HttpServletRequest request, HttpServletResponse response)
++        throws RequestBodyTooLargeException {
+         if (request instanceof RepeatedlyRequestWrapper
+             || !SysLogMediaTypePolicy.isRequestBodyLoggable(request.getContentType())) {
+             return request;
+         }
+         try {
+-            return new RepeatedlyRequestWrapper(request, response);
++            return new RepeatedlyRequestWrapper(request, response, maxRequestBytes);
++        } catch (RequestBodyTooLargeException exception) {
++            throw exception;
+         } catch (IOException | RuntimeException exception) {
+             reportFailure("请求正文采集", null, exception);
+             return request;
+--- before/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogMediaTypePolicy.java
++++ after/backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogMediaTypePolicy.java
+@@ -37,6 +37,9 @@
+         }
+         if (MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
+             return BodyDecision.omit("FORM_PARAMETERS_ONLY");
++        }
++        if (MediaType.TEXT_EVENT_STREAM.isCompatibleWith(mediaType)) {
++            return BodyDecision.omit("STREAMING");
+         }
+         return isTextual(mediaType) ? BodyDecision.allow() : BodyDecision.omit("NON_TEXT_CONTENT_TYPE");
+     }
+--- before/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/config/SysLogConfigTest.java
++++ after/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/config/SysLogConfigTest.java
+@@ -46,12 +46,29 @@
+     }
+ 
+     @Test
++    void ordinaryIngressLimitHasAnIndependentDefaultAndValidatedOverride() {
++        contextRunner.run(context -> assertThat(context.getBean(
++            org.namewta.common.web.config.properties.RequestBodyProperties.class).maxBytes()).isEqualTo(2 * 1024 * 1024));
++        contextRunner.withPropertyValues("namewta.web.request-body.max-size=3MB", "sys.log.max-body-size=16KB")
++            .run(context -> {
++                assertThat(context).hasNotFailed();
++                assertThat(context.getBean(org.namewta.common.web.config.properties.RequestBodyProperties.class).maxBytes())
++                    .isEqualTo(3 * 1024 * 1024);
++                assertThat(context.getBean(SysLogProperties.class).maxBodyBytes()).isEqualTo(16 * 1024);
++            });
++        for (String value : new String[]{"0B", "-1B", "3GB", "invalid"}) {
++            contextRunner.withPropertyValues("namewta.web.request-body.max-size=" + value)
++                .run(context -> assertThat(context).hasFailed());
++        }
++    }
++
++    @Test
+     void filterOrderKeepsLoggingAfterRepeatableAndBeforeXss() {
+         int repeatableOrder = registration(FilterConfig.class, "repeatableFilter").order();
+         int sysLogOrder = registration(SysLogConfig.class, "sysLogFilter").order();
+         int xssOrder = registration(FilterConfig.class, "xssFilter").order();
+ 
+-        assertThat(repeatableOrder).isEqualTo(FilterRegistrationBean.HIGHEST_PRECEDENCE + 1);
++        assertThat(repeatableOrder).isEqualTo(FilterRegistrationBean.HIGHEST_PRECEDENCE + 2);
+         assertThat(sysLogOrder).isEqualTo(repeatableOrder + 1);
+         assertThat(xssOrder).isEqualTo(sysLogOrder + 1);
+     }
+--- before/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/filter/RequestBodyLimitTest.java
++++ after/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/filter/RequestBodyLimitTest.java
+@@ -0,0 +1,167 @@
++package org.namewta.common.web.filter;
++
++import jakarta.servlet.ReadListener;
++import jakarta.servlet.ServletInputStream;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.springframework.mock.web.MockHttpServletRequest;
++import org.springframework.mock.web.MockHttpServletResponse;
++import org.namewta.common.core.exception.RequestBodyTooLargeException;
++import org.namewta.common.core.http.CapturedRequestBody;
++import org.namewta.common.web.logging.SysLogFilter;
++
++import java.io.IOException;
++import java.nio.charset.StandardCharsets;
++import java.util.concurrent.atomic.AtomicInteger;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertArrayEquals;
++import static org.junit.jupiter.api.Assertions.assertSame;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++@Tag("dev")
++class RequestBodyLimitTest {
++    private static final int LIMIT = 2 * 1024 * 1024;
++
++    @Test
++    void declaredOversizeIsRejectedBeforeReadingTheBody() {
++        AtomicInteger reads = new AtomicInteger();
++        MockHttpServletRequest request = request(LIMIT + 1, LIMIT + 1, reads);
++        assertThrows(RequestBodyTooLargeException.class, () -> new RepeatedlyRequestWrapper(request, new MockHttpServletResponse(), LIMIT));
++        assertEquals(0, reads.get());
++    }
++
++    @Test
++    void unknownLengthCannotConsumeBeyondTheBudgetPlusOne() {
++        AtomicInteger reads = new AtomicInteger();
++        MockHttpServletRequest request = request(-1, LIMIT + 32, reads);
++        assertThrows(RequestBodyTooLargeException.class, () -> new RepeatedlyRequestWrapper(request, new MockHttpServletResponse(), LIMIT));
++        assertTrue(reads.get() <= LIMIT + 1);
++    }
++
++    @Test
++    void structuredJsonSuffixUsesTheSameIngressLimit() throws Exception {
++        MockHttpServletRequest request = request(LIMIT + 1, LIMIT + 1, new AtomicInteger());
++        request.setContentType("application/problem+json");
++        MockHttpServletResponse response = new MockHttpServletResponse();
++        AtomicInteger business = new AtomicInteger();
++        new RepeatableFilter(2 * 1024 * 1024).doFilter(request, response, (req, res) -> business.incrementAndGet());
++        assertEquals(413, response.getStatus());
++        assertEquals(0, business.get());
++    }
++
++    @Test
++    void knownAndUnknownLengthsAllowExactlyTheBudgetButNotOneMoreByte() throws Exception {
++        for (long declared : new long[]{-1, 31, 32}) {
++            for (int size : new int[]{0, 31, 32}) {
++                var body = CapturedRequestBody.capture(request(declared, size, new AtomicInteger()), 32);
++                assertEquals(size, body.length());
++            }
++        }
++        assertThrows(RequestBodyTooLargeException.class,
++            () -> CapturedRequestBody.capture(request(1, 33, new AtomicInteger()), 32));
++    }
++
++    @Test
++    void repeatedObserversShareOriginalStorageAndCannotMutateItThroughCopies() throws Exception {
++        AtomicInteger reads = new AtomicInteger();
++        var request = request(-1, 32, reads);
++        var response = new MockHttpServletResponse();
++        var first = new RepeatedlyRequestWrapper(request, response, 32);
++        var owner = CapturedRequestBody.find(request);
++        for (int i = 0; i < 20; i++) {
++            var observer = new RepeatedlyRequestWrapper(first, response, 32);
++            assertSame(owner, CapturedRequestBody.find(observer));
++            assertEquals(32, observer.getInputStream().readAllBytes().length);
++            observer.getBodyPrefix(32)[0] = '!';
++        }
++        owner.copy()[0] = '!';
++        assertEquals('x', owner.openStream().read());
++        assertEquals(32, reads.get());
++    }
++
++    @Test
++    void xssCreatesOneSeparateViewAndLeavesRawSignatureBytesUnchanged() throws Exception {
++        MockHttpServletRequest request = new MockHttpServletRequest();
++        request.setContentType("application/problem+json");
++        byte[] raw = " {\"value\":\"<b>中</b>\"} ".getBytes(StandardCharsets.UTF_8);
++        request.setContent(raw);
++        var first = new RepeatedlyRequestWrapper(request, new MockHttpServletResponse(), 128);
++        var view = new XssHttpServletRequestWrapper(first, 128);
++        assertEquals("{\"value\":\"中\"}", view.getReader().readLine());
++        assertArrayEquals(view.getInputStream().readAllBytes(), view.getInputStream().readAllBytes());
++        assertArrayEquals(raw, CapturedRequestBody.find(view).copy());
++        assertThrows(RequestBodyTooLargeException.class,
++            () -> CapturedRequestBody.find(view).utf8View("中".repeat(128)));
++    }
++
++    @Test
++    void loggingFallbackMustNotSwallowTheIngressRejection() throws Exception {
++        var request = request(-1, 33, new AtomicInteger());
++        request.setContentType("text/plain");
++        var response = new MockHttpServletResponse();
++        AtomicInteger business = new AtomicInteger();
++        new SysLogFilter(8, 32, ignored -> { }).doFilter(request, response, (req, res) -> business.incrementAndGet());
++        assertEquals(413, response.getStatus());
++        assertEquals(0, business.get());
++    }
++
++    @Test
++    void multipartAndSseDoNotEnterOrdinaryBodyCapture() throws Exception {
++        for (String type : new String[]{"multipart/form-data; boundary=owned", "text/event-stream", "application/octet-stream"}) {
++            MockHttpServletRequest request = new MockHttpServletRequest() {
++                @Override public ServletInputStream getInputStream() { throw new AssertionError("stream was eagerly consumed"); }
++            };
++            request.setContentType(type);
++            var response = new MockHttpServletResponse();
++            AtomicInteger business = new AtomicInteger();
++            new RepeatableFilter(32).doFilter(request, response,
++                (req, res) -> new SysLogFilter(8, 32, ignored -> { }).doFilter(req, res,
++                    (raw, out) -> business.incrementAndGet()));
++            assertEquals(1, business.get());
++        }
++    }
++
++    @Test
++    void truncatedOrCancelledReadDoesNotInstallAPartialCache() {
++        MockHttpServletRequest request = new MockHttpServletRequest() {
++            @Override public ServletInputStream getInputStream() {
++                return new ServletInputStream() {
++                    @Override public int read() throws IOException { throw new IOException("owned disconnect"); }
++                    @Override public boolean isFinished() { return false; }
++                    @Override public boolean isReady() { return true; }
++                    @Override public void setReadListener(ReadListener listener) { }
++                };
++            }
++        };
++        assertThrows(IOException.class, () -> CapturedRequestBody.capture(request, 32));
++        assertEquals(null, CapturedRequestBody.find(request));
++    }
++
++    private static MockHttpServletRequest request(long declared, int actual, AtomicInteger reads) {
++        return new MockHttpServletRequest() {
++            @Override public long getContentLengthLong() { return declared; }
++            @Override public int getContentLength() { return (int) declared; }
++            @Override public ServletInputStream getInputStream() {
++                return new ServletInputStream() {
++                    private int remaining = actual;
++                    @Override public int read() {
++                        if (remaining == 0) return -1;
++                        remaining--; reads.incrementAndGet(); return 'x';
++                    }
++                    @Override public int read(byte[] target, int offset, int length) {
++                        if (length == 0) return 0;
++                        if (remaining == 0) return -1;
++                        int count = Math.min(length, remaining);
++                        java.util.Arrays.fill(target, offset, offset + count, (byte) 'x');
++                        remaining -= count; reads.addAndGet(count); return count;
++                    }
++                    @Override public boolean isFinished() { return remaining == 0; }
++                    @Override public boolean isReady() { return true; }
++                    @Override public void setReadListener(ReadListener listener) { }
++                };
++            }
++        };
++    }
++}
+--- before/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java
++++ after/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java
+@@ -30,7 +30,7 @@
+         try {
+             MockHttpServletRequest request = new MockHttpServletRequest("POST", "/failed");
+             MockHttpServletResponse response = new MockHttpServletResponse();
+-            new SysLogFilter(1024, event -> {
++            new SysLogFilter(1024, 2 * 1024 * 1024, event -> {
+                 throw new IllegalStateException(CANARY, new RuntimeException(CANARY));
+             }).doFilter(request, response, (req, res) -> res.getWriter().write("unchanged"));
+             new GlobalExceptionHandler().handleRuntimeException(new IllegalStateException(CANARY), request);
+@@ -55,7 +55,7 @@
+         request.addParameter("code", CANARY);
+         request.addParameter("user[password]", CANARY);
+         request.addParameter("page", "1", "2");
+-        new SysLogFilter(1024, events::add).doFilter(request, new MockHttpServletResponse(), (req, res) -> {
++        new SysLogFilter(1024, 2 * 1024 * 1024, events::add).doFilter(request, new MockHttpServletResponse(), (req, res) -> {
+             assertThat(req.getParameter("code")).isEqualTo(CANARY);
+             assertThat(req.getParameterValues("page")).containsExactly("1", "2");
+         });
+@@ -70,7 +70,7 @@
+         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/broken");
+         request.setContentType("application/json");
+         request.setContent(original);
+-        new SysLogFilter(1024, events::add).doFilter(request, new MockHttpServletResponse(), (req, res) ->
++        new SysLogFilter(1024, 2 * 1024 * 1024, events::add).doFilter(request, new MockHttpServletResponse(), (req, res) ->
+             assertThat(req.getInputStream().readAllBytes()).containsExactly(original));
+         assertThat(events.getFirst()).containsEntry("body", "[REDACTED]");
+     }
+--- before/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java
++++ after/backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java
+@@ -33,7 +33,7 @@
+     @Test
+     void recordsCompleteRequestAndResponseWithServerRequestId() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(1024 * 1024, events::add);
++        SysLogFilter filter = new SysLogFilter(1024 * 1024, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = jsonRequest("{\"password\":\"plain\",\"token\":\"raw\"}");
+         request.setQueryString("page=1&page=2");
+         request.addParameter("page", "1", "2");
+@@ -99,7 +99,7 @@
+     @Test
+     void concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(20, events::add);
++        SysLogFilter filter = new SysLogFilter(20, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = jsonRequest("{\"password\":\"plain\",\"visible\":true}");
+ 
+         filter.doFilter(request, new MockHttpServletResponse(), (servletRequest, servletResponse) ->
+@@ -115,7 +115,7 @@
+     @Test
+     void recursivelyRedactsOpenApiCredentialMaterial() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(1024, events::add);
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = jsonRequest("""
+             {"appSecret":"secret-value","nested":{"signature":"signature-value",\
+             "machine_token":"machine-token-value","safe":"visible"}}""");
+@@ -133,7 +133,7 @@
+     @Test
+     void hidesUnstructuredTextWithoutChangingUtf8BusinessBody() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(5, events::add);
++        SysLogFilter filter = new SysLogFilter(5, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/unicode");
+         request.setContentType("text/plain");
+         request.setContent("ééé".getBytes(StandardCharsets.UTF_8));
+@@ -162,7 +162,7 @@
+     @Test
+     void omitsBinaryResponseBodyButKeepsMetadata() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(1024, events::add);
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/download");
+         MockHttpServletResponse response = new MockHttpServletResponse();
+         byte[] bytes = {0, 1, 2, 3};
+@@ -185,7 +185,7 @@
+     @Test
+     void preservesUnhandledExceptionAndMarksResponseIncomplete() {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(1024, events::add);
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/failure");
+         MockHttpServletResponse response = new MockHttpServletResponse();
+         IllegalStateException cause = new IllegalStateException("root");
+@@ -203,7 +203,7 @@
+     @Test
+     void completesAsyncResponseExactlyOnce() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(1024, events::add);
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/async");
+         request.setAsyncSupported(true);
+         MockHttpServletResponse response = new MockHttpServletResponse();
+@@ -229,7 +229,7 @@
+     void recordsAsyncTimeoutOnceAndRestoresCallbackMdc() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+         List<String> eventRequestIds = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(1024, event -> {
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, event -> {
+             events.add(event);
+             eventRequestIds.add(MDC.get(SysLogFilter.MDC_REQUEST_ID));
+         });
+@@ -255,7 +255,7 @@
+     @Test
+     void excludesMultipartRequestAndSseResponseBodies() throws Exception {
+         List<Map<String, Object>> events = new ArrayList<>();
+-        SysLogFilter filter = new SysLogFilter(1024, events::add);
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
+         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/stream");
+         request.setContentType("multipart/form-data; boundary=test");
+         request.setContent("raw-file-content".getBytes(StandardCharsets.UTF_8));
+@@ -287,12 +287,12 @@
+         MockHttpServletRequest request = jsonRequest(requestBody);
+         request.addHeader("Authorization", "Bearer header-secret-canary");
+         MockHttpServletResponse response = new MockHttpServletResponse();
+-        var repeatableRequest = new RepeatedlyRequestWrapper(request, response);
++        var repeatableRequest = new RepeatedlyRequestWrapper(request, response, 2 * 1024 * 1024);
+         var nestedRequest = new jakarta.servlet.http.HttpServletRequestWrapper(repeatableRequest);
+         var nestedResponse = new jakarta.servlet.http.HttpServletResponseWrapper(response);
+         List<Map<String, Object>> events = new ArrayList<>();
+ 
+-        new SysLogFilter(1024, events::add).doFilter(nestedRequest, nestedResponse,
++        new SysLogFilter(1024, 2 * 1024 * 1024, events::add).doFilter(nestedRequest, nestedResponse,
+             (servletRequest, servletResponse) -> {
+                 assertThat(new String(servletRequest.getInputStream().readAllBytes(), StandardCharsets.UTF_8))
+                     .isEqualTo(requestBody);
+@@ -318,7 +318,7 @@
+     @Test
+     void restoresPreexistingMdcValue() throws Exception {
+         MDC.put(SysLogFilter.MDC_REQUEST_ID, "outer-request-id");
+-        SysLogFilter filter = new SysLogFilter(1024, ignored -> {
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, ignored -> {
+         });
+ 
+         filter.doFilter(new MockHttpServletRequest("GET", "/mdc"), new MockHttpServletResponse(),
+@@ -330,7 +330,7 @@
+ 
+     @Test
+     void loggingFailureDoesNotChangeBusinessResponse() throws Exception {
+-        SysLogFilter filter = new SysLogFilter(1024, event -> {
++        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, event -> {
+             throw new IllegalStateException("encoder unavailable");
+         });
+         MockHttpServletRequest request = jsonRequest("{\"value\":1}");
+@@ -360,7 +360,7 @@
+         request.addHeader("Referer", "https://test.invalid/callback?code=" + canary);
+         MockHttpServletResponse response = new MockHttpServletResponse();
+ 
+-        new SysLogFilter(1024, events::add).doFilter(request, response, (req, res) -> {
++        new SysLogFilter(1024, 2 * 1024 * 1024, events::add).doFilter(request, response, (req, res) -> {
+             var httpResponse = (jakarta.servlet.http.HttpServletResponse) res;
+             httpResponse.setContentType("application/json");
+             httpResponse.setHeader("Location", "https://test.invalid/callback?code=" + canary);

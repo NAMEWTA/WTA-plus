@@ -1,0 +1,6 @@
+{
+  "command": "bash release-artifacts/scripts/verify-release.sh",
+  "exitCode": 0,
+  "seconds": 6.81,
+  "log": "T-10-baseline.log"
+}

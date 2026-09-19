@@ -1,0 +1,15 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "build"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.29,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-home-build-first-1.log"
+  }
+]

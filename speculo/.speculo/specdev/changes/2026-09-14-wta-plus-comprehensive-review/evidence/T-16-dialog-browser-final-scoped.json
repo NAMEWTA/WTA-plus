@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "vite",
+        "build",
+        "--config",
+        "/srv/WTA-plus/temp/team/lead/t16-dialog-d9lbq761/vite.config.mjs"
+      ],
+      "cwd": "frontend",
+      "exit_code": 0,
+      "seconds": 0.91,
+      "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-dialog-browser-final-scoped-1.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "/srv/WTA-plus/temp/team/lead/t16-dialog-d9lbq761/playwright.config.mjs",
+        "--workers=1"
+      ],
+      "cwd": "frontend",
+      "exit_code": 0,
+      "seconds": 13.53,
+      "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-dialog-browser-final-scoped-2.log"
+    }
+  ],
+  "vite_config": "import vue from \"/srv/WTA-plus/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs\";\nexport default {\"root\": \"/srv/WTA-plus/frontend\", \"resolve\": {\"alias\": {\"vue\": \"/srv/WTA-plus/frontend/packages/web-domains/workflow/node_modules/vue\", \"element-plus\": \"/srv/WTA-plus/frontend/packages/web-domains/workflow/node_modules/element-plus\", \"@namewta/domain-workflow\": \"/srv/WTA-plus/frontend/packages/web-domains/workflow/node_modules/@namewta/domain-workflow\"}}, \"plugins\": [vue()], \"build\": {\"outDir\": \"/srv/WTA-plus/temp/team/lead/t16-dialog-d9lbq761/dist\", \"emptyOutDir\": true, \"rollupOptions\": {\"input\": \"/srv/WTA-plus/frontend/packages/web-domains/workflow/src/components/fixtures/task-integrity/index.html\"}}};\n",
+  "playwright_config": "export default {\"testDir\": \"/srv/WTA-plus/frontend/e2e\", \"testMatch\": \"workflow-task-integrity.spec.ts\", \"outputDir\": \"/srv/WTA-plus/frontend/tests/e2e/reports/t16-dialog\", \"workers\": 1, \"retries\": 0, \"maxFailures\": 1, \"reporter\": \"line\", \"use\": {\"baseURL\": \"http://127.0.0.1:43503\", \"channel\": \"chrome\"}, \"webServer\": {\"command\": \"corepack pnpm exec vite preview --config /srv/WTA-plus/temp/team/lead/t16-dialog-d9lbq761/vite.config.mjs --host 127.0.0.1 --port 43503 --strictPort\", \"url\": \"http://127.0.0.1:43503/packages/web-domains/workflow/src/components/fixtures/task-integrity/index.html\", \"reuseExistingServer\": false, \"cwd\": \"/srv/WTA-plus/frontend\"}};\n",
+  "owned_cleanup": true,
+  "preview_closed": true
+}

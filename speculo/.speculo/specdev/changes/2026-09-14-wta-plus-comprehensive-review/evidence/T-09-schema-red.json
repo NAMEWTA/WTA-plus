@@ -1,0 +1,9 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "release-artifacts/tests/notify-baseline-contract.test.mjs"
+  ],
+  "exit_code": 1
+}

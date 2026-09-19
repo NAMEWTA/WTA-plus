@@ -1,0 +1,39 @@
+[
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+      "--stage",
+      "goal-plan",
+      "--repo",
+      "/srv/WTA-plus",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+    ],
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-24-governance-1.log",
+    "seconds": 0.15
+  },
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/ticket-control.mjs",
+      "--map",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md",
+      "--repo",
+      "/srv/WTA-plus"
+    ],
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-24-governance-2.log",
+    "seconds": 0.18
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-24-governance-3.log",
+    "seconds": 0.05
+  }
+]

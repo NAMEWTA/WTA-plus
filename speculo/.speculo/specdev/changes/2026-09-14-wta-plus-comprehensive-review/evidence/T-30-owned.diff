@@ -1,0 +1,494 @@
+--- checkpoint/backend/wta-admin/src/test/java/org/namewta/test/migration/adminruntime/AdminRuntimeCapabilityMySqlIntegrationTest.java
++++ current/backend/wta-admin/src/test/java/org/namewta/test/migration/adminruntime/AdminRuntimeCapabilityMySqlIntegrationTest.java
+@@ -239,7 +239,7 @@
+         execute("insert into sys_menu(menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,"
+             + "is_frame,is_cache,menu_type,visible,status,perms,icon,active_menu,ext) "
+             + "values(2094360621561675790,1762000000000000001,'配置中心',1761400000000000001,14,"
+-            + "'nacos','monitor/nacos/index','','N','Y','C','0','0','system:nacos:console','server','','')");
++            + "'nacos','monitor/nacos/index','','N','Y','C','0','0','system:nacos:console','tabler:server','','')");
+     }
+ 
+     private String generatorMenu(long id, String name, long parentId, String path, String type,
+@@ -251,7 +251,7 @@
+ 
+     private String openApiMenu(long id, String name, long parentId, int order, String path,
+                                String component, String type, String permission) {
+-        String icon = "C".equals(type) ? "api" : "#";
++        String icon = "C".equals(type) ? "tabler:api" : "#";
+         return "insert into sys_menu(menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,"
+             + "is_frame,is_cache,menu_type,visible,status,perms,icon,active_menu,ext) "
+             + "values(" + id + ",1762000000000000001,'" + name + "'," + parentId + "," + order
+--- checkpoint/backend/wta-admin/src/test/java/org/namewta/test/migration/ossaccess/OssAccessMigrationMySqlIntegrationTest.java
++++ current/backend/wta-admin/src/test/java/org/namewta/test/migration/ossaccess/OssAccessMigrationMySqlIntegrationTest.java
+@@ -16,6 +16,7 @@
+ import org.namewta.system.mapper.SysOssConfigMapper;
+ import org.namewta.system.service.impl.SysOssConfigServiceImpl;
+ import org.namewta.test.support.SqlBaselinePaths;
++import org.namewta.test.support.SqlBaselineScripts;
+ import org.junit.jupiter.api.Assumptions;
+ import org.junit.jupiter.api.Tag;
+ import org.junit.jupiter.api.Test;
+@@ -23,14 +24,11 @@
+ import tools.jackson.databind.json.JsonMapper;
+ 
+ import java.nio.file.Files;
+-import java.nio.file.Path;
+ import java.sql.Connection;
+ import java.sql.ResultSet;
+ import java.sql.SQLException;
+ import java.sql.Statement;
+-import java.util.Arrays;
+ import java.util.Locale;
+-import java.util.stream.Collectors;
+ 
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ import static org.junit.jupiter.api.Assertions.assertThrows;
+@@ -96,8 +94,8 @@
+             + "(oss_config_id,config_key,access_policy,status) values"
+             + "(11,'private-old','0','Y'),(12,'legacy-public','1','N'),"
+             + "(13,'legacy-custom','2','N'),(14,'unknown','9','N')");
+-        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service) values"
+-            + "(101,'private-old'),(102,'legacy-public'),(103,'unknown')");
++        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service,url) values"
++            + "(101,'private-old',''),(102,'legacy-public',''),(103,'unknown','')");
+         executeBlock(dataSource, ddlBlock());
+         executeBlock(dataSource, dmlBlock());
+ 
+@@ -135,7 +133,7 @@
+             + "(oss_config_id,config_key,access_key,secret_key,bucket_name,endpoint,is_https,access_policy,status)"
+             + " values(31,'private-main','old-access','old-secret','private-bucket','old.endpoint','Y','0','N'),"
+             + "(32,'private-default','default-access','default-secret','default-bucket','default.endpoint','Y','0','Y')");
+-        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service) values(301,'private-main')");
++        execute(dataSource, "insert into " + OSS_TABLE + "(oss_id,service,url) values(301,'private-main','')");
+         SqlSessionFactory factory = sqlSessionFactory(dataSource);
+         try (SqlSession session = factory.openSession(true)) {
+             SysOssConfigMapper mapper = session.getMapper(SysOssConfigMapper.class);
+@@ -181,19 +179,8 @@
+ 
+     private void prepareBaseline(PooledDataSource dataSource) throws Exception {
+         dropTables(dataSource);
+-        execute(dataSource, "create table " + CONFIG_TABLE + " ("
+-            + "oss_config_id bigint not null,config_key varchar(20) not null default '',"
+-            + "access_key varchar(255) default '',secret_key varchar(255) default '',"
+-            + "bucket_name varchar(255) default '',prefix varchar(255) default '',"
+-            + "endpoint varchar(255) default '',domain_url varchar(255) default '',"
+-            + "is_https char(1) default 'N',region varchar(255) default '',"
+-            + "access_policy char(1) not null default '1',status char(1) default 'N',"
+-            + "ext1 varchar(255) default '',create_dept bigint default null,create_by bigint default null,"
+-            + "create_time datetime default null,update_by bigint default null,update_time datetime default null,"
+-            + "remark varchar(500) default null,"
+-            + "primary key(oss_config_id)) engine=innodb comment='OSS测试配置表'");
+-        execute(dataSource, "create table " + OSS_TABLE + " ("
+-            + "oss_id bigint not null,service varchar(20) not null,primary key(oss_id)) engine=innodb");
++        executeBlock(dataSource, SqlBaselineScripts.createTable(CONFIG_TABLE));
++        executeBlock(dataSource, SqlBaselineScripts.createTable(OSS_TABLE));
+     }
+ 
+     private SqlSessionFactory sqlSessionFactory(PooledDataSource dataSource) {
+@@ -222,37 +209,19 @@
+     }
+ 
+     private String ddlBlock() throws Exception {
+-        return rewriteTableNames(block(SqlBaselinePaths.file("10-cde-base-ddl.sql"),
+-            "-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表"));
++        return SqlBaselineScripts.createTable(BATCH_TABLE) + "\n" + SqlBaselineScripts.createTable(ITEM_TABLE);
+     }
+ 
+     private String dmlBlock() throws Exception {
+-        return rewriteTableNames(block(SqlBaselinePaths.file("50-cde-base-dml.sql"),
+-            "-- 变更内容：将全部历史OSS访问类型保守回填为PRIVATE"));
+-    }
+-
+-    private static String block(Path path, String marker) throws Exception {
+-        String sql = Files.readString(path);
+-        int start = sql.indexOf(marker);
+-        assertTrue(start >= 0, marker);
+-        return sql.substring(start);
+-    }
+-
+-    private static String rewriteTableNames(String sql) {
+-        return sql.replace("sys_oss_migration_batch", BATCH_TABLE)
+-            .replace("sys_oss_migration_item", ITEM_TABLE)
+-            .replace("sys_oss_config", CONFIG_TABLE);
++        String sql = Files.readString(SqlBaselinePaths.file("50-cde-base-dml.sql"));
++        int start = sql.indexOf("-- 变更内容：将全部历史OSS访问类型保守回填为PRIVATE");
++        int end = sql.indexOf("-- NAMEWTA-NACOS-CONSOLE-DML-001", start);
++        assertTrue(start >= 0 && end > start, "OSS访问类型回填片段边界");
++        return sql.substring(start, end);
+     }
+ 
+     private static void executeBlock(PooledDataSource dataSource, String sql) throws Exception {
+-        String executable = Arrays.stream(sql.split("\\R"))
+-            .filter(line -> !line.stripLeading().startsWith("--"))
+-            .collect(Collectors.joining("\n"));
+-        for (String statement : executable.split(";")) {
+-            if (!statement.isBlank()) {
+-                execute(dataSource, statement);
+-            }
+-        }
++        SqlBaselineScripts.execute(dataSource, sql);
+     }
+ 
+     private static void execute(PooledDataSource dataSource, String sql) throws Exception {
+--- checkpoint/backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java
++++ current/backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java
+@@ -25,7 +25,7 @@
+ import org.namewta.system.oss.readiness.OssStorageReadinessEntry;
+ import org.namewta.system.oss.readiness.OssStorageReadinessProperties;
+ import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
+-import org.namewta.test.support.SqlBaselinePaths;
++import org.namewta.test.support.SqlBaselineScripts;
+ import org.junit.jupiter.api.Assumptions;
+ import org.junit.jupiter.api.Tag;
+ import org.junit.jupiter.api.Test;
+@@ -43,7 +43,6 @@
+ import java.net.http.HttpRequest;
+ import java.net.http.HttpResponse;
+ import java.nio.charset.StandardCharsets;
+-import java.nio.file.Files;
+ import java.sql.Connection;
+ import java.sql.ResultSet;
+ import java.sql.Statement;
+@@ -52,7 +51,6 @@
+ import java.time.Instant;
+ import java.time.ZoneId;
+ import java.util.*;
+-import java.util.stream.Collectors;
+ 
+ import static org.assertj.core.api.Assertions.assertThat;
+ import static org.assertj.core.api.Assertions.assertThatThrownBy;
+@@ -204,21 +202,9 @@
+ 
+     private void prepareDatabase(PooledDataSource dataSource, String cleanupKey, String rollbackKey) throws Exception {
+         dropTables(dataSource);
+-        execute(dataSource, "create table sys_oss_config (oss_config_id bigint not null,"
+-            + "config_key varchar(20) not null, access_policy char(1) not null default '0',"
+-            + "primary key(oss_config_id)) engine=innodb");
+-        execute(dataSource, "create table sys_oss (oss_id bigint not null,file_name varchar(255) not null default '',"
+-            + "original_name varchar(255) not null default '',file_suffix varchar(10) not null default '',"
+-            + "url varchar(500) not null,ext1 text default null,create_dept bigint default null,"
+-            + "create_time datetime default null,create_by bigint default null,update_time datetime default null,"
+-            + "update_by bigint default null,service varchar(20) not null,is_temp char(1) not null default 'N',"
+-            + "expire_time datetime default null,delete_state varchar(16) not null default 'ACTIVE',"
+-            + "primary key(oss_id)) engine=innodb");
+-        execute(dataSource, "create table sys_oss_ref (oss_ref_id bigint not null,oss_id bigint not null,"
+-            + "ref_type varchar(64) not null,ref_id varchar(64) not null,version int default 0,"
+-            + "create_dept bigint default null,create_time datetime default null,create_by bigint default null,"
+-            + "update_time datetime default null,update_by bigint default null,del_flag char(1) default '0',"
+-            + "primary key(oss_ref_id)) engine=innodb");
++        for (String table : List.of("sys_oss_config", "sys_oss", "sys_oss_ref")) {
++            executeBlock(dataSource, SqlBaselineScripts.createTable(table));
++        }
+         executeBlock(dataSource, migrationDdlBlock());
+         execute(dataSource, "insert into sys_oss(oss_id,file_name,original_name,file_suffix,url,service) values"
+             + "(101,'" + cleanupKey + "','cleanup.txt','txt','private://cleanup','" + PRIVATE_ROUTE + "'),"
+@@ -279,22 +265,12 @@
+     }
+ 
+     private String migrationDdlBlock() throws Exception {
+-        String sql = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
+-        String marker = "-- 变更内容：收敛OSS访问类型并新增可审计的存储边界迁移表";
+-        int start = sql.indexOf(marker);
+-        assertThat(start).isGreaterThanOrEqualTo(0);
+-        return sql.substring(start);
++        return SqlBaselineScripts.createTable("sys_oss_migration_batch") + "\n"
++            + SqlBaselineScripts.createTable("sys_oss_migration_item");
+     }
+ 
+     private void executeBlock(PooledDataSource dataSource, String sql) throws Exception {
+-        String executable = Arrays.stream(sql.split("\\R"))
+-            .filter(line -> !line.stripLeading().startsWith("--"))
+-            .collect(Collectors.joining("\n"));
+-        for (String statement : executable.split(";")) {
+-            if (!statement.isBlank()) {
+-                execute(dataSource, statement);
+-            }
+-        }
++        SqlBaselineScripts.execute(dataSource, sql);
+     }
+ 
+     private static void execute(PooledDataSource dataSource, String sql) throws Exception {
+--- checkpoint/backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaMySqlIntegrationTest.java
++++ current/backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaMySqlIntegrationTest.java
+@@ -4,16 +4,16 @@
+ import org.junit.jupiter.api.Assumptions;
+ import org.junit.jupiter.api.Tag;
+ import org.junit.jupiter.api.Test;
++import org.namewta.test.support.SqlBaselinePaths;
++import org.namewta.test.support.SqlBaselineScripts;
+ 
+ import java.nio.file.Files;
+-import java.nio.file.Path;
+ import java.sql.Connection;
+ import java.sql.ResultSet;
+ import java.sql.SQLException;
+ import java.sql.Statement;
+-import java.util.Arrays;
+ import java.util.List;
+-import java.util.stream.Collectors;
++import java.util.ArrayList;
+ 
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ import static org.junit.jupiter.api.Assertions.assertThrows;
+@@ -21,17 +21,6 @@
+ 
+ @Tag("dev")
+ class ProfileSchemaMySqlIntegrationTest {
+-
+-    private static final List<String> PROFILE_TABLES = List.of(
+-        "profile_enterprise_transfer_record", "profile_notification_audit", "profile_operation_audit",
+-        "profile_decision_record", "profile_verification_attempt", "profile_material_ref",
+-        "profile_enterprise_binding_event", "profile_enterprise_binding", "profile_enterprise_source",
+-        "profile_enterprise_submission", "profile_enterprise_application", "profile_enterprise_version",
+-        "profile_enterprise", "profile_person_binding_event", "profile_person_binding",
+-        "profile_person_source", "profile_person_submission", "profile_person_application",
+-        "profile_person_version", "profile_person", "profile_material_requirement", "profile_material_node",
+-        "profile_document_type", "profile_identity_guard"
+-    );
+ 
+     @Test
+     void freshSchemaAndSeedsEnforceReleaseAndRecreateSemantics() throws Exception {
+@@ -42,14 +31,28 @@
+             System.getProperty("profile.schema.mysql.integration.username", "root"),
+             System.getProperty("profile.schema.mysql.integration.password", "")
+         );
++        boolean ownsSchema = false;
+         try {
+-            prepareReferenceTables(dataSource);
+-            executeBlock(dataSource, sqlBlock("10-cde-base-ddl.sql", "NAMEWTA-PROFILE-DDL-001"));
+-            executeBlock(dataSource, sqlBlock("50-cde-base-dml.sql", "NAMEWTA-PROFILE-DML-001"));
++            assertTrue(scalar(dataSource, "select database()").startsWith("namewta_profile_schema_test_"),
++                "必须使用本测试专属数据库");
++            assertEquals("0", scalar(dataSource,
++                "select count(*) from information_schema.tables where table_schema=database()"));
++            ownsSchema = true;
++            // 完整业务基座是唯一事实源；不复制简化表，也不把字面量内分号当作语句边界。
++            for (String file : List.of("10-cde-base-ddl.sql", "20-cde-job.sql", "30-cde-workflow.sql",
++                "40-cde-ai.sql", "50-cde-base-dml.sql")) {
++                SqlBaselineScripts.execute(dataSource, Files.readString(SqlBaselinePaths.file(file)));
++            }
+             assertEquals("24", scalar(dataSource,
+                 "select count(*) from information_schema.tables where table_schema=database() and table_name like 'profile\\_%'"));
+             assertEquals("14", scalar(dataSource,
+-                "select count(*) from sys_menu where perms like 'profile:%'"));
++                "select count(*) from sys_menu where client_id=1762000000000000001 and perms like 'profile:%'"));
++            assertEquals("4", scalar(dataSource,
++                "select count(*) from sys_menu where client_id=1762000000000000002 and perms like 'profile:%'"));
++            assertEquals("0", scalar(dataSource,
++                "select count(*) from sys_menu where client_id=1762000000000000002 and perms like 'profile:%'"
++                    + " and perms not in ('profile:person:apply','profile:person:material',"
++                    + "'profile:enterprise:apply','profile:enterprise:material')"));
+             assertEquals("12", scalar(dataSource, "select count(*) from profile_document_type"));
+             assertEquals("8", scalar(dataSource,
+                 "select count(*) from profile_material_node where node_type='TAG' and system_required='Y'"));
+@@ -83,8 +86,13 @@
+             assertSingleActiveMaterialTag(dataSource);
+             assertMaterialTreeShape(dataSource);
+         } finally {
+-            dropTables(dataSource);
+-            dataSource.forceCloseAll();
++            try {
++                if (ownsSchema) {
++                    dropTables(dataSource);
++                }
++            } finally {
++                dataSource.forceCloseAll();
++            }
+         }
+     }
+ 
+@@ -182,63 +190,6 @@
+             + "(99,2100200000000000011,'TAG',4,'PERSON','INVALID_DEPTH','非法深度','N','0',99)"));
+     }
+ 
+-    private static void prepareReferenceTables(PooledDataSource dataSource) throws Exception {
+-        dropTables(dataSource);
+-        execute(dataSource, "create table sys_menu (menu_id bigint not null,client_id bigint null,"
+-            + "menu_name varchar(50) not null,parent_id bigint default 0,order_num int default 0,path varchar(200) default '',"
+-            + "component varchar(255),query_param varchar(255),is_frame char(1),is_cache char(1),menu_type char(1),"
+-            + "visible char(1),status char(1),perms varchar(100),icon varchar(100),active_menu varchar(255),"
+-            + "ext varchar(2000),create_dept bigint,create_by bigint,create_time datetime,update_by bigint,"
+-            + "update_time datetime,remark varchar(500),primary key(menu_id)) engine=innodb");
+-        execute(dataSource, "create table sys_config (config_id bigint not null,config_name varchar(100),"
+-            + "config_key varchar(100),config_value varchar(500),config_type char(1),create_dept bigint,create_by bigint,"
+-            + "create_time datetime,update_by bigint,update_time datetime,remark varchar(500),primary key(config_id)) engine=innodb");
+-        execute(dataSource, "create table sys_dict_type (dict_id bigint not null,dict_name varchar(100),"
+-            + "dict_type varchar(100),create_dept bigint,create_by bigint,create_time datetime,update_by bigint,"
+-            + "update_time datetime,remark varchar(500),primary key(dict_id),unique key uk_test_dict_type(dict_type)) engine=innodb");
+-        execute(dataSource, "create table sys_dict_data (dict_code bigint not null,dict_sort int,dict_label varchar(100),"
+-            + "dict_value varchar(100),dict_type varchar(100),css_class varchar(100),list_class varchar(100),"
+-            + "is_default char(1),create_dept bigint,create_by bigint,create_time datetime,update_by bigint,"
+-            + "update_time datetime,remark varchar(500),primary key(dict_code)) engine=innodb");
+-        execute(dataSource, "create table flow_definition (id bigint not null,flow_code varchar(40) not null,"
+-            + "flow_name varchar(100) not null,model_value varchar(40),category varchar(100),version varchar(20) not null,"
+-            + "is_publish tinyint not null,form_custom char(1),form_path varchar(100),activity_status tinyint not null,"
+-            + "listener_type varchar(100),listener_path varchar(400),ext varchar(500),create_time datetime,"
+-            + "create_by varchar(64),update_time datetime,update_by varchar(64),del_flag char(1),tenant_id varchar(40),"
+-            + "primary key(id)) engine=innodb");
+-        execute(dataSource, "create table flow_node (id bigint not null,node_type tinyint not null,"
+-            + "definition_id bigint not null,node_code varchar(100) not null,node_name varchar(100),"
+-            + "permission_flag varchar(200),node_ratio varchar(200),coordinate varchar(100),any_node_skip varchar(100),"
+-            + "listener_type varchar(100),listener_path varchar(400),form_custom char(1),form_path varchar(100),"
+-            + "version varchar(20) not null,create_time datetime,create_by varchar(64),update_time datetime,"
+-            + "update_by varchar(64),ext text,del_flag char(1),tenant_id varchar(40),primary key(id)) engine=innodb");
+-        execute(dataSource, "create table flow_skip (id bigint not null,definition_id bigint not null,"
+-            + "now_node_code varchar(100) not null,now_node_type tinyint,next_node_code varchar(100) not null,"
+-            + "next_node_type tinyint,skip_name varchar(100),skip_type varchar(40),skip_condition varchar(200),"
+-            + "coordinate varchar(100),create_time datetime,create_by varchar(64),update_time datetime,"
+-            + "update_by varchar(64),del_flag char(1),tenant_id varchar(40),primary key(id)) engine=innodb");
+-    }
+-
+-    private static String sqlBlock(String file, String marker) throws Exception {
+-        String sql = Files.readString(sqlDirectory().resolve(file));
+-        int markerIndex = sql.indexOf(marker);
+-        assertTrue(markerIndex >= 0, marker);
+-        int start = sql.lastIndexOf("--", markerIndex);
+-        assertTrue(start >= 0, marker + " comment start");
+-        return sql.substring(start);
+-    }
+-
+-    private static void executeBlock(PooledDataSource dataSource, String sql) throws Exception {
+-        String executable = Arrays.stream(sql.split("\\R"))
+-            .filter(line -> !line.stripLeading().startsWith("--"))
+-            .collect(Collectors.joining("\n"));
+-        for (String statement : executable.split(";")) {
+-            if (!statement.isBlank()) {
+-                execute(dataSource, statement);
+-            }
+-        }
+-    }
+-
+     private static void execute(PooledDataSource dataSource, String sql) throws Exception {
+         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+             statement.execute(sql);
+@@ -254,36 +205,18 @@
+     }
+ 
+     private static void dropTables(PooledDataSource dataSource) throws Exception {
+-        for (String table : PROFILE_TABLES) {
+-            execute(dataSource, "drop table if exists " + table);
+-        }
+-        execute(dataSource, "drop table if exists sys_menu");
+-        execute(dataSource, "drop table if exists sys_config");
+-        execute(dataSource, "drop table if exists sys_dict_data");
+-        execute(dataSource, "drop table if exists sys_dict_type");
+-        execute(dataSource, "drop table if exists flow_skip");
+-        execute(dataSource, "drop table if exists flow_node");
+-        execute(dataSource, "drop table if exists flow_definition");
+-    }
+-
+-    private static Path repositoryRoot() {
+-        Path current = Path.of(System.getProperty("user.dir"));
+-        return current.getFileName().toString().equals("wta-admin") ? current.getParent() : current;
+-    }
+-
+-    private static Path sqlDirectory() {
+-        String configuredRoot = System.getProperty("profile.schema.sql.root");
+-        if (configuredRoot != null && !configuredRoot.isBlank()) {
+-            return Path.of(configuredRoot).resolve("release-artifacts/docker/infrastructure/mysql/init");
+-        }
+-        Path current = repositoryRoot();
+-        while (current != null) {
+-            Path directory = current.resolve("release-artifacts/docker/infrastructure/mysql/init");
+-            if (Files.isDirectory(directory)) {
+-                return directory;
++        // 只有验证过为空且归本测试所有的 schema 才会进入清理；不处理其他数据库。
++        List<String> tables = new ArrayList<>();
++        try (var connection = dataSource.getConnection(); var statement = connection.createStatement();
++             var result = statement.executeQuery(
++                 "select table_name from information_schema.tables where table_schema=database()")) {
++            while (result.next()) {
++                tables.add(result.getString(1));
+             }
+-            current = current.getParent();
+-        }
+-        throw new IllegalStateException("Cannot locate the aggregate MySQL initialization directory");
++        }
++        for (String table : tables) {
++            assertTrue(table.matches("[a-zA-Z0-9_]+"), "基座表名只能包含字母、数字与下划线");
++            execute(dataSource, "drop table `" + table + "`");
++        }
+     }
+ }
+--- checkpoint/backend/wta-admin/src/test/java/org/namewta/test/support/SqlBaselineScripts.java
++++ current/backend/wta-admin/src/test/java/org/namewta/test/support/SqlBaselineScripts.java
+@@ -0,0 +1,49 @@
++package org.namewta.test.support;
++
++import org.springframework.core.io.ByteArrayResource;
++import org.springframework.core.io.support.EncodedResource;
++import org.springframework.jdbc.datasource.init.ScriptException;
++import org.springframework.jdbc.datasource.init.ScriptUtils;
++
++import javax.sql.DataSource;
++import java.io.IOException;
++import java.nio.charset.StandardCharsets;
++import java.nio.file.Files;
++import java.sql.SQLException;
++import java.util.regex.Pattern;
++
++/** 从唯一基座选取完整建表语句，并保留 SQL 字符串内的分号和同连接事务状态。 */
++public final class SqlBaselineScripts {
++
++    private SqlBaselineScripts() {
++    }
++
++    /** 只选中指定表，避免旧变更标记后的其他领域 SQL 被一并执行。 */
++    public static String createTable(String table) throws IOException {
++        String sql = Files.readString(SqlBaselinePaths.file("10-cde-base-ddl.sql"));
++        var matcher = Pattern.compile("(?ims)^create\\s+table\\s+" + Pattern.quote(table)
++            + "\\s*\\(.*?^\\)\\s*engine\\s*=\\s*innodb[^;]*;").matcher(sql);
++        if (!matcher.find()) {
++            throw new IllegalArgumentException("基座缺少完整建表语句：" + table);
++        }
++        String statement = matcher.group();
++        if (matcher.find()) {
++            throw new IllegalArgumentException("基座存在重复建表语句：" + table);
++        }
++        return statement;
++    }
++
++    /** 使用 SQL 解析器处理引号与注释，遇到错误立即失败并保留原 JDBC 异常。 */
++    public static void execute(DataSource dataSource, String sql) throws SQLException {
++        try (var connection = dataSource.getConnection()) {
++            var resource = new EncodedResource(
++                new ByteArrayResource(sql.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
++            ScriptUtils.executeSqlScript(connection, resource);
++        } catch (ScriptException exception) {
++            if (exception.getCause() instanceof SQLException sqlException) {
++                throw sqlException;
++            }
++            throw exception;
++        }
++    }
++}
+--- checkpoint/backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java
++++ current/backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java
+@@ -184,7 +184,9 @@
+     private long save(Fixture fixture, String creditCode, boolean legalHandler) throws Exception {
+         fixture.mvc().perform(post("/profile/enterprise/application")
+                 .contentType(MediaType.APPLICATION_JSON).content(draft(creditCode, legalHandler)))
+-            .andExpect(status().isOk()).andExpect(jsonPath("$.data.status").value("DRAFT"));
++            .andExpect(status().isOk())
++            .andExpect(jsonPath("$.code").value(200))
++            .andExpect(jsonPath("$.data.status").value("DRAFT"));
+         return Long.parseLong(scalar(fixture.session(),
+             "select enterprise_application_id from profile_enterprise_application"
+                 + " where applicant_user_id=" + LoginHelper.getUserId()
+@@ -309,7 +311,15 @@
+     }
+ 
+     private String credit(int suffix) {
+-        return "91310000ABCDEF" + String.format("%04d", suffix);
++        // 合成身份固定包含现有校验合同要求的校验位，避免在目标业务断言之前被拒绝。
++        return switch (suffix) {
++            case 1 -> "91310000ABCDEF001Q";
++            case 11 -> "91310000ABCDEF011H";
++            case 21 -> "91310000ABCDEF021A";
++            case 22 -> "91310000ABCDEF0229";
++            case 23 -> "91310000ABCDEF0238";
++            default -> throw new IllegalArgumentException("Unknown enterprise fixture identity: " + suffix);
++        };
+     }
+ 
+     private void execute(SqlSession session, String sql) throws Exception {

@@ -1,0 +1,47 @@
+{
+  "frontendEnv": [
+    {
+      "path": "frontend/apps/admin-web/.env.development",
+      "sha256": "7338e4eb466da6a80334e9e54bc46b0c5a6e65415a83b7056b07bfa2ccfa6558",
+      "encryptionEnabled": "true",
+      "privateKeyLength": 848,
+      "privateKeyInCurrentProdBundle": true
+    },
+    {
+      "path": "frontend/apps/admin-web/.env.production",
+      "sha256": "b6d35d0c2a873af22c366c160c1b4d58c5051340c903b8888dff0e0328df8872",
+      "encryptionEnabled": "true",
+      "privateKeyLength": 848,
+      "privateKeyInCurrentProdBundle": true
+    },
+    {
+      "path": "frontend/apps/home-web/.env.development",
+      "sha256": "6160723647c7c5cb7c61d8c4763e31990b3303450225cd1527a4d3065284b352",
+      "encryptionEnabled": "true",
+      "privateKeyLength": 848,
+      "privateKeyInCurrentProdBundle": true
+    },
+    {
+      "path": "frontend/apps/home-web/.env.production",
+      "sha256": "92435c5d08aef6776b7980e145b16849fa3468b4aee2a79c0eb810b17e51da19",
+      "encryptionEnabled": "true",
+      "privateKeyLength": 848,
+      "privateKeyInCurrentProdBundle": true
+    }
+  ],
+  "browserTransportConsumers": [
+    "admin-web",
+    "home-web"
+  ],
+  "backendApiEncryptConsumers": [
+    "AuthController.login",
+    "AuthController.register",
+    "SysUserController.resetPwd",
+    "SysProfileController.updatePwd"
+  ],
+  "preserve": [
+    "machine HMAC",
+    "OSS signing",
+    "database field encryption"
+  ]
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/domain-admin",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "--filter",
+      "@namewta/platform-auth",
+      "--filter",
+      "@namewta/platform-app-runtime",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 23.43,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-focused-first-typecheck.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/domain-admin",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "--filter",
+      "@namewta/platform-auth",
+      "--filter",
+      "@namewta/platform-app-runtime",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "test",
+      "--maxWorkers=1",
+      "--no-file-parallelism"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 12.4,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-focused-first-test.log"
+  }
+]

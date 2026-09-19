@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-09-19T02:00:08.062819+00:00",
+  "files": {
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatedlyRequestWrapper.java": "6e901b099c5fa1f1dc8e1e6753dd70ac5cc2e1980038ad6cfb47063144be5418",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/XssHttpServletRequestWrapper.java": "03d0ca2d96304ef926f1a5a89fb0286fd06ab541674150dd1fd64aa5b28e8e45",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/FilterConfig.java": "763a1142dd113b3dea0dfd175839c819d24423503bbcf04d6147113f8133cb9f",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java": "bd96dd311f507e450ab52c87acae43ff97e0973f8d3521bb23e252b9bc4cfd62",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogProperties.java": "1adfc7f7df2c89d16aebc092ae1b08cac389f0239e09176752158e3560649b6b",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/ReplayableOpenApiRequest.java": "f94ebe8e60721841878f5d58db9f8356a58270a16eb921f7fa95f25b835a8cdc",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/OpenApiGatewayFilter.java": "cfc18baaa9dfce69bc1cd79adb4dff2441e0a6a1a25146a772d769722b03510e",
+    "backend/wta-admin/src/main/resources/application.yml": "5e86ea09a0d09b84544fa7581a87e5798406986b5953046d40f16f1a0336f916",
+    "release-artifacts/docker/docker-compose-backend.yml": "b2417b92027c34a50dc48c546c86b23af693541e0db880f0646ffeb361aa7d68",
+    "release-artifacts/docker/frontend/nginx/lb/nginx-lb-http.conf.template": "3be5e2462c1154c15fb6a57704799818800d5b302136a0f047bb67303048e598",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/anonymous/ProviderCallbackController.java": "63f37240a0f84cb8d2f5b1433487def1cfd58d3813a5633f7182da24a0613936",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java": "76bd421a0c016cf7c2ca864ee4944b7edfa38bf69286b2a68284ff07b122037a",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java": "1ead8b9d287691bb26e340f8ff0f10b9e53dab750423fc03769f1d0f854c97a7",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java": "56b88b53c585db4b0e79145a77937bf2057368c9f1a3fb10cfd3870b182ec615",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyConfigService.java": "becb097d30214ec1cb0c185cf1bcf67f69670df01a4da0cd9eaa58c1db5ee7bb",
+    "backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/Sms4jNotificationProviderResolver.java": "d4fe33fc5b9a928803a5ebd4a3137d0edf0b9da4d5337e28dc85ce718e5cc52e",
+    "backend/wta-common/wta-common-mail/src/main/java/org/namewta/common/mail/notify/MailNotifyChannelAdapter.java": "fd484a66673b30dff1674b4fec6256ccb616350c156af1dd77887b056f76dbbf"
+  },
+  "scope": "read-only current source refresh; not implementation or runtime verification"
+}

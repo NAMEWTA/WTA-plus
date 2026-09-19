@@ -1,0 +1,18 @@
+{
+  "source": "Independent Python hashlib/hmac implementation of official TC3/ACS3 specification; synthetic credentials, no provider call",
+  "timestamp": 1789783384,
+  "now": "2026-09-19T02:03:04+00:00",
+  "body": "{\"PhoneNumber\":\"+8613800000000\",\"说明\":\"状态查询\"}",
+  "tencent_signature": "c94280d8884c260e73deaa673106300a79bc44929cdf86e11026111c9a4ba047",
+  "alibaba_query": "BizId=a%2B%2F%3D&CurrentPage=1&PageSize=2&PhoneNumber=13800000000&SendDate=20260919",
+  "alibaba_headers": {
+    "host": "dysmsapi.aliyuncs.com",
+    "content-type": "application/json; charset=utf-8",
+    "x-acs-action": "QuerySendDetails",
+    "x-acs-date": "2026-09-19T02:03:04Z",
+    "x-acs-version": "2017-05-25",
+    "x-acs-signature-nonce": "fixture-nonce",
+    "x-acs-content-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "alibaba_signature": "29e8afc6966f44b31f459dce08713d60e800c440c8b5887887877bd70a671ba2"
+}

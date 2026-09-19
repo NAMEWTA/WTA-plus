@@ -1,0 +1,47 @@
+[
+  {
+    "command": [
+      "bash",
+      "release-artifacts/scripts/verify-release.sh"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "seconds": 40.07,
+    "log": "T-08-real-context-gates-1.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "seconds": 0.06,
+    "log": "T-08-real-context-gates-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "e2e/sso-release-origin.spec.ts",
+      "playwright.sso.config.ts"
+    ],
+    "cwd": "/srv/WTA-plus/frontend",
+    "exit_code": 0,
+    "seconds": 0.39,
+    "log": "T-08-real-context-gates-3.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "seconds": 0.03,
+    "log": "T-08-real-context-gates-4.log"
+  }
+]

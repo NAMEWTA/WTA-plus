@@ -1,0 +1,19 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=ServletUtilsClientAddressTest,ClientAddressFilterTest,ClientAddressConfigTest,TrustedClientAddressIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-Dclient.address.nginx.integration=true",
+    "-Dnamewta.repo.root=/srv/WTA-plus"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 1,
+  "captured_at": "2026-09-18T08:07:35.561391+00:00",
+  "log": "T-04-nginx-2.log"
+}

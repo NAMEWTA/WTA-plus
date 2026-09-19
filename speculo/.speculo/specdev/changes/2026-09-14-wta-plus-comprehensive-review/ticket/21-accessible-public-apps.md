@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-21
 title: 统一公开页面的可访问交互基线
-status: "ready"
+status: "review"
 planning_depth: "standard"
 planning_depth_reason: "沿用现有模块的多文件行为修复：统一公开页面的可访问交互基线"
 ready: true
@@ -16,11 +16,11 @@ risk: medium
 blocked_by: ["T-13"]
 contract_ids: [AC-021]
 owner: single-agent
-expected_changes: ["<Path>frontend/packages/web-domains/admin/src/auth/LoginPage.vue</Path>", "<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/home-web/src/App.vue</Path>"]
-writable_paths: ["<Path>frontend/packages/web-domains/admin/src/auth/LoginPage.vue</Path>", "<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/home-web/src/App.vue</Path>"]
+expected_changes: ["<Path>frontend/packages/web-domains/admin/src/auth/LoginPage.vue</Path>", "<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/home-web/src/App.vue</Path>", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path>", "<Path>frontend/playwright.accessibility.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>"]
+writable_paths: ["<Path>frontend/packages/web-domains/admin/src/auth/LoginPage.vue</Path>", "<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/home-web/src/App.vue</Path>", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path>", "<Path>frontend/playwright.accessibility.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/e2e/</Path>"]
-shared_path_owners: ["<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-21 turn)"]
+shared_paths: ["<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path>", "<Path>frontend/playwright.accessibility.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>"]
+shared_path_owners: ["<Path>frontend/apps/home-web/src/views/RegisterPage.vue</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/apps/home-web/src/layout/HomeShell.vue</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/playwright.accessibility.config.ts</Path> => single-agent (Lead; serial T-21 turn)", "<Path>frontend/playwright.config.ts</Path> => single-agent (Lead; serial T-21 turn)"]
 ---
 
 # T-21：统一公开页面的可访问交互基线
@@ -67,7 +67,7 @@ Home登录token样式与SSO状态→可读/可键盘操作/动态播报。调用
 - 兼容：用户明确无需旧版兼容；仓内一次切换，不加双路由/版本等待。实际供应商协议仍须遵守。
 - 安全与隐私：凭据不进入日志/UI证据；越权/过期/无owner拒绝；数据库与资源约束不能为前端成功而放宽。
 
-不要求三套视觉候选或全站换皮。Home补共享LoginPage真正使用的主题变量；SSO动态错误加live region；现有label、nav/aside与RegisterPage role=alert保留。320/768/1440与缩放、键盘验收是未来运行项。
+不要求三套视觉候选或全站换皮。Home补共享LoginPage真正使用的主题变量；SSO动态错误加live region；现有label、nav/aside与RegisterPage role=alert保留。320/768/1440与等效200%缩放、键盘/AX验收结果见T-21.md，测量方法与局限已登记。
 
 ## 6. 执行路线
 
@@ -94,11 +94,11 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - `frontend: pnpm lint`
 - `frontend: pnpm test:e2e`
 - `frontend: pnpm build:prod`
-- `frontend: pnpm exec playwright test --config playwright.sso.config.ts`
+- `frontend: corepack pnpm exec playwright test --config playwright.sso.config.ts --grep T-07`（由隔离真实SSO fixture设置三Origin；精确范围与未运行旧管理套件见Evidence）
 
 - E2E disposition：required: 320/768/1440、200%缩放、键盘/读屏语义和渲染对比检查。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本地验证见T-21.md；提交暂缓，SHA为空。
 
 ## 9. 发布、迁移与恢复
 
@@ -111,15 +111,15 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 ## 10. 验收标准
 
-- [ ] `AC-021`：只用键盘可完成公开流程，焦点可见且错误能被读屏发现。
-- [ ] `AC-021`：移动/放大页面无遮挡必要动作和横向不可达内容。
-- [ ] `AC-021`：不同App品牌差异不被当成bug强制同化。
-- [ ] `AC-021`：报告记录真实截图/可访问性结果，静态检查不冒充视觉通过。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-021`：只用键盘可完成公开流程，焦点可见且错误能被读屏发现。
+- [x] `AC-021`：移动/放大页面无遮挡必要动作和横向不可达内容。
+- [x] `AC-021`：不同App品牌差异不被当成bug强制同化。
+- [x] `AC-021`：报告记录真实截图/可访问性结果，静态检查不冒充视觉通过。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -130,3 +130,7 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：T-13。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`4043bed11299be3bc160fee21906ebdfe8626765`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

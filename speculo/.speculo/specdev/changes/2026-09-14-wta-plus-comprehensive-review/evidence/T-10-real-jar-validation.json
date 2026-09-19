@@ -1,0 +1,42 @@
+{
+  "command": "release-state.py validate_jar on the five real T-09 JARs",
+  "exitCode": 0,
+  "results": [
+    {
+      "path": "temp/team/lead/t09-bundles-b7m1fi0k/wta-admin-full.jar",
+      "size": 258829969,
+      "sha256": "99fe0933586960fb165cf41d5715708be34cbddba7ca8bcff06a282f41beac11",
+      "exitCode": 0,
+      "seconds": 0.34
+    },
+    {
+      "path": "temp/team/lead/t09-bundles-b7m1fi0k/wta-admin-core.jar",
+      "size": 167855090,
+      "sha256": "e2d126e006fac8db20b70a5ed1ec77d003c39ae67b598fccade764ae769893fe",
+      "exitCode": 0,
+      "seconds": 0.23
+    },
+    {
+      "path": "backend/wta-extend/wta-monitor-admin/target/wta-monitor-admin.jar",
+      "size": 58773518,
+      "sha256": "83c39b7c4593eb4e96dcbccacfcb6738b20103a23e6cdc43e96ba42a7a819c56",
+      "exitCode": 0,
+      "seconds": 0.06
+    },
+    {
+      "path": "backend/wta-extend/wta-snailjob-server/target/wta-snailjob-server.jar",
+      "size": 121759007,
+      "sha256": "c8c4018bd80fcc64a3f18aecd810e4457ae9e1319e2354abb912e97f52f33987",
+      "exitCode": 0,
+      "seconds": 0.13
+    },
+    {
+      "path": "backend/wta-extend/wta-snailai-server/target/wta-snailai-server.jar",
+      "size": 201554290,
+      "sha256": "d05be8a4d1196664c2cb6c6e1197d9c246ac02348450235ffee808767cebd2f9",
+      "exitCode": 0,
+      "seconds": 0.22
+    }
+  ],
+  "boundary": "Read-only JAR envelope/CRC validation; no release assembled or staged"
+}

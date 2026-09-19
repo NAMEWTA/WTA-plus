@@ -1,0 +1,32 @@
+[
+  {
+    "number": 6,
+    "command": [
+      "corepack",
+      "pnpm",
+      "build:dev"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 48.09,
+    "source_fingerprint": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+    "source_unchanged": true,
+    "log": "T-30-v1-frontend-builds-6.log",
+    "test_summary_lines": []
+  },
+  {
+    "number": 7,
+    "command": [
+      "corepack",
+      "pnpm",
+      "build:prod"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 48.35,
+    "source_fingerprint": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+    "source_unchanged": true,
+    "log": "T-30-v1-frontend-builds-7.log",
+    "test_summary_lines": []
+  }
+]

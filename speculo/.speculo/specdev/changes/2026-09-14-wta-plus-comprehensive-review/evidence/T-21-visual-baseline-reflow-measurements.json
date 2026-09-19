@@ -1,0 +1,3608 @@
+[
+  {
+    "app": "home",
+    "path": "/login",
+    "viewportWidth": 320,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 320,
+    "scrollWidth": 320,
+    "bodyWidth": 304,
+    "elementWidth": 304,
+    "left": 8,
+    "right": 312,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "CLIENT WORKSPACE",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 8,
+          "right": 312,
+          "width": 304
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "用户登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "36px",
+        "rect": {
+          "left": 8,
+          "right": 312,
+          "width": 304
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录用户中心，完成个人或企业认证。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 8,
+          "right": 312,
+          "width": 304
+        }
+      },
+      {
+        "tag": "P",
+        "text": "第三方登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 282,
+          "width": 244
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 70,
+          "width": 32
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 271,
+          "width": 222
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 66,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 271,
+          "width": 222
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 230,
+          "width": 181
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 241,
+          "width": 203
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 282,
+          "width": 244
+        }
+      },
+      {
+        "tag": "P",
+        "text": "入口已就绪",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 282,
+          "width": 244
+        }
+      }
+    ],
+    "screenshot": "home-login-320-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/login",
+    "viewportWidth": 320,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 160,
+    "scrollWidth": 249,
+    "bodyWidth": 241,
+    "elementWidth": 144,
+    "left": 8,
+    "right": 152,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "CLIENT WORKSPACE",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 8,
+          "right": 152,
+          "width": 144
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "用户登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "36px",
+        "rect": {
+          "left": 8,
+          "right": 152,
+          "width": 144
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录用户中心，完成个人或企业认证。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 8,
+          "right": 152,
+          "width": 144
+        }
+      },
+      {
+        "tag": "P",
+        "text": "第三方登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 122,
+          "width": 84
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 70,
+          "width": 32
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 111,
+          "width": 62
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 66,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 111,
+          "width": 62
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 103,
+          "width": 54
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 114,
+          "width": 76
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 122,
+          "width": 84
+        }
+      },
+      {
+        "tag": "P",
+        "text": "入口已就绪",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 122,
+          "width": 84
+        }
+      }
+    ],
+    "screenshot": "home-login-320-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/login",
+    "viewportWidth": 768,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 768,
+    "scrollWidth": 768,
+    "bodyWidth": 752,
+    "elementWidth": 752,
+    "left": 8,
+    "right": 760,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "CLIENT WORKSPACE",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 8,
+          "right": 322,
+          "width": 314
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "用户登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "46px",
+        "rect": {
+          "left": 8,
+          "right": 322,
+          "width": 314
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录用户中心，完成个人或企业认证。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 8,
+          "right": 322,
+          "width": 314
+        }
+      },
+      {
+        "tag": "P",
+        "text": "第三方登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 400,
+          "right": 730,
+          "width": 330
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 400,
+          "right": 432,
+          "width": 32
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 400,
+          "right": 442,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 411,
+          "right": 719,
+          "width": 308
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 400,
+          "right": 428,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 411,
+          "right": 719,
+          "width": 308
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 400,
+          "right": 442,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 411,
+          "right": 531,
+          "width": 120
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 670,
+          "right": 730,
+          "width": 60
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 400,
+          "right": 730,
+          "width": 330
+        }
+      },
+      {
+        "tag": "P",
+        "text": "入口已就绪",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 400,
+          "right": 730,
+          "width": 330
+        }
+      }
+    ],
+    "screenshot": "home-login-768-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/login",
+    "viewportWidth": 768,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 384,
+    "scrollWidth": 384,
+    "bodyWidth": 368,
+    "elementWidth": 368,
+    "left": 8,
+    "right": 376,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "CLIENT WORKSPACE",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 8,
+          "right": 376,
+          "width": 368
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "用户登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "36px",
+        "rect": {
+          "left": 8,
+          "right": 376,
+          "width": 368
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录用户中心，完成个人或企业认证。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 8,
+          "right": 376,
+          "width": 368
+        }
+      },
+      {
+        "tag": "P",
+        "text": "第三方登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 346,
+          "width": 308
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 70,
+          "width": 32
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 335,
+          "width": 286
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 66,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 335,
+          "width": 286
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 230,
+          "width": 181
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 241,
+          "width": 203
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 346,
+          "width": 308
+        }
+      },
+      {
+        "tag": "P",
+        "text": "入口已就绪",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 346,
+          "width": 308
+        }
+      }
+    ],
+    "screenshot": "home-login-768-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/login",
+    "viewportWidth": 1440,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "bodyWidth": 1424,
+    "elementWidth": 1424,
+    "left": 8,
+    "right": 1432,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "CLIENT WORKSPACE",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 8,
+          "right": 994,
+          "width": 986
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "用户登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "46px",
+        "rect": {
+          "left": 8,
+          "right": 994,
+          "width": 986
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录用户中心，完成个人或企业认证。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 8,
+          "right": 568,
+          "width": 560
+        }
+      },
+      {
+        "tag": "P",
+        "text": "第三方登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 1072,
+          "right": 1402,
+          "width": 330
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1072,
+          "right": 1104,
+          "width": 32
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1072,
+          "right": 1114,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1083,
+          "right": 1391,
+          "width": 308
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1072,
+          "right": 1100,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1083,
+          "right": 1391,
+          "width": 308
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1072,
+          "right": 1114,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1083,
+          "right": 1203,
+          "width": 120
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1342,
+          "right": 1402,
+          "width": 60
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 1072,
+          "right": 1402,
+          "width": 330
+        }
+      },
+      {
+        "tag": "P",
+        "text": "入口已就绪",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 1072,
+          "right": 1402,
+          "width": 330
+        }
+      }
+    ],
+    "screenshot": "home-login-1440-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/login",
+    "viewportWidth": 1440,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 720,
+    "scrollWidth": 720,
+    "bodyWidth": 704,
+    "elementWidth": 704,
+    "left": 8,
+    "right": 712,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "CLIENT WORKSPACE",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 8,
+          "right": 712,
+          "width": 704
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "用户登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "36px",
+        "rect": {
+          "left": 8,
+          "right": 712,
+          "width": 704
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录用户中心，完成个人或企业认证。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 8,
+          "right": 568,
+          "width": 560
+        }
+      },
+      {
+        "tag": "P",
+        "text": "第三方登录",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 682,
+          "width": 644
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 70,
+          "width": 32
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 671,
+          "width": 622
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 66,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 671,
+          "width": 622
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 80,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 49,
+          "right": 230,
+          "width": 181
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 241,
+          "width": 203
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 38,
+          "right": 682,
+          "width": 644
+        }
+      },
+      {
+        "tag": "P",
+        "text": "入口已就绪",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 38,
+          "right": 682,
+          "width": 644
+        }
+      }
+    ],
+    "screenshot": "home-login-1440-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/register",
+    "viewportWidth": 320,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 320,
+    "scrollWidth": 320,
+    "bodyWidth": 310,
+    "elementWidth": 304,
+    "left": 8,
+    "right": 312,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "创建用户账号",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "42px",
+        "rect": {
+          "left": 26,
+          "right": 318,
+          "width": 292
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册后进入用户中心，完成个人或企业认证。",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 26,
+          "right": 318,
+          "width": 292
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 97,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 83,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "确认密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 111,
+          "width": 56
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 97,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 187,
+          "right": 289,
+          "width": 102
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册入口已就绪",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 55,
+          "right": 289,
+          "width": 234
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "注册",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 289,
+          "width": 234
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "取消注册，返回登录",
+        "color": "rgb(15, 118, 110)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(15, 118, 110) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 93,
+          "right": 251,
+          "width": 158
+        }
+      }
+    ],
+    "screenshot": "home-register-320-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/register",
+    "viewportWidth": 320,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 160,
+    "scrollWidth": 318,
+    "bodyWidth": 310,
+    "elementWidth": 144,
+    "left": 8,
+    "right": 152,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "创建用户账号",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "42px",
+        "rect": {
+          "left": 26,
+          "right": 318,
+          "width": 292
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册后进入用户中心，完成个人或企业认证。",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 26,
+          "right": 318,
+          "width": 292
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 97,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 83,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "确认密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 111,
+          "width": 56
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 97,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 278,
+          "width": 212
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 187,
+          "right": 289,
+          "width": 102
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册入口已就绪",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 55,
+          "right": 289,
+          "width": 234
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "注册",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 289,
+          "width": 234
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "取消注册，返回登录",
+        "color": "rgb(15, 118, 110)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(15, 118, 110) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 93,
+          "right": 251,
+          "width": 158
+        }
+      }
+    ],
+    "screenshot": "home-register-320-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/register",
+    "viewportWidth": 768,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 768,
+    "scrollWidth": 768,
+    "bodyWidth": 752,
+    "elementWidth": 752,
+    "left": 8,
+    "right": 760,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "创建用户账号",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "42px",
+        "rect": {
+          "left": 36,
+          "right": 288,
+          "width": 252
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册后进入用户中心，完成个人或企业认证。",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 36,
+          "right": 288,
+          "width": 252
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 381,
+          "right": 423,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 392,
+          "right": 692,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 381,
+          "right": 409,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 392,
+          "right": 692,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "确认密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 381,
+          "right": 437,
+          "width": 56
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 392,
+          "right": 692,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 381,
+          "right": 423,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 392,
+          "right": 692,
+          "width": 300
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 513,
+          "right": 615,
+          "width": 102
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册入口已就绪",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 381,
+          "right": 703,
+          "width": 322
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "注册",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 381,
+          "right": 703,
+          "width": 322
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "取消注册，返回登录",
+        "color": "rgb(15, 118, 110)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(15, 118, 110) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 463,
+          "right": 621,
+          "width": 158
+        }
+      }
+    ],
+    "screenshot": "home-register-768-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/register",
+    "viewportWidth": 768,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 384,
+    "scrollWidth": 384,
+    "bodyWidth": 368,
+    "elementWidth": 368,
+    "left": 8,
+    "right": 376,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "创建用户账号",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "42px",
+        "rect": {
+          "left": 26,
+          "right": 358,
+          "width": 332
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册后进入用户中心，完成个人或企业认证。",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 26,
+          "right": 358,
+          "width": 332
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 97,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 318,
+          "width": 252
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 83,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 318,
+          "width": 252
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "确认密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 111,
+          "width": 56
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 318,
+          "width": 252
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 97,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 66,
+          "right": 318,
+          "width": 252
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 187,
+          "right": 289,
+          "width": 102
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册入口已就绪",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 55,
+          "right": 329,
+          "width": 274
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "注册",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 55,
+          "right": 329,
+          "width": 274
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "取消注册，返回登录",
+        "color": "rgb(15, 118, 110)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(15, 118, 110) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 113,
+          "right": 271,
+          "width": 158
+        }
+      }
+    ],
+    "screenshot": "home-register-768-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/register",
+    "viewportWidth": 1440,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "bodyWidth": 1424,
+    "elementWidth": 976,
+    "left": 232,
+    "right": 1208,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "创建用户账号",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "42px",
+        "rect": {
+          "left": 260,
+          "right": 736,
+          "width": 476
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册后进入用户中心，完成个人或企业认证。",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 260,
+          "right": 736,
+          "width": 476
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 829,
+          "right": 871,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 840,
+          "right": 1140,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 829,
+          "right": 857,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 840,
+          "right": 1140,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "确认密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 829,
+          "right": 885,
+          "width": 56
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 840,
+          "right": 1140,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 829,
+          "right": 871,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 840,
+          "right": 1140,
+          "width": 300
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 961,
+          "right": 1063,
+          "width": 102
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册入口已就绪",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 829,
+          "right": 1151,
+          "width": 322
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "注册",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 829,
+          "right": 1151,
+          "width": 322
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "取消注册，返回登录",
+        "color": "rgb(15, 118, 110)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(15, 118, 110) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 911,
+          "right": 1069,
+          "width": 158
+        }
+      }
+    ],
+    "screenshot": "home-register-1440-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/register",
+    "viewportWidth": 1440,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 720,
+    "scrollWidth": 720,
+    "bodyWidth": 704,
+    "elementWidth": 704,
+    "left": 8,
+    "right": 712,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "创建用户账号",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "42px",
+        "rect": {
+          "left": 36,
+          "right": 240,
+          "width": 204
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册后进入用户中心，完成个人或企业认证。",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 36,
+          "right": 240,
+          "width": 204
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 333,
+          "right": 375,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 344,
+          "right": 644,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 333,
+          "right": 361,
+          "width": 28
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 344,
+          "right": 644,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "确认密码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 333,
+          "right": 389,
+          "width": 56
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 344,
+          "right": 644,
+          "width": 300
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 333,
+          "right": 375,
+          "width": 42
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 344,
+          "right": 644,
+          "width": 300
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "刷新验证码",
+        "color": "rgb(96, 98, 102)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(96, 98, 102) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 465,
+          "right": 567,
+          "width": 102
+        }
+      },
+      {
+        "tag": "P",
+        "text": "注册入口已就绪",
+        "color": "rgb(100, 116, 139)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(100, 116, 139) none 3px",
+        "fontSize": "13px",
+        "rect": {
+          "left": 333,
+          "right": 655,
+          "width": 322
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "注册",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(160, 207, 255)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 333,
+          "right": 655,
+          "width": 322
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "取消注册，返回登录",
+        "color": "rgb(15, 118, 110)",
+        "background": "rgb(255, 255, 255)",
+        "outline": "rgb(15, 118, 110) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 415,
+          "right": 573,
+          "width": 158
+        }
+      }
+    ],
+    "screenshot": "home-register-1440-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/sso/callback",
+    "viewportWidth": 320,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 320,
+    "scrollWidth": 320,
+    "bodyWidth": 304,
+    "elementWidth": 304,
+    "left": 8,
+    "right": 312,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "登录未完成",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 79.984375,
+          "right": 240,
+          "width": 160.015625
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录校验已失效，请重新授权。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 47.984375,
+          "right": 272,
+          "width": 224.015625
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "重新授权",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(239, 239, 239)",
+        "outline": "rgb(0, 0, 0) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 111.34375,
+          "right": 208.65625,
+          "width": 97.3125
+        }
+      },
+      {
+        "tag": "A",
+        "text": "返回登录页",
+        "color": "rgb(0, 0, 238)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(0, 0, 238) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 119.984375,
+          "right": 200,
+          "width": 80.015625
+        }
+      }
+    ],
+    "screenshot": "home-sso-callback-320-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/sso/callback",
+    "viewportWidth": 320,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 160,
+    "scrollWidth": 249,
+    "bodyWidth": 241,
+    "elementWidth": 144,
+    "left": 8,
+    "right": 152,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "登录未完成",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 32,
+          "right": 128,
+          "width": 96
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录校验已失效，请重新授权。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 32,
+          "right": 128,
+          "width": 96
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "重新授权",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(239, 239, 239)",
+        "outline": "rgb(0, 0, 0) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 32,
+          "right": 128,
+          "width": 96
+        }
+      },
+      {
+        "tag": "A",
+        "text": "返回登录页",
+        "color": "rgb(0, 0, 238)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(0, 0, 238) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 39.984375,
+          "right": 120,
+          "width": 80.015625
+        }
+      }
+    ],
+    "screenshot": "home-sso-callback-320-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/sso/callback",
+    "viewportWidth": 768,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 768,
+    "scrollWidth": 768,
+    "bodyWidth": 752,
+    "elementWidth": 752,
+    "left": 8,
+    "right": 760,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "登录未完成",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 303.984375,
+          "right": 464,
+          "width": 160.015625
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录校验已失效，请重新授权。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 271.984375,
+          "right": 496,
+          "width": 224.015625
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "重新授权",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(239, 239, 239)",
+        "outline": "rgb(0, 0, 0) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 335.34375,
+          "right": 432.65625,
+          "width": 97.3125
+        }
+      },
+      {
+        "tag": "A",
+        "text": "返回登录页",
+        "color": "rgb(0, 0, 238)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(0, 0, 238) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 343.984375,
+          "right": 424,
+          "width": 80.015625
+        }
+      }
+    ],
+    "screenshot": "home-sso-callback-768-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/sso/callback",
+    "viewportWidth": 768,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 384,
+    "scrollWidth": 384,
+    "bodyWidth": 368,
+    "elementWidth": 368,
+    "left": 8,
+    "right": 376,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "登录未完成",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 111.984375,
+          "right": 272,
+          "width": 160.015625
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录校验已失效，请重新授权。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 79.984375,
+          "right": 304,
+          "width": 224.015625
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "重新授权",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(239, 239, 239)",
+        "outline": "rgb(0, 0, 0) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 143.34375,
+          "right": 240.65625,
+          "width": 97.3125
+        }
+      },
+      {
+        "tag": "A",
+        "text": "返回登录页",
+        "color": "rgb(0, 0, 238)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(0, 0, 238) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 151.984375,
+          "right": 232,
+          "width": 80.015625
+        }
+      }
+    ],
+    "screenshot": "home-sso-callback-768-2x.png"
+  },
+  {
+    "app": "home",
+    "path": "/sso/callback",
+    "viewportWidth": 1440,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "bodyWidth": 1424,
+    "elementWidth": 1424,
+    "left": 8,
+    "right": 1432,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "登录未完成",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 639.984375,
+          "right": 800,
+          "width": 160.015625
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录校验已失效，请重新授权。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 607.984375,
+          "right": 832,
+          "width": 224.015625
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "重新授权",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(239, 239, 239)",
+        "outline": "rgb(0, 0, 0) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 671.34375,
+          "right": 768.65625,
+          "width": 97.3125
+        }
+      },
+      {
+        "tag": "A",
+        "text": "返回登录页",
+        "color": "rgb(0, 0, 238)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(0, 0, 238) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 679.984375,
+          "right": 760,
+          "width": 80.015625
+        }
+      }
+    ],
+    "screenshot": "home-sso-callback-1440-1x.png"
+  },
+  {
+    "app": "home",
+    "path": "/sso/callback",
+    "viewportWidth": 1440,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 720,
+    "scrollWidth": 720,
+    "bodyWidth": 704,
+    "elementWidth": 704,
+    "left": 8,
+    "right": 712,
+    "token": "",
+    "styles": [
+      {
+        "tag": "H1",
+        "text": "登录未完成",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 279.984375,
+          "right": 440,
+          "width": 160.015625
+        }
+      },
+      {
+        "tag": "P",
+        "text": "登录校验已失效，请重新授权。",
+        "color": "rgb(23, 32, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(23, 32, 51) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 247.984375,
+          "right": 472,
+          "width": 224.015625
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "重新授权",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(239, 239, 239)",
+        "outline": "rgb(0, 0, 0) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 311.34375,
+          "right": 408.65625,
+          "width": 97.3125
+        }
+      },
+      {
+        "tag": "A",
+        "text": "返回登录页",
+        "color": "rgb(0, 0, 238)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(0, 0, 238) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 319.984375,
+          "right": 400,
+          "width": 80.015625
+        }
+      }
+    ],
+    "screenshot": "home-sso-callback-1440-2x.png"
+  },
+  {
+    "app": "sso",
+    "path": "/authorize",
+    "viewportWidth": 320,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 320,
+    "scrollWidth": 320,
+    "bodyWidth": 304,
+    "elementWidth": 304,
+    "left": 8,
+    "right": 312,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "FIRST-PARTY SSO",
+        "color": "rgb(56, 189, 248)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(56, 189, 248) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "WTA SSO",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "P",
+        "text": "使用本仓账号密码完成统一认人。业务应用不会共用这张会话。",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "P",
+        "text": "请输入本仓账号密码",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录并继续",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(2, 132, 199)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 40,
+          "right": 280,
+          "width": 240
+        }
+      }
+    ],
+    "screenshot": "sso-authorize-320-1x.png"
+  },
+  {
+    "app": "sso",
+    "path": "/authorize",
+    "viewportWidth": 320,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 160,
+    "scrollWidth": 209,
+    "bodyWidth": 201,
+    "elementWidth": 211.1875,
+    "left": -25.59375,
+    "right": 185.59375,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "FIRST-PARTY SSO",
+        "color": "rgb(56, 189, 248)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(56, 189, 248) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 6.40625,
+          "right": 153.59375,
+          "width": 147.1875
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "WTA SSO",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 6.40625,
+          "right": 153.59375,
+          "width": 147.1875
+        }
+      },
+      {
+        "tag": "P",
+        "text": "使用本仓账号密码完成统一认人。业务应用不会共用这张会话。",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 6.40625,
+          "right": 153.59375,
+          "width": 147.1875
+        }
+      },
+      {
+        "tag": "P",
+        "text": "请输入本仓账号密码",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 6.40625,
+          "right": 153.59375,
+          "width": 147.1875
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 6.40625,
+          "right": 209.40625,
+          "width": 203
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 6.40625,
+          "right": 209.40625,
+          "width": 203
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 6.40625,
+          "right": 209.40625,
+          "width": 203
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 6.40625,
+          "right": 209.40625,
+          "width": 203
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录并继续",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(2, 132, 199)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 6.40625,
+          "right": 209.40625,
+          "width": 203
+        }
+      }
+    ],
+    "screenshot": "sso-authorize-320-2x.png"
+  },
+  {
+    "app": "sso",
+    "path": "/authorize",
+    "viewportWidth": 768,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 768,
+    "scrollWidth": 768,
+    "bodyWidth": 752,
+    "elementWidth": 484,
+    "left": 142,
+    "right": 626,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "FIRST-PARTY SSO",
+        "color": "rgb(56, 189, 248)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(56, 189, 248) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "WTA SSO",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "P",
+        "text": "使用本仓账号密码完成统一认人。业务应用不会共用这张会话。",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "P",
+        "text": "请输入本仓账号密码",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录并继续",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(2, 132, 199)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 174,
+          "right": 594,
+          "width": 420
+        }
+      }
+    ],
+    "screenshot": "sso-authorize-768-1x.png"
+  },
+  {
+    "app": "sso",
+    "path": "/authorize",
+    "viewportWidth": 768,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 384,
+    "scrollWidth": 384,
+    "bodyWidth": 368,
+    "elementWidth": 368,
+    "left": 8,
+    "right": 376,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "FIRST-PARTY SSO",
+        "color": "rgb(56, 189, 248)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(56, 189, 248) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "WTA SSO",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "P",
+        "text": "使用本仓账号密码完成统一认人。业务应用不会共用这张会话。",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "P",
+        "text": "请输入本仓账号密码",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录并继续",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(2, 132, 199)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 40,
+          "right": 344,
+          "width": 304
+        }
+      }
+    ],
+    "screenshot": "sso-authorize-768-2x.png"
+  },
+  {
+    "app": "sso",
+    "path": "/authorize",
+    "viewportWidth": 1440,
+    "zoom": 1,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "bodyWidth": 1424,
+    "elementWidth": 484,
+    "left": 478,
+    "right": 962,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "FIRST-PARTY SSO",
+        "color": "rgb(56, 189, 248)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(56, 189, 248) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "WTA SSO",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "P",
+        "text": "使用本仓账号密码完成统一认人。业务应用不会共用这张会话。",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "P",
+        "text": "请输入本仓账号密码",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录并继续",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(2, 132, 199)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 510,
+          "right": 930,
+          "width": 420
+        }
+      }
+    ],
+    "screenshot": "sso-authorize-1440-1x.png"
+  },
+  {
+    "app": "sso",
+    "path": "/authorize",
+    "viewportWidth": 1440,
+    "zoom": 2,
+    "zoomMethod": "CDP half CSS viewport + DPR2 for 200% desktop reflow; no CSS zoom",
+    "viewport": 720,
+    "scrollWidth": 720,
+    "bodyWidth": 704,
+    "elementWidth": 484,
+    "left": 118,
+    "right": 602,
+    "token": "",
+    "styles": [
+      {
+        "tag": "P",
+        "text": "FIRST-PARTY SSO",
+        "color": "rgb(56, 189, 248)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(56, 189, 248) none 3px",
+        "fontSize": "12px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "H1",
+        "text": "WTA SSO",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "32px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "P",
+        "text": "使用本仓账号密码完成统一认人。业务应用不会共用这张会话。",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "P",
+        "text": "请输入本仓账号密码",
+        "color": "rgb(148, 163, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(148, 163, 184) none 3px",
+        "fontSize": "16px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "用户名",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "LABEL",
+        "text": "密码",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgba(0, 0, 0, 0)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "14px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "INPUT",
+        "text": "",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(11, 18, 32)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "text": "登录并继续",
+        "color": "rgb(226, 232, 240)",
+        "background": "rgb(2, 132, 199)",
+        "outline": "rgb(226, 232, 240) none 3px",
+        "fontSize": "13.3333px",
+        "rect": {
+          "left": 150,
+          "right": 570,
+          "width": 420
+        }
+      }
+    ],
+    "screenshot": "sso-authorize-1440-2x.png"
+  }
+]

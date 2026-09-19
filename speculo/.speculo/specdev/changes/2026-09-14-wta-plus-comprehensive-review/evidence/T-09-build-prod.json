@@ -1,0 +1,38 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "build:prod"
+  ],
+  "cwd": "frontend",
+  "exit_code": 0,
+  "seconds": 50.84,
+  "pnpm": "10.34.5 via owned shim",
+  "apps": {
+    "admin-web": {
+      "marker": {
+        "app": "admin-web",
+        "mode": "production"
+      },
+      "app_build_invocations": 1,
+      "index_sha256": "74641cf1fa1c74a4d752198b92ed9bdb44c73f66439160b0afc9584bebcd83ab"
+    },
+    "home-web": {
+      "marker": {
+        "app": "home-web",
+        "mode": "production"
+      },
+      "app_build_invocations": 1,
+      "index_sha256": "2029217e7341bb14d8130c4443241ad45535701592266b3099184e022f619467"
+    },
+    "sso-web": {
+      "marker": {
+        "app": "sso-web",
+        "mode": "production"
+      },
+      "app_build_invocations": 1,
+      "index_sha256": "d14d65af498aefcb17d5bb9f12f9af1058b502b5660c76c6c0535f4f47603ea6"
+    }
+  },
+  "mode_match": true
+}

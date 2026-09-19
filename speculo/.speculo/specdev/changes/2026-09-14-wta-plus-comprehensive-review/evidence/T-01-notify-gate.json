@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-modules/wta-notify",
+    "-am",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 0,
+  "captured_at": "2026-09-18T07:48:21.417510+00:00",
+  "log": "T-01-notify-gate.log"
+}

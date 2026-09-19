@@ -1,0 +1,7 @@
+{
+  "files": {
+    "frontend/packages/web-domains/system/src/sso-app/SsoAppPage.vue": "e3fb3c40fbecd8445f2d1975fa9d968a492fbe0913f17357b466ff64002f1ba5",
+    "frontend/packages/web-domains/notify/src/ConfigPage.vue": "6da45c967ebe63dff29f2b50c8aed7640aafc89afca941c340c43ba4f20c5763"
+  },
+  "reason": "revision 25 bounded build prerequisites"
+}

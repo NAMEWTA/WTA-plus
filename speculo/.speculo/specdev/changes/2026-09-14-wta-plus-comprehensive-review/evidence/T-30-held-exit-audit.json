@@ -1,0 +1,14 @@
+{
+  "first_local_completion_at": "2026-09-19T06:19:50.033258+00:00",
+  "consecutive_no_progress_goal_turns": 1,
+  "condition": "User holds all change commits; formal implementation/result/direct-parent and clean deployable release require that authorization",
+  "remaining_reversible_required_work": [],
+  "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+  "policy": "Keep user hold; no repeated permission request. Same blocker has recurred in three consecutive goal turns and no meaningful authorized work remains: set goal blocked; do not claim completion.",
+  "last_audit_at": "2026-09-19T06:29:38.053942+00:00",
+  "previous_goal_turn_classification": "progress: reconciled four ticket acceptance checklists; completed final governance v2 and retained final-state snapshot",
+  "current_goal_turn_classification": "no progress: fresh source/artifact/evidence audit confirms no remaining authorized reversible requirement",
+  "consecutive_blocking_condition_goal_turns": 3,
+  "current_audit": "T-30-held-completion-audit-3.json",
+  "blocked_threshold_met": true
+}

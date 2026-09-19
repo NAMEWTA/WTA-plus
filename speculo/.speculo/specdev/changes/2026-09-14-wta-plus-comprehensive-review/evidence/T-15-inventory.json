@@ -1,0 +1,246 @@
+{
+  "identity_overloads": [
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonApplicationUseCase.java",
+      "old": "PersonApplicationVo current()",
+      "replacement": "PersonApplicationVo current(long userId)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonApplicationUseCase.java",
+      "old": "PersonApplicationVo save(PersonApplicationSaveBo command)",
+      "replacement": "PersonApplicationVo save(long userId, PersonApplicationSaveBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonApplicationUseCase.java",
+      "old": "PersonApplicationVo submit(int expectedVersion)",
+      "replacement": "PersonApplicationVo submit(long userId, int expectedVersion)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonRebindUseCase.java",
+      "old": "PersonRebindMatchVo match(PersonRebindMatchBo command)",
+      "replacement": "PersonRebindMatchVo match(long userId, PersonRebindMatchBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonRebindUseCase.java",
+      "old": "PersonRebindConfirmationVo confirm(PersonRebindConfirmBo command)",
+      "replacement": "PersonRebindConfirmationVo confirm(long userId, PersonRebindConfirmBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonRebindUseCase.java",
+      "old": "PersonRebindSubmissionVo submit(PersonRebindSubmitBo command)",
+      "replacement": "PersonRebindSubmissionVo submit(long userId, PersonRebindSubmitBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonRebindUseCase.java",
+      "old": "PersonRebindUnbindVo unbind()",
+      "replacement": "PersonRebindUnbindVo unbind(long userId)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonAdminUseCase.java",
+      "old": "PersonAdminResultVo decide(long applicationId, PersonAdminDecisionBo command)",
+      "replacement": "PersonAdminResultVo decide(long operatorId, long applicationId, PersonAdminDecisionBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonAdminUseCase.java",
+      "old": "PersonAdminResultVo create(PersonAdminCreateBo command)",
+      "replacement": "PersonAdminResultVo create(long operatorId, PersonAdminCreateBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonAdminUseCase.java",
+      "old": "PersonAdminResultVo revise(long profileId, PersonAdminReviseBo command)",
+      "replacement": "PersonAdminResultVo revise(long operatorId, long profileId, PersonAdminReviseBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonAdminUseCase.java",
+      "old": "PersonAdminResultVo manageBinding(long profileId, PersonAdminBindingBo command)",
+      "replacement": "PersonAdminResultVo manageBinding(long operatorId, long profileId, PersonAdminBindingBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonAdminUseCase.java",
+      "old": "PersonAdminResultVo assign(long profileId, PersonAdminAssignBo command)",
+      "replacement": "PersonAdminResultVo assign(long operatorId, long profileId, PersonAdminAssignBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/usecase/PersonAdminUseCase.java",
+      "old": "PersonAdminResultVo revoke(long profileId, PersonAdminRevokeBo command)",
+      "replacement": "PersonAdminResultVo revoke(long operatorId, long profileId, PersonAdminRevokeBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseApplicationUseCase.java",
+      "old": "EnterpriseApplicationVo current()",
+      "replacement": "EnterpriseApplicationVo current(long userId)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseApplicationUseCase.java",
+      "old": "EnterpriseApplicationVo save(EnterpriseApplicationSaveBo command)",
+      "replacement": "EnterpriseApplicationVo save(long userId, EnterpriseApplicationSaveBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseApplicationUseCase.java",
+      "old": "EnterpriseApplicationVo submit(int expectedVersion)",
+      "replacement": "EnterpriseApplicationVo submit(long userId, int expectedVersion)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseAdminUseCase.java",
+      "old": "EnterpriseAdminResultVo decide(long applicationId, EnterpriseAdminDecisionBo command)",
+      "replacement": "EnterpriseAdminResultVo decide(long operatorId, long applicationId, EnterpriseAdminDecisionBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseAdminUseCase.java",
+      "old": "EnterpriseAdminResultVo create(EnterpriseAdminCreateBo command)",
+      "replacement": "EnterpriseAdminResultVo create(long operatorId, EnterpriseAdminCreateBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseAdminUseCase.java",
+      "old": "EnterpriseAdminResultVo revise(long profileId, EnterpriseAdminReviseBo command)",
+      "replacement": "EnterpriseAdminResultVo revise(long operatorId, long profileId, EnterpriseAdminReviseBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseAdminUseCase.java",
+      "old": "EnterpriseAdminResultVo manageBinding(long profileId, EnterpriseAdminBindingBo command)",
+      "replacement": "EnterpriseAdminResultVo manageBinding(long operatorId, long profileId, EnterpriseAdminBindingBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseAdminUseCase.java",
+      "old": "EnterpriseAdminResultVo assign(long profileId, EnterpriseAdminAssignBo command)",
+      "replacement": "EnterpriseAdminResultVo assign(long operatorId, long profileId, EnterpriseAdminAssignBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseAdminUseCase.java",
+      "old": "EnterpriseAdminResultVo revoke(long profileId, EnterpriseAdminRevokeBo command)",
+      "replacement": "EnterpriseAdminResultVo revoke(long operatorId, long profileId, EnterpriseAdminRevokeBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseTransferUseCase.java",
+      "old": "EnterpriseTransferVo send(EnterpriseTransferSendBo command)",
+      "replacement": "EnterpriseTransferVo send(long userId, EnterpriseTransferSendBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseTransferUseCase.java",
+      "old": "EnterpriseTransferVo confirm(EnterpriseTransferConfirmBo command)",
+      "replacement": "EnterpriseTransferVo confirm(long userId, EnterpriseTransferConfirmBo command)",
+      "decision": "remove missing-identity overload; explicit method required"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/usecase/EnterpriseTransferUseCase.java",
+      "old": "EnterpriseTransferVo unbind()",
+      "replacement": "EnterpriseTransferVo unbind(long userId)",
+      "decision": "remove missing-identity overload; explicit method required"
+    }
+  ],
+  "constructor_candidates": [
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindService.java",
+      "sha256": "aee18df7d57d89f7fb1078fb779fa25ecfca632496ccc71743a8182f3d908506",
+      "constructors": [
+        "public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao, Object jsonMapper, ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, UserService users)",
+        "public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao, Object jsonMapper, ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, UserService users, Clock clock)",
+        "public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao, ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, UserService users, ConfigService configService, PersonRebindNotificationPort notifications, ApplicationEventPublisher events)",
+        "public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao, Object jsonMapper, ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, UserService users, ConfigService configService, PersonRebindNotificationPort notifications, ApplicationEventPublisher events)",
+        "public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao, Object jsonMapper, ProfileMaterialPort materials, org.namewta.profile.person.adapter.provider.PersonVerificationProviderRegistry providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, UserService users, Clock clock)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonAdminService.java",
+      "sha256": "20b4bebfbe6c2f98e5dd128989e85bf79b27513399d6068cf9b05b96cc17afb5",
+      "constructors": [
+        "public PersonAdminService(PersonAdminDao dao, PersonApplicationPublicationPort applications, ProfileMaterialPort materials, PersonWorkflowGateway workflow, UserService users)",
+        "public PersonAdminService(PersonAdminDao dao, PersonApplicationPublicationPort applications, ProfileMaterialPort materials, PersonWorkflowGateway workflow, UserService users, Clock clock)",
+        "public PersonAdminService(PersonAdminDao dao, Object jsonMapper, PersonApplicationPublicationPort applications, ProfileMaterialPort materials, WorkflowService workflow, UserService users)",
+        "public PersonAdminService(PersonAdminDao dao, Object jsonMapper, PersonApplicationPublicationPort applications, ProfileMaterialPort materials, WorkflowService workflow, UserService users, Clock clock)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonApplicationService.java",
+      "sha256": "6e20fe50d7f9d76ccab281e949ce32ab8fbce82f63c6c579e8665e199db144ee",
+      "constructors": [
+        "public PersonApplicationService(PersonApplicationDao dao, ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, ConfigService configService)",
+        "public PersonApplicationService(PersonApplicationDao dao, Object jsonMapper, ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, ConfigService configService, Clock clock)",
+        "public PersonApplicationService(PersonApplicationDao dao, Object jsonMapper, ProfileMaterialPort materials, org.namewta.profile.person.adapter.provider.PersonVerificationProviderRegistry providers, PersonVerificationService attempts, PersonWorkflowGateway workflow, ConfigService configService, Clock clock)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonVerificationAttemptService.java",
+      "sha256": "d4d8cca100a44f4c2cdf4bab82489c45dfb7ac65a60576ca3d7903c78c455948",
+      "constructors": [
+        "public PersonVerificationAttemptService(PersonVerificationProviderRegistryPort providerRegistry, PersonVerificationAttemptDao dao, PersonVerificationEvidenceCodec evidenceCodec)",
+        "public PersonVerificationAttemptService(PersonVerificationProviderRegistryPort providerRegistry, PersonVerificationAttemptDao dao, PersonVerificationEvidenceCodec evidenceCodec, Object ignoredAuditRecorder)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/adapter/codec/PersonVerificationEvidenceCodec.java",
+      "sha256": "01d0ec7df5955071e6482ebff0f38a5abd0e6de29cd34f6c74b639a3db4625c5",
+      "constructors": [
+        "public PersonVerificationEvidenceCodec()",
+        "public PersonVerificationEvidenceCodec(Object ignoredJsonMapper)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseAdminService.java",
+      "sha256": "9dc35d14c0476cba3ce6b0df32c2f3ac1bbad37c62bf510d49831d6057458d88",
+      "constructors": [
+        "public EnterpriseAdminService(EnterpriseAdminDao dao, EnterpriseApplicationPublicationPort applications, ProfileMaterialPort materials, EnterpriseWorkflowGateway workflow, UserService users, ProfileService profiles)",
+        "public EnterpriseAdminService(EnterpriseAdminDao dao, EnterpriseApplicationPublicationPort applications, ProfileMaterialPort materials, EnterpriseWorkflowGateway workflow, UserService users, ProfileService profiles, Clock clock)",
+        "public EnterpriseAdminService(EnterpriseAdminDao dao, Object jsonMapper, EnterpriseApplicationPublicationPort applications, ProfileMaterialPort materials, WorkflowService workflow, UserService users, ProfileService profiles)",
+        "public EnterpriseAdminService(EnterpriseAdminDao dao, Object jsonMapper, EnterpriseApplicationPublicationPort applications, ProfileMaterialPort materials, WorkflowService workflow, UserService users, ProfileService profiles, Clock clock)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java",
+      "sha256": "0788c027cd63c4237ed68350893bb3d02769d5d2ff7b470bca26ac402c059652",
+      "constructors": [
+        "public EnterpriseTransferService(EnterpriseTransferDao dao, EnterpriseTransferChallengeStore challenges, EnterpriseTransferCodePort codes, PersonIdentityLookupService personIdentities, UserService users, NotificationApplicationService notify)",
+        "public EnterpriseTransferService(EnterpriseTransferDao dao, EnterpriseTransferChallengeStore challenges, EnterpriseTransferCodePort codes, PersonIdentityLookupService personIdentities, UserService users, NotificationApplicationService notify, Clock clock)",
+        "public EnterpriseTransferService(EnterpriseTransferDao dao, EnterpriseTransferChallengeStore challenges, org.namewta.profile.enterprise.adapter.security.EnterpriseTransferCodeGenerator codes, PersonIdentityLookupService personIdentities, UserService users, NotificationApplicationService notify, Clock clock)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseVerificationAttemptService.java",
+      "sha256": "6719fa12839d5b35b937404b360c77079eb662d15e6736e5b59f5774080e2e29",
+      "constructors": [
+        "public EnterpriseVerificationAttemptService(EnterpriseVerificationProviderRegistryPort providerRegistry, EnterpriseVerificationAttemptDao dao, EnterpriseVerificationEvidenceCodec evidenceCodec)",
+        "public EnterpriseVerificationAttemptService(EnterpriseVerificationProviderRegistryPort providerRegistry, EnterpriseVerificationAttemptDao dao, EnterpriseVerificationEvidenceCodec evidenceCodec, Object ignoredAuditRecorder)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseApplicationService.java",
+      "sha256": "992bc06f14069930fb126b2f382187d04a52dc28de75cecd7b78294ac73d212e",
+      "constructors": [
+        "public EnterpriseApplicationService(EnterpriseApplicationDao dao, ProfileMaterialPort materials, EnterpriseVerificationProviderRegistryPort providers, EnterpriseVerificationService attempts, EnterpriseWorkflowGateway workflow, ConfigService configService)",
+        "public EnterpriseApplicationService(EnterpriseApplicationDao dao, Object jsonMapper, ProfileMaterialPort materials, EnterpriseVerificationProviderRegistryPort providers, EnterpriseVerificationService attempts, EnterpriseWorkflowGateway workflow, ConfigService configService, Clock clock)",
+        "public EnterpriseApplicationService(EnterpriseApplicationDao dao, Object jsonMapper, ProfileMaterialPort materials, org.namewta.profile.enterprise.adapter.provider.EnterpriseVerificationProviderRegistry providers, EnterpriseVerificationService attempts, EnterpriseWorkflowGateway workflow, ConfigService configService, Clock clock)"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/adapter/codec/EnterpriseVerificationEvidenceCodec.java",
+      "sha256": "18ac14904a7dfa733898d8d0fe397f9560a1eb2f04b8bb1dbb7582153fe4d59f",
+      "constructors": [
+        "public EnterpriseVerificationEvidenceCodec()",
+        "public EnterpriseVerificationEvidenceCodec(Object ignoredJsonMapper)"
+      ]
+    }
+  ]
+}

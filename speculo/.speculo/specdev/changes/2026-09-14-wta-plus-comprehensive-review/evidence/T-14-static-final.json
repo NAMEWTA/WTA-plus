@@ -1,0 +1,91 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "tsc",
+      "--ignoreConfig",
+      "--noEmit",
+      "--strict",
+      "--skipLibCheck",
+      "--target",
+      "ES2023",
+      "--module",
+      "ESNext",
+      "--moduleResolution",
+      "Bundler",
+      "--types",
+      "node",
+      "e2e/profile-self-materials.spec.ts",
+      "playwright.profile.config.ts",
+      "playwright.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.12,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-static-final-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "e2e/profile-self-materials.spec.ts",
+      "playwright.profile.config.ts",
+      "playwright.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.32,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-static-final-2.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-profile/wta-profile-person",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.04,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-static-final-3.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-profile/wta-profile-enterprise",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.04,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-static-final-4.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.04,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-static-final-5.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.03,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-static-final-6.log"
+  }
+]

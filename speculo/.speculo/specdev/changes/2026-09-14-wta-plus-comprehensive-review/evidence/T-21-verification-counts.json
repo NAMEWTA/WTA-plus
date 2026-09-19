@@ -1,0 +1,46 @@
+{
+  "vitest": 602,
+  "node": 108,
+  "total_unit": 710,
+  "a11y": {
+    "passed": 29,
+    "skipped": 0,
+    "matrix_artifacts": 24
+  },
+  "default_browser": {
+    "passed": 53,
+    "skipped": 1,
+    "skip_reason": "Existing live Nginx/Nacos gate requires NACOS_LIVE_BASE_URL"
+  },
+  "sso": {
+    "browser_passed": 12,
+    "junit_passed": 1,
+    "skipped": 0
+  },
+  "post_static_test_only_change": {
+    "browser_passed": 1
+  },
+  "rendered_text_contrasts": {
+    "home-sso-callback": {
+      ".sso-callback p": 15.272,
+      "footer": 7.113
+    },
+    "sso-authorize": {
+      ".hint": 6.919,
+      ".status": 6.919,
+      "button[type=submit]": 5.671
+    },
+    "home-register": {
+      ".register-intro p": 7.113,
+      ".status": 4.759,
+      ".submit": 5.473,
+      "footer": 7.113
+    },
+    "home-login": {
+      ".identity-login__social-label": 7.578,
+      ".identity-login__status": 7.578,
+      ".identity-login__submit": 5.473,
+      "footer": 7.113
+    }
+  }
+}

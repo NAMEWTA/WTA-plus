@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-web",
+    "-am",
+    "test",
+    "-Dtest=SysLogFilterTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 1,
+  "captured_at": "2026-09-18T07:14:22.498168+00:00",
+  "log": "T-02-web-red.log"
+}

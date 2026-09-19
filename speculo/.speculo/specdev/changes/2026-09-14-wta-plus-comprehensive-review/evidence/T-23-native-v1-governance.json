@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "node",
+      "--test",
+      "release-artifacts/tests/notify-baseline-contract.test.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.09,
+    "source_fingerprint": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-v1-governance-1.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-notify",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.04,
+    "source_fingerprint": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-v1-governance-2.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "source_fingerprint": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-v1-governance-3.log"
+  },
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+      "--stage",
+      "tickets",
+      "--repo",
+      "/srv/WTA-plus",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+    ],
+    "cwd": ".",
+    "exit_code": 1,
+    "seconds": 0.19,
+    "source_fingerprint": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-v1-governance-4.log"
+  }
+]

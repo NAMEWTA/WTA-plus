@@ -1,0 +1,17 @@
+{
+  "captured_at": "2026-09-18T09:00:57.253384+00:00",
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-modules/wta-sso",
+    "-am",
+    "test",
+    "-Dtest=SsoAuthorizationServiceTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 0,
+  "log": "T-07-callback-green.log"
+}

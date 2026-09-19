@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-09-18T06:44:54.741958+00:00",
+  "head": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "files": {
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/anonymous/ProviderCallbackController.java": "63f37240a0f84cb8d2f5b1433487def1cfd58d3813a5633f7182da24a0613936",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java": "76bd421a0c016cf7c2ca864ee4944b7edfa38bf69286b2a68284ff07b122037a",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java": "2c4fe90c0d27420fe5a7fa410f09aa242e4a616de2d1a15cd3617608d7bd2d6a",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyConfigService.java": "becb097d30214ec1cb0c185cf1bcf67f69670df01a4da0cd9eaa58c1db5ee7bb",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java": "9e0789cb4979897c379049bc76f2786c08535c44046cc84772527987f3f91d73",
+    "backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/Sms4jNotificationProviderResolver.java": "d4fe33fc5b9a928803a5ebd4a3137d0edf0b9da4d5337e28dc85ce718e5cc52e",
+    "backend/wta-common/wta-common-mail/src/main/java/org/namewta/common/mail/notify/MailNotifyChannelAdapter.java": "fd484a66673b30dff1674b4fec6256ccb616350c156af1dd77887b056f76dbbf",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatedlyRequestWrapper.java": "6e901b099c5fa1f1dc8e1e6753dd70ac5cc2e1980038ad6cfb47063144be5418",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogProperties.java": "1adfc7f7df2c89d16aebc092ae1b08cac389f0239e09176752158e3560649b6b",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/ReplayableOpenApiRequest.java": "f94ebe8e60721841878f5d58db9f8356a58270a16eb921f7fa95f25b835a8cdc",
+    "backend/wta-common/wta-common-encrypt/src/main/java/org/namewta/common/encrypt/filter/DecryptRequestBodyWrapper.java": "5d94d732f7ec1f92d30d1843809d0cb176713a3a04372427bbe4d34ee6d1ed25",
+    "backend/wta-admin/src/main/resources/application.yml": "39cc691177682e3ee7b77bf6ea4e1f2e64fec8ad6fbdfadc9667468d2206ee69",
+    "release-artifacts/docker/docker-compose-backend.yml": "0168acd380b0ca301421420f0cc838fd1a007e6663432522ed43719ce6db47ee"
+  },
+  "runtime_verification": "not-run"
+}

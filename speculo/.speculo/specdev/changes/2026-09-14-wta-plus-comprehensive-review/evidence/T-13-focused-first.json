@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "--filter",
+      "@namewta/domain-admin",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 18.56,
+    "output": "Scope: 3 of 35 workspace projects\n\n> @namewta/domain-admin@0.0.0 typecheck /srv/WTA-plus/frontend/packages/domains/admin\n> tsc --noEmit -p tsconfig.json\n\n\n> @namewta/admin-web@0.0.0 typecheck /srv/WTA-plus/frontend/apps/admin-web\n> vue-tsc --noEmit -p tsconfig.json\n\n\n> @namewta/home-web@0.0.0 typecheck /srv/WTA-plus/frontend/apps/home-web\n> vue-tsc --noEmit -p tsconfig.json\n\n"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "--filter",
+      "@namewta/domain-admin",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 6.84,
+    "output": "Scope: 3 of 35 workspace projects\n\n> @namewta/domain-admin@0.0.0 test /srv/WTA-plus/frontend/packages/domains/admin\n> vitest run src\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/admin\n\n\n Test Files  3 passed (3)\n      Tests  49 passed (49)\n   Start at  23:57:06\n   Duration  294ms (transform 225ms, setup 0ms, import 338ms, tests 42ms, environment 2ms)\n\n\n> @namewta/admin-web@0.0.0 test /srv/WTA-plus/frontend/apps/admin-web\n> vitest run src\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web\n\n\n Test Files  15 passed (15)\n      Tests  71 passed (71)\n   Start at  23:57:08\n   Duration  3.18s (transform 3.36s, setup 0ms, import 5.21s, tests 906ms, environment 6ms)\n\n\n> @namewta/home-web@0.0.0 test /srv/WTA-plus/frontend/apps/home-web\n> vitest run src\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/home-web\n\n\n Test Files  6 passed (6)\n      Tests  8 passed (8)\n   Start at  23:57:12\n   Duration  486ms (transform 187ms, setup 0ms, import 399ms, tests 29ms, environment 2ms)\n\n"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "--filter",
+      "@namewta/domain-admin",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.84,
+    "output": "Scope: 3 of 35 workspace projects\n\n> @namewta/domain-admin@0.0.0 lint /srv/WTA-plus/frontend/packages/domains/admin\n> oxlint src\n\n\n> @namewta/admin-web@0.0.0 lint /srv/WTA-plus/frontend/apps/admin-web\n> oxlint src vite.config.ts vite\n\n\n> @namewta/home-web@0.0.0 lint /srv/WTA-plus/frontend/apps/home-web\n> oxlint src vite.config.ts\n\n"
+  }
+]

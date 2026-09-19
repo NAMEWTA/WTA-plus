@@ -1,0 +1,50 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "architecture:check"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "stdout": "\n> wta-vue-plus@6.0.0 architecture:check /srv/WTA-plus/frontend\n> namewta-architecture check --root .\n\nArchitecture check passed: 35 workspace package(s), 0 reviewed baseline violation(s).\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "stdout": "Validated 5 canonical Skills and 76 markdown references.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "rg",
+      "-n",
+      "useLoading|useFormDialog|useSearchReset",
+      "frontend/apps/admin-web"
+    ],
+    "cwd": ".",
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "stdout": "",
+    "stderr": ""
+  }
+]

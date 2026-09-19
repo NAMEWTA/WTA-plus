@@ -1,0 +1,120 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 7.39,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 17.32,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 6.3,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-3.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "tsc",
+      "--ignoreConfig",
+      "--noEmit",
+      "--strict",
+      "--skipLibCheck",
+      "--target",
+      "ES2023",
+      "--module",
+      "ESNext",
+      "--moduleResolution",
+      "Bundler",
+      "--types",
+      "node",
+      "e2e/session-navigation-lifecycle.spec.ts",
+      "playwright.lifecycle.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.28,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-4.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "playwright.lifecycle.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.37,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-5.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "build:prod"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 9.07,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-6.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-7.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.03,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-final-gates-8.log"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-N",
+    "dependency:get",
+    "-Dartifact=org.freemarker:freemarker:2.3.34",
+    "-Dtransitive=false"
+  ],
+  "cwd": "backend",
+  "exit_code": 1,
+  "seconds": 4.4,
+  "log": "T-27-template-engine.log"
+}

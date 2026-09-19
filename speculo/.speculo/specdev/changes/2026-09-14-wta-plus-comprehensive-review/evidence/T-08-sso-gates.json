@@ -1,0 +1,58 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/sso-web",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 2.37
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/sso-web",
+      "lint"
+    ],
+    "exit_code": 0,
+    "seconds": 0.47
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/sso-web",
+      "test"
+    ],
+    "exit_code": 0,
+    "seconds": 0.98
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "e2e/sso-release-origin.spec.ts",
+      "playwright.sso.config.ts"
+    ],
+    "exit_code": 0,
+    "seconds": 0.39
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/sso-web",
+      "build:prod"
+    ],
+    "exit_code": 0,
+    "seconds": 0.73
+  }
+]

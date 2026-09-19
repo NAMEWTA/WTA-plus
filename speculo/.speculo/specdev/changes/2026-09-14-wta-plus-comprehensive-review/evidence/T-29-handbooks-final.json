@@ -1,0 +1,52 @@
+[
+  {
+    "command": [
+      "node",
+      "scripts/ci/verify-agent-handbooks.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-handbooks-final-1.log"
+  },
+  {
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "scripts/ci/verify-agent-handbooks.test.mjs",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs",
+      "speculo/workflows/specdev/common/tools/validate-specdev.test.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-handbooks-final-2.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-handbooks-final-3.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-handbooks-final-4.log"
+  },
+  {
+    "command": [
+      "node",
+      "docs/fm/scripts/validate.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-handbooks-final-5.log"
+  }
+]

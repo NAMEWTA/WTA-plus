@@ -1,0 +1,59 @@
+{
+  "previous_sha256": "441de2ccc513e09820ed3d7d2faf559eeaa7466202e4fbb0c8dd3eabf09510c9",
+  "current_sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3",
+  "reason": "Reviewed only AGENTS inheritance/navigation changes; architecture, API/SPI and module boundaries unchanged.",
+  "tickets": [
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/09-coherent-build-matrix.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/15-contract-profile-legacy-bridges.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/16-workflow-task-integrity.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/23-durable-provider-callback.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/24-recoverable-third-resilience.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/25-acyclic-department-moves.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/28-bounded-notify-wake.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/29-converge-current-documentation.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md",
+      "binding_count": 1
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md",
+      "binding_count": 1
+    }
+  ]
+}

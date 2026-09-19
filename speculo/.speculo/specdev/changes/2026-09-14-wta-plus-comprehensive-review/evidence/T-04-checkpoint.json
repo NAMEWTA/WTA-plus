@@ -1,0 +1,28 @@
+{
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "captured_at": "2026-09-18T08:13:55.134003+00:00",
+  "worktree_mode": "current",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java": "daa24eb3b2064fe352e8c3b0ad8f27113cb669d6c88243c3174187a37a2ddc01",
+    "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/NetUtils.java": "02bc2018659e5cbb32566bc800c9fcacdc870785513bc50a9655fba1b38cdbd4",
+    "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ip/ClientAddressResolver.java": "d4fc9a65eda08528459d78a1885842e1b4e28761c0cd867a40671ea50a46b3ed",
+    "backend/wta-common/wta-common-core/src/test/java/org/namewta/common/core/utils/ServletUtilsClientAddressTest.java": "7ee30706b6739f9d200c60ec7ed9fadc593d558a2f790bc245ad7655f81b9b37",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ClientAddressConfig.java": "06a1896527e64f6dd73b626748f83e62672c2ba2b12cc43d5f7c1ac8191e386a",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/ClientAddressProperties.java": "90d15ac5c7347c251e5713079a9f60e765ff2563ea461f593104e519e8a77dce",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/ClientAddressFilter.java": "b4f2e680dac6eeabf9253daa2c46b31ae5425269c4e1c0fcc44fdda7705bf103",
+    "backend/wta-common/wta-common-web/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports": "d71001066ccc79abf37b2a6a92e316c43f66169f38fd0955cc2ad6b2f1cfd1d6",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/config/ClientAddressConfigTest.java": "58a3e51c24ac7df3d3be179a69c3d15fe1f90d1dacefe6bc6b7f5b2fa3ca2fa4",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/filter/ClientAddressFilterTest.java": "1e6a484e986005148e3cdcb39e9491516c46ea1403bff4fd3e4d89c769b7dc35",
+    "backend/wta-admin/src/main/resources/application.yml": "f14c3e810d3b6abf2084a65788dd203a1bef6c41f964f1440376c2786f848003",
+    "backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java": "b9ed3aedf5344f71e3a28c897df1f3c23f603d1102e7cf53ebf7192246c4fabc",
+    "release-artifacts/docker/frontend/nginx/lb/nginx-lb-http.conf.template": "e23e4a0e33f7052707b0ca9b218e72342925225d957b0935d0c2a7a4042a4a3b",
+    "release-artifacts/docker/frontend/nginx/lb/nginx-lb-tls.conf.template": "45a1c31e47b2413ae135433b96d0c74c42b2b427e39d1344d7d9cd030bb86ea5",
+    "release-artifacts/docker/frontend/nginx/CLIENT-ADDRESS.md": "edfcb900760eeceecbb2f87db35aebb19822d74db097fd4355ae1a41a60c657b",
+    "release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py": "6c97590b63270df3c2ff24b445d96686734346ae11b04f2f58905928315e69aa",
+    "release-artifacts/tests/nacos-proxy-config.test.mjs": "1f68d9897e7edc90c50ebd9e23c4123823e0447dbf5a629f4723071136cbad51",
+    "release-artifacts/tests/trusted-client-address.test.mjs": "788ebb61557ae5caa2a50175a952833495b9b5bb38404234afd19575ac5082e7",
+    ".agents/skills/wta-common-modules-guide/references/core-utils.md": "ef5918cd7ffcb52347c47a0b1de150c4f04c4e2b920e6edee242e4ec229a1a75"
+  }
+}

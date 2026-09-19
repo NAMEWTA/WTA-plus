@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "release-artifacts/tests/build-matrix.test.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "captured_at": "2026-09-18T09:36:28.170330+00:00",
+  "exit_code": 0,
+  "log": "T-09-contract-green-1.log"
+}

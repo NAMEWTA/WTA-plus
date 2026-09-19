@@ -2,13 +2,13 @@
 schema_version: 3
 plan_contract_version: 1
 skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
-skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "<Path>backend/wta-modules/wta-notify/src/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>"], "outputs": ["T-22的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "<Path>backend/wta-modules/wta-notify/src/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>"], "outputs": ["T-22的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "441de2ccc513e09820ed3d7d2faf559eeaa7466202e4fbb0c8dd3eabf09510c9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "<Path>backend/wta-modules/wta-notify/src/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>"], "outputs": ["T-22的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-22.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "<Path>backend/wta-modules/wta-notify/src/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>"], "outputs": ["T-22的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "<Path>backend/wta-modules/wta-notify/src/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>"], "outputs": ["T-22的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "<Path>backend/wta-modules/wta-notify/src/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>"], "outputs": ["T-22的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-22.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
 resource_claims: ["workspace:current-exclusive", "finding:B-04", "contract:AC-022"]
 artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-22
 title: 原子提交通知投递结果与lease fence
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：原子提交通知投递结果与lease fence"
 ready: true
@@ -98,7 +98,7 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 - E2E disposition：required: 真实MySQL/Redis双worker、过期/reclaim、Attempt失败与finish冲突注入。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本地行为证据见T-22.md；整模块分层已由T-28-static-final补验通过，提交暂缓、SHA为空。
 
 ## 9. 发布、迁移与恢复
 
@@ -111,15 +111,15 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 ## 10. 验收标准
 
-- [ ] `AC-022`：任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致。
-- [ ] `AC-022`：旧lease不能覆盖新owner结果。
-- [ ] `AC-022`：双worker只产生符合合同的结果记录。
-- [ ] `AC-022`：provider去重能力不足时风险明确且不宣称exactly-once。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-22.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-022`：任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致。
+- [x] `AC-022`：旧lease不能覆盖新owner结果。
+- [x] `AC-022`：双worker只产生符合合同的结果记录。
+- [x] `AC-022`：provider去重能力不足时风险明确且不宣称exactly-once。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-22.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -130,3 +130,15 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：无。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+### 执行前新增事实：旧通知 schema 残留
+
+T-02完整Maven（evidence/T-02-reactor-2.json，exit 1）发现BusinessOssOwnerArchitectureUnitTest拒绝未登记载体`sys_notify_log.attachment_oss_ids`。当前backend生产Java/XML无`sys_notify_log`或`attachment_oss_ids`引用，Notify实体已为notify_intent/delivery/attempt等；六文件基座仍创建旧sys_notify_log/sys_notify_delivery_log。该失败归本票Notify持久化schema收缩核对：实施时复查全部初始化DML、运行调用及原迁移决策，再决定删除无owner旧表，不给OSS清单添加虚假owner或豁免。尚未改DDL、尚未宣称修复；新环境基座与隔离MySQL完整验证仍为必需，不触及在线库。
+
+2026-09-18 Revision26：T-09真实初始化复现127/125偏差；两张无生产/DML引用旧表的基座收缩前置转交T-09，保留当前notify_* schema。T-22主体尚未开始，后续回读T-09实际DDL检查点；旧附件ADR只读偏差已记录，不增加虚假OSS owner。
+
+T-09最终验证已关闭旧schema载体错误：全新125表及默认673项Maven无失败，18路径检查点见T-09.md。本票运行时原子提交/租约主体仍未实现。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`aa98f888555baa8d9762618219a623e406dd2b23`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

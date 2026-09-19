@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-pl",
+      "wta-admin",
+      "-am",
+      "-Dtest=SysRegisterServiceRegistrationUnitTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 18.06,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-13-registration-service-first-1.log",
+    "counts": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": [
+      "backend/wta-admin/target/surefire-reports/TEST-org.namewta.web.service.SysRegisterServiceRegistrationUnitTest.xml"
+    ]
+  }
+]

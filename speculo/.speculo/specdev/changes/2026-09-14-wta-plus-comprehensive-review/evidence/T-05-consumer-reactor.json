@@ -1,0 +1,20 @@
+{
+  "captured_at": "2026-09-18T08:21:59.117315+00:00",
+  "container": "namewta-repeat-test-3ec9cba0bcc5",
+  "image": "redis:7.4-alpine@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Drepeat.redis.integration.port=32774"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "port": 32774,
+  "log": "T-05-consumer-reactor.log",
+  "exit_code": 1,
+  "cleanup_exit_code": 0
+}

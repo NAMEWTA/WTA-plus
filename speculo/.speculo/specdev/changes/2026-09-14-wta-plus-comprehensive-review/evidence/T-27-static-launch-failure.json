@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/run-t27-verify.py",
+    "T-27-static-first",
+    "static"
+  ],
+  "cwd": ".",
+  "exit_code": 1,
+  "failure": "Runner SyntaxError at line 32: list/tuple delimiter mismatch; no checks started"
+}

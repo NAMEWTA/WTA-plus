@@ -1,0 +1,16 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotificationModeOpenApiTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-Dnotify.openapi.mode.output=/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31-runtime-notification-mode.json",
+    "test"
+  ],
+  "exit_code": 0,
+  "seconds": 14.22
+}

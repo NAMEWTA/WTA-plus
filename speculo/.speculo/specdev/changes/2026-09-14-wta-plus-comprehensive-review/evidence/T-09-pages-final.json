@@ -1,0 +1,54 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "apps/admin-web/vite.config.ts",
+      "apps/home-web/vite.config.ts",
+      "apps/sso-web/vite.config.ts",
+      "packages/web-domains/system/src/sso-app/SsoAppPage.vue",
+      "packages/web-domains/notify/src/ConfigPage.vue"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-system",
+      "test",
+      "--no-file-parallelism",
+      "--maxWorkers=1"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-notify",
+      "test",
+      "--no-file-parallelism",
+      "--maxWorkers=1"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0
+  }
+]

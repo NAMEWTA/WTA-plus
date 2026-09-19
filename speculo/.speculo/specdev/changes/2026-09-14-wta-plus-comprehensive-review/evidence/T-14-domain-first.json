@@ -1,0 +1,15 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-profile",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 2,
+    "seconds": 1.17,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-domain-first-1.log"
+  }
+]

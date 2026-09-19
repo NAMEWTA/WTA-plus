@@ -1,0 +1,65 @@
+[
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+      "--stage",
+      "tickets",
+      "--repo",
+      "/srv/WTA-plus",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-governance-1.log",
+    "seconds": 0.95,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+      "--stage",
+      "goal-plan",
+      "--repo",
+      "/srv/WTA-plus",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-governance-2.log",
+    "seconds": 0.26,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/ticket-control.mjs",
+      "--map",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md",
+      "--repo",
+      "/srv/WTA-plus"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-governance-3.log",
+    "seconds": 0.34,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-governance-4.log",
+    "seconds": 0.36,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  }
+]

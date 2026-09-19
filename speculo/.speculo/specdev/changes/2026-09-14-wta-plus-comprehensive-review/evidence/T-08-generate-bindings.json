@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py",
+    "--repo-root",
+    "/srv/WTA-plus",
+    "--app",
+    "sso-web",
+    "--prefix",
+    "replace-with-sso-prefix",
+    "--port",
+    "41083"
+  ],
+  "exitCode": 0,
+  "runtimeEnvUnchanged": true
+}

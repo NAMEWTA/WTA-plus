@@ -1,0 +1,29 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "wta-modules/wta-profile/wta-profile-person",
+      "-am",
+      "-Dtest=MaterialRequirementsHttpContractTest,ProfileMaterialHttpContractTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "cwd": "backend",
+    "exit_code": 1,
+    "seconds": 9.0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-auth-advice-red-1.log",
+    "counts": {
+      "tests": 9,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": [
+      "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.admin.MaterialRequirementsHttpContractTest.xml",
+      "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.admin.ProfileMaterialHttpContractTest.xml"
+    ]
+  }
+]

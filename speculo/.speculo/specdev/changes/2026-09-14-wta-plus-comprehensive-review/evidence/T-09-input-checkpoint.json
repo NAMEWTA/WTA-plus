@@ -1,0 +1,17 @@
+{
+  "captured_at": "2026-09-18T09:34:21.644044+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "files": {
+    "frontend/apps/admin-web/vite.config.ts": "8beca2976e8eb3ee7f041ed8567ae3d0d9f754a30bea01f840c64646c8f9b2f3",
+    "frontend/apps/home-web/vite.config.ts": "7094bef6aee91e3f38f7b7f2a7c6ffdb24d960cc3ebc62d901727680ff3a94bc",
+    "frontend/apps/sso-web/vite.config.ts": "7537444b4f71b998e67631ebb5428b32964550477eff2fefca5e767050fe80d2",
+    "scripts/README.md": "85d391ca7bfd29971aa410abfe1ba0f138679e652064b9af76a574c281d2cded",
+    "frontend/package.json": "0be0feb717477f8d89ee1901030b94f99ff4a6e597aaaa24234da0f2be9c482b",
+    "backend/wta-admin/pom.xml": "db86dde42263d2594ff471de0e41ef9546460d3bcebaf34a6869e9563e63fbf2",
+    "backend/pom.xml": "3f7a53269c9e7ec23aea7f7fa284d5c81cd60169591e6d2dd6deb29507ea3efa",
+    "scripts/ci/verify-admin-bundle.sh": "088f7e5e1c2e31c6341b9b1dcf3473ac77e01ff97b73ebc2b8e1b6d8f31baeff",
+    "scripts/ci/run-external-services.sh": "c037c4b9c030b50f3783aaf255365cb49c8ef354f2a9b77ec91cc97b67a02472",
+    "release-artifacts/scripts/release-manage.sh": "b0c12aec9190c3e8f3c7272b8c63bc1491830021be6130beb0a7c7fdde93670a",
+    "release-artifacts/docker/docker-compose-infrastructure.yml": "15f4c14b608428f918b8543b2950abb41781fdf71ab2aef54d8d35101502b066"
+  }
+}

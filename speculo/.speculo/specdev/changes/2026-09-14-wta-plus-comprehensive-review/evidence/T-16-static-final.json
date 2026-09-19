@@ -1,0 +1,76 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "tsc",
+      "--ignoreConfig",
+      "--noEmit",
+      "--strict",
+      "--skipLibCheck",
+      "--target",
+      "ES2023",
+      "--module",
+      "ESNext",
+      "--moduleResolution",
+      "Bundler",
+      "--types",
+      "node",
+      "e2e/workflow-task-integrity.spec.ts",
+      "playwright.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.99,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-static-final-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "e2e/workflow-task-integrity.spec.ts",
+      "playwright.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.3,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-static-final-2.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-workflow",
+      "--mode",
+      "classic"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.03,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-static-final-3.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-static-final-4.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-static-final-5.log"
+  }
+]

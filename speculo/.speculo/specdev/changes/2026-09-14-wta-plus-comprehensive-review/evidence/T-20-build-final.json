@@ -1,0 +1,13 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "build:prod"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 49.82,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-build-final-1.log"
+  }
+]

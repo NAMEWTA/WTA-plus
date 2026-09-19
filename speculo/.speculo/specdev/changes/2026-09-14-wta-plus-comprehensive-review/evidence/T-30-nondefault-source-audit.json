@@ -1,0 +1,174 @@
+{
+  "missing": [
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/ParamUnitTest.java",
+      "classes": [
+        "ParamUnitTest"
+      ],
+      "tags": [],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/DemoUnitTest.java",
+      "classes": [
+        "DemoUnitTest"
+      ],
+      "tags": [],
+      "disabled": true
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/AssertUnitTest.java",
+      "classes": [
+        "AssertUnitTest"
+      ],
+      "tags": [],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/third/logging/ThirdOutboundSysLogPersistenceTest.java",
+      "classes": [
+        "ThirdOutboundSysLogPersistenceTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/owner/demo/TestRichTextOssOwnerUnitTest.java",
+      "classes": [
+        "TestRichTextOssOwnerUnitTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/service/ThirdProviderServiceTest.java",
+      "classes": [
+        "ThirdProviderServiceTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/service/ThirdEndpointSecurityTest.java",
+      "classes": [
+        "ThirdEndpointSecurityTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/service/ThirdCredentialServiceTest.java",
+      "classes": [
+        "ThirdCredentialServiceTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/service/ThirdCredentialCryptoTest.java",
+      "classes": [
+        "ThirdCredentialCryptoTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/spi/ThirdProviderAdapterRegistryTest.java",
+      "classes": [
+        "ThirdProviderAdapterRegistryTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/http/ThirdHttpClientFactoryTest.java",
+      "classes": [
+        "ThirdHttpClientFactoryTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/controller/admin/ThirdAdminPermissionHttpTest.java",
+      "classes": [
+        "ThirdAdminPermissionHttpTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/adapter/observability/ThirdInvocationRecorderAdapterTest.java",
+      "classes": [
+        "ThirdInvocationRecorderAdapterTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/adapter/gateway/ThirdGatewayAdapterTest.java",
+      "classes": [
+        "ThirdGatewayAdapterTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/adapter/gateway/ThirdGatewayApplicationContextTest.java",
+      "classes": [
+        "ThirdGatewayApplicationContextTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-modules/wta-third/src/test/java/org/namewta/third/adapter/log/ThirdLogSanitizerAdapterTest.java",
+      "classes": [
+        "ThirdLogSanitizerAdapterTest"
+      ],
+      "tags": [
+        "local"
+      ],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-common/wta-common-push/src/test/java/org/namewta/common/push/controller/PushTicketControllerTest.java",
+      "classes": [
+        "PushTicketControllerTest"
+      ],
+      "tags": [],
+      "disabled": false
+    },
+    {
+      "path": "backend/wta-common/wta-common-core/src/test/java/org/namewta/common/core/validation/ValidationUtilsTest.java",
+      "classes": [
+        "ValidationUtilsTest"
+      ],
+      "tags": [],
+      "disabled": false
+    }
+  ]
+}

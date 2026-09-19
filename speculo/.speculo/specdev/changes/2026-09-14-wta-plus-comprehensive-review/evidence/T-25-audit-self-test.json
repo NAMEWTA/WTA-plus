@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/audit-t25-tree.py",
+    "--self-test"
+  ],
+  "exit_code": 0,
+  "log": "T-25-audit-self-test.log"
+}

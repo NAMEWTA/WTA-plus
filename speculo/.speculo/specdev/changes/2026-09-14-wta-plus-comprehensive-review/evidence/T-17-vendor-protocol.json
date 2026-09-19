@@ -1,0 +1,14 @@
+{
+  "jar": "/root/.m2/repository/org/dromara/warm/warm-flow-plugin-vue3-ui/1.8.9/warm-flow-plugin-vue3-ui-1.8.9.jar",
+  "sha256": "ae169477e580756b029bf97a844e0a3a488631cc8829d09732cf3d03eae8a5c8",
+  "closeMessages": [
+    {
+      "entry": "META-INF/resources/warm-flow-ui/js/index-BTmmNT3K.js",
+      "snippet": "lick\",()=>{a.value=null,r.$nextTick(()=>{s.value.handleClose()})})}function $e(){window.parent.postMessage({method:\"close\"},\"*\")}const he=async xe=>{xe===!0?o.value.zoom(!0):xe===!1?o.value.zoom(!1):xe===1?(o.value.zoom(1),o.value.translateCenter&&o.value"
+    },
+    {
+      "entry": "META-INF/resources/warm-flow-ui/js/index-BTmmNT3K.js",
+      "snippet": "eJson(u)}),id:r.value};Ivt(c).then(d=>{t.$modal.msgSuccess(\"保存成功\"),d.code===200&&window.parent.postMessage({method:\"close\"},\"*\")})}function l(){var s;r.value=(s=n.value)==null?void 0:s.id,r.value?bX(r.value).then(u=>{let c=u.data;c&&yt(()=>{c=JSON.parse(c"
+    }
+  ]
+}

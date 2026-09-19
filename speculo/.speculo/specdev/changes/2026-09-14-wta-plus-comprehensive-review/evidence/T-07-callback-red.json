@@ -1,0 +1,18 @@
+{
+  "captured_at": "2026-09-18T08:58:47.795064+00:00",
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-modules/wta-sso",
+    "-am",
+    "test",
+    "-Dtest=SsoAuthorizationServiceTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 1,
+  "log": "T-07-callback-red.log",
+  "log_redaction": "Owned OAuth query credentials omitted after capture; outcome and failure stack retained"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "command": [
+      "node",
+      "frontend/tooling/openapi/src/cli.mjs",
+      "fetch",
+      "--source",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26-openapi-input.json",
+      "--backend-commit",
+      "76dbbe84a34624234e379661a57b232529e34ed3",
+      "--backend-repository",
+      "NAMEWTA/WTA-plus working-tree-uncommitted",
+      "--runtime-endpoint",
+      "baseline-plus-compiled-Spring-MVC-mappings:T-26"
+    ],
+    "exit_code": 1,
+    "seconds": 0.33,
+    "log": "T-26-openapi-update-1.log"
+  }
+]

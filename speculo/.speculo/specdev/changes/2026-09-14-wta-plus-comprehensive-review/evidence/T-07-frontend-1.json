@@ -1,0 +1,157 @@
+{
+  "captured_at": "2026-09-18T09:07:43.690028+00:00",
+  "results": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/platform-auth",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-platform-auth-lint.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/platform-auth",
+        "typecheck"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-platform-auth-typecheck.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/platform-auth",
+        "test",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-platform-auth-test.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-sso-web-lint.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "typecheck"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-sso-web-typecheck.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "test",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-sso-web-test.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/admin-web",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-admin-web-lint.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/admin-web",
+        "typecheck"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 2,
+      "log": "T-07-admin-web-typecheck.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/admin-web",
+        "test",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-admin-web-test.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/home-web",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "log": "T-07-home-web-lint.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/home-web",
+        "typecheck"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 2,
+      "log": "T-07-home-web-typecheck.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/home-web",
+        "test",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 1,
+      "log": "T-07-home-web-test.log"
+    }
+  ]
+}

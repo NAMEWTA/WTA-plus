@@ -1,0 +1,17 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-notify",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 0.91,
+    "source_fingerprint": "42b3d52d0a6ff171c00f2193d3b05014a8c925f8fa85117ab62591eed9a2032b",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-stage-frontend-1.log"
+  }
+]

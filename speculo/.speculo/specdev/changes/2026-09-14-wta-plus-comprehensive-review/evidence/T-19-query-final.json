@@ -1,0 +1,18 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-system",
+      "exec",
+      "vitest",
+      "run",
+      "src/user/page-query.test.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 2.91,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-19-query-final-1.log"
+  }
+]

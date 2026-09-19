@@ -1,0 +1,29 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--workspace-concurrency=1",
+    "-r",
+    "--filter",
+    "@namewta/platform-contracts",
+    "--filter",
+    "@namewta/platform-http",
+    "--filter",
+    "@namewta/adapter-axios-browser",
+    "--filter",
+    "@namewta/domain-admin",
+    "--filter",
+    "@namewta/domain-system",
+    "--filter",
+    "@namewta/admin-web",
+    "--filter",
+    "@namewta/home-web",
+    "test",
+    "--maxWorkers=1",
+    "--no-file-parallelism"
+  ],
+  "cwd": "frontend",
+  "exit_code": 0,
+  "seconds": 14.31,
+  "output": "Scope: 7 of 35 workspace projects\n\n> @namewta/platform-contracts@0.0.0 test /srv/WTA-plus/frontend/packages/platform/contracts\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/contracts\n\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  22:13:55\n   Duration  177ms (transform 29ms, setup 0ms, import 41ms, tests 4ms, environment 0ms)\n\n\n> @namewta/platform-http@0.0.0 test /srv/WTA-plus/frontend/packages/platform/http\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/http\n\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  22:13:55\n   Duration  193ms (transform 30ms, setup 0ms, import 44ms, tests 4ms, environment 0ms)\n\n\n> @namewta/domain-admin@0.0.0 test /srv/WTA-plus/frontend/packages/domains/admin\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/admin\n\n\n Test Files  3 passed (3)\n      Tests  42 passed (42)\n   Start at  22:13:56\n   Duration  532ms (transform 94ms, setup 0ms, import 143ms, tests 32ms, environment 1ms)\n\n\n> @namewta/domain-system@0.0.0 test /srv/WTA-plus/frontend/packages/domains/system\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/system\n\n\n Test Files  10 passed (10)\n      Tests  70 passed (70)\n   Start at  22:13:57\n   Duration  1.74s (transform 181ms, setup 0ms, import 334ms, tests 68ms, environment 3ms)\n\n\n> @namewta/adapter-axios-browser@0.0.0 test /srv/WTA-plus/frontend/packages/adapters/axios-browser\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/adapters/axios-browser\n\n\n Test Files  2 passed (2)\n      Tests  20 passed (20)\n   Start at  22:13:59\n   Duration  550ms (transform 84ms, setup 0ms, import 238ms, tests 57ms, environment 1ms)\n\n\n> @namewta/admin-web@0.0.0 test /srv/WTA-plus/frontend/apps/admin-web\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web\n\n\n Test Files  14 passed (14)\n      Tests  65 passed (65)\n   Start at  22:14:01\n   Duration  5.93s (transform 2.06s, setup 0ms, import 3.48s, tests 713ms, environment 5ms)\n\n\n> @namewta/home-web@0.0.0 test /srv/WTA-plus/frontend/apps/home-web\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/home-web\n\n\n Test Files  4 passed (4)\n      Tests  4 passed (4)\n   Start at  22:14:08\n   Duration  567ms (transform 50ms, setup 0ms, import 92ms, tests 11ms, environment 1ms)\n\n"
+}

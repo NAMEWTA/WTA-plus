@@ -1,0 +1,61 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "exec",
+      "tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--strictNullChecks",
+      "false",
+      "--noImplicitAny",
+      "false",
+      "--strictFunctionTypes",
+      "false"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.18,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-consumer-types-actual-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-system",
+      "exec",
+      "tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--strictNullChecks",
+      "false",
+      "--noImplicitAny",
+      "false",
+      "--strictFunctionTypes",
+      "false"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.41,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-consumer-types-actual-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 10.52,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-consumer-types-actual-3.log"
+  }
+]

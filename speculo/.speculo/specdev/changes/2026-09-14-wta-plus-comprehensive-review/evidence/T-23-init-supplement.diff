@@ -1,0 +1,35 @@
+--- a/release-artifacts/scripts/init-mysql-container.sh
++++ b/release-artifacts/scripts/init-mysql-container.sh
+@@ -7,8 +7,8 @@
+ ENV_FILE="${RELEASE_ROOT}/.env"
+ SQL_DIR="${RELEASE_ROOT}/docker/infrastructure/mysql/init"
+ MYSQL_CONTAINER="namewta-data-mysql"
+-# The ordered 10/20/30/40/50/60 baseline currently creates 125 tables.
+-EXPECTED_TABLES=125
++# The ordered 10/20/30/40/50/60 baseline creates 126 application tables, including durable provider receipts.
++EXPECTED_TABLES=126
+ 
+ readonly SQL_FILES=(
+   "10-cde-base-ddl.sql"
+--- a/release-artifacts/tests/release-config.test.mjs
++++ b/release-artifacts/tests/release-config.test.mjs
+@@ -325,7 +325,7 @@
+ 
+   assert.match(script, /database.*== wta-plus/);
+   assert.match(script, /refusing existing database/);
+-  assert.match(script, /EXPECTED_TABLES=125/);
++  assert.match(script, /EXPECTED_TABLES=126/);
+   assert.match(script, /--default-character-set=utf8mb4/);
+   assert.match(script, /access_policy='0'/);
+   assert.match(script, /config_key='minio' THEN 'Y' ELSE 'N'/);
+--- a/release-artifacts/tests/release-integration-contract.test.mjs
++++ b/release-artifacts/tests/release-integration-contract.test.mjs
+@@ -71,7 +71,7 @@
+   assert.match(external, /init-mysql-container\.sh/);
+   assert.match(external, /namewta\.sql\.root/);
+   assert.match(external, /mysql:8\.4\.9/);
+-  assert.match(read('release-artifacts/scripts/init-mysql-container.sh'), /EXPECTED_TABLES=125/);
++  assert.match(read('release-artifacts/scripts/init-mysql-container.sh'), /EXPECTED_TABLES=126/);
+   assert.match(workflow, /release-contracts:/);
+   assert.match(workflow, /verify-release\.sh/);
+   assert.match(verifier, /tests\/\*\.test\.mjs/);

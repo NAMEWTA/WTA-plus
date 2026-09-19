@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-09-19T06:12:32.655440+00:00",
+  "status": "review",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "candidate": null,
+  "files": {
+    "backend/wta-admin/src/test/java/org/namewta/test/migration/adminruntime/AdminRuntimeCapabilityMySqlIntegrationTest.java": "2de2963abf3e7ae3613b8d085914af74f1bde18167f452c99a9582b1fb86834f",
+    "backend/wta-admin/src/test/java/org/namewta/test/migration/ossaccess/OssAccessMigrationMySqlIntegrationTest.java": "de201db58e879fcc0d8b09031743fcb91eb3133c3c7afbb89a490d33a7b3aedd",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java": "7c41ba9c72717b9290a067f77b7b986b13d18b2341f548faee6e155b0eb4e97f",
+    "backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaMySqlIntegrationTest.java": "33edddfceeb3315ca4094b0c08ab18eb4f48753b409da7bbedb4bbe544d0b026",
+    "backend/wta-admin/src/test/java/org/namewta/test/support/SqlBaselineScripts.java": "3610183696afcb2b1c7d450c1f193e76778ddae2041dac6a8658763f883cbbde",
+    "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java": "00375846d123cd4f3980f610987d029d2f8192b85b80070b6b4b6dbf293cd8d5"
+  },
+  "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+  "input_checkpoint": "T-30-input-pre-fixture-fix.json",
+  "verified_nonoverlapping_upstream": 648,
+  "overlapping_upstream": [
+    "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java"
+  ],
+  "cumulative_file_count": 654,
+  "diff": "T-30-owned.diff",
+  "coverage": "T-30-coverage-final.json"
+}

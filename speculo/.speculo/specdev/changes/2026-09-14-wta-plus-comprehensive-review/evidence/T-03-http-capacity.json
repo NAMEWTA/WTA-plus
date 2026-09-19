@@ -1,0 +1,27 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=RequestBodyHttpIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DargLine=-Xms128m -Xmx512m",
+    "-Dnamewta.body-probe.concurrency=8",
+    "-Dnamewta.body-probe.bytes=2097152",
+    "-Dnamewta.body-probe.report=/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-heap-gc.json"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-19T02:37:52.219664+00:00",
+  "exit_code": 0,
+  "counts": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-http-capacity.log"
+}

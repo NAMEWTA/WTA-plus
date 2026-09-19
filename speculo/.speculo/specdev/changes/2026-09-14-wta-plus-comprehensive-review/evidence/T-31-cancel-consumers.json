@@ -1,0 +1,56 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "--filter",
+      "@namewta/domain-profile",
+      "--filter",
+      "@namewta/web-domain-profile",
+      "--filter",
+      "@namewta/home-web",
+      "-r",
+      "lint"
+    ],
+    "exit_code": 0,
+    "seconds": 0.58,
+    "log": "T-31-cancel-consumers-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "--filter",
+      "@namewta/domain-profile",
+      "--filter",
+      "@namewta/web-domain-profile",
+      "--filter",
+      "@namewta/home-web",
+      "-r",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 7.58,
+    "log": "T-31-cancel-consumers-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "--filter",
+      "@namewta/domain-profile",
+      "--filter",
+      "@namewta/web-domain-profile",
+      "--filter",
+      "@namewta/home-web",
+      "-r",
+      "test"
+    ],
+    "exit_code": 0,
+    "seconds": 2.83,
+    "log": "T-31-cancel-consumers-3.log"
+  }
+]

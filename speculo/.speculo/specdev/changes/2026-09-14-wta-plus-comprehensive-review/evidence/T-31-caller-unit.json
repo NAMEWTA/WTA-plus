@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "wta-admin",
+      "-am",
+      "-Dtest=EnterpriseTransferServiceTest,EnterpriseTransferPersistenceTest,PersonRebindNotificationTest,CaptchaNotifyCallerUnitTest,NotifyTestSendServiceTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 19.06,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31-caller-unit-1.log",
+    "counts": {
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": [
+      "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest.xml",
+      "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyTestSendServiceTest.xml",
+      "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindNotificationTest.xml",
+      "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest.xml",
+      "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferPersistenceTest.xml"
+    ]
+  }
+]

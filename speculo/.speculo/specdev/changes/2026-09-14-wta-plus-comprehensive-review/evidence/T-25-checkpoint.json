@@ -1,0 +1,16 @@
+{
+  "captured_at": "2026-09-18T23:50:15.341523+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "candidate": null,
+  "files": {
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysDeptServiceImpl.java": "577602246c1309e5a02a2d88de4b3035ff4b3fe6a756ec4e531bdfb48d12af26",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/mapper/SysDeptMapper.java": "08a1a97420304cf38f8c951bab1224840fe2977ea0caeea5767d18e76c0740e8",
+    "backend/wta-modules/wta-system/src/main/resources/mapper/system/SysDeptMapper.xml": "9b4da9eac29f4bdfd6be2d0ae60a314813972565f8c54a5550600dad7ede4e1e",
+    "backend/wta-admin/src/test/java/org/namewta/test/department/DepartmentTreeMySqlIntegrationTest.java": "e3a4bf5c5fdff4f7687b43047c8dcf535e2410e175a9c24fff44ec5d01a43682"
+  },
+  "upstream_nonoverlap_count": 462,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": []
+}

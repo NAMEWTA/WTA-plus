@@ -1,0 +1,52 @@
+{
+  "captured_at": "2026-09-18T08:38:11.941486+00:00",
+  "cwd": "/srv/WTA-plus/frontend",
+  "results": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "test",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "exit_code": 0,
+      "log": "T-06-frontend-test.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "log": "T-06-frontend-typecheck.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "lint"
+      ],
+      "exit_code": 0,
+      "log": "T-06-frontend-lint.log"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "build:prod"
+      ],
+      "exit_code": 0,
+      "log": "T-06-frontend-build-prod.log"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/home-web",
+    "typecheck"
+  ],
+  "cwd": "frontend",
+  "exit_code": 0,
+  "seconds": 3.84
+}

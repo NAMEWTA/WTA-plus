@@ -1,0 +1,27 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "test:e2e",
+    "--config",
+    "/srv/WTA-plus/temp/team/lead/t17-e2e-gmkuu5fm/playwright.config.mjs",
+    "--workers=1",
+    "e2e/workflow-definition.spec.ts",
+    "--max-failures=1"
+  ],
+  "cwd": "frontend",
+  "exit_code": 1,
+  "seconds": 46.23,
+  "config": "import base from \"/srv/WTA-plus/frontend/playwright.config.ts\";\nexport default { ...base, testDir: \"/srv/WTA-plus/frontend/e2e\",\noutputDir: \"/srv/WTA-plus/frontend/tests/e2e/reports/t17-regression\",\nworkers: 1, retries: 0, reporter: \"line\",\nprojects: base.projects.map(project => ({ ...project, use: { ...project.use, channel: \"chrome\" } })),\nwebServer: { ...base.webServer, command: \"corepack pnpm --filter @namewta/admin-web preview\", reuseExistingServer: false, cwd: \"/srv/WTA-plus/frontend\" } };\n",
+  "build_env": {
+    "VITE_APP_CONTEXT_PATH": "/",
+    "VITE_APP_BASE_API": "/prod-api",
+    "VITE_APP_MESSAGE_ENABLED": "true",
+    "VITE_APP_NACOS_ADMIN": "/nacos/",
+    "VITE_APP_MONITOR_ADMIN": "/applications",
+    "VITE_APP_PROXY_TARGET": "http://127.0.0.1:38751"
+  },
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-17-designer-browser-visible.log",
+  "owned_config_cleanup": true,
+  "owned_preview_closed": true
+}

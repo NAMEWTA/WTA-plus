@@ -1,0 +1,6 @@
+{
+  "exit_code": 0,
+  "tests": 0,
+  "valid_evidence": false,
+  "reason": "Test edit used wrong relative cwd and did not run; Maven selector matched zero tests. Corrected with apply_patch before actual red run."
+}

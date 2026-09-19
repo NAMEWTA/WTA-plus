@@ -1,0 +1,279 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.registration.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.registration.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/registration-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "recoverable-registration.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "recoverable-registration.spec.ts",
+      "file": "recoverable-registration.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T-13 disabled registration hides public entries and denies direct page submission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-1cb896d560ee4054021d",
+          "file": "recoverable-registration.spec.ts",
+          "line": 48,
+          "column": 1
+        },
+        {
+          "title": "T-13 failed context hides entries and direct registration can retry without reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-245f14f0b3e1af9d0c49",
+          "file": "recoverable-registration.spec.ts",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "T-13 home registration remains disabled until the captcha response is applied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-ed16573d9652ac49b2ab",
+          "file": "recoverable-registration.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "T-13 admin registration remains disabled until the captcha response is applied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-c46cbe750f5413c15c83",
+          "file": "recoverable-registration.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "T-13 Admin login remains disabled until the captcha response is applied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-e6657b656d055153cdb1",
+          "file": "recoverable-registration.spec.ts",
+          "line": 82,
+          "column": 1
+        },
+        {
+          "title": "T-13 keyboard refresh keeps the latest uuid and rejected registration can recover",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-1a71339400c3beaca533",
+          "file": "recoverable-registration.spec.ts",
+          "line": 92,
+          "column": 3
+        },
+        {
+          "title": "T-13 keyboard refresh keeps the latest uuid and network registration can recover",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-14d3ee4adfefeaa3af77",
+          "file": "recoverable-registration.spec.ts",
+          "line": 92,
+          "column": 3
+        },
+        {
+          "title": "T-13 captcha network failure stays disabled and keyboard refresh recovers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-4ec6f597edca7c1bdfaf",
+          "file": "recoverable-registration.spec.ts",
+          "line": 126,
+          "column": 1
+        },
+        {
+          "title": "T-13 registration rejection rechecks a Client that has closed registration",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-e4127cbfb6a58994037e",
+          "file": "recoverable-registration.spec.ts",
+          "line": 145,
+          "column": 1
+        },
+        {
+          "title": "T-13 repeated submit sends once and cancelling ignores its late completion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2fbe477f0e3517896d3d-4c187e54b7b78c016337",
+          "file": "recoverable-registration.spec.ts",
+          "line": 158,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T01:54:57.042Z",
+    "duration": 32.59699999999998,
+    "expected": 0,
+    "skipped": 10,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

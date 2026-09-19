@@ -1,0 +1,24 @@
+{
+  "command": [
+    "./mvnw",
+    "clean",
+    "package",
+    "-Pbundle-core",
+    "-Dmaven.test.skip=true"
+  ],
+  "cwd": "backend",
+  "exit_code": 0,
+  "per_command_network_options": "-Daether.connector.requestTimeout=60000 -Daether.connector.connectTimeout=10000 -Daether.connector.basic.threads=1 -Dmaven.artifact.threads=1",
+  "started_at": "2026-09-18T11:46:30.974384+00:00",
+  "seconds": 40.14,
+  "input_sources_sha256": "a7bd1a8a03dddb99017ee69d0ca4ce051e8d2b1b6e16eae8fecc366eab6cef07",
+  "output_sources_sha256": "a7bd1a8a03dddb99017ee69d0ca4ce051e8d2b1b6e16eae8fecc366eab6cef07",
+  "sources_unchanged": true,
+  "totals": {
+    "tests": 0,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "reports": []
+}

@@ -1,0 +1,239 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.profile.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.profile.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 1,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/profile-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "profile-self-materials.spec.ts"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "profile-self-materials.spec.ts",
+      "file": "profile-self-materials.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "个人双面材料：缺项门禁、私有预览、刷新恢复和真实提交",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-4b82f7534554e3578df0",
+          "file": "profile-self-materials.spec.ts",
+          "line": 70,
+          "column": 1
+        },
+        {
+          "title": "企业真实提交，经办人是法定代表人",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-c5b4239ebb52a4083318",
+          "file": "profile-self-materials.spec.ts",
+          "line": 92,
+          "column": 36
+        },
+        {
+          "title": "企业真实提交，经办人不是法定代表人",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-87b2c3d1ea348a7dad89",
+          "file": "profile-self-materials.spec.ts",
+          "line": 92,
+          "column": 36
+        },
+        {
+          "title": "本人上传材料不能被另一账号读取、挂载或移除；缺权限直接请求被拒绝",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-79becfe95c7c4a69bf43",
+          "file": "profile-self-materials.spec.ts",
+          "line": 106,
+          "column": 1
+        },
+        {
+          "title": "直传网络失败与取消均不登记材料，草稿保留且可重新上传",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-54423cd43d4c4b586e64",
+          "file": "profile-self-materials.spec.ts",
+          "line": 143,
+          "column": 1
+        },
+        {
+          "title": "登记响应丢失先查询恢复，替换保留旧件至新件登记，移除仅解除引用",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-65b2815b0bd4ee2b2ce7",
+          "file": "profile-self-materials.spec.ts",
+          "line": 169,
+          "column": 1
+        },
+        {
+          "title": "真实 Redis 票据过期拒绝 complete，刷新草稿并换新票据可恢复",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-b939614c9fdd973afd20",
+          "file": "profile-self-materials.spec.ts",
+          "line": 222,
+          "column": 1
+        },
+        {
+          "title": "提交末端故障回滚申请、不可变快照和 OSS 引用，刷新后可重试",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c1d9b2024aa9cb18743b-7f9b778666215f7881ff",
+          "file": "profile-self-materials.spec.ts",
+          "line": 240,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T01:55:31.163Z",
+    "duration": 38.25200000000001,
+    "expected": 0,
+    "skipped": 8,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

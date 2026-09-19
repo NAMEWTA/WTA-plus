@@ -1,0 +1,83 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "--filter",
+      "@namewta/adapter-oss-upload-browser",
+      "--filter",
+      "@namewta/web-kit-file-upload",
+      "--filter",
+      "@namewta/web-domain-system",
+      "--filter",
+      "@namewta/web-domain-workflow",
+      "--filter",
+      "@namewta/domain-workflow",
+      "--filter",
+      "@namewta/admin-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 24.09,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-18-focused-fourth-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "--filter",
+      "@namewta/adapter-oss-upload-browser",
+      "--filter",
+      "@namewta/web-kit-file-upload",
+      "--filter",
+      "@namewta/web-domain-system",
+      "--filter",
+      "@namewta/web-domain-workflow",
+      "--filter",
+      "@namewta/domain-workflow",
+      "--filter",
+      "@namewta/admin-web",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 9.31,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-18-focused-fourth-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "--filter",
+      "@namewta/adapter-oss-upload-browser",
+      "--filter",
+      "@namewta/web-kit-file-upload",
+      "--filter",
+      "@namewta/web-domain-system",
+      "--filter",
+      "@namewta/web-domain-workflow",
+      "--filter",
+      "@namewta/domain-workflow",
+      "--filter",
+      "@namewta/admin-web",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.25,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-18-focused-fourth-3.log"
+  }
+]

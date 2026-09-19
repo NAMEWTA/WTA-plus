@@ -1,0 +1,148 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 11.87
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.62
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 3.84
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.45
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/sso-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 2.05
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/sso-web",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.43
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "build:dev"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 55.75,
+    "apps": {
+      "admin-web": {
+        "marker": {
+          "app": "admin-web",
+          "mode": "development"
+        },
+        "app_build_invocations": 1,
+        "index_sha256": "35e88a77b2673ffb044d4956906d89d7f77494175be91755c172fa2b375b8bcc"
+      },
+      "home-web": {
+        "marker": {
+          "app": "home-web",
+          "mode": "development"
+        },
+        "app_build_invocations": 1,
+        "index_sha256": "dbd11a89ba654d10e4f54d92f22ebcef80a758a22707b47bb37cbcb632c27003"
+      },
+      "sso-web": {
+        "marker": {
+          "app": "sso-web",
+          "mode": "development"
+        },
+        "app_build_invocations": 1,
+        "index_sha256": "d14d65af498aefcb17d5bb9f12f9af1058b502b5660c76c6c0535f4f47603ea6"
+      }
+    },
+    "mode_matches_once": true
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "build:prod"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 55.9,
+    "apps": {
+      "admin-web": {
+        "marker": {
+          "app": "admin-web",
+          "mode": "production"
+        },
+        "app_build_invocations": 1,
+        "index_sha256": "4f2cf0054f1ab8d73474faf1d8d0356eb50408134dd17154fb4bf9cd856c17ef"
+      },
+      "home-web": {
+        "marker": {
+          "app": "home-web",
+          "mode": "production"
+        },
+        "app_build_invocations": 1,
+        "index_sha256": "2029217e7341bb14d8130c4443241ad45535701592266b3099184e022f619467"
+      },
+      "sso-web": {
+        "marker": {
+          "app": "sso-web",
+          "mode": "production"
+        },
+        "app_build_invocations": 1,
+        "index_sha256": "d14d65af498aefcb17d5bb9f12f9af1058b502b5660c76c6c0535f4f47603ea6"
+      }
+    },
+    "mode_matches_once": true
+  }
+]

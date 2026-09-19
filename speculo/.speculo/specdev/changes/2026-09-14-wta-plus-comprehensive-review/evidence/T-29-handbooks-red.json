@@ -1,0 +1,9 @@
+{
+  "command": [
+    "node",
+    "scripts/ci/verify-agent-handbooks.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "exit_code": 1,
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-handbooks-red.log"
+}

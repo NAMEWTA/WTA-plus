@@ -1,0 +1,974 @@
+{
+  "captured_at": "2026-09-19T04:59:54.610206+00:00",
+  "status": "acceptance-input-ready",
+  "acceptance_status": "in-progress",
+  "source_fingerprint": "1dff1a345e1979d809bb547f3060645d86b4508f3df3aad5fd227de53ab2c504",
+  "upstream_paths_verified": 649,
+  "source_paths": 3576,
+  "ticket_statuses": {
+    "T-01": "review",
+    "T-02": "review",
+    "T-03": "review",
+    "T-04": "review",
+    "T-05": "review",
+    "T-06": "review",
+    "T-07": "review",
+    "T-08": "review",
+    "T-09": "review",
+    "T-10": "review",
+    "T-11": "review",
+    "T-12": "review",
+    "T-13": "review",
+    "T-14": "review",
+    "T-15": "review",
+    "T-16": "review",
+    "T-17": "review",
+    "T-18": "review",
+    "T-19": "review",
+    "T-20": "review",
+    "T-21": "review",
+    "T-22": "review",
+    "T-23": "review",
+    "T-24": "review",
+    "T-25": "review",
+    "T-26": "review",
+    "T-27": "review",
+    "T-28": "review",
+    "T-29": "review",
+    "T-30": "in_progress",
+    "T-31": "review"
+  },
+  "blockers": [
+    "All implementation commits held; direct-parent/result/release candidate incomplete"
+  ],
+  "existing_ci_external_classes": [
+    "RedisNotifyIdempotencyStoreIntegrationTest",
+    "RedisOssUploadTicketStoreIntegrationTest",
+    "NotifyMonitorMySqlIntegrationTest",
+    "MinioOssClientIntegrationTest",
+    "BusinessMenuRetirementMySqlIntegrationTest",
+    "ThirdSchemaMySqlIntegrationTest",
+    "ThirdRedisIntegrationTest"
+  ],
+  "test_source_property_inventory": [
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/authorization/session/AuthorizationSessionRedisIntegrationTest.java",
+      "sha256": "3dd026352c185ee2da3ca41e8b2d294fcfa156c8a0a01f9c1fe2cfa9d6b71c44",
+      "properties": [
+        "java.class.path",
+        "java.home"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/cache/invalidation/ClusterCacheInvalidationRedisIntegrationTest.java",
+      "sha256": "09d6ef96efb439930127118ad6f3aac37a4ee205bb9e5f43295cdfcc6f966598",
+      "properties": [
+        "java.class.path",
+        "java.home"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudHttpDispatchIntegrationTest.java",
+      "sha256": "2bc7559c487db382cc4dd42cce522133273d33a1e4eb0c310509d72987fef738",
+      "properties": [
+        "crud.http.output"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudHttpMappingContractTest.java",
+      "sha256": "73a1c336833543de6fb4078a16c9f97acb23e9ca85561598000c5abf6f08ff43",
+      "properties": [
+        "crud.mapping.output"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudMySqlHttpIntegrationTest.java",
+      "sha256": "f6f82958d03dceb254ed5f825ec12962e9c8b6ed29d1887db914c91e50bd5f3d",
+      "properties": [
+        "crud.mysql.integration",
+        "crud.mysql.integration.url",
+        "crud.mysql.output",
+        "crud.redis.integration.port"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/contracts/DemoTreeMySqlIntegrationTest.java",
+      "sha256": "3b049a86064bd25be1ede0b430670b6cf3e1414cd1fd2c3864af7f1c1681696b",
+      "properties": [
+        "demo.tree.mysql.integration",
+        "demo.tree.mysql.integration.url"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/department/DepartmentTreeMySqlIntegrationTest.java",
+      "sha256": "e3a4bf5c5fdff4f7687b43047c8dcf535e2410e175a9c24fff44ec5d01a43682",
+      "properties": [
+        "department.mysql.integration",
+        "department.mysql.integration.url"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java",
+      "sha256": "bc563517583fce576b86c33062c6d5766292e59708ef4dfac0cf3a04e7813a2d",
+      "properties": [
+        "log.mysql.integration.password",
+        "log.mysql.integration.url",
+        "log.mysql.integration.username"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/BusinessMenuRetirementMySqlIntegrationTest.java",
+      "sha256": "6d9d2f411f5a96485e60ac14762d58aa66bf7e5a5b4e7d82bb963c87b757fb94",
+      "properties": [
+        "notify.mysql.integration.password",
+        "notify.mysql.integration.url",
+        "notify.mysql.integration.username"
+      ],
+      "selected_by_existing_external_script": true
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/adminruntime/AdminRuntimeCapabilityMySqlIntegrationTest.java",
+      "sha256": "dcb2b1de8c208b24789890de752e4f00d3cceb2c7455823c8d9c479aef289f57",
+      "properties": [
+        "admin.runtime.mysql.integration.password",
+        "admin.runtime.mysql.integration.url",
+        "admin.runtime.mysql.integration.username"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/ossaccess/OssAccessMigrationMySqlIntegrationTest.java",
+      "sha256": "f278709b251f543fc8552d198916a130b7a6484a5237d5870fb2e51a1d562cb5",
+      "properties": [
+        "oss.access.migration.mysql.integration.password",
+        "oss.access.migration.mysql.integration.url",
+        "oss.access.migration.mysql.integration.username"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/password/PasswordMigrationMySqlIntegrationTest.java",
+      "sha256": "69f47eea3cc5daf5b0b96cd030196c44918bd4874fc06c6591253d990f8aefa1",
+      "properties": [
+        "password.migration.mysql.integration.password",
+        "password.migration.mysql.integration.url",
+        "password.migration.mysql.integration.username"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/EnterpriseQueuedNotificationIntegrationTest.java",
+      "sha256": "09eda13c8caae6166ba12ef595f306bd7cc51623d5c2f73636ae4629b3e9e06f",
+      "properties": [
+        "profile.notify.integration"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotificationModeOpenApiTest.java",
+      "sha256": "49feb179aacf8b707dacdf75cc4cd551617943f958593dc2c8f087077ef58f24",
+      "properties": [
+        "notify.openapi.mode.output"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+      "sha256": "70b40554165dbbd371ada85ca5e1320674334a27f2a1d92ada786fb392d45354",
+      "properties": [
+        "java.class.path",
+        "java.home",
+        "notify.atomic.integration",
+        "notify.mysql.integration.url",
+        "notify.redis.integration.port"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyWakeIntegrationTest.java",
+      "sha256": "159dc82f58a71e009ef18e0c1581338fb9e790cf2568aeacf808d374686149aa",
+      "properties": [
+        "notify.redis.integration.port",
+        "notify.wake.integration"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/NotifyCallerMigrationContractUnitTest.java",
+      "sha256": "c05328f3f34b749bc90e9ef44f3d1d3cbaed61dead03fae2f5219ba189885a4c",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/monitor/NotifyMonitorMySqlIntegrationTest.java",
+      "sha256": "5431fee9d75e50809ef0770aec8b9433ec53bd7a6897cade2d12398dc0b91eee",
+      "properties": [
+        "notify.mysql.integration.password",
+        "notify.mysql.integration.url",
+        "notify.mysql.integration.username"
+      ],
+      "selected_by_existing_external_script": true
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/openapi/invalidation/IdentityOpenApiSessionInvalidationTest.java",
+      "sha256": "59f69d369fac86011ec62c88680c7f5c51765e7327526e745a7a7ace62a51bc3",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/openapi/invalidation/RbacOpenApiSessionInvalidationTest.java",
+      "sha256": "8a38b789e44fe3d454f96504834c91e6cac9e4ce3f6bae2c6d182ed68e49a8ea",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/access/OssAccessUrlArchitectureUnitTest.java",
+      "sha256": "c6eced0c7431ee24cac038d8ca0e28283280eca9e9d6fd8deaa2bd4225436a96",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/access/OssAccessUrlMinioIntegrationTest.java",
+      "sha256": "702e2f3ce348edc7278f938fda121d299402a046ccce060418141d11e0b1433b",
+      "properties": [
+        "oss.minio.integration.access-key",
+        "oss.minio.integration.endpoint",
+        "oss.minio.integration.secret-key"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/client/MinioOssClientIntegrationTest.java",
+      "sha256": "1cda6acdd1554721be989d7f3931f73a225626eb8dd88a0f22145682c90b4dc0",
+      "properties": [
+        "oss.minio.integration.access-key",
+        "oss.minio.integration.endpoint",
+        "oss.minio.integration.secret-key"
+      ],
+      "selected_by_existing_external_script": true
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/lifecycle/OssLifecycleContractUnitTest.java",
+      "sha256": "da1ade6c40d4738e33593c555bb69c577afddeb6f1bde0118558b2de064a31fe",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java",
+      "sha256": "2d42aaec31d899da9e980688f8c9da9a3c9684167df506d166f42634f96030aa",
+      "properties": [
+        "oss.migration.mysql.integration.password",
+        "oss.migration.mysql.integration.url",
+        "oss.migration.mysql.integration.username",
+        "oss.minio.integration.access-key",
+        "oss.minio.integration.endpoint",
+        "oss.minio.integration.secret-key"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/owner/BusinessOssOwnerArchitectureUnitTest.java",
+      "sha256": "cfc7506be8566e456983df2f041bd6ead2fb40629a2a65b6a66e3b2d71141c67",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/readiness/OssStorageReadinessArchitectureUnitTest.java",
+      "sha256": "9c44014c382dbfdc4ace86733e627b53a721ff1d11de0fcf430830e26bc9da1f",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/readiness/OssStorageReadinessMinioIntegrationTest.java",
+      "sha256": "a6962eb3b6522427c33ef2a966ef87a390c734e97f6eaba4cce17014777ad467",
+      "properties": [
+        "oss.minio.integration.access-key",
+        "oss.minio.integration.endpoint",
+        "oss.minio.integration.secret-key"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/BrowserUploadLifecycleIntegrationTest.java",
+      "sha256": "8c86842dc29b6800a5a0e7ea2fdbfaaa782a6182cd9a02600d3b4e8ac6697bee",
+      "properties": [
+        "browser.upload.integration",
+        "namewta.repo.root",
+        "oss.minio.integration.access-key",
+        "oss.minio.integration.endpoint",
+        "oss.minio.integration.secret-key"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/OssUploadStorageRoutingMinioIntegrationTest.java",
+      "sha256": "7b111859b829a89f29608ed798296166b0b5f84e59d6f1b8eebd4ba7e4706fe4",
+      "properties": [
+        "oss.minio.integration.access-key",
+        "oss.minio.integration.endpoint",
+        "oss.minio.integration.secret-key"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/password/policy/PasswordPolicyRedisIntegrationTest.java",
+      "sha256": "cb51a09378b76fe09a7fe11da083bd21f955880c3544a4b5270a83cd7844012f",
+      "properties": [
+        "java.class.path",
+        "java.home"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java",
+      "sha256": "bb9ef910ebbdb50b9569089aea46a5309693a65adecfb0770ed97c4012e4bab4",
+      "properties": [
+        "browser.profile.integration",
+        "namewta.repo.root",
+        "oss.minio.integration.endpoint",
+        "profile.mysql.integration.url",
+        "profile.redis.integration.port"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaContractTest.java",
+      "sha256": "523789c4eddfc05fe00521b7f32dc20b3d15c90fde4e294a1bbd5932ce92b621",
+      "properties": [
+        "profile.schema.sql.root",
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaMySqlIntegrationTest.java",
+      "sha256": "def0cef8fdbb754f7866d7ce0aa76895b12dc969ffb3b84fe210291158d3500e",
+      "properties": [
+        "profile.schema.mysql.integration.password",
+        "profile.schema.mysql.integration.url",
+        "profile.schema.mysql.integration.username",
+        "profile.schema.sql.root",
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/requestbody/RequestBodyHttpIntegrationTest.java",
+      "sha256": "0c1ce9850fb5460aaa720a43e5d1f8b7a264ff2115df66cca7ea42684d14c33d",
+      "properties": [
+        "java.version",
+        "namewta.body-probe.report"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "sha256": "b54dc3e73e48313fcef0c2bb7f8f2747742c3c55bd8de8dbf5ca9c27ad889b1b",
+      "properties": [
+        "namewta.repo.root"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java",
+      "sha256": "3e89275910518a5df86049df49fe0d585879a79b9eda4f3cc69e8e5324f8e634",
+      "properties": [
+        "namewta.repo.root"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java",
+      "sha256": "ac25db25d64e56d388b7fd87ae0135515481b2f67db1b31f8df5cea038d46e08",
+      "properties": [
+        "namewta.repo.root",
+        "sso.mysql.integration.url",
+        "sso.release.admin.origin",
+        "sso.release.backend.host",
+        "sso.release.home.origin",
+        "sso.release.sso.origin"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/support/SqlBaselinePaths.java",
+      "sha256": "ddfd399cbc6d561bc86d84eaf4f95b1e3ae6e71c7741e28667c179431cfbc1c0",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/third/ThirdLimitConfigurationIntegrationTest.java",
+      "sha256": "79053cfbba344983a1402d2949fa9e04cc6ee0f051334e2fe4fb0bdc15c007a8",
+      "properties": [
+        "third.configuration.integration",
+        "third.mysql.integration.url",
+        "third.redis.integration.port"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/third/ThirdResilienceRecoveryIntegrationTest.java",
+      "sha256": "4cd9db3c5a5da5270346ea04216b47494b6be76325da68689286f82548009713",
+      "properties": [
+        "java.class.path",
+        "java.home",
+        "surefire.test.class.path",
+        "third.redis.integration.container",
+        "third.redis.integration.port"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/third/logging/ThirdOutboundSysLogPersistenceTest.java",
+      "sha256": "49a740058fbb6f61cf71c9748d7eb66de5e513eb31750bf51e400e8815f14c35",
+      "properties": [
+        "java.class.path",
+        "java.home",
+        "path.separator"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/workflow/WorkflowTaskEngineIntegrationTest.java",
+      "sha256": "bc459cc218e71eed41982ca52ad2e9ff0c62a03fa9decdfe67d592c5c97ecf32",
+      "properties": [
+        "profile.redis.integration.port",
+        "workflow.engine.integration",
+        "workflow.mysql.integration.url"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/NotifyOutboxWakeScopeGateTest.java",
+      "sha256": "d7d4006b836cd8227ef7c8cc1af7e032aacbe068f8a34cfeb8f57a615940e75f",
+      "properties": [
+        "user.dir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/architecture/EnterpriseModuleArchitectureTest.java",
+      "sha256": "29659810632f76b7598156b0a8ec80b7aad1a508b2d43dcdc9991e52cf0b51bc",
+      "properties": [
+        "basedir"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/architecture/ExplicitProfileIdentityContractTest.java",
+      "sha256": "aefcb531ef0aeb578ad2d085464a82dba2905c62a0979d563cb59a2c1604c650",
+      "properties": [
+        "java.class.path"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/architecture/ExplicitProfileIdentityContractTest.java",
+      "sha256": "efd8fc77dcbd0a4fbcfc3d4ebe9f1a2283de7caf93f88b44df290a3100b1d4d6",
+      "properties": [
+        "java.class.path"
+      ],
+      "selected_by_existing_external_script": false
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/architecture/PersonModuleArchitectureTest.java",
+      "sha256": "946cedd5a2f195e158fde12b99e9f49dfb168ded56852035ae3a36650a54a505",
+      "properties": [
+        "basedir"
+      ],
+      "selected_by_existing_external_script": false
+    }
+  ],
+  "browser_discovery": [
+    {
+      "config": "frontend/playwright.config.ts",
+      "config_sha256": "d973219abb252970cff3c5b52741443ac91b6f3c1ad174c703a9f5e6fdf8794e",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 54,
+      "files": [
+        "frontend/e2e/ai-domain.spec.ts",
+        "frontend/e2e/app-runtime-baseline.spec.ts",
+        "frontend/e2e/client-auth-context.spec.ts",
+        "frontend/e2e/demo-manifest.spec.ts",
+        "frontend/e2e/nacos-console.spec.ts",
+        "frontend/e2e/operations-domain.spec.ts",
+        "frontend/e2e/oss-config-access-policy.spec.ts",
+        "frontend/e2e/profile-management.spec.ts",
+        "frontend/e2e/system-identity.spec.ts",
+        "frontend/e2e/system-resources.spec.ts",
+        "frontend/e2e/third-party-management.spec.ts",
+        "frontend/e2e/workflow-definition.spec.ts",
+        "frontend/e2e/workflow-runtime.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-1.json"
+    },
+    {
+      "config": "frontend/playwright.accessibility.config.ts",
+      "config_sha256": "e5e1e8c6e920f15973a594b2faf066c86714e3fe1bcf7b2dfd4d7cca713b25bd",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.accessibility.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 29,
+      "files": [
+        "frontend/e2e/public-accessibility.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-2.json"
+    },
+    {
+      "config": "frontend/playwright.lifecycle.config.ts",
+      "config_sha256": "48a7d04dac925735f8e75b218a52afc99d7ac9f1ee8db1ee1cfc22682d387c28",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.lifecycle.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 20,
+      "files": [
+        "frontend/e2e/session-navigation-lifecycle.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-3.json"
+    },
+    {
+      "config": "frontend/playwright.profile.config.ts",
+      "config_sha256": "19dfe3e86577723599c178034c63052dc75acc685e98d2812e32e584c48478e6",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.profile.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 8,
+      "files": [
+        "frontend/e2e/profile-self-materials.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-4.json"
+    },
+    {
+      "config": "frontend/playwright.registration.config.ts",
+      "config_sha256": "5409a06eb20d44a28ec31308d03a12f0c5672cb24e9fdb202c916cf1fd64103f",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.registration.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 10,
+      "files": [
+        "frontend/e2e/recoverable-registration.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-5.json"
+    },
+    {
+      "config": "frontend/playwright.sso.config.ts",
+      "config_sha256": "88e30bfe7ae3787358c2a88fc0302ae0f3aca5f8e78ec32fd1190f8e165111e1",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.sso.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 19,
+      "files": [
+        "frontend/e2e/sso-admin-config.spec.ts",
+        "frontend/e2e/sso-callback-journey.spec.ts",
+        "frontend/e2e/sso-release-origin.spec.ts",
+        "frontend/e2e/sso-three-gates.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-6.json"
+    },
+    {
+      "config": "frontend/playwright.transfer.config.ts",
+      "config_sha256": "0d4914ebb74560e080bb3023f567d97c940a02d10ebe6d4808d85ba0b72f893e",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.transfer.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 5,
+      "files": [
+        "frontend/e2e/enterprise-transfer-queue.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-7.json"
+    },
+    {
+      "config": "frontend/playwright.transport.config.ts",
+      "config_sha256": "ee1566391c34d3d0bfb0568bc325b2bb18677869401666921145a109696d05a2",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.transport.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 6,
+      "files": [
+        "frontend/e2e/browser-https-transport.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-8.json"
+    },
+    {
+      "config": "frontend/playwright.upload.config.ts",
+      "config_sha256": "00019cfd100702bd6a842c4049a3dc4fadb6fde79234f64e5f6a07fecf1cf593",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "playwright.upload.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 10,
+      "files": [
+        "frontend/e2e/upload-import-lifecycle.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-9.json"
+    },
+    {
+      "config": "frontend/apps/sso-web/playwright.security.config.ts",
+      "config_sha256": "6cc90a64f65c38b20f097b9d0ce567c61ce40a31eb6c154cf9bfe4d94e6b2556",
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "apps/sso-web/playwright.security.config.ts",
+        "--list",
+        "--workers=1",
+        "--reporter=json"
+      ],
+      "cwd": "frontend",
+      "discovered_tests": 2,
+      "files": [
+        "frontend/apps/sso-web/e2e/session-security.spec.ts"
+      ],
+      "tests_executed": 0,
+      "status": "discovery-only",
+      "discovery_report": "T-30-current-discovery-10.json"
+    }
+  ],
+  "browser_specs_without_persistent_config": [
+    "frontend/e2e/workflow-task-integrity.spec.ts"
+  ],
+  "remaining_browser_entrypoints": [
+    {
+      "spec": "frontend/e2e/workflow-task-integrity.spec.ts",
+      "driver": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/run-t16-dialog-browser.py",
+      "status": "not-run; driver creates an isolated temporary Playwright config"
+    }
+  ],
+  "serial_core_commands": [
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "architecture:check"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "architecture:test"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "lint"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "typecheck"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "test"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "build:dev"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "build:prod"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/tooling-openapi",
+        "openapi:check"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "frontend",
+      "command": [
+        "corepack",
+        "pnpm",
+        "test:e2e",
+        "--workers=1"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "backend",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "test"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "backend",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "package",
+        "-DskipTests"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": ".",
+      "command": [
+        "bash",
+        "scripts/ci/verify-admin-bundle.sh",
+        "full"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": "backend",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "package",
+        "-Pbundle-core",
+        "-Dmaven.test.skip=true"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": ".",
+      "command": [
+        "bash",
+        "scripts/ci/verify-admin-bundle.sh",
+        "core"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": ".",
+      "command": [
+        "bash",
+        "release-artifacts/scripts/verify-release.sh"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": ".",
+      "command": [
+        "bash",
+        "scripts/ci/run-external-services.sh"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": ".",
+      "command": [
+        "node",
+        "scripts/ci/verify-agent-handbooks.mjs"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    },
+    {
+      "cwd": ".",
+      "command": [
+        "node",
+        "--test",
+        "scripts/ci/verify-agent-handbooks.test.mjs"
+      ],
+      "status": "not-run",
+      "exit_code": null
+    }
+  ],
+  "acceptance_requirements": [
+    "Verify unchanged source fingerprint before/after each gate; stop on drift",
+    "One command/service fixture at a time; no subagents/worktrees",
+    "Default Maven skips are not real-service evidence; each required class must have one fresh nonzero zero-skip report",
+    "Build and verify full JAR before core clean; retain both verified artifact hashes",
+    "SSO/Profile/upload/browser tests need owned real fixtures; discovery placeholder origins are never runtime inputs",
+    "Do not rerun historical drivers into old evidence names; adapt output paths and cleanup first",
+    "Capture only safe diagnostics; no credentials/raw signed bodies in evidence",
+    "Only owned containers/ports/files may be removed; resource inventory restored",
+    "Not-run/blocked/skipped required checks never become passed"
+  ]
+}

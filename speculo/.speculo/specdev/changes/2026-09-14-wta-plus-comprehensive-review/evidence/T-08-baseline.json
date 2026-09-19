@@ -1,0 +1,18 @@
+{
+  "source": "current files; read-only inspection",
+  "apps": [
+    "admin-web",
+    "home-web",
+    "sso-web"
+  ],
+  "registryExists": false,
+  "composeAppServices": [
+    "namewta-nginx-admin-web",
+    "namewta-nginx-home-web"
+  ],
+  "ssoTemplateExists": false,
+  "ssoPrefixRegistered": false,
+  "ssoPortRegistered": false,
+  "ssoApiContract": "frontend/apps/sso-web/src/ssoApi.ts: VITE_SSO_API + /sso/*; generic env-api cannot configure it",
+  "releaseStateSha256": "f5c8a9a0d8bafcba48dbeedb41dfebc9a3eaf7cc38be191edbe1cc5f1d3928a2"
+}

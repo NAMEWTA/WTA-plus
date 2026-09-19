@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "tsc",
+      "--ignoreConfig",
+      "--noEmit",
+      "--strict",
+      "--skipLibCheck",
+      "--target",
+      "ES2023",
+      "--module",
+      "ESNext",
+      "--moduleResolution",
+      "Bundler",
+      "--types",
+      "node",
+      "e2e/public-accessibility.spec.ts",
+      "e2e/system-identity.spec.ts",
+      "playwright.accessibility.config.ts",
+      "playwright.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 2,
+    "seconds": 1.12,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-static-final-1.log"
+  }
+]

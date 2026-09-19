@@ -1,0 +1,38 @@
+{
+  "captured_at": "2026-09-19T01:24:51.519518+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "candidate": null,
+  "files": {
+    "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudMySqlHttpIntegrationTest.java": "f6f82958d03dceb254ed5f825ec12962e9c8b6ed29d1887db914c91e50bd5f3d",
+    "backend/wta-admin/src/test/java/org/namewta/test/contracts/DemoTreeMySqlIntegrationTest.java": "3b049a86064bd25be1ede0b430670b6cf3e1414cd1fd2c3864af7f1c1681696b",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/mapper/TestTreeMapper.java": "b207c3318f7cc078f7af08d051cc9dd586aced427fa83ac5395e3cc24b080c23",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/service/ITestTreeService.java": "f9e0323697c06e3b4fe0cf9089c6008f428c45554aa8354032c1b8cd582ab4d3",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/service/impl/TestTreeServiceImpl.java": "8fa14026f6b23591653894512447b9e03818e4272898f39b0f0a34b58b9f14ea",
+    "backend/wta-modules/wta-demo/src/main/resources/mapper/demo/TestTreeMapper.xml": "0d5e2c9455b069aaa62863d816b1c3591844e0972f87ad5de9f06061deda5e26",
+    "docs/fm/README.md": "2e55e5b8fb6ff2895a5a8adda7653b940b719d1e26deeeeb15defdfe7cb5bdbc",
+    "docs/fm/context-contract.md": "b1a1e76bb6793ba33bc26b2b78d322969a44e9cd01fe701eb0c43f25a9f423d2",
+    "docs/fm/java/mapper.java.ftl": "d91e2fc194ba819a91a3aefcbc4a74648aa8194dbb7b4079c8c47f7d1d6c1eb0",
+    "docs/fm/java/serviceImpl.java.ftl": "e64ccfe51d2288b5607bdb767a6795132ec425e5475ff5f3717dcea25cfe361e",
+    "docs/fm/tests/ClassicTemplateMySqlChecks.java": "df81c91b97f73382e6d123e76093f5473fd38170a54a3fe6cd6c92a8082101d3",
+    "docs/fm/tests/README.md": "f52afe17fe9cbf74f3798c43a82271eb46953ad7a4e6891de3e6a4ed398fd696",
+    "docs/fm/tests/RenderClassicFixtures.java": "176b8d7d6f1610f9d27a34fd72f34edb0e85e9a1ce29f37d73bfcdd72dee19f3",
+    "docs/fm/xml/mapper.xml.ftl": "3e149d14b137301e07cf19374b7c6d0fc61bb00f88fea41068ae0d76b4c87be3",
+    "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql": "9b82efb8585ac4c6362135df66b6990d4150d99a125909cba4abb3896e6b2b98"
+  },
+  "upstream_nonoverlap_count": 513,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudMySqlHttpIntegrationTest.java",
+      "upstream_sha256": "faf6dd2f5c4f1124109a8b5bd4caa08cac14d4776a726f886b8f4f8c4ec1a166",
+      "current_sha256": "f6f82958d03dceb254ed5f825ec12962e9c8b6ed29d1887db914c91e50bd5f3d"
+    },
+    {
+      "path": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "upstream_sha256": "8c71462f18b61ffc803c945d5111da558be9f50ea1ebcd4e764fcc707377c896",
+      "current_sha256": "9b82efb8585ac4c6362135df66b6990d4150d99a125909cba4abb3896e6b2b98"
+    }
+  ]
+}

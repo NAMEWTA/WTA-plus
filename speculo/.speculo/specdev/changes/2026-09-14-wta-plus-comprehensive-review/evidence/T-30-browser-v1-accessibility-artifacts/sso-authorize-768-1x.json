@@ -1,0 +1,40 @@
+{
+  "dimensions": {
+    "viewport": 768,
+    "scrollWidth": 768,
+    "dpr": 1
+  },
+  "contrasts": [
+    {
+      "selector": ".hint",
+      "color": "rgb(148, 163, 184)",
+      "background": [
+        17,
+        24,
+        39
+      ],
+      "ratio": 6.9186546948218375
+    },
+    {
+      "selector": ".status",
+      "color": "rgb(148, 163, 184)",
+      "background": [
+        17,
+        24,
+        39
+      ],
+      "ratio": 6.9186546948218375
+    },
+    {
+      "selector": "button[type=submit]",
+      "color": "rgb(248, 250, 252)",
+      "background": [
+        3,
+        105,
+        161
+      ],
+      "ratio": 5.671199357509169
+    }
+  ],
+  "zoomMethod": "Playwright context CSS viewport / zoom, DPR=zoom; device-pixel PNG, equivalent desktop reflow, not CSS zoom"
+}

@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-09-18T19:45:58.816069+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue": "d7da1f2039c3c5745115daed09d9d9c17f039ab8210d658f11c76c54602990f9",
+    "frontend/packages/web-domains/workflow/src/components/useProcessActionDialog.ts": "7f8848573ec6bac80e4c95a1a9e5f229991ac0c23149337829b9aa3b2c3001c2",
+    "frontend/packages/web-domains/workflow/src/components/useProcessActionDialog.test.ts": "bb011a2f8dab51af91ad3ff859e73e4e41c16bcdb99ebf51d4ac10c797cfc35b",
+    "frontend/packages/web-domains/workflow/src/components/fixtures/task-integrity/index.html": "206036ae8eb3ec373f6e202e492a31c95a0f495dd40d66019fdf36f469b96bf9",
+    "frontend/packages/web-domains/workflow/src/components/fixtures/task-integrity/main.ts": "4d98cdaaf83890eb039b0fc4373f0bbc7a8db6828f099703f9180c1789477538",
+    "frontend/packages/web-domains/workflow/src/components/fixtures/task-integrity/Harness.vue": "8e42eb9d1790d0d91ab56f73d820c0c8ba0854a9270c76f13c0ac38fb1225d98",
+    "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwTaskServiceImpl.java": "68bb7dd53c978056f091a174ea4e949d1d0002c7308e2538354f1bffa2fcefb7",
+    "backend/wta-admin/src/test/java/org/namewta/test/workflow/WorkflowTaskEngineIntegrationTest.java": "aeccf95e8c36322ea324255cf03b18fecc6f64c630a9d60476a4c761045398f8",
+    "frontend/e2e/workflow-task-integrity.spec.ts": "1e919112a261a3540657c1e62db9dd13dd3795cb61fa395ce81d004c51d8b3bc",
+    "frontend/playwright.config.ts": "4a8f38e65a2fee2163eb097d9f9b7a375348dc0394ea233be5d04966877c1d31"
+  },
+  "upstream_nonoverlap_count": 342,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [
+    "frontend/playwright.config.ts"
+  ]
+}

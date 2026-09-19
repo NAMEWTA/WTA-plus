@@ -1,0 +1,709 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.accessibility.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.accessibility.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/accessibility-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "public-accessibility.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "public-accessibility.spec.ts",
+      "file": "public-accessibility.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Home login preparation failure has a keyboard retry with visible focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5fcfb0f579a1e9998d68-feaa33fab07c691436ac",
+          "file": "public-accessibility.spec.ts",
+          "line": 132,
+          "column": 1
+        },
+        {
+          "title": "Home login can fail and complete using only keyboard input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5fcfb0f579a1e9998d68-5be184d6cf8eb554568c",
+          "file": "public-accessibility.spec.ts",
+          "line": 143,
+          "column": 1
+        },
+        {
+          "title": "Home registration retains labels and alert while keyboard retry completes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5fcfb0f579a1e9998d68-4f179bc4903b14c47e23",
+          "file": "public-accessibility.spec.ts",
+          "line": 157,
+          "column": 1
+        },
+        {
+          "title": "SSO network retry and failed password status remain accessible to keyboard and AX tree",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5fcfb0f579a1e9998d68-a32035a92c402fd885ea",
+          "file": "public-accessibility.spec.ts",
+          "line": 172,
+          "column": 1
+        },
+        {
+          "title": "Home callback preserves live errors and keyboard restart/back navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5fcfb0f579a1e9998d68-88bbd042619a8338888e",
+          "file": "public-accessibility.spec.ts",
+          "line": 194,
+          "column": 1
+        }
+      ],
+      "suites": [
+        {
+          "title": "public viewport 320 density 1",
+          "file": "public-accessibility.spec.ts",
+          "line": 92,
+          "column": 8,
+          "specs": [
+            {
+              "title": "home /login 320px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-9850374344ae4ef564e9",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /register 320px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-f31be237024cc407a686",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /sso/callback 320px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-d65bde76667a90d02865",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "sso /authorize 320px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-177e1ec4447262bd2af0",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "public viewport 320 density 2",
+          "file": "public-accessibility.spec.ts",
+          "line": 92,
+          "column": 8,
+          "specs": [
+            {
+              "title": "home /login 320px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-826968efbd64a4b94139",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /register 320px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-a545f7452915bf6beeb9",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /sso/callback 320px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-76798821d6b11ecff06c",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "sso /authorize 320px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-11b46c62e2ceb5525d74",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "public viewport 768 density 1",
+          "file": "public-accessibility.spec.ts",
+          "line": 92,
+          "column": 8,
+          "specs": [
+            {
+              "title": "home /login 768px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-5bdfca4a16865d38aabe",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /register 768px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-590352d068711c5983f4",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /sso/callback 768px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-2004bf395dd1ebe84644",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "sso /authorize 768px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-13624745aad5e716fe7c",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "public viewport 768 density 2",
+          "file": "public-accessibility.spec.ts",
+          "line": 92,
+          "column": 8,
+          "specs": [
+            {
+              "title": "home /login 768px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-c254237aa18bd1ab3425",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /register 768px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-24c172e1451460e681db",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /sso/callback 768px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-d52dbdaf068c2637b434",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "sso /authorize 768px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-8894957c6344c5ac2f6b",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "public viewport 1440 density 1",
+          "file": "public-accessibility.spec.ts",
+          "line": 92,
+          "column": 8,
+          "specs": [
+            {
+              "title": "home /login 1440px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-e381f7cd5545d67447aa",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /register 1440px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-157dbf4dcdd8aee7980d",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /sso/callback 1440px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-9860bfecf0447cf143a8",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "sso /authorize 1440px 100% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-90c96078e73bf9084599",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "public viewport 1440 density 2",
+          "file": "public-accessibility.spec.ts",
+          "line": 92,
+          "column": 8,
+          "specs": [
+            {
+              "title": "home /login 1440px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-2141f9e86812df4302c3",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /register 1440px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-e2925d9e7a6b8509bd82",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "home /sso/callback 1440px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-22e77bd02842c59afce2",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "sso /authorize 1440px 200% reflow and rendered contrast",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5fcfb0f579a1e9998d68-a32879afdedc6c815a7e",
+              "file": "public-accessibility.spec.ts",
+              "line": 94,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T04:32:45.058Z",
+    "duration": 37.459,
+    "expected": 0,
+    "skipped": 29,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

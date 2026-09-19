@@ -1,0 +1,46 @@
+{
+  "captured_at": "2026-09-18T09:03:51.715178+00:00",
+  "results": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/platform-auth",
+        "test",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> @namewta/platform-auth@0.0.0 test /srv/WTA-plus/frontend/packages/platform/auth\n> vitest run src --maxWorkers=1 --no-file-parallelism\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/auth\n\n\n Test Files  2 passed (2)\n      Tests  15 passed (15)\n   Start at  17:03:49\n   Duration  558ms (transform 75ms, setup 0ms, import 114ms, tests 179ms, environment 1ms)\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/platform-auth",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 1,
+      "stdout": "\n> @namewta/platform-auth@0.0.0 lint /srv/WTA-plus/frontend/packages/platform/auth\n> oxlint src\n\nsrc/index.ts:93:63: error eslint(no-control-regex): Unexpected control character help: Avoid matching control characters in regular expressions. If intentional, consider using a Unicode escape instead.\n/srv/WTA-plus/frontend/packages/platform/auth:\n ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @namewta/platform-auth@0.0.0 lint: `oxlint src`\nExit status 1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/platform-auth",
+        "typecheck"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> @namewta/platform-auth@0.0.0 typecheck /srv/WTA-plus/frontend/packages/platform/auth\n> tsc --noEmit -p tsconfig.json\n\n",
+      "stderr": ""
+    }
+  ]
+}

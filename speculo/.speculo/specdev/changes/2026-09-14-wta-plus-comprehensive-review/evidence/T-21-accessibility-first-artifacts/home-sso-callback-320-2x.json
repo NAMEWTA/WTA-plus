@@ -1,0 +1,30 @@
+{
+  "dimensions": {
+    "viewport": 160,
+    "scrollWidth": 160,
+    "dpr": 2
+  },
+  "contrasts": [
+    {
+      "selector": ".sso-callback p",
+      "color": "rgb(23, 32, 51)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 15.271793605500177
+    },
+    {
+      "selector": "footer",
+      "color": "rgb(100, 116, 139)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 4.4672928174139255
+    }
+  ],
+  "zoomMethod": "CDP CSS viewport / zoom, DPR=zoom; equivalent desktop reflow, not CSS zoom"
+}

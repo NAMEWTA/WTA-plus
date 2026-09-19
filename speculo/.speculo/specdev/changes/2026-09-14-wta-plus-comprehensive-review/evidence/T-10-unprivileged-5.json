@@ -1,0 +1,7 @@
+{
+  "command": "runuser -u nobody -- <owned-copy-of-node-24.21.0> --test --test-concurrency=1 release-artifacts/tests/atomic-release.test.mjs",
+  "exitCode": 0,
+  "seconds": 15.83,
+  "toolSetup": "copy existing Node and JDK 21.0.12.1 to owned temporary executable directory; no permission changes to /root and no global Git safe.directory; removed afterward",
+  "log": "T-10-unprivileged-5.log"
+}

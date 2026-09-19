@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-09-18T09:39:26.521892+00:00",
+  "command": [
+    "corepack",
+    "pnpm",
+    "build:dev"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "pnpm": "10.34.5 via owned PATH shim for nested commands",
+  "workspace_concurrency": 1,
+  "exit_code": 2,
+  "log": "T-09-frontend-baseline.log",
+  "mode_markers": {
+    "admin-web": {
+      "app": "admin-web",
+      "mode": "development"
+    },
+    "home-web": {
+      "app": "home-web",
+      "mode": "development"
+    },
+    "sso-web": {
+      "app": "sso-web",
+      "mode": "production"
+    }
+  }
+}

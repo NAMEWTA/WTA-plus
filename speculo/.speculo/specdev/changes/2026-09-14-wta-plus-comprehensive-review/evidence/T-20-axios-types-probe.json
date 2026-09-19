@@ -1,0 +1,19 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/adapter-axios-browser",
+    "exec",
+    "tsc",
+    "--noEmit",
+    "-p",
+    "tsconfig.json"
+  ],
+  "cwd": "frontend",
+  "probe_source": "import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';\nexport const client: AxiosInstance = axios.create();\nexport const send = (request: AxiosRequestConfig<unknown>): Promise<AxiosResponse<unknown>> => client.request<unknown>(request);\n",
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "owned_probe_removed": true
+}

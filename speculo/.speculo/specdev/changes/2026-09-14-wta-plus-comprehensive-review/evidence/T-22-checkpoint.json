@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-09-18T21:49:11.584430+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java": "56b88b53c585db4b0e79145a77937bf2057368c9f1a3fb10cfd3870b182ec615",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyOutboxMapper.java": "c7a5c4d0c40d2bd26c61e334e7825a0e0148490395b0eb05896c314600f8eb86",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java": "e6ffdbd42e07ca3806bc854ca55d1a0edaf7b45b944b8a7f041069d895217f95",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java": "29ddf1370e5bf5bdc3828d37c6a0011c3fa1cf788b4ef0cd95085bb6d1759dbc",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxClaimService.java": "a84df3cbc9deae159219b274dddb922b25c05963c1134975a9636e1443b5a45f",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java": "1ead8b9d287691bb26e340f8ff0f10b9e53dab750423fc03769f1d0f854c97a7",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyDispatchResultService.java": "36d87c1d5ef35dbc13278fbeccbc12cf0a85a04e242f2456dccaa95f677f64ac",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotifyDispatchResultUseCase.java": "520f80e9464efd34770a67af251ae355cba711c3f723a759bada265862422026",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/NotifyDispatchResultPort.java": "c27dd57e8d20387343263d72a861672876031a375ec4b177ec7cf6af9b651ac7",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/policy/NotificationDeliveryPolicy.java": "bbfa5b30fa187be741f294a52c75329af2d0440e81118c2ef2d65068e8aa1a61",
+    "backend/wta-modules/wta-notify/src/main/resources/mapper/notify/NotifyOutboxMapper.xml": "0991e53f432dd542dbfdc9c164ab1ce484094cde75849dc04bd02e1933e22f42",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java": "dabccefecb81e33365585b8317925f3812d6ee1a120b0d5a4e5c6ce7e3f9ef66",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotifyOutboxClaimConcurrencyTest.java": "7628ebf8fca228190a055d3323d8952ee3220c0a6c799ed85f4cf5c98cf02de6",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotifyOutboxWakePublisherTest.java": "901fffc18f041d813a1cfd7f3de703d6c312c5a37b6fcb82dbe504f32f931f5c",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java": "4fa5883a8a96441ef95e911fa66e8b24aa298da321966299495fc65e685365f0"
+  },
+  "upstream_nonoverlap_count": 393,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [],
+  "post_verification_edits": "Only Javadoc and removal of unused test imports; behavior unchanged."
+}

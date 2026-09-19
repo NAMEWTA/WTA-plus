@@ -1,0 +1,6 @@
+{
+  "files": {
+    "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql": "7d563c533ce83340cbfdec770c48138d238a8060bfbc26450c61b6d36d044bbd"
+  },
+  "source": "T-09-external-services-1.json; current source rg no runtime/DML references; historical ADR-0009 read-only"
+}

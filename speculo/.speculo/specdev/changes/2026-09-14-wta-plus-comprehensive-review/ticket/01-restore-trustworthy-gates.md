@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-01
 title: 恢复可信的仓库门禁与治理入口
-status: "ready"
+status: "review"
 planning_depth: "standard"
 planning_depth_reason: "沿用现有模块的多文件行为修复：恢复可信的仓库门禁与治理入口"
 ready: true
@@ -16,11 +16,11 @@ risk: medium
 blocked_by: []
 contract_ids: [AC-001]
 owner: single-agent
-expected_changes: ["<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.mjs</Path>", "<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs</Path>", "<Path>scripts/ci/verify-submodules.sh</Path>", "<Path>scripts/ci/verify-dev-build-guard.sh</Path>", "<Path>scripts/README.md</Path>", "<Path>.github/workflows/quality-gates.yml</Path>", "<Path>{roots.state}/specdev/config.json</Path>", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path>", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path>"]
-writable_paths: ["<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.mjs</Path>", "<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs</Path>", "<Path>scripts/ci/verify-submodules.sh</Path>", "<Path>scripts/ci/verify-dev-build-guard.sh</Path>", "<Path>scripts/README.md</Path>", "<Path>.github/workflows/quality-gates.yml</Path>", "<Path>{roots.state}/specdev/config.json</Path>", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path>", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path>"]
+expected_changes: ["<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.mjs</Path>", "<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs</Path>", "<Path>scripts/ci/verify-submodules.sh</Path>", "<Path>scripts/ci/verify-dev-build-guard.sh</Path>", "<Path>scripts/README.md</Path>", "<Path>.github/workflows/quality-gates.yml</Path>", "<Path>{roots.state}/specdev/config.json</Path>", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path>", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/01-module-map.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/03-backend-module-modes.md</Path>", "<Path>release-artifacts/scripts/verify-release.sh</Path>", "<Path>.agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md</Path>", "<Path>speculo/workflows/specdev/common/tools/validate-specdev.mjs</Path>", "<Path>speculo/workflows/specdev/common/tools/validate-specdev.test.mjs</Path>", "<Path>backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/NotifyOutboxWakeScopeGateTest.java</Path>"]
+writable_paths: ["<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.mjs</Path>", "<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs</Path>", "<Path>scripts/ci/verify-submodules.sh</Path>", "<Path>scripts/ci/verify-dev-build-guard.sh</Path>", "<Path>scripts/README.md</Path>", "<Path>.github/workflows/quality-gates.yml</Path>", "<Path>{roots.state}/specdev/config.json</Path>", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path>", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/01-module-map.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/03-backend-module-modes.md</Path>", "<Path>release-artifacts/scripts/verify-release.sh</Path>", "<Path>.agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md</Path>", "<Path>speculo/workflows/specdev/common/tools/validate-specdev.mjs</Path>", "<Path>speculo/workflows/specdev/common/tools/validate-specdev.test.mjs</Path>", "<Path>backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/NotifyOutboxWakeScopeGateTest.java</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>scripts/ci/verify-submodules.sh</Path>", "<Path>scripts/ci/verify-dev-build-guard.sh</Path>", "<Path>scripts/README.md</Path>", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path>", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path>"]
-shared_path_owners: ["<Path>scripts/ci/verify-submodules.sh</Path> => single-agent (Lead; serial T-01 turn)", "<Path>scripts/ci/verify-dev-build-guard.sh</Path> => single-agent (Lead; serial T-01 turn)", "<Path>scripts/README.md</Path> => single-agent (Lead; serial T-01 turn)", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path> => single-agent (Lead; serial T-01 turn)", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path> => single-agent (Lead; serial T-01 turn)"]
+shared_paths: ["<Path>scripts/ci/verify-submodules.sh</Path>", "<Path>scripts/ci/verify-dev-build-guard.sh</Path>", "<Path>scripts/README.md</Path>", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path>", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path>", "<Path>backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/NotifyOutboxWakeScopeGateTest.java</Path>"]
+shared_path_owners: ["<Path>scripts/ci/verify-submodules.sh</Path> => single-agent (Lead; serial T-01 turn)", "<Path>scripts/ci/verify-dev-build-guard.sh</Path> => single-agent (Lead; serial T-01 turn)", "<Path>scripts/README.md</Path> => single-agent (Lead; serial T-01 turn)", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path> => single-agent (Lead; serial T-01 turn)", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path> => single-agent (Lead; serial T-01 turn)", "<Path>backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/NotifyOutboxWakeScopeGateTest.java</Path> => single-agent (Lead; serial T-01 then T-28 turns)"]
 ---
 
 # T-01：恢复可信的仓库门禁与治理入口
@@ -107,20 +107,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：撤回本票检查器/CI候选diff；保留修复前失败基线。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；最新Goal已授权实现及本地验证，commit授权待具体结果审阅。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-001`：干净clone不创建temp/release也通过事实检查。
-- [ ] `AC-001`：注释中DSTransactional不触发越层误报，真实非法import必须失败。
-- [ ] `AC-001`：不存在CI文件时文档不得宣称active；远程required状态有独立证据。
-- [ ] `AC-001`：每个声明命令可在对应cwd解析，Maven/前端测试与package分开记录。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-001`：干净clone不创建temp/release也通过事实检查。
+- [x] `AC-001`：注释中DSTransactional不触发越层误报，真实非法import必须失败。
+- [x] `AC-001`：不存在CI文件时文档不得宣称active；远程required状态有独立证据。
+- [x] `AC-001`：每个声明命令可在对应cwd解析，Maven/前端测试与package分开记录。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -131,3 +131,21 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：无。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+## 2026-09-18 执行准备修订
+
+最新用户请求授权本 change 全部实现与本地验证；先完成 T-01 门禁准备。工作树基线为 `76dbbe84a34624234e379661a57b232529e34ed3`，无既有脏改动。工程规范要求事实同步，因此补充 Project Profile/Module Map/模式登记表写集；发布测试以 `--test-concurrency=1` 串行运行。T-03/T-23 未决不以 T-01 的局部通过消除，G-plan 和各票提交出口仍保持未完成。
+
+### T-01 门禁准备补充
+
+当前源码证明ARCH-001仍要求Git submodule，与100644跟踪的backend/pom.xml、frontend/package.json及无.gitmodules冲突，按事实优先修正规则。P校验器把stage=goal-plan等同于多change，导致单change无法校验；同时缺失单change goal-plan.md未被明确拒绝。扩充以上三份写集，修复模式路由并用单/多change正负夹具证明缺件、无效父计划和缺失Goal仍失败。不改变schema、agent上限、Ready/授权或完成条件；这是对既有工具缺陷的局部修复，不是为本change放宽校验。供应商其余文件与永久知识保持只读。
+
+T-02完整Maven发现追加门禁缺陷：旧NotifyOutboxWakeScopeGateTest绑定不存在的历史commit和后端独立Git根。按归档2026-09-11原Spec AC-006及ADR-0006/0007保留长期合同，改为当前Outbox组件不耦合配置控制面/渠道直投，以及common Dispatcher同步行为；增加违规依赖夹具。原change写集审查由归档证据拥有，不用永远变化的全仓diff模拟永久合同。此文件已纳入本票写集，业务分层与运行时修复仍由T-28/T-22负责。
+
+## Revision134 最终本地验收补记
+
+原SSO/Notify分层、P-validator和T-03/T-23未知均已由责任票闭合并在T-30复验。远程CI/required checks继续明确未运行，仓内CI只作候选；不能把候选配置等同远程启用。 实际证据：T-30-final-quality.json, T-30-v2-release.json, T-30-final-governance.json；源码路径及hash见T-30-completion-audit-revision134.json。实施提交/direct-parent/result继续未勾选。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`3aa047b85033afd7588923ffa7b37481dc2d1645`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

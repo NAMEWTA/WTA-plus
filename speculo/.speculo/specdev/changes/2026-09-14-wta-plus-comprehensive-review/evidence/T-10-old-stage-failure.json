@@ -1,0 +1,26 @@
+{
+  "command": "isolated old release-manage.sh stage --env prod",
+  "failure": "missing admin-web nginx template",
+  "exitCode": 1,
+  "diagnostic": "[ERROR] admin-web 缺少独立 Nginx 模板；请先运行项目 Skill 的 add_app.py\n",
+  "contextsBefore": {
+    "docker/backend/images/wta-admin/app.jar": "8f5f9e5e819baa9a96a47cfec4a91a257e865c7aa8ef195407a93f624a50a10f",
+    "docker/backend/images/wta-monitor-admin/app.jar": "b37f8e1f4374657884d678030712ee7e52d9aa529e528ef0210f1cfbba5ee4ae",
+    "docker/backend/images/wta-snailai-server/app.jar": "f913a586613e4b056a8673148a34dff42898ae4b80e03a2219d08ad469b8cadd",
+    "docker/backend/images/wta-snailjob-server/app.jar": "537cdf858ec72e1b04ecdcb5b168214d884bd62118b24cfa235165abbc487d47",
+    "docker/frontend/nginx/html/admin-web/index.html": "bc2cb7012bc96824e1beecb6bdbe47726879b8b5a8c6b53c0afda52758c7b52b"
+  },
+  "contextsAfter": {
+    "docker/backend/images/wta-admin/app.jar": "5bab22a0f0a7c377d52503a74f69c2cd635348fe08e8067962a541a3e772c80b",
+    "docker/backend/images/wta-monitor-admin/app.jar": "be82804c6b7bcd3aadc131230ec34e0da5f88dc53b4e60e39133cab27b7393b3",
+    "docker/backend/images/wta-snailai-server/app.jar": "5747031ba979625e708eb026ca9cf206c086fae1d7695555af054a0a75acf817",
+    "docker/backend/images/wta-snailjob-server/app.jar": "17f6c56cb45318a30e443c0c7fe23f0f016505861c922a378aa7f1470ebf13f1",
+    "docker/frontend/nginx/html/admin-web/index.html": "bc2cb7012bc96824e1beecb6bdbe47726879b8b5a8c6b53c0afda52758c7b52b"
+  },
+  "mutatedPaths": [
+    "docker/backend/images/wta-admin/app.jar",
+    "docker/backend/images/wta-monitor-admin/app.jar",
+    "docker/backend/images/wta-snailai-server/app.jar",
+    "docker/backend/images/wta-snailjob-server/app.jar"
+  ]
+}

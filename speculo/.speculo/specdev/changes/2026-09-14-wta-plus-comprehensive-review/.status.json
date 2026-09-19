@@ -10,16 +10,16 @@
   "claimed_investigations": [],
   "execution_authorization": {
     "implementation_commit": {
-      "status": "not-authorized",
-      "source": null,
-      "granted_at": null,
-      "scope": "Ticket implementation commits"
+      "status": "authorized",
+      "source": "USER: 现在请你全部 commit push",
+      "granted_at": "2026-09-19T07:31:04.600552+00:00",
+      "scope": "All completed change implementation commits"
     },
     "local_candidate_integration": {
-      "status": "not-authorized",
-      "source": null,
-      "granted_at": null,
-      "scope": "Lead-owned local direct-parent or candidate integration and parent update"
+      "status": "authorized",
+      "source": "USER: 现在请你全部 commit push",
+      "granted_at": "2026-09-19T07:31:04.600552+00:00",
+      "scope": "Serial direct-parent commits and verification on current main; no worktree"
     },
     "source_cleanup": {
       "status": "not-authorized",
@@ -42,20 +42,49 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-18T06:10:12.702369+00:00",
+  "updated_at": "2026-09-19T07:35:26.511946+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
-    "PLAN:T-03 request byte budgets need evidence",
-    "PLAN:T-23 callback identity and retention need provider evidence",
-    "EXECUTION: implementation/commit/integration not authorized; current workspace contains user changes",
-    "P-VALIDATOR: goal-plan stage incorrectly requires parent implementation artifacts for this single change"
+    "RELEASE: formal release candidate/manifest and target production configuration acceptance remain pending; commit and push authorization is granted"
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",
     "T/P plan: user permits complete planning and related status index updates; product implementation remains out of scope.",
-    "Goal schema v6 positive implementation_agent_limit=1 is a ceiling only; explicit user prohibition makes effective subagent count 0."
+    "Goal schema v6 positive implementation_agent_limit=1 is a ceiling only; explicit user prohibition makes effective subagent count 0.",
+    "Latest user Goal supersedes plan-only scope and authorizes all change implementation and local checks. T-01 gate preparation is being reviewed; G-plan and commit/result exit stay unfulfilled. Zero subagents and zero new worktrees.",
+    "2026-09-18 USER: all change implementation commits held; continue serial reversible work using verified working-tree checkpoints, no Done or result SHA without delivery. T-01 P-validator fixed with 11 regression tests and real goal-plan exit 0.",
+    "Revision99核对：T-28已完成本地分层修复与补验，移除该过时GATE blocker；T-03/T-23与提交暂缓仍有效。",
+    "Revision103：T-26本地验收与70路径检查点完成；所有提交仍暂缓，T-03/T-23真实参数未知与direct-parent出口未闭合。",
+    "Revision106：T-27本地review。15真实MySQL、6真实HTTP、21实际模板渲染/编译/MySQL场景全部零skip；695默认后端通过/97环境skip、4 Demo前端、full/core打包及清单、6静态命令通过。15路径checkpoint、513上游非重叠不变/2重叠登记，累计528。27review/2ready/2blocked/0Done；全部提交继续暂缓，下一票T-29。",
+    "Revision108：T-29本地review。4父导航先承接规则，37重复手册逐文件复核后删除，8特殊手册/28硬约束保留；15当前文档事实/cwd收敛。134链接、49模块/测试根、855保护哈希、八条本地检查和116发布合同零skip通过；62路径checkpoint（37删除）、523非重叠上游不变/5重叠，累计585。28review/1ready/2blocked/0Done；全部提交暂缓，下一步T-30可逆准备，未知责任票仍阻塞。",
+    "Revision109：T-29补修先登记两条写集：wta-module-guide入口同步最近有效AGENTS继承与模块地图；review-and-delivery修正已不存在plan/update的来源，DELIVERY-001 MUST正文不变。已回读父Skill与真实清理结果，随后显式更新受影响票Skill摘要绑定；不重写历史证据。27review/1in_progress/1ready/2blocked/0Done；全部提交暂缓。",
+    "Revision110：T-29父级文档补修review。module-guide改用适用父AGENTS/模块地图导航；交付来源去掉缺失plan/update，全部既有硬约束不变。13票Skill绑定经回读更新；144链接、28特殊规则、855保护哈希和facts/fullstack检查通过。最新T-29-checkpoint-v2含64路径、523非重叠不变/5重叠，累计587。28review/1ready/2blocked/0Done；全部提交暂缓。",
+    "Revision111：T-30准备回读发现另三处父规范事实漂移，T-29追加精确写集后补修：testing与architecture缺失plan/update来源/验收入口；frontend naming宣称每包都有AGENTS但validation与rich-text实际没有。只修来源和导航事实，全部测试/鉴权/架构MUST保留。T-29 in_progress，其他状态不变；提交暂缓。",
+    "Revision112：T-29全部父级补修review，146链接、49模块、28特殊规则、855保护哈希与facts/fullstack/fm检查通过。最新T-29-checkpoint-v3登记67路径（30修改/37删除），522上游非重叠不变/6重叠，累计589。28review/1ready/2blocked/0Done；T-30仅准备可逆验证清单，全部提交暂缓。",
+    "Revision113：T-30可逆准备完成，正式整体验收not-run/AC未勾选。589上游路径一致，3549源码路径指纹保存；10份Playwright配置最终枚举163用例（仅list，产品执行0），workflow专用临时配置另列；16核心门禁及真实服务追加矩阵已保存。17源文件刷新T-03/T-23事实，缺业务/供应商依据仍阻塞。28review/1ready/2blocked/0Done；无暂存/提交/推送/部署。",
+    "Revision114：T-29实际运行旧手册检查器exit 1，确认其一manifest一手册/七标题模板与已批准收敛合同冲突。先登记检查器、对应回归测试及CI候选写集；按最近有效父导航、中文标题、本地链接和禁止嵌套CLAUDE校验，不恢复重复手册。27review/1in_progress/1ready/2blocked/0Done。用户另已明确T-03无需样本或目标预算，授权选通用初值；拟用JSON/机器各2MiB可配置，收尾本票后修订责任合同实施。全部提交暂缓。",
+    "Revision116：T-29检查器补修完成review。85 manifest全部找到最近有效导读，8新增+42既有检查器回归零skip、116发布合同零skip、146链接/49模块/28独有硬规则/855保护哈希通过。最新T-29-checkpoint-v4登记72路径，521上游非重叠不变/7重叠，累计593；T-30旧589路径准备快照已过时须后续更新。用户已授权T-03通用初值与T-23常见供应商预置，接下来串行更新责任票合同并实现；全部提交暂缓。",
+    "Revision117：T-03开始。用户授权无需样本/目标容量，JSON/机器默认各2MiB且独立可配置，日志前缀独立；原预算等待关闭。追加admin真实HTTP/现有OpenAPI测试与backend配置说明精确写集，593上游哈希已核对。机器原始验签先于XSS改写，公共缓存保持只读、不得暴露可变数组；413不可吞、普通上传/SSE不缓存。T-23用户已授权常见供应商预置，下一票由官方协议与实际SDK自主取证，不再等待用户原问题。28review/1in_progress/1ready/1blocked（T-23协议决策待研究）/0Done；全部提交暂缓。",
+    "Revision119：T-03本地review。JSON/机器各2MiB独立预算、原始缓存共享与XSS独立视图、验签先于改写、稳定413已完成。83/83 common、814默认测试（717通过/97环境skip）、11/11真实HTTP与512MiB堆/8并发/2MiB请求探针通过；full/core清理构建和清单同源验证通过。26路径checkpoint、584上游非重叠不变/9重叠，累计610。29review/1ready/1blocked（T-23协议研究）/0Done；全部提交暂缓。",
+    "Revision120：T-23开始，610上游hash已核对。用户要求的五种禁用账号预设、必要凭据/签名校验和SMS4J消息ID保留先行；已登记common-sms、DML、通知配置页面、精确父规范与供应商说明写集。官方原生回执均不同于现有HMAC；阿里重试文档互相矛盾、腾讯仅说明再试2次，保留期不猜测。回执安全接入/身份仍在内部研究，不等待用户、不标review。29review/1in_progress/1ready/0Done，全部提交暂缓。",
+    "Revision121：T-23三项真实MySQL红灯已复现（回滚重试、跨账号eventId、同事件事实冲突），3/3失败且隔离资源已回收。冻结自定义HMAC接入的渠道+账号configKey+eventId持久身份；业务事实摘要排除每次重签的传输timestamp，其他字段不可变；同一供应商消息多收件人必须明确target，歧义拒绝且不消费receipt。receipt无自动清理，与状态和聚合同事务。原生厂商接入仍单独研究；现有HMAC不宣称原生短信回调。新增common Skill绑定；29review/1in_progress/1ready/0Done，所有提交暂缓。",
+    "Revision122：T-23已完成30项真实数据库/HTTP/独立JVM回归及2项JDBC提交故障测试，均零skip；扩展测试首次夹具NotAMock错误已修复，失败记录保留。补齐账号命名空间生命周期：configKey和渠道创建后不可变，已选短信厂商不可替换；账号逻辑删除并永久保留唯一标识，禁止删除后重建同名账号混淆迟到回执。该变更在既有Notify/DDL写集内，随后验证真实Mapper与软删除。原生短信回执接入仍不宣称完成，29review/1in_progress/1ready/0Done，全部提交暂缓。",
+    "Revision123：全后端首次838项中1项静态基座断言失败（旧测试要求供应商消息号跨收件人唯一），110项环境测试默认跳过。实际33项MySQL/HTTP验收已证明共享消息号按target关联。先登记精确OssNotifyMigrationUnitTest写集并保存原文，再将过时断言更新为普通关联索引+持久receipt唯一约束；保留既有OSS与基础字段检查，不删测试放宽门禁。前端首次旧参数提示断言失败已按阿里名称/腾讯位置两种合同更新，9项测试/typecheck/lint通过。T-23仍in_progress，全部提交暂缓。",
+    "Revision124：带真实GlobalExceptionHandler的回调SQL失败已映射503并可重试，34/34隔离集成通过。复核新增target关联字段会经过HTTP日志，按通知规范的手机号/邮箱不得写日志硬约束，先登记common-json脱敏实现与测试两个精确写集；自定义回执正文/查询参数仅保留脱敏摘要，签名与业务原文不变。之前full/core和838默认测试通过为上一源码阶段；变更后重新运行受影响验证。全部提交暂缓。",
+    "Revision125：T-23阶段检查点已保存（整票仍in_progress/ready=false）。五种停用账号预设、凭据/模板校验、SMS消息ID、持久回执及账号命名空间、真实HTTP失败重试和隐私日志已实现。34/34隔离MySQL/Redis/HTTP/独立JVM及提交故障通过；最新默认后端840项=729通过+111环境skip，前端9项/typecheck/lint、full/core构建清单通过。33路径owned diff，9上游重叠/601非重叠不变，累计634；源码0eafcc88e72430f715389660b5bac34c504dca49d85dce9040ffe6b7b7967842。腾讯/阿里原生回执安全适配仍待内部闭合，不冒充厂商支持；T-30未做正式整体验收。29review/1in_progress/1ready/0Done，HEAD与空index保持，全部提交暂缓。",
+    "Revision126：冻结T-23原生短信状态核对合同：腾讯DescribeSendRecordList（72小时/最多1000条）、阿里QuerySendDetails（BizId+号码+发送日），使用相同账号密钥签名HTTPS查询，复用持久receipt事务。查询失败、截断或歧义不提升状态、不重新发送；查询记录与厂商推送事件区分命名空间，SMTP保持受理语义。实施及协议/真实数据库验证待完成，旧v5证据只对应已保存阶段。29review/1in_progress/1ready/0Done，全部提交暂缓。",
+    "Revision127：T-23完成本地review。五种禁用供应商预设、真实发送消息ID、持久回执/账号命名空间及腾讯TC3/阿里ACS3鉴权状态查询已闭合；原生推送不冒充支持。11项协议/HTTP测试、41项真实MySQL/Redis/重启/并发/提交故障零skip通过；默认后端857项=740通过+117环境skip，Notify前端9项/typecheck/lint、full/core同源构建及清单通过。47路径checkpoint、9上游重叠/601非重叠不变，累计648；源码88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0。无真实账号试发或生产容量声明；30review/1ready/0Done，下一步T-30同一候选整体验收。HEAD/空index保持，全部提交暂缓。",
+    "Revision128：T-30进入同一工作树候选整体验收。30个前置票已完成本地review，648累计路径全部核对；计划T/P与ticket-control均0error，T-03/T-23原未知关闭。源码88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0，重建正式门禁/环境/浏览器矩阵，旧准备日志保留不覆盖。30review/1in_progress/0Done；提交/推送/部署全部暂缓，正式交付出口仍未完成。",
+    "Revision129：T-30真实依赖门禁发现T-23新增receipt表未同步受保护初始化器：实际126表/预期125，测试尚未开始即exit1，owned资源已恢复。回到T-23补修，先登记初始化脚本及两份发布合同测试精确写集；T-30暂停为ready，29review/1in_progress/1ready/0Done。保留旧源码88a5a9a的通过与失败证据；修正后重新冻结输入并运行受影响发布/真实服务门禁。全部提交继续暂缓。",
+    "Revision130：T-23初始化补修完成review：受保护六文件初始化实际126表，发布117项及真实MySQL/Redis/MinIO八项均零skip通过，资源恢复；仅初始化脚本和两处旧计数断言变化。T-23-checkpoint-v2共50路径，累计649路径；源码1dff1a345e1979d809bb547f3060645d86b4508f3df3aad5fd227de53ab2c504。T-30继续整体验收，30review/1in_progress/0Done；未受影响的前端/后端源树逐文件相同，旧验证证据按明确输入等价关系关联，受影响release/external已重跑。全部提交暂缓。",
+    "Revision131：T-30补跑默认环境skip发现5个夹具错误：Admin菜单使用失效裸图标，两个OSS测试从旧标记截取至EOF导致重复建表，Profile以分号直接切SQL破坏坐标字面量且截取后续无关域。在本票既有admin测试写集内登记4测试及1共用SQL执行工具：复用真实基座DDL、限定片段、使用Spring SQL脚本解析，Profile在owned空数据库完整初始化五份业务基座并清理全部所建表；保留所有权限/数据/失败关闭断言，生产SQL不放宽。保留T-30-extra-services-v1的15项/5错误，修复后重跑受影响闭包；30review/1in_progress/0Done，全部提交暂缓。",
+    "Revision132：T-30补查全部环境门控/Tag发现9个Profile e2e类未被默认Maven选择；真实MySQL补跑15项，13通过/2失败/零skip。企业申请夹具credit(suffix)拼接任意末位，不满足当前统一社会信用代码校验码合同，save在业务入口即被拒绝。先追加该EnterpriseApplicationMySqlE2ETest.java精确写集，仅修正合成合法身份数据并增加响应code断言，保留发布/重新认证/唯一约束/工作流回滚断言及生产校验。浏览器163项及额外10工作流弹窗已实际通过；30review/1in_progress/0Done，全部提交暂缓。",
+    "Revision133：T-30本地整体验收完成review。最终源码bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba，3577源码/654累计owned路径；6测试修复、1上游重叠/648非重叠不变。18核心门禁通过，前端722、浏览器163+工作流10=173；默认后端740通过/117环境skip均有专项零skip闭合，46环境类/264测试源逐类对应，额外非默认选集53通过/1既有教学Disabled占位。最终full/core构建/清单、117发布合同、真实依赖与发布恢复、五分层/facts检查器通过。全部31票review、0Done；仅本地产物可审查，干净提交/正式发布candidate/direct-parent出口因用户全change提交暂缓保持未完成。最终治理结果见T-30-final-governance.json。",
+    "Revision134：完成逐票出口复核与本地产物重新验hash，3577源码/654owned路径无漂移，两JAR及三App保留副本一致、HEAD不变且index为空。T-01/T-02/T-04/T-05早期验收勾选尚未承接最终实际证据，已按各项源码/测试报告补齐并注明旧失败由后续票关闭；T-02历史日志处置/凭据轮换属于OUT且无批准，继续明确未执行。31review/0Done；非空implementation/result、direct-parent和干净正式发布候选仍受用户全change不提交约束。没有新产品改动，不重跑已证明输入未变的业务测试。",
+    "Revision135：用户明确授权全部commit和push，撤销此前全change提交暂缓。按实际最终检查点归属拆分票据主题提交，后端合同先于前端消费者；以完整提交链核对同一已验证源码，不把中间拆分树冒充独立通过全部测试的候选。推送origin/main；运行中的人工检查环境及凭据仍由ignore排除；真实部署/正式发布候选仍未执行。",
+    "Revision135提交完成：43非空实现提交/31票，result=6c8764cca97bb6057fcb90ccdfe635c7efbf502a；Git归档3577源码与最终验收输入一致，父链及包含关系通过。仍保留review，未建立正式release候选或部署。"
   ],
   "worktrees": []
 }

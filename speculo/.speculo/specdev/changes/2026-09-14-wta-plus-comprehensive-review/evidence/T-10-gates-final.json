@@ -1,0 +1,44 @@
+[
+  {
+    "command": [
+      "bash",
+      "release-artifacts/scripts/verify-release.sh"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exitCode": 0,
+    "seconds": 23.19,
+    "log": "T-10-release-final-2.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exitCode": 0,
+    "seconds": 0.06,
+    "log": "T-10-facts-final-2.log"
+  },
+  {
+    "command": [
+      "bash",
+      "-n",
+      "scripts/ci/verify-admin-bundle.sh"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exitCode": 0,
+    "seconds": 0.0,
+    "log": "T-10-bundle-shell-final.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exitCode": 0,
+    "seconds": 0.02,
+    "log": "T-10-diff-final-2.log"
+  }
+]

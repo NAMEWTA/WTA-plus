@@ -1,0 +1,12 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/sso-web",
+    "typecheck"
+  ],
+  "cwd": "frontend",
+  "exit_code": 0,
+  "seconds": 2.05
+}

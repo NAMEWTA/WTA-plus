@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-04
 title: 建立可信代理来源IP合同
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：建立可信代理来源IP合同"
 ready: true
@@ -16,11 +16,11 @@ risk: high
 blocked_by: []
 contract_ids: [AC-004]
 owner: single-agent
-expected_changes: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path>", "<Path>backend/wta-common/wta-common-security/</Path>", "<Path>backend/wta-common/wta-common-redis/</Path>", "<Path>release-artifacts/docker/frontend/nginx/</Path>", "<Path>backend/wta-common/wta-common-core/src/test/</Path>", "<Path>backend/wta-common/wta-common-web/src/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>"]
-writable_paths: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path>", "<Path>backend/wta-common/wta-common-security/</Path>", "<Path>backend/wta-common/wta-common-redis/</Path>", "<Path>release-artifacts/docker/frontend/nginx/</Path>", "<Path>backend/wta-common/wta-common-core/src/test/</Path>", "<Path>backend/wta-common/wta-common-web/src/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>"]
+expected_changes: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path>", "<Path>backend/wta-common/wta-common-security/</Path>", "<Path>backend/wta-common/wta-common-redis/</Path>", "<Path>release-artifacts/docker/frontend/nginx/</Path>", "<Path>backend/wta-common/wta-common-core/src/test/</Path>", "<Path>backend/wta-common/wta-common-web/src/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/NetUtils.java</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ip/ClientAddressResolver.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path>", "<Path>release-artifacts/tests/nacos-proxy-config.test.mjs</Path>", "<Path>release-artifacts/tests/trusted-client-address.test.mjs</Path>", "<Path>.agents/skills/wta-common-modules-guide/references/core-utils.md</Path>"]
+writable_paths: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path>", "<Path>backend/wta-common/wta-common-security/</Path>", "<Path>backend/wta-common/wta-common-redis/</Path>", "<Path>release-artifacts/docker/frontend/nginx/</Path>", "<Path>backend/wta-common/wta-common-core/src/test/</Path>", "<Path>backend/wta-common/wta-common-web/src/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/NetUtils.java</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ip/ClientAddressResolver.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path>", "<Path>release-artifacts/tests/nacos-proxy-config.test.mjs</Path>", "<Path>release-artifacts/tests/trusted-client-address.test.mjs</Path>", "<Path>.agents/skills/wta-common-modules-guide/references/core-utils.md</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path>", "<Path>backend/wta-common/wta-common-security/</Path>", "<Path>backend/wta-common/wta-common-redis/</Path>", "<Path>release-artifacts/docker/frontend/nginx/</Path>", "<Path>backend/wta-common/wta-common-core/src/test/</Path>", "<Path>backend/wta-common/wta-common-web/src/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>"]
-shared_path_owners: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-security/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-redis/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>release-artifacts/docker/frontend/nginx/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-core/src/test/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-web/src/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-admin/src/main/resources/application.yml</Path> => single-agent (Lead; serial T-04 turn)"]
+shared_paths: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path>", "<Path>backend/wta-common/wta-common-security/</Path>", "<Path>backend/wta-common/wta-common-redis/</Path>", "<Path>release-artifacts/docker/frontend/nginx/</Path>", "<Path>backend/wta-common/wta-common-core/src/test/</Path>", "<Path>backend/wta-common/wta-common-web/src/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/NetUtils.java</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ip/ClientAddressResolver.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path>", "<Path>release-artifacts/tests/nacos-proxy-config.test.mjs</Path>", "<Path>release-artifacts/tests/trusted-client-address.test.mjs</Path>"]
+shared_path_owners: ["<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-security/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-redis/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>release-artifacts/docker/frontend/nginx/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-core/src/test/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-web/src/</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-admin/src/main/resources/application.yml</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/NetUtils.java</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ip/ClientAddressResolver.java</Path> => single-agent (Lead; serial T-04 turn)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java</Path> => single-agent (Lead; serial T-04 turn)", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path> => single-agent (Lead; serial T-04 turn)", "<Path>release-artifacts/tests/nacos-proxy-config.test.mjs</Path> => single-agent (Lead; serial T-04 turn)", "<Path>release-artifacts/tests/trusted-client-address.test.mjs</Path> => single-agent (Lead; serial T-04 turn)"]
 ---
 
 # T-04：建立可信代理来源IP合同
@@ -104,20 +104,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：可信CIDR/入口配置与代码一起恢复；实际生产拓扑验收属于发布Gate。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；最新用户已授权实现和本地验证；全change暂不提交。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-004`：任意外来XFF不改变直连或正常入口的授权结果。
-- [ ] `AC-004`：可信双代理解析一致，非法值失败关闭。
-- [ ] `AC-004`：白名单与限流使用同一个规范来源。
-- [ ] `AC-004`：未获得环境资料时不得把likely改成已复现越权。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-04.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-004`：任意外来XFF不改变直连或正常入口的授权结果。
+- [x] `AC-004`：可信双代理解析一致，非法值失败关闭。
+- [x] `AC-004`：白名单与限流使用同一个规范来源。
+- [x] `AC-004`：未获得环境资料时不得把likely改成已复现越权。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-04.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -128,3 +128,19 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：无。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+### 本地实施决策
+
+只解析显式可信CIDR下的XFF，默认空配置，其他头不能作为fallback。web入口过滤器在业务处理前计算一次并保存server-only request attribute，ServletUtils消费该值，未经过滤器的调用仅取peer；无core到web反向依赖。非法可信链返回400且不回退代理地址，XFF限制32 hop/4096字符。应用禁止native/framework转发地址重写以保留真实socket peer；环境可信CIDR发布前仍需实测。IPv6白名单精确匹配按地址字节比较，配置CIDR仅接受数字字面量、不解析DNS。保留现有Java方法签名，调用方自定义转发头参数明确拒绝；当前仓内无此调用，无旧多头兼容桥。公网LB覆盖XFF，内部App代理继续追加，add_app生成器同步该入口合同。
+
+### 本地验证检查点
+
+56项受影响Maven测试、12项定向含真实Nginx/Jetty/IPv4/IPv6测试、45项发布合同及四类Compose解析均通过。真实HTTP发现并修复Jetty方括号IPv6 peer，外来XFF仍严格校验。证据见T-04.md及T-04-checkpoint.json；所有提交仍暂停，commit/result为null，正式Done/生产拓扑验收未关闭。
+
+## Revision134 最终本地验收补记
+
+真实单/双Nginx、IPv4/IPv6、伪造XFF及统一来源矩阵已复验。实际生产CIDR/拓扑未验证，likely不改写为生产已复现越权。 实际证据：T-30-http-v1.json, T-30-v2-release.json；源码路径及hash见T-30-completion-audit-revision134.json。实施提交/direct-parent/result继续未勾选。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`d3fb6abbd17c032a2d8040c6e0ab8ab110481bee`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

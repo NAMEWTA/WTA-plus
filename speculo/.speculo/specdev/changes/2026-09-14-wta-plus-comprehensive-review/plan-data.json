@@ -50,11 +50,16 @@
     ],
     "contract": "AC-001",
     "review_date": "2026-09-18",
-    "notes": "保留分层硬约束：修复Javadoc误报与org.namewta漏检；SSO Cookie渲染归HTTP adapter（T-06），Notify wake归event/worker adapter（T-28），两项真实结构命中不能作为误报放行。新增检查器夹具是计划文件，创建后登记精确node --test命令。全部5个layered模块必须复核。现有9条命令结果见 reviews/re-review-command-results.json。 新增validator测试文件及可选恢复CI文件当前不存在，均为计划路径；不为迎合dev-build-guard而创建空.vscode/settings.json，保留真正构建锁/JAR检查并解除编辑器文件前置。",
-    "status": "ready",
+    "notes": "保留分层硬约束：修复Javadoc误报与org.namewta漏检；SSO Cookie渲染归HTTP adapter（T-06），Notify wake归event/worker adapter（T-28），两项真实结构命中不能作为误报放行。新增检查器夹具是计划文件，创建后登记精确node --test命令。全部5个layered模块必须复核。现有9条命令结果见 reviews/re-review-command-results.json。 新增validator测试文件及可选恢复CI文件当前不存在，均为计划路径；不为迎合dev-build-guard而创建空.vscode/settings.json，保留真正构建锁/JAR检查并解除编辑器文件前置。 Revision134：原SSO/Notify分层、P-validator和T-03/T-23未知均已由责任票闭合并在T-30复验。远程CI/required checks继续明确未运行，仓内CI只作候选；不能把候选配置等同远程启用。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "3aa047b85033afd7588923ffa7b37481dc2d1645"
+    ],
+    "implementation_commit": "3aa047b85033afd7588923ffa7b37481dc2d1645",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-02",
@@ -98,11 +103,16 @@
     ],
     "contract": "AC-002",
     "review_date": "2026-09-18",
-    "notes": "两个日志模块目前都依赖 common-json；日志副本策略优先放入已有 <Path>backend/wta-common/wta-common-json/src/</Path>，由 common-log/web 调用，不令 common-log 反向依赖 common-web。对嵌套 JSON、数组、form、重复 query、非法 JSON 和异常日志分别验收；在截断前脱敏，失败输出安全摘要。OAuth code 按路由处理，不全局删除业务 code；签名原始字节与业务响应不受日志转换影响。",
-    "status": "ready",
+    "notes": "两个日志模块目前都依赖 common-json；日志副本策略优先放入已有 <Path>backend/wta-common/wta-common-json/src/</Path>，由 common-log/web 调用，不令 common-log 反向依赖 common-web。对嵌套 JSON、数组、form、重复 query、非法 JSON 和异常日志分别验收；在截断前脱敏，失败输出安全摘要。OAuth code 按路由处理，不全局删除业务 code；签名原始字节与业务响应不受日志转换影响。 Revision134：HTTP sink、OperLogEvent和真实MySQL canary及普通字段/失败元数据已复验；全量旧Notify错误已关闭。历史日志处置/凭据轮换在本票OUT且未获授权，未执行，也不存在可伪造的批准记录；该外部批准项继续未勾选，不是待执行的本地实现。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "4cfb7eea819c142ccdbcc29004a86868b86e2551"
+    ],
+    "implementation_commit": "4cfb7eea819c142ccdbcc29004a86868b86e2551",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-03",
@@ -116,16 +126,21 @@
       "backend/wta-common/wta-common-openapi/",
       "backend/wta-common/wta-common-encrypt/",
       "backend/wta-admin/src/main/resources/application.yml",
-      "backend/wta-common/wta-common-core/src/"
+      "backend/wta-common/wta-common-core/src/",
+      "backend/wta-admin/src/test/java/org/namewta/test/requestbody/",
+      "backend/wta-admin/src/test/java/org/namewta/test/openapi/",
+      "backend/README.md",
+      "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java"
     ],
     "steps": [
-      "测量最大合法普通JSON与机器请求，批准请求预算和日志前缀预算。",
+      "按用户决定固定2MiB两类可配置默认与独立日志预算，合成精确字节夹具验证。",
       "固定未知长度/chunked超限以及伪签名头大请求的红灯。",
       "构造受限采集owner，Content-Length提前检查且实际读取计数，超限稳定413。",
-      "复用精确原始字节，删除无界readAllBytes和不必要全数组复制；日志/解密/XSS顺序独立验证。",
+      "复用精确原始字节，删除无界readAllBytes和不必要全数组复制；日志/XSS顺序独立验证，T-11退役解密链不复活。",
       "验证正常JSON共享wrapper；上传和SSE继续流式，不强行进入普通正文缓存。",
       "记录并发堆峰值、GC和取消资源释放，确认压测只在隔离环境。",
-      "超限异常不得被SysLogFilter.prepareRequest的宽泛catch吞掉后继续业务。对XssHttpServletRequestWrapper及解密视图同样检查边界，日志失败与入口413分开处理。"
+      "超限异常不得被SysLogFilter.prepareRequest的宽泛catch吞掉后继续业务。对XssHttpServletRequestWrapper清洗视图同样检查边界，日志失败与入口413分开处理。"
     ],
     "checks": [
       "大小边界前/等于/超限一字节结果可判定",
@@ -133,7 +148,7 @@
       "OpenAPI签名测试逐字节通过",
       "同一正文不会因观察者线性增加完整副本，SSE/上传可取消"
     ],
-    "decision": "建议普通JSON/机器正文2MiB为评估起点，最终以真实最大请求决定；新增413属于当前计划合同外部合同。",
+    "decision": "USER-DECISION：无需样本/部署预算，JSON与机器入口各2MiB可配置初值；真实HTTP边界/隔离容量实测，不冒充生产容量。",
     "blocked_by": [
       "T-02"
     ],
@@ -148,11 +163,16 @@
     ],
     "contract": "AC-003",
     "review_date": "2026-09-18",
-    "notes": "RepeatableFilter与SysLogFilter已复用RepeatedlyRequestWrapper，不能按两个filter重复计缓存。OpenAPI目前不依赖common-web，优先复用common-core中的小型受限读取能力及请求属性保存原始正文，避免新模块或循环依赖；原始字节与XSS/解密后的视图分别拥有。OpenApiRequest的防御性复制先按峰值验证，不为减少复制公开可变byte[]。2 MiB是测量起点，不是已批准生产限制。",
-    "status": "blocked",
-    "ready": false,
+    "notes": "本地实现与验证完成，T-03.md/T-03-checkpoint.json；用户暂缓全部提交，生产容量未知不冒充验收。",
+    "status": "review",
+    "ready": true,
     "e2e_disposition": "required: 通过真实HTTP发送定长/chunked边界请求、伪签名大正文及正常签名正文",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "214de538267a60fa527b1213f7dd9139622f4a2e"
+    ],
+    "implementation_commit": "214de538267a60fa527b1213f7dd9139622f4a2e",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-04",
@@ -196,11 +216,16 @@
     ],
     "contract": "AC-004",
     "review_date": "2026-09-18",
-    "notes": "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path> 被白名单与 RateLimiterAspect 同时使用。按实际 peer/CIDR 取证，不能默认所有私网可信；公网入口覆盖不可信头，可信内层保留/追加，应用从 socket peer 向可信 hop 边界解析。覆盖 IPv4/IPv6、单/双代理、缺头、非法值与伪造最左值；nginx -t 只验证配置，不能代替伪造头请求矩阵。没有实际入口证据时 R-03 保持 likely。",
-    "status": "ready",
+    "notes": "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/ServletUtils.java</Path> 被白名单与 RateLimiterAspect 同时使用。按实际 peer/CIDR 取证，不能默认所有私网可信；公网入口覆盖不可信头，可信内层保留/追加，应用从 socket peer 向可信 hop 边界解析。覆盖 IPv4/IPv6、单/双代理、缺头、非法值与伪造最左值；nginx -t 只验证配置，不能代替伪造头请求矩阵。没有实际入口证据时 R-03 保持 likely。 Revision134：真实单/双Nginx、IPv4/IPv6、伪造XFF及统一来源矩阵已复验。实际生产CIDR/拓扑未验证，likely不改写为生产已复现越权。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 隔离单/双Nginx链发IPv4/IPv6和伪造XFF请求，比较白名单、限流、审计来源",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "d3fb6abbd17c032a2d8040c6e0ab8ab110481bee"
+    ],
+    "implementation_commit": "d3fb6abbd17c032a2d8040c6e0ab8ab110481bee",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-05",
@@ -240,11 +265,16 @@
     ],
     "contract": "AC-005",
     "review_date": "2026-09-18",
-    "notes": "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path> 的 lease 由随机 owner token 绑定；<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path> 必须原子 compare-and-delete，不能先 GET 再 DEL。A 超时→B 取得同 key→A 失败→C 请求以屏障控制时序；同时覆盖未取得 lease、业务异常、非成功 R、成功 TTL 与复用线程。嵌套/异步支持另行定界，不宣称持久 exactly-once。",
-    "status": "ready",
+    "notes": "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path> 的 lease 由随机 owner token 绑定；<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path> 必须原子 compare-and-delete，不能先 GET 再 DEL。A 超时→B 取得同 key→A 失败→C 请求以屏障控制时序；同时覆盖未取得 lease、业务异常、非成功 R、成功 TTL 与复用线程。嵌套/异步支持另行定界，不宣称持久 exactly-once。 Revision134：真实Redis七项验证A过期/B接管/A失败不能删除B、失败重试和TTL保留；生产切面局部owner与原子compareAndSet(expected,null)已回读；未用注解替代数据库或通知幂等。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真实Redis以屏障复现A过期/B接管/A失败/C被拒及正常失败重试",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "c0036f33036e1fef30d289adf4d72bc23100bd43"
+    ],
+    "implementation_commit": "c0036f33036e1fef30d289adf4d72bc23100bd43",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-06",
@@ -290,10 +320,16 @@
     "contract": "AC-006",
     "review_date": "2026-09-18",
     "notes": "当前code来自ThreadLocalRandom，session来自两次IdGeneratorUtil；两处均需替换。保留PKCE S256和目标Client身份。旧会话无需兼容分支；实际环境凭据清理与发布另行授权。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: HTTPS隔离SSO验证Cookie、CORS、PKCE、过期与单次兑换；显式dev HTTP例外",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "9d78cb2b30d863d4ab4099c0959656d280c7549b",
+      "79e3376cd8c76b6b157217936db020a5de920f56"
+    ],
+    "implementation_commit": "79e3376cd8c76b6b157217936db020a5de920f56",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-07",
@@ -351,10 +387,16 @@
     "contract": "AC-007",
     "review_date": "2026-09-18",
     "notes": "SsoAuthorizationService.authorize除appendQuery未编码外，还对state调用trim；同时修复精确往返。前端默认Playwright配置不覆盖SSO专用用例，使用playwright.sso.config.ts且先启动隔离服务。returnTo仅接受当前App内路径。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 专用SSO Playwright跑/admin与/home base、复杂state、过期与重新登录",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "5aadc6453405694c2e2066ef551c61374a2f5914",
+      "2b93d2d5407a7e341076f771a19ab5292b567cf8"
+    ],
+    "implementation_commit": "2b93d2d5407a7e341076f771a19ab5292b567cf8",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-08",
@@ -374,7 +416,19 @@
       "frontend/apps/sso-web/",
       "frontend/e2e/",
       "frontend/playwright.sso.config.ts",
-      "scripts/sso-hard-e2e.sh"
+      "scripts/sso-hard-e2e.sh",
+      "release-artifacts/apps.json",
+      "release-artifacts/scripts/release-state.py",
+      "release-artifacts/scripts/verify-release.sh",
+      "backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java",
+      ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "release-artifacts/docker/docker-compose-backend.yml",
+      "release-artifacts/scripts/docker-manage.sh",
+      "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/config/SsoProperties.java",
+      "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java",
+      "backend/wta-admin/src/test/java/org/namewta/web/controller/AuthClientContextSsoUnitTest.java",
+      "backend/wta-admin/src/main/resources/application.yml"
     ],
     "steps": [
       "将三App的package、prefix、origin、port、API路由、callback、template、shipped状态写入显式发布清单；复用T-09构建矩阵和T-10 release manifest，独立Origin必须改变scheme/host/port之一，不能以同Origin路径冒充ADR-0073。",
@@ -398,7 +452,8 @@
     "depth": "deep",
     "risk": "high",
     "skills": [
-      "engineering-standards"
+      "engineering-standards",
+      "namewta-fullstack-development"
     ],
     "commands": [
       "bash release-artifacts/scripts/verify-release.sh",
@@ -407,10 +462,16 @@
     "contract": "AC-008",
     "review_date": "2026-09-18",
     "notes": "正确SSO浏览器命令为cwd <Path>frontend</Path>：`pnpm exec playwright test --config playwright.sso.config.ts`。默认配置忽略SSO测试，不能使用默认pnpm test:e2e冒充。现有SSO config无webServer；Lead先提供隔离服务与真实origin/callback矩阵。生产域名与TLS未确定则保持not-ready。SSO独立Origin不是同站点一个新prefix。只修改.env.example占位；真实.env/证书/DNS不在写集。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 本地三Origin HTTPS部署候选，登录、刷新、过期恢复与health可用",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "0b71f34a414946a3d203ba84889bbd088035abd2",
+      "f661de8a81ed96662c3accb8d48a89fbe81bbe3b"
+    ],
+    "implementation_commit": "f661de8a81ed96662c3accb8d48a89fbe81bbe3b",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-09",
@@ -467,10 +528,16 @@
     "contract": "AC-009",
     "review_date": "2026-09-18",
     "notes": "`full|core`仅为枚举，不是可复制shell命令。正确顺序：cwd <Path>backend</Path>运行`./mvnw test`并保存证据；运行`./mvnw clean package -DskipTests`，随后cwd <Path>.</Path>运行`bash scripts/ci/verify-admin-bundle.sh full`并保存JAR清单；再cwd <Path>backend</Path>运行`./mvnw clean package -Pbundle-core -Dmaven.test.skip=true`，随后cwd <Path>.</Path>运行`bash scripts/ci/verify-admin-bundle.sh core`。不得先clean覆盖full产物才验证full。required名单补齐wta-notify与profile-person/enterprise，保留已校验third/sso。App开发构建后先保存mode marker，再构建prod；源码active与release shipped分开。真实外部服务命令是cwd <Path>.</Path>的`bash scripts/ci/run-external-services.sh`，仅由Lead在专属隔离Docker运行；创建/销毁容器，当前not-run。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "not-required: 构建产物扫描与脚本负向夹具覆盖；线上组合由T-08/T-30验收",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "1b5872750ba8a074ddef150400322f8b287ae69f",
+      "f4ea9c5a6b2e7dbb5dd859dc5e955b0a59252981"
+    ],
+    "implementation_commit": "f4ea9c5a6b2e7dbb5dd859dc5e955b0a59252981",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-10",
@@ -487,7 +554,13 @@
       "release-artifacts/README.md",
       "release-artifacts/docker/docker-compose-backend.yml",
       "release-artifacts/docker/docker-compose-frontend.yml",
-      "release-artifacts/scripts/docker-manage.sh"
+      "release-artifacts/scripts/docker-manage.sh",
+      "release-artifacts/scripts/release-state.py",
+      "release-artifacts/skills/wta-namewta-nginx-config/SKILL.md",
+      "release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py",
+      ".agents/skills/deploy-namewta-environment/references/build-transfer-release.md",
+      ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "scripts/ci/verify-admin-bundle.sh"
     ],
     "steps": [
       "固定partial复制旧current再覆盖一半的混源场景；当前manifest已有每文件SHA-256，问题是整体HEAD/bundle无法证明继承产物来源。",
@@ -518,10 +591,15 @@
     "contract": "AC-010",
     "review_date": "2026-09-18",
     "notes": "release-manage.sh当前stage依次写后端、清空前端、最后校验SQL，失败会留下部分新资产。修改release-artifacts/tests中的合同测试；不以逐目录rename冒充整套原子切换，不要求运行容器通过symlink自动更新。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 隔离文件系统完整stage、缺件/中断/混源注入、固定版本消费者与容器重建恢复",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "e730305a50d9065fdc8af454770b3267983ae982"
+    ],
+    "implementation_commit": "e730305a50d9065fdc8af454770b3267983ae982",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-11",
@@ -547,7 +625,32 @@
       "frontend/apps/home-web/package.json",
       "frontend/package.json",
       "frontend/pnpm-lock.yaml",
-      "backend/wta-admin/src/main/resources/application.yml"
+      "backend/wta-admin/src/main/resources/application.yml",
+      "frontend/apps/admin-web/.env.development",
+      "frontend/apps/admin-web/.env.production",
+      "frontend/apps/home-web/.env.development",
+      "frontend/apps/home-web/.env.production",
+      "frontend/apps/admin-web/src/application/http.test.ts",
+      "frontend/packages/domains/admin/src/index.ts",
+      "frontend/packages/domains/admin/src/index.test.ts",
+      "frontend/packages/domains/system/src/service.ts",
+      "frontend/packages/domains/system/src/index.test.ts",
+      "frontend/pnpm-workspace.yaml",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysProfileController.java",
+      ".agents/skills/wta-common-modules-guide/references/module-map.md",
+      ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "frontend/e2e/browser-https-transport.spec.ts",
+      "frontend/playwright.transport.config.ts",
+      "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/config/SysLogConfigTest.java",
+      "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java",
+      "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogConfig.java",
+      "backend/wta-common/wta-common-web/pom.xml",
+      "frontend/tooling/architecture/src/index.mjs",
+      "frontend/tooling/architecture/test/architecture.test.mjs",
+      "frontend/playwright.config.ts",
+      "frontend/e2e/client-auth-context.spec.ts"
     ],
     "steps": [
       "盘点哪些登录/业务请求实际开启VITE_APP_ENCRYPT、服务端@ApiEncrypt及外部消费者。",
@@ -556,7 +659,7 @@
       "同步移除无消费者CryptoJS/jsencrypt依赖，锁文件由正常依赖工具生成。",
       "构建扫描不能误删用于测试的公钥/占位说明，针对生产bundle与环境策略验收。浏览器共享响应privateKey暴露不等同于服务器私钥泄露，本票不声称TLS下可任意解密抓包。",
       "按实际@ApiEncrypt消费者裁决移除范围；机器OpenAPI HMAC、OSS签名和HttpOnly Cookie迁移不在默认写集。",
-      "当前App根目录未发现.env文件，环境注入由实际构建/部署owner补证并登记真实路径后清理，不保留虚构.env通配写集。package.json与lock仅按无消费者依赖清退修改，使用正常依赖工具生成lock；release-artifacts为构建验收产物，不作为源码写目录。"
+      "移除四份实际受跟踪App环境文件中的旧传输开关/密钥键；同步无消费者package/catalog，锁文件由正常pnpm工具生成。release-artifacts仅作为已有发布验证消费者，本票不修改其源码。"
     ],
     "checks": [
       "生产bundle不再携带该共享响应私钥或ECB路径",
@@ -570,7 +673,8 @@
     "risk": "high",
     "skills": [
       "engineering-standards",
-      "wta-common-modules-guide"
+      "wta-common-modules-guide",
+      "namewta-fullstack-development"
     ],
     "commands": [
       "frontend: pnpm lint",
@@ -581,11 +685,17 @@
     ],
     "contract": "AC-011",
     "review_date": "2026-09-18",
-    "notes": "生产bundle只有实际注入后才含密钥；源码允许注入已确认，尚未构建生产产物，不声称已泄露服务器私钥。同步Admin/Home、axios/crypto与后端ApiEncrypt消费者，保留机器HMAC、OSS签名及数据库加密。没有真实.env文件时只修配置模板和读取入口，不杜撰删除路径。",
-    "status": "ready",
+    "notes": "实际源码确认Admin/Home各有受跟踪.env.development/.env.production，共四份开启旧包装；当前两App真实prod bundle均命中共享响应私钥，T-11-baseline.json只保存文件hash/长度/命中布尔值，不保存密钥。该共享浏览器密钥不等于服务器私钥。同步两个App、两个domain及AuthController/SysUserController/SysProfileController实际消费者；保留机器HMAC、OSS签名和数据库加密。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 两App登录注册/下载/错误回归及生产bundle密钥/ECB扫描",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "b2fe70f4b5311947ea1724fbf0175f76ce802290",
+      "42c79abaf4d8de00b678bfd6da534209d851be6f"
+    ],
+    "implementation_commit": "42c79abaf4d8de00b678bfd6da534209d851be6f",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-12",
@@ -603,7 +713,21 @@
       "frontend/apps/home-web/src/router/",
       "frontend/e2e/",
       "frontend/apps/admin-web/src/router/",
-      "frontend/apps/home-web/src/application/session.ts"
+      "frontend/apps/home-web/src/application/session.ts",
+      "frontend/apps/home-web/src/application/http.ts",
+      "frontend/apps/home-web/src/layout/HomeShell.vue",
+      "frontend/apps/admin-web/src/layout/components/Navbar.vue",
+      "frontend/packages/domains/admin/src/index.ts",
+      "frontend/packages/domains/admin/src/index.test.ts",
+      "frontend/packages/adapters/axios-browser/",
+      "frontend/packages/platform/auth/src/index.ts",
+      "frontend/packages/platform/auth/src/index.test.ts",
+      "frontend/packages/platform/app-runtime/src/navigationRecovery.ts",
+      "frontend/packages/platform/app-runtime/src/navigationRecovery.test.ts",
+      "frontend/playwright.lifecycle.config.ts",
+      "frontend/playwright.config.ts",
+      "frontend/apps/admin-web/src/views/system/user/profile/index.vue",
+      ".agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md"
     ],
     "steps": [
       "固定Admin logout网络失败后的本地清理缺失与Home空roles恢复循环红灯；Home已有finally清token作为反证保留。",
@@ -636,10 +760,15 @@
     "contract": "AC-012",
     "review_date": "2026-09-18",
     "notes": "ADR-CR-007保留各App路由owner，共享稳定机制；本地退出不伪称远端token已撤销。 Home已有finally清token必须保留，修复其异常后导航和route回收；不再报告Home token残留。\n",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 离线/超时logout、并发401、空角色恢复和切Client重登",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "ae21ca00686e0065044e6e3b4a9eff01308498ff"
+    ],
+    "implementation_commit": "ae21ca00686e0065044e6e3b4a9eff01308498ff",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-13",
@@ -652,12 +781,21 @@
       "frontend/apps/home-web/src/views/RegisterPage.vue",
       "frontend/apps/home-web/src/router/",
       "frontend/packages/domains/admin/",
-      "frontend/e2e/"
+      "frontend/e2e/",
+      "frontend/apps/home-web/src/layout/HomeShell.vue",
+      "frontend/apps/home-web/src/views/PortalPage.vue",
+      "frontend/apps/home-web/src/store/registrationAvailability.ts",
+      "frontend/apps/home-web/src/store/registrationAvailability.test.ts",
+      "frontend/apps/admin-web/src/views/register.vue",
+      "frontend/apps/admin-web/src/views/login.vue",
+      "frontend/playwright.registration.config.ts",
+      "frontend/playwright.config.ts",
+      "backend/wta-admin/src/test/java/org/namewta/web/service/SysRegisterServiceRegistrationUnitTest.java"
     ],
     "steps": [
       "使用现有prepareLogin登录准备返回的Client context判定registerEnabled；它不是专用注册准备API。状态未加载或失败时入口失败关闭，后端仍独立拒绝禁用注册。",
       "提供键盘可用的验证码刷新，替换uuid同时清code。",
-      "对验证码错/过期/网络失败按错误码恢复，保留非敏感已填字段。",
+      "区分本地未发送校验与远端失败；远端拒绝或网络结果不明均重读Client并申请验证码，保留非敏感字段，不发明专用服务端错误码。",
       "展开单行SFC并给输入label、错误aria-live及loading禁用。",
       "验证快速刷新只应用最新captcha：先递增generation，旧慢响应不得覆盖新uuid；一次性captcha消费导致错误后换uuid并清code；卸载或重复提交可取消。登录与SSO/config响应合同保持回归覆盖。"
     ],
@@ -681,15 +819,21 @@
       "frontend: pnpm --filter @namewta/home-web test",
       "frontend: pnpm typecheck",
       "frontend: pnpm test:e2e",
-      "frontend: pnpm exec playwright test --config playwright.sso.config.ts"
+      "frontend: pnpm exec playwright test --config playwright.sso.config.ts --grep T-07"
     ],
     "contract": "AC-013",
-    "review_date": "2026-09-18",
+    "review_date": "2026-09-19",
     "notes": "不改变密码策略和匿名注册权限，仅兑现已存在Client context合同。\n",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 禁用注册直接访问、验证码错误后刷新重试、慢旧响应及键盘提交",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "05c035972638d950241b53366cd629fe50c48855",
+      "f2dfd45593f300bcffbe5d4ad2b0385b6edf2b31"
+    ],
+    "implementation_commit": "f2dfd45593f300bcffbe5d4ad2b0385b6edf2b31",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-14",
@@ -708,7 +852,18 @@
       "frontend/e2e/profile-management.spec.ts",
       "frontend/apps/home-web/src/application/services.ts",
       "frontend/apps/home-web/package.json",
-      "frontend/e2e/profile-self-materials.spec.ts"
+      "frontend/e2e/profile-self-materials.spec.ts",
+      "frontend/packages/domains/profile/src/material-tags/",
+      "frontend/packages/web-domains/profile/package.json",
+      "frontend/pnpm-lock.yaml",
+      "frontend/playwright.profile.config.ts",
+      "frontend/playwright.config.ts",
+      "backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java",
+      "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "frontend/apps/home-web/AGENTS.md",
+      "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/handler/SaTokenExceptionHandler.java"
     ],
     "steps": [
       "从材料目录与基座规则读取必填tag，确认person/enterprise状态及owner。",
@@ -733,7 +888,8 @@
     "skills": [
       "engineering-standards",
       "namewta-fullstack-development",
-      "wta-module-guide"
+      "wta-module-guide",
+      "wta-common-modules-guide"
     ],
     "commands": [
       "frontend: pnpm --filter @namewta/web-domain-profile test",
@@ -743,11 +899,17 @@
     ],
     "contract": "AC-014",
     "review_date": "2026-09-18",
-    "notes": "沿用现有Profile材料归属与数据库规则，不删除后端门禁换取页面成功。\n",
-    "status": "ready",
+    "notes": "沿用现有Profile材料归属与数据库规则，不删除后端门禁换取页面成功。\n Revision61：按源码增加requirements只读查询、Home最小材料/上传功能权限及实际MySQL/OSS/Chrome测试写集；不改后端提交必填规则。 Revision62：真实六份基座初始化后的OSS登记触发SQLSyntaxError，源码对照确认SysOss/Mapper所需delete_state列缺失。追加10-cde-base-ddl.sql最小写集，在唯一建表基座增加ACTIVE/PENDING字段，不修改在线库、不创建替代测试schema；T-14/T-30及共享DDL后续票必须复核。六轮失败共同模式与下一次具体改变见evidence/T-14.md。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 新个人身份证双面、企业条件材料经真实MySQL/OSS提交，刷新/失败/越权覆盖",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "56783a4959f6c06d2080871b80499bb922524599",
+      "65bd6d38d67ddaef02d83a45db528347e5487109"
+    ],
+    "implementation_commit": "65bd6d38d67ddaef02d83a45db528347e5487109",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-15",
@@ -792,10 +954,15 @@
     "contract": "AC-015",
     "review_date": "2026-09-18",
     "notes": "I*命名不是删除理由；逐方法核对声明、实现、调用与反射。测试时钟/端口注入构造是真实测试接缝，应保留；仅删除转接旧具体验证器或缺身份参数的兼容重载。正式接口中的显式身份方法改为抽象必需实现，不能删除旧default后留下委托悬空。同步EX-002当前事实。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "not-required: 方法级迁移表、全Profile/消费者编译和原行为测试覆盖，无独立新交互",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "fe4ef1303f0104441fef8458c368a0cb31a5f238"
+    ],
+    "implementation_commit": "fe4ef1303f0104441fef8458c368a0cb31a5f238",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-16",
@@ -810,11 +977,12 @@
       "frontend/packages/web-domains/workflow/src/",
       "backend/wta-modules/wta-workflow/",
       "backend/wta-admin/src/test/java/org/namewta/test/",
-      "frontend/e2e/"
+      "frontend/e2e/",
+      "frontend/playwright.config.ts"
     ],
     "steps": [
       "用受控Promise复现A加载后打开B失败或乱序响应；open立即清task/nextNodes/附属动作并递增generation。",
-      "只有当前generation可提交结果、错误和loading终态；关闭/卸载使generation失效。当前HTTP端口无signal，generation即可修复本问题，不强制扩展所有transport。",
+      "只有当前generation可提交结果、错误和loading终态；关闭/卸载使generation失效。platform HttpRequest已有signal，但当前Workflow domain调用未提供取消参数；generation即可修复本问题，不强制扩展所有transport。",
       "提交前同步阻止重复提交，捕获当前taskId及payload；await确认后再次核对generation，禁止闭包读取已被切换的task.value。",
       "分别检查getNextNodeList与getBackTaskNode的实际读取权限，复用已有checkTaskReadAccess；保留WarmFlow办理handler、现有任务锁和状态校验。",
       "不新增前后端task version字段来修前端竞态；只有定向后端测试证明现有状态/锁不足时才扩大合同。"
@@ -825,7 +993,7 @@
       "双击/过期任务不重复推进流程",
       "快速切换、关闭、网络乱序与服务端失败可恢复"
     ],
-    "decision": "复用既有checkTaskReadAccess及WarmFlow锁；先用实际引擎权限测试确定调用接入点，B-10仍标likely直到运行证实。",
+    "decision": "复用既有checkTaskReadAccess及WarmFlow锁；先用实际引擎权限测试确定调用接入点，B-10 两入口已由 T-16-engine-both-red 真实运行证实，并通过 engine-matrix 最终回归。",
     "blocked_by": [],
     "depth": "deep",
     "risk": "high",
@@ -841,11 +1009,17 @@
     ],
     "contract": "AC-016",
     "review_date": "2026-09-18",
-    "notes": "CompleteTaskBo没有现成taskVersion合同，FlwTaskServiceImpl.completeTask已有Lock4j。节点读取缺显式checkTaskReadAccess为静态事实，真实WarmFlow调用效果仍待集成验证；listVariable不是本finding定位的两个入口，不把它写成已确认缺陷。",
-    "status": "ready",
+    "notes": "CompleteTaskBo没有现成taskVersion合同，FlwTaskServiceImpl.completeTask已有Lock4j。两个节点读取已在真实 Warm-Flow 中复现越权并通过既有 checkTaskReadAccess 修复；listVariable不是本finding定位的两个入口，不把它写成已确认缺陷。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真引擎授权矩阵及快速A/B切换、B失败、确认期间切任务、重复办理",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "a81099a9f9ff113508148647c0545bef37b643d1",
+      "7ec7b019b74a824667a2ef3026fa5d3c7956e949"
+    ],
+    "implementation_commit": "7ec7b019b74a824667a2ef3026fa5d3c7956e949",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-17",
@@ -859,7 +1033,9 @@
       "frontend/packages/web-domains/workflow/src/designer.ts",
       "frontend/packages/web-domains/workflow/src/runtime.ts",
       "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
-      "frontend/e2e/"
+      "frontend/e2e/",
+      "frontend/packages/web-domains/workflow/src/index.test.ts",
+      "frontend/packages/web-domains/workflow/src/designer.test.ts"
     ],
     "steps": [
       "iframe保存ref；从实际designUrl解析允许origin，以event.source===iframe.contentWindow绑定窗口。",
@@ -889,10 +1065,15 @@
     "contract": "AC-017",
     "review_date": "2026-09-18",
     "notes": "消息来源校验在拥有iframe的Vue边界完成，controller只处理已验证动作。恶意同源脚本本身已具有同源权限，不将close消息修复描述为抵御同源XSS。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真实iframe发合法close及外部window伪造消息，刷新卸载不残留",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "01560fec395ef68127ead6ac02a5c0551411e9e7"
+    ],
+    "implementation_commit": "01560fec395ef68127ead6ac02a5c0551411e9e7",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-18",
@@ -913,7 +1094,20 @@
       "frontend/packages/web-kit/file-upload/src/types.ts",
       "frontend/packages/web-kit/file-upload/src/upload-request.ts",
       "frontend/packages/adapters/oss-upload-browser/src/client.test.ts",
-      "frontend/apps/admin-web/src/router/adminManifestRegistry.ts"
+      "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+      "frontend/packages/web-kit/file-upload/src/upload-request.test.ts",
+      "frontend/packages/web-domains/system/src/user/useUserImport.ts",
+      "frontend/packages/web-domains/system/src/user/useUserImport.test.ts",
+      "frontend/packages/web-domains/system/src/page-types.d.ts",
+      "frontend/packages/web-domains/workflow/src/definition/DefinitionPage.vue",
+      "frontend/packages/domains/workflow/src/index.ts",
+      "frontend/packages/domains/workflow/src/index.test.ts",
+      "frontend/packages/adapters/axios-browser/src/index.ts",
+      "frontend/packages/adapters/axios-browser/src/index.test.ts",
+      "frontend/packages/web-domains/system/src/oss/OssPage.vue",
+      "frontend/playwright.upload.config.ts",
+      "frontend/playwright.config.ts",
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/BrowserUploadLifecycleIntegrationTest.java"
     ],
     "steps": [
       "移除resolveUploadResult中无人持有的createObjectURL fallback；上传成功与预览地址获取失败分开表达。优先显示文件名/预览不可用并按需重新获取URL。",
@@ -942,11 +1136,17 @@
     ],
     "contract": "AC-018",
     "review_date": "2026-09-18",
-    "notes": "F-11确认的是下载URL失败后的Blob URL泄漏。现有上传成功不应因为预览失败变成失败或重复上传。避免另建system import框架；只在现有端口确实不能承载文件上传时增加最小方法。",
-    "status": "ready",
+    "notes": "F-11确认的是下载URL失败后的Blob URL泄漏。现有上传成功不应因为预览失败变成失败或重复上传。避免另建system import框架；只在现有端口确实不能承载文件上传时增加最小方法。 Revision59：24路径本地checkpoint；实际测试、失败历史及fixture边界见evidence/T-18.md。全部提交暂缓，无implementation/result SHA，不标Done。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真实上传后URL失败、导入网络/业务/401/取消、重试与资源回收",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "706c281958e23408041ae34d052a309e08201187",
+      "5fde7e2cb180156e46fa3a9671ee4776feeb24f8"
+    ],
+    "implementation_commit": "5fde7e2cb180156e46fa3a9671ee4776feeb24f8",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-19",
@@ -971,7 +1171,7 @@
     ],
     "steps": [
       "分别列User/Role/Menu的查询、表单、权限树、导入与选择状态及其owner。",
-      "当前优先用generation绑定查询参数与Client，只有当前generation可以写入list、error或结束loading。HttpRequest当前无signal；若需真实取消，再列明platform/contracts/src/index.ts与axios adapter的接口变更并修订写集，不能把AbortController当作已存在能力。",
+      "当前优先用generation绑定查询参数与Client，只有当前generation可以写入list、error或结束loading。platform HttpRequest已在T-12支持signal，但当前System domain列表方法未提供取消参数；本票使用generation失效，若扩充这些domain方法的取消合同须先修订对应写集。",
       "分别固定User/Role/Menu的旧筛选慢响应晚于新筛选响应返回的红灯，确认旧响应不能覆盖新列表或结束新loading；再拆职责，不以行数目标机械拆文件。",
       "按query/form/permission/import等可命名职责提取局部module，保留页面组合与业务所有权。",
       "对system/workflow/demo composables.ts及Admin useLoading/useDialogState/useFormDialog/useSearchReset逐个比较调用者和取消、错误语义；只在真实同语义消费者层提共享primitive。web-kit与domains/system不作为默认写集，不上收所有表单状态。",
@@ -1003,10 +1203,15 @@
     "contract": "AC-019",
     "review_date": "2026-09-18",
     "notes": "以同页面筛选A慢/B快作为最小复现；源码无generation足以确认覆盖风险，但当前页面未证明支持无卸载的动态Client切换，不能将跨Client泄漏写成已复现。先修query owner，再按实际重复语义提局部composable，不规定每个大文件必须拆分。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "not-required: 受控Promise组件测试覆盖乱序和取消，既有App回归由T-30执行",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "2fcb6aab92eb192640945e20a97088475736a164"
+    ],
+    "implementation_commit": "2fcb6aab92eb192640945e20a97088475736a164",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-20",
@@ -1025,7 +1230,36 @@
       "frontend/packages/domains/admin/src/transport.ts",
       "frontend/packages/domains/system/src/transport.ts",
       "frontend/packages/domains/third/src/index.ts",
-      "frontend/packages/adapters/oss-upload-browser/src/transport.ts"
+      "frontend/packages/adapters/oss-upload-browser/src/transport.ts",
+      "frontend/packages/platform/http/tsconfig.json",
+      "frontend/packages/adapters/axios-browser/tsconfig.json",
+      "frontend/packages/domains/admin/tsconfig.json",
+      "frontend/packages/domains/system/tsconfig.json",
+      "frontend/packages/domains/profile/tsconfig.json",
+      "frontend/packages/domains/third/tsconfig.json",
+      "frontend/packages/adapters/oss-upload-browser/tsconfig.json",
+      "frontend/packages/platform/auth/tsconfig.json",
+      "frontend/packages/platform/app-runtime/tsconfig.json",
+      "frontend/packages/platform/permission/tsconfig.json",
+      "frontend/packages/web-domains/profile/tsconfig.json",
+      "frontend/apps/home-web/tsconfig.json",
+      "frontend/packages/domains/admin/src/index.ts",
+      "frontend/packages/domains/admin/src/transport.test.ts",
+      "frontend/packages/domains/system/src/user/public.ts",
+      "frontend/packages/domains/system/src/user/public.test.ts",
+      "frontend/packages/domains/system/src/menu/public.ts",
+      "frontend/packages/domains/system/src/menu/public.test.ts",
+      "frontend/packages/domains/system/src/dict-type/public.ts",
+      "frontend/packages/domains/system/src/transport.test.ts",
+      "frontend/packages/platform/auth/src/index.test.ts",
+      "frontend/packages/platform/app-runtime/src/index.ts",
+      "frontend/packages/platform/permission/src/index.ts",
+      "frontend/packages/web-domains/profile/src/person/logic.ts",
+      "frontend/packages/web-domains/profile/src/material-tag/MaterialTagPage.vue",
+      ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md",
+      ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "frontend/apps/admin-web/src/types/axios.d.ts",
+      "frontend/apps/admin-web/src/application/http.test.ts"
     ],
     "steps": [
       "记录三个关闭开关与受影响包真实诊断，不把tsconfig开关本身报告为已发生运行时故障。",
@@ -1060,10 +1294,15 @@
     "contract": "AC-020",
     "review_date": "2026-09-18",
     "notes": "这是类型质量改进票，不是新增运行时验证框架。生成transport通过生成流程更新，不手工编辑；不顺带升级TypeScript/Vite或第三方声明。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "not-required: 受影响包诊断、typecheck和边界单测直接覆盖；相关业务E2E属于原票",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "1393ea3af6be8fd4995fad19f6f0c4ea31ad7419"
+    ],
+    "implementation_commit": "1393ea3af6be8fd4995fad19f6f0c4ea31ad7419",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-21",
@@ -1078,7 +1317,10 @@
       "frontend/apps/sso-web/src/views/AuthorizePage.vue",
       "frontend/apps/home-web/src/views/SsoCallbackPage.vue",
       "frontend/e2e/",
-      "frontend/apps/home-web/src/App.vue"
+      "frontend/apps/home-web/src/App.vue",
+      "frontend/apps/home-web/src/layout/HomeShell.vue",
+      "frontend/playwright.accessibility.config.ts",
+      "frontend/playwright.config.ts"
     ],
     "steps": [
       "保留SSO包裹input的label和Home nav/aside语义；优先补Home登录所需--client-* token fallback与SSO动态status播报。",
@@ -1110,10 +1352,15 @@
     "contract": "AC-021",
     "review_date": "2026-09-18",
     "notes": "不要求三套视觉候选或全站换皮。Home补共享LoginPage真正使用的主题变量；SSO动态错误加live region；现有label、nav/aside与RegisterPage role=alert保留。320/768/1440与缩放、键盘验收是未来运行项。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 320/768/1440、200%缩放、键盘/读屏语义和渲染对比检查",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "4043bed11299be3bc160fee21906ebdfe8626765"
+    ],
+    "implementation_commit": "4043bed11299be3bc160fee21906ebdfe8626765",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-22",
@@ -1159,10 +1406,15 @@
     "contract": "AC-022",
     "review_date": "2026-09-18",
     "notes": "用代理调用的UseCase短DSTransactional原子提交Delivery/Attempt/Outbox/Intent；Provider I/O在外。取得锁后校验owner/token/状态及租约有效期；finish影响0行时回滚先前写入。Callback与dispatch共享单调状态推进和锁序，避免DELIVERED倒退；不同delivery的聚合须串行或CAS重试。站内信已有幂等持久化和实时推送失败隔离需保留。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真实MySQL/Redis双worker、过期/reclaim、Attempt失败与finish冲突注入",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "aa98f888555baa8d9762618219a623e406dd2b23"
+    ],
+    "implementation_commit": "aa98f888555baa8d9762618219a623e406dd2b23",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-23",
@@ -1176,7 +1428,20 @@
       "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
       "backend/wta-admin/src/test/java/org/namewta/test/notify/",
       "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java",
-      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java"
+      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java",
+      "backend/wta-common/wta-common-sms/",
+      "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "frontend/packages/web-domains/notify/",
+      "docs/notify-providers.md",
+      "release-artifacts/tests/notify-baseline-contract.test.mjs",
+      ".agents/skills/engineering-standards/references/notification.md",
+      ".agents/skills/wta-module-guide/references/modules/notify/index.md",
+      "backend/wta-admin/src/test/java/org/namewta/test/migration/ossnotify/OssNotifyMigrationUnitTest.java",
+      "backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java",
+      "backend/wta-common/wta-common-json/src/test/java/org/namewta/common/json/utils/LogSanitizerTest.java",
+      "release-artifacts/scripts/init-mysql-container.sh",
+      "release-artifacts/tests/release-integration-contract.test.mjs",
+      "release-artifacts/tests/release-config.test.mjs"
     ],
     "steps": [
       "固定事务提交失败后seenEvents仍抑制重试及跨provider事件ID碰撞红灯。",
@@ -1192,7 +1457,7 @@
       "乱序/伪签名/迟到回调按现有规则失败关闭或no-op",
       "重启不丢幂等记录，聚合与delivery一致"
     ],
-    "decision": "ADR-CR-009推荐MySQL receipt唯一键；唯一身份与保留期需按实际供应商合同审核。",
+    "decision": "用户授权常见供应商停用预设；自定义HMAC持久身份永久保留，原生短信通过腾讯TC3/阿里ACS3只读查询安全接入。SMTP只标已受理。",
     "blocked_by": [
       "T-22"
     ],
@@ -1201,18 +1466,25 @@
     "skills": [
       "engineering-standards",
       "namewta-fullstack-development",
-      "wta-module-guide"
+      "wta-module-guide",
+      "wta-common-modules-guide"
     ],
     "commands": [
       "backend: ./mvnw -pl wta-modules/wta-notify -am test"
     ],
     "contract": "AC-023",
     "review_date": "2026-09-18",
-    "notes": "最小持久receipt唯一身份为明确供应商命名空间+eventId（多账号仅在实际eventId作用域需要时加入）。receipt、状态CAS与聚合同事务；同event不同payload拒绝。Worker尚未回写providerMessageId时不能先记已处理，应给供应商可重试失败；只有供应商合同证明不会重试才另评估持久inbox，不默认创建第二套消息系统。保留HMAC原文与时间窗。",
-    "status": "blocked",
-    "ready": false,
+    "notes": "已有五种预设与自定义HMAC持久回执阶段检查点；34真实集成/最新840默认回归及双bundle通过，原生短信回执适配仍为内部剩余工作；不等待用户资料，不标review/Done。 Revision127：T-23完成本地review。五种禁用供应商预设、真实发送消息ID、持久回执/账号命名空间及腾讯TC3/阿里ACS3鉴权状态查询已闭合；原生推送不冒充支持。11项协议/HTTP测试、41项真实MySQL/Redis/重启/并发/提交故障零skip通过；默认后端857项=740通过+117环境skip，Notify前端9项/typecheck/lint、full/core同源构建及清单通过。47路径checkpoint、9上游重叠/601非重叠不变，累计648；源码88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0。无真实账号试发或生产容量声明；30review/1ready/0Done，下一步T-30同一候选整体验收。HEAD/空index保持，全部提交暂缓。 Revision129：T-30真实依赖门禁发现T-23新增receipt表未同步受保护初始化器：实际126表/预期125，测试尚未开始即exit1，owned资源已恢复。回到T-23补修，先登记初始化脚本及两份发布合同测试精确写集；T-30暂停为ready，29review/1in_progress/1ready/0Done。保留旧源码88a5a9a的通过与失败证据；修正后重新冻结输入并运行受影响发布/真实服务门禁。全部提交继续暂缓。",
+    "status": "review",
+    "ready": true,
     "e2e_disposition": "required: 两实例重启/并发重复/跨provider同eventId/提交失败/早到回调；真实签名适配",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "3892e0638f668417918971fc3d64a28da30b411d",
+      "d6aba2f3beaa503d4ff76adbf178857081d50b65"
+    ],
+    "implementation_commit": "d6aba2f3beaa503d4ff76adbf178857081d50b65",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-24",
@@ -1247,7 +1519,8 @@
     "skills": [
       "engineering-standards",
       "namewta-fullstack-development",
-      "wta-module-guide"
+      "wta-module-guide",
+      "wta-common-modules-guide"
     ],
     "commands": [
       "backend: ./mvnw -pl wta-modules/wta-third -am test"
@@ -1255,10 +1528,15 @@
     "contract": "AC-024",
     "review_date": "2026-09-18",
     "notes": "RSemaphore无超时回收是源码事实；网络分区/进程停顿不一定永久泄漏，不将所有异常都写成永久故障。RPermitExpirableSemaphore具体能力以项目实际依赖验证。远端处理可能超过本地超时，不能承诺TTL严格限制供应商实际执行数；此限制与本地permit恢复分别验收。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 隔离Redis kill进程、嵌套申请失败、降低并发在途收束、rate窗口更新",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "c494e9d41c853d5c62594622f8e332c1f6d68279"
+    ],
+    "implementation_commit": "c494e9d41c853d5c62594622f8e332c1f6d68279",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-25",
@@ -1304,10 +1582,15 @@
     "contract": "AC-025",
     "review_date": "2026-09-18",
     "notes": "优先采用简单、明确的同一组织树修改串行锁，在事务内重新读取和校验父链；所有相关移动入口遵守同一锁，必要时新增/删除也纳入，禁止只锁两个端点。根sentinel、已删/不存在父、后代移动、权限范围分别处理。不新增任意depth上限或树框架。缓存以提交后的状态为准。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真MySQL并发同树/跨根移动及注入后代更新失败，树不变量成立",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "1070579108d425a228087150d08b8b6fdd0df606"
+    ],
+    "implementation_commit": "1070579108d425a228087150d08b8b6fdd0df606",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-26",
@@ -1324,7 +1607,12 @@
       "frontend/packages/api-contracts/",
       "frontend/tooling/openapi/",
       "docs/fm/",
-      "frontend/e2e/"
+      "frontend/e2e/",
+      "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java",
+      "backend/wta-admin/src/test/",
+      "backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java",
+      ".agents/skills/wta-module-guide/references/modules/workflow/capability-map.md",
+      ".agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md"
     ],
     "steps": [
       "逐条分类本change记录的70个PUT/DELETE/PATCH mapping候选（27文件），区分CRUD和OAuth/第三方协议。",
@@ -1349,7 +1637,9 @@
     "risk": "high",
     "skills": [
       "engineering-standards",
-      "namewta-fullstack-development"
+      "namewta-fullstack-development",
+      "wta-common-modules-guide",
+      "wta-module-guide"
     ],
     "commands": [
       "frontend: pnpm --filter @namewta/tooling-openapi openapi:check",
@@ -1362,10 +1652,16 @@
     "contract": "AC-026",
     "review_date": "2026-09-18",
     "notes": "70 个 mapping/27 文件是当前静态候选，实施前重新枚举并逐条给出迁移/保留理由。完整 HTTP 合同表还要单列只读 POST 与 GET 副作用的 owner，不能仅替换 PUT/DELETE/PATCH 就宣称全仓符合规范。真实 OpenAPI package 是 <Path>frontend/tooling/openapi/package.json</Path> 中的 @namewta/tooling-openapi，脚本 openapi:check；生成声明经正式 fetch/generate 重建。T-25/T-16/T-31 的 Controller/Demo 写集交叉须由 Map 串行化。 原59项漏掉11个无括号@PutMapping，当前70项见evidence/re-review-inventory.json。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 各受影响资源代表读/写/批量删除与越权请求，旧CRUD方法拒绝、生成合同一致",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "40b7f145f1e69f2df2ecb5b1de77a510cba99c3f",
+      "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
+    ],
+    "implementation_commit": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-27",
@@ -1379,7 +1675,8 @@
       "frontend/packages/domains/demo/",
       "frontend/packages/web-domains/demo/",
       "docs/fm/",
-      "backend/wta-admin/src/test/"
+      "backend/wta-admin/src/test/",
+      "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql"
     ],
     "steps": [
       "确认Demo仍是现有bundle-full中的主动示例，不因名称demo直接删产品能力。",
@@ -1411,10 +1708,15 @@
     "contract": "AC-027",
     "review_date": "2026-09-18",
     "notes": "具体 TODO 位于 <Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/service/impl/TestTreeServiceImpl.java</Path>。规则至少包含有效 parent、拒绝环、有子节点删除策略及并发重验；不能仅删除 TODO 或加前端判断。名称唯一性不是现有事实，未声明不强加。<Path>docs/fm/</Path> 代表输出需要编译与负向场景，静态模板 validate 不能代替输出验证。Demo 仍在 bundle-full；B-16 过宽依赖候选已 rejected，不借本票再次拆包。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "9c3bba7242e9fb165d96395ffc101f564fb2283d"
+    ],
+    "implementation_commit": "9c3bba7242e9fb165d96395ffc101f564fb2283d",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-28",
@@ -1428,7 +1730,8 @@
       "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java",
       "backend/wta-modules/wta-notify/src/test/",
       "backend/wta-admin/src/test/",
-      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/"
+      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/",
+      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java"
     ],
     "steps": [
       "先测默认事件multicaster与提交线程是否同步进入drain/provider，确认likely风险。",
@@ -1452,18 +1755,24 @@
     "skills": [
       "engineering-standards",
       "namewta-fullstack-development",
-      "wta-module-guide"
+      "wta-module-guide",
+      "wta-common-modules-guide"
     ],
     "commands": [
       "backend: ./mvnw -pl wta-modules/wta-notify -am test"
     ],
     "contract": "AC-028",
     "review_date": "2026-09-18",
-    "notes": "优先删除本地重复事件链，并将Redis AFTER_COMMIT发布器移到event adapter，修复真实分层命中。保留Redis wake+poll及claim/fence，不引入新executor；Redis超时失败只影响唤醒，已提交Outbox继续由poll恢复。测量慢Provider对提交线程的影响，保留needs-runtime边界。",
-    "status": "ready",
+    "notes": "优先删除本地重复事件链，并将Redis AFTER_COMMIT发布器移到event adapter，修复真实分层命中。保留Redis wake+poll及claim/fence，不引入新executor；Redis超时失败只影响唤醒，已提交Outbox继续由poll恢复。测量慢Provider对提交线程的影响，保留needs-runtime边界。 Revision86：立即排队时间复用数据库UTC并截断到秒，修复唤醒早于舍入时间；仅扩展Runtime精确路径。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 慢provider下提交耗时、Redis失败/丢wake后poll及双worker fence",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "6168467713ac3afadcff3b786ec0b7dd3f796d60"
+    ],
+    "implementation_commit": "6168467713ac3afadcff3b786ec0b7dd3f796d60",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-29",
@@ -1539,7 +1848,17 @@
       "docs/runtime-nacos-hard-cut.md",
       "docs/oss-public-private-operations.md",
       "release-artifacts/README.md",
-      ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md"
+      ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      ".agents/skills/wta-module-guide/SKILL.md",
+      ".agents/skills/engineering-standards/references/rules/review-and-delivery.md",
+      ".agents/skills/engineering-standards/references/rules/testing.md",
+      ".agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md",
+      ".agents/skills/namewta-fullstack-development/references/frontend/naming-and-layout.md",
+      "scripts/ci/verify-agent-handbooks.mjs",
+      "scripts/ci/verify-agent-handbooks.test.mjs",
+      ".github/workflows/quality-gates.yml",
+      "frontend/packages/domains/third/AGENTS.md",
+      "frontend/packages/web-domains/third/AGENTS.md"
     ],
     "steps": [
       "按cleanup-plan与精确清理清单逐文件比对独有内容，不能以31行或旧名称自动删除。",
@@ -1562,7 +1881,9 @@
     "depth": "deep",
     "risk": "medium",
     "skills": [
-      "engineering-standards"
+      "engineering-standards",
+      "wta-module-guide",
+      "namewta-fullstack-development"
     ],
     "commands": [
       "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
@@ -1571,10 +1892,15 @@
     "contract": "AC-029",
     "review_date": "2026-09-18",
     "notes": "blocked_by=T-01，正文同样只依赖T-01；不能在正文强制所有28张票完成。先收敛当前可证事实，未来未实现能力写target，代码票实施时同步对应事实，T-30最终再验。精确清理分类见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/cleanup-plan.md</Path>。41个generic不是自动删除：4个REWRITE，37个VERIFY；8个特殊手册KEEP。数字50/3/247按最终源码重新统计并保留口径。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "70eed51acb703ed19a48a47d182f2476f3eabcf7"
+    ],
+    "implementation_commit": "70eed51acb703ed19a48a47d182f2476f3eabcf7",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-30",
@@ -1585,7 +1911,8 @@
       "frontend/e2e/",
       "backend/wta-admin/src/test/",
       "scripts/ci/",
-      "release-artifacts/tests/"
+      "release-artifacts/tests/",
+      "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java"
     ],
     "steps": [
       "回读所有已接受Ticket与ADR，未接受项明确移出实施范围并保留理由，不默认为完成。",
@@ -1601,7 +1928,7 @@
       "未增加安全/类型豁免或删除测试制造绿色",
       "用户能据artifact digest批准明确候选，未自动发布"
     ],
-    "decision": "本票是未来实施后的最终验收，不是当前只写change审查任务已执行的验证。",
+    "decision": "全部31票本地实现与可逆验收完成，按T-30最终coverage与产物摘要审查；用户暂缓提交，正式Done/发布候选出口未关闭。",
     "blocked_by": [
       "T-01",
       "T-02",
@@ -1660,11 +1987,16 @@
     ],
     "contract": "AC-030",
     "review_date": "2026-09-18",
-    "notes": "最终验收使用同一源码候选和完整产物；full JAR在core clean前验证。默认Playwright不含SSO专用用例，单列playwright.sso.config.ts与新增self材料用例；现有profile-management测试不能自动代表新self流程。本change仅完成计划复核，所有产品验收保持not-run。",
-    "status": "ready",
+    "notes": "最终验收使用同一源码候选和完整产物；full JAR在core clean前验证。默认Playwright不含SSO专用用例，单列playwright.sso.config.ts与新增self材料用例；现有profile-management测试不能自动代表新self流程。本change仅完成计划复核，所有产品验收保持not-run。 Revision128：T-30进入同一工作树候选整体验收。30个前置票已完成本地review，648累计路径全部核对；计划T/P与ticket-control均0error，T-03/T-23原未知关闭。源码88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0，重建正式门禁/环境/浏览器矩阵，旧准备日志保留不覆盖。30review/1in_progress/0Done；提交/推送/部署全部暂缓，正式交付出口仍未完成。 Revision131：T-30补跑默认环境skip发现5个夹具错误：Admin菜单使用失效裸图标，两个OSS测试从旧标记截取至EOF导致重复建表，Profile以分号直接切SQL破坏坐标字面量且截取后续无关域。在本票既有admin测试写集内登记4测试及1共用SQL执行工具：复用真实基座DDL、限定片段、使用Spring SQL脚本解析，Profile在owned空数据库完整初始化五份业务基座并清理全部所建表；保留所有权限/数据/失败关闭断言，生产SQL不放宽。保留T-30-extra-services-v1的15项/5错误，修复后重跑受影响闭包；30review/1in_progress/0Done，全部提交暂缓。 Revision132：T-30补查全部环境门控/Tag发现9个Profile e2e类未被默认Maven选择；真实MySQL补跑15项，13通过/2失败/零skip。企业申请夹具credit(suffix)拼接任意末位，不满足当前统一社会信用代码校验码合同，save在业务入口即被拒绝。先追加该EnterpriseApplicationMySqlE2ETest.java精确写集，仅修正合成合法身份数据并增加响应code断言，保留发布/重新认证/唯一约束/工作流回滚断言及生产校验。浏览器163项及额外10工作流弹窗已实际通过；30review/1in_progress/0Done，全部提交暂缓。 Revision133：T-30本地整体验收完成review。最终源码bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba，3577源码/654累计owned路径；6测试修复、1上游重叠/648非重叠不变。18核心门禁通过，前端722、浏览器163+工作流10=173；默认后端740通过/117环境skip均有专项零skip闭合，46环境类/264测试源逐类对应，额外非默认选集53通过/1既有教学Disabled占位。最终full/core构建/清单、117发布合同、真实依赖与发布恢复、五分层/facts检查器通过。全部31票review、0Done；仅本地产物可审查，干净提交/正式发布candidate/direct-parent出口因用户全change提交暂缓保持未完成。最终治理结果见T-30-final-governance.json。 Revision134：完成逐票出口复核与本地产物重新验hash，3577源码/654owned路径无漂移，两JAR及三App保留副本一致、HEAD不变且index为空。T-01/T-02/T-04/T-05早期验收勾选尚未承接最终实际证据，已按各项源码/测试报告补齐并注明旧失败由后续票关闭；T-02历史日志处置/凭据轮换属于OUT且无批准，继续明确未执行。31review/0Done；非空implementation/result、direct-parent和干净正式发布候选仍受用户全change不提交约束。没有新产品改动，不重跑已证明输入未变的业务测试。",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "91d4c2ea6356c74d3174f63f2665485484f0a103"
+    ],
+    "implementation_commit": "91d4c2ea6356c74d3174f63f2665485484f0a103",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   },
   {
     "id": "T-31",
@@ -1689,7 +2021,11 @@
       "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
       "frontend/packages/api-contracts/",
       "frontend/tooling/openapi/",
-      "frontend/e2e/"
+      "frontend/e2e/",
+      "frontend/playwright.transfer.config.ts",
+      "frontend/playwright.config.ts",
+      ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "frontend/pnpm-lock.yaml"
     ],
     "steps": [
       "真实Profile→NotificationApplicationService提交应返回QUEUED；确认receipt.queued当前还受mode==ASYNC影响，同步删除假SYNC语义及全部仓内消费者。",
@@ -1714,7 +2050,8 @@
     "skills": [
       "engineering-standards",
       "namewta-fullstack-development",
-      "wta-module-guide"
+      "wta-module-guide",
+      "wta-common-modules-guide"
     ],
     "commands": [
       "backend: ./mvnw -pl wta-modules/wta-profile,wta-modules/wta-notify,wta-admin -am test"
@@ -1722,9 +2059,15 @@
     "contract": "AC-031",
     "review_date": "2026-09-18",
     "notes": "原方案新增事件、投影Outbox和MySQL挑战副本缺少必要性。Notify已有query入口，按需读取即可保持原先“供应商接受后激活”的安全语义。Profile不能直接访问Notify表/实现；notificationId归属由服务端关联决定，不接受前端任意替换。新字段只修改10-cde-base-ddl.sql；不要求存量迁移或兼容适配。",
-    "status": "ready",
+    "status": "review",
     "ready": true,
     "e2e_disposition": "required: 真Profile→Notify QUEUED、worker受理→确认及DB/Redis部分失败、重复确认/错用户/绑定变更",
-    "plan_revision": 3
+    "plan_revision": 135,
+    "implementation_commits": [
+      "ad93698fa1f5c9d41117f10f66d7ed9b65baa231",
+      "032bcecccec99080102a09c90a597e53fa7e0d36"
+    ],
+    "implementation_commit": "032bcecccec99080102a09c90a597e53fa7e0d36",
+    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a"
   }
 ]

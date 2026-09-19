@@ -1,0 +1,194 @@
+{
+  "captured_at": "2026-09-19T07:38:00.911549+00:00",
+  "implementation_result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+  "commands": [
+    {
+      "command": [
+        "node",
+        "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+        "--stage",
+        "tickets",
+        "--repo",
+        "/srv/WTA-plus",
+        "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+      ],
+      "exit_code": 0,
+      "seconds": 0.31,
+      "log": "temp/commit-push-20260919/commit-governance-1.log"
+    },
+    {
+      "command": [
+        "node",
+        "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+        "--stage",
+        "goal-plan",
+        "--repo",
+        "/srv/WTA-plus",
+        "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+      ],
+      "exit_code": 0,
+      "seconds": 0.22,
+      "log": "temp/commit-push-20260919/commit-governance-2.log"
+    },
+    {
+      "command": [
+        "node",
+        "speculo/workflows/specdev/common/tools/ticket-control.mjs",
+        "--map",
+        "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md",
+        "--repo",
+        "/srv/WTA-plus"
+      ],
+      "exit_code": 0,
+      "seconds": 0.25,
+      "log": "temp/commit-push-20260919/commit-governance-3.log"
+    }
+  ],
+  "whitespace": {
+    "full_staged_exit_code": 2,
+    "diagnostics": 360,
+    "classification": "Every remaining diagnostic is exactly one ASCII space representing an empty context line in a stored unified-diff evidence artifact. All nine artifacts parse with git apply --numstat. Their exact historical bytes are preserved; no whitespace rule or hook was changed.",
+    "counts_by_artifact": {
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-owned-diff.patch": 61,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-init-supplement.diff": 2,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-owned.diff": 45,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-stage-owned.diff": 42,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-checker-owned-diff.patch": 10,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-followup-owned-diff.patch": 12,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-owned-diff.patch": 147,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-supplement-owned-diff.patch": 16,
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-owned.diff": 25
+    },
+    "non_patch_command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check",
+      "--",
+      ".",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-owned-diff.patch",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-init-supplement.diff",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-owned.diff",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-stage-owned.diff",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-checker-owned-diff.patch",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-followup-owned-diff.patch",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-owned-diff.patch",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-supplement-owned-diff.patch",
+      ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-owned.diff"
+    ],
+    "non_patch_exit_code": 0,
+    "fixed_document": "Removed an extra blank line at EOF from evidence/T-18.md.",
+    "log": "temp/commit-push-20260919/governance-whitespace.log"
+  },
+  "patch_parse_checks": [
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-owned-diff.patch",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-owned-diff.patch"
+      ],
+      "exit_code": 0,
+      "file_entries": 26,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-init-supplement.diff",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-init-supplement.diff"
+      ],
+      "exit_code": 0,
+      "file_entries": 3,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-owned.diff",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-owned.diff"
+      ],
+      "exit_code": 0,
+      "file_entries": 47,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-stage-owned.diff",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-stage-owned.diff"
+      ],
+      "exit_code": 0,
+      "file_entries": 33,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-checker-owned-diff.patch",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-checker-owned-diff.patch"
+      ],
+      "exit_code": 0,
+      "file_entries": 8,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-followup-owned-diff.patch",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-followup-owned-diff.patch"
+      ],
+      "exit_code": 0,
+      "file_entries": 3,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-owned-diff.patch",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-owned-diff.patch"
+      ],
+      "exit_code": 0,
+      "file_entries": 62,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-supplement-owned-diff.patch",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-supplement-owned-diff.patch"
+      ],
+      "exit_code": 0,
+      "file_entries": 2,
+      "stderr": ""
+    },
+    {
+      "path": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-owned.diff",
+      "command": [
+        "git",
+        "apply",
+        "--numstat",
+        "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-owned.diff"
+      ],
+      "exit_code": 0,
+      "file_entries": 6,
+      "stderr": ""
+    }
+  ],
+  "finalized_at": "2026-09-19T07:39:04.814760+00:00"
+}

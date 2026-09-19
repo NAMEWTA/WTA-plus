@@ -1,0 +1,8 @@
+{
+  "probe": "Chrome cookie selection with a host-only Secure HttpOnly cookie; no network requests or real credentials",
+  "checks": {
+    "https://localhost:4441": true,
+    "https://localhost:4443": true,
+    "https://127.0.0.1:4441": false
+  }
+}

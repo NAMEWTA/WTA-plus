@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-web,wta-modules/wta-sso",
+    "-am",
+    "test",
+    "-Dtest=CorsPolicyTest,SsoSessionCookieTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 1,
+  "captured_at": "2026-09-18T08:28:47.236497+00:00",
+  "log": "T-06-security-red.log"
+}

@@ -1,0 +1,88 @@
+[
+  {
+    "command": [
+      "node",
+      "--test",
+      "release-artifacts/tests/notify-baseline-contract.test.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.09,
+    "source_fingerprint": "333f347e43c5bd393722a0b0db7e77207adf4aba685a6ff694b2bbde8f71704b",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-gate-first-governance-1.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-notify",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.03,
+    "source_fingerprint": "333f347e43c5bd393722a0b0db7e77207adf4aba685a6ff694b2bbde8f71704b",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-gate-first-governance-2.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.04,
+    "source_fingerprint": "333f347e43c5bd393722a0b0db7e77207adf4aba685a6ff694b2bbde8f71704b",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-gate-first-governance-3.log"
+  },
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+      "--stage",
+      "goal-plan",
+      "--repo",
+      "/srv/WTA-plus",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.18,
+    "source_fingerprint": "333f347e43c5bd393722a0b0db7e77207adf4aba685a6ff694b2bbde8f71704b",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-gate-first-governance-4.log"
+  },
+  {
+    "command": [
+      "node",
+      "speculo/workflows/specdev/common/tools/ticket-control.mjs",
+      "--map",
+      "/srv/WTA-plus/speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md",
+      "--repo",
+      "/srv/WTA-plus"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.2,
+    "source_fingerprint": "333f347e43c5bd393722a0b0db7e77207adf4aba685a6ff694b2bbde8f71704b",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-gate-first-governance-5.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.07,
+    "source_fingerprint": "333f347e43c5bd393722a0b0db7e77207adf4aba685a6ff694b2bbde8f71704b",
+    "source_unchanged": true,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-native-gate-first-governance-6.log"
+  }
+]

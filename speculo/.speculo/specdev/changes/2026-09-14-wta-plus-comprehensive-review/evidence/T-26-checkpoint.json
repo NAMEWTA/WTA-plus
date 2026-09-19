@@ -1,0 +1,188 @@
+{
+  "captured_at": "2026-09-19T00:46:22.177394+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "candidate": null,
+  "files": {
+    ".agents/skills/wta-module-guide/references/modules/workflow/capability-map.md": "5698ebfa72ca33c91d05cc83ab628db46f95de73a899777d1d4a955f11d2a352",
+    ".agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md": "2541655a08fdf2a672de99c8de9a984eaf5d1993bf8c5ce813715db8829d84d3",
+    "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java": "dcc71ba89b5622cee379a5b2c81cf0c37e9b76cd6a52fdb04dc0d4da64e16e41",
+    "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudHttpDispatchIntegrationTest.java": "2bc7559c487db382cc4dd42cce522133273d33a1e4eb0c310509d72987fef738",
+    "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudHttpMappingContractTest.java": "73a1c336833543de6fb4078a16c9f97acb23e9ca85561598000c5abf6f08ff43",
+    "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudMySqlHttpIntegrationTest.java": "faf6dd2f5c4f1124109a8b5bd4caa08cac14d4776a726f886b8f4f8c4ec1a166",
+    "backend/wta-admin/src/test/java/org/namewta/test/logging/OperationLogRedactionTest.java": "decc60490e10cc6deac8bc49a43b5ea34138e074f8a4b03acb2e6784c9d0ac64",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/OssUploadHttpContractUnitTest.java": "e2a40fb9147b246921fe6560b9193107a3ba0ea70ddabc6c96962300dd667ee7",
+    "backend/wta-admin/src/test/java/org/namewta/test/workflow/WorkflowTaskEngineIntegrationTest.java": "bc459cc218e71eed41982ca52ad2e9ff0c62a03fa9decdfe67d592c5c97ecf32",
+    "backend/wta-admin/src/test/resources/contracts/crud-http-migration.json": "6732f2df94a42cfc6e9268cee2a3e2d6ba0e8169f0e1fc8fd239bd839173b9af",
+    "backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java": "d04afb8aad6c5b1788ad5758fafdfa3708a0670e6f1c6dd33db17999952fc83a",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/EsCrudController.java": "8e5371e1c7969b5cabc0f8d0db8d17be48dea5024a01438f2e80f70a5809dfaa",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java": "aa09de652e2f550f6f3207b06d29b33184376e352d60b673e3b456b883c79ebc",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/McpDemoController.java": "9c5e3942a99d11e19809dc8468c0348425a0c307ebfffb48584299a6969211d1",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MqttController.java": "d73c818d915d4a244263648e613790029aee29ca8f96ff9a8bfefc1436650aba",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/RedisCacheController.java": "256b56fe3904569cd41e29bbae740d25c1a3382d234c1949d821875679e340c1",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/RedisPubSubController.java": "112c7c4008c35fcef6e52ae64009b060bfd99fe3ff33b891f7cfca5932626478",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java": "caacebf48935cfff93a1d04d5541d2ff8c8b60eb09722eb72a65f69bf582d0f1",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/Swagger3DemoController.java": "b09b5b330ff3b9196fcb174bb29ceff7fa9182ca683716f871c52d2811360c00",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestBatchController.java": "18efbae8134f3999aea2019f2a8a6fab5aaa5e0d06572ce0474f4c018354e43a",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestDemoController.java": "65f1a3f98f056f0d587b9c0f76b03151c5a9fdcec4be37a38f6b12796f29673b",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestExcelController.java": "74dc9d659870f008486c7e4efc159f0e2bfa251d434c9752c7b8911d04fc4587",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/TestTreeController.java": "078874a4b8da1b21a025f223c8c08517a39d5fde2d5202b9ac77072f5368c3c5",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/WebSocketController.java": "d6a3507aec2df827cddc2205fb8fefb6370f3e0616c6d9f98d3aaf4ab382918d",
+    "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/queue/PriorityQueueController.java": "8a7b5610d8b24251e3a76b27cf59fcb7dd1fcb2a928f02b2ca22ab28d2990bc7",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysLoginInfoController.java": "eb9007840f0e5062b11de3099e07a2a1e35bca8c92dbbbd22e3e170d4384158e",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysOperlogController.java": "e9e23d059cd3d894994b2290f61e55cd157865b4b261b505137b133028cfd8ec",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysUserOnlineController.java": "f074aaeefde2d0876fd2c14756fe41d2c81f28d78d3b1e1ff071bdea2ba4bc9b",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysClientController.java": "13c5dba310a3f473ba38a09a8368d7d0749671815eb633de0effc782d4fbe587",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysConfigController.java": "6354d23c9e3afa26976f739ac2e88f4ede8323486bac74b66683e29b86cd8813",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDeptController.java": "32e7305ef042c458ba4ee643d19558b2f7675da4b47ca3b5ace42cdcacfe8e5a",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictDataController.java": "85ca54294f919374362293e3d761c4977c150dac07d1f876de268910e1e3a192",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysDictTypeController.java": "4b980a1720a0da8579d41e3e7cfdfba873d0e539287daaabf40e83da3aa01c9e",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysMenuController.java": "5ca665f72ab5437e64c6617f5fd803bfe845f90688cefd0bc127d47632f11ffc",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssController.java": "069affd365dc436c718596f0bb92e42c74f9be01fa038ecabbc151df9cd22236",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssUploadController.java": "553abe56b357009d19934bb7a511942086775069731ba2d2a2fb9dc0c43e341a",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysPostController.java": "746d80fe8d6a34df63ac2d0859d3834eb13ce5ec6a12e761e3c41951d81d5248",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysProfileController.java": "14f0f745ac8bba7cf1d5a05fa884f6183d9cff4766a37b4c3aa28c0d43b4b607",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysRoleController.java": "658030a00a5258be0b958b96b215e1b42e68bb2e9202df5c256a83dde12eefce",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java": "0b4b7861127cf2d1afeb8ba66c3873518c1fdb8a52f8408529fcd904a4c611af",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserTypeController.java": "6c2fd9139b4522ab05217c5d13eeff1d55b6707dcde7fb004e41a9a6edf65790",
+    "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java": "621ee3126ec01e672d98214c4e207e8b4dd98407e36e764fe719a76fb1a5f6d3",
+    "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java": "a4a96780fe1e7bd2d44197a8ab87045f2ec4a5b2cfed0cc1a2172cce7a428e7d",
+    "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwInstanceController.java": "0b3384d4446f559291b7a581e8cb84ef8b688f6d9becd4161ad990aca1c70a66",
+    "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java": "f9bf475f947c0c088fdaf4d0e182863e574e635b9fd9b69d93351c572cf181b4",
+    "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwTaskController.java": "a42e5b84e597237270471c40918cf71755b6a6536de4675047cca96dc2db3156",
+    "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java": "63ebea1100f50e6d21d69486bc37e65f314efd3981c2fa343b58dbf748d228fd",
+    "frontend/e2e/operations-domain.spec.ts": "3effcf9696ea642913c16e7207cae7123f4df4f122de6990365d531ffb911599",
+    "frontend/e2e/system-identity.spec.ts": "e7c7737b77853f8a421550bff6bd5fb9c3abdecd74ff34d2b3a622840ae240a7",
+    "frontend/e2e/system-resources.spec.ts": "87baa330e6c6597f105631524017860cc24ca327da620ed68fbe25e8d1d45602",
+    "frontend/e2e/upload-import-lifecycle.spec.ts": "503f45b75ba526fa50eb5e99a90243084171bc43e0e8b68c638a1b0c5ac83f1c",
+    "frontend/e2e/workflow-definition.spec.ts": "5f4083a8077eff4d5391837a3e7c1ad695401f4ec3fc1ef80d3281a91def4176",
+    "frontend/e2e/workflow-runtime.spec.ts": "4597d9f740191b5d2da9ff605078c963916b1a3a11382747f4b7d9775584faa3",
+    "frontend/packages/api-contracts/README.md": "f89c54228abcff4e6f6054642a11097c3ed9f6fa2eb9a9cee3b2aab331586b76",
+    "frontend/packages/api-contracts/generated/openapi.ts": "2c2a00a739834a1d651b77d17fca8c8b3ea69a5a85f44893ef8fd1dbd444db25",
+    "frontend/packages/api-contracts/openapi/current.json": "e0309c6393e36c37c835ddee7366606868630690f9bcc3d23a1e91b2c7796d4c",
+    "frontend/packages/api-contracts/openapi/revisions/7b969de6b8ecd2efe207faeeb8639edca40af9fdbed4d34968fd2e9e42a72f32/provenance.json": "a6263f4d919d17714398778459874f61a11d6d9c7d9d8eeb401646ea524fe8b1",
+    "frontend/packages/api-contracts/openapi/revisions/7b969de6b8ecd2efe207faeeb8639edca40af9fdbed4d34968fd2e9e42a72f32/source.json": "e63f642a4d781973e691a3daab6bd4be32300fd804f99df329e68f849549fc96",
+    "frontend/packages/domains/admin/src/index.test.ts": "3298bf2dd856ebbce498b7dad524133dccb48c44784ba423a0185b2f1713867e",
+    "frontend/packages/domains/admin/src/index.ts": "393cd8e3ae8ca5e555ddb048df5c49a6a867d8b9baabbd77537e1f80ab8a88b0",
+    "frontend/packages/domains/demo/src/index.test.ts": "dcf1cd9a3f45c4bbef008c6d9227ada33bb89896d8da43b758fb2789c1c6c435",
+    "frontend/packages/domains/demo/src/index.ts": "7a27ca822917dabf2c8337185f66b46ae80b47066d7df44806d16f511f00fbf8",
+    "frontend/packages/domains/system/src/index.test.ts": "8a4cf6329828c6bd04c918eed6a56ff3792fa26ae894bca69bbf36d5fff977f6",
+    "frontend/packages/domains/system/src/monitor/index.test.ts": "160e254b2b9703bcb2ff685b72cef2da8a0762f31a9854c61b006f8aa1fb6e88",
+    "frontend/packages/domains/system/src/monitor/index.ts": "88bb9e790f6fbe9166c6ebc8e74956e14261f1e999d87c5a5a1a613fc0f364ee",
+    "frontend/packages/domains/system/src/resource-service.test.ts": "22d94a7ada3b7ae5ea490837f9d46cb442808921259eaf9cf99d59e9b11ed20f",
+    "frontend/packages/domains/system/src/resource-service.ts": "632f8f00faac26f49bd5d8b5ce864f84bba4020e02d0ffb6ac0b0f8742d40941",
+    "frontend/packages/domains/system/src/service.ts": "204ee8868b150cb20c13115e1a4125e2f5aa086e83fc4a13e60b5cf8a9f68ec6",
+    "frontend/packages/domains/workflow/src/index.test.ts": "5142599bf6b23a7e0f0cf224f4e317bf112945131033942ee0c00f396dc12f02",
+    "frontend/packages/domains/workflow/src/index.ts": "edff772f170fa404a63b02d555aa5e9babda7ee1db3cc34f0328fbf842bc0a14"
+  },
+  "upstream_nonoverlap_count": 445,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [
+    {
+      "path": "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java",
+      "upstream_sha256": "d91a9bf72c108b1ec1372d210ec4a860e7165024273ae881847791227f5a643d",
+      "current_sha256": "dcc71ba89b5622cee379a5b2c81cf0c37e9b76cd6a52fdb04dc0d4da64e16e41"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/logging/OperationLogRedactionTest.java",
+      "upstream_sha256": "d3a1874bec7e9044645d331584c8b110c19a35a2732d50c8b9ec59a472968c3d",
+      "current_sha256": "decc60490e10cc6deac8bc49a43b5ea34138e074f8a4b03acb2e6784c9d0ac64"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/workflow/WorkflowTaskEngineIntegrationTest.java",
+      "upstream_sha256": "aeccf95e8c36322ea324255cf03b18fecc6f64c630a9d60476a4c761045398f8",
+      "current_sha256": "bc459cc218e71eed41982ca52ad2e9ff0c62a03fa9decdfe67d592c5c97ecf32"
+    },
+    {
+      "path": "backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java",
+      "upstream_sha256": "a0fb90268518a6b8bf10fd87cb0e1aafc854a41e561c9305fae429b60686990b",
+      "current_sha256": "d04afb8aad6c5b1788ad5758fafdfa3708a0670e6f1c6dd33db17999952fc83a"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java",
+      "upstream_sha256": "0765f4ad68d914a6d471496257340ae296200e66a66a14c6f12c3c9130288c0e",
+      "current_sha256": "aa09de652e2f550f6f3207b06d29b33184376e352d60b673e3b456b883c79ebc"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java",
+      "upstream_sha256": "d78e8bacd8590fb882081b1af5d1372f10063c5f2a38e4824b2b84a812ad15dd",
+      "current_sha256": "caacebf48935cfff93a1d04d5541d2ff8c8b60eb09722eb72a65f69bf582d0f1"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysProfileController.java",
+      "upstream_sha256": "4b3a1559cf894914446f1722af149fce721965b489485d5443bb1d5b3785927b",
+      "current_sha256": "14f0f745ac8bba7cf1d5a05fa884f6183d9cff4766a37b4c3aa28c0d43b4b607"
+    },
+    {
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysUserController.java",
+      "upstream_sha256": "290da78d0e138d5ab5e70a931e10dd4c7ad7561c4d70121baef7fb780a771a88",
+      "current_sha256": "0b4b7861127cf2d1afeb8ba66c3873518c1fdb8a52f8408529fcd904a4c611af"
+    },
+    {
+      "path": "frontend/e2e/operations-domain.spec.ts",
+      "upstream_sha256": "35e288ab616003ccc98061c74eebae12656bb6bc9ad3eb23401a2df9422e62c9",
+      "current_sha256": "3effcf9696ea642913c16e7207cae7123f4df4f122de6990365d531ffb911599"
+    },
+    {
+      "path": "frontend/e2e/system-identity.spec.ts",
+      "upstream_sha256": "179db12532556e01bbbbb73df18029fda33c9908a1e1f46db93df3040e74b27c",
+      "current_sha256": "e7c7737b77853f8a421550bff6bd5fb9c3abdecd74ff34d2b3a622840ae240a7"
+    },
+    {
+      "path": "frontend/e2e/upload-import-lifecycle.spec.ts",
+      "upstream_sha256": "1ca6427a90cde65889f7336121bcab213f2dcc3ffa367fee29671b267cc0c19f",
+      "current_sha256": "503f45b75ba526fa50eb5e99a90243084171bc43e0e8b68c638a1b0c5ac83f1c"
+    },
+    {
+      "path": "frontend/e2e/workflow-definition.spec.ts",
+      "upstream_sha256": "ec9de0f080a02c87218048ad280bc245a33a7b24789cf1d16445baa3725da0e3",
+      "current_sha256": "5f4083a8077eff4d5391837a3e7c1ad695401f4ec3fc1ef80d3281a91def4176"
+    },
+    {
+      "path": "frontend/e2e/workflow-runtime.spec.ts",
+      "upstream_sha256": "8293410527ca5a71900baa2e5860dfdbe6c46aebffeeb727bd11b2d6cd132379",
+      "current_sha256": "4597d9f740191b5d2da9ff605078c963916b1a3a11382747f4b7d9775584faa3"
+    },
+    {
+      "path": "frontend/packages/api-contracts/generated/openapi.ts",
+      "upstream_sha256": "0f8f914d0ac0904134ca3a20f92d51aafa76db62414c7830ccff83b3b6d6ce74",
+      "current_sha256": "2c2a00a739834a1d651b77d17fca8c8b3ea69a5a85f44893ef8fd1dbd444db25"
+    },
+    {
+      "path": "frontend/packages/api-contracts/openapi/current.json",
+      "upstream_sha256": "ab988ad6fe65471a114f0af217966f36790a7df9f9262e5351e1f30ff78a7758",
+      "current_sha256": "e0309c6393e36c37c835ddee7366606868630690f9bcc3d23a1e91b2c7796d4c"
+    },
+    {
+      "path": "frontend/packages/domains/admin/src/index.test.ts",
+      "upstream_sha256": "40f882800356f67d262ef79c9d98d7ad206ba6c62ac129d6af21123b1e2c65fa",
+      "current_sha256": "3298bf2dd856ebbce498b7dad524133dccb48c44784ba423a0185b2f1713867e"
+    },
+    {
+      "path": "frontend/packages/domains/admin/src/index.ts",
+      "upstream_sha256": "c21886096de1175f9feaabc9ec05ec877d10bcd2c1498b8ac2fdf7116e73c3d8",
+      "current_sha256": "393cd8e3ae8ca5e555ddb048df5c49a6a867d8b9baabbd77537e1f80ab8a88b0"
+    },
+    {
+      "path": "frontend/packages/domains/system/src/index.test.ts",
+      "upstream_sha256": "132571d36535df9e4659f630e2b02fc400a3609997b2856df3f79eab4a622bc6",
+      "current_sha256": "8a4cf6329828c6bd04c918eed6a56ff3792fa26ae894bca69bbf36d5fff977f6"
+    },
+    {
+      "path": "frontend/packages/domains/system/src/service.ts",
+      "upstream_sha256": "ca4679ac97eeaedf69603d129d20540537da2a9dd3960355470c059913df9bcf",
+      "current_sha256": "204ee8868b150cb20c13115e1a4125e2f5aa086e83fc4a13e60b5cf8a9f68ec6"
+    },
+    {
+      "path": "frontend/packages/domains/workflow/src/index.test.ts",
+      "upstream_sha256": "68dfa3569be9df2e982de21a00187dea8904fd05c70c071b3a36b36c12eb0079",
+      "current_sha256": "5142599bf6b23a7e0f0cf224f4e317bf112945131033942ee0c00f396dc12f02"
+    },
+    {
+      "path": "frontend/packages/domains/workflow/src/index.ts",
+      "upstream_sha256": "a6a1470ddd9c92f74983ddd2328847f7aa85de38885a88887705ef0f25a55a30",
+      "current_sha256": "edff772f170fa404a63b02d555aa5e9babda7ee1db3cc34f0328fbf842bc0a14"
+    }
+  ]
+}

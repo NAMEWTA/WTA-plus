@@ -1,0 +1,18 @@
+{
+  "captured_at": "2026-09-18T19:59:33.861096+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "frontend/packages/web-domains/workflow/src/definition/DesignPage.vue": "eea6ad709829c0c5b865b7797a0dc817696014d62878ab6344aec15070b66d90",
+    "frontend/packages/web-domains/workflow/src/designer.ts": "1377580b455856115f462d531413fdf0cba1a4bfe09ce169f23a2431684e65a4",
+    "frontend/packages/web-domains/workflow/src/index.test.ts": "4853589967c827cebf7838e8fc298d91b085706f78103194f39fd2207730f6cc",
+    "frontend/packages/web-domains/workflow/src/designer.test.ts": "5a0221727b8ecf3183a52972daf7be7dd8436052d62e82f06ed070eed75962c8",
+    "frontend/e2e/workflow-definition.spec.ts": "ec9de0f080a02c87218048ad280bc245a33a7b24789cf1d16445baa3725da0e3"
+  },
+  "upstream_nonoverlap_count": 351,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [
+    "frontend/e2e/workflow-definition.spec.ts"
+  ]
+}

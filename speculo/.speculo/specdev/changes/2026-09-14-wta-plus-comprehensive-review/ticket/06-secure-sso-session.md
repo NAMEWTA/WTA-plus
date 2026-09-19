@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-06
 title: 强化SSO令牌随机性与Cookie安全
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：强化SSO令牌随机性与Cookie安全"
 ready: true
@@ -16,8 +16,8 @@ risk: high
 blocked_by: []
 contract_ids: [AC-006]
 owner: single-agent
-expected_changes: ["<Path>backend/wta-modules/wta-sso/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>frontend/apps/sso-web/</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java</Path>", "<Path>backend/wta-common/wta-common-web/src/test/</Path>"]
-writable_paths: ["<Path>backend/wta-modules/wta-sso/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>frontend/apps/sso-web/</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java</Path>", "<Path>backend/wta-common/wta-common-web/src/test/</Path>"]
+expected_changes: ["<Path>backend/wta-modules/wta-sso/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>frontend/apps/sso-web/</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java</Path>", "<Path>backend/wta-common/wta-common-web/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java</Path>"]
+writable_paths: ["<Path>backend/wta-modules/wta-sso/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>frontend/apps/sso-web/</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java</Path>", "<Path>backend/wta-common/wta-common-web/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
 shared_paths: ["<Path>backend/wta-modules/wta-sso/</Path>", "<Path>backend/wta-admin/src/main/resources/application.yml</Path>", "<Path>frontend/apps/sso-web/</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java</Path>", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java</Path>", "<Path>backend/wta-common/wta-common-web/src/test/</Path>"]
 shared_path_owners: ["<Path>backend/wta-modules/wta-sso/</Path> => single-agent (Lead; serial T-06 turn)", "<Path>backend/wta-admin/src/main/resources/application.yml</Path> => single-agent (Lead; serial T-06 turn)", "<Path>frontend/apps/sso-web/</Path> => single-agent (Lead; serial T-06 turn)", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java</Path> => single-agent (Lead; serial T-06 turn)", "<Path>backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java</Path> => single-agent (Lead; serial T-06 turn)", "<Path>backend/wta-common/wta-common-web/src/test/</Path> => single-agent (Lead; serial T-06 turn)"]
@@ -97,7 +97,7 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 - E2E disposition：required: HTTPS隔离SSO验证Cookie、CORS、PKCE、过期与单次兑换；显式dev HTTP例外。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本票实际检查见T-06.md，commit/result仍为空。
 
 ## 9. 发布、迁移与恢复
 
@@ -105,20 +105,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：会话无需兼容；旧会话失效重登；真实环境凭据清理需授权。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；最新用户授权本地实现与验证，全change暂不提交。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-006`：生产实现不含ThreadLocalRandom/雪花ID作为bearer。
-- [ ] `AC-006`：已接受的PKCE/client/version/expiry/单次兑换负向测试全部保留。
-- [ ] `AC-006`：HTTPS生产Cookie属性成立，开发HTTP例外不可进入prod。
-- [ ] `AC-006`：CORS拒绝未知origin，登录不会因Cookie错误进入循环。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-06.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-006`：生产实现不含ThreadLocalRandom/雪花ID作为bearer。
+- [x] `AC-006`：已接受的PKCE/client/version/expiry/单次兑换负向测试全部保留。
+- [x] `AC-006`：HTTPS生产Cookie属性成立，开发HTTP例外不可进入prod。
+- [x] `AC-006`：CORS拒绝未知origin，登录不会因Cookie错误进入循环。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-06.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -129,3 +129,15 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：无。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+### 本地实施决策
+
+授权码和会话标识复用模块内32字节SecureRandom实现，不新增SPI；SQL主键仍用IdGeneratorUtil。Redis会话切换v2前缀，旧会话自然等待TTL且不被新代码读取，不删除在线数据。Cookie渲染移到adapter/http，创建/删除均Secure默认true；显式SSO_COOKIE_SECURE=false只允许active profiles全为local/dev，空或含prod/未知profile拒绝启动。前端仍走同源/sso代理，开发HTTP需显式例外。
+
+common-web CORS从模式通配改为精确origin列表，默认空集合；主应用默认显式SSO_WEB_ORIGIN，可通过WEB_CORS_ALLOWED_ORIGINS提供已批准的所有App origin。拒绝通配符、null、userinfo、路径/查询/fragment和非HTTP(S)配置。此配置硬切换不保留allowed-origin-patterns桥；真实发布必须配齐TLS App origin，不把隔离/开发地址复制到生产。
+
+真实服务装配测试放在已有MySQL驱动的wta-admin测试层，复用SqlBaselinePaths，不为SSO生产POM添加测试驱动。当前完整模块81项、定向31项、2个真实Chrome场景及SSO App 3项测试/typecheck/lint/build:prod均通过，零required跳过；详见T-06.md。旧SsoTokenExtras为第二处分层真实命中，已按现有Sa-Token适配职责移至adapter/gateway并保留全部原测试，当前layered校验通过。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`9d78cb2b30d863d4ab4099c0959656d280c7549b`, `79e3376cd8c76b6b157217936db020a5de920f56`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

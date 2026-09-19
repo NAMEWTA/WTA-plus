@@ -1,0 +1,10 @@
+{
+  "command": [
+    "bash",
+    "release-artifacts/scripts/verify-release.sh"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "exit_code": 0,
+  "captured_at": "2026-09-18T08:10:48.570926+00:00",
+  "log": "T-04-release.log"
+}

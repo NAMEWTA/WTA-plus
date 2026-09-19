@@ -1,0 +1,27 @@
+{
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "captured_at": "2026-09-18T06:56:09.108406+00:00",
+  "files": {
+    ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs": "b91a485039cec0d017516cb9e5d635df9ef3f354a03bfdad659c72e260b3aa35",
+    ".agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs": "be623cc19f6677b3c965fb3f8a5147ce5637e9eba298ff41b65fe5ae664d135a",
+    ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs": "9c39671ce58aa887d74bc8a2d21beabe1eacd2dd4b5b000faefec7e8a4e473df",
+    ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs": "7c13a4b01f15545580e82603e80570d632d5ec1c770d3afcaf5623d02e0a9c96",
+    "scripts/ci/verify-submodules.sh": null,
+    "scripts/ci/verify-dev-build-guard.sh": "8cf607a1d80027dae42e0189b6e3b2d99122f17f7d9b2031328606fd880a1fee",
+    "scripts/README.md": "85d391ca7bfd29971aa410abfe1ba0f138679e652064b9af76a574c281d2cded",
+    ".github/workflows/quality-gates.yml": "f19b559c8be8f94080580fa504c3a9c1d353aef2e7316643a60a739dc0bce7b4",
+    "speculo/.speculo/specdev/config.json": "9cd30b718e29a5b19e31ba6a86beaac88322e1f7a3e77f1b646f674b99d8c352",
+    "release-artifacts/tests/release-integration-contract.test.mjs": "37b9480ce319f3b6d6a7f03ffd643959c419befb762da1502239ff9df21e5af5",
+    "release-artifacts/tests/wta-rename-keep-contract.test.mjs": "44b890f575d3c412605a1036d145258f83a7f8bb47c5c8d7997a7acddb35feac",
+    ".agents/skills/engineering-standards/references/project/00-project-profile.md": "7c2ccdd5718d9c0caf00a570acddc7c583f6ac844f75671ec1a08c58afef8eef",
+    ".agents/skills/engineering-standards/references/project/01-module-map.md": "497a296104a626a32a21ae07960530d6a45dea9bf54c3189eee62e1a2202bc2b",
+    ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md": "f528f02f3934cb678fa396e7c27da25eb737875de887f397e2bf9b96d1719211",
+    "release-artifacts/scripts/verify-release.sh": "7ab7eed8ab3ec315b8d82b818a96d659a81357a8359ecd4543d742f8a698354f",
+    ".agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md": "7fbba2b6d856e2bcd3f6f1bd7d0c150b1486c011715460b76129bc6d551a9815",
+    "speculo/workflows/specdev/common/tools/validate-specdev.mjs": "caaa167d4ab25b0b1001fdd3463e1189745aca6531ba7ecce83325dbe36ce3a5",
+    "speculo/workflows/specdev/common/tools/validate-specdev.test.mjs": "422149c90b1cae806143099c74c6934b679e785918f56ae8d032bb816f4841ad"
+  },
+  "worktree_mode": "current",
+  "implementation_commit": null,
+  "result_sha": null
+}

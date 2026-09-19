@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-log",
+    "-am",
+    "test",
+    "-Dtest=LogAspectRedactionTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 1,
+  "captured_at": "2026-09-18T07:14:57.440995+00:00",
+  "log": "T-02-operation-red.log"
+}

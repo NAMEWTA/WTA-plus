@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-core,wta-common/wta-common-web,wta-common/wta-common-security,wta-common/wta-common-redis",
+    "-am",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 0,
+  "captured_at": "2026-09-18T08:02:13.711620+00:00",
+  "log": "T-04-reactor-1.log"
+}

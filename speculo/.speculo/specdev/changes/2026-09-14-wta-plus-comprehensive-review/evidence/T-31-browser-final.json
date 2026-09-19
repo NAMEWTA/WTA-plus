@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "build:prod"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.26,
+    "log": "T-31-browser-final-build.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.transfer.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 3.95,
+    "log": "T-31-browser-final-browser.log"
+  }
+]

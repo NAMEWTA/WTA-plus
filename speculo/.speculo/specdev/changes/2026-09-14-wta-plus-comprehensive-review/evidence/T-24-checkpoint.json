@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-09-18T23:22:27.416027+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "candidate": null,
+  "files": {
+    "backend/wta-modules/wta-third/src/main/java/org/namewta/third/adapter/resilience/ThirdResiliencePolicyAdapter.java": "8ca9ae987ee16bebc8eb2d7de693cc35591a8b49582be86d7b1d806f59a7bf00",
+    "backend/wta-modules/wta-third/src/main/java/org/namewta/third/adapter/store/ThirdConfigCacheAdapter.java": "ee9d006cf74f52d4d4e6bcb2afa7291ca4953fd895aff4fdb8af06d902e113df",
+    "backend/wta-modules/wta-third/src/main/java/org/namewta/third/domain/ThirdProvider.java": "b8ee34d314872b358086299aec019270f82d90d879b7a9b0a0f0d565cd83e164",
+    "backend/wta-modules/wta-third/src/main/java/org/namewta/third/domain/ThirdEndpoint.java": "05ad74176264ff27f1a1871bf51826f60ae794074dd1c7b668a6953aa63159be",
+    "backend/wta-modules/wta-third/src/main/java/org/namewta/third/port/ThirdResiliencePort.java": "5bb0554e9de9e9693f37bd2aa6f42ce71d27cb3b1c739e6e127d5b4a2970c8cb",
+    "backend/wta-modules/wta-third/src/main/java/org/namewta/third/service/ThirdEndpointService.java": "3194e13a4078fa95a3b47618e421de8c69baacf92e1f0b234e62d8c681d84764",
+    "backend/wta-modules/wta-third/src/main/java/org/namewta/third/support/ThirdRejectedException.java": "2f77a16e1c1b80a4b2d6d82ba87399dca4b3842db5c148fa6969d1dddb9d35d9",
+    "backend/wta-modules/wta-third/src/test/java/org/namewta/third/adapter/resilience/ThirdResiliencePolicyAdapterTest.java": "2febb1b080defefe9c5b36beb624f44f4b28c94258a067b513a6293ad65a79c2",
+    "backend/wta-modules/wta-third/src/test/java/org/namewta/third/adapter/gateway/ThirdGatewayAdapterTest.java": "9d18b5969732eac010469ae44b3d9d49a9418a81d97e6ae0603110af74db75e1",
+    "backend/wta-modules/wta-third/src/test/java/org/namewta/third/adapter/gateway/ThirdGatewayApplicationContextTest.java": "b0dd6094e844d6559eacac92f4c7051e82f4fd51af8414b359d484032cba9362",
+    "backend/wta-admin/src/test/java/org/namewta/test/third/ThirdResilienceRecoveryIntegrationTest.java": "4cd9db3c5a5da5270346ea04216b47494b6be76325da68689286f82548009713",
+    "backend/wta-admin/src/test/java/org/namewta/test/third/ThirdLimitConfigurationIntegrationTest.java": "79053cfbba344983a1402d2949fa9e04cc6ee0f051334e2fe4fb0bdc15c007a8"
+  },
+  "upstream_nonoverlap_count": 450,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": []
+}

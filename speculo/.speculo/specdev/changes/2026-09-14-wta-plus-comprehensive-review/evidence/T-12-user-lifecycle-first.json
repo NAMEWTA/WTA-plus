@@ -1,0 +1,36 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "exec",
+      "vitest",
+      "run",
+      "src/store/modules/user.lifecycle.test.ts",
+      "--maxWorkers=1",
+      "--no-file-parallelism"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "output": "\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web\n\n\n Test Files  1 passed (1)\n      Tests  4 passed (4)\n   Start at  22:51:22\n   Duration  331ms (transform 118ms, setup 0ms, import 195ms, tests 10ms, environment 0ms)\n\n"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "exec",
+      "vitest",
+      "run",
+      "src/store/user.lifecycle.test.ts",
+      "--maxWorkers=1",
+      "--no-file-parallelism"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "output": "\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/home-web\n\n\n Test Files  1 passed (1)\n      Tests  3 passed (3)\n   Start at  22:51:24\n   Duration  239ms (transform 50ms, setup 0ms, import 115ms, tests 7ms, environment 0ms)\n\n"
+  }
+]

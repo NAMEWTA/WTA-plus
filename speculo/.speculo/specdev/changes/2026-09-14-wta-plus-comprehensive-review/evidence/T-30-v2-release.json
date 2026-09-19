@@ -1,0 +1,20 @@
+[
+  {
+    "number": 15,
+    "command": [
+      "bash",
+      "release-artifacts/scripts/verify-release.sh"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 38.12,
+    "source_fingerprint": "1dff1a345e1979d809bb547f3060645d86b4508f3df3aad5fd227de53ab2c504",
+    "source_unchanged": true,
+    "log": "T-30-v2-release-15.log",
+    "test_summary_lines": [
+      "ℹ tests 117",
+      "ℹ pass 117",
+      "ℹ fail 0"
+    ]
+  }
+]

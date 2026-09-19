@@ -1,0 +1,101 @@
+{
+  "captured_at": "2026-09-19T06:12:32.655440+00:00",
+  "current_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+  "comparisons": [
+    {
+      "from_snapshot": "T-30-source-pre-init-fix.json",
+      "from_fingerprint": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+      "to_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+      "changed": {
+        "backend/wta-admin/src/test/java/org/namewta/test/migration/adminruntime/AdminRuntimeCapabilityMySqlIntegrationTest.java": {
+          "before": "dcb2b1de8c208b24789890de752e4f00d3cceb2c7455823c8d9c479aef289f57",
+          "after": "2de2963abf3e7ae3613b8d085914af74f1bde18167f452c99a9582b1fb86834f"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/migration/ossaccess/OssAccessMigrationMySqlIntegrationTest.java": {
+          "before": "f278709b251f543fc8552d198916a130b7a6484a5237d5870fb2e51a1d562cb5",
+          "after": "de201db58e879fcc0d8b09031743fcb91eb3133c3c7afbb89a490d33a7b3aedd"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java": {
+          "before": "2d42aaec31d899da9e980688f8c9da9a3c9684167df506d166f42634f96030aa",
+          "after": "7c41ba9c72717b9290a067f77b7b986b13d18b2341f548faee6e155b0eb4e97f"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaMySqlIntegrationTest.java": {
+          "before": "def0cef8fdbb754f7866d7ce0aa76895b12dc969ffb3b84fe210291158d3500e",
+          "after": "33edddfceeb3315ca4094b0c08ab18eb4f48753b409da7bbedb4bbe544d0b026"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/support/SqlBaselineScripts.java": {
+          "before": null,
+          "after": "3610183696afcb2b1c7d450c1f193e76778ddae2041dac6a8658763f883cbbde"
+        },
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java": {
+          "before": "ff4fe9b0dacbff12b7149923ba84bf458f512fb34ca0bd1b316cb8322f4ae359",
+          "after": "00375846d123cd4f3980f610987d029d2f8192b85b80070b6b4b6dbf293cd8d5"
+        },
+        "release-artifacts/scripts/init-mysql-container.sh": {
+          "before": "70875e463a9a5f2ee4dd609268b6dc3a51a1ec6f528d0019079fd9638397ba8b",
+          "after": "5913f4a7b26ba31341f4a00c5af22913805fa4701aebc7d88075589e0340514e"
+        },
+        "release-artifacts/tests/release-config.test.mjs": {
+          "before": "98ed4245830a3f36b460e7c4eca111e4eb0e58e466e58f0d6e59a80ff561cc96",
+          "after": "b38cfad8a496b926168ba3d5551731c9ed9b6a9f3c9ee6160e105ed4d6640edf"
+        },
+        "release-artifacts/tests/release-integration-contract.test.mjs": {
+          "before": "37b9480ce319f3b6d6a7f03ffd643959c419befb762da1502239ff9df21e5af5",
+          "after": "5d6acba5ec58fff481494bbab440ae09efe745bf993040ac1d10dd26541b5fac"
+        }
+      },
+      "unchanged_paths": 3568,
+      "production_backend_unchanged": true,
+      "frontend_unchanged": true
+    },
+    {
+      "from_snapshot": "T-30-source-pre-fixture-fix.json",
+      "from_fingerprint": "1dff1a345e1979d809bb547f3060645d86b4508f3df3aad5fd227de53ab2c504",
+      "to_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+      "changed": {
+        "backend/wta-admin/src/test/java/org/namewta/test/migration/adminruntime/AdminRuntimeCapabilityMySqlIntegrationTest.java": {
+          "before": "dcb2b1de8c208b24789890de752e4f00d3cceb2c7455823c8d9c479aef289f57",
+          "after": "2de2963abf3e7ae3613b8d085914af74f1bde18167f452c99a9582b1fb86834f"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/migration/ossaccess/OssAccessMigrationMySqlIntegrationTest.java": {
+          "before": "f278709b251f543fc8552d198916a130b7a6484a5237d5870fb2e51a1d562cb5",
+          "after": "de201db58e879fcc0d8b09031743fcb91eb3133c3c7afbb89a490d33a7b3aedd"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java": {
+          "before": "2d42aaec31d899da9e980688f8c9da9a3c9684167df506d166f42634f96030aa",
+          "after": "7c41ba9c72717b9290a067f77b7b986b13d18b2341f548faee6e155b0eb4e97f"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaMySqlIntegrationTest.java": {
+          "before": "def0cef8fdbb754f7866d7ce0aa76895b12dc969ffb3b84fe210291158d3500e",
+          "after": "33edddfceeb3315ca4094b0c08ab18eb4f48753b409da7bbedb4bbe544d0b026"
+        },
+        "backend/wta-admin/src/test/java/org/namewta/test/support/SqlBaselineScripts.java": {
+          "before": null,
+          "after": "3610183696afcb2b1c7d450c1f193e76778ddae2041dac6a8658763f883cbbde"
+        },
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java": {
+          "before": "ff4fe9b0dacbff12b7149923ba84bf458f512fb34ca0bd1b316cb8322f4ae359",
+          "after": "00375846d123cd4f3980f610987d029d2f8192b85b80070b6b4b6dbf293cd8d5"
+        }
+      },
+      "unchanged_paths": 3571,
+      "production_backend_unchanged": true,
+      "frontend_unchanged": true
+    },
+    {
+      "from_snapshot": "T-30-source-pre-profile-tagged-fix.json",
+      "from_fingerprint": "e82d67bfc48be34beba20dfad06848e15965f96ba172ddb5f30a8e752c856d66",
+      "to_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+      "changed": {
+        "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java": {
+          "before": "ff4fe9b0dacbff12b7149923ba84bf458f512fb34ca0bd1b316cb8322f4ae359",
+          "after": "00375846d123cd4f3980f610987d029d2f8192b85b80070b6b4b6dbf293cd8d5"
+        }
+      },
+      "unchanged_paths": 3576,
+      "production_backend_unchanged": true,
+      "frontend_unchanged": true
+    }
+  ],
+  "rule": "Historical results retain original fingerprints. Only byte-identical production/frontend inputs are carried forward. All six changed tests ran after correction; latest default Maven and full/core rebuild use the final fingerprint."
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-core",
+    "-am",
+    "test",
+    "-Dtest=ServletUtilsClientAddressTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "exit_code": 1,
+  "captured_at": "2026-09-18T07:57:42.220844+00:00",
+  "log": "T-04-peer-red.log"
+}

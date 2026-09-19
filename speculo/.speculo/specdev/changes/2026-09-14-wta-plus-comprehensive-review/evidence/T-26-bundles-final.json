@@ -1,0 +1,45 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "clean",
+      "package",
+      "-DskipTests"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 42.73,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26-bundles-final-1.log",
+    "counts": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": []
+  },
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "clean",
+      "package",
+      "-Pbundle-core",
+      "-Dmaven.test.skip=true"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 39.01,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26-bundles-final-2.log",
+    "counts": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": []
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=TrustedClientAddressIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-Dclient.address.nginx.integration=true",
+    "-Dnamewta.repo.root=/srv/WTA-plus"
+  ],
+  "exit_code": 0,
+  "seconds": 26.43,
+  "reports": [
+    {
+      "name": "org.namewta.test.security.TrustedClientAddressIntegrationTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ]
+}

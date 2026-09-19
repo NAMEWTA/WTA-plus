@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-05
 title: 修复防重键过期后的所有权竞态
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：修复防重键过期后的所有权竞态"
 ready: true
@@ -16,8 +16,8 @@ risk: high
 blocked_by: []
 contract_ids: [AC-005]
 owner: single-agent
-expected_changes: ["<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/test/</Path>"]
-writable_paths: ["<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/test/</Path>"]
+expected_changes: ["<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/test/</Path>", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/annotation/RepeatSubmit.java</Path>", "<Path>.agents/skills/wta-common-modules-guide/references/other-utils.md</Path>"]
+writable_paths: ["<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/test/</Path>", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/annotation/RepeatSubmit.java</Path>", "<Path>.agents/skills/wta-common-modules-guide/references/other-utils.md</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
 shared_paths: ["<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path>", "<Path>backend/wta-common/wta-common-redis/src/test/</Path>"]
 shared_path_owners: ["<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/aspectj/RepeatSubmitAspect.java</Path> => single-agent (Lead; serial T-05 turn)", "<Path>backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java</Path> => single-agent (Lead; serial T-05 turn)", "<Path>backend/wta-common/wta-common-redis/src/test/</Path> => single-agent (Lead; serial T-05 turn)"]
@@ -104,20 +104,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：修复失败回退本票代码并停止使用错误释放路径；不批量清理Redis业务键。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；最新用户已授权本地实现与验证，全change暂不提交。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-005`：A失败不得删除B的键。
-- [ ] `AC-005`：正常失败可重试，正常成功TTL内被拒。
-- [ ] `AC-005`：异常/线程复用无ThreadLocal遗留。
-- [ ] `AC-005`：DB唯一约束和通知业务幂等不被此注解替代。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-05.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-005`：A失败不得删除B的键。
+- [x] `AC-005`：正常失败可重试，正常成功TTL内被拒。
+- [x] `AC-005`：异常/线程复用无ThreadLocal遗留。
+- [x] `AC-005`：DB唯一约束和通知业务幂等不被此注解替代。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-05.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -128,3 +128,19 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：无。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+### 实施补充
+
+将三个advice与ThreadLocal改为一个同步Around作用域，owner/key只属于已获得租约的当前调用，异常分支原子比较删除，成功及非R结果保留原TTL。仓内无直接调用advice方法，IdempotentConfig仍只构造Aspect；不提供旧advice桥。RedisUtils新增有明确expected value的比较删除，通过当前Redisson 4.6.1 RBucket.compareAndSet(expected,null)复用同一codec与NameMapper，已检查其字节码为单个Lua GET/DEL。注解文档明确同步防重窗口，不承诺嵌套/异步或持久幂等。真实Redis用屏障控制旧请求停留、实际TTL到期、新请求接管和旧请求失败；所有测试在独立容器，禁止连接现有Redis或批量清键。
+
+### 本地验证检查点
+
+真实Redis红灯已证明旧A删除B。最终受影响Maven15项通过（含7项真实Redis/Spring AOP测试，零跳过），44模块消费者完整回归670项中643通过、1项既有旧Notify DDL OSS载体错误、26项外部环境跳过；本票7项在完整回归仍全通过。详见T-05.md/T-05-checkpoint.json。全部自建Redis容器已清理；所有提交暂停，commit/result为null，未标Done。
+
+## Revision134 最终本地验收补记
+
+真实Redis七项验证A过期/B接管/A失败不能删除B、失败重试和TTL保留；生产切面局部owner与原子compareAndSet(expected,null)已回读；未用注解替代数据库或通知幂等。 实际证据：T-30-repeat-v2.json, T-30-v3-backend-tests.json；源码路径及hash见T-30-completion-audit-revision134.json。实施提交/direct-parent/result继续未勾选。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`c0036f33036e1fef30d289adf4d72bc23100bd43`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

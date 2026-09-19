@@ -1,0 +1,17 @@
+{
+  "inspected_at": "2026-09-19T03:00:24.879399+00:00",
+  "method": "javap -c -p on installed SMS4J 3.3.5 bytecode; read-only",
+  "jars": {
+    "/root/.m2/repository/org/dromara/sms4j/sms4j-core/3.3.5/sms4j-core-3.3.5.jar": "8acf6f7288991555384be0ab8a305d675d16559f13fbc869c925abb2c05bfc48",
+    "/root/.m2/repository/org/dromara/sms4j/sms4j-comm/3.3.5/sms4j-comm-3.3.5.jar": "e8cf994dd42185877b6909ae5ab9c37f3082c492e10ad64328f929d470f1cd44",
+    "/root/.m2/repository/org/dromara/sms4j/sms4j-spring-boot-starter/3.3.5/sms4j-spring-boot-starter-3.3.5.jar": "a4a6634188398d91fe4c45277fcc0e7dec26dd742fa8a2ec9b7e9eab96f4cc00",
+    "/root/.m2/repository/org/dromara/sms4j/sms4j-provider/3.3.5/sms4j-provider-3.3.5.jar": "eb92105fddc2e06b402c2657b0fc13ad8f65b4627f6f1e03670ff42f439535d9",
+    "/root/.m2/repository/org/dromara/sms4j/sms4j-api/3.3.5/sms4j-api-3.3.5.jar": "ac215c11a7ff6053f428e09b39c636a92e8d7916ae1348502cdcfc58009645a9"
+  },
+  "outputs": {
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-sdk-tencent.txt": "088f42e34b1dc02219fc5eddbb3acb91553cdd56594647e99767c8098fd72c98",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-sdk-alibaba.txt": "40763239375d8f3e8b34d15ea9cd2065daf62a5c7e8c61c0b1c0cb08fc8646a9",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-sdk-tencent-utils.txt": "50db0dfd7d5cfa4efb4062ce6fb779a42bf3e71bff73442e15921a26ef56418e",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-sdk-sms-utils.txt": "81b995f39eed298ba72ad17b534ace71e40a088597ea740f967cd49d8629bfdf"
+  }
+}

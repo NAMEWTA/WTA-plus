@@ -1,0 +1,21 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "release-artifacts/tests/build-matrix.test.mjs",
+    "release-artifacts/tests/external-service-reports.test.mjs",
+    "release-artifacts/tests/mysql-baseline-contract.test.mjs",
+    "release-artifacts/tests/mysql-sql-contract.test.mjs",
+    "release-artifacts/tests/nacos-proxy-config.test.mjs",
+    "release-artifacts/tests/notify-baseline-contract.test.mjs",
+    "release-artifacts/tests/release-config.test.mjs",
+    "release-artifacts/tests/release-integration-contract.test.mjs",
+    "release-artifacts/tests/trusted-client-address.test.mjs",
+    "release-artifacts/tests/workflow-assets-contract.test.mjs",
+    "release-artifacts/tests/wta-rename-keep-contract.test.mjs"
+  ],
+  "cwd": ".",
+  "exit_code": 0,
+  "seconds": 6.15
+}

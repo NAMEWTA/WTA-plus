@@ -1,0 +1,302 @@
+Compiled from "TencentUtils.java"
+public class org.dromara.sms4j.tencent.utils.TencentUtils {
+  private static final org.slf4j.Logger log;
+
+  private static final java.lang.String ALGORITHM;
+
+  private static final java.lang.String HTTP_REQUEST_METHOD;
+
+  public org.dromara.sms4j.tencent.utils.TencentUtils();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  private static byte[] hmac256(byte[], java.lang.String);
+    Code:
+       0: new           #7                  // class cn/hutool/crypto/digest/HMac
+       3: dup
+       4: getstatic     #9                  // Field cn/hutool/crypto/digest/HmacAlgorithm.HmacSHA256:Lcn/hutool/crypto/digest/HmacAlgorithm;
+       7: aload_0
+       8: invokespecial #15                 // Method cn/hutool/crypto/digest/HMac."<init>":(Lcn/hutool/crypto/digest/HmacAlgorithm;[B)V
+      11: astore_2
+      12: aload_2
+      13: aload_1
+      14: invokevirtual #18                 // Method cn/hutool/crypto/digest/HMac.digest:(Ljava/lang/String;)[B
+      17: areturn
+
+  private static java.lang.String sha256Hex(java.lang.String) throws java.lang.Exception;
+    Code:
+       0: aload_0
+       1: invokestatic  #22                 // Method cn/hutool/crypto/digest/DigestUtil.sha256:(Ljava/lang/String;)[B
+       4: invokestatic  #27                 // Method javax/xml/bind/DatatypeConverter.printHexBinary:([B)Ljava/lang/String;
+       7: invokevirtual #33                 // Method java/lang/String.toLowerCase:()Ljava/lang/String;
+      10: areturn
+
+  public static java.lang.String generateSignature(org.dromara.sms4j.tencent.config.TencentConfig, java.lang.String, java.lang.String[], java.lang.String[], java.lang.String) throws java.lang.Exception;
+    Code:
+       0: new           #39                 // class java/util/Date
+       3: dup
+       4: new           #41                 // class java/lang/StringBuilder
+       7: dup
+       8: invokespecial #43                 // Method java/lang/StringBuilder."<init>":()V
+      11: aload         4
+      13: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      16: ldc           #48                 // String 000
+      18: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      21: invokevirtual #50                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      24: invokestatic  #53                 // Method java/lang/Long.parseLong:(Ljava/lang/String;)J
+      27: invokespecial #59                 // Method java/util/Date."<init>":(J)V
+      30: invokestatic  #62                 // Method org/dromara/sms4j/comm/utils/SmsDateUtils.normDateGmt:(Ljava/util/Date;)Ljava/lang/String;
+      33: astore        5
+      35: ldc           #68                 // String /
+      37: astore        6
+      39: ldc           #70                 // String
+      41: astore        7
+      43: new           #41                 // class java/lang/StringBuilder
+      46: dup
+      47: invokespecial #43                 // Method java/lang/StringBuilder."<init>":()V
+      50: ldc           #72                 // String content-type:application/json; charset=utf-8\nhost:
+      52: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      55: aload_0
+      56: invokevirtual #74                 // Method org/dromara/sms4j/tencent/config/TencentConfig.getRequestUrl:()Ljava/lang/String;
+      59: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      62: ldc           #79                 // String \n
+      64: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      67: invokevirtual #50                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      70: astore        8
+      72: ldc           #81                 // String content-type;host
+      74: astore        9
+      76: new           #83                 // class java/util/HashMap
+      79: dup
+      80: invokespecial #85                 // Method java/util/HashMap."<init>":()V
+      83: astore        10
+      85: aload         10
+      87: ldc           #86                 // String PhoneNumberSet
+      89: aload_3
+      90: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      95: pop
+      96: aload         10
+      98: ldc           #94                 // String SmsSdkAppId
+     100: aload_0
+     101: invokevirtual #96                 // Method org/dromara/sms4j/tencent/config/TencentConfig.getSdkAppId:()Ljava/lang/String;
+     104: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     109: pop
+     110: aload         10
+     112: ldc           #99                 // String SignName
+     114: aload_0
+     115: invokevirtual #101                // Method org/dromara/sms4j/tencent/config/TencentConfig.getSignature:()Ljava/lang/String;
+     118: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     123: pop
+     124: aload         10
+     126: ldc           #104                // String TemplateId
+     128: aload_1
+     129: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     134: pop
+     135: aload         10
+     137: ldc           #106                // String TemplateParamSet
+     139: aload_2
+     140: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     145: pop
+     146: aload         10
+     148: invokestatic  #108                // Method cn/hutool/json/JSONUtil.toJsonStr:(Ljava/lang/Object;)Ljava/lang/String;
+     151: astore        11
+     153: aload         11
+     155: invokestatic  #114                // Method sha256Hex:(Ljava/lang/String;)Ljava/lang/String;
+     158: astore        12
+     160: new           #41                 // class java/lang/StringBuilder
+     163: dup
+     164: invokespecial #43                 // Method java/lang/StringBuilder."<init>":()V
+     167: ldc           #120                // String POST\n
+     169: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     172: aload         6
+     174: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     177: ldc           #79                 // String \n
+     179: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     182: aload         7
+     184: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     187: ldc           #79                 // String \n
+     189: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     192: aload         8
+     194: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     197: ldc           #79                 // String \n
+     199: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     202: aload         9
+     204: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     207: ldc           #79                 // String \n
+     209: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     212: aload         12
+     214: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     217: invokevirtual #50                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     220: astore        13
+     222: new           #41                 // class java/lang/StringBuilder
+     225: dup
+     226: invokespecial #43                 // Method java/lang/StringBuilder."<init>":()V
+     229: aload         5
+     231: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     234: ldc           #68                 // String /
+     236: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     239: aload_0
+     240: invokevirtual #122                // Method org/dromara/sms4j/tencent/config/TencentConfig.getService:()Ljava/lang/String;
+     243: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     246: ldc           #125                // String /tc3_request
+     248: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     251: invokevirtual #50                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     254: astore        14
+     256: aload         13
+     258: invokestatic  #114                // Method sha256Hex:(Ljava/lang/String;)Ljava/lang/String;
+     261: astore        15
+     263: new           #41                 // class java/lang/StringBuilder
+     266: dup
+     267: invokespecial #43                 // Method java/lang/StringBuilder."<init>":()V
+     270: ldc           #127                // String TC3-HMAC-SHA256\n
+     272: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     275: aload         4
+     277: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     280: ldc           #79                 // String \n
+     282: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     285: aload         14
+     287: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     290: ldc           #79                 // String \n
+     292: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     295: aload         15
+     297: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     300: invokevirtual #50                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     303: astore        16
+     305: new           #41                 // class java/lang/StringBuilder
+     308: dup
+     309: invokespecial #43                 // Method java/lang/StringBuilder."<init>":()V
+     312: ldc           #129                // String TC3
+     314: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     317: aload_0
+     318: invokevirtual #131                // Method org/dromara/sms4j/tencent/config/TencentConfig.getAccessKeySecret:()Ljava/lang/String;
+     321: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     324: invokevirtual #50                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     327: getstatic     #134                // Field java/nio/charset/StandardCharsets.UTF_8:Ljava/nio/charset/Charset;
+     330: invokevirtual #140                // Method java/lang/String.getBytes:(Ljava/nio/charset/Charset;)[B
+     333: aload         5
+     335: invokestatic  #144                // Method hmac256:([BLjava/lang/String;)[B
+     338: astore        17
+     340: aload         17
+     342: aload_0
+     343: invokevirtual #122                // Method org/dromara/sms4j/tencent/config/TencentConfig.getService:()Ljava/lang/String;
+     346: invokestatic  #144                // Method hmac256:([BLjava/lang/String;)[B
+     349: astore        18
+     351: aload         18
+     353: ldc           #148                // String tc3_request
+     355: invokestatic  #144                // Method hmac256:([BLjava/lang/String;)[B
+     358: astore        19
+     360: aload         19
+     362: aload         16
+     364: invokestatic  #144                // Method hmac256:([BLjava/lang/String;)[B
+     367: invokestatic  #27                 // Method javax/xml/bind/DatatypeConverter.printHexBinary:([B)Ljava/lang/String;
+     370: invokevirtual #33                 // Method java/lang/String.toLowerCase:()Ljava/lang/String;
+     373: astore        20
+     375: new           #41                 // class java/lang/StringBuilder
+     378: dup
+     379: invokespecial #43                 // Method java/lang/StringBuilder."<init>":()V
+     382: ldc           #150                // String TC3-HMAC-SHA256 Credential=
+     384: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     387: aload_0
+     388: invokevirtual #152                // Method org/dromara/sms4j/tencent/config/TencentConfig.getAccessKeyId:()Ljava/lang/String;
+     391: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     394: ldc           #68                 // String /
+     396: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     399: aload         14
+     401: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     404: ldc           #155                // String , SignedHeaders=
+     406: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     409: aload         9
+     411: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     414: ldc           #157                // String , Signature=
+     416: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     419: aload         20
+     421: invokevirtual #44                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     424: invokevirtual #50                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     427: areturn
+
+  public static java.util.Map<java.lang.String, java.lang.String> generateHeadsMap(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+    Code:
+       0: new           #83                 // class java/util/HashMap
+       3: dup
+       4: invokespecial #85                 // Method java/util/HashMap."<init>":()V
+       7: astore        6
+       9: aload         6
+      11: ldc           #161                // String Authorization
+      13: aload_0
+      14: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      19: pop
+      20: aload         6
+      22: ldc           #163                // String Content-Type
+      24: ldc           #165                // String application/json; charset=utf-8
+      26: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      31: pop
+      32: aload         6
+      34: ldc           #167                // String Host
+      36: aload         5
+      38: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      43: pop
+      44: aload         6
+      46: ldc           #169                // String X-TC-Action
+      48: aload_2
+      49: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      54: pop
+      55: aload         6
+      57: ldc           #171                // String X-TC-Timestamp
+      59: aload_1
+      60: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      65: pop
+      66: aload         6
+      68: ldc           #173                // String X-TC-Version
+      70: aload_3
+      71: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      76: pop
+      77: aload         6
+      79: ldc           #175                // String X-TC-Region
+      81: aload         4
+      83: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      88: pop
+      89: aload         6
+      91: areturn
+
+  public static java.util.Map<java.lang.String, java.lang.Object> generateRequestBody(java.lang.String[], java.lang.String, java.lang.String, java.lang.String, java.lang.String[]);
+    Code:
+       0: new           #83                 // class java/util/HashMap
+       3: dup
+       4: invokespecial #85                 // Method java/util/HashMap."<init>":()V
+       7: astore        5
+       9: aload         5
+      11: ldc           #86                 // String PhoneNumberSet
+      13: aload_0
+      14: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      19: pop
+      20: aload         5
+      22: ldc           #94                 // String SmsSdkAppId
+      24: aload_1
+      25: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      30: pop
+      31: aload         5
+      33: ldc           #99                 // String SignName
+      35: aload_2
+      36: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      41: pop
+      42: aload         5
+      44: ldc           #104                // String TemplateId
+      46: aload_3
+      47: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      52: pop
+      53: aload         5
+      55: ldc           #106                // String TemplateParamSet
+      57: aload         4
+      59: invokeinterface #88,  3           // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      64: pop
+      65: aload         5
+      67: areturn
+
+  static {};
+    Code:
+       0: ldc           #115                // class org/dromara/sms4j/tencent/utils/TencentUtils
+       2: invokestatic  #177                // Method org/slf4j/LoggerFactory.getLogger:(Ljava/lang/Class;)Lorg/slf4j/Logger;
+       5: putstatic     #183                // Field log:Lorg/slf4j/Logger;
+       8: return
+}

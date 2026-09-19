@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=CrudHttpMappingContractTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "backend",
+  "exit_code": 1,
+  "seconds": 13.82,
+  "log": "T-26-mapping-red.log"
+}

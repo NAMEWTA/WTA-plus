@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "build:prod"
+    ],
+    "context": "/admin/",
+    "api": "/api",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "build:prod"
+    ],
+    "context": "/home/",
+    "api": "/api",
+    "exit_code": 0
+  }
+]

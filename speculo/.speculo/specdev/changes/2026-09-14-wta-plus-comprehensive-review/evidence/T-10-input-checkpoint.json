@@ -1,0 +1,12 @@
+{
+  "captured_at": "2026-09-18T11:58:55.356425+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "files": {
+    "release-artifacts/scripts/release-manage.sh": "42c03feb2bc76cdbbf86620df5797071c276d6db2e5435723479f1e80b37bead",
+    "release-artifacts/scripts/verify-release.sh": "7ab7eed8ab3ec315b8d82b818a96d659a81357a8359ecd4543d742f8a698354f",
+    "release-artifacts/scripts/docker-manage.sh": "b7be2c79e8ba945adde9466e43107bd7918433d4ec9e01df11d8de565105232d",
+    "release-artifacts/docker/docker-compose-backend.yml": "0168acd380b0ca301421420f0cc838fd1a007e6663432522ed43719ce6db47ee",
+    "release-artifacts/docker/docker-compose-frontend.yml": "e0af1684c1d86b9f5cf83cf1ef0911fb32f81cff8f5808b2a158e73b8287b927",
+    "release-artifacts/README.md": "d93d0eaf77bd5e015a901d4e51ac475765116320652e350683e41bb8fa95a482"
+  }
+}

@@ -1,0 +1,38 @@
+--- before/.agents/skills/engineering-standards/references/rules/testing.md
++++ after/.agents/skills/engineering-standards/references/rules/testing.md
+@@ -18,11 +18,11 @@
+ 
+ Level: MUST
+ 
+-Source: `repository-fact` (`AGENTS.md`, `plan/update.md`)
++Source: `repository-fact` (`AGENTS.md`, `namewta-fullstack-development`)
+ 
+ Rule: 覆盖多 Client、多登录域、默认/显式角色、超管、缺失 `clientPk`、跨 Client 越权、注册开关、Token 失效和前端伪造字段。只测正常路径不充分。
+ 
+-Verification: 自动测试或 `plan/update.md` 人工验收矩阵；核对后端拒绝路径和前端呈现；记录数据库与 Token 的可观察结果。
++Verification: 自动测试或当前任务内记录的人工验收矩阵；核对后端拒绝路径和前端呈现；记录数据库与 Token 的可观察结果。
+ 
+ ### TEST-003 测试隔离与清理
+ 
+--- before/.agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md
++++ after/.agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md
+@@ -58,7 +58,7 @@
+ 
+ Level: MUST
+ 
+-Source: `repository-fact` (`plan/update.md`, `AGENTS.md`)
++Source: `repository-fact` (`AGENTS.md`, `namewta-fullstack-development`)
+ 
+ Rule: JSON 字段、HTTP 路径、认证 header、数据库 schema 和初始化 SQL 都是兼容合同。跨端变更先形成向后兼容或同步可交付的后端合同，再更新前端消费者；破坏性变更必须给出迁移和回滚。
+ 
+--- before/.agents/skills/namewta-fullstack-development/references/frontend/naming-and-layout.md
++++ after/.agents/skills/namewta-fullstack-development/references/frontend/naming-and-layout.md
+@@ -8,7 +8,7 @@
+ 
+ ## AGENTS.md 索引
+ 
+-- 根 `frontend/AGENTS.md` 描述工作区；每个含 `package.json` 的 App、domain、web-domain、platform、adapter、web-kit、合同或 tooling 包各有一份同目录 `AGENTS.md`。
++- 根 `frontend/AGENTS.md` 描述工作区；App、domain、web-domain、platform、adapter、web-kit、合同或 tooling 包沿用适用的父目录索引，已有包级 `AGENTS.md` 说明本地差异。缺少包级手册时，从模块地图、`package.json` 和源码定位入口；不因存在 `package.json` 复制通用手册。
+ - 索引只写当前包的用途、组成、公开入口、依赖方向、验证命令和 `Read Next` 链接，不复制架构规范、README 全文或源码实现。
+ - 读取代码时使用最近的 `AGENTS.md`；子包可以补充本地事实，但不能放宽父级硬边界。README、`package.json#exports`、入口和测试变化必须同步检查索引。
+ - `node_modules`、`dist`、`coverage`、`target`、生成快照和 README-only 占位目录不创建索引；尚未激活的未来 App/适配器继续使用已有 README。

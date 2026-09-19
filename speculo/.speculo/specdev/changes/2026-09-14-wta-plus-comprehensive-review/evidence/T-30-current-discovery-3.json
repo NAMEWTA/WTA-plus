@@ -1,0 +1,479 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.lifecycle.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.lifecycle.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/lifecycle-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "session-navigation-lifecycle.spec.ts"
+        ],
+        "timeout": 35000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "session-navigation-lifecycle.spec.ts",
+      "file": "session-navigation-lifecycle.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T-12 admin empty roles recover once across repeated SPA navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-ff8c090eb8cd8b1c56e5",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 115,
+          "column": 3
+        },
+        {
+          "title": "T-12 admin offline logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-55b15c069e7a8f304735",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 admin timeout logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-6925f4fc99cc4c6fd8f4",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 admin unauthorized logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-92b6c9330720390193b7",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 admin http-unauthorized logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-a7c7b99bc0e168f63cb3",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 admin concurrent 401 cancellation and retry has one terminating recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-fd0e49c30d6ab4160ec7",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 149,
+          "column": 3
+        },
+        {
+          "title": "T-12 admin initial identity 401 terminates without a competing modal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-86080a2f456d28f5dcd3",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 168,
+          "column": 3
+        },
+        {
+          "title": "T-12 admin logout cancels pending identity and prevents stale recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-4dc4a33d45edcffda1b8",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "T-12 admin logout cancels pending menus and prevents stale recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-66c320af0b846d82186d",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "T-12 home empty roles recover once across repeated SPA navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-893ff7ee273598736672",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 115,
+          "column": 3
+        },
+        {
+          "title": "T-12 home offline logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-febf19a8140c8996c329",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 home timeout logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-8a1906ae6c3c8231326a",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 home unauthorized logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-e67c932522efe55e4416",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 home http-unauthorized logout clears local state and routes and completes UI navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-3aacf6078e7cf3655c49",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 126,
+          "column": 5
+        },
+        {
+          "title": "T-12 home concurrent 401 cancellation and retry has one terminating recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-068763ee2db72d3315d9",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 149,
+          "column": 3
+        },
+        {
+          "title": "T-12 home initial identity 401 terminates without a competing modal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-9e963dea12a0d147ce90",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 168,
+          "column": 3
+        },
+        {
+          "title": "T-12 home logout cancels pending identity and prevents stale recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-157c94ac04d08b53aec0",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "T-12 home logout cancels pending menus and prevents stale recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-8e9f3cacc48c8157c4e3",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "T-12 separate Client origins retain only their own identity and navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-e43a509c5f64ff59a614",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 196,
+          "column": 1
+        },
+        {
+          "title": "T-12 Admin logout closes a real open HTTPS EventSource despite remote failure",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "212fefc5c7503cc589de-45793f953085d7dc9d62",
+          "file": "session-navigation-lifecycle.spec.ts",
+          "line": 207,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T04:32:45.740Z",
+    "duration": 32.037000000000035,
+    "expected": 0,
+    "skipped": 20,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "captured_at": "2026-09-18T09:25:34.956886+00:00",
+  "results": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "oxlint",
+        "e2e/sso-callback-journey.spec.ts",
+        "playwright.sso.config.ts"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/srv/WTA-plus/frontend/node_modules/.tmp/tsconfig-t07-e2e.json"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "architecture:check"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> wta-vue-plus@6.0.0 architecture:check /srv/WTA-plus/frontend\n> namewta-architecture check --root .\n\nArchitecture check passed: 36 workspace package(s), 0 reviewed baseline violation(s).\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/admin-web",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> @namewta/admin-web@0.0.0 lint /srv/WTA-plus/frontend/apps/admin-web\n> oxlint src vite.config.ts vite\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/home-web",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> @namewta/home-web@0.0.0 lint /srv/WTA-plus/frontend/apps/home-web\n> oxlint src vite.config.ts\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+        "backend/wta-modules/wta-sso",
+        "--mode",
+        "layered"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "exit_code": 0,
+      "stdout": "Validated layered module: backend/wta-modules/wta-sso (32 Java files)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

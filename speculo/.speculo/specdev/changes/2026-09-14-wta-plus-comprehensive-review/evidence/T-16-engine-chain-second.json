@@ -1,0 +1,180 @@
+{
+  "captured_at": "2026-09-18T19:24:14.365654+00:00",
+  "before": {
+    "containers": [
+      "00f0fd109aa4269630858b37982fb91eb6efc01621477cd81348ddd1789bf89b",
+      "0d0b959ce9a994396692fc0f52551800a0f910a34694815f497dba6c2a805205",
+      "0ef9f886562e3a98b6477dd7bc37d2bb4767a1b4a2876fde2f331a28ed534573",
+      "4032f5c1a33573b01ec074cde352d48124ce0367debc74378250ffdb68f23308",
+      "429b9f9844d6770f4a4f40f51406e27ca4fb90fd1a7042148813ee6d7805c98b",
+      "43a5fc43b458d6402ecb644421ec079c99738258161f3d76095eb47ad9dd6cc1",
+      "67d00f1ff26138b96d3a6f914c29d748436cf521f3267298f5f61ef9e1b6a396",
+      "71be16fdf9cc5fcfbdd1c59cc7ab31506bb228204b1e57ab31c4b2cf720565b7",
+      "7b0c6be5701c936a8767604035bf691167ef72a02aaf19663759ff7e623d3b5b",
+      "8023f1eb89a0d3bfc31eb673b6b2186434d9e5b0519d7b670a863c03a3d698c2",
+      "ac18cf14be61c4940352330a0c2b6ae2e1a3f57348f854ef47199cc7ef9db72a",
+      "c3114af0d164b2e1561cfc75a81b0a55a266493fb4bffc78b5f8d95e07c37712",
+      "c4fcf1f583656c2751c4e41993f997c8aee755dfd59ac0244ea226e3241b431a",
+      "d70b7c77dcad34270ff366bb2c7a19c4915e7c9293cf504b8bda1a450498342f",
+      "edf4457cedc591840c65920e0b4364a1e1a5457aeddcba938d15432fe3c2a1b0",
+      "f67de730d32fb6db13feb0b507df9b5c9fe49e2c664b9310e71d7c93159ed3ca"
+    ],
+    "networks": [
+      "035da8b194d99c56cb8954c67cce5f780f2f25b47535ba064f8ad5db7dc7591a",
+      "1a3f0aef782d156fe8fb5c37ca32278f6a6046935df932b88c3883b38834ec6f",
+      "3972a638f2c1687218d389df453ce030367ddc1b3af11bf726d3dcc047431a65",
+      "5025e1000d4707568a980fa339d20520659259071fd62880a438cfe88a1a91b5",
+      "9887700f9b92fd7770640e09cfdeabc3728695fda080eb8e24bc6fd06467da7f",
+      "b013cccb2dc7dd62d8a04a833bda218878efe6603ffa43af9d39af502dc4f133"
+    ],
+    "volumes": [
+      "00ce7b90728dc9a70f6f7137ab6df613b0e91f5b8273114d13c6cec528000520",
+      "0911118e28c2baa726d46d3ba17d761775fab3a37cf7c7be783f7444722b510c",
+      "0c22442fecd8eab801cfe12b74285bbf180572f2f0b761cc2196fd92e55a1b20",
+      "0d1e5f6c58b0c9c0e731123439ca805441b4ef406c0e94370163ec8a50caa56f",
+      "117c337d7c03a2a58608a61b8b6c1b63f104218c01a1a3e9e15da4357e4777a1",
+      "22fb47758c335c38b66d564e628b565b0d148628e8aeee021e5fd8df9633bc59",
+      "4d36feafd078b30a5684ac7e7e9a3186fc65cd073bcfa1262aed4b68824c7e6e",
+      "4f1919cfaf7f61df6c9a1d913c08863b67722d0b9abea972273db266ed3da5b8",
+      "4f591057f88e35a30bd87030316904d4dd6ba68f2f041c1e4eb98d8508f110fd",
+      "5ae370ea7d2cecc459536ce567dcf65e5c964f45cf85394f0b88ff1e84370ab6",
+      "5f1dfaa8efd38ee5ab48e5cbf3d9d984fb34b1ade5a1a99ea6275bff83ed080c",
+      "6b52ce705e4cdeaa9a4a59aff9696416a662bc0eaec81ff60cb353135bc51064",
+      "6c2f7e0a76fdc4a001ceed19463a0c7b24f3fa29a30427899b38d9f076d17515",
+      "6e759fa4bc64c123dd09c0868cedfbf2504c9b4a1ca2f6b907a434d01cdc68fe",
+      "74e5c7f93585f4cde6c462c5d4a2b14916f1e4daad5d183f255fa08a8e57acb0",
+      "8766c1b3b2768216ce36777810afabffa8115eba14a8c9de6eee71f47713ff23",
+      "98f55e771e274f6daff338b6cba8f9fb0688e1a286c50a9e9affd4623b1ebbed",
+      "add884cf8e8c66dbce6b2b860949c852a469102a5806c968ef82d40780f01cf5",
+      "afef6db425fb6a36337a8bf3557bcb90da665edec188f28057fefd1ece7a65db",
+      "dc4234ba96aaf73a9f976630ff0208a5cd0f12374f8452fdbce9d81d67c5437e",
+      "efcacf31b454a75eea0c44d7e461685a47b21103cf248d94fbc6ceb33bf85f66",
+      "f274b6e5ae43ce66c2bc91f38ce219f157ef5ebbfbe3866ba28363c68e35f665"
+    ]
+  },
+  "cleanup": [
+    {
+      "container": "465f2aeac39a895f0095607be18f03d305c255f9017e62ffaf167300be1a6de0",
+      "exit_code": 0
+    },
+    {
+      "container": "7863205ea17e51beb48b6b32e7b9d54699a6e4d63e533612626009dd934043d9",
+      "exit_code": 0
+    }
+  ],
+  "containers": [
+    "7863205ea17e51beb48b6b32e7b9d54699a6e4d63e533612626009dd934043d9",
+    "465f2aeac39a895f0095607be18f03d305c255f9017e62ffaf167300be1a6de0"
+  ],
+  "initialization": [
+    {
+      "file": "10-cde-base-ddl.sql",
+      "exit_code": 0
+    },
+    {
+      "file": "20-cde-job.sql",
+      "exit_code": 0
+    },
+    {
+      "file": "30-cde-workflow.sql",
+      "exit_code": 0
+    },
+    {
+      "file": "40-cde-ai.sql",
+      "exit_code": 0
+    },
+    {
+      "file": "50-cde-base-dml.sql",
+      "exit_code": 0
+    },
+    {
+      "file": "60-cde-nacos.sql",
+      "exit_code": 0
+    }
+  ],
+  "images": {
+    "mysql": "mysql:8.4.9@sha256:c36050afdca850f23cef85703f84c7531a5ae155a11b5ee1c60acb09937c4084",
+    "redis": "redis:7.4-alpine@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+  },
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=WorkflowTaskEngineIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-Dworkflow.engine.integration=true",
+    "-Dprofile.redis.integration.port=32880",
+    "-Dworkflow.mysql.integration.url=jdbc:mysql://127.0.0.1:32879/namewta_workflow_test_f48a20e3b159?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnamewta.repo.root=/srv/WTA-plus",
+    "test"
+  ],
+  "cwd": "backend",
+  "log": "T-16-engine-chain-second.log",
+  "counts": {
+    "tests": 1,
+    "failures": 0,
+    "errors": 1,
+    "skipped": 0
+  },
+  "reports": [
+    "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.workflow.WorkflowTaskEngineIntegrationTest.xml"
+  ],
+  "after": {
+    "containers": [
+      "00f0fd109aa4269630858b37982fb91eb6efc01621477cd81348ddd1789bf89b",
+      "0d0b959ce9a994396692fc0f52551800a0f910a34694815f497dba6c2a805205",
+      "0ef9f886562e3a98b6477dd7bc37d2bb4767a1b4a2876fde2f331a28ed534573",
+      "4032f5c1a33573b01ec074cde352d48124ce0367debc74378250ffdb68f23308",
+      "429b9f9844d6770f4a4f40f51406e27ca4fb90fd1a7042148813ee6d7805c98b",
+      "43a5fc43b458d6402ecb644421ec079c99738258161f3d76095eb47ad9dd6cc1",
+      "67d00f1ff26138b96d3a6f914c29d748436cf521f3267298f5f61ef9e1b6a396",
+      "71be16fdf9cc5fcfbdd1c59cc7ab31506bb228204b1e57ab31c4b2cf720565b7",
+      "7b0c6be5701c936a8767604035bf691167ef72a02aaf19663759ff7e623d3b5b",
+      "8023f1eb89a0d3bfc31eb673b6b2186434d9e5b0519d7b670a863c03a3d698c2",
+      "ac18cf14be61c4940352330a0c2b6ae2e1a3f57348f854ef47199cc7ef9db72a",
+      "c3114af0d164b2e1561cfc75a81b0a55a266493fb4bffc78b5f8d95e07c37712",
+      "c4fcf1f583656c2751c4e41993f997c8aee755dfd59ac0244ea226e3241b431a",
+      "d70b7c77dcad34270ff366bb2c7a19c4915e7c9293cf504b8bda1a450498342f",
+      "edf4457cedc591840c65920e0b4364a1e1a5457aeddcba938d15432fe3c2a1b0",
+      "f67de730d32fb6db13feb0b507df9b5c9fe49e2c664b9310e71d7c93159ed3ca"
+    ],
+    "networks": [
+      "035da8b194d99c56cb8954c67cce5f780f2f25b47535ba064f8ad5db7dc7591a",
+      "1a3f0aef782d156fe8fb5c37ca32278f6a6046935df932b88c3883b38834ec6f",
+      "3972a638f2c1687218d389df453ce030367ddc1b3af11bf726d3dcc047431a65",
+      "5025e1000d4707568a980fa339d20520659259071fd62880a438cfe88a1a91b5",
+      "9887700f9b92fd7770640e09cfdeabc3728695fda080eb8e24bc6fd06467da7f",
+      "b013cccb2dc7dd62d8a04a833bda218878efe6603ffa43af9d39af502dc4f133"
+    ],
+    "volumes": [
+      "00ce7b90728dc9a70f6f7137ab6df613b0e91f5b8273114d13c6cec528000520",
+      "0911118e28c2baa726d46d3ba17d761775fab3a37cf7c7be783f7444722b510c",
+      "0c22442fecd8eab801cfe12b74285bbf180572f2f0b761cc2196fd92e55a1b20",
+      "0d1e5f6c58b0c9c0e731123439ca805441b4ef406c0e94370163ec8a50caa56f",
+      "117c337d7c03a2a58608a61b8b6c1b63f104218c01a1a3e9e15da4357e4777a1",
+      "22fb47758c335c38b66d564e628b565b0d148628e8aeee021e5fd8df9633bc59",
+      "4d36feafd078b30a5684ac7e7e9a3186fc65cd073bcfa1262aed4b68824c7e6e",
+      "4f1919cfaf7f61df6c9a1d913c08863b67722d0b9abea972273db266ed3da5b8",
+      "4f591057f88e35a30bd87030316904d4dd6ba68f2f041c1e4eb98d8508f110fd",
+      "5ae370ea7d2cecc459536ce567dcf65e5c964f45cf85394f0b88ff1e84370ab6",
+      "5f1dfaa8efd38ee5ab48e5cbf3d9d984fb34b1ade5a1a99ea6275bff83ed080c",
+      "6b52ce705e4cdeaa9a4a59aff9696416a662bc0eaec81ff60cb353135bc51064",
+      "6c2f7e0a76fdc4a001ceed19463a0c7b24f3fa29a30427899b38d9f076d17515",
+      "6e759fa4bc64c123dd09c0868cedfbf2504c9b4a1ca2f6b907a434d01cdc68fe",
+      "74e5c7f93585f4cde6c462c5d4a2b14916f1e4daad5d183f255fa08a8e57acb0",
+      "8766c1b3b2768216ce36777810afabffa8115eba14a8c9de6eee71f47713ff23",
+      "98f55e771e274f6daff338b6cba8f9fb0688e1a286c50a9e9affd4623b1ebbed",
+      "add884cf8e8c66dbce6b2b860949c852a469102a5806c968ef82d40780f01cf5",
+      "afef6db425fb6a36337a8bf3557bcb90da665edec188f28057fefd1ece7a65db",
+      "dc4234ba96aaf73a9f976630ff0208a5cd0f12374f8452fdbce9d81d67c5437e",
+      "efcacf31b454a75eea0c44d7e461685a47b21103cf248d94fbc6ceb33bf85f66",
+      "f274b6e5ae43ce66c2bc91f38ce219f157ef5ebbfbe3866ba28363c68e35f665"
+    ]
+  },
+  "resources_restored": true,
+  "exit_code": 1,
+  "seconds": 25.68
+}

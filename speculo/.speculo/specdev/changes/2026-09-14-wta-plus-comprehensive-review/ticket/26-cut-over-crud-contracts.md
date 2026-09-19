@@ -2,13 +2,13 @@
 schema_version: 3
 plan_contract_version: 1
 skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
-skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path>", "<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>"], "outputs": ["T-26的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path>", "<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>"], "outputs": ["T-26的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path>", "<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>"], "outputs": ["T-26的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path>", "<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>"], "outputs": ["T-26的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-common-modules-guide", "path": "<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>", "sha256": "e92775ce47af41bd33c1b3293d7f8a3185fdd739b9b588519e043c654f678d98", "phase": "implement", "operation": "reuse-logging-and-module-http-contracts", "inputs": ["T-26 current Controller/domain/LogAspect source"], "outputs": ["T-26安全审计和System/Workflow端到端HTTP合同"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3", "phase": "implement", "operation": "reuse-logging-and-module-http-contracts", "inputs": ["T-26 current Controller/domain/LogAspect source"], "outputs": ["T-26安全审计和System/Workflow端到端HTTP合同"], "required": true, "on_failure": "block-ticket"}]
 resource_claims: ["workspace:current-exclusive", "finding:B-11", "contract:AC-026"]
 artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-26
 title: 按资源合同清除旧CRUD方法并同步客户端
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：按资源合同清除旧CRUD方法并同步客户端"
 ready: true
@@ -16,11 +16,11 @@ risk: high
 blocked_by: ["T-02", "T-16", "T-25"]
 contract_ids: [AC-026]
 owner: single-agent
-expected_changes: ["<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>docs/fm/</Path>", "<Path>frontend/e2e/</Path>"]
-writable_paths: ["<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>docs/fm/</Path>", "<Path>frontend/e2e/</Path>"]
+expected_changes: ["<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>docs/fm/</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/capability-map.md</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md</Path>"]
+writable_paths: ["<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>docs/fm/</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/capability-map.md</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>docs/fm/</Path>", "<Path>frontend/e2e/</Path>"]
-shared_path_owners: ["<Path>backend/wta-modules/wta-system/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>backend/wta-modules/wta-workflow/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>backend/wta-modules/wta-demo/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/packages/domains/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/packages/api-contracts/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/tooling/openapi/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>docs/fm/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-26 turn)"]
+shared_paths: ["<Path>backend/wta-modules/wta-system/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>", "<Path>docs/fm/</Path>", "<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/capability-map.md</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md</Path>"]
+shared_path_owners: ["<Path>backend/wta-modules/wta-system/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>backend/wta-modules/wta-workflow/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>backend/wta-modules/wta-demo/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/packages/domains/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/packages/api-contracts/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/tooling/openapi/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>docs/fm/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path> => single-agent (Lead; serial T-26 turn)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; serial T-26 turn)", "<Path>backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java</Path> => single-agent (Lead; serial T-26 turn)", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/capability-map.md</Path> => single-agent (Lead; serial T-26 turn)", "<Path>.agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md</Path> => single-agent (Lead; serial T-26 turn)"]
 ---
 
 # T-26：按资源合同清除旧CRUD方法并同步客户端
@@ -101,7 +101,7 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 - E2E disposition：required: 各受影响资源代表读/写/批量删除与越权请求，旧CRUD方法拒绝、生成合同一致。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本地产品检查见T-26.md；实现commit/direct-parent与result仍未完成。
 
 ## 9. 发布、迁移与恢复
 
@@ -109,20 +109,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：Controller+前端+生成物作为整批恢复，不恢复一半协议。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮已授权可逆实现与本地验证，全部提交暂缓。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-026`：每个候选有迁移或保留理由，不遗漏调用者。
-- [ ] `AC-026`：已迁移CRUD无旧PUT/PATCH/DELETE可达入口。
-- [ ] `AC-026`：前后端method/path/权限/日志与OpenAPI快照一致。
-- [ ] `AC-026`：生成/源码门禁和代表资源E2E通过。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-026`：每个候选有迁移或保留理由，不遗漏调用者。
+- [x] `AC-026`：已迁移CRUD无旧PUT/PATCH/DELETE可达入口。
+- [x] `AC-026`：前后端method/path/权限/日志与OpenAPI快照一致。
+- [x] `AC-026`：生成/源码门禁和代表资源E2E通过。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -133,3 +133,15 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：T-02, T-16, T-25。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+Revision100：T-26开始，466条最新上游哈希全部一致。先重新枚举所有旧CRUD方法、只读POST和GET副作用，按资源逐项固定无冲突路由/参数/权限/Log/调用者；Auth解绑已在原70候选内但漏于写集，登记AuthController精确写集及wta-admin集成测试目录。25review/1in_progress/3ready/2blocked/0Done，全部提交暂缓。
+
+Revision101：T-26确认70旧方法/27文件全部为第一方变更入口。无子路径PUT仅在与新增POST冲突时迁移为/update，其余保持原路径只换POST；2个账户解锁GET改POST，下一节点查询改GET并以JSON query保持嵌套变量类型。额外GET副作用与只读POST单列owner和理由，不宣称仅70替换即全仓合规。补LogAspect精确写集：新增上传审计会经operUrl泄漏path中的令牌，使用服务端路由模板而非原始URI，未匹配时固定占位；添加common/module Skill绑定。
+
+Revision102：T-26已迁移70旧方法和20 GET副作用，下一节点改GET JSON query。6项编译后真实Spring MVC/操作日志测试零skip；4个domain定向测试通过。314实际MVC映射用于核对89项已收录OpenAPI变更，2项Easy-ES因原快照关闭条件未收录、单独编译映射验证；SnailAI 1.1.1三项供应商PUT/DELETE经锁定jar javap核实保留，不伪造仓内协议。正式fetch/generate/check通过，415路径442schemas；provenance明确baseline+未提交工作树编译映射，不冒充完整live捕获。登记Workflow两份父Skill引用精确写集修正方法事实；required HTTP/全量验证仍待执行。
+
+Revision103：T-26本地review。70旧方法、20 GET副作用和下一节点GET迁移完成；91实际HTTP方法与67权限拒绝、五资源真实HTTP/MySQL、Warm-Flow及MinIO10浏览器通过。默认Maven695通过/82环境skip，前端720、三App、full/core打包、7静态与正式OpenAPI通过；默认浏览器53通过/1个独立Nacos条件skip。OpenAPI明确基线+编译MVC映射来源和供应商边界。70路径checkpoint、445上游非重叠不变/21重叠登记，累计515；26review/3ready/2blocked/0Done，全部提交暂缓，下一票T-27。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`40b7f145f1e69f2df2ecb5b1de77a510cba99c3f`, `6c8764cca97bb6057fcb90ccdfe635c7efbf502a`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

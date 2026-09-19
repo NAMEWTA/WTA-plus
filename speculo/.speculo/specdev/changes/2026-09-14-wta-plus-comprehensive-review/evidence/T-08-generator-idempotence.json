@@ -1,0 +1,31 @@
+{
+  "command": [
+    "python3",
+    "release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py",
+    "--repo-root",
+    "/srv/WTA-plus",
+    "--app",
+    "sso-web",
+    "--prefix",
+    "replace-with-sso-prefix",
+    "--port",
+    "41083"
+  ],
+  "exitCodes": [
+    0,
+    0
+  ],
+  "idempotent": true,
+  "runtimeEnvUnchanged": true,
+  "hashes": {
+    "release-artifacts/apps.json": "a8786c42f79b1f0a38fa2bef261464b79c58b4029ac8939bfa1670b0df0192a7",
+    "release-artifacts/.env.example": "69b82ea5ca6accf2de0a6e212372caa5fa9e1630389e8725d5710861a11bac9b",
+    "release-artifacts/docker/docker-compose-frontend.yml": "5ae370c24459697c3f65e2e36dffe7d4a93ab50c44277a6bcedd3d49475e22ca",
+    "release-artifacts/docker/frontend/nginx/lb/nginx-lb-http.conf.template": "3be5e2462c1154c15fb6a57704799818800d5b302136a0f047bb67303048e598",
+    "release-artifacts/docker/frontend/nginx/lb/nginx-lb-tls.conf.template": "6a4cd6f343a0c79762a6d0a5bd2fc202fd9c57c981e88b56e789bf0efa8f25b4",
+    "release-artifacts/docker/frontend/nginx/apps/nginx-home-web.conf.template": "0e8510e96abaa26273a50f4ffcf5460d8c73ea82fc770dce57ede522245bdfdd",
+    "release-artifacts/docker/frontend/nginx/apps/nginx-sso-web-tls.conf.template": "3eeba2993e2342ff6262f44e3fd8094efb4b7fc88a91b0b4813ebb9ed3809550",
+    "release-artifacts/docker/frontend/nginx/apps/nginx-sso-web.conf.template": "96376245aa26dddea0f580824a41c18e85a7a65f4ac77d436c09ec91abf5f72f",
+    "release-artifacts/docker/frontend/nginx/apps/nginx-admin-web.conf.template": "0e8510e96abaa26273a50f4ffcf5460d8c73ea82fc770dce57ede522245bdfdd"
+  }
+}

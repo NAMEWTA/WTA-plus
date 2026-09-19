@@ -1,0 +1,8 @@
+{
+  "captured_at": "2026-09-18T19:06:40.924725+00:00",
+  "cause": "Evidence generation reused a path variable and wrote migration Markdown to the last inspected Java source after successful tests. The next-ticket hash guard detected it before T-16 began.",
+  "recovery": "Moved the generated mapping to its intended evidence file and restored the Java source byte-for-byte to the already-tested checkpoint; no checkpoint digest was relaxed.",
+  "source": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/adapter/codec/EnterpriseVerificationEvidenceCodec.java",
+  "sha256": "61d9b919c3198ff2d133873e43e41e164ba8efd69e4222280489ee1718ca8241",
+  "all_merged_checkpoint_paths_verified": 343
+}

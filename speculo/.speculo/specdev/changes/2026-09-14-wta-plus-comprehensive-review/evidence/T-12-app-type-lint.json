@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "output": "Scope: 2 of 35 workspace projects\n\n> @namewta/admin-web@0.0.0 typecheck /srv/WTA-plus/frontend/apps/admin-web\n> vue-tsc --noEmit -p tsconfig.json\n\n\n> @namewta/home-web@0.0.0 typecheck /srv/WTA-plus/frontend/apps/home-web\n> vue-tsc --noEmit -p tsconfig.json\n\n"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "-r",
+      "--filter",
+      "@namewta/admin-web",
+      "--filter",
+      "@namewta/home-web",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "output": "Scope: 2 of 35 workspace projects\n\n> @namewta/admin-web@0.0.0 lint /srv/WTA-plus/frontend/apps/admin-web\n> oxlint src vite.config.ts vite\n\n\n> @namewta/home-web@0.0.0 lint /srv/WTA-plus/frontend/apps/home-web\n> oxlint src vite.config.ts\n\n"
+  }
+]

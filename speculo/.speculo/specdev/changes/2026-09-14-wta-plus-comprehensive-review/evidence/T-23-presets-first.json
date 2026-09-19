@@ -1,0 +1,69 @@
+[
+  {
+    "command": [
+      "node",
+      "--test",
+      "release-artifacts/tests/notify-baseline-contract.test.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.09,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-presets-first-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-notify",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.95,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-presets-first-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-notify",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 3.16,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-presets-first-3.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-notify",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.42,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-presets-first-4.log"
+  },
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "wta-modules/wta-notify",
+      "-am",
+      "test",
+      "-Dtest=NotifyConfigServiceTest,Sms4jBlendRegistryTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 12.96,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-presets-first-5.log"
+  }
+]

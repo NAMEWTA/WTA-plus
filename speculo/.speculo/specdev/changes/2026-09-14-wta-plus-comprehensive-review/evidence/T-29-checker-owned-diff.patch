@@ -1,0 +1,314 @@
+--- before/scripts/ci/verify-agent-handbooks.mjs
++++ after/scripts/ci/verify-agent-handbooks.mjs
+@@ -1,69 +1,87 @@
+-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+-import { dirname, join, relative, resolve } from 'node:path';
++import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
++import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
++import { fileURLToPath } from 'node:url';
+ 
+-/**
+- * 校验两个产品子仓库的 manifest 与 AGENTS 索引是否一一对应。
+- * 该脚本只验证导读索引，不复制或替代工程规范。
+- */
++/** 校验模块能继承有效导读及本地链接；独有硬约束的保留仍需逐文件评审。 */
++const ignored = new Set(['.git', 'node_modules', 'target', 'dist', 'coverage', 'specdev-worktree']);
+ 
+-const root = resolve(dirname(new URL(import.meta.url).pathname), '../..');
+-const products = [
+-  { path: join(root, 'backend'), manifest: 'pom.xml' },
+-  { path: join(root, 'frontend'), manifest: 'package.json' },
+-];
+-const ignored = new Set(['.git', 'node_modules', 'target', 'dist', 'specdev-worktree']);
+-const requiredSections = ['## Scope', '## Purpose', '## Components', '## Entry Points',
+-  '## Dependencies', '## Verification', '## Read Next'];
+-const failures = [];
+-
+-function walk(directory, predicate) {
++function walk(directory) {
+   if (!existsSync(directory)) return [];
+   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+     if (ignored.has(entry.name)) return [];
+     const path = join(directory, entry.name);
+-    return entry.isDirectory() ? walk(path, predicate) : predicate(path) ? [path] : [];
++    return entry.isDirectory() ? walk(path) : entry.isFile() ? [path] : [];
+   });
+ }
+ 
+-for (const product of products) {
+-  const manifests = walk(product.path, path => path.endsWith(`/${product.manifest}`));
+-  const expected = new Set(manifests.map(path => dirname(path)));
+-  const handbooks = walk(product.path, path => path.endsWith('AGENTS.md'));
+-  const actual = new Set(handbooks.map(path => dirname(path)));
+-
+-  for (const directory of expected) {
+-    if (!actual.has(directory)) {
+-      failures.push(`${relative(root, directory)} 缺少 AGENTS.md`);
++export function verifyHandbooks(workspaceRoot) {
++  const root = resolve(workspaceRoot);
++  const failures = [];
++  const products = [];
++  for (const [name, manifest] of [['backend', 'pom.xml'], ['frontend', 'package.json']]) {
++    const directory = join(root, name);
++    const files = walk(directory);
++    const manifests = files.filter(path => basename(path) === manifest);
++    const handbooks = files.filter(path => basename(path) === 'AGENTS.md');
++    const owners = new Set(handbooks);
++    const assignments = [];
++    if (!manifests.includes(join(directory, manifest))) failures.push(`${name} 缺少工作区 ${manifest}`);
++    for (const path of manifests) {
++      let current = dirname(path);
++      let owner;
++      // 产品根也是 manifest owner；不越过它借用仓根手册掩盖缺失导航。
++      while (true) {
++        const candidate = join(current, 'AGENTS.md');
++        if (owners.has(candidate)) { owner = candidate; break; }
++        if (current === directory) break;
++        current = dirname(current);
++      }
++      if (!owner) failures.push(`${relative(root, path)} 没有适用的产品 AGENTS.md`);
++      else assignments.push({ manifest: relative(root, path), handbook: relative(root, owner) });
+     }
+-  }
+-  for (const directory of actual) {
+-    if (!expected.has(directory)) {
+-      failures.push(`${relative(root, directory)} 的 AGENTS.md 没有对应 ${product.manifest}`);
+-    }
+-  }
+-
+-  for (const file of handbooks) {
+-    const directory = dirname(file);
+-    const source = readFileSync(file, 'utf8');
+-    if (!/[\u3400-\u9fff]/u.test(source)) {
+-      failures.push(`${relative(root, file)} 必须包含中文索引内容`);
+-    }
+-    // 旧模块保留既有详细手册；新索引必须保持渐进式披露的七个最小章节。
+-    const isLegacySystem = relative(root, directory) === 'backend/wta-modules/wta-system';
+-    if (!isLegacySystem) {
+-      for (const section of requiredSections) {
+-        if (!source.includes(section)) failures.push(`${relative(root, file)} 缺少 ${section}`);
++    for (const path of handbooks) {
++      const source = readFileSync(path, 'utf8');
++      if (!/^#\s+\S.*$/mu.test(source) || !/[\u3400-\u9fff]/u.test(source)) {
++        failures.push(`${relative(root, path)} 必须包含标题和中文导读`);
++      }
++      // 仅校验 Markdown inline 链接落点，不声称解析完整 Markdown 或验证锚点。
++      for (const match of source.matchAll(/\]\((?:<([^>]+)>|([^\s)]+))(?:\s+"[^"]*")?\)/gu)) {
++        const link = match[1] ?? match[2];
++        if (/^[a-z][a-z\d+.-]*:/iu.test(link) || link.startsWith('//')) continue;
++        const location = link.split('#', 1)[0];
++        if (!location) continue;
++        let target;
++        try { target = resolve(dirname(path), decodeURIComponent(location)); }
++        catch { failures.push(`${relative(root, path)} 链接编码无效：${link}`); continue; }
++        const local = relative(root, target);
++        if (isAbsolute(local) || local === '..' || local.startsWith(`..${sep}`) || !existsSync(target)) {
++          failures.push(`${relative(root, path)} 本地链接无效：${link}`);
++        } else if (!statSync(target).isFile() && !statSync(target).isDirectory()) {
++          failures.push(`${relative(root, path)} 链接不是文件或目录：${link}`);
++        }
+       }
+     }
++    for (const path of files.filter(path => basename(path) === 'CLAUDE.md')) {
++      failures.push(`${relative(root, path)} 不应新增 CLAUDE.md`);
++    }
++    products.push({ product: name, manifests: manifests.length, handbooks: handbooks.length, assignments });
+   }
+-
+-  const claudeFiles = walk(product.path, path => path.endsWith('CLAUDE.md'));
+-  for (const file of claudeFiles) failures.push(`${relative(root, file)} 不应新增 CLAUDE.md`);
+-  process.stdout.write(`${relative(root, product.path)}: ${manifests.length} manifest, ${handbooks.length} AGENTS.md\n`);
++  return { products, failures };
+ }
+ 
+-if (failures.length) {
+-  failures.forEach(message => process.stderr.write(`ERROR: ${message}\n`));
+-  process.exit(1);
++if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
++  const args = process.argv.slice(2);
++  if (args.length && (args.length !== 2 || args[0] !== '--root')) {
++    process.stderr.write('Usage: node verify-agent-handbooks.mjs [--root <workspace>]\n');
++    process.exitCode = 2;
++  } else {
++    const root = args[1] ?? resolve(dirname(fileURLToPath(import.meta.url)), '../..');
++    const result = verifyHandbooks(root);
++    for (const product of result.products) {
++      process.stdout.write(`${product.product}: ${product.manifests} manifest, ${product.handbooks} AGENTS.md, ${product.assignments.length} assigned\n`);
++    }
++    for (const failure of result.failures) process.stderr.write(`ERROR: ${failure}\n`);
++    process.exitCode = result.failures.length ? 1 : 0;
++    if (!result.failures.length) process.stdout.write('AGENTS inheritance and local navigation passed.\n');
++  }
+ }
+-process.stdout.write('AGENTS manifest contract passed.\n');
+--- before/scripts/ci/verify-agent-handbooks.test.mjs
++++ after/scripts/ci/verify-agent-handbooks.test.mjs
+@@ -0,0 +1,99 @@
++import assert from 'node:assert/strict';
++import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
++import { tmpdir } from 'node:os';
++import { dirname, join } from 'node:path';
++import { spawnSync } from 'node:child_process';
++import { fileURLToPath } from 'node:url';
++import test from 'node:test';
++import { verifyHandbooks } from './verify-agent-handbooks.mjs';
++
++function fixture(t) {
++  const root = mkdtempSync(join(tmpdir(), 'handbook workspace '));
++  t.after(() => rmSync(root, { recursive: true, force: true }));
++  const write = (path, source) => {
++    const target = join(root, path);
++    mkdirSync(dirname(target), { recursive: true });
++    writeFileSync(target, source);
++  };
++  write('backend/pom.xml', '<project/>');
++  write('frontend/package.json', '{}');
++  write('backend/AGENTS.md', '# 后端导航\n\n[构建](pom.xml)\n');
++  write('frontend/AGENTS.md', '# 前端导航\n\n[构建](package.json)\n');
++  return { root, write };
++}
++
++test('modules inherit the nearest guide; meaningful local guides remain owners', t => {
++  const { root, write } = fixture(t);
++  write('backend/common/pom.xml', '<project/>');
++  write('backend/common/AGENTS.md', '# 公共模块导航\n[父导航](../AGENTS.md)\n');
++  write('backend/common/leaf/pom.xml', '<project/>');
++  write('backend/special/pom.xml', '<project/>');
++  write('backend/special/AGENTS.md', '# 特殊模块\n独有约束保留。\n');
++  write('frontend/packages/validation/package.json', '{}');
++  const result = verifyHandbooks(root);
++  assert.deepEqual(result.failures, []);
++  assert.equal(result.products[0].assignments.find(row => row.manifest.endsWith('leaf/pom.xml')).handbook,
++    'backend/common/AGENTS.md');
++  assert.equal(result.products[0].assignments.find(row => row.manifest.endsWith('special/pom.xml')).handbook,
++    'backend/special/AGENTS.md');
++  assert.equal(result.products[1].assignments.find(row => row.manifest.includes('validation')).handbook,
++    'frontend/AGENTS.md');
++});
++
++test('missing product navigation fails even when the workspace root has a guide', t => {
++  const { root, write } = fixture(t);
++  rmSync(join(root, 'backend/AGENTS.md'));
++  write('AGENTS.md', '# 仓根规范\n');
++  write('backend/leaf/pom.xml', '<project/>');
++  assert.equal(verifyHandbooks(root).failures.filter(message => message.includes('没有适用')).length, 2);
++});
++
++test('missing, out-of-workspace and malformed local links fail', t => {
++  const { root, write } = fixture(t);
++  write('backend/AGENTS.md', '# 中文导航\n[缺失](missing.md)\n[越界](../../outside.md)\n[编码](%ZZ.md)\n');
++  assert.equal(verifyHandbooks(root).failures.length, 3);
++});
++
++test('encoded paths and links with spaces work without enforcing template sections', t => {
++  const { root, write } = fixture(t);
++  write('docs/a b.md', '# 中文参考\n');
++  write('backend/AGENTS.md', '# 中文导航\n[资料](../docs/a%20b.md#参考)\n[资料](<../docs/a b.md>)\n[网站](https://example.test)\n');
++  assert.deepEqual(verifyHandbooks(root).failures, []);
++});
++
++test('empty or non-Chinese guides and nested CLAUDE copies fail', t => {
++  const { root, write } = fixture(t);
++  write('backend/AGENTS.md', '# Backend only\n');
++  write('frontend/AGENTS.md', '中文但没有标题\n');
++  write('frontend/CLAUDE.md', 'duplicate');
++  assert.equal(verifyHandbooks(root).failures.length, 3);
++});
++
++test('missing manifests cannot produce a zero-input green result', t => {
++  const { root } = fixture(t);
++  rmSync(join(root, 'backend/pom.xml'));
++  rmSync(join(root, 'frontend/package.json'));
++  assert.equal(verifyHandbooks(root).failures.filter(message => message.includes('缺少工作区')).length, 2);
++});
++
++test('dependency and build outputs are excluded; similar filenames are not handbooks', t => {
++  const { root, write } = fixture(t);
++  for (const path of ['backend/target', 'frontend/node_modules', 'frontend/dist', 'frontend/coverage']) {
++    write(`${path}/AGENTS.md`, 'generated');
++    write(`${path}/CLAUDE.md`, 'generated');
++  }
++  write('backend/NOT-AGENTS.md', 'not a handbook');
++  assert.deepEqual(verifyHandbooks(root).failures, []);
++});
++
++test('CLI handles a workspace with spaces and returns failure for broken navigation', t => {
++  const { root, write } = fixture(t);
++  const script = fileURLToPath(new URL('./verify-agent-handbooks.mjs', import.meta.url));
++  const run = () => spawnSync(process.execPath, [script, '--root', root], { encoding: 'utf8' });
++  assert.equal(run().status, 0);
++  write('backend/AGENTS.md', '# 中文导航\n[丢失](missing.md)\n');
++  const failure = run();
++  assert.equal(failure.status, 1);
++  assert.match(failure.stderr, /本地链接无效/);
++  assert.equal(spawnSync(process.execPath, [script, '--unknown'], { encoding: 'utf8' }).status, 2);
++});
+--- before/.github/workflows/quality-gates.yml
++++ after/.github/workflows/quality-gates.yml
+@@ -28,6 +28,8 @@
+       - name: Skill facts and regression fixtures
+         run: |
+           node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs
++          node scripts/ci/verify-agent-handbooks.mjs
++          node --test --test-concurrency=1 scripts/ci/verify-agent-handbooks.test.mjs
+           node --test --test-concurrency=1 .agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs speculo/workflows/specdev/common/tools/validate-specdev.test.mjs
+           node .agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs
+           node docs/fm/scripts/validate.mjs
+--- before/scripts/README.md
++++ after/scripts/README.md
+@@ -10,6 +10,8 @@
+ ├── start-dev.sh
+ ├── sso-hard-e2e.sh
+ ├── ci/
++│   ├── verify-agent-handbooks.mjs
++│   ├── verify-agent-handbooks.test.mjs
+ │   ├── run-external-services.sh
+ │   ├── verify-admin-bundle.sh
+ │   ├── verify-dev-build-guard.sh
+@@ -85,6 +87,12 @@
+ 4. 若极端 `SIGKILL` 留下错误中显示的 `.reclaim` 目录，先核对其 `owner` PID 已不存在，再只删除该 owner 文件
+    与已变空的 `.reclaim` 目录；不得递归删除锁根目录或仍有活动 PID 的锁。
+ 
++## ci/verify-agent-handbooks.mjs
++
++从仓根运行 `node scripts/ci/verify-agent-handbooks.mjs`，检查 backend/frontend 的实际 manifest 是否有最近适用的产品手册、手册是否有标题和中文导读、Markdown inline 本地链接是否指向现存文件或目录，以及产品目录是否出现重复 CLAUDE 入口。允许模块继承父手册，不要求每个 POM/package 复制七段模板。链接检查不覆盖锚点或完整 Markdown 语法，独有硬约束的保留仍需逐文件评审。
++
++回归命令为 `node --test --test-concurrency=1 scripts/ci/verify-agent-handbooks.test.mjs`；夹具仅使用并清理各自临时目录。两条命令已接入仓内 CI 候选，远程执行仍待提交推送后验证。
++
+ ## ci/verify-dev-build-guard.sh
+ 
+ ### 作用
+--- before/.agents/skills/engineering-standards/references/project/00-project-profile.md
++++ after/.agents/skills/engineering-standards/references/project/00-project-profile.md
+@@ -39,6 +39,7 @@
+ 
+ | Scope | Working directory | Command | Responsibility | Source | Status |
+ |---|---|---|---|---|---|
++| `workspace-parent` | `.` | `node scripts/ci/verify-agent-handbooks.mjs` | 检查每个manifest的最近有效导读、中文标题、本地链接及嵌套CLAUDE副本；独有硬约束仍需逐文件评审 | `scripts/ci/verify-agent-handbooks.mjs` | active local gate / CI candidate |
+ | `module:frontend` | `frontend` | `pnpm architecture:check` / `pnpm architecture:test` | 检查工作区依赖方向、公开入口、终端纯度、占位和基线合同 | `package.json`, `tooling/architecture/**` | active local gate / CI candidate |
+ | `module:frontend` | `frontend` | `pnpm --filter @namewta/tooling-openapi openapi:check` | 检查生成合同与提交快照漂移 | `tooling/openapi/package.json` | active local gate / CI candidate |
+ | `module:frontend` | `frontend` | `pnpm lint` | 根配置与各激活工作区包的 Oxlint 检查 | `package.json`, `.oxlintrc.json`, package scripts | active local gate / CI candidate |
+--- before/frontend/AGENTS.md
++++ after/frontend/AGENTS.md
+@@ -19,4 +19,4 @@
+ 在 `frontend/` 执行 `pnpm architecture:check`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod`。
+ 
+ ## Read Next
+-通用边界与命名读取父工作区 [namewta-fullstack-development](../.agents/skills/namewta-fullstack-development/SKILL.md)；具体包读取其同目录索引。
++通用边界与命名读取父工作区 [namewta-fullstack-development](../.agents/skills/namewta-fullstack-development/SKILL.md)；具体包读取最近适用的索引，没有包级手册时继承父目录导航。
+--- before/frontend/packages/domains/third/AGENTS.md
++++ after/frontend/packages/domains/third/AGENTS.md
+@@ -1,4 +1,4 @@
+-# Third Domain
++# Third 领域合同
+ 
+ This package owns only typed contracts and HTTP service functions for the `wta-third` backend.
+ It does not import Vue, Element Plus, application stores, or database entities.
+--- before/frontend/packages/web-domains/third/AGENTS.md
++++ after/frontend/packages/web-domains/third/AGENTS.md
+@@ -1,4 +1,4 @@
+-# Third Web Domain
++# Third Web 页面
+ 
+ Owns the admin pages for provider, endpoint, credential summary, invocation and statistic management.
+ Keep HTTP access in `@namewta/domain-third`; page components receive the service through runtime injection.

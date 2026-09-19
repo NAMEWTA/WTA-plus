@@ -1,0 +1,7 @@
+{
+  "exit_code": 143,
+  "cause": "unknown; no assertion failure recorded before interruption",
+  "owned_preview_pid": 1751699,
+  "owned_preview_closed": true,
+  "owned_config_cleanup": true
+}

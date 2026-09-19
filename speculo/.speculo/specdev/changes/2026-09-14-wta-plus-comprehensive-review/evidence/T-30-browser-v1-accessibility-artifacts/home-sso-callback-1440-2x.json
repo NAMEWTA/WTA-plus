@@ -1,0 +1,30 @@
+{
+  "dimensions": {
+    "viewport": 720,
+    "scrollWidth": 720,
+    "dpr": 2
+  },
+  "contrasts": [
+    {
+      "selector": ".sso-callback p",
+      "color": "rgb(23, 32, 51)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 15.271793605500177
+    },
+    {
+      "selector": "footer",
+      "color": "rgb(71, 85, 105)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 7.1134192200446416
+    }
+  ],
+  "zoomMethod": "Playwright context CSS viewport / zoom, DPR=zoom; device-pixel PNG, equivalent desktop reflow, not CSS zoom"
+}

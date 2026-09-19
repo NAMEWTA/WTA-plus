@@ -1,0 +1,22 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--workspace-concurrency=1",
+      "--filter",
+      "@namewta/domain-system",
+      "--filter",
+      "@namewta/domain-workflow",
+      "--filter",
+      "@namewta/domain-demo",
+      "--filter",
+      "@namewta/domain-admin",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 2.82,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26-frontend-focused-first-1.log"
+  }
+]

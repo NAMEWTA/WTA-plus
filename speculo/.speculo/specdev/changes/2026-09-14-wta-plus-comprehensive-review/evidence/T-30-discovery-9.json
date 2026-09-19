@@ -1,0 +1,279 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.upload.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.upload.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/upload-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "upload-import-lifecycle.spec.ts"
+        ],
+        "timeout": 35000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "upload-import-lifecycle.spec.ts",
+      "file": "upload-import-lifecycle.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T-18 user import network resets and retries through current authentication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-0b8ad2d7668930afb74a",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 83,
+          "column": 3
+        },
+        {
+          "title": "T-18 user import business resets and retries through current authentication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-c4cea92f582e3b8ea2a3",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 83,
+          "column": 3
+        },
+        {
+          "title": "T-18 user import 401 resets and retries through current authentication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-370bd7cc8c2120033733",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 83,
+          "column": 3
+        },
+        {
+          "title": "T-18 user import http401 resets and retries through current authentication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-51521b7bbf34192f2ba3",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 83,
+          "column": 3
+        },
+        {
+          "title": "T-18 user import cancellation stops the request and a fresh dialog can retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-47ce37c22b0724607f90",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "T-18 real MinIO file survives preview failure and retries without retransmission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-15adb98e1004bfead28d",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 126,
+          "column": 3
+        },
+        {
+          "title": "T-18 real MinIO image survives preview failure and retries without retransmission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-6b4221ef67e0848eb84e",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 126,
+          "column": 3
+        },
+        {
+          "title": "T-18 workflow import completes error and success callbacks with actual multipart bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-a5174b854049e6b161ef",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 153,
+          "column": 1
+        },
+        {
+          "title": "T-18 pending image dialog releases its local preview and ignores late completion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-097eb1a366da0b1f891e",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 170,
+          "column": 1
+        },
+        {
+          "title": "T-18 workflow import cancellation aborts transport and permits another attempt",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c5ae55b42abbaa7beb1a-9e41ea9afed2381691b1",
+          "file": "upload-import-lifecycle.spec.ts",
+          "line": 188,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T01:55:00.138Z",
+    "duration": 22.66700000000003,
+    "expected": 0,
+    "skipped": 10,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

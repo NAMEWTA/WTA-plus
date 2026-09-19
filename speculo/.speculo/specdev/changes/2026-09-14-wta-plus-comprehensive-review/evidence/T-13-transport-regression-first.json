@@ -1,0 +1,28 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-pl",
+      "wta-admin",
+      "-am",
+      "-Dtest=BrowserHttpsTransportIntegrationTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "-Dbrowser.transport.integration=true",
+      "-Dnamewta.repo.root=/srv/WTA-plus",
+      "test"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 32.34,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-13-transport-regression-first-1.log",
+    "counts": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": [
+      "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.security.BrowserHttpsTransportIntegrationTest.xml"
+    ]
+  }
+]

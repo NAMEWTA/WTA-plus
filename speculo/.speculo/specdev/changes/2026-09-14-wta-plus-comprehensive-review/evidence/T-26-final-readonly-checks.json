@@ -1,0 +1,25 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/tooling-openapi",
+      "openapi:check"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "generated_sha256": "2c2a00a739834a1d651b77d17fca8c8b3ea69a5a85f44893ef8fd1dbd444db25"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "architecture:check"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "workspaces": 35,
+    "reviewed_baseline_violations": 0
+  }
+]

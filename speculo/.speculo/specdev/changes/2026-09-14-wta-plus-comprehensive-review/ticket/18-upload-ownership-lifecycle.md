@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-18
 title: 明确上传完成、引用移除和导入失败生命周期
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：明确上传完成、引用移除和导入失败生命周期"
 ready: true
@@ -16,11 +16,11 @@ risk: high
 blocked_by: []
 contract_ids: [AC-018]
 owner: single-agent
-expected_changes: ["<Path>frontend/packages/web-kit/file-upload/src/FileUpload.vue</Path>", "<Path>frontend/packages/web-kit/file-upload/src/ImageUpload.vue</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path>", "<Path>frontend/packages/web-domains/system/src/runtime.ts</Path>", "<Path>frontend/packages/platform/contracts/src/index.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/packages/web-kit/file-upload/src/types.ts</Path>", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.ts</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.test.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"]
-writable_paths: ["<Path>frontend/packages/web-kit/file-upload/src/FileUpload.vue</Path>", "<Path>frontend/packages/web-kit/file-upload/src/ImageUpload.vue</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path>", "<Path>frontend/packages/web-domains/system/src/runtime.ts</Path>", "<Path>frontend/packages/platform/contracts/src/index.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/packages/web-kit/file-upload/src/types.ts</Path>", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.ts</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.test.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"]
+expected_changes: ["<Path>frontend/packages/web-kit/file-upload/src/FileUpload.vue</Path>", "<Path>frontend/packages/web-kit/file-upload/src/ImageUpload.vue</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path>", "<Path>frontend/packages/web-domains/system/src/runtime.ts</Path>", "<Path>frontend/packages/platform/contracts/src/index.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/packages/web-kit/file-upload/src/types.ts</Path>", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.ts</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.test.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/page-types.d.ts</Path>", "<Path>frontend/packages/web-domains/workflow/src/definition/DefinitionPage.vue</Path>", "<Path>frontend/packages/domains/workflow/src/index.ts</Path>", "<Path>frontend/packages/domains/workflow/src/index.test.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/src/index.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/src/index.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path>", "<Path>frontend/playwright.upload.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/upload/BrowserUploadLifecycleIntegrationTest.java</Path>"]
+writable_paths: ["<Path>frontend/packages/web-kit/file-upload/src/FileUpload.vue</Path>", "<Path>frontend/packages/web-kit/file-upload/src/ImageUpload.vue</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path>", "<Path>frontend/packages/web-domains/system/src/runtime.ts</Path>", "<Path>frontend/packages/platform/contracts/src/index.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/packages/web-kit/file-upload/src/types.ts</Path>", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.ts</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/client.test.ts</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/page-types.d.ts</Path>", "<Path>frontend/packages/web-domains/workflow/src/definition/DefinitionPage.vue</Path>", "<Path>frontend/packages/domains/workflow/src/index.ts</Path>", "<Path>frontend/packages/domains/workflow/src/index.test.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/src/index.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/src/index.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path>", "<Path>frontend/playwright.upload.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/upload/BrowserUploadLifecycleIntegrationTest.java</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path>", "<Path>frontend/packages/platform/contracts/src/index.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>"]
-shared_path_owners: ["<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/platform/contracts/src/index.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path> => single-agent (Lead; serial T-18 turn)"]
+shared_paths: ["<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path>", "<Path>frontend/packages/platform/contracts/src/index.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path>", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.ts</Path>", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/page-types.d.ts</Path>", "<Path>frontend/packages/web-domains/workflow/src/definition/DefinitionPage.vue</Path>", "<Path>frontend/packages/domains/workflow/src/index.ts</Path>", "<Path>frontend/packages/domains/workflow/src/index.test.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/src/index.ts</Path>", "<Path>frontend/packages/adapters/axios-browser/src/index.test.ts</Path>", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path>", "<Path>frontend/playwright.upload.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/upload/BrowserUploadLifecycleIntegrationTest.java</Path>"]
+shared_path_owners: ["<Path>frontend/packages/web-domains/system/src/user/UserPage.vue</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/platform/contracts/src/index.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/e2e/</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/apps/admin-web/src/router/adminManifestRegistry.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/web-kit/file-upload/src/upload-request.test.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/web-domains/system/src/user/useUserImport.test.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/web-domains/system/src/page-types.d.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/web-domains/workflow/src/definition/DefinitionPage.vue</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/domains/workflow/src/index.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/domains/workflow/src/index.test.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/adapters/axios-browser/src/index.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/adapters/axios-browser/src/index.test.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/playwright.upload.config.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>frontend/playwright.config.ts</Path> => single-agent (Lead; serial T-18 turn)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/upload/BrowserUploadLifecycleIntegrationTest.java</Path> => single-agent (Lead; serial T-18 turn)"]
 ---
 
 # T-18：明确上传完成、引用移除和导入失败生命周期
@@ -97,7 +97,7 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 
 - E2E disposition：required: 真实上传后URL失败、导入网络/业务/401/取消、重试与资源回收。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本票本地产品检查已完成，结果及边界见 evidence/T-18.md；commit/result 仍为空。
 
 ## 9. 发布、迁移与恢复
 
@@ -105,20 +105,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：保留已完成对象及引用；回退UI不能批量删除文件。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；用户已授权全部本地可逆实现与验证；当前所有提交继续暂缓。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-018`：下载URL失败不生成无人回收的Blob URL，也不把已完成上传误报失败。
-- [ ] `AC-018`：导入网络失败、业务错误、401和取消均复位且可重试。
-- [ ] `AC-018`：业务提交等待上传与材料归属登记完成。
-- [ ] `AC-018`：现有OSS删除权限/引用保护不退化；若保留本地URL则replace/remove/unmount释放。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-18.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-018`：下载URL失败不生成无人回收的Blob URL，也不把已完成上传误报失败。
+- [x] `AC-018`：导入网络失败、业务错误、401和取消均复位且可重试。
+- [x] `AC-018`：业务提交等待上传与材料归属登记完成。
+- [x] `AC-018`：现有OSS删除权限/引用保护不退化；若保留本地URL则replace/remove/unmount释放。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-18.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -129,3 +129,15 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：无。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+Revision56：真实Workflow importDefinition没有完成Element回调且不能取消，补精确消费者/可选signal与测试写集；用户导入最小runtime方法使用现有App HTTP，不创建通用导入框架。新局部状态与上传request测试同步登记。
+
+Revision57：实际Axios facade覆盖调用者signal；为导入局部取消补最小HttpRequest.signal与双范围取消合成，保留T-12退出取消。登记两个adapter路径及其回归，不能只取消页面loading却继续忽略调用者中断。
+
+Revision58：登记OSS管理对话框busy/销毁生命周期及独立浏览器配置、实际MinIO上传集成fixture；控制面与数据库边界须明确，不将Playwright API响应外推为真实业务数据库。
+
+Revision59：24路径检查点，本地验证完成；全工作区561/最终七包155、38Java/10MinIO Chrome、默认51pass/1Nacos skip、20会话/10注册/6真实HTTPS及静态门禁通过。私有预览解析、失败/取消回收及真实fixture边界见T-18.md；review不等于Done，提交继续全部暂缓。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`706c281958e23408041ae34d052a309e08201187`, `5fde7e2cb180156e46fa3a9671ee4776feeb24f8`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

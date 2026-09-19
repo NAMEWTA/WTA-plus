@@ -1,0 +1,21 @@
+{
+  "captured_at": "2026-09-18T20:13:01.819929+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "frontend/packages/web-domains/system/src/composables.ts": "cdcd14acb5db78008d2141453114a8dc80794f41e34a3151b4d921ea678d5a01",
+    "frontend/packages/web-domains/system/src/user/UserPage.vue": "c736f68a0c9539c508d1e53f25db62247850f11beabb9dd0d88692cab9ebd1c9",
+    "frontend/packages/web-domains/system/src/role/RolePage.vue": "9704ce47017ec30e232913e6fc71f390133b144223842bca272e23ab9ef7076a",
+    "frontend/packages/web-domains/system/src/menu/MenuPage.vue": "3391d8004d5ebb152421937038fe83cc7f6bf0342afa23bd88d6468db8b81e3a",
+    "frontend/packages/web-domains/system/src/user/page-query.test.ts": "9100fa914440d3a8542011fe08e4a180d60d14d415dc70ef45b0aaeed79634b0",
+    "frontend/apps/admin-web/src/hooks/async/useLoading.ts": null,
+    "frontend/apps/admin-web/src/hooks/dialog/useFormDialog.ts": null,
+    "frontend/apps/admin-web/src/hooks/form/useSearchReset.ts": null
+  },
+  "upstream_nonoverlap_count": 355,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [
+    "frontend/packages/web-domains/system/src/user/UserPage.vue"
+  ]
+}

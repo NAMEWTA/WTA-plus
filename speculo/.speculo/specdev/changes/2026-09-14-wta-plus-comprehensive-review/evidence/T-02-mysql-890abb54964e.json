@@ -1,0 +1,75 @@
+{
+  "captured_at": "2026-09-18T07:40:59.662881+00:00",
+  "records": [
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-d",
+        "--name",
+        "namewta-log-test-890abb54964e",
+        "--label",
+        "namewta.test.owner=T-02",
+        "-p",
+        "127.0.0.1::3306",
+        "-e",
+        "MYSQL_ROOT_PASSWORD=namewta-log-test-only",
+        "-e",
+        "MYSQL_DATABASE=namewta_log_test_890abb54964e",
+        "mysql:8.4.9",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_general_ci"
+      ],
+      "exit_code": 0,
+      "stdout": "1ff29ee4c275f9dd65ac51cbf02e65fb3f84498acadd286f30e85645e33686ba\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "port",
+        "namewta-log-test-890abb54964e",
+        "3306/tcp"
+      ],
+      "exit_code": 0,
+      "stdout": "127.0.0.1:32770\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-pl",
+        "wta-admin",
+        "-am",
+        "test",
+        "-Dtest=LogSanitizerTest,LogAspectRedactionTest,SysLog*Test,OperationLogRedactionTest,LogRedactionHttpMySqlIntegrationTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Dlog.mysql.integration.url=jdbc:mysql://127.0.0.1:32770/namewta_log_test_890abb54964e?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+        "-Dlog.mysql.integration.username=root",
+        "-Dlog.mysql.integration.password=namewta-log-test-only",
+        "-Dnamewta.sql.root=/srv/WTA-plus/release-artifacts/docker/infrastructure/mysql/init"
+      ],
+      "cwd": "/srv/WTA-plus/backend",
+      "exit_code": 0,
+      "log": "T-02-mysql-890abb54964e.log"
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "namewta-log-test-890abb54964e"
+      ],
+      "exit_code": 0,
+      "stdout": "namewta-log-test-890abb54964e\n",
+      "stderr": ""
+    }
+  ],
+  "mysql_image": "mysql:8.4.9",
+  "mysql_digest": "sha256:c36050afdca850f23cef85703f84c7531a5ae155a11b5ee1c60acb09937c4084",
+  "exit_code": 0,
+  "container_removed": true
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "exec",
+      "tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--strictNullChecks",
+      "false"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 1.12,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-consumer-types-1.log"
+  }
+]

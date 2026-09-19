@@ -1,0 +1,26 @@
+{
+  "captured_at": "2026-09-18T21:24:51.297898+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "frontend/packages/web-domains/admin/src/auth/LoginPage.vue": "ff494f036ed421203c619bdb850cdcc9d262255b48c67df0ba2ca9ec0214e735",
+    "frontend/apps/home-web/src/views/RegisterPage.vue": "d2e607f2f5185c181b6b129382e9d489270eed87fce377f05e973b1b0ec1e5ba",
+    "frontend/apps/sso-web/src/views/AuthorizePage.vue": "e4ea290d890411f7d2fde95c39909a07b0cd627988d4eb114d4c44eaf8bc7a93",
+    "frontend/apps/home-web/src/App.vue": "acb0b93db88fba4063a32d13ed65ba0322a10efeb9a786fee90116656feed499",
+    "frontend/apps/home-web/src/layout/HomeShell.vue": "545c78fd35c189c07977a56fe89b71aa6ca8f6b0c2e9e3ec1218ac8c2f57b16e",
+    "frontend/playwright.accessibility.config.ts": "e5e1e8c6e920f15973a594b2faf066c86714e3fe1bcf7b2dfd4d7cca713b25bd",
+    "frontend/playwright.config.ts": "e7e3876f90de968d4c7f945dd793c9f298074d57b1ba5ae33aa22676aad86194",
+    "frontend/e2e/public-accessibility.spec.ts": "62c5d07e0841f530a1de0dc4098d584825140731a9676c47fd522387d3086bb7",
+    "frontend/e2e/system-identity.spec.ts": "179db12532556e01bbbbb73df18029fda33c9908a1e1f46db93df3040e74b27c"
+  },
+  "upstream_nonoverlap_count": 384,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": [
+    "frontend/apps/home-web/src/views/RegisterPage.vue",
+    "frontend/apps/sso-web/src/views/AuthorizePage.vue",
+    "frontend/apps/home-web/src/layout/HomeShell.vue",
+    "frontend/playwright.config.ts",
+    "frontend/e2e/system-identity.spec.ts"
+  ]
+}

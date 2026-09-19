@@ -1,0 +1,76 @@
+{
+  "captured_at": "2026-09-19T02:45:04.305653+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "candidate": null,
+  "files": {
+    "backend/README.md": "a690c830e01a73340781c9ae1e14598721607e83bef9b7b3a80839154e2ffa84",
+    "backend/wta-admin/src/main/resources/application.yml": "0f404bd742347e008277a78487242e5b36bb47a99099bc69334e8fb23e4bedfb",
+    "backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java": "bc563517583fce576b86c33062c6d5766292e59708ef4dfac0cf3a04e7813a2d",
+    "backend/wta-admin/src/test/java/org/namewta/test/openapi/assembly/OpenApiAssemblyContextTest.java": "162646e16a73ee5111809263b107b7988539d4de85c4c3c095e2e44215193d0c",
+    "backend/wta-admin/src/test/java/org/namewta/test/requestbody/RequestBodyHttpIntegrationTest.java": "0c1ce9850fb5460aaa720a43e5d1f8b7a264ff2115df66cca7ea42684d14c33d",
+    "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java": "b54dc3e73e48313fcef0c2bb7f8f2747742c3c55bd8de8dbf5ca9c27ad889b1b",
+    "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/exception/RequestBodyTooLargeException.java": "ee24228d7a97b31910b1f8869de29da70e871bd8c1f6b59bd7b85a3ac02f7c9c",
+    "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/http/CapturedRequestBody.java": "890cb864cccace34b6e731939ce7304d05bf0a5cd27244e539b7cb26119810a4",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/OpenApiAutoConfiguration.java": "6afe335c717201cdd43e0c528aa9da1a6922eeb4000ef448aa13a184ecee0bbb",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/OpenApiStartupValidator.java": "cc9e41e88c54ece44aa8ca03680efbc4d8c50d671fdbbf6a67452897d9827e6e",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/config/properties/OpenApiProperties.java": "3156013325f5d7ecebee520f30f9d122f4f448349853d997058875707bcfe08c",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/OpenApiGatewayFilter.java": "8327d2dd379654eb9c21c976642a1b913176cbf5e5249356c8e82d725a3d365f",
+    "backend/wta-common/wta-common-openapi/src/main/java/org/namewta/common/openapi/gateway/ReplayableOpenApiRequest.java": "58ef7181c520ac3e87b319f81802234df1f137b865842a07d6788aa6ce176d0a",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/FilterConfig.java": "484ebd4527fe79dda767cf4ea60a50a575999e117b1331685163ed2035e84f5f",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogConfig.java": "dfe1bf793ca002e6f657716667d7fb52f42742221e833969dec60ec332affff8",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/RequestBodyProperties.java": "1054c33602c7ded7518b6741d583d0d5e60fb560c2442cc98b2ec878853e7457",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatableFilter.java": "a7d27ef5c1e2c14e7217843845b262e2264efaf0070772270db18e5f8c04e9e0",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatedlyRequestWrapper.java": "f92c5a739f8f0932393f8831efbfb6f3dad5db489cb05b8e83ba3e393bc64cb5",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/XssFilter.java": "1ff110cdbd63e59d01b92424975dbe5f0b2f18e6a383f7461d894f8e07595ebe",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/XssHttpServletRequestWrapper.java": "3bcdff2ce243f23e724ea30afb7717fbf3ccaa027e87540f05586b96067535d1",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java": "9bf0c50cbace14a33d5332609de71656d027650e1df4aecfeaa081def12492e1",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogMediaTypePolicy.java": "615edbef83ced612b1a48d6dcc0f06cdfd79ec647dcad425cd92e65fa006dbea",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/config/SysLogConfigTest.java": "10fffb25715b7bd6f12b8b4401aec8ebd41dc0959b4fea16a54b30085d769965",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/filter/RequestBodyLimitTest.java": "3fd385d2180f12c6dbb7f78807660aacdbb64f95802b7c9480f582257cbc9312",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java": "304bd37294d0392bd80121ea3e2f886abaca9610257510a1d676ea0f23b7fd2c",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java": "f09d36ad151189a38de71a3e2c2b9adc91b92672893a2c66f3718c5d2917256c"
+  },
+  "upstream_nonoverlap_count": 584,
+  "upstream_nonoverlap_unchanged": true,
+  "upstream_overlap": {
+    "backend/README.md": {
+      "before": "889f3b614aad6d40b21a66a4867532c52b8ae0acf8f154b8d53a1ba0b0fa3590",
+      "after": "a690c830e01a73340781c9ae1e14598721607e83bef9b7b3a80839154e2ffa84"
+    },
+    "backend/wta-admin/src/main/resources/application.yml": {
+      "before": "5e86ea09a0d09b84544fa7581a87e5798406986b5953046d40f16f1a0336f916",
+      "after": "0f404bd742347e008277a78487242e5b36bb47a99099bc69334e8fb23e4bedfb"
+    },
+    "backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java": {
+      "before": "692c887d34478721e79aa50597e517b0f893fd59886c032fef3011b27bf2ede7",
+      "after": "bc563517583fce576b86c33062c6d5766292e59708ef4dfac0cf3a04e7813a2d"
+    },
+    "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java": {
+      "before": "0cb41c55b72078deb58dd7c33132348f0cfbb4ec5ec286c68ff85ef1495870e0",
+      "after": "b54dc3e73e48313fcef0c2bb7f8f2747742c3c55bd8de8dbf5ca9c27ad889b1b"
+    },
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/SysLogConfig.java": {
+      "before": "3ca5e2317f7530422b52a0c61d7501ecf55660e98d6d055d7f5846fe6ccaa7c2",
+      "after": "dfe1bf793ca002e6f657716667d7fb52f42742221e833969dec60ec332affff8"
+    },
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java": {
+      "before": "bd96dd311f507e450ab52c87acae43ff97e0973f8d3521bb23e252b9bc4cfd62",
+      "after": "9bf0c50cbace14a33d5332609de71656d027650e1df4aecfeaa081def12492e1"
+    },
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/config/SysLogConfigTest.java": {
+      "before": "79108e3cefd9e426daa06e651de839140e4b917117994c2fb934904a6b2f47e7",
+      "after": "10fffb25715b7bd6f12b8b4401aec8ebd41dc0959b4fea16a54b30085d769965"
+    },
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java": {
+      "before": "f4520b6ad633942ea657952c64e39c0fd3f76169b2140ab652d85788b057f8da",
+      "after": "304bd37294d0392bd80121ea3e2f886abaca9610257510a1d676ea0f23b7fd2c"
+    },
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java": {
+      "before": "a01a8c46ca8078329c43b685f88330ed631236352c8292de1c85963821ce26cc",
+      "after": "f09d36ad151189a38de71a3e2c2b9adc91b92672893a2c66f3718c5d2917256c"
+    }
+  },
+  "cumulative_paths": 610
+}

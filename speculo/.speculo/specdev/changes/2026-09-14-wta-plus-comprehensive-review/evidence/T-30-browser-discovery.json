@@ -1,0 +1,1470 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.82,
+    "report": "T-30-discovery-1.json",
+    "config": "playwright.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "ai-domain.spec.ts",
+        "title": "admin selects the permission-neutral AI manifest and loads the embedded chat",
+        "line": 123,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "ai-domain.spec.ts",
+        "title": "failed and hanging probes keep the sensitive URL private and remain retryable",
+        "line": 149,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "app-runtime-baseline.spec.ts",
+        "title": "client context request failure keeps authentication fail-closed",
+        "line": 178,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "app-runtime-baseline.spec.ts",
+        "title": "client context missing a required field keeps authentication fail-closed",
+        "line": 187,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "app-runtime-baseline.spec.ts",
+        "title": "login restores the selected manifest route without re-filtering the server menu",
+        "line": 196,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "app-runtime-baseline.spec.ts",
+        "title": "captcha refresh failure is handled and disables authentication",
+        "line": 222,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "app-runtime-baseline.spec.ts",
+        "title": "unknown server component fails closed with stable manifest diagnostics",
+        "line": 238,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "app-runtime-baseline.spec.ts",
+        "title": "an authenticated 401 logs out and preserves the protected route as redirect",
+        "line": 257,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "client-auth-context.spec.ts",
+        "title": "invalid Client context reaches terminal fail-close before code or login",
+        "line": 112,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "client-auth-context.spec.ts",
+        "title": "registration applies the public policy before sending the JSON write",
+        "line": 124,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "client-auth-context.spec.ts",
+        "title": "registration fails closed when an enabled Client omits the password policy",
+        "line": 144,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "client-auth-context.spec.ts",
+        "title": "profile password change reuses the same policy and blocks weak writes",
+        "line": 155,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "client-auth-context.spec.ts",
+        "title": "dynamic recovery uses server menu order and exposes a true no-facade typo diagnostic",
+        "line": 176,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "client-auth-context.spec.ts",
+        "title": "permission wildcard allows controls while an unrelated permission fails closed",
+        "line": 202,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "client-auth-context.spec.ts",
+        "title": "a protected 401 presents one recovery and performs one logout",
+        "line": 230,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "demo-manifest.spec.ts",
+        "title": "selected demo registry routes survive a keep-alive menu round trip",
+        "line": 100,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "demo-manifest.spec.ts",
+        "title": "shared manifest diagnostic renders a stable missing-key error",
+        "line": 127,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "nacos-console.spec.ts",
+        "title": "authorized WTA user gets a same-origin Nacos frame without credential injection",
+        "line": 40,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "nacos-console.spec.ts",
+        "title": "WTA permission denial creates no Nacos frame or request",
+        "line": 62,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "nacos-console.spec.ts",
+        "title": "live proxy loads official login in a same-origin iframe and keeps API authentication",
+        "line": 78,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "operations-domain.spec.ts",
+        "title": "admin selects operations, queries a real monitor seam and enforces the configured URL boundary",
+        "line": 84,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "operations-domain.spec.ts",
+        "title": "permission denial renders no external frame",
+        "line": 117,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "operations-domain.spec.ts",
+        "title": "notification monitor uses the current notify contract and renders delivery status",
+        "line": 127,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "oss-config-access-policy.spec.ts",
+        "title": "OSS config exposes two policies, enforces public constraints and uses POST commands",
+        "line": 128,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "profile-management.spec.ts",
+        "title": "profile manifests resolve all management surfaces and submit a workflow rejection",
+        "line": 202,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "admin runs Client-scoped governance queries and an authorized role mutation while unrelated controls fail closed",
+        "line": 193,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "a rejected Client-scoped user query stays visible and does not invent fallback rows",
+        "line": 245,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "credential permissions remain independent and fail closed in the user row",
+        "line": 258,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "new user form adopts the server candidate and rejects a weak edit without legacy config",
+        "line": 283,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "admin edits the server reset candidate while weak input sends no password write",
+        "line": 308,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "temporary password is copied once, removed on close and reissued as a new value",
+        "line": 357,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "clipboard failure is visible without dismissing the one-time value",
+        "line": 405,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-identity.spec.ts",
+        "title": "credential request failures close loading dialogs without exposing empty values",
+        "line": 429,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-resources.spec.ts",
+        "title": "admin selects resource manifests and keeps message/config/dict/OSS requests Client scoped",
+        "line": 267,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-resources.spec.ts",
+        "title": "resource permission denial hides mutations and a Client query failure never invents fallback data",
+        "line": 340,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "system-resources.spec.ts",
+        "title": "social list is rendered and binding/unlock failures remain Client scoped and visible",
+        "line": 363,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "third-party-management.spec.ts",
+        "title": "admin projects all third pages and keeps outbound management requests Client scoped",
+        "line": 206,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "third-party-management.spec.ts",
+        "title": "list-only permission hides every mutation and direct ungranted route fails closed",
+        "line": 279,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-definition.spec.ts",
+        "title": "selected workflow manifest completes category, definition, designer and SpEL mutations",
+        "line": 224,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-definition.spec.ts",
+        "title": "workflow business failure stays visible without false success or loading lock",
+        "line": 330,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-definition.spec.ts",
+        "title": "workflow permissions hide mutations without filtering selected server menus",
+        "line": 351,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-definition.spec.ts",
+        "title": "designer rejects foreign origin, other windows and unknown payloads",
+        "line": 380,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-definition.spec.ts",
+        "title": "designer refresh replaces its window and releases message listeners after closing",
+        "line": 418,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "admin selected workflow completes a task through the public user seam",
+        "line": 475,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "user and task failures remain visible without clearing approval input",
+        "line": 529,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "participant actions execute delegate transfer add-sign and reduce-sign contracts",
+        "line": 560,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "task edit controls fail closed when the permission contribution is absent",
+        "line": 627,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "all-task runtime separates finished work and sends exact urge payload",
+        "line": 650,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "instance invalidation requires a reason and posts exact FlowInvalidBo",
+        "line": 694,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "task back uploads a real attachment and preserves the exact payload",
+        "line": 719,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "instance variables can be updated under the exact permission and payload",
+        "line": 772,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "my document cancellation keeps the backend cancellation reason",
+        "line": 800,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "leave controls follow exact state and permission gates",
+        "line": 824,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "workflow-runtime.spec.ts",
+        "title": "leave add calculates days, starts workflow and closes after task completion",
+        "line": 850,
+        "projects": [
+          "chromium"
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.accessibility.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.85,
+    "report": "T-30-discovery-2.json",
+    "config": "playwright.accessibility.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "Home login preparation failure has a keyboard retry with visible focus",
+        "line": 132,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "Home login can fail and complete using only keyboard input",
+        "line": 143,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "Home registration retains labels and alert while keyboard retry completes",
+        "line": 157,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "SSO network retry and failed password status remain accessible to keyboard and AX tree",
+        "line": 172,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "Home callback preserves live errors and keyboard restart/back navigation",
+        "line": 194,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /login 320px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /register 320px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /sso/callback 320px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "sso /authorize 320px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /login 320px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /register 320px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /sso/callback 320px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "sso /authorize 320px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /login 768px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /register 768px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /sso/callback 768px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "sso /authorize 768px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /login 768px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /register 768px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /sso/callback 768px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "sso /authorize 768px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /login 1440px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /register 1440px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /sso/callback 1440px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "sso /authorize 1440px 100% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /login 1440px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /register 1440px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "home /sso/callback 1440px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "public-accessibility.spec.ts",
+        "title": "sso /authorize 1440px 200% reflow and rendered contrast",
+        "line": 94,
+        "projects": [
+          ""
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.lifecycle.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.77,
+    "report": "T-30-discovery-3.json",
+    "config": "playwright.lifecycle.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin empty roles recover once across repeated SPA navigation",
+        "line": 115,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin offline logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin timeout logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin unauthorized logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin http-unauthorized logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin concurrent 401 cancellation and retry has one terminating recovery",
+        "line": 149,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin initial identity 401 terminates without a competing modal",
+        "line": 168,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin logout cancels pending identity and prevents stale recovery",
+        "line": 179,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 admin logout cancels pending menus and prevents stale recovery",
+        "line": 179,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home empty roles recover once across repeated SPA navigation",
+        "line": 115,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home offline logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home timeout logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home unauthorized logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home http-unauthorized logout clears local state and routes and completes UI navigation",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home concurrent 401 cancellation and retry has one terminating recovery",
+        "line": 149,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home initial identity 401 terminates without a competing modal",
+        "line": 168,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home logout cancels pending identity and prevents stale recovery",
+        "line": 179,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 home logout cancels pending menus and prevents stale recovery",
+        "line": 179,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 separate Client origins retain only their own identity and navigation",
+        "line": 196,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-navigation-lifecycle.spec.ts",
+        "title": "T-12 Admin logout closes a real open HTTPS EventSource despite remote failure",
+        "line": 207,
+        "projects": [
+          ""
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.profile.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 0.82,
+    "report": "T-30-discovery-4.json",
+    "config": "playwright.profile.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [],
+    "errors": [
+      {
+        "message": "Error: Owned Profile/MySQL/MinIO fixture is required",
+        "stack": "Error: Owned Profile/MySQL/MinIO fixture is required\n    at /srv/WTA-plus/frontend/e2e/profile-self-materials.spec.ts:4:20",
+        "location": {
+          "file": "/srv/WTA-plus/frontend/e2e/profile-self-materials.spec.ts",
+          "column": 20,
+          "line": 4
+        },
+        "snippet": "\u001b[90m   at \u001b[39mprofile-self-materials.spec.ts:4\n\n  2 |\n  3 | const origin = process.env.PROFILE_TEST_ORIGIN;\n> 4 | if (!origin) throw new Error('Owned Profile/MySQL/MinIO fixture is required');\n    |                    ^\n  5 | const clientid = '428a8310cd442757ae699df5d894f051';\n  6 | const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a9ioAAAAASUVORK5CYII=', 'base64');\n  7 | const item = (page: Page, label: string) => page.locator('.el-form-item').filter({ has: page.locator('.el-form-item__label', { hasText: new RegExp(`^${label}$`) }) });"
+      },
+      {
+        "message": "Error: No tests found",
+        "stack": "Error: No tests found"
+      }
+    ]
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.registration.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.78,
+    "report": "T-30-discovery-5.json",
+    "config": "playwright.registration.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 disabled registration hides public entries and denies direct page submission",
+        "line": 48,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 failed context hides entries and direct registration can retry without reload",
+        "line": 58,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 home registration remains disabled until the captcha response is applied",
+        "line": 70,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 admin registration remains disabled until the captcha response is applied",
+        "line": 70,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 Admin login remains disabled until the captcha response is applied",
+        "line": 82,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 keyboard refresh keeps the latest uuid and rejected registration can recover",
+        "line": 92,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 keyboard refresh keeps the latest uuid and network registration can recover",
+        "line": 92,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 captcha network failure stays disabled and keyboard refresh recovers",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 registration rejection rechecks a Client that has closed registration",
+        "line": 145,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "recoverable-registration.spec.ts",
+        "title": "T-13 repeated submit sends once and cancelling ignores its late completion",
+        "line": 158,
+        "projects": [
+          ""
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.sso.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.82,
+    "report": "T-30-discovery-6.json",
+    "config": "playwright.sso.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "sso-admin-config.spec.ts",
+        "title": "SSO 管理 create/config and Client own-app 已接入",
+        "line": 23,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "registered context callback returns to the requested App route",
+        "line": 84,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "opaque state including spaces, plus, ampersand, percent and Unicode survives the browser round trip",
+        "line": 90,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "expired real authorization code offers a fresh authorization without reusing credentials",
+        "line": 104,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "network failure and refresh never replay the old exchange",
+        "line": 121,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "wrong verifier is rejected by the real backend and fresh authorization recovers",
+        "line": 140,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "wrong state fails before exchange and can restart from the callback page",
+        "line": 160,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "registered context callback returns to the requested App route",
+        "line": 84,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "opaque state including spaces, plus, ampersand, percent and Unicode survives the browser round trip",
+        "line": 90,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "expired real authorization code offers a fresh authorization without reusing credentials",
+        "line": 104,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "network failure and refresh never replay the old exchange",
+        "line": 121,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "wrong verifier is rejected by the real backend and fresh authorization recovers",
+        "line": 140,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-callback-journey.spec.ts",
+        "title": "wrong state fails before exchange and can restart from the callback page",
+        "line": 160,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-release-origin.spec.ts",
+        "title": "T-08 three HTTPS health routes and host-only SSO cookie boundaries",
+        "line": 88,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-release-origin.spec.ts",
+        "title": "HTTPS login, callback and page refresh preserve the App session",
+        "line": 67,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-release-origin.spec.ts",
+        "title": "expired SSO session can sign in again after business session removal",
+        "line": 73,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-release-origin.spec.ts",
+        "title": "HTTPS login, callback and page refresh preserve the App session",
+        "line": 67,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-release-origin.spec.ts",
+        "title": "expired SSO session can sign in again after business session removal",
+        "line": 73,
+        "projects": [
+          "chromium"
+        ]
+      },
+      {
+        "file": "sso-three-gates.spec.ts",
+        "title": "AC-001 default provider, AC-002 reuse, AC-003 isolation",
+        "line": 37,
+        "projects": [
+          "chromium"
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.transfer.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 0.8,
+    "report": "T-30-discovery-7.json",
+    "config": "playwright.transfer.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [],
+    "errors": [
+      {
+        "message": "Error: Owned Home transfer fixture required",
+        "stack": "Error: Owned Home transfer fixture required\n    at /srv/WTA-plus/frontend/e2e/enterprise-transfer-queue.spec.ts:5:64",
+        "location": {
+          "file": "/srv/WTA-plus/frontend/e2e/enterprise-transfer-queue.spec.ts",
+          "column": 64,
+          "line": 5
+        },
+        "snippet": "\u001b[90m   at \u001b[39menterprise-transfer-queue.spec.ts:5\n\n  3 |\n  4 | const origin = process.env.TRANSFER_TEST_ORIGIN;\n> 5 | if (!origin || new URL(origin).hostname !== '127.0.0.1') throw new Error('Owned Home transfer fixture required');\n    |                                                                ^\n  6 |\n  7 | function state() {\n  8 |   return { permission: true, sends: 0, confirms: 0, expires: 300, status: 'QUEUED', requests: [] as unknown[], hold: undefined as Promise<void> | undefined };"
+      },
+      {
+        "message": "Error: No tests found",
+        "stack": "Error: No tests found"
+      }
+    ]
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.transport.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.74,
+    "report": "T-30-discovery-8.json",
+    "config": "playwright.transport.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "browser-https-transport.spec.ts",
+        "title": "T-11 admin registers, logs in and reloads using ordinary HTTPS JSON",
+        "line": 73,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "browser-https-transport.spec.ts",
+        "title": "T-11 admin preserves ordinary JSON login failures without creating a session",
+        "line": 102,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "browser-https-transport.spec.ts",
+        "title": "T-11 home registers, logs in and reloads using ordinary HTTPS JSON",
+        "line": 73,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "browser-https-transport.spec.ts",
+        "title": "T-11 home preserves ordinary JSON login failures without creating a session",
+        "line": 102,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "browser-https-transport.spec.ts",
+        "title": "T-11 Admin download preserves binary bytes and displays a JSON download failure",
+        "line": 111,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "browser-https-transport.spec.ts",
+        "title": "T-11 real Auth MVC rejects unknown Client and malformed registration without writing users",
+        "line": 128,
+        "projects": [
+          ""
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.upload.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.74,
+    "report": "T-30-discovery-9.json",
+    "config": "playwright.upload.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 user import network resets and retries through current authentication",
+        "line": 83,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 user import business resets and retries through current authentication",
+        "line": 83,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 user import 401 resets and retries through current authentication",
+        "line": 83,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 user import http401 resets and retries through current authentication",
+        "line": 83,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 user import cancellation stops the request and a fresh dialog can retry",
+        "line": 107,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 real MinIO file survives preview failure and retries without retransmission",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 real MinIO image survives preview failure and retries without retransmission",
+        "line": 126,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 workflow import completes error and success callbacks with actual multipart bytes",
+        "line": 153,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 pending image dialog releases its local preview and ignores late completion",
+        "line": 170,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "upload-import-lifecycle.spec.ts",
+        "title": "T-18 workflow import cancellation aborts transport and permits another attempt",
+        "line": 188,
+        "projects": [
+          ""
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "apps/sso-web/playwright.security.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.81,
+    "report": "T-30-discovery-10.json",
+    "config": "apps/sso-web/playwright.security.config.ts",
+    "status": "discovery-only",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "session-security.spec.ts",
+        "title": "HTTPS login preserves host-only HttpOnly cookies, PKCE, expiry, one-time use and CORS boundaries",
+        "line": 51,
+        "projects": [
+          ""
+        ]
+      },
+      {
+        "file": "session-security.spec.ts",
+        "title": "explicit local/dev HTTP mode can login and clears the same cookie",
+        "line": 109,
+        "projects": [
+          ""
+        ]
+      }
+    ],
+    "errors": []
+  }
+]

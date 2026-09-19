@@ -1,0 +1,29 @@
+{
+  "captured_at": "2026-09-19T05:02:48.389097+00:00",
+  "prior_source": "88a5a9a25f9c3d88def978ac6aac64d60522638cfa43150e0cfb3f4924a9fee0",
+  "current_source": "1dff1a345e1979d809bb547f3060645d86b4508f3df3aad5fd227de53ab2c504",
+  "changed_files": [
+    "release-artifacts/scripts/init-mysql-container.sh",
+    "release-artifacts/tests/release-config.test.mjs",
+    "release-artifacts/tests/release-integration-contract.test.mjs"
+  ],
+  "all_other_source_files_identical": true,
+  "unchanged_build_and_test_input_trees": [
+    "frontend/",
+    "backend/",
+    ".agents/",
+    "scripts/"
+  ],
+  "carried_gate_reports": [
+    "T-30-v2-static.json",
+    "T-30-v2-frontend-builds.json",
+    "T-30-v2-default-browser.json",
+    "T-30-v1-backend-tests.json",
+    "T-30-v1-backend-bundles.json"
+  ],
+  "rerun_affected_reports": [
+    "T-30-v2-release.json",
+    "T-30-v2-external.json"
+  ],
+  "limitation": "Carried gates ran before the initializer count correction; their full input trees and build scripts are byte-identical. Their original source fingerprint is preserved, not relabeled."
+}

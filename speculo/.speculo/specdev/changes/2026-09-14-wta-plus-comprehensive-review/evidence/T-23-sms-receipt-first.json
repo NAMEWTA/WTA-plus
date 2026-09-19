@@ -1,0 +1,23 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-modules/wta-notify",
+    "-am",
+    "test",
+    "-Dtest=Sms4jReceiptTest,NotifyConfigServiceTest,Sms4jBlendRegistryTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "backend",
+  "exit_code": 0,
+  "counts": {
+    "tests": 19,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "seconds": 10.37,
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23-sms-receipt-first.log"
+}

@@ -1,0 +1,539 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.sso.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/playwright.sso.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/srv/WTA-plus/frontend/tests/e2e/reports/sso-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "sso-three-gates.spec.ts",
+          "sso-admin-config.spec.ts",
+          "sso-callback-journey.spec.ts",
+          "sso-release-origin.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "sso-admin-config.spec.ts",
+      "file": "sso-admin-config.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Round4 SSO Admin + Client bind",
+          "file": "sso-admin-config.spec.ts",
+          "line": 22,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SSO 管理 create/config and Client own-app 已接入",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "2272029b6c2e114dba1e-d5699139b76d69a9a0a7",
+              "file": "sso-admin-config.spec.ts",
+              "line": 23,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sso-callback-journey.spec.ts",
+      "file": "sso-callback-journey.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "T-07 admin callback journey",
+          "file": "sso-callback-journey.spec.ts",
+          "line": 81,
+          "column": 8,
+          "specs": [
+            {
+              "title": "registered context callback returns to the requested App route",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-5a666de81376aab743d6",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 84,
+              "column": 5
+            },
+            {
+              "title": "opaque state including spaces, plus, ampersand, percent and Unicode survives the browser round trip",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-6ed6398c623858d188da",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 90,
+              "column": 5
+            },
+            {
+              "title": "expired real authorization code offers a fresh authorization without reusing credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-9ce39066618e616040be",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 104,
+              "column": 5
+            },
+            {
+              "title": "network failure and refresh never replay the old exchange",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-74c8bfea144862650e51",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 121,
+              "column": 5
+            },
+            {
+              "title": "wrong verifier is rejected by the real backend and fresh authorization recovers",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-6b1567a7bb4268ed50fd",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 140,
+              "column": 5
+            },
+            {
+              "title": "wrong state fails before exchange and can restart from the callback page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-ae41ab037bed414f94cb",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 160,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "T-07 home callback journey",
+          "file": "sso-callback-journey.spec.ts",
+          "line": 81,
+          "column": 8,
+          "specs": [
+            {
+              "title": "registered context callback returns to the requested App route",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-095258cb872a7bd3b606",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 84,
+              "column": 5
+            },
+            {
+              "title": "opaque state including spaces, plus, ampersand, percent and Unicode survives the browser round trip",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-32f922ccaad34b0557c4",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 90,
+              "column": 5
+            },
+            {
+              "title": "expired real authorization code offers a fresh authorization without reusing credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-d2c3005a1b968c490872",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 104,
+              "column": 5
+            },
+            {
+              "title": "network failure and refresh never replay the old exchange",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-44016f64f1d8bb61266b",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 121,
+              "column": 5
+            },
+            {
+              "title": "wrong verifier is rejected by the real backend and fresh authorization recovers",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-0c3b6d53ad8a3543bdd7",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 140,
+              "column": 5
+            },
+            {
+              "title": "wrong state fails before exchange and can restart from the callback page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f7c0376e16058f26303d-4d52813c82f4a61744ba",
+              "file": "sso-callback-journey.spec.ts",
+              "line": 160,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sso-release-origin.spec.ts",
+      "file": "sso-release-origin.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T-08 three HTTPS health routes and host-only SSO cookie boundaries",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "b268da7d13516628a37d-9ef93a6c61b8377b9b99",
+          "file": "sso-release-origin.spec.ts",
+          "line": 88,
+          "column": 1
+        }
+      ],
+      "suites": [
+        {
+          "title": "T-08 admin through release Nginx",
+          "file": "sso-release-origin.spec.ts",
+          "line": 64,
+          "column": 8,
+          "specs": [
+            {
+              "title": "HTTPS login, callback and page refresh preserve the App session",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b268da7d13516628a37d-a90c2315543fc952ac0d",
+              "file": "sso-release-origin.spec.ts",
+              "line": 67,
+              "column": 5
+            },
+            {
+              "title": "expired SSO session can sign in again after business session removal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b268da7d13516628a37d-c43273153d230cc8a5bf",
+              "file": "sso-release-origin.spec.ts",
+              "line": 73,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "T-08 home through release Nginx",
+          "file": "sso-release-origin.spec.ts",
+          "line": 64,
+          "column": 8,
+          "specs": [
+            {
+              "title": "HTTPS login, callback and page refresh preserve the App session",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b268da7d13516628a37d-15fd2c38fd01af8bdf37",
+              "file": "sso-release-origin.spec.ts",
+              "line": 67,
+              "column": 5
+            },
+            {
+              "title": "expired SSO session can sign in again after business session removal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b268da7d13516628a37d-239bfa6249ac2c294cac",
+              "file": "sso-release-origin.spec.ts",
+              "line": 73,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sso-three-gates.spec.ts",
+      "file": "sso-three-gates.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "SSO three hard gates",
+          "file": "sso-three-gates.spec.ts",
+          "line": 36,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-001 default provider, AC-002 reuse, AC-003 isolation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "076a14fda74dab68589c-97f1465e1b945c817232",
+              "file": "sso-three-gates.spec.ts",
+              "line": 37,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-19T04:32:47.745Z",
+    "duration": 50.82499999999999,
+    "expected": 0,
+    "skipped": 19,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

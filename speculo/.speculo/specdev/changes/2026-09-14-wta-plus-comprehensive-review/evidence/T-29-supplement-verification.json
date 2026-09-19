@@ -1,0 +1,20 @@
+[
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-supplement-verify-1.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "exit_code": 0,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-supplement-verify-2.log"
+  }
+]

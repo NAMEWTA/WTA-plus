@@ -1,0 +1,25 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "wta-admin",
+      "-am",
+      "-DskipTests",
+      "test-compile"
+    ],
+    "cwd": "backend",
+    "exit_code": 1,
+    "seconds": 12.68,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-fixture-compile-first-1.log",
+    "counts": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": []
+  }
+]

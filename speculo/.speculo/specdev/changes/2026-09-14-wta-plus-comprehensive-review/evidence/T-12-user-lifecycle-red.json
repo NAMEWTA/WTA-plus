@@ -1,0 +1,36 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "exec",
+      "vitest",
+      "run",
+      "src/store/modules/user.lifecycle.test.ts",
+      "--maxWorkers=1",
+      "--no-file-parallelism"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "output": "\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web\n\n ❯ src/store/modules/user.lifecycle.test.ts (4 tests | 4 failed) 14ms\n     × represents a loaded identity with empty roles without inventing a role 8ms\n     × clears every local identity and owned resource even when remote logout rejects 1ms\n     × ignores an identity response that completes after logout 3ms\n     × coalesces repeated logout while the remote attempt is pending 2ms\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯\n\n FAIL  src/store/modules/user.lifecycle.test.ts > Admin session lifecycle > represents a loaded identity with empty roles without inventing a role\nAssertionError: expected [ 'ROLE_DEFAULT' ] to deeply equal []\n\n- Expected\n+ Received\n\n- []\n+ [\n+   \"ROLE_DEFAULT\",\n+ ]\n\n ❯ src/store/modules/user.lifecycle.test.ts:30:24\n     28|   it('represents a loaded identity with empty roles without inventing …\n     29|     const user = useUserStore(); await user.getInfo();\n     30|     expect(user.roles).toEqual([]);\n       |                        ^\n     31|     expect(user).toHaveProperty('identityLoaded', true);\n     32|   });\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯\n\n FAIL  src/store/modules/user.lifecycle.test.ts > Admin session lifecycle > clears every local identity and owned resource even when remote logout rejects\nAssertionError: expected 'owned-session' to be '' // Object.is equality\n\n- Expected\n+ Received\n\n+ owned-session\n\n ❯ src/store/modules/user.lifecycle.test.ts:38:27\n     36|     fixture.logout.mockRejectedValue(new Error('owned offline'));\n     37|     await user.logout().catch(() => undefined);\n     38|     expect(fixture.token).toBe(''); expect(user.token).toBe('');\n       |                           ^\n     39|     expect(user.roles).toEqual([]); expect(user.permissions).toEqual([…\n     40|     expect(user.nickname).toBe(''); expect(user.userId).toBe(''); expe…\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯\n\n FAIL  src/store/modules/user.lifecycle.test.ts > Admin session lifecycle > ignores an identity response that completes after logout\nAssertionError: expected [ 'owned:read' ] to deeply equal []\n\n- Expected\n+ Received\n\n- []\n+ [\n+   \"owned:read\",\n+ ]\n\n ❯ src/store/modules/user.lifecycle.test.ts:52:30\n     50|     const user = useUserStore(); const pending = user.getInfo().catch(…\n     51|     await user.logout(); complete(info); await pending;\n     52|     expect(user.permissions).toEqual([]); expect(user.nickname).toBe('…\n       |                              ^\n     53|     expect(user).toHaveProperty('identityLoaded', false);\n     54|   });\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯\n\n FAIL  src/store/modules/user.lifecycle.test.ts > Admin session lifecycle > coalesces repeated logout while the remote attempt is pending\nAssertionError: expected 2 to be 1 // Object.is equality\n\n- Expected\n+ Received\n\n- 1\n+ 2\n\n ❯ src/store/modules/user.lifecycle.test.ts:62:19\n     60|     const calls = fixture.logout.mock.calls.length;\n     61|     finish(); await first; await second;\n     62|     expect(calls).toBe(1);\n       |                   ^\n     63|   });\n     64| });\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯\n\n\n Test Files  1 failed (1)\n      Tests  4 failed (4)\n   Start at  22:44:42\n   Duration  320ms (transform 100ms, setup 0ms, import 167ms, tests 14ms, environment 0ms)\n\nundefined\n/srv/WTA-plus/frontend/apps/admin-web:\n ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/store/modules/user.lifecycle.test.ts --maxWorkers=1 --no-file-parallelism\n"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "exec",
+      "vitest",
+      "run",
+      "src/store/user.lifecycle.test.ts",
+      "--maxWorkers=1",
+      "--no-file-parallelism"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "output": "\n RUN  v4.1.10 /srv/WTA-plus/frontend/apps/home-web\n\n ❯ src/store/user.lifecycle.test.ts (3 tests | 3 failed) 12ms\n     × marks an empty-role identity as loaded 7ms\n     × keeps the existing finally token cleanup and clears remaining identity/routes on failure 2ms\n     × does not restore old identity after logout completed 2ms\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯\n\n FAIL  src/store/user.lifecycle.test.ts > Home session lifecycle > marks an empty-role identity as loaded\nAssertionError: expected { _hmrPayload: { …(5) }, …(19) } to have property \"identityLoaded\" with value true\n\n- Expected:\ntrue\n\n+ Received:\nundefined\n\n ❯ src/store/user.lifecycle.test.ts:25:50\n     23|   it('marks an empty-role identity as loaded', async () => {\n     24|     const user = useUserStore(); await user.getInfo();\n     25|     expect(user.roles).toEqual([]); expect(user).toHaveProperty('ident…\n       |                                                  ^\n     26|   });\n     27|\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯\n\n FAIL  src/store/user.lifecycle.test.ts > Home session lifecycle > keeps the existing finally token cleanup and clears remaining identity/routes on failure\nAssertionError: expected 'Owned user' to be '' // Object.is equality\n\n- Expected\n+ Received\n\n+ Owned user\n\n ❯ src/store/user.lifecycle.test.ts:34:27\n     32|     expect(fixture.token).toBe(''); expect(user.token).toBe('');\n     33|     expect(user.permissions).toEqual([]); expect(user.roles).toEqual([…\n     34|     expect(user.nickname).toBe(''); expect(user.userId).toBe('');\n       |                           ^\n     35|     expect(user).toHaveProperty('identityLoaded', false);\n     36|     expect(fixture.resetRoutes).toHaveBeenCalled(); expect(fixture.can…\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯\n\n FAIL  src/store/user.lifecycle.test.ts > Home session lifecycle > does not restore old identity after logout completed\nAssertionError: expected [ 'owned:read' ] to deeply equal []\n\n- Expected\n+ Received\n\n- []\n+ [\n+   \"owned:read\",\n+ ]\n\n ❯ src/store/user.lifecycle.test.ts:44:30\n     42|     const user = useUserStore(); const pending = user.getInfo().catch(…\n     43|     await user.logout(); complete(info); await pending;\n     44|     expect(user.permissions).toEqual([]); expect(user.nickname).toBe('…\n       |                              ^\n     45|     expect(user).toHaveProperty('identityLoaded', false);\n     46|   });\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯\n\n\n Test Files  1 failed (1)\n      Tests  3 failed (3)\n   Start at  22:44:43\n   Duration  258ms (transform 52ms, setup 0ms, import 119ms, tests 12ms, environment 0ms)\n\nundefined\n/srv/WTA-plus/frontend/apps/home-web:\n ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/store/user.lifecycle.test.ts --maxWorkers=1 --no-file-parallelism\n"
+  }
+]

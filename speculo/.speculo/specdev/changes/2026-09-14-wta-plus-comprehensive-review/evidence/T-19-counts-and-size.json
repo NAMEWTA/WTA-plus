@@ -1,0 +1,16 @@
+{
+  "test_counts": {
+    "T-19-frontend-final-3.log": {
+      "vitest": 538,
+      "node": 108
+    },
+    "T-19-query-final-1.log": {
+      "vitest": 26,
+      "node": 0
+    }
+  },
+  "large_pages": {
+    "frontend/packages/web-domains/system/src/user/UserPage.vue": 1209,
+    "frontend/packages/web-domains/system/src/role/RolePage.vue": 1281
+  }
+}

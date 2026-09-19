@@ -1,0 +1,352 @@
+{
+  "captured_at": "2026-09-18T19:02:29.756974+00:00",
+  "searches": [
+    {
+      "command": [
+        "rg",
+        "-n",
+        "\\bI(?:PersonAdmin|PersonApplication|PersonRebind|ProfileMaterial|EnterpriseAdmin|EnterpriseApplication|EnterpriseTransfer)Service\\b|handleProcessEvent|legacyWorkflow",
+        "backend",
+        "--glob",
+        "*.java",
+        "--glob",
+        "*.xml",
+        "--glob",
+        "!**/target/**"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "@Deprecated|Object (jsonMapper|ignored[A-Za-z]*)|旧适配器|VerificationSecurityAuditRecorder",
+        "backend/wta-modules/wta-profile",
+        "--glob",
+        "*.java",
+        "--glob",
+        "!**/target/**"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "LoginHelper.getUserId",
+        "backend/wta-modules/wta-profile",
+        "--glob",
+        "*ServiceImpl.java",
+        "--glob",
+        "!**/target/**"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    }
+  ],
+  "built_jars": [
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/target/wta-profile-person-6.0.0.jar",
+      "sha256": "304416118628bd90b7d744704642724ecf8563b4a446e694ead07b893f66d7d0",
+      "retired_classes": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/wta-profile-enterprise-6.0.0.jar",
+      "sha256": "9caf02e37b1d91acd112d6bf877b6e63d4675b46c87c5ad5b8476d5a92db0f77",
+      "retired_classes": []
+    }
+  ],
+  "consumer_skips": [
+    {
+      "classname": "org.namewta.common.redis.cache.ThirdRedisIntegrationTest",
+      "name": "providerBoundsRateAndConcurrencyAndRedisFailureIsClosed",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable Redis port"
+    },
+    {
+      "classname": "org.namewta.common.redis.cache.ThirdRedisIntegrationTest",
+      "name": "twoNodesInvalidateAndRequireEverySubscriberAcknowledgement",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable Redis port"
+    },
+    {
+      "classname": "org.namewta.test.password.temporary.TemporaryPasswordRedisIntegrationTest",
+      "name": "overwriteExpiryAndCompareDeleteAreAtomicOnRealRedis",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable Redis port"
+    },
+    {
+      "classname": "org.namewta.test.migration.password.PasswordMigrationMySqlIntegrationTest",
+      "name": "migratesFreshAndUpgradeDatabasesIdempotentlyAndSupportsRecovery",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.security.TrustedClientAddressIntegrationTest",
+      "name": "forgedHeadersCannotChangeAuthorizationRateIdentityOrAuditAcrossProxyChains",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: isolated Docker Nginx required"
+    },
+    {
+      "classname": "org.namewta.test.migration.ossaccess.OssAccessMigrationMySqlIntegrationTest",
+      "name": "migratesFreshAndUpgradeSafelyAndFailsBeforeBackfillWhenDefaultIsAmbiguous",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.migration.BusinessMenuRetirementMySqlIntegrationTest",
+      "name": "removesRetiredClientsRolesAndMenusWhilePreservingCurrentAssignments",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest",
+      "name": "shouldInvalidateAcrossTwoIndependentJvmProcesses",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable Redis port"
+    },
+    {
+      "classname": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest",
+      "name": "shouldConfirmRemoteEvictionAcrossTwoRedisClients",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable Redis port"
+    },
+    {
+      "classname": "org.namewta.test.password.policy.PasswordPolicyRedisIntegrationTest",
+      "name": "shouldRefreshValidatedPolicyAcrossTwoIndependentJvmProcesses",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable Redis port"
+    },
+    {
+      "classname": "org.namewta.test.third.schema.ThirdSchemaMySqlIntegrationTest",
+      "name": "mysql84EnforcesOwnerScopeAndAggregateDimensions",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable or isolated MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest",
+      "name": "credentialsNeverReachHttpEventsOperationEventsOrMySql",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性日志验收 MySQL URL"
+    },
+    {
+      "classname": "org.namewta.test.sso.SsoHttpsSessionIntegrationTest",
+      "name": "browserSessionPkceAndCookieContractsHoldWithRealStores",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: owned MySQL/Redis and built SSO App required"
+    },
+    {
+      "classname": "org.namewta.test.profile.schema.ProfileSchemaMySqlIntegrationTest",
+      "name": "freshSchemaAndSeedsEnforceReleaseAndRecreateSemantics",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "name": "resolvesStablePublicAndExpiringPrivateUrlsAgainstRealMinio",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 MinIO endpoint"
+    },
+    {
+      "classname": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+      "name": "routesSingleAndMultipartUploadsToPolicyBoundBuckets",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 MinIO endpoint"
+    },
+    {
+      "classname": "org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest",
+      "name": "shouldRoundTripIndexAndSerializeConcurrentLock",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 Redis 端口"
+    },
+    {
+      "classname": "org.namewta.test.notify.monitor.NotifyMonitorMySqlIntegrationTest",
+      "name": "filtersAndBoundsRealDeliveryRowsWithoutExposingTargets",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "name": "rejectsMenuConflictBeforeDeletingGeneratorState",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "name": "convergesMixedUpgradeStateAndReplays",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "name": "rejectsGeneratorMenuIdentityConflictBeforeWrites",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "name": "rejectsCorruptedCompleteOpenApiMenuSetBeforeWrites",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "name": "convergesFreshHistoricalMenuState",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+      "name": "roundTripsTransfersAndEnforcesDualBucketBoundaries",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 MinIO endpoint"
+    },
+    {
+      "classname": "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest",
+      "name": "shouldAtomicallyAcquireCompleteReuseAndExpire",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 Redis 端口"
+    },
+    {
+      "classname": "org.namewta.test.security.BrowserHttpsTransportIntegrationTest",
+      "name": "productionAppsUseOrdinaryJsonOverHttpsWithRealMvcAndRedactedAudit",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: owned production App builds required"
+    },
+    {
+      "classname": "org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest",
+      "name": "uploadedObjectsSurvivePreviewFailureAndImportLifetimesTerminate",
+      "reason": "System property [browser.upload.integration] does not exist"
+    },
+    {
+      "classname": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "name": "migratesWithProductionStoreAndDualBucketsThenCleansUpOrRollsBack",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性隔离 MySQL JDBC URL"
+    },
+    {
+      "classname": "org.namewta.test.profile.material.ProfileSelfMaterialsBrowserIntegrationTest",
+      "name": "selfApplicationsPersistMaterialsAndSubmissionSnapshots",
+      "reason": "System property [browser.profile.integration] does not exist"
+    },
+    {
+      "classname": "org.namewta.test.authorization.session.AuthorizationSessionRedisIntegrationTest",
+      "name": "invalidatesOneClientAcrossTwoIndependentJvmProcesses",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: requires a disposable Redis port"
+    },
+    {
+      "classname": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "name": "verifiesPublicAndPrivateBoundariesWithoutMutatingPolicy",
+      "reason": "org.opentest4j.TestAbortedException: Assumption failed: 需要一次性 MinIO endpoint"
+    }
+  ],
+  "consumer_skip_suites_from_immutable_log": [
+    {
+      "classname": "org.namewta.common.redis.cache.ThirdRedisIntegrationTest",
+      "tests": 2,
+      "skipped": 2
+    },
+    {
+      "classname": "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.notify.monitor.NotifyMonitorMySqlIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "tests": 5,
+      "skipped": 5
+    },
+    {
+      "classname": "org.namewta.test.migration.password.PasswordMigrationMySqlIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.migration.ossaccess.OssAccessMigrationMySqlIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.migration.BusinessMenuRetirementMySqlIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.password.policy.PasswordPolicyRedisIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.password.temporary.TemporaryPasswordRedisIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.security.TrustedClientAddressIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.security.BrowserHttpsTransportIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.authorization.session.AuthorizationSessionRedisIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.profile.schema.ProfileSchemaMySqlIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.profile.material.ProfileSelfMaterialsBrowserIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest",
+      "tests": 2,
+      "skipped": 2
+    },
+    {
+      "classname": "org.namewta.test.third.schema.ThirdSchemaMySqlIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    },
+    {
+      "classname": "org.namewta.test.sso.SsoHttpsSessionIntegrationTest",
+      "tests": 1,
+      "skipped": 1
+    }
+  ],
+  "current_xml_note": "This snapshot records all 31 skipped cases from T-15-consumers-audit-final; immutable log keeps the same per-suite totals. The separately executed T-15-material-browser-final has 1 Java + 8 Chrome passing cases."
+}

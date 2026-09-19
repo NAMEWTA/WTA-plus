@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "env",
+      "VITE_APP_CONTEXT_PATH=/admin/",
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/admin-web",
+      "build:prod"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 8.92,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-13-sso-regression-builds-1.log"
+  },
+  {
+    "command": [
+      "env",
+      "VITE_APP_CONTEXT_PATH=/home/",
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "build:prod"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.63,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-13-sso-regression-builds-2.log"
+  }
+]

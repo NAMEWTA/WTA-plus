@@ -1,0 +1,7 @@
+{
+  "command": "runuser -u nobody -- <owned-copy-of-node-24.21.0> --test --test-concurrency=1 release-artifacts/tests/atomic-release.test.mjs",
+  "exitCode": 1,
+  "seconds": 3.17,
+  "toolSetup": "copy existing Node binary to owned temporary executable directory; do not change /root permissions; removed afterward",
+  "log": "T-10-unprivileged-2.log"
+}

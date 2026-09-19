@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-07
 title: 修复SSO回调编码与可恢复登录旅程
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：修复SSO回调编码与可恢复登录旅程"
 ready: true
@@ -16,11 +16,11 @@ risk: high
 blocked_by: ["T-06"]
 contract_ids: [AC-007]
 owner: single-agent
-expected_changes: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path>", "<Path>backend/wta-modules/wta-sso/src/test/</Path>", "<Path>frontend/apps/admin-web/src/views/sso-callback.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path>", "<Path>frontend/apps/home-web/src/application/sso.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path>", "<Path>frontend/packages/platform/auth/</Path>", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path>", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/playwright.sso.config.ts</Path>"]
-writable_paths: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path>", "<Path>backend/wta-modules/wta-sso/src/test/</Path>", "<Path>frontend/apps/admin-web/src/views/sso-callback.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path>", "<Path>frontend/apps/home-web/src/application/sso.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path>", "<Path>frontend/packages/platform/auth/</Path>", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path>", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/playwright.sso.config.ts</Path>"]
+expected_changes: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path>", "<Path>backend/wta-modules/wta-sso/src/test/</Path>", "<Path>frontend/apps/admin-web/src/views/sso-callback.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path>", "<Path>frontend/apps/home-web/src/application/sso.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path>", "<Path>frontend/packages/platform/auth/</Path>", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path>", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/playwright.sso.config.ts</Path>", "<Path>frontend/apps/admin-web/src/views/login.vue</Path>", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.test.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java</Path>", "<Path>frontend/e2e/sso-callback-journey.spec.ts</Path>"]
+writable_paths: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path>", "<Path>backend/wta-modules/wta-sso/src/test/</Path>", "<Path>frontend/apps/admin-web/src/views/sso-callback.vue</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path>", "<Path>frontend/apps/home-web/src/application/sso.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path>", "<Path>frontend/packages/platform/auth/</Path>", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path>", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/playwright.sso.config.ts</Path>", "<Path>frontend/apps/admin-web/src/views/login.vue</Path>", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.test.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java</Path>", "<Path>frontend/e2e/sso-callback-journey.spec.ts</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path>", "<Path>backend/wta-modules/wta-sso/src/test/</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path>", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path>", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/playwright.sso.config.ts</Path>"]
-shared_path_owners: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path> => single-agent (Lead; serial T-07 turn)", "<Path>backend/wta-modules/wta-sso/src/test/</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/playwright.sso.config.ts</Path> => single-agent (Lead; serial T-07 turn)"]
+shared_paths: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path>", "<Path>backend/wta-modules/wta-sso/src/test/</Path>", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path>", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path>", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path>", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path>", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path>", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>", "<Path>frontend/playwright.sso.config.ts</Path>", "<Path>frontend/apps/admin-web/src/views/login.vue</Path>", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java</Path>", "<Path>frontend/e2e/sso-callback-journey.spec.ts</Path>"]
+shared_path_owners: ["<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path> => single-agent (Lead; serial T-07 turn)", "<Path>backend/wta-modules/wta-sso/src/test/</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/home-web/src/views/SsoCallbackPage.vue</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/admin-web/src/application/sso.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/sso-web/src/ssoApi.test.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/e2e/sso-three-gates.spec.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/e2e/sso-admin-config.spec.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/playwright.sso.config.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/admin-web/src/views/login.vue</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path> => single-agent (Lead; serial T-07 turn)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java</Path> => single-agent (Lead; serial T-07 turn)", "<Path>frontend/e2e/sso-callback-journey.spec.ts</Path> => single-agent (Lead; serial T-07 turn)"]
 ---
 
 # T-07：修复SSO回调编码与可恢复登录旅程
@@ -94,11 +94,11 @@ SsoAuthorizationService.authorize除appendQuery未编码外，还对state调用t
 Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该目录，其他命令cwd为仓根，逐条串行执行。新增用例实施时登记精确选择器、实际测试数与跳过项，零测试/required跳过不算通过。
 
 - `backend: ./mvnw -pl wta-modules/wta-sso -am test`
-- `frontend: pnpm exec playwright test --config playwright.sso.config.ts`
+- `frontend: pnpm exec playwright test --config playwright.sso.config.ts --grep T-07`（由隔离fixture提供环境参数）
 
 - E2E disposition：required: 专用SSO Playwright跑/admin与/home base、复杂state、过期与重新登录。
 - E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前全部产品检查not-run。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本票实际检查见T-07.md；Admin全量typecheck剩8条其他页面诊断归T-20，commit/result仍空。
 
 ## 9. 发布、迁移与恢复
 
@@ -106,20 +106,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：前后端整体回退同一版本；清理当前浏览器临时PKCE状态后重新授权。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；最新用户授权本地实现与验证，全change暂不提交。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-007`：复杂state往返相等且无重复code/state参数。
-- [ ] `AC-007`：过期、错state、错误verifier均失败关闭且用户可重新授权。
-- [ ] `AC-007`：成功回到原App内路径，带外域returnTo被拒。
-- [ ] `AC-007`：日志与UI不暴露code/verifier/token。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-07.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-007`：复杂state往返相等且无重复code/state参数。
+- [x] `AC-007`：过期、错state、错误verifier均失败关闭且用户可重新授权。
+- [x] `AC-007`：成功回到原App内路径，带外域returnTo被拒。
+- [x] `AC-007`：日志与UI不暴露code/verifier/token。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-07.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -130,3 +130,16 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：T-06。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+### 本地实施决策
+
+T-06以已验证未提交检查点为输入。补充两个App实际SSO启动调用点到写集，用现有redirect查询记录App内returnTo；不改非SSO本地登录、路由权限或会话注销合同。
+
+验收接缝补充：复用T-06的自建HTTPS/Redis/MySQL fixture，并增加两个独立端口的/admin、/home构建产物；SSO独立localhost Origin，两个App使用127.0.0.1 Origin。专用配置新增T-07浏览器场景，保留原three-gates/admin-config测试文件；后两者包含完整System准入/管理写入，归T-30真实整合环境执行，不用其默认18080端口探测或修改现有服务。T-07的身份/菜单API和业务Token签发为显式fixture，SSO协议、MySQL消费、Redis会话和App浏览器路径真实执行。
+
+
+第一轮浏览器Admin6通过，Home6失败已定位为fixture误用componentKey而非真实菜单component字段。复核确认Home createReplacement原本已保留hash，未修改该生产路由文件；此前缺hash判断撤回，以实际源码为准。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`5aadc6453405694c2e2066ef551c61374a2f5914`, `2b93d2d5407a7e341076f771a19ab5292b567cf8`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

@@ -1,0 +1,22 @@
+{
+  "captured_at": "2026-09-19T05:42:01.564367+00:00",
+  "container": "namewta-repeat-test-a2c5b38469ff",
+  "image": "redis:7.4-alpine@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-common/wta-common-redis",
+    "-am",
+    "test",
+    "-Drepeat.redis.integration.port=33014",
+    "-Dtest=RepeatSubmitRedisIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "port": 33014,
+  "log": "T-30-repeat-v1-fixture.log",
+  "exit_code": 0,
+  "cleanup_exit_code": 0
+}

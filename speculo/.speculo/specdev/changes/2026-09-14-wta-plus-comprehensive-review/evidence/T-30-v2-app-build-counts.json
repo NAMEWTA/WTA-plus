@@ -1,0 +1,12 @@
+{
+  "build:dev": {
+    "admin-web": 1,
+    "home-web": 1,
+    "sso-web": 1
+  },
+  "build:prod": {
+    "admin-web": 1,
+    "home-web": 1,
+    "sso-web": 1
+  }
+}

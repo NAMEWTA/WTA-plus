@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-modules/wta-profile/wta-profile-enterprise",
+    "-am",
+    "-Dtest=EnterpriseTransferServiceTest,EnterpriseTransferPersistenceTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "exit_code": 0,
+  "seconds": 11.83
+}

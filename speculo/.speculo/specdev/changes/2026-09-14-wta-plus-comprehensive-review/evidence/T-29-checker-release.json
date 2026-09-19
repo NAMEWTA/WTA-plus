@@ -1,0 +1,10 @@
+{
+  "command": [
+    "bash",
+    "release-artifacts/scripts/verify-release.sh"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-19T02:10:06.817153+00:00",
+  "exit_code": 0,
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-checker-release.log"
+}

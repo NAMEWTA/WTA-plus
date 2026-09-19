@@ -1,0 +1,175 @@
+{
+  "frontend": {
+    "vitest_passed": 489,
+    "node_passed": 108,
+    "total_passed": 597
+  },
+  "backend": {
+    "tests": 711,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 32
+  },
+  "skips": [
+    {
+      "class": "org.namewta.common.redis.cache.ThirdRedisIntegrationTest",
+      "method": "providerBoundsRateAndConcurrencyAndRedisFailureIsClosed",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.common.redis.cache.ThirdRedisIntegrationTest",
+      "method": "twoNodesInvalidateAndRequireEverySubscriberAcknowledgement",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.password.temporary.TemporaryPasswordRedisIntegrationTest",
+      "method": "overwriteExpiryAndCompareDeleteAreAtomicOnRealRedis",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.password.PasswordMigrationMySqlIntegrationTest",
+      "method": "migratesFreshAndUpgradeDatabasesIdempotentlyAndSupportsRecovery",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.security.TrustedClientAddressIntegrationTest",
+      "method": "forgedHeadersCannotChangeAuthorizationRateIdentityOrAuditAcrossProxyChains",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.ossaccess.OssAccessMigrationMySqlIntegrationTest",
+      "method": "migratesFreshAndUpgradeSafelyAndFailsBeforeBackfillWhenDefaultIsAmbiguous",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.BusinessMenuRetirementMySqlIntegrationTest",
+      "method": "removesRetiredClientsRolesAndMenusWhilePreservingCurrentAssignments",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest",
+      "method": "shouldInvalidateAcrossTwoIndependentJvmProcesses",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest",
+      "method": "shouldConfirmRemoteEvictionAcrossTwoRedisClients",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.password.policy.PasswordPolicyRedisIntegrationTest",
+      "method": "shouldRefreshValidatedPolicyAcrossTwoIndependentJvmProcesses",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.third.schema.ThirdSchemaMySqlIntegrationTest",
+      "method": "mysql84EnforcesOwnerScopeAndAggregateDimensions",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest",
+      "method": "credentialsNeverReachHttpEventsOperationEventsOrMySql",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.sso.SsoHttpsSessionIntegrationTest",
+      "method": "browserSessionPkceAndCookieContractsHoldWithRealStores",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.profile.schema.ProfileSchemaMySqlIntegrationTest",
+      "method": "freshSchemaAndSeedsEnforceReleaseAndRecreateSemantics",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "method": "resolvesStablePublicAndExpiringPrivateUrlsAgainstRealMinio",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+      "method": "routesSingleAndMultipartUploadsToPolicyBoundBuckets",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest",
+      "method": "shouldRoundTripIndexAndSerializeConcurrentLock",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.notify.monitor.NotifyMonitorMySqlIntegrationTest",
+      "method": "filtersAndBoundsRealDeliveryRowsWithoutExposingTargets",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "method": "rejectsMenuConflictBeforeDeletingGeneratorState",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "method": "convergesMixedUpgradeStateAndReplays",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "method": "rejectsGeneratorMenuIdentityConflictBeforeWrites",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "method": "rejectsCorruptedCompleteOpenApiMenuSetBeforeWrites",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "method": "convergesFreshHistoricalMenuState",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+      "method": "roundTripsTransfersAndEnforcesDualBucketBoundaries",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest",
+      "method": "shouldAtomicallyAcquireCompleteReuseAndExpire",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.security.BrowserHttpsTransportIntegrationTest",
+      "method": "productionAppsUseOrdinaryJsonOverHttpsWithRealMvcAndRedactedAudit",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest",
+      "method": "uploadedObjectsSurvivePreviewFailureAndImportLifetimesTerminate",
+      "reason": "System property [browser.upload.integration] does not exist"
+    },
+    {
+      "class": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "method": "migratesWithProductionStoreAndDualBucketsThenCleansUpOrRollsBack",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.profile.material.ProfileSelfMaterialsBrowserIntegrationTest",
+      "method": "selfApplicationsPersistMaterialsAndSubmissionSnapshots",
+      "reason": "System property [browser.profile.integration] does not exist"
+    },
+    {
+      "class": "org.namewta.test.authorization.session.AuthorizationSessionRedisIntegrationTest",
+      "method": "invalidatesOneClientAcrossTwoIndependentJvmProcesses",
+      "reason": null
+    },
+    {
+      "class": "org.namewta.test.workflow.WorkflowTaskEngineIntegrationTest",
+      "method": "readsRespectTaskRelationshipsAndCompletedTaskCannotAdvanceTwice",
+      "reason": "System property [workflow.engine.integration] does not exist"
+    },
+    {
+      "class": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "method": "verifiesPublicAndPrivateBoundariesWithoutMutatingPolicy",
+      "reason": null
+    }
+  ]
+}

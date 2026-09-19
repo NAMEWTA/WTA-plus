@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "release-artifacts/tests/build-matrix.test.mjs",
+      "release-artifacts/tests/mysql-baseline-contract.test.mjs",
+      "release-artifacts/tests/mysql-sql-contract.test.mjs",
+      "release-artifacts/tests/nacos-proxy-config.test.mjs",
+      "release-artifacts/tests/notify-baseline-contract.test.mjs",
+      "release-artifacts/tests/release-config.test.mjs",
+      "release-artifacts/tests/release-integration-contract.test.mjs",
+      "release-artifacts/tests/trusted-client-address.test.mjs",
+      "release-artifacts/tests/workflow-assets-contract.test.mjs",
+      "release-artifacts/tests/wta-rename-keep-contract.test.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 5.62
+  },
+  {
+    "command": [
+      "bash",
+      "-n",
+      "scripts/ci/run-external-services.sh",
+      "scripts/ci/verify-admin-bundle.sh",
+      "release-artifacts/scripts/release-manage.sh"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.0
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-system",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.43
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-notify",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.81
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "apps/admin-web/vite.config.ts",
+      "apps/home-web/vite.config.ts",
+      "apps/sso-web/vite.config.ts",
+      "packages/web-domains/system/src/sso-app/SsoAppPage.vue",
+      "packages/web-domains/notify/src/ConfigPage.vue"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 0.41
+  }
+]

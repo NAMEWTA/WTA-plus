@@ -1,0 +1,10 @@
+{
+  "command": "bash release-artifacts/scripts/release-manage.sh build --target all --env prod",
+  "exitCode": 1,
+  "expectedExitCode": 1,
+  "diagnostic": "[ERROR] deployable build requires clean tracked and untracked source\n",
+  "head": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "currentAndVersionInventoryUnchanged": true,
+  "dockerContextHashesUnchanged": true,
+  "artifactCreated": false
+}

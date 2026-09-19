@@ -1,0 +1,103 @@
+[
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-sso",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-quality-1.log",
+    "seconds": 0.21,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-notify",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-quality-2.log",
+    "seconds": 0.21,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-third",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-quality-3.log",
+    "seconds": 0.33,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-profile/wta-profile-person",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-quality-4.log",
+    "seconds": 0.16,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+      "backend/wta-modules/wta-profile/wta-profile-enterprise",
+      "--mode",
+      "layered"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-quality-5.log",
+    "seconds": 0.13,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-quality-6.log",
+    "seconds": 0.45,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  },
+  {
+    "command": [
+      "node",
+      "--test",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "T-30-final-quality-7.log",
+    "seconds": 4.24,
+    "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+    "source_unchanged": true
+  }
+]

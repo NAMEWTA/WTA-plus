@@ -1,0 +1,200 @@
+{
+  "captured_at": "2026-09-19T06:27:42.876287+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "index_empty": true,
+  "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+  "source_paths_verified": 3577,
+  "owned_paths_verified": 654,
+  "ticket_statuses": {
+    "review": 31,
+    "done": 0
+  },
+  "quality_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "governance_exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "implementation_commit": null,
+  "result_sha": null,
+  "deployable_release": false,
+  "plan_revision": 134,
+  "governance_evidence": "T-30-final-governance-v2.json",
+  "completion_audit": "T-30-completion-audit-revision134.json",
+  "unchecked_acceptance_items": [
+    {
+      "file": "ticket/01-restore-trustworthy-gates.md",
+      "line": 122,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/02-unify-log-redaction.md",
+      "line": 115,
+      "text": "- [ ] `AC-002`：旧日志处置与凭据轮换另有批准记录，本票不自动删历史数据。"
+    },
+    {
+      "file": "ticket/02-unify-log-redaction.md",
+      "line": 119,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/03-bound-request-capture.md",
+      "line": 123,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/04-trusted-client-address.md",
+      "line": 119,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/05-repeat-submit-lease.md",
+      "line": 119,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/06-secure-sso-session.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/07-sso-callback-journey.md",
+      "line": 121,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/08-complete-sso-release.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/09-coherent-build-matrix.md",
+      "line": 124,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/10-atomic-release-provenance.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/11-remove-browser-shared-private-key.md",
+      "line": 125,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/12-session-navigation-lifecycle.md",
+      "line": 122,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/13-recoverable-registration.md",
+      "line": 123,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/14-profile-self-materials.md",
+      "line": 124,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/15-contract-profile-legacy-bridges.md",
+      "line": 121,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/16-workflow-task-integrity.md",
+      "line": 121,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/17-trusted-designer-messages.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/18-upload-ownership-lifecycle.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/19-system-page-state-locality.md",
+      "line": 124,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/20-strict-contract-target.md",
+      "line": 122,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/21-accessible-public-apps.md",
+      "line": 121,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/22-atomic-notify-result.md",
+      "line": 121,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/23-durable-provider-callback.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/24-recoverable-third-resilience.md",
+      "line": 119,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/25-acyclic-department-moves.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/26-cut-over-crud-contracts.md",
+      "line": 124,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/27-honest-demo-tree-baseline.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/28-bounded-notify-wake.md",
+      "line": 119,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/29-converge-current-documentation.md",
+      "line": 121,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/30-integrated-upgrade-acceptance.md",
+      "line": 130,
+      "text": "- [ ] `AC-030`：用户能据artifact digest批准明确候选，未自动发布。"
+    },
+    {
+      "file": "ticket/30-integrated-upgrade-acceptance.md",
+      "line": 134,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    },
+    {
+      "file": "ticket/31-enterprise-transfer-queued-contract.md",
+      "line": 120,
+      "text": "- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-admin",
+      "typecheck"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.62,
+    "output": "\n> @namewta/domain-admin@0.0.0 typecheck /srv/WTA-plus/frontend/packages/domains/admin\n> tsc --noEmit -p tsconfig.json\n\n"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-admin",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.99,
+    "output": "\n> @namewta/domain-admin@0.0.0 test /srv/WTA-plus/frontend/packages/domains/admin\n> vitest run src\n\n\n RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/admin\n\n\n Test Files  3 passed (3)\n      Tests  49 passed (49)\n   Start at  23:48:32\n   Duration  270ms (transform 186ms, setup 0ms, import 298ms, tests 43ms, environment 1ms)\n\n"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-admin",
+      "lint"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.44,
+    "output": "\n> @namewta/domain-admin@0.0.0 lint /srv/WTA-plus/frontend/packages/domains/admin\n> oxlint src\n\n"
+  }
+]

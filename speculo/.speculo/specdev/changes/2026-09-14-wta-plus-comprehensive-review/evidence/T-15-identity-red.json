@@ -1,0 +1,28 @@
+[
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "wta-modules/wta-profile/wta-profile-enterprise",
+      "-am",
+      "-Dtest=ExplicitProfileIdentityContractTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "cwd": "backend",
+    "exit_code": 1,
+    "seconds": 10.57,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-15-identity-red-1.log",
+    "counts": {
+      "tests": 25,
+      "failures": 25,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": [
+      "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.architecture.ExplicitProfileIdentityContractTest.xml"
+    ]
+  }
+]

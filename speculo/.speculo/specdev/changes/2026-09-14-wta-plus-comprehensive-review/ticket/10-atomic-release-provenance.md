@@ -8,7 +8,7 @@ artifact: ticket
 change: 2026-09-14-wta-plus-comprehensive-review
 id: T-10
 title: 删除混源局部发布并实现原子stage
-status: "ready"
+status: "review"
 planning_depth: "deep"
 planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：删除混源局部发布并实现原子stage"
 ready: true
@@ -16,11 +16,11 @@ risk: high
 blocked_by: ["T-09"]
 contract_ids: [AC-010]
 owner: single-agent
-expected_changes: ["<Path>release-artifacts/scripts/release-manage.sh</Path>", "<Path>release-artifacts/scripts/verify-release.sh</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>release-artifacts/README.md</Path>", "<Path>release-artifacts/docker/docker-compose-backend.yml</Path>", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path>", "<Path>release-artifacts/scripts/docker-manage.sh</Path>"]
-writable_paths: ["<Path>release-artifacts/scripts/release-manage.sh</Path>", "<Path>release-artifacts/scripts/verify-release.sh</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>release-artifacts/README.md</Path>", "<Path>release-artifacts/docker/docker-compose-backend.yml</Path>", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path>", "<Path>release-artifacts/scripts/docker-manage.sh</Path>"]
+expected_changes: ["<Path>release-artifacts/scripts/release-manage.sh</Path>", "<Path>release-artifacts/scripts/verify-release.sh</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>release-artifacts/README.md</Path>", "<Path>release-artifacts/docker/docker-compose-backend.yml</Path>", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path>", "<Path>release-artifacts/scripts/docker-manage.sh</Path>", "<Path>release-artifacts/scripts/release-state.py</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/SKILL.md</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path>", "<Path>.agents/skills/deploy-namewta-environment/references/build-transfer-release.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>scripts/ci/verify-admin-bundle.sh</Path>"]
+writable_paths: ["<Path>release-artifacts/scripts/release-manage.sh</Path>", "<Path>release-artifacts/scripts/verify-release.sh</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>release-artifacts/README.md</Path>", "<Path>release-artifacts/docker/docker-compose-backend.yml</Path>", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path>", "<Path>release-artifacts/scripts/docker-manage.sh</Path>", "<Path>release-artifacts/scripts/release-state.py</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/SKILL.md</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path>", "<Path>.agents/skills/deploy-namewta-environment/references/build-transfer-release.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>scripts/ci/verify-admin-bundle.sh</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>release-artifacts/scripts/release-manage.sh</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>release-artifacts/README.md</Path>", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path>"]
-shared_path_owners: ["<Path>release-artifacts/scripts/release-manage.sh</Path> => single-agent (Lead; serial T-10 turn)", "<Path>release-artifacts/tests/</Path> => single-agent (Lead; serial T-10 turn)", "<Path>release-artifacts/README.md</Path> => single-agent (Lead; serial T-10 turn)", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path> => single-agent (Lead; serial T-10 turn)"]
+shared_paths: ["<Path>release-artifacts/scripts/release-manage.sh</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>release-artifacts/README.md</Path>", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path>", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>scripts/ci/verify-admin-bundle.sh</Path>"]
+shared_path_owners: ["<Path>release-artifacts/scripts/release-manage.sh</Path> => single-agent (Lead; serial T-10 turn)", "<Path>release-artifacts/tests/</Path> => single-agent (Lead; serial T-10 turn)", "<Path>release-artifacts/README.md</Path> => single-agent (Lead; serial T-10 turn)", "<Path>release-artifacts/docker/docker-compose-frontend.yml</Path> => single-agent (Lead; serial T-10 turn)", "<Path>release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py</Path> => single-agent (Lead; serial T-10 turn)", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path> => single-agent (Lead; serial T-10 turn)", "<Path>scripts/ci/verify-admin-bundle.sh</Path> => single-agent (Lead; serial T-10 turn)"]
 ---
 
 # T-10：删除混源局部发布并实现原子stage
@@ -105,20 +105,20 @@ Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该�
 - 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
 - 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
 - 恢复：指针切回已验证完整版本并重建对应容器；仅清本次临时目录。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮只有计划文档授权。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本地实现与隔离验证已授权；本change全部提交由用户暂缓，不执行真实发布或部署。
 - 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
 
 ## 10. 验收标准
 
-- [ ] `AC-010`：manifest每个artifact的digest和source可追溯。
-- [ ] `AC-010`：缺模板/坏SQL/坏JAR/中断时current/context SHA256完全不变。
-- [ ] `AC-010`：单目标构建不能stage为完整release。
-- [ ] `AC-010`：恢复只操作本次stage，不触及他人文件或历史发布。
-- [ ] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [ ] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-10.md</Path>，未执行不得标通过。
-- [ ] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [ ] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [ ] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [x] `AC-010`：manifest每个artifact的digest和source可追溯。
+- [x] `AC-010`：缺模板/坏SQL/坏JAR/中断时current/context SHA256完全不变。
+- [x] `AC-010`：单目标构建不能stage为完整release。
+- [x] `AC-010`：恢复只操作本次stage，不触及他人文件或历史发布。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-10.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
 
 ## 11. SKILL 调用计划
 
@@ -129,3 +129,23 @@ frontmatter绑定的项目Skill在implementation阶段接收本票路径和上�
 
 交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
 依赖：T-09。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+### 实施入口
+
+T-09十八路径检查点已逐一回读hash；默认Maven、双bundle与三App模式证据可复核。当前工作树未提交，真实deployable构建必须保留干净源码要求，不能把脏树标成干净；本票可逆实现/失败注入在一次性测试夹具中验证，不晋升现有发布指针或重建已有环境。
+
+### T-10实现细化（revision 31）
+
+增加标准库Python发布状态辅助脚本，Shell保留正式入口。完整构建先拒绝脏源码，再将单一Git revision归档到本次临时构建目录（不创建Git worktree）；只从该快照构建并记录每文件sourceRevision/digest。build只生成不可变版本，stage必须显式指定版本ID并只原子替换current符号链接。Docker入口单次解析并校验该版本，将持久数据/证书/日志留在独立运行目录；up显式build/recreate。局部构建仅写development目录，不能stage。正式工作树不提交、不构建deployable候选、不部署；夹具中的合成Git历史仅为测试输入。
+
+Revision 32：同步实际调用方的构建/stage说明及工程画像，修正add_app生成的日志挂载到独立运行目录；不执行部署Skill操作。SQL初始化工具仍接受显式sql-dir/schema-file，部署文档从一次解析后的固定版本传入；源基座stage-mysql保持只读。
+
+Revision 33：普通用户隔离验证发现verify-admin-bundle即使传入ADMIN_ARTIFACT仍无条件查询调用目录Git；接管该检查器的一处前置条件修复，明确artifact时不读Git。只调整入口定位，不放宽8+4 bundle内容断言，不设置safe.directory全局例外。
+
+### 本地审查检查点
+
+T-10.md/T-10-checkpoint.json记录15路径、100项发布合同、16项普通用户测试、5个真实Nginx HTTP观察及五份真实JAR验证。AC为本地实现验证；implementation/result仍空，不提交、不Done。指针原子边界及stub/真实验证区分见Evidence，T-08/T-30真实完整发布责任未提前关闭。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`e730305a50d9065fdc8af454770b3267983ae982`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

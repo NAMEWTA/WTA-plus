@@ -1,0 +1,7 @@
+[
+  {
+    "jar": "/root/.m2/repository/com/aizuda/snail-ai-agent-chat-starter/1.1.1/snail-ai-agent-chat-starter-1.1.1.jar",
+    "sha256": "2aa9f4b67c21d3cc154e19bb94fe55ea7ed0a46c72b378dab4549054b8b2b06a",
+    "controller": "com.aizuda.snail.ai.agent.chat.starter.SnailAiChatGatewayController"
+  }
+]

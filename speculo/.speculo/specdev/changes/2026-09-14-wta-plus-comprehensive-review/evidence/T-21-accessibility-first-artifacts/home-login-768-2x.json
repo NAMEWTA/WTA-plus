@@ -1,0 +1,50 @@
+{
+  "dimensions": {
+    "viewport": 384,
+    "scrollWidth": 384,
+    "dpr": 2
+  },
+  "contrasts": [
+    {
+      "selector": ".identity-login__social-label",
+      "color": "rgb(71, 85, 105)",
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.577663953533317
+    },
+    {
+      "selector": ".identity-login__status",
+      "color": "rgb(71, 85, 105)",
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.577663953533317
+    },
+    {
+      "selector": ".identity-login__submit",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        77,
+        156,
+        172
+      ],
+      "ratio": 3.150005794820479
+    },
+    {
+      "selector": "footer",
+      "color": "rgb(100, 116, 139)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 4.4672928174139255
+    }
+  ],
+  "zoomMethod": "CDP CSS viewport / zoom, DPR=zoom; equivalent desktop reflow, not CSS zoom"
+}

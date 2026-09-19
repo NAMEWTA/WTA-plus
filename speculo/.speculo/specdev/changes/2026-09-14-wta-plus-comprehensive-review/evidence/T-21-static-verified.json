@@ -1,0 +1,78 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "tsc",
+      "--ignoreConfig",
+      "--noEmit",
+      "--strict",
+      "--skipLibCheck",
+      "--target",
+      "ES2023",
+      "--module",
+      "ESNext",
+      "--moduleResolution",
+      "Bundler",
+      "--types",
+      "node",
+      "e2e/public-accessibility.spec.ts",
+      "e2e/system-identity.spec.ts",
+      "playwright.accessibility.config.ts",
+      "playwright.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.24,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-static-verified-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "e2e/public-accessibility.spec.ts",
+      "e2e/system-identity.spec.ts",
+      "playwright.accessibility.config.ts",
+      "playwright.config.ts"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.31,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-static-verified-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "architecture:check"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.72,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-static-verified-3.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-static-verified-4.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.06,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-static-verified-5.log"
+  }
+]

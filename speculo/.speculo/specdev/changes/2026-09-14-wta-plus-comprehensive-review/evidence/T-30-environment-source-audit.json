@@ -1,0 +1,321 @@
+{
+  "gated_classes": [
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java",
+      "class_name": "LogRedactionHttpMySqlIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+      "class_name": "NotifyAtomicResultIntegrationTest",
+      "evidence": [
+        "T-30-notify-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyWakeIntegrationTest.java",
+      "class_name": "NotifyWakeIntegrationTest",
+      "evidence": [
+        "T-30-wake-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/EnterpriseQueuedNotificationIntegrationTest.java",
+      "class_name": "EnterpriseQueuedNotificationIntegrationTest",
+      "evidence": [
+        "T-30-queued-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/BusinessMenuRetirementMySqlIntegrationTest.java",
+      "class_name": "BusinessMenuRetirementMySqlIntegrationTest",
+      "evidence": [
+        "T-30-v2-external.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "class_name": "BrowserHttpsTransportIntegrationTest",
+      "evidence": [
+        "T-30-http-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/security/TrustedClientAddressIntegrationTest.java",
+      "class_name": "TrustedClientAddressIntegrationTest",
+      "evidence": [
+        "T-30-http-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/contracts/DemoTreeMySqlIntegrationTest.java",
+      "class_name": "DemoTreeMySqlIntegrationTest",
+      "evidence": [
+        "T-30-demo-tree-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/contracts/CrudMySqlHttpIntegrationTest.java",
+      "class_name": "CrudMySqlHttpIntegrationTest",
+      "evidence": [
+        "T-30-crud-http-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/department/DepartmentTreeMySqlIntegrationTest.java",
+      "class_name": "DepartmentTreeMySqlIntegrationTest",
+      "evidence": [
+        "T-30-department-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/workflow/WorkflowTaskEngineIntegrationTest.java",
+      "class_name": "WorkflowTaskEngineIntegrationTest",
+      "evidence": [
+        "T-30-workflow-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/third/ThirdLimitConfigurationIntegrationTest.java",
+      "class_name": "ThirdLimitConfigurationIntegrationTest",
+      "evidence": [
+        "T-30-third-v2.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/third/ThirdResilienceRecoveryIntegrationTest.java",
+      "class_name": "ThirdResilienceRecoveryIntegrationTest",
+      "evidence": [
+        "T-30-third-v2.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java",
+      "class_name": "SsoHttpsSessionIntegrationTest",
+      "evidence": [
+        "T-30-sso-v1-journey.json",
+        "T-30-sso-v1-security.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/third/schema/ThirdSchemaMySqlIntegrationTest.java",
+      "class_name": "ThirdSchemaMySqlIntegrationTest",
+      "evidence": [
+        "T-30-v2-external.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/cache/invalidation/ClusterCacheInvalidationRedisIntegrationTest.java",
+      "class_name": "ClusterCacheInvalidationRedisIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/profile/schema/ProfileSchemaMySqlIntegrationTest.java",
+      "class_name": "ProfileSchemaMySqlIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java",
+      "class_name": "ProfileSelfMaterialsBrowserIntegrationTest",
+      "evidence": [
+        "T-30-profile-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java",
+      "class_name": "OssStorageMigrationIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/client/MinioOssClientIntegrationTest.java",
+      "class_name": "MinioOssClientIntegrationTest",
+      "evidence": [
+        "T-30-v2-external.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/access/OssAccessUrlMinioIntegrationTest.java",
+      "class_name": "OssAccessUrlMinioIntegrationTest",
+      "evidence": [
+        "T-30-oss-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/readiness/OssStorageReadinessMinioIntegrationTest.java",
+      "class_name": "OssStorageReadinessMinioIntegrationTest",
+      "evidence": [
+        "T-30-oss-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/OssUploadStorageRoutingMinioIntegrationTest.java",
+      "class_name": "OssUploadStorageRoutingMinioIntegrationTest",
+      "evidence": [
+        "T-30-oss-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/RedisOssUploadTicketStoreIntegrationTest.java",
+      "class_name": "RedisOssUploadTicketStoreIntegrationTest",
+      "evidence": [
+        "T-30-v2-external.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/BrowserUploadLifecycleIntegrationTest.java",
+      "class_name": "BrowserUploadLifecycleIntegrationTest",
+      "evidence": [
+        "T-30-oss-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/authorization/session/AuthorizationSessionRedisIntegrationTest.java",
+      "class_name": "AuthorizationSessionRedisIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/password/policy/PasswordPolicyRedisIntegrationTest.java",
+      "class_name": "PasswordPolicyRedisIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/password/temporary/TemporaryPasswordRedisIntegrationTest.java",
+      "class_name": "TemporaryPasswordRedisIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/adminruntime/AdminRuntimeCapabilityMySqlIntegrationTest.java",
+      "class_name": "AdminRuntimeCapabilityMySqlIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/password/PasswordMigrationMySqlIntegrationTest.java",
+      "class_name": "PasswordMigrationMySqlIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/migration/ossaccess/OssAccessMigrationMySqlIntegrationTest.java",
+      "class_name": "OssAccessMigrationMySqlIntegrationTest",
+      "evidence": [
+        "T-30-extra-services-v3.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/idempotency/RedisNotifyIdempotencyStoreIntegrationTest.java",
+      "class_name": "RedisNotifyIdempotencyStoreIntegrationTest",
+      "evidence": [
+        "T-30-v2-external.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/monitor/NotifyMonitorMySqlIntegrationTest.java",
+      "class_name": "NotifyMonitorMySqlIntegrationTest",
+      "evidence": [
+        "T-30-v2-external.json"
+      ]
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/common/redis/cache/ThirdRedisIntegrationTest.java",
+      "class_name": "ThirdRedisIntegrationTest",
+      "evidence": [
+        "T-30-third-v2.json",
+        "T-30-v2-external.json"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonRebindMySqlE2ETest.java",
+      "class_name": "PersonRebindMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonIdentityLookupMySqlE2ETest.java",
+      "class_name": "PersonIdentityLookupMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonAdminMySqlE2ETest.java",
+      "class_name": "PersonAdminMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonApplicationMySqlE2ETest.java",
+      "class_name": "PersonApplicationMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonVerificationMySqlE2ETest.java",
+      "class_name": "PersonVerificationMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/ProfileMaterialMySqlE2ETest.java",
+      "class_name": "ProfileMaterialMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java",
+      "class_name": "EnterpriseApplicationMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseTransferMySqlRedisE2ETest.java",
+      "class_name": "EnterpriseTransferMySqlRedisE2ETest",
+      "evidence": [
+        "T-30-queued-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/RedisEnterpriseTransferChallengeStoreE2ETest.java",
+      "class_name": "RedisEnterpriseTransferChallengeStoreE2ETest",
+      "evidence": [
+        "T-30-queued-v1.json"
+      ]
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseVerificationMySqlE2ETest.java",
+      "class_name": "EnterpriseVerificationMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseAdminMySqlE2ETest.java",
+      "class_name": "EnterpriseAdminMySqlE2ETest",
+      "evidence": []
+    },
+    {
+      "path": "backend/wta-common/wta-common-redis/src/test/java/org/namewta/common/redis/aspectj/RepeatSubmitRedisIntegrationTest.java",
+      "class_name": "RepeatSubmitRedisIntegrationTest",
+      "evidence": [
+        "T-30-repeat-v2.json"
+      ]
+    }
+  ],
+  "unmapped": [
+    "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonRebindMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonIdentityLookupMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonAdminMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonApplicationMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonVerificationMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/ProfileMaterialMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseVerificationMySqlE2ETest.java",
+    "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseAdminMySqlE2ETest.java"
+  ]
+}

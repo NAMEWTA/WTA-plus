@@ -1,0 +1,22 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "--config",
+    "playwright.lifecycle.config.ts"
+  ],
+  "cwd": "frontend",
+  "exit_code": 0,
+  "seconds": 67.13,
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-browser-fourth.log",
+  "owned_origins": [
+    "https://127.0.0.1:34245",
+    "https://127.0.0.1:40891"
+  ],
+  "boundary": "Real built Apps/Chrome/TLS/Axios/Pinia/Router; explicit Playwright API identity and fault fixtures, no backend/database claim",
+  "owned_cleanup": true,
+  "real_https_sse_connections": 1
+}

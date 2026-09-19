@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-modules/wta-profile/wta-profile-enterprise",
+    "-am",
+    "-Dtest=EnterpriseTransferServiceTest#queuedNotifyCreatesAnUnactivatedChallengeInsteadOfRejectingSubmission",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "exit_code": 1,
+  "seconds": 7.26
+}

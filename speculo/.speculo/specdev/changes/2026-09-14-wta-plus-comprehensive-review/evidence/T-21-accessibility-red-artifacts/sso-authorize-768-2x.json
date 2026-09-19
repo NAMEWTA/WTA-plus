@@ -1,0 +1,40 @@
+{
+  "dimensions": {
+    "viewport": 384,
+    "scrollWidth": 384,
+    "dpr": 1
+  },
+  "contrasts": [
+    {
+      "selector": ".hint",
+      "color": "rgb(148, 163, 184)",
+      "background": [
+        17,
+        24,
+        39
+      ],
+      "ratio": 6.9186546948218375
+    },
+    {
+      "selector": ".status",
+      "color": "rgb(148, 163, 184)",
+      "background": [
+        17,
+        24,
+        39
+      ],
+      "ratio": 6.9186546948218375
+    },
+    {
+      "selector": "button[type=submit]",
+      "color": "rgb(226, 232, 240)",
+      "background": [
+        2,
+        132,
+        199
+      ],
+      "ratio": 3.3220248389914486
+    }
+  ],
+  "zoomMethod": "CDP CSS viewport / zoom, DPR=zoom; equivalent desktop reflow, not CSS zoom"
+}

@@ -1,0 +1,8 @@
+{
+  "mode": "read-only-dry-run",
+  "active_count": 10,
+  "finding_count": 0,
+  "findings": [],
+  "executes_repairs": false,
+  "source": "supplied snapshot only; no production connection"
+}

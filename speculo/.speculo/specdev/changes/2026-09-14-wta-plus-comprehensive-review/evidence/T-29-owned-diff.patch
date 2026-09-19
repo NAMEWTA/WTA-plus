@@ -1,0 +1,2090 @@
+--- before/.agents/skills/engineering-standards/references/project/00-project-profile.md
++++ after/.agents/skills/engineering-standards/references/project/00-project-profile.md
+@@ -16,13 +16,24 @@
+ - `frontend/packages/api-contracts/**`、`tooling/openapi/**`：生成 transport、不可变快照、来源与漂移检查；domain model 由各领域独立拥有。
+ - `frontend/tooling/architecture/**`：使用 AST/SFC/YAML 结构化检查工作区、公开入口、依赖方向、终端纯度、占位目录和基线漂移。
+ - `docs/fm/**`：与已删除的运行时代码生成器解耦的静态 CRUD 模板资产，是 AI 与开发者实现 Java、Vue、React、MyBatis XML、MySQL 菜单片段、树结构、状态/排序和前后端合同时的当前参考基线；SQL 模板只支持 MySQL。
+-- `backend/pom.xml`、`mvnw`、各模块 `pom.xml`：Java 21、Spring Boot 4.1.0、Maven Wrapper、50 个 POM 描述符；根 reactor 经聚合 POM 组装项目，`bundle-full/core` 控制最终 admin fat jar 的业务模块集合。
++- `backend/pom.xml`、`backend/mvnw`、各模块 `pom.xml`：Java 21、Spring Boot 4.1.0、Maven Wrapper；POM 数量按当前源码盘点；根 reactor 经聚合 POM 组装项目，`bundle-full/core` 控制最终 admin fat jar 的业务模块集合。
+ - `backend/wta-admin/src/main/java/org/namewta/NamewtaApplication.java`、`wta-modules/wta-demo/**` 及 `wta-modules/wta-system/**`：Spring MVC、BO/VO/entity、service、mapper、Bean Validation、数据权限、事务和 Sa-Token 主导实践。
+ - `backend/pom.xml`、`wta-common/wta-common-mybatis/**`：dynamic-datasource 4.5.0、`@DSTransactional`、`BaseEntity` 自动填充字段、VO mapper 与链式查询的公共基础设施合同。
+ - `release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql` 的 `test_demo`、`wta-modules/wta-demo/**/TestDemo*`：新建项目自有业务表的乐观锁、审计字段、逻辑删除及 entity 映射基线。
+ - `backend/wta-common/wta-common-translation/**`：批量翻译和 JSON 响应增强的公共基础设施合同。
+-- `plan/update.md`：当前端到端构建命令、提交拆分、前后端顺序和禁止全仓无关格式化的项目决策证据。
+ - `.github/workflows/quality-gates.yml`、`scripts/ci/**`：仓内候选配置 Skill/分层/发布合同检查、前端静态/单元/E2E/构建、后端测试与双 bundle 打包，以及 Redis/MySQL/MinIO 真实服务验收。远程运行记录需在提交推送后由 GitHub Actions 产生。
++
++## 源码库存口径
++
++POM、激活 App 与测试源码以当前工作树为准，不把历史数量当门禁阈值。以下命令在仓根列出事实来源（包括本次未提交源码，排除构建输出）；Java 源文件数量不是 JUnit 测试用例数量，运行数/skip 以当次 Surefire 报告为准。
++
++```bash
++rg --files backend -g pom.xml -g '!**/target/**'
++rg --files frontend/apps -g package.json -g '!**/node_modules/**' -g '!**/dist/**'
++rg --files backend -g '**/src/test/java/**/*.java' -g '!**/target/**'
++```
++
++当前实现、可构建、发布清单和已部署是不同事实：App 是否参与构建看 `frontend/package.json`；是否登记发布看 `release-artifacts/apps.json`；实际交付需有干净源码版本、manifest、真实服务验收与部署记录。仓内 CI 配置和历史预览图均不能代替这些记录。
+ 
+ ## 工具链与质量门禁
+ 
+@@ -64,7 +75,7 @@
+ - `pending-decision`: 前端仍缺少非写入式 format-check 与统一覆盖率阈值；现有 lint/typecheck/unit/E2E/build 已形成可执行基线。
+ - `verification-gap`: 外部服务验收脚本需要 Docker daemon；只有提供真实服务参数且未跳过的当前测试结果才能关闭验证缺口。
+ - `ratchet`: 根 `tsconfig.json` 开启 `strict`，但关闭 `noImplicitAny`、`strictFunctionTypes`、`strictNullChecks`；platform http/auth/app-runtime/permission、axios/OSS 上传 adapter、admin/system/profile/third domain、profile web-domain 与 Home App 的 12 个 tsconfig 已显式开启三项检查。其余包按实际诊断渐进收紧；`.oxlintrc.json` 仍有存量 any 例外，新/修改边界不得扩大，不全仓重写。
+-- 当前没有声明统一覆盖率、ArchUnit、Java formatter、Checkstyle/SpotBugs；不得假装这些工具已启用。E2E 已覆盖 Client 上下文真假值边界，但不是全业务回归套件。
++- 当前没有声明统一覆盖率、ArchUnit、Java formatter、Checkstyle/SpotBugs；已有自有源码架构合同测试与分层检查，不等于已启用这些工具。E2E 已覆盖 Client 上下文真假值边界，但不是全业务回归套件。
+ 
+ SSO 发布验证入口：`bash scripts/sso-hard-e2e.sh --release-origin --evidence <新JSON路径>` 串行构建三 App并使用临时 Nginx/Redis/MySQL/Chrome；SSO是真实实现，System身份/菜单与业务token签发是显式fixture。普通 `pnpm test:e2e` 不覆盖该专用配置。
+ 
+--- before/.agents/skills/engineering-standards/references/project/01-module-map.md
++++ after/.agents/skills/engineering-standards/references/project/01-module-map.md
+@@ -4,61 +4,62 @@
+ 
+ | ID | Path | Language / framework / runtime | Build | Source / test roots | Public entrypoint | Quality gates | Evidence |
+ |---|---|---|---|---|---|---|---|
+-| `workspace-parent` | `.` | Markdown、Git 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | frontend/backend/external-services jobs | `README.md`, `.github/workflows/quality-gates.yml`; high |
++| `workspace-parent` | `.` | Markdown、Git 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | 仓内 release-contracts/frontend/backend/external-services 候选 jobs | `README.md`, `.github/workflows/quality-gates.yml`; 配置可核对，远程运行待验证 |
+ | `plus-ui` | `frontend` | TypeScript、Vue 3、Pinia、Browser，可扩展多 App monorepo | pnpm workspace、Vite、Oxlint、Vitest、Playwright | `apps/{admin-web,home-web,sso-web}/src`、`packages/**/src`、`tooling/**/src`、相邻 `*.test.ts`、`e2e/**` | `apps/{admin-web,home-web,sso-web}/src/main.ts` | architecture check/test、lint、typecheck、workspace test、双模式 build、按风险 E2E | `package.json`、`pnpm-workspace.yaml`、`tooling/architecture/**`、`playwright.config.ts`; high |
+-| `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | 50 POM descriptors; Java test inventory is derived from current src/test/java | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
++| `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | POM 与 Java 测试源码库存由当前文件派生，见项目画像的盘点命令 | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
+ 
+ ## 后端 Maven 模块
+ 
+-下表每一行都是唯一 `module:<path>` scope。未另行标注时，语言为 Java、运行时为 JVM、构建为 Maven，源码根为 `src/main/java`（存在资源时同时含 `src/main/resources`），测试根为空，generated path 为空，证据为该路径 `pom.xml` 与源码，置信度 high。
++下表每一行都是唯一 `module:<path>` scope。未另行标注时，语言为 Java、运行时为 JVM、构建为 Maven，源码根为 `src/main/java`（存在资源时同时含 `src/main/resources`），测试根以表中实存目录为准，generated path 为空，证据为该路径 `pom.xml` 与源码，置信度 high。
+ 
+ | ID / path suffix under `backend/` | Role / framework | Public entrypoint | Test / generated notes |
+ |---|---|---|---|
+-| `wta-admin` | Spring Boot 可部署主应用，组装 api/common/modules | `org.namewta.NamewtaApplication` | `src/test/java`; JUnit 示例/基础测试 |
+-| `wta-api` | 跨业务模块公开 API/DTO 合同 | `org.namewta.system.api.*` | none |
++| `wta-admin` | Spring Boot 可部署主应用，组装 api/common/modules | `org.namewta.NamewtaApplication` | `src/test/java`; 组装、合同、架构及属性门控真实服务/浏览器测试 |
++| `wta-api` | 跨业务模块公开 API/DTO 合同 | `src/main/java/org/namewta/**/api` 及共享 DTO/SPI | none |
+ | `wta-common` | common 聚合 POM | none | no source root |
+ | `wta-common/wta-common-bom` | common 版本/BOM 合同 | none | no source root |
+ | `wta-common/wta-common-ai` | AI 公共配置/适配 | package surface | none |
+-| `wta-common/wta-common-core` | Spring 核心类型、配置、通用合同 | package surface | none |
++| `wta-common/wta-common-core` | Spring 核心类型、配置、通用合同 | package surface | `src/test/java`; 实际模块测试 |
+ | `wta-common/wta-common-doc` | SpringDoc/Javadoc 适配 | package surface | none |
+ | `wta-common/wta-common-elasticsearch` | Elasticsearch 适配 | package surface | none |
+ | `wta-common/wta-common-encrypt` | Spring/MyBatis 加解密适配 | package surface | none |
+ | `wta-common/wta-common-excel` | Excel 公共 API | package surface | none |
+ | `wta-common/wta-common-job` | Spring 调度集成 | package surface | none |
+-| `wta-common/wta-common-json` | Spring/Jackson JSON 合同 | package surface | none |
++| `wta-common/wta-common-json` | Spring/Jackson JSON 合同 | package surface | `src/test/java`; 实际模块测试 |
+ | `wta-common/wta-common-liteflow` | Spring LiteFlow 集成 | package surface | none |
+-| `wta-common/wta-common-log` | 日志/审计切面 | package surface | none |
+-| `wta-common/wta-common-notify` | 渠道无关通知契约、分发、幂等和附件快照 | `NotifyDispatcher`, `NotifyClient`, adapter SPI | tests through consumers/admin |
++| `wta-common/wta-common-log` | 日志/审计切面 | package surface | `src/test/java`; 实际模块测试 |
++| `wta-common/wta-common-notify` | 渠道无关通知契约、分发、幂等和附件快照 | `NotifyDispatcher`, `NotifyClient`, adapter SPI | 无本地 src/test/java；由 admin/Notify 消费者测试覆盖 |
+ | `wta-common/wta-common-mail` | 邮件适配 | package surface | none |
+ | `wta-common/wta-common-mcp` | MCP 集成 | package surface | none |
+ | `wta-common/wta-common-mqtt` | Spring MQTT 集成 | package surface | none |
+ | `wta-common/wta-common-mybatis` | Spring/MyBatis 数据访问基础 | package surface | none |
+-| `wta-common/wta-common-nacos` | Nacos 配置解密与启动集成 | package surface | none |
++| `wta-common/wta-common-nacos` | Nacos 配置解密与启动集成 | package surface | `src/test/java`; 实际模块测试 |
+ | `wta-common/wta-common-openapi` | 默认开启、可由 `OPENAPI_ENABLED=false` 显式关闭的机器调用协议、注册表、网关与 Sa-Token Session 桥 | `@OpenApi`, OpenAPI SPI, auto-configuration | `src/test/java`; protocol/registry/gateway/assembly tests |
+ | `wta-common/wta-common-oss` | 对象存储适配 | package surface | none |
+-| `wta-common/wta-common-push` | Spring 推送/WebSocket/SSE 基础 | package surface | none |
+-| `wta-common/wta-common-redis` | Spring/Redis 缓存、锁与限流 | package surface | none |
++| `wta-common/wta-common-push` | Spring 推送/WebSocket/SSE 基础 | package surface | `src/test/java`; 实际模块测试 |
++| `wta-common/wta-common-redis` | Spring/Redis 缓存、锁与限流 | package surface | `src/test/java`; 实际模块测试 |
++| `wta-common/wta-common-richtext` | 富文本清洗、规范化与 OSS 资源引用桥 | package surface | `src/test/java` |
+ | `wta-common/wta-common-satoken` | Spring/Sa-Token 认证基础 | package surface | none |
+ | `wta-common/wta-common-security` | 安全注解/权限合同 | package surface | none |
+ | `wta-common/wta-common-sensitive` | 敏感数据处理 | package surface | none |
+ | `wta-common/wta-common-sms` | Spring SMS 集成 | package surface | none |
+ | `wta-common/wta-common-social` | 社交登录适配 | package surface | none |
+ | `wta-common/wta-common-translation` | 翻译/字典适配 | package surface | none |
+-| `wta-common/wta-common-web` | Spring MVC、错误映射、Actuator 基础 | package surface | none |
++| `wta-common/wta-common-web` | Spring MVC、错误映射、Actuator 基础 | package surface | `src/test/java`; 实际模块测试 |
+ | `wta-extend` | 独立应用聚合 POM | none | no source root |
+ | `wta-extend/wta-monitor-admin` | Spring Boot Monitor 可部署应用 | `MonitorAdminApplication` | none |
+ | `wta-extend/wta-snailai-server` | Spring Boot SnailAI 可部署应用 | `SnailAiServerApplication` | none |
+ | `wta-extend/wta-snailjob-server` | Spring Boot SnailJob 可部署应用 | `SnailJobServerApplication` | none |
+ | `wta-modules` | 业务模块聚合 POM | none | no source root |
+ | `wta-modules/wta-ai` | AI 业务能力 | package surface | none |
+-| `wta-modules/wta-demo` | 示例/集成演示能力 | package surface | none |
++| `wta-modules/wta-demo` | 示例/集成演示能力 | package surface | `src/test/java`; 实际模块测试 |
+ | `wta-modules/wta-job` | 业务任务执行器 | package surface | none |
+ | `wta-modules/wta-notify` | 通知公告、收件箱、渠道投递编排和通知配置 | `controller/admin`、`controller/anonymous`、`usecase` | `src/test/java`; layered module; `validate-module-mode` required |
+ | `wta-modules/wta-profile` | 账号资料业务聚合 POM | none | no source root |
+ | `wta-modules/wta-profile/wta-profile-bom` | profile 子模块版本/BOM 合同 | none | no source root |
+-| `wta-modules/wta-profile/wta-profile-person` | 个人资料与认证能力 | controller/service/mapper contracts | `src/test/java` |
+-| `wta-modules/wta-profile/wta-profile-enterprise` | 企业资料与认证能力 | controller/service/mapper contracts | `src/test/java` |
+-| `wta-modules/wta-system` | 用户、Client、角色、菜单、权限等核心系统能力 | controller/service/mapper contracts | none |
++| `wta-modules/wta-profile/wta-profile-person` | 个人资料与认证能力 | Controller/UseCase 入口；跨模块通过 wta-api | `src/test/java` |
++| `wta-modules/wta-profile/wta-profile-enterprise` | 企业资料与认证能力 | Controller/UseCase 入口；跨模块通过 wta-api | `src/test/java` |
++| `wta-modules/wta-system` | 用户、Client、角色、菜单、权限等核心系统能力 | controller/service/mapper contracts | `src/test/java`; 实际模块测试 |
+ | `wta-modules/wta-workflow` | WarmFlow 工作流能力 | controller/service contracts | none |
+ | `wta-modules/wta-third` | 第三方 HTTP Provider/Endpoint 管理、凭据安全、RestClient Gateway、显式适配器 SPI、限流与出站观测 | `org.namewta.third.api.ThirdPartyGateway`；管理 API 位于 `org.namewta.third.controller.admin` | `src/test/java`; crypto/path security tests; external MySQL/Redis/HTTP/browser gates are recorded by the change release evidence |
+ | `wta-modules/wta-sso` | 第一方 SSO Authorization Code + PKCE、SSO 域会话 | `controller/anonymous` authorize/token/revoke/login | `src/test/java`; layered module; `validate-module-mode` required |
+@@ -92,4 +93,4 @@
+ - `path:backend/wta-modules/**` 中的 CRUD/mapper/service/controller，以及 `wta-common-mybatis`、`wta-common-translation` -> 追加后端 CRUD/查询实现规范；模板修改单独路由到 `path:docs/fm/**`。
+ - `path:docs/fm/**` -> 静态 CRUD 模板规范。
+ - SQL/表结构变化 -> 安全数据 + Java/Spring contract + 数据源事务与建表；新建项目自有表应用基础字段基线，直接修改本仓六份 MySQL 8.4 完整基座中的对应文件。
+-- 跨前后端 API 变化 -> 同时加载 TypeScript、Java、测试、安全和交付规则，并以后端兼容合同先行。
++- 跨前后端 API 变化 -> 同时加载 TypeScript、Java、测试、安全和交付规则，并以后端公开合同、权限及仓内消费者同步为先。
+--- before/.agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md
++++ after/.agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md
+@@ -43,7 +43,7 @@
+ - Scope: `path:backend/wta-modules/**`
+ - Decision: 新增后端业务模块默认登记为 `layered`，强制 `Controller/Listener/API Adapter -> UseCase -> Service -> DAO -> Mapper -> Mapper XML`。DAO 不继承 MyBatis-Plus `IService`；Service 不继承 `IService`/`ServiceImpl`，只承载业务规则并通过 DAO 持久化。`wta-system`、`wta-workflow`、`wta-job`、`wta-demo`、`wta-ai` 在本阶段登记为 classic，保持现状。
+ - Source: `user-decision` + `repository-fact` (`wta-profile`)
+-- Rationale: 编排、业务规则和持久化条件分离，避免 ServiceImpl 变成 SQL、事务、关系和外部副作用的耦合中心，同时保留存量模块兼容窗口。
++- Rationale: 编排、业务规则和持久化条件分离，避免 ServiceImpl 变成 SQL、事务、关系和外部副作用的耦合中心，同时保持未纳入本次变更的存量模块边界。
+ - Migration: 新模块直接使用 layered；存量只按 Ratchet 收紧。classic -> layered 必须提供旧路径、公开合同、调用方、SQL、测试和回滚映射，不以本决策授权无关重构。
+ - Verification: 模块注册表、目录/import 静态检查、五层链路测试、Maven 测试和构建；通过 `validate-module-mode.mjs` 检查 layered 依赖方向。
+ 
+@@ -71,7 +71,7 @@
+ - Decision: 列表/分页、详情、树和下拉等只读查询使用 HTTP `GET`；新增、修改、删除、批量删除、状态变更和排序更新等变更操作使用 HTTP `POST`，每个 POST 业务接口必须使用安全、准确的 `@Log` 记录调用追踪；CRUD 不使用 PUT/PATCH/DELETE，非 CRUD 协议按自身合同处理。
+ - Source: `user-decision`
+ - Rationale: 统一查询与变更的接口语义，并通过操作日志保留 POST 调用的操作者、方法、URL、结果、耗时与失败状态等追踪信息。
+-- Migration: 新增 CRUD 立即执行；实质修改存量 CRUD 合同时，同步迁移该合同内受影响的前端请求、controller mapping、`@Log`、测试和文档，禁止继续新增 PUT/PATCH/DELETE CRUD 路由或无 `@Log` 的 POST 业务接口。生成器迁移后才能作为新 CRUD 骨架。
++- Migration: 新增 CRUD 立即执行；实质修改存量 CRUD 合同时，同步迁移该合同内受影响的前端请求、controller mapping、`@Log`、测试和文档，禁止继续新增 PUT/PATCH/DELETE CRUD 路由或无 `@Log` 的 POST 业务接口。静态模板代表输出验证后才能作为相应 CRUD 骨架；仓内调用方与合同同批切换，不新增旧路由兼容桥。
+ - Verification: 执行 `API-005` 的前后端静态搜索与契约/集成测试；生成分页和树表代表样例，确认 Java/Vue 两端查询为 GET、变更为 POST，且每个 POST controller 方法均有准确、安全的 `@Log`。
+ 
+ ### DEC-007 前端按文件角色命名
+@@ -97,13 +97,13 @@
+ | ID | Current | Target | Migration / Verification |
+ |---|---|---|---|
+ | `MIG-TS-STRICT` | 根配置 `strict: true` 但三项子开关关闭；项目画像列出的 12 个包/App 已显式开启三项；其他包与 lint 仍有存量债 | 新/修改的 API、存储、环境变量和第三方响应边界使用精确类型、`unknown` + narrowing，不新增无理由 any | 变更文件 Ratchet；review、`pnpm lint` 与完整 `pnpm typecheck` 已是 active gate |
+-| `MIG-FE-TEST` | 根级 `pnpm test` 聚合当前激活 App/包的 Vitest，Playwright 覆盖 Admin 关键浏览器流程 | 新增纯逻辑、状态、权限或复杂交互时在 domain、web-domain、App 或 E2E 的正确层级扩展测试；第二个 App 激活时恢复跨 App 隔离场景 | 本地与 CI 运行 architecture/lint/typecheck/unit/build，按风险运行 E2E；覆盖率阈值仍待决策 |
+-| `MIG-BE-TEST` | 176 个已跟踪 Java 测试源码文件；root 默认执行测试，Redis/MySQL/MinIO 用例通过属性门控接入真实服务 job | 认证、权限、事务、SQL 和公共 API 变更有回归测试，并在合并门禁执行 | `./mvnw test` 为默认门禁；core 产物因排除 demo/workflow 等可选模块而在已测试后用 `-Dmaven.test.skip=true` 组装；真实服务由 CI 补证 |
++| `MIG-FE-TEST` | `frontend/` 的 `pnpm test` 聚合当前 App/包测试；默认 Playwright 覆盖 Admin，SSO/跨 Origin 使用专用配置 | 新增纯逻辑、状态、权限或复杂交互时在 domain、web-domain、App 或 E2E 的正确层级扩展测试；当前 Admin/Home/SSO 变更按影响执行 Client、会话与 Cookie 隔离验收 | 本地与 CI 运行 architecture/lint/typecheck/unit/build，按风险运行 E2E；覆盖率阈值仍待决策 |
++| `MIG-BE-TEST` | 当前 src/test/java 库存按项目画像命令派生；root 默认执行测试，真实 Redis/MySQL/MinIO/HTTP/浏览器用例按属性门控 | 认证、权限、事务、SQL 和公共 API 变更有回归测试，并在合并门禁执行 | `./mvnw test` 为默认门禁；core 产物因排除 demo/workflow 等可选模块而在已测试后用 `-Dmaven.test.skip=true` 组装；真实服务需本地或 CI 显式启用并记录零 required skip 证据 |
+ | `MIG-BE-DS-TX` | 业务代码同时存在 Spring `@Transactional` 与 dynamic-datasource `@DSTransactional` | 新建或实质修改的业务事务统一使用 `@DSTransactional`，事务事件使用匹配的 `@DsTxEventListener` | 按变更文件 Ratchet；迁移时验证代理调用、回滚、数据源切换和提交阶段事件；不发动无需求证据的全仓替换 |
+ | `MIG-BE-DDL-BASE` | 历史、上游、第三方及部分 NAMEWTA 表未统一具备 `version/create_dept/create_time/create_by/update_time/update_by/del_flag` | 每个新建项目自有表均具备七个基础字段，并与 `BaseEntity`、`@Version`、`@TableLogic` 映射一致 | 新表立即执行；触及存量项目自有表时评估兼容迁移，未经迁移设计不直接补列；上游冻结和第三方 schema 不做无关整治 |
+-| `MIG-CI` | 已配置 `.github/workflows/quality-gates.yml`，含快照、前端、后端与真实服务四个 job | PR 稳定执行同源 lint/typecheck/test/build，并由分支保护设为 required checks | 本地完成静态验证；提交推送后观察首次 Actions 运行，再配置分支保护并记录远程证据 |
+-| `MIG-LARGE-FILES` | 前后端存在多个 700-1400 行文件 | 新功能避免继续混合职责，触及文件时提取可命名且可测试的边界 | 文件大小只作 review 触发器；不得为行数机械拆分 |
+-| `MIG-CRUD-METHOD-LOG` | 现有前端 API、后端 controller 和生成模板仍混用 GET/POST/PUT/DELETE，POST 日志约束尚未统一 | CRUD 只读查询使用 GET，变更使用 POST；CRUD 不使用 PUT/PATCH/DELETE；每个 POST 业务接口使用安全、准确的 `@Log` | 新增立即执行；存量按 CRUD 合同触及范围迁移，前后端、日志注解、测试、文档和生成模板同步收敛；按 `API-005` 验证 |
++| `MIG-CI` | 已配置 `.github/workflows/quality-gates.yml`，包含 release-contracts、frontend、backend、external-services 四个串行候选 job；尚无提交后远程结果 | PR 稳定执行同源 lint/typecheck/test/build，并由分支保护设为 required checks | 本地完成静态验证；提交推送后观察首次 Actions 运行，再配置分支保护并记录远程证据 |
++| `MIG-LARGE-FILES` | 前后端存在职责需持续审查的大文件 | 新功能避免继续混合职责，触及文件时提取可命名且可测试的边界 | 文件大小只作 review 触发器；不得为行数机械拆分 |
++| `MIG-CRUD-METHOD-LOG` | 当前登记的第一方 CRUD 使用 GET 查询/POST 变更，下一节点读取为 GET；仓内调用及 OpenAPI 同步，存储直传和供应商协议按各自合同保留 | CRUD 只读查询使用 GET，变更使用 POST；CRUD 不使用 PUT/PATCH/DELETE；每个 POST 业务接口使用安全、准确的 `@Log` | 新增立即执行；存量按 CRUD 合同触及范围迁移，前后端、日志注解、测试、文档和生成模板同步收敛；按 `API-005` 验证 |
+ | `MIG-FE-NAMING` | 各 App/包内存在符合局部语义的 PascalCase/lowerCamelCase 混用，工作区目录和包名已稳定使用 kebab-case | 新文件按 `TS-ORG` 所有权与角色映射命名，import 与磁盘大小写精确一致 | 不批量改名；触及存量时核对 exports/manifest/route/import，运行 architecture/typecheck/build 并检查 Git 大小写 diff |
+ 
+ ## 例外
+@@ -129,4 +129,4 @@
+ 
+ - `PENDING-CI-001`: 首次 GitHub Actions 远程运行通过后，将哪些 job 设为 PR/主分支 required checks，以及失败责任与重跑权限。
+ - `PENDING-FE-001`: 是否新增非写入式 format-check 与覆盖率阈值；typecheck、Vitest、Playwright 已成为 active gate。
+-- `PENDING-ARCH-001`: 前端多 App 依赖方向与占位纯度已有自动架构测试；Maven 模块方向是否追加自动架构测试仍待确认。
++- `PENDING-ARCH-001`: 前端依赖/占位与后端 layered 方向已有自动检查；是否引入额外架构框架由具体未覆盖合同决定，不把现有源码架构测试记为缺失。
+--- before/README.md
++++ after/README.md
+@@ -24,7 +24,7 @@
+ | OSS 直传与生命周期 | 浏览器直传对象存储：单文件、分片、断点续传、失败恢复、对象引用、临时清理、可恢复删除、授权下载 | 大文件不再经应用服务器转发，并补齐对象全生命周期 |
+ | 统一通知 | 渠道无关分发：邮件/短信适配、Redis 幂等、OSS 附件快照、调用上下文审计、脱敏、投递监控 | 业务模块通过统一合同发送和追踪；公告先草稿再发布 |
+ | HTTP 可观测 | Servlet 边界输出可按 `requestId` 关联的请求/响应结构化事件 | 覆盖同步、异步、异常、正文截断和媒体类型策略，不必为每个接口重写访问日志 |
+-| 数据基座 | 父仓统一维护六份 MySQL 8.4 完整初始化基座（三方菜单 DML 已并入 60） | 全新环境确定性初始化；已有环境按源/目标 Git Tag 评审差异后升级 |
++| 数据基座 | 父仓统一维护六份 MySQL 8.4 完整初始化基座（产品结构/数据分别由 10/50 文件拥有） | 全新环境确定性初始化；已有环境按源/目标 Git Tag 评审差异后升级 |
+ | 工程治理 | 单一 monorepo 固定基线：架构检查、OpenAPI 漂移检查、分层测试 | 产品能力在本仓演进，不以 submodule 或上游 URL 为交付依赖 |
+ 
+ ## 架构一览
+@@ -41,7 +41,7 @@
+ │   ├── wta-admin/            # 服务启动与模块组装
+ │   ├── wta-api/              # 跨模块公开合同
+ │   ├── wta-common/           # OSS / 通知 / HTTP 日志等基础能力
+-│   └── wta-modules/          # system / workflow / demo / profile / notify / ai / job / third
++│   └── wta-modules/          # system / workflow / demo / profile / notify / ai / job / third / sso
+ ├── docs/                     # 当前架构与产品说明
+ ├── release-artifacts/        # 发布资产及六份 MySQL 8.4 初始化基座
+ ├── scripts/                  # 聚合 CI / 开发脚本
+@@ -60,13 +60,13 @@
+ | `home-web` | 已激活 | 用户门户与用户中心，组合登录、注册和档案认证流程 |
+ | `sso-web` | 已激活 | 第一方 SSO 认人页；业务应用不共用这张会话 |
+ 
+-新增 App 时不复制 `admin-web/src/api`、业务类型或领域页面。App 从公开包入口选择所需 domain/web-domain，再提供本终端的请求、存储、加密、布局和路由适配。
++新增 App 时不复制 `admin-web/src/api`、业务类型或领域页面。App 从公开包入口选择所需 domain/web-domain，再提供本终端的请求、存储、布局和路由适配。
+ 
+ 前端动态导航由 `packages/platform/app-runtime` 投影当前 Client 的服务端菜单，Admin 的 `navigation` Store 只维护 App 自有导航状态，页面解析严格使用已选择的 web-domain manifest。Vue 权限指令由 `packages/web-kit/permission` 提供，Admin 入口注入当前会话 evaluator；菜单和按钮可见性始终不替代后端鉴权。
+ 
+ ## 功能速览
+ 
+-以下截取自本仓本地预览（Admin `4174` / Home `4175` / SSO `4176`），侧栏与面包屑可见。弹窗一次性密钥未入库；列表页如含密钥列，仅为演示环境数据。未能打开的外部控制台见文末说明。
++以下是历史本地预览截图，保留为界面参考，不作为当前工作树的验收或部署证据。截图时使用本仓本地预览（Admin `4174` / Home `4175` / SSO `4176`），侧栏与面包屑可见。弹窗一次性密钥未入库；列表页如含密钥列，仅为演示环境数据。未能打开的外部控制台见文末说明。
+ 
+ ### Admin 登录与首页
+ 
+@@ -227,15 +227,15 @@
+ pnpm test
+ pnpm build:prod
+ 
+-# 后端
+-cd backend
++# 后端（从 frontend 返回同仓 backend）
++cd ../backend
+ ./mvnw test
+ ./mvnw clean package -DskipTests
+ # 核心平台组合（须在完整测试通过后）
+ ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true
+ ```
+ 
+-具体启动、构建和验证命令分别见前后端 README。每次 bundle 构建都必须先 `clean`，避免复用另一 profile 的 fat jar。
++构建命令不会自动发布。三个 App 均已进入工作区构建和发布清单，实际发布仍需干净源码版本、配套 manifest、真实服务验收和目标环境批准。具体启动、构建和验证命令分别见前后端 README。每次 bundle 构建都必须先 `clean`，避免复用另一 profile 的 fat jar。
+ 
+ ## 文档导航
+ 
+--- before/backend/AGENTS.md
++++ after/backend/AGENTS.md
+@@ -1,31 +1,16 @@
+-# backend 模块索引
++# 后端工作区导航
+ 
+-## Scope
++本目录是 monorepo 的 Maven reactor。处理实现前读取仓根 [engineering-standards](../.agents/skills/engineering-standards/SKILL.md)；业务模式和完整模块清单分别以[模式登记表](../.agents/skills/engineering-standards/references/project/03-backend-module-modes.md)和[模块地图](../.agents/skills/engineering-standards/references/project/01-module-map.md)为准。
+ 
+-本索引覆盖 后端工作区，以本目录的 pom.xml 和源码为准。
++依赖关系以各模块 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。业务规则、接口与数据结构以当前源码和测试为准；先定位目标模块的源码、资源和测试，再按工程 Skill 路由加载规范。
+ 
+-## Purpose
++- [pom.xml](pom.xml)：版本、reactor、测试与 bundle 配置；[mvnw](mvnw) 是统一 Maven 入口。
++- [wta-admin](wta-admin/pom.xml)：主应用组装，入口 `wta-admin/src/main/java/org/namewta/NamewtaApplication.java`；集成测试位于 `wta-admin/src/test/java`。
++- [wta-api](wta-api/pom.xml)：跨业务模块 Service/SPI/DTO；兼容演进读取 [java-api-compatibility](../.agents/skills/java-api-compatibility/SKILL.md)。
++- [wta-common](wta-common/AGENTS.md)、[wta-modules](wta-modules/AGENTS.md)、[wta-extend](wta-extend/AGENTS.md)：基础设施、业务模块与独立应用导航。聚合 POM/BOM 不虚构 `src/main`。
+ 
+-说明 backend 的职责边界、组成和最小验证入口。
++## 验证
+ 
+-## Components
++以下 cwd 均为 `backend/`。完整测试为 `./mvnw test`；定向示例为 `./mvnw -pl wta-modules/wta-demo -am test`，其他模块使用模块地图中相对 backend 的真实 POM 路径替换 `-pl`，BOM 只做构建验证、不声称运行测试。
+ 
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl 后端工作区 -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
++后端交付还需 `./mvnw clean package -DskipTests` 与 `./mvnw clean package -Pbundle-core -Dmaven.test.skip=true`，各自在仓根运行 `bash scripts/ci/verify-admin-bundle.sh full` 或 `core` 核对对应产物。先保存完整测试证据，再跳过测试打包；外部服务用例按实际条件单独启用，skip 不算通过。
+--- before/backend/README.md
++++ after/backend/README.md
+@@ -1,6 +1,6 @@
+ # NAMEWTA 后端
+ 
+-本目录是 WTA-plus monorepo 的后端（`backend/`）。它增强 Client 登录域与 RBAC 隔离、OSS 直传和对象生命周期、统一通知、完整 HTTP 系统日志、增量 SQL 及组合构建治理。
++本目录是 WTA-plus monorepo 的后端（`backend/`）。它增强 Client 登录域与 RBAC 隔离、OSS 直传和对象生命周期、统一通知、HTTP 系统日志、六文件 SQL 基座及组合构建治理。
+ 
+ ## 核心能力
+ 
+@@ -11,7 +11,7 @@
+ | Token 与会话 | Token 明确携带 Client 主键和登录域，区分 OAuth `clientId`；配置或身份状态变化时定向清理会话 | `wta-api` LoginUser、`wta-admin` 登录、`wta-system` 会话服务 |
+ | OSS 直传 | 浏览器直接向对象存储上传，支持单文件、Multipart、断点续传、分片校验、上传会话隔离和失败恢复 | `wta-common-oss`、`wta-system` oss/upload |
+ | 对象生命周期 | 通过临时状态、业务引用、授权下载、可恢复删除、过期与物理清理管理文件 | `wta-api` OssService、`wta-system` OSS 服务与任务 |
+-| 统一通知 | 邮件/短信使用渠道适配器统一分发，支持 Redis 幂等、OSS 附件快照、请求上下文、脱敏、投递记录和监控 | `wta-common-notify`、`wta-system` notify |
++| 统一通知 | 邮件/短信使用渠道适配器统一分发，支持 Redis 幂等、OSS 附件快照、请求上下文、脱敏、投递记录和监控 | `wta-api` NotificationService、`wta-common-notify`、`wta-modules/wta-notify` |
+ | HTTP 系统日志 | Servlet Filter 为每次请求输出可由 requestId 关联的结构化请求/响应事件，覆盖异步、异常、正文截断和媒体类型策略 | `wta-common-web/.../logging` |
+ | 模块组合 | 明确 `wta-admin` 组装、`wta-api` 跨模块合同和 common SPI 边界，同时验证 full/core bundle | 根 POM、`wta-admin`、`wta-api`、`wta-common` |
+ | MySQL 合同 | 后端测试消费父聚合仓库维护的六份 MySQL 8.4 完整基座，本仓库不保存 SQL 副本 | `../release-artifacts/docker/infrastructure/mysql/init` |
+@@ -31,7 +31,7 @@
+ wta-admin/       主应用与模块组装
+ wta-api/         跨业务模块公开服务和 DTO
+ wta-common/      可按需依赖的通用基础能力
+-wta-modules/     system、workflow、demo、profile、notify、ai、job、third 业务模块
++wta-modules/     system、workflow、demo、profile、notify、ai、job、third、sso 业务模块
+ wta-extend/      monitor、SnailJob、SnailAI 等独立应用
+ ```
+ 
+@@ -41,11 +41,13 @@
+ 
+ 后端向所有 App 提供一致的 HTTP/JSON 合同，并负责最终认证、授权、数据范围和 Client 隔离。前端可以按 App 选择页面与菜单表现，但不能放宽服务端权限。
+ 
+-前端只消费 HTTP/JSON 合同。Vue 页面、动态路由和 App 组合归独立仓库 `frontend` 所有，后端仓库不维护前端源码副本。
++前端只消费 HTTP/JSON 合同。Vue 页面、动态路由和 App 组合归同一 monorepo 的 `frontend/` 工作区所有，后端目录不维护前端源码副本。
+ 
+ 新增前端 App 不需要在后端复制 Controller。它应申请或配置独立 ClientId，并复用相同的领域接口；需要不同准入、默认角色、菜单和权限时，通过 Client 级数据配置实现。
+ 
+ ## 构建与验证
++
++以下命令 cwd 为 `backend/`；工作区入口见 [AGENTS.md](AGENTS.md)，模块与测试事实见[模块地图](../.agents/skills/engineering-standards/references/project/01-module-map.md)。
+ 
+ ```bash
+ # 完整测试
+@@ -72,14 +74,16 @@
+ 
+ ## SQL
+ 
+-数据库初始化与发布资产由父聚合仓库 `release-artifacts/docker/infrastructure/mysql/init/` 统一维护，本仓库不再保留 `script/` 或 SQL 副本。后端 SQL 合同测试默认自动定位父仓库；独立检出后运行相关测试时，通过 `-Dnamewta.sql.root=/绝对路径/release-artifacts/docker/infrastructure/mysql/init` 显式指定六文件基座目录。
++数据库初始化与发布资产由仓根 `release-artifacts/docker/infrastructure/mysql/init/` 统一维护，本仓库不再保留 `script/` 或 SQL 副本。后端 SQL 合同测试默认从 monorepo 定位该目录；为隔离验证显式提供其他基座副本时，通过 `-Dnamewta.sql.root=/绝对路径/release-artifacts/docker/infrastructure/mysql/init` 显式指定六文件基座目录。
+ 
+ 项目只支持 MySQL 8.4。全新库按六份文件的数字前缀初始化；已有库不得重放基座，必须依据源/目标 Git Tag 的基座差异形成单独的评审与执行方案。
+ 
+ ## 开发导航
+ 
+ - 工程规范：`../.agents/skills/engineering-standards/SKILL.md`
+-- 后端导航：`../.agents/skills/namewta-fullstack-development/SKILL.md`
++- 后端导航：[namewta-fullstack-development](../.agents/skills/namewta-fullstack-development/SKILL.md)
++- 通知模块：[wta-notify](wta-modules/wta-notify/AGENTS.md)
++- SSO 模块：[wta-sso](wta-modules/wta-sso/AGENTS.md)
+ 
+ 项目开发 Skill 只在仓库根 `.agents/skills/` 集中维护。
+ 
+--- before/backend/wta-admin/AGENTS.md
++++ after/backend/wta-admin/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-admin 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-admin，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-admin 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-admin -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-api/AGENTS.md
++++ after/backend/wta-api/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-api 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-api，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-api 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-api -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/AGENTS.md
++++ after/backend/wta-common/AGENTS.md
+@@ -1,31 +1,7 @@
+-# wta-common 模块索引
++# common 基础设施导航
+ 
+-## Scope
++本目录由 [pom.xml](pom.xml) 聚合基础能力，[wta-common-bom/pom.xml](wta-common-bom/pom.xml) 管理版本；业务调用者按需依赖子模块。完整清单与实际测试入口见[模块地图](../../.agents/skills/engineering-standards/references/project/01-module-map.md)，包含富文本清洗与 OSS 引用桥接的 `wta-common-richtext`。
+ 
+-本索引覆盖 wta-common，以本目录的 pom.xml 和源码为准。
++复用、SPI、工具和依赖入口读取 [wta-common-modules-guide](../../.agents/skills/wta-common-modules-guide/SKILL.md)；硬约束由 [engineering-standards](../../.agents/skills/engineering-standards/SKILL.md) 裁决。common 不反向依赖业务实现，也不强套业务五层目录。
+ 
+-## Purpose
+-
+-说明 wta-common 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
++定向验证沿用[后端统一命令](../AGENTS.md#验证)。例如在 `backend/` 执行 `./mvnw -pl wta-common/wta-common-richtext -am test`。模块没有独立测试时，选择真实消费者测试，不能把零测试报告称为验证通过。
+--- before/backend/wta-common/wta-common-ai/AGENTS.md
++++ after/backend/wta-common/wta-common-ai/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-ai 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-ai，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-ai 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-ai -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-bom/AGENTS.md
++++ after/backend/wta-common/wta-common-bom/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-bom 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-bom，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-bom 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-bom -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-core/AGENTS.md
++++ after/backend/wta-common/wta-common-core/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-core 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-core，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-core 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-core -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-doc/AGENTS.md
++++ after/backend/wta-common/wta-common-doc/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-doc 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-doc，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-doc 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-doc -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-elasticsearch/AGENTS.md
++++ after/backend/wta-common/wta-common-elasticsearch/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-elasticsearch 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-elasticsearch，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-elasticsearch 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-elasticsearch -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-encrypt/AGENTS.md
++++ after/backend/wta-common/wta-common-encrypt/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-encrypt 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-encrypt，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-encrypt 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-encrypt -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-excel/AGENTS.md
++++ after/backend/wta-common/wta-common-excel/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-excel 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-excel，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-excel 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-excel -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-job/AGENTS.md
++++ after/backend/wta-common/wta-common-job/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-job 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-job，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-job 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-job -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-json/AGENTS.md
++++ after/backend/wta-common/wta-common-json/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-json 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-json，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-json 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-json -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-liteflow/AGENTS.md
++++ after/backend/wta-common/wta-common-liteflow/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-liteflow 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-liteflow，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-liteflow 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-liteflow -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-log/AGENTS.md
++++ after/backend/wta-common/wta-common-log/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-log 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-log，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-log 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-log -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-mail/AGENTS.md
++++ after/backend/wta-common/wta-common-mail/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-mail 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-mail，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-mail 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mail -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-mcp/AGENTS.md
++++ after/backend/wta-common/wta-common-mcp/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-mcp 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-mcp，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-mcp 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mcp -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-mqtt/AGENTS.md
++++ after/backend/wta-common/wta-common-mqtt/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-mqtt 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-mqtt，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-mqtt 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mqtt -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-mybatis/AGENTS.md
++++ after/backend/wta-common/wta-common-mybatis/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-mybatis 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-mybatis，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-mybatis 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-mybatis -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-nacos/AGENTS.md
++++ after/backend/wta-common/wta-common-nacos/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-nacos 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-nacos，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-nacos 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-nacos -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-notify/AGENTS.md
++++ after/backend/wta-common/wta-common-notify/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-notify 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-notify，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-notify 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-notify -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-openapi/AGENTS.md
++++ after/backend/wta-common/wta-common-openapi/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-openapi 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-openapi，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-openapi 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-openapi -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-oss/AGENTS.md
++++ after/backend/wta-common/wta-common-oss/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-oss 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-oss，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-oss 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-oss -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-push/AGENTS.md
++++ after/backend/wta-common/wta-common-push/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-push 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-push，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-push 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-push -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-redis/AGENTS.md
++++ after/backend/wta-common/wta-common-redis/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-redis 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-redis，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-redis 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-redis -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-satoken/AGENTS.md
++++ after/backend/wta-common/wta-common-satoken/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-satoken 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-satoken，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-satoken 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-satoken -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-security/AGENTS.md
++++ after/backend/wta-common/wta-common-security/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-security 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-security，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-security 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-security -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-sensitive/AGENTS.md
++++ after/backend/wta-common/wta-common-sensitive/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-sensitive 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-sensitive，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-sensitive 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-sensitive -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-sms/AGENTS.md
++++ after/backend/wta-common/wta-common-sms/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-sms 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-sms，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-sms 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-sms -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-social/AGENTS.md
++++ after/backend/wta-common/wta-common-social/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-social 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-social，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-social 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-social -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-translation/AGENTS.md
++++ after/backend/wta-common/wta-common-translation/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-translation 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-translation，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-translation 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-translation -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-common/wta-common-web/AGENTS.md
++++ after/backend/wta-common/wta-common-web/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-common-web 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-common/wta-common-web，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-common-web 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-common/wta-common-web -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-extend/AGENTS.md
++++ after/backend/wta-extend/AGENTS.md
+@@ -1,31 +1,9 @@
+-# wta-extend 模块索引
++# 独立应用导航
+ 
+-## Scope
++[pom.xml](pom.xml) 聚合三个独立 Spring Boot 应用，具体版本、依赖、启动类和测试入口以各模块 POM/源码及[模块地图](../../.agents/skills/engineering-standards/references/project/01-module-map.md)为准：
+ 
+-本索引覆盖 wta-extend，以本目录的 pom.xml 和源码为准。
++- [wta-monitor-admin](wta-monitor-admin/pom.xml)：Monitor Admin。
++- [wta-snailai-server](wta-snailai-server/pom.xml)：SnailAI 服务。
++- [wta-snailjob-server](wta-snailjob-server/pom.xml)：SnailJob 服务。
+ 
+-## Purpose
+-
+-说明 wta-extend 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-extend -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
++它们通过发布资产组装，供应商坐标、协议和 schema 不能按自有命名规则批量改写。工程规则与测试/双 bundle 命令见[后端入口](../AGENTS.md)；仅做定向编译时，在 `backend/` 使用 `./mvnw -pl wta-extend/wta-monitor-admin -am -DskipTests compile` 并明确这不是运行验收。
+--- before/backend/wta-extend/wta-monitor-admin/AGENTS.md
++++ after/backend/wta-extend/wta-monitor-admin/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-monitor-admin 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-extend/wta-monitor-admin，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-monitor-admin 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-extend/wta-monitor-admin -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-extend/wta-snailai-server/AGENTS.md
++++ after/backend/wta-extend/wta-snailai-server/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-snailai-server 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-extend/wta-snailai-server，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-snailai-server 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-extend/wta-snailai-server -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-extend/wta-snailjob-server/AGENTS.md
++++ after/backend/wta-extend/wta-snailjob-server/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-snailjob-server 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-extend/wta-snailjob-server，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-snailjob-server 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-extend/wta-snailjob-server -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-modules/AGENTS.md
++++ after/backend/wta-modules/AGENTS.md
+@@ -1,31 +1,9 @@
+-# wta-modules 模块索引
++# 业务模块导航
+ 
+-## Scope
++[pom.xml](pom.xml) 聚合业务模块。架构选择以[模式登记表](../../.agents/skills/engineering-standards/references/project/03-backend-module-modes.md)为唯一入口；完整模块、公开合同和测试根见[模块地图](../../.agents/skills/engineering-standards/references/project/01-module-map.md)。规则由 [engineering-standards](../../.agents/skills/engineering-standards/SKILL.md) 裁决，实现导航按需读取 [wta-module-guide](../../.agents/skills/wta-module-guide/SKILL.md)。
+ 
+-本索引覆盖 wta-modules，以本目录的 pom.xml 和源码为准。
++保留具有独立合同的模块手册：[System](wta-system/AGENTS.md)、[Demo](wta-demo/AGENTS.md)、[Profile](wta-profile/AGENTS.md)、[Notify](wta-notify/AGENTS.md)、[SSO](wta-sso/AGENTS.md)、[Third](wta-third/AGENTS.md)。Profile 的 person/enterprise 手册继续约束各自业务边界；profile-bom 仅管理版本。
+ 
+-## Purpose
++Workflow、Job、AI 的入口分别为 [wta-workflow/pom.xml](wta-workflow/pom.xml)、[wta-job/pom.xml](wta-job/pom.xml)、[wta-ai/pom.xml](wta-ai/pom.xml)；其源码、资源、测试和 common/API 依赖以对应 POM 和模块地图为准。没有独立合同的重复手册由本导航与上级规则承接。
+ 
+-说明 wta-modules 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-modules -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
++验证命令沿用[后端入口](../AGENTS.md#验证)，`-pl` 使用相对 `backend/` 的具体模块路径。layered 模块另在仓根运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-notify --mode layered`，按模式登记替换具体模块；禁止把聚合 POM 的零测试误记为业务测试通过。
+--- before/backend/wta-modules/wta-ai/AGENTS.md
++++ after/backend/wta-modules/wta-ai/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-ai 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-modules/wta-ai，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-ai 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-ai -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-modules/wta-demo/AGENTS.md
++++ after/backend/wta-modules/wta-demo/AGENTS.md
+@@ -11,8 +11,8 @@
+ ## Components
+ 
+ - Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- `controller/OpenApiDemoController.java`：OpenAPI 注解与机器调用链路演示。
+-- `controller/TestRichTextController.java`：富文本规范化、OSS 资源授权与引用对账演示。
++- `src/main/java/org/namewta/demo/controller/OpenApiDemoController.java`：OpenAPI 注解与机器调用链路演示。
++- `src/main/java/org/namewta/demo/controller/TestRichTextController.java`：富文本规范化、OSS 资源授权与引用对账演示。
+ - 具体业务规则、接口与数据结构以源码为准。
+ 
+ ## Entry Points
+@@ -27,7 +27,7 @@
+ 
+ ## Verification
+ 
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-demo -am -DskipTests compile`，再按模块测试配置执行验证。
++在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-demo -am -DskipTests compile`，再按模块测试配置执行验证。
+ 
+ ## Read Next
+ 
+--- before/backend/wta-modules/wta-job/AGENTS.md
++++ after/backend/wta-modules/wta-job/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-job 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-modules/wta-job，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-job 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-job -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-modules/wta-notify/AGENTS.md
++++ after/backend/wta-modules/wta-notify/AGENTS.md
+@@ -3,4 +3,4 @@
+ - 入口：`controller/admin`、`controller/anonymous`；业务调用按 `UseCase -> Service -> DAO -> Mapper` 分层。
+ - 所有通知、公告、收件箱、Outbox 和监控数据由本模块拥有；跨模块仅依赖 `wta-api` 与 common SPI。
+ - DDL/DML：父仓库 `release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql` 与 `50-cde-base-dml.sql`。
+-- 测试：`./mvnw -pl wta-modules/wta-notify -am test`。
++- 测试（cwd=`backend/`）：`./mvnw -pl wta-modules/wta-notify -am test`。
+--- before/backend/wta-modules/wta-profile/AGENTS.md
++++ after/backend/wta-modules/wta-profile/AGENTS.md
+@@ -26,8 +26,8 @@
+ 
+ ## Verification
+ 
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile -am -DskipTests compile`，再按 person/enterprise 模块测试配置执行验证。
++在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-profile -am -DskipTests compile`，再按 person/enterprise 模块测试配置执行验证。
+ 
+ ## Read Next
+ 
+-先阅读本目录各子模块 `AGENTS.md`、源码包结构、测试和资源，再按任务读取 [统一模块导航](../../../.agents/skills/wta-module-guide/SKILL.md) 及适用工程 Skill。
++先阅读person/enterprise 各自的 `AGENTS.md`、源码包结构、测试和资源，再按任务读取 [统一模块导航](../../../.agents/skills/wta-module-guide/SKILL.md) 及适用工程 Skill。
+--- before/backend/wta-modules/wta-profile/wta-profile-bom/AGENTS.md
++++ after/backend/wta-modules/wta-profile/wta-profile-bom/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-profile-bom 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-modules/wta-profile/wta-profile-bom，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-profile-bom 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile/wta-profile-bom -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md
++++ after/backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md
+@@ -26,7 +26,7 @@
+ 
+ ## Verification
+ 
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile/wta-profile-enterprise -am -DskipTests compile`，并运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs wta-modules/wta-profile/wta-profile-enterprise --mode=layered`，再按模块测试配置执行验证。
++在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-profile/wta-profile-enterprise -am -DskipTests compile`；在仓根运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-enterprise --mode=layered`，再按模块测试配置执行验证。
+ 
+ ## Read Next
+ 
+--- before/backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md
++++ after/backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md
+@@ -26,7 +26,7 @@
+ 
+ ## Verification
+ 
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile/wta-profile-person -am -DskipTests compile`，并运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs wta-modules/wta-profile/wta-profile-person --mode=layered`，再按模块测试配置执行验证。
++在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-profile/wta-profile-person -am -DskipTests compile`；在仓根运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-person --mode=layered`，再按模块测试配置执行验证。
+ 
+ ## Read Next
+ 
+--- before/backend/wta-modules/wta-third/AGENTS.md
++++ after/backend/wta-modules/wta-third/AGENTS.md
+@@ -14,4 +14,4 @@
+ 
+ ## 验证
+ 
+-在后端仓库根目录运行 `mvn -pl wta-modules/wta-third -am -DskipTests compile`，再运行本模块定向测试。
++在 `backend/` 目录运行 `./mvnw -pl wta-modules/wta-third -am -DskipTests compile`，再运行本模块定向测试。
+--- before/backend/wta-modules/wta-workflow/AGENTS.md
++++ after/backend/wta-modules/wta-workflow/AGENTS.md
+@@ -1,31 +0,0 @@
+-# wta-workflow 模块索引
+-
+-## Scope
+-
+-本索引覆盖 wta-modules/wta-workflow，以本目录的 pom.xml 和源码为准。
+-
+-## Purpose
+-
+-说明 wta-workflow 的职责边界、组成和最小验证入口。
+-
+-## Components
+-
+-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
+-- 具体业务规则、接口与数据结构以源码为准。
+-
+-## Entry Points
+-
+-- `pom.xml`：模块构建和依赖入口。
+-- `src/main`：生产代码与资源入口。
+-
+-## Dependencies
+-
+-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
+-
+-## Verification
+-
+-在后端仓库根目录执行 `mvn -pl wta-modules/wta-workflow -am -DskipTests compile`，再按模块测试配置执行验证。
+-
+-## Read Next
+-
+-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+--- before/docs/README.md
++++ after/docs/README.md
+@@ -5,9 +5,12 @@
+ ## 项目说明
+ 
+ - [NAMEWTA 增强说明](./namewta-enhancements.md)：当前能力、实现位置和前后端协作方式。
++- [OSS 公私双桶运维](./oss-public-private-operations.md)：访问类型、readiness、迁移批准和恢复边界。
++- [Nacos 配置切换合同](./runtime-nacos-hard-cut.md)：当前 Data ID、单读与发布运维导航。
++- [静态代码模板](./fm/README.md)：目录清单、上下文与代表输出验证。
+ - [OSS 登录与浏览器直传排障手册](./error/oss-login-and-direct-upload-troubleshooting.md)：登录、预签名上传、MinIO CORS、重启顺序和故障验证。
+ 
+-## 子仓库文档
++## 工作区文档
+ 
+ - [前端 README](../frontend/README.md)：多 App monorepo、领域分层、开发命令与复用规则。
+ - [前端架构基线](../frontend/docs/architecture-baseline.md)：认证、动态路由、权限和包依赖边界。
+--- before/docs/namewta-enhancements.md
++++ after/docs/namewta-enhancements.md
+@@ -14,25 +14,25 @@
+ | `packages/domains/*` | 无 Vue/DOM 的 API、领域类型、查询/命令服务和传输映射 |
+ | `packages/web-domains/*` | Vue 页面、领域组件、Web hooks、语言资源和动态路由 manifest |
+ | `packages/platform/*` | 认证、权限、HTTP、运行时等跨领域端口和合同 |
+-| `packages/adapters/*` | Axios、浏览器存储、浏览器加密及未来终端适配实现 |
++| `packages/adapters/*` | Axios、浏览器存储、OSS 上传及未来终端适配实现 |
+ | `packages/web-kit/*` | 多个 Web 消费者共同使用的壳层、基础组件和设计 token |
+ | `packages/api-contracts` | 可追溯、确定性生成的 OpenAPI 传输合同 |
+ 
+-当前发布面包含 `admin-web` 管理端和 `home-web` 用户门户；未激活终端不参与工作区构建、路由和权限注册。
++当前工作区构建包含 Admin、Home、SSO；[发布清单](../release-artifacts/apps.json)登记三者的配套入口。SSO 使用独立 Origin 的认人页；构建通过、历史预览和已部署状态不能互相推导。真实部署需经过[发布门禁](../release-artifacts/README.md)。未激活终端不参与构建、路由和权限注册。
+ 
+-domain 与后端模块一一对应为 `admin`、`system`、`workflow`、`demo`、`profile`、`notify`、`third`、`ai`；包内第二层按 Controller 的稳定 HTTP 资源命名。由此可以从 `/system/client` 直接定位到 `domains/system/src/client`，再定位到 `web-domains/system/src/client` 的 Web 表现层。
++domain 与后端模块一一对应为 `admin`、`system`、`workflow`、`demo`、`profile`、`notify`、`third`、`ai`；包内第二层按 Controller 的稳定 HTTP 资源命名。由此可以从 `/system/client` 直接定位到 `frontend/packages/domains/system/src/client`，再定位到 `frontend/packages/web-domains/system/src/client` 的 Web 表现层。
+ 
+ App 不重新实现后端接口和数据模型。新增 App 时只选择需要的公开 domain/web-domain，并实现该终端自己的适配和界面组合。未来移动端、小程序可以复用 headless domain 与 platform 合同，同时替换终端特有 UI、请求、存储和生命周期。
+ 
+ ### Client 级认证、动态路由与权限
+ 
+-每个 App 使用显式 ClientId 和独立会话命名空间。登录前先获取服务端 ClientContext；注册开关、登录域、请求加密和认证方式均由服务端上下文约束，失败或畸形数据按关闭处理。
++每个 App 使用显式 ClientId 和独立会话命名空间。登录前先获取服务端 ClientContext；注册开关、登录域和认证方式均由服务端上下文约束，失败或畸形数据按关闭处理。
+ 
+ Admin 登录后恢复用户信息，按当前 Client 获取后端菜单，由 `packages/platform/app-runtime` 生成确定导航投影，再使用 App 已选择的 web-domain manifest 解析组件键并通过 Vue Router `addRoute` 注册。Admin 自有 `navigation` Store 维护 sidebar、topbar、default 和 Router 投影；`packages/web-kit/permission` 安装的 `v-hasPermi`、`v-hasRoles` 与命令式检查消费同一实时 evaluator。后端仍负责最终授权。
+ 
+ ### 工程质量
+ 
+-前端使用 pnpm workspace/catalog 管理依赖，并以架构检查、OpenAPI 漂移检查、Oxlint、Oxfmt、TypeScript、Vitest、工作区构建和 Playwright 验证包边界及关键流程。跨 App 导入、包深层导入、跨工作区相对导入和未声明依赖由门禁阻止；第二个 App 激活时必须恢复真实跨 App Client 与会话隔离验收。
++前端使用 pnpm workspace/catalog 管理依赖，并以架构检查、OpenAPI 漂移检查、Oxlint、TypeScript、Vitest、工作区构建和 Playwright 验证包边界及关键流程；Oxfmt 是写入式格式化工具，不是已启用的 format-check。跨 App 导入、包深层导入、跨工作区相对导入和未声明依赖由门禁阻止；当前 Admin/Home/SSO 的认证变更必须验证跨 App Client、会话及 Cookie 隔离，默认 Admin E2E 不能替代 SSO 专用验收。
+ 
+ ## 后端增强
+ 
+--- before/docs/oss-public-private-operations.md
++++ after/docs/oss-public-private-operations.md
+@@ -51,7 +51,7 @@
+ 
+ ## 5. 发布候选验证
+ 
+-后端候选使用隔离 MySQL、Redis 和双 Bucket MinIO 执行：
++后端候选使用隔离 MySQL、Redis 和双 Bucket MinIO，在 `backend/` 执行：
+ 
+ ```bash
+ ./mvnw -pl wta-admin -am -Dtest='*Oss*Test' -Dsurefire.failIfNoSpecifiedTests=false test
+@@ -61,7 +61,7 @@
+ 
+ 为 required integration tests 提供一次性 `oss.minio.integration.*` 与 `oss.migration.mysql.integration.*` 系统属性。必须确认相关测试 `0 skipped`；没有外部参数而被跳过不能作为发布证据。
+ 
+-前端候选执行：
++前端候选在 `frontend/` 执行：
+ 
+ ```bash
+ pnpm --filter @namewta/tooling-openapi openapi:check
+@@ -118,7 +118,7 @@
+ 
+ ## 10. 发布完成条件
+ 
+-- 后端、前端和聚合父仓候选 SHA/tree 与 Evidence 一致，工作树干净。
++- 同一 monorepo 的后端、前端与发布候选 SHA/tree 与 Evidence 一致，工作树干净。
+ - 真实 MySQL、MinIO、HTTP 和 browser required tests 均实际执行且关键项没有 skipped。
+ - OpenAPI 无 drift，禁止能力扫描为零，公共/私有/上传/迁移/恢复矩阵全部通过。
+ - 无 active 或未处理 failed migration；源对象仍受独立 cleanup Gate 保护。
+--- before/docs/runtime-nacos-hard-cut.md
++++ after/docs/runtime-nacos-hard-cut.md
+@@ -1,12 +1,7 @@
+-# Nacos hard-cut (shipped)
++# Nacos 当前配置切换合同
+ 
+-See change evidence `speculo/.speculo/specdev/changes/2026-09-12-rename-ruoyi-dromara-to-wta/evidence/runtime/nacos-hard-cut-mapping.md` for the full table.
++当前客户端默认 Data ID 为 `wta-namewta.yml`，以 `backend/wta-common/wta-common-nacos/src/main/java/org/namewta/common/nacos/NacosConfigConstants.java` 和运行配置为准；不双读旧 `ruoyi-namewta.yml`。Docker 产品服务保持 `namewta-*`，容器工作目录位于 `/wta/...`。
+ 
+-Shipped runtime:
++当前启用、稀疏覆盖、断连/重启与恢复规则统一维护在[发布说明的 Nacos 章节](../release-artifacts/README.md#可选-nacos-配置中心)。上述名称是源码与配置合同，不能据此声称生产已部署。
+ 
+-- `nacos.config.data-id` / `NacosConfigConstants.DEFAULT_DATA_ID` = `wta-namewta.yml`
+-- No dual-read of `ruoyi-namewta.yml`
+-- Docker product services remain `namewta-*`
+-- Container workdirs `/wta/...`
+-
+-Fresh databases seed login `WTA` from `50-cde-base-dml.sql`. Do not add `mysql/migrate/` files; existing databases upgrade via Git Tag diffs, not baseline replay.
++全新数据库从 `50-cde-base-dml.sql` 初始化登录用户 `WTA`。禁止增加 `mysql/migrate/` 文件；已有数据库按源/目标 Git Tag 差异形成经评审的升级方案，不重放六文件基座。历史改名记录从 Git/Speculo 归档查询，不把失效的 active change 路径作为当前权威。
+--- before/frontend/AGENTS.md
++++ after/frontend/AGENTS.md
+@@ -4,19 +4,19 @@
+ `frontend` pnpm 多 App 工作区。
+ 
+ ## Purpose
+-组合可复用 domain、Web domain、平台合同和终端适配器，当前产品入口是 Admin Web 与 Home Web。
++组合可复用 domain、Web domain、平台合同和终端适配器，当前产品入口是 Admin Web、Home Web 与独立 Origin 的 SSO Web。
+ 
+ ## Components
+ `apps/` 终端；`packages/domains/` 无界面领域；`packages/web-domains/` Vue 表现；`packages/platform/` 合同与运行时；`packages/adapters/` 具体适配；`packages/web-kit/` Web 机制；`tooling/` 工具。
+ 
+ ## Entry Points
+-工作区脚本见 [package.json](package.json)；Admin 入口见 [apps/admin-web](apps/admin-web/AGENTS.md)，Home 入口见 [apps/home-web](apps/home-web/AGENTS.md)。
++工作区脚本见 [package.json](package.json)；Admin 入口见 [apps/admin-web](apps/admin-web/AGENTS.md)，Home 入口见 [apps/home-web](apps/home-web/AGENTS.md)，SSO 入口见 [apps/sso-web](apps/sso-web/AGENTS.md)。完整事实见[项目画像](../.agents/skills/engineering-standards/references/project/00-project-profile.md)。
+ 
+ ## Dependencies
+ 组合方向为 `apps -> web-domains -> domains -> platform`，适配器和 web-kit 通过公开合同接入；禁止跨包深层导入。
+ 
+ ## Verification
+-`pnpm architecture:check`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod`。
++在 `frontend/` 执行 `pnpm architecture:check`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:prod`。
+ 
+ ## Read Next
+ 通用边界与命名读取父工作区 [namewta-fullstack-development](../.agents/skills/namewta-fullstack-development/SKILL.md)；具体包读取其同目录索引。
+--- before/frontend/README.md
++++ after/frontend/README.md
+@@ -6,14 +6,14 @@
+ 
+ | 增强方向     | 当前实现                                                                                           | 带来的变化                                                            |
+ | ------------ | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+-| 多 App 交付  | `admin-web` 管理端与 `home-web` 应用用户端均已激活；旧 Client Web、移动 Web 和小程序入口已清理 | 两个产品端共享领域架构，同时保持 Client、会话和菜单隔离 |
++| 多 App 交付  | `admin-web`、`home-web`、`sso-web` 均有真实入口并参与构建；发布面由 apps.json 显式登记 | 业务 App 共享领域，SSO 采用独立 Origin；Client、会话和菜单保持隔离 |
+ | 领域复用     | 无界面 API、类型和业务服务进入 `packages/domains/*`，Vue 页面进入 `packages/web-domains/*`         | 新 App 直接组合已有能力，不重新创建后端接口和数据模型                 |
+ | 前后端映射   | domain 名与后端 `admin/system/workflow/demo/profile/notify/third/ai` 模块一致，资源目录与 Controller base path 一致 | 可从 Java Controller 或 URL 快速定位前端 API、类型和页面              |
+-| 通用平台能力 | 认证、权限、HTTP 和运行时进入 `platform`，Axios、存储和加密进入 `adapters`，Web 壳层进入 `web-kit` | 动态路由、权限、字典、OSS、加密等能力可复用，同时允许不同终端替换实现 |
++| 通用平台能力 | 认证、权限、HTTP 和运行时进入 `platform`，Axios、存储和 OSS 上传进入 `adapters`，Web 壳层进入 `web-kit` | 动态路由、权限、字典、OSS 等能力可复用，同时允许不同终端替换实现 |
+ | Client 安全  | App 使用显式 ClientId、独立会话命名空间和服务端 ClientContext；认证与路由失败关闭                  | 避免不同 App 之间的 Token、菜单和权限串用                             |
+ | 动态菜单     | App 只注册已选择 web-domain manifest 中的页面，未知或未选择的组件键拒绝解析                        | 后端菜单仍动态驱动界面，但不能越过 App 的编译期能力边界               |
+ | API 合同     | OpenAPI 传输合同确定性生成并检查漂移，domain 在边界处映射自己的领域模型                            | 自动生成类型可追溯，又不会把页面直接绑定到生成器内部结构              |
+-| 工程门禁     | 架构检查、Oxlint、Oxfmt、TypeScript、Vitest、工作区 build 和 Playwright                            | 依赖方向、公开导出和关键登录/权限流程可以持续验证                     |
++| 工程门禁     | 架构检查、Oxlint、TypeScript、Vitest、工作区 build 和 Playwright；Oxfmt 是写入式工具                            | 依赖方向、公开导出和关键登录/权限流程可以持续验证                     |
+ 
+ ## 技术栈
+ 
+@@ -35,7 +35,7 @@
+ tooling/                 架构、OpenAPI 与未来脚手架工具
+ ```
+ 
+-当前激活 `admin-web` 管理端和 `home-web` 应用用户端。两者使用独立 Client 与会话命名空间，并共享后端授权和动态菜单合同；移动 Web、小程序和 Taro 适配器不在当前产品范围内。
++当前构建包含 `admin-web` 管理端、`home-web` 用户端及独立 Origin 的 `sso-web` 认人页。Admin/Home 使用各自 Client 与会话，SSO Cookie 不与业务应用共享。三个 App 的发布配套由 [apps.json](../release-artifacts/apps.json) 和[发布说明](../release-artifacts/README.md)核对；可构建、可预览不代表已部署。移动 Web、小程序和 Taro 适配器保持有激活门槛的占位。
+ 
+ 八个 headless domains 与后端模块一一对应：admin、system、workflow、demo、profile、notify、third、ai。每个 App 只显式组合需要的 domain/web-domain，可以独立定制布局、样式和 CSS；`gen` 已从基座物理删除，不属于运行时领域。
+ 
+@@ -52,12 +52,14 @@
+ 1. 为 App 配置独立 ClientId、会话命名空间、路由基路径和部署环境。
+ 2. 从 `packages/domains/*` 的公开导出选择需要的 API、领域类型和服务。
+ 3. Web App 按需选择对应 `packages/web-domains/*` manifest；非 Web 终端使用自己的表现层。
+-4. 通过 platform port 注入请求、存储、加密、导航、下载和反馈等终端能力。
++4. 通过 platform port 注入请求、存储、导航、下载和反馈等终端能力。
+ 5. App 仅实现布局、品牌、主题、静态页面及启动/路由编排。
+ 
+-以 `/system/client` 为例，HTTP 与领域模型归 `packages/domains/system/src/client/`，Vue 管理页面归 `packages/web-domains/system/src/client/`，Admin 只负责选择它并将后端菜单组件键接入动态路由。第二个 App 若只需要 Client 查询服务，可只组合 domain，不必引入系统管理页面。
++以 `/system/client` 为例，HTTP 与领域模型归 `packages/domains/system/src/client/`，Vue 管理页面归 `packages/web-domains/system/src/client/`，Admin 只负责选择它并将后端菜单组件键接入动态路由。其他 App 若只需要 Client 查询服务，可只组合 domain，不必引入系统管理页面。
+ 
+ ## 开发命令
++
++以下命令均在 `frontend/` 执行，使用 packageManager 锁定的 pnpm；命令详情以 [package.json](package.json) 为准。
+ 
+ 各 App 的 Vite 公开参数在 `apps/<app>/.env.development` 与 `.env.production` 中跟踪，作为迁移和上线要改哪些键的清单。`VITE_*` 会进入浏览器产物，不要写入数据库、Redis 或 MinIO 密码。本机私有覆盖用未被跟踪的 `.env.*.local`。发布脚本会覆盖 `VITE_APP_CONTEXT_PATH` 与 `VITE_APP_BASE_API`。
+ 
+@@ -84,7 +86,7 @@
+ pnpm build:prod
+ ```
+ 
+-需要只验证单个包时使用 `pnpm --filter <package-name> <script>`。涉及登录、动态菜单或权限的变化还应运行对应 Playwright 流程；重新激活第二个 App 时必须恢复跨 App Client 与会话隔离验收。
++需要只验证单个包时使用 `pnpm --filter <package-name> <script>`。涉及登录、动态菜单或权限的变化还应运行对应 Playwright 流程，并覆盖当前 Admin/Home 的 Client 与会话隔离；SSO 和三 Origin 发布入口需使用专用验收，默认 `pnpm test:e2e` 不涵盖它们。运行入口及真实/夹具边界见[发布验证说明](../release-artifacts/README.md#nginx-请求链路)。
+ 
+ ## 维护规则
+ 
+--- before/frontend/apps/README.md
++++ after/frontend/apps/README.md
+@@ -2,7 +2,8 @@
+ 
+ ## 当前状态
+ 
+-- `admin-web` 是管理端，`home-web` 是应用用户端；两个 App 都是可构建和部署的浏览器入口。
++- `admin-web` 是管理端，`home-web` 是用户门户，`sso-web` 是独立 Origin 的认人页；三者均有真实源码、构建脚本和发布登记。
++- 构建由 [frontend/package.json](../package.json) 串行运行；发布由 [apps.json](../../release-artifacts/apps.json) 检查配套。预览成功、清单登记与目标环境已部署分别记录，不互相替代。
+ 
+ ## 目录职责
+ 
+@@ -10,7 +11,7 @@
+ 
+ App 可从 `packages/**` 的公开入口组合所需能力，但不得导入其他 App、深层导入包内部，也不得重新拥有可复用领域规则。
+ 
+-相较上游单 App 结构，这里只保存“这个终端如何组装和交付”，不保存可复用的后端 API、领域类型或管理页面。两个 App 都复用 domain/web-domain/platform，保持 Client、会话和动态菜单隔离。
++相较上游单 App 结构，这里只保存“这个终端如何组装和交付”，不保存可复用的后端 API、领域类型或管理页面。Admin/Home 按需复用 domain/web-domain/platform，保持 Client、会话和动态菜单隔离；SSO 使用专属页面与 host-only Cookie，不取得业务 App 的菜单或会话。
+ 
+ ## 激活新终端
+ 
+--- before/frontend/docs/architecture-baseline.md
++++ after/frontend/docs/architecture-baseline.md
+@@ -25,7 +25,8 @@
+ 
+ - 登录前必须先获取 `/auth/client/context`；`clientEnabled`、`registerEnabled` 只接受精确布尔值，缺失、畸形或请求失败均关闭后续认证动作。
+ - 每个已激活 App 必须使用显式 ClientId、独立环境变量与会话命名空间，不存在隐式默认 Client。
+-- 请求加密、Client 请求头、验证码、登录、注册和社交登录能力必须服从服务端 ClientContext。
++- Client 请求头、验证码、登录、注册和社交登录能力必须服从服务端 ClientContext。
++- 浏览器业务传输使用 HTTPS 上的普通 JSON/二进制，不恢复共享响应私钥或 ECB 包装；机器 HMAC 与存储签名维持独立合同。
+ - 登出和登录态失效必须清理当前 App 的会话，并防止跨 App 会话串用。
+ 
+ ## 路由与权限不变量
+@@ -45,4 +46,6 @@
+ 
+ ## 验证基线
+ 
+-根级 `architecture:check`、`architecture:test`、lint、typecheck、test、开发构建和生产构建必须通过。OpenAPI 快照变化还必须通过 `openapi:check`。涉及真实登录、菜单或权限时，增加对应 Playwright 浏览器验收；激活第二个 App 时恢复跨 App Client 与会话隔离验收。
++在 `frontend/` 执行 `pnpm architecture:check`、`pnpm architecture:test`、`pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build:dev` 和 `pnpm build:prod`。OpenAPI 快照变化还必须运行 `pnpm --filter @namewta/tooling-openapi openapi:check`；仓根没有同名 pnpm 脚本。
++
++涉及登录、菜单或权限时，增加当前 Admin/Home 的 Client 与会话隔离验收。默认 `pnpm test:e2e` 不包含 SSO 专用配置；三 Origin 的入口、Cookie、刷新与过期流程使用仓根 `bash scripts/sso-hard-e2e.sh --release-origin --evidence <新JSON路径>`。该夹具的身份与业务 Token 边界见[发布说明](../../release-artifacts/README.md#nginx-请求链路)，不能据此声称所有业务均经过真实端到端验收。
+--- before/release-artifacts/README.md
++++ after/release-artifacts/README.md
+@@ -13,6 +13,8 @@
+ - `docker/frontend/nginx/html/nginx-lb/`：统一 LB 的内部静态维护页；上游返回 404 或常见 5xx 时保留原状态码展示。
+ - `skills/wta-namewta-nginx-config/`：新增前端 App 与维护 LB/Nginx 的项目内动态 Skill。
+ 
++所有示例命令默认从仓根执行（明确 `cd backend` 的子 shell 除外）。发布清单和本地夹具验证不代表已提交的干净版本或已部署环境；以具体 manifest、验收证据与批准记录判定交付状态。
++
+ ## 配置
+ 
+ 真实密码只写入未纳入版本管理的 env 文件。私有路径前缀从该文件输入，构建后会出现在浏览器资产和产物 manifest 中，不写回源码。先复制变量名并替换全部占位值：
+@@ -25,7 +27,7 @@
+ 
+ 发布基座 SQL 仍包含当前版本必须保留的初始化账号/客户端默认凭据（例如初始密码和演示客户端密钥）。这些值只用于首次初始化兼容性，已在发布风险清单中标记；生产环境必须在首次登录后立即轮换，并通过未入库的 env/密钥管理覆盖，禁止在新配置、脚本或文档中新增明文密钥。
+ 
+-完整构建以 `apps.json` 的显式 shipped 清单决定发布面；目录扫描仅检测未登记或缺失 App。当前发布 admin-web、home-web、sso-web，逐项校验 package、构建命令、Compose 服务及挂载、Nginx、env、端口和入口。`release-manage.sh check-apps` 可只读检查配套。缺项或漂移在构建/晋升前失败，不改变已选版本。
++完整构建以 `apps.json` 的显式 shipped 清单决定发布面；目录扫描仅检测未登记或缺失 App。当前发布清单登记 admin-web、home-web、sso-web，逐项校验 package、构建命令、Compose 服务及挂载、Nginx、env、端口和入口。`release-manage.sh check-apps` 可只读检查配套。缺项或漂移在构建/晋升前失败，不改变已选版本。
+ 
+ 运行 env 必须填写三个 `*_WEB_ORIGIN`（仅 scheme、hostname、可选 port）和 `*_WEB_PREFIX`。生产 Origin 必须 HTTPS，SSO 与业务 App 必须使用不同 hostname；仅换端口不能隔离 Cookie。真实 DNS、TLS 和端口由部署环境确定，样例中的 `.invalid` 占位值不能用于构建。manifest 的 `appOrigins` 和 `applicationMatrix` 保存规范化 Origin、base、API、callback/authorize URL，需将精确 callback URL 登记到后端对应 SSO Client。
+ 
+@@ -71,7 +73,7 @@
+ `release-artifacts/.env`，也不复用现有容器或数据卷；必须显式确认后运行：
+ 
+ ```bash
+-./mvnw -f backend/pom.xml -Pbundle-full -DskipTests package
++(cd backend && ./mvnw -Pbundle-full -DskipTests package)
+ NACOS_E2E_CONFIRM=1 \
+   bash release-artifacts/scripts/verify-nacos.sh
+ 
+@@ -185,6 +187,8 @@
+ 
+ ## 可选 Nacos 配置中心
+ 
++当前 Data ID 固定为 `wta-namewta.yml`（`NacosConfigConstants.DEFAULT_DATA_ID`），不双读旧 `ruoyi-namewta.yml`。Docker 产品服务保持 `namewta-*`，容器工作目录位于 `/wta/...`；升级前按当前配置准备新 Data ID，不以旧名称作为自动回退。
++
+ Nacos 固定使用官方 `nacos/nacos-server:v2.5.4`。客户端默认关闭；准备好数据库、管理员密码、
+ namespace 和同源代理后，再通过 `docker/overrides/nacos-enabled.yml` 同时开启两套后端实例：
+ 
+--- before/scripts/README.md
++++ after/scripts/README.md
+@@ -8,10 +8,12 @@
+ scripts/
+ ├── README.md
+ ├── start-dev.sh
++├── sso-hard-e2e.sh
+ ├── ci/
+ │   ├── run-external-services.sh
+ │   ├── verify-admin-bundle.sh
+-│   └── verify-dev-build-guard.sh
++│   ├── verify-dev-build-guard.sh
++│   └── verify-external-tests.py
+ └── lib/
+     ├── backend-build-guard.sh
+     └── dev-runtime.sh
+@@ -49,7 +51,7 @@
+ 
+ 前端选项优先使用本机可直接调用的 `pnpm`，没有 `pnpm` 时回退到 `corepack pnpm`；依赖安装严格遵循 lockfile，随后运行固定端口且不自动打开浏览器的 `pnpm dev`。
+ 后端选项先取得按 canonical backend path 隔离的原子构建锁，再通过 Maven Wrapper 执行跳过自动测试的
+-本地 reactor install。构建完成后，脚本会比较 `wta-system/target/classes` 与 target JAR、
++本地 reactor install。构建完成后，脚本会比较 `backend/wta-modules/wta-system/target/classes` 与 target JAR、
+ `wta-admin` 实际 Maven classpath 中已安装 JAR 的 class 集合，并检查 admin 登录链依赖的关键类型；全部
+ 通过后释放构建锁，再以 `dev,local` profiles 启动 `wta-admin`。Windows 上 Maven classpath 使用 `;`
+ 和盘符路径，脚本按平台分隔符解析，不会把 `D:\` 中的冒号当成 Unix classpath 分隔符。该脚本用于启动
+@@ -64,9 +66,7 @@
+ - 启动前检查前端 `80` 或后端 `8080` 端口：优先 `lsof`，Windows 上回退到 `netstat`；端口被占用时只报告
+   进程并退出，不会自动终止任何现有服务。
+ - 脚本不会读取或输出本地配置中的账号、密码等敏感值。
+-- 父工作区只版本化 `.vscode/settings.json` 并关闭 Red Hat Java 的自动构建，其他 `.vscode` 本地文件仍被
+-  忽略；这可避免 JDT language server 与 Maven 同时写入 `target/generated-sources`。需要 IDE 编译时请
+-  显式执行一次 Java build，不要在后端 reactor 运行中触发。
++- 仓库不要求 `.vscode/settings.json` 存在。使用 Java 自动构建的编辑器时，应在自己的工作区设置关闭对 Maven `target/` 的并行写入；不要在 reactor 运行中触发 IDE 编译。
+ - 同一后端工作区的第二个受管启动会立即失败，并显示持锁 PID；正常退出或 `Ctrl+C`/`TERM` 会清理锁，
+   owner PID 已不存在的 stale lock 会被安全替换。含未知内容或元数据不匹配的锁不会被递归删除。
+ - 锁只协调 `start-dev.sh` 启动。运行后端启动时不要同时从其他终端或 IDE 对同一工作区执行 Maven
+@@ -137,7 +137,7 @@
+ 
+ 两次打包都使用 `clean`，用于避免前一种 profile 的产物污染后一种 profile 的校验。必须先验证并保存 full
+ 产物清单，再 clean 构建 core。可用 `ADMIN_ARTIFACT` 指定待检 JAR；按完整 artifact 名匹配，不接受同前缀的替代模块。
+-该脚本被 GitHub Actions 的 `backend` job 和 release-manage 的后端打包步骤调用。
++该脚本由仓内 GitHub Actions 候选的 `backend` job 和 release-manage 的后端打包步骤调用。
+ 
+ 前端在 `frontend/` 执行 `pnpm build:dev` 或 `pnpm build:prod`：先串行按依赖顺序构建 packages/tooling，
+ 再以指定模式分别构建 Admin、Home、SSO 各一次。每个 App 的 `dist/build-mode.json` 记录 Vite 实际模式；
+@@ -198,7 +198,7 @@
+ - 需要 Bash、Git、curl、Python 3、Java 21、可用的 Docker CLI/daemon，以及后端 Maven Wrapper 所需的网络和依赖。
+ - 脚本使用的数据库和对象存储凭据仅属于一次性 CI 容器，不应复用于共享环境或生产环境。
+ - 镜像版本与 `release-artifacts/docker/docker-compose-infrastructure.yml` 一致，发布合同测试检查漂移。
+-- 该脚本被 GitHub Actions 的 `external-services` job 调用，本地没有 Docker 时无法执行完整验收。
++- 该脚本由仓内 GitHub Actions 候选的 `external-services` job 调用，本地没有 Docker 时无法执行完整验收。
+ 
+ ## 与 GitHub Actions 的对应关系
+ 

@@ -1,0 +1,7 @@
+{
+  "files": {
+    "backend/wta-admin/src/test/java/org/namewta/test/migration/BusinessMenuRetirementMySqlIntegrationTest.java": "38988c3e8455f5d8df25fa559162cd06ee61c15210936ff031091f319b20368d",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/monitor/NotifyMonitorMySqlIntegrationTest.java": null,
+    "scripts/ci/verify-external-tests.py": null
+  }
+}

@@ -1,0 +1,1702 @@
+{
+  "command": [
+    "./mvnw",
+    "test"
+  ],
+  "cwd": "backend",
+  "exit_code": 0,
+  "per_command_network_options": "-Daether.connector.requestTimeout=60000 -Daether.connector.connectTimeout=10000 -Daether.connector.basic.threads=1 -Dmaven.artifact.threads=1",
+  "started_at": "2026-09-18T14:00:38.241087+00:00",
+  "seconds": 76.56,
+  "input_sources_sha256": "8eb9fbe9cc5b70f2d31b7f447aba1096da78db37fd3e33113f7ac5529ffe3bb0",
+  "output_sources_sha256": "8eb9fbe9cc5b70f2d31b7f447aba1096da78db37fd3e33113f7ac5529ffe3bb0",
+  "sources_unchanged": true,
+  "totals": {
+    "tests": 674,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 28
+  },
+  "reports": [
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.write.PasswordImportUnitTest.xml",
+      "name": "org.namewta.test.password.write.PasswordImportUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssConfigGovernanceUnitTest.xml",
+      "name": "org.namewta.test.oss.config.OssConfigGovernanceUnitTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileCrossModuleBoundaryContractTest.xml",
+      "name": "org.namewta.test.profile.contract.ProfileCrossModuleBoundaryContractTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.web.service.HomeClientLoginAccessPathTest.xml",
+      "name": "org.namewta.web.service.HomeClientLoginAccessPathTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest.xml",
+      "name": "org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.SmsNotifyChannelAdapterUnitTest.xml",
+      "name": "org.namewta.test.notify.core.SmsNotifyChannelAdapterUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.common.redis.cache.ThirdRedisIntegrationTest.xml",
+      "name": "org.namewta.common.redis.cache.ThirdRedisIntegrationTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssConfigHttpContractUnitTest.xml",
+      "name": "org.namewta.test.oss.config.OssConfigHttpContractUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.adminruntime.AdminRuntimeCapabilitySqlContractTest.xml",
+      "name": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilitySqlContractTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.cutover.OssProtocolCutoverUnitTest.xml",
+      "name": "org.namewta.test.oss.cutover.OssProtocolCutoverUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.nacos.menu.NacosMenuContractUnitTest.xml",
+      "name": "org.namewta.test.nacos.menu.NacosMenuContractUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.WorkflowGlobalListenerContractTest.xml",
+      "name": "org.namewta.test.profile.contract.WorkflowGlobalListenerContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlArchitectureUnitTest.xml",
+      "name": "org.namewta.test.oss.access.OssAccessUrlArchitectureUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordRedisIntegrationTest.xml",
+      "name": "org.namewta.test.password.temporary.TemporaryPasswordRedisIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.password.PasswordMigrationMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.migration.password.PasswordMigrationMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadHttpContractUnitTest.xml",
+      "name": "org.namewta.test.oss.upload.OssUploadHttpContractUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.policy.PasswordPolicyContractUnitTest.xml",
+      "name": "org.namewta.test.password.policy.PasswordPolicyContractUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordServiceUnitTest.xml",
+      "name": "org.namewta.test.password.temporary.TemporaryPasswordServiceUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.policy.PasswordPolicyBoundaryUnitTest.xml",
+      "name": "org.namewta.test.password.policy.PasswordPolicyBoundaryUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.authorization.session.AuthorizationInvalidationCallSiteUnitTest.xml",
+      "name": "org.namewta.test.authorization.session.AuthorizationInvalidationCallSiteUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+      "name": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadMetadataStoreUnitTest.xml",
+      "name": "org.namewta.test.oss.upload.OssUploadMetadataStoreUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.security.TrustedClientAddressIntegrationTest.xml",
+      "name": "org.namewta.test.security.TrustedClientAddressIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossaccess.OssAccessMigrationMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.migration.ossaccess.OssAccessMigrationMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.BusinessMenuRetirementMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.migration.BusinessMenuRetirementMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.gateway.OpenApiGatewayE2ETest.xml",
+      "name": "org.namewta.test.openapi.gateway.OpenApiGatewayE2ETest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest.xml",
+      "name": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileStructureContractTest.xml",
+      "name": "org.namewta.test.profile.contract.ProfileStructureContractTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.policy.PasswordPolicyRedisIntegrationTest.xml",
+      "name": "org.namewta.test.password.policy.PasswordPolicyRedisIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.TagUnitTest.xml",
+      "name": "org.namewta.test.TagUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.NamewtaApplicationUnitTest.xml",
+      "name": "org.namewta.NamewtaApplicationUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest.xml",
+      "name": "org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadConfigurationUnitTest.xml",
+      "name": "org.namewta.test.oss.upload.OssUploadConfigurationUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssAccessDiagnosticUnitTest.xml",
+      "name": "org.namewta.common.oss.client.OssAccessDiagnosticUnitTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.logging.SysConsoleLoggingUnitTest.xml",
+      "name": "org.namewta.test.logging.SysConsoleLoggingUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest.xml",
+      "name": "org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.SysOpenApiCredentialControllerContractTest.xml",
+      "name": "org.namewta.test.openapi.credential.SysOpenApiCredentialControllerContractTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessPropertiesUnitTest.xml",
+      "name": "org.namewta.test.oss.readiness.OssStorageReadinessPropertiesUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlContractUnitTest.xml",
+      "name": "org.namewta.test.oss.access.OssAccessUrlContractUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssMigrationHttpContractUnitTest.xml",
+      "name": "org.namewta.test.oss.migration.OssMigrationHttpContractUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssLifecycleConfigurationUnitTest.xml",
+      "name": "org.namewta.test.oss.config.OssLifecycleConfigurationUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.OpenApiCredentialSqlContractTest.xml",
+      "name": "org.namewta.test.openapi.credential.OpenApiCredentialSqlContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadServiceUnitTest.xml",
+      "name": "org.namewta.test.oss.upload.OssUploadServiceUnitTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.WorkflowTerminationContractTest.xml",
+      "name": "org.namewta.test.profile.contract.WorkflowTerminationContractTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.third.schema.ThirdSchemaMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.third.schema.ThirdSchemaMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest.xml",
+      "name": "org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordControllerContractUnitTest.xml",
+      "name": "org.namewta.test.password.temporary.TemporaryPasswordControllerContractUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest.xml",
+      "name": "org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest.xml",
+      "name": "org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest.xml",
+      "name": "org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.OpenApiCredentialCryptoTest.xml",
+      "name": "org.namewta.test.openapi.credential.OpenApiCredentialCryptoTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.catalog.SystemOpenApiCatalogTest.xml",
+      "name": "org.namewta.test.openapi.catalog.SystemOpenApiCatalogTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest.xml",
+      "name": "org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.sso.SsoHttpsSessionIntegrationTest.xml",
+      "name": "org.namewta.test.sso.SsoHttpsSessionIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlServiceUnitTest.xml",
+      "name": "org.namewta.test.oss.access.OssAccessUrlServiceUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.schema.ProfileSchemaMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.profile.schema.ProfileSchemaMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.OssClientS3CompatibilityUnitTest.xml",
+      "name": "org.namewta.test.oss.client.OssClientS3CompatibilityUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossaccess.OssAccessMigrationContractUnitTest.xml",
+      "name": "org.namewta.test.migration.ossaccess.OssAccessMigrationContractUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessServiceUnitTest.xml",
+      "name": "org.namewta.test.oss.readiness.OssStorageReadinessServiceUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.logging.OperationLogRedactionTest.xml",
+      "name": "org.namewta.test.logging.OperationLogRedactionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest.xml",
+      "name": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssClientProviderUnitTest.xml",
+      "name": "org.namewta.common.oss.client.OssClientProviderUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest.xml",
+      "name": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyDispatcherUnitTest.xml",
+      "name": "org.namewta.test.notify.core.NotifyDispatcherUnitTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.authorization.SystemOpenApiAuthorizationResolverTest.xml",
+      "name": "org.namewta.test.openapi.authorization.SystemOpenApiAuthorizationResolverTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest.xml",
+      "name": "org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest.xml",
+      "name": "org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.monitor.NotifyMonitorMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.notify.monitor.NotifyMonitorMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest.xml",
+      "name": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 5
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.invalidation.IdentityOpenApiSessionInvalidationTest.xml",
+      "name": "org.namewta.test.openapi.invalidation.IdentityOpenApiSessionInvalidationTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.MinioOssClientIntegrationTest.xml",
+      "name": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.web.service.impl.PasswordAuthStrategyTemporaryUnitTest.xml",
+      "name": "org.namewta.web.service.impl.PasswordAuthStrategyTemporaryUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.web.controller.AuthClientContextSsoUnitTest.xml",
+      "name": "org.namewta.web.controller.AuthClientContextSsoUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+      "name": "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlProviderUnitTest.xml",
+      "name": "org.namewta.test.oss.access.OssAccessUrlProviderUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.third.schema.ThirdSchemaContractTest.xml",
+      "name": "org.namewta.test.third.schema.ThirdSchemaContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest.xml",
+      "name": "org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest.xml",
+      "name": "org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.assembly.OpenApiAssemblyContextTest.xml",
+      "name": "org.namewta.test.openapi.assembly.OpenApiAssemblyContextTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.release.OssReleaseContractionUnitTest.xml",
+      "name": "org.namewta.test.oss.release.OssReleaseContractionUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.nacos.refresh.NacosLiveRefreshContractUnitTest.xml",
+      "name": "org.namewta.test.nacos.refresh.NacosLiveRefreshContractUnitTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessRegistryUnitTest.xml",
+      "name": "org.namewta.test.oss.readiness.OssStorageReadinessRegistryUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileModuleGraphContractTest.xml",
+      "name": "org.namewta.test.profile.contract.ProfileModuleGraphContractTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.write.PasswordWritePathUnitTest.xml",
+      "name": "org.namewta.test.password.write.PasswordWritePathUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssReferenceReconciliationUnitTest.xml",
+      "name": "org.namewta.test.oss.lifecycle.OssReferenceReconciliationUnitTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileApiContractTest.xml",
+      "name": "org.namewta.test.profile.contract.ProfileApiContractTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.write.PasswordCandidateContractUnitTest.xml",
+      "name": "org.namewta.test.password.write.PasswordCandidateContractUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest.xml",
+      "name": "org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest.xml",
+      "name": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.invalidation.RbacOpenApiSessionInvalidationTest.xml",
+      "name": "org.namewta.test.openapi.invalidation.RbacOpenApiSessionInvalidationTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.schema.ProfileSchemaContractTest.xml",
+      "name": "org.namewta.test.profile.schema.ProfileSchemaContractTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyChannelUnitTest.xml",
+      "name": "org.namewta.test.notify.core.NotifyChannelUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadPropertiesUnitTest.xml",
+      "name": "org.namewta.test.oss.upload.OssUploadPropertiesUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.cache.invalidation.ClusterCacheInvalidationCoordinatorUnitTest.xml",
+      "name": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationCoordinatorUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.controller.IndexControllerUnitTest.xml",
+      "name": "org.namewta.test.controller.IndexControllerUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest.xml",
+      "name": "org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.workflow.WorkflowHistoryOssOwnerUnitTest.xml",
+      "name": "org.namewta.test.oss.owner.workflow.WorkflowHistoryOssOwnerUnitTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.authorization.session.AuthorizationSessionRedisIntegrationTest.xml",
+      "name": "org.namewta.test.authorization.session.AuthorizationSessionRedisIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.password.PasswordMigrationUnitTest.xml",
+      "name": "org.namewta.test.migration.password.PasswordMigrationUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.OssClientContractUnitTest.xml",
+      "name": "org.namewta.test.oss.client.OssClientContractUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.BusinessOssFreshBaselineUnitTest.xml",
+      "name": "org.namewta.test.oss.owner.BusinessOssFreshBaselineUnitTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.BusinessOssOwnerArchitectureUnitTest.xml",
+      "name": "org.namewta.test.oss.owner.BusinessOssOwnerArchitectureUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessSchedulingUnitTest.xml",
+      "name": "org.namewta.test.oss.readiness.OssStorageReadinessSchedulingUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.system.SystemUserAvatarOssOwnerUnitTest.xml",
+      "name": "org.namewta.test.oss.owner.system.SystemUserAvatarOssOwnerUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessHealthUnitTest.xml",
+      "name": "org.namewta.test.oss.readiness.OssStorageReadinessHealthUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssAccessConfigurationUnitTest.xml",
+      "name": "org.namewta.test.oss.config.OssAccessConfigurationUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.xml",
+      "name": "org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.system.service.SysClientDefaultRoleResolverServiceImplUnitTest.xml",
+      "name": "org.namewta.test.system.service.SysClientDefaultRoleResolverServiceImplUnitTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordAuditUnitTest.xml",
+      "name": "org.namewta.test.password.temporary.TemporaryPasswordAuditUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyAutoConfigurationUnitTest.xml",
+      "name": "org.namewta.test.notify.core.NotifyAutoConfigurationUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest.xml",
+      "name": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleContractUnitTest.xml",
+      "name": "org.namewta.test.oss.lifecycle.OssLifecycleContractUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.authorization.session.ClientSessionServiceUnitTest.xml",
+      "name": "org.namewta.test.authorization.session.ClientSessionServiceUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.SystemOpenApiCredentialServiceTest.xml",
+      "name": "org.namewta.test.openapi.credential.SystemOpenApiCredentialServiceTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-demo/target/surefire-reports/TEST-org.namewta.demo.service.impl.TestRichTextListAutoMapperTest.xml",
+      "name": "org.namewta.demo.service.impl.TestRichTextListAutoMapperTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.config.SsoCookieConfigurationTest.xml",
+      "name": "org.namewta.sso.config.SsoCookieConfigurationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.service.SsoSessionServiceTest.xml",
+      "name": "org.namewta.sso.service.SsoSessionServiceTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.support.PkceS256Test.xml",
+      "name": "org.namewta.sso.support.PkceS256Test",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.adapter.gateway.SsoTokenExtrasTest.xml",
+      "name": "org.namewta.sso.adapter.gateway.SsoTokenExtrasTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.service.SsoAuthorizationServiceTest.xml",
+      "name": "org.namewta.sso.service.SsoAuthorizationServiceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.support.SsoBearerTokensTest.xml",
+      "name": "org.namewta.sso.support.SsoBearerTokensTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.adapter.http.SsoSessionCookieTest.xml",
+      "name": "org.namewta.sso.adapter.http.SsoSessionCookieTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.service.impl.SysClientServiceSsoUnitTest.xml",
+      "name": "org.namewta.system.service.impl.SysClientServiceSsoUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoAccessSupportTest.xml",
+      "name": "org.namewta.system.sso.SsoAccessSupportTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoAppRegistrationTest.xml",
+      "name": "org.namewta.system.sso.SsoAppRegistrationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.ClientAccessPathsTest.xml",
+      "name": "org.namewta.system.sso.ClientAccessPathsTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoRedirectUrisTest.xml",
+      "name": "org.namewta.system.sso.SsoRedirectUrisTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoClientFieldsSupportTest.xml",
+      "name": "org.namewta.system.sso.SsoClientFieldsSupportTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyNoticeServiceTest.xml",
+      "name": "org.namewta.notify.service.NotifyNoticeServiceTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.DispatchNotificationServiceTest.xml",
+      "name": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.controller.admin.NotifyConfigControllerContractTest.xml",
+      "name": "org.namewta.notify.controller.admin.NotifyConfigControllerContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotifyOutboxWakePublisherTest.xml",
+      "name": "org.namewta.notify.service.runtime.NotifyOutboxWakePublisherTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyConfigServiceTest.xml",
+      "name": "org.namewta.notify.service.NotifyConfigServiceTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.NotifyOutboxWakeScopeGateTest.xml",
+      "name": "org.namewta.notify.NotifyOutboxWakeScopeGateTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.domain.policy.NotificationAggregatePolicyTest.xml",
+      "name": "org.namewta.notify.domain.policy.NotificationAggregatePolicyTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.domain.policy.NoticeAudiencePolicyTest.xml",
+      "name": "org.namewta.notify.domain.policy.NoticeAudiencePolicyTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyNoticePublisherServiceTest.xml",
+      "name": "org.namewta.notify.service.NotifyNoticePublisherServiceTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest.xml",
+      "name": "org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.support.NotifySendPlannerTest.xml",
+      "name": "org.namewta.notify.support.NotifySendPlannerTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.usecase.NotifyNoticeUseCaseTest.xml",
+      "name": "org.namewta.notify.usecase.NotifyNoticeUseCaseTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest.xml",
+      "name": "org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest.xml",
+      "name": "org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyTestSendServiceTest.xml",
+      "name": "org.namewta.notify.service.NotifyTestSendServiceTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindServiceTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonRebindServiceTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationEvidenceCodecTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonVerificationEvidenceCodecTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonAdminServiceTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonAdminServiceTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonProfileProjectionContributorTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonProfileProjectionContributorTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.ProfileMaterialServiceTest.xml",
+      "name": "org.namewta.profile.person.service.impl.ProfileMaterialServiceTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.anonymous.PersonVerificationAnonymousControllerTest.xml",
+      "name": "org.namewta.profile.person.controller.anonymous.PersonVerificationAnonymousControllerTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.listener.PersonRebindProcessListenerTest.xml",
+      "name": "org.namewta.profile.person.listener.PersonRebindProcessListenerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonApplicationServicePersistenceTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonApplicationServicePersistenceTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.admin.PersonAdminHttpContractTest.xml",
+      "name": "org.namewta.profile.person.controller.admin.PersonAdminHttpContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonIdentityLookupServiceImplTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonIdentityLookupServiceImplTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonApplicationServiceTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonApplicationServiceTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationProviderRegistryTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonVerificationProviderRegistryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationCallbackContractTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonVerificationCallbackContractTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.admin.ProfileMaterialHttpContractTest.xml",
+      "name": "org.namewta.profile.person.controller.admin.ProfileMaterialHttpContractTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindServicePersistenceTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonRebindServicePersistenceTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationAttemptServiceTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonVerificationAttemptServiceTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.self.PersonApplicationHttpContractTest.xml",
+      "name": "org.namewta.profile.person.controller.self.PersonApplicationHttpContractTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.config.ProfileApiConfigurationTest.xml",
+      "name": "org.namewta.profile.person.config.ProfileApiConfigurationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.SpringPersonWorkflowGatewayTest.xml",
+      "name": "org.namewta.profile.person.service.impl.SpringPersonWorkflowGatewayTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.architecture.PersonModuleArchitectureTest.xml",
+      "name": "org.namewta.profile.person.architecture.PersonModuleArchitectureTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.self.PersonRebindHttpContractTest.xml",
+      "name": "org.namewta.profile.person.controller.self.PersonRebindHttpContractTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindNotificationTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonRebindNotificationTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonProfileMaterialOwnerContributorTest.xml",
+      "name": "org.namewta.profile.person.service.impl.PersonProfileMaterialOwnerContributorTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.admin.EnterpriseMaterialAdminControllerContractTest.xml",
+      "name": "org.namewta.profile.enterprise.controller.admin.EnterpriseMaterialAdminControllerContractTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseApplicationServiceTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseApplicationServiceTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.anonymous.EnterpriseVerificationAnonymousControllerTest.xml",
+      "name": "org.namewta.profile.enterprise.controller.anonymous.EnterpriseVerificationAnonymousControllerTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationProviderRegistryTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseVerificationProviderRegistryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.self.EnterpriseTransferHttpContractTest.xml",
+      "name": "org.namewta.profile.enterprise.controller.self.EnterpriseTransferHttpContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationCallbackContractTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseVerificationCallbackContractTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationAttemptServiceTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseVerificationAttemptServiceTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseProfileProjectionContributorTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseProfileProjectionContributorTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.EnterpriseBeanValidationContractTest.xml",
+      "name": "org.namewta.profile.enterprise.controller.EnterpriseBeanValidationContractTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.architecture.EnterpriseModuleArchitectureTest.xml",
+      "name": "org.namewta.profile.enterprise.architecture.EnterpriseModuleArchitectureTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseApplicationPersistenceTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseApplicationPersistenceTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseAdminServiceTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseAdminServiceTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.self.EnterpriseApplicationHttpContractTest.xml",
+      "name": "org.namewta.profile.enterprise.controller.self.EnterpriseApplicationHttpContractTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.admin.EnterpriseAdminHttpContractTest.xml",
+      "name": "org.namewta.profile.enterprise.controller.admin.EnterpriseAdminHttpContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.SpringEnterpriseWorkflowGatewayTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.SpringEnterpriseWorkflowGatewayTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseMaterialOwnerContributorTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseMaterialOwnerContributorTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationEvidenceCodecTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseVerificationEvidenceCodecTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.self.EnterpriseMaterialSelfControllerContractTest.xml",
+      "name": "org.namewta.profile.enterprise.controller.self.EnterpriseMaterialSelfControllerContractTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferPersistenceTest.xml",
+      "name": "org.namewta.profile.enterprise.service.impl.EnterpriseTransferPersistenceTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+      "name": "org.namewta.common.web.logging.SysLogFilterTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogEventWriterTest.xml",
+      "name": "org.namewta.common.web.logging.SysLogEventWriterTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.CorsPolicyTest.xml",
+      "name": "org.namewta.common.web.config.CorsPolicyTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFailureRedactionTest.xml",
+      "name": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.SysLogConfigTest.xml",
+      "name": "org.namewta.common.web.config.SysLogConfigTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.ClientAddressConfigTest.xml",
+      "name": "org.namewta.common.web.config.ClientAddressConfigTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.filter.ClientAddressFilterTest.xml",
+      "name": "org.namewta.common.web.filter.ClientAddressFilterTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-json/target/surefire-reports/TEST-org.namewta.common.json.utils.LogSanitizerTest.xml",
+      "name": "org.namewta.common.json.utils.LogSanitizerTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-core/target/surefire-reports/TEST-org.namewta.common.core.utils.ServletUtilsClientAddressTest.xml",
+      "name": "org.namewta.common.core.utils.ServletUtilsClientAddressTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigSettingsTest.xml",
+      "name": "org.namewta.common.nacos.NacosConfigSettingsTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosSnapshotPolicyUnitTest.xml",
+      "name": "org.namewta.common.nacos.NacosSnapshotPolicyUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigBootstrapTest.xml",
+      "name": "org.namewta.common.nacos.NacosConfigBootstrapTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosPropertySourceRegistrarTest.xml",
+      "name": "org.namewta.common.nacos.NacosPropertySourceRegistrarTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigManagerTest.xml",
+      "name": "org.namewta.common.nacos.NacosConfigManagerTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigAutoConfigurationTest.xml",
+      "name": "org.namewta.common.nacos.NacosConfigAutoConfigurationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-log/target/surefire-reports/TEST-org.namewta.common.log.aspect.LogAspectRedactionTest.xml",
+      "name": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-richtext/target/surefire-reports/TEST-org.namewta.common.richtext.RichTextProcessorTest.xml",
+      "name": "org.namewta.common.richtext.RichTextProcessorTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-redis/target/surefire-reports/TEST-org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest.xml",
+      "name": "org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.session.OpenApiMachineSessionBridgeTest.xml",
+      "name": "org.namewta.common.openapi.session.OpenApiMachineSessionBridgeTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest.xml",
+      "name": "org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.protocol.OpenApiProtocolTest.xml",
+      "name": "org.namewta.common.openapi.protocol.OpenApiProtocolTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.registry.OpenApiOperationRegistryTest.xml",
+      "name": "org.namewta.common.openapi.registry.OpenApiOperationRegistryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.gateway.OpenApiGatewayStateStoreTest.xml",
+      "name": "org.namewta.common.openapi.gateway.OpenApiGatewayStateStoreTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ]
+}

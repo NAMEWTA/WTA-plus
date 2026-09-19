@@ -1,0 +1,363 @@
+[
+  {
+    "package": "@namewta/platform-http",
+    "area": "packages/platform/http",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/platform-http",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.18,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-platform-http.log"
+  },
+  {
+    "package": "@namewta/adapter-axios-browser",
+    "area": "packages/adapters/axios-browser",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 1.25,
+    "diagnostic_count": 1,
+    "diagnostics": [
+      {
+        "file": "src/index.ts",
+        "line": 31,
+        "column": 7,
+        "code": "TS2322",
+        "message": "Type 'string | number | boolean | null | undefined' is not assignable to type 'AxiosHeaderValue'."
+      }
+    ],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-adapters-axios-browser.log"
+  },
+  {
+    "package": "@namewta/domain-admin",
+    "area": "packages/domains/admin",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-admin",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.46,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-domains-admin.log"
+  },
+  {
+    "package": "@namewta/domain-system",
+    "area": "packages/domains/system",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-system",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 1.68,
+    "diagnostic_count": 4,
+    "diagnostics": [
+      {
+        "file": "src/transport.ts",
+        "line": 19,
+        "column": 67,
+        "code": "TS18046",
+        "message": "'value' is of type 'unknown'."
+      },
+      {
+        "file": "src/transport.ts",
+        "line": 24,
+        "column": 50,
+        "code": "TS18046",
+        "message": "'value' is of type 'unknown'."
+      },
+      {
+        "file": "src/transport.ts",
+        "line": 26,
+        "column": 3,
+        "code": "TS2322",
+        "message": "Type 'Readonly<{ password: string; expiresInSeconds: unknown; }>' is not assignable to type 'TemporaryPassword'."
+      },
+      {
+        "file": "src/transport.ts",
+        "line": 27,
+        "column": 46,
+        "code": "TS18046",
+        "message": "'value' is of type 'unknown'."
+      }
+    ],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-domains-system.log"
+  },
+  {
+    "package": "@namewta/domain-profile",
+    "area": "packages/domains/profile",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-profile",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.28,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-domains-profile.log"
+  },
+  {
+    "package": "@namewta/domain-third",
+    "area": "packages/domains/third",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-third",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.17,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-domains-third.log"
+  },
+  {
+    "package": "@namewta/adapter-oss-upload-browser",
+    "area": "packages/adapters/oss-upload-browser",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/adapter-oss-upload-browser",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.2,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-adapters-oss-upload-browser.log"
+  },
+  {
+    "package": "@namewta/platform-auth",
+    "area": "packages/platform/auth",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/platform-auth",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.23,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-platform-auth.log"
+  },
+  {
+    "package": "@namewta/platform-app-runtime",
+    "area": "packages/platform/app-runtime",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/platform-app-runtime",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.44,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-platform-app-runtime.log"
+  },
+  {
+    "package": "@namewta/platform-permission",
+    "area": "packages/platform/permission",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/platform-permission",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.11,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-platform-permission.log"
+  },
+  {
+    "package": "@namewta/web-domain-profile",
+    "area": "packages/web-domains/profile",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/web-domain-profile",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 2.98,
+    "diagnostic_count": 0,
+    "diagnostics": [],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-packages-web-domains-profile.log"
+  },
+  {
+    "package": "@namewta/home-web",
+    "area": "apps/home-web",
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "exec",
+      "vue-tsc",
+      "--noEmit",
+      "-p",
+      "tsconfig.json",
+      "--noImplicitAny",
+      "--strictFunctionTypes",
+      "--strictNullChecks"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 3.73,
+    "diagnostic_count": 5,
+    "diagnostics": [
+      {
+        "file": "../../packages/adapters/axios-browser/src/index.ts",
+        "line": 31,
+        "column": 7,
+        "code": "TS2322",
+        "message": "Type 'string | number | boolean | null | undefined' is not assignable to type 'AxiosHeaderValue'."
+      },
+      {
+        "file": "../../packages/domains/system/src/transport.ts",
+        "line": 19,
+        "column": 67,
+        "code": "TS18046",
+        "message": "'value' is of type 'unknown'."
+      },
+      {
+        "file": "../../packages/domains/system/src/transport.ts",
+        "line": 24,
+        "column": 50,
+        "code": "TS18046",
+        "message": "'value' is of type 'unknown'."
+      },
+      {
+        "file": "../../packages/domains/system/src/transport.ts",
+        "line": 26,
+        "column": 3,
+        "code": "TS2322",
+        "message": "Type 'Readonly<{ password: string; expiresInSeconds: unknown; }>' is not assignable to type 'TemporaryPassword'."
+      },
+      {
+        "file": "../../packages/domains/system/src/transport.ts",
+        "line": 27,
+        "column": 46,
+        "code": "TS18046",
+        "message": "'value' is of type 'unknown'."
+      }
+    ],
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-strict-first-apps-home-web.log"
+  }
+]

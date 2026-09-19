@@ -1,0 +1,2885 @@
+--- a/.agents/skills/engineering-standards/references/notification.md
++++ b/.agents/skills/engineering-standards/references/notification.md
+@@ -32,7 +32,9 @@
+ 
+ `controller -> usecase -> service -> dao -> mapper/XML` 是 `wta-notify` 的固定链路。UseCase 负责事务、目标解析、幂等和状态迁移；Service 负责规则；DAO 封装 MyBatis-Plus Wrapper、分页、锁和批量更新；Provider/Outbox Worker/Callback 只能通过端口或事件接入。
+ 
+-发布必须在同一业务事务内写入通知意图、接收者快照和 Outbox。Worker 使用租约 owner/token 更新，续租失败时禁止继续写入投递结果。供应商回调必须验证 HMAC 原文、`providerKey`、`eventId` 和时间窗，状态只能单向升级，重复事件不重复刷新聚合状态。
++发布必须在同一业务事务内写入通知意图、接收者快照和 Outbox。Worker 使用租约 owner/token 更新，续租失败时禁止继续写入投递结果。当前自定义回执入口必须验证 HMAC 原文、`providerKey`、`eventId` 和时间窗，状态只能单向升级，重复事件不重复刷新聚合状态。原文从入口有界缓存读取，不使用 XSS 改写后的视图验签；回执含精确收件地址，HTTP/操作日志必须只保留元数据及脱敏摘要。`notify_provider_receipt` 按渠道、账号配置标识和事件编号持久去重，凭据与状态、聚合同事务；不同事实复用事件编号必须拒绝，早到未关联不得消费事件，记录不自动过期。账号标识创建后不可变，逻辑删除仍保留唯一命名空间。腾讯/阿里原生推送没有本接口的 HMAC 合同，不能直接接入或宣称已支持；SMTP 受理也不等于送达。
++
++腾讯/阿里的原生送达核对复用账号密钥进行官方只读签名查询，固定HTTPS端点，不通过禁用验签接收原生推送。查询预约只修改Delivery的`receipt_query_at`，不得复用发送租约或重新发送；供应商I/O必须在事务外。确认结果复用持久receipt、状态与聚合事务，内部`native-sms:`事件前缀不得由自定义HTTP回执占用。当前自动核对窗口为71小时；超窗、缺流水号、查询失败/截断/歧义均保持已受理，不推断送达。
+ 
+ ## 前端与权限
+ 
+--- a/.agents/skills/wta-module-guide/references/modules/notify/index.md
++++ b/.agents/skills/wta-module-guide/references/modules/notify/index.md
+@@ -14,6 +14,7 @@
+ | 收件箱 | `controller/admin/NotifyInboxController`、`usecase/NotifyInboxUseCase` |
+ | 投递监控 | `controller/admin/NotificationMonitorController`、`usecase/NotificationMonitorUseCase` |
+ | 供应商回调 | `controller/anonymous/ProviderCallbackController`、`usecase/ProviderCallbackUseCase` |
++| 原生短信状态核对 | `adapter/worker/SmsReceiptQueryWorker`、`usecase/SmsReceiptQueryUseCase`、`common-sms/SmsDeliveryQueryClient` |
+ | 通知配置 | `controller/admin/NotifyConfigController`、`usecase/NotifyConfigUseCase` |
+ | 统一业务通知 | `org.namewta.notify.api.NotificationApplicationService` |
+ | 实时推送 | `org.namewta.notify.api.InAppNotificationPort` 与 `common-push` 一次性票据 |
+@@ -46,8 +47,17 @@
+ - `channels` 只允许 `IN_APP`、`SMS`、`MAIL`；未实现渠道不得写入命令。未选择时由公告入口默认 `IN_APP`。
+ - MAIL/SMS 调用方只传场景编码、模板码和已声明变量，不要传 `providerKey` 或写死完整句子。验证码场景编码为 `auth-captcha`。
+ - 邮件 SMTP 与短信厂商账号、热配文案、模板码和收件人拦截的运行时权威是通知配置表，不是 YAML。YAML 最多保留 SMS4J 框架项（如 `config-type`）。
+-- 提交只写入 Intent、Recipient、Delivery 和 Outbox；不要在业务事务中等待 Provider I/O。由 Outbox Worker 负责有限重试、幂等和死信，供应商回调必须带短时窗口内的 `eventId`、`timestamp`、`providerKey` 并通过 HMAC 验签。缺绑定、账号停用或限额用尽时该渠道失败关闭，不改选其他已启用账号。
++- 提交只写入 Intent、Recipient、Delivery 和 Outbox；不要在业务事务中等待 Provider I/O。由 Outbox Worker 负责有限重试、幂等和死信，当前自定义回执必须带 `eventId`、短时窗口内的 `timestamp`、账号 `providerKey` 并通过原文 HMAC 验签；这不是腾讯/阿里原生推送格式。缺绑定、账号停用或限额用尽时该渠道失败关闭，不改选其他已启用账号。
+ - 站内消息和消息盒子统一读取 `/notify/inbox`；实时提示只能使用 `/resource/message/ticket` 签发的一次性短时票据，禁止把长期 Bearer Token 放入 URL。
++
++## 账号预设与回执事实
++
++- 基座提供腾讯/阿里短信、QQ/163/腾讯企业邮箱 SMTP 五个停用账号，凭据为空、场景未绑定。前端新增账号提供同样的预设；短信仍需用户自己的审核签名、模板码，腾讯还需 SMS SDK AppID。
++- `NotifyConfigService` 校验启用凭据和腾讯模板参数位置；账号渠道/configKey 不可改名，已选短信厂商不可替换。`NotifyChannelAccount` 逻辑删除保留唯一配置标识，旧回执命名空间不可分配给新账号。
++- common-sms 的 `Sms4jNotificationProviderResolver` 保留阿里 `BizId`、腾讯匹配收件人的 `SerialNo`，不将请求 `RequestId` 当消息号；腾讯参数按连续数字位置排序。
++- 腾讯/阿里原生送达通过固定HTTPS端点的TC3/ACS3签名查询取得，不直接接受无本地HMAC合同的原生推送。每次领取一条SMS ACCEPTED，`receipt_query_at` CAS预约15分钟；外部I/O在事务外，结果经`ProviderCallbackUseCase.confirm`和相同持久receipt事务确认。受理71小时后停止自动查询，仍未确认保持ACCEPTED；缺流水号、停用账号、歧义/截断不触发发送。
++- `ProviderCallbackService -> NotifyProviderReceiptDao -> NotifyProviderReceiptMapper` 在当前动态事务中写 `notify_provider_receipt`，随后推进 Delivery 与聚合。持久摘要按渠道/账号/事件隔离，不含每次重签的传输时间戳。共享消息号时必须明确目标；查询最多两条，歧义拒绝。无进程内去重缓存或自动清理。
++- `/notify/callback/{channel}` 只接受自定义 JSON/HMAC；HTTP 200 且响应 code=200 确认完成或相同事实重复，401 验签失败、409 事件冲突、422 关联歧义/非法参数、503 未关联或可重试业务失败。QQ/163/企业邮箱 SMTP 不提供本接口的送达事件。
+ 
+ ## 验证
+ 
+--- a/backend/wta-admin/src/test/java/org/namewta/test/migration/ossnotify/OssNotifyMigrationUnitTest.java
++++ b/backend/wta-admin/src/test/java/org/namewta/test/migration/ossnotify/OssNotifyMigrationUnitTest.java
+@@ -51,7 +51,14 @@
+         assertTrue(delivery.contains("recipient_id"));
+         assertTrue(delivery.contains("target_value"));
+         assertTrue(delivery.contains("provider_message_id"));
+-        assertTrue(delivery.contains("uk_notify_delivery_provider_message"));
++        // 批量短信与邮件允许多个收件人共享流水号，幂等唯一约束属于事件凭据。
++        assertTrue(delivery.contains("key idx_notify_delivery_account_message (provider_key, channel, provider_message_id)"));
++        assertFalse(delivery.contains("unique key uk_notify_delivery_provider_message"));
++        String receipt = createTable(ddl, "notify_provider_receipt");
++        assertBaseFields(receipt);
++        assertTrue(receipt.contains("unique key uk_notify_provider_receipt_event (event_key)"));
++        assertTrue(receipt.contains("facts_hash"));
++        assertBaseFields(createTable(ddl, "notify_channel_account"));
+     }
+ 
+     @Test
+--- a/backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java
++++ b/backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java
+@@ -21,6 +21,7 @@
+ import org.namewta.common.notify.core.NotifyClient;
+ import org.namewta.notify.api.InAppNotificationPort;
+ import org.namewta.notify.dao.NotifyConfigDao;
++import org.namewta.notify.dao.NotifyProviderReceiptDao;
+ import org.namewta.notify.dao.NotifyNotificationDao;
+ import org.namewta.notify.domain.entity.NotifyOutbox;
+ import org.namewta.notify.mapper.*;
+@@ -69,7 +70,11 @@
+     private NotifyDispatchResultUseCase results;
+     private NotifyOutboxClaimUseCase claims;
+     private ProviderCallbackUseCase callbacks;
++    private NotifyProviderReceiptDao receipts;
++    private NotifyProviderReceiptMapper receiptMapper;
++    private NotifyConfigDao configDao;
+     private Runnable duringProvider = () -> {};
++    private final java.util.concurrent.atomic.AtomicReference<String> commitFault = new java.util.concurrent.atomic.AtomicReference<>();
+ 
+     @BeforeEach
+     @SuppressWarnings("unchecked")
+@@ -79,21 +84,54 @@
+         pool = new HikariDataSource(); pool.setJdbcUrl(url); pool.setUsername("root");
+         pool.setPassword("owned-notify-test-only"); pool.setMaximumPoolSize(8);
+         routing = new DynamicRoutingDataSource(List.of()); routing.setPrimary("master"); routing.setStrict(true);
+-        routing.addDataSource("master", pool); db = new JdbcTemplate(routing);
++        routing.addDataSource("master", new org.springframework.jdbc.datasource.DelegatingDataSource(pool) {
++            @Override public java.sql.Connection getConnection() throws java.sql.SQLException {
++                java.sql.Connection connection = pool.getConnection();
++                return (java.sql.Connection) java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{java.sql.Connection.class},
++                    (proxy, method, arguments) -> {
++                        if ("commit".equals(method.getName())) {
++                            String fault = commitFault.getAndSet(null);
++                            if ("BEFORE".equals(fault)) {
++                                long connectionId;
++                                try (var statement = connection.createStatement(); var row = statement.executeQuery("select connection_id()")) {
++                                    row.next(); connectionId = row.getLong(1);
++                                }
++                                try (var killer = pool.getConnection(); var statement = killer.createStatement()) {
++                                    statement.execute("kill connection " + connectionId);
++                                }
++                                // 真正关闭服务端会话，再调用 JDBC commit 验证提交前断连回滚。
++                            } else if ("AFTER".equals(fault)) {
++                                connection.commit();
++                                throw new java.sql.SQLRecoverableException("owned lost commit acknowledgement");
++                            }
++                        }
++                        try { return method.invoke(connection, arguments); }
++                        catch (java.lang.reflect.InvocationTargetException failure) { throw failure.getCause(); }
++                    });
++            }
++        });
++        db = new JdbcTemplate(routing);
+         var config = new MybatisConfiguration(new Environment("notify-owned", new SpringManagedTransactionFactory(), routing));
+         config.setMapUnderscoreToCamelCase(true);
++        var interceptors = new com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor();
++        interceptors.addInnerInterceptor(new com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor());
++        config.addInterceptor(interceptors);
+         GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults().setMetaObjectHandler(new InjectionMetaObjectHandler()));
+         for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
+-            NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class)) config.addMapper(mapper);
+-        String resource = "/mapper/notify/NotifyOutboxMapper.xml";
+-        try (var stream = getClass().getResourceAsStream(resource)) {
+-            assertThat(stream).isNotNull();
+-            new XMLMapperBuilder(stream, config, resource, config.getSqlFragments()).parse();
++            NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, NotifyProviderReceiptMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class)) config.addMapper(mapper);
++        for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml", "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml")) {
++            try (var stream = getClass().getResourceAsStream(resource)) {
++                assertThat(stream).isNotNull();
++                new XMLMapperBuilder(stream, config, resource, config.getSqlFragments()).parse();
++            }
+         }
+         var sessions = new SqlSessionTemplate(new MybatisSqlSessionFactoryBuilder().build(config));
+         dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class), sessions.getMapper(NotifyRecipientMapper.class),
+             sessions.getMapper(NotifyDeliveryMapper.class), sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
+             sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
++        configDao = new NotifyConfigDao(sessions.getMapper(NotifyChannelAccountMapper.class), sessions.getMapper(NotifySceneBindingMapper.class));
++        receiptMapper = sessions.getMapper(NotifyProviderReceiptMapper.class);
++        receipts = new NotifyProviderReceiptDao(receiptMapper);
+         var redisConfig = new Config(); redisConfig.setThreads(2).setNettyThreads(2);
+         redisConfig.useSingleServer().setAddress("redis://127.0.0.1:" + System.getProperty("notify.redis.integration.port"))
+             .setConnectionMinimumIdleSize(1).setConnectionPoolSize(4);
+@@ -112,7 +150,7 @@
+         ObjectProvider<InAppNotificationPort> providers = mock(ObjectProvider.class); when(providers.getIfAvailable()).thenReturn(provider);
+         results = transactional(new NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)), NotifyDispatchResultUseCase.class);
+         claims = transactional(new NotifyOutboxClaimUseCase(new NotifyOutboxClaimService(dao)), NotifyOutboxClaimUseCase.class);
+-        callbacks = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(dao, results)), ProviderCallbackUseCase.class);
++        callbacks = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(dao, results, receipts)), ProviderCallbackUseCase.class);
+         dispatch = new DispatchNotificationService(dao, mock(NotifyClient.class), providers, mock(NotifyConfigDao.class), (key, limit, duration) -> true, results);
+         db.update("insert into notify_intent(intent_id,app_id,scene_code,template_code,template_params_json,strategy,mode,status,create_time) values(?,'owned-t22','owned','owned','{}','ALL','ASYNC','QUEUED',utc_timestamp())", INTENT);
+         db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,create_time) values(?,?,1,7,'IN_APP','PENDING',utc_timestamp())", DELIVERY, INTENT);
+@@ -122,10 +160,14 @@
+     @AfterEach
+     void close() {
+         try {
++            commitFault.set(null);
+             if (db != null) {
+                 db.execute("drop trigger if exists owned_t22_attempt_failure");
+                 db.execute("drop trigger if exists owned_t22_finish_conflict");
+                 db.execute("drop trigger if exists owned_t22_write_failure");
++                db.execute("drop trigger if exists owned_t23_receipt_failure");
++                db.update("delete from notify_channel_account where account_id=9238881 and config_key='owned-config'");
++                db.update("delete from notify_provider_receipt where delivery_id in (select delivery_id from notify_delivery where intent_id=?)", INTENT);
+                 for (String table : List.of("notify_attempt", "notify_outbox", "notify_delivery", "notify_intent")) db.update("delete from " + table + " where intent_id=?", INTENT);
+                 db.update("delete from notify_message_recipient where message_id=?", INTENT);
+                 db.update("delete from notify_message where message_id=?", INTENT);
+@@ -339,8 +381,8 @@
+         var observedDao = spy(dao);
+         doAnswer(invocation -> {
+             Object value = invocation.callRealMethod(); lookedUp.countDown(); await(resume); return value;
+-        }).when(observedDao).deliveryByProvider("MAIL", "owned-smtp", "old-message");
+-        callbacks = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(observedDao, results)), ProviderCallbackUseCase.class);
++        }).when(observedDao).deliveriesByProvider("MAIL", "owned-smtp", "old-message", "");
++        callbacks = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(observedDao, results, receipts)), ProviderCallbackUseCase.class);
+         try (var worker = Executors.newSingleThreadExecutor()) {
+             var oldCallback = worker.submit(() -> { callback("DELIVERED", "old-message", "old-event"); return true; });
+             try {
+@@ -354,15 +396,472 @@
+         assertThat(dao.intent(INTENT).getStatus()).isEqualTo("ACCEPTED");
+     }
+ 
++    @Test
++    void callbackRollbackMustAllowSameEventRetry() throws Exception {
++        db.update("update notify_delivery set provider_key='owned-smtp',provider_message_id='owned-message',channel='MAIL' where delivery_id=?", DELIVERY);
++        db.execute("create trigger owned_t22_write_failure before update on notify_intent for each row signal sqlstate '45000' set message_text='owned callback aggregate failure'");
++        assertThatThrownBy(() -> callback("DELIVERED", "owned-message", "retry-event")).isInstanceOf(RuntimeException.class);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("PENDING");
++        db.execute("drop trigger owned_t22_write_failure");
++        callback("DELIVERED", "owned-message", "retry-event");
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    @Test
++    void sameEventFromDifferentAccountsMustNotCollide() throws Exception {
++        db.update("update notify_delivery set provider_key='owned-smtp',provider_message_id='owned-message',channel='MAIL' where delivery_id=?", DELIVERY);
++        db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,provider_key,provider_message_id,create_time) values(?,?,2,8,'MAIL','PENDING','other-account','owned-message',utc_timestamp())", DELIVERY + 10, INTENT);
++        callback("DELIVERED", "owned-message", "shared-event");
++        signedCallback("other-account", "DELIVERED", "owned-message", "shared-event");
++        assertThat(dao.delivery(DELIVERY + 10).getStatus()).isEqualTo("DELIVERED");
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    @Test
++    void duplicateEventWithChangedFactsMustBeRejected() throws Exception {
++        db.update("update notify_delivery set provider_key='owned-smtp',provider_message_id='owned-message',channel='MAIL' where delivery_id=?", DELIVERY);
++        callback("ACCEPTED", "owned-message", "conflicting-event");
++        assertThatThrownBy(() -> callback("DELIVERED", "owned-message", "conflicting-event"))
++            .isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("ACCEPTED");
++    }
++
++    @Test
++    void twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce() throws Exception {
++        prepareCallbackDelivery();
++        var barrier = new CyclicBarrier(2);
++        var observedReceipts = spy(receipts);
++        doAnswer(invocation -> {
++            Object result = invocation.callRealMethod();
++            barrier.await(5, TimeUnit.SECONDS);
++            return result;
++        }).when(observedReceipts).find(anyString());
++        var observedService = spy(new NotifyDispatchResultService(dao));
++        var observedResults = transactional(new NotifyDispatchResultUseCase(observedService), NotifyDispatchResultUseCase.class);
++        var first = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(dao, observedResults, observedReceipts)), ProviderCallbackUseCase.class);
++        var second = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(dao, observedResults, observedReceipts)), ProviderCallbackUseCase.class);
++        try (var workers = Executors.newFixedThreadPool(2)) {
++            var a = workers.submit(() -> { callOn(first, "MAIL", "owned-smtp", "DELIVERED", "owned-message", "race-event", ""); return true; });
++            var b = workers.submit(() -> { callOn(second, "MAIL", "owned-smtp", "DELIVERED", "owned-message", "race-event", ""); return true; });
++            assertThat(a.get(10, TimeUnit.SECONDS)).isTrue();
++            assertThat(b.get(10, TimeUnit.SECONDS)).isTrue();
++        }
++        verify(observedService, times(1)).refreshAggregate(INTENT);
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    @Test
++    void earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult() throws Exception {
++        assertThatThrownBy(() -> callback("DELIVERED", "owned-message", "early-event"))
++            .isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
++        assertThat(receiptCount()).isZero();
++        prepareCallbackDelivery();
++        callback("DELIVERED", "owned-message", "early-event");
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    @Test
++    void receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry() throws Exception {
++        prepareCallbackDelivery();
++        db.execute("create trigger owned_t23_receipt_failure before insert on notify_provider_receipt for each row signal sqlstate '45000' set message_text='owned receipt failure'");
++        assertThatThrownBy(() -> callback("DELIVERED", "owned-message", "storage-event")).isInstanceOf(RuntimeException.class);
++        assertThat(receiptCount()).isZero();
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("PENDING");
++        db.execute("drop trigger owned_t23_receipt_failure");
++        var failingDao = spy(dao);
++        doReturn(0).when(failingDao).updateDeliveryStatus(eq(DELIVERY), eq("PENDING"), any(org.namewta.notify.domain.entity.NotifyDelivery.class));
++        var failing = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(failingDao, results, receipts)), ProviderCallbackUseCase.class);
++        assertThatThrownBy(() -> callOn(failing, "MAIL", "owned-smtp", "DELIVERED", "owned-message", "storage-event", ""))
++            .isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
++        assertThat(receiptCount()).isZero();
++        callback("DELIVERED", "owned-message", "storage-event");
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    @Test
++    void sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients() throws Exception {
++        prepareCallbackDelivery();
++        db.update("update notify_delivery set target_value='first@example.test' where delivery_id=?", DELIVERY);
++        db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,target_value,status,provider_key,provider_message_id,create_time) values(?,?,2,8,'MAIL','second@example.test','PENDING','owned-smtp','owned-message',utc_timestamp())", DELIVERY + 10, INTENT);
++        assertThatThrownBy(() -> callback("DELIVERED", "owned-message", "shared-message-event"))
++            .isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
++        assertThat(receiptCount()).isZero();
++        callOn(callbacks, "MAIL", "owned-smtp", "DELIVERED", "owned-message", "shared-message-event", "first@example.test");
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
++        assertThat(dao.delivery(DELIVERY + 10).getStatus()).isEqualTo("PENDING");
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThatThrownBy(() -> callOn(callbacks, "MAIL", "owned-smtp", "DELIVERED", "owned-message", "shared-message-event", "second@example.test"))
++            .isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
++    }
++
++    @Test
++    void sameAccountKeyAndEventAcrossChannelsRemainIndependent() throws Exception {
++        prepareCallbackDelivery();
++        db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,provider_key,provider_message_id,create_time) values(?,?,2,8,'SMS','PENDING','owned-smtp','owned-message',utc_timestamp())", DELIVERY + 10, INTENT);
++        callback("DELIVERED", "owned-message", "channel-event");
++        callOn(callbacks, "SMS", "owned-smtp", "DELIVERED", "owned-message", "channel-event", "");
++        assertThat(receiptCount()).isEqualTo(2);
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    @Test
++    void restartedJvmsSeeCommittedReceiptAndRejectChangedFacts() throws Exception {
++        prepareCallbackDelivery();
++        assertThat(probe("ACCEPTED")).isZero();
++        assertThat(probe("ACCEPTED")).isZero();
++        assertThat(probe("DELIVERED")).isEqualTo(3);
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("ACCEPTED");
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("ACCEPTED");
++    }
++
++    @Test
++    void receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract() throws Exception {
++        prepareCallbackDelivery();
++        callback("ACCEPTED", "owned-message", "base-event");
++        Long id = db.queryForObject("select provider_receipt_id from notify_provider_receipt where delivery_id=?", Long.class, DELIVERY);
++        var current = receiptMapper.selectById(id);
++        var stale = receiptMapper.selectById(id);
++        assertThat(current.getCreateTime()).isNotNull();
++        assertThat(current.getCreateDept()).isEqualTo(-1L);
++        assertThat(current.getCreateBy()).isEqualTo(-1L);
++        assertThat(current.getUpdateBy()).isEqualTo(-1L);
++        assertThat(current.getVersion()).isZero();
++        assertThat(receiptMapper.updateById(current)).isEqualTo(1);
++        assertThat(receiptMapper.updateById(stale)).isZero();
++        assertThat(receiptMapper.selectById(id).getVersion()).isEqualTo(1);
++        assertThat(receiptMapper.selectById(id).getUpdateTime()).isNotNull();
++        assertThat(receiptMapper.deleteById(id)).isEqualTo(1);
++        assertThat(receiptMapper.selectById(id)).isNull();
++        assertThat(db.queryForObject("select del_flag from notify_provider_receipt where provider_receipt_id=?", String.class, id)).isEqualTo("1");
++        // 即使有人绕过应用逻辑删除凭据，唯一键仍阻止同事件被再次消费。
++        assertThatThrownBy(() -> callback("ACCEPTED", "owned-message", "base-event"))
++            .isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
++        assertThat(receiptCount()).isEqualTo(1);
++    }
++
++    @Test
++    void freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved() {
++        var all = configDao.listAccounts(null);
++        assertThat(all).hasSize(5);
++        for (var account : all) {
++            assertThat(account.getEnabled()).isEqualTo("N");
++            assertThat(account.getMailPass()).isEmpty();
++            assertThat(account.getAccessKeySecret()).isEmpty();
++            assertThat(account.getVersion()).isZero();
++            assertThat(account.getDelFlag()).isEqualTo("0");
++            assertThat(configDao.existsNamespace(account.getChannel(), account.getConfigKey())).isTrue();
++        }
++        assertThat(configDao.listBindings()).hasSize(10).allSatisfy(binding -> assertThat(binding.getAccountId()).isNull());
++        var account = configDao.findAccount("MAIL", "mail-qq");
++        account.setAccountId(9238881L); account.setConfigKey("owned-config");
++        account.setMailUser("owned@example.test"); account.setMailFrom("owned@example.test"); account.setMailPass("owned-test-only");
++        assertThat(configDao.insert(account)).isEqualTo(1);
++        var current = configDao.findAccount(9238881L); var stale = configDao.findAccount(9238881L);
++        assertThat(configDao.update(current)).isEqualTo(1);
++        assertThat(configDao.update(stale)).isZero();
++        var service = new org.namewta.notify.service.NotifyConfigService(configDao, mock(org.namewta.notify.port.SmsBlendRegistryPort.class));
++        assertThat(service.resolve("owned-config")).isNull();
++        assertThat(service.changeStatus(9238881L, "Y")).isEqualTo(1);
++        assertThat(service.resolve("owned-config").getHost()).isEqualTo("smtp.qq.com");
++        assertThat(service.resolve("owned-config").getPort()).isEqualTo(465);
++        assertThat(service.removeAccount(9238881L)).isEqualTo(1);
++        assertThat(configDao.findAccount(9238881L)).isNull();
++        assertThat(service.resolve("owned-config")).isNull();
++        assertThat(configDao.existsNamespace("MAIL", "owned-config")).isTrue();
++        var bo = new org.namewta.notify.domain.bo.NotifyChannelAccountBo(); bo.setChannel("MAIL"); bo.setConfigKey("owned-config");
++        assertThatThrownBy(() -> service.addAccount(bo)).isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
++        assertThat(db.queryForObject("select del_flag from notify_channel_account where account_id=9238881", String.class)).isEqualTo("1");
++    }
++
++    @ParameterizedTest
++    @CsvSource({"BEFORE,0,PENDING", "AFTER,1,DELIVERED"})
++    void commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String phase, int committed, String status) throws Exception {
++        prepareCallbackDelivery();
++        commitFault.set(phase);
++        assertThatThrownBy(() -> callback("DELIVERED", "owned-message", "commit-event")).isInstanceOf(Exception.class);
++        assertThat(commitFault.get()).as("failure was injected at JDBC commit").isNull();
++        assertThat(receiptCount()).isEqualTo(committed);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo(status);
++        callback("DELIVERED", "owned-message", "commit-event");
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
++        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    @Test
++    void realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus() throws Exception {
++        try (var http = new CallbackHttp(callbacks)) {
++            String body = " \r\n" + JsonUtils.toJsonString(Map.of("eventId", "<b>http-event</b>", "timestamp", java.time.Instant.now().toString(),
++                "providerKey", "owned-smtp", "providerMessageId", "owned-message", "status", "DELIVERED")) + " \n";
++            assertThat(http.send(body, sign(body), "application/json").statusCode()).isEqualTo(503);
++            assertThat(receiptCount()).isZero();
++            prepareCallbackDelivery();
++            assertThat(http.send(body, sign(body), "application/json").statusCode()).isEqualTo(200);
++            assertThat(http.send(body, sign(body), "application/json").statusCode()).isEqualTo(200);
++            assertThat(receiptCount()).isEqualTo(1);
++            assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
++            assertThat(http.send(body + " ", sign(body), "application/json").statusCode()).isEqualTo(401);
++            String conflict = body.replace("DELIVERED", "FAILED");
++            assertThat(http.send(conflict, sign(conflict), "application/json").statusCode()).isEqualTo(409);
++            String stale = JsonUtils.toJsonString(Map.of("eventId", "stale", "timestamp", java.time.Instant.now().minusSeconds(600).toString(),
++                "providerKey", "owned-smtp", "providerMessageId", "owned-message", "status", "DELIVERED"));
++            assertThat(http.send(stale, sign(stale), "application/json").statusCode()).isEqualTo(400);
++            assertThat(http.send(body, sign(body), "text/plain").statusCode()).isEqualTo(415);
++            assertThat(http.send("x".repeat(2 * 1024 * 1024 + 1), "00", "application/json").statusCode()).isEqualTo(413);
++            assertThat(receiptCount()).isEqualTo(1);
++        }
++    }
++
++    @Test
++    void callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler() throws Exception {
++        prepareCallbackDelivery();
++        db.update("update notify_delivery set target_value='owned-recipient@example.test' where delivery_id=?", DELIVERY);
++        try (var http = new CallbackHttp(callbacks, true)) {
++            String body = JsonUtils.toJsonString(Map.of("target", "owned-recipient@example.test", "eventId", "http-rollback-event", "timestamp", java.time.Instant.now().toString(),
++                "providerKey", "owned-smtp", "providerMessageId", "owned-message", "status", "DELIVERED"));
++            db.execute("create trigger owned_t22_write_failure before update on notify_intent for each row signal sqlstate '45000' set message_text='owned http transaction failure'");
++            var failed = http.send(body, sign(body), "application/json");
++            assertThat(failed.statusCode()).isEqualTo(503);
++            assertThat(failed.body()).doesNotContain("owned http transaction failure");
++            assertThat(receiptCount()).isZero();
++            assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("PENDING");
++            db.execute("drop trigger owned_t22_write_failure");
++            var retried = http.send(body, sign(body), "application/json");
++            assertThat(retried.statusCode()).isEqualTo(200);
++            assertThat(JsonUtils.parseMap(retried.body()).get("code")).isEqualTo(200);
++            assertThat(receiptCount()).isEqualTo(1);
++            assertThat(http.events).isNotEmpty();
++            assertThat(JsonUtils.toJsonString(http.events)).doesNotContain("owned-recipient@example.test", "http-rollback-event", sign(body));
++        }
++    }
++
++    @org.springframework.context.annotation.Configuration
++    @org.springframework.web.servlet.config.annotation.EnableWebMvc
++    static class CallbackWebConfiguration { }
++
++    private static final class CallbackHttp implements AutoCloseable {
++        private final org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(new java.net.InetSocketAddress("127.0.0.1", 0));
++        private final org.springframework.web.context.support.AnnotationConfigWebApplicationContext context = new org.springframework.web.context.support.AnnotationConfigWebApplicationContext();
++        private final java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder().build();
++        private final int port;
++        final java.util.List<Map<String, Object>> events = new java.util.concurrent.CopyOnWriteArrayList<>();
++
++        CallbackHttp(ProviderCallbackUseCase useCase) throws Exception { this(useCase, false); }
++        CallbackHttp(ProviderCallbackUseCase useCase, boolean withGlobalHandler) throws Exception {
++            try {
++                var controller = new org.namewta.notify.controller.anonymous.ProviderCallbackController(useCase);
++                org.springframework.test.util.ReflectionTestUtils.setField(controller, "secret", "owned-t22-only");
++                var handler = new org.eclipse.jetty.ee11.servlet.ServletContextHandler(); handler.setContextPath("/");
++                context.setServletContext(handler.getServletContext());
++                context.register(CallbackWebConfiguration.class);
++                context.addBeanFactoryPostProcessor(factory -> {
++                    factory.registerSingleton("providerCallbackController", controller);
++                    if (withGlobalHandler) factory.registerSingleton("globalExceptionHandler", new org.namewta.common.web.handler.GlobalExceptionHandler());
++                });
++                context.refresh();
++                handler.addFilter(new org.eclipse.jetty.ee11.servlet.FilterHolder(new org.namewta.common.web.filter.RepeatableFilter(2 * 1024 * 1024)), "/*", java.util.EnumSet.of(jakarta.servlet.DispatcherType.REQUEST));
++                handler.addFilter(new org.eclipse.jetty.ee11.servlet.FilterHolder(new org.namewta.common.web.logging.SysLogFilter(1024, 2 * 1024 * 1024, events::add)), "/*", java.util.EnumSet.of(jakarta.servlet.DispatcherType.REQUEST));
++                handler.addFilter(new org.eclipse.jetty.ee11.servlet.FilterHolder(new org.namewta.common.web.filter.XssFilter(new org.namewta.common.web.config.properties.XssProperties(), 2 * 1024 * 1024)), "/*", java.util.EnumSet.of(jakarta.servlet.DispatcherType.REQUEST));
++                handler.addServlet(new org.eclipse.jetty.ee11.servlet.ServletHolder(new org.springframework.web.servlet.DispatcherServlet(context)), "/");
++                server.setHandler(handler); server.start();
++                port = ((org.eclipse.jetty.server.ServerConnector) server.getConnectors()[0]).getLocalPort();
++            } catch (Exception failure) { close(); throw failure; }
++        }
++
++        java.net.http.HttpResponse<String> send(String body, String signature, String contentType) throws Exception {
++            return client.send(java.net.http.HttpRequest.newBuilder(java.net.URI.create("http://127.0.0.1:" + port + "/notify/callback/MAIL"))
++                .timeout(java.time.Duration.ofSeconds(10)).header("Content-Type", contentType).header("X-Notify-Signature", signature)
++                .POST(java.net.http.HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8)).build(), java.net.http.HttpResponse.BodyHandlers.ofString());
++        }
++        @Override public void close() throws Exception { try { server.stop(); } finally { context.close(); client.close(); } }
++    }
++
++    private static String sign(String body) throws Exception {
++        Mac mac = Mac.getInstance("HmacSHA256"); mac.init(new SecretKeySpec("owned-t22-only".getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
++        return HexFormat.of().formatHex(mac.doFinal(body.getBytes(StandardCharsets.UTF_8)));
++    }
++
++    private int probe(String status) throws Exception {
++        var output = java.nio.file.Files.createTempFile("owned-notify-receipt-probe-", ".log");
++        Process process = null;
++        try {
++            process = new ProcessBuilder(java.nio.file.Path.of(System.getProperty("java.home"), "bin/java").toString(),
++                "-Xmx128m", "-XX:ActiveProcessorCount=2", "-cp", System.getProperty("java.class.path"),
++                "org.namewta.test.notify.NotifyCallbackProcessProbe", System.getProperty("notify.mysql.integration.url"), status)
++                .redirectErrorStream(true).redirectOutput(output.toFile()).start();
++            assertThat(process.waitFor(30, TimeUnit.SECONDS)).as("owned callback JVM exits").isTrue();
++            assertThat(java.nio.file.Files.readString(output)).contains("OWNED_CALLBACK_PROBE");
++            return process.exitValue();
++        } finally {
++            if (process != null && process.isAlive()) { process.destroyForcibly(); process.waitFor(5, TimeUnit.SECONDS); }
++            java.nio.file.Files.deleteIfExists(output);
++        }
++    }
++
++    private int receiptCount() {
++        return db.queryForObject("select count(*) from notify_provider_receipt where delivery_id in (select delivery_id from notify_delivery where intent_id=?)", Integer.class, INTENT);
++    }
++
++    @Test
++    void nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending() throws Exception {
++        prepareNativeSms();
++        AtomicInteger queried = new AtomicInteger();
++        var useCase = nativeQueries(dao, (account, delivery, now) -> {
++            assertThat(TransactionContext.getXID()).as("native HTTP query outside transaction").isNull();
++            assertThat(account.getConfigKey()).isEqualTo("owned-config");
++            queried.incrementAndGet();
++            return org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status.DELIVERED;
++        });
++        var claimed = useCase.claim();
++        assertThat(claimed).isNotNull();
++        assertThat(dao.delivery(DELIVERY).getReceiptQueryAt()).isEqualTo(claimed.getReceiptQueryAt());
++        assertThat(useCase.claim()).isNull();
++        useCase.query(claimed);
++        assertThat(queried).hasValue(1);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
++        assertThat(receiptCount()).isEqualTo(1);
++        callbacks.confirm("tencent", "owned-config", "owned-message", "13800000000", "DELIVERED");
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("PROCESSING");
++        assertThat(dao.delivery(DELIVERY).getAttemptCount()).isZero();
++        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isZero();
++        assertThatThrownBy(() -> callOn(callbacks, "SMS", "owned-config", "DELIVERED", "owned-message", "native-sms:untrusted", "13800000000"))
++            .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("保留前缀");
++    }
++
++    @Test
++    void twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim() throws Exception {
++        prepareNativeSms();
++        var bothRead = new CountDownLatch(2);
++        var observed = spy(dao);
++        doAnswer(call -> {
++            var candidate = call.callRealMethod(); bothRead.countDown(); await(bothRead); return candidate;
++        }).when(observed).smsReceiptCandidate(any());
++        var first = nativeQueries(observed, (a, d, n) -> org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status.WAITING);
++        var second = nativeQueries(observed, (a, d, n) -> org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status.WAITING);
++        try (var workers = Executors.newFixedThreadPool(2)) {
++            var a = workers.submit(first::claim); var b = workers.submit(second::claim);
++            var claimedA = a.get(10, TimeUnit.SECONDS); var claimedB = b.get(10, TimeUnit.SECONDS);
++            assertThat((claimedA == null ? 0 : 1) + (claimedB == null ? 0 : 1)).isEqualTo(1);
++        }
++        var restored = nativeQueries(dao, (a, d, n) -> org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status.WAITING);
++        assertThat(restored.claim()).isNull();
++        db.update("update notify_delivery set receipt_query_at=timestampadd(second,-1,utc_timestamp()) where delivery_id=?", DELIVERY);
++        assertThat(restored.claim()).isNotNull();
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("ACCEPTED");
++        assertThat(receiptCount()).isZero();
++    }
++
++    @Test
++    void nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation() {
++        prepareNativeSms();
++        var useCase = nativeQueries(dao, (a, d, n) -> org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status.DELIVERED);
++        var claimed = useCase.claim();
++        db.execute("create trigger owned_t23_receipt_failure before insert on notify_provider_receipt for each row signal sqlstate '45000' set message_text='owned native receipt failure'");
++        assertThatThrownBy(() -> useCase.query(claimed)).isInstanceOf(RuntimeException.class);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("ACCEPTED");
++        assertThat(receiptCount()).isZero();
++        assertThat(useCase.claim()).isNull();
++        db.execute("drop trigger owned_t23_receipt_failure");
++        db.update("update notify_delivery set receipt_query_at=timestampadd(second,-1,utc_timestamp()) where delivery_id=?", DELIVERY);
++        useCase.query(useCase.claim());
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
++        assertThat(receiptCount()).isEqualTo(1);
++    }
++
++    @Test
++    void nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries() {
++        prepareNativeSms();
++        var provider = mock(org.namewta.notify.port.SmsReceiptProviderPort.class);
++        var useCase = nativeQueries(dao, provider);
++        db.update("update notify_channel_account set enabled='N' where account_id=9238881");
++        assertThat(useCase.claim()).isNull();
++        db.update("update notify_channel_account set enabled='Y' where account_id=9238881");
++        db.update("update notify_delivery set provider_message_id=null where delivery_id=?", DELIVERY);
++        assertThat(useCase.claim()).isNull();
++        db.update("update notify_delivery set provider_message_id='owned-message',channel='MAIL' where delivery_id=?", DELIVERY);
++        assertThat(useCase.claim()).isNull();
++        db.update("update notify_delivery set channel='SMS',accepted_at=timestampadd(hour,-72,utc_timestamp()) where delivery_id=?", DELIVERY);
++        assertThat(useCase.claim()).isNull();
++        db.update("update notify_delivery set accepted_at=timestampadd(second,-120,utc_timestamp()) where delivery_id=?", DELIVERY);
++        var claimed = useCase.claim(); assertThat(claimed).isNotNull();
++        db.update("update notify_channel_account set enabled='N' where account_id=9238881");
++        useCase.query(claimed);
++        db.update("update notify_channel_account set enabled='Y',del_flag='1' where account_id=9238881");
++        useCase.query(claimed);
++        verifyNoInteractions(provider);
++        assertThat(receiptCount()).isZero();
++    }
++
++    @Test
++    void nativeQueryCredentialEditOrReadFailureDoesNotApplyResult() {
++        prepareNativeSms();
++        var useCase = nativeQueries(dao, (a, d, n) -> {
++            db.update("update notify_channel_account set version=version+1 where account_id=9238881");
++            return org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status.DELIVERED;
++        });
++        useCase.query(useCase.claim());
++        assertThat(receiptCount()).isZero();
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("ACCEPTED");
++        db.update("update notify_delivery set receipt_query_at=timestampadd(second,-1,utc_timestamp()) where delivery_id=?", DELIVERY);
++        var failing = nativeQueries(dao, (a, d, n) -> { throw new IllegalStateException("owned query timeout"); });
++        var claim = failing.claim();
++        assertThatThrownBy(() -> failing.query(claim)).isInstanceOf(IllegalStateException.class);
++        assertThat(failing.claim()).isNull();
++        assertThat(receiptCount()).isZero();
++        assertThat(dao.delivery(DELIVERY).getAttemptCount()).isZero();
++    }
++
++    @ParameterizedTest
++    @CsvSource({"BEFORE,0,ACCEPTED", "AFTER,1,DELIVERED"})
++    void nativeReceiptCommitFailureCanRetrySameInternalIdentity(String fault, int count, String status) {
++        prepareNativeSms();
++        commitFault.set(fault);
++        assertThatThrownBy(() -> callbacks.confirm("tencent", "owned-config", "owned-message", "13800000000", "DELIVERED"))
++            .isInstanceOf(RuntimeException.class);
++        assertThat(receiptCount()).isEqualTo(count);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo(status);
++        callbacks.confirm("tencent", "owned-config", "owned-message", "13800000000", "DELIVERED");
++        assertThat(receiptCount()).isEqualTo(1);
++        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
++    }
++
++    private org.namewta.notify.usecase.SmsReceiptQueryUseCase nativeQueries(NotifyNotificationDao persistence,
++            org.namewta.notify.port.SmsReceiptProviderPort provider) {
++        return transactional(new org.namewta.notify.usecase.SmsReceiptQueryUseCase(
++            new org.namewta.notify.service.runtime.SmsReceiptQueryService(persistence, configDao, provider, callbacks)),
++            org.namewta.notify.usecase.SmsReceiptQueryUseCase.class);
++    }
++
++    private void prepareNativeSms() {
++        db.update("insert into notify_channel_account(account_id,channel,config_key,enabled,supplier,access_key_id,access_key_secret,sdk_app_id,create_time) values(9238881,'SMS','owned-config','Y','tencent','fixture-key','fixture-secret','1400000000',utc_timestamp())");
++        db.update("update notify_delivery set channel='SMS',status='ACCEPTED',provider_key='owned-config',provider_message_id='owned-message',target_value='13800000000',accepted_at=timestampadd(second,-120,utc_timestamp()) where delivery_id=?", DELIVERY);
++    }
++
++    private void prepareCallbackDelivery() {
++        db.update("update notify_delivery set provider_key='owned-smtp',provider_message_id='owned-message',channel='MAIL' where delivery_id=?", DELIVERY);
++    }
++
+     private NotifyDispatchResultPort.Result delivered() {
+         return new NotifyDispatchResultPort.Result("DELIVERED", "in-app", null, null, null, 1);
+     }
+     private void expire() { db.update("update notify_outbox set lease_until=timestampadd(second,-1,utc_timestamp()) where outbox_id=?", OUTBOX); }
+     private void callback(String status, String message, String event) throws Exception {
++        signedCallback("owned-smtp", status, message, event);
++    }
++    private void signedCallback(String account, String status, String message, String event) throws Exception {
++        callOn(callbacks, "MAIL", account, status, message, event, "");
++    }
++    private static void callOn(ProviderCallbackUseCase useCase, String channel, String account, String status, String message, String event, String target) throws Exception {
+         String body = JsonUtils.toJsonString(Map.of("eventId", event, "timestamp", java.time.Instant.now().toString(),
+-            "providerKey", "owned-smtp", "providerMessageId", message, "status", status));
++            "providerKey", account, "providerMessageId", message, "status", status, "target", target));
+         Mac mac = Mac.getInstance("HmacSHA256"); mac.init(new SecretKeySpec("owned-t22-only".getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+-        callbacks.apply("MAIL", HexFormat.of().formatHex(mac.doFinal(body.getBytes(StandardCharsets.UTF_8))), body, "owned-t22-only");
++        useCase.apply(channel, HexFormat.of().formatHex(mac.doFinal(body.getBytes(StandardCharsets.UTF_8))), body, "owned-t22-only");
+     }
+     private static void await(CountDownLatch latch) {
+         try { if (!latch.await(10, TimeUnit.SECONDS)) throw new IllegalStateException("Owned worker barrier timeout"); }
+--- /dev/null
++++ b/backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyCallbackProcessProbe.java
+@@ -0,0 +1,87 @@
++package org.namewta.test.notify;
++
++import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
++import com.baomidou.dynamic.datasource.annotation.DSTransactional;
++import com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
++import com.baomidou.dynamic.datasource.aop.DynamicLocalTransactionInterceptor;
++import com.baomidou.mybatisplus.core.MybatisConfiguration;
++import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
++import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
++import com.zaxxer.hikari.HikariDataSource;
++import org.apache.ibatis.builder.xml.XMLMapperBuilder;
++import org.apache.ibatis.mapping.Environment;
++import org.mybatis.spring.SqlSessionTemplate;
++import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
++import org.namewta.common.core.exception.ServiceException;
++import org.namewta.common.json.utils.JsonUtils;
++import org.namewta.common.mybatis.handler.InjectionMetaObjectHandler;
++import org.namewta.notify.dao.NotifyNotificationDao;
++import org.namewta.notify.dao.NotifyProviderReceiptDao;
++import org.namewta.notify.mapper.*;
++import org.namewta.notify.service.runtime.NotifyDispatchResultService;
++import org.namewta.notify.service.runtime.ProviderCallbackService;
++import org.namewta.notify.usecase.NotifyDispatchResultUseCase;
++import org.namewta.notify.usecase.ProviderCallbackUseCase;
++import org.springframework.aop.framework.ProxyFactory;
++
++import javax.crypto.Mac;
++import javax.crypto.spec.SecretKeySpec;
++import java.nio.charset.StandardCharsets;
++import java.time.Instant;
++import java.util.HexFormat;
++import java.util.List;
++import java.util.Map;
++
++/** 仅供隔离集成测试启动独立 JVM，验证幂等事实不会随着应用进程退出而丢失。 */
++public final class NotifyCallbackProcessProbe {
++    private NotifyCallbackProcessProbe() { }
++
++    public static void main(String[] args) throws Exception {
++        if (args.length != 2 || !args[0].startsWith("jdbc:mysql://127.0.0.1:") || !args[0].contains("/namewta_notify_test_")) {
++            throw new IllegalArgumentException("Only the owned loopback test database is allowed");
++        }
++        int code = 0;
++        try (var pool = new HikariDataSource()) {
++            pool.setJdbcUrl(args[0]); pool.setUsername("root"); pool.setPassword("owned-notify-test-only"); pool.setMaximumPoolSize(2);
++            var routing = new DynamicRoutingDataSource(List.of()); routing.setPrimary("master"); routing.setStrict(true);
++            routing.addDataSource("master", pool);
++            try {
++                var config = new MybatisConfiguration(new Environment("owned-callback-process", new SpringManagedTransactionFactory(), routing));
++                config.setMapUnderscoreToCamelCase(true);
++                GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults().setMetaObjectHandler(new InjectionMetaObjectHandler()));
++                for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
++                    NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class,
++                    NotifyProviderReceiptMapper.class)) config.addMapper(mapper);
++                String resource = "/mapper/notify/NotifyOutboxMapper.xml";
++                try (var stream = NotifyCallbackProcessProbe.class.getResourceAsStream(resource)) {
++                    new XMLMapperBuilder(stream, config, resource, config.getSqlFragments()).parse();
++                }
++                var sessions = new SqlSessionTemplate(new MybatisSqlSessionFactoryBuilder().build(config));
++                var dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class), sessions.getMapper(NotifyRecipientMapper.class),
++                    sessions.getMapper(NotifyDeliveryMapper.class), sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
++                    sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
++                var results = transactional(new NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)), NotifyDispatchResultUseCase.class);
++                var receipts = new NotifyProviderReceiptDao(sessions.getMapper(NotifyProviderReceiptMapper.class));
++                var callbacks = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(dao, results, receipts)), ProviderCallbackUseCase.class);
++                String body = JsonUtils.toJsonString(Map.of("eventId", "process-restart-event", "timestamp", Instant.now().toString(),
++                    "providerKey", "owned-smtp", "providerMessageId", "owned-message", "status", args[1], "target", ""));
++                Mac mac = Mac.getInstance("HmacSHA256");
++                mac.init(new SecretKeySpec("owned-t22-only".getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
++                try {
++                    callbacks.apply("MAIL", HexFormat.of().formatHex(mac.doFinal(body.getBytes(StandardCharsets.UTF_8))), body, "owned-t22-only");
++                } catch (ServiceException conflict) {
++                    if (!Integer.valueOf(409).equals(conflict.getCode())) throw conflict;
++                    code = 3;
++                }
++            } finally { routing.destroy(); }
++        }
++        System.out.println("OWNED_CALLBACK_PROBE exit=" + code);
++        System.exit(code);
++    }
++
++    private static <T> T transactional(T target, Class<T> type) {
++        var proxy = new ProxyFactory(target); proxy.setProxyTargetClass(true);
++        proxy.addAdvisor(new DynamicDataSourceAnnotationAdvisor(new DynamicLocalTransactionInterceptor(true), DSTransactional.class));
++        return type.cast(proxy.getProxy());
++    }
++}
+--- a/backend/wta-admin/src/test/java/org/namewta/test/notify/core/SmsNotifyChannelAdapterUnitTest.java
++++ b/backend/wta-admin/src/test/java/org/namewta/test/notify/core/SmsNotifyChannelAdapterUnitTest.java
+@@ -25,7 +25,7 @@
+                     phones.add(phone);
+                     return phone.startsWith("139")
+                         ? SmsNotificationReceipt.failed("PROVIDER_REJECTED", "provider rejected")
+-                        : SmsNotificationReceipt.accepted();
++                        : SmsNotificationReceipt.accepted("owned-message");
+                 }));
+         NotifyRequest request = NotifyRequest.builder()
+             .channel(NotifyChannel.SMS)
+--- a/backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java
++++ b/backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java
+@@ -44,6 +44,7 @@
+         if (name == null) {
+             return false;
+         }
++        if (isNotifyCallbackPath(requestPath)) return true;
+         String normalized = normalize(name);
+         if (SENSITIVE_NAMES.contains(normalized)
+             || Arrays.stream(SystemConstants.EXCLUDE_PROPERTIES).anyMatch(value -> normalize(value).equals(normalized))
+@@ -71,6 +72,7 @@
+         if (raw == null || raw.isBlank()) {
+             return raw;
+         }
++        if (isNotifyCallbackPath(requestPath)) return REDACTED;
+         try {
+             JsonNode node = JsonUtils.getJsonMapper().reader()
+                 .with(DeserializationFeature.FAIL_ON_TRAILING_TOKENS).readTree(raw);
+@@ -89,6 +91,7 @@
+         if (value == null) {
+             return null;
+         }
++        if (isNotifyCallbackPath(requestPath)) return REDACTED;
+         if (value instanceof CharSequence text) {
+             return json(text.toString(), requestPath, excludedNames);
+         }
+@@ -130,6 +133,12 @@
+         return path.startsWith("/sso/") || path.startsWith("/auth/social/") || path.equals("/auth/login");
+     }
+ 
++    /** 回执包含精确收件地址，HTTP 与操作日志均只保留元数据；不改变验签原文。 */
++    private static boolean isNotifyCallbackPath(String requestPath) {
++        String path = normalizePath(requestPath);
++        return path.equals("/notify/callback") || path.startsWith("/notify/callback/");
++    }
++
+     private static String normalizePath(String requestPath) {
+         if (requestPath == null) {
+             return "";
+--- a/backend/wta-common/wta-common-json/src/test/java/org/namewta/common/json/utils/LogSanitizerTest.java
++++ b/backend/wta-common/wta-common-json/src/test/java/org/namewta/common/json/utils/LogSanitizerTest.java
+@@ -70,4 +70,17 @@
+     void errorTextCannotEchoCredentialsInOtherwiseValidJson() {
+         assertFalse(LogSanitizer.json("{\"code\":500,\"msg\":\"" + CANARY + "\",\"error\":{\"value\":\"" + CANARY + "\"}}", "/normal").contains(CANARY));
+     }
++
++    @Test
++    void notificationCallbacksKeepOnlyMetadataWithoutChangingBusinessValues() {
++        Map<String, String> body = Map.of("target", "owned-recipient@example.test", "eventId", CANARY);
++        for (String path : new String[]{"/notify/callback/MAIL", "/notify/callback/SMS;ignored=x/"}) {
++            assertEquals(LogSanitizer.REDACTED, LogSanitizer.object(body, path));
++            assertEquals(LogSanitizer.REDACTED, LogSanitizer.json(JsonUtils.toJsonString(body), path));
++            assertTrue(LogSanitizer.isSensitiveName("target", path));
++            assertTrue(LogSanitizer.isSensitiveName("unknown", path));
++        }
++        assertEquals("owned-recipient@example.test", body.get("target"));
++        assertTrue(LogSanitizer.object(body, "/notify/callback-settings").contains(CANARY));
++    }
+ }
+--- a/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/Sms4jNotificationProviderResolver.java
++++ b/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/Sms4jNotificationProviderResolver.java
+@@ -9,6 +9,7 @@
+ import org.dromara.sms4j.core.factory.SmsFactory;
+ 
+ import java.util.LinkedHashMap;
++import java.util.Map;
+ 
+ /**
+  * SMS4J Provider 解析实现。
+@@ -37,14 +38,57 @@
+         SmsResponse response;
+         if (content instanceof NotifyTemplateContent template) {
+             response = blend.sendMessage(phone, template.providerTemplateCode(),
+-                new LinkedHashMap<>(template.params()));
++                templateParams(blend.getSupplier(), template.params()));
+         } else if (content instanceof NotifyTextContent text) {
+             response = blend.sendMessage(phone, text.text());
+         } else {
+             response = blend.sendMessage(phone, content.contentSnapshot());
+         }
+         return response != null && response.isSuccess()
+-            ? SmsNotificationReceipt.accepted()
++            ? SmsNotificationReceipt.accepted(providerMessageId(blend.getSupplier(), phone, response.getData()))
+             : SmsNotificationReceipt.failed("PROVIDER_REJECTED", "SMS Provider 未接受请求");
+     }
++
++    /** 腾讯位置参数不能依赖不可变Map的迭代顺序；阿里仍保留供应商参数名。 */
++    private LinkedHashMap<String, String> templateParams(String supplier, Map<String, String> params) {
++        if (!"tencent".equals(supplier)) return new LinkedHashMap<>(params);
++        LinkedHashMap<String, String> ordered = new LinkedHashMap<>();
++        for (int index = 1; index <= params.size(); index++) {
++            String key = Integer.toString(index);
++            String value = params.get(key);
++            if (value == null || value.isBlank()) {
++                throw new NotifyValidationException("INVALID_TEMPLATE_PARAMETERS", "腾讯短信参数须映射为连续的1..N位置且值不能为空");
++            }
++            ordered.put(key, value);
++        }
++        return ordered;
++    }
++
++    /**
++     * 按实际SMS4J 3.3.5成功响应读取供应商流水号，绝不用RequestId替代。
++     * 成功响应缺少可确认的ID时仍保持已受理，避免将已发送短信判失败而自动重发。
++     */
++    private String providerMessageId(String supplier, String phone, Object data) {
++        if (!(data instanceof Map<?, ?> body)) return null;
++        if ("alibaba".equals(supplier)) return nonblankString(body.get("BizId"));
++        if (!"tencent".equals(supplier) || !(body.get("Response") instanceof Map<?, ?> response)
++            || !(response.get("SendStatusSet") instanceof Iterable<?> statuses)) return null;
++        // 与SMS4J调用时的号码规则一致：含区号分隔符则去掉分隔符，否则补国内+86前缀。
++        String requestedPhone = phone.contains("-") ? phone.replace("-", "")
++            : phone.startsWith("+86") ? phone : "+86" + phone;
++        String messageId = null;
++        int matches = 0;
++        for (Object item : statuses) {
++            if (item instanceof Map<?, ?> status && requestedPhone.equals(status.get("PhoneNumber"))
++                && "Ok".equals(status.get("Code"))) {
++                messageId = nonblankString(status.get("SerialNo"));
++                matches++;
++            }
++        }
++        return matches == 1 ? messageId : null;
++    }
++
++    private String nonblankString(Object value) {
++        return value instanceof String text && !text.isBlank() ? text : null;
++    }
+ }
+--- /dev/null
++++ b/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsDeliveryQueryClient.java
+@@ -0,0 +1,199 @@
++package org.namewta.common.sms.notify;
++
++import org.namewta.common.json.utils.JsonUtils;
++import tools.jackson.databind.JsonNode;
++
++import java.net.URI;
++import java.time.Duration;
++import java.time.Instant;
++import java.time.ZoneId;
++import java.time.format.DateTimeFormatter;
++import java.time.temporal.ChronoUnit;
++import java.util.HashMap;
++import java.util.HashSet;
++import java.util.Map;
++import java.util.UUID;
++
++/**
++ * 腾讯/阿里短信只读送达查询。无发送能力，不接收厂商推送，也不保存正文/凭据。
++ * 查询异常由调用方延迟重试；查不到或状态未知时保持已受理。
++ */
++public final class SmsDeliveryQueryClient {
++    private static final String TENCENT_HOST = "sms.tencentcloudapi.com";
++    private static final String ALIBABA_HOST = "dysmsapi.aliyuncs.com";
++    private static final ZoneId SEND_DATE_ZONE = ZoneId.of("Asia/Shanghai");
++    private final Transport transport;
++
++    /** 使用固定HTTPS端点及有界同步连接，无后台线程或客户端池。 */
++    public SmsDeliveryQueryClient() { this(new SmsQueryHttpTransport()); }
++
++    SmsDeliveryQueryClient(Transport transport) { this.transport = transport; }
++
++    /**
++     * 读取已受理短信的最终状态，未确认返回WAITING。错误不会转换为投递失败。
++     * @param account 当前启用账号，仅本次请求使用
++     * @param query 精确消息/收件人及UTC受理时刻
++     * @param now 当前UTC时刻
++     * @return 可确认的终态或WAITING
++     */
++    public Status query(Account account, Query query, Instant now) {
++        if (Thread.currentThread().isInterrupted()) throw new IllegalStateException("SMS_QUERY_INTERRUPTED");
++        if (account == null || query == null || blank(account.supplier()) || blank(account.keyId()) || blank(account.secret())
++            || blank(query.messageId()) || blank(query.phone()) || query.acceptedAt() == null || now == null) {
++            throw new IllegalArgumentException("SMS_QUERY_INVALID_INPUT");
++        }
++        if (query.acceptedAt().isAfter(now) || Duration.between(query.acceptedAt(), now).compareTo(Duration.ofHours(71)) >= 0) {
++            return Status.WAITING;
++        }
++        return switch (account.supplier()) {
++            case "tencent" -> tencent(account, query, now);
++            case "alibaba" -> alibaba(account, query, now);
++            default -> throw new IllegalArgumentException("SMS_QUERY_UNSUPPORTED_SUPPLIER");
++        };
++    }
++
++    private Status tencent(Account account, Query query, Instant now) {
++        if (blank(account.sdkAppId())) throw new IllegalArgumentException("SMS_QUERY_INVALID_ACCOUNT");
++        String phone = tencentPhone(query.phone());
++        Status result = Status.WAITING;
++        int matches = 0;
++        long total = -1;
++        // 完整扫描最多1000条；固定查询时间范围，页数和总数变化不能被当作完整结果。
++        var seen = new HashSet<String>();
++        for (int offset = 0; offset < 1000; offset += 50) {
++            if (offset > 0) {
++                try { Thread.sleep(200); }
++                catch (InterruptedException exception) {
++                    Thread.currentThread().interrupt();
++                    throw new IllegalStateException("SMS_QUERY_INTERRUPTED", exception);
++                }
++            }
++            String body = JsonUtils.toJsonString(Map.of("PhoneNumber", phone, "SmsSdkAppId", account.sdkAppId(),
++                "BeginTime", now.minus(Duration.ofHours(72)).plusSeconds(60).getEpochSecond(),
++                "EndTime", now.getEpochSecond(), "Limit", 50, "Offset", offset));
++            var headers = new HashMap<String, String>();
++            headers.put("Content-Type", "application/json; charset=utf-8");
++            headers.put("X-TC-Action", "DescribeSendRecordList");
++            headers.put("X-TC-Version", "2021-01-11");
++            headers.put("X-TC-Region", "ap-guangzhou");
++            headers.put("X-TC-Timestamp", Long.toString(now.getEpochSecond()));
++            headers.put("Authorization", SmsQuerySignature.tencent(account.keyId(), account.secret(), TENCENT_HOST, body, now));
++            JsonNode response = parse(transport.post(URI.create("https://" + TENCENT_HOST + "/"), headers, body)).path("Response");
++            if (!response.isObject() || response.has("Error")) throw invalidResponse();
++            long count = integer(response.path("TotalCount"));
++            if (count > 1000 || (total != -1 && total != count)) throw invalidResponse();
++            total = count;
++            JsonNode rows = response.path("SendRecordSet");
++            if (!rows.isArray() || rows.size() != Math.min(50, total - offset)) throw invalidResponse();
++            for (JsonNode row : rows) {
++                String id = string(row.path("SerialNo"));
++                if (id.isBlank() || !seen.add(id)) throw invalidResponse();
++                if (!id.equals(query.messageId())) continue;
++                if (!phone.equals(string(row.path("PhoneNumber")))) throw invalidResponse();
++                matches++;
++                result = switch ((int) integer(row.path("SendStatus"))) {
++                    case 2 -> Status.DELIVERED;
++                    case 4 -> Status.UNDELIVERABLE;
++                    default -> Status.WAITING;
++                };
++            }
++            if (offset + rows.size() >= total) return matches == 1 ? result : Status.WAITING;
++        }
++        throw invalidResponse();
++    }
++
++    private Status alibaba(Account account, Query query, Instant now) {
++        String phone = alibabaPhone(query.phone());
++        var acceptedDate = query.acceptedAt().atZone(SEND_DATE_ZONE).toLocalDate();
++        Status result = Status.WAITING;
++        int matches = 0;
++        // 受理写回可能跨过午夜，始终核对两个发送日；不能见到第一条就忽略另一天的歧义。
++        for (var day : java.util.List.of(acceptedDate, acceptedDate.minusDays(1))) {
++            String parameters = SmsQuerySignature.query(Map.of("PhoneNumber", phone, "BizId", query.messageId(),
++                "SendDate", day.format(DateTimeFormatter.BASIC_ISO_DATE), "PageSize", "2", "CurrentPage", "1"));
++            var headers = new HashMap<String, String>();
++            headers.put("host", ALIBABA_HOST);
++            headers.put("content-type", "application/json; charset=utf-8");
++            headers.put("x-acs-action", "QuerySendDetails");
++            headers.put("x-acs-version", "2017-05-25");
++            headers.put("x-acs-date", now.truncatedTo(ChronoUnit.SECONDS).toString());
++            headers.put("x-acs-signature-nonce", UUID.randomUUID().toString());
++            headers.put("x-acs-content-sha256", SmsQuerySignature.sha256(""));
++            String authorization = SmsQuerySignature.alibaba(account.keyId(), account.secret(), parameters, headers);
++            headers.put("Authorization", authorization);
++            headers.put("Accept", "application/json");
++            JsonNode response = parse(transport.post(URI.create("https://" + ALIBABA_HOST + "/?" + parameters), headers, ""));
++            if (!"OK".equals(string(response.path("Code")))) throw invalidResponse();
++            long total = integer(response.path("TotalCount"));
++            JsonNode rows = response.path("SmsSendDetailDTOs").path("SmsSendDetailDTO");
++            if (total > 1 || (total == 0 && !rows.isArray() && !rows.isMissingNode() && !rows.isNull())
++                || (rows.isArray() && rows.size() != total) || (total == 1 && !rows.isArray())) throw invalidResponse();
++            if (total == 0) continue;
++            JsonNode row = rows.get(0);
++            if (!phone.equals(string(row.path("PhoneNum"))) || !string(row.path("SendDate")).startsWith(day + " ")) {
++                throw invalidResponse();
++            }
++            matches++;
++            if (matches > 1) throw invalidResponse();
++            result = switch ((int) integer(row.path("SendStatus"))) {
++                case 3 -> Status.DELIVERED;
++                case 2 -> Status.UNDELIVERABLE;
++                default -> Status.WAITING;
++            };
++        }
++        return result;
++    }
++
++    private static JsonNode parse(String body) {
++        try {
++            JsonNode node = JsonUtils.getJsonMapper().readTree(body);
++            if (node == null || !node.isObject()) throw invalidResponse();
++            return node;
++        } catch (RuntimeException exception) {
++            // Jackson异常可包含短信原文，因此不把解析异常作为cause跨出边界。
++            throw invalidResponse();
++        }
++    }
++
++    private static long integer(JsonNode node) {
++        try {
++            String value = node.isString() ? node.asString() : node.isIntegralNumber() ? node.asText() : "";
++            long number = Long.parseLong(value);
++            if (number < 0 || number > Integer.MAX_VALUE) throw invalidResponse();
++            return number;
++        } catch (NumberFormatException exception) { throw invalidResponse(); }
++    }
++
++    private static String string(JsonNode node) { return node.isString() ? node.asString() : ""; }
++    private static boolean blank(String value) { return value == null || value.isBlank(); }
++    private static IllegalStateException invalidResponse() { return new IllegalStateException("SMS_QUERY_UNCONFIRMED_RESPONSE"); }
++
++    /** 必须复现SMS4J 3.3.5发送侧规则；不能查询一个未实际发送的规范化号码。 */
++    private static String tencentPhone(String phone) {
++        return phone.contains("-") ? phone.replace("-", "") : phone.startsWith("+86") ? phone : "+86" + phone;
++    }
++
++    private static String alibabaPhone(String phone) {
++        String value = phone.replace("-", "");
++        if (value.startsWith("+86") && value.length() == 14) return value.substring(3);
++        return value.startsWith("+") ? value.substring(1) : value;
++    }
++
++    /** 凭据只在请求栈内使用，禁止record默认toString泄漏。 */
++    public record Account(String supplier, String keyId, String secret, String sdkAppId) {
++        @Override public String toString() { return "SmsQueryAccount[redacted]"; }
++    }
++
++    /** 一次只读查询的精确关联条件，不在日志中渲染收件人。 */
++    public record Query(String phone, String messageId, Instant acceptedAt) {
++        @Override public String toString() { return "SmsDeliveryQuery[redacted]"; }
++    }
++
++    /** WAITING不代表发送失败，也不触发重发。 */
++    public enum Status { WAITING, DELIVERED, UNDELIVERABLE }
++
++    @FunctionalInterface
++    interface Transport {
++        String post(URI endpoint, Map<String, String> headers, String body);
++    }
++}
+--- a/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsNotificationReceipt.java
++++ b/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsNotificationReceipt.java
+@@ -10,8 +10,9 @@
+     String errorMessage
+ ) {
+ 
+-    public static SmsNotificationReceipt accepted() {
+-        return new SmsNotificationReceipt(true, null, null, null);
++    /** 已受理；null流水号表示无法关联回执，不能由此推导应重新发送。 */
++    public static SmsNotificationReceipt accepted(String providerMessageId) {
++        return new SmsNotificationReceipt(true, providerMessageId, null, null);
+     }
+ 
+     public static SmsNotificationReceipt failed(String errorCode, String errorMessage) {
+--- /dev/null
++++ b/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsQueryHttpTransport.java
+@@ -0,0 +1,55 @@
++package org.namewta.common.sms.notify;
++
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.net.HttpURLConnection;
++import java.net.URI;
++import java.nio.charset.StandardCharsets;
++import java.util.Map;
++import java.util.concurrent.TimeUnit;
++
++/** 每次查询拥有并关闭其连接和响应；禁止重定向及无界响应。生产端点由调用者固定。 */
++final class SmsQueryHttpTransport implements SmsDeliveryQueryClient.Transport {
++    static final int MAX_RESPONSE_BYTES = 256 * 1024;
++    private static final int TIMEOUT_MS = 5000;
++
++    @Override
++    public String post(URI endpoint, Map<String, String> headers, String body) {
++        if (Thread.currentThread().isInterrupted()) throw new IllegalStateException("SMS_QUERY_INTERRUPTED");
++        HttpURLConnection connection = null;
++        long started = System.nanoTime();
++        try {
++            connection = (HttpURLConnection) endpoint.toURL().openConnection();
++            connection.setInstanceFollowRedirects(false);
++            connection.setConnectTimeout(TIMEOUT_MS);
++            connection.setReadTimeout(TIMEOUT_MS);
++            connection.setRequestMethod("POST");
++            connection.setDoOutput(true);
++            headers.forEach(connection::setRequestProperty);
++            byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
++            connection.setFixedLengthStreamingMode(bytes.length);
++            try (var output = connection.getOutputStream()) { output.write(bytes); }
++            if (connection.getResponseCode() != 200) throw new IllegalStateException("SMS_QUERY_HTTP_ERROR");
++            if (connection.getContentLengthLong() > MAX_RESPONSE_BYTES) throw new IllegalStateException("SMS_QUERY_RESPONSE_TOO_LARGE");
++            try (InputStream input = connection.getInputStream(); var output = new ByteArrayOutputStream()) {
++                byte[] buffer = new byte[4096];
++                int count;
++                while ((count = input.read(buffer)) != -1) {
++                    if (Thread.currentThread().isInterrupted()) throw new IllegalStateException("SMS_QUERY_INTERRUPTED");
++                    if (TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - started) >= 15) {
++                        throw new IllegalStateException("SMS_QUERY_DEADLINE");
++                    }
++                    if (output.size() + count > MAX_RESPONSE_BYTES) throw new IllegalStateException("SMS_QUERY_RESPONSE_TOO_LARGE");
++                    output.write(buffer, 0, count);
++                }
++                return output.toString(StandardCharsets.UTF_8);
++            }
++        } catch (IOException exception) {
++            // 保留内部cause用于定位；上层只记录固定错误类别，禁止打印请求URL/供应商响应。
++            throw new IllegalStateException("SMS_QUERY_IO_ERROR", exception);
++        } finally {
++            if (connection != null) connection.disconnect();
++        }
++    }
++}
+--- /dev/null
++++ b/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsQuerySignature.java
+@@ -0,0 +1,70 @@
++package org.namewta.common.sms.notify;
++
++import javax.crypto.Mac;
++import javax.crypto.spec.SecretKeySpec;
++import java.net.URLEncoder;
++import java.nio.charset.StandardCharsets;
++import java.security.GeneralSecurityException;
++import java.security.MessageDigest;
++import java.time.Instant;
++import java.time.ZoneOffset;
++import java.util.HexFormat;
++import java.util.Map;
++import java.util.TreeMap;
++import java.util.stream.Collectors;
++
++/** 原生只读短信查询使用的 TC3 / ACS3 请求签名，不参与 SMS4J 发送。 */
++final class SmsQuerySignature {
++    private SmsQuerySignature() { }
++
++    static String tencent(String keyId, String secret, String host, String body, Instant now) {
++        String date = now.atOffset(ZoneOffset.UTC).toLocalDate().toString();
++        String scope = date + "/sms/tc3_request";
++        String headers = "content-type;host";
++        String canonical = "POST\n/\n\ncontent-type:application/json; charset=utf-8\nhost:" + host
++            + "\n\n" + headers + "\n" + sha256(body);
++        String toSign = "TC3-HMAC-SHA256\n" + now.getEpochSecond() + "\n" + scope + "\n" + sha256(canonical);
++        byte[] signing = hmac(hmac(hmac(bytes("TC3" + secret), date), "sms"), "tc3_request");
++        return "TC3-HMAC-SHA256 Credential=" + keyId + "/" + scope + ", SignedHeaders=" + headers
++            + ", Signature=" + HexFormat.of().formatHex(hmac(signing, toSign));
++    }
++
++    static String alibaba(String keyId, String secret, String query, Map<String, String> headers) {
++        var sorted = new TreeMap<>(headers);
++        String names = String.join(";", sorted.keySet());
++        String canonicalHeaders = sorted.entrySet().stream().map(e -> e.getKey() + ":" + e.getValue().trim() + "\n")
++            .collect(Collectors.joining());
++        String canonical = "POST\n/\n" + query + "\n" + canonicalHeaders + "\n" + names + "\n" + sha256("");
++        return "ACS3-HMAC-SHA256 Credential=" + keyId + ",SignedHeaders=" + names + ",Signature="
++            + HexFormat.of().formatHex(hmac(bytes(secret), "ACS3-HMAC-SHA256\n" + sha256(canonical)));
++    }
++
++    static String query(Map<String, String> values) {
++        return new TreeMap<>(values).entrySet().stream().map(e -> encode(e.getKey()) + "=" + encode(e.getValue()))
++            .collect(Collectors.joining("&"));
++    }
++
++    static String sha256(String value) {
++        try {
++            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes(value)));
++        } catch (GeneralSecurityException exception) {
++            throw new IllegalStateException("SMS_QUERY_CRYPTO_UNAVAILABLE", exception);
++        }
++    }
++
++    private static String encode(String value) {
++        return URLEncoder.encode(value, StandardCharsets.UTF_8).replace("+", "%20").replace("*", "%2A").replace("%7E", "~");
++    }
++
++    private static byte[] hmac(byte[] key, String value) {
++        try {
++            Mac mac = Mac.getInstance("HmacSHA256");
++            mac.init(new SecretKeySpec(key, "HmacSHA256"));
++            return mac.doFinal(bytes(value));
++        } catch (GeneralSecurityException exception) {
++            throw new IllegalStateException("SMS_QUERY_CRYPTO_UNAVAILABLE", exception);
++        }
++    }
++
++    private static byte[] bytes(String value) { return value.getBytes(StandardCharsets.UTF_8); }
++}
+--- /dev/null
++++ b/backend/wta-common/wta-common-sms/src/test/java/org/namewta/common/sms/notify/SmsDeliveryQueryClientTest.java
+@@ -0,0 +1,207 @@
++package org.namewta.common.sms.notify;
++
++import com.sun.net.httpserver.HttpServer;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.Tag;
++import org.namewta.common.json.utils.JsonUtils;
++import java.net.InetSocketAddress;
++import java.net.URI;
++import java.time.Instant;
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.concurrent.atomic.AtomicInteger;
++import static org.junit.jupiter.api.Assertions.*;
++import static org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status.*;
++
++/** 协议夹具与loopback HTTP；不调用真实供应商、不发送短信。 */
++@Tag("dev")
++class SmsDeliveryQueryClientTest {
++    private static final Instant NOW = Instant.parse("2026-09-19T02:03:04Z");
++    private static final SmsDeliveryQueryClient.Account TENCENT = new SmsDeliveryQueryClient.Account("tencent", "fixture-key", "fixture-secret", "1400000000");
++    private static final SmsDeliveryQueryClient.Account ALIBABA = new SmsDeliveryQueryClient.Account("alibaba", "fixture-key", "fixture-secret", "");
++    private static final SmsDeliveryQueryClient.Query QUERY = new SmsDeliveryQueryClient.Query("13800000000", "message-1", NOW.minusSeconds(120));
++
++    @Test void signaturesMatchIndependentPythonVectorsIncludingUtf8AndQueryEscaping() {
++        String body = "{\"PhoneNumber\":\"+8613800000000\",\"说明\":\"状态查询\"}";
++        assertEquals("TC3-HMAC-SHA256 Credential=fixture-key/2026-09-19/sms/tc3_request, SignedHeaders=content-type;host, Signature=c94280d8884c260e73deaa673106300a79bc44929cdf86e11026111c9a4ba047",
++            SmsQuerySignature.tencent("fixture-key", "fixture-secret", "sms.tencentcloudapi.com", body, NOW));
++        String query = SmsQuerySignature.query(Map.of("BizId", "a+/=", "CurrentPage", "1", "PageSize", "2", "PhoneNumber", "13800000000", "SendDate", "20260919"));
++        assertEquals("BizId=a%2B%2F%3D&CurrentPage=1&PageSize=2&PhoneNumber=13800000000&SendDate=20260919", query);
++        var headers = new HashMap<String, String>();
++        headers.put("host", "dysmsapi.aliyuncs.com"); headers.put("content-type", "application/json; charset=utf-8");
++        headers.put("x-acs-action", "QuerySendDetails"); headers.put("x-acs-date", NOW.toString());
++        headers.put("x-acs-version", "2017-05-25"); headers.put("x-acs-signature-nonce", "fixture-nonce");
++        headers.put("x-acs-content-sha256", SmsQuerySignature.sha256(""));
++        assertTrue(SmsQuerySignature.alibaba("fixture-key", "fixture-secret", query, headers)
++            .endsWith("Signature=29e8afc6966f44b31f459dce08713d60e800c440c8b5887887877bd70a671ba2"));
++        assertNotEquals(SmsQuerySignature.tencent("fixture-key", "fixture-secret", "sms.tencentcloudapi.com", body, NOW),
++            SmsQuerySignature.tencent("fixture-key", "fixture-secret", "sms.tencentcloudapi.com", body + " ", NOW));
++    }
++
++    @Test void tencentQueriesExactAccountPhoneAndMessageAcrossAllPages() {
++        var requests = new ArrayList<Map<String, Object>>();
++        var client = new SmsDeliveryQueryClient((uri, headers, body) -> {
++            assertEquals("https://sms.tencentcloudapi.com/", uri.toString());
++            assertEquals("DescribeSendRecordList", headers.get("X-TC-Action"));
++            assertEquals("2021-01-11", headers.get("X-TC-Version"));
++            assertTrue(headers.get("Authorization").startsWith("TC3-HMAC-SHA256 "));
++            Map<String, Object> payload = JsonUtils.parseMap(body); requests.add(payload);
++            assertEquals("+8613800000000", payload.get("PhoneNumber"));
++            assertEquals("1400000000", payload.get("SmsSdkAppId"));
++            var rows = new ArrayList<Map<String, Object>>();
++            if (requests.size() == 1) for (int i = 0; i < 50; i++) rows.add(tcRow("other-" + i, "+8613800000000", 2));
++            else rows.add(tcRow("message-1", "+8613800000000", 4));
++            return tcResponse(51, rows);
++        });
++        assertEquals(UNDELIVERABLE, client.query(TENCENT, QUERY, NOW));
++        assertEquals(2, requests.size());
++        assertEquals(50, ((Number) requests.get(1).get("Offset")).intValue());
++    }
++
++    @Test void tencentDoesNotPromoteTruncatedInconsistentOrAmbiguousResults() {
++        for (String response : List.of(tcResponse(1001, List.of(tcRow("message-1", "+8613800000000", 2))),
++            tcResponse(2, List.of(tcRow("message-1", "+8613800000000", 2))),
++            tcResponse(2, List.of(tcRow("message-1", "+8613800000000", 2), tcRow("message-1", "+8613800000000", 4))),
++            tcResponse(1, List.of(tcRow("message-1", "+8613900000000", 2))),
++            "{\"Response\":{\"Error\":{\"Message\":\"private-canary\"}}}")) {
++            var client = new SmsDeliveryQueryClient((uri, headers, body) -> response);
++            var error = assertThrows(IllegalStateException.class, () -> client.query(TENCENT, QUERY, NOW));
++            assertEquals("SMS_QUERY_UNCONFIRMED_RESPONSE", error.getMessage()); assertNull(error.getCause());
++        }
++    }
++
++    @Test void tencentWaitingAbsentAndUnknownStatusDoNotMeanFailure() {
++        for (String response : List.of(tcResponse(0, List.of()), tcResponse(1, List.of(tcRow("other", "+8613800000000", 2))),
++            tcResponse(1, List.of(tcRow("message-1", "+8613800000000", 3))), tcResponse(1, List.of(tcRow("message-1", "+8613800000000", 97))))) {
++            assertEquals(WAITING, new SmsDeliveryQueryClient((uri, headers, body) -> response).query(TENCENT, QUERY, NOW));
++        }
++        assertEquals(DELIVERED, new SmsDeliveryQueryClient((uri, headers, body) -> tcResponse(1,
++            List.of(tcRow("message-1", "+8613800000000", 2)))).query(TENCENT, QUERY, NOW));
++    }
++
++    @Test void alibabaSignsBizIdQueryAndChecksPreviousDayAtMidnight() {
++        var dates = new ArrayList<String>();
++        var client = new SmsDeliveryQueryClient((uri, headers, body) -> {
++            assertEquals("dysmsapi.aliyuncs.com", uri.getHost()); assertEquals("https", uri.getScheme());
++            assertEquals("", body); assertTrue(uri.getRawQuery().contains("BizId=a%2B%2F%3D"));
++            assertTrue(headers.get("Authorization").startsWith("ACS3-HMAC-SHA256 "));
++            assertEquals("QuerySendDetails", headers.get("x-acs-action"));
++            dates.add(uri.getRawQuery());
++            return uri.getRawQuery().contains("SendDate=20260919") ? aliResponse(0, List.of())
++                : aliResponse(1, List.of(aliRow("13800000000", "2026-09-18 23:59:59", 3)));
++        });
++        var midnight = Instant.parse("2026-09-18T16:00:01Z");
++        assertEquals(DELIVERED, client.query(ALIBABA, new SmsDeliveryQueryClient.Query("+8613800000000", "a+/=", midnight), midnight.plusSeconds(100)));
++        assertEquals(2, dates.size());
++    }
++
++    @Test void alibabaRequiresSingleMatchingRecordAcrossBothDates() {
++        for (String response : List.of(aliResponse(2, List.of(aliRow("13800000000", "2026-09-19 10:01:00", 3), aliRow("13800000000", "2026-09-19 10:01:00", 2))),
++            aliResponse(1, List.of(aliRow("13900000000", "2026-09-19 10:01:00", 3))),
++            aliResponse(1, List.of(aliRow("13800000000", "2026-09-17 10:01:00", 3))),
++            "{\"Code\":\"Forbidden\",\"Message\":\"private-canary\"}")) {
++            assertThrows(IllegalStateException.class, () -> new SmsDeliveryQueryClient((uri, headers, body) -> response).query(ALIBABA, QUERY, NOW));
++        }
++        var client = new SmsDeliveryQueryClient((uri, headers, body) -> aliResponse(1, List.of(aliRow("13800000000",
++            uri.getQuery().contains("20260919") ? "2026-09-19 00:00:01" : "2026-09-18 23:59:59", 3))));
++        assertThrows(IllegalStateException.class, () -> client.query(ALIBABA, QUERY, NOW));
++    }
++
++    @Test void malformedProviderPayloadNeverEscapesWithItsPrivateContents() {
++        for (String response : List.of("private-canary{", "null", "[]", "{\"Response\":{\"TotalCount\":\"wrong\"}}")) {
++            var error = assertThrows(IllegalStateException.class, () -> new SmsDeliveryQueryClient((uri, headers, body) -> response).query(TENCENT, QUERY, NOW));
++            assertFalse(error.toString().contains("private-canary")); assertNull(error.getCause());
++        }
++        assertFalse(TENCENT.toString().contains("fixture-secret")); assertFalse(QUERY.toString().contains("13800000000"));
++    }
++
++    @Test void queryWindowAndMissingIdentityPreventAnyNetworkCall() {
++        var client = new SmsDeliveryQueryClient((uri, headers, body) -> { fail("unexpected network request"); return ""; });
++        assertEquals(WAITING, client.query(TENCENT, QUERY, QUERY.acceptedAt().plusSeconds(71 * 3600)));
++        assertEquals(WAITING, client.query(TENCENT, QUERY, QUERY.acceptedAt().minusSeconds(1)));
++        assertThrows(IllegalArgumentException.class, () -> client.query(TENCENT, new SmsDeliveryQueryClient.Query(QUERY.phone(), "", QUERY.acceptedAt()), NOW));
++    }
++
++    @Test void realHttpTransportPostsBodyAndRejectsRedirectsErrorsAndOversize() throws Exception {
++        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
++        AtomicInteger followed = new AtomicInteger();
++        server.createContext("/ok", exchange -> {
++            assertEquals("POST", exchange.getRequestMethod());
++            assertEquals("signed-fixture", exchange.getRequestHeaders().getFirst("Authorization"));
++            byte[] request = exchange.getRequestBody().readAllBytes();
++            exchange.sendResponseHeaders(200, request.length); exchange.getResponseBody().write(request); exchange.close();
++        });
++        server.createContext("/redirect", exchange -> { exchange.getResponseHeaders().add("Location", "/followed"); exchange.sendResponseHeaders(302, -1); exchange.close(); });
++        server.createContext("/followed", exchange -> { followed.incrementAndGet(); exchange.sendResponseHeaders(200, -1); exchange.close(); });
++        server.createContext("/error", exchange -> { exchange.sendResponseHeaders(503, -1); exchange.close(); });
++        server.createContext("/large", exchange -> {
++            exchange.sendResponseHeaders(200, 0);
++            try { exchange.getResponseBody().write(new byte[SmsQueryHttpTransport.MAX_RESPONSE_BYTES + 1]); }
++            catch (java.io.IOException ignored) { /* 客户端到上限主动关闭。 */ }
++            finally { exchange.close(); }
++        });
++        server.start();
++        try {
++            String base = "http://127.0.0.1:" + server.getAddress().getPort();
++            var transport = new SmsQueryHttpTransport();
++            assertEquals("{\"fixture\":true}", transport.post(URI.create(base + "/ok"), Map.of("Authorization", "signed-fixture"), "{\"fixture\":true}"));
++            for (String path : List.of("/redirect", "/error", "/large")) {
++                assertThrows(IllegalStateException.class, () -> transport.post(URI.create(base + path), Map.of(), ""));
++            }
++            assertEquals(0, followed.get());
++        } finally { server.stop(0); }
++    }
++
++    @Test void actualProtocolClientRunsThroughLocalHttpAndNeverCallsSendAction() throws Exception {
++        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
++        AtomicInteger queries = new AtomicInteger();
++        var failure = new java.util.concurrent.atomic.AtomicReference<Throwable>();
++        server.createContext("/", exchange -> {
++            try {
++                assertEquals("DescribeSendRecordList", exchange.getRequestHeaders().getFirst("X-TC-Action"));
++                assertTrue(exchange.getRequestHeaders().getFirst("Authorization").startsWith("TC3-HMAC-SHA256 Credential=fixture-key/"));
++                var body = JsonUtils.parseMap(new String(exchange.getRequestBody().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
++                assertEquals("+8613800000000", body.get("PhoneNumber"));
++                queries.incrementAndGet();
++                byte[] bytes = tcResponse(1, List.of(tcRow("message-1", "+8613800000000", 2))).getBytes(java.nio.charset.StandardCharsets.UTF_8);
++                exchange.sendResponseHeaders(200, bytes.length); exchange.getResponseBody().write(bytes);
++            } catch (AssertionError error) { failure.set(error); exchange.sendResponseHeaders(500, -1); }
++            finally { exchange.close(); }
++        });
++        server.start();
++        try {
++            var transport = new SmsQueryHttpTransport();
++            // 仅测试传输接缝重定向至owned loopback；生产Client没有可配置URL。
++            var client = new SmsDeliveryQueryClient((uri, headers, body) -> transport.post(
++                URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/"), headers, body));
++            assertEquals(DELIVERED, client.query(TENCENT, QUERY, NOW));
++            assertEquals(DELIVERED, client.query(TENCENT, QUERY, NOW));
++            assertEquals(2, queries.get()); assertNull(failure.get());
++        } finally { server.stop(0); }
++    }
++
++    @Test void transportReadTimeoutIsBoundedAndDoesNotExposeServerBody() throws Exception {
++        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
++        var release = new java.util.concurrent.CountDownLatch(1);
++        server.createContext("/", exchange -> {
++            exchange.sendResponseHeaders(200, 100);
++            try { release.await(10, java.util.concurrent.TimeUnit.SECONDS); }
++            catch (InterruptedException exception) { Thread.currentThread().interrupt(); }
++            finally { exchange.close(); }
++        });
++        server.start();
++        try {
++            var error = assertThrows(IllegalStateException.class, () -> new SmsQueryHttpTransport().post(
++                URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/"), Map.of(), ""));
++            assertEquals("SMS_QUERY_IO_ERROR", error.getMessage());
++            assertInstanceOf(java.net.SocketTimeoutException.class, error.getCause());
++        } finally { release.countDown(); server.stop(0); }
++    }
++
++    private static Map<String, Object> tcRow(String id, String phone, int status) { return Map.of("SerialNo", id, "PhoneNumber", phone, "SendStatus", status); }
++    private static String tcResponse(int total, List<Map<String, Object>> rows) { return JsonUtils.toJsonString(Map.of("Response", Map.of("TotalCount", total, "SendRecordSet", rows))); }
++    private static Map<String, Object> aliRow(String phone, String date, int status) { return Map.of("PhoneNum", phone, "SendDate", date, "SendStatus", status, "Content", "private-canary"); }
++    private static String aliResponse(int total, List<Map<String, Object>> rows) { return JsonUtils.toJsonString(Map.of("Code", "OK", "TotalCount", Integer.toString(total), "SmsSendDetailDTOs", Map.of("SmsSendDetailDTO", rows))); }
++}
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/provider/NativeSmsReceiptAdapter.java
+@@ -0,0 +1,23 @@
++package org.namewta.notify.adapter.provider;
++
++import org.namewta.common.sms.notify.SmsDeliveryQueryClient;
++import org.namewta.notify.domain.entity.NotifyChannelAccount;
++import org.namewta.notify.domain.entity.NotifyDelivery;
++import org.namewta.notify.port.SmsReceiptProviderPort;
++import org.springframework.stereotype.Component;
++import java.time.Instant;
++import java.time.ZoneOffset;
++
++/** 将业务账号与投递快照交给common-sms只读客户端；不注册第二套发送器。 */
++@Component
++public class NativeSmsReceiptAdapter implements SmsReceiptProviderPort {
++    private final SmsDeliveryQueryClient client = new SmsDeliveryQueryClient();
++
++    @Override
++    public SmsDeliveryQueryClient.Status query(NotifyChannelAccount account, NotifyDelivery delivery, Instant now) {
++        return client.query(new SmsDeliveryQueryClient.Account(account.getSupplier(), account.getAccessKeyId(),
++                account.getAccessKeySecret(), account.getSdkAppId()),
++            new SmsDeliveryQueryClient.Query(delivery.getTargetValue(), delivery.getProviderMessageId(),
++                delivery.getAcceptedAt().toInstant(ZoneOffset.UTC)), now);
++    }
++}
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/SmsReceiptQueryWorker.java
+@@ -0,0 +1,35 @@
++package org.namewta.notify.adapter.worker;
++
++import lombok.RequiredArgsConstructor;
++import lombok.extern.slf4j.Slf4j;
++import org.namewta.notify.port.SmsReceiptQueryPort;
++import org.springframework.scheduling.annotation.Scheduled;
++import org.springframework.stereotype.Component;
++import java.util.concurrent.atomic.AtomicBoolean;
++
++/** 每轮最多核对一条；Spring拥有调度生命周期，不另建线程或无限drain。 */
++@Slf4j
++@Component
++@RequiredArgsConstructor
++public class SmsReceiptQueryWorker {
++    private final SmsReceiptQueryPort useCase;
++    private final AtomicBoolean running = new AtomicBoolean();
++
++    /** 默认每5秒选一条到期记录；同一条15分钟才再次预约，状态查询不触发发送。 */
++    @Scheduled(fixedDelay = 5000, initialDelay = 60000)
++    public void poll() {
++        if (!running.compareAndSet(false, true)) return;
++        Long deliveryId = null;
++        try {
++            var delivery = useCase.claim();
++            if (delivery == null) return;
++            deliveryId = delivery.getDeliveryId();
++            useCase.query(delivery);
++        } catch (RuntimeException exception) {
++            // 供应商异常cause可含凭据、号码或短信原文；日志只保留投递主键与固定说明。
++            log.warn("notify sms receipt query deferred deliveryId={} reason=QUERY_UNCONFIRMED", deliveryId);
++        } finally {
++            running.set(false);
++        }
++    }
++}
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/anonymous/ProviderCallbackController.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/anonymous/ProviderCallbackController.java
+@@ -4,13 +4,18 @@
+ import lombok.RequiredArgsConstructor;
+ import org.namewta.common.core.domain.R;
+ import org.namewta.common.core.exception.ServiceException;
++import org.namewta.common.core.http.CapturedRequestBody;
++import org.namewta.common.log.annotation.Log;
++import org.namewta.common.log.enums.BusinessType;
+ import org.namewta.notify.usecase.ProviderCallbackUseCase;
+ import org.springframework.beans.factory.annotation.Value;
++import org.springframework.http.ResponseEntity;
+ import org.springframework.web.bind.annotation.*;
++import jakarta.servlet.http.HttpServletRequest;
+ 
+ 
+ /**
+- * 外部供应商回调入口，验签后只更新统一投递状态。
++ * 自定义 HMAC 回执接入；不冒充腾讯或阿里的原生回调协议。
+  */
+ @SaIgnore
+ @RequiredArgsConstructor
+@@ -29,14 +34,24 @@
+      * @param payload 原始 JSON 回调数据，必须包含 providerMessageId 和 status
+      * @return 处理结果
+      */
+-    @PostMapping("/{channel}")
+-    public R<Void> callback(@PathVariable String channel, @RequestHeader("X-Notify-Signature") String signature,
+-                            @RequestBody String payload) {
++    @PostMapping(value = "/{channel}", consumes = "application/json")
++    @Log(title = "通知状态回执", businessType = BusinessType.UPDATE,
++        isSaveRequestData = false, isSaveResponseData = false)
++    public ResponseEntity<R<Void>> callback(@PathVariable String channel, @RequestHeader(value = "X-Notify-Signature", required = false) String signature,
++                            @RequestBody String payload, HttpServletRequest request) {
+         try {
+-            callbackUseCase.apply(channel, signature, payload, secret);
+-            return R.ok();
+-        } catch (ServiceException | IllegalArgumentException exception) {
+-            return R.fail(exception.getMessage());
++            // 正文可能已经过 XSS 视图改写；验签与事件解析都必须使用入口捕获的原文。
++            CapturedRequestBody raw = CapturedRequestBody.find(request);
++            callbackUseCase.apply(channel, signature, raw == null ? payload : raw.utf8(), secret);
++            return ResponseEntity.ok(R.ok());
++        } catch (ServiceException exception) {
++            int code = exception.getCode() == null ? 503 : exception.getCode();
++            return ResponseEntity.status(code).body(R.fail(code, exception.getMessage()));
++        } catch (IllegalArgumentException exception) {
++            return ResponseEntity.badRequest().body(R.fail(400, exception.getMessage()));
++        } catch (RuntimeException unavailable) {
++            // 回执的数据库或提交失败必须可重试，不能落入全局 R.fail 的 HTTP 200 映射。
++            return ResponseEntity.status(503).body(R.fail(503, "回执暂时不可用，请稍后重试"));
+         }
+     }
+ }
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyConfigDao.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyConfigDao.java
+@@ -40,6 +40,11 @@
+ 
+     public NotifyChannelAccount findAccount(Long accountId) {
+         return accountId == null ? null : accountMapper.selectById(accountId);
++    }
++
++    /** 配置标识永久保留，包含逻辑删除的账号。 */
++    public boolean existsNamespace(String channel, String configKey) {
++        return accountMapper.existsNamespace(channel, configKey);
+     }
+ 
+     public NotifyChannelAccount findAccount(String channel, String configKey) {
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java
+@@ -86,11 +86,29 @@
+     public int insert(NotifyDelivery value) { return deliveryMapper.insert(value); }
+     public int update(NotifyDelivery value) { return deliveryMapper.updateById(value); }
+     public NotifyDelivery delivery(Long id) { return deliveryMapper.selectById(id); }
+-    public NotifyDelivery deliveryByProvider(String channel, String providerKey, String providerMessageId) {
+-        return deliveryMapper.selectOne(new LambdaQueryWrapper<NotifyDelivery>()
++    /** 原生查询候选；启用账号及71小时窗口由XML控制，不扫描邮件/缺流水号投递。 */
++    public NotifyDelivery smsReceiptCandidate(LocalDateTime now) { return deliveryMapper.selectSmsReceiptCandidate(now); }
++    /**
++     * CAS预约下次核对；其他节点不能同时领取相同的到期快照。
++     * 不修改status、attempt或Outbox，失败后预约到期即可再次读取供应商状态。
++     */
++    public int reserveSmsReceiptQuery(NotifyDelivery value, LocalDateTime next) {
++        var update = new LambdaUpdateWrapper<NotifyDelivery>()
++            .eq(NotifyDelivery::getDeliveryId, value.getDeliveryId()).eq(NotifyDelivery::getStatus, "ACCEPTED")
++            .eq(NotifyDelivery::getProviderKey, value.getProviderKey())
++            .eq(NotifyDelivery::getProviderMessageId, value.getProviderMessageId());
++        if (value.getReceiptQueryAt() == null) update.isNull(NotifyDelivery::getReceiptQueryAt);
++        else update.eq(NotifyDelivery::getReceiptQueryAt, value.getReceiptQueryAt());
++        return deliveryMapper.update(null, update.set(NotifyDelivery::getReceiptQueryAt, next));
++    }
++    /** 最多返回两条候选，调用方必须拒绝未指明收件人或历史消息重用导致的歧义。 */
++    public List<NotifyDelivery> deliveriesByProvider(String channel, String providerKey, String providerMessageId, String target) {
++        return deliveryMapper.selectList(new LambdaQueryWrapper<NotifyDelivery>()
+             .eq(NotifyDelivery::getChannel, channel)
+             .eq(NotifyDelivery::getProviderKey, providerKey)
+-            .eq(NotifyDelivery::getProviderMessageId, providerMessageId));
++            .eq(NotifyDelivery::getProviderMessageId, providerMessageId)
++            .eq(target != null && !target.isEmpty(), NotifyDelivery::getTargetValue, target)
++            .orderByAsc(NotifyDelivery::getDeliveryId).last("limit 2"));
+     }
+     public List<NotifyDelivery> deliveries(Long intentId) {
+         return deliveryMapper.selectList(new LambdaQueryWrapper<NotifyDelivery>().eq(NotifyDelivery::getIntentId, intentId));
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyProviderReceiptDao.java
+@@ -0,0 +1,31 @@
++package org.namewta.notify.dao;
++
++import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
++import lombok.RequiredArgsConstructor;
++import org.namewta.notify.domain.entity.NotifyProviderReceipt;
++import org.namewta.notify.mapper.NotifyProviderReceiptMapper;
++import org.springframework.stereotype.Repository;
++
++/** 回执持久化边界，唯一键保留在业务事务内，不依赖进程缓存。 */
++@Repository
++@RequiredArgsConstructor
++public class NotifyProviderReceiptDao {
++    private final NotifyProviderReceiptMapper mapper;
++
++    /** 查询已提交且不可变的回执；不存在时返回 null。 */
++    public NotifyProviderReceipt find(String eventKey) {
++        return mapper.selectOne(new LambdaQueryWrapper<NotifyProviderReceipt>()
++            .eq(NotifyProviderReceipt::getEventKey, eventKey));
++    }
++
++    /** 唯一键竞争后使用当前读，避免事务早先快照漏掉刚提交的赢家。 */
++    public NotifyProviderReceipt lock(String eventKey) {
++        return mapper.selectOne(new LambdaQueryWrapper<NotifyProviderReceipt>()
++            .eq(NotifyProviderReceipt::getEventKey, eventKey).last("for update"));
++    }
++
++    /** 插入回执，唯一键冲突由 Service 按幂等业务规则处理。 */
++    public int insert(NotifyProviderReceipt receipt) {
++        return mapper.insert(receipt);
++    }
++}
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyChannelAccount.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyChannelAccount.java
+@@ -2,6 +2,8 @@
+ 
+ import com.baomidou.mybatisplus.annotation.TableId;
+ import com.baomidou.mybatisplus.annotation.TableName;
++import com.baomidou.mybatisplus.annotation.TableLogic;
++import com.baomidou.mybatisplus.annotation.Version;
+ import lombok.Data;
+ import lombok.EqualsAndHashCode;
+ import org.namewta.common.mybatis.core.domain.BaseEntity;
+@@ -32,4 +34,10 @@
+     private String sdkAppId;
+     private Integer minuteMax;
+     private String remark;
++    /** 账号并发编辑版本。 */
++    @Version
++    private Integer version;
++    /** 删除后仍保留渠道和配置标识的唯一命名空间。 */
++    @TableLogic
++    private String delFlag;
+ }
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyDelivery.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyDelivery.java
+@@ -27,6 +27,8 @@
+     private String errorCode;
+     private String errorMessage;
+     private LocalDateTime acceptedAt;
++    /** 原生短信状态下次核对时间，仅调度查询，不授权再次发送。 */
++    private LocalDateTime receiptQueryAt;
+     private LocalDateTime deliveredAt;
+     private LocalDateTime readAt;
+     private Integer version;
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyProviderReceipt.java
+@@ -0,0 +1,36 @@
++package org.namewta.notify.domain.entity;
++
++import com.baomidou.mybatisplus.annotation.TableId;
++import com.baomidou.mybatisplus.annotation.TableLogic;
++import com.baomidou.mybatisplus.annotation.TableName;
++import com.baomidou.mybatisplus.annotation.Version;
++import lombok.Data;
++import lombok.EqualsAndHashCode;
++import org.namewta.common.mybatis.core.domain.BaseEntity;
++
++import java.io.Serial;
++
++/** 已提交回执的幂等凭据；仅保存摘要和投递关联，不保存原文或收件地址。 */
++@Data
++@EqualsAndHashCode(callSuper = true)
++@TableName("notify_provider_receipt")
++public class NotifyProviderReceipt extends BaseEntity {
++    @Serial
++    private static final long serialVersionUID = 1L;
++
++    /** 回执主键。 */
++    @TableId
++    private Long providerReceiptId;
++    /** 渠道、账号配置标识和事件编号的 SHA-256。 */
++    private String eventKey;
++    /** 业务事实摘要，不含重签时可刷新的传输时间戳。 */
++    private String factsHash;
++    /** 已校验关联的投递主键。 */
++    private Long deliveryId;
++    /** 乐观锁版本。 */
++    @Version
++    private Integer version;
++    /** 逻辑删除标志；运行时不提供删除或过期清理入口。 */
++    @TableLogic
++    private String delFlag;
++}
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyChannelAccountMapper.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyChannelAccountMapper.java
+@@ -1,6 +1,7 @@
+ package org.namewta.notify.mapper;
+ 
+ import org.apache.ibatis.annotations.Mapper;
++import org.apache.ibatis.annotations.Param;
+ import org.namewta.common.mybatis.core.mapper.BaseMapperPlus;
+ import org.namewta.notify.domain.entity.NotifyChannelAccount;
+ import org.namewta.notify.domain.vo.NotifyChannelAccountVo;
+@@ -10,4 +11,6 @@
+  */
+ @Mapper
+ public interface NotifyChannelAccountMapper extends BaseMapperPlus<NotifyChannelAccount, NotifyChannelAccountVo> {
++    /** 包含已逻辑删除账号，防止旧回执命名空间被新账号复用。 */
++    boolean existsNamespace(@Param("channel") String channel, @Param("configKey") String configKey);
+ }
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyDeliveryMapper.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyDeliveryMapper.java
+@@ -1,9 +1,14 @@
+ package org.namewta.notify.mapper;
+ 
+-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
++import org.namewta.common.mybatis.core.mapper.BaseMapperPlus;
+ import org.apache.ibatis.annotations.Mapper;
++import org.apache.ibatis.annotations.Param;
+ import org.namewta.notify.domain.entity.NotifyDelivery;
++import java.time.LocalDateTime;
+ 
+ /** 通知投递 Mapper。 */
+ @Mapper
+-public interface NotifyDeliveryMapper extends BaseMapper<NotifyDelivery> { }
++public interface NotifyDeliveryMapper extends BaseMapperPlus<NotifyDelivery, NotifyDelivery> {
++    /** 只选启用的原生短信账号；实际领取仍须DAO执行CAS。 */
++    NotifyDelivery selectSmsReceiptCandidate(@Param("now") LocalDateTime now);
++}
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyProviderReceiptMapper.java
+@@ -0,0 +1,10 @@
++package org.namewta.notify.mapper;
++
++import org.apache.ibatis.annotations.Mapper;
++import org.namewta.common.mybatis.core.mapper.BaseMapperPlus;
++import org.namewta.notify.domain.entity.NotifyProviderReceipt;
++
++/** 回执幂等凭据映射器，仅供 DAO 使用。 */
++@Mapper
++public interface NotifyProviderReceiptMapper extends BaseMapperPlus<NotifyProviderReceipt, NotifyProviderReceipt> {
++}
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/ProviderCallbackPort.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/ProviderCallbackPort.java
+@@ -2,5 +2,6 @@
+ 
+ /** 供应商回调更新端口，验签和事务由 UseCase 负责。 */
+ public interface ProviderCallbackPort {
+-    void apply(String channel, String providerKey, String providerMessageId, String status, String eventId);
++    /** 多收件人共享消息编号时，target 必须准确标识收件人；空值仅允许唯一投递。 */
++    void apply(String channel, String providerKey, String providerMessageId, String status, String eventId, String target);
+ }
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/SmsReceiptProviderPort.java
+@@ -0,0 +1,11 @@
++package org.namewta.notify.port;
++
++import org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status;
++import org.namewta.notify.domain.entity.NotifyChannelAccount;
++import org.namewta.notify.domain.entity.NotifyDelivery;
++import java.time.Instant;
++
++/** 原生只读供应商适配边界，凭据只传给已固定的HTTPS端点。 */
++public interface SmsReceiptProviderPort {
++    Status query(NotifyChannelAccount account, NotifyDelivery delivery, Instant now);
++}
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/SmsReceiptQueryPort.java
+@@ -0,0 +1,11 @@
++package org.namewta.notify.port;
++
++import org.namewta.notify.domain.entity.NotifyDelivery;
++
++/** Worker只通过用例领取并核对，外部I/O不在领取事务中。 */
++public interface SmsReceiptQueryPort {
++    /** 领取一条到期短信；无候选或CAS竞争失败返回null。 */
++    NotifyDelivery claim();
++    /** 读取供应商状态并通过独立结果事务确认；不发送短信。 */
++    void query(NotifyDelivery delivery);
++}
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/SmsReceiptResultPort.java
+@@ -0,0 +1,7 @@
++package org.namewta.notify.port;
++
++/** 已鉴权原生查询的结果事务入口，不作为HTTP入口公开。 */
++public interface SmsReceiptResultPort {
++    /** 仅接受DELIVERED/UNDELIVERABLE，同结果重复确认不得重复生效。 */
++    void confirm(String supplier, String providerKey, String messageId, String target, String status);
++}
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyConfigService.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyConfigService.java
+@@ -92,11 +92,13 @@
+      */
+     public int addAccount(NotifyChannelAccountBo bo) {
+         validateChannel(bo.getChannel());
+-        if (dao.findAccount(bo.getChannel(), bo.getConfigKey()) != null) {
+-            throw new ServiceException("配置标识已存在");
++        if (dao.existsNamespace(bo.getChannel(), bo.getConfigKey())) {
++            throw new ServiceException("配置标识已使用，请选择新的标识");
+         }
+         NotifyChannelAccount entity = toAccountEntity(bo);
+         entity.setAccountId(IdGeneratorUtil.nextLongId());
++        entity.setVersion(0);
++        entity.setDelFlag("0");
+         if (isBlank(entity.getEnabled())) {
+             entity.setEnabled("N");
+         }
+@@ -119,13 +121,16 @@
+         NotifyChannelAccount current = requireAccount(bo.getAccountId());
+         validateChannel(bo.getChannel());
+         if (!current.getChannel().equals(bo.getChannel()) || !current.getConfigKey().equals(bo.getConfigKey())) {
+-            NotifyChannelAccount clash = dao.findAccount(bo.getChannel(), bo.getConfigKey());
+-            if (clash != null && !clash.getAccountId().equals(current.getAccountId())) {
+-                throw new ServiceException("配置标识已存在");
+-            }
++            throw new ServiceException("账号渠道和配置标识创建后不可修改");
++        }
++        if ("SMS".equals(current.getChannel()) && !isBlank(current.getSupplier())
++            && !current.getSupplier().trim().equals(nvl(bo.getSupplier()).trim())) {
++            throw new ServiceException("短信厂商创建后不可替换，请新增账号");
+         }
+         NotifyChannelAccount entity = toAccountEntity(bo);
+         entity.setAccountId(current.getAccountId());
++        entity.setVersion(current.getVersion());
++        entity.setDelFlag(current.getDelFlag());
+         if (isBlank(entity.getMailPass())) {
+             entity.setMailPass(current.getMailPass());
+         }
+@@ -137,6 +142,7 @@
+         }
+         validateEnabledCredentials(entity);
+         int rows = dao.update(entity);
++        if (rows != 1) throw new ServiceException("渠道账号已变化，请刷新后重试");
+         registerSms(dao.findAccount(entity.getAccountId()));
+         return rows;
+     }
+@@ -156,6 +162,7 @@
+         current.setEnabled(enabled);
+         validateEnabledCredentials(current);
+         int rows = dao.update(current);
++        if (rows != 1) throw new ServiceException("渠道账号已变化，请刷新后重试");
+         registerSms(current);
+         return rows;
+     }
+@@ -243,6 +250,17 @@
+             for (String name : mapping.keySet()) {
+                 if (!allowed.contains(name)) {
+                     throw new ServiceException("不允许映射未声明变量 " + name);
++                }
++            }
++            if (mapping.values().stream().anyMatch(this::isBlank)
++                || new java.util.HashSet<>(mapping.values()).size() != mapping.size()) {
++                throw new ServiceException("短信供应商参数不能空白或重复");
++            }
++            if (account != null && "tencent".equals(nvl(account.getSupplier()).trim())) {
++                for (int index = 1; index <= mapping.size(); index++) {
++                    if (!mapping.containsValue(Integer.toString(index))) {
++                        throw new ServiceException("腾讯短信变量请映射为连续的1..N位置");
++                    }
+                 }
+             }
+         }
+@@ -331,13 +349,22 @@
+         }
+         if ("MAIL".equals(account.getChannel())) {
+             if (isBlank(account.getHost()) || account.getPort() == null
+-                || isBlank(account.getMailFrom()) || isBlank(account.getMailPass())) {
+-                throw new ServiceException("启用邮件账号必须填写 SMTP 主机、端口、发件人和密码");
++                || account.getPort() < 1 || account.getPort() > 65535
++                || isBlank(account.getMailUser()) || isBlank(account.getMailFrom()) || isBlank(account.getMailPass())) {
++                throw new ServiceException("启用邮件账号必须填写 SMTP 主机、有效端口、用户名、发件人和授权密码");
+             }
+             return;
+         }
+         if (isBlank(account.getSupplier()) || isBlank(account.getAccessKeyId()) || isBlank(account.getAccessKeySecret())) {
+             throw new ServiceException("启用短信账号必须填写厂商、AccessKey 和密钥");
++        }
++        String supplier = account.getSupplier().trim();
++        if (("alibaba".equals(supplier) || "tencent".equals(supplier))
++            && isBlank(account.getSignature())) {
++            throw new ServiceException("启用阿里云或腾讯云短信必须填写已审核的短信签名");
++        }
++        if ("tencent".equals(supplier) && isBlank(account.getSdkAppId())) {
++            throw new ServiceException("启用腾讯云短信必须填写 SMS SDK AppID");
+         }
+     }
+ 
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java
+@@ -2,21 +2,27 @@
+ 
+ import lombok.RequiredArgsConstructor;
+ import org.namewta.common.core.exception.ServiceException;
++import org.namewta.common.json.utils.JsonUtils;
++import org.namewta.common.mybatis.utils.IdGeneratorUtil;
++import org.namewta.notify.dao.NotifyNotificationDao;
++import org.namewta.notify.dao.NotifyProviderReceiptDao;
+ import org.namewta.notify.domain.entity.NotifyDelivery;
+-import org.namewta.notify.dao.NotifyNotificationDao;
++import org.namewta.notify.domain.entity.NotifyProviderReceipt;
++import org.namewta.notify.domain.policy.NotificationDeliveryPolicy;
+ import org.namewta.notify.port.NotifyDispatchResultPort;
+-import org.namewta.notify.domain.policy.NotificationDeliveryPolicy;
+ import org.namewta.notify.port.ProviderCallbackPort;
+ import org.springframework.stereotype.Service;
++import org.springframework.dao.DuplicateKeyException;
+ 
++import java.nio.charset.StandardCharsets;
++import java.security.MessageDigest;
++import java.security.NoSuchAlgorithmException;
++import java.util.HexFormat;
++import java.util.List;
+ import java.util.Locale;
+ import java.util.Set;
+-import java.util.Map;
+-import java.util.concurrent.ConcurrentHashMap;
+ 
+-/**
+- * 供应商回执用例，负责幂等更新投递状态并刷新通知聚合状态。
+- */
++/** 已认证回执的持久幂等规则；由外层 UseCase 保证 receipt、状态与聚合同事务。 */
+ @Service
+ @RequiredArgsConstructor
+ public class ProviderCallbackService implements ProviderCallbackPort {
+@@ -24,38 +30,57 @@
+ 
+     private final NotifyNotificationDao dao;
+     private final NotifyDispatchResultPort resultPort;
+-    private final Map<String, Long> seenEvents = new ConcurrentHashMap<>();
++    private final NotifyProviderReceiptDao receipts;
+ 
+-    /** 应用供应商回执；旧状态等级高于回执时忽略乱序消息。 */
++    /**
++     * 账号内事件编号永久去重；同事件不同事实失败关闭，回滚不会消费事件。
++     * 传输时间戳由接入层验证，不进入业务摘要，允许重试时重新签名。
++     */
+     @Override
+-    public void apply(String channel, String providerKey, String providerMessageId, String status, String eventId) {
+-        if (channel == null || channel.isBlank() || providerMessageId == null || providerMessageId.isBlank()
+-            || status == null || status.isBlank()) {
+-            throw new ServiceException("回调渠道、消息编号和状态不能为空");
++    public void apply(String channel, String providerKey, String providerMessageId, String status, String eventId, String target) {
++        requireText(channel, 32); requireText(providerKey, 64); requireText(providerMessageId, 255);
++        requireText(status, 32); requireText(eventId, 255);
++        String normalizedChannel = channel.toUpperCase(Locale.ROOT);
++        String normalizedStatus = status.toUpperCase(Locale.ROOT);
++        String normalizedTarget = target == null ? "" : target;
++        if (!Set.of("MAIL", "SMS").contains(normalizedChannel)) throw new ServiceException("回调渠道不支持", 422);
++        if (!CALLBACK_STATUSES.contains(normalizedStatus)) throw new ServiceException("回调状态不支持", 422);
++        if (normalizedTarget.length() > 1000 || (!normalizedTarget.isEmpty() && normalizedTarget.isBlank())) {
++            throw new ServiceException("回调收件人无效", 422);
+         }
+-        if (providerKey == null || providerKey.isBlank() || eventId == null || eventId.isBlank()) {
+-            throw new ServiceException("回调供应商和事件 ID 不能为空");
++        String eventKey = digest(List.of(normalizedChannel, providerKey, eventId));
++        String factsHash = digest(List.of(normalizedChannel, providerKey, providerMessageId, normalizedStatus, normalizedTarget));
++        NotifyProviderReceipt committed = receipts.find(eventKey);
++        if (committed != null) {
++            requireSameFacts(committed, factsHash);
++            return;
+         }
+-        String normalizedStatus = status.toUpperCase(Locale.ROOT);
+-        if (!CALLBACK_STATUSES.contains(normalizedStatus)) throw new ServiceException("回调状态不支持");
+-        long now = System.currentTimeMillis();
+-        seenEvents.entrySet().removeIf(entry -> entry.getValue() < now - 10 * 60_000L);
+-        if (seenEvents.containsKey(eventId)) return;
+-        NotifyDelivery delivery = dao.deliveryByProvider(channel.toUpperCase(Locale.ROOT), providerKey, providerMessageId);
+-        if (delivery == null) throw new ServiceException("未找到对应投递记录");
++        var candidates = dao.deliveriesByProvider(normalizedChannel, providerKey, providerMessageId, normalizedTarget);
++        if (candidates.isEmpty()) throw new ServiceException("未找到对应投递记录，请稍后重试");
++        if (candidates.size() != 1) throw new ServiceException("回执投递不唯一，请指定准确收件人", 422);
++        NotifyDelivery delivery = candidates.getFirst();
+         // 与 dispatch 一致：Intent 在前，随后锁定并重新读取 Delivery。
+         if (dao.lockIntent(delivery.getIntentId()) == null) throw new ServiceException("通知不存在");
+         delivery = dao.lockDelivery(delivery.getDeliveryId());
+         if (delivery == null) throw new ServiceException("投递记录不存在");
+-        if (!channel.equalsIgnoreCase(delivery.getChannel())
++        if (!normalizedChannel.equals(delivery.getChannel())
+             || !providerKey.equals(delivery.getProviderKey())
+-            || !providerMessageId.equals(delivery.getProviderMessageId())) {
++            || !providerMessageId.equals(delivery.getProviderMessageId())
++            || (!normalizedTarget.isEmpty() && !normalizedTarget.equals(delivery.getTargetValue()))) {
+             throw new ServiceException("回执对应投递已变化");
+         }
+-        if (!NotificationDeliveryPolicy.canAdvance(delivery.getStatus(), normalizedStatus)) {
+-            seenEvents.putIfAbsent(eventId, now);
++        NotifyProviderReceipt receipt = new NotifyProviderReceipt();
++        receipt.setProviderReceiptId(IdGeneratorUtil.nextLongId());
++        receipt.setEventKey(eventKey); receipt.setFactsHash(factsHash); receipt.setDeliveryId(delivery.getDeliveryId());
++        receipt.setVersion(0); receipt.setDelFlag("0");
++        try {
++            if (receipts.insert(receipt) != 1) throw new ServiceException("回执持久化失败，请重试");
++        } catch (DuplicateKeyException duplicate) {
++            // MySQL 重复键只回滚当前语句，随后以当前读核对已提交的赢家。
++            requireSameFacts(receipts.lock(eventKey), factsHash);
+             return;
+         }
++        if (!NotificationDeliveryPolicy.canAdvance(delivery.getStatus(), normalizedStatus)) return;
+         String previousStatus = delivery.getStatus();
+         delivery.setStatus(normalizedStatus);
+         if ("ACCEPTED".equals(normalizedStatus)) delivery.setAcceptedAt(dao.databaseNow());
+@@ -63,10 +88,29 @@
+             delivery.setAcceptedAt(delivery.getAcceptedAt() == null ? dao.databaseNow() : delivery.getAcceptedAt());
+             delivery.setDeliveredAt(dao.databaseNow());
+         }
+-        int updated = dao.updateDeliveryStatus(delivery.getDeliveryId(), previousStatus, delivery);
+-        if (updated == 0) return;
+-        seenEvents.putIfAbsent(eventId, now);
++        if (dao.updateDeliveryStatus(delivery.getDeliveryId(), previousStatus, delivery) != 1) {
++            throw new ServiceException("回执状态写入冲突，请重试");
++        }
+         resultPort.refreshAggregate(delivery.getIntentId());
+     }
+ 
++    private static void requireText(String value, int maximum) {
++        if (value == null || value.isBlank() || value.length() > maximum) throw new ServiceException("回调参数为空或过长", 422);
++    }
++
++    private static void requireSameFacts(NotifyProviderReceipt receipt, String factsHash) {
++        if (receipt == null || !factsHash.equals(receipt.getFactsHash())) {
++            throw new ServiceException("回执事件编号已存在且业务事实不一致", 409);
++        }
++    }
++
++    /** JSON 数组保留字段边界，避免简单字符串拼接产生身份碰撞。 */
++    private static String digest(List<String> values) {
++        try {
++            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256")
++                .digest(JsonUtils.toJsonString(values).getBytes(StandardCharsets.UTF_8)));
++        } catch (NoSuchAlgorithmException unavailable) {
++            throw new IllegalStateException("SHA-256 unavailable", unavailable);
++        }
++    }
+ }
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/SmsReceiptQueryService.java
+@@ -0,0 +1,55 @@
++package org.namewta.notify.service.runtime;
++
++import lombok.RequiredArgsConstructor;
++import org.namewta.common.sms.notify.SmsDeliveryQueryClient.Status;
++import org.namewta.notify.dao.NotifyConfigDao;
++import org.namewta.notify.dao.NotifyNotificationDao;
++import org.namewta.notify.domain.entity.NotifyDelivery;
++import org.namewta.notify.port.SmsReceiptProviderPort;
++import org.namewta.notify.port.SmsReceiptResultPort;
++import org.springframework.stereotype.Service;
++import java.time.ZoneOffset;
++import java.util.Objects;
++
++/** 只读状态核对规则；领取事务与外部查询/结果事务明确分离。 */
++@Service
++@RequiredArgsConstructor
++public class SmsReceiptQueryService {
++    private final NotifyNotificationDao dao;
++    private final NotifyConfigDao configDao;
++    private final SmsReceiptProviderPort provider;
++    private final SmsReceiptResultPort results;
++
++    /** 预约15分钟后重试，覆盖单次最多20页的有界I/O和进程退出。 */
++    public NotifyDelivery claim() {
++        var now = dao.databaseNow().truncatedTo(java.time.temporal.ChronoUnit.SECONDS);
++        NotifyDelivery candidate = dao.smsReceiptCandidate(now);
++        if (candidate == null || dao.reserveSmsReceiptQuery(candidate, now.plusMinutes(15)) != 1) return null;
++        candidate.setReceiptQueryAt(now.plusMinutes(15));
++        return candidate;
++    }
++
++    /**
++     * 重新读取投递及账号后查询；停用/删除/状态变化均不调用供应商。
++     * 凭据修改期间完成的结果不应用，预约到期后使用新配置重新核对。
++     */
++    public void query(NotifyDelivery claimed) {
++        if (claimed == null) return;
++        NotifyDelivery delivery = dao.delivery(claimed.getDeliveryId());
++        if (delivery == null || !"SMS".equals(delivery.getChannel()) || !"ACCEPTED".equals(delivery.getStatus())
++            || !Objects.equals(claimed.getReceiptQueryAt(), delivery.getReceiptQueryAt())
++            || !Objects.equals(claimed.getProviderKey(), delivery.getProviderKey())
++            || !Objects.equals(claimed.getProviderMessageId(), delivery.getProviderMessageId())) return;
++        var account = configDao.findAccount("SMS", delivery.getProviderKey());
++        if (account == null || !"Y".equals(account.getEnabled())
++            || !("tencent".equals(account.getSupplier()) || "alibaba".equals(account.getSupplier()))) return;
++        var now = dao.databaseNow();
++        if (delivery.getAcceptedAt() == null || !delivery.getAcceptedAt().isAfter(now.minusHours(71))) return;
++        Status status = provider.query(account, delivery, now.toInstant(ZoneOffset.UTC));
++        if (status == Status.WAITING) return;
++        var current = configDao.findAccount(account.getAccountId());
++        if (current == null || !"Y".equals(current.getEnabled()) || !Objects.equals(account.getVersion(), current.getVersion())) return;
++        results.confirm(account.getSupplier(), delivery.getProviderKey(), delivery.getProviderMessageId(),
++            delivery.getTargetValue(), status.name());
++    }
++}
+--- a/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java
+@@ -2,8 +2,10 @@
+ 
+ import lombok.RequiredArgsConstructor;
+ import org.namewta.common.json.utils.JsonUtils;
++import org.namewta.common.core.exception.ServiceException;
+ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+ import org.namewta.notify.port.ProviderCallbackPort;
++import org.namewta.notify.port.SmsReceiptResultPort;
+ import org.springframework.stereotype.Service;
+ 
+ import javax.crypto.Mac;
+@@ -11,37 +13,68 @@
+ import java.nio.charset.StandardCharsets;
+ import java.util.HexFormat;
+ import java.util.Map;
+-import java.util.Objects;
++import java.util.Set;
+ import java.time.Instant;
+-import java.time.Duration;
+ 
+ /** 回调验签、解析和幂等更新用例。 */
+ @Service
+ @RequiredArgsConstructor
+-public class ProviderCallbackUseCase {
++public class ProviderCallbackUseCase implements SmsReceiptResultPort {
++    private static final String NATIVE_SMS_PREFIX = "native-sms:";
+     private final ProviderCallbackPort callbackService;
+ 
+     @DSTransactional
+     public void apply(String channel, String signature, String payload, String secret) {
+-        if (!verify(payload, signature, secret)) throw new IllegalArgumentException("回调验签失败");
+-        Map<String, Object> body = JsonUtils.parseMap(payload);
+-        String eventId = Objects.toString(body.get("eventId"), "");
+-        String timestamp = Objects.toString(body.get("timestamp"), "");
+-        String providerKey = Objects.toString(body.get("providerKey"), "");
++        if (!verify(payload, signature, secret)) throw new ServiceException("回调验签失败", 401);
++        Map<String, Object> body;
++        try {
++            body = JsonUtils.parseMap(payload);
++        } catch (RuntimeException malformed) {
++            throw new IllegalArgumentException("回调 JSON 格式错误");
++        }
++        if (body == null || !Set.of("eventId", "timestamp", "providerKey", "providerMessageId", "status", "target").containsAll(body.keySet())
++            || body.values().stream().anyMatch(value -> !(value instanceof String))) {
++            throw new IllegalArgumentException("回调字段不合法");
++        }
++        String eventId = text(body, "eventId");
++        if (eventId.startsWith(NATIVE_SMS_PREFIX)) throw new IllegalArgumentException("回调事件编号使用保留前缀");
++        String timestamp = text(body, "timestamp");
++        String providerKey = text(body, "providerKey");
+         if (eventId.isBlank() || timestamp.isBlank() || providerKey.isBlank()) {
+-            throw new IllegalArgumentException("鍥炶皟浜嬩欢鍏冩暟鎹笉瀹屾暣");
++            throw new IllegalArgumentException("回调事件元数据不完整");
+         }
+         try {
+-            if (Math.abs(Duration.between(Instant.parse(timestamp), Instant.now()).toSeconds()) > 300) {
+-                throw new IllegalArgumentException("鍥炶皟宸茶繃鏈");
++            Instant sentAt = Instant.parse(timestamp);
++            Instant now = Instant.now();
++            if (sentAt.isBefore(now.minusSeconds(300)) || sentAt.isAfter(now.plusSeconds(300))) {
++                throw new IllegalArgumentException("回调已过期");
+             }
+         } catch (java.time.DateTimeException exception) {
+-            throw new IllegalArgumentException("鍥炶皟鏃堕棿鏍煎紡閿欒");
++            throw new IllegalArgumentException("回调时间格式错误");
+         }
+-        String providerMessageId = Objects.toString(body.get("providerMessageId"), "");
+-        String status = Objects.toString(body.get("status"), "");
+-        if (providerMessageId.isBlank() || status.isBlank()) throw new IllegalArgumentException("回调参数不完整");
+-        callbackService.apply(channel, providerKey, providerMessageId, status, eventId);
++        callbackService.apply(channel, providerKey, text(body, "providerMessageId"), text(body, "status"), eventId, text(body, "target"));
++    }
++
++    /** 已鉴权HTTPS查询产生内部身份，与外部自定义事件隔离；仍复用同一持久事务。 */
++    @Override
++    @DSTransactional
++    public void confirm(String supplier, String providerKey, String messageId, String target, String status) {
++        if (!Set.of("tencent", "alibaba").contains(supplier)
++            || !Set.of("DELIVERED", "UNDELIVERABLE").contains(status)) {
++            throw new IllegalArgumentException("短信查询结果不合法");
++        }
++        try {
++            String identity = JsonUtils.toJsonString(java.util.List.of(supplier, messageId, target, status));
++            String eventId = NATIVE_SMS_PREFIX + HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256")
++                .digest(identity.getBytes(StandardCharsets.UTF_8)));
++            callbackService.apply("SMS", providerKey, messageId, status, eventId, target);
++        } catch (java.security.NoSuchAlgorithmException exception) {
++            throw new IllegalStateException("SHA-256 unavailable", exception);
++        }
++    }
++
++    private static String text(Map<String, Object> body, String name) {
++        return (String) body.getOrDefault(name, "");
+     }
+ 
+     private boolean verify(String payload, String signature, String secret) {
+@@ -53,4 +86,3 @@
+         } catch (Exception exception) { return false; }
+     }
+ }
+-
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/SmsReceiptQueryUseCase.java
+@@ -0,0 +1,22 @@
++package org.namewta.notify.usecase;
++
++import com.baomidou.dynamic.datasource.annotation.DSTransactional;
++import lombok.RequiredArgsConstructor;
++import org.namewta.notify.domain.entity.NotifyDelivery;
++import org.namewta.notify.port.SmsReceiptQueryPort;
++import org.namewta.notify.service.runtime.SmsReceiptQueryService;
++import org.springframework.stereotype.Service;
++
++/** 预约在短动态事务中提交，查询通过另一公开入口执行，避免自调用事务。 */
++@Service
++@RequiredArgsConstructor
++public class SmsReceiptQueryUseCase implements SmsReceiptQueryPort {
++    private final SmsReceiptQueryService service;
++
++    @Override
++    @DSTransactional
++    public NotifyDelivery claim() { return service.claim(); }
++
++    @Override
++    public void query(NotifyDelivery delivery) { service.query(delivery); }
++}
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/resources/mapper/notify/NotifyChannelAccountMapper.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
++<mapper namespace="org.namewta.notify.mapper.NotifyChannelAccountMapper">
++    <!-- 有意包含 del_flag=1 的保留标识；不读取或暴露账号凭据。 -->
++    <select id="existsNamespace" resultType="boolean">
++        select exists(select 1 from notify_channel_account where channel = #{channel} and config_key = #{configKey})
++    </select>
++</mapper>
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/main/resources/mapper/notify/NotifyDeliveryMapper.xml
+@@ -0,0 +1,16 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
++<mapper namespace="org.namewta.notify.mapper.NotifyDeliveryMapper">
++    <select id="selectSmsReceiptCandidate" resultType="org.namewta.notify.domain.entity.NotifyDelivery">
++        select d.* from notify_delivery d
++        join notify_channel_account a on a.channel = 'SMS' and a.config_key = d.provider_key
++        where d.channel = 'SMS' and d.status = 'ACCEPTED'
++          and d.provider_message_id is not null and d.provider_message_id &lt;&gt; ''
++          and d.accepted_at &lt;= timestampadd(second, -60, #{now})
++          and d.accepted_at &gt; timestampadd(hour, -71, #{now})
++          and (d.receipt_query_at is null or d.receipt_query_at &lt;= #{now})
++          and a.enabled = 'Y' and a.del_flag = '0' and a.supplier in ('tencent', 'alibaba')
++        order by coalesce(d.receipt_query_at, d.accepted_at), d.delivery_id
++        limit 1
++    </select>
++</mapper>
+--- /dev/null
++++ b/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/provider/Sms4jReceiptTest.java
+@@ -0,0 +1,104 @@
++package org.namewta.notify.adapter.provider;
++
++import cn.hutool.json.JSONUtil;
++import org.dromara.sms4j.api.SmsBlend;
++import org.dromara.sms4j.api.entity.SmsResponse;
++import org.dromara.sms4j.core.factory.SmsFactory;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.namewta.common.notify.exception.NotifyValidationException;
++import org.namewta.common.notify.model.NotifyTemplateContent;
++import org.namewta.common.sms.notify.Sms4jNotificationProviderResolver;
++
++import java.util.LinkedHashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.UUID;
++
++import static org.junit.jupiter.api.Assertions.*;
++import static org.mockito.ArgumentMatchers.*;
++import static org.mockito.Mockito.*;
++
++/** 实际Factory与项目发送边界；外部发送响应为按供应商协议构造的受控替身。 */
++@Tag("dev")
++class Sms4jReceiptTest {
++    @Test
++    void alibabaPreservesBizIdInsteadOfTheRequestId() throws Exception {
++        withBlend("alibaba", "{\"Code\":\"OK\",\"BizId\":\"owned-biz\",\"RequestId\":\"not-message-id\"}", true,
++            (blend, key) -> {
++                var result = new Sms4jNotificationProviderResolver().resolve(key).sender().send("13800000000", template(Map.of("code", "123456")));
++                assertTrue(result.success());
++                assertEquals("owned-biz", result.providerMessageId());
++            });
++    }
++
++    @Test
++    void tencentCorrelatesTheRequestedPhoneAndSortsNumericTemplatePositions() throws Exception {
++        withBlend("tencent", "{\"Response\":{\"RequestId\":\"request\",\"SendStatusSet\":["
++            + "{\"PhoneNumber\":\"+8613900000000\",\"SerialNo\":\"other\",\"Code\":\"Ok\"},"
++            + "{\"PhoneNumber\":\"+8613800000000\",\"SerialNo\":\"owned-serial\",\"Code\":\"Ok\"}]}}", true,
++            (blend, key) -> {
++                LinkedHashMap<String, String> unordered = new LinkedHashMap<>();
++                for (int i = 12; i > 0; i--) unordered.put(Integer.toString(i), "v" + i);
++                var result = new Sms4jNotificationProviderResolver().resolve(key).sender().send("13800000000", template(unordered));
++                assertEquals("owned-serial", result.providerMessageId());
++                verify(blend).sendMessage(eq("13800000000"), eq("owned-template"), argThat(params ->
++                    List.copyOf(params.values()).equals(java.util.stream.IntStream.rangeClosed(1, 12).mapToObj(i -> "v" + i).toList())));
++            });
++    }
++
++    @Test
++    void tencentInvalidPositionsAreRejectedBeforeTheProviderCall() throws Exception {
++        withBlend("tencent", "{}", true, (blend, key) -> {
++            var sender = new Sms4jNotificationProviderResolver().resolve(key).sender();
++            for (Map<String, String> params : List.of(Map.of("code", "123456"), Map.of("2", "gap"), Map.of("1", " "))) {
++                assertThrows(NotifyValidationException.class, () -> sender.send("13800000000", template(params)));
++            }
++            verify(blend, never()).sendMessage(anyString(), anyString(), any(LinkedHashMap.class));
++        });
++    }
++
++    @Test
++    void acceptedWithoutAUsableMessageIdDoesNotBecomeAFailureOrAnotherTargetsId() throws Exception {
++        for (String payload : List.of("{}", "{\"Response\":{\"SendStatusSet\":["
++            + "{\"PhoneNumber\":\"+8613900000000\",\"SerialNo\":\"other\",\"Code\":\"Ok\"}]}}")) {
++            withBlend("tencent", payload, true, (blend, key) -> {
++                var result = new Sms4jNotificationProviderResolver().resolve(key).sender().send("13800000000", template(Map.of("1", "code")));
++                assertTrue(result.success());
++                assertNull(result.providerMessageId());
++                verify(blend, times(1)).sendMessage(anyString(), anyString(), any(LinkedHashMap.class));
++            });
++        }
++    }
++
++    @Test
++    void explicitProviderRejectionRemainsFailed() throws Exception {
++        withBlend("alibaba", "{\"Code\":\"isv.INVALID_PARAMETERS\"}", false, (blend, key) -> {
++            var result = new Sms4jNotificationProviderResolver().resolve(key).sender().send("13800000000", template(Map.of()));
++            assertFalse(result.success());
++            assertNull(result.providerMessageId());
++        });
++    }
++
++    private NotifyTemplateContent template(Map<String, String> params) {
++        return new NotifyTemplateContent("owned", "owned-template", params, "");
++    }
++
++    private void withBlend(String supplier, String payload, boolean success, Scenario scenario) throws Exception {
++        String key = "owned-t23-" + UUID.randomUUID();
++        SmsBlend blend = mock(SmsBlend.class);
++        when(blend.getConfigId()).thenReturn(key);
++        when(blend.getSupplier()).thenReturn(supplier);
++        SmsResponse response = new SmsResponse();
++        response.setSuccess(success);
++        response.setConfigId(key);
++        response.setData(JSONUtil.parseObj(payload));
++        when(blend.sendMessage(anyString(), anyString(), any(LinkedHashMap.class))).thenReturn(response);
++        SmsFactory.register(blend);
++        try { scenario.run(blend, key); }
++        finally { SmsFactory.unregister(key); }
++    }
++
++    @FunctionalInterface
++    interface Scenario { void run(SmsBlend blend, String key) throws Exception; }
++}
+--- a/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyConfigServiceTest.java
++++ b/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyConfigServiceTest.java
+@@ -88,6 +88,7 @@
+         bo.setHost("smtp.example.com");
+         bo.setPort(465);
+         bo.setMailFrom("ops@example.com");
++        bo.setMailUser("ops@example.com");
+         bo.setMailPass("");
+         bo.setAccessKeySecret(" ");
+         service.updateAccount(bo);
+@@ -210,6 +211,120 @@
+         verify(dao, never()).insert(any(NotifyChannelAccount.class));
+     }
+ 
++    @Test
++    void disabledPresetsNeedNoCredentialsAndDoNotRegisterASender() {
++        for (String supplier : new String[]{"alibaba", "tencent", "qq", "163", "tencent-enterprise"}) {
++            NotifyConfigDao dao = mock(NotifyConfigDao.class);
++            SmsBlendRegistryPort registry = mock(SmsBlendRegistryPort.class);
++            var service = new NotifyConfigService(dao, registry);
++            NotifyChannelAccountBo bo = new NotifyChannelAccountBo();
++            bo.setChannel(supplier.equals("alibaba") || supplier.equals("tencent") ? "SMS" : "MAIL");
++            bo.setSupplier(supplier);
++            bo.setConfigKey("owned-" + supplier);
++            bo.setEnabled("N");
++            bo.setMinuteMax(60);
++            when(dao.insert(any(NotifyChannelAccount.class))).thenReturn(1);
++            assertEquals(1, service.addAccount(bo));
++            verify(registry, never()).upsert(any());
++        }
++    }
++
++    @Test
++    void commonSmsProvidersRequireApprovedSignatureAndTencentAppId() {
++        for (String supplier : new String[]{"alibaba", "tencent"}) {
++            NotifyConfigDao dao = mock(NotifyConfigDao.class);
++            SmsBlendRegistryPort registry = mock(SmsBlendRegistryPort.class);
++            var service = new NotifyConfigService(dao, registry);
++            NotifyChannelAccount current = new NotifyChannelAccount();
++            current.setAccountId(8L);
++            current.setChannel("SMS");
++            current.setSupplier(supplier);
++            current.setConfigKey("owned-" + supplier);
++            current.setAccessKeyId("owned-id");
++            current.setAccessKeySecret("owned-secret");
++            current.setEnabled("N");
++            when(dao.findAccount(8L)).thenReturn(current);
++            when(dao.update(any(NotifyChannelAccount.class))).thenReturn(1);
++            assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
++            current.setSignature("已审核签名");
++            if ("tencent".equals(supplier)) {
++                assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
++                current.setSdkAppId("1400000000");
++            }
++            verify(dao, never()).update(any(NotifyChannelAccount.class));
++            verify(registry, never()).upsert(any());
++            assertEquals(1, service.changeStatus(8L, "Y"));
++            verify(registry).upsert(current);
++        }
++    }
++
++    @Test
++    void smtpPresetRequiresLoginAndAValidPortBeforeEnable() {
++        NotifyConfigDao dao = mock(NotifyConfigDao.class);
++        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
++        NotifyChannelAccount current = account();
++        when(dao.findAccount(8L)).thenReturn(current);
++        current.setMailUser("");
++        assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
++        current.setMailUser("ops@example.com");
++        for (int invalid : new int[]{0, -1, 65536}) {
++            current.setPort(invalid);
++            assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
++        }
++        verify(dao, never()).update(any(NotifyChannelAccount.class));
++        current.setPort(465);
++        when(dao.update(any(NotifyChannelAccount.class))).thenReturn(1);
++        assertEquals(1, service.changeStatus(8L, "Y"));
++    }
++
++    @Test
++    void accountNamespaceCannotBeRenamedOrReusedAfterDeletion() {
++        NotifyConfigDao dao = mock(NotifyConfigDao.class);
++        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
++        when(dao.findAccount(8L)).thenReturn(account());
++        var bo = new NotifyChannelAccountBo();
++        bo.setAccountId(8L); bo.setChannel("MAIL"); bo.setConfigKey("renamed");
++        assertThrows(ServiceException.class, () -> service.updateAccount(bo));
++        bo.setConfigKey("smtp-main"); bo.setChannel("SMS");
++        assertThrows(ServiceException.class, () -> service.updateAccount(bo));
++        bo.setChannel("MAIL");
++        when(dao.existsNamespace("MAIL", "smtp-main")).thenReturn(true);
++        assertThrows(ServiceException.class, () -> service.addAccount(bo));
++        verify(dao, never()).insert(any(NotifyChannelAccount.class));
++        verify(dao, never()).update(any(NotifyChannelAccount.class));
++    }
++
++    @Test
++    void smsProviderCannotChangeWithinAnExistingNamespace() {
++        NotifyConfigDao dao = mock(NotifyConfigDao.class);
++        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
++        var current = account(); current.setChannel("SMS"); current.setSupplier("tencent");
++        when(dao.findAccount(8L)).thenReturn(current);
++        var bo = new NotifyChannelAccountBo();
++        bo.setAccountId(8L); bo.setChannel("SMS"); bo.setConfigKey("smtp-main"); bo.setSupplier("alibaba");
++        assertThrows(ServiceException.class, () -> service.updateAccount(bo));
++        verify(dao, never()).update(any(NotifyChannelAccount.class));
++    }
++
++    @Test
++    void smsMappingsRejectDuplicateAndMissingPositionsBeforePersistence() {
++        NotifyConfigDao dao = mock(NotifyConfigDao.class);
++        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
++        var current = account(); current.setChannel("SMS"); current.setSupplier("tencent");
++        when(dao.findAccount(8L)).thenReturn(current);
++        var bo = new NotifySceneBindingBo();
++        bo.setSceneCode("auth-captcha"); bo.setChannel("SMS"); bo.setAccountId(8L); bo.setSmsTemplateCode("owned-approved");
++        for (var mapping : java.util.List.of(Map.of("code", "1", "expireMinutes", "1"),
++            Map.of("code", "1", "expireMinutes", "3"), Map.of("code", "code", "expireMinutes", "minutes"))) {
++            bo.setSmsParamMapping(mapping);
++            assertThrows(ServiceException.class, () -> service.saveBinding(bo));
++        }
++        verify(dao, never()).insert(any(NotifySceneBinding.class));
++        bo.setSmsParamMapping(Map.of("code", "2", "expireMinutes", "1"));
++        when(dao.insert(any(NotifySceneBinding.class))).thenReturn(1);
++        assertEquals(1, service.saveBinding(bo));
++    }
++
+     private NotifyChannelAccount account() {
+         NotifyChannelAccount account = new NotifyChannelAccount();
+         account.setAccountId(8L);
+@@ -220,6 +335,7 @@
+         account.setHost("smtp.example.com");
+         account.setPort(465);
+         account.setMailFrom("ops@example.com");
++        account.setMailUser("ops@example.com");
+         account.setMailPass("keep-me");
+         return account;
+     }
+--- /dev/null
++++ b/docs/notify-providers.md
+@@ -0,0 +1,47 @@
++# 通知供应商配置
++
++在管理端「通知中心 → 通知配置」配置账号，再将账号绑定到需要的通知场景。新环境包含以下停用账号；已有环境可点「新增账号」选择相同预设，无须重放初始化 SQL。
++
++| 预设 | 已填参数 | 需要填写 |
++|---|---|---|
++| 腾讯云短信 `sms-tencent` | 厂商 `tencent` | SecretId、SecretKey、已审核短信签名、SMS SDK AppID |
++| 阿里云短信 `sms-alibaba` | 厂商 `alibaba` | AccessKey ID、AccessKey Secret、已审核短信签名 |
++| QQ 邮箱 `mail-qq` | `smtp.qq.com:465`，SSL | 完整邮箱用户名、发件人地址、SMTP 授权码 |
++| 网易 163 `mail-163` | `smtp.163.com:465`，SSL | 完整邮箱用户名、发件人地址、客户端授权密码 |
++| 腾讯企业邮箱 `mail-tencent-enterprise` | `smtp.exmail.qq.com:465`，SSL | 完整邮箱用户名、发件人地址、客户端专用密码 |
++
++腾讯企业邮箱用于企业微信中的邮箱场景；企业微信应用消息或群机器人不属于邮件渠道。邮箱所有者需要先在对应邮箱设置中开通 SMTP；企业邮箱还可能受管理员的客户端访问策略限制。预设没有账号、密码或密钥，默认停用，也不会自动绑定业务场景。
++
++1. 编辑预设账号，填入凭据和必填字段后启用。密钥只写不读，编辑时留空保留已保存的值。每分钟 60 次是本地初始限额，应按账号配额和业务需求调整。
++2. 邮件场景已有验证码、身份变更、企业转移、工作流和公告的文案，选择启用的邮箱账号并保存绑定即可使用；可按需调整文案中的声明变量。
++3. 短信场景还必须填写供应商控制台审核通过的模板 ID/CODE。阿里云变量映射填供应商参数名；腾讯云变量映射填模板占位的位置 `1`、`2`、`3`……，必须从 1 连续编号、不能重复。模板 ID、签名和 SMS SDK AppID 均属于账号实际资源，预设无法替账号所有者申请。
++4. 使用自己的测试收件人完成账号和场景试发，再绑定正式业务。没有绑定或账号停用时该渠道会明确失败，不会自动选用其他账号。
++
++账号的渠道、配置标识和已选择的短信厂商创建后不可替换；切换厂商请新增账号。删除账号会隐藏账号并保留配置标识，不能再用同一标识创建新账号，以免历史回执误归属。
++
++发送成功表示供应商或 SMTP 服务器已受理。阿里云保存 `BizId`，腾讯云保存该收件人的 `SerialNo`；请求级 `RequestId` 不作为送达关联号。成功响应缺少可确认的流水号时保留“已受理”，不会仅因缺 ID 自动重复发送。SMTP 受理不等于已投递或已读。
++
++厂商原生回执的字段、认证和确认响应必须按各自协议接入。现有 `X-Notify-Signature` 是本系统的自定义 HMAC 格式，腾讯/阿里短信原生推送不会自动携带它；不得把该地址直接当作已支持的厂商回调。SMTP 预设不提供 HTTP 送达事件。
++
++腾讯、阿里的已受理短信会自动查询送达状态，复用账号密钥，无须另外设置公网回调地址或回调密钥。腾讯账号需允许 `sms:DescribeSendRecordList`，阿里账号需允许 `dysms:QuerySendDetails`；账号停用或删除后停止查询。不同云账号请使用新的配置标识，已有配置的凭据更新用于同一云账号的密钥轮换。
++
++首次核对最早在受理一分钟后进行；每个应用节点每轮最多查询一条，间隔五秒，同一投递预约十五分钟后才能再次领取。数据库预约避免多个节点同时领取同一个到期快照，进程退出后可到期恢复。跨节点总请求量仍需按实际部署规模和厂商额度评估；这是初始调度参数，不是生产吞吐保证。
++
++自动核对持续至受理后 71 小时，超过窗口、没有流水号、供应商查询失败或关联不明确时保留“已受理”，不会当作送达或重新发送。腾讯完整扫描最多 1000 条号码记录，超过范围拒绝确认；阿里按 BizId、号码及发送日核对唯一记录。可通过供应商控制台核实仍未确认的记录。查询窗口与供应商重试期限无关，已经保存的去重记录不自动删除。依据：[腾讯发送记录查询](https://cloud.tencent.com/document/api/382/137245)、[阿里发送详情查询](https://help.aliyun.com/zh/sms/developer-reference/api-dysmsapi-2017-05-25-querysenddetails)。
++
++官方参考：[腾讯云 SMTP 配置](https://intl.cloud.tencent.com/zh/document/product/1266/71700)、[网易客户端设置](https://help.mail.126.com/faqDetail.do?code=d7a5dc8471cd0c0e8b4b8f4f8e49998b374173cfe9171305fa1ce630d7f67ac25c12dcb3d46222b6)、[腾讯云发送短信](https://cloud.tencent.com/document/api/382/38778)、[阿里云发送短信](https://help.aliyun.com/zh/sms/developer-reference/api-dysmsapi-2017-05-25-sendsms)、[腾讯云状态回执](https://cloud.tencent.com/document/product/382/59178)、[阿里云状态回执](https://help.aliyun.com/zh/sms/developer-reference/smsreport-http)。
++
++
++## 自定义受信回执接入
++
++`POST /notify/callback/{SMS|MAIL}` 仅供已完成来源验证的受信适配器使用；预设账号的发送不需要配置此接口。使用 `Content-Type: application/json`，`X-Notify-Signature` 为独立 `notify.callback-secret` 对完整 UTF-8 正文计算的 HMAC-SHA256 十六进制值。未配置密钥时拒绝全部请求，生产接入应使用 HTTPS。
++
++正文包含字符串 `eventId`、`timestamp`（ISO Instant）、`providerKey`（账号配置标识）、`providerMessageId`、`status`，可选字符串 `target`。其他字段和非字符串值拒绝。`eventId` 在一个渠道账号内必须唯一，每个收件人的状态事件单独编号；同消息多收件人时必须填写准确的 `target`。状态支持 `ACCEPTED`、`DELIVERED`、`UNDELIVERABLE`、`FAILED`、`UNKNOWN`，终态不被迟到的低等级状态覆盖。
++
++`eventId` 不得以 `native-sms:` 开头，该前缀保留给内部已鉴权状态查询；原生核对和自定义回执使用独立事件身份，共享持久事务和单向状态规则。
++
++签名时间允许当前时间前后 5 分钟。生产方重试时保留事件编号与业务事实，可更新时间戳并对新的完整原文重签。渠道和状态统一为大写，其余业务字符串必须保持一致；更换目标、消息号或状态必须使用新事件编号。数据库凭据不自动过期，事务回滚不消费事件，重启不会忘记已处理事件。
++
++只有 HTTP 200 且 JSON 响应 `code=200` 才是已提交确认（含相同事实重复）；项目通用错误处理可能返回 HTTP 200 的失败响应，不能仅凭传输状态确认。401 表示验签失败，400 表示正文或时间戳错误，409 表示事件编号被不同事实复用，422 表示非法参数或关联不唯一。503 表示发送结果尚未关联或业务写入暂时失败；500/503、连接中断或未收到确认时，可按相同事实重新签名重试。不要把腾讯/阿里原生回调地址直接配置到此入口，也不要把 SMTP 受理转换成 `DELIVERED`。
++
++回执正文可能包含精确收件地址，HTTP 和操作日志只保留请求元数据及脱敏摘要；业务验签仍读取完整原文。
+--- a/frontend/packages/web-domains/notify/src/ConfigPage.vue
++++ b/frontend/packages/web-domains/notify/src/ConfigPage.vue
+@@ -126,6 +126,13 @@
+ 
+     <el-dialog v-model="accountVisible" :title="accountForm.accountId ? '编辑账号' : '新增账号'" width="640px">
+       <el-form :model="accountForm" label-width="120px">
++        <el-form-item v-if="!accountForm.accountId" label="供应商预设">
++          <el-select v-model="presetKey" aria-label="供应商预设" @change="applyPreset">
++            <el-option label="手动配置" value="" />
++            <el-option v-for="item in availablePresets" :key="item.key" :label="item.label" :value="item.key" />
++          </el-select>
++          <div class="text-sm">切换预设会重置尚未保存的账号信息。</div>
++        </el-form-item>
+         <el-form-item label="配置标识" required>
+           <el-input v-model="accountForm.configKey" :disabled="Boolean(accountForm.accountId)" />
+         </el-form-item>
+@@ -139,13 +146,13 @@
+           <el-form-item label="SMTP 主机"><el-input v-model="accountForm.host" /></el-form-item>
+           <el-form-item label="端口"><el-input-number v-model="accountForm.port" :min="1" /></el-form-item>
+           <el-form-item label="发件人"><el-input v-model="accountForm.mailFrom" /></el-form-item>
+-          <el-form-item label="用户名"><el-input v-model="accountForm.mailUser" /></el-form-item>
+-          <el-form-item label="密码">
++          <el-form-item label="用户名"><el-input v-model="accountForm.mailUser" placeholder="完整邮箱地址" /></el-form-item>
++          <el-form-item label="SMTP 授权密码">
+             <el-input
+               v-model="accountForm.mailPass"
+               type="password"
+               show-password
+-              :placeholder="accountForm.mailPassSet ? '留空保持原密码' : '请输入密码'"
++              :placeholder="accountForm.mailPassSet ? '留空保持原密码' : '邮箱开通 SMTP 后生成的授权码或客户端专用密码'"
+             />
+           </el-form-item>
+           <el-form-item label="SSL">
+@@ -156,7 +163,7 @@
+           </el-form-item>
+         </template>
+         <template v-else>
+-          <el-form-item label="厂商"><el-input v-model="accountForm.supplier" placeholder="alibaba / tencent" /></el-form-item>
++          <el-form-item label="厂商"><el-input v-model="accountForm.supplier" :disabled="supplierLocked" placeholder="alibaba / tencent" /></el-form-item>
+           <el-form-item label="AccessKey"><el-input v-model="accountForm.accessKeyId" /></el-form-item>
+           <el-form-item label="密钥">
+             <el-input
+@@ -166,8 +173,8 @@
+               :placeholder="accountForm.accessKeySecretSet ? '留空保持原密钥' : '请输入密钥'"
+             />
+           </el-form-item>
+-          <el-form-item label="签名"><el-input v-model="accountForm.signature" /></el-form-item>
+-          <el-form-item label="应用 ID"><el-input v-model="accountForm.sdkAppId" /></el-form-item>
++          <el-form-item label="签名"><el-input v-model="accountForm.signature" placeholder="供应商审核通过的短信签名" /></el-form-item>
++          <el-form-item label="应用 ID"><el-input v-model="accountForm.sdkAppId" placeholder="腾讯云必填 SMS SDK AppID；阿里云无需填写" /></el-form-item>
+         </template>
+         <el-form-item label="备注"><el-input v-model="accountForm.remark" /></el-form-item>
+       </el-form>
+@@ -224,7 +231,7 @@
+           <el-form-item v-for="item in sceneForm.variables" :key="item.name" :label="item.name">
+             <el-input
+               v-model="sceneForm.smsParamMapping![item.name]"
+-              :placeholder="'映射到供应商参数名，样例 ' + (item.example || item.name)"
++              placeholder="阿里云填参数名；腾讯云填模板中的位置 1、2、3…"
+             />
+           </el-form-item>
+         </template>
+@@ -264,6 +271,7 @@
+ import { ElMessage, ElMessageBox } from 'element-plus';
+ import { computed, onMounted, ref } from 'vue';
+ import type { NotifyWebRuntime } from './runtime';
++import { accountFromPreset, accountPresets } from './config/account-presets';
+ 
+ const { runtime } = defineProps<{ runtime: NotifyWebRuntime }>();
+ const channel = ref<NotifyConfigChannel>('MAIL');
+@@ -284,6 +292,9 @@
+ const testAccountId = ref<string | number | undefined>();
+ const testSceneCode = ref('');
+ const accountForm = ref<NotifyChannelAccount>(emptyAccount());
++const presetKey = ref('');
++const supplierLocked = ref(false);
++const availablePresets = computed(() => accountPresets.filter(item => item.channel === channel.value));
+ const sceneForm = ref<NotifySceneBinding | null>(null);
+ 
+ const enabledAccounts = computed(() => accounts.value.filter(item => item.enabled === 'Y'));
+@@ -294,16 +305,11 @@
+ });
+ 
+ function emptyAccount(): NotifyChannelAccount {
+-  return {
+-    channel: channel.value,
+-    configKey: '',
+-    enabled: 'N',
+-    minuteMax: 60,
+-    sslEnable: 'N',
+-    starttlsEnable: 'N',
+-    mailPass: '',
+-    accessKeySecret: ''
+-  };
++  return accountFromPreset(channel.value);
++}
++
++function applyPreset() {
++  accountForm.value = accountFromPreset(channel.value, presetKey.value);
+ }
+ 
+ function showError(error: unknown, fallback: string) {
+@@ -341,6 +347,8 @@
+ }
+ 
+ function openAccount(row?: NotifyChannelAccount) {
++  presetKey.value = '';
++  supplierLocked.value = Boolean(row?.supplier?.trim());
+   accountForm.value = row
+     ? { ...row, channel: channel.value, mailPass: '', accessKeySecret: '' }
+     : emptyAccount();
+@@ -378,7 +386,7 @@
+ 
+ async function removeAccount(row: NotifyChannelAccount) {
+   if (!row.accountId) return;
+-  await ElMessageBox.confirm('确认删除该渠道账号？', '提示');
++  await ElMessageBox.confirm('确认删除该渠道账号？删除后配置标识仍将保留，请勿重复使用。', '提示');
+   try {
+     await runtime.service.config.removeAccount(row.accountId);
+     await reload();
+--- /dev/null
++++ b/frontend/packages/web-domains/notify/src/config/account-presets.test.ts
+@@ -0,0 +1,27 @@
++import { describe, expect, it } from 'vitest';
++import { accountFromPreset } from './account-presets';
++
++describe('账号预设草稿隔离', () => {
++  it('切换供应商和重新打开不会携带前一草稿的凭据或启用状态', () => {
++    const first = accountFromPreset('MAIL', 'mail-qq');
++    first.mailPass = 'owned-draft-secret';
++    first.mailUser = 'owned@example.test';
++    first.enabled = 'Y';
++    for (const next of [accountFromPreset('MAIL', 'mail-163'), accountFromPreset('MAIL', 'mail-qq'), accountFromPreset('SMS', 'sms-tencent')]) {
++      expect(next.enabled).toBe('N');
++      expect(next.mailPass).toBe('');
++      expect(next.accessKeySecret).toBe('');
++      expect(next.mailUser).toBeUndefined();
++    }
++    expect(first.mailPass).toBe('owned-draft-secret');
++  });
++
++  it('跨渠道或未知预设保持空白草稿，不隐式改选其他供应商', () => {
++    for (const key of ['sms-tencent', 'unknown']) {
++      const account = accountFromPreset('MAIL', key);
++      expect(account.configKey).toBe('');
++      expect(account.host).toBeUndefined();
++      expect(account.supplier).toBeUndefined();
++    }
++  });
++});
+--- /dev/null
++++ b/frontend/packages/web-domains/notify/src/config/account-presets.ts
+@@ -0,0 +1,31 @@
++import type { NotifyChannelAccount, NotifyConfigChannel } from '@namewta/domain-notify';
++
++/** 只用于新账号表单的连接预填；发送时仍以服务端已保存、已启用的账号为准。 */
++export const accountPresets = [
++  { key: 'mail-qq', label: 'QQ 邮箱', channel: 'MAIL', host: 'smtp.qq.com' },
++  { key: 'mail-163', label: '网易 163 邮箱', channel: 'MAIL', host: 'smtp.163.com' },
++  { key: 'mail-tencent-enterprise', label: '腾讯企业邮箱（企业微信）', channel: 'MAIL', host: 'smtp.exmail.qq.com' },
++  { key: 'sms-tencent', label: '腾讯云短信', channel: 'SMS', supplier: 'tencent' },
++  { key: 'sms-alibaba', label: '阿里云短信', channel: 'SMS', supplier: 'alibaba' }
++] as const;
++
++/** 切换预设生成新草稿，禁止把另一个供应商尚未保存的密钥带入新账号。 */
++export function accountFromPreset(channel: NotifyConfigChannel, key = ''): NotifyChannelAccount {
++  const preset = accountPresets.find(item => item.channel === channel && item.key === key);
++  const account: NotifyChannelAccount = {
++    channel,
++    configKey: preset?.key ?? '',
++    enabled: 'N',
++    minuteMax: 60,
++    sslEnable: channel === 'MAIL' ? 'Y' : 'N',
++    starttlsEnable: 'N',
++    mailPass: '',
++    accessKeySecret: ''
++  };
++  if (preset?.channel === 'MAIL') {
++    account.host = preset.host;
++    account.port = 465;
++  }
++  if (preset?.channel === 'SMS') account.supplier = preset.supplier;
++  return account;
++}
+--- a/frontend/packages/web-domains/notify/src/index.test.ts
++++ b/frontend/packages/web-domains/notify/src/index.test.ts
+@@ -55,7 +55,8 @@
+     const smsSceneStart = page.lastIndexOf('<template v-else>');
+     const smsSceneBlock = page.slice(smsSceneStart, page.indexOf('</template>', smsSceneStart));
+     expect(smsSceneBlock).toContain('smsTemplateCode');
+-    expect(smsSceneBlock).toContain('映射到供应商参数名');
++    expect(smsSceneBlock).toContain('阿里云填参数名');
++    expect(smsSceneBlock).toContain('腾讯云填模板中的位置');
+     expect(smsSceneBlock).toContain('禁止自由正文');
+     expect(smsSceneBlock).not.toContain('type="textarea"');
+     expect(smsSceneBlock).not.toContain('mailBody');
+--- a/release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql
++++ b/release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql
+@@ -1453,6 +1453,7 @@
+     error_code varchar(128) default null comment '错误码',
+     error_message varchar(2000) default null comment '清洗后的错误信息',
+     accepted_at datetime default null comment '供应商接受时间',
++    receipt_query_at datetime default null comment '短信状态下次核对时间，不触发重发',
+     delivered_at datetime default null comment '最终送达时间',
+     read_at datetime default null comment '用户阅读时间',
+     version int not null default 0 comment '乐观锁版本',
+@@ -1465,9 +1466,27 @@
+     unique key uk_notify_delivery_recipient_channel (recipient_id, channel),
+     key idx_notify_delivery_intent (intent_id),
+     key idx_notify_delivery_status_time (status, create_time),
+-    unique key uk_notify_delivery_provider_message (provider_key, channel, provider_message_id),
++    key idx_notify_delivery_receipt_query (channel, status, receipt_query_at, accepted_at),
++    key idx_notify_delivery_account_message (provider_key, channel, provider_message_id),
+     key idx_notify_delivery_provider_message (provider_message_id)
+ ) engine=innodb comment='用户渠道投递';
++
++create table notify_provider_receipt (
++    provider_receipt_id bigint not null comment '回执主键',
++    event_key char(64) character set ascii collate ascii_bin not null comment '渠道账号事件唯一摘要',
++    facts_hash char(64) character set ascii collate ascii_bin not null comment '不含传输时间戳的业务事实摘要',
++    delivery_id bigint not null comment '已关联的投递主键',
++    version int not null default 0 comment '乐观锁版本',
++    create_dept bigint default null comment '创建部门',
++    create_time datetime not null comment '首次处理时间',
++    create_by bigint default null comment '创建者',
++    update_time datetime default null comment '更新时间',
++    update_by bigint default null comment '更新者',
++    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常 1删除）',
++    primary key (provider_receipt_id),
++    unique key uk_notify_provider_receipt_event (event_key),
++    key idx_notify_provider_receipt_delivery (delivery_id)
++) engine=innodb comment='通知回执持久幂等凭据';
+ 
+ create table notify_attempt (
+     attempt_id bigint(20) not null comment 'Provider 尝试主键',
+@@ -1573,11 +1592,13 @@
+     sdk_app_id varchar(128) default null comment '短信应用 ID',
+     minute_max int not null default 60 comment '账号每分钟上限',
+     remark varchar(500) default null comment '备注',
++    version int not null default 0 comment '乐观锁版本',
+     create_dept bigint(20) default null comment '创建部门',
+     create_by bigint(20) default null comment '创建者',
+     create_time datetime not null comment '创建时间',
+     update_by bigint(20) default null comment '更新者',
+     update_time datetime default null comment '更新时间',
++    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常 1删除，保留配置标识）',
+     primary key (account_id),
+     unique key uk_notify_channel_account (channel, config_key)
+ ) engine=innodb comment='通知渠道账号';
+--- a/release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql
++++ b/release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql
+@@ -1580,6 +1580,28 @@
+     (2100600000000000023, 2100600000000000036, 2100600000000000051, 2100600000000000052,
+      2100600000000000053, 2100600000000000054, 2100600000000000055);
+ 
++-- 外部渠道只预置连接参数：默认停用、密钥留空，不绑定场景或产生发送任务。
++insert into notify_channel_account
++    (account_id, channel, config_key, enabled, supplier, host, port, mail_from, mail_user, mail_pass,
++     ssl_enable, starttls_enable, access_key_id, access_key_secret, signature, sdk_app_id, minute_max,
++     remark, create_dept, create_by, create_time, update_by, update_time)
++values
++    (2100640000000000001, 'MAIL', 'mail-qq', 'N', null, 'smtp.qq.com', 465, '', '', '',
++     'Y', 'N', '', '', '', '', 60, 'QQ 邮箱：填写完整邮箱地址与 SMTP 授权码，启用后绑定场景。',
++     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
++    (2100640000000000002, 'MAIL', 'mail-163', 'N', null, 'smtp.163.com', 465, '', '', '',
++     'Y', 'N', '', '', '', '', 60, '网易 163 邮箱：填写完整邮箱地址与客户端授权密码，启用后绑定场景。',
++     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
++    (2100640000000000003, 'MAIL', 'mail-tencent-enterprise', 'N', null, 'smtp.exmail.qq.com', 465, '', '', '',
++     'Y', 'N', '', '', '', '', 60, '腾讯企业邮箱（企业微信）：填写邮箱账号与客户端专用密码，需先开启 SMTP 服务。',
++     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
++    (2100640000000000004, 'SMS', 'sms-tencent', 'N', 'tencent', null, null, '', '', '',
++     'N', 'N', '', '', '', '', 60, '腾讯云短信：填写 SecretId、SecretKey、已审核签名、SMS SDK AppID；场景中填写模板 ID 与参数。',
++     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
++    (2100640000000000005, 'SMS', 'sms-alibaba', 'N', 'alibaba', null, null, '', '', '',
++     'N', 'N', '', '', '', '', 60, '阿里云短信：填写 AccessKey ID、AccessKey Secret 与已审核签名；场景中填写模板 CODE 与参数。',
++     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate());
++
+ insert into notify_scene_binding
+     (binding_id, scene_code, channel, account_id, mail_subject, mail_body, sms_template_code,
+      sms_param_mapping_json, template_minute_max, restricted, recipient_minute_max, recipient_day_max,
+--- a/release-artifacts/tests/notify-baseline-contract.test.mjs
++++ b/release-artifacts/tests/notify-baseline-contract.test.mjs
+@@ -131,3 +131,35 @@
+   assert.doesNotMatch(cleanup[0], /'notify\/monitor\/index'/,
+     '清理语句不能按当前通知监控 component 删除有效菜单');
+ });
++
++test('常见短信和邮件预设默认停用且不携带账号凭据或隐式场景绑定', () => {
++  const insert = dml.match(/insert\s+into\s+notify_channel_account\s*\(([^)]+)\)\s*values\s*([\s\S]*?);/i);
++  assert.ok(insert);
++  const columns = splitSqlList(insert[1]);
++  const accounts = splitSqlList(insert[2]).map(row => {
++    const values = splitSqlList(row.slice(1, -1));
++    assert.equal(columns.length, values.length);
++    return Object.fromEntries(columns.map((column, index) => [column, values[index]]));
++  });
++  assert.equal(accounts.length, 5);
++  assert.equal(new Set(accounts.map(row => row.account_id)).size, 5);
++  assert.deepEqual(accounts.filter(row => row.channel === "'SMS'").map(row => row.supplier).sort(), ["'alibaba'", "'tencent'"]);
++  assert.deepEqual(accounts.filter(row => row.channel === "'MAIL'").map(row => row.host).sort(),
++    ["'smtp.163.com'", "'smtp.exmail.qq.com'", "'smtp.qq.com'"]);
++  for (const account of accounts) {
++    assert.equal(account.enabled, "'N'");
++    for (const field of ['mail_from', 'mail_user', 'mail_pass', 'access_key_id', 'access_key_secret', 'signature', 'sdk_app_id']) {
++      assert.equal(account[field], "''", `${account.config_key}: ${field} 必须由账号所有者填写`);
++    }
++    if (account.channel === "'MAIL'") {
++      assert.equal(account.ssl_enable, "'Y'");
++      assert.equal(account.starttls_enable, "'N'");
++      assert.equal(account.port, '465');
++    }
++  }
++  const scenes = dml.match(/insert\s+into\s+notify_scene_binding\s*\(([^)]+)\)\s*values\s*([\s\S]*?);/i);
++  assert.ok(scenes);
++  const accountIndex = splitSqlList(scenes[1]).indexOf('account_id');
++  assert.ok(accountIndex >= 0);
++  for (const row of splitSqlList(scenes[2])) assert.equal(splitSqlList(row.slice(1, -1))[accountIndex], 'null');
++});

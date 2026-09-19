@@ -1,0 +1,31 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "--config",
+    "playwright.registration.config.ts"
+  ],
+  "cwd": "frontend",
+  "exit_code": 0,
+  "seconds": 9.63,
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-browser-v1-registration.log",
+  "owned_origins": [
+    "https://127.0.0.1:46451",
+    "https://127.0.0.1:38893"
+  ],
+  "boundary": "Real built Apps/Chrome/TLS/Axios/Pinia/Router; explicit Playwright API identity and fault fixtures, no backend/database claim",
+  "counts": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0
+  },
+  "expected_tests": 10,
+  "source_fingerprint": "e82d67bfc48be34beba20dfad06848e15965f96ba172ddb5f30a8e752c856d66",
+  "source_unchanged": true,
+  "owned_cleanup": true,
+  "real_https_sse_connections": 0,
+  "verification_exit_code": 0
+}

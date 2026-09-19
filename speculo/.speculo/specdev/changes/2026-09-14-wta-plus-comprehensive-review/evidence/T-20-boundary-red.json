@@ -1,0 +1,67 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/platform-http",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 0.8,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-red-1.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/adapter-axios-browser",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 0.85,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-red-2.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-system",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 1.34,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-red-3.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/domain-admin",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.86,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-red-4.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/home-web",
+      "test"
+    ],
+    "cwd": "frontend",
+    "exit_code": 1,
+    "seconds": 1.25,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20-boundary-red-5.log"
+  }
+]

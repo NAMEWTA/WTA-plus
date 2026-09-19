@@ -1,0 +1,75 @@
+{
+  "captured_at": "2026-09-18T08:52:00.253317+00:00",
+  "results": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "lint"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> @namewta/sso-web@0.0.0 lint /srv/WTA-plus/frontend/apps/sso-web\n> oxlint src vite.config.ts e2e playwright.security.config.ts\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@namewta/sso-web",
+        "typecheck"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> @namewta/sso-web@0.0.0 typecheck /srv/WTA-plus/frontend/apps/sso-web\n> vue-tsc --noEmit -p tsconfig.json\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "architecture:check"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "exit_code": 0,
+      "stdout": "\n> wta-vue-plus@6.0.0 architecture:check /srv/WTA-plus/frontend\n> namewta-architecture check --root .\n\nArchitecture check passed: 36 workspace package(s), 0 reviewed baseline violation(s).\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+        "backend/wta-modules/wta-sso",
+        "--mode",
+        "layered"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "exit_code": 0,
+      "stdout": "Validated layered module: backend/wta-modules/wta-sso (32 Java files)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        ".agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "exit_code": 0,
+      "stdout": "Validated unified full-stack Skill (19 files, 16 templates).\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "docs/fm/scripts/validate.mjs"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "exit_code": 0,
+      "stdout": "Validated 32 FreeMarker templates.\n",
+      "stderr": ""
+    }
+  ]
+}

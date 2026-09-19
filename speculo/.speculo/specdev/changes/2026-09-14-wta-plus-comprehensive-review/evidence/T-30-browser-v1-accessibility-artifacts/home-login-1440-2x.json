@@ -1,0 +1,50 @@
+{
+  "dimensions": {
+    "viewport": 720,
+    "scrollWidth": 720,
+    "dpr": 2
+  },
+  "contrasts": [
+    {
+      "selector": ".identity-login__social-label",
+      "color": "rgb(71, 85, 105)",
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.577663953533317
+    },
+    {
+      "selector": ".identity-login__status",
+      "color": "rgb(71, 85, 105)",
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.577663953533317
+    },
+    {
+      "selector": ".identity-login__submit",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        15,
+        118,
+        110
+      ],
+      "ratio": 5.473250081210842
+    },
+    {
+      "selector": "footer",
+      "color": "rgb(71, 85, 105)",
+      "background": [
+        246,
+        248,
+        249
+      ],
+      "ratio": 7.1134192200446416
+    }
+  ],
+  "zoomMethod": "Playwright context CSS viewport / zoom, DPR=zoom; device-pixel PNG, equivalent desktop reflow, not CSS zoom"
+}

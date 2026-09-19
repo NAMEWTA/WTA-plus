@@ -1,5 +1,7 @@
 # WTA-plus 全面审查 Change
 
+当前执行以 goal-plan.md、tickets-map.md 和 worklog.md 最新 revision 为准。用户已授权全部本地可逆工作并明确暂缓所有提交；截至 revision59，13票本地review、16票ready、2票规划blocked、0Done。下文“尚未实施/plan-only”等是历史规划快照，不再代表当前授权。
+
 2026-09-18已串行完成源码复核及T-tickets/P-goal-plan文档完善，未调用任何子代理。31票均有完整执行合同；29票计划Ready，T-03/T-23因具体参数缺证据保持blocked。产品实现未开始，Goal执行Gate关闭。
 
 阅读顺序：

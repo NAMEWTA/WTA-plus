@@ -1,0 +1,10 @@
+{
+  "captured_at": "2026-09-18T08:28:40.102065+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "files": {
+    "backend/wta-admin/src/main/resources/application.yml": "f14c3e810d3b6abf2084a65788dd203a1bef6c41f964f1440376c2786f848003",
+    "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java": "d8241ea3f4fe517557a720d37830f5baed23678c7de34e155f874ec9c6a5c99f",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java": "5466e63946c633817e7a879b47c5e86e5c7c972da696dd6b32dfc68e95dae1eb",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java": "f77a0ba684529de776233d3e29b521f3cc591d495f054383aaa97dd6d879f979"
+  }
+}

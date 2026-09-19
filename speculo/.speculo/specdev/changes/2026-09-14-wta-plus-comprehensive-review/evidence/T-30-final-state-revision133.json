@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-09-19T06:19:50.033258+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "index_empty": true,
+  "source_fingerprint": "bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba",
+  "source_paths_verified": 3577,
+  "owned_paths_verified": 654,
+  "ticket_statuses": {
+    "review": 31,
+    "done": 0
+  },
+  "quality_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "governance_exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "implementation_commit": null,
+  "result_sha": null,
+  "deployable_release": false
+}

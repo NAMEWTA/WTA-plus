@@ -1,0 +1,19 @@
+{
+  "frontend_vitest": 612,
+  "frontend_node": 108,
+  "default_browser": {
+    "passed": 53,
+    "skipped": 1,
+    "failed": 0,
+    "skip_reason": "live Nacos reverse proxy parameters absent; independent of migrated CRUD"
+  },
+  "upload_browser": {
+    "passed": 10,
+    "skipped": 0
+  },
+  "http_migrations": 91,
+  "http_permission_denials": 67,
+  "openapi_revision": "7b969de6b8ecd2efe207faeeb8639edca40af9fdbed4d34968fd2e9e42a72f32",
+  "openapi_raw_sha256": "e63f642a4d781973e691a3daab6bd4be32300fd804f99df329e68f849549fc96",
+  "generated_sha256": "2c2a00a739834a1d651b77d17fca8c8b3ea69a5a85f44893ef8fd1dbd444db25"
+}

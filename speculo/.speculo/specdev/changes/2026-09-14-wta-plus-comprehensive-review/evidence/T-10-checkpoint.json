@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-09-18T12:36:30.706682+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "implementation_commit": null,
+  "result_sha": null,
+  "files": {
+    "release-artifacts/scripts/release-manage.sh": "dd8e3b1f0eb9580b7643daa535981ab6ca3363ed424b2cdda1ad86214d0d15db",
+    "release-artifacts/scripts/release-state.py": "f5c8a9a0d8bafcba48dbeedb41dfebc9a3eaf7cc38be191edbe1cc5f1d3928a2",
+    "release-artifacts/scripts/docker-manage.sh": "ff51fe50a50486f2c8b8629e4ca0129a99d8f5bf87a648ea4689f245f115942b",
+    "release-artifacts/scripts/verify-release.sh": "da980eaf55c065dd3682678018f3a5cdbc9e2c7228072a81c74b572129046c59",
+    "release-artifacts/README.md": "7ed7cd582774d6d886d515f30e80a9b76910e9c4853e8c307de52eeb651c22cc",
+    "release-artifacts/docker/docker-compose-frontend.yml": "40c47fe31fa86ebfdb859dea595565a856f28c0d8b0121f917c219baf5347008",
+    "release-artifacts/tests/atomic-release.test.mjs": "8466e5ade5b6d24139ab1815b1da14e20cecd42c0d79ec8215fbeb0d7f5fd597",
+    "release-artifacts/tests/fixtures/atomic-release-fixture.mjs": "ddb466498d7324eca74d4864f4f68cc3b4e414076f4abdc98257da07db8a8365",
+    "release-artifacts/tests/release-config.test.mjs": "98ed4245830a3f36b460e7c4eca111e4eb0e58e466e58f0d6e59a80ff561cc96",
+    "release-artifacts/tests/build-matrix.test.mjs": "1b64d950661185b8d17b1bd49567b4c5dfa8e392b283e497ddc6cf72a0245328",
+    "release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py": "d2dd635ca0b12775bb2c80259193c79ee60d6591d9f6d53b0b2f4a9890cd6fdf",
+    "release-artifacts/skills/wta-namewta-nginx-config/SKILL.md": "33938981e0d2b4eb341c5758fcf704a7ce2e513c5d93f82055e18b8ab78be686",
+    ".agents/skills/engineering-standards/references/project/00-project-profile.md": "6363888c36c5299b59da86bef63c14d36adb0ad1fe69ce58041503ca09ce087d",
+    ".agents/skills/deploy-namewta-environment/references/build-transfer-release.md": "fe0dfb0d8b67f72419e2aed7627898c535c8f042dec693fee73c24325c953bff",
+    "scripts/ci/verify-admin-bundle.sh": "e170cff5f5aa8fec326ba1fb784c67b405a9a8293340b8eabf990ac40d407c2a"
+  }
+}

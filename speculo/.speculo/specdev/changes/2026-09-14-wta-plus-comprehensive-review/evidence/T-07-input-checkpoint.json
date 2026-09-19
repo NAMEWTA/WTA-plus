@@ -1,0 +1,10 @@
+{
+  "captured_at": "2026-09-18T08:58:40.953212+00:00",
+  "parent_before": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "predecessor": "T-06-checkpoint.json",
+  "predecessor_all_paths_match": true,
+  "additional_inputs": {
+    "frontend/apps/admin-web/src/views/login.vue": "6b563a9207029ad2066b5c04f174e6dad6dc9fc19854a1c081663f8f04ae893f",
+    "frontend/apps/home-web/src/router/homeManifestRegistry.ts": "4be69c6688c4bd697e4771eb52d24d37de81c473a64173ba6f135a4838112dfe"
+  }
+}

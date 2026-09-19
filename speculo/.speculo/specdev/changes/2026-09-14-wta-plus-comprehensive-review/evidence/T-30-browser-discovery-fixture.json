@@ -1,0 +1,119 @@
+[
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.profile.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.82,
+    "report": "T-30-discovery-profile-fixture.json",
+    "environment": {
+      "PROFILE_TEST_ORIGIN": "http://127.0.0.1:9"
+    },
+    "environment_purpose": "list-only import fixture; no server/browser/test is started; not usable as runtime success evidence",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "个人双面材料：缺项门禁、私有预览、刷新恢复和真实提交",
+        "line": 70
+      },
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "企业真实提交，经办人是法定代表人",
+        "line": 92
+      },
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "企业真实提交，经办人不是法定代表人",
+        "line": 92
+      },
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "本人上传材料不能被另一账号读取、挂载或移除；缺权限直接请求被拒绝",
+        "line": 106
+      },
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "直传网络失败与取消均不登记材料，草稿保留且可重新上传",
+        "line": 143
+      },
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "登记响应丢失先查询恢复，替换保留旧件至新件登记，移除仅解除引用",
+        "line": 169
+      },
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "真实 Redis 票据过期拒绝 complete，刷新草稿并换新票据可恢复",
+        "line": 222
+      },
+      {
+        "file": "profile-self-materials.spec.ts",
+        "title": "提交末端故障回滚申请、不可变快照和 OSS 引用，刷新后可重试",
+        "line": 240
+      }
+    ],
+    "errors": []
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.transfer.config.ts",
+      "--list",
+      "--workers=1",
+      "--reporter=json"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 0.77,
+    "report": "T-30-discovery-transfer-fixture.json",
+    "environment": {
+      "TRANSFER_TEST_ORIGIN": "http://127.0.0.1:9"
+    },
+    "environment_purpose": "list-only import fixture; no server/browser/test is started; not usable as runtime success evidence",
+    "tests_executed": 0,
+    "discovered_specs": [
+      {
+        "file": "enterprise-transfer-queue.spec.ts",
+        "title": "queued confirmation stays pending until the server reports transfer success",
+        "line": 43
+      },
+      {
+        "file": "enterprise-transfer-queue.spec.ts",
+        "title": "failed delivery can be resent and local expiry never enables confirmation",
+        "line": 61
+      },
+      {
+        "file": "enterprise-transfer-queue.spec.ts",
+        "title": "repeated submission while pending sends only one command",
+        "line": 75
+      },
+      {
+        "file": "enterprise-transfer-queue.spec.ts",
+        "title": "a session without enterprise apply permission has no transfer controls",
+        "line": 93
+      },
+      {
+        "file": "enterprise-transfer-queue.spec.ts",
+        "title": "leaving the page aborts its pending send and does not restore a stale challenge",
+        "line": 99
+      }
+    ],
+    "errors": []
+  }
+]

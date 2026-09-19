@@ -1,0 +1,19 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "test:e2e",
+    "--config",
+    "/srv/WTA-plus/temp/team/lead/t21-e2e-qzdfcr0v/playwright.config.mjs",
+    "--workers=1"
+  ],
+  "cwd": "frontend",
+  "config": "import base from \"/srv/WTA-plus/frontend/playwright.config.ts\";\nexport default { ...base, testDir: \"/srv/WTA-plus/frontend/e2e\",\noutputDir: \"/srv/WTA-plus/frontend/tests/e2e/reports/t21-regression\",\nworkers: 1, retries: 0, reporter: \"line\",\nprojects: base.projects.map(project => ({ ...project, use: { ...project.use, channel: \"chrome\" } })),\nwebServer: { ...base.webServer, command: \"corepack pnpm --filter @namewta/admin-web preview\", reuseExistingServer: false, cwd: \"/srv/WTA-plus/frontend\" } };\n",
+  "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-default-browser-managed.log",
+  "terminated_owned_children": [],
+  "exit_code": 1,
+  "seconds": 137.68,
+  "interrupted_signal": null,
+  "owned_config_cleanup": true,
+  "owned_preview_closed": true
+}

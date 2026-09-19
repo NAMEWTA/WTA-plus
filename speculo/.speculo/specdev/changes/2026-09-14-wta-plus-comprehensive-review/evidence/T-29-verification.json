@@ -1,0 +1,92 @@
+[
+  {
+    "command": [
+      "node",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-1.log"
+  },
+  {
+    "command": [
+      "node",
+      ".agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.03,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-2.log"
+  },
+  {
+    "command": [
+      "node",
+      "docs/fm/scripts/validate.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.03,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-3.log"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/ci/verify-dev-build-guard.sh"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 2.13,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-4.log"
+  },
+  {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "wta-admin,wta-common/wta-common-richtext,wta-extend/wta-monitor-admin,wta-modules/wta-demo,wta-modules/wta-notify,wta-modules/wta-profile,wta-modules/wta-profile/wta-profile-enterprise,wta-modules/wta-profile/wta-profile-person,wta-modules/wta-sso,wta-modules/wta-third",
+      "-am",
+      "validate"
+    ],
+    "cwd": "backend",
+    "exit_code": 0,
+    "seconds": 1.64,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-5.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "architecture:check"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.92,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-6.log"
+  },
+  {
+    "command": [
+      "corepack",
+      "pnpm",
+      "--filter",
+      "@namewta/tooling-openapi",
+      "openapi:check"
+    ],
+    "cwd": "frontend",
+    "exit_code": 0,
+    "seconds": 1.13,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-7.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "seconds": 0.08,
+    "log": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-verification-8.log"
+  }
+]

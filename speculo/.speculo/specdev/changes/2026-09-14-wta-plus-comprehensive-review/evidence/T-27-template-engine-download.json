@@ -1,0 +1,10 @@
+{
+  "source": "https://repo.maven.apache.org/maven2/org/freemarker/freemarker/2.3.34/freemarker-2.3.34.jar",
+  "version": "2.3.34",
+  "sha512": "58bc6e157452f6b3a70a7d1bcfb89013e7204e716e267386014f6834fb66a56333fe4b538ef25b651913ab585bfa5c8fa010159d96ab952de42a82edb9552fca",
+  "sha256": "9a9fb91cd64199232eb1ca9766148a5d30ef8944be5fac051018f96c70c8f6a3",
+  "size": 1886604,
+  "exit_code": 0,
+  "seconds": 3.82,
+  "scope": "owned template test engine only; no product dependency change"
+}

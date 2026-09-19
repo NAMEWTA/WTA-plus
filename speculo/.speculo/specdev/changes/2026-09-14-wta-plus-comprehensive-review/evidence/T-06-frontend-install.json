@@ -1,0 +1,15 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "install",
+    "--frozen-lockfile",
+    "--child-concurrency=1",
+    "--network-concurrency=1",
+    "--reporter=append-only"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "exit_code": 0,
+  "captured_at": "2026-09-18T08:37:41.587250+00:00",
+  "log": "T-06-frontend-install.log"
+}
