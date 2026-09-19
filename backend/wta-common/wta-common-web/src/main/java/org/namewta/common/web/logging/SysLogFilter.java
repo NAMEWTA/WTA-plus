@@ -11,6 +11,10 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.namewta.common.web.filter.RepeatedlyRequestWrapper;
+import org.namewta.common.web.filter.RepeatableFilter;
+import org.namewta.common.core.exception.RequestBodyTooLargeException;
+import org.namewta.common.core.http.CapturedRequestBody;
+import org.namewta.common.json.utils.LogSanitizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -22,9 +26,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -38,29 +40,19 @@ public class SysLogFilter implements Filter {
 
     private static final String STATE_ATTRIBUTE = SysLogFilter.class.getName() + ".exchange";
     private static final String REDACTED_HEADER_VALUE = "[REDACTED]";
-    private static final Set<String> SENSITIVE_HEADER_NAMES = Set.of(
-        "authorization",
-        "proxy-authorization",
-        "cookie",
-        "set-cookie",
-        "x-api-key",
-        "api-key",
-        "x-app-key",
-        "x-signature",
-        "x-auth-token",
-        "x-csrf-token",
-        "encrypt-key"
-    );
     private static final Logger FAILURE_LOG = LoggerFactory.getLogger(SysLogFilter.class);
 
     private final int maxBodyBytes;
+    private final int maxRequestBytes;
     private final SysLogEventSink eventSink;
 
-    public SysLogFilter(int maxBodyBytes, SysLogEventSink eventSink) {
+    public SysLogFilter(int maxBodyBytes, int maxRequestBytes, SysLogEventSink eventSink) {
         if (maxBodyBytes <= 0) {
             throw new IllegalArgumentException("正文日志字节上限必须大于 0");
         }
         this.maxBodyBytes = maxBodyBytes;
+        CapturedRequestBody.requireLimit(maxRequestBytes);
+        this.maxRequestBytes = maxRequestBytes;
         this.eventSink = eventSink;
     }
 
@@ -77,7 +69,12 @@ public class SysLogFilter implements Filter {
         HttpServletRequest effectiveRequest = httpRequest;
         boolean initialDispatch = state == null;
         if (initialDispatch) {
-            effectiveRequest = prepareRequest(httpRequest, httpResponse);
+            try {
+                effectiveRequest = prepareRequest(httpRequest, httpResponse);
+            } catch (RequestBodyTooLargeException exception) {
+                RepeatableFilter.rejectTooLarge(httpResponse);
+                return;
+            }
             state = new ExchangeState(effectiveRequest, maxBodyBytes);
             effectiveRequest.setAttribute(STATE_ATTRIBUTE, state);
             httpResponse.setHeader(REQUEST_ID_HEADER, state.requestId());
@@ -105,13 +102,16 @@ public class SysLogFilter implements Filter {
         }
     }
 
-    private HttpServletRequest prepareRequest(HttpServletRequest request, HttpServletResponse response) {
+    private HttpServletRequest prepareRequest(HttpServletRequest request, HttpServletResponse response)
+        throws RequestBodyTooLargeException {
         if (request instanceof RepeatedlyRequestWrapper
             || !SysLogMediaTypePolicy.isRequestBodyLoggable(request.getContentType())) {
             return request;
         }
         try {
-            return new RepeatedlyRequestWrapper(request, response);
+            return new RepeatedlyRequestWrapper(request, response, maxRequestBytes);
+        } catch (RequestBodyTooLargeException exception) {
+            throw exception;
         } catch (IOException | RuntimeException exception) {
             reportFailure("请求正文采集", null, exception);
             return request;
@@ -141,10 +141,10 @@ public class SysLogFilter implements Filter {
 
     private void reportFailure(String stage, String requestId, Throwable failure) {
         try {
-            FAILURE_LOG.error("系统 HTTP 日志采集失败：阶段={}，请求标识={}", stage, requestId, failure);
+            FAILURE_LOG.error("系统 HTTP 日志采集失败：阶段={}，请求标识={}，异常类型={}", stage, requestId, LogSanitizer.failure(failure));
         } catch (RuntimeException | LinkageError terminalFailure) {
             System.err.printf("系统 HTTP 日志采集失败：阶段=%s，请求标识=%s，原因=%s%n",
-                stage, requestId, failure.getMessage());
+                stage, requestId, LogSanitizer.failure(failure));
         }
     }
 
@@ -179,7 +179,7 @@ public class SysLogFilter implements Filter {
         Map<String, List<String>> parameters = new LinkedHashMap<>();
         try {
             request.getParameterMap().forEach((name, values) ->
-                parameters.put(name, SysLogBodySanitizer.isSensitiveName(name)
+                parameters.put(name, LogSanitizer.isSensitiveName(name, requestPath(request))
                     ? List.of(REDACTED_HEADER_VALUE)
                     : values == null ? List.of() : Arrays.asList(values.clone())));
         } catch (RuntimeException exception) {
@@ -203,7 +203,7 @@ public class SysLogFilter implements Filter {
     }
 
     private boolean isSensitiveHeader(String name) {
-        return name != null && SENSITIVE_HEADER_NAMES.contains(name.toLowerCase(Locale.ROOT));
+        return LogSanitizer.isSensitiveHeader(name);
     }
 
     private List<String> enumerationValues(Enumeration<String> values) {
@@ -234,6 +234,12 @@ public class SysLogFilter implements Filter {
         return SysLogBody.omitted(0, "BODY_CAPTURE_UNAVAILABLE");
     }
 
+    private String requestPath(HttpServletRequest request) {
+        String servletPath = request.getServletPath();
+        return servletPath == null || servletPath.isEmpty()
+            ? request.getRequestURI().substring(request.getContextPath().length()) : servletPath;
+    }
+
     private long responseContentLength(HttpServletResponse response) {
         String value = response.getHeader("Content-Length");
         if (value == null) {
@@ -246,8 +252,8 @@ public class SysLogFilter implements Filter {
         }
     }
 
-    private void putBody(Map<String, Object> event, SysLogBody body, String contentType) {
-        body = SysLogBodySanitizer.sanitize(body, contentType);
+    private void putBody(Map<String, Object> event, SysLogBody body, String contentType, String requestPath) {
+        body = SysLogBodySanitizer.sanitize(body, contentType, requestPath);
         event.put("bodyLogged", body.logged());
         event.put("bodyLength", body.length());
         event.put("truncated", body.truncated());
@@ -273,7 +279,7 @@ public class SysLogFilter implements Filter {
 
         private ExchangeState(HttpServletRequest request, int bodyLimit) {
             this.method = request.getMethod();
-            this.path = request.getRequestURI();
+            this.path = requestPath(request);
             this.bodyLimit = bodyLimit;
             this.responseCapture = new SysLogResponseCapture(bodyLimit);
         }
@@ -297,7 +303,6 @@ public class SysLogFilter implements Filter {
             event.put("requestId", requestId);
             event.put("method", method);
             event.put("path", path);
-            event.put("queryString", request.getQueryString());
             event.put("parameters", requestParameters(request));
             event.put("requestHeaders", requestHeaders(request));
             event.put("contentType", request.getContentType());
@@ -306,7 +311,7 @@ public class SysLogFilter implements Filter {
             if (upstreamRequestId != null) {
                 event.put("upstreamRequestId", upstreamRequestId);
             }
-            putBody(event, requestBody(request, bodyLimit), request.getContentType());
+            putBody(event, requestBody(request, bodyLimit), request.getContentType(), path);
             return event;
         }
 
@@ -358,7 +363,11 @@ public class SysLogFilter implements Filter {
                 event.put("contentLength", responseContentLength(response));
                 event.put("durationMs", Math.max(0, (System.nanoTime() - startNanos) / 1_000_000));
                 event.put("completed", completed);
-                putBody(event, responseCapture.snapshot(response), response.getContentType());
+                SysLogBody body = responseCapture.snapshot(response);
+                if (LogSanitizer.omitResponseBody(path)) {
+                    body = SysLogBody.omitted(body.length(), "CREDENTIAL_RESPONSE");
+                }
+                putBody(event, body, response.getContentType(), path);
                 emit(event);
             } finally {
                 restoreMdc(previousRequestId);

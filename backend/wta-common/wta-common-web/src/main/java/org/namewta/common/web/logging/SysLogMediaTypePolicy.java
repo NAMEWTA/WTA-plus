@@ -38,6 +38,9 @@ public final class SysLogMediaTypePolicy {
         if (MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
             return BodyDecision.omit("FORM_PARAMETERS_ONLY");
         }
+        if (MediaType.TEXT_EVENT_STREAM.isCompatibleWith(mediaType)) {
+            return BodyDecision.omit("STREAMING");
+        }
         return isTextual(mediaType) ? BodyDecision.allow() : BodyDecision.omit("NON_TEXT_CONTENT_TYPE");
     }
 

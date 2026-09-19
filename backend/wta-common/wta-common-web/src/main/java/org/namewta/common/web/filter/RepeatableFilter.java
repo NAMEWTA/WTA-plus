@@ -1,59 +1,51 @@
 package org.namewta.common.web.filter;
 
-import jakarta.servlet.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.namewta.common.core.utils.StringUtils;
-import org.springframework.http.MediaType;
+import jakarta.servlet.http.HttpServletResponse;
+import org.namewta.common.core.domain.R;
+import org.namewta.common.core.exception.RequestBodyTooLargeException;
+import org.namewta.common.core.http.CapturedRequestBody;
+import org.namewta.common.json.utils.JsonUtils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-/**
- * 可重复读取请求体的过滤器，仅对 JSON 请求包装可重复消费的请求对象。
- *
- * @author wta
- */
+/** 为普通JSON建立唯一有界缓存，上传与持续流继续使用容器原始流。 */
 public class RepeatableFilter implements Filter {
+    private final int maxBodyBytes;
 
-    /**
-     * 过滤器初始化入口，当前无额外初始化逻辑。
-     *
-     * @param filterConfig 过滤器配置
-     * @throws ServletException 过滤器初始化异常
-     */
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
+    public RepeatableFilter(int maxBodyBytes) {
+        CapturedRequestBody.requireLimit(maxBodyBytes);
+        this.maxBodyBytes = maxBodyBytes;
     }
 
-    /**
-     * 为 JSON 请求创建可重复读取的包装器，便于日志、验签等场景多次读取请求体。
-     *
-     * @param request  原始请求
-     * @param response 当前响应
-     * @param chain    过滤器链
-     * @throws IOException      IO 异常
-     * @throws ServletException Servlet 异常
-     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
-        ServletRequest requestWrapper = null;
-        if (request instanceof HttpServletRequest
-            && StringUtils.startsWithIgnoreCase(request.getContentType(), MediaType.APPLICATION_JSON_VALUE)) {
-            requestWrapper = new RepeatedlyRequestWrapper((HttpServletRequest) request, response);
+        ServletRequest effective = request;
+        if (request instanceof HttpServletRequest httpRequest
+            && response instanceof HttpServletResponse httpResponse
+            && CapturedRequestBody.isJsonContentType(request.getContentType())) {
+            try {
+                effective = new RepeatedlyRequestWrapper(httpRequest, response, maxBodyBytes);
+            } catch (RequestBodyTooLargeException exception) {
+                rejectTooLarge(httpResponse);
+                return;
+            }
         }
-        if (null == requestWrapper) {
-            chain.doFilter(request, response);
-        } else {
-            chain.doFilter(requestWrapper, response);
-        }
+        chain.doFilter(effective, response);
     }
 
-    /**
-     * 过滤器销毁入口，当前无额外资源需要释放。
-     */
-    @Override
-    public void destroy() {
-
+    /** 在业务执行前映射真实413；不使用会重置为200的通用renderString。 */
+    public static void rejectTooLarge(HttpServletResponse response) throws IOException {
+        response.setStatus(413);
+        response.setContentType("application/json");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.getWriter().write(JsonUtils.toJsonString(R.fail(413, RequestBodyTooLargeException.ERROR_CODE)));
     }
 }

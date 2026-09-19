@@ -125,6 +125,27 @@ class OpenApiAssemblyContextTest {
     }
 
     @Test
+    void machineBodyBudgetHasIndependentDefaultOverrideAndRejectsUnboundedValues() {
+        dependencies(runner).withPropertyValues(validProperties()).run(context -> {
+            assertThat(context).hasNotFailed();
+            assertThat(context.getBean(org.namewta.common.openapi.config.properties.OpenApiProperties.class).maxBodyBytes())
+                .isEqualTo(2 * 1024 * 1024);
+            assertThat(context.getBean("openApiGatewayFilterRegistration", FilterRegistrationBean.class).getOrder())
+                .isEqualTo(org.springframework.core.Ordered.HIGHEST_PRECEDENCE + 1);
+        });
+        dependencies(runner).withPropertyValues(validProperties()).withPropertyValues("openapi.max-body-size=3MB")
+            .run(context -> {
+                assertThat(context).hasNotFailed();
+                assertThat(context.getBean(org.namewta.common.openapi.config.properties.OpenApiProperties.class).maxBodyBytes())
+                    .isEqualTo(3 * 1024 * 1024);
+            });
+        for (String value : new String[]{"0B", "-1B", "3GB", "invalid"}) {
+            dependencies(runner).withPropertyValues(validProperties()).withPropertyValues("openapi.max-body-size=" + value)
+                .run(context -> assertThat(context).hasFailed());
+        }
+    }
+
+    @Test
     void failsClosedWhenCredentialSpiIsAmbiguous() {
         dependencies(runner)
             .withBean("secondCredentialResolver", OpenApiCredentialResolver.class, OpenApiAssemblyContextTest::credentialResolver)

@@ -1,6 +1,8 @@
 package org.namewta.common.openapi.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.unit.DataSize;
+import org.namewta.common.core.http.CapturedRequestBody;
 
 import java.time.Duration;
 
@@ -11,6 +13,7 @@ import java.time.Duration;
 public class OpenApiProperties {
 
     private boolean enabled;
+    private DataSize maxBodySize = DataSize.ofBytes(CapturedRequestBody.DEFAULT_MAX_BYTES);
     private Duration clockSkew = Duration.ofSeconds(60);
     private Duration nonceTtl = Duration.ofSeconds(60);
     private int appRateLimitPerMinute = 1000;
@@ -21,6 +24,18 @@ public class OpenApiProperties {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    /** 机器签名正文的独立上限，不受普通JSON或日志前缀配置覆盖。 */
+    public DataSize getMaxBodySize() { return maxBodySize; }
+    public void setMaxBodySize(DataSize maxBodySize) { this.maxBodySize = maxBodySize; }
+
+    public int maxBodyBytes() {
+        if (maxBodySize == null || maxBodySize.toBytes() <= 0
+            || maxBodySize.toBytes() > CapturedRequestBody.MAX_CONFIGURED_BYTES) {
+            throw new IllegalArgumentException("openapi.max-body-size 必须为正数且在JVM数组范围内");
+        }
+        return Math.toIntExact(maxBodySize.toBytes());
     }
 
     public void setEnabled(boolean enabled) {

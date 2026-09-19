@@ -129,7 +129,8 @@ public class OpenApiAutoConfiguration {
         registration.addUrlPatterns("/*");
         registration.setDispatcherTypes(DispatcherType.REQUEST);
         registration.setAsyncSupported(true);
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 10);
+        // 在普通正文/日志/XSS之前完成原始字节验签，后续观察者复用已验证的独立预算。
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
         return registration;
     }
 }

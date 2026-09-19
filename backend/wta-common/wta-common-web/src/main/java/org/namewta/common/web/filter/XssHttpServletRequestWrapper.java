@@ -1,20 +1,16 @@
 package org.namewta.common.web.filter;
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
-import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-import org.namewta.common.core.utils.StringUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.namewta.common.core.http.CapturedRequestBody;
 
-import java.io.ByteArrayInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,14 +21,24 @@ import java.util.Map;
  * @author wta
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
+    private final CapturedRequestBody view;
 
     /**
      * 使用原始请求构造 XSS 包装器。
      *
      * @param request 原始请求
+     * @param maxBodyBytes 未捕获正文的默认上限
+     * @throws IOException 读取或视图字节预算失败，必须在进入业务前处理
      */
-    public XssHttpServletRequestWrapper(HttpServletRequest request) {
+    public XssHttpServletRequestWrapper(HttpServletRequest request, int maxBodyBytes) throws IOException {
         super(request);
+        if (isJsonRequest()) {
+            CapturedRequestBody raw = CapturedRequestBody.find(request);
+            if (raw == null) raw = CapturedRequestBody.capture(request, maxBodyBytes);
+            view = raw.utf8View(HtmlUtil.cleanHtmlTag(raw.utf8()).trim());
+        } else {
+            view = null;
+        }
     }
 
     /**
@@ -108,74 +114,17 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      */
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        // 非json类型，直接返回
-        if (!isJsonRequest()) {
-            return super.getInputStream();
-        }
-
-        // 为空，直接返回
-        String json = StrUtil.str(IoUtil.readBytes(super.getInputStream(), false), StandardCharsets.UTF_8);
-        if (StringUtils.isEmpty(json)) {
-            return super.getInputStream();
-        }
-
-        // xss过滤
-        json = HtmlUtil.cleanHtmlTag(json).trim();
-        byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
-        final ByteArrayInputStream bis = IoUtil.toStream(jsonBytes);
-        return new ServletInputStream() {
-            /**
-             * 判断清洗后的 JSON 流是否已读取完毕。
-             *
-             * @return 是否读取完毕
-             */
-            @Override
-            public boolean isFinished() {
-                return true;
-            }
-
-            /**
-             * 判断清洗后的 JSON 流是否可读。
-             *
-             * @return 固定为 true
-             */
-            @Override
-            public boolean isReady() {
-                return true;
-            }
-
-            /**
-             * 返回清洗后的 JSON 字节数。
-             *
-             * @return JSON 字节数
-             * @throws IOException IO 异常
-             */
-            @Override
-            public int available() throws IOException {
-                return jsonBytes.length;
-            }
-
-            /**
-             * 设置异步读取监听器。
-             *
-             * @param readListener 读取监听器
-             */
-            @Override
-            public void setReadListener(ReadListener readListener) {
-            }
-
-            /**
-             * 读取清洗后的 JSON 流下一个字节。
-             *
-             * @return 下一个字节
-             * @throws IOException IO 异常
-             */
-            @Override
-            public int read() throws IOException {
-                return bis.read();
-            }
-        };
+        return view == null ? super.getInputStream() : view.openStream();
     }
+
+    @Override
+    public BufferedReader getReader() throws IOException {
+        return view == null ? super.getReader()
+            : new BufferedReader(new InputStreamReader(view.openStream(), StandardCharsets.UTF_8));
+    }
+
+    @Override public int getContentLength() { return view == null ? super.getContentLength() : view.length(); }
+    @Override public long getContentLengthLong() { return view == null ? super.getContentLengthLong() : view.length(); }
 
     /**
      * 判断当前请求是否为 JSON 请求。
@@ -183,7 +132,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      * @return true 表示 JSON 请求
      */
     public boolean isJsonRequest() {
-        String header = super.getHeader(HttpHeaders.CONTENT_TYPE);
-        return StringUtils.startsWithIgnoreCase(header, MediaType.APPLICATION_JSON_VALUE);
+        return CapturedRequestBody.isJsonContentType(super.getContentType());
     }
 }

@@ -28,6 +28,7 @@ import org.namewta.common.satoken.utils.LoginHelper;
 import org.namewta.system.api.model.LoginUser;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.namewta.common.core.exception.RequestBodyTooLargeException;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -127,7 +128,7 @@ public final class OpenApiGatewayFilter extends OncePerRequestFilter {
             if (presentHeaders != SIGNATURE_HEADERS.size() || hasBrowserAuthentication(request)) {
                 throw new OpenApiAuthenticationException();
             }
-            ReplayableOpenApiRequest replayable = new ReplayableOpenApiRequest(request);
+            ReplayableOpenApiRequest replayable = new ReplayableOpenApiRequest(request, properties.maxBodyBytes());
             invocation.operation = resolveOperation(replayable);
             invocation.credential = authenticate(replayable);
             enforceReplayAndRates(replayable, invocation.operation);
@@ -155,6 +156,8 @@ public final class OpenApiGatewayFilter extends OncePerRequestFilter {
             }
         } catch (DownstreamException exception) {
             downstreamFailure = exception.getCause();
+        } catch (RequestBodyTooLargeException exception) {
+            writeError(response, 413, RequestBodyTooLargeException.ERROR_CODE);
         } catch (OpenApiAuthenticationException exception) {
             writeError(response, 401, OpenApiAuthenticationException.ERROR_CODE);
         } catch (OpenApiGatewayException exception) {

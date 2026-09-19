@@ -1,5 +1,7 @@
 # 开发环境配置
 server:
+  # 保留真实socket peer；统一由ClientAddressFilter按显式可信代理解析。
+  forward-headers-strategy: none
   # 服务器的HTTP端口，默认为8080
   port: 8080
   servlet:
@@ -26,12 +28,27 @@ captcha:
   charLength: 4
 
 namewta:
+  web:
+    request-body:
+      # 普通JSON及需要缓存的文本正文；与日志前缀和机器签名正文分开计限。
+      max-size: ${REQUEST_BODY_MAX_SIZE:2MB}
+    client-address:
+      # 逗号分隔的IPv4/IPv6 CIDR；默认空，只信socket peer。发布前按拓扑实测。
+      trusted-proxies: ${TRUSTED_PROXY_CIDRS:}
   sso:
     enabled: true
     web-origin: ${SSO_WEB_ORIGIN:http://127.0.0.1:4176}
+    web-base-path: ${SSO_WEB_BASE_PATH:/}
     cookie-name: Sso-Token
+    # 仅local/dev可显式false使用HTTP；生产或未知profile拒绝关闭Secure。
+    cookie-secure: ${SSO_COOKIE_SECURE:true}
     code-ttl: 5m
     session-ttl: 8h
+
+web:
+  cors:
+    # 精确Origin列表；发布时配置所有获准App来源，不接受通配符或URL路径。
+    allowed-origins: ${WEB_CORS_ALLOWED_ORIGINS:${SSO_WEB_ORIGIN:http://127.0.0.1:4176}}
 
 # 可选 Nacos 稀疏配置覆盖。关闭时不创建客户端或监听器。
 nacos:
@@ -50,6 +67,8 @@ nacos:
 
 # OpenAPI 机器调用网关。默认开启；KEK 只能由部署密钥系统注入。
 openapi:
+  # 机器请求按原始字节限额；超限HTTP 413，不进入认证后业务。
+  max-body-size: ${OPENAPI_MAX_BODY_SIZE:2MB}
   enabled: ${OPENAPI_ENABLED:true}
   clock-skew: ${OPENAPI_CLOCK_SKEW:60s}
   nonce-ttl: ${OPENAPI_NONCE_TTL:60s}
@@ -317,19 +336,6 @@ mybatis-encryptor:
   # 公私钥 非对称算法的公私钥 如：SM2，RSA
   publicKey:
   privateKey:
-
-# api接口加密
-api-decrypt:
-  # 是否开启全局接口加密
-  enabled: true
-  # AES 加密头标识
-  headerFlag: encrypt-key
-  # 响应加密公钥 非对称算法的公私钥 如：SM2，RSA 使用者请自行更换
-  # 对应前端解密私钥 MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAObq7yrxfvyieZtTjAYyrdvi59tYTXxjO5ajmPCRSXBY9M9wQ1tli297JN6mnY53UJMNyOFNSZVi8WSFoIXjpR87FmvChJlzeN/dZdd3SEs48Ee66XKeSePYqxa8oO5GKDsnajgpsOHKXSeeVSIysiIPS2/WsEqk0In9P4w3RsRFAgMBAAECgYBiMEWwce24SPICnRzuScBpvmsudrbEDIH7BOd0a6LZlcnLJwZNJ7mJlshPsHNQb+WgEf135+BBGEhioPtn0yuTdEuKP4kB9UdYUKiayWCoWhJpesv7sAD4RDClV7dhuV+gcd1AXD+YzyRIPbGm0VC2U+4q8/+UPRpVjqskbLVTgQJBAPRpou7g3S8n4XB527kq0D8I3+ZYwMxZhszwhrCDpJU319+ucmpLVwYIzDmZVeID2QQdUaDfIEViFHu95xDrGiUCQQDx3YOKn3yaEctk/ERVn7hDAyAXUbd8/pv2b24/M/l1ZevlsFem8U4Jk5Mu64t3z3YGJoymEjQmbucwT01iKhehAkEAxlnccsRmfFh/KkqauKE4M4++NTAd9zlInpUsmZ+cN8UEGnF2RTEzRKBrLOt1uWCqBB7PGiE6DVTVjr7FAQPrSQJAT5yeY87DcONSk9cFlzmPqV8p/QME5rvYEnHzVBKDlkUKNPyqnWToTvaoh9U4fyNmsfeWbEOprszqhFhWHG3GgQJAK8+ynmyFhaw63+Hx2KU5zR4hVuQso2IzrEurGxCxybV6mR7VBerb4502+EPx3PmOgxQL+niUFhcMWxcvBFP9+A==
-  publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDm6u8q8X78onmbU4wGMq3b4ufbWE18YzuWo5jwkUlwWPTPcENbZYtveyTepp2Od1CTDcjhTUmVYvFkhaCF46UfOxZrwoSZc3jf3WXXd0hLOPBHuulynknj2KsWvKDuRig7J2o4KbDhyl0nnlUiMrIiD0tv1rBKpNCJ/T+MN0bERQIDAQAB
-  # 请求解密私钥 非对称算法的公私钥 如：SM2，RSA 使用者请自行更换
-  # 对应前端加密公钥 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDvEDuRIOM3oZPWj9Ukoc5pQklR4PFH6/clnjeFqjDLIgDyQvjxhgqAZQA+E9eD6qu6FsXPmK8djcL+nh3cFHz4pX473jDvO3Sve+8yL3VRQ0n2pRgQ2a01MJsy+WwTZCBYWf0VnLRIvANUoWQgy9vz94q7Va44dg7A1/3ICf+xAwIDAQAB
-  privateKey: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAO8QO5Eg4zehk9aP1SShzmlCSVHg8Ufr9yWeN4WqMMsiAPJC+PGGCoBlAD4T14Pqq7oWxc+Yrx2Nwv6eHdwUfPilfjveMO87dK977zIvdVFDSfalGBDZrTUwmzL5bBNkIFhZ/RWctEi8A1ShZCDL2/P3irtVrjh2DsDX/cgJ/7EDAgMBAAECgYEAhNZAQyRDHWZq/45soS5Hw7VRiG21pIE5k22W7G7lLfp3DCaqrYoNy8pTmCruVh7PzVdaE0CEDaf38gNqFCBOT8iTFQiYV3am4W3hsEQM5wmVBeTvCM5P2jsaaBQbqmneRjiZVbs6ha205JSho1Oc85NbaZa8gFVjwZgZWJrbzgECQQD/iZWhkRPtbdeai/Xk7D/eIXKh1Gxid0rWKQq8ikxbaiergn47XzNKrpROVyka3Gn85o7jJphgxp99R3r8sH71AkEA738Dn7xs+I4Y+MLa2EcT78JG3f/VhlWS/ks3qGJ2dfqwS7ntnmf5Q+2Xw+9UcuiK/TxD8K/0inSCkIMeWBOFFwJBAIoTebq3faEJfTqQ7ekojsokIKC4+2epNdLKknaV8/RhQ9Y0yKikJD7yXkiGaDuPZeW1Xvf2XtfL+1niSd5IMBECQDCOOMbe5dzyuj9dCg+FQZZ/dey2XK0Slm22BD/ATrIWtD12IaXXAKNz/Sv9TsrJOLykxkV69wJHIt13p+RFeNsCQGn5XGRn4ZCRVCesJYXyx29MTqkl8sD/gzYcURTZYjHqX2EvtvAyC6gBm9H0EbxmHIi4Oq0tITzklCXj5SpvBEw=
 
 springdoc:
   api-docs:

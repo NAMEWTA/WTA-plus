@@ -25,6 +25,7 @@ final class OpenApiStartupValidator implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        properties.maxBodyBytes();
         validateKekVersion(properties.getKekVersion());
         validateKek(properties.getKek());
         requirePositive(properties.getClockSkew(), "openapi.clock-skew");

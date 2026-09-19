@@ -1,43 +1,28 @@
 package org.namewta.common.openapi.gateway;
 
-import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+import org.namewta.common.core.http.CapturedRequestBody;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
-/**
- * Preserves exact request bytes after signing so MVC can consume the same body.
- */
+/** 机器入口有界捕获原始字节；验签与MVC使用同一正文，后续观察者复用只读缓存。 */
 final class ReplayableOpenApiRequest extends HttpServletRequestWrapper {
+    private final CapturedRequestBody body;
 
-    private final byte[] body;
-
-    ReplayableOpenApiRequest(HttpServletRequest request) throws IOException {
+    ReplayableOpenApiRequest(HttpServletRequest request, int maxBodyBytes) throws IOException {
         super(request);
-        body = request.getInputStream().readAllBytes();
+        body = CapturedRequestBody.capture(request, maxBodyBytes);
     }
 
-    byte[] body() {
-        return Arrays.copyOf(body, body.length);
-    }
-
-    @Override
-    public int getContentLength() {
-        return body.length;
-    }
-
-    @Override
-    public long getContentLengthLong() {
-        return body.length;
-    }
+    byte[] body() { return body.copy(); }
+    @Override public int getContentLength() { return body.length(); }
+    @Override public long getContentLengthLong() { return body.length(); }
 
     @Override
     public BufferedReader getReader() {
@@ -46,34 +31,5 @@ final class ReplayableOpenApiRequest extends HttpServletRequestWrapper {
         return new BufferedReader(new InputStreamReader(getInputStream(), charset));
     }
 
-    @Override
-    public ServletInputStream getInputStream() {
-        ByteArrayInputStream input = new ByteArrayInputStream(body);
-        return new ServletInputStream() {
-            @Override
-            public int read() {
-                return input.read();
-            }
-
-            @Override
-            public int available() {
-                return input.available();
-            }
-
-            @Override
-            public boolean isFinished() {
-                return input.available() == 0;
-            }
-
-            @Override
-            public boolean isReady() {
-                return true;
-            }
-
-            @Override
-            public void setReadListener(ReadListener readListener) {
-                // Synchronous Servlet request bodies are sufficient for the v1 gateway.
-            }
-        };
-    }
+    @Override public ServletInputStream getInputStream() { return body.openStream(); }
 }

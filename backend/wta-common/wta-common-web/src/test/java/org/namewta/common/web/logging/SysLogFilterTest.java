@@ -3,9 +3,6 @@ package org.namewta.common.web.logging;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.ServletException;
-import org.namewta.common.encrypt.filter.DecryptRequestBodyWrapper;
-import org.namewta.common.encrypt.filter.EncryptResponseBodyWrapper;
-import org.namewta.common.encrypt.utils.EncryptUtils;
 import org.namewta.common.web.filter.RepeatedlyRequestWrapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
@@ -36,7 +33,7 @@ class SysLogFilterTest {
     @Test
     void recordsCompleteRequestAndResponseWithServerRequestId() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(1024 * 1024, events::add);
+        SysLogFilter filter = new SysLogFilter(1024 * 1024, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = jsonRequest("{\"password\":\"plain\",\"token\":\"raw\"}");
         request.setQueryString("page=1&page=2");
         request.addParameter("page", "1", "2");
@@ -102,7 +99,7 @@ class SysLogFilterTest {
     @Test
     void concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(20, events::add);
+        SysLogFilter filter = new SysLogFilter(20, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = jsonRequest("{\"password\":\"plain\",\"visible\":true}");
 
         filter.doFilter(request, new MockHttpServletResponse(), (servletRequest, servletResponse) ->
@@ -118,7 +115,7 @@ class SysLogFilterTest {
     @Test
     void recursivelyRedactsOpenApiCredentialMaterial() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(1024, events::add);
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = jsonRequest("""
             {"appSecret":"secret-value","nested":{"signature":"signature-value",\
             "machine_token":"machine-token-value","safe":"visible"}}""");
@@ -134,9 +131,9 @@ class SysLogFilterTest {
     }
 
     @Test
-    void truncatesAtUtf8BoundaryWithoutChangingBusinessBody() throws Exception {
+    void hidesUnstructuredTextWithoutChangingUtf8BusinessBody() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(5, events::add);
+        SysLogFilter filter = new SysLogFilter(5, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/unicode");
         request.setContentType("text/plain");
         request.setContent("ééé".getBytes(StandardCharsets.UTF_8));
@@ -152,11 +149,11 @@ class SysLogFilterTest {
 
         assertThat(events).hasSize(2);
         assertThat(events.getFirst())
-            .containsEntry("body", "éé")
+            .containsEntry("body", "[REDACTED]")
             .containsEntry("bodyLength", 6L)
             .containsEntry("truncated", true);
         assertThat(events.getLast())
-            .containsEntry("body", "éé")
+            .containsEntry("body", "[REDACTED]")
             .containsEntry("bodyLength", 6L)
             .containsEntry("truncated", true);
         assertThat(response.getContentAsString()).isEqualTo("ééé");
@@ -165,7 +162,7 @@ class SysLogFilterTest {
     @Test
     void omitsBinaryResponseBodyButKeepsMetadata() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(1024, events::add);
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/download");
         MockHttpServletResponse response = new MockHttpServletResponse();
         byte[] bytes = {0, 1, 2, 3};
@@ -188,7 +185,7 @@ class SysLogFilterTest {
     @Test
     void preservesUnhandledExceptionAndMarksResponseIncomplete() {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(1024, events::add);
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/failure");
         MockHttpServletResponse response = new MockHttpServletResponse();
         IllegalStateException cause = new IllegalStateException("root");
@@ -206,7 +203,7 @@ class SysLogFilterTest {
     @Test
     void completesAsyncResponseExactlyOnce() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(1024, events::add);
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/async");
         request.setAsyncSupported(true);
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -232,7 +229,7 @@ class SysLogFilterTest {
     void recordsAsyncTimeoutOnceAndRestoresCallbackMdc() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
         List<String> eventRequestIds = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(1024, event -> {
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, event -> {
             events.add(event);
             eventRequestIds.add(MDC.get(SysLogFilter.MDC_REQUEST_ID));
         });
@@ -258,7 +255,7 @@ class SysLogFilterTest {
     @Test
     void excludesMultipartRequestAndSseResponseBodies() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
-        SysLogFilter filter = new SysLogFilter(1024, events::add);
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/stream");
         request.setContentType("multipart/form-data; boundary=test");
         request.setContent("raw-file-content".getBytes(StandardCharsets.UTF_8));
@@ -284,26 +281,21 @@ class SysLogFilterTest {
     }
 
     @Test
-    void observesDecryptedRequestAndPlainResponseBeforeOuterEncryption() throws Exception {
-        Map<String, String> keys = EncryptUtils.generateRsaKey();
-        String aesPassword = "1234567890123456";
-        String requestBody = "{\"password\":\"decrypted-value\"}";
-        String responseBody = "{\"token\":\"plain-response\"}";
-        String headerName = "encrypt-key";
-        MockHttpServletRequest request = new MockHttpServletRequest("POST", "/encrypted");
-        request.setContentType("application/json");
-        request.setContent(EncryptUtils.encryptByAes(requestBody, aesPassword).getBytes(StandardCharsets.UTF_8));
-        request.addHeader(headerName, EncryptUtils.encryptByRsa(
-            EncryptUtils.encryptByBase64(aesPassword), keys.get(EncryptUtils.PUBLIC_KEY)));
+    void preservesPlainJsonThroughNestedWrappersAndRedactsAuditCopies() throws Exception {
+        String requestBody = "{\"password\":\"request-secret-canary\",\"displayName\":\"测试\"}";
+        String responseBody = "{\"token\":\"response-secret-canary\",\"code\":200}";
+        MockHttpServletRequest request = jsonRequest(requestBody);
+        request.addHeader("Authorization", "Bearer header-secret-canary");
         MockHttpServletResponse response = new MockHttpServletResponse();
-        var decryptedRequest = new DecryptRequestBodyWrapper(
-            request, keys.get(EncryptUtils.PRIVATE_KEY), headerName);
-        var repeatableRequest = new RepeatedlyRequestWrapper(decryptedRequest, response);
-        var encryptingResponse = new EncryptResponseBodyWrapper(response);
+        var repeatableRequest = new RepeatedlyRequestWrapper(request, response, 2 * 1024 * 1024);
+        var nestedRequest = new jakarta.servlet.http.HttpServletRequestWrapper(repeatableRequest);
+        var nestedResponse = new jakarta.servlet.http.HttpServletResponseWrapper(response);
         List<Map<String, Object>> events = new ArrayList<>();
 
-        new SysLogFilter(1024, events::add).doFilter(repeatableRequest, encryptingResponse,
+        new SysLogFilter(1024, 2 * 1024 * 1024, events::add).doFilter(nestedRequest, nestedResponse,
             (servletRequest, servletResponse) -> {
+                assertThat(new String(servletRequest.getInputStream().readAllBytes(), StandardCharsets.UTF_8))
+                    .isEqualTo(requestBody);
                 assertThat(new String(servletRequest.getInputStream().readAllBytes(), StandardCharsets.UTF_8))
                     .isEqualTo(requestBody);
                 var httpResponse = (jakarta.servlet.http.HttpServletResponse) servletResponse;
@@ -312,26 +304,21 @@ class SysLogFilterTest {
         });
 
         assertThat(events).hasSize(2);
-        assertThat(events.getFirst()).containsEntry("body", "{\"password\":\"[REDACTED]\"}");
-        assertThat(events.getLast()).containsEntry("body", "{\"token\":\"[REDACTED]\"}");
-        assertThat(((Map<?, ?>) events.getFirst().get("requestHeaders")).get(headerName))
+        assertThat(events.getFirst()).containsEntry("body",
+            "{\"password\":\"[REDACTED]\",\"displayName\":\"测试\"}");
+        assertThat(events.getLast()).containsEntry("body", "{\"token\":\"[REDACTED]\",\"code\":200}");
+        assertThat(events.toString()).doesNotContain("request-secret-canary", "response-secret-canary",
+            "header-secret-canary");
+        assertThat(((Map<?, ?>) events.getFirst().get("requestHeaders")).get("Authorization"))
             .isEqualTo(List.of("[REDACTED]"));
-
-        String encryptedResponse = encryptingResponse.getEncryptContent(
-            response, keys.get(EncryptUtils.PUBLIC_KEY), headerName);
-        response.getWriter().write(encryptedResponse);
-        response.getWriter().flush();
-        String responseAesPassword = EncryptUtils.decryptByBase64(EncryptUtils.decryptByRsa(
-            response.getHeader(headerName), keys.get(EncryptUtils.PRIVATE_KEY)));
-        assertThat(response.getContentAsString()).isNotEqualTo(responseBody);
-        assertThat(EncryptUtils.decryptByAes(response.getContentAsString(), responseAesPassword))
-            .isEqualTo(responseBody);
+        assertThat(response.getContentAsString()).isEqualTo(responseBody);
+        assertThat(response.getHeader("encrypt-key")).isNull();
     }
 
     @Test
     void restoresPreexistingMdcValue() throws Exception {
         MDC.put(SysLogFilter.MDC_REQUEST_ID, "outer-request-id");
-        SysLogFilter filter = new SysLogFilter(1024, ignored -> {
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, ignored -> {
         });
 
         filter.doFilter(new MockHttpServletRequest("GET", "/mdc"), new MockHttpServletResponse(),
@@ -343,7 +330,7 @@ class SysLogFilterTest {
 
     @Test
     void loggingFailureDoesNotChangeBusinessResponse() throws Exception {
-        SysLogFilter filter = new SysLogFilter(1024, event -> {
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, event -> {
             throw new IllegalStateException("encoder unavailable");
         });
         MockHttpServletRequest request = jsonRequest("{\"value\":1}");
@@ -360,6 +347,30 @@ class SysLogFilterTest {
         assertThat(response.getContentAsString()).isEqualTo("{\"ok\":true}");
         assertThat(response.getHeader(SysLogFilter.REQUEST_ID_HEADER)).isNotBlank();
         assertThat(MDC.get(SysLogFilter.MDC_REQUEST_ID)).isNull();
+    }
+
+    @Test
+    void neverCopiesRawOAuthQueryAndRedirectIntoLogEvents() throws Exception {
+        String canary = "credential-canary-query";
+        List<Map<String, Object>> events = new ArrayList<>();
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/sso/oauth2/authorize");
+        request.setQueryString("code=" + canary + "&page=1&page=2");
+        request.addParameter("code", canary);
+        request.addParameter("page", "1", "2");
+        request.addHeader("Referer", "https://test.invalid/callback?code=" + canary);
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        new SysLogFilter(1024, 2 * 1024 * 1024, events::add).doFilter(request, response, (req, res) -> {
+            var httpResponse = (jakarta.servlet.http.HttpServletResponse) res;
+            httpResponse.setContentType("application/json");
+            httpResponse.setHeader("Location", "https://test.invalid/callback?code=" + canary);
+            httpResponse.getWriter().write("{\"redirectUri\":\"https://test.invalid/callback?code=" + canary + "\"}");
+        });
+
+        assertThat(events.toString()).doesNotContain(canary);
+        assertThat(((Map<?, ?>) events.getFirst().get("parameters")).get("page"))
+            .isEqualTo(List.of("1", "2"));
+        assertThat(response.getContentAsString()).contains(canary);
     }
 
     private MockHttpServletRequest jsonRequest(String body) {

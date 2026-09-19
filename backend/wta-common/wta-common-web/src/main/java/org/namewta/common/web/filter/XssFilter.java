@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.utils.StringUtils;
 import org.namewta.common.web.config.properties.XssProperties;
+import org.namewta.common.core.exception.RequestBodyTooLargeException;
 import org.springframework.http.HttpMethod;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class XssFilter implements Filter {
     private final List<String> excludes = new ArrayList<>();
 
     private final XssProperties properties;
+    private final int maxBodyBytes;
 
     /**
      * 初始化过滤器并加载配置中的排除路径。
@@ -57,7 +59,13 @@ public class XssFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
-        XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest) request);
+        XssHttpServletRequestWrapper xssRequest;
+        try {
+            xssRequest = new XssHttpServletRequestWrapper(req, maxBodyBytes);
+        } catch (RequestBodyTooLargeException exception) {
+            RepeatableFilter.rejectTooLarge(resp);
+            return;
+        }
         chain.doFilter(xssRequest, response);
     }
 

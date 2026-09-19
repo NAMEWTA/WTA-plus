@@ -1,6 +1,5 @@
 package org.namewta.common.web.config;
 
-import org.namewta.common.encrypt.config.ApiDecryptAutoConfiguration;
 import org.namewta.common.web.logging.SysLogFilter;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -47,16 +46,31 @@ class SysLogConfigTest {
     }
 
     @Test
-    void filterOrderKeepsLoggingInsideCryptoAndBeforeXss() throws Exception {
-        int cryptoOrder = registration(ApiDecryptAutoConfiguration.class, "cryptoFilter").order();
+    void ordinaryIngressLimitHasAnIndependentDefaultAndValidatedOverride() {
+        contextRunner.run(context -> assertThat(context.getBean(
+            org.namewta.common.web.config.properties.RequestBodyProperties.class).maxBytes()).isEqualTo(2 * 1024 * 1024));
+        contextRunner.withPropertyValues("namewta.web.request-body.max-size=3MB", "sys.log.max-body-size=16KB")
+            .run(context -> {
+                assertThat(context).hasNotFailed();
+                assertThat(context.getBean(org.namewta.common.web.config.properties.RequestBodyProperties.class).maxBytes())
+                    .isEqualTo(3 * 1024 * 1024);
+                assertThat(context.getBean(SysLogProperties.class).maxBodyBytes()).isEqualTo(16 * 1024);
+            });
+        for (String value : new String[]{"0B", "-1B", "3GB", "invalid"}) {
+            contextRunner.withPropertyValues("namewta.web.request-body.max-size=" + value)
+                .run(context -> assertThat(context).hasFailed());
+        }
+    }
+
+    @Test
+    void filterOrderKeepsLoggingAfterRepeatableAndBeforeXss() {
         int repeatableOrder = registration(FilterConfig.class, "repeatableFilter").order();
         int sysLogOrder = registration(SysLogConfig.class, "sysLogFilter").order();
         int xssOrder = registration(FilterConfig.class, "xssFilter").order();
 
-        assertThat(cryptoOrder).isEqualTo(FilterRegistrationBean.HIGHEST_PRECEDENCE);
-        assertThat(repeatableOrder).isEqualTo(cryptoOrder + 1);
-        assertThat(sysLogOrder).isEqualTo(cryptoOrder + 2);
-        assertThat(xssOrder).isEqualTo(cryptoOrder + 3);
+        assertThat(repeatableOrder).isEqualTo(FilterRegistrationBean.HIGHEST_PRECEDENCE + 2);
+        assertThat(sysLogOrder).isEqualTo(repeatableOrder + 1);
+        assertThat(xssOrder).isEqualTo(sysLogOrder + 1);
     }
 
     private FilterRegistration registration(Class<?> configurationClass, String methodName) {

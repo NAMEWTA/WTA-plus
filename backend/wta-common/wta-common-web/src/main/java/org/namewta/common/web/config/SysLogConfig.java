@@ -3,6 +3,7 @@ package org.namewta.common.web.config;
 import jakarta.servlet.DispatcherType;
 import org.namewta.common.web.logging.SysLogEventWriter;
 import org.namewta.common.web.logging.SysLogFilter;
+import org.namewta.common.web.config.properties.RequestBodyProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,13 +16,14 @@ import tools.jackson.databind.json.JsonMapper;
  * 系统 HTTP 日志自动配置。
  */
 @AutoConfiguration
-@EnableConfigurationProperties(SysLogProperties.class)
+@EnableConfigurationProperties({SysLogProperties.class, RequestBodyProperties.class})
 public class SysLogConfig {
 
     /**
-     * 在 CryptoFilter 解密和 repeatable 包装之后、XSS 改写之前记录 Filter 所见数据。
+     * 在 repeatable 包装之后、XSS 改写之前记录并脱敏 Filter 所见数据。
      *
      * @param properties 系统日志配置
+     * @param bodyProperties 日志需要捕获且尚未缓存的请求正文预算
      * @param jsonMapper 项目统一 JSON 映射器
      * @return 系统 HTTP 日志过滤器
      */
@@ -30,11 +32,12 @@ public class SysLogConfig {
     @FilterRegistration(
         name = "sysLogFilter",
         urlPatterns = "/*",
-        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 2,
+        order = FilterRegistrationBean.HIGHEST_PRECEDENCE + 3,
         asyncSupported = true,
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.ASYNC}
     )
-    public SysLogFilter sysLogFilter(SysLogProperties properties, JsonMapper jsonMapper) {
-        return new SysLogFilter(properties.maxBodyBytes(), new SysLogEventWriter(jsonMapper));
+    public SysLogFilter sysLogFilter(SysLogProperties properties, RequestBodyProperties bodyProperties,
+                                     JsonMapper jsonMapper) {
+        return new SysLogFilter(properties.maxBodyBytes(), bodyProperties.maxBytes(), new SysLogEventWriter(jsonMapper));
     }
 }
