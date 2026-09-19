@@ -2,6 +2,8 @@
 
 未来模板运行器必须一次性构造下列上下文。字段缺失时应在渲染前失败，不允许以空字符串静默生成不完整代码。
 
+FreeMarker 必须配置 `Configuration.DOLLAR_INTERPOLATION_SYNTAX`，只解析 `${...}`；MyBatis XML 的 `#{...}` 是 SQL 参数占位符，必须原样保留，不能按 FreeMarker 旧式数字插值解析。
+
 ## 表级字段
 
 | 变量 | 含义 |
@@ -59,6 +61,10 @@
 ## 树表字段
 
 树表额外要求 `treeCode`、`treeParentCode`、`treeName`、`treeParentColumn`、`treeRootValue`、`treeRootValueTsLiteral`、`treeRootValueJavaLiteral`、`treeAncestorsField`、`treeOrderField` 与 `expandColumn`。运行器必须在渲染前验证父字段、根值和主键类型一致。
+
+classic 树模板还要求 `treeParentIndex` 指向已在目标 schema 定义的父列索引；启用 ancestors 时必须提供其真实数据库列名 `treeAncestorsColumn`。`treeParentCap`、`treeAncestorsCap` 是对应 Java 属性首字母大写形式。不得凭生成名称假设索引存在。结构读取和根锁只用于服务端完整性检查，不可作为返回隐藏节点的公共查询；`selectVisibleForUpdate` 和实际更新/删除仍需挂接该资源的数据权限。
+
+新增、修改和删除共用 `@DSTransactional` 及按主键排序的根锁，锁后使用 current read 重验父链。不含 ancestors 的树也必须检查父存在性和后代成环；含 ancestors 的树在同事务更新并校验所有后代路径。根值必须显式提交，有子节点时整批拒绝删除，`isValid=false` 不能跳过结构和权限约束。模板不产生名称唯一约束，只有显式 `enableUnique` 才按已有字段合同生成唯一性校验。
 
 ## 输出集成
 

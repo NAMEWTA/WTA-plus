@@ -49,7 +49,7 @@ public interface ITestTreeService {
      * 校验并删除数据
      *
      * @param ids     主键集合
-     * @param isValid 是否校验,true-删除前校验,false-不校验
+     * @param isValid 保留的可选业务校验标志；树完整性与数据权限始终校验
      * @return 是否删除成功
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);

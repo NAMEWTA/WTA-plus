@@ -4,6 +4,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${packageName}.mapper.${ClassName}Mapper">
 
+<#if architectureMode == "classic">
+<#if table.tree>
+    <sql id="Tree_Structure_Columns">
+        ${pkColumn.columnName}, ${treeParentColumn.columnName}<#if "" != treeAncestorsField>, ${treeAncestorsColumn}</#if>
+    </sql>
+    <select id="selectStructure" resultType="${packageName}.domain.${ClassName}">
+        select <include refid="Tree_Structure_Columns"/> from ${tableName}
+        where ${pkColumn.columnName} = #{id} and del_flag = 0
+        <if test="locking">for update</if>
+    </select>
+    <select id="lockTreeRoots" resultType="${packageName}.domain.${ClassName}">
+        select <include refid="Tree_Structure_Columns"/> from ${tableName} force index (PRIMARY)
+        where del_flag = 0 and ${pkColumn.columnName} in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+        order by ${pkColumn.columnName} for update
+    </select>
+    <select id="selectVisibleForUpdate" resultType="${packageName}.domain.${ClassName}">
+        select <include refid="Tree_Structure_Columns"/> from ${tableName}
+        where ${pkColumn.columnName} = #{id} and del_flag = 0 for update
+    </select>
+    <select id="selectTreeChildrenForUpdate" resultType="${packageName}.domain.${ClassName}">
+        select <include refid="Tree_Structure_Columns"/> from ${tableName} force index (${treeParentIndex})
+        where del_flag = 0 and ${treeParentColumn.columnName} in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+        order by ${pkColumn.columnName} for update
+    </select>
+</#if>
+<#else>
+
     <sql id="Base_Column_List">
 <#list columns as column>
 <#if !table.isSuperColumn(column.javaField)>
@@ -84,4 +113,5 @@
         where ${pkColumn.columnName} in
         <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
     </update>
+</#if>
 </mapper>

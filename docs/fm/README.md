@@ -90,3 +90,5 @@ node docs/fm/scripts/validate.mjs
 ```
 
 校验模板清单、Vue 架构边界、CRUD method 和 Java POST 日志的静态合同。完整验收还必须使用代表性普通表与树表上下文渲染，再在目标前后端工程执行类型检查、测试和构建。
+
+classic 后端普通表、无 ancestors 树、含 ancestors 树的实际渲染、编译及 MySQL 负向/并发验收见 [tests/README.md](./tests/README.md)。通用模板的数据权限必须由目标资源显式配置，结构校验不能替代权限配置。
