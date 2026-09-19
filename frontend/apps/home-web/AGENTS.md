@@ -15,6 +15,8 @@
 ## Dependencies
 只从 `packages/**` 的公开入口组合 admin/profile domain 和 profile self web-domain，不依赖 admin-web。
 
+档案自助材料通过 App 注入 `uploadMaterial`，使用 OSS adapter 的私有 `general` 策略；预览、登记和移除引用经过 Profile owner 接口，不授予通用 OSS 管理查询、下载或删除权限。
+
 ## Verification
 `pnpm --filter @namewta/home-web lint`、`typecheck`、`test`、`build`。
 

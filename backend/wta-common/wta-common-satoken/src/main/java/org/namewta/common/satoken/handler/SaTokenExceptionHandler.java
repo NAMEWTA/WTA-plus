@@ -7,6 +7,7 @@ import cn.hutool.http.HttpStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.namewta.common.core.domain.R;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
+// 鉴权失败必须保留 401/403 合同，优先于通用 RuntimeException 兜底。
+@Order(0)
 public class SaTokenExceptionHandler {
 
     /**

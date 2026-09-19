@@ -4,9 +4,12 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 
 import lombok.RequiredArgsConstructor;
 import org.namewta.profile.api.material.ProfileMaterialPort;
+import org.namewta.profile.api.domain.ProfileType;
+import org.namewta.profile.person.domain.vo.ProfileMaterialRequirementVo;
 import org.namewta.profile.person.service.ProfileMaterialService;
 import org.namewta.profile.person.usecase.ProfileMaterialUseCase;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 /**
  * ProfileMaterialUseCaseImpl 应用用例合同，定义入口可调用的业务场景。
@@ -16,6 +19,14 @@ import org.springframework.stereotype.Service;
 public class ProfileMaterialUseCaseImpl implements ProfileMaterialUseCase {
 
     private final ProfileMaterialService service;
+
+    /** 查询当前条件适用的材料标签和最少份数。 */
+    @Override
+    public List<ProfileMaterialRequirementVo> requiredMaterials(
+        ProfileType profileType, String documentTypeCode,
+        boolean handlerIsLegalRepresentative) {
+        return service.requiredMaterials(profileType, documentTypeCode, handlerIsLegalRepresentative);
+    }
 
     /** 查询个人材料目录树。 */
     @DSTransactional

@@ -9,6 +9,8 @@ import org.namewta.common.core.domain.R;
 import org.namewta.common.log.annotation.Log;
 import org.namewta.common.log.enums.BusinessType;
 import org.namewta.profile.person.usecase.ProfileMaterialUseCase;
+import org.namewta.profile.api.domain.ProfileType;
+import org.namewta.profile.person.domain.vo.ProfileMaterialRequirementVo;
 import org.namewta.profile.api.material.ProfileMaterialPort.MaterialNodeCommand;
 import org.namewta.profile.api.material.ProfileMaterialPort.MaterialNodeView;
 import org.namewta.profile.api.material.ProfileMaterialPort.MaterialScope;
@@ -33,6 +35,17 @@ import java.util.List;
 public class MaterialTagController {
 
     private final ProfileMaterialUseCase materialPort;
+
+    /** 查询当前申请条件的材料提示；不接受前端提供的规则或跳过提交校验。 */
+    @GetMapping("/requirements")
+    @SaCheckPermission(value = {"profile:material-tag:query", "profile:person:material",
+        "profile:enterprise:material", "profile:person:override", "profile:enterprise:override"}, mode = SaMode.OR)
+    public R<List<ProfileMaterialRequirementVo>> requirements(
+        @RequestParam ProfileType profileType,
+        @RequestParam String documentTypeCode,
+        @RequestParam(defaultValue = "true") boolean handlerIsLegalRepresentative) {
+        return R.ok(materialPort.requiredMaterials(profileType, documentTypeCode, handlerIsLegalRepresentative));
+    }
 
     /**
      * 处理 tree HTTP 请求。
