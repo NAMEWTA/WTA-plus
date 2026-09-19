@@ -104,7 +104,7 @@ G-plan ── T-01 ── G-phone ──┐
 | 合同 | 覆盖 Ticket | 验证接缝 | Evidence | 当前状态 |
 |---|---|---|---|---|
 | AC-001–005 | T-01 | S1/S2，真实校验、写入无副作用、页面与旧登录 | T-01 执行 Evidence / acceptance JSON | passed，result ccd9d98 |
-| AC-006–008 | T-02 | S1–S4，退役导航/桥、包依赖、占位构建 | T-02 执行 Evidence | planned，未运行 |
+| AC-006–008 | T-02 | S1–S4，退役导航/桥、包依赖、占位构建 | T-02 执行 Evidence / acceptance JSON | passed，result b394c60 |
 | AC-009–012 | T-03 | S1–S5，生成合同、双 bundle、真实发布与隔离数据 | T-03 执行 Evidence及 G-final 聚合 | planned，未运行 |
 | 项目硬约束与明确交付数量 | 全部，T-03 最终聚合 | 每票真实 Skill 调用、owner/回归、2/6 实物核验 | 各票 phase/operation/hash 与最终清单 | 绑定已核验，实施调用未运行 |
 
@@ -131,7 +131,7 @@ G-plan ── T-01 ── G-phone ──┐
 | Ticket | Parent/base | Workspace/branch | Source checks | Implementation commit | Integration checks/E2E | Parent result |
 |---|---|---|---|---|---|---|
 | T-01 | main / dea1754 | 当前仓库/main | 通过，见 T-01 Evidence | ccd9d98（初始241a96a，审查修复后固定） | G-phone passed，28服务/10浏览器最终复核 | ccd9d98 |
-| T-02 | T-01 已验收 result | 当前仓库/main | 同上，仅本票合同 | 尚无；需授权且非空 | Lead 当前工作区 G-ai | 同上 |
+| T-02 | main / 2853e45 | 当前仓库/main | 通过，见 T-02 Evidence | b394c60（初始51a9ad6） | G-ai passed，MVC2/浏览器9 | b394c60 |
 | T-03 | T-02 result，且包含 T-01 | 当前仓库/main | 本票及最终生成/构建合同 | 尚无；必要的后端来源与最终生成提交均记录 | Lead 当前工作区 G-contract/G-final | 最终已验收 implementation commit |
 
 严格单 writer，不创建 source/candidate worktree。每票实现者先运行非 E2E，取得具体提交授权后形成 commit，Lead 在相同 main/current-workspace 执行集成和 required E2E。授权提交本身会移动当前 HEAD；失败时不标 accepted、不开始下一票、不擅自 reset，保留该未验收 checkpoint并修复。不得照搬 candidate 模式“父 HEAD 始终未动”的表述。
@@ -196,7 +196,7 @@ T-01 固定手机号合同；T-02 退出 AI 消费者并保留两个 Java 占位
 
 ### Current Status
 
-S Ready，T-01 done / G-phone passed，固定 result ccd9d98；T-02/T-03 Ready。Map revision 7；下一步 T-02 串行实施。G-contract/G-final 尚未完成。
+S Ready，T-01 done / G-phone passed，固定 result ccd9d98；T-02 done / G-ai passed，result b394c60；T-03 Ready。Map revision 7；下一步 T-03 串行实施。G-contract/G-final 尚未完成。
 
 规划质量与实际 validator/controller 结果归 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/planning-review.md</Path>；它不能代替三张执行 Evidence。Go/Python 仍在 <Path>{roots.state}/specdev/changes/2026-09-19-go-python-ai-platform/</Path> 暂缓。
 

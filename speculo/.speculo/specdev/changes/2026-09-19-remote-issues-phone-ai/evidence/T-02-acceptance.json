@@ -1,0 +1,29 @@
+{
+  "ticket_id": "T-02",
+  "lead": "codex-root",
+  "parent_before_sha": "2853e45c2b094311a6df28511c261822ae5623a4",
+  "implementation_commit": "b394c60bf6b1087b755cf0ed02a435183fa256f2",
+  "verified_tree_sha": "64275391a358f01ac5b93d7c6ed3d38e3d8c58a5",
+  "observed_head_before": "b394c60bf6b1087b755cf0ed02a435183fa256f2",
+  "porcelain_before": "",
+  "started_at": "2026-09-19T11:16:01.136114+00:00",
+  "observed_head_after": "b394c60bf6b1087b755cf0ed02a435183fa256f2",
+  "porcelain_after": "",
+  "completed_at": "2026-09-19T11:16:32.383044+00:00",
+  "verification": [
+    {
+      "command": "./mvnw -pl wta-admin -am test -Dtest=SnailAiRetirementTest -Dsurefire.failIfNoSpecifiedTests=false",
+      "cwd": "backend",
+      "exit_code": 0,
+      "passed": 2,
+      "skipped": 0
+    },
+    {
+      "command": "PATH=/tmp/wta-phone-tool-bin:$PATH corepack pnpm exec playwright test --config /tmp/wta-ai-retirement.config.mjs",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "passed": 9,
+      "skipped": 0
+    }
+  ]
+}

@@ -154,3 +154,7 @@ I 实施中以隔离 Git fixture 复现：产品提交后写 Evidence 必然使�
 ## LOG-013 — T-02 局部生成声明写集
 
 导航测试触发 Vite auto-import 插件，按本次局部扫描自动删除四项 Element Plus 声明；完整构建后再核对最终生成结果。Lead 将 frontend/apps/admin-web/src/types/auto-imports.d.ts 精确归 T-02；Map revision 6，重验 tickets 后恢复实施。没有手改生成文件或接管 API 合同生成物。
+
+## LOG-013 — T-02 本地验收
+
+Lead 接受 T-02 result b394c60；标准轴pass，规范S-001白名单修复并复审pass，固定点clean/MVC2/browser9全部通过。无远程写入，T-03现在可开始。

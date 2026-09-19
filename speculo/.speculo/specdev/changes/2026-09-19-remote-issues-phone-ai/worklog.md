@@ -8,7 +8,7 @@
 
 ## Current status
 
-用户已按 LOG-011 批准基线修复和本地提交。T-01 done，固定 result ccd9d98，双轴和 Lead 验收通过；T-02 正在实施，随后 T-03 严格串行。产品与状态唯一 writer=codex-root；无部署、推送或远程 Issue 回写。
+用户已按 LOG-011 批准基线修复和本地提交。T-01 done，固定 result ccd9d98，双轴和 Lead 验收通过；T-02 done，result b394c60，双轴与固定点MVC2/浏览器9通过；接着 T-03 严格串行。产品与状态唯一 writer=codex-root；无部署、推送或远程 Issue 回写。
 
 ## Decisions
 
@@ -70,3 +70,5 @@ T-01 本地实现/验证全部通过，Ticket 与 current workspace 记录为 bl
 T-01 已验收：ccd9d98，双轴通过，最终同tree28真实服务/安全/登录及10浏览器均通过；result不可变。接着串行T-02；OpenAPI S2留T-03必闭合。
 
 T-02 产品退出及非E2E通过：907后端发现/785执行/122属性skip，前端594+101+7（另补1导航边界），full/core产物验证，最终Client7+退役2浏览器通过。下一步不可变提交、隔离双轴审查、Lead固定点复核；独立server/发布/SQL/OpenAPI尚待T-03。
+
+T-02验收 b394c60：两轮隔离双轴pass，S-001旧聊天白名单修复；固定点clean前后MVC2/浏览器9再次exit0。进入T-03。

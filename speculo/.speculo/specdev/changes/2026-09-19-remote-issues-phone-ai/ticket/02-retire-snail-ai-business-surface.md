@@ -8,11 +8,11 @@ artifact: "ticket"
 change: "2026-09-19-remote-issues-phone-ai"
 id: "T-02"
 title: "退出 Snail AI 业务入口并保留 Java 占位"
-status: "in_progress"
+status: "done"
 kind: "refactor"
 planning_depth: "deep"
 planning_depth_reason: "移除 HTTP 能力、前端导航/权限组合与第三方依赖，需要保护旧数据库菜单和其他功能。"
-ready: true
+ready: false
 risk: "high"
 blocked_by: []
 contract_ids: ["AC-006", "AC-007", "AC-008"]
@@ -95,7 +95,7 @@ T-01/T-02不得修改T-03拥有的API生成物或SQL；交回有来源的合同�
 | 导航/依赖 | frontend: corepack pnpm architecture:check；corepack pnpm architecture:test；corepack pnpm test；corepack pnpm lint；corepack pnpm typecheck；corepack pnpm build:prod | 旧AI菜单隐藏；非AI未知键仍诊断；依赖和锁一致 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-02.md</Path> |
 | 浏览器旧菜单 | frontend: corepack pnpm test:e2e snail-ai-retirement.spec.ts --workers=1 | Lead检查新/旧菜单响应，禁止发旧注册或iframe请求；Client与导航恢复负向保持 | <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/evidence/T-02.md</Path> |
 
-所有命令为执行计划，当前尚未运行。frontend cwd固定使用corepack pnpm 10.34.5（已实测）；系统默认pnpm 9不能作为执行入口。精确新增测试名在实现形成后冻结并重验实际发现数；Maven reactor上无匹配模块可跳过，但负责该合同的模块不得零测试。
+上述命令的实际执行与最终验收见 Evidence。frontend cwd固定使用corepack pnpm 10.34.5（已实测）；系统默认pnpm 9不能作为执行入口。精确新增测试名在实现形成后冻结并重验实际发现数；Maven reactor上无匹配模块可跳过，但负责该合同的模块不得零测试。
 
 - **Workspace checks：** current-workspace执行非E2E检查；父分支main，单writer串行。
 - **E2E disposition：** required：真实Admin导航恢复与历史菜单响应；Lead在current-workspace观察不呈现旧功能、没有旧请求/iframe。
@@ -110,14 +110,14 @@ T-01/T-02不得修改T-03拥有的API生成物或SQL；交回有来源的合同�
 
 ## 10. 验收标准
 
-- [ ] AC-006：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-007：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] AC-008：Spec对应可观察结果由本票验证矩阵证明。
-- [ ] 已按Map→Skill→Ticket调用真实项目Skill，并在Evidence记录匹配phase/operation/hash。
-- [ ] 正常、失败、回归与E2E实际执行，含cwd、版本、命令、退出码、用例/skip数量及失败分类。
-- [ ] 所有写入在授权路径，shared path由指定owner修改。
-- [ ] 已获相应执行授权并形成非空implementation commit；Lead的current-workspace direct-parent验收通过，父分支result可回读。
-- [ ] 未完成项/残余风险如实记录；不把未实施、无修改或仅Evidence票标Done。
+- [x] AC-006：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-007：Spec对应可观察结果由本票验证矩阵证明。
+- [x] AC-008：Spec对应可观察结果由本票验证矩阵证明。
+- [x] 已按Map→Skill→Ticket调用真实项目Skill，并在Evidence记录匹配phase/operation/hash。
+- [x] 正常、失败、回归与E2E实际执行，含cwd、版本、命令、退出码、用例/skip数量及失败分类。
+- [x] 所有写入在授权路径，shared path由指定owner修改。
+- [x] 已获相应执行授权并形成非空implementation commit；Lead的current-workspace direct-parent验收通过，父分支result可回读。
+- [x] 未完成项/残余风险如实记录；不把未实施、无修改或仅Evidence票标Done。
 
 ## 11. SKILL 调用计划
 
