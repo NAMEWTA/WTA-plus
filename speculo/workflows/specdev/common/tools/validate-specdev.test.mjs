@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -469,3 +469,117 @@ for (const phase of ['in_progress', 'review', 'blocked', 'deviated', 'done']) {
     assert.ok(validateChange(directory, 'implement').errors.includes('T-01: Implement stage requires one Ticket workspace execution record'));
   });
 }
+
+function archivedFixture(t, { strict = true, governanceOnly = false } = {}) {
+  const f = gitFixture(t);
+  if (strict) {
+    write(join(f.root, '.speculo/workspace.json'), JSON.stringify({
+      schema_version: 1, path_base: 'project-root', roots: { state: '.speculo' },
+    }));
+  }
+  let result;
+  if (governanceOnly) {
+    write(join(f.directory, 'evidence/T-01.md'), 'historical governance only\n');
+    result = f.commit('not an implementation');
+    f.finishTicket('T-01', f.ticketSource.replaceAll(`${basename(f.directory)}/file.txt`, '.speculo/specdev'));
+  } else {
+    result = f.implement();
+    f.finishTicket();
+  }
+  f.record([f.entry(f.base, result)], true);
+  f.commit('completed acceptance');
+  const archive = join(f.root, '.speculo/specdev/archive/2026-09', basename(f.directory));
+  mkdirSync(dirname(archive), { recursive: true });
+  renameSync(f.directory, archive);
+  const statePath = join(archive, '.status.json');
+  const state = JSON.parse(readFileSync(statePath, 'utf8'));
+  Object.assign(state, { change_status: 'archived', archived: true,
+    archive_path: `<Path>{roots.state}/specdev/archive/2026-09/${basename(archive)}</Path>` });
+  const save = () => write(statePath, JSON.stringify(state));
+  save();
+  f.commit('archive completed fixture');
+  return { ...f, archive, state, save, check: () => validate(archive, 'complete', f.root).errors };
+}
+
+for (const strict of [false, true]) {
+  test(`complete accepts an actual archived change in a ${strict ? 'declared' : 'legacy'} workspace`, t => {
+    const f = archivedFixture(t, { strict });
+    assert.deepEqual(f.check(), []);
+    const cli = spawnSync(process.execPath, [validator, '--stage', 'complete', '--repo', f.root, f.archive], {
+      encoding: 'utf8', cwd: f.root,
+    });
+    assert.equal(cli.status, 0, cli.stderr);
+  });
+}
+
+test('an active-directory change cannot claim archived terminal state', t => {
+  const f = archivedFixture(t);
+  renameSync(f.archive, f.directory);
+  f.commit('invalid archive state in active directory');
+  assert.ok(validate(f.directory, 'complete', f.root).errors.some(error => /archived change must live/.test(error)));
+});
+
+test('archive month must follow the dated change name even when archive_path matches its location', t => {
+  const f = archivedFixture(t);
+  const wrongMonth = join(f.root, '.speculo/specdev/archive/2026-08', basename(f.archive));
+  mkdirSync(dirname(wrongMonth), { recursive: true });
+  renameSync(f.archive, wrongMonth);
+  f.state.archive_path = `<Path>{roots.state}/specdev/archive/2026-08/${basename(wrongMonth)}</Path>`;
+  write(join(wrongMonth, '.status.json'), JSON.stringify(f.state));
+  f.commit('archive in a month inconsistent with change date');
+  assert.ok(validate(wrongMonth, 'complete', f.root).errors.some(error => /archive month must match the change name/.test(error)));
+});
+
+for (const [label, update, expected] of [
+  ['false archived flag', { archived: false }, /requires archived=true/],
+  ['missing archive path', { archive_path: null }, /requires a rooted archive_path/],
+  ['different archive month', { archive_path: '<Path>{roots.state}/specdev/archive/2026-08/2026-09-18-single</Path>' }, /archive_path must match/],
+  ['different archive change', { archive_path: '<Path>{roots.state}/specdev/archive/2026-09/2026-09-18-other</Path>' }, /archive_path must match/],
+]) {
+  test(`archived complete rejects ${label}`, t => {
+    const f = archivedFixture(t);
+    Object.assign(f.state, update);
+    f.save();
+    f.commit('invalid archive metadata');
+    assert.ok(f.check().some(error => expected.test(error)));
+  });
+}
+
+test('archived complete still rejects an unfinished Ticket', t => {
+  const f = archivedFixture(t);
+  write(join(f.archive, 'ticket/01-example.md'), f.ticketSource);
+  f.commit('unfinished archived Ticket');
+  assert.ok(f.check().some(error => /planned Tickets remain unfinished/.test(error)));
+});
+
+test('archived complete still requires integrated Ticket evidence', t => {
+  const f = archivedFixture(t);
+  f.state.worktrees = [];
+  f.save();
+  f.commit('missing archived integration');
+  assert.ok(f.check().some(error => /no integrated or removed Ticket worktree exists/.test(error)));
+});
+
+test('archived complete still authenticates recorded Git commits', t => {
+  const f = archivedFixture(t);
+  const missing = '1'.repeat(40);
+  f.state.worktrees[0].source_checkpoint = missing;
+  Object.assign(f.state.worktrees[0].integration, { source_sha: missing, result_sha: missing });
+  f.save();
+  f.commit('forged archived implementation');
+  assert.ok(f.check().some(error => /not a resolvable Git commit/.test(error)));
+});
+
+test('archived complete retains the clean tracked and untracked repository gate', t => {
+  const f = archivedFixture(t);
+  write(f.product, 'dirty tracked\n');
+  assert.ok(f.check().some(error => /archived change requires a clean repository/.test(error)));
+  f.git('restore', '--', f.product);
+  write(join(f.root, 'untracked.txt'), 'dirty untracked\n');
+  assert.ok(f.check().some(error => /archived change requires a clean repository/.test(error)));
+});
+
+test('archive movement cannot turn historical governance into Ticket implementation', t => {
+  const f = archivedFixture(t, { governanceOnly: true });
+  assert.ok(f.check().some(error => /non-empty implementation diff/.test(error)));
+});

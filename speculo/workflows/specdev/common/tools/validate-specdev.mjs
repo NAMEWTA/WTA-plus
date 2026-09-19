@@ -2779,13 +2779,19 @@ function validateGitEvidence(repoRoot, change, changeStatus, tickets, errors) {
     return;
   }
   const currentBranch = gitOutput(resolvedRoot, ["branch", "--show-current"]);
-  const governanceRoot = `${toPosix(relative(resolvedRoot, change))}/`;
+  const governanceRoots = [`${toPosix(relative(resolvedRoot, change))}/`];
+  if (changeStatus?.change_status === "archived") {
+    // Moving the receipt must not turn its original governance commits into
+    // implementation when a Ticket owns a broader state or documentation path.
+    const originalChange = join(dirname(dirname(dirname(resolve(change)))), "changes", basename(change));
+    governanceRoots.push(`${toPosix(relative(resolvedRoot, originalChange))}/`);
+  }
   const completedCurrent = [];
   // Cleanliness is a live completion gate, not a permanent property of old Tickets.
   const status = gitOutput(resolvedRoot, ["status", "--porcelain=v1", "--untracked-files=all"]);
   if (status === null) errors.push("cannot read Git working tree status");
-  if (changeStatus?.change_status === "completed" && status !== "") {
-    errors.push("completed change requires a clean repository (tracked and untracked files)");
+  if (new Set(["completed", "archived"]).has(changeStatus?.change_status) && status !== "") {
+    errors.push(`${changeStatus.change_status} change requires a clean repository (tracked and untracked files)`);
   }
   for (const worktree of Array.isArray(changeStatus?.worktrees) ? changeStatus.worktrees : []) {
     const label = String(worktree.ticket_id ?? "worktree");
@@ -2826,7 +2832,7 @@ function validateGitEvidence(repoRoot, change, changeStatus, tickets, errors) {
           }
           const writable = tickets.get(worktree.ticket_id)?.meta.writable_paths ?? [];
           const hasImplementation = (paths) => paths !== null && paths.split("\0").some((path) =>
-            path && !path.startsWith(governanceRoot) && writable.some((owned) => pathsOverlap(path, owned)));
+            path && !governanceRoots.some((root) => path.startsWith(root)) && writable.some((owned) => pathsOverlap(path, owned)));
           const delta = gitOutput(resolvedRoot, ["diff", "--name-only", "--no-renames", "-z", before, result, "--"], false);
           const checkpoint = gitOutput(resolvedRoot, ["diff-tree", "--root", "--no-commit-id", "--name-only", "--no-renames", "-r", "-z", result, "--"], false);
           if (!hasImplementation(delta) || !hasImplementation(checkpoint)) {
@@ -3317,6 +3323,25 @@ function validateChange(change, stage = null, repoRoot = null) {
   errors.push(...workspace.errors);
 
   const changeStatus = validateChangeStatus(join(change, ".status.json"), basename(change), errors);
+  if (changeStatus?.change_status === "archived") {
+    const changeAbs = resolve(change);
+    const month = basename(dirname(changeAbs));
+    const specdevRoot = workspace.specdevRoot ?? dirname(dirname(dirname(changeAbs)));
+    if (
+      basename(specdevRoot) !== "specdev" ||
+      !/^\d{4}-(?:0[1-9]|1[0-2])$/.test(month) ||
+      changeAbs !== join(specdevRoot, "archive", month, basename(changeAbs))
+    ) {
+      errors.push("archived change must live under the workspace archive/YYYY-MM/change directory");
+    }
+    if (CHANGE_NAME.test(basename(changeAbs)) && month !== basename(changeAbs).slice(0, 7)) {
+      errors.push("archive month must match the change name date");
+    }
+    const expectedArchivePath = `<Path>${STATE_PREFIX}archive/${month}/${basename(changeAbs)}</Path>`;
+    if (changeStatus.archive_path !== expectedArchivePath) {
+      errors.push(`.status.json: archive_path must match the actual archive directory: ${expectedArchivePath}`);
+    }
+  }
   validateParentImplementation(change, changeStatus, stage, errors, warnings, repoRoot);
   errors.push(...validateInitiative(change));
   if (isFile(join(change, "source-issue.md"))) {
@@ -3603,18 +3628,15 @@ function validateChange(change, stage = null, repoRoot = null) {
 
   if (changeStatus) {
     if (
-      changeStatus.change_status === "completed" &&
+      new Set(["completed", "archived"]).has(changeStatus.change_status) &&
       [...tickets.values()].some(
         (artifact) => !new Set(["done", "cancelled"]).has(artifact.meta.status),
       )
     ) {
-      errors.push("change_status is completed while planned Tickets remain unfinished");
+      errors.push(`change_status is ${changeStatus.change_status} while planned Tickets remain unfinished`);
     }
-    if (changeStatus.change_status === "archived") {
-      warnings.push("validating an archived change in place; normally it lives under the archive root");
-    }
-    if (stage === "complete" && changeStatus.change_status !== "completed") {
-      errors.push("complete stage requires change_status=completed");
+    if (stage === "complete" && !new Set(["completed", "archived"]).has(changeStatus.change_status)) {
+      errors.push("complete stage requires change_status=completed or a valid archived change");
     }
   }
   if (
