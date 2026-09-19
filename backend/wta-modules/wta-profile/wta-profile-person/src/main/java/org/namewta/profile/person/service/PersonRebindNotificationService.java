@@ -122,12 +122,12 @@ public class PersonRebindNotificationService implements PersonRebindNotification
     private Delivery deliver(String type, long profileId, long applicationId, long userId) {
         try {
             if (INTERNAL_TYPE.equals(type)) {
-                notifications.submit(new NotificationCommand("profile", "person-rebind", INTERNAL_TYPE,
+                NotificationReceipt result = notifications.submit(new NotificationCommand("profile", "person-rebind", INTERNAL_TYPE,
                     Long.toString(applicationId), "USER", List.of(Long.toString(userId)), "person-rebind",
                     java.util.Map.of("title", "实名认证绑定变更通知", "content", SAFE_TEXT), List.of(NotificationChannel.IN_APP),
                     NotificationStrategy.ALL, NotificationMode.ASYNC, 60, null, null,
                     internalRequestId(applicationId), java.util.Map.of("audit", "SAFE_TEXT")));
-                return new Delivery(internalRequestId(applicationId), "ACCEPTED", null);
+                return submissionResult(result, internalRequestId(applicationId));
             }
             if (SMS_TYPE.equals(type)) {
                 return sendSms(profileId, applicationId, userId);
@@ -150,13 +150,18 @@ public class PersonRebindNotificationService implements PersonRebindNotification
         NotificationReceipt result = notifications.submit(new NotificationCommand("profile", "person-rebind", SMS_TYPE,
             Long.toString(applicationId), "PHONE", List.of(phone), "person-rebind",
             java.util.Map.of(), List.of(NotificationChannel.SMS),
-            NotificationStrategy.ALL, NotificationMode.SYNC, 60, null, null,
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 60, null, null,
             "profile:person:rebind:" + profileId + ":" + applicationId + ":sms", java.util.Map.of("audit", "REDACT_SENSITIVE")));
+        return submissionResult(result, requestId);
+    }
+    /** 如实记录提交时状态，QUEUED 不表示供应商已经受理或投递失败。 */
+    private Delivery submissionResult(NotificationReceipt result, String requestId) {
         if (result == null || result.status() == null) {
             return new Delivery(requestId, "FAILED", "EMPTY_NOTIFY_RESULT");
         }
-        if (result.status() == NotificationStatus.ACCEPTED || result.status() == NotificationStatus.DELIVERED) {
-            return new Delivery(result.notificationId(), "ACCEPTED", null);
+        if (result.status() == NotificationStatus.QUEUED || result.status() == NotificationStatus.PROCESSING
+            || result.status() == NotificationStatus.ACCEPTED || result.status() == NotificationStatus.DELIVERED) {
+            return new Delivery(result.notificationId(), result.status().name(), null);
         }
         return new Delivery(result.notificationId(), "FAILED", "NOTIFY_" + result.status().name());
     }

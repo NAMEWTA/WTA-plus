@@ -19,6 +19,12 @@ public class EnterpriseTransferDao {
 
     private final EnterpriseTransferMapper mapper;
 
+    /** 锁定当前用户拥有、已提交且尚未确认的挑战关联。 */
+    public ProfileEnterpriseTransferRecord lockChallenge(String challengeId, long sourceUserId) {
+        return mapper.lockChallenge(challengeId, sourceUserId);
+    }
+
+
     /**
      * 查询持久化数据（selectActiveOwner）。
      */
@@ -43,8 +49,8 @@ public class EnterpriseTransferDao {
     /**
      * 新增持久化数据（insertTransferRecord）。
      */
-    public int insertTransferRecord(long recordId, long profileId, long sourceBindingId, long sourceUserId, long targetUserId, String challengeId, int bindingVersion, Instant expiresTime, Instant occurredTime) {
-        return mapper.insertTransferRecord(recordId, profileId, sourceBindingId, sourceUserId, targetUserId, challengeId, bindingVersion, expiresTime, occurredTime);
+    public int insertTransferRecord(long recordId, long profileId, long sourceBindingId, long sourceUserId, long targetUserId, String challengeId, String notificationId, int bindingVersion, Instant expiresTime, Instant occurredTime) {
+        return mapper.insertTransferRecord(recordId, profileId, sourceBindingId, sourceUserId, targetUserId, challengeId, notificationId, bindingVersion, expiresTime, occurredTime);
     }
 
     /**

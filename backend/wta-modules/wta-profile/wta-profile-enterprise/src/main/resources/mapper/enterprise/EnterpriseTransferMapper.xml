@@ -29,15 +29,25 @@
          where user_id = #{userId} and status in ('ACTIVE','SUSPENDED') and del_flag = '0'
     </select>
 
+    <select id="lockChallenge" resultType="org.namewta.profile.enterprise.domain.ProfileEnterpriseTransferRecord">
+        select enterprise_transfer_record_id, enterprise_profile_id, source_binding_id,
+               source_user_id, target_user_id, challenge_id, notification_id,
+               expected_binding_version, status, expires_time
+          from profile_enterprise_transfer_record
+         where challenge_id = #{challengeId} and source_user_id = #{sourceUserId}
+           and status = 'CHALLENGED' and del_flag = '0'
+         for update
+    </select>
+
     <insert id="insertTransferRecord">
         insert into profile_enterprise_transfer_record (
             enterprise_transfer_record_id, enterprise_profile_id, source_binding_id,
-            source_user_id, target_user_id, challenge_id, expected_binding_version,
+            source_user_id, target_user_id, challenge_id, notification_id, expected_binding_version,
             status, failed_attempts, expires_time, version,
             create_dept, create_time, create_by, update_time, update_by, del_flag
         ) values (
             #{recordId}, #{profileId}, #{sourceBindingId},
-            #{sourceUserId}, #{targetUserId}, #{challengeId}, #{bindingVersion},
+            #{sourceUserId}, #{targetUserId}, #{challengeId}, #{notificationId}, #{bindingVersion},
             'CHALLENGED', 0, #{expiresTime}, 0,
             -1, #{occurredTime}, #{sourceUserId}, #{occurredTime}, #{sourceUserId}, '0'
         )
@@ -50,7 +60,7 @@
          where challenge_id = #{challengeId} and enterprise_profile_id = #{profileId}
            and source_binding_id = #{sourceBindingId} and source_user_id = #{sourceUserId}
            and target_user_id = #{targetUserId} and expected_binding_version = #{bindingVersion}
-           and status = 'CHALLENGED' and del_flag = '0'
+           and status = 'CHALLENGED' and expires_time > #{occurredTime} and del_flag = '0'
     </update>
 
     <select id="lockEffectiveBindingId" resultType="java.lang.Long">

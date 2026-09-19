@@ -55,9 +55,11 @@ public class RedisEnterpriseTransferChallengeStore implements EnterpriseTransfer
     public boolean activate(String challengeId) {
         return locked(challengeId, () -> {
             StoredChallenge stored = read(challengeId);
-            if (stored == null || stored.challenge().state() != EnterpriseTransferChallenge.State.PENDING_DELIVERY) {
+            if (stored == null || stored.challenge().expiresAtEpochMilli() <= System.currentTimeMillis()) {
                 return false;
             }
+            // 再次确认可复用有效挑战，不能清空已产生的消费 token 或延长原 TTL。
+            if (stored.challenge().state() == EnterpriseTransferChallenge.State.ACTIVE) return true;
             save(challengeId, new StoredChallenge(stored.challenge().activate(), null));
             return true;
         });
@@ -94,17 +96,30 @@ public class RedisEnterpriseTransferChallengeStore implements EnterpriseTransfer
         String challengeId = verifiedChallenge.challenge().challengeId();
         return locked(challengeId, () -> {
             StoredChallenge stored = read(challengeId);
-            if (stored == null || stored.storageToken() == null
+            if (stored == null || stored.challenge().expiresAtEpochMilli() <= System.currentTimeMillis()
+                || stored.storageToken() == null
                 || !stored.storageToken().equals(verifiedChallenge.storageToken())) {
                 return false;
             }
-            return bucket(challengeId).delete();
+            boolean consumed = bucket(challengeId).delete();
+            if (consumed) releaseRate(stored.challenge());
+            return consumed;
         });
     }
     /** 撤销转移挑战或档案绑定。 */
     @Override
     public void revoke(String challengeId) {
-        locked(challengeId, () -> bucket(challengeId).delete());
+        locked(challengeId, () -> {
+            StoredChallenge stored = read(challengeId);
+            bucket(challengeId).delete();
+            if (stored != null) releaseRate(stored.challenge());
+            return null;
+        });
+    }
+    /** 只撤销属于本挑战的限流键，不删除后续挑战的发码资格。 */
+    private void releaseRate(EnterpriseTransferChallenge challenge) {
+        client.<String>getBucket(rateKey(challenge.sourceUserId(), challenge.targetUserId()), StringCodec.INSTANCE)
+            .compareAndSet(challenge.challengeId(), null);
     }
     /** 保存转移挑战数据。 */
     private void save(String challengeId, StoredChallenge stored) {

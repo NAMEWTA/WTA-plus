@@ -120,6 +120,22 @@ class PersonRebindNotificationTest {
         verify(notifications).submit(any());
     }
 
+    @Test
+    void bothChannelsRecordQueuedInsteadOfClaimingAcceptanceOrFailure() {
+        when(users.selectPhonenumberById(202L)).thenReturn("13800138000");
+        when(notifications.submit(any())).thenReturn(new NotificationReceipt("93101", NotificationStatus.QUEUED,
+            true, false, List.of()));
+        stubPendingRows();
+        service.notifyOldAccount(new PersonReboundEvent(9201L, 9001L, 202L));
+        ArgumentCaptor<PersonNotificationAuditRow> audit = ArgumentCaptor.forClass(PersonNotificationAuditRow.class);
+        verify(audits, org.mockito.Mockito.times(2)).updateDelivery(audit.capture());
+        assertThat(audit.getAllValues()).allSatisfy(row -> {
+            assertThat(row.getStatus()).isEqualTo("QUEUED");
+            assertThat(row.getNotifyRequestId()).isEqualTo("93101");
+            assertThat(row.getFailureCategory()).isNull();
+        });
+    }
+
     private void stubPendingRows() {
         when(audits.selectRetryable(anyString(), anyLong(), anyLong(), anyLong()))
             .thenAnswer(invocation -> pending(invocation.getArgument(0)));

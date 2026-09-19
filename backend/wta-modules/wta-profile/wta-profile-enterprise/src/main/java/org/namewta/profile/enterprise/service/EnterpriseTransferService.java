@@ -5,6 +5,7 @@ import org.namewta.profile.enterprise.dao.EnterpriseTransferDao;
 import org.namewta.profile.enterprise.domain.model.read.EnterpriseTransferOwnerRow;
 import org.namewta.profile.enterprise.domain.exception.EnterpriseTransferException;
 import org.namewta.profile.enterprise.domain.transfer.EnterpriseTransferChallenge;
+import org.namewta.profile.enterprise.domain.ProfileEnterpriseTransferRecord;
 import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import org.namewta.notify.api.NotificationApplicationService;
@@ -12,6 +13,7 @@ import org.namewta.notify.api.NotificationChannel;
 import org.namewta.notify.api.NotificationCommand;
 import org.namewta.notify.api.NotificationMode;
 import org.namewta.notify.api.NotificationReceipt;
+import org.namewta.notify.api.NotificationQuery;
 import org.namewta.notify.api.NotificationStatus;
 import org.namewta.notify.api.NotificationStrategy;
 import org.namewta.profile.api.person.PersonIdentityLookupService;
@@ -81,15 +83,6 @@ public class EnterpriseTransferService {
         this.notify = notify;
         this.clock = clock;
     }
-    /** 兼容存量测试适配器使用的具体验证码生成器构造方法。 */
-    @Deprecated
-    public EnterpriseTransferService(EnterpriseTransferDao dao,
-                              EnterpriseTransferChallengeStore challenges,
-                              org.namewta.profile.enterprise.adapter.security.EnterpriseTransferCodeGenerator codes,
-                              PersonIdentityLookupService personIdentities, UserService users,
-                              NotificationApplicationService notify, Clock clock) {
-        this(dao, challenges, (EnterpriseTransferCodePort) codes, personIdentities, users, notify, clock);
-    }
     /**
      * 发起企业档案转移
      */
@@ -122,37 +115,65 @@ public class EnterpriseTransferService {
             result = notify.submit(new NotificationCommand("profile", "enterprise-transfer", "ENTERPRISE_TRANSFER",
                 challengeId, "PHONE", List.of(target.phone()), "enterprise-transfer",
                 Map.of("code", code),
-                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.SYNC, 80, null, expiresAt,
+                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, expiresAt,
                 "profile:enterprise:transfer:" + challengeId, Map.of("audit", "REDACT_SENSITIVE")));
         } catch (RuntimeException exception) {
             challenges.revoke(challengeId);
             throw new EnterpriseTransferException("ENTERPRISE_TRANSFER_DELIVERY_FAILED", exception);
         }
-        if (!delivered(result)) {
+        if (result == null || result.status() == null || result.notificationId() == null || result.notificationId().isBlank()
+            || !Set.of(NotificationStatus.QUEUED, NotificationStatus.ACCEPTED, NotificationStatus.DELIVERED)
+                .contains(result.status())) {
             challenges.revoke(challengeId);
             throw failure("ENTERPRISE_TRANSFER_DELIVERY_FAILED");
         }
         try {
-            recordChallenge(challenge, clock.instant());
-            if (!challenges.activate(challengeId)) {
-                throw failure("ENTERPRISE_TRANSFER_CHALLENGE_STATE_FAILURE");
-            }
+            // 与 Notify 意图在同一个动态数据源事务提交；Redis stage 不代表具备确认资格。
+            recordChallenge(challenge, result.notificationId(), clock.instant());
         } catch (RuntimeException exception) {
             challenges.revoke(challengeId);
             throw exception;
         }
-        return EnterpriseTransferVo.sent(challengeId);
+        return EnterpriseTransferVo.queued(challengeId, Math.max(0, Duration.between(clock.instant(), expiresAt).toSeconds()));
     }
     /**
      * 确认当前业务操作
      */
 
     public EnterpriseTransferVo confirm(long sourceUserId, EnterpriseTransferConfirmBo command) {
+        ProfileEnterpriseTransferRecord record = dao.lockChallenge(command.challengeId(), sourceUserId);
+        if (record == null || record.getNotificationId() == null || record.getExpiresTime() == null) {
+            throw failure("ENTERPRISE_TRANSFER_CHALLENGE_INVALID");
+        }
+        if (!record.getExpiresTime().isAfter(clock.instant())) {
+            challenges.revoke(command.challengeId());
+            return EnterpriseTransferVo.status("EXPIRED");
+        }
+        var notification = notify.query(new NotificationQuery(record.getNotificationId(), false));
+        if (notification == null || !record.getNotificationId().equals(notification.notificationId())
+            || notification.status() == null) {
+            throw failure("ENTERPRISE_TRANSFER_DELIVERY_FAILED");
+        }
+        if (Set.of(NotificationStatus.QUEUED, NotificationStatus.PROCESSING, NotificationStatus.UNKNOWN)
+            .contains(notification.status())) {
+            return EnterpriseTransferVo.queued(command.challengeId(),
+                Math.max(0, Duration.between(clock.instant(), record.getExpiresTime()).toSeconds()));
+        }
+        if (notification.status() != NotificationStatus.ACCEPTED && notification.status() != NotificationStatus.DELIVERED) {
+            challenges.revoke(command.challengeId());
+            return EnterpriseTransferVo.status(notification.status() == NotificationStatus.EXPIRED ? "EXPIRED" : "FAILED");
+        }
+        if (!challenges.activate(command.challengeId())) {
+            throw failure("ENTERPRISE_TRANSFER_CHALLENGE_INVALID");
+        }
         Verification verification = challenges.verify(command.challengeId(), sourceUserId, command.code());
         if (verification.status() != VerificationStatus.VERIFIED || verification.verified() == null) {
             throw failure("ENTERPRISE_TRANSFER_CHALLENGE_INVALID");
         }
         EnterpriseTransferChallenge challenge = verification.verified().challenge();
+        if (!matchesRecord(challenge, record) || challenge.expiresAtEpochMilli() <= clock.millis()) {
+            throw failure("ENTERPRISE_TRANSFER_CHALLENGE_INVALID");
+        }
         ActiveIdentityLock lock = new ActiveIdentityLock(challenge.targetUserId(), challenge.personProfileId(),
             challenge.fullName(), challenge.documentLastFour());
         ActiveIdentityMatch identity = personIdentities.lockActiveExactMatch(lock).orElse(null);
@@ -189,11 +210,11 @@ public class EnterpriseTransferService {
     /**
      * 记录转移挑战信息
      */
-    public void recordChallenge(EnterpriseTransferChallenge challenge, Instant occurredTime) {
+    public void recordChallenge(EnterpriseTransferChallenge challenge, String notificationId, Instant occurredTime) {
         try {
             changed(dao.insertTransferRecord(IdGeneratorUtil.nextLongId(), challenge.enterpriseProfileId(),
                 challenge.sourceBindingId(), challenge.sourceUserId(), challenge.targetUserId(),
-                challenge.challengeId(), challenge.sourceBindingVersion(),
+                challenge.challengeId(), notificationId, challenge.sourceBindingVersion(),
                 Instant.ofEpochMilli(challenge.expiresAtEpochMilli()), occurredTime),
                 "ENTERPRISE_TRANSFER_RECORD_CONFLICT");
         } catch (DuplicateKeyException exception) {
@@ -287,12 +308,14 @@ public class EnterpriseTransferService {
     private boolean activeWithPhone(UserDTO user, String phone) {
         return user != null && "0".equals(user.getStatus()) && phone.equals(user.getPhoneNumber());
     }
-    /**
-     * 判断通知是否已送达
-     */
-    private boolean delivered(NotificationReceipt result) {
-        return result != null && (result.status() == NotificationStatus.ACCEPTED
-            || result.status() == NotificationStatus.DELIVERED);
+    /** Redis 挑战必须与当前锁定的持久归属记录逐项一致。 */
+    private boolean matchesRecord(EnterpriseTransferChallenge challenge, ProfileEnterpriseTransferRecord record) {
+        return Objects.equals(record.getChallengeId(), challenge.challengeId())
+            && Objects.equals(record.getSourceUserId(), challenge.sourceUserId())
+            && Objects.equals(record.getTargetUserId(), challenge.targetUserId())
+            && Objects.equals(record.getEnterpriseProfileId(), challenge.enterpriseProfileId())
+            && Objects.equals(record.getSourceBindingId(), challenge.sourceBindingId())
+            && Objects.equals(record.getExpectedBindingVersion(), challenge.sourceBindingVersion());
     }
     /**
      * 构造流程事件数据

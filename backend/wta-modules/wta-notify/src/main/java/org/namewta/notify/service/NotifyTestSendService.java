@@ -82,7 +82,7 @@ public class NotifyTestSendService {
         NotifySceneCatalog.examples(sceneCode).forEach(params::put);
         NotificationReceipt receipt = notifications.submit(new NotificationCommand(
             "notify", sceneCode, "NOTIFY_CONFIG_TEST", target, recipientType, List.of(target),
-            sceneCode, params, List.of(notifyChannel), NotificationStrategy.ALL, NotificationMode.SYNC,
+            sceneCode, params, List.of(notifyChannel), NotificationStrategy.ALL, NotificationMode.ASYNC,
             20, null, null,
             "notify-config-test:" + sceneCode + ":" + channel + ":" + System.currentTimeMillis(),
             Map.of("audit", "TEST")));

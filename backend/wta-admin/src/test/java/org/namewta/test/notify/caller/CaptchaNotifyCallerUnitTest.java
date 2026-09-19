@@ -25,9 +25,9 @@ import static org.mockito.Mockito.*;
 class CaptchaNotifyCallerUnitTest {
 
     @Test
-    void smsCaptchaUsesTemplateSnapshotAndCachesOnlyAfterAccepted() {
+    void smsCaptchaUsesTemplateSnapshotAndCachesAfterQueuedSubmission() {
         NotificationApplicationService notificationService = mock(NotificationApplicationService.class);
-        when(notificationService.submit(any())).thenReturn(accepted());
+        when(notificationService.submit(any())).thenReturn(queued());
         RecordingCaptchaController controller = new RecordingCaptchaController(
             new CaptchaProperties(), notificationService);
 
@@ -53,7 +53,7 @@ class CaptchaNotifyCallerUnitTest {
     }
 
     @Test
-    void smsCaptchaReturnsFailureAndDoesNotCacheWhenProviderRejects() {
+    void smsCaptchaReturnsFailureAndDoesNotCacheWhenSubmissionFails() {
         NotificationApplicationService notificationService = mock(NotificationApplicationService.class);
         when(notificationService.submit(any())).thenThrow(new IllegalStateException("provider rejected"));
         RecordingCaptchaController controller = new RecordingCaptchaController(
@@ -68,9 +68,9 @@ class CaptchaNotifyCallerUnitTest {
     }
 
     @Test
-    void emailCaptchaUsesNotifyClientAndCachesOnlyAfterAccepted() {
+    void emailCaptchaUsesNotifyClientAndCachesAfterQueuedSubmission() {
         NotificationApplicationService notificationService = mock(NotificationApplicationService.class);
-        when(notificationService.submit(any())).thenReturn(accepted());
+        when(notificationService.submit(any())).thenReturn(queued());
         RecordingCaptchaController controller = new RecordingCaptchaController(
             new CaptchaProperties(), notificationService);
 
@@ -106,8 +106,8 @@ class CaptchaNotifyCallerUnitTest {
         assertNull(controller.cachedCode);
     }
 
-    private NotificationReceipt accepted() {
-        return new NotificationReceipt("notification-1", NotificationStatus.ACCEPTED, false, false, List.of());
+    private NotificationReceipt queued() {
+        return new NotificationReceipt("notification-1", NotificationStatus.QUEUED, true, false, List.of());
     }
 
     private static final class RecordingCaptchaController extends CaptchaController {

@@ -35,9 +35,9 @@ class EnterpriseTransferPersistenceTest {
         EnterpriseTransferChallenge challenge = challenge();
         EnterpriseTransferOwnerRow source = owner();
         when(mapper.insertTransferRecord(anyLong(), eq(9201L), eq(9101L), eq(101L), eq(202L),
-            eq("challenge-1"), eq(7), eq(Instant.ofEpochMilli(challenge.expiresAtEpochMilli())), eq(NOW)))
+            eq("challenge-1"), eq("93101"), eq(7), eq(Instant.ofEpochMilli(challenge.expiresAtEpochMilli())), eq(NOW)))
             .thenReturn(1);
-        service.recordChallenge(challenge, NOW);
+        service.recordChallenge(challenge, "93101", NOW);
 
         when(mapper.lockActiveOwner(101L)).thenReturn(source);
         when(mapper.lockEffectiveBindingId(202L)).thenReturn(null);

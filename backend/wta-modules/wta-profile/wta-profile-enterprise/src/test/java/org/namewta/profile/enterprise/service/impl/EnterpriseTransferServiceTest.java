@@ -60,7 +60,23 @@ class EnterpriseTransferServiceTest {
         codes, personIdentities, users, notify, Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
-    void sendsCodeWithRedactedAuditThenActivatesTheStagedChallenge() {
+    void queuedNotifyCreatesAnUnactivatedChallengeInsteadOfRejectingSubmission() {
+        eligibleTarget();
+        when(codes.generate()).thenReturn("123456");
+        when(challenges.stage(any())).thenReturn(StageResult.STAGED);
+        when(notify.submit(any())).thenReturn(new NotificationReceipt("93101", NotificationStatus.QUEUED,
+            true, false, List.of()));
+
+        var view = service.send(101L, new EnterpriseTransferSendBo("张三", "3001", "13800138000"));
+
+        assertThat(view.status()).isEqualTo("QUEUED");
+        assertThat(view.challengeId()).isNotBlank();
+        verify(challenges, never()).activate(any());
+        verify(challenges, never()).revoke(any());
+    }
+
+    @Test
+    void recordsRedactedNotificationAssociationWithoutActivatingBeforeCommit() {
         eligibleTarget();
         when(codes.generate()).thenReturn("123456");
         when(challenges.stage(any())).thenReturn(StageResult.STAGED);
@@ -69,7 +85,7 @@ class EnterpriseTransferServiceTest {
 
         var view = service.send(101L, new EnterpriseTransferSendBo("张三", "3001", "13800138000"));
 
-        assertThat(view.status()).isEqualTo("SENT");
+        assertThat(view.status()).isEqualTo("QUEUED");
         assertThat(view.challengeId()).isNotBlank();
         assertThat(view.expiresInSeconds()).isEqualTo(300);
         ArgumentCaptor<EnterpriseTransferChallenge> challenge =
@@ -83,7 +99,7 @@ class EnterpriseTransferServiceTest {
         assertThat(request.getValue().metadata().get("audit")).isEqualTo("REDACT_SENSITIVE");
         assertThat(request.getValue().templateParams().get("code")).isEqualTo("123456");
         assertThat(request.getValue().templateParams()).doesNotContainKey("content");
-        verify(challenges).activate(view.challengeId());
+        verify(challenges, never()).activate(view.challengeId());
     }
 
     @Test
@@ -150,7 +166,8 @@ class EnterpriseTransferServiceTest {
             new EnterpriseTransferConfirmBo("challenge-1", "000000")))
             .isInstanceOf(EnterpriseTransferException.class)
             .hasMessage("ENTERPRISE_TRANSFER_CHALLENGE_INVALID");
-        verifyNoInteractions(mapper, personIdentities, users, notify);
+        verify(mapper).lockChallenge("challenge-1", 101L);
+        verifyNoInteractions(personIdentities, users, notify);
     }
 
     @Test
@@ -179,15 +196,68 @@ class EnterpriseTransferServiceTest {
         verifyNoInteractions(challenges, codes, personIdentities, users, notify);
     }
 
+    private org.namewta.profile.enterprise.domain.ProfileEnterpriseTransferRecord committedNotification(NotificationStatus status) {
+        var record = new org.namewta.profile.enterprise.domain.ProfileEnterpriseTransferRecord();
+        record.setChallengeId("challenge-1"); record.setNotificationId("93101");
+        record.setSourceUserId(101L); record.setTargetUserId(202L); record.setEnterpriseProfileId(9201L);
+        record.setSourceBindingId(9101L); record.setExpectedBindingVersion(7); record.setExpiresTime(NOW.plusSeconds(300));
+        when(mapper.lockChallenge("challenge-1", 101L)).thenReturn(record);
+        when(notify.query(new org.namewta.notify.api.NotificationQuery("93101", false))).thenReturn(
+            new org.namewta.notify.api.NotificationSnapshot("93101", status, NOW, List.of()));
+        when(challenges.activate("challenge-1")).thenReturn(true);
+        return record;
+    }
+
+    @Test
+    void queuedNotificationCannotActivateOrConsumeTheChallenge() {
+        committedNotification(NotificationStatus.QUEUED);
+        var view = service.confirm(101L, new EnterpriseTransferConfirmBo("challenge-1", "123456"));
+        assertThat(view.status()).isEqualTo("QUEUED");
+        assertThat(view.expiresInSeconds()).isEqualTo(300);
+        verifyNoInteractions(challenges, personIdentities, users);
+    }
+
+    @Test
+    void failedNotificationRevokesTheChallengeAndAllowsResend() {
+        committedNotification(NotificationStatus.FAILED);
+        assertThat(service.confirm(101L, new EnterpriseTransferConfirmBo("challenge-1", "123456")).status()).isEqualTo("FAILED");
+        verify(challenges).revoke("challenge-1");
+        verify(challenges, never()).verify(any(), anyLong(), any());
+        verifyNoInteractions(personIdentities, users);
+    }
+
+    @Test
+    void expiredCommittedChallengeDoesNotQueryNotifyOrVerifyOtp() {
+        committedNotification(NotificationStatus.DELIVERED).setExpiresTime(NOW);
+        assertThat(service.confirm(101L, new EnterpriseTransferConfirmBo("challenge-1", "123456")).status()).isEqualTo("EXPIRED");
+        verify(challenges).revoke("challenge-1");
+        verifyNoInteractions(notify, personIdentities, users);
+    }
+
+    @Test
+    void matchingOtpCannotOverrideTheServerSideTransferAssociation() {
+        eligibleAccountOnly();
+        committedNotification(NotificationStatus.DELIVERED).setTargetUserId(303L);
+        when(challenges.verify("challenge-1", 101L, "123456"))
+            .thenReturn(new Verification(VerificationStatus.VERIFIED,
+                new VerifiedChallenge(challenge(EnterpriseTransferChallenge.State.ACTIVE), "stored-token")));
+        assertThatThrownBy(() -> service.confirm(101L, new EnterpriseTransferConfirmBo("challenge-1", "123456")))
+            .hasMessage("ENTERPRISE_TRANSFER_CHALLENGE_INVALID");
+        verifyNoInteractions(personIdentities, users);
+        verify(challenges, never()).consume(any());
+    }
+
     private void eligibleTarget() {
         when(mapper.selectActiveOwner(101L)).thenReturn(owner());
         when(mapper.insertTransferRecord(anyLong(), anyLong(), anyLong(), anyLong(), anyLong(),
-            any(), anyInt(), any(), any())).thenReturn(1);
+            any(), any(), anyInt(), any(), any())).thenReturn(1);
         when(personIdentities.findActiveExactMatches(any())).thenReturn(List.of(identity()));
         batchAccount();
     }
 
     private void eligibleAccountOnly() {
+        committedNotification(NotificationStatus.ACCEPTED);
+
         when(personIdentities.lockActiveExactMatch(any())).thenReturn(Optional.of(identity()));
         when(mapper.countEffectiveBinding(202L)).thenReturn(0);
         successfulBindingMutation();

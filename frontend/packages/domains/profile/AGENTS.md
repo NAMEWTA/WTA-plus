@@ -12,10 +12,10 @@
 ## Entry Points
 公开资源子路径见 [package.json](package.json)，新代码优先使用 `./person/*`、`./enterprise/*`。
 
-当前 OpenAPI 快照尚无 `/profile/**`；资源 service 暂以类型化 HTTP 边界承载已核实的 URL/方法，待快照纳入后再映射生成 transport，不让页面依赖 generated 文件。后端与 Web owner 映射见 [Profile 模块索引](../../../../.agents/skills/wta-module-guide/references/modules/profile/index.md)。
+当前 OpenAPI 快照已含 `/profile/**`，`current.json` 仅是版本指针。企业转移资源在 service 边界使用 generated transport 并映射自有状态；其他资源按受影响范围核对源码合同。禁止页面直接依赖 generated 文件，禁止手改生成类型。后端与 Web owner 映射见 [Profile 模块索引](../../../../.agents/skills/wta-module-guide/references/modules/profile/index.md)。
 
 ## Dependencies
-只依赖 platform 合同；不依赖 Vue、DOM、浏览器存储或具体请求实现，后端负责最终授权。
+依赖 platform 合同和 api-contracts 生成传输类型；不依赖 Vue、DOM、浏览器存储或具体请求实现，后端负责最终授权。
 
 ## Verification
 `pnpm --filter @namewta/domain-profile lint`、`typecheck`、`test`。

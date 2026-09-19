@@ -82,6 +82,9 @@ public class NotificationApplicationRuntimeService {
 
         List<NotifyDelivery> deliveries = new ArrayList<>();
         List<NotifyOutbox> outboxes = new ArrayList<>();
+        // 秒精度列可能向上舍入；立即任务取数据库当前整秒，保证提交后的首次 wake 已可 claim。
+        LocalDateTime availableAt = command.scheduledAt() == null
+            ? dao.databaseNow().withNano(0) : toLocal(command.scheduledAt());
         for (ResolvedRecipient user : users) {
             NotifyRecipient recipient = new NotifyRecipient();
             recipient.setRecipientId(IdGeneratorUtil.nextLongId());
@@ -121,7 +124,7 @@ public class NotificationApplicationRuntimeService {
                 outbox.setIntentId(intentId);
                 outbox.setDeliveryId(delivery.getDeliveryId());
                 outbox.setStatus("READY");
-                outbox.setAvailableAt(toLocal(command.scheduledAt() == null ? Instant.now() : command.scheduledAt()));
+                outbox.setAvailableAt(availableAt);
                 outbox.setAttemptCount(0);
                 outbox.setNextAttemptAt(outbox.getAvailableAt());
                 outbox.setMaxAttempts(5);
@@ -158,17 +161,17 @@ public class NotificationApplicationRuntimeService {
         if (command == null || command.notificationId() == null) {
             throw new ServiceException("通知编号不能为空");
         }
-        NotifyIntent intent = dao.intent(parsePositiveId(command.notificationId()));
+        NotifyIntent intent = dao.lockIntent(parsePositiveId(command.notificationId()));
         if (intent == null) {
             throw new ServiceException("通知不存在");
         }
-        List<NotifyDelivery> deliveries = dao.deliveries(intent.getIntentId()).stream()
+        List<NotifyDelivery> deliveries = dao.lockDeliveries(intent.getIntentId()).stream()
             .filter(item -> List.of("FAILED", "UNKNOWN").contains(item.getStatus())).toList();
         boolean queued = false;
         Long wakeHint = null;
         for (NotifyDelivery delivery : deliveries) {
             if (dao.markDeliveryForRetry(delivery.getDeliveryId()) != 1) continue;
-            LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+            LocalDateTime now = dao.databaseNow().withNano(0);
             if (dao.requeueOutbox(delivery.getDeliveryId(), now) == 0) {
                 NotifyOutbox outbox = new NotifyOutbox();
                 outbox.setOutboxId(IdGeneratorUtil.nextLongId());
@@ -196,7 +199,7 @@ public class NotificationApplicationRuntimeService {
         if (command == null || command.notificationId() == null) {
             throw new ServiceException("通知编号不能为空");
         }
-        NotifyIntent intent = dao.intent(parsePositiveId(command.notificationId()));
+        NotifyIntent intent = dao.lockIntent(parsePositiveId(command.notificationId()));
         if (intent == null) {
             throw new ServiceException("通知不存在");
         }
@@ -300,7 +303,7 @@ public class NotificationApplicationRuntimeService {
     }
 
     private NotificationReceipt receipt(NotifyIntent intent, List<NotifyDelivery> deliveries) {
-        boolean queued = "ASYNC".equals(intent.getMode()) && deliveries.stream().anyMatch(item -> "PENDING".equals(item.getStatus()));
+        boolean queued = deliveries.stream().anyMatch(item -> "PENDING".equals(item.getStatus()));
         boolean followUpRequired = deliveries.stream().anyMatch(item -> !"IN_APP".equals(item.getChannel())
             && ("ACCEPTED".equals(item.getStatus()) || "UNKNOWN".equals(item.getStatus())));
         return new NotificationReceipt(String.valueOf(intent.getIntentId()), status(intent.getStatus()),
@@ -344,4 +347,3 @@ public class NotificationApplicationRuntimeService {
     private record ResolvedRecipient(Long userId, String key, String phone, String email) {
     }
 }
-

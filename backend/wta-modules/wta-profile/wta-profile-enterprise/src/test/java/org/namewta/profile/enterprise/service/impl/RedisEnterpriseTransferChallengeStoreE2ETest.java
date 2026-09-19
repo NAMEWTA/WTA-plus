@@ -115,6 +115,36 @@ class RedisEnterpriseTransferChallengeStoreE2ETest {
         return store.consume(verified);
     }
 
+    @Test
+    void repeatedActivationPreservesTheVerificationTokenAndOriginalExpiry() {
+        var challenge = challenge("transfer-redis-idempotent", 7104L, 7204L, "123456");
+        track(challenge);
+        assertThat(store.stage(challenge)).isEqualTo(StageResult.STAGED);
+        assertThat(store.activate(challenge.challengeId())).isTrue();
+        var verified = store.verify(challenge.challengeId(), challenge.sourceUserId(), "123456");
+        long before = client.getBucket(RedisEnterpriseTransferChallengeStore.challengeKey(challenge.challengeId())).remainTimeToLive();
+        assertThat(store.activate(challenge.challengeId())).isTrue();
+        assertThat(client.getBucket(RedisEnterpriseTransferChallengeStore.challengeKey(challenge.challengeId())).remainTimeToLive())
+            .isLessThanOrEqualTo(before);
+        assertThat(store.consume(verified.verified())).isTrue();
+        var replacement = challenge("transfer-redis-after-consume", 7104L, 7204L, "123456");
+        track(replacement);
+        assertThat(store.stage(replacement)).isEqualTo(StageResult.STAGED);
+    }
+
+    @Test
+    void revokingAnOldChallengeCannotClearTheNewChallengesRateLimit() {
+        var first = challenge("transfer-redis-revoke-old", 7105L, 7205L, "123456");
+        var second = challenge("transfer-redis-revoke-new", 7105L, 7205L, "123456");
+        var third = challenge("transfer-redis-revoke-third", 7105L, 7205L, "123456");
+        track(first); track(second); track(third);
+        assertThat(store.stage(first)).isEqualTo(StageResult.STAGED);
+        store.revoke(first.challengeId());
+        assertThat(store.stage(second)).isEqualTo(StageResult.STAGED);
+        store.revoke(first.challengeId());
+        assertThat(store.stage(third)).isEqualTo(StageResult.RATE_LIMITED);
+    }
+
     private EnterpriseTransferChallenge challenge(String challengeId, long sourceUserId,
                                                    long targetUserId, String code) {
         return new EnterpriseTransferChallenge(challengeId, sourceUserId, targetUserId, 7301L, 7401L, 3,

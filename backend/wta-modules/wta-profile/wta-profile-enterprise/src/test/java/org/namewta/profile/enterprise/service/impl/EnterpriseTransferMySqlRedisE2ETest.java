@@ -99,7 +99,7 @@ class EnterpriseTransferMySqlRedisE2ETest {
                         .content("{\"fullName\":\"张三\",\"documentLastFour\":\"9999\","
                             + "\"phone\":\"13800138000\"}"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.data.status").value("SENT"))
+                    .andExpect(jsonPath("$.data.status").value("QUEUED"))
                     .andExpect(jsonPath("$.data.expiresInSeconds").value(300))
                     .andReturn();
                 challengeId = JsonMapper.builder().build().readTree(sent.getResponse().getContentAsString())
@@ -108,6 +108,7 @@ class EnterpriseTransferMySqlRedisE2ETest {
                 assertThat(delivery.get().metadata().get("audit")).isEqualTo("REDACT_SENSITIVE");
                 assertThat(delivery.get().recipientIds()).containsExactly("13800138000");
                 String code = String.valueOf(delivery.get().templateParams().get("code"));
+                session.commit(); // 发码事务先提交，后续确认只能读取已持久化的关联。
 
                 mvc.perform(post("/profile/enterprise/transfer/confirm")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -170,9 +171,11 @@ class EnterpriseTransferMySqlRedisE2ETest {
         when(notify.submit(any())).thenAnswer(invocation -> {
             NotificationCommand request = invocation.getArgument(0);
             delivery.set(request);
-            return new NotificationReceipt("enterprise-transfer-challenge-1", NotificationStatus.ACCEPTED,
-                false, false, List.of());
+            return new NotificationReceipt("enterprise-transfer-challenge-1", NotificationStatus.QUEUED,
+                true, false, List.of());
         });
+        when(notify.query(any())).thenReturn(new org.namewta.notify.api.NotificationSnapshot(
+            "enterprise-transfer-challenge-1", NotificationStatus.ACCEPTED, NOW, List.of()));
         EnterpriseTransferServiceImpl service = new EnterpriseTransferServiceImpl(mapper, challenges, codes,
             personIdentities, users, notify, Clock.fixed(NOW, ZoneOffset.UTC));
         return MockMvcBuilders.standaloneSetup(new EnterpriseTransferController(service))

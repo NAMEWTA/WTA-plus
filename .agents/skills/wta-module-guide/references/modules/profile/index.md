@@ -43,9 +43,13 @@ Profile 后端 Controller 与前端资源的当前映射如下。`web-domain` �
 
 `material-tags`（领域合同、后端路径）与 `material-tag`（页面 owner、组件键 `profile/materialTag/index`）是有意的复数/单数别名，不能随意改名。匿名验证回调是后端入口，没有前端页面时不创建空资源目录。
 
-当前工作树的 `frontend/packages/api-contracts/openapi/current.json` 不包含任何 `/profile/**` 路径，`generated/openapi.ts` 也没有 Profile 传输类型。这是已确认的暂态事实：Profile domain 的类型化 HTTP service 可以暂时在资源边界维护 URL/方法和领域映射，并用合同测试固定；不得伪造 OpenAPI 类型，也不得让页面直接依赖 generated 文件。
+自助材料页通过 `GET /profile/material-tags/requirements` 读取数据库中按 profileType、documentTypeCode 和 handlerIsLegalRepresentative 选择的必填规则。该查询只用于提示；提交时仍由服务端按已保存申请独立校验。上传先保存草稿取得 WORKING owner，再登记 OSS 引用；预览与移除都经过 owner 权限校验，移除引用不物理删除 OSS 对象。`current` 查询只返回 DRAFT/BACK/CANCEL/WAITING，已完成申请不作为可编辑 current 返回。
 
-后端 OpenAPI 快照纳入 Profile 后，按 `tooling/openapi` 的 `openapi:fetch`、`openapi:generate`、`openapi:check` 流程更新快照和生成结果，禁止手工编辑 `generated/openapi.ts`。domain 仍需把生成 transport 映射成自有模型，Web 只依赖 domain 公开合同；迁移完成后删除上述暂态例外。
+当前 `frontend/packages/api-contracts/openapi/current.json` 是不可变快照版本的指针；必须读取对应 `openapi/revisions/<revision>/source.json`，不能把指针本身误当路径清单。当前版本已包含 50 条 `/profile/**` 路径，`generated/openapi.ts` 也有 Profile 传输类型。
+
+企业转移资源通过 generated `EnterpriseTransferSendBo`、`EnterpriseTransferConfirmBo`、`EnterpriseTransferVo` 映射为 domain 自有状态合同；其他存量 Profile 资源的映射以源码为准，不再以“快照不存在”解释独立类型。变更命中的资源应同步校核生成 transport 与 domain 模型；Web 只依赖 domain 公开合同。
+
+更新快照与生成结果使用 `tooling/openapi` 的 `openapi:fetch`、`openapi:generate`、`openapi:check`，禁止手工编辑 `generated/openapi.ts`。来源若是已有全量快照加实际 Java schema 导出，provenance 必须明确各自来源及未提交工作树，不能声称是当前完整 HTTP 文档采集。
 
 ## 变更护栏
 

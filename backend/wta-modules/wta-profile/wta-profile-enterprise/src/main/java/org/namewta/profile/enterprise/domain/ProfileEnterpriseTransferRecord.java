@@ -10,6 +10,7 @@ import org.namewta.common.mybatis.core.domain.BaseEntity;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * 企业负责人转移挑战与结果审计实体。
@@ -29,10 +30,12 @@ public class ProfileEnterpriseTransferRecord extends BaseEntity {
     private Long sourceUserId;
     private Long targetUserId;
     private String challengeId;
+    /** 仅由服务端写入，用于经 Notify 公开 API 核验供应商受理状态。 */
+    private String notificationId;
     private Integer expectedBindingVersion;
     private String status;
     private Integer failedAttempts;
-    private LocalDateTime expiresTime;
+    private Instant expiresTime;
     private LocalDateTime confirmedTime;
     private String failureCategory;
 

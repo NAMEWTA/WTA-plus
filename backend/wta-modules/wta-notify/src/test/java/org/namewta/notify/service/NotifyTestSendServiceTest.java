@@ -68,14 +68,14 @@ class NotifyTestSendServiceTest {
         when(dao.findBinding("auth-captcha", "MAIL")).thenReturn(binding);
         when(dao.findAccount(9L)).thenReturn(account);
         when(notifications.submit(any())).thenReturn(
-            new NotificationReceipt("n1", NotificationStatus.ACCEPTED, false, false, List.of()));
+            new NotificationReceipt("n1", NotificationStatus.QUEUED, true, false, List.of()));
 
         String status = new NotifyTestSendService(dao, notifications)
             .sendTemplate("auth-captcha", "MAIL", "user@example.com");
 
         ArgumentCaptor<NotificationCommand> captor = ArgumentCaptor.forClass(NotificationCommand.class);
         verify(notifications).submit(captor.capture());
-        assertEquals("ACCEPTED", status);
+        assertEquals("QUEUED", status);
         assertEquals("auth-captcha", captor.getValue().templateCode());
         assertTrue(captor.getValue().templateParams().containsKey("code"));
         assertEquals(false, captor.getValue().templateParams().containsKey("providerKey"));

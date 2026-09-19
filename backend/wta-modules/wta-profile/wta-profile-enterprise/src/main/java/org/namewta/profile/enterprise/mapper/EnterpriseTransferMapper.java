@@ -14,6 +14,10 @@ import java.time.Instant;
 public interface EnterpriseTransferMapper
     extends BaseMapperPlus<ProfileEnterpriseTransferRecord, ProfileEnterpriseTransferRecord> {
 
+    /** 锁定服务端挑战关联；不接受客户端 notificationId。 */
+    ProfileEnterpriseTransferRecord lockChallenge(@Param("challengeId") String challengeId,
+                                                  @Param("sourceUserId") long sourceUserId);
+
     /**
      * 定义查询映射（selectActiveOwner）。
      */
@@ -38,6 +42,7 @@ public interface EnterpriseTransferMapper
                              @Param("sourceUserId") long sourceUserId,
                              @Param("targetUserId") long targetUserId,
                              @Param("challengeId") String challengeId,
+                             @Param("notificationId") String notificationId,
                              @Param("bindingVersion") int bindingVersion,
                              @Param("expiresTime") Instant expiresTime,
                              @Param("occurredTime") Instant occurredTime);
