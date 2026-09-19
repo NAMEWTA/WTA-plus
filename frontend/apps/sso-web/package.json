@@ -11,7 +11,7 @@
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "dev": "vite serve --mode development",
-    "lint": "oxlint src vite.config.ts",
+    "lint": "oxlint src vite.config.ts e2e playwright.security.config.ts",
     "preview": "vite preview --host 127.0.0.1 --port 4176 --strictPort",
     "test": "vitest run src",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json"

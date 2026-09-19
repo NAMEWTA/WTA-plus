@@ -6,6 +6,6 @@
     "tsBuildInfoFile": "../../node_modules/.tmp/sso-web.tsbuildinfo",
     "types": ["node", "vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.d.ts", "vite.config.ts"],
+  "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.d.ts", "vite.config.ts", "e2e/**/*.ts", "playwright.security.config.ts"],
   "exclude": ["node_modules", "dist"]
 }
