@@ -4,61 +4,62 @@
 
 | ID | Path | Language / framework / runtime | Build | Source / test roots | Public entrypoint | Quality gates | Evidence |
 |---|---|---|---|---|---|---|---|
-| `workspace-parent` | `.` | Markdown、Git 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | frontend/backend/external-services jobs | `README.md`, `.github/workflows/quality-gates.yml`; high |
-| `plus-ui` | `frontend` | TypeScript、Vue 3、Pinia、Browser，可扩展多 App monorepo | pnpm workspace、Vite、Oxlint、Vitest、Playwright | `apps/admin-web/src`、`packages/**/src`、`tooling/**/src`、相邻 `*.test.ts`、`e2e/**` | `apps/admin-web/src/main.ts` | architecture check/test、lint、typecheck、workspace test、双模式 build、按风险 E2E | `package.json`、`pnpm-workspace.yaml`、`tooling/architecture/**`、`playwright.config.ts`; high |
-| `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | 46 Maven projects below; 176 tracked Java test source files | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
+| `workspace-parent` | `.` | Markdown、Git 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | 仓内 release-contracts/frontend/backend/external-services 候选 jobs | `README.md`, `.github/workflows/quality-gates.yml`; 配置可核对，远程运行待验证 |
+| `plus-ui` | `frontend` | TypeScript、Vue 3、Pinia、Browser，可扩展多 App monorepo | pnpm workspace、Vite、Oxlint、Vitest、Playwright | `apps/{admin-web,home-web,sso-web}/src`、`packages/**/src`、`tooling/**/src`、相邻 `*.test.ts`、`e2e/**` | `apps/{admin-web,home-web,sso-web}/src/main.ts` | architecture check/test、lint、typecheck、workspace test、双模式 build、按风险 E2E | `package.json`、`pnpm-workspace.yaml`、`tooling/architecture/**`、`playwright.config.ts`; high |
+| `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | POM 与 Java 测试源码库存由当前文件派生，见项目画像的盘点命令 | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
 
 ## 后端 Maven 模块
 
-下表每一行都是唯一 `module:<path>` scope。未另行标注时，语言为 Java、运行时为 JVM、构建为 Maven，源码根为 `src/main/java`（存在资源时同时含 `src/main/resources`），测试根为空，generated path 为空，证据为该路径 `pom.xml` 与源码，置信度 high。
+下表每一行都是唯一 `module:<path>` scope。未另行标注时，语言为 Java、运行时为 JVM、构建为 Maven，源码根为 `src/main/java`（存在资源时同时含 `src/main/resources`），测试根以表中实存目录为准，generated path 为空，证据为该路径 `pom.xml` 与源码，置信度 high。
 
 | ID / path suffix under `backend/` | Role / framework | Public entrypoint | Test / generated notes |
 |---|---|---|---|
-| `wta-admin` | Spring Boot 可部署主应用，组装 api/common/modules | `org.namewta.NamewtaApplication` | `src/test/java`; JUnit 示例/基础测试 |
-| `wta-api` | 跨业务模块公开 API/DTO 合同 | `org.namewta.system.api.*` | none |
+| `wta-admin` | Spring Boot 可部署主应用，组装 api/common/modules | `org.namewta.NamewtaApplication` | `src/test/java`; 组装、合同、架构及属性门控真实服务/浏览器测试 |
+| `wta-api` | 跨业务模块公开 API/DTO 合同 | `src/main/java/org/namewta/**/api` 及共享 DTO/SPI | none |
 | `wta-common` | common 聚合 POM | none | no source root |
 | `wta-common/wta-common-bom` | common 版本/BOM 合同 | none | no source root |
 | `wta-common/wta-common-ai` | AI 公共配置/适配 | package surface | none |
-| `wta-common/wta-common-core` | Spring 核心类型、配置、通用合同 | package surface | none |
+| `wta-common/wta-common-core` | Spring 核心类型、配置、通用合同 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-common/wta-common-doc` | SpringDoc/Javadoc 适配 | package surface | none |
 | `wta-common/wta-common-elasticsearch` | Elasticsearch 适配 | package surface | none |
 | `wta-common/wta-common-encrypt` | Spring/MyBatis 加解密适配 | package surface | none |
 | `wta-common/wta-common-excel` | Excel 公共 API | package surface | none |
 | `wta-common/wta-common-job` | Spring 调度集成 | package surface | none |
-| `wta-common/wta-common-json` | Spring/Jackson JSON 合同 | package surface | none |
+| `wta-common/wta-common-json` | Spring/Jackson JSON 合同 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-common/wta-common-liteflow` | Spring LiteFlow 集成 | package surface | none |
-| `wta-common/wta-common-log` | 日志/审计切面 | package surface | none |
-| `wta-common/wta-common-notify` | 渠道无关通知契约、分发、幂等和附件快照 | `NotifyDispatcher`, `NotifyClient`, adapter SPI | tests through consumers/admin |
+| `wta-common/wta-common-log` | 日志/审计切面 | package surface | `src/test/java`; 实际模块测试 |
+| `wta-common/wta-common-notify` | 渠道无关通知契约、分发、幂等和附件快照 | `NotifyDispatcher`, `NotifyClient`, adapter SPI | 无本地 src/test/java；由 admin/Notify 消费者测试覆盖 |
 | `wta-common/wta-common-mail` | 邮件适配 | package surface | none |
 | `wta-common/wta-common-mcp` | MCP 集成 | package surface | none |
 | `wta-common/wta-common-mqtt` | Spring MQTT 集成 | package surface | none |
 | `wta-common/wta-common-mybatis` | Spring/MyBatis 数据访问基础 | package surface | none |
-| `wta-common/wta-common-nacos` | Nacos 配置解密与启动集成 | package surface | none |
+| `wta-common/wta-common-nacos` | Nacos 配置解密与启动集成 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-common/wta-common-openapi` | 默认开启、可由 `OPENAPI_ENABLED=false` 显式关闭的机器调用协议、注册表、网关与 Sa-Token Session 桥 | `@OpenApi`, OpenAPI SPI, auto-configuration | `src/test/java`; protocol/registry/gateway/assembly tests |
 | `wta-common/wta-common-oss` | 对象存储适配 | package surface | none |
-| `wta-common/wta-common-push` | Spring 推送/WebSocket/SSE 基础 | package surface | none |
-| `wta-common/wta-common-redis` | Spring/Redis 缓存、锁与限流 | package surface | none |
+| `wta-common/wta-common-push` | Spring 推送/WebSocket/SSE 基础 | package surface | `src/test/java`; 实际模块测试 |
+| `wta-common/wta-common-redis` | Spring/Redis 缓存、锁与限流 | package surface | `src/test/java`; 实际模块测试 |
+| `wta-common/wta-common-richtext` | 富文本清洗、规范化与 OSS 资源引用桥 | package surface | `src/test/java` |
 | `wta-common/wta-common-satoken` | Spring/Sa-Token 认证基础 | package surface | none |
 | `wta-common/wta-common-security` | 安全注解/权限合同 | package surface | none |
 | `wta-common/wta-common-sensitive` | 敏感数据处理 | package surface | none |
 | `wta-common/wta-common-sms` | Spring SMS 集成 | package surface | none |
 | `wta-common/wta-common-social` | 社交登录适配 | package surface | none |
 | `wta-common/wta-common-translation` | 翻译/字典适配 | package surface | none |
-| `wta-common/wta-common-web` | Spring MVC、错误映射、Actuator 基础 | package surface | none |
+| `wta-common/wta-common-web` | Spring MVC、错误映射、Actuator 基础 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-extend` | 独立应用聚合 POM | none | no source root |
 | `wta-extend/wta-monitor-admin` | Spring Boot Monitor 可部署应用 | `MonitorAdminApplication` | none |
 | `wta-extend/wta-snailai-server` | Spring Boot SnailAI 可部署应用 | `SnailAiServerApplication` | none |
 | `wta-extend/wta-snailjob-server` | Spring Boot SnailJob 可部署应用 | `SnailJobServerApplication` | none |
 | `wta-modules` | 业务模块聚合 POM | none | no source root |
 | `wta-modules/wta-ai` | AI 业务能力 | package surface | none |
-| `wta-modules/wta-demo` | 示例/集成演示能力 | package surface | none |
+| `wta-modules/wta-demo` | 示例/集成演示能力 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-modules/wta-job` | 业务任务执行器 | package surface | none |
 | `wta-modules/wta-notify` | 通知公告、收件箱、渠道投递编排和通知配置 | `controller/admin`、`controller/anonymous`、`usecase` | `src/test/java`; layered module; `validate-module-mode` required |
 | `wta-modules/wta-profile` | 账号资料业务聚合 POM | none | no source root |
 | `wta-modules/wta-profile/wta-profile-bom` | profile 子模块版本/BOM 合同 | none | no source root |
-| `wta-modules/wta-profile/wta-profile-person` | 个人资料与认证能力 | controller/service/mapper contracts | `src/test/java` |
-| `wta-modules/wta-profile/wta-profile-enterprise` | 企业资料与认证能力 | controller/service/mapper contracts | `src/test/java` |
-| `wta-modules/wta-system` | 用户、Client、角色、菜单、权限等核心系统能力 | controller/service/mapper contracts | none |
+| `wta-modules/wta-profile/wta-profile-person` | 个人资料与认证能力 | Controller/UseCase 入口；跨模块通过 wta-api | `src/test/java` |
+| `wta-modules/wta-profile/wta-profile-enterprise` | 企业资料与认证能力 | Controller/UseCase 入口；跨模块通过 wta-api | `src/test/java` |
+| `wta-modules/wta-system` | 用户、Client、角色、菜单、权限等核心系统能力 | controller/service/mapper contracts | `src/test/java`; 实际模块测试 |
 | `wta-modules/wta-workflow` | WarmFlow 工作流能力 | controller/service contracts | none |
 | `wta-modules/wta-third` | 第三方 HTTP Provider/Endpoint 管理、凭据安全、RestClient Gateway、显式适配器 SPI、限流与出站观测 | `org.namewta.third.api.ThirdPartyGateway`；管理 API 位于 `org.namewta.third.controller.admin` | `src/test/java`; crypto/path security tests; external MySQL/Redis/HTTP/browser gates are recorded by the change release evidence |
 | `wta-modules/wta-sso` | 第一方 SSO Authorization Code + PKCE、SSO 域会话 | `controller/anonymous` authorize/token/revoke/login | `src/test/java`; layered module; `validate-module-mode` required |
@@ -92,4 +93,4 @@
 - `path:backend/wta-modules/**` 中的 CRUD/mapper/service/controller，以及 `wta-common-mybatis`、`wta-common-translation` -> 追加后端 CRUD/查询实现规范；模板修改单独路由到 `path:docs/fm/**`。
 - `path:docs/fm/**` -> 静态 CRUD 模板规范。
 - SQL/表结构变化 -> 安全数据 + Java/Spring contract + 数据源事务与建表；新建项目自有表应用基础字段基线，直接修改本仓六份 MySQL 8.4 完整基座中的对应文件。
-- 跨前后端 API 变化 -> 同时加载 TypeScript、Java、测试、安全和交付规则，并以后端兼容合同先行。
+- 跨前后端 API 变化 -> 同时加载 TypeScript、Java、测试、安全和交付规则，并以后端公开合同、权限及仓内消费者同步为先。

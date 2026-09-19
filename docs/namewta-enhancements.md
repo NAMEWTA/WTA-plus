@@ -14,25 +14,25 @@ NAMEWTA 是 WTA-plus 的产品发行线。目录所有权和安全不变量以�
 | `packages/domains/*` | 无 Vue/DOM 的 API、领域类型、查询/命令服务和传输映射 |
 | `packages/web-domains/*` | Vue 页面、领域组件、Web hooks、语言资源和动态路由 manifest |
 | `packages/platform/*` | 认证、权限、HTTP、运行时等跨领域端口和合同 |
-| `packages/adapters/*` | Axios、浏览器存储、浏览器加密及未来终端适配实现 |
+| `packages/adapters/*` | Axios、浏览器存储、OSS 上传及未来终端适配实现 |
 | `packages/web-kit/*` | 多个 Web 消费者共同使用的壳层、基础组件和设计 token |
 | `packages/api-contracts` | 可追溯、确定性生成的 OpenAPI 传输合同 |
 
-当前发布面包含 `admin-web` 管理端和 `home-web` 用户门户；未激活终端不参与工作区构建、路由和权限注册。
+当前工作区构建包含 Admin、Home、SSO；[发布清单](../release-artifacts/apps.json)登记三者的配套入口。SSO 使用独立 Origin 的认人页；构建通过、历史预览和已部署状态不能互相推导。真实部署需经过[发布门禁](../release-artifacts/README.md)。未激活终端不参与构建、路由和权限注册。
 
-domain 与后端模块一一对应为 `admin`、`system`、`workflow`、`demo`、`profile`、`notify`、`third`、`ai`；包内第二层按 Controller 的稳定 HTTP 资源命名。由此可以从 `/system/client` 直接定位到 `domains/system/src/client`，再定位到 `web-domains/system/src/client` 的 Web 表现层。
+domain 与后端模块一一对应为 `admin`、`system`、`workflow`、`demo`、`profile`、`notify`、`third`、`ai`；包内第二层按 Controller 的稳定 HTTP 资源命名。由此可以从 `/system/client` 直接定位到 `frontend/packages/domains/system/src/client`，再定位到 `frontend/packages/web-domains/system/src/client` 的 Web 表现层。
 
 App 不重新实现后端接口和数据模型。新增 App 时只选择需要的公开 domain/web-domain，并实现该终端自己的适配和界面组合。未来移动端、小程序可以复用 headless domain 与 platform 合同，同时替换终端特有 UI、请求、存储和生命周期。
 
 ### Client 级认证、动态路由与权限
 
-每个 App 使用显式 ClientId 和独立会话命名空间。登录前先获取服务端 ClientContext；注册开关、登录域、请求加密和认证方式均由服务端上下文约束，失败或畸形数据按关闭处理。
+每个 App 使用显式 ClientId 和独立会话命名空间。登录前先获取服务端 ClientContext；注册开关、登录域和认证方式均由服务端上下文约束，失败或畸形数据按关闭处理。
 
 Admin 登录后恢复用户信息，按当前 Client 获取后端菜单，由 `packages/platform/app-runtime` 生成确定导航投影，再使用 App 已选择的 web-domain manifest 解析组件键并通过 Vue Router `addRoute` 注册。Admin 自有 `navigation` Store 维护 sidebar、topbar、default 和 Router 投影；`packages/web-kit/permission` 安装的 `v-hasPermi`、`v-hasRoles` 与命令式检查消费同一实时 evaluator。后端仍负责最终授权。
 
 ### 工程质量
 
-前端使用 pnpm workspace/catalog 管理依赖，并以架构检查、OpenAPI 漂移检查、Oxlint、Oxfmt、TypeScript、Vitest、工作区构建和 Playwright 验证包边界及关键流程。跨 App 导入、包深层导入、跨工作区相对导入和未声明依赖由门禁阻止；第二个 App 激活时必须恢复真实跨 App Client 与会话隔离验收。
+前端使用 pnpm workspace/catalog 管理依赖，并以架构检查、OpenAPI 漂移检查、Oxlint、TypeScript、Vitest、工作区构建和 Playwright 验证包边界及关键流程；Oxfmt 是写入式格式化工具，不是已启用的 format-check。跨 App 导入、包深层导入、跨工作区相对导入和未声明依赖由门禁阻止；当前 Admin/Home/SSO 的认证变更必须验证跨 App Client、会话及 Cookie 隔离，默认 Admin E2E 不能替代 SSO 专用验收。
 
 ## 后端增强
 

@@ -1,16 +1,16 @@
 # 架构、目录与依赖边界
 
-### ARCH-001 Submodule 所有权
+### ARCH-001 Monorepo 源码所有权
 
 Scope: `repository`, `module:frontend`, `module:backend`
 
 Level: MUST
 
-Source: `repository-fact` (`README.md`, `.gitmodules`)
+Source: `repository-fact` (`README.md`, `backend/pom.xml`, `frontend/package.json`, Git tracked tree)
 
-Rule: 前后端变更在各自 Submodule 中实现、验证和形成独立逻辑提交；父仓库只记录文档与经过选择的 Submodule commit 指针。不得把子模块源码复制进父仓库或跨目录建立隐式构建依赖。
+Rule: 前后端源码由同一 monorepo 的 `backend/` 与 `frontend/` 拥有，不以 Git submodule 指针交付。变更在所属目录实现和验证，形成聚焦逻辑主题的提交；跨端合同按后端合同与前端消费者顺序同步。不得复制一套平行源码或跨目录建立隐式构建依赖。
 
-Verification: 分别检查父仓库及两个子模块 `git status`; review 父仓库 diff 只含预期文档/指针；在对应子模块工作目录运行门禁。
+Verification: 从 monorepo 根检查 `git status` 与实际 diff；核对前后端源码由普通 Git 文件跟踪而非 gitlink，并在对应目录运行门禁。
 
 ### ARCH-002 后端依赖方向
 
@@ -58,7 +58,7 @@ Scope: `public-api:wta-api`, HTTP/JSON, SQL/schema, `path:frontend/packages/api-
 
 Level: MUST
 
-Source: `repository-fact` (`plan/update.md`, `AGENTS.md`)
+Source: `repository-fact` (`AGENTS.md`, `namewta-fullstack-development`)
 
 Rule: JSON 字段、HTTP 路径、认证 header、数据库 schema 和初始化 SQL 都是兼容合同。跨端变更先形成向后兼容或同步可交付的后端合同，再更新前端消费者；破坏性变更必须给出迁移和回滚。
 

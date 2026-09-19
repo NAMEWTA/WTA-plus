@@ -11,8 +11,8 @@
 ## Components
 
 - Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
-- `controller/OpenApiDemoController.java`：OpenAPI 注解与机器调用链路演示。
-- `controller/TestRichTextController.java`：富文本规范化、OSS 资源授权与引用对账演示。
+- `src/main/java/org/namewta/demo/controller/OpenApiDemoController.java`：OpenAPI 注解与机器调用链路演示。
+- `src/main/java/org/namewta/demo/controller/TestRichTextController.java`：富文本规范化、OSS 资源授权与引用对账演示。
 - 具体业务规则、接口与数据结构以源码为准。
 
 ## Entry Points
@@ -27,7 +27,7 @@
 
 ## Verification
 
-在后端仓库根目录执行 `mvn -pl wta-modules/wta-demo -am -DskipTests compile`，再按模块测试配置执行验证。
+在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-demo -am -DskipTests compile`，再按模块测试配置执行验证。
 
 ## Read Next
 

@@ -6,14 +6,14 @@
 
 | 增强方向     | 当前实现                                                                                           | 带来的变化                                                            |
 | ------------ | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| 多 App 交付  | `admin-web` 管理端与 `home-web` 应用用户端均已激活；旧 Client Web、移动 Web 和小程序入口已清理 | 两个产品端共享领域架构，同时保持 Client、会话和菜单隔离 |
+| 多 App 交付  | `admin-web`、`home-web`、`sso-web` 均有真实入口并参与构建；发布面由 apps.json 显式登记 | 业务 App 共享领域，SSO 采用独立 Origin；Client、会话和菜单保持隔离 |
 | 领域复用     | 无界面 API、类型和业务服务进入 `packages/domains/*`，Vue 页面进入 `packages/web-domains/*`         | 新 App 直接组合已有能力，不重新创建后端接口和数据模型                 |
 | 前后端映射   | domain 名与后端 `admin/system/workflow/demo/profile/notify/third/ai` 模块一致，资源目录与 Controller base path 一致 | 可从 Java Controller 或 URL 快速定位前端 API、类型和页面              |
-| 通用平台能力 | 认证、权限、HTTP 和运行时进入 `platform`，Axios、存储和加密进入 `adapters`，Web 壳层进入 `web-kit` | 动态路由、权限、字典、OSS、加密等能力可复用，同时允许不同终端替换实现 |
+| 通用平台能力 | 认证、权限、HTTP 和运行时进入 `platform`，Axios、存储和 OSS 上传进入 `adapters`，Web 壳层进入 `web-kit` | 动态路由、权限、字典、OSS 等能力可复用，同时允许不同终端替换实现 |
 | Client 安全  | App 使用显式 ClientId、独立会话命名空间和服务端 ClientContext；认证与路由失败关闭                  | 避免不同 App 之间的 Token、菜单和权限串用                             |
 | 动态菜单     | App 只注册已选择 web-domain manifest 中的页面，未知或未选择的组件键拒绝解析                        | 后端菜单仍动态驱动界面，但不能越过 App 的编译期能力边界               |
 | API 合同     | OpenAPI 传输合同确定性生成并检查漂移，domain 在边界处映射自己的领域模型                            | 自动生成类型可追溯，又不会把页面直接绑定到生成器内部结构              |
-| 工程门禁     | 架构检查、Oxlint、Oxfmt、TypeScript、Vitest、工作区 build 和 Playwright                            | 依赖方向、公开导出和关键登录/权限流程可以持续验证                     |
+| 工程门禁     | 架构检查、Oxlint、TypeScript、Vitest、工作区 build 和 Playwright；Oxfmt 是写入式工具                            | 依赖方向、公开导出和关键登录/权限流程可以持续验证                     |
 
 ## 技术栈
 
@@ -35,7 +35,7 @@ packages/api-contracts/  OpenAPI 生成的传输合同
 tooling/                 架构、OpenAPI 与未来脚手架工具
 ```
 
-当前激活 `admin-web` 管理端和 `home-web` 应用用户端。两者使用独立 Client 与会话命名空间，并共享后端授权和动态菜单合同；移动 Web、小程序和 Taro 适配器不在当前产品范围内。
+当前构建包含 `admin-web` 管理端、`home-web` 用户端及独立 Origin 的 `sso-web` 认人页。Admin/Home 使用各自 Client 与会话，SSO Cookie 不与业务应用共享。三个 App 的发布配套由 [apps.json](../release-artifacts/apps.json) 和[发布说明](../release-artifacts/README.md)核对；可构建、可预览不代表已部署。移动 Web、小程序和 Taro 适配器保持有激活门槛的占位。
 
 八个 headless domains 与后端模块一一对应：admin、system、workflow、demo、profile、notify、third、ai。每个 App 只显式组合需要的 domain/web-domain，可以独立定制布局、样式和 CSS；`gen` 已从基座物理删除，不属于运行时领域。
 
@@ -52,12 +52,14 @@ tooling/                 架构、OpenAPI 与未来脚手架工具
 1. 为 App 配置独立 ClientId、会话命名空间、路由基路径和部署环境。
 2. 从 `packages/domains/*` 的公开导出选择需要的 API、领域类型和服务。
 3. Web App 按需选择对应 `packages/web-domains/*` manifest；非 Web 终端使用自己的表现层。
-4. 通过 platform port 注入请求、存储、加密、导航、下载和反馈等终端能力。
+4. 通过 platform port 注入请求、存储、导航、下载和反馈等终端能力。
 5. App 仅实现布局、品牌、主题、静态页面及启动/路由编排。
 
-以 `/system/client` 为例，HTTP 与领域模型归 `packages/domains/system/src/client/`，Vue 管理页面归 `packages/web-domains/system/src/client/`，Admin 只负责选择它并将后端菜单组件键接入动态路由。第二个 App 若只需要 Client 查询服务，可只组合 domain，不必引入系统管理页面。
+以 `/system/client` 为例，HTTP 与领域模型归 `packages/domains/system/src/client/`，Vue 管理页面归 `packages/web-domains/system/src/client/`，Admin 只负责选择它并将后端菜单组件键接入动态路由。其他 App 若只需要 Client 查询服务，可只组合 domain，不必引入系统管理页面。
 
 ## 开发命令
+
+以下命令均在 `frontend/` 执行，使用 packageManager 锁定的 pnpm；命令详情以 [package.json](package.json) 为准。
 
 各 App 的 Vite 公开参数在 `apps/<app>/.env.development` 与 `.env.production` 中跟踪，作为迁移和上线要改哪些键的清单。`VITE_*` 会进入浏览器产物，不要写入数据库、Redis 或 MinIO 密码。本机私有覆盖用未被跟踪的 `.env.*.local`。发布脚本会覆盖 `VITE_APP_CONTEXT_PATH` 与 `VITE_APP_BASE_API`。
 
@@ -84,7 +86,7 @@ pnpm build:dev
 pnpm build:prod
 ```
 
-需要只验证单个包时使用 `pnpm --filter <package-name> <script>`。涉及登录、动态菜单或权限的变化还应运行对应 Playwright 流程；重新激活第二个 App 时必须恢复跨 App Client 与会话隔离验收。
+需要只验证单个包时使用 `pnpm --filter <package-name> <script>`。涉及登录、动态菜单或权限的变化还应运行对应 Playwright 流程，并覆盖当前 Admin/Home 的 Client 与会话隔离；SSO 和三 Origin 发布入口需使用专用验收，默认 `pnpm test:e2e` 不涵盖它们。运行入口及真实/夹具边界见[发布验证说明](../release-artifacts/README.md#nginx-请求链路)。
 
 ## 维护规则
 

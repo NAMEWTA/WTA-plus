@@ -1,31 +1,9 @@
-# wta-extend 模块索引
+# 独立应用导航
 
-## Scope
+[pom.xml](pom.xml) 聚合三个独立 Spring Boot 应用，具体版本、依赖、启动类和测试入口以各模块 POM/源码及[模块地图](../../.agents/skills/engineering-standards/references/project/01-module-map.md)为准：
 
-本索引覆盖 wta-extend，以本目录的 pom.xml 和源码为准。
+- [wta-monitor-admin](wta-monitor-admin/pom.xml)：Monitor Admin。
+- [wta-snailai-server](wta-snailai-server/pom.xml)：SnailAI 服务。
+- [wta-snailjob-server](wta-snailjob-server/pom.xml)：SnailJob 服务。
 
-## Purpose
-
-说明 wta-extend 的职责边界、组成和最小验证入口。
-
-## Components
-
-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
-- 具体业务规则、接口与数据结构以源码为准。
-
-## Entry Points
-
-- `pom.xml`：模块构建和依赖入口。
-- `src/main`：生产代码与资源入口。
-
-## Dependencies
-
-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
-
-## Verification
-
-在后端仓库根目录执行 `mvn -pl wta-extend -am -DskipTests compile`，再按模块测试配置执行验证。
-
-## Read Next
-
-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+它们通过发布资产组装，供应商坐标、协议和 schema 不能按自有命名规则批量改写。工程规则与测试/双 bundle 命令见[后端入口](../AGENTS.md)；仅做定向编译时，在 `backend/` 使用 `./mvnw -pl wta-extend/wta-monitor-admin -am -DskipTests compile` 并明确这不是运行验收。

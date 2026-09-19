@@ -8,11 +8,14 @@
 scripts/
 ├── README.md
 ├── start-dev.sh
+├── sso-hard-e2e.sh
 ├── ci/
+│   ├── verify-agent-handbooks.mjs
+│   ├── verify-agent-handbooks.test.mjs
 │   ├── run-external-services.sh
 │   ├── verify-admin-bundle.sh
 │   ├── verify-dev-build-guard.sh
-│   └── verify-submodules.sh
+│   └── verify-external-tests.py
 └── lib/
     ├── backend-build-guard.sh
     └── dev-runtime.sh
@@ -21,7 +24,7 @@ scripts/
 | 目录 | 作用 |
 | --- | --- |
 | `scripts/` | 父仓库自动化脚本的统一入口及说明文档。 |
-| `scripts/ci/` | CI 质量门禁脚本，负责子模块快照、后端打包内容和真实外部服务集成测试的验收。 |
+| `scripts/ci/` | CI 质量门禁脚本，负责构建保护、后端打包内容和真实外部服务集成测试的验收。 |
 | `scripts/lib/` | 开发脚本复用模块；当前提供后端构建互斥、Maven 模块 JAR 完整性校验，以及 Windows/Unix classpath 与端口探测。 |
 
 ## start-dev.sh
@@ -50,7 +53,7 @@ bash scripts/start-dev.sh
 
 前端选项优先使用本机可直接调用的 `pnpm`，没有 `pnpm` 时回退到 `corepack pnpm`；依赖安装严格遵循 lockfile，随后运行固定端口且不自动打开浏览器的 `pnpm dev`。
 后端选项先取得按 canonical backend path 隔离的原子构建锁，再通过 Maven Wrapper 执行跳过自动测试的
-本地 reactor install。构建完成后，脚本会比较 `wta-system/target/classes` 与 target JAR、
+本地 reactor install。构建完成后，脚本会比较 `backend/wta-modules/wta-system/target/classes` 与 target JAR、
 `wta-admin` 实际 Maven classpath 中已安装 JAR 的 class 集合，并检查 admin 登录链依赖的关键类型；全部
 通过后释放构建锁，再以 `dev,local` profiles 启动 `wta-admin`。Windows 上 Maven classpath 使用 `;`
 和盘符路径，脚本按平台分隔符解析，不会把 `D:\` 中的冒号当成 Unix classpath 分隔符。该脚本用于启动
@@ -65,9 +68,7 @@ bash scripts/start-dev.sh
 - 启动前检查前端 `80` 或后端 `8080` 端口：优先 `lsof`，Windows 上回退到 `netstat`；端口被占用时只报告
   进程并退出，不会自动终止任何现有服务。
 - 脚本不会读取或输出本地配置中的账号、密码等敏感值。
-- 父工作区只版本化 `.vscode/settings.json` 并关闭 Red Hat Java 的自动构建，其他 `.vscode` 本地文件仍被
-  忽略；这可避免 JDT language server 与 Maven 同时写入 `target/generated-sources`。需要 IDE 编译时请
-  显式执行一次 Java build，不要在后端 reactor 运行中触发。
+- 仓库不要求 `.vscode/settings.json` 存在。使用 Java 自动构建的编辑器时，应在自己的工作区设置关闭对 Maven `target/` 的并行写入；不要在 reactor 运行中触发 IDE 编译。
 - 同一后端工作区的第二个受管启动会立即失败，并显示持锁 PID；正常退出或 `Ctrl+C`/`TERM` 会清理锁，
   owner PID 已不存在的 stale lock 会被安全替换。含未知内容或元数据不匹配的锁不会被递归删除。
 - 锁只协调 `start-dev.sh` 启动。运行后端启动时不要同时从其他终端或 IDE 对同一工作区执行 Maven
@@ -86,11 +87,17 @@ bash scripts/start-dev.sh
 4. 若极端 `SIGKILL` 留下错误中显示的 `.reclaim` 目录，先核对其 `owner` PID 已不存在，再只删除该 owner 文件
    与已变空的 `.reclaim` 目录；不得递归删除锁根目录或仍有活动 PID 的锁。
 
+## ci/verify-agent-handbooks.mjs
+
+从仓根运行 `node scripts/ci/verify-agent-handbooks.mjs`，检查 backend/frontend 的实际 manifest 是否有最近适用的产品手册、手册是否有标题和中文导读、Markdown inline 本地链接是否指向现存文件或目录，以及产品目录是否出现重复 CLAUDE 入口。允许模块继承父手册，不要求每个 POM/package 复制七段模板。链接检查不覆盖锚点或完整 Markdown 语法，独有硬约束的保留仍需逐文件评审。
+
+回归命令为 `node --test --test-concurrency=1 scripts/ci/verify-agent-handbooks.test.mjs`；夹具仅使用并清理各自临时目录。两条命令已接入仓内 CI 候选，远程执行仍待提交推送后验证。
+
 ## ci/verify-dev-build-guard.sh
 
 ### 作用
 
-验证父工作区已关闭 Java 自动构建，并使用临时目录和临时 JAR 验证后端开发构建保护模块，覆盖活动 owner
+使用临时目录和临时 JAR 验证后端开发构建保护模块，覆盖活动 owner
 锁冲突、并发 stale lock 回收、stale lock 恢复、`TERM` 清理、完整 class 集合、残缺 JAR、关键 class
 哨兵，以及 Unix/Windows Maven classpath 中 `wta-system` JAR 的唯一定位。测试只清理自己创建的临时目录，
 不访问产品配置或本地 Maven 仓库。
@@ -101,9 +108,7 @@ bash scripts/start-dev.sh
 scripts/ci/verify-dev-build-guard.sh
 ```
 
-## ci/verify-submodules.sh
-
-WTA-plus 默认交付是单一 monorepo，**不再**以 git submodule 检出前后端。该脚本是聚合仓时期的遗留校验，不作为本仓克隆/启动步骤。新环境不要运行它来“初始化子模块”。
+编辑器配置不是验收前置条件。使用自动 Java 编译的编辑器时，应关闭对 Maven `target/` 的并行写入；构建锁和 JAR 检查在没有编辑器的干净 clone 中也必须运行。
 
 ## ci/verify-admin-bundle.sh
 
@@ -116,8 +121,8 @@ WTA-plus 默认交付是单一 monorepo，**不再**以 git submodule 检出前�
 
 | 参数 | 必须包含 | 业务模块要求 |
 | --- | --- | --- |
-| `full` | `wta-system`、`wta-common-notify`、`wta-common-oss` | 必须包含 `wta-job`、`wta-ai`、`wta-demo`、`wta-workflow`。 |
-| `core` | `wta-system`、`wta-common-notify`、`wta-common-oss` | 必须排除上述四个业务模块。 |
+| `full` | `wta-system`、`wta-common-notify`、`wta-common-oss`、`wta-third`、`wta-sso`、`wta-notify`、`wta-profile-person`、`wta-profile-enterprise` | 必须包含 `wta-job`、`wta-ai`、`wta-demo`、`wta-workflow`。 |
+| `core` | 同上 | 必须排除上述四个可选业务模块。 |
 
 脚本使用 JDK 的 `jar tf` 读取
 `backend/wta-admin/target/wta-admin.jar` 中的 `BOOT-INF/lib/` 条目。
@@ -126,6 +131,9 @@ WTA-plus 默认交付是单一 monorepo，**不再**以 git submodule 检出前�
 ### 使用方式
 
 ```bash
+# 先保存完整测试结果；skipTests 仅用于后续打包，不代表测试通过
+(cd backend && ./mvnw test)
+
 # 全量业务组合
 (cd backend && ./mvnw clean package -DskipTests)
 scripts/ci/verify-admin-bundle.sh full
@@ -135,8 +143,13 @@ scripts/ci/verify-admin-bundle.sh full
 scripts/ci/verify-admin-bundle.sh core
 ```
 
-两次打包都使用 `clean`，用于避免前一种 profile 的产物污染后一种 profile 的校验。该脚本被 GitHub Actions
-的 `backend` job 在两次打包后分别调用。
+两次打包都使用 `clean`，用于避免前一种 profile 的产物污染后一种 profile 的校验。必须先验证并保存 full
+产物清单，再 clean 构建 core。可用 `ADMIN_ARTIFACT` 指定待检 JAR；按完整 artifact 名匹配，不接受同前缀的替代模块。
+该脚本由仓内 GitHub Actions 候选的 `backend` job 和 release-manage 的后端打包步骤调用。
+
+前端在 `frontend/` 执行 `pnpm build:dev` 或 `pnpm build:prod`：先串行按依赖顺序构建 packages/tooling，
+再以指定模式分别构建 Admin、Home、SSO 各一次。每个 App 的 `dist/build-mode.json` 记录 Vite 实际模式；
+检查开发产物后再运行生产构建，避免覆盖证据。此名单表示源码中的 active App，发布名单由发布配置单独决定。
 
 ## ci/run-external-services.sh
 
@@ -147,34 +160,39 @@ Redis、MySQL 和兼容 S3 协议的 MinIO 协作，而不只是通过 mock 或�
 
 ### 执行流程
 
-1. 以 `GITHUB_RUN_ID`（本地执行时使用进程 ID）生成唯一的 Docker 网络名和容器名。
+1. 以运行 ID、进程 ID 和随机后缀生成本轮 Docker 资源名，并记录实际创建成功的资源 ID。
 2. 启动以下固定版本的容器：
 
    | 服务 | 镜像 | 默认宿主机端口 | 用途 |
    | --- | --- | --- | --- |
-   | Redis | `redis:8.6.3` | `16379` | 通知幂等存储、OSS 上传票据存储集成测试。 |
-   | MySQL | `mysql:8.4.9` | `13306` | 通知监控、业务菜单退役集成测试。 |
-   | MinIO | `pgsty/minio:RELEASE.2026-08-04T00-00-00Z` | `19000` | OSS/S3 客户端集成测试。 |
+   | Redis | `redis:8.6.3` | 127.0.0.1 随机端口 | 通知幂等存储、OSS 上传票据存储集成测试。 |
+   | MySQL | `mysql:8.4.9` | 127.0.0.1 随机端口 | 通知监控、业务菜单退役集成测试。 |
+   | MinIO | `pgsty/minio:RELEASE.2026-04-17T00-00-00Z` | 127.0.0.1 随机端口 | OSS/S3 客户端集成测试。 |
 
 3. 分别使用 `redis-cli ping`、`mysqladmin ping` 和 MinIO readiness endpoint 等待服务就绪；超时或健康检查
    失败时脚本退出。
-4. 在后端子模块中通过 Maven Wrapper 运行以下测试：
+4. 在后端目录中通过 Maven Wrapper 运行以下测试：
    - `RedisNotifyIdempotencyStoreIntegrationTest`
    - `RedisOssUploadTicketStoreIntegrationTest`
    - `NotifyMonitorMySqlIntegrationTest`
    - `MinioOssClientIntegrationTest`
    - `BusinessMenuRetirementMySqlIntegrationTest`
-5. 无论测试成功还是中途失败，`EXIT` trap 都会删除本次创建的三个容器和 Docker 网络。
+   - `ThirdSchemaMySqlIntegrationTest`
+   - `ThirdRedisIntegrationTest`
+5. 无论测试成功还是中途失败，`EXIT` trap 都按记录的 ID 删除本轮容器、匿名卷和 Docker 网络；名称冲突时不删除既有资源。
+
+Maven 成功后还由 `verify-external-tests.py` 检查本轮七个测试类的 XML 报告；缺失、旧报告、零测试或任何跳过均失败。
+通知监控通过当前 UseCase/Service/DAO/Mapper 读取真实投递表；菜单验证当前基座 DSL-004 的删除与保留行为。
 
 ### 可配置端口
 
 | 环境变量 | 默认值 | 含义 |
 | --- | --- | --- |
-| `NAMEWTA_CI_REDIS_PORT` | `16379` | Redis 映射到宿主机的端口。 |
-| `NAMEWTA_CI_MYSQL_PORT` | `13306` | MySQL 映射到宿主机的端口。 |
-| `NAMEWTA_CI_MINIO_PORT` | `19000` | MinIO API 映射到宿主机的端口。 |
+| `NAMEWTA_CI_REDIS_PORT` | 空，自动分配 | Redis 映射到本机的端口。 |
+| `NAMEWTA_CI_MYSQL_PORT` | 空，自动分配 | MySQL 映射到本机的端口。 |
+| `NAMEWTA_CI_MINIO_PORT` | 空，自动分配 | MinIO API 映射到本机的端口。 |
 
-端口被占用时，可以在单次命令前覆盖：
+需要固定端口时，可以在单次命令前覆盖（占用时启动失败，不连接既有服务）：
 
 ```bash
 NAMEWTA_CI_REDIS_PORT=26379 \
@@ -185,15 +203,18 @@ scripts/ci/run-external-services.sh
 
 ### 前置条件与注意事项
 
-- 需要 Bash、Git、curl、Java 21、可用的 Docker CLI/daemon，以及后端 Maven Wrapper 所需的网络和依赖。
+- 需要 Bash、Git、curl、Python 3、Java 21、可用的 Docker CLI/daemon，以及后端 Maven Wrapper 所需的网络和依赖。
 - 脚本使用的数据库和对象存储凭据仅属于一次性 CI 容器，不应复用于共享环境或生产环境。
-- 脚本会删除与本次运行生成名称相同的容器和网络；不要手工复用 `namewta-*-<run-id>` 命名。
-- 该脚本被 GitHub Actions 的 `external-services` job 调用，本地没有 Docker 时无法执行完整验收。
+- 镜像版本与 `release-artifacts/docker/docker-compose-infrastructure.yml` 一致，发布合同测试检查漂移。
+- 该脚本由仓内 GitHub Actions 候选的 `external-services` job 调用，本地没有 Docker 时无法执行完整验收。
 
 ## 与 GitHub Actions 的对应关系
 
 | GitHub Actions job | 脚本 | 门禁目标 |
 | --- | --- | --- |
-| `snapshot` | `verify-submodules.sh` | 确保父仓库与前后端子模块快照一致且工作树干净。 |
+| `release-contracts` | Skill/分层检查、`verify-dev-build-guard.sh`、`verify-release.sh` | 检查monorepo结构、锁、JAR与发布合同。 |
+| `frontend` | `frontend/package.json`及OpenAPI工具scripts | 架构、OpenAPI漂移、lint、typecheck、测试、双模式构建及Admin E2E。 |
 | `backend` | `verify-admin-bundle.sh full\|core` | 确保两种后端分发包具有正确的模块边界。 |
 | `external-services` | `run-external-services.sh` | 使用真实 Redis、MySQL、MinIO 验证关键集成路径。 |
+
+该 workflow 是仓内候选，jobs 通过 needs 串行连接；配置存在不代表远程运行成功或分支保护已启用。SSO 专用 E2E 与整体候选验收由相应任务补充，不能用 Admin 默认 E2E 代替。

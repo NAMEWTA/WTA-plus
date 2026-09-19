@@ -14,4 +14,4 @@ Production code follows `controller/admin -> usecase/impl -> service -> dao -> m
 
 ## 验证
 
-在后端仓库根目录运行 `mvn -pl wta-modules/wta-third -am -DskipTests compile`，再运行本模块定向测试。
+在 `backend/` 目录运行 `./mvnw -pl wta-modules/wta-third -am -DskipTests compile`，再运行本模块定向测试。

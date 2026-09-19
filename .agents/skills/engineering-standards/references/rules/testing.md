@@ -18,11 +18,11 @@ Scope: authentication, authorization, Client, role, menu, registration, user typ
 
 Level: MUST
 
-Source: `repository-fact` (`AGENTS.md`, `plan/update.md`)
+Source: `repository-fact` (`AGENTS.md`, `namewta-fullstack-development`)
 
 Rule: 覆盖多 Client、多登录域、默认/显式角色、超管、缺失 `clientPk`、跨 Client 越权、注册开关、Token 失效和前端伪造字段。只测正常路径不充分。
 
-Verification: 自动测试或 `plan/update.md` 人工验收矩阵；核对后端拒绝路径和前端呈现；记录数据库与 Token 的可观察结果。
+Verification: 自动测试或当前任务内记录的人工验收矩阵；核对后端拒绝路径和前端呈现；记录数据库与 Token 的可观察结果。
 
 ### TEST-003 测试隔离与清理
 

@@ -1,0 +1,105 @@
+name: Quality gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Skill facts and regression fixtures
+        run: |
+          node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs
+          node scripts/ci/verify-agent-handbooks.mjs
+          node --test --test-concurrency=1 scripts/ci/verify-agent-handbooks.test.mjs
+          node --test --test-concurrency=1 .agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs speculo/workflows/specdev/common/tools/validate-specdev.test.mjs
+          node .agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs
+          node docs/fm/scripts/validate.mjs
+      - name: Layered modules
+        run: |
+          for module in wta-profile/wta-profile-person wta-profile/wta-profile-enterprise wta-notify wta-sso wta-third; do
+            node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs "backend/wta-modules/$module" --mode layered
+          done
+      - name: Build lock and JAR failure contracts
+        run: bash scripts/ci/verify-dev-build-guard.sh
+      - name: Release contracts and Compose validation
+        run: bash release-artifacts/scripts/verify-release.sh
+
+  frontend:
+    needs: release-contracts
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    env:
+      npm_config_workspace_concurrency: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm architecture:check
+      - run: pnpm architecture:test
+      - run: pnpm --filter @namewta/tooling-openapi openapi:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build:dev
+      - run: pnpm build:prod
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e --workers=1
+
+  backend:
+    needs: frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: ./mvnw test
+        working-directory: backend
+      - run: ./mvnw clean package -DskipTests
+        working-directory: backend
+      - run: bash scripts/ci/verify-admin-bundle.sh full
+      - run: ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true
+        working-directory: backend
+      - run: bash scripts/ci/verify-admin-bundle.sh core
+
+  external-services:
+    needs: backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: bash scripts/ci/run-external-services.sh

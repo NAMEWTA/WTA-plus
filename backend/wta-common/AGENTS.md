@@ -1,31 +1,7 @@
-# wta-common 模块索引
+# common 基础设施导航
 
-## Scope
+本目录由 [pom.xml](pom.xml) 聚合基础能力，[wta-common-bom/pom.xml](wta-common-bom/pom.xml) 管理版本；业务调用者按需依赖子模块。完整清单与实际测试入口见[模块地图](../../.agents/skills/engineering-standards/references/project/01-module-map.md)，包含富文本清洗与 OSS 引用桥接的 `wta-common-richtext`。
 
-本索引覆盖 wta-common，以本目录的 pom.xml 和源码为准。
+复用、SPI、工具和依赖入口读取 [wta-common-modules-guide](../../.agents/skills/wta-common-modules-guide/SKILL.md)；硬约束由 [engineering-standards](../../.agents/skills/engineering-standards/SKILL.md) 裁决。common 不反向依赖业务实现，也不强套业务五层目录。
 
-## Purpose
-
-说明 wta-common 的职责边界、组成和最小验证入口。
-
-## Components
-
-- Java/Spring Boot 代码、资源文件及本模块 Maven 依赖。
-- 具体业务规则、接口与数据结构以源码为准。
-
-## Entry Points
-
-- `pom.xml`：模块构建和依赖入口。
-- `src/main`：生产代码与资源入口。
-
-## Dependencies
-
-依赖关系以 `pom.xml` 为准；跨模块能力必须使用项目公开 API 或 SPI。
-
-## Verification
-
-在后端仓库根目录执行 `mvn -pl wta-common -am -DskipTests compile`，再按模块测试配置执行验证。
-
-## Read Next
-
-先阅读本目录的源码包结构、测试和资源，再按任务读取 `.agents/skills` 中对应规范。
+定向验证沿用[后端统一命令](../AGENTS.md#验证)。例如在 `backend/` 执行 `./mvnw -pl wta-common/wta-common-richtext -am test`。模块没有独立测试时，选择真实消费者测试，不能把零测试报告称为验证通过。

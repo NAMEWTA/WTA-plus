@@ -51,7 +51,7 @@
 
 ## 5. 发布候选验证
 
-后端候选使用隔离 MySQL、Redis 和双 Bucket MinIO 执行：
+后端候选使用隔离 MySQL、Redis 和双 Bucket MinIO，在 `backend/` 执行：
 
 ```bash
 ./mvnw -pl wta-admin -am -Dtest='*Oss*Test' -Dsurefire.failIfNoSpecifiedTests=false test
@@ -61,7 +61,7 @@
 
 为 required integration tests 提供一次性 `oss.minio.integration.*` 与 `oss.migration.mysql.integration.*` 系统属性。必须确认相关测试 `0 skipped`；没有外部参数而被跳过不能作为发布证据。
 
-前端候选执行：
+前端候选在 `frontend/` 执行：
 
 ```bash
 pnpm --filter @namewta/tooling-openapi openapi:check
@@ -118,7 +118,7 @@ pnpm exec playwright test e2e/system-resources.spec.ts e2e/oss-config-access-pol
 
 ## 10. 发布完成条件
 
-- 后端、前端和聚合父仓候选 SHA/tree 与 Evidence 一致，工作树干净。
+- 同一 monorepo 的后端、前端与发布候选 SHA/tree 与 Evidence 一致，工作树干净。
 - 真实 MySQL、MinIO、HTTP 和 browser required tests 均实际执行且关键项没有 skipped。
 - OpenAPI 无 drift，禁止能力扫描为零，公共/私有/上传/迁移/恢复矩阵全部通过。
 - 无 active 或未处理 failed migration；源对象仍受独立 cleanup Gate 保护。

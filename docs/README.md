@@ -5,9 +5,12 @@
 ## 项目说明
 
 - [NAMEWTA 增强说明](./namewta-enhancements.md)：当前能力、实现位置和前后端协作方式。
+- [OSS 公私双桶运维](./oss-public-private-operations.md)：访问类型、readiness、迁移批准和恢复边界。
+- [Nacos 配置切换合同](./runtime-nacos-hard-cut.md)：当前 Data ID、单读与发布运维导航。
+- [静态代码模板](./fm/README.md)：目录清单、上下文与代表输出验证。
 - [OSS 登录与浏览器直传排障手册](./error/oss-login-and-direct-upload-troubleshooting.md)：登录、预签名上传、MinIO CORS、重启顺序和故障验证。
 
-## 子仓库文档
+## 工作区文档
 
 - [前端 README](../frontend/README.md)：多 App monorepo、领域分层、开发命令与复用规则。
 - [前端架构基线](../frontend/docs/architecture-baseline.md)：认证、动态路由、权限和包依赖边界。

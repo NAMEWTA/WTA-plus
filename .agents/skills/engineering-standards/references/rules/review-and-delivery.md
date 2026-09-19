@@ -6,7 +6,7 @@ Scope: `repository`
 
 Level: MUST
 
-Source: `repository-fact` (`plan/update.md`, Git history)
+Source: `repository-fact` (`AGENTS.md`, Git history)
 
 Rule: 一个提交聚焦一个逻辑主题；不混入全仓格式化、依赖升级、lockfile 漂移、生成输出或无关重构。后端合同提交先于对应前端消费者。
 

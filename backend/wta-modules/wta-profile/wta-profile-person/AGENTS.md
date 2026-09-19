@@ -26,7 +26,7 @@
 
 ## Verification
 
-在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile/wta-profile-person -am -DskipTests compile`，并运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs wta-modules/wta-profile/wta-profile-person --mode=layered`，再按模块测试配置执行验证。
+在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-profile/wta-profile-person -am -DskipTests compile`；在仓根运行 `node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-profile/wta-profile-person --mode=layered`，再按模块测试配置执行验证。
 
 ## Read Next
 

@@ -26,8 +26,8 @@ Profile 新增模块聚合入口，承载 person、enterprise 两个隔离子域
 
 ## Verification
 
-在后端仓库根目录执行 `mvn -pl wta-modules/wta-profile -am -DskipTests compile`，再按 person/enterprise 模块测试配置执行验证。
+在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-profile -am -DskipTests compile`，再按 person/enterprise 模块测试配置执行验证。
 
 ## Read Next
 
-先阅读本目录各子模块 `AGENTS.md`、源码包结构、测试和资源，再按任务读取 [统一模块导航](../../../.agents/skills/wta-module-guide/SKILL.md) 及适用工程 Skill。
+先阅读person/enterprise 各自的 `AGENTS.md`、源码包结构、测试和资源，再按任务读取 [统一模块导航](../../../.agents/skills/wta-module-guide/SKILL.md) 及适用工程 Skill。

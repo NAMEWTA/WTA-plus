@@ -24,7 +24,7 @@ NAMEWTA 增强版后台与多 App 前端的单一 monorepo（公开仓名 **WTA-
 | OSS 直传与生命周期 | 浏览器直传对象存储：单文件、分片、断点续传、失败恢复、对象引用、临时清理、可恢复删除、授权下载 | 大文件不再经应用服务器转发，并补齐对象全生命周期 |
 | 统一通知 | 渠道无关分发：邮件/短信适配、Redis 幂等、OSS 附件快照、调用上下文审计、脱敏、投递监控 | 业务模块通过统一合同发送和追踪；公告先草稿再发布 |
 | HTTP 可观测 | Servlet 边界输出可按 `requestId` 关联的请求/响应结构化事件 | 覆盖同步、异步、异常、正文截断和媒体类型策略，不必为每个接口重写访问日志 |
-| 数据基座 | 父仓统一维护六份 MySQL 8.4 完整初始化基座（三方菜单 DML 已并入 60） | 全新环境确定性初始化；已有环境按源/目标 Git Tag 评审差异后升级 |
+| 数据基座 | 父仓统一维护六份 MySQL 8.4 完整初始化基座（产品结构/数据分别由 10/50 文件拥有） | 全新环境确定性初始化；已有环境按源/目标 Git Tag 评审差异后升级 |
 | 工程治理 | 单一 monorepo 固定基线：架构检查、OpenAPI 漂移检查、分层测试 | 产品能力在本仓演进，不以 submodule 或上游 URL 为交付依赖 |
 
 ## 架构一览
@@ -41,7 +41,7 @@ WTA-plus/
 │   ├── wta-admin/            # 服务启动与模块组装
 │   ├── wta-api/              # 跨模块公开合同
 │   ├── wta-common/           # OSS / 通知 / HTTP 日志等基础能力
-│   └── wta-modules/          # system / workflow / demo / profile / notify / ai / job / third
+│   └── wta-modules/          # system / workflow / demo / profile / notify / ai / job / third / sso
 ├── docs/                     # 当前架构与产品说明
 ├── release-artifacts/        # 发布资产及六份 MySQL 8.4 初始化基座
 ├── scripts/                  # 聚合 CI / 开发脚本
@@ -60,13 +60,13 @@ WTA-plus/
 | `home-web` | 已激活 | 用户门户与用户中心，组合登录、注册和档案认证流程 |
 | `sso-web` | 已激活 | 第一方 SSO 认人页；业务应用不共用这张会话 |
 
-新增 App 时不复制 `admin-web/src/api`、业务类型或领域页面。App 从公开包入口选择所需 domain/web-domain，再提供本终端的请求、存储、加密、布局和路由适配。
+新增 App 时不复制 `admin-web/src/api`、业务类型或领域页面。App 从公开包入口选择所需 domain/web-domain，再提供本终端的请求、存储、布局和路由适配。
 
 前端动态导航由 `packages/platform/app-runtime` 投影当前 Client 的服务端菜单，Admin 的 `navigation` Store 只维护 App 自有导航状态，页面解析严格使用已选择的 web-domain manifest。Vue 权限指令由 `packages/web-kit/permission` 提供，Admin 入口注入当前会话 evaluator；菜单和按钮可见性始终不替代后端鉴权。
 
 ## 功能速览
 
-以下截取自本仓本地预览（Admin `4174` / Home `4175` / SSO `4176`），侧栏与面包屑可见。弹窗一次性密钥未入库；列表页如含密钥列，仅为演示环境数据。未能打开的外部控制台见文末说明。
+以下是历史本地预览截图，保留为界面参考，不作为当前工作树的验收或部署证据。截图时使用本仓本地预览（Admin `4174` / Home `4175` / SSO `4176`），侧栏与面包屑可见。弹窗一次性密钥未入库；列表页如含密钥列，仅为演示环境数据。未能打开的外部控制台见文末说明。
 
 ### Admin 登录与首页
 
@@ -227,15 +227,15 @@ pnpm architecture:check
 pnpm test
 pnpm build:prod
 
-# 后端
-cd backend
+# 后端（从 frontend 返回同仓 backend）
+cd ../backend
 ./mvnw test
 ./mvnw clean package -DskipTests
 # 核心平台组合（须在完整测试通过后）
 ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true
 ```
 
-具体启动、构建和验证命令分别见前后端 README。每次 bundle 构建都必须先 `clean`，避免复用另一 profile 的 fat jar。
+构建命令不会自动发布。三个 App 均已进入工作区构建和发布清单，实际发布仍需干净源码版本、配套 manifest、真实服务验收和目标环境批准。具体启动、构建和验证命令分别见前后端 README。每次 bundle 构建都必须先 `clean`，避免复用另一 profile 的 fat jar。
 
 ## 文档导航
 
