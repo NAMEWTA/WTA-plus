@@ -39,7 +39,7 @@ const adminState = (overrides: Partial<AdminState> = {}): AdminState => ({
 const fulfillJson = (route: Route, body: unknown) =>
   route.fulfill({ contentType: 'application/json', body: JSON.stringify(body) });
 
-async function installAdminApi(page: Page, state: AdminState, messageBoxCode = 200) {
+async function installAdminApi(page: Page, state: AdminState, protectedReadCode = 200) {
   await page.route('**/prod-api/**', route => {
     const request = route.request();
     const path = new URL(request.url()).pathname.replace('/prod-api', '');
@@ -77,7 +77,7 @@ async function installAdminApi(page: Page, state: AdminState, messageBoxCode = 2
     }
     if (path === '/system/user/profile' && request.method() === 'GET') {
       return fulfillJson(route, {
-        code: 200,
+        code: protectedReadCode,
         data: {
           user: { userId: 1, userName: 'admin-proof', nickName: 'Admin Proof', avatarUrl: '' },
           roleGroup: 'operator',
@@ -95,7 +95,7 @@ async function installAdminApi(page: Page, state: AdminState, messageBoxCode = 2
     }
     if (path === '/notify/inbox') {
       return fulfillJson(route, {
-        code: messageBoxCode,
+        code: 200,
         data: []
       });
     }
@@ -127,6 +127,7 @@ test('registration applies the public policy before sending the JSON write', asy
   await page.goto('/register');
 
   await page.getByPlaceholder('用户名').fill('policy-user');
+  await page.getByLabel('手机号码', { exact: true }).fill('13800138000');
   await page.getByPlaceholder('密码', { exact: true }).fill('weak');
   await page.getByPlaceholder('确认密码').fill('weak');
   await page.getByRole('button', { name: '注 册' }).click();
@@ -232,7 +233,8 @@ test('a protected 401 presents one recovery and performs one logout', async ({ p
   await installAdminApi(page, state, 401);
   await page.addInitScript(() => localStorage.setItem('Admin-Token', 'expired-token'));
 
-  await page.goto('/index');
+  // 个人资料保证触发受保护读取；首页不保证请求通知收件箱。
+  await page.goto('/user/profile');
   await expect(page.getByRole('dialog', { name: '系统提示' })).toBeVisible();
   await page.getByRole('button', { name: '重新登录' }).click();
   await expect(page).toHaveURL(/\/login\?redirect=/);

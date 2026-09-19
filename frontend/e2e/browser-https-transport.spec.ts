@@ -78,8 +78,9 @@ for (const app of apps) {
     const form = page.locator('.register-form');
     await expect(form.locator('input').first()).toBeVisible();
     await form.locator('input').nth(0).fill(`registered-${app.kind}`);
-    await form.locator('input').nth(1).fill(password);
-    await form.locator('input').nth(2).fill(password);
+    await form.getByLabel('手机号码', { exact: true }).fill(app.kind === 'admin' ? '13800138001' : '13800138002');
+    await form.locator('input[type="password"]').nth(0).fill(password);
+    await form.locator('input[type="password"]').nth(1).fill(password);
     const registered = page.waitForResponse(response => response.url().endsWith('/auth/register'));
     await form.getByRole('button', { name: app.kind === 'admin' ? '注 册' : '注册', exact: true }).click();
     const response = await registered;
@@ -131,7 +132,7 @@ test('T-11 real Auth MVC rejects unknown Client and malformed registration witho
   expect((await unknown.json()).code).not.toBe(200);
   const invalid = await request.post(base + '/auth/register', { data: { clientId: apps[0].clientId, username: '', password } });
   expect((await invalid.json()).code).not.toBe(200);
-  const weak = await request.post(base + '/auth/register', { data: { clientId: apps[0].clientId, username: 'weak-policy', password: 'weak' } });
+  const weak = await request.post(base + '/auth/register', { data: { clientId: apps[0].clientId, username: 'weak-policy', password: 'weak', phoneNumber: '13800138003' } });
   const result = await weak.json();
   expect(result.code).not.toBe(200);
   expect(result.data.violations.length).toBeGreaterThan(0);

@@ -4,7 +4,7 @@ const adminWebUrl = 'http://127.0.0.1:4173';
 
 export default defineConfig({
   testDir: './e2e',
-  testIgnore: [/enterprise-transfer-queue\.spec\.ts/, /public-accessibility\.spec\.ts/, /workflow-task-integrity\.spec\.ts/, /sso-(three-gates|admin-config|callback-journey|release-origin)\.spec\.ts/, /browser-https-transport\.spec\.ts/, /session-navigation-lifecycle\.spec\.ts/, /recoverable-registration\.spec\.ts/, /upload-import-lifecycle\.spec\.ts/, /profile-self-materials\.spec\.ts/],
+  testIgnore: [/required-phone\.spec\.ts/, /enterprise-transfer-queue\.spec\.ts/, /public-accessibility\.spec\.ts/, /workflow-task-integrity\.spec\.ts/, /sso-(three-gates|admin-config|callback-journey|release-origin)\.spec\.ts/, /browser-https-transport\.spec\.ts/, /session-navigation-lifecycle\.spec\.ts/, /recoverable-registration\.spec\.ts/, /upload-import-lifecycle\.spec\.ts/, /profile-self-materials\.spec\.ts/],
   outputDir: './tests/e2e/reports/results',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),

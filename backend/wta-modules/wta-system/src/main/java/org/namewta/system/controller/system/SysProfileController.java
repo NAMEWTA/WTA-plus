@@ -14,6 +14,7 @@ import org.namewta.common.satoken.utils.LoginHelper;
 import org.namewta.common.web.core.BaseController;
 import org.namewta.system.domain.bo.SysUserBo;
 import org.namewta.system.domain.bo.SysUserProfileBo;
+import org.namewta.system.domain.policy.UserPhonePolicy;
 import org.namewta.system.domain.vo.ProfileUserVo;
 import org.namewta.system.domain.vo.SysUserVo;
 import org.namewta.system.password.PasswordPolicyService;
@@ -63,6 +64,9 @@ public class SysProfileController extends BaseController {
     public R<Void> updateProfile(@Validated @RequestBody SysUserProfileBo profile) {
         SysUserBo user = BeanUtil.toBean(profile, SysUserBo.class);
         user.setUserId(LoginHelper.getUserId());
+        if (user.getPhoneNumber() != null) {
+            user.setPhoneNumber(UserPhonePolicy.requirePhone(user.getPhoneNumber()));
+        }
         String username = LoginHelper.getUsername();
         if (StringUtils.isNotEmpty(user.getPhoneNumber()) && !userService.checkPhoneUnique(user)) {
             return R.fail("修改用户'" + username + "'失败，手机号码已存在");

@@ -41,6 +41,7 @@ class SystemUserAvatarOssOwnerUnitTest {
         SysUserServiceImpl service = userService(userMapper, ossService);
         SysUserBo user = new SysUserBo();
         user.setAvatar(77L);
+        user.setPhoneNumber("13800138000");
         doAnswer(invocation -> {
             invocation.getArgument(0, SysUser.class).setUserId(100L);
             return 1;

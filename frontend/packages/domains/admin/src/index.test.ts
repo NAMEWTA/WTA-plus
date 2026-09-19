@@ -78,7 +78,7 @@ describe('registration preparation lifecycle', () => {
     const second = service.getVerification().catch(() => undefined);
     newer.reject(new Error('owned network failure')); await second;
     older.resolve(challenge('old')); await first;
-    await expect(service.register({ username: 'owned', password: 'OwnedPass!9', code: '1234', uuid: 'old' }))
+    await expect(service.register({ username: 'owned', phoneNumber: '13800138000', password: 'OwnedPass!9', code: '1234', uuid: 'old' }))
       .rejects.toMatchObject({ code: 'client-context-unavailable' });
   });
 
@@ -86,7 +86,7 @@ describe('registration preparation lifecycle', () => {
     const { request, service } = fixture(); await service.getClientContext();
     request.mockResolvedValueOnce(challenge('consumed')); await service.getVerification();
     request.mockRejectedValueOnce(new Error('owned rejected attempt'));
-    const input = { username: 'owned', password: 'OwnedPass!9', code: '1234', uuid: 'consumed' };
+    const input = { username: 'owned', phoneNumber: '13800138000', password: 'OwnedPass!9', code: '1234', uuid: 'consumed' };
     await service.register(input).catch(() => undefined);
     const sent = request.mock.calls.length;
     await expect(service.register(input)).rejects.toMatchObject({ code: 'client-context-unavailable' });
@@ -95,6 +95,38 @@ describe('registration preparation lifecycle', () => {
 });
 
 describe('identity access domain', () => {
+  it.each([undefined, null, '', '   ', '12345', '12800138000'])(
+    'rejects invalid registration phone %j before sending or consuming the captcha', async (phoneNumber) => {
+      const harness = createHarness({
+        '/auth/client/context': { code: 200, data: { clientEnabled: true, registerEnabled: true, passwordPolicy } },
+        '/auth/code': { code: 200, data: { captchaEnabled: true, uuid: 'phone-challenge', img: 'image' } },
+        '/auth/register': { code: 200 }
+      });
+      const service = createIdentityAccessService({ ...harness, client: { clientId: 'phone-proof' } });
+      await service.prepareLogin();
+      const input = { username: 'new-user', password: 'ValidPass!9', code: '1234', uuid: 'phone-challenge' };
+      await expect(service.register({ ...input, phoneNumber: phoneNumber as string }))
+        .rejects.toMatchObject({ code: 'invalid-credentials' });
+      expect(harness.requests.map(request => request.url)).toEqual(['/auth/client/context', '/auth/code']);
+      await expect(service.register({ ...input, phoneNumber: '13800138000' })).resolves.toBeUndefined();
+    }
+  );
+
+  it('sends the required registration phone number to the backend', async () => {
+    const harness = createHarness({
+      '/auth/client/context': { code: 200, data: { clientEnabled: true, registerEnabled: true, passwordPolicy } },
+      '/auth/code': { code: 200, data: { captchaEnabled: false } },
+      '/auth/register': { code: 200 }
+    });
+    const service = createIdentityAccessService({ ...harness, client: { clientId: 'phone-proof' } });
+    await service.prepareLogin();
+    const input = { username: 'new-user', password: 'ValidPass!9', phoneNumber: '13800138000' };
+    await service.register(input);
+    expect(harness.requests.at(-1)?.data).toEqual({
+      username: 'new-user', password: 'ValidPass!9', phoneNumber: '13800138000', clientId: 'phone-proof'
+    });
+  });
+
   it('publishes frozen headless metadata', () => {
     expect(adminDomainModule).toEqual({
       id: 'admin',
@@ -276,6 +308,7 @@ describe('identity access domain', () => {
 
     await service.prepareLogin();
     await service.register({
+      phoneNumber: '13800138000',
       username: 'new-user',
       password: 'ValidPass!9',
       confirmPassword: 'ValidPass!9'
@@ -415,7 +448,7 @@ describe('identity access domain', () => {
 
     await service.prepareLogin();
     await expect(
-      service.register({ username: 'new-user', password: 'secret', confirmPassword: 'secret' })
+      service.register({ username: 'new-user', phoneNumber: '13800138000', password: 'secret', confirmPassword: 'secret' })
     ).rejects.toMatchObject({ code: 'registration-disabled' });
     expect(harness.requests.map(request => request.url)).toEqual(['/auth/client/context', '/auth/code']);
   });
@@ -434,7 +467,7 @@ describe('identity access domain', () => {
 
     await service.prepareLogin();
     await expect(
-      service.register({ username: 'new-user', password: 'ValidPass!9', confirmPassword: 'ValidPass!9' })
+      service.register({ username: 'new-user', phoneNumber: '13800138000', password: 'ValidPass!9', confirmPassword: 'ValidPass!9' })
     ).rejects.toMatchObject({ code: 'password-policy-unavailable' });
     expect(harness.requests.map(request => request.url)).toEqual(['/auth/client/context', '/auth/code']);
   });
@@ -456,7 +489,7 @@ describe('identity access domain', () => {
 
     await service.prepareLogin();
     await expect(
-      service.register({ username: 'new-user', password: 'weak', confirmPassword: 'weak' })
+      service.register({ username: 'new-user', phoneNumber: '13800138000', password: 'weak', confirmPassword: 'weak' })
     ).rejects.toMatchObject({
       code: 'password-policy-violation',
       violations: [

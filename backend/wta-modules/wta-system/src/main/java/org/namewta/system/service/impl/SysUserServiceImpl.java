@@ -32,6 +32,7 @@ import org.namewta.system.domain.SysRole;
 import org.namewta.system.domain.SysUserType;
 import org.namewta.system.domain.bo.SysUserBo;
 import org.namewta.system.domain.constant.UserTypeGrantSource;
+import org.namewta.system.domain.policy.UserPhonePolicy;
 import org.namewta.system.domain.vo.SysPostVo;
 import org.namewta.system.domain.vo.SysRoleVo;
 import org.namewta.system.domain.vo.SysUserExportVo;
@@ -375,6 +376,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     @Override
     @DSTransactional
     public int insertUser(SysUserBo user) {
+        user.setPhoneNumber(UserPhonePolicy.requirePhone(user.getPhoneNumber()));
         SysUser sysUser = MapstructUtils.convert(user, SysUser.class);
         // 新增用户信息
         int rows = userMapper.insert(sysUser);
@@ -399,6 +401,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     @Override
     @DSTransactional
     public boolean registerUser(SysUserBo user) {
+        user.setPhoneNumber(UserPhonePolicy.requirePhone(user.getPhoneNumber()));
         user.setCreateBy(0L);
         user.setUpdateBy(0L);
         SysUser sysUser = MapstructUtils.convert(user, SysUser.class);
@@ -420,11 +423,12 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     @CacheEvict(cacheNames = CacheNames.SYS_NICKNAME, key = "#user.userId")
     @DSTransactional
     public int updateUser(SysUserBo user) {
-        Long previousAvatar = null;
-        if (user.getAvatar() != null) {
-            SysUser existing = userMapper.selectById(user.getUserId());
-            previousAvatar = existing == null ? null : existing.getAvatar();
+        SysUser existing = userMapper.selectById(user.getUserId());
+        if (existing == null) {
+            throw new ServiceException("用户不存在");
         }
+        user.setPhoneNumber(UserPhonePolicy.forUpdate(user.getPhoneNumber(), existing.getPhoneNumber()));
+        Long previousAvatar = existing.getAvatar();
         if (user.getUserTypeIds() != null) {
             userTypeRelService.coverUserTypes(user.getUserId(), user.getUserTypeIds(), UserTypeGrantSource.ADMIN_GRANT);
         }
@@ -499,11 +503,12 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     @DSTransactional
     @Override
     public int updateUserProfile(SysUserBo user) {
-        Long previousAvatar = null;
-        if (user.getAvatar() != null) {
-            SysUser existing = userMapper.selectById(user.getUserId());
-            previousAvatar = existing == null ? null : existing.getAvatar();
+        SysUser existing = userMapper.selectById(user.getUserId());
+        if (existing == null) {
+            throw new ServiceException("用户不存在");
         }
+        user.setPhoneNumber(UserPhonePolicy.forUpdate(user.getPhoneNumber(), existing.getPhoneNumber()));
+        Long previousAvatar = existing.getAvatar();
         int rows = userMapper.lambda()
             .setIfPresent(SysUser::getNickName, user.getNickName())
             .setIfPresent(SysUser::getAvatar, user.getAvatar())

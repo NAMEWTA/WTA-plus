@@ -40,6 +40,7 @@ async function install(page: Page, state: State) {
 async function fill(page: Page, value: string) {
   const form = page.locator('.register-form');
   await form.getByLabel('用户名', { exact: true }).fill('owned-register');
+  await form.getByLabel('手机号码', { exact: true }).fill('13800138000');
   await form.getByLabel('密码', { exact: true }).fill('OwnedPass!9');
   await form.getByLabel('确认密码', { exact: true }).fill('OwnedPass!9');
   await form.getByLabel('验证码', { exact: true }).fill(value);

@@ -62,12 +62,14 @@ class PasswordWritePathUnitTest {
         when(clientService.queryByClientId("web")).thenReturn(client);
         when(userTypeService.queryById(7L)).thenReturn(userType);
         when(userService.checkUserNameUnique(any())).thenReturn(true);
+        when(userService.checkPhoneUnique(any())).thenReturn(true);
         when(userService.registerUser(any())).thenReturn(false);
         SysRegisterService service = new SysRegisterService(userService, captcha, clientService, userTypeService,
             relationService, policyService);
         RegisterBody body = new RegisterBody();
         body.setClientId("web");
         body.setUsername("new-user");
+        body.setPhoneNumber("13800138000");
         body.setPassword(STRONG_PASSWORD);
 
         assertThrows(UserException.class, () -> service.register(body));
@@ -85,11 +87,13 @@ class PasswordWritePathUnitTest {
         ISysDeptService deptService = mock(ISysDeptService.class);
         PasswordPolicyService policyService = mock(PasswordPolicyService.class);
         when(userService.checkUserNameUnique(any())).thenReturn(true);
+        when(userService.checkPhoneUnique(any())).thenReturn(true);
         when(userService.insertUser(any())).thenReturn(1);
         when(userService.resetUserPwd(anyLong(), any())).thenReturn(1);
         SysUserController controller = new SysUserController(userService, mock(ISysRoleService.class),
             mock(ISysPostService.class), deptService, policyService);
         SysUserBo add = user(10L, "added-user", STRONG_PASSWORD);
+        add.setPhoneNumber("13800138000");
 
         controller.add(add);
 

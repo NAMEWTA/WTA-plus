@@ -145,7 +145,7 @@ Lead 比对验收前后 HEAD 和工作区内容，result 必须对应实际受�
 | 本次 S/T/P 文档、只读调查与规划校验 | allowed | 用户最终共识和当前工作区选择；仅规划工件 |
 | Current workspace Ticket changes | allowed | LOG-009：用户明确要求 I 执行并完成 change，覆盖三张既定 Deep 票；Lead 当前唯一writer |
 | Implementation commit | authorized | LOG-011：本 change 基线与三票具体本地提交 |
-| Local direct-parent verification and parent update | not-authorized | run 的集成出口，由 Lead 核对动作范围；当前仅可做只读规划检查 |
+| Local direct-parent verification and parent update | authorized | LOG-011：三票在 main 本地提交并由 Lead 验收 |
 | Push / PR / remote merge / close Issue | not-authorized | 没有远程写入授权，remote #1/#2/#3 保持原状态 |
 | Branch/worktree cleanup | not-authorized / 本策略无需 | 不创建工作树，也不清理其他 change |
 | Deploy / migration / production actions | not-authorized | 不属于本 Goal 的本地实现验收；另行固定目标和具体批准 |

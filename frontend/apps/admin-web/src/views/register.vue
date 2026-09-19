@@ -41,6 +41,18 @@
             <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
           </el-input>
         </el-form-item>
+        <el-form-item prop="phoneNumber">
+          <el-input
+            v-model="registerForm.phoneNumber"
+            aria-label="手机号码"
+            type="tel"
+            name="phoneNumber"
+            autocomplete="tel"
+            size="large"
+            maxlength="11"
+            placeholder="手机号码（必填）"
+          />
+        </el-form-item>
         <el-form-item prop="password">
           <el-input
             v-model="registerForm.password"
@@ -116,6 +128,7 @@ import {
   type RegistrationInput
 } from '@namewta/domain-admin';
 import { to } from 'await-to-js';
+import { isValidFormat } from '@namewta/platform-validation';
 import { useI18n } from 'vue-i18n';
 import { identityAccessService } from '@/application/services';
 
@@ -134,6 +147,7 @@ const passwordPolicy = ref<PasswordPolicy>();
 
 const registerForm = ref<RegistrationInput>({
   username: '',
+  phoneNumber: '',
   password: '',
   confirmPassword: '',
   code: '',
@@ -165,6 +179,14 @@ const validatePasswordPolicy = (rule: unknown, value: string, callback: (error?:
 };
 
 const registerRules: ElFormRules = {
+  phoneNumber: [
+    { required: true, whitespace: true, message: '手机号码不能为空', trigger: 'blur' },
+    {
+      validator: (_rule: unknown, value: string, callback: (error?: Error) => void) =>
+        callback(isValidFormat(value, 'MAINLAND_MOBILE') ? undefined : new Error('请输入正确的手机号码')),
+      trigger: ['blur', 'change']
+    }
+  ],
   username: [
     {
       required: true,

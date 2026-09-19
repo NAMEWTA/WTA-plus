@@ -29,6 +29,7 @@ import org.namewta.system.domain.bo.SysDeptBo;
 import org.namewta.system.domain.bo.SysPostBo;
 import org.namewta.system.domain.bo.SysRoleBo;
 import org.namewta.system.domain.bo.SysUserBo;
+import org.namewta.system.domain.policy.UserPhonePolicy;
 import org.namewta.system.domain.vo.password.ResetPasswordCandidateVo;
 import org.namewta.system.domain.vo.*;
 import org.namewta.system.listener.SysUserImportListener;
@@ -196,6 +197,7 @@ public class SysUserController extends BaseController {
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysUserBo user) {
         deptService.checkDeptDataScope(user.getDeptId());
+        user.setPhoneNumber(UserPhonePolicy.requirePhone(user.getPhoneNumber()));
         if (!userService.checkUserNameUnique(user)) {
             return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (StringUtils.isNotEmpty(user.getPhoneNumber()) && !userService.checkPhoneUnique(user)) {
@@ -223,6 +225,9 @@ public class SysUserController extends BaseController {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
         deptService.checkDeptDataScope(user.getDeptId());
+        if (user.getPhoneNumber() != null) {
+            user.setPhoneNumber(UserPhonePolicy.requirePhone(user.getPhoneNumber()));
+        }
         if (!userService.checkUserNameUnique(user)) {
             return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (StringUtils.isNotEmpty(user.getPhoneNumber()) && !userService.checkPhoneUnique(user)) {

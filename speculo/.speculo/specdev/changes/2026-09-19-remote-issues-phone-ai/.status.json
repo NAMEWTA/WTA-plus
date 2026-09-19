@@ -56,7 +56,7 @@
       "implementation_owner": "codex-root",
       "integration_owner": "codex-root",
       "provider": "git",
-      "base_sha": "86154daa4c67fa02ac13439c038a09caf5e6308a",
+      "base_sha": "dea1754fb1cae6d8d32fcc1ed19a91d6610ea5cd",
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
@@ -64,7 +64,7 @@
       "integration": {
         "status": "pending",
         "parent_ref": "main",
-        "parent_before_sha": "86154daa4c67fa02ac13439c038a09caf5e6308a",
+        "parent_before_sha": "dea1754fb1cae6d8d32fcc1ed19a91d6610ea5cd",
         "source_sha": null,
         "candidate_sha": null,
         "candidate_tree_sha": null,

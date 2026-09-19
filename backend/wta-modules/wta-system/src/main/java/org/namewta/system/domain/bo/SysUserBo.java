@@ -68,8 +68,9 @@ public class SysUserBo implements Serializable {
     private String email;
 
     /**
-     * 手机号码
+     * 手机号码；省略时由写入边界验证并保留原值，显式空串或空白不可用于清空。
      */
+    @ValidFormat(type = ValidationFormat.MAINLAND_MOBILE, message = "{validation.phone.mobile.invalid}")
     private String phoneNumber;
 
     /**

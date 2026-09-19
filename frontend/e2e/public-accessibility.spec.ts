@@ -159,6 +159,7 @@ test('Home registration retains labels and alert while keyboard retry completes'
   for (const attempt of [1, 2]) {
     const username = page.getByLabel('用户名', { exact: true }); await expect(username).toBeEnabled();
     await typeWithKeyboard(page, username, 'owned-user'); await visibleFocus(username);
+    await typeWithKeyboard(page, page.getByLabel('手机号码', { exact: true }), '13800138000');
     await typeWithKeyboard(page, page.getByLabel('密码', { exact: true }), 'OwnedPass!9');
     await typeWithKeyboard(page, page.getByLabel('确认密码', { exact: true }), 'OwnedPass!9');
     await typeWithKeyboard(page, page.getByLabel('验证码', { exact: true }), 'owned');

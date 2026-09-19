@@ -30,7 +30,8 @@ import org.namewta.system.service.ISysUserService;
 import org.namewta.system.service.ISysUserTypeRelService;
 import org.namewta.system.service.ISysUserTypeService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import org.namewta.system.domain.policy.UserPhonePolicy;
 
 /**
  * 注册校验方法
@@ -53,7 +54,7 @@ public class SysRegisterService {
      *
      * @param registerBody 注册请求参数
      */
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional
     public void register(RegisterBody registerBody) {
         SysClientVo client = clientService.queryByClientId(registerBody.getClientId());
         if (ObjectUtil.isNull(client) || !SystemConstants.NORMAL.equals(client.getStatus())) {
@@ -70,6 +71,7 @@ public class SysRegisterService {
             throw new ServiceException("登录域不存在或已停用");
         }
 
+        String phoneNumber = UserPhonePolicy.requirePhone(registerBody.getPhoneNumber());
         String username = registerBody.getUsername();
         String password = registerBody.getPassword();
         boolean captchaEnabled = captchaProperties.getEnable();
@@ -83,9 +85,7 @@ public class SysRegisterService {
         if (StringUtils.isNotBlank(registerBody.getEmail())) {
             sysUser.setEmail(StringUtils.trim(registerBody.getEmail()));
         }
-        if (StringUtils.isNotBlank(registerBody.getPhoneNumber())) {
-            sysUser.setPhoneNumber(StringUtils.trim(registerBody.getPhoneNumber()));
-        }
+        sysUser.setPhoneNumber(phoneNumber);
         if (!userService.checkUserNameUnique(sysUser)) {
             throw new ServiceException("该账号已存在，请登录");
         }

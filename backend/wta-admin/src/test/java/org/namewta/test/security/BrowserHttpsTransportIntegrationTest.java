@@ -202,6 +202,8 @@ class BrowserHttpsTransportIntegrationTest {
             var type = new SysUserTypeVo(); type.setStatus("0");
             when(types.queryById(9L)).thenReturn(type);
             when(userService.checkUserNameUnique(any())).thenAnswer(call -> !users.containsKey(call.<SysUserBo>getArgument(0).getUserName()));
+            when(userService.checkPhoneUnique(any())).thenAnswer(call -> users.values().stream()
+                .noneMatch(user -> call.<SysUserBo>getArgument(0).getPhoneNumber().equals(user.getPhoneNumber())));
             when(userService.registerUser(any())).thenAnswer(call -> {
                 SysUserBo user = call.getArgument(0); user.setUserId(ids.incrementAndGet());
                 return users.putIfAbsent(user.getUserName(), user) == null;

@@ -9,6 +9,9 @@
       <el-form-item label="用户名" for="register-username">
         <el-input id="register-username" v-model="form.username" name="username" autocomplete="username" :disabled="!ready || submitting" />
       </el-form-item>
+      <el-form-item label="手机号码" for="register-phone" required>
+        <el-input id="register-phone" aria-label="手机号码" aria-required="true" v-model="form.phoneNumber" name="phoneNumber" type="tel" autocomplete="tel" maxlength="11" :disabled="!ready || submitting" />
+      </el-form-item>
       <el-form-item label="密码" for="register-password">
         <el-input id="register-password" v-model="form.password" name="password" type="password" show-password autocomplete="new-password" :disabled="!ready || submitting" />
       </el-form-item>
@@ -46,7 +49,7 @@ const ready = ref(false);
 const errorMessage = ref('');
 const captchaEnabled = ref(false);
 const verification = ref<LoginVerification>();
-const form = reactive({ username: '', password: '', confirmPassword: '', code: '' });
+const form = reactive({ username: '', phoneNumber: '', password: '', confirmPassword: '', code: '' });
 const captchaImage = computed(() => verification.value?.img ? `data:image/gif;base64,${verification.value.img}` : '');
 let generation = 0;
 let active = true;

@@ -44,8 +44,9 @@ public class RegisterBody extends LoginBody {
     private String email;
 
     /**
-     * 可选手机号码。
+     * 注册必填手机号码；采用现有大陆手机号格式。
      */
+    @NotBlank(message = "手机号码不能为空")
     @ValidFormat(type = ValidationFormat.MAINLAND_MOBILE, message = "{validation.phone.mobile.invalid}")
     private String phoneNumber;
 

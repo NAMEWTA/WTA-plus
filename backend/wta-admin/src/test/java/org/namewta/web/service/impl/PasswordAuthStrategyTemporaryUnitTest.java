@@ -16,6 +16,9 @@ import org.namewta.system.temporarypassword.TemporaryPasswordStore;
 import org.namewta.web.service.SysLoginService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 
@@ -30,10 +33,13 @@ import static org.mockito.Mockito.when;
 @Tag("dev")
 class PasswordAuthStrategyTemporaryUnitTest {
 
-    @Test
-    void permanentPasswordWinsWithoutReadingOrConsumingTemporaryValue() {
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    void permanentPasswordWinsForLegacyEmptyPhoneWithoutReadingOrConsumingTemporaryValue(String phone) {
         Fixture fixture = new Fixture();
         SysUserVo user = fixture.user("Permanent1!");
+        user.setPhoneNumber(phone);
         when(fixture.access.requireLoginAccess(user.getUserId(), fixture.client)).thenReturn(fixture.userType);
 
         assertSame(fixture.userType,

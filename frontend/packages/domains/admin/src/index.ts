@@ -1,6 +1,7 @@
 import type { DomainModule } from '@namewta/platform-app-runtime';
 import type { ApiErrorInfo, ClientContext, HttpClient, SessionStore } from '@namewta/platform-contracts';
 import { requireClientContext } from '@namewta/platform-contracts';
+import { isValidFormat } from '@namewta/platform-validation';
 import {
   requirePasswordPolicy,
   validatePassword,
@@ -42,6 +43,7 @@ export interface IdentitySession {
 }
 
 export interface RegistrationInput extends PasswordLoginInput {
+  phoneNumber: string;
   confirmPassword?: string;
 }
 
@@ -461,6 +463,10 @@ export function createIdentityAccessService({
       if (input.confirmPassword !== undefined && input.confirmPassword !== input.password) {
         throw new IdentityAccessError('invalid-credentials', '两次输入的密码不一致');
       }
+      const phoneNumber = typeof input.phoneNumber === 'string' ? input.phoneNumber.trim() : '';
+      if (!phoneNumber || !isValidFormat(phoneNumber, 'MAINLAND_MOBILE')) {
+        throw new IdentityAccessError('invalid-credentials', '请输入有效的手机号码');
+      }
       // 后端先消费一次性验证码再校验其他注册条件；失败或网络结果不明也必须换一张。
       if (currentVerification?.captchaEnabled) {
         prepared = false;
@@ -475,6 +481,7 @@ export function createIdentityAccessService({
           password: credentials.password,
           ...(credentials.code ? { code: credentials.code } : {}),
           ...(credentials.uuid ? { uuid: credentials.uuid } : {}),
+          phoneNumber,
           clientId: client.clientId
         }
       });

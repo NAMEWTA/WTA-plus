@@ -53,6 +53,7 @@ const rule: ElFormRules = {
   phoneNumber: [
     {
       required: true,
+      whitespace: true,
       message: '手机号码不能为空',
       trigger: 'blur'
     },
