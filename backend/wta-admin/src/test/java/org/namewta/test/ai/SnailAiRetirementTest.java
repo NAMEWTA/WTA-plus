@@ -48,6 +48,8 @@ class SnailAiRetirementTest {
             var http = MockMvcBuilders.webAppContextSetup(context).build();
             http.perform(get("/owned-retirement-control")).andExpect(status().isOk());
             http.perform(post("/snail-ai/user/register")).andExpect(status().isNotFound());
+            http.perform(post("/snail-chat/chat")).andExpect(status().isNotFound());
+            http.perform(post("/api/snail/chat/chat")).andExpect(status().isNotFound());
         }
     }
 

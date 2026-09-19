@@ -300,8 +300,6 @@ security:
     - /*/api-docs
     - /*/api-docs/**
     - /warm-flow-ui/config
-    - /snail-chat/**
-    - /api/snail/chat/**
     - /sso/**
     - /sso/oauth2/**
 
