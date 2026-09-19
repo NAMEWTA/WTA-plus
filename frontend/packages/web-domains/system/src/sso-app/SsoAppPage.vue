@@ -26,11 +26,13 @@
         <el-table-column label="应用 key" align="center" prop="clientKey" />
         <el-table-column label="类型" align="center" prop="ssoClientKind" width="120" />
         <el-table-column label="精确回调" align="center" prop="ssoRedirectUris" min-width="220" show-overflow-tooltip />
+        <!-- @vue-generic {ClientVO} -->
         <el-table-column label="密钥" align="center" width="100">
           <template #default="scope">
             {{ scope.row.ssoSecretConfigured ? '已配置' : '未配置' }}
           </template>
         </el-table-column>
+        <!-- @vue-generic {ClientVO} -->
         <el-table-column label="操作" align="center" width="160">
           <template #default="scope">
             <el-button
@@ -180,7 +182,7 @@ const handleRotate = async () => {
   if (!form.value.id) return;
   const res = await ssoApps.rotateSecret(form.value.id);
   secretConfigured.value = true;
-  await revealOnce(res.data?.clientId ?? form.value.clientId, res.data?.ssoSecretOnce);
+  await revealOnce(String(res.data?.clientId ?? form.value.clientId ?? ''), res.data?.ssoSecretOnce);
 };
 
 const submitForm = () => {

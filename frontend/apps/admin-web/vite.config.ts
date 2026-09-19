@@ -14,7 +14,20 @@ export default defineConfig(({ mode, command }) => {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },
     // https://cn.vitejs.dev/config/#resolve-extensions
-    plugins: createPlugins(env, command === 'build'),
+    plugins: [
+      ...createPlugins(env, command === 'build'),
+      {
+        name: 'admin-build-mode',
+        apply: 'build',
+        generateBundle() {
+          this.emitFile({
+            type: 'asset',
+            fileName: 'build-mode.json',
+            source: JSON.stringify({ app: 'admin-web', mode })
+          });
+        }
+      }
+    ],
     build: {
       chunkSizeWarningLimit: 1500,
       rolldownOptions: {
