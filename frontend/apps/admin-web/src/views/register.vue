@@ -206,7 +206,10 @@ const codeUrl = ref('');
 const loading = ref(false);
 const captchaEnabled = ref(true);
 const authContextState = ref<'loading' | 'available' | 'unavailable'>('loading');
-const registerEnabled = computed(() => authContextState.value === 'available');
+const captchaLoading = ref(true);
+let captchaGeneration = 0;
+let pageActive = true;
+const registerEnabled = computed(() => authContextState.value === 'available' && !captchaLoading.value && !loading.value);
 const registerRef = ref<ElFormInstance>();
 
 const handleRegister = () => {
@@ -217,12 +220,13 @@ const handleRegister = () => {
     if (valid) {
       loading.value = true;
       const [err] = await to(identityAccessService.register(registerForm.value));
+      if (!pageActive) return;
       if (!err) {
         const username = registerForm.value.username;
         await ElMessageBox.alert(t('register.registerSuccess', { username }), '系统提示', {
           type: 'success'
         });
-        await router.push('/login');
+        if (pageActive) await router.push('/login');
       } else {
         loading.value = false;
         if (captchaEnabled.value) {
@@ -234,11 +238,25 @@ const handleRegister = () => {
 };
 
 const getCode = async () => {
-  const verification = await identityAccessService.getVerification();
-  captchaEnabled.value = verification.captchaEnabled;
-  if (captchaEnabled.value) {
-    codeUrl.value = 'data:image/gif;base64,' + verification.img;
+  if (!pageActive) return;
+  const generation = ++captchaGeneration;
+  captchaLoading.value = true;
+  registerForm.value.code = '';
+  registerForm.value.uuid = '';
+  try {
+    const verification = await identityAccessService.getVerification();
+    if (!pageActive || generation !== captchaGeneration) return;
+    captchaEnabled.value = verification.captchaEnabled;
+    codeUrl.value = verification.captchaEnabled ? 'data:image/gif;base64,' + verification.img : '';
     registerForm.value.uuid = verification.uuid;
+    authContextState.value = 'available';
+  } catch {
+    if (!pageActive || generation !== captchaGeneration) return;
+    authContextState.value = 'unavailable';
+    codeUrl.value = '';
+    ElMessage.error('验证码获取失败，请刷新重试');
+  } finally {
+    if (pageActive && generation === captchaGeneration) captchaLoading.value = false;
   }
 };
 
@@ -246,6 +264,7 @@ const loadClientAuthContext = async () => {
   authContextState.value = 'loading';
   try {
     const context = await identityAccessService.getClientContext();
+    if (!pageActive) return;
     if (!context.clientEnabled || !context.registerEnabled) {
       authContextState.value = 'unavailable';
       ElMessage.warning('当前客户端未开放注册');
@@ -255,6 +274,7 @@ const loadClientAuthContext = async () => {
     passwordPolicy.value = requirePasswordPolicy(context);
     authContextState.value = 'available';
   } catch {
+    if (!pageActive) return;
     passwordPolicy.value = undefined;
     authContextState.value = 'unavailable';
     ElMessage.warning(t('passwordPolicy.unavailable'));
@@ -264,10 +284,11 @@ const loadClientAuthContext = async () => {
 
 onMounted(async () => {
   await loadClientAuthContext();
-  if (registerEnabled.value) {
+  if (pageActive && authContextState.value === 'available') {
     await getCode();
   }
 });
+onUnmounted(() => { pageActive = false; captchaGeneration++; });
 </script>
 
 <style lang="scss" scoped>

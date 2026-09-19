@@ -213,7 +213,10 @@ const loading = ref(false);
 const captchaEnabled = ref(true);
 const register = ref(false);
 const authContextState = ref<'loading' | 'available' | 'unavailable'>('loading');
-const loginEnabled = computed(() => authContextState.value === 'available');
+const captchaLoading = ref(true);
+let captchaGeneration = 0;
+let pageActive = true;
+const loginEnabled = computed(() => authContextState.value === 'available' && !captchaLoading.value && !loading.value);
 const ssoEnabled = ref(false);
 const ssoAuthorizeUrl = ref('');
 const authMode = ref<'local' | 'sso' | 'both'>('both');
@@ -244,6 +247,7 @@ const handleLogin = () => {
       }
       localStorage.removeItem('password');
       const [err] = await to(userStore.login(loginForm.value));
+      if (!pageActive) return;
       if (!err) {
         const redirectUrl = redirect.value || '/';
         await router.push(redirectUrl);
@@ -261,22 +265,27 @@ const handleLogin = () => {
 };
 
 const getCode = async () => {
+  if (!pageActive) return;
+  const generation = ++captchaGeneration;
+  captchaLoading.value = true;
+  loginForm.value.code = '';
+  loginForm.value.uuid = '';
   try {
     const verification = await identityAccessService.getVerification();
+    if (!pageActive || generation !== captchaGeneration) return;
     captchaEnabled.value = verification.captchaEnabled;
-    if (captchaEnabled.value) {
-      loginForm.value.code = '';
-      codeUrl.value = 'data:image/gif;base64,' + verification.img;
-      loginForm.value.uuid = verification.uuid;
-    }
+    codeUrl.value = verification.captchaEnabled ? 'data:image/gif;base64,' + verification.img : '';
+    loginForm.value.uuid = verification.uuid;
+    authContextState.value = 'available';
   } catch {
+    if (!pageActive || generation !== captchaGeneration) return;
     authContextState.value = 'unavailable';
+    codeUrl.value = '';
     register.value = false;
     captchaEnabled.value = false;
-    codeUrl.value = '';
-    loginForm.value.code = '';
-    loginForm.value.uuid = '';
     ElMessage.error(identityAccessWebMessages.unavailable);
+  } finally {
+    if (pageActive && generation === captchaGeneration) captchaLoading.value = false;
   }
 };
 
@@ -296,7 +305,8 @@ const doSsoLogin = async () => {
   await adminSso.startSsoLogin({
     authorizeUrl: ssoAuthorizeUrl.value,
     clientId: import.meta.env.VITE_APP_CLIENT_ID,
-    redirectUri: adminSsoRedirectUri()
+    redirectUri: adminSsoRedirectUri(),
+    returnTo: typeof router.currentRoute.value.query.redirect === 'string' ? router.currentRoute.value.query.redirect : '/'
   });
 };
 
@@ -313,6 +323,7 @@ const loadClientAuthContext = async () => {
   register.value = false;
   try {
     const context = await identityAccessService.getClientContext();
+    if (!pageActive) return;
     if (!context.clientEnabled) {
       authContextState.value = 'unavailable';
       ElMessage.error('当前客户端已停用，无法登录');
@@ -324,6 +335,7 @@ const loadClientAuthContext = async () => {
     ssoAuthorizeUrl.value = context.ssoAuthorizeUrl ?? '';
     authMode.value = context.authMode === 'sso' || context.authMode === 'local' ? context.authMode : 'both';
   } catch {
+    if (!pageActive) return;
     authContextState.value = 'unavailable';
     register.value = false;
     ElMessage.error(identityAccessWebMessages.unavailable);
@@ -333,10 +345,11 @@ const loadClientAuthContext = async () => {
 onMounted(async () => {
   getLoginData();
   await loadClientAuthContext();
-  if (loginEnabled.value) {
+  if (pageActive && authContextState.value === 'available') {
     await getCode();
   }
 });
+onUnmounted(() => { pageActive = false; captchaGeneration++; });
 </script>
 
 <style lang="scss" scoped>
