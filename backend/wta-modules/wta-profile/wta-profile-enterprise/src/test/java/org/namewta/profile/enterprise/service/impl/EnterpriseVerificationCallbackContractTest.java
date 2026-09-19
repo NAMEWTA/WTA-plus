@@ -1,6 +1,5 @@
 package org.namewta.profile.enterprise.service.impl;
 
-import org.namewta.profile.enterprise.service.impl.EnterpriseVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.enterprise.adapter.codec.EnterpriseVerificationEvidenceCodec;
 
@@ -19,7 +18,6 @@ import org.namewta.profile.enterprise.mapper.EnterpriseVerificationAttemptMapper
 import org.namewta.profile.enterprise.dao.EnterpriseVerificationAttemptDao;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -143,11 +141,10 @@ class EnterpriseVerificationCallbackContractTest {
             EnterpriseVerificationProviderProperties properties = new EnterpriseVerificationProviderProperties();
             properties.setEnabledProviders(Set.of("test-provider"));
             EnterpriseVerificationEvidenceCodec codec =
-                new EnterpriseVerificationEvidenceCodec(JsonMapper.builder().build());
+                new EnterpriseVerificationEvidenceCodec();
             coordinator = new EnterpriseVerificationAttemptService(
                 new EnterpriseVerificationProviderRegistry(List.of(provider), properties),
-                new EnterpriseVerificationAttemptDao(mapper), codec,
-                new EnterpriseVerificationSecurityAuditRecorder(new EnterpriseVerificationAttemptDao(mapper)));
+                new EnterpriseVerificationAttemptDao(mapper), codec);
         }
 
         private EnterpriseProviderCallbackEnvelope callback(String payload, Instant timestamp) {

@@ -9,9 +9,7 @@ public interface EnterpriseWorkflowGateway {
     void start(long applicationId, long submissionId, int snapshotVersion);
 
     /** 终止指定企业档案审批流程。 */
-    default void terminate(String businessId, String reason) {
-        throw new UnsupportedOperationException("当前工作流网关不支持终止流程");
-    }
+    void terminate(String businessId, String reason);
 
     /** 读取流程事件中的持久化快照版本。 */
     default Integer persistedSnapshotVersion(ProcessEvent event) {
@@ -19,7 +17,5 @@ public interface EnterpriseWorkflowGateway {
     }
 
     /** 读取流程实例中的持久化快照版本。 */
-    default Integer persistedSnapshotVersionByInstanceId(Long instanceId) {
-        return null;
-    }
+    Integer persistedSnapshotVersionByInstanceId(Long instanceId);
 }

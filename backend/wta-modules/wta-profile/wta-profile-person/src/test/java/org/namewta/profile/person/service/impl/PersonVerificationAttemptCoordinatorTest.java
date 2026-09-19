@@ -1,6 +1,5 @@
 package org.namewta.profile.person.service.impl;
 
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.person.adapter.provider.PersonManualVerificationProvider;
 
@@ -8,7 +7,6 @@ import org.namewta.profile.person.service.PersonVerificationAttemptService;
 
 import org.namewta.profile.person.adapter.provider.PersonVerificationProviderRegistry;
 import org.namewta.profile.person.adapter.provider.PersonManualVerificationProvider;
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.person.dao.PersonVerificationAttemptDao;
 import org.namewta.profile.person.domain.exception.PersonVerificationException;
@@ -38,8 +36,7 @@ class PersonVerificationAttemptServiceTest {
         properties.setEnabledProviders(Set.of("manual"));
         PersonVerificationAttemptService coordinator = new PersonVerificationAttemptService(
             new PersonVerificationProviderRegistry(List.of(new PersonManualVerificationProvider()), properties),
-            new PersonVerificationAttemptDao(fixture.mapper()), fixture.evidenceCodec(),
-            new PersonVerificationSecurityAuditRecorder(new PersonVerificationAttemptDao(fixture.mapper())));
+            new PersonVerificationAttemptDao(fixture.mapper()), fixture.evidenceCodec());
 
         PersonVerificationAttempt first = coordinator.startAttempt(
             new PersonVerificationStartAttemptCommand(41L, 501L, "fingerprint-1"));
@@ -59,8 +56,7 @@ class PersonVerificationAttemptServiceTest {
         PersonVerificationProviderProperties properties = new PersonVerificationProviderProperties();
         PersonVerificationAttemptService coordinator = new PersonVerificationAttemptService(
             new PersonVerificationProviderRegistry(List.of(new PersonManualVerificationProvider()), properties),
-            new PersonVerificationAttemptDao(fixture.mapper()), fixture.evidenceCodec(),
-            new PersonVerificationSecurityAuditRecorder(new PersonVerificationAttemptDao(fixture.mapper())));
+            new PersonVerificationAttemptDao(fixture.mapper()), fixture.evidenceCodec());
 
         PersonVerificationException failure = assertThrows(PersonVerificationException.class,
             () -> coordinator.startAttempt(

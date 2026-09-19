@@ -31,7 +31,7 @@ public class PersonVerificationAttemptService implements PersonVerificationServi
     private final PersonVerificationAttemptDao dao;
     private final PersonVerificationEvidenceCodec evidenceCodec;
 
-    /** Spring 生产装配入口，不依赖测试审计记录器占位参数。 */
+    /** 使用正式供应商端口与持久化依赖装配认证尝试。 */
     @Autowired
     public PersonVerificationAttemptService(PersonVerificationProviderRegistryPort providerRegistry,
                                                 PersonVerificationAttemptDao dao,
@@ -41,15 +41,6 @@ public class PersonVerificationAttemptService implements PersonVerificationServi
         this.evidenceCodec = evidenceCodec;
     }
 
-    /**
-     * 处理personverificationattemptcoordinator。
-     */
-    public PersonVerificationAttemptService(PersonVerificationProviderRegistryPort providerRegistry,
-                                                PersonVerificationAttemptDao dao,
-                                                PersonVerificationEvidenceCodec evidenceCodec,
-                                                Object ignoredAuditRecorder) {
-        this(providerRegistry, dao, evidenceCodec);
-    }
     /**
      * 启动认证尝试
      */

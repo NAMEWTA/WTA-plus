@@ -10,7 +10,6 @@ import org.namewta.profile.person.domain.verification.PersonVerificationSecurity
 import org.namewta.profile.person.domain.model.read.PersonVerificationApplicationRow;
 import org.namewta.profile.person.domain.model.read.PersonVerificationAttemptRow;
 import org.namewta.profile.person.mapper.PersonVerificationAttemptMapper;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public final class PersonVerificationMapperFixture {
 
     private final PersonVerificationAttemptMapper mapper = mock(PersonVerificationAttemptMapper.class);
     private final PersonVerificationEvidenceCodec evidenceCodec =
-        new PersonVerificationEvidenceCodec(JsonMapper.builder().build());
+        new PersonVerificationEvidenceCodec();
     private final List<PersonVerificationAttemptRow> attempts = new ArrayList<>();
     private final List<PersonVerificationSecurityAudit> audits = new ArrayList<>();
     private PersonApplicationVerificationState application;

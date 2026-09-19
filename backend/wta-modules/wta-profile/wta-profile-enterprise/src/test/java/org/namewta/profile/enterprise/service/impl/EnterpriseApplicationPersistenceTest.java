@@ -9,7 +9,6 @@ import org.namewta.profile.enterprise.mapper.EnterpriseApplicationMapper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -30,7 +29,7 @@ class EnterpriseApplicationPersistenceTest {
 
     private final EnterpriseApplicationMapper mapper = mock(EnterpriseApplicationMapper.class);
     private final EnterpriseApplicationServiceImpl service = new EnterpriseApplicationServiceImpl(
-        mapper, JsonMapper.builder().build(), null, null, null, null, null, Clock.systemUTC());
+        mapper, null, null, null, null, null, Clock.systemUTC());
 
     @Test
     void ordinaryApplicationCannotReplaceAnyEffectiveResponsibleAccount() {

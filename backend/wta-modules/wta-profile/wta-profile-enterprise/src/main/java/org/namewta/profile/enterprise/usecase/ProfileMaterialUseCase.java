@@ -45,9 +45,7 @@ public interface ProfileMaterialUseCase {
     /**
      * 编排 accessUrlView 应用用例。
      */
-    default EnterpriseProfileAccessUrl accessUrlView(ProfileMaterialPort.MaterialOwnerKey owner, Long materialRefId) {
-        throw new UnsupportedOperationException("旧适配器不支持文件访问地址入口");
-    }
+    EnterpriseProfileAccessUrl accessUrlView(ProfileMaterialPort.MaterialOwnerKey owner, Long materialRefId);
     /**
      * 编排 validateRequired 应用用例。
      */

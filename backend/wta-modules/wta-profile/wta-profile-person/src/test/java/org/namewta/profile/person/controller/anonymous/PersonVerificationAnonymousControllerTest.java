@@ -5,7 +5,6 @@ import org.namewta.profile.person.domain.verification.PersonProviderAttemptStatu
 import org.namewta.profile.person.domain.verification.PersonVerificationAttempt;
 import org.namewta.profile.person.dao.PersonVerificationAttemptDao;
 import org.namewta.profile.person.config.PersonVerificationProviderProperties;
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 import org.namewta.profile.person.service.impl.PersonDeterministicTestProvider;
 import org.namewta.profile.person.service.PersonVerificationAttemptService;
 import org.namewta.profile.person.service.impl.PersonVerificationMapperFixture;
@@ -44,8 +43,7 @@ class PersonVerificationAnonymousControllerTest {
         properties.setEnabledProviders(Set.of("test-provider"));
         PersonVerificationAttemptService coordinator = new PersonVerificationAttemptService(
             new PersonVerificationProviderRegistry(List.of(provider), properties),
-            new PersonVerificationAttemptDao(fixture.mapper()), fixture.evidenceCodec(),
-            new PersonVerificationSecurityAuditRecorder(new PersonVerificationAttemptDao(fixture.mapper())));
+            new PersonVerificationAttemptDao(fixture.mapper()), fixture.evidenceCodec());
         PersonVerificationAnonymousController controller =
             new PersonVerificationAnonymousController(new PersonVerificationUseCaseImpl(coordinator), () -> NOW);
         MockMvc mvc = MockMvcBuilders.standaloneSetup(controller)

@@ -10,24 +10,6 @@ import java.util.List;
  * EnterpriseAdminUseCase 应用用例合同，定义入口可调用的业务场景。
  */
 public interface EnterpriseAdminUseCase {
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default EnterpriseAdminResultVo decide(long applicationId, EnterpriseAdminDecisionBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default EnterpriseAdminResultVo create(EnterpriseAdminCreateBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default EnterpriseAdminResultVo revise(long profileId, EnterpriseAdminReviseBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default EnterpriseAdminResultVo manageBinding(long profileId, EnterpriseAdminBindingBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default EnterpriseAdminResultVo assign(long profileId, EnterpriseAdminAssignBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default EnterpriseAdminResultVo revoke(long profileId, EnterpriseAdminRevokeBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
     /**
      * 编排 page 应用用例。
      */

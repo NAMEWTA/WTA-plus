@@ -8,11 +8,6 @@ public class PersonVerificationEvidenceCodec {
     /** 创建个人认证证据编解码器。 */
     public PersonVerificationEvidenceCodec() {
     }
-    /** 兼容旧构造调用；统一使用项目 JsonUtils。 */
-    @Deprecated
-    public PersonVerificationEvidenceCodec(Object ignoredJsonMapper) {
-        this();
-    }
     /** 编码认证证据。 */
     public String encode(String callbackDigest, String providerEvidenceJson) {
         return JsonUtils.toJsonString(

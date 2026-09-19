@@ -13,7 +13,7 @@ import org.namewta.profile.enterprise.controller.admin.EnterpriseAdminController
 import org.namewta.profile.enterprise.controller.advice.EnterpriseAdminExceptionHandler;
 import org.namewta.profile.enterprise.domain.exception.EnterpriseAdminException;
 import org.namewta.profile.enterprise.mapper.EnterpriseAdminMapper;
-import org.namewta.profile.enterprise.service.IEnterpriseApplicationService;
+import org.namewta.profile.enterprise.port.EnterpriseApplicationPublicationPort;
 import org.namewta.profile.enterprise.support.EnterpriseMapperXmlTestSupport;
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -34,14 +34,12 @@ import org.namewta.profile.enterprise.domain.application.EnterpriseDocumentTypeR
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
-import org.namewta.workflow.api.WorkflowService;
-import org.namewta.workflow.api.domain.WorkflowTerminationResult;
+import org.namewta.profile.enterprise.port.gateway.EnterpriseWorkflowGateway;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -81,22 +79,19 @@ class EnterpriseAdminMySqlE2ETest {
             session.commit(true);
 
             EnterpriseAdminMapper mapper = session.getMapper(EnterpriseAdminMapper.class);
-            IEnterpriseApplicationService applications = mock(IEnterpriseApplicationService.class);
+            EnterpriseApplicationPublicationPort applications = mock(EnterpriseApplicationPublicationPort.class);
             when(applications.findDocumentType("CN_RESIDENT_ID"))
                 .thenReturn(Optional.of(new EnterpriseDocumentTypeRule("CN_RESIDENT_ID", "^[0-9]{17}[0-9X]$", true)));
             ProfileMaterialPort materials = materials();
-            WorkflowService workflow = mock(WorkflowService.class);
-            when(workflow.terminateInstance(eq(Long.toString(REJECT_APPLICATION)), anyString()))
-                .thenReturn(new WorkflowTerminationResult(WorkflowTerminationResult.Status.TERMINATED, 702L));
-            when(workflow.terminateInstance(eq(Long.toString(FAIL_APPLICATION)), anyString()))
-                .thenThrow(new IllegalStateException("workflow unavailable"));
+            EnterpriseWorkflowGateway workflow = mock(EnterpriseWorkflowGateway.class);
+            org.mockito.Mockito.doNothing().when(workflow).terminate(eq(Long.toString(REJECT_APPLICATION)), anyString());
+            org.mockito.Mockito.doThrow(new IllegalStateException("workflow unavailable")).when(workflow).terminate(eq(Long.toString(FAIL_APPLICATION)), anyString());
             UserService users = mock(UserService.class);
             when(users.selectById(anyLong())).thenAnswer(invocation -> normalUser(invocation.getArgument(0)));
             ProfileService profiles = mock(ProfileService.class);
             when(profiles.findByUserId(USER)).thenReturn(new ProfileSummary(USER,
                 new ProfileBindingSummary(799000000001L, ProfileType.PERSON, NOW.minusSeconds(60)), null));
-            EnterpriseAdminServiceImpl service = new EnterpriseAdminServiceImpl(mapper,
-                JsonMapper.builder().build(), applications, materials, workflow, users, profiles,
+            EnterpriseAdminServiceImpl service = new EnterpriseAdminServiceImpl(mapper, applications, materials, workflow, users, profiles,
                 Clock.fixed(NOW, ZoneOffset.UTC));
 
             var identity = identity("管理直建企业", "软件开发");
@@ -189,7 +184,7 @@ class EnterpriseAdminMySqlE2ETest {
 
             cleanup(session);
             session.commit(true);
-            verify(workflow).terminateInstance(Long.toString(REJECT_APPLICATION), "e2e reject");
+            verify(workflow).terminate(Long.toString(REJECT_APPLICATION), "e2e reject");
         }
     }
 

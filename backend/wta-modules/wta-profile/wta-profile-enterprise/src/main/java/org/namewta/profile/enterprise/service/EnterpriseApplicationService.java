@@ -31,7 +31,6 @@ import org.namewta.profile.enterprise.dao.EnterpriseApplicationDao;
 import org.namewta.profile.enterprise.port.provider.EnterpriseVerificationProviderRegistryPort;
 import org.namewta.profile.enterprise.port.verification.EnterpriseVerificationService;
 import org.namewta.system.api.ConfigService;
-import org.namewta.workflow.api.event.ProcessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -74,31 +73,21 @@ public class EnterpriseApplicationService implements EnterpriseApplicationPublic
                                     EnterpriseVerificationProviderRegistryPort providers,
                                     EnterpriseVerificationService attempts,
                                     EnterpriseWorkflowGateway workflow, ConfigService configService) {
-        this(dao, null, materials, providers, attempts, workflow, configService, Clock.systemUTC());
+        this(dao, materials, providers, attempts, workflow, configService, Clock.systemUTC());
     }
     /** 创建可注入时钟的企业申请业务服务，测试场景据此固定时间。 */
-    public EnterpriseApplicationService(EnterpriseApplicationDao dao, Object jsonMapper,
+    public EnterpriseApplicationService(EnterpriseApplicationDao dao,
                              ProfileMaterialPort materials,
                              EnterpriseVerificationProviderRegistryPort providers,
                              EnterpriseVerificationService attempts,
                              EnterpriseWorkflowGateway workflow, ConfigService configService, Clock clock) {
         this.dao = dao;
-                this.materials = materials;
+        this.materials = materials;
         this.providers = providers;
         this.attempts = attempts;
         this.workflow = workflow;
         this.configService = configService;
         this.clock = clock;
-    }
-    /** 兼容存量测试适配器使用的具体注册表构造方法。 */
-    @Deprecated
-    public EnterpriseApplicationService(EnterpriseApplicationDao dao, Object jsonMapper,
-                             ProfileMaterialPort materials,
-                             org.namewta.profile.enterprise.adapter.provider.EnterpriseVerificationProviderRegistry providers,
-                             EnterpriseVerificationService attempts, EnterpriseWorkflowGateway workflow,
-                             ConfigService configService, Clock clock) {
-        this(dao, jsonMapper, materials, (EnterpriseVerificationProviderRegistryPort) providers,
-            attempts, workflow, configService, clock);
     }
     /**
      * 查询当前用户的进行中申请
@@ -219,37 +208,6 @@ public class EnterpriseApplicationService implements EnterpriseApplicationPublic
         } else if (EVENT_STATUSES.contains(status)) {
             updateWorkflowStatus(applicationId, snapshotVersion, status,
                 application.version(), occurredTime(command.occurredTime()));
-        }
-    }
-    /**
-     * 兼容存量事件调用方；新代码应由 Listener 转换后调用 {@link #handleProcess(EnterpriseApplicationProcessCommand)}。
-     *
-     * @param event 原始工作流事件
-     */
-    @Deprecated
-    public void handleProcessEvent(ProcessEvent event) {
-        if (event == null) {
-            return;
-        }
-        Map<String, Object> params = event.getParams();
-        handleProcess(new EnterpriseApplicationProcessCommand(event.getInstanceId(), event.getBusinessId(),
-            event.getFlowCode(), event.getStatus(), decision(params), snapshotVersion(params), clock.instant()));
-    }
-    /** 提取存量事件中的决定字段。 */
-    private String decision(Map<String, Object> params) {
-        Object value = params == null ? null : params.get("profileDecision");
-        return value == null ? "" : value.toString().strip().toUpperCase(Locale.ROOT);
-    }
-    /** 提取存量事件中的快照版本。 */
-    private Integer snapshotVersion(Map<String, Object> params) {
-        Object value = params == null ? null : params.get("snapshotVersion");
-        if (value instanceof Number number) {
-            return number.intValue();
-        }
-        try {
-            return value == null ? null : Integer.valueOf(value.toString());
-        } catch (NumberFormatException ignored) {
-            return null;
         }
     }
     /** 取得事件时间并提供当前时间兜底。 */

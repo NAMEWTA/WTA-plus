@@ -1,11 +1,9 @@
 package org.namewta.profile.person.service.impl;
 
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.person.service.PersonVerificationAttemptService;
 
 import org.namewta.profile.person.adapter.provider.PersonVerificationProviderRegistry;
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.person.domain.exception.PersonVerificationException;
 import org.namewta.profile.person.domain.verification.PersonApplicationVerificationState;
@@ -117,12 +115,10 @@ class PersonVerificationCallbackContractTest {
         mapperFixture.addAttempt(new PersonVerificationAttempt(
             91L, 41L, 501L, "test-provider", "person-41-1", "fingerprint", null, 1,
             PersonProviderAttemptStatus.PENDING, null, null, null, null));
-        PersonVerificationSecurityAuditRecorder recorder =
-            new PersonVerificationSecurityAuditRecorder(new PersonVerificationAttemptDao(mapperFixture.mapper()));
         PersonVerificationAttemptService coordinator = new PersonVerificationAttemptService(
             new PersonVerificationProviderRegistry(List.of(provider), properties),
             new PersonVerificationAttemptDao(mapperFixture.mapper()),
-            mapperFixture.evidenceCodec(), recorder);
+            mapperFixture.evidenceCodec());
         return new Fixture(provider, mapperFixture, coordinator);
     }
 

@@ -20,7 +20,6 @@ import org.namewta.profile.person.port.gateway.PersonWorkflowGateway;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.domain.UserDTO;
-import org.namewta.workflow.api.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -62,40 +61,6 @@ public class PersonAdminService {
         this.workflow = workflow;
         this.users = users;
         this.clock = clock;
-    }
-    /** 兼容存量测试适配器使用的工作流服务构造方法。 */
-    public PersonAdminService(PersonAdminDao dao, Object jsonMapper,
-                           PersonApplicationPublicationPort applications, ProfileMaterialPort materials,
-                           WorkflowService workflow, UserService users) {
-        this(dao, applications, materials, legacyWorkflow(workflow), users, Clock.systemUTC());
-    }
-    /** 兼容存量测试适配器使用的可注入时钟构造方法。 */
-    public PersonAdminService(PersonAdminDao dao, Object jsonMapper,
-                           PersonApplicationPublicationPort applications, ProfileMaterialPort materials,
-                           WorkflowService workflow, UserService users, Clock clock) {
-        this.dao = dao;
-        this.applications = applications;
-        this.materials = materials;
-        this.workflow = legacyWorkflow(workflow);
-        this.users = users;
-        this.clock = clock;
-    }
-    /** 将旧版工作流服务包装为模块端口，保持测试和扩展点兼容。 */
-    private static PersonWorkflowGateway legacyWorkflow(WorkflowService workflow) {
-        if (workflow == null) {
-            return null;
-        }
-        return new PersonWorkflowGateway() {
-            @Override
-            public void start(long applicationId, long submissionId, int snapshotVersion) {
-                throw new UnsupportedOperationException("旧测试工作流桥不支持启动流程");
-            }
-
-            @Override
-            public void terminate(String businessId, String reason) {
-                workflow.terminateInstance(businessId, reason);
-            }
-        };
     }
     /**
      * 分页查询档案数据

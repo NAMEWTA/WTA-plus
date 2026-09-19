@@ -31,7 +31,7 @@ public class EnterpriseVerificationAttemptService implements EnterpriseVerificat
     private final EnterpriseVerificationAttemptDao dao;
     private final EnterpriseVerificationEvidenceCodec evidenceCodec;
 
-    /** Spring 生产装配入口，不依赖测试审计记录器占位参数。 */
+    /** 使用正式供应商端口与持久化依赖装配认证尝试。 */
     @Autowired
     public EnterpriseVerificationAttemptService(EnterpriseVerificationProviderRegistryPort providerRegistry,
                                                      EnterpriseVerificationAttemptDao dao,
@@ -41,15 +41,6 @@ public class EnterpriseVerificationAttemptService implements EnterpriseVerificat
         this.evidenceCodec = evidenceCodec;
     }
 
-    /**
-     * 处理enterpriseverificationattemptcoordinator。
-     */
-    public EnterpriseVerificationAttemptService(EnterpriseVerificationProviderRegistryPort providerRegistry,
-                                                     EnterpriseVerificationAttemptDao dao,
-                                                     EnterpriseVerificationEvidenceCodec evidenceCodec,
-                                                     Object ignoredAuditRecorder) {
-        this(providerRegistry, dao, evidenceCodec);
-    }
     /**
      * 启动认证尝试
      */

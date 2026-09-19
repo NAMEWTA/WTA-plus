@@ -12,14 +12,12 @@ import org.namewta.profile.api.domain.ProfileType;
 import org.namewta.profile.enterprise.domain.application.EnterprisePublication;
 import org.namewta.profile.enterprise.domain.application.EnterpriseSubmission;
 import org.namewta.profile.enterprise.mapper.EnterpriseAdminMapper;
-import org.namewta.profile.enterprise.service.IEnterpriseApplicationService;
+import org.namewta.profile.enterprise.port.EnterpriseApplicationPublicationPort;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
-import org.namewta.workflow.api.WorkflowService;
-import org.namewta.workflow.api.domain.WorkflowTerminationResult;
+import org.namewta.profile.enterprise.port.gateway.EnterpriseWorkflowGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -34,13 +32,13 @@ import static org.mockito.Mockito.*;
 class EnterpriseAdminServiceTest {
 
     private final EnterpriseAdminMapper mapper = mock(EnterpriseAdminMapper.class);
-    private final IEnterpriseApplicationService applications = mock(IEnterpriseApplicationService.class);
+    private final EnterpriseApplicationPublicationPort applications = mock(EnterpriseApplicationPublicationPort.class);
     private final ProfileMaterialPort materials = mock(ProfileMaterialPort.class);
-    private final WorkflowService workflow = mock(WorkflowService.class);
+    private final EnterpriseWorkflowGateway workflow = mock(EnterpriseWorkflowGateway.class);
     private final UserService users = mock(UserService.class);
     private final ProfileService profiles = mock(ProfileService.class);
     private final EnterpriseAdminServiceImpl service = spy(new EnterpriseAdminServiceImpl(
-        mapper, JsonMapper.builder().build(), applications, materials, workflow, users, profiles,
+        mapper, applications, materials, workflow, users, profiles,
         Clock.fixed(Instant.parse("2026-09-02T00:00:00Z"), ZoneOffset.UTC)));
 
     @Test
@@ -51,8 +49,7 @@ class EnterpriseAdminServiceTest {
         doNothing().when(service).resumeForApproval(state, 99L);
         doNothing().when(service).finalizeApproved(state, 31L, 41L, 99L, "checked",
             Instant.parse("2026-09-02T00:00:00Z"));
-        when(workflow.terminateInstance("11", "checked"))
-            .thenReturn(new WorkflowTerminationResult(WorkflowTerminationResult.Status.TERMINATED, 7L));
+        org.mockito.Mockito.doNothing().when(workflow).terminate("11", "checked");
         when(applications.requireSubmission(11L, 3)).thenReturn(new EnterpriseSubmission(22L, 11L, 3,
             77L, null, "manual", Instant.parse("2026-09-01T00:00:00Z")));
         when(applications.publishApproved(11L, 3, Instant.parse("2026-09-02T00:00:00Z")))
@@ -63,7 +60,7 @@ class EnterpriseAdminServiceTest {
         var order = inOrder(service, workflow, applications, materials);
         order.verify(service).beginDecision(11L, "APPROVED", 99L, "checked",
             Instant.parse("2026-09-02T00:00:00Z"));
-        order.verify(workflow).terminateInstance("11", "checked");
+        order.verify(workflow).terminate("11", "checked");
         order.verify(service).resumeForApproval(state, 99L);
         order.verify(applications).publishApproved(11L, 3, Instant.parse("2026-09-02T00:00:00Z"));
         order.verify(materials).snapshotImmutable(any(), any());
@@ -75,7 +72,7 @@ class EnterpriseAdminServiceTest {
     void terminationFailureNeverPublishesOrFinalizes() {
         var state = new EnterpriseAdminServiceImpl.DecisionState(11L, 22L, 3, 4);
         doReturn(state).when(service).beginDecision(anyLong(), anyString(), anyLong(), anyString(), any());
-        when(workflow.terminateInstance("11", "checked")).thenThrow(new IllegalStateException("down"));
+        org.mockito.Mockito.doThrow(new IllegalStateException("down")).when(workflow).terminate("11", "checked");
 
         assertThatThrownBy(() -> service.decide(99L, 11L,
             new EnterpriseAdminDecisionBo("APPROVED", "checked")))
@@ -103,7 +100,7 @@ class EnterpriseAdminServiceTest {
 
     @Test
     void missingWorkflowFailsClosedBeforeAnyAdminDecisionStateIsWritten() {
-        EnterpriseAdminServiceImpl core = spy(new EnterpriseAdminServiceImpl(mapper, JsonMapper.builder().build(),
+        EnterpriseAdminServiceImpl core = spy(new EnterpriseAdminServiceImpl(mapper,
             applications, materials, null, users, profiles,
             Clock.fixed(Instant.parse("2026-09-02T00:00:00Z"), ZoneOffset.UTC)));
 

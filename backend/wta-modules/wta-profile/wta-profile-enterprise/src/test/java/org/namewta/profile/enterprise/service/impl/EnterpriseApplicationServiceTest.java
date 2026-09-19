@@ -19,13 +19,12 @@ import org.namewta.profile.enterprise.mapper.EnterpriseApplicationMapper;
 import org.namewta.profile.api.domain.ProfileType;
 import org.namewta.profile.api.material.ProfileMaterialPort;
 import org.namewta.system.api.ConfigService;
-import org.namewta.workflow.api.event.ProcessEvent;
+import org.namewta.profile.enterprise.domain.application.EnterpriseApplicationProcessCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -64,7 +63,7 @@ class EnterpriseApplicationServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = spy(new EnterpriseApplicationServiceImpl(mapper, JsonMapper.builder().build(), materials,
+        service = spy(new EnterpriseApplicationServiceImpl(mapper, materials,
             providers, attempts, workflow, config, clock));
     }
 
@@ -146,8 +145,8 @@ class EnterpriseApplicationServiceTest {
         doReturn(new EnterprisePublication(9201L, 9301L, 9401L, false))
             .when(service).publishApproved(9001L, 3, clock.instant());
 
-        service.handleProcessEvent(event("finish", 3));
-        service.handleProcessEvent(event("finish", 2));
+        service.handleProcess(event("finish", 3));
+        service.handleProcess(event("finish", 2));
 
         verify(service).publishApproved(9001L, 3, clock.instant());
         verify(materials).snapshotImmutable(
@@ -164,7 +163,7 @@ class EnterpriseApplicationServiceTest {
         doReturn(application(9001L, "WAITING", 2, 1, true)).when(service).lockById(9001L);
         doNothing().when(service).updateWorkflowStatus(anyLong(), anyInt(), any(), anyInt(), any());
 
-        service.handleProcessEvent(event(status.toLowerCase(java.util.Locale.ROOT), 1));
+        service.handleProcess(event(status.toLowerCase(java.util.Locale.ROOT), 1));
 
         verify(service).updateWorkflowStatus(9001L, 1, status, 2, clock.instant());
         verify(service, never()).publishApproved(anyLong(), anyInt(), any());
@@ -175,10 +174,10 @@ class EnterpriseApplicationServiceTest {
         when(config.getConfigValue("profile.enterprise.flowCode")).thenReturn("profile_enterprise_verification");
         doReturn(application(9001L, "WAITING", 2, 1, true)).when(service).lockById(9001L);
         doNothing().when(service).updateWorkflowStatus(anyLong(), anyInt(), any(), anyInt(), any());
-        ProcessEvent rejected = event("finish", 1);
-        rejected.setParams(Map.of("snapshotVersion", 1, "profileDecision", "REJECT"));
+        EnterpriseApplicationProcessCommand rejected = new EnterpriseApplicationProcessCommand(
+            null, "9001", "profile_enterprise_verification", "finish", "REJECT", 1, clock.instant());
 
-        service.handleProcessEvent(rejected);
+        service.handleProcess(rejected);
 
         verify(service).updateWorkflowStatus(9001L, 1, "INVALID", 2, clock.instant());
         verify(service, never()).publishApproved(anyLong(), anyInt(), any());
@@ -217,12 +216,8 @@ class EnterpriseApplicationServiceTest {
         return new EnterpriseDocumentTypeRule("CN_RESIDENT_ID", "^[0-9]{17}[0-9Xx]$", true);
     }
 
-    private ProcessEvent event(String status, int snapshotVersion) {
-        ProcessEvent event = new ProcessEvent();
-        event.setFlowCode("profile_enterprise_verification");
-        event.setBusinessId("9001");
-        event.setStatus(status);
-        event.setParams(Map.of("snapshotVersion", snapshotVersion));
-        return event;
+    private EnterpriseApplicationProcessCommand event(String status, int snapshotVersion) {
+        return new EnterpriseApplicationProcessCommand(null, "9001", "profile_enterprise_verification",
+            status, "", snapshotVersion, clock.instant());
     }
 }

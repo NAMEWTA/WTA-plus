@@ -8,11 +8,6 @@ public class EnterpriseVerificationEvidenceCodec {
     /** 创建企业认证证据编解码器。 */
     public EnterpriseVerificationEvidenceCodec() {
     }
-    /** 兼容旧构造调用；统一使用项目 JsonUtils。 */
-    @Deprecated
-    public EnterpriseVerificationEvidenceCodec(Object ignoredJsonMapper) {
-        this();
-    }
     /** 编码认证证据。 */
     public String encode(String callbackDigest, String providerEvidenceJson) {
         return JsonUtils.toJsonString(

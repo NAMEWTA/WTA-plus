@@ -24,7 +24,6 @@ import org.namewta.system.api.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -61,7 +60,7 @@ class PersonRebindServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = spy(new PersonRebindServiceImpl(rebindMapper, applicationMapper, JsonMapper.builder().build(),
+        service = spy(new PersonRebindServiceImpl(rebindMapper, applicationMapper,
             materials, providers, attempts, workflow, users, clock));
         doReturn(Optional.of(new PersonDocumentTypeRule("CN_RESIDENT_ID", "^[0-9]{17}[0-9Xx]$", true)))
             .when(service).findDocumentType("CN_RESIDENT_ID");

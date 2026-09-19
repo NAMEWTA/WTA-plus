@@ -20,13 +20,12 @@ import org.namewta.profile.api.material.ProfileMaterialPort;
 import org.namewta.profile.person.domain.exception.PersonVerificationException;
 import org.namewta.profile.person.domain.verification.PersonVerificationFailureCategory;
 import org.namewta.system.api.ConfigService;
-import org.namewta.workflow.api.event.ProcessEvent;
+import org.namewta.profile.person.domain.application.PersonApplicationProcessCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -56,7 +55,6 @@ import static org.mockito.Mockito.when;
 class PersonApplicationServiceTest {
 
     private final PersonApplicationMapper mapper = mock(PersonApplicationMapper.class);
-    private final JsonMapper jsonMapper = mock(JsonMapper.class);
     private final ProfileMaterialPort materials = mock(ProfileMaterialPort.class);
     private final PersonVerificationProviderRegistry providers = mock(PersonVerificationProviderRegistry.class);
     private final PersonVerificationAttemptService attempts = mock(PersonVerificationAttemptService.class);
@@ -69,7 +67,7 @@ class PersonApplicationServiceTest {
     @BeforeEach
     void setUp() {
         service = spy(new PersonApplicationServiceImpl(
-            mapper, jsonMapper, materials, providers, attempts, workflow, config, clock));
+            mapper, materials, providers, attempts, workflow, config, clock));
     }
 
     @Test
@@ -173,8 +171,8 @@ class PersonApplicationServiceTest {
         doReturn(new PersonPublication(9201L, 9301L, 9401L, false)).when(service)
             .publishApproved(9001L, 3, Instant.parse("2026-09-01T12:00:00Z"));
 
-        service.handleProcessEvent(event("finish", 3));
-        service.handleProcessEvent(event("back", 2));
+        service.handleProcess(event("finish", 3));
+        service.handleProcess(event("back", 2));
 
         verify(service).publishApproved(9001L, 3, Instant.parse("2026-09-01T12:00:00Z"));
         verify(service, never()).updateWorkflowStatus(eq(9001L), eq(2), eq("BACK"), eq(2), any());
@@ -191,11 +189,10 @@ class PersonApplicationServiceTest {
             Instant.parse("2026-09-01T11:00:00Z"))).when(service).requireSubmission(9001L, 3);
         doReturn(new PersonPublication(9201L, 9301L, 9401L, false)).when(service)
             .publishApproved(9001L, 3, Instant.parse("2026-09-01T12:00:00Z"));
-        ProcessEvent event = event("finish", 3);
-        event.setInstanceId(77L);
-        event.setParams(Map.of("message", "approved"));
+        PersonApplicationProcessCommand event = new PersonApplicationProcessCommand(
+            77L, "9001", "profile_person_verification", "finish", "", null, clock.instant());
 
-        service.handleProcessEvent(event);
+        service.handleProcess(event);
 
         verify(service).publishApproved(9001L, 3, Instant.parse("2026-09-01T12:00:00Z"));
     }
@@ -205,7 +202,7 @@ class PersonApplicationServiceTest {
         when(config.getConfigValue("profile.person.flowCode")).thenReturn("profile_person_verification");
         doReturn(application(9001L, 101L, "BACK", 3, 3)).when(service).lockById(9001L);
 
-        service.handleProcessEvent(event("finish", 3));
+        service.handleProcess(event("finish", 3));
 
         verify(service, never()).requireSubmission(anyLong(), anyInt());
         verify(service, never()).publishApproved(anyLong(), anyInt(), any());
@@ -218,7 +215,7 @@ class PersonApplicationServiceTest {
         doReturn(application(9001L, 101L, "WAITING", 2, 1)).when(service).lockById(9001L);
         doNothing().when(service).updateWorkflowStatus(anyLong(), anyInt(), any(), anyInt(), any());
 
-        service.handleProcessEvent(event(status.toLowerCase(java.util.Locale.ROOT), 1));
+        service.handleProcess(event(status.toLowerCase(java.util.Locale.ROOT), 1));
 
         verify(service).updateWorkflowStatus(9001L, 1, status, 2,
             Instant.parse("2026-09-01T12:00:00Z"));
@@ -230,10 +227,10 @@ class PersonApplicationServiceTest {
         when(config.getConfigValue("profile.person.flowCode")).thenReturn("profile_person_verification");
         doReturn(application(9001L, 101L, "WAITING", 2, 1)).when(service).lockById(9001L);
         doNothing().when(service).updateWorkflowStatus(anyLong(), anyInt(), any(), anyInt(), any());
-        ProcessEvent rejected = event("finish", 1);
-        rejected.setParams(Map.of("snapshotVersion", 1, "profileDecision", "REJECT"));
+        PersonApplicationProcessCommand rejected = new PersonApplicationProcessCommand(
+            null, "9001", "profile_person_verification", "finish", "REJECT", 1, clock.instant());
 
-        service.handleProcessEvent(rejected);
+        service.handleProcess(rejected);
 
         verify(service).updateWorkflowStatus(9001L, 1, "INVALID", 2,
             Instant.parse("2026-09-01T12:00:00Z"));
@@ -271,13 +268,8 @@ class PersonApplicationServiceTest {
         return new PersonDocumentTypeRule("CN_RESIDENT_ID", "^[0-9]{17}[0-9Xx]$", true);
     }
 
-    private ProcessEvent event(String status, int snapshotVersion) {
-        ProcessEvent event = new ProcessEvent();
-        event.setFlowCode("profile_person_verification");
-        event.setBusinessId("9001");
-        event.setStatus(status);
-        event.setParams(Map.of("snapshotVersion", snapshotVersion));
-        event.setSubmit(false);
-        return event;
+    private PersonApplicationProcessCommand event(String status, int snapshotVersion) {
+        return new PersonApplicationProcessCommand(null, "9001", "profile_person_verification",
+            status, "", snapshotVersion, clock.instant());
     }
 }

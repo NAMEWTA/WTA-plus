@@ -8,14 +8,12 @@ import org.namewta.profile.api.material.ProfileMaterialPort;
 import org.namewta.profile.person.domain.application.PersonPublication;
 import org.namewta.profile.person.domain.application.PersonSubmission;
 import org.namewta.profile.person.mapper.PersonAdminMapper;
-import org.namewta.profile.person.service.IPersonApplicationService;
+import org.namewta.profile.person.port.PersonApplicationPublicationPort;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
-import org.namewta.workflow.api.WorkflowService;
-import org.namewta.workflow.api.domain.WorkflowTerminationResult;
+import org.namewta.profile.person.port.gateway.PersonWorkflowGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -29,12 +27,11 @@ import static org.mockito.Mockito.*;
 class PersonAdminServiceTest {
 
     private final PersonAdminMapper mapper = mock(PersonAdminMapper.class);
-    private final IPersonApplicationService applications = mock(IPersonApplicationService.class);
+    private final PersonApplicationPublicationPort applications = mock(PersonApplicationPublicationPort.class);
     private final ProfileMaterialPort materials = mock(ProfileMaterialPort.class);
-    private final WorkflowService workflow = mock(WorkflowService.class);
+    private final PersonWorkflowGateway workflow = mock(PersonWorkflowGateway.class);
     private final UserService users = mock(UserService.class);
-    private final PersonAdminServiceImpl service = spy(new PersonAdminServiceImpl(mapper,
-        JsonMapper.builder().build(), applications, materials, workflow, users,
+    private final PersonAdminServiceImpl service = spy(new PersonAdminServiceImpl(mapper, applications, materials, workflow, users,
         Clock.fixed(Instant.parse("2026-09-02T00:00:00Z"), ZoneOffset.UTC)));
 
     @Test
@@ -45,8 +42,7 @@ class PersonAdminServiceTest {
         doNothing().when(service).resumeForApproval(state, 99L);
         doNothing().when(service).finalizeApproved(state, 31L, 41L, 99L, "checked",
             Instant.parse("2026-09-02T00:00:00Z"));
-        when(workflow.terminateInstance("11", "checked"))
-            .thenReturn(new WorkflowTerminationResult(WorkflowTerminationResult.Status.TERMINATED, 7L));
+        org.mockito.Mockito.doNothing().when(workflow).terminate("11", "checked");
         when(applications.requireSubmission(11L, 3)).thenReturn(new PersonSubmission(22L, 11L, 3,
             77L, null, "manual", Instant.parse("2026-09-01T00:00:00Z")));
         when(applications.publishApproved(11L, 3, Instant.parse("2026-09-02T00:00:00Z")))
@@ -57,7 +53,7 @@ class PersonAdminServiceTest {
         var order = inOrder(service, workflow, applications, materials);
         order.verify(service).beginDecision(11L, "APPROVED", 99L, "checked",
             Instant.parse("2026-09-02T00:00:00Z"));
-        order.verify(workflow).terminateInstance("11", "checked");
+        order.verify(workflow).terminate("11", "checked");
         order.verify(service).resumeForApproval(state, 99L);
         order.verify(applications).publishApproved(11L, 3, Instant.parse("2026-09-02T00:00:00Z"));
         order.verify(materials).snapshotImmutable(any(), any());
@@ -69,7 +65,7 @@ class PersonAdminServiceTest {
     void terminationFailureNeverPublishesOrFinalizes() {
         var state = new PersonAdminServiceImpl.DecisionState(11L, 22L, 3, 4);
         doReturn(state).when(service).beginDecision(anyLong(), anyString(), anyLong(), anyString(), any());
-        when(workflow.terminateInstance("11", "checked")).thenThrow(new IllegalStateException("down"));
+        org.mockito.Mockito.doThrow(new IllegalStateException("down")).when(workflow).terminate("11", "checked");
 
         assertThatThrownBy(() -> service.decide(99L, 11L,
             new PersonAdminDecisionBo("APPROVED", "checked")))
@@ -91,7 +87,7 @@ class PersonAdminServiceTest {
 
     @Test
     void missingWorkflowFailsClosedBeforeAnyAdminDecisionStateIsWritten() {
-        PersonAdminServiceImpl core = spy(new PersonAdminServiceImpl(mapper, JsonMapper.builder().build(),
+        PersonAdminServiceImpl core = spy(new PersonAdminServiceImpl(mapper,
             applications, materials, null, users,
             Clock.fixed(Instant.parse("2026-09-02T00:00:00Z"), ZoneOffset.UTC)));
 

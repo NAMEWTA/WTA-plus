@@ -1,6 +1,8 @@
 package org.namewta.profile.person.usecase;
 
 import org.namewta.profile.api.material.ProfileMaterialPort;
+import org.namewta.profile.api.domain.ProfileType;
+import org.namewta.profile.person.domain.vo.ProfileMaterialRequirementVo;
 import org.namewta.profile.person.domain.vo.PersonProfileAccessUrl;
 
 import java.util.List;
@@ -10,6 +12,11 @@ import java.util.Set;
  * ProfileMaterialUseCase 应用用例合同，定义入口可调用的业务场景。
  */
 public interface ProfileMaterialUseCase {
+    /** 查询申请条件对应的材料提示，不替代提交时的必填校验。 */
+    List<ProfileMaterialRequirementVo> requiredMaterials(
+        ProfileType profileType, String documentTypeCode,
+        boolean handlerIsLegalRepresentative);
+
     /**
      * 编排 tree 应用用例。
      */
@@ -45,9 +52,7 @@ public interface ProfileMaterialUseCase {
     /**
      * 编排 accessUrlView 应用用例。
      */
-    default PersonProfileAccessUrl accessUrlView(ProfileMaterialPort.MaterialOwnerKey owner, Long materialRefId) {
-        throw new UnsupportedOperationException("旧适配器不支持文件访问地址入口");
-    }
+    PersonProfileAccessUrl accessUrlView(ProfileMaterialPort.MaterialOwnerKey owner, Long materialRefId);
     /**
      * 编排 validateRequired 应用用例。
      */

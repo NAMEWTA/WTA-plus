@@ -4,7 +4,6 @@ import org.namewta.profile.person.adapter.codec.PersonVerificationEvidenceCodec;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import tools.jackson.databind.json.JsonMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,7 +13,7 @@ class PersonVerificationEvidenceCodecTest {
     @Test
     void roundTripsDigestAndProviderEvidenceWithoutChangingLegacyRows() {
         PersonVerificationEvidenceCodec codec =
-            new PersonVerificationEvidenceCodec(JsonMapper.builder().build());
+            new PersonVerificationEvidenceCodec();
 
         String stored = codec.encode("digest-1", "{\"provider\":\"test-provider\"}");
         PersonVerificationEvidenceCodec.DecodedEvidence decoded = codec.decode(stored);

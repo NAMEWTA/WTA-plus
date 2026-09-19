@@ -1,6 +1,5 @@
 package org.namewta.profile.enterprise.service.impl;
 
-import org.namewta.profile.enterprise.service.impl.EnterpriseVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.enterprise.adapter.codec.EnterpriseVerificationEvidenceCodec;
 
@@ -30,7 +29,6 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,7 +57,7 @@ class EnterpriseVerificationMySqlE2ETest {
             EnterpriseVerificationAttemptMapper mapper =
                 session.getMapper(EnterpriseVerificationAttemptMapper.class);
             EnterpriseVerificationEvidenceCodec codec =
-                new EnterpriseVerificationEvidenceCodec(JsonMapper.builder().build());
+                new EnterpriseVerificationEvidenceCodec();
             EnterpriseDeterministicTestProvider provider =
                 new EnterpriseDeterministicTestProvider("enterprise-mysql-e2e-secret");
             EnterpriseVerificationProviderProperties properties = new EnterpriseVerificationProviderProperties();
@@ -67,8 +65,7 @@ class EnterpriseVerificationMySqlE2ETest {
             EnterpriseVerificationAttemptService coordinator = new EnterpriseVerificationAttemptService(
                 new EnterpriseVerificationProviderRegistry(List.of(provider), properties),
                 new EnterpriseVerificationAttemptDao(mapper),
-                codec,
-                new EnterpriseVerificationSecurityAuditRecorder(new EnterpriseVerificationAttemptDao(mapper)));
+                codec);
             EnterpriseVerificationAttempt attempt = coordinator.startAttempt(
                 new EnterpriseVerificationStartAttemptCommand(
                     APPLICATION_ID, SUBMISSION_ID, "enterprise-fingerprint"));

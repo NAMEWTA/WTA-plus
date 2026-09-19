@@ -1,6 +1,5 @@
 package org.namewta.profile.enterprise.service.impl;
 
-import org.namewta.profile.enterprise.service.impl.EnterpriseVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.enterprise.adapter.codec.EnterpriseVerificationEvidenceCodec;
 
@@ -77,12 +76,11 @@ class EnterpriseVerificationAttemptServiceTest {
         EnterpriseVerificationProviderProperties properties = new EnterpriseVerificationProviderProperties();
         properties.setEnabledProviders(enabledProviders);
         EnterpriseVerificationEvidenceCodec codec =
-            new EnterpriseVerificationEvidenceCodec(tools.jackson.databind.json.JsonMapper.builder().build());
+            new EnterpriseVerificationEvidenceCodec();
         return new EnterpriseVerificationAttemptService(
             new EnterpriseVerificationProviderRegistry(
                 List.of(new EnterpriseManualVerificationProvider()), properties),
-            new EnterpriseVerificationAttemptDao(mapper), codec,
-            mock(EnterpriseVerificationSecurityAuditRecorder.class));
+            new EnterpriseVerificationAttemptDao(mapper), codec);
     }
 
     private EnterpriseVerificationApplicationRow application() {

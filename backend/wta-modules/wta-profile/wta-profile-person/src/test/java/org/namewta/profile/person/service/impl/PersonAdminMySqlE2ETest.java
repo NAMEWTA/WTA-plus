@@ -30,14 +30,12 @@ import org.namewta.profile.person.domain.application.PersonDocumentTypeRule;
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
-import org.namewta.workflow.api.WorkflowService;
-import org.namewta.workflow.api.domain.WorkflowTerminationResult;
+import org.namewta.profile.person.port.gateway.PersonWorkflowGateway;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -80,14 +78,12 @@ class PersonAdminMySqlE2ETest {
             when(applications.findDocumentType("CN_RESIDENT_ID"))
                 .thenReturn(Optional.of(new PersonDocumentTypeRule("CN_RESIDENT_ID", "^[0-9]{17}[0-9X]$", true)));
             ProfileMaterialPort materials = materials();
-            WorkflowService workflow = mock(WorkflowService.class);
-            when(workflow.terminateInstance(eq(Long.toString(REJECT_APPLICATION)), anyString()))
-                .thenReturn(new WorkflowTerminationResult(WorkflowTerminationResult.Status.TERMINATED, 701L));
-            when(workflow.terminateInstance(eq(Long.toString(FAIL_APPLICATION)), anyString()))
-                .thenThrow(new IllegalStateException("workflow unavailable"));
+            PersonWorkflowGateway workflow = mock(PersonWorkflowGateway.class);
+            org.mockito.Mockito.doNothing().when(workflow).terminate(eq(Long.toString(REJECT_APPLICATION)), anyString());
+            org.mockito.Mockito.doThrow(new IllegalStateException("workflow unavailable")).when(workflow).terminate(eq(Long.toString(FAIL_APPLICATION)), anyString());
             UserService users = mock(UserService.class);
             when(users.selectById(anyLong())).thenAnswer(invocation -> normalUser(invocation.getArgument(0)));
-            PersonAdminServiceImpl service = new PersonAdminServiceImpl(mapper, JsonMapper.builder().build(),
+            PersonAdminServiceImpl service = new PersonAdminServiceImpl(mapper,
                 applications, materials, workflow, users, Clock.fixed(NOW, ZoneOffset.UTC));
 
             var identity = new PersonAdminIdentityBo("管理直建用户", "CN_RESIDENT_ID", DOCUMENT,
@@ -177,7 +173,7 @@ class PersonAdminMySqlE2ETest {
 
             cleanup(session);
             session.commit(true);
-            verify(workflow).terminateInstance(Long.toString(REJECT_APPLICATION), "e2e reject");
+            verify(workflow).terminate(Long.toString(REJECT_APPLICATION), "e2e reject");
             assertThat(assigned.status()).isEqualTo("ACTIVE");
         }
     }

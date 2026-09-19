@@ -15,7 +15,6 @@ import org.namewta.profile.person.domain.model.read.PersonVersionRow;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -32,9 +31,8 @@ import static org.mockito.Mockito.when;
 class PersonApplicationServicePersistenceTest {
 
     private final PersonApplicationMapper mapper = mock(PersonApplicationMapper.class);
-    private final JsonMapper jsonMapper = mock(JsonMapper.class);
     private final PersonApplicationServiceImpl service = new PersonApplicationServiceImpl(
-        mapper, jsonMapper, mock(org.namewta.profile.api.material.ProfileMaterialPort.class),
+        mapper, mock(org.namewta.profile.api.material.ProfileMaterialPort.class),
         mock(PersonVerificationProviderRegistry.class), mock(PersonVerificationAttemptService.class),
         mock(org.namewta.profile.person.port.gateway.PersonWorkflowGateway.class),
         mock(org.namewta.system.api.ConfigService.class), java.time.Clock.systemUTC());

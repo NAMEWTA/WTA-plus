@@ -11,24 +11,6 @@ import java.util.List;
  */
 public interface PersonAdminUseCase {
 
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonAdminResultVo decide(long applicationId, PersonAdminDecisionBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonAdminResultVo create(PersonAdminCreateBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonAdminResultVo revise(long profileId, PersonAdminReviseBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonAdminResultVo manageBinding(long profileId, PersonAdminBindingBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonAdminResultVo assign(long profileId, PersonAdminAssignBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonAdminResultVo revoke(long profileId, PersonAdminRevokeBo command) { throw new UnsupportedOperationException("请传入 operatorId"); }
 
     /**
      * 编排 page 应用用例。

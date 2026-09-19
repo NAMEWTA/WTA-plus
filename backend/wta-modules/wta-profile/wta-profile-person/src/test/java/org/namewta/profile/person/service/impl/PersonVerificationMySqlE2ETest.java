@@ -1,13 +1,11 @@
 package org.namewta.profile.person.service.impl;
 
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.person.adapter.codec.PersonVerificationEvidenceCodec;
 
 import org.namewta.profile.person.service.PersonVerificationAttemptService;
 
 import org.namewta.profile.person.adapter.provider.PersonVerificationProviderRegistry;
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.person.controller.anonymous.PersonVerificationCallbackExceptionHandler;
 import org.namewta.profile.person.controller.anonymous.PersonVerificationAnonymousController;
@@ -32,7 +30,6 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,15 +57,14 @@ class PersonVerificationMySqlE2ETest {
             seedApplication(session);
             PersonVerificationAttemptMapper mapper = session.getMapper(PersonVerificationAttemptMapper.class);
             PersonVerificationEvidenceCodec evidenceCodec =
-                new PersonVerificationEvidenceCodec(JsonMapper.builder().build());
+                new PersonVerificationEvidenceCodec();
             PersonDeterministicTestProvider provider =
                 new PersonDeterministicTestProvider("person-mysql-e2e-secret");
             PersonVerificationProviderProperties properties = new PersonVerificationProviderProperties();
             properties.setEnabledProviders(Set.of("test-provider"));
             PersonVerificationAttemptService coordinator = new PersonVerificationAttemptService(
                 new PersonVerificationProviderRegistry(List.of(provider), properties),
-                new PersonVerificationAttemptDao(mapper), evidenceCodec,
-                new PersonVerificationSecurityAuditRecorder(new PersonVerificationAttemptDao(mapper)));
+                new PersonVerificationAttemptDao(mapper), evidenceCodec);
             PersonVerificationAttempt attempt = coordinator.startAttempt(
                 new PersonVerificationStartAttemptCommand(APPLICATION_ID, SUBMISSION_ID, "person-fingerprint"));
             session.commit();

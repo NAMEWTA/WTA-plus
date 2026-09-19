@@ -1,13 +1,11 @@
 package org.namewta.profile.person.service.impl;
 
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 
 import org.namewta.profile.person.adapter.provider.PersonManualVerificationProvider;
 
 import org.namewta.profile.person.adapter.codec.PersonVerificationEvidenceCodec;
 
 import org.namewta.profile.person.adapter.api.PersonProfileMaterialOwnerContributor;
-import org.namewta.profile.person.service.impl.PersonVerificationSecurityAuditRecorder;
 import org.namewta.profile.person.adapter.provider.PersonManualVerificationProvider;
 import org.namewta.profile.person.usecase.impl.PersonProfileApiUseCaseImpl;
 import org.namewta.profile.person.service.PersonProfileApiService;
@@ -48,7 +46,6 @@ import org.mockito.MockedStatic;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -333,11 +330,10 @@ class PersonApplicationMySqlE2ETest {
         event.setBusinessId(String.valueOf(applicationId));
         event.setStatus(status);
         event.setParams(Map.of("snapshotVersion", snapshotVersion));
-        service.handleProcessEvent(event);
+        new org.namewta.profile.person.listener.PersonApplicationProcessListener(service).handle(event);
     }
 
     private Fixture fixture(SqlSession session, AtomicLong currentUser) {
-        JsonMapper json = JsonMapper.builder().build();
         PersonApplicationMapper applicationMapper = session.getMapper(PersonApplicationMapper.class);
         OssService oss = mock(OssService.class);
         when(oss.objectMetadata(anyLong())).thenAnswer(invocation -> {
@@ -354,18 +350,17 @@ class PersonApplicationMySqlE2ETest {
                 new PersonProfileApiService(new PersonApplicationDao(session.getMapper(PersonApplicationMapper.class)))))));
 
         PersonVerificationAttemptMapper attemptMapper = session.getMapper(PersonVerificationAttemptMapper.class);
-        PersonVerificationEvidenceCodec evidenceCodec = new PersonVerificationEvidenceCodec(json);
+        PersonVerificationEvidenceCodec evidenceCodec = new PersonVerificationEvidenceCodec();
         PersonVerificationProviderProperties properties = new PersonVerificationProviderProperties();
         properties.setEnabledProviders(java.util.Set.of("manual"));
         PersonVerificationAttemptService attempts = new PersonVerificationAttemptService(
             new PersonVerificationProviderRegistry(List.of(new PersonManualVerificationProvider()), properties),
-            new PersonVerificationAttemptDao(attemptMapper), evidenceCodec,
-            new PersonVerificationSecurityAuditRecorder(new PersonVerificationAttemptDao(attemptMapper)));
+            new PersonVerificationAttemptDao(attemptMapper), evidenceCodec);
         ConfigService config = mock(ConfigService.class);
         when(config.getConfigValue("profile.person.provider.default")).thenReturn("manual");
         when(config.getConfigValue("profile.person.flowCode")).thenReturn("profile_person_verification");
         RecordingWorkflowGateway workflow = new RecordingWorkflowGateway();
-        PersonApplicationServiceImpl service = new PersonApplicationServiceImpl(applicationMapper, json, materials,
+        PersonApplicationServiceImpl service = new PersonApplicationServiceImpl(applicationMapper, materials,
             new PersonVerificationProviderRegistry(List.of(new PersonManualVerificationProvider()), properties),
             attempts, workflow, config, Clock.fixed(NOW, ZoneOffset.UTC));
         MockMvc mvc = MockMvcBuilders.standaloneSetup(
@@ -476,6 +471,13 @@ class PersonApplicationMySqlE2ETest {
     }
 
     private static final class RecordingWorkflowGateway implements PersonWorkflowGateway {
+        @Override public void terminate(String businessId, String reason) {
+            throw new AssertionError("This fixture only exercises process start and explicit snapshot events");
+        }
+        @Override public Integer persistedSnapshotVersionByInstanceId(Long instanceId) {
+            throw new AssertionError("This fixture supplies snapshotVersion in every process event");
+        }
+
         private long applicationId;
         private int snapshotVersion;
         private boolean fail;

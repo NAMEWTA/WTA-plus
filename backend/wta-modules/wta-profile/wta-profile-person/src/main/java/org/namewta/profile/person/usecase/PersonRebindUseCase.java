@@ -13,18 +13,6 @@ import java.util.Optional;
  */
 public interface PersonRebindUseCase {
 
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonRebindMatchVo match(PersonRebindMatchBo command) { throw new UnsupportedOperationException("请传入 userId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonRebindConfirmationVo confirm(PersonRebindConfirmBo command) { throw new UnsupportedOperationException("请传入 userId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonRebindSubmissionVo submit(PersonRebindSubmitBo command) { throw new UnsupportedOperationException("请传入 userId"); }
-    /** @deprecated 新入口必须显式传入操作者编号。 */
-    @Deprecated
-    default PersonRebindUnbindVo unbind() { throw new UnsupportedOperationException("请传入 userId"); }
 
     /**
      * 编排 probe 应用用例。
@@ -33,26 +21,24 @@ public interface PersonRebindUseCase {
     /**
      * 编排 match 应用用例。
      */
-    default PersonRebindMatchVo match(long userId, PersonRebindMatchBo command) { return match(command); }
+    PersonRebindMatchVo match(long userId, PersonRebindMatchBo command);
     /**
      * 编排 confirm 应用用例。
      */
-    default PersonRebindConfirmationVo confirm(long userId, PersonRebindConfirmBo command) { return confirm(command); }
+    PersonRebindConfirmationVo confirm(long userId, PersonRebindConfirmBo command);
     /**
      * 编排 submit 应用用例。
      */
-    default PersonRebindSubmissionVo submit(long userId, PersonRebindSubmitBo command) { return submit(command); }
+    PersonRebindSubmissionVo submit(long userId, PersonRebindSubmitBo command);
     /**
      * 编排 unbind 应用用例。
      */
-    default PersonRebindUnbindVo unbind(long userId) { return unbind(); }
+    PersonRebindUnbindVo unbind(long userId);
     /**
      * 编排 publishApproved 应用用例。
      */
     Optional<PersonRebindPublication> publishApproved(long applicationId, int snapshotVersion, Instant finishedTime);
 
     /** 接收工作流事件并编排换绑发布。 */
-    default void handleProcess(PersonRebindProcessCommand command) {
-        throw new UnsupportedOperationException("旧适配器不支持工作流事件入口");
-    }
+    void handleProcess(PersonRebindProcessCommand command);
 }

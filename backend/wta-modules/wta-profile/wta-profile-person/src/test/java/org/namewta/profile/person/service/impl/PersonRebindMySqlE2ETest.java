@@ -39,7 +39,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -162,8 +161,7 @@ class PersonRebindMySqlE2ETest {
                 + "where person_binding_id=971000000201");
             session.commit();
             PersonRebindServiceImpl service = new PersonRebindServiceImpl(
-                session.getMapper(PersonRebindMapper.class), session.getMapper(PersonApplicationMapper.class),
-                JsonMapper.builder().build(), mock(ProfileMaterialPort.class),
+                session.getMapper(PersonRebindMapper.class), session.getMapper(PersonApplicationMapper.class), mock(ProfileMaterialPort.class),
                 mock(PersonVerificationProviderRegistry.class), mock(PersonVerificationAttemptService.class),
                 mock(PersonWorkflowGateway.class), mock(UserService.class), Clock.fixed(NOW, ZoneOffset.UTC));
 
@@ -202,8 +200,7 @@ class PersonRebindMySqlE2ETest {
         PersonRebindNotificationService notifications = new PersonRebindNotificationService(
             new PersonNotificationAuditDao(session.getMapper(PersonNotificationAuditMapper.class)),
             notificationService, users);
-        PersonRebindServiceImpl service = new PersonRebindServiceImpl(rebinds, applications,
-            JsonMapper.builder().build(), materials, providers, attempts, workflow, users,
+        PersonRebindServiceImpl service = new PersonRebindServiceImpl(rebinds, applications, materials, providers, attempts, workflow, users,
             Clock.fixed(NOW, ZoneOffset.UTC), config, notifications, events);
         MockMvc mvc = MockMvcBuilders.standaloneSetup(new PersonRebindController(service))
             .setControllerAdvice(new PersonRebindExceptionHandler()).build();
@@ -321,6 +318,13 @@ class PersonRebindMySqlE2ETest {
     }
 
     private static final class RecordingWorkflow implements PersonWorkflowGateway {
+        @Override public void terminate(String businessId, String reason) {
+            throw new AssertionError("This fixture only exercises process start and explicit snapshot events");
+        }
+        @Override public Integer persistedSnapshotVersionByInstanceId(Long instanceId) {
+            throw new AssertionError("This fixture supplies snapshotVersion in every process event");
+        }
+
         @Override
         public void start(long applicationId, long submissionId, int snapshotVersion) {
         }

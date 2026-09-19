@@ -77,56 +77,37 @@ public class PersonRebindService {
     private final ApplicationEventPublisher events;
     /** 创建个人换绑业务服务。 */
     public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao,
-                               Object jsonMapper,
                                ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers,
                                PersonVerificationService attempts, PersonWorkflowGateway workflow,
                                UserService users) {
-        this(dao, applicationDao, jsonMapper, materials, providers, attempts, workflow, users,
-            Clock.systemUTC());
+        this(dao, applicationDao, materials, providers, attempts, workflow, users, Clock.systemUTC());
     }
-    /** 创建可注入时钟的个人换绑业务服务，测试场景据此固定时间。 */
+    /** 创建可注入时钟的个人换绑业务服务。 */
     public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao,
-                        Object jsonMapper,
-                        ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers,
-                        PersonVerificationService attempts, PersonWorkflowGateway workflow,
-                        UserService users, Clock clock) {
-        this(dao, applicationDao, jsonMapper, materials, providers, attempts, workflow, users, clock,
-            null, null, null);
+                               ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers,
+                               PersonVerificationService attempts, PersonWorkflowGateway workflow,
+                               UserService users, Clock clock) {
+        this(dao, applicationDao, materials, providers, attempts, workflow, users, clock, null, null, null);
     }
     /** 创建可处理工作流事件的个人换绑业务服务。 */
     @Autowired
     public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao,
-                               ProfileMaterialPort materials,
-                               PersonVerificationProviderRegistryPort providers,
+                               ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers,
                                PersonVerificationService attempts, PersonWorkflowGateway workflow,
                                UserService users, ConfigService configService,
-                               PersonRebindNotificationPort notifications,
-                               ApplicationEventPublisher events) {
-        this(dao, applicationDao, null, materials, providers, attempts, workflow, users,
+                               PersonRebindNotificationPort notifications, ApplicationEventPublisher events) {
+        this(dao, applicationDao, materials, providers, attempts, workflow, users,
             Clock.systemUTC(), configService, notifications, events);
     }
-    /** 兼容存量测试适配器的完整构造方法，jsonMapper 参数已由统一 JsonUtils 接管。 */
-    @Deprecated
+    /** 初始化完整端口依赖并保留固定时钟的测试接缝。 */
     public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao,
-                               Object jsonMapper, ProfileMaterialPort materials,
-                               PersonVerificationProviderRegistryPort providers,
+                               ProfileMaterialPort materials, PersonVerificationProviderRegistryPort providers,
                                PersonVerificationService attempts, PersonWorkflowGateway workflow,
-                               UserService users, ConfigService configService,
-                               PersonRebindNotificationPort notifications,
-                               ApplicationEventPublisher events) {
-        this(dao, applicationDao, jsonMapper, materials, providers, attempts, workflow, users,
-            Clock.systemUTC(), configService, notifications, events);
-    }
-    /** 初始化个人换绑服务依赖。 */
-    private PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao,
-                        Object jsonMapper, ProfileMaterialPort materials,
-                        PersonVerificationProviderRegistryPort providers,
-                        PersonVerificationService attempts, PersonWorkflowGateway workflow,
-                        UserService users, Clock clock, ConfigService configService,
-                        PersonRebindNotificationPort notifications, ApplicationEventPublisher events) {
+                               UserService users, Clock clock, ConfigService configService,
+                               PersonRebindNotificationPort notifications, ApplicationEventPublisher events) {
         this.dao = dao;
         this.applicationDao = applicationDao;
-                this.materials = materials;
+        this.materials = materials;
         this.providers = providers;
         this.attempts = attempts;
         this.workflow = workflow;
@@ -135,16 +116,6 @@ public class PersonRebindService {
         this.configService = configService;
         this.notifications = notifications;
         this.events = events;
-    }
-    /** 兼容存量测试适配器使用的具体注册表构造方法。 */
-    @Deprecated
-    public PersonRebindService(PersonRebindDao dao, PersonApplicationDao applicationDao,
-                               Object jsonMapper, ProfileMaterialPort materials,
-                               org.namewta.profile.person.adapter.provider.PersonVerificationProviderRegistry providers,
-                               PersonVerificationService attempts, PersonWorkflowGateway workflow,
-                               UserService users, Clock clock) {
-        this(dao, applicationDao, jsonMapper, materials, (PersonVerificationProviderRegistryPort) providers,
-            attempts, workflow, users, clock, null, null, null);
     }
     /**
      * 校验申请身份并返回探测结果

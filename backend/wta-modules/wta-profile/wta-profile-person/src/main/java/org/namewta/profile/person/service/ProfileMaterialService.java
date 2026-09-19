@@ -1,4 +1,6 @@
 package org.namewta.profile.person.service;
+
+import org.namewta.profile.api.material.ProfileMaterialPort;
 import org.namewta.profile.person.domain.exception.ProfileMaterialException;
 import org.namewta.profile.person.domain.material.MaterialNode;
 import org.namewta.profile.person.domain.material.MaterialOwner;
@@ -7,6 +9,7 @@ import org.namewta.profile.person.domain.material.MaterialRequirement;
 import org.namewta.profile.person.domain.model.read.MaterialNodeRow;
 import org.namewta.profile.person.domain.model.read.MaterialReferenceRow;
 import org.namewta.profile.person.dao.ProfileMaterialDao;
+import org.namewta.profile.person.domain.vo.ProfileMaterialRequirementVo;
 import org.namewta.profile.person.port.security.ProfileMaterialAccessPolicy;
 import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import org.namewta.profile.api.domain.ProfileType;
@@ -42,7 +45,7 @@ import java.util.stream.Collectors;
  * 创建档案材料业务服务。
  */
 @Service
-public class ProfileMaterialService implements IProfileMaterialService {
+public class ProfileMaterialService implements ProfileMaterialPort {
     static final long MAX_FILE_SIZE = 10L * 1024 * 1024;
     static final int MAX_FILE_COUNT = 10;
     private static final String REFERENCE_TABLE = "profile_material_ref";
@@ -84,6 +87,21 @@ public class ProfileMaterialService implements IProfileMaterialService {
             accessPolicy.requireCatalogRead();
         }
         return buildTree(nodes(scope, includeDisabled));
+    }
+
+    /**
+     * 从同一材料规则表查询页面所需标签；提交时仍按服务端已保存的申请重新校验。
+     */
+    public List<ProfileMaterialRequirementVo> requiredMaterials(
+        ProfileType profileType, String documentTypeCode, boolean handlerIsLegalRepresentative) {
+        Objects.requireNonNull(profileType, "profileType");
+        String document = profileType == ProfileType.PERSON
+            ? requireText(documentTypeCode, "documentTypeCode") : "*";
+        Set<String> conditions = profileType == ProfileType.ENTERPRISE && !handlerIsLegalRepresentative
+            ? Set.of("ALWAYS", "HANDLER_NOT_LEGAL_REPRESENTATIVE") : Set.of("ALWAYS");
+        return requirements(profileType, document, conditions).stream()
+            .map(item -> new ProfileMaterialRequirementVo(
+                item.materialTagCode(), item.minimumCount())).toList();
     }
     /**
      * 创建材料节点

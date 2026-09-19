@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.namewta.system.api.UserService;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -40,7 +39,7 @@ class PersonRebindServicePersistenceTest {
     private final PersonRebindMapper mapper = mock(PersonRebindMapper.class);
     private final Instant now = Instant.parse("2026-09-01T12:00:00Z");
     private final PersonRebindServiceImpl service = new PersonRebindServiceImpl(
-        mapper, mock(PersonApplicationMapper.class), JsonMapper.builder().build(), mock(ProfileMaterialPort.class),
+        mapper, mock(PersonApplicationMapper.class), mock(ProfileMaterialPort.class),
         mock(PersonVerificationProviderRegistry.class), mock(PersonVerificationAttemptService.class),
         mock(PersonWorkflowGateway.class), mock(UserService.class),
         java.time.Clock.fixed(now, java.time.ZoneOffset.UTC));

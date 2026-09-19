@@ -11,14 +11,12 @@ import org.namewta.profile.enterprise.service.impl.EnterpriseDeterministicTestPr
 import org.namewta.profile.enterprise.service.EnterpriseVerificationAttemptService;
 import org.namewta.profile.enterprise.adapter.codec.EnterpriseVerificationEvidenceCodec;
 import org.namewta.profile.enterprise.adapter.provider.EnterpriseVerificationProviderRegistry;
-import org.namewta.profile.enterprise.service.impl.EnterpriseVerificationSecurityAuditRecorder;
 import org.namewta.profile.enterprise.usecase.impl.EnterpriseVerificationUseCaseImpl;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
 import java.util.List;
@@ -47,11 +45,10 @@ class EnterpriseVerificationAnonymousControllerTest {
         EnterpriseVerificationProviderProperties properties = new EnterpriseVerificationProviderProperties();
         properties.setEnabledProviders(Set.of("test-provider"));
         EnterpriseVerificationEvidenceCodec codec =
-            new EnterpriseVerificationEvidenceCodec(JsonMapper.builder().build());
+            new EnterpriseVerificationEvidenceCodec();
         EnterpriseVerificationAttemptService coordinator = new EnterpriseVerificationAttemptService(
             new EnterpriseVerificationProviderRegistry(List.of(provider), properties),
-            new EnterpriseVerificationAttemptDao(mapper), codec,
-            new EnterpriseVerificationSecurityAuditRecorder(new EnterpriseVerificationAttemptDao(mapper)));
+            new EnterpriseVerificationAttemptDao(mapper), codec);
         EnterpriseVerificationAnonymousController controller =
             new EnterpriseVerificationAnonymousController(new EnterpriseVerificationUseCaseImpl(coordinator), () -> NOW);
         MockMvc mvc = MockMvcBuilders.standaloneSetup(controller)
