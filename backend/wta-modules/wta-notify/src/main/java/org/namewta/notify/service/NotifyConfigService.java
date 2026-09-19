@@ -92,11 +92,13 @@ public class NotifyConfigService implements MailAccountResolver {
      */
     public int addAccount(NotifyChannelAccountBo bo) {
         validateChannel(bo.getChannel());
-        if (dao.findAccount(bo.getChannel(), bo.getConfigKey()) != null) {
-            throw new ServiceException("配置标识已存在");
+        if (dao.existsNamespace(bo.getChannel(), bo.getConfigKey())) {
+            throw new ServiceException("配置标识已使用，请选择新的标识");
         }
         NotifyChannelAccount entity = toAccountEntity(bo);
         entity.setAccountId(IdGeneratorUtil.nextLongId());
+        entity.setVersion(0);
+        entity.setDelFlag("0");
         if (isBlank(entity.getEnabled())) {
             entity.setEnabled("N");
         }
@@ -119,13 +121,16 @@ public class NotifyConfigService implements MailAccountResolver {
         NotifyChannelAccount current = requireAccount(bo.getAccountId());
         validateChannel(bo.getChannel());
         if (!current.getChannel().equals(bo.getChannel()) || !current.getConfigKey().equals(bo.getConfigKey())) {
-            NotifyChannelAccount clash = dao.findAccount(bo.getChannel(), bo.getConfigKey());
-            if (clash != null && !clash.getAccountId().equals(current.getAccountId())) {
-                throw new ServiceException("配置标识已存在");
-            }
+            throw new ServiceException("账号渠道和配置标识创建后不可修改");
+        }
+        if ("SMS".equals(current.getChannel()) && !isBlank(current.getSupplier())
+            && !current.getSupplier().trim().equals(nvl(bo.getSupplier()).trim())) {
+            throw new ServiceException("短信厂商创建后不可替换，请新增账号");
         }
         NotifyChannelAccount entity = toAccountEntity(bo);
         entity.setAccountId(current.getAccountId());
+        entity.setVersion(current.getVersion());
+        entity.setDelFlag(current.getDelFlag());
         if (isBlank(entity.getMailPass())) {
             entity.setMailPass(current.getMailPass());
         }
@@ -137,6 +142,7 @@ public class NotifyConfigService implements MailAccountResolver {
         }
         validateEnabledCredentials(entity);
         int rows = dao.update(entity);
+        if (rows != 1) throw new ServiceException("渠道账号已变化，请刷新后重试");
         registerSms(dao.findAccount(entity.getAccountId()));
         return rows;
     }
@@ -156,6 +162,7 @@ public class NotifyConfigService implements MailAccountResolver {
         current.setEnabled(enabled);
         validateEnabledCredentials(current);
         int rows = dao.update(current);
+        if (rows != 1) throw new ServiceException("渠道账号已变化，请刷新后重试");
         registerSms(current);
         return rows;
     }
@@ -245,6 +252,17 @@ public class NotifyConfigService implements MailAccountResolver {
                     throw new ServiceException("不允许映射未声明变量 " + name);
                 }
             }
+            if (mapping.values().stream().anyMatch(this::isBlank)
+                || new java.util.HashSet<>(mapping.values()).size() != mapping.size()) {
+                throw new ServiceException("短信供应商参数不能空白或重复");
+            }
+            if (account != null && "tencent".equals(nvl(account.getSupplier()).trim())) {
+                for (int index = 1; index <= mapping.size(); index++) {
+                    if (!mapping.containsValue(Integer.toString(index))) {
+                        throw new ServiceException("腾讯短信变量请映射为连续的1..N位置");
+                    }
+                }
+            }
         }
         NotifySceneBinding current = dao.findBinding(bo.getSceneCode(), bo.getChannel());
         NotifySceneBinding entity = new NotifySceneBinding();
@@ -331,13 +349,22 @@ public class NotifyConfigService implements MailAccountResolver {
         }
         if ("MAIL".equals(account.getChannel())) {
             if (isBlank(account.getHost()) || account.getPort() == null
-                || isBlank(account.getMailFrom()) || isBlank(account.getMailPass())) {
-                throw new ServiceException("启用邮件账号必须填写 SMTP 主机、端口、发件人和密码");
+                || account.getPort() < 1 || account.getPort() > 65535
+                || isBlank(account.getMailUser()) || isBlank(account.getMailFrom()) || isBlank(account.getMailPass())) {
+                throw new ServiceException("启用邮件账号必须填写 SMTP 主机、有效端口、用户名、发件人和授权密码");
             }
             return;
         }
         if (isBlank(account.getSupplier()) || isBlank(account.getAccessKeyId()) || isBlank(account.getAccessKeySecret())) {
             throw new ServiceException("启用短信账号必须填写厂商、AccessKey 和密钥");
+        }
+        String supplier = account.getSupplier().trim();
+        if (("alibaba".equals(supplier) || "tencent".equals(supplier))
+            && isBlank(account.getSignature())) {
+            throw new ServiceException("启用阿里云或腾讯云短信必须填写已审核的短信签名");
+        }
+        if ("tencent".equals(supplier) && isBlank(account.getSdkAppId())) {
+            throw new ServiceException("启用腾讯云短信必须填写 SMS SDK AppID");
         }
     }
 

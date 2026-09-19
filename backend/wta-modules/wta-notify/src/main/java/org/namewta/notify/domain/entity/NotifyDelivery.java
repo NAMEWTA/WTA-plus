@@ -27,6 +27,8 @@ public class NotifyDelivery extends BaseEntity {
     private String errorCode;
     private String errorMessage;
     private LocalDateTime acceptedAt;
+    /** 原生短信状态下次核对时间，仅调度查询，不授权再次发送。 */
+    private LocalDateTime receiptQueryAt;
     private LocalDateTime deliveredAt;
     private LocalDateTime readAt;
     private Integer version;

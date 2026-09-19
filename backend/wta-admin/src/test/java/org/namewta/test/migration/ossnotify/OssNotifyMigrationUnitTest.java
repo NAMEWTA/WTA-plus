@@ -51,7 +51,14 @@ class OssNotifyMigrationUnitTest {
         assertTrue(delivery.contains("recipient_id"));
         assertTrue(delivery.contains("target_value"));
         assertTrue(delivery.contains("provider_message_id"));
-        assertTrue(delivery.contains("uk_notify_delivery_provider_message"));
+        // 批量短信与邮件允许多个收件人共享流水号，幂等唯一约束属于事件凭据。
+        assertTrue(delivery.contains("key idx_notify_delivery_account_message (provider_key, channel, provider_message_id)"));
+        assertFalse(delivery.contains("unique key uk_notify_delivery_provider_message"));
+        String receipt = createTable(ddl, "notify_provider_receipt");
+        assertBaseFields(receipt);
+        assertTrue(receipt.contains("unique key uk_notify_provider_receipt_event (event_key)"));
+        assertTrue(receipt.contains("facts_hash"));
+        assertBaseFields(createTable(ddl, "notify_channel_account"));
     }
 
     @Test

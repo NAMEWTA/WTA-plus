@@ -88,6 +88,7 @@ class NotifyConfigServiceTest {
         bo.setHost("smtp.example.com");
         bo.setPort(465);
         bo.setMailFrom("ops@example.com");
+        bo.setMailUser("ops@example.com");
         bo.setMailPass("");
         bo.setAccessKeySecret(" ");
         service.updateAccount(bo);
@@ -210,6 +211,120 @@ class NotifyConfigServiceTest {
         verify(dao, never()).insert(any(NotifyChannelAccount.class));
     }
 
+    @Test
+    void disabledPresetsNeedNoCredentialsAndDoNotRegisterASender() {
+        for (String supplier : new String[]{"alibaba", "tencent", "qq", "163", "tencent-enterprise"}) {
+            NotifyConfigDao dao = mock(NotifyConfigDao.class);
+            SmsBlendRegistryPort registry = mock(SmsBlendRegistryPort.class);
+            var service = new NotifyConfigService(dao, registry);
+            NotifyChannelAccountBo bo = new NotifyChannelAccountBo();
+            bo.setChannel(supplier.equals("alibaba") || supplier.equals("tencent") ? "SMS" : "MAIL");
+            bo.setSupplier(supplier);
+            bo.setConfigKey("owned-" + supplier);
+            bo.setEnabled("N");
+            bo.setMinuteMax(60);
+            when(dao.insert(any(NotifyChannelAccount.class))).thenReturn(1);
+            assertEquals(1, service.addAccount(bo));
+            verify(registry, never()).upsert(any());
+        }
+    }
+
+    @Test
+    void commonSmsProvidersRequireApprovedSignatureAndTencentAppId() {
+        for (String supplier : new String[]{"alibaba", "tencent"}) {
+            NotifyConfigDao dao = mock(NotifyConfigDao.class);
+            SmsBlendRegistryPort registry = mock(SmsBlendRegistryPort.class);
+            var service = new NotifyConfigService(dao, registry);
+            NotifyChannelAccount current = new NotifyChannelAccount();
+            current.setAccountId(8L);
+            current.setChannel("SMS");
+            current.setSupplier(supplier);
+            current.setConfigKey("owned-" + supplier);
+            current.setAccessKeyId("owned-id");
+            current.setAccessKeySecret("owned-secret");
+            current.setEnabled("N");
+            when(dao.findAccount(8L)).thenReturn(current);
+            when(dao.update(any(NotifyChannelAccount.class))).thenReturn(1);
+            assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
+            current.setSignature("已审核签名");
+            if ("tencent".equals(supplier)) {
+                assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
+                current.setSdkAppId("1400000000");
+            }
+            verify(dao, never()).update(any(NotifyChannelAccount.class));
+            verify(registry, never()).upsert(any());
+            assertEquals(1, service.changeStatus(8L, "Y"));
+            verify(registry).upsert(current);
+        }
+    }
+
+    @Test
+    void smtpPresetRequiresLoginAndAValidPortBeforeEnable() {
+        NotifyConfigDao dao = mock(NotifyConfigDao.class);
+        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
+        NotifyChannelAccount current = account();
+        when(dao.findAccount(8L)).thenReturn(current);
+        current.setMailUser("");
+        assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
+        current.setMailUser("ops@example.com");
+        for (int invalid : new int[]{0, -1, 65536}) {
+            current.setPort(invalid);
+            assertThrows(ServiceException.class, () -> service.changeStatus(8L, "Y"));
+        }
+        verify(dao, never()).update(any(NotifyChannelAccount.class));
+        current.setPort(465);
+        when(dao.update(any(NotifyChannelAccount.class))).thenReturn(1);
+        assertEquals(1, service.changeStatus(8L, "Y"));
+    }
+
+    @Test
+    void accountNamespaceCannotBeRenamedOrReusedAfterDeletion() {
+        NotifyConfigDao dao = mock(NotifyConfigDao.class);
+        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
+        when(dao.findAccount(8L)).thenReturn(account());
+        var bo = new NotifyChannelAccountBo();
+        bo.setAccountId(8L); bo.setChannel("MAIL"); bo.setConfigKey("renamed");
+        assertThrows(ServiceException.class, () -> service.updateAccount(bo));
+        bo.setConfigKey("smtp-main"); bo.setChannel("SMS");
+        assertThrows(ServiceException.class, () -> service.updateAccount(bo));
+        bo.setChannel("MAIL");
+        when(dao.existsNamespace("MAIL", "smtp-main")).thenReturn(true);
+        assertThrows(ServiceException.class, () -> service.addAccount(bo));
+        verify(dao, never()).insert(any(NotifyChannelAccount.class));
+        verify(dao, never()).update(any(NotifyChannelAccount.class));
+    }
+
+    @Test
+    void smsProviderCannotChangeWithinAnExistingNamespace() {
+        NotifyConfigDao dao = mock(NotifyConfigDao.class);
+        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
+        var current = account(); current.setChannel("SMS"); current.setSupplier("tencent");
+        when(dao.findAccount(8L)).thenReturn(current);
+        var bo = new NotifyChannelAccountBo();
+        bo.setAccountId(8L); bo.setChannel("SMS"); bo.setConfigKey("smtp-main"); bo.setSupplier("alibaba");
+        assertThrows(ServiceException.class, () -> service.updateAccount(bo));
+        verify(dao, never()).update(any(NotifyChannelAccount.class));
+    }
+
+    @Test
+    void smsMappingsRejectDuplicateAndMissingPositionsBeforePersistence() {
+        NotifyConfigDao dao = mock(NotifyConfigDao.class);
+        var service = new NotifyConfigService(dao, mock(SmsBlendRegistryPort.class));
+        var current = account(); current.setChannel("SMS"); current.setSupplier("tencent");
+        when(dao.findAccount(8L)).thenReturn(current);
+        var bo = new NotifySceneBindingBo();
+        bo.setSceneCode("auth-captcha"); bo.setChannel("SMS"); bo.setAccountId(8L); bo.setSmsTemplateCode("owned-approved");
+        for (var mapping : java.util.List.of(Map.of("code", "1", "expireMinutes", "1"),
+            Map.of("code", "1", "expireMinutes", "3"), Map.of("code", "code", "expireMinutes", "minutes"))) {
+            bo.setSmsParamMapping(mapping);
+            assertThrows(ServiceException.class, () -> service.saveBinding(bo));
+        }
+        verify(dao, never()).insert(any(NotifySceneBinding.class));
+        bo.setSmsParamMapping(Map.of("code", "2", "expireMinutes", "1"));
+        when(dao.insert(any(NotifySceneBinding.class))).thenReturn(1);
+        assertEquals(1, service.saveBinding(bo));
+    }
+
     private NotifyChannelAccount account() {
         NotifyChannelAccount account = new NotifyChannelAccount();
         account.setAccountId(8L);
@@ -220,6 +335,7 @@ class NotifyConfigServiceTest {
         account.setHost("smtp.example.com");
         account.setPort(465);
         account.setMailFrom("ops@example.com");
+        account.setMailUser("ops@example.com");
         account.setMailPass("keep-me");
         return account;
     }

@@ -532,11 +532,17 @@ delete from sys_client where id in (1762000000000000003, 1762000000000000004);
 insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache, menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
 values (2100500000000000100, 1762000000000000002, '档案中心', 0, 1, 'profile', 'profile/center/index', '', 'N', 'Y', 'M', '0', '0', '', 'tabler:id', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '用户档案认证中心'),
        (2100500000000000101, 1762000000000000002, '个人认证', 2100500000000000100, 1, 'person', 'profile/person/application', '', 'N', 'Y', 'C', '1', '0', 'profile:person:apply', 'tabler:user', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '个人实名认证申请'),
-       (2100500000000000102, 1762000000000000002, '企业认证', 2100500000000000100, 2, 'enterprise', 'profile/enterprise/application', '', 'N', 'Y', 'C', '1', '0', 'profile:enterprise:apply', 'tabler:building', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '企业实名认证申请');
+       (2100500000000000102, 1762000000000000002, '企业认证', 2100500000000000100, 2, 'enterprise', 'profile/enterprise/application', '', 'N', 'Y', 'C', '1', '0', 'profile:enterprise:apply', 'tabler:building', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '企业实名认证申请'),
+       (2100500000000000103, 1762000000000000002, '个人认证材料', 2100500000000000101, 1, '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:person:material', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '仅办理本人申请材料'),
+       (2100500000000000104, 1762000000000000002, '企业认证材料', 2100500000000000102, 1, '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:enterprise:material', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '仅办理本人申请材料'),
+       (2100500000000000105, 1762000000000000002, '认证材料上传', 2100500000000000100, 3, '', '', '', 'N', 'Y', 'F', '0', '0', 'system:oss:upload', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '上传私有材料，不授予OSS管理读删权限');
 insert into sys_role_menu (role_id, menu_id)
 values (1761300000000000010, 2100500000000000100),
        (1761300000000000010, 2100500000000000101),
-       (1761300000000000010, 2100500000000000102);
+       (1761300000000000010, 2100500000000000102),
+       (1761300000000000010, 2100500000000000103),
+       (1761300000000000010, 2100500000000000104),
+       (1761300000000000010, 2100500000000000105);
 
 -- NAMEWTA-BASE-DSL-004-END
 
@@ -1573,6 +1579,28 @@ insert ignore into sys_role_menu (role_id, menu_id)
 select 1761300000000000001, menu_id from sys_menu where menu_id in
     (2100600000000000023, 2100600000000000036, 2100600000000000051, 2100600000000000052,
      2100600000000000053, 2100600000000000054, 2100600000000000055);
+
+-- 外部渠道只预置连接参数：默认停用、密钥留空，不绑定场景或产生发送任务。
+insert into notify_channel_account
+    (account_id, channel, config_key, enabled, supplier, host, port, mail_from, mail_user, mail_pass,
+     ssl_enable, starttls_enable, access_key_id, access_key_secret, signature, sdk_app_id, minute_max,
+     remark, create_dept, create_by, create_time, update_by, update_time)
+values
+    (2100640000000000001, 'MAIL', 'mail-qq', 'N', null, 'smtp.qq.com', 465, '', '', '',
+     'Y', 'N', '', '', '', '', 60, 'QQ 邮箱：填写完整邮箱地址与 SMTP 授权码，启用后绑定场景。',
+     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
+    (2100640000000000002, 'MAIL', 'mail-163', 'N', null, 'smtp.163.com', 465, '', '', '',
+     'Y', 'N', '', '', '', '', 60, '网易 163 邮箱：填写完整邮箱地址与客户端授权密码，启用后绑定场景。',
+     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
+    (2100640000000000003, 'MAIL', 'mail-tencent-enterprise', 'N', null, 'smtp.exmail.qq.com', 465, '', '', '',
+     'Y', 'N', '', '', '', '', 60, '腾讯企业邮箱（企业微信）：填写邮箱账号与客户端专用密码，需先开启 SMTP 服务。',
+     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
+    (2100640000000000004, 'SMS', 'sms-tencent', 'N', 'tencent', null, null, '', '', '',
+     'N', 'N', '', '', '', '', 60, '腾讯云短信：填写 SecretId、SecretKey、已审核签名、SMS SDK AppID；场景中填写模板 ID 与参数。',
+     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate()),
+    (2100640000000000005, 'SMS', 'sms-alibaba', 'N', 'alibaba', null, null, '', '', '',
+     'N', 'N', '', '', '', '', 60, '阿里云短信：填写 AccessKey ID、AccessKey Secret 与已审核签名；场景中填写模板 CODE 与参数。',
+     1761000000000000103, 1761100000000000001, sysdate(), 1761100000000000001, sysdate());
 
 insert into notify_scene_binding
     (binding_id, scene_code, channel, account_id, mail_subject, mail_body, sms_template_code,

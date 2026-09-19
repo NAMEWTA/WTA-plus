@@ -42,6 +42,11 @@ public class NotifyConfigDao {
         return accountId == null ? null : accountMapper.selectById(accountId);
     }
 
+    /** 配置标识永久保留，包含逻辑删除的账号。 */
+    public boolean existsNamespace(String channel, String configKey) {
+        return accountMapper.existsNamespace(channel, configKey);
+    }
+
     public NotifyChannelAccount findAccount(String channel, String configKey) {
         return accountMapper.selectOne(new LambdaQueryWrapper<NotifyChannelAccount>()
             .eq(NotifyChannelAccount::getChannel, channel)

@@ -32,7 +32,9 @@ notificationService.submit(new NotificationCommand(
 
 `controller -> usecase -> service -> dao -> mapper/XML` 是 `wta-notify` 的固定链路。UseCase 负责事务、目标解析、幂等和状态迁移；Service 负责规则；DAO 封装 MyBatis-Plus Wrapper、分页、锁和批量更新；Provider/Outbox Worker/Callback 只能通过端口或事件接入。
 
-发布必须在同一业务事务内写入通知意图、接收者快照和 Outbox。Worker 使用租约 owner/token 更新，续租失败时禁止继续写入投递结果。供应商回调必须验证 HMAC 原文、`providerKey`、`eventId` 和时间窗，状态只能单向升级，重复事件不重复刷新聚合状态。
+发布必须在同一业务事务内写入通知意图、接收者快照和 Outbox。Worker 使用租约 owner/token 更新，续租失败时禁止继续写入投递结果。当前自定义回执入口必须验证 HMAC 原文、`providerKey`、`eventId` 和时间窗，状态只能单向升级，重复事件不重复刷新聚合状态。原文从入口有界缓存读取，不使用 XSS 改写后的视图验签；回执含精确收件地址，HTTP/操作日志必须只保留元数据及脱敏摘要。`notify_provider_receipt` 按渠道、账号配置标识和事件编号持久去重，凭据与状态、聚合同事务；不同事实复用事件编号必须拒绝，早到未关联不得消费事件，记录不自动过期。账号标识创建后不可变，逻辑删除仍保留唯一命名空间。腾讯/阿里原生推送没有本接口的 HMAC 合同，不能直接接入或宣称已支持；SMTP 受理也不等于送达。
+
+腾讯/阿里的原生送达核对复用账号密钥进行官方只读签名查询，固定HTTPS端点，不通过禁用验签接收原生推送。查询预约只修改Delivery的`receipt_query_at`，不得复用发送租约或重新发送；供应商I/O必须在事务外。确认结果复用持久receipt、状态与聚合事务，内部`native-sms:`事件前缀不得由自定义HTTP回执占用。当前自动核对窗口为71小时；超窗、缺流水号、查询失败/截断/歧义均保持已受理，不推断送达。
 
 ## 前端与权限
 

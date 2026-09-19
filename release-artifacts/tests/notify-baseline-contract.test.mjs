@@ -6,6 +6,18 @@ const sqlRoot = new URL('../docker/infrastructure/mysql/init/', import.meta.url)
 const ddl = fs.readFileSync(new URL('10-cde-base-ddl.sql', sqlRoot), 'utf8');
 const dml = fs.readFileSync(new URL('50-cde-base-dml.sql', sqlRoot), 'utf8');
 
+test('基座只保留当前通知持久化模型，不重新创建已退役的 System 通知日志表', () => {
+  assert.doesNotMatch(ddl, /create\s+table\s+sys_notify_(?:delivery_)?log\b/i);
+  assert.doesNotMatch(dml, /\bsys_notify_(?:delivery_)?log\b/i);
+  for (const table of [
+    'notify_intent', 'notify_recipient', 'notify_delivery', 'notify_attempt', 'notify_outbox',
+    'notify_notice', 'notify_notice_snapshot', 'notify_message', 'notify_message_recipient',
+    'notify_channel_account', 'notify_scene_binding'
+  ]) {
+    assert.match(ddl, new RegExp(`create\\s+table\\s+${table}\\s*\\(`, 'i'), table);
+  }
+});
+
 // 按 SQL 顶层逗号拆分，保留字符串、JSON 数组和函数参数内的逗号。
 function splitSqlList(source) {
   const parts = [];
@@ -118,4 +130,36 @@ test('清理旧通知菜单不会删除当前通知监控路由', () => {
   assert.match(cleanup[0], /'monitor\/notify\/index'/);
   assert.doesNotMatch(cleanup[0], /'notify\/monitor\/index'/,
     '清理语句不能按当前通知监控 component 删除有效菜单');
+});
+
+test('常见短信和邮件预设默认停用且不携带账号凭据或隐式场景绑定', () => {
+  const insert = dml.match(/insert\s+into\s+notify_channel_account\s*\(([^)]+)\)\s*values\s*([\s\S]*?);/i);
+  assert.ok(insert);
+  const columns = splitSqlList(insert[1]);
+  const accounts = splitSqlList(insert[2]).map(row => {
+    const values = splitSqlList(row.slice(1, -1));
+    assert.equal(columns.length, values.length);
+    return Object.fromEntries(columns.map((column, index) => [column, values[index]]));
+  });
+  assert.equal(accounts.length, 5);
+  assert.equal(new Set(accounts.map(row => row.account_id)).size, 5);
+  assert.deepEqual(accounts.filter(row => row.channel === "'SMS'").map(row => row.supplier).sort(), ["'alibaba'", "'tencent'"]);
+  assert.deepEqual(accounts.filter(row => row.channel === "'MAIL'").map(row => row.host).sort(),
+    ["'smtp.163.com'", "'smtp.exmail.qq.com'", "'smtp.qq.com'"]);
+  for (const account of accounts) {
+    assert.equal(account.enabled, "'N'");
+    for (const field of ['mail_from', 'mail_user', 'mail_pass', 'access_key_id', 'access_key_secret', 'signature', 'sdk_app_id']) {
+      assert.equal(account[field], "''", `${account.config_key}: ${field} 必须由账号所有者填写`);
+    }
+    if (account.channel === "'MAIL'") {
+      assert.equal(account.ssl_enable, "'Y'");
+      assert.equal(account.starttls_enable, "'N'");
+      assert.equal(account.port, '465');
+    }
+  }
+  const scenes = dml.match(/insert\s+into\s+notify_scene_binding\s*\(([^)]+)\)\s*values\s*([\s\S]*?);/i);
+  assert.ok(scenes);
+  const accountIndex = splitSqlList(scenes[1]).indexOf('account_id');
+  assert.ok(accountIndex >= 0);
+  for (const row of splitSqlList(scenes[2])) assert.equal(splitSqlList(row.slice(1, -1))[accountIndex], 'null');
 });

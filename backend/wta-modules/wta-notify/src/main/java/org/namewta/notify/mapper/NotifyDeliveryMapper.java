@@ -1,9 +1,14 @@
 package org.namewta.notify.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.namewta.common.mybatis.core.mapper.BaseMapperPlus;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.namewta.notify.domain.entity.NotifyDelivery;
+import java.time.LocalDateTime;
 
 /** 通知投递 Mapper。 */
 @Mapper
-public interface NotifyDeliveryMapper extends BaseMapper<NotifyDelivery> { }
+public interface NotifyDeliveryMapper extends BaseMapperPlus<NotifyDelivery, NotifyDelivery> {
+    /** 只选启用的原生短信账号；实际领取仍须DAO执行CAS。 */
+    NotifyDelivery selectSmsReceiptCandidate(@Param("now") LocalDateTime now);
+}

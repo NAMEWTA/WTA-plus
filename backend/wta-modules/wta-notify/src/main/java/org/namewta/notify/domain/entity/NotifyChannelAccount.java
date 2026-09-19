@@ -2,6 +2,8 @@ package org.namewta.notify.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.namewta.common.mybatis.core.domain.BaseEntity;
@@ -32,4 +34,10 @@ public class NotifyChannelAccount extends BaseEntity {
     private String sdkAppId;
     private Integer minuteMax;
     private String remark;
+    /** 账号并发编辑版本。 */
+    @Version
+    private Integer version;
+    /** 删除后仍保留渠道和配置标识的唯一命名空间。 */
+    @TableLogic
+    private String delFlag;
 }

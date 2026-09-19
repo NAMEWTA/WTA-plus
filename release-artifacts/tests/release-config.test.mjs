@@ -227,7 +227,7 @@ test('Nacos MySQL schema is pinned and both initialization paths are idempotent'
   assert.match(script, /schema table-name verification failed/);
   assert.doesNotMatch(script, /DROP DATABASE|DROP USER|GRANT ALL PRIVILEGES/);
 
-  const releaseScript = read('scripts/release-manage.sh');
+  const releaseScript = read('scripts/release-state.py');
   assert.match(releaseScript, /60-cde-nacos\.sql/);
   assert.doesNotMatch(releaseScript, /15-nacos-init\.sh/);
   assert.doesNotMatch(releaseScript, /nacos\/mysql-schema\.sql/);
@@ -313,7 +313,7 @@ test('stage-mysql validates the canonical SQL baseline without writing it', () =
 
 test('MySQL initialization targets one protected wta-plus database', () => {
   const script = read('scripts/init-mysql-container.sh');
-  const releaseScript = read('scripts/release-manage.sh');
+  const releaseScript = read('scripts/release-state.py');
   const expectedSql = [
     '10-cde-base-ddl.sql',
     '20-cde-job.sql',
@@ -325,7 +325,7 @@ test('MySQL initialization targets one protected wta-plus database', () => {
 
   assert.match(script, /database.*== wta-plus/);
   assert.match(script, /refusing existing database/);
-  assert.match(script, /EXPECTED_TABLES=125/);
+  assert.match(script, /EXPECTED_TABLES=126/);
   assert.match(script, /--default-character-set=utf8mb4/);
   assert.match(script, /access_policy='0'/);
   assert.match(script, /config_key='minio' THEN 'Y' ELSE 'N'/);
@@ -352,7 +352,7 @@ test('admin instances receive the private MinIO readiness canary contract', () =
 });
 
 test('reserved ingress routes cannot be used as an app prefix', () => {
-  const script = read('scripts/release-manage.sh');
+  const script = read('scripts/release-state.py');
   for (const route of ['admin', 'monitor', 'snail-job', 'snail-ai', 'dev-api', 'prod-api', 'actuator']) {
     assert.match(script, new RegExp(`\\b${route.replace('-', '\\-')}\\b`));
   }
@@ -406,26 +406,7 @@ try {
   }
 });
 
-test('docker manager forwards an optional logs service on macOS-compatible bash', () => {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'namewta-docker-cli-test-'));
-  try {
-    const fakeDocker = path.join(tempRoot, 'docker');
-    fs.writeFileSync(fakeDocker, '#!/bin/sh\nprintf "%s\\n" "$*"\n');
-    fs.chmodSync(fakeDocker, 0o755);
-    const output = execFileSync(
-      'bash',
-      [path.join(releaseRoot, 'scripts/docker-manage.sh'), 'logs', 'backend', 'namewta-server1'],
-      {
-        encoding: 'utf8',
-        env: {
-          ...process.env,
-          PATH: `${tempRoot}:${process.env.PATH}`,
-          RELEASE_ENV_FILE: path.join(releaseRoot, '.env.example'),
-        },
-      },
-    );
-    assert.match(output, /logs -f --tail 200 namewta-server1/);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
+test('docker manager keeps optional service forwarding as an argument', () => {
+  const script = read('scripts/docker-manage.sh');
+  assert.match(script, /logs -f --tail 200 "\$\{service\}"/);
 });

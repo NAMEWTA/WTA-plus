@@ -10,8 +10,9 @@ public record SmsNotificationReceipt(
     String errorMessage
 ) {
 
-    public static SmsNotificationReceipt accepted() {
-        return new SmsNotificationReceipt(true, null, null, null);
+    /** 已受理；null流水号表示无法关联回执，不能由此推导应重新发送。 */
+    public static SmsNotificationReceipt accepted(String providerMessageId) {
+        return new SmsNotificationReceipt(true, providerMessageId, null, null);
     }
 
     public static SmsNotificationReceipt failed(String errorCode, String errorMessage) {

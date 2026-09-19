@@ -316,6 +316,7 @@ create table sys_oss (
     service         varchar(20)  not null default 'minio'   comment '服务商',
     is_temp         char(1)      not null default 'N'        comment '是否临时对象（Y是 N否）',
     expire_time     datetime              default null      comment '临时对象过期时间',
+    delete_state    varchar(16)  not null default 'ACTIVE'   comment '对象删除状态（ACTIVE正常 PENDING等待供应商删除）',
     primary key (oss_id),
     key idx_sys_oss_temp_expire (is_temp, expire_time)
 ) engine=innodb comment ='OSS对象存储表';
@@ -450,68 +451,6 @@ create table sys_oss_ref (
     unique key uk_sys_oss_ref_object (oss_id, ref_type, ref_id),
     key idx_sys_oss_ref_reverse (ref_type, ref_id)
 ) engine=innodb comment='OSS业务引用表';
-
-create table sys_notify_log (
-    notify_log_id       bigint(20)    not null                   comment '通知日志主键',
-    request_id          varchar(64)   not null                   comment '逻辑通知请求ID',
-    original_request_id varchar(64)   default null               comment '重复请求关联的原请求ID',
-    biz_type            varchar(64)   default null               comment '业务类型',
-    biz_id              varchar(64)   default null               comment '业务主键',
-    channel             varchar(32)   not null                   comment '通知渠道',
-    provider_key        varchar(64)   default null               comment '实际供应商标识',
-    subject             varchar(500)  default null               comment '最终通知主题',
-    content             longtext      default null               comment '最终通知正文（明文）',
-    content_type        varchar(32)   default null               comment '正文类型',
-    template_code       varchar(128)  default null               comment '供应商模板编码',
-    template_params     longtext      default null               comment '模板参数JSON（明文）',
-    content_snapshot    longtext      default null               comment '应用认知的完整正文快照（明文）',
-    attachment_oss_ids  text          default null               comment '通知附件快照OSS主键JSON',
-    status              varchar(32)   not null                   comment '逻辑通知状态',
-    error_code          varchar(128)  default null               comment '逻辑错误码',
-    error_message       varchar(2000) default null               comment '清洗后的逻辑错误信息',
-    client_pk           bigint(20)    default null               comment '请求来源客户端主键（仅审计）',
-    user_id             bigint(20)    default null               comment '请求来源用户主键',
-    trace_id            varchar(64)   default null               comment '链路追踪ID',
-    version             int(11)       default 0                  comment '乐观锁版本号',
-    create_dept         bigint(20)    default null               comment '创建部门',
-    create_time         datetime      default null               comment '创建时间',
-    create_by           bigint(20)    default null               comment '创建者',
-    update_time         datetime      default null               comment '更新时间',
-    update_by           bigint(20)    default null               comment '更新者',
-    del_flag            char(1)       default '0'                comment '删除标志（0代表存在 1代表删除）',
-    primary key (notify_log_id),
-    unique key uk_sys_notify_log_request (request_id),
-    key idx_sys_notify_log_original_request (original_request_id),
-    key idx_sys_notify_log_biz (biz_type, biz_id),
-    key idx_sys_notify_log_channel_status_time (channel, status, create_time),
-    key idx_sys_notify_log_trace (trace_id)
-) engine=innodb comment='通知逻辑日志表';
-
-create table sys_notify_delivery_log (
-    notify_delivery_log_id bigint(20)    not null                   comment '通知投递日志主键',
-    notify_log_id          bigint(20)    not null                   comment '通知逻辑日志主键',
-    target_type            varchar(32)   not null                   comment '目标类型',
-    target_role            varchar(16)   default null               comment '目标角色（TO/CC/BCC）',
-    target_value           varchar(1000) not null                   comment '完整物理目标（明文）',
-    provider_key           varchar(64)   default null               comment '实际供应商标识',
-    provider_message_id    varchar(255)  default null               comment '供应商消息ID',
-    attempt_no             int(11)       not null default 1         comment '发送尝试次数',
-    status                 varchar(32)   not null                   comment '目标投递状态',
-    cost_time              bigint(20)    default 0                  comment '供应商调用耗时（毫秒）',
-    error_code             varchar(128)  default null               comment '供应商错误码',
-    error_message          varchar(2000) default null               comment '清洗后的供应商错误信息',
-    version                int(11)       default 0                  comment '乐观锁版本号',
-    create_dept            bigint(20)    default null               comment '创建部门',
-    create_time            datetime      default null               comment '创建时间',
-    create_by              bigint(20)    default null               comment '创建者',
-    update_time            datetime      default null               comment '更新时间',
-    update_by              bigint(20)    default null               comment '更新者',
-    del_flag               char(1)       default '0'                comment '删除标志（0代表存在 1代表删除）',
-    primary key (notify_delivery_log_id),
-    key idx_sys_notify_delivery_notify (notify_log_id),
-    key idx_sys_notify_delivery_status_time (status, create_time),
-    key idx_sys_notify_delivery_provider_msg (provider_message_id)
-) engine=innodb comment='通知目标投递日志表';
 
 -- NAMEWTA-OPENAPI-CREDENTIAL-DDL-001
 -- 变更内容：新增每用户唯一的 OpenAPI 凭据表
@@ -1295,6 +1234,7 @@ create table profile_enterprise_transfer_record (
     source_user_id bigint(20) not null comment '原负责人账户主键',
     target_user_id bigint(20) not null comment '目标负责人账户主键',
     challenge_id varchar(64) not null comment '专用短信挑战标识',
+    notification_id varchar(64) not null comment '服务端关联的验证码通知标识',
     expected_binding_version int(11) not null comment '发起时绑定版本',
     status varchar(32) not null comment '转移状态（CHALLENGED/CONFIRMED/EXPIRED/FAILED）',
     failed_attempts int(11) not null default 0 comment '验证码错误次数',
@@ -1513,6 +1453,7 @@ create table notify_delivery (
     error_code varchar(128) default null comment '错误码',
     error_message varchar(2000) default null comment '清洗后的错误信息',
     accepted_at datetime default null comment '供应商接受时间',
+    receipt_query_at datetime default null comment '短信状态下次核对时间，不触发重发',
     delivered_at datetime default null comment '最终送达时间',
     read_at datetime default null comment '用户阅读时间',
     version int not null default 0 comment '乐观锁版本',
@@ -1525,9 +1466,27 @@ create table notify_delivery (
     unique key uk_notify_delivery_recipient_channel (recipient_id, channel),
     key idx_notify_delivery_intent (intent_id),
     key idx_notify_delivery_status_time (status, create_time),
-    unique key uk_notify_delivery_provider_message (provider_key, channel, provider_message_id),
+    key idx_notify_delivery_receipt_query (channel, status, receipt_query_at, accepted_at),
+    key idx_notify_delivery_account_message (provider_key, channel, provider_message_id),
     key idx_notify_delivery_provider_message (provider_message_id)
 ) engine=innodb comment='用户渠道投递';
+
+create table notify_provider_receipt (
+    provider_receipt_id bigint not null comment '回执主键',
+    event_key char(64) character set ascii collate ascii_bin not null comment '渠道账号事件唯一摘要',
+    facts_hash char(64) character set ascii collate ascii_bin not null comment '不含传输时间戳的业务事实摘要',
+    delivery_id bigint not null comment '已关联的投递主键',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime not null comment '首次处理时间',
+    create_by bigint default null comment '创建者',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新者',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常 1删除）',
+    primary key (provider_receipt_id),
+    unique key uk_notify_provider_receipt_event (event_key),
+    key idx_notify_provider_receipt_delivery (delivery_id)
+) engine=innodb comment='通知回执持久幂等凭据';
 
 create table notify_attempt (
     attempt_id bigint(20) not null comment 'Provider 尝试主键',
@@ -1633,11 +1592,13 @@ create table notify_channel_account (
     sdk_app_id varchar(128) default null comment '短信应用 ID',
     minute_max int not null default 60 comment '账号每分钟上限',
     remark varchar(500) default null comment '备注',
+    version int not null default 0 comment '乐观锁版本',
     create_dept bigint(20) default null comment '创建部门',
     create_by bigint(20) default null comment '创建者',
     create_time datetime not null comment '创建时间',
     update_by bigint(20) default null comment '更新者',
     update_time datetime default null comment '更新时间',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常 1删除，保留配置标识）',
     primary key (account_id),
     unique key uk_notify_channel_account (channel, config_key)
 ) engine=innodb comment='通知渠道账号';
@@ -1720,5 +1681,6 @@ CREATE TABLE test_tree
     update_time datetime(0)  NULL DEFAULT NULL COMMENT '更新时间',
     update_by   bigint(0)    NULL DEFAULT NULL COMMENT '更新人',
     del_flag    int(0)       NULL DEFAULT 0 COMMENT '删除标志',
-    PRIMARY KEY (id) USING BTREE
+    PRIMARY KEY (id) USING BTREE,
+    KEY idx_test_tree_parent_id (parent_id)
 ) ENGINE = InnoDB COMMENT = '测试树表';

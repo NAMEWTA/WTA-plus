@@ -71,7 +71,7 @@ test('CI 复用受保护初始化器并把唯一 SQL 根传给后端测试', () 
   assert.match(external, /init-mysql-container\.sh/);
   assert.match(external, /namewta\.sql\.root/);
   assert.match(external, /mysql:8\.4\.9/);
-  assert.match(read('release-artifacts/scripts/init-mysql-container.sh'), /EXPECTED_TABLES=125/);
+  assert.match(read('release-artifacts/scripts/init-mysql-container.sh'), /EXPECTED_TABLES=126/);
   assert.match(workflow, /release-contracts:/);
   assert.match(workflow, /verify-release\.sh/);
   assert.match(verifier, /tests\/\*\.test\.mjs/);

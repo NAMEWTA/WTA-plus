@@ -25,7 +25,7 @@ class SmsNotifyChannelAdapterUnitTest {
                     phones.add(phone);
                     return phone.startsWith("139")
                         ? SmsNotificationReceipt.failed("PROVIDER_REJECTED", "provider rejected")
-                        : SmsNotificationReceipt.accepted();
+                        : SmsNotificationReceipt.accepted("owned-message");
                 }));
         NotifyRequest request = NotifyRequest.builder()
             .channel(NotifyChannel.SMS)
