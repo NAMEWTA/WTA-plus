@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|---|---|
 | `workspace-parent` | `.` | Markdown、Git 治理 | Git, GitHub Actions | `docs/**`, `scripts/ci/**` | `README.md` | 仓内 release-contracts/frontend/backend/external-services 候选 jobs | `README.md`, `.github/workflows/quality-gates.yml`; 配置可核对，远程运行待验证 |
 | `plus-ui` | `frontend` | TypeScript、Vue 3、Pinia、Browser，可扩展多 App monorepo | pnpm workspace、Vite、Oxlint、Vitest、Playwright | `apps/{admin-web,home-web,sso-web}/src`、`packages/**/src`、`tooling/**/src`、相邻 `*.test.ts`、`e2e/**` | `apps/{admin-web,home-web,sso-web}/src/main.ts` | architecture check/test、lint、typecheck、workspace test、双模式 build、按风险 E2E | `package.json`、`pnpm-workspace.yaml`、`tooling/architecture/**`、`playwright.config.ts`; high |
-| `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | POM 与 Java 测试源码库存由当前文件派生，见项目画像的盘点命令 | `wta-admin` and three extension applications | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
+| `backend-root` | `backend` | Java 21, Spring Boot 4, JVM | Maven Wrapper | POM 与 Java 测试源码库存由当前文件派生，见项目画像的盘点命令 | `wta-admin`、`wta-monitor-admin`、`wta-snailjob-server` | default test; bundle-full + bundle-core package | root `pom.xml`, `wta-admin/pom.xml`; high |
 
 ## 后端 Maven 模块
 
