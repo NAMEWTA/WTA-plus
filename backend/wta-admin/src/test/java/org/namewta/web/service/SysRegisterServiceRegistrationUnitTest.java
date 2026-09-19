@@ -45,7 +45,7 @@ class SysRegisterServiceRegistrationUnitTest {
         ISysUserTypeRelService grants = mock(ISysUserTypeRelService.class);
         PasswordPolicyService policy = mock(PasswordPolicyService.class);
         CaptchaProperties captcha = new CaptchaProperties();
-        captcha.setEnable(false);
+        captcha.setEnable(true);
         SysClientVo client = new SysClientVo();
         client.setStatus("0"); client.setRegisterEnabled(true); client.setUserTypeId(9L);
         SysUserTypeVo type = new SysUserTypeVo(); type.setStatus("0");

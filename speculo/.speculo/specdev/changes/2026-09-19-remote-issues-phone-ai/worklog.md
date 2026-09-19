@@ -62,3 +62,7 @@
 ### 当前恢复点
 
 T-01 本地实现/验证全部通过，Ticket 与 current workspace 记录为 blocked，仅等待本地提交及受保护基线处理方案确认。34 个浏览器用例、默认后端 772 executed / 121 gated skip、真实 MySQL 4、前端 729、full/core 打包均有真实记录；详见 T-01 Evidence。临时 MySQL 已销毁。待确认后先应用可审查 validator 修复和基线提交，取得 T-01 implementation commit、固定点双轴 review/direct-parent，再按 T-02→T-03；没有开始其他产品票。
+
+## 2026-09-19 授权后进展
+
+用户已批准 preflight 方案和本 change main 本地提交；基线 dea1754、T-01 初始实现 241a96a 均已提交。固定点双轴初审完成；产品规范通过，测试安全修复与复审进行中，后续 T-02/T-03 尚未开工。current 串行 Git 校验缺陷以独立治理修复处理。仍无 push、部署或真实数据修改。

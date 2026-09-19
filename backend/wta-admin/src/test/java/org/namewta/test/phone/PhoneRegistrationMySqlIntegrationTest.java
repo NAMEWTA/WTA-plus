@@ -41,8 +41,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.StaticMessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.namewta.common.core.constant.GlobalConstants;
 
 import java.util.List;
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -60,21 +65,54 @@ class PhoneRegistrationMySqlIntegrationTest {
     private PasswordPolicyService passwords;
     private ValidatorFactory validator;
     private Object previousFactory, previousContext;
+    private boolean capturedSpringState;
+    private String ownerToken;
+    private String schemaName;
+    private RedissonClient redis;
+    private CaptchaProperties captcha;
+
+    static void requireOwnedDatabaseUrl(String url) {
+        if (url == null || !url.startsWith("jdbc:mysql://")) {
+            throw new IllegalArgumentException("A task-owned phone test database is required");
+        }
+        URI target = URI.create(url.substring(5));
+        if (!"127.0.0.1".equals(target.getHost()) || target.getPort() < 1 || target.getPort() > 65535
+            || target.getUserInfo() != null || target.getFragment() != null
+            || !target.getRawPath().matches("/namewta_phone_test_[A-Za-z0-9_]+")
+            || (target.getRawQuery() != null && !target.getRawQuery().matches(
+                "(?:useSSL=false|allowPublicKeyRetrieval=true|serverTimezone=[A-Za-z_/]+)(?:&(?:useSSL=false|allowPublicKeyRetrieval=true|serverTimezone=[A-Za-z_/]+))*"))) {
+            throw new IllegalArgumentException("A task-owned phone test database is required");
+        }
+    }
 
     @BeforeAll
     void open() {
         String url = System.getProperty("phone.mysql.integration.url");
-        assertThat(url).startsWith("jdbc:mysql://127.0.0.1:").contains("/namewta_phone_test_");
+        requireOwnedDatabaseUrl(url);
+        ownerToken = System.getProperty("phone.mysql.integration.owner");
+        if (ownerToken == null || !ownerToken.matches("[a-f0-9]{32}")) {
+            throw new IllegalArgumentException("The fixture's random ownership token is required");
+        }
+        schemaName = URI.create(url.substring(5)).getPath().substring(1);
         previousFactory = ReflectionTestUtils.getField(SpringUtil.class, "beanFactory");
         previousContext = ReflectionTestUtils.getField(SpringUtil.class, "applicationContext");
+        capturedSpringState = true;
         var pool = new HikariDataSource(); pool.setJdbcUrl(url);
         pool.setUsername(System.getProperty("phone.mysql.integration.username", "root"));
         pool.setPassword(System.getProperty("phone.mysql.integration.password"));
         pool.setMaximumPoolSize(4);
         routing = new DynamicRoutingDataSource(List.of()); routing.setPrimary("master"); routing.addDataSource("master", pool);
         // 独立连接读取已提交状态，避免在断言中复用动态事务的连接。
-        db = new JdbcTemplate(pool);
+        var candidate = new JdbcTemplate(pool);
+        requireOwnership(candidate);
+        db = candidate;
         context = new AnnotationConfigApplicationContext();
+        int redisPort = Integer.parseInt(System.getProperty("phone.redis.integration.port"));
+        if (redisPort < 1 || redisPort > 65535) throw new IllegalArgumentException("Invalid owned Redis port");
+        var redisConfig = new Config();
+        redisConfig.useSingleServer().setAddress("redis://127.0.0.1:" + redisPort);
+        redis = Redisson.create(redisConfig);
+        context.registerBean(RedissonClient.class, () -> redis, bean -> bean.setDestroyMethodName(""));
         context.registerBean(SpringUtils.class); context.registerBean(Converter.class, () -> new Converter());
         context.registerBean("messageSource", StaticMessageSource.class, () -> {
             var messages = new StaticMessageSource(); messages.setUseCodeAsDefaultMessage(true); return messages;
@@ -95,7 +133,7 @@ class PhoneRegistrationMySqlIntegrationTest {
         var client = new SysClientVo(); client.setStatus("0"); client.setRegisterEnabled(true); client.setUserTypeId(9L);
         when(clients.queryByClientId("owned-phone")).thenReturn(client);
         var type = new SysUserTypeVo(); type.setStatus("0"); when(types.queryById(9L)).thenReturn(type);
-        var captcha = new CaptchaProperties(); captcha.setEnable(false);
+        captcha = new CaptchaProperties(); captcha.setEnable(false);
         passwords = mock(PasswordPolicyService.class); when(passwords.generateDefaultPassword()).thenReturn("OwnedPass!9");
         registration = transactional(new SysRegisterService(users, captcha, clients, types, grants, passwords));
         validator = Validation.buildDefaultValidatorFactory();
@@ -105,9 +143,17 @@ class PhoneRegistrationMySqlIntegrationTest {
     @AfterEach
     void clean() {
         if (db == null) return;
+        requireOwnership(db);
+        if (captcha != null) captcha.setEnable(false);
         db.execute("drop trigger if exists owned_phone_grant_failure");
         db.update("delete from sys_user_type_rel");
         db.update("delete from sys_user");
+    }
+
+    private void requireOwnership(JdbcTemplate connection) {
+        assertThat(connection.queryForObject("select database()", String.class)).isEqualTo(schemaName);
+        assertThat(connection.queryForObject("select owner_token from owned_phone_fixture where id = 1", String.class))
+            .isEqualTo(ownerToken);
     }
 
     @AfterAll
@@ -116,9 +162,33 @@ class PhoneRegistrationMySqlIntegrationTest {
             if (validator != null) validator.close();
             if (context != null) context.close();
             if (routing != null) routing.destroy();
+            if (redis != null) redis.shutdown();
         } finally {
-            ReflectionTestUtils.setField(SpringUtil.class, "beanFactory", previousFactory);
-            ReflectionTestUtils.setField(SpringUtil.class, "applicationContext", previousContext);
+            if (capturedSpringState) {
+                ReflectionTestUtils.setField(SpringUtil.class, "beanFactory", previousFactory);
+                ReflectionTestUtils.setField(SpringUtil.class, "applicationContext", previousContext);
+            }
+        }
+    }
+
+    @Test
+    void invalidPhonePreservesTheRealCaptchaUntilAValidRegistrationConsumesIt() {
+        captcha.setEnable(true);
+        String key = GlobalConstants.CAPTCHA_CODE_KEY + ownerToken;
+        var challenge = redis.<String>getBucket(key);
+        challenge.set("1234");
+        try {
+            var body = registrationBody("captcha-user", " ");
+            body.setUuid(ownerToken); body.setCode("1234");
+            assertThatThrownBy(() -> registration.register(body)).isInstanceOf(ServiceException.class)
+                .hasMessageContaining("手机号码");
+            assertThat(challenge.get()).isEqualTo("1234");
+            body.setPhoneNumber("13800138008");
+            registration.register(body);
+            assertThat(challenge.get()).isNull();
+            assertThat(phone("captcha-user")).isEqualTo("13800138008");
+        } finally {
+            challenge.delete();
         }
     }
 

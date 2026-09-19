@@ -144,3 +144,9 @@ T-01 的本地修改、定向 red/green、全量测试、真实 MySQL、full/cor
 用户明确答复“同意该方案与本地提交（推荐）”，批准 evidence/preflight-proposal.md 的具体范围：恢复 validator 四处路由和原 11 场景测试；保留 AGENTS 空行/config 键重排和本轮规划工件形成基线；随后各票在 main 本地提交并验收。授权时间 2026-09-19T10:33:11.939574+00:00。不包括 push、部署、真实数据操作或远程 Issue 写回。
 
 已核验 29 个 T-01 源文件摘要未变；按提案应用补丁，validator 回归 11 pass / 0 skip，已恢复与原 HEAD 一致的工具字节。
+
+## LOG-012 — current 串行验收的时点与历史事实修复
+
+I 实施中以隔离 Git fixture 复现：产品提交后写 Evidence 必然使工作区暂时 dirty，收据另行提交后 HEAD 又不等于旧票 result；两票串行时不能同时令父 HEAD 等于两个不同 result。这是治理校验缺陷，与前次四处路由恢复不同。Lead 在用户授权的本地完成范围内修复：result 固定在非空实现 commit，历史校验使用真实祖先关系；Lead 验收时仍捕获精确 HEAD/tree 与完整 clean 状态，最终 completed 和 release clean_source 保持严格干净门。不得以空实现、证据提交冒充 result 或改写旧票 SHA 通过。治理独立提交，AI facts 仅写指定 workflow/tool 文件；产品与 change 状态仍由 Lead 独占。
+
+标准/规范双轴完成 T-01 初审，见 evidence/T-01-review.md。测试隔离和验证码观察点按发现修复；OpenAPI 同步按原归属留 T-03；不扩张已确认导入唯一性策略。
