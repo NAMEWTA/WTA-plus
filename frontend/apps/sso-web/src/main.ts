@@ -4,7 +4,7 @@ import App from './App.vue';
 import AuthorizePage from './views/AuthorizePage.vue';
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', component: AuthorizePage },
     { path: '/authorize', component: AuthorizePage },
