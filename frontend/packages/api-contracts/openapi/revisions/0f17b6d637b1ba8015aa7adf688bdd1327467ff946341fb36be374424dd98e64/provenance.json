@@ -1,0 +1,13 @@
+{
+  "backendCommit": "76dbbe84a34624234e379661a57b232529e34ed3",
+  "backendRepository": "WTA-plus working tree (uncommitted T-31)",
+  "generator": "openapi-typescript@7.13.0",
+  "openapiVersion": "3.1.0",
+  "rawSha256": "b7d0cf71f9c2c29ba144609db1b5f2287a4c4aeb9751e9b5211cca33ddfc555d",
+  "runtimeEndpoint": "baseline:adab7988fa8b134f865c16e7290639ffefbcc2078ec04088a3f13d59019cd321; jvm:ModelConverters/NotificationCommand.mode",
+  "totals": {
+    "paths": 399,
+    "schemas": 442,
+    "tags": 73
+  }
+}

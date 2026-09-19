@@ -23,6 +23,7 @@
         <el-button v-if="runtime.hasPermission('profile:enterprise:apply')" type="primary" plain @click="open('/profile/enterprise')">开始认证</el-button>
       </article>
     </section>
+    <EnterpriseTransferPanel v-if="isCenter" :runtime="runtime" />
     <router-view />
   </main>
 </template>
@@ -31,6 +32,7 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { ProfileSelfWebRuntime } from './runtime';
+import EnterpriseTransferPanel from './EnterpriseTransferPanel.vue';
 
 const { runtime } = defineProps<{ runtime: ProfileSelfWebRuntime }>();
 const router = useRouter();

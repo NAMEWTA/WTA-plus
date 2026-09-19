@@ -215,7 +215,9 @@ function fixtureHttp(requests: HttpRequest[]): HttpClient {
     async request<T>(request: HttpRequest): Promise<T> {
       requests.push(request);
       const isMatch = request.url.endsWith('/match');
-      const data = isMatch ? { status: 'MATCHED', maskedPhone: '138****0000' } : { status: 'AVAILABLE' };
+      const data = request.url.includes('/enterprise/transfer/')
+        ? { status: request.url.endsWith('/send') ? 'QUEUED' : request.url.endsWith('/confirm') ? 'TRANSFERRED' : 'UNBOUND' }
+        : isMatch ? { status: 'MATCHED', maskedPhone: '138****0000' } : { status: 'AVAILABLE' };
       return { code: 200, msg: 'ok', data } as T;
     }
   };

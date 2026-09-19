@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "@namewta/platform-app-runtime": "workspace:*",
-    "@namewta/platform-contracts": "workspace:*"
+    "@namewta/platform-contracts": "workspace:*",
+    "@namewta/api-contracts": "workspace:*"
   },
   "devDependencies": {
     "oxlint": "catalog:",
