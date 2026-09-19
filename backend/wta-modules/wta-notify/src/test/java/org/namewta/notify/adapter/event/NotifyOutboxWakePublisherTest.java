@@ -1,4 +1,7 @@
-package org.namewta.notify.service.runtime;
+package org.namewta.notify.adapter.event;
+
+import org.namewta.notify.service.runtime.DispatchNotificationService;
+import org.namewta.notify.service.runtime.NotificationApplicationRuntimeService;
 
 import com.baomidou.dynamic.datasource.annotation.DsTxEventListener;
 import com.baomidou.dynamic.datasource.tx.DsTxEventListenerFactory;
@@ -36,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -47,6 +51,67 @@ import static org.mockito.Mockito.when;
  */
 @Tag("dev")
 class NotifyOutboxWakePublisherTest {
+
+    @Test
+    void stalledRedisPublishIsBoundedAndCancelled() {
+        var pending = new java.util.concurrent.CompletableFuture<Long>();
+        var publisher = new NotifyOutboxWakePublisher((channel, signal) -> pending, 20);
+        org.junit.jupiter.api.Assertions.assertTimeoutPreemptively(java.time.Duration.ofSeconds(1),
+            () -> publisher.publishAfterCommit(new NotifyOutboxWakeRequestedEvent(1L)));
+        assertTrue(pending.isCancelled());
+    }
+
+    @Test
+    void interruptedPublishPreservesInterruptAndCancelsPendingOperation() {
+        var pending = new java.util.concurrent.CompletableFuture<Long>();
+        var publisher = new NotifyOutboxWakePublisher((channel, signal) -> pending, 250);
+        Thread.currentThread().interrupt();
+        try {
+            publisher.publishAfterCommit(new NotifyOutboxWakeRequestedEvent(1L));
+            assertTrue(Thread.currentThread().isInterrupted());
+            assertTrue(pending.isCancelled());
+        } finally { Thread.interrupted(); }
+    }
+
+    @Test
+    void committingThreadDoesNotWaitForLocalProvider() throws Exception {
+        RecordingTransport transport = new RecordingTransport();
+        var releaseProvider = new java.util.concurrent.CountDownLatch(1);
+        var providerCalls = new java.util.concurrent.atomic.AtomicInteger();
+        org.namewta.notify.port.NotifyOutboxClaimPort claims = owner -> {
+            NotifyOutbox row = new NotifyOutbox(); row.setOutboxId(77L);
+            return providerCalls.get() == 0 ? List.of(row) : List.of();
+        };
+        org.namewta.notify.port.NotifyDispatchPort dispatch = new org.namewta.notify.port.NotifyDispatchPort() {
+            public void dispatch(NotifyOutbox row) {
+                providerCalls.incrementAndGet();
+                try { releaseProvider.await(3, java.util.concurrent.TimeUnit.SECONDS); }
+                catch (InterruptedException failure) { Thread.currentThread().interrupt(); throw new IllegalStateException(failure); }
+            }
+            public void refreshAggregate(Long id) { }
+        };
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            context.registerBean(DsTxEventListenerFactory.class);
+            context.registerBean(org.namewta.notify.adapter.worker.NotifyOutboxWorker.class,
+                () -> new org.namewta.notify.adapter.worker.NotifyOutboxWorker(claims, dispatch));
+            context.registerBean(NotifyOutboxWakePublisher.class, () -> new NotifyOutboxWakePublisher(transport, 250));
+            context.refresh();
+            try (var caller = java.util.concurrent.Executors.newSingleThreadExecutor()) {
+                var committed = caller.submit(() -> {
+                    TransactionContext.bind("owned-t28-commit");
+                    try {
+                        context.publishEvent(new NotifyOutboxWakeRequestedEvent(77L));
+                        TransactionContext.getSynchronizations().getFirst().afterCommit();
+                        return true;
+                    } finally { TransactionContext.removeSynchronizations(); TransactionContext.remove(); }
+                });
+                try {
+                    assertTrue(committed.get(500, java.util.concurrent.TimeUnit.MILLISECONDS));
+                    assertEquals(0, providerCalls.get(), "default local multicaster must not call the Provider on the commit thread");
+                } finally { releaseProvider.countDown(); }
+            }
+        }
+    }
 
     @Test
     void listenerUsesExplicitAfterCommitPhase() throws Exception {
@@ -62,7 +127,7 @@ class NotifyOutboxWakePublisherTest {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.registerBean(DsTxEventListenerFactory.class);
             context.registerBean(NotifyOutboxWakePublisher.class,
-                () -> new NotifyOutboxWakePublisher(transport, event -> { }));
+                () -> new NotifyOutboxWakePublisher(transport, 250));
             context.refresh();
             TransactionContext.bind("notify-outbox-wake-test");
             try {
@@ -89,7 +154,7 @@ class NotifyOutboxWakePublisherTest {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.registerBean(DsTxEventListenerFactory.class);
             context.registerBean(NotifyOutboxWakePublisher.class,
-                () -> new NotifyOutboxWakePublisher(transport, event -> { }));
+                () -> new NotifyOutboxWakePublisher(transport, 250));
             context.refresh();
             TransactionContext.bind("notify-outbox-wake-redis-fail");
             try {
@@ -109,7 +174,7 @@ class NotifyOutboxWakePublisherTest {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.registerBean(DsTxEventListenerFactory.class);
             context.registerBean(NotifyOutboxWakePublisher.class,
-                () -> new NotifyOutboxWakePublisher(transport, event -> { }));
+                () -> new NotifyOutboxWakePublisher(transport, 250));
             context.refresh();
             TransactionContext.bind("notify-outbox-wake-pii");
             try {
@@ -142,13 +207,16 @@ class NotifyOutboxWakePublisherTest {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.registerBean(DsTxEventListenerFactory.class);
             context.registerBean(NotifyOutboxWakePublisher.class,
-                () -> new NotifyOutboxWakePublisher(transport, event -> { }));
+                () -> new NotifyOutboxWakePublisher(transport, 250));
             context.refresh();
             NotificationApplicationRuntimeService runtime = new NotificationApplicationRuntimeService(
                 dao, users, dispatch, context);
             TransactionContext.bind("notify-outbox-wake-submit");
             try {
                 runtime.submit(submitCommand());
+                verify(dao).insert(argThat((NotifyOutbox outbox) ->
+                    outbox.getAvailableAt().equals(java.time.LocalDateTime.of(2026, 9, 19, 0, 0))
+                        && outbox.getNextAttemptAt().equals(outbox.getAvailableAt())));
                 assertTrue(transport.published.isEmpty());
                 TransactionContext.getSynchronizations().getFirst().afterCommit();
                 assertEquals(1, transport.published.size());
@@ -174,13 +242,14 @@ class NotifyOutboxWakePublisherTest {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.registerBean(DsTxEventListenerFactory.class);
             context.registerBean(NotifyOutboxWakePublisher.class,
-                () -> new NotifyOutboxWakePublisher(transport, event -> { }));
+                () -> new NotifyOutboxWakePublisher(transport, 250));
             context.refresh();
             NotificationApplicationRuntimeService runtime = new NotificationApplicationRuntimeService(
                 dao, users, dispatch, context);
             TransactionContext.bind("notify-outbox-wake-retry");
             try {
                 runtime.retry(new NotificationRetryCommand("9", null, "manual", "retry-1"));
+                verify(dao).requeueOutbox(8L, java.time.LocalDateTime.of(2026, 9, 19, 0, 0));
                 assertTrue(transport.published.isEmpty());
                 TransactionContext.getSynchronizations().getFirst().afterCommit();
                 assertEquals(1, transport.published.size());
@@ -200,13 +269,13 @@ class NotifyOutboxWakePublisherTest {
         NotifyIntent intent = new NotifyIntent();
         intent.setIntentId(9L);
         intent.setStatus("QUEUED");
-        when(dao.intent(9L)).thenReturn(intent);
+        when(dao.lockIntent(9L)).thenReturn(intent);
         when(dao.update(any(NotifyIntent.class))).thenReturn(1);
         when(dao.updateDeliveryStatus(9L, "PENDING", "CANCELLED")).thenReturn(1);
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.registerBean(DsTxEventListenerFactory.class);
             context.registerBean(NotifyOutboxWakePublisher.class,
-                () -> new NotifyOutboxWakePublisher(transport, event -> { }));
+                () -> new NotifyOutboxWakePublisher(transport, 250));
             context.refresh();
             NotificationApplicationRuntimeService runtime = new NotificationApplicationRuntimeService(
                 dao, users, dispatch, context);
@@ -225,6 +294,7 @@ class NotifyOutboxWakePublisherTest {
     }
 
     private static void stubSubmitDao(NotifyNotificationDao dao, UserService users) {
+        when(dao.databaseNow()).thenReturn(java.time.LocalDateTime.of(2026, 9, 19, 0, 0, 0, 900_000_000));
         UserDTO user = new UserDTO();
         user.setUserId(101L);
         user.setPhoneNumber("13800138000");
@@ -253,14 +323,15 @@ class NotifyOutboxWakePublisherTest {
     }
 
     private static void stubRetryDao(NotifyNotificationDao dao) {
+        when(dao.databaseNow()).thenReturn(java.time.LocalDateTime.of(2026, 9, 19, 0, 0, 0, 900_000_000));
         NotifyIntent intent = new NotifyIntent();
         intent.setIntentId(9L);
         intent.setStatus("FAILED");
-        when(dao.intent(9L)).thenReturn(intent);
+        when(dao.lockIntent(9L)).thenReturn(intent);
         NotifyDelivery delivery = new NotifyDelivery();
         delivery.setDeliveryId(8L);
         delivery.setStatus("FAILED");
-        when(dao.deliveries(9L)).thenReturn(List.of(delivery));
+        when(dao.lockDeliveries(9L)).thenReturn(List.of(delivery));
         when(dao.markDeliveryForRetry(8L)).thenReturn(1);
         when(dao.requeueOutbox(eq(8L), any())).thenReturn(1);
         when(dao.update(any(NotifyIntent.class))).thenReturn(1);
@@ -281,11 +352,12 @@ class NotifyOutboxWakePublisherTest {
         private RuntimeException failure;
 
         @Override
-        public void publish(String channel, NotifyOutboxWakeSignal signal) {
+        public java.util.concurrent.Future<Long> publish(String channel, NotifyOutboxWakeSignal signal) {
             if (failure != null) {
                 throw failure;
             }
             published.add(new PublishedWake(channel, signal));
+            return java.util.concurrent.CompletableFuture.completedFuture(1L);
         }
     }
 

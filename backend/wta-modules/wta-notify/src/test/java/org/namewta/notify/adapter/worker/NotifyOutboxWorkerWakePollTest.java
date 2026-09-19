@@ -8,10 +8,8 @@ import org.namewta.notify.support.outbox.NotifyOutboxWakeSignal;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,9 +43,39 @@ class NotifyOutboxWorkerWakePollTest {
     }
 
     @Test
-    void localAuxListenerIsOptionalSameJvmEvent() throws Exception {
-        Method listener = NotifyOutboxWorker.class.getMethod("onLocalWake", NotifyOutboxWakeSignal.class);
-        assertNotNull(listener.getAnnotation(EventListener.class));
+    void overlappingWakeStormIsCoalescedAndPollWorksAfterCompletion() throws Exception {
+        Fixture fixture = fixture();
+        var entered = new java.util.concurrent.CountDownLatch(1);
+        var release = new java.util.concurrent.CountDownLatch(1);
+        NotifyOutbox due = outbox(17L);
+        when(fixture.claim.claim(anyString())).thenReturn(List.of(due), List.of());
+        org.mockito.Mockito.doAnswer(invocation -> {
+            entered.countDown();
+            try { assertTrue(release.await(5, java.util.concurrent.TimeUnit.SECONDS)); }
+            catch (InterruptedException failure) { Thread.currentThread().interrupt(); throw failure; }
+            return null;
+        }).when(fixture.dispatch).dispatch(due);
+        try (var consumer = java.util.concurrent.Executors.newSingleThreadExecutor()) {
+            var running = consumer.submit(fixture.worker::poll);
+            try {
+                assertTrue(entered.await(5, java.util.concurrent.TimeUnit.SECONDS));
+                for (int index = 0; index < 1000; index++) fixture.worker.onWake(NotifyOutboxWakeSignal.wake(17L));
+                verify(fixture.claim, times(1)).claim(anyString());
+            } finally { release.countDown(); }
+            running.get(5, java.util.concurrent.TimeUnit.SECONDS);
+        }
+        fixture.worker.poll();
+        verify(fixture.claim, times(3)).claim(anyString());
+        verify(fixture.dispatch, times(1)).dispatch(due);
+    }
+
+    @Test
+    void failedDrainReleasesTheCoalescingFlagForPollRecovery() {
+        Fixture fixture = fixture();
+        when(fixture.claim.claim(anyString())).thenThrow(new IllegalStateException("owned claim failure")).thenReturn(List.of());
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, fixture.worker::poll);
+        assertDoesNotThrow(fixture.worker::poll);
+        verify(fixture.claim, times(2)).claim(anyString());
     }
 
     @Test
