@@ -21,11 +21,14 @@
           and (lease_until is null or lease_until &lt;= #{now})
     </update>
 
+    <select id="databaseNow" resultType="java.time.LocalDateTime">select utc_timestamp(6)</select>
+
     <update id="renew">
         update notify_outbox
-        set lease_until = #{leaseUntil}
+        set lease_until = timestampadd(second, 60, utc_timestamp(6))
         where outbox_id = #{outboxId} and status = 'PROCESSING'
           and lease_owner = #{owner} and lease_token = #{token}
+          and lease_until &gt; utc_timestamp(6)
     </update>
 
     <update id="finish">
@@ -35,6 +38,7 @@
             lease_owner = null, lease_token = null, lease_until = null
         where outbox_id = #{outboxId} and status = 'PROCESSING'
           and lease_owner = #{owner} and lease_token = #{token}
+          and lease_until &gt; utc_timestamp(6)
     </update>
 
     <update id="requeue">

@@ -42,6 +42,7 @@ class NotifyOutboxClaimConcurrencyTest {
         when(dao.finishOutbox(any())).thenAnswer(invocation ->
             store.finish(invocation.getArgument(0)));
 
+        when(dao.databaseNow()).thenAnswer(invocation -> LocalDateTime.now(ZoneOffset.UTC));
         NotifyOutboxClaimService service = new NotifyOutboxClaimService(dao);
         int n = 8;
         ExecutorService pool = Executors.newFixedThreadPool(n);

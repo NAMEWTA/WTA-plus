@@ -104,6 +104,8 @@ class DispatchNotificationServiceTest {
         verify(fixture.notifyClient).send(captor.capture());
         NotifyRequest request = captor.getValue();
         assertEquals("smtp-main", request.providerKey());
+        assertEquals("2", request.requestId());
+        assertEquals("2", request.idempotencyKey());
         NotifyRichContent content = assertInstanceOf(NotifyRichContent.class, request.content());
         assertEquals("验证码 1234", content.subject());
         assertEquals("有效 5 分钟，码 1234", content.content());
@@ -266,7 +268,7 @@ class DispatchNotificationServiceTest {
         ObjectProvider<InAppNotificationPort> inApp = mock(ObjectProvider.class);
         NotifyConfigDao configDao = mock(NotifyConfigDao.class);
         DispatchNotificationService service = new DispatchNotificationService(
-            dao, notifyClient, inApp, configDao, quotaPort);
+            dao, notifyClient, inApp, configDao, quotaPort, new org.namewta.notify.usecase.NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)));
         NotifyIntent intent = new NotifyIntent();
         intent.setIntentId(1L);
         intent.setSceneCode("auth-captcha");
@@ -293,11 +295,28 @@ class DispatchNotificationServiceTest {
         outbox.setMaxAttempts(5);
         when(dao.outbox(3L)).thenReturn(outbox);
         when(dao.intent(1L)).thenReturn(intent);
-        when(dao.delivery(2L)).thenReturn(delivery);
-        when(dao.renewOutbox(anyLong(), anyString(), anyString(), any())).thenReturn(1);
+        when(dao.delivery(2L)).thenAnswer(invocation -> copyDelivery(delivery));
+        when(dao.renewOutbox(anyLong(), anyString(), anyString())).thenReturn(1);
         when(dao.finishOutbox(any())).thenReturn(1);
         when(dao.deliveries(1L)).thenReturn(List.of(delivery));
+        when(dao.databaseNow()).thenAnswer(invocation -> LocalDateTime.now(ZoneOffset.UTC));
+        when(dao.lockIntent(1L)).thenReturn(intent);
+        when(dao.lockDelivery(2L)).thenAnswer(invocation -> copyDelivery(delivery));
+        when(dao.lockOutbox(3L)).thenReturn(outbox);
+        when(dao.lockDeliveries(1L)).thenReturn(List.of(delivery));
+        when(dao.saveDeliveryResult(any())).thenAnswer(invocation -> {
+            org.springframework.beans.BeanUtils.copyProperties(invocation.getArgument(0), delivery);
+            return 1;
+        });
+        when(dao.update(any(NotifyIntent.class))).thenReturn(1);
+        when(dao.insert(any(org.namewta.notify.domain.entity.NotifyAttempt.class))).thenReturn(1);
         return new Fixture(service, dao, notifyClient, configDao, intent, delivery, outbox);
+    }
+
+    private NotifyDelivery copyDelivery(NotifyDelivery delivery) {
+        NotifyDelivery snapshot = new NotifyDelivery();
+        org.springframework.beans.BeanUtils.copyProperties(delivery, snapshot);
+        return snapshot;
     }
 
     private NotifySceneBinding binding(Long accountId, String channel, String subject, String body) {

@@ -11,27 +11,23 @@ import org.namewta.common.notify.model.NotifyTarget;
 import org.namewta.common.notify.exception.NotifyDeliveryException;
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.notify.api.NotificationChannel;
-import org.namewta.notify.api.NotificationStatus;
 import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.dao.NotifyConfigDao;
 import org.namewta.notify.dao.NotifyNotificationDao;
-import org.namewta.notify.domain.entity.NotifyAttempt;
 import org.namewta.notify.domain.entity.NotifyChannelAccount;
 import org.namewta.notify.domain.entity.NotifyDelivery;
 import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.entity.NotifySceneBinding;
-import org.namewta.notify.domain.policy.NotificationAggregatePolicy;
 import org.namewta.notify.port.NotifyDispatchPort;
+import org.namewta.notify.port.NotifyDispatchResultPort;
+import org.namewta.notify.port.NotifyDispatchResultPort.Disposition;
 import org.namewta.notify.port.NotifyQuotaPort;
 import org.namewta.notify.support.NotifySendPlanner;
 import org.namewta.notify.support.NotifyTemplateRenderer;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.ObjectProvider;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +44,13 @@ public class DispatchNotificationService implements NotifyDispatchPort {
     private final ObjectProvider<InAppNotificationPort> inAppPort;
     private final NotifyConfigDao configDao;
     private final NotifyQuotaPort quotaPort;
+    private final NotifyDispatchResultPort resultPort;
 
-    /** 执行一个 Outbox 任务。 */
+    /**
+     * 执行一个 Outbox 任务，Provider I/O 在结果事务外；失效 owner 不写回。
+     * @param outbox 本次领取的任务与 fencing token
+     * @throws IllegalStateException 结果事务检测到写入冲突
+     */
     public void dispatch(NotifyOutbox outbox) {
         NotifyOutbox leased = dao.outbox(outbox.getOutboxId());
         if (!leaseActive(leased, outbox)) return;
@@ -57,25 +58,17 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         NotifyIntent intent = dao.intent(outbox.getIntentId());
         NotifyDelivery delivery = dao.delivery(outbox.getDeliveryId());
         if (intent == null || delivery == null || !"PENDING".equals(delivery.getStatus())) {
-            outbox.setStatus("DONE");
-            dao.finishOutbox(outbox);
+            resultPort.settle(outbox, Disposition.CLOSE);
             return;
         }
         if (!renewLease(outbox)) return;
         RouteDecision route = routeDecision(intent, delivery);
         if (route == RouteDecision.SKIP) {
-            delivery.setStatus("CANCELLED");
-            dao.update(delivery);
-            outbox.setStatus("DONE");
-            dao.finishOutbox(outbox);
-            refreshIntent(intent.getIntentId());
+            resultPort.settle(outbox, Disposition.SKIP);
             return;
         }
         if (route == RouteDecision.WAIT) {
-            LocalDateTime next = LocalDateTime.ofInstant(Instant.now().plusSeconds(30), ZoneOffset.UTC);
-            outbox.setStatus("READY");
-            outbox.setNextAttemptAt(next);
-            dao.finishOutbox(outbox);
+            resultPort.settle(outbox, Disposition.WAIT);
             return;
         }
         long started = System.nanoTime();
@@ -144,81 +137,28 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             errorCode = "DISPATCH_ERROR";
             errorMessage = exception.getClass().getSimpleName();
         }
-        // Provider I/O may outlive the lease. A stale worker must not overwrite a newer claim.
-        if (!renewLease(outbox)) return;
-        delivery.setAttemptCount((delivery.getAttemptCount() == null ? 0 : delivery.getAttemptCount()) + 1);
-        if (isSuccess(delivery.getStatus())) {
-            delivery.setAcceptedAt(LocalDateTime.now(ZoneOffset.UTC));
-            if ("DELIVERED".equals(delivery.getStatus())) {
-                delivery.setDeliveredAt(LocalDateTime.now(ZoneOffset.UTC));
-            }
-        }
-        delivery.setErrorCode(errorCode);
-        delivery.setErrorMessage(errorMessage);
-        dao.update(delivery);
-
-        NotifyAttempt attempt = new NotifyAttempt();
-        attempt.setAttemptId(org.namewta.common.mybatis.utils.IdGeneratorUtil.nextLongId());
-        attempt.setIntentId(intent.getIntentId());
-        attempt.setDeliveryId(delivery.getDeliveryId());
-        attempt.setAttemptNo(delivery.getAttemptCount());
-        attempt.setProviderKey(result == null ? "in-app" : result.providerKey());
-        attempt.setStatus(delivery.getStatus());
-        attempt.setProviderMessageId(delivery.getProviderMessageId());
-        attempt.setErrorCategory(errorCode);
-        attempt.setErrorCode(errorCode);
-        attempt.setErrorMessage(errorMessage);
-        attempt.setCostTime(java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started));
-        dao.insert(attempt);
-
-        boolean success = isSuccess(delivery.getStatus());
-        boolean failClosed = "FAILED".equals(delivery.getStatus()) && isConfigFailure(errorCode);
-        boolean waitForReceipt = "UNKNOWN".equals(delivery.getStatus());
-        outbox.setStatus(success || failClosed ? "DONE" : waitForReceipt ? "WAITING_RECEIPT" : "READY");
-        outbox.setAttemptCount((outbox.getAttemptCount() == null ? 0 : outbox.getAttemptCount()) + 1);
-        outbox.setLastErrorCode(errorCode);
-        outbox.setLastErrorMessage(errorMessage);
-        if (!success && !waitForReceipt && !failClosed) {
-            outbox.setNextAttemptAt(LocalDateTime.ofInstant(Instant.now().plusSeconds(backoff(outbox.getAttemptCount())), ZoneOffset.UTC));
-            if (outbox.getAttemptCount() >= outbox.getMaxAttempts()) {
-                outbox.setStatus("DEAD_LETTER");
-                delivery.setStatus("FAILED");
-                dao.update(delivery);
-            } else {
-                delivery.setStatus("PENDING");
-                dao.update(delivery);
-            }
-        }
-        if (dao.finishOutbox(outbox) != 1) return;
-        refreshIntent(intent.getIntentId());
+        resultPort.complete(outbox, new NotifyDispatchResultPort.Result(delivery.getStatus(),
+            result == null ? (NotificationChannel.IN_APP.name().equals(delivery.getChannel()) ? "in-app" : delivery.getProviderKey()) : result.providerKey(),
+            delivery.getProviderMessageId(), errorCode, errorMessage,
+            java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started)));
     }
 
+    /** 调用前续租也由数据库判断有效期，不能复活已经过期的 owner。 */
     private boolean renewLease(NotifyOutbox outbox) {
-        LocalDateTime leaseUntil = LocalDateTime.ofInstant(Instant.now().plusSeconds(60), ZoneOffset.UTC);
-        return dao.renewOutbox(outbox.getOutboxId(), outbox.getLeaseOwner(), outbox.getLeaseToken(), leaseUntil) == 1;
+        return resultPort.renew(outbox);
     }
 
+    /** 预检只减少无效 I/O；最终权限以锁后的结果事务为准。 */
     private boolean leaseActive(NotifyOutbox current, NotifyOutbox claimed) {
         return current != null && "PROCESSING".equals(current.getStatus())
+            && claimed.getLeaseOwner() != null && claimed.getLeaseToken() != null
             && java.util.Objects.equals(current.getLeaseOwner(), claimed.getLeaseOwner())
             && java.util.Objects.equals(current.getLeaseToken(), claimed.getLeaseToken())
-            && current.getLeaseUntil() != null
-            && current.getLeaseUntil().isAfter(LocalDateTime.now(ZoneOffset.UTC));
+            && current.getLeaseUntil() != null && current.getLeaseUntil().isAfter(dao.databaseNow());
     }
 
-    /** 根据最新投递结果重新计算通知聚合状态，供异步回调使用。 */
-    public void refreshAggregate(Long intentId) {
-        refreshIntent(intentId);
-    }
-
-    private void refreshIntent(Long intentId) {
-        NotifyIntent intent = dao.intent(intentId);
-        List<NotifyDelivery> all = dao.deliveries(intentId);
-        if (all.isEmpty()) return;
-        intent.setStatus(NotificationAggregatePolicy.aggregate(all.stream()
-            .map(NotifyDelivery::getStatus).toList()).name());
-        dao.update(intent);
-    }
+    /** 聚合重算同样经过短事务代理，供提交用例复用。 */
+    public void refreshAggregate(Long intentId) { resultPort.refreshAggregate(intentId); }
 
     private NotifyContent toContent(NotifySendPlanner.Plan plan) {
         if (plan.mail()) {
@@ -236,15 +176,6 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         Map<String, Object> raw = JsonUtils.parseObject(intent.getTemplateParamsJson(), Map.class);
         return NotifySendPlanner.plan(sceneCode, delivery.getChannel(), delivery.getTargetValue(),
             NotifyTemplateRenderer.stringify(raw), binding, account, quotaPort);
-    }
-
-    private boolean isConfigFailure(String errorCode) {
-        return errorCode != null && (
-            errorCode.startsWith("UNBOUND")
-                || errorCode.startsWith("ACCOUNT_")
-                || errorCode.startsWith("MISSING_")
-                || errorCode.startsWith("SMS_")
-                || errorCode.endsWith("_QUOTA"));
     }
 
     private NotifyTarget target(NotifyDelivery delivery) {
@@ -270,6 +201,4 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             ? RouteDecision.READY : RouteDecision.WAIT;
     }
     private enum RouteDecision { READY, WAIT, SKIP }
-    private long backoff(int attempt) { return Math.min(3600L, 1L << Math.min(attempt, 10)); }
 }
-

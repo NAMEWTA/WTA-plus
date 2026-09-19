@@ -5,9 +5,7 @@ import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,9 +24,8 @@ public class NotifyOutboxClaimService {
      * @return 已建立租约的任务
      */
     public List<NotifyOutbox> claim(String owner) {
-        Instant now = Instant.now();
-        LocalDateTime nowUtc = LocalDateTime.ofInstant(now, ZoneOffset.UTC);
-        LocalDateTime leaseUntil = LocalDateTime.ofInstant(now.plusSeconds(60), ZoneOffset.UTC);
+        LocalDateTime nowUtc = dao.databaseNow();
+        LocalDateTime leaseUntil = nowUtc.plusSeconds(60);
         List<NotifyOutbox> candidates = dao.claimCandidates(nowUtc, 50);
         return candidates.stream().filter(outbox -> {
             String token = UUID.randomUUID().toString();

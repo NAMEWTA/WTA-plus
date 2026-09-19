@@ -18,9 +18,11 @@ public interface NotifyOutboxMapper extends BaseMapper<NotifyOutbox> {
               @Param("token") String token, @Param("leaseUntil") LocalDateTime leaseUntil,
               @Param("now") LocalDateTime now);
 
-    int renew(@Param("outboxId") Long outboxId, @Param("owner") String owner,
-              @Param("token") String token, @Param("leaseUntil") LocalDateTime leaseUntil,
-              @Param("now") LocalDateTime now);
+    /** 数据库 UTC 时钟，用于锁后租约判断。 */
+    LocalDateTime databaseNow();
+
+    /** 仅续期仍有效的 owner/token，过期 owner 返回零行。 */
+    int renew(@Param("outboxId") Long outboxId, @Param("owner") String owner, @Param("token") String token);
 
     int finish(@Param("outboxId") Long outboxId, @Param("owner") String owner,
                @Param("token") String token, @Param("status") String status,
