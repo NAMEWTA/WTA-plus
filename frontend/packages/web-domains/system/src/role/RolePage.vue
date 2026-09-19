@@ -1,5 +1,6 @@
 <template>
   <div class="p-2 system-role-page">
+    <el-alert v-if="queryError" :title="queryError" type="error" show-icon :closable="false" />
     <div class="search-wrap">
       <el-card shadow="hover" class="search-panel" :class="{ 'is-collapsed': !showSearch }">
         <template #header>
@@ -369,7 +370,7 @@ import type { SystemWebRuntime } from '../runtime';
 import {
   useDateRangeQuery,
   useDialogState,
-  useLoading,
+  useLatestQuery,
   useSearchReset,
   useSearchToggle,
   useTableSelection
@@ -411,7 +412,7 @@ interface RoleMenuPermissionMeta {
 
 const roleList = ref<RoleVO[]>();
 const clientOptions = ref<ClientVO[]>([]);
-const { loading, withLoading } = useLoading(true);
+const { loading, queryError, run: runQuery, invalidate: invalidateQuery } = useLatestQuery();
 const { showSearch } = useSearchToggle();
 const total = ref(0);
 const { dateRange, applyDateRange, resetDateRange } = useDateRangeQuery();
@@ -856,16 +857,24 @@ const loadClientOptions = async () => {
 /**
  * 查询角色列表
  */
+let listClientKey = '';
 const getList = () => {
+  const clientKey = String(queryParams.value.clientId ?? '');
+  if (clientKey !== listClientKey) {
+    listClientKey = clientKey;
+    roleList.value = [];
+    total.value = 0;
+    handleSelectionChange([]);
+  }
   if (!queryParams.value.clientId) {
+    invalidateQuery();
     roleList.value = [];
     total.value = 0;
     return;
   }
-  withLoading(async () => {
-    const res = await listRole(applyDateRange(queryParams.value));
-    roleList.value = res.data?.rows;
-    total.value = res.data?.total;
+  return runQuery(applyDateRange(queryParams.value), listRole, res => {
+    roleList.value = res.data?.rows ?? [];
+    total.value = res.data?.total ?? 0;
   });
 };
 

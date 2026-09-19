@@ -1,5 +1,6 @@
 <template>
   <div class="p-2 app-container system-menu-page">
+    <el-alert v-if="queryError" :title="queryError" type="error" show-icon :closable="false" />
     <div class="search-wrap">
       <el-card shadow="hover" class="search-panel" :class="{ 'is-collapsed': !showSearch }">
         <template #header>
@@ -394,7 +395,7 @@ import { onMounted, reactive, ref, toRefs } from 'vue';
 type ElTableInstance = any;
 type ElTreeInstance = InstanceType<typeof ElTree>;
 import type { SystemWebRuntime } from '../runtime';
-import { useDialogState, useLoading, useSearchReset, useSearchToggle } from '../composables';
+import { useDialogState, useLatestQuery, useSearchReset, useSearchToggle } from '../composables';
 import { handleTree, MenuTypeEnum } from '../utils';
 
 const { runtime } = defineProps<{ runtime: SystemWebRuntime }>();
@@ -425,7 +426,7 @@ const menuList = ref<MenuVO[]>([]);
 const clientOptions = ref<ClientVO[]>([]);
 const menuChildrenListMap = ref({});
 const menuExpandMap = ref({});
-const { loading, withLoading } = useLoading(true);
+const { loading, queryError, run: runQuery, invalidate: invalidateQuery } = useLatestQuery();
 const { showSearch } = useSearchToggle();
 const menuOptions = ref<MenuOptionsType[]>([]);
 
@@ -544,15 +545,23 @@ const handleClientChange = () => {
 };
 
 /** 查询菜单列表 */
+let listClientKey = '';
 const getList = async () => {
-  if (!queryParams.value.clientId) {
+  const clientKey = String(queryParams.value.clientId ?? '');
+  if (clientKey !== listClientKey) {
+    listClientKey = clientKey;
     menuList.value = [];
     menuChildrenListMap.value = {};
+    menuExpandMap.value = {};
+  }
+  if (!queryParams.value.clientId) {
+    invalidateQuery();
+    menuList.value = [];
+    menuChildrenListMap.value = {};
+    menuExpandMap.value = {};
     return;
   }
-  await withLoading(async () => {
-    const res = await listMenu(queryParams.value);
-
+  await runQuery(queryParams.value, listMenu, res => {
     const tempMap = {};
     // 存储 父菜单:子菜单列表
     for (const menu of res.data) {

@@ -1,5 +1,6 @@
 <template>
   <div class="p-2 system-user-page">
+    <el-alert v-if="queryError" :title="queryError" type="error" show-icon :closable="false" />
     <el-row :gutter="20" class="content-grid">
       <!-- 部门树 -->
       <tree-panel
@@ -154,7 +155,7 @@
           </template>
 
           <el-table
-            v-loading="loading"
+            v-loading="loading || editing"
             border
             class="data-table"
             :data="userList"
@@ -480,14 +481,14 @@
 
     <!-- 用户导入对话框 -->
     <el-dialog v-model="upload.open" :title="upload.title" width="400px" append-to-body>
+      <p v-if="importError" role="alert" aria-live="polite">{{ importError }}</p>
       <el-upload
         ref="uploadRef"
         :limit="1"
         accept=".xlsx, .xls"
-        :headers="upload.headers"
-        :action="upload.url + '?updateSupport=' + upload.updateSupport"
-        :disabled="upload.isUploading"
-        :on-progress="handleFileUploadProgress"
+        action="#"
+        :http-request="userImport.request"
+        :disabled="importBusy"
         :on-success="handleFileSuccess"
         :auto-upload="false"
         drag
@@ -502,7 +503,7 @@
         <template #tip>
           <div class="text-center el-upload__tip">
             <div class="el-upload__tip">
-              <el-checkbox v-model="upload.updateSupport" />
+              <el-checkbox v-model="upload.updateSupport" :disabled="importBusy" />
               是否更新已经存在的用户数据
             </div>
             <span>仅允许导入xls、xlsx格式文件。</span>
@@ -519,7 +520,7 @@
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button type="primary" :loading="importBusy" :disabled="importBusy" @click="submitFileForm">确 定</el-button>
           <el-button @click="upload.open = false">取 消</el-button>
         </div>
       </template>
@@ -551,7 +552,6 @@ import {
   ElMessageBox,
   type DialogInstance as ElDialogInstance,
   type FormInstance as ElFormInstance,
-  type UploadFile,
   type UploadInstance as ElUploadInstance
 } from 'element-plus';
 import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue';
@@ -560,6 +560,7 @@ import type { SystemPasswordPolicy, SystemWebRuntime } from '../runtime';
 import {
   useDateRangeQuery,
   useDialogState,
+  useLatestQuery,
   useLoading,
   useSearchReset,
   useSearchToggle,
@@ -568,6 +569,7 @@ import {
 } from '../composables';
 import { describePasswordViolations } from './credential-workflow';
 import UserCredentialDialogs from './UserCredentialDialogs.vue';
+import { useUserImport } from './useUserImport';
 import UserViewDrawer from './UserViewDrawer.vue';
 
 const { runtime } = defineProps<{ runtime: SystemWebRuntime }>();
@@ -592,11 +594,11 @@ const listUserTypeOptions = runtime.service.userTypes.options;
 const modal = { confirm: runtime.confirm, msgSuccess: runtime.success };
 const requestDownload = runtime.download;
 const checkPermi = (permissions: string[]) => permissions.some(permission => runtime.hasPermission(permission));
-const globalHeaders = runtime.uploadHeaders;
 const currentUserId = runtime.currentUserId;
 const { sys_normal_disable, sys_user_gender } = runtime.dicts('sys_normal_disable', 'sys_user_gender');
 const userList = ref<UserVO[]>();
-const { loading, withLoading } = useLoading(true);
+const { loading, queryError, run: runQuery } = useLatestQuery();
+const { loading: editing, withLoading } = useLoading();
 const { showSearch } = useSearchToggle();
 const total = ref(0);
 const { dateRange, applyDateRange, resetDateRange } = useDateRangeQuery();
@@ -616,20 +618,17 @@ const defaultRoleList = ref<RoleVO[]>([]);
 let roleContextRequestId = 0;
 let roleClientRequestId = 0;
 /*** 用户导入参数 */
-const upload = reactive<ImportOption>({
+const upload = reactive({
   // 是否显示弹出层（用户导入）
   open: false,
   // 弹出层标题（用户导入）
   title: '',
-  // 是否禁用上传
-  isUploading: false,
   // 是否更新已经存在的用户数据
-  updateSupport: 0,
-  // 设置上传的请求头部
-  headers: globalHeaders(),
-  // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + '/system/user/importData'
+  updateSupport: false
 });
+const userImport = useUserImport(runtime.importUsers, () => upload.updateSupport);
+const { busy: importBusy, errorMessage: importError } = userImport;
+watch(() => upload.open, open => { if (!open) { userImport.cancel(); uploadRef.value?.abort(); uploadRef.value?.clearFiles(); } });
 // 列显隐信息
 const columns = ref<FieldOption[]>([
   { key: 0, label: `用户编号`, visible: false, children: [] },
@@ -887,10 +886,9 @@ const handleRoleClientChange = async (clientId?: string | number) => {
 
 /** 查询用户列表 */
 const getList = async () => {
-  await withLoading(async () => {
-    const res = await api.listUser(applyDateRange(queryParams.value));
-    userList.value = res.data?.rows;
-    total.value = res.data?.total;
+  await runQuery(applyDateRange(queryParams.value), api.listUser, res => {
+    userList.value = res.data?.rows ?? [];
+    total.value = res.data?.total ?? 0;
   });
 };
 
@@ -1007,11 +1005,6 @@ const importTemplate = () => {
   requestDownload('system/user/importTemplate', {}, `user_template_${new Date().getTime()}.xlsx`);
 };
 
-/**文件上传中处理 */
-const handleFileUploadProgress = () => {
-  upload.isUploading = true;
-};
-
 const formatImportResultMessage = (message: unknown) => {
   return String(message ?? '')
     .replace(/<br\s*\/?>/gi, '\n')
@@ -1020,19 +1013,18 @@ const formatImportResultMessage = (message: unknown) => {
 };
 
 /** 文件上传成功处理 */
-const handleFileSuccess = (response: any, file: UploadFile) => {
+const handleFileSuccess = (response: { message: string }) => {
   upload.open = false;
-  upload.isUploading = false;
-  uploadRef.value?.handleRemove(file);
-  ElMessageBox.alert(formatImportResultMessage(response.msg), '导入结果', {
+  uploadRef.value?.clearFiles();
+  void ElMessageBox.alert(formatImportResultMessage(response.message), '导入结果', {
     customClass: 'import-result-box'
-  });
-  getList();
+  }).catch(() => undefined);
+  void getList();
 };
 
 /** 提交上传文件 */
 function submitFileForm() {
-  uploadRef.value?.submit();
+  if (!importBusy.value) uploadRef.value?.submit();
 }
 
 /** 重置操作表单 */

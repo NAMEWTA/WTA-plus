@@ -1,4 +1,4 @@
-import { reactive, ref, type Ref } from 'vue';
+import { onScopeDispose, reactive, ref, toRaw, type Ref } from 'vue';
 
 type FormRef = {
   resetFields?(): void;
@@ -8,6 +8,35 @@ type FormRef = {
 type TableRef<T> = {
   toggleRowExpansion(row: T, expanded: boolean): void;
 };
+
+/** Owns replaceable page queries; editing and mutations keep their own state. */
+export function useLatestQuery() {
+  const loading = ref(false);
+  const queryError = ref('');
+  let generation = 0;
+  let disposed = false;
+  const invalidate = () => {
+    generation++;
+    loading.value = false;
+    queryError.value = '';
+  };
+  onScopeDispose(() => { disposed = true; invalidate(); });
+  const run = async <Q extends object, T>(query: Q, request: (snapshot: Q) => Promise<T>, apply: (result: T) => void) => {
+    if (disposed) return;
+    const owner = ++generation;
+    loading.value = true;
+    queryError.value = '';
+    try {
+      const result = await request(structuredClone(toRaw(query)));
+      if (!disposed && owner === generation) apply(result);
+    } catch (error: unknown) {
+      if (!disposed && owner === generation) queryError.value = error instanceof Error ? error.message : '查询失败，请重试';
+    } finally {
+      if (!disposed && owner === generation) loading.value = false;
+    }
+  };
+  return { loading, queryError, run, invalidate };
+}
 
 export function useLoading(initialValue = false) {
   const loading = ref(initialValue);
