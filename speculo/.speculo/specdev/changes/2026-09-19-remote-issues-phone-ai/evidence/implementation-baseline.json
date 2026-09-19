@@ -1,0 +1,9 @@
+{
+  "head": "86154daa4c67fa02ac13439c038a09caf5e6308a",
+  "protected": {
+    "AGENTS.md": "c1cf3683728ebad644e5ead21498f4cf254c5bc42f93f91f0ff598c0b837831e",
+    "speculo/.speculo/specdev/config.json": "e59f5cd3e8cf4fb427b5008c7250797f6ae1e041ed2d27a3d3554aa37ab34440",
+    "speculo/workflows/specdev/common/tools/validate-specdev.mjs": "f0a9bb05509107d5b8c3813cd4edd6d584e40b19e57138ab2a54c4c4f6e8ce15",
+    "speculo/workflows/specdev/common/tools/validate-specdev.test.mjs": "deleted"
+  }
+}

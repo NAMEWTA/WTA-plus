@@ -21,16 +21,16 @@
   },
   "schema_version": 5,
   "verification": {
-    "build": "(cd backend && ./mvnw clean package -DskipTests) && bash scripts/ci/verify-admin-bundle.sh full && (cd backend && ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true) && bash scripts/ci/verify-admin-bundle.sh core && pnpm --dir frontend build:dev && pnpm --dir frontend build:prod",
-    "lint": "pnpm --dir frontend lint",
-    "test": "(cd backend && ./mvnw test) && pnpm --dir frontend test",
-    "typecheck": "pnpm --dir frontend typecheck",
     "architecture": "pnpm --dir frontend architecture:check && pnpm --dir frontend architecture:test",
-    "openapi": "pnpm --dir frontend --filter @namewta/tooling-openapi openapi:check",
-    "external_services": "bash scripts/ci/run-external-services.sh",
+    "build": "(cd backend && ./mvnw clean package -DskipTests) && bash scripts/ci/verify-admin-bundle.sh full && (cd backend && ./mvnw clean package -Pbundle-core -Dmaven.test.skip=true) && bash scripts/ci/verify-admin-bundle.sh core && pnpm --dir frontend build:dev && pnpm --dir frontend build:prod",
     "e2e": "pnpm --dir frontend test:e2e --workers=1",
+    "external_services": "bash scripts/ci/run-external-services.sh",
+    "gate_fixtures": "node --test --test-concurrency=1 .agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs speculo/workflows/specdev/common/tools/validate-specdev.test.mjs",
+    "lint": "pnpm --dir frontend lint",
+    "openapi": "pnpm --dir frontend --filter @namewta/tooling-openapi openapi:check",
     "release_contracts": "bash release-artifacts/scripts/verify-release.sh",
     "skill_facts": "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
-    "gate_fixtures": "node --test --test-concurrency=1 .agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs speculo/workflows/specdev/common/tools/validate-specdev.test.mjs"
+    "test": "(cd backend && ./mvnw test) && pnpm --dir frontend test",
+    "typecheck": "pnpm --dir frontend typecheck"
   }
 }

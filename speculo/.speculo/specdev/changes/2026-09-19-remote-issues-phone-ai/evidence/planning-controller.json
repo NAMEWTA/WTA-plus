@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "scope": "2026-09-19-remote-issues-phone-ai",
+  "mode": "read-only-analysis",
+  "authorization_checked": false,
+  "transaction_gateway_checked": false,
+  "workspace_policy": "current",
+  "implementation_limit": 1,
+  "input_digest": "53bede405840a3c62d05d9fdaa0e02ab3a98a5e7b7ef6658990db57e4b31bd17",
+  "goal_contract_digest": "36885e5e70468b0f0e466601d99c5a6f5e20af70d051db9689150c3c62e9f3a2",
+  "contract_digests": {
+    "T-01": "d1c82d4ded31c856a12be7bb0293350679fffd812facc3e1b71d52c546cd0a06",
+    "T-02": "5ca72b31e25994796db0cac2f13044824d833b424078628e5eef4dda5116e8b7",
+    "T-03": "79c0071d64d4cf95abec3d9a3465d272fb144f841580eac9157b299439e2a516"
+  },
+  "frontier": [],
+  "deferred": [],
+  "in_flight": [],
+  "done": [],
+  "cancelled": [],
+  "blocked": [
+    {
+      "id": "T-01",
+      "reasons": [
+        "Goal planning gate is not ready for execution"
+      ]
+    },
+    {
+      "id": "T-02",
+      "reasons": [
+        "Goal planning gate is not ready for execution"
+      ]
+    },
+    {
+      "id": "T-03",
+      "reasons": [
+        "Goal planning gate is not ready for execution",
+        "dependency not successfully satisfied: T-01",
+        "dependency not successfully satisfied: T-02",
+        "blocked dependency closure: T-01",
+        "blocked dependency closure: T-02"
+      ]
+    }
+  ],
+  "invalidated": [],
+  "eligible_for_final_verification": false,
+  "validation_errors": [],
+  "errors": [],
+  "warnings": [],
+  "next": "Lead must verify real authorization, existing transaction/ownership gateways, Skill execution and Goal acceptance; this output does not execute anything."
+}

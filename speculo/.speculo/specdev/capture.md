@@ -3,7 +3,7 @@ schema_version: 1
 artifact: capture-index
 mode: capture
 repo: NAMEWTA/WTA-plus
-updated_at: 2026-09-17T11:29:56Z
+updated_at: 2026-09-19T08:05:40.164378Z
 ---
 
 # Capture
@@ -21,9 +21,9 @@ capture 不创建 Change，不写 `current_work`，不关闭 Issue。GitHub 是 
 
 | id | kind | title | labels | number | url | marker | sha256 | state |
 |---|---|---|---|---|---|---|---|---|
-| 2026-09-17-phone-number-required | bug | bug: 手机号应为必填项，当前仍为选填 | bug, specdev:captured, origin:local | 1 | https://github.com/NAMEWTA/WTA-plus/issues/1 | specdev:capture:2026-09-17-phone-number-required | a849e2c2ece87cdd58a6563fedd2006118260cbaacedd428cedef434b8d7f000 | open |
-| 2026-09-17-ai-module-placeholder-cleanup | refactor | refactor: 完整移除 snail-ai，仅保留 cde-ai 与 cde-common-ai 占位 | enhancement, specdev:captured, origin:local | 2 | https://github.com/NAMEWTA/WTA-plus/issues/2 | specdev:capture:2026-09-17-ai-module-placeholder-cleanup | 4e61bd75492fd8d1ea9529b128ca7e99a1e2bcafcb2875b09e0efd61ee67800b | open |
-| 2026-09-17-wta-extend-go-python-ai | feature | feature: 在 backend/wta-extend 新起 Go 网关 + Python 智能体独立服务，由 cde-ai / cde-common-ai 经 OpenAPI 引用 | enhancement, specdev:captured, origin:local | 3 | https://github.com/NAMEWTA/WTA-plus/issues/3 | specdev:capture:2026-09-17-wta-extend-go-python-ai | 51fc33f5de239086db6c64e99ff787f4405899e1e65ae60cbc55f25e189f3599 | open |
+| 2026-09-17-phone-number-required | bug | bug: 手机号应为必填项，当前仍为选填 | bug, specdev:captured, origin:local | 1 | https://github.com/NAMEWTA/WTA-plus/issues/1 | specdev:capture:2026-09-17-phone-number-required | a849e2c2ece87cdd58a6563fedd2006118260cbaacedd428cedef434b8d7f000 | intaken |
+| 2026-09-17-ai-module-placeholder-cleanup | refactor | refactor: 完整移除 snail-ai，仅保留 cde-ai 与 cde-common-ai 占位 | enhancement, specdev:captured, origin:local | 2 | https://github.com/NAMEWTA/WTA-plus/issues/2 | specdev:capture:2026-09-17-ai-module-placeholder-cleanup | 4e61bd75492fd8d1ea9529b128ca7e99a1e2bcafcb2875b09e0efd61ee67800b | intaken |
+| 2026-09-17-wta-extend-go-python-ai | feature | feature: 在 backend/wta-extend 新起 Go 网关 + Python 智能体独立服务，由 cde-ai / cde-common-ai 经 OpenAPI 引用 | enhancement, specdev:captured, origin:local | 3 | https://github.com/NAMEWTA/WTA-plus/issues/3 | specdev:capture:2026-09-17-wta-extend-go-python-ai | 51fc33f5de239086db6c64e99ff787f4405899e1e65ae60cbc55f25e189f3599 | intaken |
 
 `state`：`planned | open | skipped:duplicate | intaken | waived | failed`。
 
@@ -31,8 +31,8 @@ capture 不创建 Change，不写 `current_work`，不关闭 Issue。GitHub 是 
 
 ## 计数
 
-- **inbox_open：** 3
-- **inbox_intaken：** 0
+- **inbox_open：** 0
+- **inbox_intaken：** 3
 - **inbox_waived：** 0
 - **skipped：** 0
 - **failed：** 0
@@ -42,3 +42,9 @@ capture 不创建 Change，不写 `current_work`，不关闭 Issue。GitHub 是 
 ## 重试
 
 无
+
+## Intake 2026-09-19T08:05:40.164378Z
+
+用户明确要求三条事项集中于同一个新 change。三个 locator 分别冻结在 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/sources/</Path>，聚合授权与逐条 hash 见 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/issue-index.md</Path>。仅本地消费状态改为 intaken；GitHub 三条 Issue 仍 open，未发生远程写入。
+
+后续用户范围修订：Issue #3 的唯一待开发归属已转入 <Path>{roots.state}/specdev/changes/2026-09-19-go-python-ai-platform/</Path> 并暂缓；#1/#2 留在原 change。三行仍为 intaken，未重新捕获或改变远程状态。

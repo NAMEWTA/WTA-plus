@@ -1,0 +1,175 @@
+{
+  "backend-full": {
+    "discovered": 893,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 121,
+    "classes": 237,
+    "skipped_classes": [
+      {
+        "name": "org.namewta.common.redis.cache.ThirdRedisIntegrationTest",
+        "count": 2
+      },
+      {
+        "name": "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.notify.NotifyWakeIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest",
+        "count": 7
+      },
+      {
+        "name": "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.notify.NotifyAtomicResultIntegrationTest",
+        "count": 35
+      },
+      {
+        "name": "org.namewta.test.notify.monitor.NotifyMonitorMySqlIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest",
+        "count": 5
+      },
+      {
+        "name": "org.namewta.test.migration.password.PasswordMigrationMySqlIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.migration.ossaccess.OssAccessMigrationMySqlIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.migration.BusinessMenuRetirementMySqlIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.phone.PhoneRegistrationMySqlIntegrationTest",
+        "count": 4
+      },
+      {
+        "name": "org.namewta.test.password.policy.PasswordPolicyRedisIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.password.temporary.TemporaryPasswordRedisIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.security.TrustedClientAddressIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.security.BrowserHttpsTransportIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.authorization.session.AuthorizationSessionRedisIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.contracts.CrudMySqlHttpIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.contracts.DemoTreeMySqlIntegrationTest",
+        "count": 15
+      },
+      {
+        "name": "org.namewta.test.profile.schema.ProfileSchemaMySqlIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.profile.material.ProfileSelfMaterialsBrowserIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.department.DepartmentTreeMySqlIntegrationTest",
+        "count": 14
+      },
+      {
+        "name": "org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest",
+        "count": 2
+      },
+      {
+        "name": "org.namewta.test.workflow.WorkflowTaskEngineIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.third.schema.ThirdSchemaMySqlIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.third.ThirdLimitConfigurationIntegrationTest",
+        "count": 1
+      },
+      {
+        "name": "org.namewta.test.third.ThirdResilienceRecoveryIntegrationTest",
+        "count": 11
+      },
+      {
+        "name": "org.namewta.test.sso.SsoHttpsSessionIntegrationTest",
+        "count": 1
+      }
+    ]
+  },
+  "mysql-final": {
+    "discovered": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 2,
+    "skipped_classes": []
+  },
+  "targeted-green": {
+    "discovered": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 6,
+    "skipped_classes": []
+  },
+  "transport-e2e": {
+    "discovered": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 1,
+    "skipped_classes": []
+  }
+}
