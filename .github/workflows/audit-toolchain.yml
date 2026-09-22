@@ -1,0 +1,62 @@
+name: Audit offline toolchain
+on:
+  push:
+    branches: [refactor/audit-2026-09-22]
+    paths: [.github/workflows/audit-toolchain.yml]
+permissions:
+  contents: read
+jobs:
+  frontend-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: pnpm --dir frontend install --frozen-lockfile
+      - name: Package only dependencies and tools, never configuration or credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          find frontend -type d -name node_modules -prune -print0 | tar --null -T - -czf /tmp/frontend-dependencies.tar.gz
+          mkdir /tmp/audit-tools
+          cp "$(command -v node)" /tmp/audit-tools/node
+          cp -a "$HOME/setup-pnpm/node_modules/pnpm" /tmp/audit-tools/pnpm
+          tar -C /tmp -czf /tmp/node-toolchain.tar.gz audit-tools
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-frontend-dependencies
+          path: /tmp/frontend-dependencies.tar.gz
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-node-toolchain
+          path: /tmp/node-toolchain.tar.gz
+          retention-days: 1
+  java-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Compile and cache dependencies without executing tests or applications
+        working-directory: backend
+        run: ./mvnw -pl wta-admin -am -Plocal -Dmaven.test.skip=true install
+      - name: Package dependencies only, exclude Maven settings and credentials
+        if: always()
+        run: tar -C "$HOME" -czf /tmp/maven-dependencies.tar.gz .m2/repository .m2/wrapper
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-maven-dependencies
+          path: /tmp/maven-dependencies.tar.gz
+          retention-days: 1
