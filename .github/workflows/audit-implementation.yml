@@ -1,0 +1,28 @@
+name: Audit implementation
+
+on:
+  push:
+    branches: [refactor/audit-2026-09-22]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-implementation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Export exact reviewed source
+        run: git archive --format=tar.gz HEAD -o source.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-source-${{ github.sha }}
+          path: source.tar.gz
+          retention-days: 1
