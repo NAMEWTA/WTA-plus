@@ -60,4 +60,12 @@ public interface ISysOssService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
+    /**
+     * 恢复待删除的 OSS 对象，并按当前有效引用重算生命周期。
+     *
+     * @param ids OSS对象ID串
+     * @return 是否恢复成功
+     */
+    Boolean restoreWithValidByIds(Collection<Long> ids);
+
 }

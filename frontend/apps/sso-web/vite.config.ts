@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
       open: false,
       proxy: {
         '/sso': {
-          target: env.VITE_SSO_API_PROXY || 'http://127.0.0.1:18080',
+          target: env.VITE_SSO_API_PROXY || 'http://127.0.0.1:38888',
           changeOrigin: true
         }
       }

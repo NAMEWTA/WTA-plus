@@ -46,6 +46,7 @@ public class OssUploadService {
     private final OssUploadObjectStore objectStore;
     private final OssUploadMetadataStore metadataStore;
     private final OssStorageReadinessRegistry readinessRegistry;
+    private final OssDefaultStorageKey defaultStorageKey;
 
     public InitResponse init(InitRequest request) {
         validateInitRequest(request);
@@ -56,7 +57,8 @@ public class OssUploadService {
         if (request.fileSize() > policy.getMaxSize() || !policy.allowsContentType(contentType)) {
             throw new OssUploadException(OssUploadError.INVALID_FILE, "文件大小或 Content-Type 不符合上传策略");
         }
-        requireStorageRoute(policy);
+        String storageConfigKey = currentDefaultStorageKey();
+        requireStorageRoute(policy, storageConfigKey);
         OssUploadMode mode = policy.resolveMode(request.fileSize());
         long partSize = mode == OssUploadMode.MULTIPART ? policy.getPartSize() : 0;
         int partCount = mode == OssUploadMode.MULTIPART
@@ -65,7 +67,7 @@ public class OssUploadService {
         String fingerprintDigest = sha256(request.fingerprint());
         OssUploadObjectStore.PreparedUpload prepared;
         try {
-            prepared = objectStore.prepare(policy.getStorageConfigKey(), policy.getExpectedAccessPolicy(),
+            prepared = objectStore.prepare(storageConfigKey, policy.getExpectedAccessPolicy(),
                 policy.getObjectPrefix(), request.fileName(), contentType, fingerprintDigest, mode,
                 properties.getPresignTtl());
         } catch (OssUploadException e) {
@@ -91,8 +93,15 @@ public class OssUploadService {
             mode == OssUploadMode.MULTIPART ? partCount : null);
     }
 
-    private void requireStorageRoute(OssUploadProperties.Policy policy) {
-        String storageConfigKey = policy.getStorageConfigKey();
+    private String currentDefaultStorageKey() {
+        String storageConfigKey = defaultStorageKey.current();
+        if (storageConfigKey == null || storageConfigKey.isBlank()) {
+            throw new OssUploadException(OssUploadError.STORAGE_NOT_SERVING, "默认 OSS 配置不存在");
+        }
+        return storageConfigKey;
+    }
+
+    private void requireStorageRoute(OssUploadProperties.Policy policy, String storageConfigKey) {
         OssStorageReadinessEntry entry = readinessRegistry.snapshot().get(storageConfigKey);
         if (entry == null || entry.status() != OssStorageReadinessEntry.Status.SERVING) {
             throw new OssUploadException(OssUploadError.STORAGE_NOT_SERVING, "OSS 上传目标当前不可服务");

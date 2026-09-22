@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.namewta.system.oss.upload.OssUploadContracts.*;
@@ -32,6 +33,7 @@ class OssUploadServiceUnitTest {
     private FakeObjectStore objects;
     private MemoryMetadataStore metadata;
     private OssStorageReadinessRegistry readiness;
+    private AtomicReference<String> defaultKey;
     private OssUploadService service;
 
     @BeforeEach
@@ -43,26 +45,36 @@ class OssUploadServiceUnitTest {
         objects = new FakeObjectStore();
         metadata = new MemoryMetadataStore();
         readiness = new OssStorageReadinessRegistry(new OssStorageReadinessProperties());
+        defaultKey = new AtomicReference<>("minio");
         replaceReadiness("minio", AccessPolicy.PRIVATE, OssStorageReadinessEntry.Status.SERVING);
-        service = new OssUploadService(properties, identity, tickets, objects, metadata, readiness);
+        service = new OssUploadService(properties, identity, tickets, objects, metadata, readiness, defaultKey::get);
     }
 
     @Test
-    void shouldRouteInitUsingServerPolicyStorageBinding() {
+    void shouldRouteInitToTheCurrentDefaultConfig() {
         service.init(new InitRequest("general", "private.bin", 8,
             "application/octet-stream", "fp-private-route"));
         assertEquals("minio", objects.preparedStorageConfigKey);
         assertEquals(AccessPolicy.PRIVATE, objects.preparedExpectedAccessPolicy);
 
-        properties.requirePolicy("general").setStorageConfigKey("portal");
-        properties.requirePolicy("general").setExpectedAccessPolicy(AccessPolicy.PUBLIC_READ);
-        replaceReadiness("portal", AccessPolicy.PUBLIC_READ, OssStorageReadinessEntry.Status.SERVING);
-        service.init(new InitRequest("general", "public.bin", 8,
-            "application/octet-stream", "fp-public-route"));
+        defaultKey.set("archive");
+        replaceReadiness("archive", AccessPolicy.PRIVATE, OssStorageReadinessEntry.Status.SERVING);
+        service.init(new InitRequest("general", "next.bin", 8,
+            "application/octet-stream", "fp-next-route"));
 
-        assertEquals("portal", objects.preparedStorageConfigKey);
-        assertEquals(AccessPolicy.PUBLIC_READ, objects.preparedExpectedAccessPolicy);
+        assertEquals("archive", objects.preparedStorageConfigKey);
+        assertEquals(AccessPolicy.PRIVATE, objects.preparedExpectedAccessPolicy);
         assertEquals(2, objects.prepareCalls.get());
+    }
+
+    @Test
+    void shouldRejectWhenDefaultConfigIsMissing() {
+        defaultKey.set(" ");
+        OssUploadException missing = assertThrows(OssUploadException.class,
+            () -> service.init(new InitRequest("general", "file.bin", 8,
+                "application/octet-stream", "fp-no-default")));
+        assertEquals(OssUploadError.STORAGE_NOT_SERVING, missing.error());
+        assertEquals(0, objects.prepareCalls.get());
     }
 
     @Test
@@ -90,9 +102,8 @@ class OssUploadServiceUnitTest {
             "application/octet-stream", "fp-frozen"));
         assertEquals("minio", tickets.get(init.uploadToken()).service());
 
-        properties.requirePolicy("general").setStorageConfigKey("portal");
-        properties.requirePolicy("general").setExpectedAccessPolicy(AccessPolicy.PUBLIC_READ);
-        replaceReadiness("portal", AccessPolicy.PUBLIC_READ, OssStorageReadinessEntry.Status.SERVING);
+        defaultKey.set("archive");
+        replaceReadiness("archive", AccessPolicy.PRIVATE, OssStorageReadinessEntry.Status.SERVING);
         service.resume(init.uploadToken(), "fp-frozen");
         service.abort(init.uploadToken());
 

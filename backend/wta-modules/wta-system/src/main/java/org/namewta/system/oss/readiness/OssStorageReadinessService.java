@@ -11,7 +11,6 @@ import org.namewta.system.domain.SysOss;
 import org.namewta.system.domain.SysOssConfig;
 import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.mapper.SysOssMapper;
-import org.namewta.system.oss.upload.OssUploadProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,6 @@ public class OssStorageReadinessService {
 
     private final SysOssConfigMapper configMapper;
     private final SysOssMapper ossMapper;
-    private final OssUploadProperties uploadProperties;
     private final OssStorageReadinessProperties properties;
     private final OssStorageReadinessRegistry registry;
     private final OssReadinessClientProvider clientProvider;
@@ -66,11 +64,6 @@ public class OssStorageReadinessService {
         Map<String, Set<String>> required = new LinkedHashMap<>();
         configs.stream().filter(config -> SystemConstants.YES.equals(config.getStatus()))
             .forEach(config -> add(required, config.getConfigKey(), "DEFAULT"));
-        uploadProperties.getPolicies().forEach((name, policy) -> {
-            if (policy.isEnabled()) {
-                add(required, policy.getStorageConfigKey(), "UPLOAD_POLICY:" + name);
-            }
-        });
         List<Object> services = ossMapper.selectObjs(new QueryWrapper<SysOss>()
             .select("service").groupBy("service"));
         services.stream().map(String::valueOf).filter(StringUtils::isNotBlank)

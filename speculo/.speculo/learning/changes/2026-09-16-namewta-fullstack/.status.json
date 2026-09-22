@@ -14,10 +14,11 @@
   "current_work": null,
   "works_run": [
     "learning/assess-and-plan",
-    "learning/goal"
+    "learning/goal",
+    "learning/lesson"
   ],
   "created_at": "2026-09-16T06:56:05.000Z",
-  "updated_at": "2026-09-16T08:47:16.000Z",
+  "updated_at": "2026-09-22T09:10:00.000Z",
   "closed_at": null,
   "archived_at": null,
   "closure_reason": null,

@@ -12,7 +12,7 @@ Cookie 渲染归 `adapter/http`，Sa-Token extras 归 `adapter/gateway`。授权
 
 生产保持 `SSO_COOKIE_SECURE=true`（默认），通过 HTTPS 的独立 SSO Origin 及其同源 `/sso` 反代访问后端。Cookie 为 host-only、HttpOnly、Secure、Path=/、SameSite=Lax，创建和删除属性一致。开发 HTTP 必须显式设置 `SSO_COOKIE_SECURE=false`，且实际 active profiles 只能为 `local`/`dev`；未声明、prod 或混合其他 profile 会拒绝启动。
 
-`WEB_CORS_ALLOWED_ORIGINS` 是逗号分隔的精确 HTTP(S) Origin 白名单，未配置时采用 `SSO_WEB_ORIGIN`。部署应显式列出批准的 App Origin（含端口、不带路径），不允许通配符；旧 `web.cors.allowed-origin-patterns` 已移除。同源访问不需要 CORS 许可。跨 Origin 不自动使用 SameSite=None 或共享父域 Cookie。
+`WEB_CORS_ALLOWED_ORIGINS` 是逗号分隔的精确 HTTP(S) Origin 白名单。未设置时默认 `*`，允许任意 Origin；需要收紧时再设成不含路径的精确 Origin。单独的 `*` 不能和其他来源混写。同源访问不需要 CORS 许可。跨 Origin 不自动使用 SameSite=None 或共享父域 Cookie。
 
 ## 验证
 

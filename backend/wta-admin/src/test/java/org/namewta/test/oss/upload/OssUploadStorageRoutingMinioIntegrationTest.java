@@ -32,9 +32,11 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.namewta.system.oss.upload.OssUploadContracts.*;
 import static org.mockito.Mockito.mockStatic;
 
@@ -70,23 +72,10 @@ class OssUploadStorageRoutingMinioIntegrationTest {
 
                 MemoryTicketStore tickets = new MemoryTicketStore();
                 MemoryMetadataStore metadata = new MemoryMetadataStore();
+                AtomicReference<String> defaultKey = new AtomicReference<>("private-route");
                 OssUploadService service = new OssUploadService(properties(), identity(), tickets,
-                    new DefaultOssUploadObjectStore(), metadata, readiness());
+                    new DefaultOssUploadObjectStore(), metadata, readiness(), defaultKey::get);
                 HttpClient http = HttpClient.newHttpClient();
-
-                byte[] publicBody = "public-single".getBytes(StandardCharsets.UTF_8);
-                InitResponse publicInit = service.init(new InitRequest("portal", "portal.txt",
-                    publicBody.length, "application/octet-stream", "public-fingerprint"));
-                OssUploadTicket publicTicket = tickets.get(publicInit.uploadToken());
-                uploadedKeys[0] = publicTicket.objectKey();
-                assertThat(publicInit.mode()).isEqualTo(OssUploadMode.SINGLE);
-                assertThat(publicTicket.service()).isEqualTo("public-route");
-                assertThat(publicTicket.bucket()).isEqualTo(publicBucket);
-                assertThat(put(http, publicInit.presignedRequest(), publicBody).statusCode()).isEqualTo(200);
-                service.complete(publicInit.uploadToken(), new CompleteRequest(List.of()));
-                assertThat(metadata.registered.get(publicInit.uploadToken()).service()).isEqualTo("public-route");
-                assertThat(publicClient.headObject(uploadedKeys[0]).size()).isEqualTo(publicBody.length);
-                assertThat(rawGet(http, endpointUri, publicBucket, uploadedKeys[0])).isEqualTo(200);
 
                 byte[] privateBody = "private-multipart".getBytes(StandardCharsets.UTF_8);
                 InitResponse privateInit = service.init(new InitRequest("attachment", "private.bin",
@@ -107,8 +96,12 @@ class OssUploadStorageRoutingMinioIntegrationTest {
                 assertThat(privateClient.headObject(uploadedKeys[1]).size()).isEqualTo(privateBody.length);
                 assertThat(rawGet(http, endpointUri, privateBucket, uploadedKeys[1])).isEqualTo(403);
 
-                assertThatThrownByHead(publicClient, uploadedKeys[1]);
-                assertThatThrownByHead(privateClient, uploadedKeys[0]);
+                defaultKey.set("public-route");
+                assertThatThrownBy(() -> service.init(new InitRequest("portal", "portal.txt",
+                    4, "application/octet-stream", "public-fingerprint")))
+                    .isInstanceOf(OssUploadException.class)
+                    .extracting(error -> ((OssUploadException) error).error())
+                    .isEqualTo(OssUploadError.STORAGE_ACCESS_POLICY_MISMATCH);
             } finally {
                 if (uploadedKeys[0] != null) {
                     bootstrap.deleteObject(builder -> builder.bucket(publicBucket).key(uploadedKeys[0]));
@@ -124,20 +117,16 @@ class OssUploadStorageRoutingMinioIntegrationTest {
     }
 
     private OssUploadProperties properties() {
-        OssUploadProperties.Policy portal = policy("public-route", AccessPolicy.PUBLIC_READ,
-            "direct/portal", OssUploadMode.SINGLE);
-        OssUploadProperties.Policy attachment = policy("private-route", AccessPolicy.PRIVATE,
-            "direct/private", OssUploadMode.MULTIPART);
+        OssUploadProperties.Policy portal = policy(AccessPolicy.PRIVATE, "direct/portal", OssUploadMode.SINGLE);
+        OssUploadProperties.Policy attachment = policy(AccessPolicy.PRIVATE, "direct/private", OssUploadMode.MULTIPART);
         OssUploadProperties properties = new OssUploadProperties();
         properties.setPolicies(Map.of("portal", portal, "attachment", attachment));
         properties.validate();
         return properties;
     }
 
-    private OssUploadProperties.Policy policy(String configKey, AccessPolicy accessPolicy, String prefix,
-                                                OssUploadMode mode) {
+    private OssUploadProperties.Policy policy(AccessPolicy accessPolicy, String prefix, OssUploadMode mode) {
         OssUploadProperties.Policy policy = new OssUploadProperties.Policy();
-        policy.setStorageConfigKey(configKey);
         policy.setExpectedAccessPolicy(accessPolicy);
         policy.setMaxSize(10L * 1024 * 1024);
         policy.setAllowedContentTypes(Set.of("application/octet-stream"));

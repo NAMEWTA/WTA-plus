@@ -1,5 +1,6 @@
 import type { UploadClient, UploadIdentifier, UploadItem, UploadResult } from '@namewta/platform-contracts';
 import { createOssFileFingerprint } from './fingerprint';
+import { sha256Hex } from './sha256';
 import { createIndexedDbResumeStore } from './resume-store';
 import { transferToOss } from './transport';
 import type {
@@ -69,8 +70,7 @@ export function getUploadErrorMessage(error: unknown, fallback: string): string 
 
 async function resumeKey(clientId: string, getToken: () => string | null | undefined, fingerprint: string, policy: string) {
   const identity = `${clientId}:${getToken() || 'anonymous'}:${policy}:${fingerprint}`;
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(identity));
-  return Array.from(new Uint8Array(digest), value => value.toString(16).padStart(2, '0')).join('');
+  return sha256Hex(identity);
 }
 
 async function resolveUploadResult(

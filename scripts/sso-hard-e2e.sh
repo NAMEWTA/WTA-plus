@@ -6,7 +6,7 @@ if [[ "${1:-}" == --release-origin ]]; then
   exec python3 "${ROOT}/release-artifacts/tests/fixtures/sso-release-origin.py" "$@"
 fi
 # Same-session three-gate launcher for AC-001/002/003.
-# Requires live MySQL, Redis, backend 18080, admin 4174, home 4175, sso-web 4176.
+# Requires live MySQL, Redis, backend 38888, admin 4174, home 4175, sso-web 4176.
 
 need_port() {
   python3 - "$1" <<'PY'
@@ -27,7 +27,7 @@ PY
 
 need_port 3306
 need_port 6379
-need_port 18080
+need_port 38888
 need_port 4174
 need_port 4175
 need_port 4176

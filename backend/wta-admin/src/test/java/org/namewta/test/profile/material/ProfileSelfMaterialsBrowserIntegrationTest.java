@@ -203,7 +203,7 @@ class ProfileSelfMaterialsBrowserIntegrationTest {
                 Set.of("profile-materials"), OssStorageReadinessEntry.Status.SERVING, OssStorageReadinessEntry.Reason.READY, Instant.now())), Set.of("minio"), true);
             var lifecycle = transactional(new OssLifecycleManager(ossMapper, sessions.getMapper(SysOssRefMapper.class),
                 new DefaultOssObjectStore(), lifecycleProperties, readiness));
-            var oss = new SysOssServiceImpl(ossMapper, lifecycle);
+            var oss = new SysOssServiceImpl(ossMapper, mock(org.namewta.system.mapper.SysOssConfigMapper.class), mock(org.namewta.system.oss.migration.mapper.SysOssMigrationItemMapper.class), lifecycle);
             var personDao = new PersonApplicationDao(sessions.getMapper(PersonApplicationMapper.class));
             var enterpriseDao = new EnterpriseApplicationDao(sessions.getMapper(EnterpriseApplicationMapper.class));
             var personOwners = new PersonProfileMaterialOwnerContributor(transactional(new PersonProfileApiUseCaseImpl(new PersonProfileApiService(personDao))));
@@ -233,7 +233,7 @@ class ProfileSelfMaterialsBrowserIntegrationTest {
             var enterprise = transactional(new EnterpriseApplicationUseCaseImpl(new EnterpriseApplicationService(enterpriseDao, materials,
                 enterpriseProviders, mock(EnterpriseVerificationService.class), mock(EnterpriseWorkflowGateway.class), configurations)));
             var uploads = new OssUploadService(uploadProperties(), new DefaultOssUploadIdentityResolver(), new RedisOssUploadTicketStore(redis),
-                new DefaultOssUploadObjectStore(), transactional(new DefaultOssUploadMetadataStore(ossMapper, lifecycleProperties)), readiness);
+                new DefaultOssUploadObjectStore(), transactional(new DefaultOssUploadMetadataStore(ossMapper, lifecycleProperties)), readiness, () -> "minio");
             context.register(MvcConfiguration.class);
             context.addBeanFactoryPostProcessor(factory -> {
                 factory.registerSingleton("ownedRedis", redis);

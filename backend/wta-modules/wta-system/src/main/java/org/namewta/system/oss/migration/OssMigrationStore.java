@@ -18,4 +18,9 @@ public interface OssMigrationStore {
     void saveBatch(SysOssMigrationBatch batch);
     boolean compareAndSetService(Long ossId, String expectedService, String targetService);
     Set<String> activeConfigKeys();
+
+    /**
+     * 该对象最新一张仍可把目录指针拨回来源的公开工单。
+     */
+    SysOssMigrationItem findLatestRestorable(Long ossId);
 }

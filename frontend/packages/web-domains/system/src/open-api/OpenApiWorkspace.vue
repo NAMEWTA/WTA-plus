@@ -1,18 +1,20 @@
 <template>
   <div class="openapi-workspace">
-    <header class="workspace-heading">
-      <div>
-        <h3>OpenAPI 凭据</h3>
-        <p>{{ state.scopeLabel }}</p>
+    <div class="toolbar-shell">
+      <div class="table-heading">
+        <h3 id="credential-heading">调用身份</h3>
+        <p>{{ state.scopeLabel }}。AppKey 可重复查看，AppSecret 仅在创建或重置后展示一次。</p>
       </div>
-      <el-button
-        circle
-        icon="Refresh"
-        aria-label="刷新 OpenAPI 数据"
-        :loading="state.loading"
-        @click="controller.load"
-      />
-    </header>
+      <div class="toolbar-actions">
+        <el-button
+          circle
+          icon="Refresh"
+          aria-label="刷新 OpenAPI 数据"
+          :loading="state.loading"
+          @click="controller.load"
+        />
+      </div>
+    </div>
 
     <el-alert
       v-if="state.error"
@@ -21,7 +23,6 @@
       :type="state.error === 'forbidden' ? 'warning' : 'error'"
       show-icon
       :closable="false"
-      class="workspace-alert"
     >
       <template #default>
         <el-button v-if="state.error !== 'forbidden'" size="small" @click="controller.load">重试</el-button>
@@ -31,15 +32,7 @@
     <div v-if="state.loading" v-loading="true" class="workspace-loading" aria-label="正在加载 OpenAPI 数据" />
 
     <template v-else>
-      <section class="workspace-section" aria-labelledby="credential-heading">
-        <div class="section-heading">
-          <div>
-            <h4 id="credential-heading">调用身份</h4>
-            <p>AppKey 可重复查看，AppSecret 仅在创建或重置后展示一次。</p>
-          </div>
-          <el-tag v-if="state.credential" :type="credentialTag.type" effect="plain">{{ credentialTag.label }}</el-tag>
-        </div>
-
+      <section aria-labelledby="credential-heading">
         <el-empty v-if="!state.credential" description="尚未创建 OpenAPI 凭据" :image-size="72">
           <el-button v-if="controller.can('create')" type="primary" icon="Plus" @click="createVisible = true">
             创建凭据
@@ -47,28 +40,18 @@
         </el-empty>
 
         <template v-else>
-          <dl class="credential-grid">
-            <div>
-              <dt>应用名称</dt>
-              <dd>{{ state.credential.appName }}</dd>
-            </div>
-            <div>
-              <dt>AppKey</dt>
-              <dd class="mono-value">{{ state.credential.appKey }}</dd>
-            </div>
-            <div>
-              <dt>到期时间</dt>
-              <dd>{{ formatDate(state.credential.expiresAt) }}</dd>
-            </div>
-            <div>
-              <dt>更新时间</dt>
-              <dd>{{ formatDate(state.credential.updateTime) }}</dd>
-            </div>
-            <div class="credential-remark">
-              <dt>备注</dt>
-              <dd>{{ state.credential.remark || '-' }}</dd>
-            </div>
-          </dl>
+          <el-descriptions :column="2" border>
+            <el-descriptions-item label="应用名称">{{ state.credential.appName }}</el-descriptions-item>
+            <el-descriptions-item label="状态">
+              <el-tag :type="credentialTag.type" effect="plain">{{ credentialTag.label }}</el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="AppKey">
+              <span class="mono-value">{{ state.credential.appKey }}</span>
+            </el-descriptions-item>
+            <el-descriptions-item label="到期时间">{{ formatDate(state.credential.expiresAt) }}</el-descriptions-item>
+            <el-descriptions-item label="更新时间">{{ formatDate(state.credential.updateTime) }}</el-descriptions-item>
+            <el-descriptions-item label="备注">{{ state.credential.remark || '-' }}</el-descriptions-item>
+          </el-descriptions>
           <div class="credential-actions">
             <el-button v-if="controller.can('edit')" icon="RefreshRight" @click="confirmReset">重置密钥</el-button>
             <el-button
@@ -86,17 +69,16 @@
         </template>
       </section>
 
-      <section class="workspace-section" aria-labelledby="catalog-heading">
-        <div class="section-heading">
-          <div>
-            <h4 id="catalog-heading">可调用接口</h4>
-            <p>目录按当前身份的实时权限生成，不依赖凭据是否已创建。</p>
+      <section aria-labelledby="catalog-heading">
+        <div class="toolbar-shell">
+          <div class="table-heading">
+            <h3 id="catalog-heading">可调用接口</h3>
+            <p>目录按当前身份的实时权限生成，不依赖凭据是否已创建。共 {{ state.catalog.length }} 项。</p>
           </div>
-          <span class="catalog-count">{{ state.catalog.length }} 项</span>
         </div>
         <el-empty v-if="state.catalog.length === 0" description="当前没有可调用接口" :image-size="72" />
-        <el-table v-else :data="[...state.catalog]" row-key="interfaceId" class="catalog-table">
-          <el-table-column label="方法" width="92">
+        <el-table v-else :data="[...state.catalog]" row-key="interfaceId" class="data-table" border>
+          <el-table-column label="方法" width="92" align="center">
             <template #default="{ row }">
               <el-tag size="small" effect="plain">{{ row.method }}</el-tag>
             </template>
@@ -110,7 +92,7 @@
           <el-table-column label="操作" width="76" align="center">
             <template #default="{ row }">
               <el-tooltip content="查看调用合同" placement="top">
-                <el-button circle text icon="View" aria-label="查看调用合同" @click="showInterface(row)" />
+                <el-button link type="primary" icon="View" aria-label="查看调用合同" @click="showInterface(row)" />
               </el-tooltip>
             </template>
           </el-table-column>
@@ -176,20 +158,15 @@
 
     <el-drawer v-model="detailVisible" title="接口调用合同" size="min(720px, 92vw)" append-to-body>
       <template v-if="selectedInterface">
-        <dl class="interface-meta">
-          <div>
-            <dt>接口</dt>
-            <dd>{{ selectedInterface.summary }}</dd>
-          </div>
-          <div>
-            <dt>方法与路径</dt>
-            <dd class="mono-value">{{ selectedInterface.method }} {{ selectedInterface.path }}</dd>
-          </div>
-          <div>
-            <dt>响应模型</dt>
-            <dd class="mono-value">{{ selectedInterface.responseSchema }}</dd>
-          </div>
-        </dl>
+        <el-descriptions :column="1" border class="interface-meta">
+          <el-descriptions-item label="接口">{{ selectedInterface.summary }}</el-descriptions-item>
+          <el-descriptions-item label="方法与路径">
+            <span class="mono-value">{{ selectedInterface.method }} {{ selectedInterface.path }}</span>
+          </el-descriptions-item>
+          <el-descriptions-item label="响应模型">
+            <span class="mono-value">{{ selectedInterface.responseSchema }}</span>
+          </el-descriptions-item>
+        </el-descriptions>
         <el-tabs>
           <el-tab-pane label="cURL">
             <pre class="code-block">{{ selectedInterface.curlExample }}</pre>
@@ -299,76 +276,21 @@ function closeIssuedSecret(visible: boolean): void {
   gap: 18px;
   min-width: 0;
 }
-.workspace-heading,
-.section-heading,
+.workspace-loading {
+  min-height: 180px;
+}
 .credential-actions,
 .secret-row {
   align-items: center;
   display: flex;
 }
-.workspace-heading,
-.section-heading {
-  justify-content: space-between;
-  gap: 16px;
-}
-.workspace-heading h3,
-.section-heading h4 {
-  margin: 0;
-}
-.workspace-heading p,
-.section-heading p {
-  color: var(--el-text-color-secondary);
-  margin: 5px 0 0;
-}
-.workspace-section {
-  border-top: 1px solid var(--el-border-color-lighter);
-  padding-top: 18px;
-  min-width: 0;
-}
-.workspace-alert,
-.workspace-loading {
-  margin-bottom: 2px;
-}
-.workspace-loading {
-  min-height: 180px;
-}
-.credential-grid,
-.interface-meta {
-  display: grid;
-  gap: 16px 24px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 20px 0;
-}
-.credential-grid > div,
-.interface-meta > div {
-  min-width: 0;
-}
-.credential-grid dt,
-.interface-meta dt,
-.issued-fields label {
-  color: var(--el-text-color-secondary);
-  font-size: 12px;
-  margin-bottom: 6px;
-}
-.credential-grid dd,
-.interface-meta dd {
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-.credential-remark {
-  grid-column: 1 / -1;
-}
 .credential-actions {
   flex-wrap: wrap;
   gap: 8px;
-}
-.catalog-count {
-  color: var(--el-text-color-secondary);
-  white-space: nowrap;
-}
-.catalog-table {
   margin-top: 16px;
-  width: 100%;
+}
+.interface-meta {
+  margin-bottom: 16px;
 }
 .mono-value,
 .code-block {
@@ -378,6 +300,10 @@ function closeIssuedSecret(visible: boolean): void {
   display: grid;
   gap: 10px;
   margin-top: 18px;
+}
+.issued-fields label {
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
 }
 .secret-row {
   gap: 8px;
@@ -396,14 +322,5 @@ function closeIssuedSecret(visible: boolean): void {
   overflow: auto;
   padding: 14px;
   white-space: pre-wrap;
-}
-@media (max-width: 640px) {
-  .credential-grid,
-  .interface-meta {
-    grid-template-columns: 1fr;
-  }
-  .credential-remark {
-    grid-column: auto;
-  }
 }
 </style>

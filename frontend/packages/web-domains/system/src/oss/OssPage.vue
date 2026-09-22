@@ -117,13 +117,14 @@
         <el-table-column label="文件展示" align="center" prop="url">
           <template #default="scope">
             <ImagePreview
-              v-if="previewListResource && checkFileSuffix(scope.row.fileSuffix)"
+              v-if="filePresentation(scope.row) === 'image' && previewUrl(scope.row)"
               :width="100"
               :height="100"
-              :src="scope.row.url"
-              :preview-src-list="[scope.row.url]"
+              :src="previewUrl(scope.row)"
+              :preview-src-list="[previewUrl(scope.row)]"
             />
-            <span v-if="!checkFileSuffix(scope.row.fileSuffix) || !previewListResource" v-text="scope.row.url" />
+            <span v-else-if="filePresentation(scope.row) === 'deleted'">{{ deletedMessage }}</span>
+            <span v-else-if="filePresentation(scope.row) !== 'image'" v-text="scope.row.url" />
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" prop="createTime" width="180" sortable="custom">
@@ -133,6 +134,13 @@
         </el-table-column>
         <el-table-column label="上传人" align="center" prop="createByName" />
         <el-table-column label="服务商" align="center" prop="service" sortable="custom" />
+        <el-table-column label="访问类型" align="center" prop="accessPolicy" width="110">
+          <template #default="scope">
+            <el-tag v-if="scope.row.accessPolicy === 'PUBLIC_READ'" type="success">公开只读</el-tag>
+            <el-tag v-else-if="scope.row.accessPolicy === 'PRIVATE'" type="warning">私有</el-tag>
+            <span v-else>未知</span>
+          </template>
+        </el-table-column>
         <el-table-column label="生命周期" align="center" width="116">
           <template #default="scope">
             <el-tag v-if="scope.row.deleteState === 'PENDING'" type="danger" effect="light">待删除</el-tag>
@@ -152,7 +160,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="下载" placement="top">
               <el-button
@@ -164,7 +172,7 @@
                 @click="handleDownload(scope.row)"
               ></el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="top">
+            <el-tooltip v-if="rowMutation(scope.row) === 'delete'" content="删除" placement="top">
               <el-button
                 v-hasPermi="['system:oss:remove']"
                 aria-label="删除"
@@ -172,6 +180,36 @@
                 type="primary"
                 icon="Delete"
                 @click="handleDelete(scope.row)"
+              ></el-button>
+            </el-tooltip>
+            <el-tooltip v-if="canPublish(scope.row)" content="复制到公开配置" placement="top">
+              <el-button
+                v-hasPermi="['system:oss:publish']"
+                aria-label="公开"
+                link
+                type="primary"
+                icon="Share"
+                @click="openPublish(scope.row)"
+              ></el-button>
+            </el-tooltip>
+            <el-tooltip v-if="scope.row.restorable" content="用工单恢复为私有，不删除公开桶副本" placement="top">
+              <el-button
+                v-hasPermi="['system:oss:publish']"
+                aria-label="恢复私有"
+                link
+                type="primary"
+                icon="Lock"
+                @click="handleUnpublish(scope.row)"
+              ></el-button>
+            </el-tooltip>
+            <el-tooltip v-if="rowMutation(scope.row) === 'restore'" content="恢复" placement="top">
+              <el-button
+                v-hasPermi="['system:oss:remove']"
+                aria-label="恢复"
+                link
+                type="primary"
+                icon="RefreshLeft"
+                @click="handleRestore(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -201,11 +239,27 @@
         </div>
       </template>
     </el-dialog>
+    <el-dialog v-model="publishVisible" title="公开文件" width="480px" append-to-body destroy-on-close>
+      <p>将这一条记录复制到所选公开只读配置。文件编号不变，私有桶里的原件先保留。</p>
+      <el-select v-model="publishTarget" placeholder="选择公开配置" style="width: 100%">
+        <el-option
+          v-for="config in publicConfigs"
+          :key="String(config.ossConfigId)"
+          :label="`${config.configKey} / ${config.bucketName}`"
+          :value="config.configKey"
+        />
+      </el-select>
+      <p v-if="publicConfigs.length === 0">没有可选的公开只读配置。请先在 OSS 配置里新增一张不能设为默认的 PUBLIC_READ 配置。</p>
+      <template #footer>
+        <el-button @click="publishVisible = false">取 消</el-button>
+        <el-button type="primary" :loading="buttonLoading" :disabled="!publishTarget" @click="submitPublish">确 定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="Oss" lang="ts">
-import type { OssForm, OssQuery, OssVO } from '@namewta/domain-system';
+import type { OssConfigVO, OssForm, OssQuery, OssVO } from '@namewta/domain-system';
 import type { FormInstance as ElFormInstance } from 'element-plus';
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
@@ -219,13 +273,23 @@ import {
   useTableSelection
 } from '../composables';
 import { parseTime } from '../utils';
+import {
+  OSS_DELETED_MESSAGE,
+  ossDeleteConfirmMessage,
+  ossDeleteTargets,
+  ossFilePresentation,
+  ossRowMutation,
+  type OssFilePresentation
+} from './presentation';
 
 const { runtime } = defineProps<{ runtime: SystemWebRuntime }>();
 const ImagePreview = runtime.imagePreview;
 const { byKey: getConfigKey, updateByKey: updateConfigByKey } = runtime.service.resources.configs;
-const { list: listOss, delete: delOss } = runtime.service.resources.oss;
+const { list: listOss, delete: delOss, restore: restoreOss, downloadUrl, publish: publishOss, unpublish: unpublishOss } = runtime.service.resources.oss;
+const { list: listOssConfigs } = runtime.service.resources.ossConfigs;
 const download = { oss: runtime.downloadOss };
-const modal = { confirm: runtime.confirm, msgSuccess: runtime.success };
+const modal = { confirm: runtime.confirm, msgSuccess: runtime.success, msgError: runtime.error };
+const deletedMessage = OSS_DELETED_MESSAGE;
 const router = useRouter();
 
 const referenceSummary = (oss: any) =>
@@ -275,7 +339,15 @@ const data = reactive<PageData<OssForm, OssQuery>>({
 });
 
 const { queryParams, form, rules } = toRefs(data);
-const { ids, single, multiple, handleSelectionChange } = useTableSelection<OssVO>(item => item.ossId);
+const selectedRows = ref<OssVO[]>([]);
+const { multiple, handleSelectionChange: syncSelection } = useTableSelection<OssVO>(item => item.ossId);
+const handleSelectionChange = (selection: OssVO[]) => {
+  selectedRows.value = selection;
+  syncSelection(selection);
+};
+const previewUrls = ref<Record<string, string>>({});
+const deletedPreviewIds = ref<Record<string, true>>({});
+let listGeneration = 0;
 const {
   dialog,
   resetForm: reset,
@@ -287,22 +359,59 @@ const {
   initialFormData: initFormData
 });
 
+const rowKey = (row: Partial<OssVO>) => String(row.ossId ?? '');
+const filePresentation = (row: OssVO): OssFilePresentation =>
+  deletedPreviewIds.value[rowKey(row)] ? 'deleted' : ossFilePresentation(row, previewListResource.value);
+const rowMutation = (row: OssVO) => ossRowMutation(row);
+const canPublish = (row: OssVO) => row.deleteState === 'ACTIVE' && row.accessPolicy === 'PRIVATE';
+const publishVisible = ref(false);
+const publishTarget = ref('');
+const publishRow = ref<OssVO | null>(null);
+const publicConfigs = ref<OssConfigVO[]>([]);
+const previewUrl = (row: OssVO) => previewUrls.value[rowKey(row)] || '';
+
 /** 查询OSS对象存储列表 */
 const getList = async () => {
+  const generation = ++listGeneration;
+  previewUrls.value = {};
+  deletedPreviewIds.value = {};
   await withLoading(async () => {
     const res = await getConfigKey('sys.oss.previewListResource');
     previewListResource.value = res?.data === undefined ? true : res.data === 'true';
     const response = await listOss(applyCreateTimeDateRange(queryParams.value));
-    ossList.value = response.data?.rows;
-    total.value = response.data?.total;
+    ossList.value = response.data?.rows ?? [];
+    total.value = response.data?.total ?? 0;
     showTable.value = true;
   });
+  if (generation !== listGeneration) return;
+  await fillPreviewUrls(generation);
 };
-function checkFileSuffix(fileSuffix: string | string[]) {
-  const arr = ['.png', '.jpg', '.jpeg'];
-  const suffixArray = Array.isArray(fileSuffix) ? fileSuffix : [fileSuffix];
-  return suffixArray.some(suffix => arr.includes(suffix.toLowerCase()));
-}
+
+// 管理列表不带可访问地址。待删除对象不能申请下载地址；活动图片只使用本次查询的短时授权。
+const fillPreviewUrls = async (generation: number) => {
+  if (!previewListResource.value) return;
+  const images = ossList.value.filter(row => ossFilePresentation(row, true) === 'image');
+  const resolved = await Promise.all(
+    images.map(async row => {
+      try {
+        const response = await downloadUrl(row.ossId);
+        return { id: rowKey(row), url: response.data?.url ?? '', deleted: false };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '';
+        return { id: rowKey(row), url: '', deleted: message === deletedMessage };
+      }
+    })
+  );
+  if (generation !== listGeneration) return;
+  const urls: Record<string, string> = {};
+  const deleted: Record<string, true> = {};
+  for (const item of resolved) {
+    if (item.deleted) deleted[item.id] = true;
+    else if (item.url) urls[item.id] = item.url;
+  }
+  previewUrls.value = urls;
+  deletedPreviewIds.value = deleted;
+};
 /** 取消按钮 */
 function cancel() {
   reset();
@@ -394,6 +503,10 @@ const submitForm = () => {
 };
 /** 下载按钮操作 */
 const handleDownload = (row: Partial<OssVO>) => {
+  if (row.deleteState === 'PENDING') {
+    modal.msgError(deletedMessage);
+    return;
+  }
   download.oss(row.ossId);
 };
 /** 预览开关按钮  */
@@ -408,12 +521,65 @@ const handlePreviewListResource = async (preview: boolean) => {
 };
 /** 删除按钮操作 */
 const handleDelete = async (row?: Partial<OssVO>) => {
-  const ossIds = row?.ossId || ids.value;
-  await modal.confirm('是否确认删除OSS对象存储编号为"' + ossIds + '"的数据项?');
+  const targets = row?.ossId ? [row] : selectedRows.value;
+  const { pending, removable } = ossDeleteTargets(targets);
+  if (removable.length === 0) {
+    modal.msgError(row?.ossId ? deletedMessage : '所选文件已处于待删除，请使用行内恢复');
+    return;
+  }
+  const ossIds = removable.map(item => item.ossId).filter(id => id !== undefined);
+  await modal.confirm(ossDeleteConfirmMessage(ossIds, pending.length));
   setLoading(true);
   await delOss(ossIds).finally(() => setLoading(false));
   await getList();
   modal.msgSuccess('删除成功');
+};
+
+const openPublish = async (row: OssVO) => {
+  publishRow.value = row;
+  publishTarget.value = '';
+  const response = await listOssConfigs({ pageNum: 1, pageSize: 200, configKey: '', bucketName: '', status: '' });
+  publicConfigs.value = (response.data?.rows ?? []).filter(config =>
+    config.accessPolicy === 'PUBLIC_READ' && config.configKey !== row.service);
+  publishVisible.value = true;
+};
+
+const submitPublish = async () => {
+  if (!publishRow.value || !publishTarget.value) return;
+  buttonLoading.value = true;
+  try {
+    await publishOss(publishRow.value.ossId, publishTarget.value);
+    publishVisible.value = false;
+    modal.msgSuccess('已复制到公开配置');
+    await getList();
+  } catch (error) {
+    modal.msgError(error instanceof Error ? error.message : '公开失败');
+  } finally {
+    buttonLoading.value = false;
+  }
+};
+
+const handleUnpublish = async (row: OssVO) => {
+  await modal.confirm('恢复后这一条记录重新指向原来的私有配置。公开桶里已复制的文件不会删除。');
+  setLoading(true);
+  try {
+    await unpublishOss(row.ossId);
+    modal.msgSuccess('已恢复为私有');
+    await getList();
+  } catch (error) {
+    modal.msgError(error instanceof Error ? error.message : '恢复私有失败');
+  } finally {
+    setLoading(false);
+  }
+};
+
+/** 恢复待删除对象，生命周期按当前引用重算。 */
+const handleRestore = async (row: OssVO) => {
+  await modal.confirm('是否确认恢复OSS对象存储编号为"' + row.ossId + '"的数据项?');
+  setLoading(true);
+  await restoreOss(row.ossId).finally(() => setLoading(false));
+  await getList();
+  modal.msgSuccess('恢复成功');
 };
 
 onMounted(() => {

@@ -12,12 +12,10 @@ import org.namewta.system.oss.readiness.OssStorageReadinessEntry;
 import org.namewta.system.oss.readiness.OssStorageReadinessProperties;
 import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
 import org.namewta.system.oss.readiness.OssStorageReadinessService;
-import org.namewta.system.oss.upload.OssUploadProperties;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +41,6 @@ class OssStorageReadinessServiceUnitTest {
         when(fixture.configMapper.selectList()).thenReturn(List.of(
             defaultPrivate, uploadPublic, storedPrivate, placeholder));
         when(fixture.ossMapper.selectObjs(any())).thenReturn(List.of("archive"));
-        fixture.uploadProperties.setPolicies(Map.of("portal", policy("public")));
         fixture.properties.setDiagnosticObjects(Map.of(
             "private", "diagnostic/private.txt",
             "public", "diagnostic/public.txt",
@@ -58,7 +55,8 @@ class OssStorageReadinessServiceUnitTest {
         Map<String, OssStorageReadinessEntry> snapshot = fixture.registry.snapshot();
         assertThat(fixture.registry.overallServing()).isTrue();
         assertThat(snapshot.get("private").requiredBy()).containsExactly("DEFAULT");
-        assertThat(snapshot.get("public").requiredBy()).containsExactly("UPLOAD_POLICY:portal");
+        assertThat(snapshot.get("public").required()).isFalse();
+        assertThat(snapshot.get("public").requiredBy()).isEmpty();
         assertThat(snapshot.get("archive").requiredBy()).containsExactly("STORED_OBJECT");
         assertThat(snapshot.get("placeholder").required()).isFalse();
         assertThat(snapshot.get("placeholder").reason())
@@ -139,20 +137,12 @@ class OssStorageReadinessServiceUnitTest {
     private Fixture fixture(List<OssRequiredConfigContributor> contributors) {
         SysOssConfigMapper configMapper = mock(SysOssConfigMapper.class);
         SysOssMapper ossMapper = mock(SysOssMapper.class);
-        OssUploadProperties uploadProperties = new OssUploadProperties();
-        uploadProperties.setPolicies(new LinkedHashMap<>());
         OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
         OssStorageReadinessRegistry registry = new OssStorageReadinessRegistry(properties);
         OssReadinessClientProvider clientProvider = mock(OssReadinessClientProvider.class);
         OssStorageReadinessService service = new OssStorageReadinessService(configMapper, ossMapper,
-            uploadProperties, properties, registry, clientProvider, contributors);
-        return new Fixture(configMapper, ossMapper, uploadProperties, properties, registry, clientProvider, service);
-    }
-
-    private OssUploadProperties.Policy policy(String configKey) {
-        OssUploadProperties.Policy policy = new OssUploadProperties.Policy();
-        policy.setStorageConfigKey(configKey);
-        return policy;
+            properties, registry, clientProvider, contributors);
+        return new Fixture(configMapper, ossMapper, properties, registry, clientProvider, service);
     }
 
     private SysOssConfig config(String key, String policy, String status, String domain) {
@@ -165,7 +155,7 @@ class OssStorageReadinessServiceUnitTest {
     }
 
     private record Fixture(SysOssConfigMapper configMapper, SysOssMapper ossMapper,
-                           OssUploadProperties uploadProperties, OssStorageReadinessProperties properties,
+                           OssStorageReadinessProperties properties,
                            OssStorageReadinessRegistry registry, OssReadinessClientProvider clientProvider,
                            OssStorageReadinessService service) {
     }

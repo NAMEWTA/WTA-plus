@@ -27,8 +27,6 @@ public class OssUploadProperties implements InitializingBean {
     public static final long MAX_PART_SIZE = 5L * 1024 * 1024 * 1024;
     private static final Pattern POLICY_KEY = Pattern.compile("[a-z][a-z0-9-]{0,63}");
     private static final Pattern OBJECT_PREFIX = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9/_-]{0,127}");
-    private static final Pattern STORAGE_CONFIG_KEY = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._-]{1,19}");
-
     private Duration ticketTtl = Duration.ofHours(24);
     private Duration presignTtl = Duration.ofMinutes(5);
     private Duration cleanupRecordTtl = Duration.ofDays(7);
@@ -71,9 +69,8 @@ public class OssUploadProperties implements InitializingBean {
         if (policy.maxSize < 1 || policy.allowedContentTypes == null || policy.allowedContentTypes.isEmpty()) {
             invalid("uploadPolicy 必须声明 maxSize 和 allowedContentTypes: " + key);
         }
-        if (policy.storageConfigKey == null || !STORAGE_CONFIG_KEY.matcher(policy.storageConfigKey).matches()
-            || policy.expectedAccessPolicy == null) {
-            invalid("uploadPolicy 必须声明合法 storageConfigKey 和 expectedAccessPolicy: " + key);
+        if (policy.expectedAccessPolicy == null) {
+            invalid("uploadPolicy 必须声明 expectedAccessPolicy: " + key);
         }
         if (policy.objectPrefix == null || !OBJECT_PREFIX.matcher(policy.objectPrefix).matches()
             || policy.objectPrefix.contains("..") || policy.objectPrefix.startsWith("/")
@@ -119,7 +116,6 @@ public class OssUploadProperties implements InitializingBean {
     public static class Policy {
 
         private boolean enabled = true;
-        private String storageConfigKey;
         private AccessPolicy expectedAccessPolicy;
         private long maxSize;
         private Set<String> allowedContentTypes = new LinkedHashSet<>();

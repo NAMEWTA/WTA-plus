@@ -4,7 +4,6 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.namewta.common.core.constant.HttpStatus;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.log.annotation.Log;
@@ -45,7 +44,7 @@ public class SysOpenApiCredentialController {
     @SaCheckPermission("system:openApi:self")
     @GetMapping("/self/credential")
     public R<OpenApiCredentialSummary> getSelfCredential() {
-        return R.ok(requiredCredential(credentialService.get(LoginHelper.getUserId())));
+        return R.data(credentialService.get(LoginHelper.getUserId()));
     }
 
     @SaCheckPermission("system:openApi:self")
@@ -105,7 +104,7 @@ public class SysOpenApiCredentialController {
     @GetMapping("/users/{userId}/credential")
     public R<OpenApiCredentialSummary> getUserCredential(@PathVariable Long userId) {
         requireSuperAdmin();
-        return R.ok(requiredCredential(credentialService.get(userId)));
+        return R.data(credentialService.get(userId));
     }
 
     @SaCheckPermission("system:openApi:add")
@@ -164,10 +163,4 @@ public class SysOpenApiCredentialController {
         }
     }
 
-    private static OpenApiCredentialSummary requiredCredential(OpenApiCredentialSummary credential) {
-        if (credential == null) {
-            throw new ServiceException("OpenAPI credential is unavailable", HttpStatus.NOT_FOUND);
-        }
-        return credential;
-    }
 }

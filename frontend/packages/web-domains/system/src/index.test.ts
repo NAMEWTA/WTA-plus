@@ -103,6 +103,11 @@ describe('system web manifest', () => {
   it('labels icon-only OSS row actions for assistive technology', () => {
     expect(ossPage).toContain('aria-label="下载"');
     expect(ossPage).toContain('aria-label="删除"');
+    expect(ossPage).toContain('aria-label="恢复"');
+    expect(ossPage).toContain('aria-label="公开"');
+    expect(ossPage).toContain('aria-label="恢复私有"');
+    expect(ossPage).toContain('icon="Share"');
+    expect(ossPage).toContain('icon="Lock"');
   });
 
   it('keeps the target owner visible and clears the controlled one-time secret dialog on every close path', () => {

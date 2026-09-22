@@ -45,6 +45,44 @@ class OssStorageMigrationServiceUnitTest {
     }
 
     @Test
+    void publishThenUnpublishRestoresTheSameOssRow() {
+        long batchId = service.publish(10L, "public");
+
+        assertThat(store.objects.get(10L).getOssId()).isEqualTo(10L);
+        assertThat(store.objects.get(10L).getService()).isEqualTo("public");
+        assertThat(store.items.values()).singleElement().satisfies(item -> {
+            assertThat(item.getStatus()).isEqualTo(OssMigrationStatus.CLEANUP_ELIGIBLE);
+            assertThat(item.getSourceConfigKey()).isEqualTo("private");
+        });
+        assertThat(objects.deleteCalls).hasValue(0);
+
+        service.unpublish(10L);
+
+        assertThat(store.objects.get(10L).getOssId()).isEqualTo(10L);
+        assertThat(store.objects.get(10L).getService()).isEqualTo("private");
+        assertThat(store.getBatch(batchId).getStatus()).isEqualTo(OssMigrationStatus.ROLLED_BACK);
+    }
+
+    @Test
+    void unpublishRejectsMissingWorkOrderPendingObjectAndMissingSource() {
+        store.objects.get(10L).setDeleteState("PENDING");
+        assertThatThrownBy(() -> service.publish(10L, "public"))
+            .isInstanceOf(OssMigrationException.class);
+
+        store.objects.get(10L).setDeleteState("ACTIVE");
+        assertThatThrownBy(() -> service.unpublish(10L))
+            .isInstanceOfSatisfying(OssMigrationException.class,
+                error -> assertThat(error.error()).isEqualTo(OssMigrationError.INVALID_STATE));
+
+        service.publish(10L, "public");
+        objects.absentServices.add("private");
+        assertThatThrownBy(() -> service.unpublish(10L))
+            .isInstanceOfSatisfying(OssMigrationException.class,
+                error -> assertThat(error.error()).isEqualTo(OssMigrationError.OBJECT_NOT_FOUND));
+        assertThat(store.objects.get(10L).getService()).isEqualTo("public");
+    }
+
+    @Test
     void dryRunHasNoDatabaseOrProviderMutation() {
         var report = service.dryRun(new MigrationRequest(List.of(10L), "public"));
 
@@ -270,12 +308,20 @@ class OssStorageMigrationServiceUnitTest {
             });
             return keys;
         }
+        @Override public SysOssMigrationItem findLatestRestorable(Long ossId) {
+            return items.values().stream()
+                .filter(item -> Objects.equals(item.getOssId(), ossId)
+                    && item.getStatus() == OssMigrationStatus.CLEANUP_ELIGIBLE)
+                .max(Comparator.comparing(SysOssMigrationItem::getOssMigrationItemId))
+                .orElse(null);
+        }
     }
 
     private static final class FakeObjects implements OssMigrationObjectStore {
         private final AtomicInteger copyCalls = new AtomicInteger();
         private final AtomicInteger physicalCopies = new AtomicInteger();
         private final AtomicInteger deleteCalls = new AtomicInteger();
+        private final Set<String> absentServices = new HashSet<>();
         private boolean targetExists;
         private int deleteFailures;
         private RuntimeException transferError;
@@ -290,7 +336,7 @@ class OssStorageMigrationServiceUnitTest {
             if (!targetExists) { targetExists = true; physicalCopies.incrementAndGet(); }
             return new Transfer(10, 10, "etag", "etag");
         }
-        @Override public boolean exists(String service, String key) { return true; }
+        @Override public boolean exists(String service, String key) { return !absentServices.contains(service); }
         @Override public void delete(String service, String key) {
             deleteCalls.incrementAndGet();
             if (deleteFailures-- > 0) throw new IllegalStateException("provider delete failed");

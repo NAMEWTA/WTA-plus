@@ -80,6 +80,8 @@ export interface OssVO extends BaseEntity {
   url: string;
   createByName: string;
   service: string;
+  accessPolicy?: 'PRIVATE' | 'PUBLIC_READ' | 'UNKNOWN';
+  restorable?: boolean;
   isTemp: 'Y' | 'N';
   expireTime?: string;
   deleteState: 'ACTIVE' | 'PENDING';

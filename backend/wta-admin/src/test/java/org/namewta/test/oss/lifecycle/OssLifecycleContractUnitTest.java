@@ -1,10 +1,13 @@
 package org.namewta.test.oss.lifecycle;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import org.namewta.common.log.annotation.Log;
+import org.namewta.common.log.enums.BusinessType;
 import org.namewta.system.api.OssService;
 import org.namewta.system.controller.system.SysOssController;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -43,6 +46,28 @@ class OssLifecycleContractUnitTest {
 
         assertNotNull(permission);
         assertArrayEquals(new String[]{"system:oss:download"}, permission.value());
+    }
+
+    @Test
+    void restoreUsesPostUpdateLogAndDoesNotCollideWithDelete() throws Exception {
+        Method restore = SysOssController.class.getMethod("restore", Long[].class);
+        Method remove = SysOssController.class.getMethod("remove", Long[].class);
+        PostMapping restoreMapping = restore.getAnnotation(PostMapping.class);
+        PostMapping removeMapping = remove.getAnnotation(PostMapping.class);
+        Log log = restore.getAnnotation(Log.class);
+        SaCheckPermission permission = restore.getAnnotation(SaCheckPermission.class);
+
+        assertNotNull(restoreMapping);
+        assertNotNull(removeMapping);
+        assertArrayEquals(new String[]{"/{ossIds}/restore"}, restoreMapping.value());
+        assertArrayEquals(new String[]{"/{ossIds}"}, removeMapping.value());
+        assertNotNull(log);
+        assertEquals("OSS对象存储", log.title());
+        assertEquals(BusinessType.UPDATE, log.businessType());
+        assertFalse(log.isSaveRequestData());
+        assertFalse(log.isSaveResponseData());
+        assertNotNull(permission);
+        assertArrayEquals(new String[]{"system:oss:remove"}, permission.value());
     }
 
     @Test

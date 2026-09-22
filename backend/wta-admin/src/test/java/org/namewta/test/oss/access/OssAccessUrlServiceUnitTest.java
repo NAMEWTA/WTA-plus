@@ -4,7 +4,9 @@ import org.namewta.common.core.utils.SpringUtils;
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.domain.OssDTO;
 import org.namewta.system.domain.vo.SysOssVo;
+import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.mapper.SysOssMapper;
+import org.namewta.system.oss.migration.mapper.SysOssMigrationItemMapper;
 import org.namewta.system.oss.exception.OssLifecycleError;
 import org.namewta.system.oss.exception.OssLifecycleException;
 import org.namewta.system.oss.service.OssLifecycleManager;
@@ -30,7 +32,7 @@ class OssAccessUrlServiceUnitTest {
     void legacyUrlSelectionDelegatesToResolverAndMissingObjectFails() {
         SysOssMapper mapper = mock(SysOssMapper.class);
         OssLifecycleManager lifecycle = mock(OssLifecycleManager.class);
-        SysOssServiceImpl service = new SysOssServiceImpl(mapper, lifecycle);
+        SysOssServiceImpl service = new SysOssServiceImpl(mapper, mock(SysOssConfigMapper.class), mock(SysOssMigrationItemMapper.class), lifecycle);
         when(lifecycle.resolveAccessUrl(1L)).thenReturn(
             new OssService.OssAccessUrl("PUBLIC", "https://cdn.example.test/a.txt", null, "a.txt"));
         when(lifecycle.resolveAccessUrl(2L)).thenThrow(
@@ -46,7 +48,7 @@ class OssAccessUrlServiceUnitTest {
     void legacyDtoSelectionFiltersMissingAndUsesUnifiedResolver() {
         SysOssMapper mapper = mock(SysOssMapper.class);
         OssLifecycleManager lifecycle = mock(OssLifecycleManager.class);
-        SysOssServiceImpl service = new SysOssServiceImpl(mapper, lifecycle);
+        SysOssServiceImpl service = new SysOssServiceImpl(mapper, mock(SysOssConfigMapper.class), mock(SysOssMigrationItemMapper.class), lifecycle);
         SysOssVo existing = vo(1L, "persisted-url");
         when(mapper.selectVoById(1L)).thenReturn(existing);
         when(mapper.selectVoById(2L)).thenReturn(null);
@@ -69,7 +71,7 @@ class OssAccessUrlServiceUnitTest {
     void managementListNeverReturnsAccessUrl() {
         SysOssMapper mapper = mock(SysOssMapper.class);
         OssLifecycleManager lifecycle = mock(OssLifecycleManager.class);
-        SysOssServiceImpl service = new SysOssServiceImpl(mapper, lifecycle);
+        SysOssServiceImpl service = new SysOssServiceImpl(mapper, mock(SysOssConfigMapper.class), mock(SysOssMigrationItemMapper.class), lifecycle);
         when(mapper.selectVoById(1L)).thenReturn(vo(1L, "https://stored.example/object"));
         when(lifecycle.snapshot(1L)).thenReturn(
             new OssService.OssLifecycleSnapshot(1L, false, null, List.of()));

@@ -96,4 +96,16 @@ public class MybatisOssMigrationStore implements OssMigrationStore {
     public Set<String> activeConfigKeys() {
         return new LinkedHashSet<>(itemMapper.selectActiveConfigKeys());
     }
+
+    @Override
+    public SysOssMigrationItem findLatestRestorable(Long ossId) {
+        if (ossId == null) {
+            return null;
+        }
+        return itemMapper.selectOne(new LambdaQueryWrapper<SysOssMigrationItem>()
+            .eq(SysOssMigrationItem::getOssId, ossId)
+            .eq(SysOssMigrationItem::getStatus, OssMigrationStatus.CLEANUP_ELIGIBLE)
+            .orderByDesc(SysOssMigrationItem::getOssMigrationItemId)
+            .last("limit 1"));
+    }
 }

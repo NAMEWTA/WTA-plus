@@ -19,7 +19,7 @@ import java.util.List;
 public class OssUploadDiagnostics {
 
     private final OssStorageReadinessRegistry readinessRegistry;
-    private final OssUploadProperties uploadProperties;
+    private final OssDefaultStorageKey defaultStorageKey;
     private final OssReadinessClientProvider clientProvider;
 
     public List<String> requirements() {
@@ -39,8 +39,12 @@ public class OssUploadDiagnostics {
                 log.warn("OSS存储配置 [{}] readiness 未通过: {}", configKey, entry.reason());
             }
         });
-        uploadProperties.getPolicies().values().stream().filter(OssUploadProperties.Policy::isEnabled)
-            .map(OssUploadProperties.Policy::getStorageConfigKey).distinct().forEach(this::reportUploadPrerequisites);
+        String storageConfigKey = defaultStorageKey.current();
+        if (storageConfigKey == null || storageConfigKey.isBlank()) {
+            log.warn("OSS Direct Upload 未配置默认存储");
+            return;
+        }
+        reportUploadPrerequisites(storageConfigKey);
     }
 
     private void reportUploadPrerequisites(String configKey) {

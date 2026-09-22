@@ -74,6 +74,16 @@ public class SysOssVo implements Serializable {
     private String service;
 
     /**
+     * 当前 service 对应配置的访问类型。不入库，由列表查询填入。
+     */
+    private String accessPolicy;
+
+    /**
+     * 是否存在尚未清理来源的公开工单，可以恢复为私有。
+     */
+    private boolean restorable;
+
+    /**
      * 是否为临时对象。
      */
     private String isTemp;

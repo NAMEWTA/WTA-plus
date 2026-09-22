@@ -57,8 +57,24 @@ class CorsPolicyTest {
     }
 
     @Test
-    void invalidOrWildcardOriginConfigurationIsRejected() {
-        for (String invalid : List.of("*", "https://*.example.test", "null", "file:///tmp", "https://user@example.test",
+    void wildcardOriginAllowsCredentialedRequestAndReflectsOrigin() throws Exception {
+        var properties = new CorsProperties();
+        properties.setAllowedOrigins(List.of("*"));
+        var request = new MockHttpServletRequest("POST", "/auth/login");
+        request.addHeader("Origin", "http://172.16.105.9:5177");
+        var response = new MockHttpServletResponse();
+        var reached = new AtomicBoolean();
+        new ResourcesConfig().corsFilter(properties).doFilter(request, response,
+            (req, res) -> reached.set(true));
+        assertThat(reached).isTrue();
+        assertThat(response.getStatus()).isNotEqualTo(403);
+        assertThat(response.getHeader("Access-Control-Allow-Origin")).isEqualTo("http://172.16.105.9:5177");
+        assertThat(response.getHeader("Access-Control-Allow-Credentials")).isEqualTo("true");
+    }
+
+    @Test
+    void invalidOriginConfigurationIsRejected() {
+        for (String invalid : List.of("https://*.example.test", "null", "file:///tmp", "https://user@example.test",
             "https://example.test/", "https://example.test/path", "https://example.test?x=1",
             "https://example.test#fragment", "https://example.test:65536")) {
             var properties = new CorsProperties();
@@ -66,5 +82,9 @@ class CorsPolicyTest {
             assertThatThrownBy(() -> new ResourcesConfig().corsFilter(properties)).as(invalid)
                 .isInstanceOf(IllegalArgumentException.class);
         }
+        var mixed = new CorsProperties();
+        mixed.setAllowedOrigins(List.of("*", "http://127.0.0.1:4176"));
+        assertThatThrownBy(() -> new ResourcesConfig().corsFilter(mixed))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 }

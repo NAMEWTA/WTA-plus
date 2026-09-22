@@ -194,6 +194,46 @@ public class OssLifecycleManager {
         return true;
     }
 
+    /**
+     * 把待删除对象恢复为当前引用对应的生命周期。
+     *
+     * <p>删除标记会改写原来的临时标志和过期时间，因此这里不回放旧字段，
+     * 而是与绑定、解绑使用同一规则：仍有有效引用则回到已绑定，没有引用则按
+     * 临时保留时长重新起算。这样恢复后的对象不会因为删除时写入的过期时间立刻再次清理。
+     * 任一行不是待删除时整批不写，避免部分恢复。</p>
+     *
+     * @param ossIds 待恢复的对象主键；空集合不访问数据库
+     * @return 是否完成恢复写入
+     * @throws OssLifecycleException 对象不存在，或其中包含非待删除对象
+     */
+    @DSTransactional
+    public boolean restoreObjects(Collection<Long> ossIds) {
+        if (ossIds == null || ossIds.isEmpty()) {
+            return false;
+        }
+        List<Long> orderedIds = ossIds.stream().distinct().sorted().toList();
+        List<SysOss> objects = ossMapper.selectByIdsForUpdate(orderedIds).stream()
+            .sorted(Comparator.comparing(SysOss::getOssId)).toList();
+        if (objects.size() != orderedIds.size()) {
+            throw new OssLifecycleException(OssLifecycleError.OBJECT_NOT_FOUND, "部分 OSS 对象不存在");
+        }
+        for (SysOss oss : objects) {
+            if (!DELETE_PENDING.equals(oss.getDeleteState())) {
+                throw new OssLifecycleException(OssLifecycleError.OBJECT_NOT_DELETE_PENDING,
+                    "OSS 对象不处于待删除: " + oss.getOssId());
+            }
+        }
+        LocalDateTime now = LocalDateTime.now();
+        for (SysOss oss : objects) {
+            if (refMapper.countActiveByOssId(oss.getOssId()) > 0) {
+                ossMapper.updateLifecycle(oss.getOssId(), "N", null);
+            } else {
+                ossMapper.updateLifecycle(oss.getOssId(), "Y", now.plus(properties.getTempRetention()));
+            }
+        }
+        return true;
+    }
+
     @DSTransactional
     public boolean cleanupExpired(Long ossId, LocalDateTime now, boolean dryRun) {
         SysOss oss = requireLocked(ossId);

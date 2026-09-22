@@ -1,6 +1,6 @@
 import type { LoadingInstance } from 'element-plus';
 import axiosModule from 'axios';
-import { extractErrorMessage, globalHeaders } from '@/application/http';
+import { extractErrorMessage, globalHeaders, isHandledRequestError } from '@/application/http';
 import { systemService } from '@/application/services';
 import errorCode from '@/utils/errorCode';
 import { saveBlob } from '@/utils/save';
@@ -124,8 +124,10 @@ export default {
       link.remove();
     } catch (r) {
       console.error(r);
-      const errMsg = await extractErrorMessage(r);
-      ElMessage.error(errMsg || '下载文件出现错误，请联系管理员！');
+      if (!isHandledRequestError(r)) {
+        const errMsg = await extractErrorMessage(r);
+        ElMessage.error(errMsg || '下载文件出现错误，请联系管理员！');
+      }
     } finally {
       downloadLoadingInstance?.close();
     }

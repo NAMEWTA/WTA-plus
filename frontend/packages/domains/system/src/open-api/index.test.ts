@@ -134,7 +134,7 @@ describe('OpenAPI scope-specific HTTP contracts', () => {
   it('exposes different compile-time signatures for current and target user scopes', () => {
     const service = createOpenApiService({ request: vi.fn() });
     expectTypeOf(service.currentUser.getCredential).toEqualTypeOf<
-      () => Promise<OpenApiResponse<OpenApiCredentialSummary>>
+      () => Promise<OpenApiResponse<OpenApiCredentialSummary | null>>
     >();
     expectTypeOf(service.targetUser.getCredential).parameter(0).toEqualTypeOf<string | number>();
   });

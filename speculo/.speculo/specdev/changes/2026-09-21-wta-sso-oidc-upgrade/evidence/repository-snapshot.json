@@ -1,0 +1,187 @@
+{
+  "checked_at": "2026-09-21T13:46:01.739843+00:00",
+  "head": "2b4fd1f4b0e8f8c3520788f35a08476d5ecb0257",
+  "review_mode": "static source review; no product tests run",
+  "source_files": [
+    {
+      "path": "<Path>.agents/skills/engineering-standards/references/rules/api-errors-resources.md</Path>",
+      "sha256": "2ad51aa47fce7550fc11d934cb69dc1b6afaa5e792060af3d0c29b683cc24bef"
+    },
+    {
+      "path": "<Path>backend/pom.xml</Path>",
+      "sha256": "a9f42fd1aaeefbb38c7109f70f2cbb25b682ece5b0fb2a9a59c64d8241680efc"
+    },
+    {
+      "path": "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path>",
+      "sha256": "dcc71ba89b5622cee379a5b2c81cf0c37e9b76cd6a52fdb04dc0d4da64e16e41"
+    },
+    {
+      "path": "<Path>backend/wta-admin/src/main/java/org/namewta/web/service/SysRegisterService.java</Path>",
+      "sha256": "7fb8429970a2f0d71a69468383893f2f636d441a66771ede11e2bec6f03e071b"
+    },
+    {
+      "path": "<Path>backend/wta-admin/src/main/java/org/namewta/web/sso/AdminSsoIdentityService.java</Path>",
+      "sha256": "555bf7ced95dba93a8a985e157af565007d885e981d34cba6ac5cbdcd4b7d680"
+    },
+    {
+      "path": "<Path>backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java</Path>",
+      "sha256": "ac25db25d64e56d388b7fd87ae0135515481b2f67db1b31f8df5cea038d46e08"
+    },
+    {
+      "path": "<Path>backend/wta-api/src/main/java/org/namewta/sso/api/SsoIdentityService.java</Path>",
+      "sha256": "74742fa43813313637de0de0875e70f15994691f35de55c6118b0edbe13323b9"
+    },
+    {
+      "path": "<Path>backend/wta-common/wta-common-security/src/main/java/org/namewta/common/security/config/SecurityConfig.java</Path>",
+      "sha256": "c759e4154107f39c864b7c06d487463c27168f28620225225b41de9d40842d31"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/adapter/http/SsoSessionCookie.java</Path>",
+      "sha256": "ca52452852f6a77fab5df955d419ba8cdbb31406d7f0992997bada43277f6de5"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/adapter/store/RedisSsoSessionStore.java</Path>",
+      "sha256": "f7ae5fb8adecd38ecf05a26df53de7e59ea6d568071426175af081ee2d330808"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path>",
+      "sha256": "d8241ea3f4fe517557a720d37830f5baed23678c7de34e155f874ec9c6a5c99f"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/domain/SsoOAuthCommands.java</Path>",
+      "sha256": "41077ea3fecb204cffedb8f7c9660408d23650da9c22c121e5bd59fe4ff0c2c1"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/domain/bo/SsoLoginBo.java</Path>",
+      "sha256": "c9c550339636fd2243b28012312238b36c7e2a49861ce2d6fdfef5a3a77d00fa"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/domain/vo/SsoTokenVo.java</Path>",
+      "sha256": "de7c2cface865d8be96c44b49db244527ac1e7be37ce91497adfed16dbfc3945"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoAuthorizationService.java</Path>",
+      "sha256": "8ed1ab0d0f8b78768e9b23100d8b1c70da411bcdbece9dc47b02daa3c7f0d716"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/service/SsoSessionService.java</Path>",
+      "sha256": "60f61fa98ddb94ee355d65de7a861846e00690ed3c8a0a067e5d57c92df90425"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/support/PkceS256.java</Path>",
+      "sha256": "5ef245a158d5a0cd83c95db51ef286286a43676fa159c665810806be661d9643"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/mapper/SysUserMapper.java</Path>",
+      "sha256": "3a367f63a1cb05c45473ee9972e11314627cc3b3a330a5360ce56eed81d6fbfa"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysClientServiceImpl.java</Path>",
+      "sha256": "f8536ef032819e4410818b0a2a549801be574a52cae78c0230a8a4763ec2c3aa"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysUserServiceImpl.java</Path>",
+      "sha256": "63f184839c42c0625921463f05a0981c0c84fd0dd9505fe8dfe4b049d9a918cf"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/sso/SsoClientFieldsSupport.java</Path>",
+      "sha256": "eb8b58955a43832e3eb5066892df88d873b8431373601ee33826f846c3a4c6ed"
+    },
+    {
+      "path": "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/sso/SystemSsoClientCatalog.java</Path>",
+      "sha256": "c80d2a451577276edb27e4f62c36c7bc9ade5ad2a40da956d666b6fc88c072a6"
+    },
+    {
+      "path": "<Path>frontend/apps/admin-web/src/views/login.vue</Path>",
+      "sha256": "9200070a189ccfcee0ff33069c9145158a1d7c8d5426b31cc25e998bfdaf8386"
+    },
+    {
+      "path": "<Path>frontend/apps/sso-web/src/main.ts</Path>",
+      "sha256": "a9b8ce636c63fa281e6ab77f3179923a328d2e64cf991e24c140996c2626eeaa"
+    },
+    {
+      "path": "<Path>frontend/apps/sso-web/src/ssoApi.ts</Path>",
+      "sha256": "d09e1c971dc792cbb6a987297cff501fd88f145d29ad1be6f8064adaa3f88832"
+    },
+    {
+      "path": "<Path>frontend/apps/sso-web/src/views/AuthorizePage.vue</Path>",
+      "sha256": "e4ea290d890411f7d2fde95c39909a07b0cd627988d4eb114d4c44eaf8bc7a93"
+    },
+    {
+      "path": "<Path>frontend/e2e/sso-callback-journey.spec.ts</Path>",
+      "sha256": "93b70c2998f50f122b4651904e138d361493abc41b9a8fede9870ccbca69272a"
+    },
+    {
+      "path": "<Path>frontend/e2e/sso-release-origin.spec.ts</Path>",
+      "sha256": "8dc5596b97d4a6cfe2eedc8c5f5ab0d2f9dda8b987a316438dd21d5da64820ce"
+    },
+    {
+      "path": "<Path>frontend/e2e/sso-three-gates.spec.ts</Path>",
+      "sha256": "516f65c30efa98e83e91aa4a7f44c9c7953a6b175753a09604bcb96015eecaa8"
+    },
+    {
+      "path": "<Path>frontend/packages/domains/admin/src/index.ts</Path>",
+      "sha256": "e0233ba92be1f830ff586978704f54fb1d25bf7ac49700c61e4d1c48af7d0b06"
+    },
+    {
+      "path": "<Path>frontend/packages/platform/auth/src/index.ts</Path>",
+      "sha256": "a2b809f826bffcdf92391c67f6c50f797e51253efbcb40b5b3959dd2d1c6dabf"
+    },
+    {
+      "path": "<Path>frontend/packages/web-domains/admin/src/auth/LoginPage.vue</Path>",
+      "sha256": "ff494f036ed421203c619bdb850cdcc9d262255b48c67df0ba2ca9ec0214e735"
+    },
+    {
+      "path": "<Path>frontend/packages/web-domains/admin/src/loginState.ts</Path>",
+      "sha256": "de972418d091fadd9203d8d7b2db8d771aa42d1398bf3e1854917d19ee268bf1"
+    },
+    {
+      "path": "<Path>frontend/packages/web-domains/system/src/sso-app/SsoAppPage.vue</Path>",
+      "sha256": "7aed5b89c7a22693bb4f53487c9f0f098df2284d80fb65dfb02e14a808284285"
+    },
+    {
+      "path": "<Path>frontend/playwright.config.ts</Path>",
+      "sha256": "1eb4acad3d85180bd121c31433c9d2334b1c5d731e4a36630545a7a672fa1965"
+    },
+    {
+      "path": "<Path>release-artifacts/apps.json</Path>",
+      "sha256": "a8786c42f79b1f0a38fa2bef261464b79c58b4029ac8939bfa1670b0df0192a7"
+    },
+    {
+      "path": "<Path>release-artifacts/docker/frontend/nginx/apps/nginx-sso-web-tls.conf.template</Path>",
+      "sha256": "77f6b4802c6bde9a891717125763801502c6daba3512db3db23b750f7e685720"
+    },
+    {
+      "path": "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>",
+      "sha256": "62f6f4ea845c22acd5c8e8322ba810c78570132bb5510d289301da969ad2de9c"
+    },
+    {
+      "path": "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path>",
+      "sha256": "98a1e325330c2ffe676f19d347a1336adeeaeb3dfbd831459f311b3a390e2bb0"
+    },
+    {
+      "path": "<Path>release-artifacts/tests/fixtures/sso-release-origin.py</Path>",
+      "sha256": "bced36b8c534d371e1a0855d178374b16a741313498d3e59452bc9d35c5d44e1"
+    },
+    {
+      "path": "<Path>scripts/ci/run-external-services.sh</Path>",
+      "sha256": "80bd2d9ceab7f81b09ab6103034c79e7ed15aff3ffde5bd972fff6932e196ea3"
+    },
+    {
+      "path": "<Path>scripts/sso-hard-e2e.sh</Path>",
+      "sha256": "00e2d0a606c282b65f92c91d9daca11be5a37da64005194156cb078e8e2cb915"
+    }
+  ],
+  "pre_existing_changes_preserved": [
+    "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>",
+    "<Path>.agents/skills/engineering-standards/references/project/01-module-map.md</Path>",
+    "<Path>speculo/.speculo/specdev/capture.md</Path>",
+    "<Path>speculo/.speculo/specdev/changes/2026-09-19-go-python-ai-platform/.status.json</Path>",
+    "<Path>speculo/.speculo/specdev/changes/2026-09-19-go-python-ai-platform/source.md</Path>",
+    "<Path>speculo/.speculo/specdev/changes/2026-09-19-go-python-ai-platform/triage.md</Path>",
+    "<Path>speculo/.speculo/specdev/changes/2026-09-19-go-python-ai-platform/worklog.md</Path>"
+  ],
+  "global_index_only_appended_own_change": true,
+  "all_document_path_refs_exist": true,
+  "user_request_sha256": "d2b0649888883449e5dd770dbb2d98f48fe8e8e93d92f9072a19d7c319b8f982"
+}

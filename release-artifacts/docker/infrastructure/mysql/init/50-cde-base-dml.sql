@@ -140,6 +140,7 @@ insert into sys_menu values(1761400000000001600, NULL, '文件查询', 176140000
 insert into sys_menu values(1761400000000001601, NULL, '文件上传', 1761400000000000118, 2, '#', '', '', 'N', 'Y', 'F', '0', '0', 'system:oss:upload', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '');
 insert into sys_menu values(1761400000000001602, NULL, '文件下载', 1761400000000000118, 3, '#', '', '', 'N', 'Y', 'F', '0', '0', 'system:oss:download', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '');
 insert into sys_menu values(1761400000000001603, NULL, '文件删除', 1761400000000000118, 4, '#', '', '', 'N', 'Y', 'F', '0', '0', 'system:oss:remove', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '');
+insert into sys_menu values(1761400000000001604, NULL, '文件公开', 1761400000000000118, 4, '#', '', '', 'N', 'Y', 'F', '0', '0', 'system:oss:publish', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '');
 insert into sys_menu values(1761400000000001620, NULL, '配置列表', 1761400000000000118, 5, '#', '', '', 'N', 'Y', 'F', '0', '0', 'system:ossConfig:list', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '');
 insert into sys_menu values(1761400000000001621, NULL, '配置添加', 1761400000000000118, 6, '#', '', '', 'N', 'Y', 'F', '0', '0', 'system:ossConfig:add', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '');
 insert into sys_menu values(1761400000000001622, NULL, '配置编辑', 1761400000000000118, 6, '#', '', '', 'N', 'Y', 'F', '0', '0', 'system:ossConfig:edit', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '');
@@ -256,6 +257,7 @@ insert into sys_role_menu values (1761300000000000003, 1761400000000001600);
 insert into sys_role_menu values (1761300000000000003, 1761400000000001601);
 insert into sys_role_menu values (1761300000000000003, 1761400000000001602);
 insert into sys_role_menu values (1761300000000000003, 1761400000000001603);
+insert into sys_role_menu values (1761300000000000003, 1761400000000001604);
 insert into sys_role_menu values (1761300000000000003, 1761400000000001620);
 insert into sys_role_menu values (1761300000000000003, 1761400000000001621);
 insert into sys_role_menu values (1761300000000000003, 1761400000000001622);

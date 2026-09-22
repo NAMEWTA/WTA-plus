@@ -25,6 +25,7 @@ import org.namewta.common.oss.model.OssObjectOptions;
 import org.namewta.common.oss.model.OssObjectStat;
 import org.namewta.common.oss.model.OssPresignedRequest;
 import org.namewta.common.oss.model.PutObjectResult;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.awscore.presigner.PresignedRequest;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.async.AsyncRequestBody;
@@ -1023,16 +1024,31 @@ public abstract class AbstractOssClientImpl implements OssClient {
                 false, false, false, checkedAt);
         }
 
-        PublicAccess publicAccess;
+        // 最小权限账号不能读桶策略时返回 403，不是 404。没有可读策略就继续看匿名访问，不能把无权读取当成存储故障。
+        String policy;
         try {
-            String policy = readBucketPolicy(bucket, timeout);
-            var acl = await(s3AsyncClient.getBucketAcl(builder -> builder.bucket(bucket)), timeout);
-            publicAccess = PublicAccess.from(policy, acl.grants());
+            policy = readBucketPolicy(bucket, timeout);
         } catch (RuntimeException ex) {
-            return diagnostic(OssAccessDiagnostic.Verification.UNVERIFIED,
-                diagnosticFailure(ex, OssAccessDiagnostic.Reason.POLICY_UNREADABLE), expectedPolicy,
-                false, false, false, checkedAt);
+            if (!isPolicyReadDenied(ex)) {
+                return diagnostic(OssAccessDiagnostic.Verification.UNVERIFIED,
+                    diagnosticFailure(ex, OssAccessDiagnostic.Reason.POLICY_UNREADABLE), expectedPolicy,
+                    false, false, false, checkedAt);
+            }
+            policy = "";
         }
+        List<software.amazon.awssdk.services.s3.model.Grant> grants;
+        try {
+            var acl = await(s3AsyncClient.getBucketAcl(builder -> builder.bucket(bucket)), timeout);
+            grants = acl.grants() == null ? List.of() : acl.grants();
+        } catch (RuntimeException ex) {
+            if (!isPolicyReadDenied(ex)) {
+                return diagnostic(OssAccessDiagnostic.Verification.UNVERIFIED,
+                    diagnosticFailure(ex, OssAccessDiagnostic.Reason.POLICY_UNREADABLE), expectedPolicy,
+                    false, false, false, checkedAt);
+            }
+            grants = List.of();
+        }
+        PublicAccess publicAccess = PublicAccess.from(policy, grants);
 
         AnonymousRead anonymousRead;
         try {
@@ -1064,6 +1080,18 @@ public abstract class AbstractOssClientImpl implements OssClient {
         }
         return diagnostic(OssAccessDiagnostic.Verification.VERIFIED, OssAccessDiagnostic.Reason.READY,
             expectedPolicy, anonymousRead.headAllowed(), anonymousRead.getAllowed(), true, checkedAt);
+    }
+
+    private boolean isPolicyReadDenied(RuntimeException ex) {
+        Throwable cause = unwrapAsyncException(ex);
+        if (!(cause instanceof AwsServiceException serviceException)) {
+            return false;
+        }
+        if (serviceException.statusCode() == 403) {
+            return true;
+        }
+        return serviceException.awsErrorDetails() != null
+            && "AccessDenied".equals(serviceException.awsErrorDetails().errorCode());
     }
 
     private String readBucketPolicy(String bucket, Duration timeout) {

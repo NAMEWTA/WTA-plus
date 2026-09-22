@@ -39,12 +39,18 @@ public class CorsProperties {
     private Long maxAge = 1800L;
 
     /**
-     * @return 经校验的精确HTTP(S) origin；禁止任何通配模式或带路径的URL
+     * @return 经校验的来源；单独的 {@code *} 表示临时允许任意 Origin，其余值必须是不带路径的精确 HTTP(S) origin
      * @throws IllegalArgumentException 错误配置时拒绝启动，不自动放宽信任
      */
     public List<String> validatedOrigins() {
         return allowedOrigins.stream().map(origin -> {
             String value = origin.trim();
+            if ("*".equals(value)) {
+                if (allowedOrigins.size() != 1) {
+                    throw new IllegalArgumentException("CORS wildcard cannot be combined with explicit origins");
+                }
+                return value;
+            }
             URI uri = URI.create(value);
             if ((!"http".equalsIgnoreCase(uri.getScheme()) && !"https".equalsIgnoreCase(uri.getScheme()))
                 || uri.getHost() == null || value.contains("*") || uri.getUserInfo() != null

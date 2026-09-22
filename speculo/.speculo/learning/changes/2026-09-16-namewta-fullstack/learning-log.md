@@ -8,3 +8,5 @@
 | 2026-09-16T07:53:45.456Z | learning/consolidate | 四门课嵌入 `children/`。locator 已更新。 |
 | 2026-09-16T08:47:16.000Z | learning/goal | replan：旧计划归档 `goal/revisions/REV-001.md`。对齐 mine unit / teach-then-mine / Lead 扇出 / 每课 ≤10 问。85 课切 U1–U9（各 ≤15）。Wave 收成 2。不写 lessons/ 与 probes。`ready_for_execution: false`。`goal/verify.md` 保持过期过程即停记录，本会话不改。 |
 | 2026-09-17T14:40:00.000Z | /goal | U1…U9 teach-then-mine 结束。85 Lesson + 85 `GP-*-b01`。矩阵 covered=163 / deferred=7 / covered-by-parent=5 / uncovered=0。重写 `goal/verify.md` 完成即停。 |
+| 2026-09-22T08:30:00.000Z | learning/lesson | 学习者指定 `SysOssMigrationController`、直传与后端上传是否独立、当前实现、以及 MinIO 创建配置。写入 `lessons/L-086-oss-migration-and-minio.md`。不改 Goal 链，不写作业，不宣称掌握。`current_work` 清空。 |
+| 2026-09-22T09:10:00.000Z | learning/lesson | 学习者指定 `application.yml` 第 82–218 行的读写与每个键的含义，并追问 `storage-config-key: minio` 写死是否必须改。写入 `lessons/L-087-oss-direct-upload-yaml.md`。不改 Goal 链，不写作业。`current_work` 清空。 |

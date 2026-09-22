@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-09-21-wta-sso-oidc-upgrade",
+  "status": "blocked",
+  "round": 1,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "内外统一 OIDC",
+      "question": "内部 App 与外部平台是否采用同一 OIDC 认证核心？",
+      "depends_on": [],
+      "recommendation": "采用同一 issuer、协议与账户核心，权限仍按 Client 独立。",
+      "status": "answered",
+      "round": 1,
+      "answer": "内部与外部交互一致，按 OIDC 提供统一 SSO。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "默认与自定义界面",
+      "question": "是否同时支持默认 sso-web 与 App/第三方自定义登录注册界面？",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "支持两种界面，但高影响凭据/托管边界另行明确。",
+      "status": "answered",
+      "round": 1,
+      "answer": "两种均需要；界面自主性不改变统一认证要求。",
+      "log_ref": "LOG-002"
+    },
+    {
+      "id": "D-003",
+      "title": "唯一账户与用户管理",
+      "question": "是否复用 sys_*，并让 SSO 注册账户在系统用户管理出现？",
+      "depends_on": [],
+      "recommendation": "复用 sys_user 和现有关系，不创建平行用户库。",
+      "status": "answered",
+      "round": 1,
+      "answer": "必须复用，注册用户应在系统用户表和管理界面可见、可管理。",
+      "log_ref": "LOG-003"
+    },
+    {
+      "id": "D-004",
+      "title": "完整前后端范围",
+      "question": "是否覆盖后端、sso-web、Admin/Home 入口与管理验收？",
+      "depends_on": [
+        "D-001"
+      ],
+      "recommendation": "复用已有入口并完成协议和全链路升级。",
+      "status": "answered",
+      "round": 1,
+      "answer": "完整前后端，Admin/Home 点击 WTA SSO 跳 sso-web 登录。",
+      "log_ref": "LOG-004"
+    },
+    {
+      "id": "D-005",
+      "title": "自定义 UI 的凭据边界",
+      "question": "第三方需要在其自己的域名或原生界面直接收集统一账户密码，还是可将定制认证页面部署在受控 SSO Origin？",
+      "depends_on": [
+        "D-002"
+      ],
+      "recommendation": "推荐默认开放受控认证 Origin 上的定制页面；如确需自托管凭据 UI，仅为审核准入的认证交互扩展，明确凭据暴露与会话完成约束。",
+      "status": "open",
+      "round": null,
+      "answer": null,
+      "log_ref": null
+    },
+    {
+      "id": "D-006",
+      "title": "身份、资源令牌与外部权限",
+      "question": "外部应用仅用 WTA 身份登录，还是也需要调用 WTA 业务 API；现有 Sa-Token 合同如何迁移？",
+      "depends_on": [
+        "D-001",
+        "D-003"
+      ],
+      "recommendation": "默认外部仅身份 scopes；保留 Sa-Token 不透明令牌并补足 scope/resource 边界作为优先候选，若适配验证失败再显式选择 OIDC token 与 WTA 业务会话桥接。",
+      "status": "open",
+      "round": null,
+      "answer": null,
+      "log_ref": null
+    },
+    {
+      "id": "D-007",
+      "title": "已有账户首次接入其他 Client",
+      "question": "已有统一账户首次进入尚无准入关系的外部 Client 时，允许自助授权取得该普通 Client 的准入，还是必须管理员事先分配？",
+      "depends_on": [
+        "D-003",
+        "D-006"
+      ],
+      "recommendation": "普通开放 Client 按显式登记策略自助准入；admin 等受限 Client 保持管理员分配；不得用注册绕过现有登录域隔离。",
+      "status": "open",
+      "round": null,
+      "answer": null,
+      "log_ref": null
+    },
+    {
+      "id": "D-008",
+      "title": "完整生命周期范围",
+      "question": "本 change 是否同时交付刷新轮换、同意管理、密码找回与统一退出，还是对其中能力有明确范围限制？",
+      "depends_on": [
+        "D-004"
+      ],
+      "recommendation": "推荐将 refresh/revoke/consent/找回/账户失效和 RP 发起退出纳入完整交付；是否承诺外部 RP 全局退出传播及 SLA 另列明确边界，不使用含糊的完整承诺。",
+      "status": "open",
+      "round": null,
+      "answer": null,
+      "log_ref": null
+    },
+    {
+      "id": "D-009",
+      "title": "服务部署形态",
+      "question": "本次形成 SSO 服务是否必须独立 Java 进程，还是保持当前后端组装并提供独立 HTTPS issuer 与 sso-web Origin？",
+      "depends_on": [
+        "D-004"
+      ],
+      "recommendation": "沿用当前后端组装、提供独立认证 Origin 与稳定 issuer，避免为用户复用引入跨进程直连 System Mapper；仅在明确隔离需求时另定独立进程适配。",
+      "status": "open",
+      "round": null,
+      "answer": null,
+      "log_ref": null
+    }
+  ]
+}

@@ -1,43 +1,44 @@
 <template>
-  <main class="app-container openapi-admin-page">
-    <header class="page-heading">
-      <div>
-        <h2>OpenAPI 管理</h2>
-        <p>选择目标用户后管理其调用凭据与实时接口目录。</p>
-      </div>
-    </header>
-    <section class="target-toolbar" aria-labelledby="target-user-heading">
-      <div>
-        <h3 id="target-user-heading">目标用户</h3>
-        <p>所有操作只作用于当前明确选择的用户。</p>
-      </div>
-      <el-select
-        v-model="selectedUserId"
-        filterable
-        remote
-        clearable
-        :remote-method="searchUsers"
-        :loading="loadingUsers"
-        placeholder="搜索用户名或昵称"
-        class="user-select"
-      >
-        <el-option
-          v-for="user in users"
-          :key="String(user.userId)"
-          :value="String(user.userId)"
-          :label="userLabel(user)"
-        />
-      </el-select>
-    </section>
-    <el-alert v-if="userError" :title="userError" type="error" show-icon :closable="false" />
-    <el-empty v-if="!selectedUser" description="请选择要管理的目标用户" :image-size="88" />
-    <open-api-workspace
-      v-else
-      :key="String(selectedUser.userId)"
-      :runtime="runtime"
-      :scope="{ kind: 'target-user', userId: selectedUser.userId, userLabel: userLabel(selectedUser) }"
-    />
-  </main>
+  <div class="p-2 app-container openapi-admin-page">
+    <el-card shadow="hover" class="table-panel">
+      <template #header>
+        <div class="toolbar-shell">
+          <div class="table-heading">
+            <h3>OpenAPI 管理</h3>
+            <p>选择目标用户后管理其调用凭据与实时接口目录。</p>
+          </div>
+          <div class="toolbar-actions">
+            <el-select
+              v-model="selectedUserId"
+              filterable
+              remote
+              clearable
+              :remote-method="searchUsers"
+              :loading="loadingUsers"
+              placeholder="搜索用户名或昵称"
+              aria-label="目标用户"
+              class="user-select"
+            >
+              <el-option
+                v-for="user in users"
+                :key="String(user.userId)"
+                :value="String(user.userId)"
+                :label="userLabel(user)"
+              />
+            </el-select>
+          </div>
+        </div>
+      </template>
+      <el-alert v-if="userError" :title="userError" type="error" show-icon :closable="false" />
+      <el-empty v-if="!selectedUser" description="请选择要管理的目标用户" />
+      <open-api-workspace
+        v-else
+        :key="String(selectedUser.userId)"
+        :runtime="runtime"
+        :scope="{ kind: 'target-user', userId: selectedUser.userId, userLabel: userLabel(selectedUser) }"
+      />
+    </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -78,34 +79,7 @@ onMounted(() => void searchUsers());
 </script>
 
 <style scoped>
-.openapi-admin-page {
-  display: grid;
-  gap: 20px;
-}
-.page-heading h2,
-.target-toolbar h3 {
-  margin: 0;
-}
-.page-heading p,
-.target-toolbar p {
-  color: var(--el-text-color-secondary);
-  margin: 6px 0 0;
-}
-.target-toolbar {
-  align-items: end;
-  border-bottom: 1px solid var(--el-border-color-lighter);
-  display: grid;
-  gap: 18px;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
-  padding-bottom: 18px;
-}
 .user-select {
-  width: 100%;
-}
-@media (max-width: 720px) {
-  .target-toolbar {
-    align-items: stretch;
-    grid-template-columns: 1fr;
-  }
+  width: 280px;
 }
 </style>

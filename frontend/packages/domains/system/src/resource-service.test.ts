@@ -94,6 +94,9 @@ describe('system resource transports', () => {
     await service.oss.abortUpload('upload/token');
     await service.oss.downloadUrl('oss/1');
     await service.oss.delete(['oss/1', 2]);
+    await service.oss.restore(['oss/1', 2]);
+    await service.oss.publish('oss/1', 'public');
+    await service.oss.unpublish('oss/1');
     await service.ossConfigs.list(query as never);
     await service.ossConfigs.get('config/1');
     await service.ossConfigs.add(ossConfigForm);
@@ -137,6 +140,9 @@ describe('system resource transports', () => {
       { url: '/resource/oss/uploads/upload%2Ftoken', method: 'post' },
       { url: '/resource/oss/oss%2F1/download-url', method: 'get' },
       { url: '/resource/oss/oss%2F1,2', method: 'post' },
+      { url: '/resource/oss/oss%2F1,2/restore', method: 'post' },
+      { url: '/resource/oss/oss%2F1/publish', method: 'post', data: { targetConfigKey: 'public' } },
+      { url: '/resource/oss/oss%2F1/unpublish', method: 'post' },
       { url: '/resource/oss/config/list', method: 'get', params: query },
       { url: '/resource/oss/config/config%2F1', method: 'get' },
       { url: '/resource/oss/config', method: 'post', data: { marker: 'resource', accessPolicy: '0' } },

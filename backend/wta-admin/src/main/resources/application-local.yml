@@ -1,6 +1,6 @@
 # Local-only overrides for WTA-plus box E2E. Do not commit secrets.
 server:
-  port: 18080
+  port: 38888
 
 spring:
   datasource:

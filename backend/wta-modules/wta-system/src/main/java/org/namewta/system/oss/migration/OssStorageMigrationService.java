@@ -43,6 +43,35 @@ public class OssStorageMigrationService {
         this.clock = clock;
     }
 
+    public long publish(Long ossId, String targetConfigKey) {
+        if (ossId == null || ossId <= 0) {
+            throw new OssMigrationException(OssMigrationError.INVALID_REQUEST, "公开对象无效");
+        }
+        return start(new MigrationRequest(List.of(ossId), targetConfigKey));
+    }
+
+    public void unpublish(Long ossId) {
+        SysOssMigrationItem item = ossId == null ? null : store.findLatestRestorable(ossId);
+        if (item == null) {
+            throw new OssMigrationException(OssMigrationError.INVALID_STATE, "没有可恢复的公开工单");
+        }
+        if (!objectStore.exists(item.getSourceConfigKey(), item.getObjectKey())) {
+            throw new OssMigrationException(OssMigrationError.OBJECT_NOT_FOUND, "来源对象已不存在，不能恢复");
+        }
+        SysOss oss = store.findObject(ossId);
+        if (oss == null || !Objects.equals(oss.getService(), item.getTargetConfigKey())) {
+            throw new OssMigrationException(OssMigrationError.SERVICE_DRIFT, "对象已不在公开配置上");
+        }
+        if (!store.compareAndSetService(ossId, item.getTargetConfigKey(), item.getSourceConfigKey())) {
+            throw new OssMigrationException(OssMigrationError.SERVICE_DRIFT, "对象存储指针已变化");
+        }
+        item.setStage(OssMigrationStage.ROLLED_BACK);
+        item.setStatus(OssMigrationStatus.ROLLED_BACK);
+        item.setErrorMessage(null);
+        store.saveItem(item);
+        refreshBatch(requireBatch(item.getOssMigrationBatchId()));
+    }
+
     public DryRunReport dryRun(MigrationRequest request) {
         List<Long> ids = validateRequest(request);
         requireRoute(request.targetConfigKey(), AccessPolicy.PUBLIC_READ);

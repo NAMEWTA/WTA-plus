@@ -22,10 +22,15 @@ import org.namewta.common.oss.model.PutObjectResult;
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.domain.OssDTO;
 import org.namewta.system.domain.SysOss;
+import org.namewta.system.domain.SysOssConfig;
 import org.namewta.system.domain.SysOssExt;
 import org.namewta.system.domain.bo.SysOssBo;
 import org.namewta.system.domain.vo.SysOssVo;
+import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.mapper.SysOssMapper;
+import org.namewta.system.oss.migration.OssMigrationStatus;
+import org.namewta.system.oss.migration.SysOssMigrationItem;
+import org.namewta.system.oss.migration.mapper.SysOssMigrationItemMapper;
 import org.namewta.system.oss.service.OssLifecycleManager;
 import org.namewta.system.service.ISysOssService;
 import org.jetbrains.annotations.NotNull;
@@ -36,8 +41,11 @@ import tools.jackson.databind.json.JsonMapper;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -54,6 +62,10 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
 
     private final SysOssMapper ossMapper;
 
+    private final SysOssConfigMapper ossConfigMapper;
+
+    private final SysOssMigrationItemMapper migrationItemMapper;
+
     private final OssLifecycleManager lifecycleManager;
 
     /**
@@ -68,6 +80,7 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
         LambdaQueryWrapper<SysOss> lqw = buildQueryWrapper(bo);
         Page<SysOssVo> result = ossMapper.selectVoPage(pageQuery.build(), lqw);
         List<SysOssVo> filterResult = StreamUtils.toList(result.getRecords(), this::managementView);
+        attachStorageFacts(filterResult);
         result.setRecords(filterResult);
         return PageResult.build(result.getRecords(), result.getTotal());
     }
@@ -90,7 +103,59 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
         }).toList();
         List<SysOssVo> list = ThreadUtils.virtualSubmitAll(suppliers);
         list.removeAll(Collections.singleton(null));
+        attachStorageFacts(list);
         return list;
+    }
+
+    /**
+     * 访问类型和能否恢复都由当前配置与未清理工单算出，不写入 sys_oss。
+     */
+    private void attachStorageFacts(List<SysOssVo> rows) {
+        if (rows == null || rows.isEmpty()) {
+            return;
+        }
+        Set<String> services = new HashSet<>();
+        Set<Long> ossIds = new HashSet<>();
+        for (SysOssVo row : rows) {
+            if (StringUtils.isNotBlank(row.getService())) {
+                services.add(row.getService());
+            }
+            if (row.getOssId() != null) {
+                ossIds.add(row.getOssId());
+            }
+        }
+        Map<String, String> accessByService = new HashMap<>();
+        if (!services.isEmpty()) {
+            List<SysOssConfig> configs = ossConfigMapper.selectList(new LambdaQueryWrapper<SysOssConfig>()
+                .in(SysOssConfig::getConfigKey, services));
+            for (SysOssConfig config : configs) {
+                accessByService.put(config.getConfigKey(), accessPolicyName(config.getAccessPolicy()));
+            }
+        }
+        Set<Long> restorable = new HashSet<>();
+        if (!ossIds.isEmpty()) {
+            List<SysOssMigrationItem> items = migrationItemMapper.selectList(new LambdaQueryWrapper<SysOssMigrationItem>()
+                .in(SysOssMigrationItem::getOssId, ossIds)
+                .eq(SysOssMigrationItem::getStatus, OssMigrationStatus.CLEANUP_ELIGIBLE));
+            for (SysOssMigrationItem item : items) {
+                restorable.add(item.getOssId());
+            }
+        }
+        for (SysOssVo row : rows) {
+            String accessPolicy = accessByService.getOrDefault(row.getService(), "UNKNOWN");
+            row.setAccessPolicy(accessPolicy);
+            row.setRestorable("PUBLIC_READ".equals(accessPolicy) && restorable.contains(row.getOssId()));
+        }
+    }
+
+    private String accessPolicyName(String accessPolicy) {
+        if ("0".equals(accessPolicy)) {
+            return "PRIVATE";
+        }
+        if ("2".equals(accessPolicy)) {
+            return "PUBLIC_READ";
+        }
+        return "UNKNOWN";
     }
 
     /**
@@ -237,6 +302,17 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
             // 做一些业务上的校验,判断是否需要校验
         }
         return lifecycleManager.deleteObjects(ids);
+    }
+
+    /**
+     * 恢复待删除对象。不触碰对象存储，只重算数据库中的生命周期。
+     *
+     * @param ids OSS对象ID串
+     * @return 是否恢复成功
+     */
+    @Override
+    public Boolean restoreWithValidByIds(Collection<Long> ids) {
+        return lifecycleManager.restoreObjects(ids);
     }
 
     @Override

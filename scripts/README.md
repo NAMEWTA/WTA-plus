@@ -31,12 +31,12 @@ scripts/
 
 ### 作用
 
-开发完成后，从父仓库根目录通过两个选项启动本地人工测试环境：
+开发完成后，从父仓库根目录按菜单启动一个本地人工测试进程：
 
-1. 启动前端；
-2. 启动后端。
+1. 启动前端，再选择 `frontend/apps` 下带 `dev` 脚本的应用和启动方式；
+2. 启动后端，再选择是否清理 Maven `target` 并重新安装。
 
-脚本不创建后台进程，也不重定向服务日志。依赖准备完成后，Vite 或 Spring Boot 会直接接管脚本进程，
+脚本不创建后台进程，也不重定向服务日志。依赖或缓存准备完成后，Vite 或 Spring Boot 会直接接管脚本进程，
 持续在当前终端输出实时日志；按 `Ctrl+C` 停止服务后返回调用脚本的终端。
 
 ### 使用方式
@@ -51,27 +51,44 @@ Windows PowerShell 或 CMD 需要 Git for Windows 提供的 `bash`：
 bash scripts/start-dev.sh
 ```
 
-前端选项优先使用本机可直接调用的 `pnpm`，没有 `pnpm` 时回退到 `corepack pnpm`；依赖安装严格遵循 lockfile，随后运行固定端口且不自动打开浏览器的 `pnpm dev`。
-后端选项先取得按 canonical backend path 隔离的原子构建锁，再通过 Maven Wrapper 执行跳过自动测试的
-本地 reactor install。构建完成后，脚本会比较 `backend/wta-modules/wta-system/target/classes` 与 target JAR、
-`wta-admin` 实际 Maven classpath 中已安装 JAR 的 class 集合，并检查 admin 登录链依赖的关键类型；全部
-通过后释放构建锁，再以 `dev,local` profiles 启动 `wta-admin`。Windows 上 Maven classpath 使用 `;`
-和盘符路径，脚本按平台分隔符解析，不会把 `D:\` 中的冒号当成 Unix classpath 分隔符。该脚本用于启动
-人工测试环境，不能替代前后端自动测试和质量门禁。
+第一级菜单只有「启动前端」和「启动后端」。前端应用按目录名排序，菜单显示包名和 development 环境的
+`VITE_APP_PORT`。端口按 Vite 顺序读取 `.env`、`.env.local`、`.env.development`、`.env.development.local`，
+后读到的非空值覆盖先前的值；脚本只取端口和 `VITE_APP_CONTEXT_PATH`，不打印其他键。
+
+前端启动方式：
+
+| 选项 | 行为 |
+| --- | --- |
+| 直接启动 | 保留 Vite 预构建缓存。`frontend/node_modules` 已存在时跳过 install，否则 `pnpm install --frozen-lockfile`。 |
+| 清理当前应用缓存 | 删除该应用以及工作区根上的 `node_modules/.vite`、`node_modules/.cache`、`node_modules/.unocss`、应用内 `.vite` 和 `*.tsbuildinfo`，再用 `vite --force` 重新预构建。不删除 `node_modules` 和 `dist`。 |
+| 清理并重装 | 在上一档之外再删除该应用 `dist`，并总是按 lockfile 重装依赖。 |
+
+后端启动方式：
+
+| 选项 | 行为 |
+| --- | --- |
+| 直接启动 | 不执行 Maven `clean/install`，只校验已有 `wta-system` 产物。产物缺失时失败，需改选清理安装。 |
+| 增量安装 | 在聚合根执行 `-pl wta-admin -am install`，不 `clean`。MapStruct Plus 可能因 `target/generated-sources` 中的旧 `AutoMapperConfig` 编译失败。 |
+| 清理并重新安装 | 推荐用于生成源或依赖异常。同一聚合根执行 `-pl wta-admin -am -Plocal clean install`，跳过测试。 |
+
+两段后端命令都留在 `backend/`：根 POM 以 import 引入仓内 `wta-common-bom` 和 `wta-profile-bom`，`-am` 不会安装这两个 BOM；进入 `wta-admin` 后 reactor 看不到它们。`spring-boot:run` 不带 `-am`，否则没有主类的依赖模块也会执行该目标；聚合根没有 spring-boot 插件前缀，所以必须带 `-pl wta-admin`。安装使用 Maven profile `local`，启动使用 Maven profile `dev` 和 Spring profiles `dev,local`。
+
+构建或直接启动前，脚本比较 `backend/wta-modules/wta-system/target/classes` 与 target JAR、`wta-admin` 实际 Maven classpath 中已安装 JAR 的 class 集合，并检查 admin 登录链依赖的关键类型。通过后释放构建锁，再以前台方式启动。Windows 上 Maven classpath 使用 `;` 和盘符路径，脚本按平台分隔符解析，不会把 `D:\` 中的冒号当成 Unix classpath 分隔符。该脚本用于启动人工测试环境，不能替代前后端自动测试和质量门禁。
 
 ### 前置条件与保护
 
-- 前端需要可用的 Node.js、Corepack，以及完整的 `frontend/package.json` 和 lockfile。
+- 前端需要可用的 Node.js、Corepack 或 pnpm，以及完整的 `frontend/package.json` 和 lockfile。Git Bash 会识别 `pnpm.cmd`。
 - 后端需要 Java 21、可执行的 Maven Wrapper，以及非空的
   `backend/wta-admin/src/main/resources/application-local.yml`；该配置允许纳入 Git 跟踪，
   启动脚本不校验其忽略状态。
-- 启动前检查前端 `80` 或后端 `8080` 端口：优先 `lsof`，Windows 上回退到 `netstat`；端口被占用时只报告
-  进程并退出，不会自动终止任何现有服务。
-- 脚本不会读取或输出本地配置中的账号、密码等敏感值。
+- 前端端口取所选应用的 `VITE_APP_PORT`。后端只解析本地配置里顶层 `server.port`；没有该键时使用 `38888`，键存在但不是 1–65535 的纯数字时退出。两种情况都不打印该文件的其他内容。
+- 启动前检查对应端口：优先 `lsof`，Windows 上回退到 `netstat`；端口被占用时只报告进程并退出，不会自动终止任何现有服务，也不会先删缓存。
+- 前端缓存删除只允许 `.vite`、`.cache`、`.unocss`、`dist` 和 `*.tsbuildinfo`。解析后的路径必须仍在 `frontend/` 内；`node_modules` 本身、pnpm store 和源码不删除。
+- 脚本不会读取或输出本地配置中的账号、密码等敏感值，也不会删除本机 Maven 仓库。
 - 仓库不要求 `.vscode/settings.json` 存在。使用 Java 自动构建的编辑器时，应在自己的工作区设置关闭对 Maven `target/` 的并行写入；不要在 reactor 运行中触发 IDE 编译。
 - 同一后端工作区的第二个受管启动会立即失败，并显示持锁 PID；正常退出或 `Ctrl+C`/`TERM` 会清理锁，
   owner PID 已不存在的 stale lock 会被安全替换。含未知内容或元数据不匹配的锁不会被递归删除。
-- 锁只协调 `start-dev.sh` 启动。运行后端启动时不要同时从其他终端或 IDE 对同一工作区执行 Maven
+- 锁只协调 `start-dev.sh` 的安装和校验。运行后端启动时不要同时从其他终端或 IDE 对同一工作区执行 Maven
   `clean/package/install`；这些外部进程不获取脚本锁，但构建后的 JAR 完整性门会阻止已发现的半成品继续启动。
 
 所有可执行 Shell 入口都启用了 `set -euo pipefail`：命令失败、使用未定义变量或管道中的任一命令失败时，
@@ -81,7 +98,7 @@ bash scripts/start-dev.sh
 
 1. 停止同一后端工作区中仍在运行的 Maven/IDE build；确认 VS Code 已应用工作区中的
    `"java.autobuild.enabled": false`，不要删除仍有存活 owner PID 的锁。
-2. 重新执行 `./scripts/start-dev.sh` 并选择后端。stale lock 会自动清理，reactor 会重新 `clean install`。
+2. 重新执行 `./scripts/start-dev.sh`，选择后端，再选择「清理 Maven target 并重新安装后启动」。stale lock 会自动清理，reactor 会重新 `clean install`。
 3. 若仍提示 class 集合或哨兵缺失，检查错误中显示的 target/installed JAR，确认没有外部构建持续写入；
    然后再次串行启动。脚本不会在产物不完整时进入 Spring Boot。
 4. 若极端 `SIGKILL` 留下错误中显示的 `.reclaim` 目录，先核对其 `owner` PID 已不存在，再只删除该 owner 文件

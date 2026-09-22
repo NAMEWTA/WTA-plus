@@ -93,3 +93,7 @@
 - `path:docs/fm/**` -> 静态 CRUD 模板规范。
 - SQL/表结构变化 -> 安全数据 + Java/Spring contract + 数据源事务与建表；新建项目自有表应用基础字段基线，直接修改本仓六份 MySQL 8.4 完整基座中的对应文件。
 - 跨前后端 API 变化 -> 同时加载 TypeScript、Java、测试、安全和交付规则，并以后端公开合同、权限及仓内消费者同步为先。
+
+## 外部 AI 平台边界
+
+[wta-ai](https://github.com/NAMEWTA/wta-ai) 是独立项目，不属于本表的 Maven 模块或前端工作区。其 Python 后端、双前端及发布脚本由独立仓库拥有；与本仓集成通过公开网络 API，不形成源码路径或发布产物依赖。本仓 wta-ai / wta-common-ai 名称仍指 Java Maven 占位。

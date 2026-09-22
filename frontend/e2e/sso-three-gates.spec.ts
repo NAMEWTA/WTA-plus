@@ -135,7 +135,7 @@ test.describe('SSO three hard gates', () => {
     expect(adminClient).not.toEqual(homeClient);
     expect(adminClient === 'sso' || homeClient === 'sso').toBeFalsy();
 
-    const cross = await request.get('http://127.0.0.1:18080/system/user/getInfo', {
+    const cross = await request.get('http://127.0.0.1:38888/system/user/getInfo', {
       headers: {
         Authorization: `Bearer ${adminToken}`,
         clientid: homeClientId

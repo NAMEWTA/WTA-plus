@@ -3,6 +3,7 @@ package org.namewta.test.openapi.credential;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import jakarta.servlet.http.HttpServletResponse;
 import org.namewta.common.core.constant.HttpStatus;
+import org.namewta.common.core.domain.R;
 import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.log.annotation.Log;
 import org.namewta.common.log.enums.BusinessType;
@@ -39,16 +40,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SysOpenApiCredentialControllerContractTest {
 
     @Test
-    void missingCredentialUsesNotFoundContract() {
+    void missingCredentialReturnsEmptySuccess() {
         SystemOpenApiCredentialService service = mock(SystemOpenApiCredentialService.class);
         SysOpenApiCredentialController controller = new SysOpenApiCredentialController(service);
         when(service.get(41L)).thenReturn(null);
 
         try (MockedStatic<LoginHelper> login = mockStatic(LoginHelper.class)) {
             login.when(LoginHelper::getUserId).thenReturn(41L);
-            assertThatThrownBy(controller::getSelfCredential)
-                .isInstanceOfSatisfying(ServiceException.class,
-                    exception -> assertThat(exception.getCode()).isEqualTo(HttpStatus.NOT_FOUND));
+            R<OpenApiCredentialSummary> self = controller.getSelfCredential();
+            assertThat(self.getCode()).isEqualTo(HttpStatus.SUCCESS);
+            assertThat(self.getData()).isNull();
+        }
+
+        try (MockedStatic<LoginHelper> login = mockStatic(LoginHelper.class)) {
+            login.when(LoginHelper::isSuperAdmin).thenReturn(true);
+            R<OpenApiCredentialSummary> target = controller.getUserCredential(41L);
+            assertThat(target.getCode()).isEqualTo(HttpStatus.SUCCESS);
+            assertThat(target.getData()).isNull();
         }
     }
 

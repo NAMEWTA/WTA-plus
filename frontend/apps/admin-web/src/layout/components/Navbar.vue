@@ -55,11 +55,11 @@
           </div>
         </el-tooltip>
         <el-tooltip content="Github" effect="dark" placement="bottom">
-          <ruo-yi-git id="wta-git" class="right-menu-item hover-effect" />
+          <WTAGit id="wta-git" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <el-tooltip :content="$t('navbar.document')" effect="dark" placement="bottom">
-          <ruo-yi-doc id="wta-doc" class="right-menu-item hover-effect" />
+          <WTADoc id="wta-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <el-tooltip :content="$t('navbar.full')" effect="dark" placement="bottom">
@@ -106,7 +106,7 @@
 <script setup lang="ts">
 import type { ElMessageBoxOptions } from 'element-plus';
 import { CaretBottom } from '@element-plus/icons-vue';
-import appLogo from '@/assets/logo/logo.png';
+import appLogo from '@/assets/logo/logo.svg';
 import { NavTypeEnum } from '@/enums/NavTypeEnum';
 import router from '@/router';
 import { useAppStore } from '@/store/modules/app';
@@ -114,6 +114,8 @@ import { useNoticeStore } from '@/store/modules/notice';
 import { useSettingsStore } from '@/store/modules/settings';
 import { useUserStore } from '@/store/modules/user';
 import { initMessageBox } from '@/utils/push';
+import WTADoc from '@/components/WTADoc/index.vue';
+import WTAGit from '@/components/WTAGit/index.vue';
 import notice from './notice/index.vue';
 import TopBar from './TopBar/index.vue';
 import SearchMenu from './TopBar/search.vue';

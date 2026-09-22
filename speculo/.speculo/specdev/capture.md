@@ -48,3 +48,7 @@ capture 不创建 Change，不写 `current_work`，不关闭 Issue。GitHub 是 
 用户明确要求三条事项集中于同一个新 change。三个 locator 分别冻结在 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/sources/</Path>，聚合授权与逐条 hash 见 <Path>{roots.state}/specdev/changes/2026-09-19-remote-issues-phone-ai/issue-index.md</Path>。仅本地消费状态改为 intaken；GitHub 三条 Issue 仍 open，未发生远程写入。
 
 后续用户范围修订：Issue #3 的唯一待开发归属已转入 <Path>{roots.state}/specdev/changes/2026-09-19-go-python-ai-platform/</Path> 并暂缓；#1/#2 留在原 change。三行仍为 intaken，未重新捕获或改变远程状态。
+
+## 独立项目迁移 2026-09-20
+
+最新归属替代上述历史“本仓暂缓”：用户明确将 Issue #3 的 change 整体迁至 wta-ai 独立项目。新仓为 <Url>https://github.com/NAMEWTA/wta-ai</Url>；本仓不再保留活动副本。迁移凭据与远程关闭结果见 <Path>{roots.state}/specdev/migrations/2026-09-19-go-python-ai-platform.md</Path>。捕获行继续表示已 intake，不重复创建来源或更改原始摘要。

@@ -89,7 +89,7 @@ export interface OpenApiCatalogGroup {
 }
 
 export interface CurrentUserOpenApiService {
-  getCredential(): Promise<OpenApiResponse<OpenApiCredentialSummary>>;
+  getCredential(): Promise<OpenApiResponse<OpenApiCredentialSummary | null>>;
   createCredential(input: OpenApiCredentialCreateInput): Promise<OpenApiResponse<OpenApiCredentialIssued>>;
   resetCredential(): Promise<OpenApiResponse<OpenApiCredentialIssued>>;
   enableCredential(): Promise<OpenApiResponse<OpenApiCredentialSummary>>;
@@ -101,7 +101,7 @@ export interface CurrentUserOpenApiService {
 
 export interface TargetUserOpenApiService {
   listUsers(query?: OpenApiUserQuery): Promise<OpenApiResponse<readonly OpenApiCredentialUserSummary[]>>;
-  getCredential(userId: OpenApiIdentifier): Promise<OpenApiResponse<OpenApiCredentialSummary>>;
+  getCredential(userId: OpenApiIdentifier): Promise<OpenApiResponse<OpenApiCredentialSummary | null>>;
   createCredential(
     userId: OpenApiIdentifier,
     input: OpenApiCredentialCreateInput

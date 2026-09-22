@@ -161,6 +161,69 @@ class OssLifecycleManagerUnitTest {
     }
 
     @Test
+    void restoreWithoutReferencesStartsAFreshTemporaryRetention() {
+        Fixture fixture = fixture();
+        SysOss pending = oss(10L, "Y", LocalDateTime.now().minusMinutes(1));
+        pending.setDeleteState("PENDING");
+        when(fixture.ossMapper.selectByIdsForUpdate(List.of(10L))).thenReturn(List.of(pending));
+        when(fixture.refMapper.countActiveByOssId(10L)).thenReturn(0L);
+        when(fixture.ossMapper.updateLifecycle(eq(10L), eq("Y"), any(LocalDateTime.class))).thenReturn(1);
+        LocalDateTime before = LocalDateTime.now();
+
+        assertTrue(fixture.manager.restoreObjects(List.of(10L)));
+
+        LocalDateTime after = LocalDateTime.now();
+        ArgumentCaptor<LocalDateTime> expiry = ArgumentCaptor.forClass(LocalDateTime.class);
+        verify(fixture.ossMapper).updateLifecycle(eq(10L), eq("Y"), expiry.capture());
+        assertFalse(expiry.getValue().isBefore(before.plus(fixture.properties.getTempRetention())));
+        assertFalse(expiry.getValue().isAfter(after.plus(fixture.properties.getTempRetention())));
+        verifyNoInteractions(fixture.objectStore);
+    }
+
+    @Test
+    void restoreWithReferencesReturnsBoundLifecycle() {
+        Fixture fixture = fixture();
+        SysOss pending = oss(10L, "Y", LocalDateTime.now());
+        pending.setDeleteState("PENDING");
+        when(fixture.ossMapper.selectByIdsForUpdate(List.of(10L))).thenReturn(List.of(pending));
+        when(fixture.refMapper.countActiveByOssId(10L)).thenReturn(2L);
+        when(fixture.ossMapper.updateLifecycle(10L, "N", null)).thenReturn(1);
+
+        assertTrue(fixture.manager.restoreObjects(List.of(10L)));
+
+        verify(fixture.ossMapper).updateLifecycle(10L, "N", null);
+        verifyNoInteractions(fixture.objectStore);
+    }
+
+    @Test
+    void restoreRejectsABatchThatContainsAnObjectWhichIsNotPending() {
+        Fixture fixture = fixture();
+        SysOss pending = oss(10L, "Y", LocalDateTime.now());
+        pending.setDeleteState("PENDING");
+        SysOss active = oss(11L, "N", null);
+        when(fixture.ossMapper.selectByIdsForUpdate(List.of(10L, 11L))).thenReturn(List.of(pending, active));
+
+        OssLifecycleException exception = assertThrows(OssLifecycleException.class,
+            () -> fixture.manager.restoreObjects(List.of(10L, 11L)));
+
+        assertEquals(OssLifecycleError.OBJECT_NOT_DELETE_PENDING, exception.error());
+        verify(fixture.ossMapper, never()).updateLifecycle(anyLong(), anyString(), nullable(LocalDateTime.class));
+        verifyNoInteractions(fixture.objectStore);
+    }
+
+    @Test
+    void restoreRejectsMissingObjectsBeforeChangingLifecycle() {
+        Fixture fixture = fixture();
+        when(fixture.ossMapper.selectByIdsForUpdate(List.of(10L))).thenReturn(List.of());
+
+        OssLifecycleException exception = assertThrows(OssLifecycleException.class,
+            () -> fixture.manager.restoreObjects(List.of(10L)));
+
+        assertEquals(OssLifecycleError.OBJECT_NOT_FOUND, exception.error());
+        verify(fixture.ossMapper, never()).updateLifecycle(anyLong(), anyString(), nullable(LocalDateTime.class));
+    }
+
+    @Test
     void shouldPersistPendingStateBeforeDeletingExpiredTempObject() {
         Fixture fixture = fixture();
         LocalDateTime now = LocalDateTime.now();

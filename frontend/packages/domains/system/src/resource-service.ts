@@ -203,7 +203,13 @@ function createOssService(request: Request) {
       request<string>({ url: `/resource/oss/uploads/${segment(token)}/complete`, method: 'post', data: { parts } }),
     abortUpload: (token: string) => request({ url: `/resource/oss/uploads/${segment(token)}`, method: 'post' }),
     downloadUrl,
-    delete: (ids: ResourceIdentifierList) => request({ url: '/resource/oss/' + segment(ids), method: 'post' })
+    delete: (ids: ResourceIdentifierList) => request({ url: '/resource/oss/' + segment(ids), method: 'post' }),
+    restore: (ids: ResourceIdentifierList) =>
+      request({ url: '/resource/oss/' + segment(ids) + '/restore', method: 'post' }),
+    publish: (id: ResourceIdentifier, targetConfigKey: string) =>
+      request<string>({ url: `/resource/oss/${segment(id)}/publish`, method: 'post', data: { targetConfigKey } }),
+    unpublish: (id: ResourceIdentifier) =>
+      request({ url: `/resource/oss/${segment(id)}/unpublish`, method: 'post' })
   });
 }
 

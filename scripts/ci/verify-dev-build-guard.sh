@@ -369,11 +369,13 @@ fi
 
 start_workspace="${test_root}/start-workspace"
 start_backend="${start_workspace}/backend"
-mkdir -p "${start_workspace}/scripts/lib" "${start_backend}"
+mkdir -p "${start_workspace}/scripts/lib" "${start_backend}/wta-admin"
 cp "${workspace_root}/scripts/start-dev.sh" "${start_workspace}/scripts/start-dev.sh"
 cp "${guard_module}" "${start_workspace}/scripts/lib/backend-build-guard.sh"
 cp "${dev_runtime}" "${start_workspace}/scripts/lib/dev-runtime.sh"
 : >"${start_backend}/mvnw"
+: >"${start_backend}/pom.xml"
+: >"${start_backend}/wta-admin/pom.xml"
 chmod +x "${start_backend}/mvnw"
 
 backend_build_lock_acquire "${start_backend}"
@@ -381,12 +383,16 @@ fake_bin="${test_root}/bin"
 mkdir -p "${fake_bin}"
 ln -s /usr/bin/false "${fake_bin}/lsof"
 set +e
-start_conflict_output=$(printf '2\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
+start_conflict_output=$(printf '2\n3\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
 start_conflict_status=$?
 set -e
 backend_build_lock_release
 if [[ ${start_conflict_status} -eq 0 ]]; then
   echo "start-dev lock conflict unexpectedly succeeded" >&2
+  exit 1
+fi
+if [[ "${start_conflict_output}" != *"请选择后端启动方式"* ]]; then
+  echo "start-dev lock conflict did not ask for a backend mode: ${start_conflict_output}" >&2
   exit 1
 fi
 if [[ "${start_conflict_output}" != *"PID $$"* ]]; then
@@ -404,7 +410,7 @@ git -C "${start_backend}" init -q
 git -C "${start_backend}" add -- wta-admin/src/main/resources/application-local.yml
 
 set +e
-tracked_config_output=$(printf '2\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
+tracked_config_output=$(printf '2\n3\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
 tracked_config_status=$?
 set -e
 if [[ ${tracked_config_status} -eq 0 ]]; then
@@ -420,4 +426,163 @@ if [[ "${tracked_config_output}" != *"正在刷新后端本地 Maven reactor"* ]
   exit 1
 fi
 
-echo "backend lock lifecycle, Windows classpath parsing, and module JAR class-set verification passed"
+set +e
+direct_backend_output=$(printf '2\n1\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
+direct_backend_status=$?
+set -e
+if [[ ${direct_backend_status} -eq 0 ]]; then
+  echo "start-dev direct backend mode unexpectedly completed" >&2
+  exit 1
+fi
+if [[ "${direct_backend_output}" != *"跳过后端 Maven clean/install"* ]]; then
+  echo "start-dev direct backend mode did not skip Maven install: ${direct_backend_output}" >&2
+  exit 1
+fi
+if [[ "${direct_backend_output}" == *"正在刷新后端本地 Maven reactor"* ]]; then
+  echo "start-dev direct backend mode invoked a clean install: ${direct_backend_output}" >&2
+  exit 1
+fi
+
+(
+  # shellcheck source=../start-dev.sh
+  source "${workspace_root}/scripts/start-dev.sh"
+  menu_file="${test_root}/frontend-menu.txt"
+  app_name=$(choose_frontend_app < <(printf '1\n') 2>"${menu_file}")
+  [[ "${app_name}" == "admin-web" ]]
+  grep -F "1、admin-web（@namewta/admin-web，5177）" "${menu_file}" >/dev/null
+  grep -F "2、home-web（@namewta/home-web，5175）" "${menu_file}" >/dev/null
+  grep -F "3、sso-web（@namewta/sso-web，4176）" "${menu_file}" >/dev/null
+  frontend_mode=$(choose_frontend_mode < <(printf ' 2 \n') 2>/dev/null)
+  [[ "${frontend_mode}" == "clear-cache" ]]
+  backend_mode=$(choose_backend_mode < <(printf '3\r\n') 2>/dev/null)
+  [[ "${backend_mode}" == "clean" ]]
+  [[ "$(build_visit_url 5177 /)" == "http://127.0.0.1:5177/" ]]
+  [[ "$(build_visit_url 5177 admin)" == "http://127.0.0.1:5177/admin" ]]
+
+  env_app="${test_root}/env-app"
+  mkdir -p "${env_app}"
+  printf '# VITE_APP_PORT=9999\nVITE_APP_PORT = "1111"\nVITE_OTHER=other-key-value\n' >"${env_app}/.env"
+  printf 'VITE_APP_PORT=2222\n' >"${env_app}/.env.development"
+  printf 'VITE_APP_PORT=3333\n' >"${env_app}/.env.development.local"
+  [[ "$(resolve_vite_env_key "${env_app}" VITE_APP_PORT)" == "3333" ]]
+  [[ "$(resolve_vite_env_key "${env_app}" VITE_OTHER)" == "other-key-value" ]]
+
+  secret_backend="${test_root}/secret-backend"
+  mkdir -p "${secret_backend}"
+  backend_dir="${secret_backend}"
+  backend_local_config="application-local.yml"
+  cat >"${secret_backend}/application-local.yml" <<'EOF'
+# password: should-not-leak
+server:
+  port: 39991
+
+spring:
+  datasource:
+    password: "super-secret-value"
+snail-job:
+  server:
+    port: 17888
+  port: 2${server.port}
+EOF
+  port_output=$(load_backend_port)
+  [[ "${backend_port}" == "39991" ]]
+  [[ -z "${port_output}" ]]
+  [[ "${port_output}" != *"super-secret-value"* ]]
+  [[ "${port_output}" != *"should-not-leak"* ]]
+
+  cat >"${secret_backend}/application-local.yml" <<'EOF'
+spring:
+  datasource:
+    password: "super-secret-value"
+EOF
+  default_port_output=$(load_backend_port)
+  [[ "${backend_port}" == "38888" ]]
+  [[ "${default_port_output}" == *"使用默认端口 38888"* ]]
+  [[ "${default_port_output}" != *"super-secret-value"* ]]
+
+  cat >"${secret_backend}/application-local.yml" <<'EOF'
+server:
+  port: not-a-port
+EOF
+  set +e
+  invalid_port_output=$(load_backend_port 2>&1)
+  invalid_port_status=$?
+  set -e
+  [[ ${invalid_port_status} -ne 0 ]]
+  [[ "${invalid_port_output}" == *"不是有效端口"* ]]
+  [[ "${invalid_port_output}" != *"not-a-port"* ]]
+
+  cache_root="${test_root}/frontend-cache"
+  app_dir="${cache_root}/apps/demo"
+  outside_dir="${test_root}/outside-cache"
+  mkdir -p "${app_dir}/node_modules/vue" "${app_dir}/node_modules/.vite/deps" \
+    "${app_dir}/node_modules/.cache" "${app_dir}/dist/assets" "${app_dir}/src" \
+    "${cache_root}/node_modules/.vite" "${outside_dir}/.vite"
+  echo keep >"${app_dir}/node_modules/vue/package.json"
+  echo keep >"${app_dir}/src/main.ts"
+  echo stale >"${app_dir}/dist/index.html"
+  echo cache >"${app_dir}/node_modules/.vite/deps/a.js"
+  echo workspace >"${cache_root}/node_modules/.vite/marker"
+  echo build >"${app_dir}/tsconfig.tsbuildinfo"
+  echo outside >"${outside_dir}/.vite/a"
+  frontend_dir="${cache_root}"
+  clear_frontend_dev_caches "${app_dir}" no >/dev/null
+  [[ -f "${app_dir}/node_modules/vue/package.json" ]]
+  [[ -f "${app_dir}/src/main.ts" ]]
+  [[ -f "${app_dir}/dist/index.html" ]]
+  [[ ! -e "${app_dir}/node_modules/.vite" ]]
+  [[ ! -e "${app_dir}/node_modules/.cache" ]]
+  [[ ! -e "${cache_root}/node_modules/.vite" ]]
+  [[ ! -e "${app_dir}/tsconfig.tsbuildinfo" ]]
+  [[ -d "${outside_dir}/.vite" ]]
+  clear_frontend_dev_caches "${app_dir}" yes >/dev/null
+  [[ ! -e "${app_dir}/dist" ]]
+  [[ -f "${app_dir}/src/main.ts" ]]
+
+  ln -s "${outside_dir}" "${app_dir}/escape"
+  set +e
+  escaped_output=$(remove_frontend_cache_path "${cache_root}" "${app_dir}/escape/.vite" 2>&1)
+  escaped_status=$?
+  set -e
+  [[ ${escaped_status} -ne 0 ]]
+  [[ "${escaped_output}" == *"拒绝删除"* ]]
+  [[ -f "${outside_dir}/.vite/a" ]]
+
+  set +e
+  source_output=$(remove_frontend_cache_path "${cache_root}" "${app_dir}/src/main.ts" 2>&1)
+  source_status=$?
+  set -e
+  [[ ${source_status} -ne 0 ]]
+  [[ "${source_output}" == *"未列入缓存清单"* ]]
+  [[ -f "${app_dir}/src/main.ts" ]]
+) || {
+  echo "start-dev menu, port parser, or cache cleanup contract failed" >&2
+  exit 1
+}
+
+# 必须在独立进程的顶层 shell 里调用。放进 ( ) 或 || 会让 set -e 被忽略，测不出 shopt -p 的退出码。
+top_level_cache="${test_root}/top-level-cache"
+set +e
+top_level_output=$(
+  bash -c '
+    set -euo pipefail
+    source "$1"
+    frontend_dir=$2
+    app_dir="${frontend_dir}/apps/demo"
+    mkdir -p "${app_dir}/node_modules/.vite" "${app_dir}/dist"
+    echo cache > "${app_dir}/node_modules/.vite/a"
+    echo built > "${app_dir}/dist/index.html"
+    clear_frontend_dev_caches "${app_dir}" yes >/dev/null
+    [[ ! -e "${app_dir}/node_modules/.vite" ]]
+    [[ ! -e "${app_dir}/dist" ]]
+    echo CLEAR_DONE
+  ' _ "${workspace_root}/scripts/start-dev.sh" "${top_level_cache}"
+)
+top_level_status=$?
+set -e
+if [[ ${top_level_status} -ne 0 || "${top_level_output}" != *"CLEAR_DONE"* ]]; then
+  echo "cache cleanup exited before the dev server handoff (status ${top_level_status}): ${top_level_output}" >&2
+  exit 1
+fi
+
+echo "backend lock lifecycle, Windows classpath parsing, module JAR class-set verification, and start-dev choice contracts passed"

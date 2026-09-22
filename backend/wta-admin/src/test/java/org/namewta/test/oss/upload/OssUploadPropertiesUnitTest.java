@@ -27,22 +27,13 @@ class OssUploadPropertiesUnitTest {
         assertEquals(OssUploadMode.MULTIPART,
             properties.requirePolicy("general").resolveMode(100L * 1024 * 1024));
         assertEquals(Duration.ofMinutes(5), properties.getPresignTtl());
-        assertEquals("minio", properties.requirePolicy("general").getStorageConfigKey());
         assertEquals(AccessPolicy.PRIVATE, properties.requirePolicy("general").getExpectedAccessPolicy());
     }
 
     @Test
-    void shouldRejectMissingStorageBindingOrUnsupportedAccessPolicy() {
+    void shouldRejectMissingAccessPolicy() {
         OssUploadProperties properties = validProperties();
-        properties.getPolicies().get("general").setStorageConfigKey(" ");
-        assertThrows(OssUploadException.class, properties::validate);
-
-        properties = validProperties();
         properties.getPolicies().get("general").setExpectedAccessPolicy(null);
-        assertThrows(OssUploadException.class, properties::validate);
-
-        properties = validProperties();
-        properties.getPolicies().get("general").setStorageConfigKey("storage-config-key-21");
         assertThrows(OssUploadException.class, properties::validate);
     }
 
@@ -70,7 +61,6 @@ class OssUploadPropertiesUnitTest {
         policy.setMode(OssUploadMode.AUTO);
         policy.setMultipartThreshold(100L * 1024 * 1024);
         policy.setPartSize(16L * 1024 * 1024);
-        policy.setStorageConfigKey("minio");
         policy.setExpectedAccessPolicy(AccessPolicy.PRIVATE);
         OssUploadProperties properties = new OssUploadProperties();
         properties.setPolicies(Map.of("general", policy));

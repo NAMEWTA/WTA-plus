@@ -131,15 +131,36 @@ class OssAccessDiagnosticUnitTest {
         S3Exception.Builder builder = S3Exception.builder();
         builder.statusCode(403);
         builder.message("sensitive provider detail");
+        var deniedError = builder.build();
         when(denied.getBucketPolicy(any(Consumer.class)))
-            .thenReturn(CompletableFuture.failedFuture(builder.build()));
+            .thenReturn(CompletableFuture.failedFuture(deniedError));
+        when(denied.getBucketAcl(any(Consumer.class)))
+            .thenReturn(CompletableFuture.failedFuture(deniedError));
 
         OssAccessDiagnostic deniedResult = client(denied, true).diagnoseAccess(
             "diagnostic/canary.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(2));
 
-        assertThat(deniedResult.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
-        assertThat(deniedResult.reason()).isEqualTo(OssAccessDiagnostic.Reason.POLICY_UNREADABLE);
+        assertThat(deniedResult.verified()).isTrue();
+        assertThat(deniedResult.reason()).isEqualTo(OssAccessDiagnostic.Reason.READY);
+        assertThat(deniedResult.anonymousHeadAllowed()).isFalse();
+        assertThat(deniedResult.anonymousGetAllowed()).isFalse();
         assertThat(deniedResult.toString()).doesNotContain("sensitive provider detail");
+
+        S3AsyncClient broken = mock(S3AsyncClient.class);
+        when(broken.headObject(any(Consumer.class)))
+            .thenReturn(CompletableFuture.completedFuture(HeadObjectResponse.builder().contentLength(1L).build()));
+        S3Exception.Builder serverError = S3Exception.builder();
+        serverError.statusCode(500);
+        serverError.message("sensitive provider detail");
+        when(broken.getBucketPolicy(any(Consumer.class)))
+            .thenReturn(CompletableFuture.failedFuture(serverError.build()));
+
+        OssAccessDiagnostic brokenResult = client(broken, true).diagnoseAccess(
+            "diagnostic/canary.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(2));
+
+        assertThat(brokenResult.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
+        assertThat(brokenResult.reason()).isEqualTo(OssAccessDiagnostic.Reason.POLICY_UNREADABLE);
+        assertThat(brokenResult.toString()).doesNotContain("sensitive provider detail");
     }
 
     private S3AsyncClient provider(String policy, CompletableFuture<GetBucketAclResponse> acl) {

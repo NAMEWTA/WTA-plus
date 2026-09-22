@@ -24,6 +24,23 @@
 | S-014 | 已有课 | `{roots.state}/learning/changes/2026-09-16-namewta-fullstack/children/2026-09-14-wta-third/course.md` 及 Lesson INDEX | 2026-09-16 | third 五切片；前端出范围 | high |
 | S-015 | 工作树 | `backend/wta-api/src/main/java/org/namewta/{system,notify,profile,sso,third,workflow}/api` | 2026-09-16 | 跨模块 Java 合同面 | high |
 | S-016 | 学习者偏好 | `{roots.state}/learning/learner-profile.md` | 2026-09-16 | `zh-CN`、`eli5`、默认 standard；本 Goal 用户改 deep | high |
+| S-L086-01 | 工作树 | `backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssMigrationController.java` | 2026-09-22 | 迁移七个 HTTP 方法与四颗权限 | high |
+| S-L086-02 | 工作树 | `backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/OssStorageMigrationService.java` | 2026-09-22 | dry-run 零写入；PRIVATE 到 PUBLIC_READ；复制、CAS、回滚、清理窗口 | high |
+| S-L086-03 | 工作树 | `backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssUploadController.java` | 2026-09-22 | 直传控制面；abort 为 POST | high |
+| S-L086-04 | 工作树 | `backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/upload/OssUploadService.java` | 2026-09-22 | init 绑定命名策略与 readiness；complete 登记临时对象 | high |
+| S-L086-05 | 工作树 | `SysOssServiceImpl.upload(File)` 与 `OssProtocolCutoverUnitTest` | 2026-09-22 | 服务端字节上传无 HTTP、无当前调用方 | high |
+| S-L086-06 | 工作树 | `SysOssConfigServiceImpl`、`OssConfigChangeListener` | 2026-09-22 | 保存配置不建桶；提交后刷新缓存和 readiness | high |
+| S-L086-07 | 工作树 | `OssStorageReadinessService`、`application.yml`、`application-local.yml` | 2026-09-22 | 诊断对象与访问类型不匹配则不可服务 | high |
+| S-L086-08 | 工作树 | `OssClientConfig`、`DefaultOssClientImpl`、Compose MinIO 端口 | 2026-09-22 | 路径风格、endpoint 协议、宿主机端口 49000 | high |
+| S-L086-09 | 工作树 | `oss-upload-browser` 客户端与 `admin-web` `.env.development` | 2026-09-22 | 浏览器只提交策略名；默认不改写预签名主机 | high |
+| S-L086-10 | 项目文档 | `docs/oss-public-private-operations.md`、`docs/error/oss-login-and-direct-upload-troubleshooting.md` | 2026-09-22 | 应用不创建桶、不改 Policy；CORS 与 Lifecycle 分开看 | high |
+| S-L087-01 | 工作树 | `backend/wta-admin/src/main/resources/application.yml` 第 82–218 行 | 2026-09-22 | lifecycle 与 direct-upload 的字面配置 | high |
+| S-L087-02 | 工作树 | `OssUploadProperties.java` | 2026-09-22 | 直传字段校验与 `storage-config-key` 必填 | high |
+| S-L087-03 | 工作树 | `OssUploadService.java`、`SysOssUploadController.java` | 2026-09-22 | 策略读取、两道权限、TTL 与 readiness | high |
+| S-L087-04 | 工作树 | `OssLifecycleProperties.java`、`OssLifecycleManager.java` | 2026-09-22 | 下载 TTL；仅 `download-ttl` 可被 Nacos 精确刷新 | high |
+| S-L087-05 | 工作树 | `OssUploadCleanupTask.java` | 2026-09-22 | `cleanup-enabled` 与 `cleanup-dry-run` 的直传清理语义 | high |
+| S-L087-06 | 工作树 | `OssStorageReadinessService.java` | 2026-09-22 | 启用策略的 `storage-config-key` 进入必检集合 | high |
+| S-L087-07 | 工作树 | `DefaultOssUploadObjectStore.java` | 2026-09-22 | 按 configKey 取客户端并拼接对象键 | high |
 
 ## 项目事实 / 外部证据 / 类比 / 未知
 

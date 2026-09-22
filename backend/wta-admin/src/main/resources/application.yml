@@ -47,8 +47,9 @@ namewta:
 
 web:
   cors:
-    # 精确Origin列表；发布时配置所有获准App来源，不接受通配符或URL路径。
-    allowed-origins: ${WEB_CORS_ALLOWED_ORIGINS:${SSO_WEB_ORIGIN:http://127.0.0.1:4176}}
+    # 临时默认通配。未设置环境变量时允许任意 Origin；发布前用 WEB_CORS_ALLOWED_ORIGINS 收成精确列表。
+    # 值必须加引号，否则 YAML 会把 * 当成别名。
+    allowed-origins: "${WEB_CORS_ALLOWED_ORIGINS:*}"
 
 # 可选 Nacos 稀疏配置覆盖。关闭时不创建客户端或监听器。
 nacos:
@@ -98,7 +99,6 @@ oss:
     cleanup-dry-run: true
     policies:
       general:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 10485760
         allowed-content-types:
@@ -116,7 +116,6 @@ oss:
         part-size: 16777216
         required-permission: system:oss:upload
       avatar:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 10485760
         allowed-content-types: [image/jpeg, image/png, image/webp]
@@ -126,7 +125,6 @@ oss:
         part-size: 5242880
         required-permission: system:oss:upload
       image:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 20971520
         allowed-content-types: [image/jpeg, image/png, image/gif, image/webp]
@@ -136,7 +134,6 @@ oss:
         part-size: 5242880
         required-permission: system:oss:upload
       editor-image:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 20971520
         allowed-content-types: [image/jpeg, image/png, image/gif, image/webp, image/svg+xml]
@@ -146,7 +143,6 @@ oss:
         part-size: 5242880
         required-permission: system:oss:upload
       editor-video:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 524288000
         allowed-content-types: [video/mp4, video/webm, video/ogg]
@@ -156,7 +152,6 @@ oss:
         part-size: 16777216
         required-permission: system:oss:upload
       richtext-image:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 20971520
         allowed-content-types: [image/jpeg, image/png, image/gif, image/webp]
@@ -166,7 +161,6 @@ oss:
         part-size: 5242880
         required-permission: common:richtext:upload
       richtext-audio:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 104857600
         allowed-content-types: [audio/mpeg, audio/mp4, audio/ogg, audio/wav, audio/webm]
@@ -176,7 +170,6 @@ oss:
         part-size: 8388608
         required-permission: common:richtext:upload
       richtext-video:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 524288000
         allowed-content-types: [video/mp4, video/webm, video/ogg]
@@ -186,7 +179,6 @@ oss:
         part-size: 16777216
         required-permission: common:richtext:upload
       richtext-file:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 104857600
         allowed-content-types: [application/pdf, application/zip, application/octet-stream, text/plain]
@@ -196,7 +188,6 @@ oss:
         part-size: 8388608
         required-permission: common:richtext:upload
       document:
-        storage-config-key: minio
         expected-access-policy: PRIVATE
         max-size: 104857600
         allowed-content-types:

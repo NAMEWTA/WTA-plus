@@ -20,3 +20,5 @@ U1…U9 已全部 written 后 mined。`generated` 表示文件已落在本树且
 | L-065 … L-066 | 本目录（third 前端） | OBJ-65 … OBJ-66 | 35–38 | mined |
 | L-067 … L-081 | 本目录（workflow / demo / job / ai） | OBJ-67 … OBJ-81 | 35–38 | mined |
 | L-082 … L-085 | 本目录（common 枢纽 + MySQL 基座） | OBJ-82 … OBJ-85 | 38 | mined |
+| L-086 | `L-086-oss-migration-and-minio.md` | OBJ-25, OBJ-27, OBJ-28, OBJ-29（串讲，不替换 L-025…L-029，不进入原 85 课 Goal 链） | 36 | written |
+| L-087 | `L-087-oss-direct-upload-yaml.md` | OBJ-25, OBJ-27, OBJ-29（yml 字段与 storage-config-key；不进入原 85 课 Goal 链） | 37 | written |

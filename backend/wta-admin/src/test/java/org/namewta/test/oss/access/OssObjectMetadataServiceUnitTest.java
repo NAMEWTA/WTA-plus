@@ -3,7 +3,9 @@ package org.namewta.test.oss.access;
 import org.namewta.common.core.exception.ServiceException;
 import org.namewta.system.api.OssService;
 import org.namewta.system.domain.SysOss;
+import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.mapper.SysOssMapper;
+import org.namewta.system.oss.migration.mapper.SysOssMigrationItemMapper;
 import org.namewta.system.oss.service.OssLifecycleManager;
 import org.namewta.system.service.impl.SysOssServiceImpl;
 import org.junit.jupiter.api.Tag;
@@ -30,7 +32,7 @@ class OssObjectMetadataServiceUnitTest {
     void exposesAuthoritativePersistedUploadMetadataWithoutResolvingAUrl() {
         SysOssMapper mapper = mock(SysOssMapper.class);
         OssLifecycleManager lifecycle = mock(OssLifecycleManager.class);
-        SysOssServiceImpl service = new SysOssServiceImpl(mapper, lifecycle);
+        SysOssServiceImpl service = new SysOssServiceImpl(mapper, mock(SysOssConfigMapper.class), mock(SysOssMigrationItemMapper.class), lifecycle);
         SysOss oss = oss(7L, "identity/front.JPG",
             "{\"fileSize\":1048576,\"contentType\":\"image/jpeg\"}");
         when(mapper.selectById(7L)).thenReturn(oss);
@@ -45,7 +47,7 @@ class OssObjectMetadataServiceUnitTest {
     void failsClosedWhenObjectOrAuthoritativeMetadataIsMissing() {
         SysOssMapper mapper = mock(SysOssMapper.class);
         OssLifecycleManager lifecycle = mock(OssLifecycleManager.class);
-        SysOssServiceImpl service = new SysOssServiceImpl(mapper, lifecycle);
+        SysOssServiceImpl service = new SysOssServiceImpl(mapper, mock(SysOssConfigMapper.class), mock(SysOssMigrationItemMapper.class), lifecycle);
         when(mapper.selectById(8L)).thenReturn(oss(8L, "identity/front.jpg", "{}"));
         when(mapper.selectById(10L)).thenReturn(oss(10L, "identity/front.jpg", "not-json"));
 

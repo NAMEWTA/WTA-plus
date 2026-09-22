@@ -13,6 +13,10 @@ import {
 const BASE_PATH = '/system/openApi';
 const NO_STORE = Object.freeze({ 'Cache-Control': 'no-store', repeatSubmit: false });
 
+function projectNullableCredentialSummary(value: unknown) {
+  return value === null ? null : projectOpenApiCredentialSummary(value);
+}
+
 function userSegment(value: OpenApiIdentifier): string {
   const text = String(value);
   if (!/^[1-9]\d*$/.test(text)) throw new TypeError('OpenAPI target userId is invalid');
@@ -70,7 +74,7 @@ export function createOpenApiService(http: HttpClient): OpenApiService {
   return Object.freeze({
     currentUser: Object.freeze({
       getCredential: () =>
-        request({ url: `${BASE_PATH}/self/credential`, method: 'get' }, projectOpenApiCredentialSummary),
+        request({ url: `${BASE_PATH}/self/credential`, method: 'get' }, projectNullableCredentialSummary),
       createCredential: (input: OpenApiCredentialCreateInput) =>
         request(
           {
@@ -103,7 +107,7 @@ export function createOpenApiService(http: HttpClient): OpenApiService {
       listUsers: (query?: OpenApiUserQuery) =>
         request({ url: `${BASE_PATH}/users`, method: 'get', params: userQuery(query) }, projectOpenApiUsers),
       getCredential: (userId: OpenApiIdentifier) =>
-        request({ url: `${userPath(userId)}/credential`, method: 'get' }, projectOpenApiCredentialSummary),
+        request({ url: `${userPath(userId)}/credential`, method: 'get' }, projectNullableCredentialSummary),
       createCredential: (userId: OpenApiIdentifier, input: OpenApiCredentialCreateInput) =>
         request(
           {
