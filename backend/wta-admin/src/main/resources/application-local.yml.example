@@ -1,0 +1,17 @@
+# Optional local override: copy to application-local.yml (ignored by Git).
+# Prefer Spring's native environment overrides; no OSS account or probe is required to start.
+server:
+  port: ${SERVER_PORT:38888}
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/wta-plus?serverTimezone=UTC}
+          username: ${DB_USERNAME:wta_app}
+          password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}

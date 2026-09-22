@@ -18,6 +18,9 @@ type BaselineApiState = {
   loginRequests: number;
   logoutRequests: number;
   messageBoxCode?: number;
+  inboxMessages?: Record<string, unknown>[];
+  inboxRequests: number;
+  pushTicketRequests: number;
   menuComponent: string;
   networkOrder: string[];
   permissions: string[];
@@ -38,6 +41,8 @@ const createApiState = (overrides: Partial<BaselineApiState> = {}): BaselineApiS
   loginRequests: 0,
   logoutRequests: 0,
   menuComponent: 'demo/demo/index',
+  inboxRequests: 0,
+  pushTicketRequests: 0,
   networkOrder: [],
   permissions: ['demo:demo:list'],
   registerRequests: 0,
@@ -146,15 +151,17 @@ const installBaselineApi = async (page: Page, state: BaselineApiState) => {
       return fulfillJson(route, { code: 200, data: null });
     }
     if (path === '/resource/message/ticket') {
+      state.pushTicketRequests += 1;
       return fulfillJson(route, { code: 200, data: 'test-push-ticket' });
     }
     if (path === '/resource/message') {
       return route.fulfill({ contentType: 'text/event-stream', body: '' });
     }
     if (path === '/notify/inbox') {
+      state.inboxRequests += 1;
       return fulfillJson(route, {
         code: state.messageBoxCode ?? 200,
-        data: []
+        data: state.inboxMessages ?? []
       });
     }
     if (path === '/demo/demo/list') {
@@ -268,4 +275,29 @@ test('an authenticated 401 logs out and preserves the protected route as redirec
   expect(redirect).toBe(encodeURIComponent('/baseline/route'));
   expect(state.logoutRequests).toBe(1);
   expect(state.unknownRequests).toEqual([]);
+});
+
+
+test('persisted notice is visible in the message box with production realtime disabled', async ({ page }) => {
+  const state = createApiState({ inboxMessages: [{
+    messageId: '9000000000000000101', category: 'notice', title: '持久公告可阅读',
+    message: '当前用户的持久站内消息', createTime: '2026-09-22 10:00:00', readTime: null
+  }] });
+  await installBaselineApi(page, state);
+  await page.goto('/login?redirect=%2Fbaseline%2Froute');
+  await expect(page.locator('.submit-button')).toBeEnabled();
+  await page.locator('.submit-button').click();
+  await expect(page).toHaveURL(/\/baseline\/route$/);
+  await expect.poll(() => state.inboxRequests).toBeGreaterThan(0);
+  await page.locator('.message-trigger').click();
+  await page.getByRole('tab', { name: '通知 1', exact: true }).click();
+  await expect(page.getByText('持久公告可阅读', { exact: true })).toBeVisible();
+  expect(state.pushTicketRequests).toBe(0);
+  const requestsBeforeReload = state.inboxRequests;
+  await page.reload();
+  await expect.poll(() => state.inboxRequests).toBeGreaterThan(requestsBeforeReload);
+  await page.locator('.message-trigger').click();
+  await page.getByRole('tab', { name: '通知 1', exact: true }).click();
+  await expect(page.getByText('持久公告可阅读', { exact: true })).toBeVisible();
+  expect(state.pushTicketRequests).toBe(0);
 });

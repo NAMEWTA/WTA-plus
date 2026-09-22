@@ -7,6 +7,9 @@
     },
     {
       "change": "2026-09-21-wta-sso-oidc-upgrade"
+    },
+    {
+      "change": "2026-09-22-audit-foundation-hardening"
     }
   ],
   "archived": [

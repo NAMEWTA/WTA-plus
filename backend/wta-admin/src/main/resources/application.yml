@@ -47,9 +47,8 @@ namewta:
 
 web:
   cors:
-    # 临时默认通配。未设置环境变量时允许任意 Origin；发布前用 WEB_CORS_ALLOWED_ORIGINS 收成精确列表。
-    # 值必须加引号，否则 YAML 会把 * 当成别名。
-    allowed-origins: "${WEB_CORS_ALLOWED_ORIGINS:*}"
+    # 同源/Vite代理无需额外配置。跨源部署只接受明确的 HTTP(S) Origin。
+    allowed-origins: ${WEB_CORS_ALLOWED_ORIGINS:}
 
 # 可选 Nacos 稀疏配置覆盖。关闭时不创建客户端或监听器。
 nacos:

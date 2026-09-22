@@ -1,0 +1,90 @@
+{
+  "schema_version": 6,
+  "artifact": "change-status",
+  "change": "2026-09-22-audit-foundation-hardening",
+  "change_status": "active",
+  "current_work": "specdev/implement",
+  "works_run": [
+    "specdev/spec",
+    "specdev/tickets"
+  ],
+  "claimed_investigations": [],
+  "execution_authorization": {
+    "implementation_commit": {
+      "status": "authorized",
+      "source": "<Path>{roots.state}/specdev/changes/2026-09-22-audit-foundation-hardening/source.md</Path>",
+      "granted_at": "2026-09-22T14:20:35Z",
+      "scope": "本报告整改独立分支的提交、推送、验证后PR合并；不修改真实环境"
+    },
+    "local_candidate_integration": {
+      "status": "authorized",
+      "source": "<Path>{roots.state}/specdev/changes/2026-09-22-audit-foundation-hardening/source.md</Path>",
+      "granted_at": "2026-09-22T14:20:35Z",
+      "scope": "本报告整改独立分支的提交、推送、验证后PR合并；不修改真实环境"
+    },
+    "source_cleanup": {
+      "status": "not-authorized",
+      "source": null,
+      "granted_at": null,
+      "scope": "本报告整改独立分支的提交、推送、验证后PR合并；不修改真实环境"
+    }
+  },
+  "leadership": {
+    "current": "audit-lead",
+    "epoch": 1,
+    "assigned_at": "2026-09-22T14:20:35Z",
+    "history": []
+  },
+  "created_at": "2026-09-22T14:20:35Z",
+  "updated_at": "2026-09-22T14:20:35Z",
+  "completed_at": null,
+  "archived": false,
+  "archive_path": null,
+  "blockers": [],
+  "deviations": [],
+  "worktrees": [
+    {
+      "ticket_id": "T-01",
+      "owner": "audit-lead",
+      "implementation_owner": "audit-lead",
+      "integration_owner": "audit-lead",
+      "provider": "git",
+      "base_sha": "ee2464f79ed284bfd4213f2c28496595e3ac7f43",
+      "parent_branch": "refactor/audit-2026-09-22",
+      "branch": "refactor/audit-2026-09-22",
+      "workspace_ref": "current",
+      "source_checkpoint": null,
+      "integration": {
+        "status": "pending",
+        "parent_ref": "refactor/audit-2026-09-22",
+        "parent_before_sha": "ee2464f79ed284bfd4213f2c28496595e3ac7f43",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": false,
+          "status": "not-required",
+          "reason": "本票执行定向回归；全仓门禁由T-06汇合验收，基线OSS类型错误单独记录。",
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-22-audit-foundation-hardening/evidence/T-01.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
+      },
+      "status": "active",
+      "updated_at": "2026-09-22T14:30:46Z"
+    }
+  ]
+}

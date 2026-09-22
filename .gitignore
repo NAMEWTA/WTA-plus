@@ -73,6 +73,5 @@ venv/
 specdev-worktree/
 temp/
 
-# local secrets for box E2E
-# tracked per CTO: local box E2E config (intranet-only)
-# backend/wta-admin/src/main/resources/application-local.yml
+# Local backend overrides contain environment-specific credentials and are never versioned.
+backend/wta-admin/src/main/resources/application-local.yml

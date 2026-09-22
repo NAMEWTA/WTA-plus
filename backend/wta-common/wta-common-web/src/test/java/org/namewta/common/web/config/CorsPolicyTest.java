@@ -57,19 +57,14 @@ class CorsPolicyTest {
     }
 
     @Test
-    void wildcardOriginAllowsCredentialedRequestAndReflectsOrigin() throws Exception {
-        var properties = new CorsProperties();
-        properties.setAllowedOrigins(List.of("*"));
-        var request = new MockHttpServletRequest("POST", "/auth/login");
-        request.addHeader("Origin", "http://172.16.105.9:5177");
-        var response = new MockHttpServletResponse();
-        var reached = new AtomicBoolean();
-        new ResourcesConfig().corsFilter(properties).doFilter(request, response,
-            (req, res) -> reached.set(true));
-        assertThat(reached).isTrue();
-        assertThat(response.getStatus()).isNotEqualTo(403);
-        assertThat(response.getHeader("Access-Control-Allow-Origin")).isEqualTo("http://172.16.105.9:5177");
-        assertThat(response.getHeader("Access-Control-Allow-Credentials")).isEqualTo("true");
+    void wildcardCannotExpandTheCredentialTrustBoundary() {
+        for (boolean credentials : List.of(true, false)) {
+            var properties = new CorsProperties();
+            properties.setAllowCredentials(credentials);
+            properties.setAllowedOrigins(List.of("*"));
+            assertThatThrownBy(() -> new ResourcesConfig().corsFilter(properties))
+                .isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
     @Test

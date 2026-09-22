@@ -100,7 +100,8 @@ export const initPush = async () => {
 export const initMessageBox = async () => {
   const currentRequest = ++inboxRequest;
   const token = getToken();
-  if (import.meta.env.VITE_APP_MESSAGE_ENABLED === 'false' || !token) {
+  // 持久收件箱只依赖登录身份；实时传输关闭不影响 REST 阅读。
+  if (!token) {
     useNoticeStore().clearNotice();
     return;
   }

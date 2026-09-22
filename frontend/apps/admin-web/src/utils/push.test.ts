@@ -47,6 +47,37 @@ describe('message box synchronization', () => {
     vi.unstubAllEnvs();
   });
 
+  it('loads persisted messages while realtime transport is disabled', async () => {
+    vi.stubEnv('VITE_APP_MESSAGE_ENABLED', 'false');
+    harness.list.mockResolvedValue({ data: [{ messageId: 'notice-1', category: 'notice' }] });
+    await initMessageBox();
+    await initPush();
+    expect(harness.list).toHaveBeenCalledOnce();
+    expect(harness.setNotices.mock.calls[0][0][0].messageId).toBe('notice-1');
+    expect(harness.start).not.toHaveBeenCalled();
+    expect(harness.request).not.toHaveBeenCalled();
+  });
+
+  it('does not query a signed-out inbox, regardless of the realtime setting', async () => {
+    harness.token = undefined;
+    await initMessageBox();
+    expect(harness.list).not.toHaveBeenCalled();
+    expect(harness.clearNotice).toHaveBeenCalledOnce();
+  });
+
+  it('never installs a previous user inbox after switching sessions', async () => {
+    let resolveFirst: (value: unknown) => void = () => undefined;
+    harness.list.mockImplementationOnce(() => new Promise(resolve => { resolveFirst = resolve; }));
+    const first = initMessageBox();
+    harness.token = 'session-2';
+    harness.list.mockResolvedValueOnce({ data: [{ messageId: 'user-2-message' }] });
+    await initMessageBox();
+    resolveFirst({ data: [{ messageId: 'user-1-private-message' }] });
+    await first;
+    expect(harness.setNotices).toHaveBeenCalledOnce();
+    expect(harness.setNotices.mock.calls[0][0][0].messageId).toBe('user-2-message');
+  });
+
   it('loads the authoritative inbox fields and server read state', async () => {
     harness.list.mockResolvedValue({
       data: [
