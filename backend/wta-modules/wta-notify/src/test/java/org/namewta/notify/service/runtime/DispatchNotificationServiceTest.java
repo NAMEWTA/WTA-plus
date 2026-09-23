@@ -46,6 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -292,6 +293,57 @@ class DispatchNotificationServiceTest {
         assertEquals("FAILED", fixture.delivery.getStatus());
         assertEquals("DONE", fixture.outbox.getStatus());
         assertEquals("LOCAL_DISPATCH_ERROR", fixture.delivery.getErrorCode());
+    }
+
+    @Test
+    void overlongLegacyPathClosesBeforeInAppBudgetAndPersist() {
+        Fixture fixture = fixture("IN_APP");
+        fixture.intent.setPathSnapshot("😀".repeat(501));
+        InAppNotificationPort port = mock(InAppNotificationPort.class);
+        when(fixture.inApp.getIfAvailable()).thenReturn(port);
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals("FAILED", fixture.delivery.getStatus());
+        assertEquals("LOCAL_DISPATCH_ERROR", fixture.delivery.getErrorCode());
+        assertEquals("DONE", fixture.outbox.getStatus());
+        verify(fixture.dao, never()).reserveInAppOutbox(anyLong(), anyString(), anyString());
+        verify(port, never()).persist(anyString(), any(), any());
+    }
+
+    @Test
+    void failedResultCallDoesNotClearAnActiveCallerTransaction() {
+        assertCallerSynchronizationsSurviveFailedResult(true);
+    }
+
+    @Test
+    void failedResultCallDoesNotClearAnExistingAfterCommitCallback() {
+        assertCallerSynchronizationsSurviveFailedResult(false);
+    }
+
+    private void assertCallerSynchronizationsSurviveFailedResult(boolean activeXid) {
+        Fixture fixture = fixture("IN_APP");
+        InAppNotificationPort inbox = mock(InAppNotificationPort.class);
+        when(fixture.inApp.getIfAvailable()).thenReturn(inbox);
+        org.namewta.notify.port.NotifyDispatchResultPort result = mock(org.namewta.notify.port.NotifyDispatchResultPort.class);
+        when(result.renew(fixture.outbox)).thenReturn(true);
+        when(result.beginInAppAttempt(fixture.outbox)).thenThrow(new IllegalStateException("owned result failure"));
+        var service = new DispatchNotificationService(fixture.dao, fixture.notifyClient, fixture.inApp,
+            fixture.configDao, (key, limit, window) -> true, result);
+        com.baomidou.dynamic.datasource.tx.TransactionContext.removeSynchronizations();
+        com.baomidou.dynamic.datasource.tx.TransactionContext.bind("owned-caller");
+        var existing = new org.springframework.transaction.support.TransactionSynchronization() { };
+        com.baomidou.dynamic.datasource.tx.TransactionContext.registerSynchronization(existing);
+        if (!activeXid) com.baomidou.dynamic.datasource.tx.TransactionContext.remove();
+        try {
+            assertThrows(IllegalStateException.class, () -> service.dispatch(fixture.outbox));
+            assertEquals(activeXid ? "owned-caller" : null,
+                com.baomidou.dynamic.datasource.tx.TransactionContext.getXID());
+            assertEquals(List.of(existing), com.baomidou.dynamic.datasource.tx.TransactionContext.getSynchronizations());
+        } finally {
+            com.baomidou.dynamic.datasource.tx.TransactionContext.removeSynchronizations();
+            com.baomidou.dynamic.datasource.tx.TransactionContext.remove();
+        }
     }
 
     @Test

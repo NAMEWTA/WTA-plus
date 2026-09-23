@@ -1,5 +1,6 @@
 package org.namewta.notify.service.runtime;
 
+import com.baomidou.dynamic.datasource.tx.TransactionContext;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.notify.core.NotifyClient;
 import org.namewta.common.notify.model.NotifyContent;
@@ -199,14 +200,51 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             String noticeType = params == null ? null : String.valueOf(params.getOrDefault("noticeType", ""));
             snapshot = new InAppNotificationPort.InAppSnapshot(intent.getTitleSnapshot(), intent.getContentSnapshot(),
                 intent.getPathSnapshot(), noticeType, channels);
+            if (!fitsColumn(snapshot.title(), 255) || !fitsColumn(snapshot.noticeType(), 10)
+                || !fitsColumn(snapshot.path(), 500)) {
+                throw new IllegalArgumentException("站内通知快照超过持久化字段上限");
+            }
         } catch (RuntimeException invalidLocalInput) {
             resultPort.complete(outbox, new NotifyDispatchResultPort.Result("FAILED", "in-app", null,
                 "LOCAL_DISPATCH_ERROR", "站内通知参数或端口无效", 0));
             return;
         }
-        if (!resultPort.beginInAppAttempt(outbox)) return;
-        resultPort.completeInApp(outbox, port, snapshot, delivery.getUserId(),
-            java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started));
+        boolean standaloneBegin = standaloneResultCall();
+        boolean reserved;
+        try {
+            reserved = resultPort.beginInAppAttempt(outbox);
+        } catch (RuntimeException | Error failure) {
+            clearFailedResultSynchronizations(standaloneBegin);
+            throw failure;
+        }
+        if (!reserved) {
+            NotifyDelivery current = dao.delivery(outbox.getDeliveryId());
+            if (current == null || !"PENDING".equals(current.getStatus())) {
+                resultPort.settle(outbox, Disposition.CLOSE);
+            }
+            return;
+        }
+        boolean standaloneComplete = standaloneResultCall();
+        try {
+            resultPort.completeInApp(outbox, port, snapshot, delivery.getUserId(),
+                java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started));
+        } catch (RuntimeException | Error failure) {
+            clearFailedResultSynchronizations(standaloneComplete);
+            throw failure;
+        }
+    }
+
+    private boolean standaloneResultCall() {
+        return TransactionContext.getXID() == null && TransactionContext.getSynchronizations().isEmpty();
+    }
+
+    /** 提交故障可能跳过 afterCompletion；仅原本无上下文的调用清理其新留在本线程的回调。 */
+    private void clearFailedResultSynchronizations(boolean standaloneAtEntry) {
+        if (standaloneAtEntry && TransactionContext.getXID() == null) TransactionContext.removeSynchronizations();
+    }
+
+    private boolean fitsColumn(String value, int maximumCodePoints) {
+        return value == null || value.codePointCount(0, value.length()) <= maximumCodePoints;
     }
 
     /** 调用前续租也由数据库判断有效期，不能复活已经过期的 owner。 */

@@ -148,3 +148,11 @@ Revision154: T36 active at 5118051403de0648540646d98536d8c4f3f9f26d; cors_audit 
 ### revision156 持久化摘要长度核查
 
 当前InAppNotificationService把完整content同时写入varchar(1000)的message摘要和longtext正文；公告内容只NotBlank，合法长文会因摘要列溢出失败。现有写集内修正字段映射：message至多1000个Unicode code point、不截断代理对，content保持完整，幂等快照比较仍比较完整content。真实MySQL覆盖长文/emoji边界，不通过扩列、放宽SQL模式或截断正文规避。
+
+## T36 第一候选验收未通过
+
+固定54cf715c2829ff95cf994401ff52f02668c1e171，39类175单元/Wake1/SMS8零失败零skip，但Atomic61有3断言失败（两项提交后推送计数0、一项取消收尾PROCESSING）；run 0e830cfa64189d7f与d5a41784604fd16a全部owned清理完成，clean前后源一致。功能审查还发现多渠道JSON文本比较与确定字段长度预检缺口。正式attempt=1，保留原始记录/tmp/wta-t36-c1；不标done，不重置次数。writer在原授权写集内按根因修复第二候选，禁止放宽断言。
+
+### T36 依赖事件清理的限定范围
+
+dynamic-datasource 4.5.0 的提交异常可能跳过同步清理，依赖源码与实际class由ops专项复核。本票仅在自己的IN_APP代理结果调用失败、调用前无XID且同步集合为空、退出后无XID时清理，保留原异常；不能在入口按“无XID+有sync”泛清，因为正常AFTER_COMMIT回调阶段也有该形态。本地修复不代表所有UseCase的依赖问题已消失；T22/T30当前候选复验应核查其他提交失败后线程复用与事件传播，不能把本票局部证明扩成全局保证。

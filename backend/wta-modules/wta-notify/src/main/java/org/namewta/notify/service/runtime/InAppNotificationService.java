@@ -55,7 +55,8 @@ public class InAppNotificationService implements InAppNotificationPort {
             || !Objects.equals(existing.getContent(), snapshot.content())
             || !Objects.equals(existing.getPath(), snapshot.path())
             || !Objects.equals(existing.getNoticeType(), snapshot.noticeType())
-            || !Objects.equals(existing.getChannelsJson(), org.namewta.common.json.utils.JsonUtils.toJsonString(snapshot.channels()))) {
+            || !Objects.equals(org.namewta.common.json.utils.JsonUtils.parseArray(existing.getChannelsJson(), String.class),
+                snapshot.channels())) {
             throw new IllegalStateException("同一站内消息主键的内容快照不一致");
         }
         if (userIds == null) return;

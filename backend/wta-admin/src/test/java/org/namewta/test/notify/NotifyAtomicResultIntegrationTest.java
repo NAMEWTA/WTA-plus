@@ -195,6 +195,7 @@ class NotifyAtomicResultIntegrationTest {
                 db.update("delete from notify_message where message_id=?", INTENT);
             }
         } finally {
+            if (TransactionContext.getXID() == null) TransactionContext.removeSynchronizations();
             if (eventContext != null) eventContext.close();
             if (redis != null) redis.shutdown();
             if (routing != null) routing.destroy();
@@ -252,6 +253,37 @@ class NotifyAtomicResultIntegrationTest {
     }
 
     @ParameterizedTest
+    @CsvSource({"title,255,true", "title,256,false", "notice,10,true", "notice,11,false", "path,500,true"})
+    void inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String field, int length, boolean fits) {
+        String value = "😀".repeat(length);
+        switch (field) {
+            case "title" -> db.update("update notify_intent set title_snapshot=? where intent_id=?", value, INTENT);
+            case "notice" -> db.update("update notify_intent set template_params_json=? where intent_id=?",
+                JsonUtils.toJsonString(Map.of("noticeType", value)), INTENT);
+            case "path" -> db.update("update notify_intent set path_snapshot=? where intent_id=?", value, INTENT);
+            default -> throw new IllegalArgumentException(field);
+        }
+
+        dispatch.dispatch(dao.outbox(OUTBOX));
+
+        if (fits) {
+            assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
+            assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
+            String column = switch (field) { case "title" -> "title"; case "notice" -> "notice_type"; default -> "path"; };
+            assertThat(db.queryForObject("select " + column + " from notify_message where message_id=?", String.class, INTENT))
+                .isEqualTo(value);
+        } else {
+            assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("FAILED");
+            assertThat(dao.delivery(DELIVERY).getErrorCode()).isEqualTo("LOCAL_DISPATCH_ERROR");
+            assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("DONE");
+            assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
+            assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+            assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isZero();
+            assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
+        }
+    }
+
+    @ParameterizedTest
     @ValueSource(strings = {"notify_message:insert", "notify_message_recipient:insert",
         "notify_delivery:update", "notify_attempt:insert", "notify_outbox:update", "notify_intent:update"})
     void everyInAppWriteStageRollsBackMessageRecipientAndResult(String stage) {
@@ -301,6 +333,8 @@ class NotifyAtomicResultIntegrationTest {
     void concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations() throws Exception {
         long secondDelivery = DELIVERY + 10;
         long secondOutbox = OUTBOX + 10;
+        db.update("update notify_intent set template_params_json=? where intent_id=?",
+            JsonUtils.toJsonString(Map.of("channels", List.of("IN_APP", "SMS"))), INTENT);
         db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,create_time) "
             + "values(?,?,2,8,'IN_APP','PENDING',utc_timestamp())", secondDelivery, INTENT);
         db.update("insert into notify_outbox(outbox_id,intent_id,delivery_id,status,available_at,lease_owner,lease_token,"
@@ -321,6 +355,8 @@ class NotifyAtomicResultIntegrationTest {
             .containsExactly(7L, 8L);
         assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(2);
         assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
+        assertThat(JsonUtils.parseArray(db.queryForObject("select channels_json from notify_message where message_id=?",
+            String.class, INTENT), String.class)).containsExactly("IN_APP", "SMS");
         assertThat(realtimeCalls.get()).isEqualTo(2);
         dispatch.dispatch(dao.outbox(OUTBOX));
         assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(2);
@@ -470,6 +506,7 @@ class NotifyAtomicResultIntegrationTest {
         duringProvider = () -> commitFault.set(phase);
         NotifyOutbox first = dao.outbox(OUTBOX);
         assertThatThrownBy(() -> dispatch.dispatch(first)).isInstanceOf(RuntimeException.class);
+        assertThat(TransactionContext.getSynchronizations()).as("failed proxy commit cannot poison the worker thread").isEmpty();
         assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
         assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(1);
         if ("AFTER".equals(phase)) {
@@ -491,6 +528,17 @@ class NotifyAtomicResultIntegrationTest {
         assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isEqualTo(1);
         assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(1);
         assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(1);
+        int priorPushes = realtimeCalls.get();
+        long nextDelivery = DELIVERY + 20, nextOutbox = OUTBOX + 20;
+        db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,create_time) "
+            + "values(?,?,2,8,'IN_APP','PENDING',utc_timestamp())", nextDelivery, INTENT);
+        db.update("insert into notify_outbox(outbox_id,intent_id,delivery_id,status,available_at,lease_owner,lease_token,"
+            + "lease_until,create_time) values(?,?,?,'PROCESSING',utc_timestamp(),'worker-c','token-c',"
+            + "timestampadd(second,60,utc_timestamp()),utc_timestamp())", nextOutbox, INTENT, nextDelivery);
+        dispatch.dispatch(dao.outbox(nextOutbox));
+        assertThat(realtimeCalls.get()).as("later normal commit on the same thread must emit AFTER_COMMIT")
+            .isEqualTo(priorPushes + 1);
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(2);
     }
 
     @Test

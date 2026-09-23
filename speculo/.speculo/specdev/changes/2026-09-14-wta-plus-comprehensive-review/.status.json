@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T09:48:11.719925+00:00",
+  "updated_at": "2026-09-23T10:27:40.025472+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -387,14 +387,14 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "5118051403de0648540646d98536d8c4f3f9f26d",
+      "source_checkpoint": "54cf715c2829ff95cf994401ff52f02668c1e171",
       "status": "active",
       "updated_at": "2026-09-23T09:48:11.719925+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
         "parent_before_sha": "5118051403de0648540646d98536d8c4f3f9f26d",
-        "source_sha": "5118051403de0648540646d98536d8c4f3f9f26d",
+        "source_sha": "54cf715c2829ff95cf994401ff52f02668c1e171",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
@@ -402,7 +402,7 @@
         "result_sha": null,
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "failed",
         "full_suite": {
           "required": true,
           "status": "pending",
@@ -416,7 +416,7 @@
           "evidence": null
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-36.md</Path>",
-        "attempts": 0,
+        "attempts": 1,
         "promotion_status": "pending"
       }
     }
