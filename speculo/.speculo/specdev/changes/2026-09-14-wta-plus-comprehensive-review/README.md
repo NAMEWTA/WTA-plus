@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，执行全部50票。当前revision166：10done、T-01/T-03取消重复施工但AC归T30、38ready。T38已完成，下一T39；Goal active。
+用户已激活Goal，执行全部50票。当前revision167：10done、2cancelled（AC保留）、T39 in_progress、37ready。cors_audit唯一产品writer，Lead治理/提交/服务验收；Goal active。
 
 最近产品T38 Source A `7a6f75ac9238399daf7936797d07da141f0f5a03`，完整生成合同/result B `a3b289efbaf5862e55a40a6c58a6ad66c79b40b2`。B真实14、前端736零skip，全前端及full/core通过；默认后台A854执行/163环境skip按相同输入复用，整个change仍未完成。
 
