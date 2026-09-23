@@ -1,0 +1,19 @@
+{
+  "time": "2026-09-23T07:28:46.973339+00:00",
+  "source": "24909df0e49208535097f03d174c0592ea6836d3",
+  "failure": "real E2E timed out at initial login form before business journey",
+  "evidence": [
+    "/tmp/wta-t34-harness/runs/fd9a7f08ddb41a50/result.json",
+    "/tmp/wta-t34-harness/runs/fd9a7f08ddb41a50/backend.log"
+  ],
+  "observations": [
+    "Hikari housekeeper reported 2m35s starvation/clock leap",
+    "auth client context only reached backend at end of timed out browser session",
+    "host load 74.43/65.03/33.07, swap fully used",
+    "concurrent full frontend typecheck took same interval and eventually passed"
+  ],
+  "causality": "resource contention is supported but exact cause not proven",
+  "review_after_three_attempts": "Lead inspected real failure and source; product contracts already unit/synthetic/review pass; no further blind retry or timeout weakening",
+  "recovery": "run owned real E2E alone after all compiler/typecheck jobs finish; no source, selectors, timeouts or assertions changed; preserve all failed and success records",
+  "reuse": "already successful non-E2E checks on exact same HEAD remain valid"
+}

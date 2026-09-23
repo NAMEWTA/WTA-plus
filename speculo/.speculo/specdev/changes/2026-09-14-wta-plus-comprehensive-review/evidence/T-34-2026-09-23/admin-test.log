@@ -1,0 +1,13 @@
+
+> @namewta/admin-web@0.0.0 test /srv/WTA-plus/frontend/apps/admin-web
+> vitest run src
+
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web
+
+
+ Test Files  15 passed (15)
+      Tests  71 passed (71)
+   Start at  15:14:18
+   Duration  3.40s (transform 5.01s, setup 0ms, import 7.82s, tests 974ms, environment 7ms)
+

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "--config",
+    "/tmp/wta-t34/playwright.synthetic.config.ts"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T07:16:54.324837+00:00",
+  "finished_at": "2026-09-23T07:17:42.108761+00:00",
+  "exit_code": 1,
+  "log": "accept1-synthetic.log"
+}

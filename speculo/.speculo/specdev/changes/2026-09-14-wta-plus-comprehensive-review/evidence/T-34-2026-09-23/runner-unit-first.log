@@ -1,0 +1,13 @@
+test_logger_failure_still_attempts_container_removal (test_run_inbox_real.ContainerCleanupTest.test_logger_failure_still_attempts_container_removal) ... ok
+test_mismatched_label_cannot_be_removed (test_run_inbox_real.ContainerCleanupTest.test_mismatched_label_cannot_be_removed) ... ok
+test_recovers_uncaptured_container_from_both_exact_labels (test_run_inbox_real.ContainerCleanupTest.test_recovers_uncaptured_container_from_both_exact_labels) ... ok
+test_redaction_failure_still_attempts_container_removal (test_run_inbox_real.ContainerCleanupTest.test_redaction_failure_still_attempts_container_removal) ... ok
+test_fixed_source_title_and_single_case (test_run_inbox_real.IdentityTest.test_fixed_source_title_and_single_case) ... ok
+test_wrong_source_title_or_extra_case_fails (test_run_inbox_real.IdentityTest.test_wrong_source_title_or_extra_case_fails) ... ok
+test_cleanup_error_forces_failed_gate_even_if_test_passed (test_run_inbox_real.ProcessCleanupTest.test_cleanup_error_forces_failed_gate_even_if_test_passed) ... ok
+test_exited_leader_does_not_hide_live_child (test_run_inbox_real.ProcessCleanupTest.test_exited_leader_does_not_hide_live_child) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.126s
+
+OK

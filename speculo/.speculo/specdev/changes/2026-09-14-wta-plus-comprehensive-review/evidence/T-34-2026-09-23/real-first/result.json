@@ -1,0 +1,99 @@
+{
+  "gate": "T-34 real Admin inbox without realtime",
+  "run_id": "9f798f9a29cbeb5a",
+  "started_utc": "2026-09-23T07:17:03.988405+00:00",
+  "run_dir": "/tmp/wta-t34-harness/runs/9f798f9a29cbeb5a",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "41248e7ab26aa18a4f31afb3af32b532d54d277fa8be9134b927493d3aca0d11",
+    "redis_container_id": "ecca32d0c9112a7715cd2bee228c7205cbc09b55bb85e664ff8e5aaf53bfbc8c",
+    "backend_pid": 3574267,
+    "vite_pid": 3575260
+  },
+  "cleanup": {
+    "ecca32d0c9112a7715cd2bee228c7205cbc09b55bb85e664ff8e5aaf53bfbc8c": "removed",
+    "41248e7ab26aa18a4f31afb3af32b532d54d277fa8be9134b927493d3aca0d11": "removed",
+    "owned_containers_remaining": [],
+    "ports_closed": {
+      "44065": true,
+      "56907": true,
+      "32778": true,
+      "32779": true
+    }
+  },
+  "counts": {
+    "expected": 1,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "source": {
+    "head": "d3549fb5d9965a2799c14c67326890172288b4b3",
+    "tree": "c7c3cb1bd94d43b707b7d427c13b14875bda4bd8",
+    "clean": true,
+    "jar_build_head": "6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04",
+    "backend_sql_equal_to_jar_build": true
+  },
+  "transport_disabled_contract": {
+    "backend_message_enabled": false,
+    "frontend_message_enabled": false,
+    "transport_condition_source": "backend/wta-common/wta-common-push/src/main/java/org/namewta/common/push/condition/MessageTransportCondition.java",
+    "transport_condition_sha256": "23a0427e5b5e58c971c3fb6a22a9b37d136b6e40894883db7a3522458f568609",
+    "auto_configuration_source": "backend/wta-common/wta-common-push/src/main/java/org/namewta/common/push/config/MessageAutoConfiguration.java",
+    "auto_configuration_sha256": "f8edc84e6fb084dfcce48db235ef6eeab7e716a96cc8fbc5aafc30c6bd6a3011",
+    "browser_must_make_zero_ticket_and_stream_requests": true
+  },
+  "artifact": {
+    "jar": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "8c1fbefbbb4e00d2c8dbaeac4bbcbc5b43333be79db559c979810f9b15420e60",
+    "playwright_config_sha256": "72203cc6f4abfb9cf0a3b20f6fe6f0f977ac0bf4fa0e850e3037dd33c953e430",
+    "playwright_test_sha256": "b4ab5ae2620c2a29fee7e9d9dd6f9cf548d911da9a0c87423fa91ac440efe84c"
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "62f6f4ea845c22acd5c8e8322ba810c78570132bb5510d289301da969ad2de9c",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "24ec3355759905263057ec4bfd08d637b29b69993cb94ae62996d96c27abd84e",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "seed": {
+    "message_id": "8005813921196356821",
+    "recipient_id": "8197847365091992789",
+    "user_id": "1761100000000000001",
+    "joined_rows": 1,
+    "category": "notice",
+    "read_time": "2026-09-23 10:00:00"
+  },
+  "playwright_exit_code": 0,
+  "source_after": {
+    "head": "d3549fb5d9965a2799c14c67326890172288b4b3",
+    "tree": "c7c3cb1bd94d43b707b7d427c13b14875bda4bd8",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T07:17:49.543745+00:00"
+}

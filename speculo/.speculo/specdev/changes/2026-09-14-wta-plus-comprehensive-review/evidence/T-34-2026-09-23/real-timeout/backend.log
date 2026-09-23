@@ -1,0 +1,152 @@
+15:23:55,006 |-WARN in ch.qos.logback.core.joran.action.ConversionRuleAction - [converterClass] attribute is deprecated and replaced by [class]. See element [conversionRule] near line 9
+Application Version: 6.0.0
+Spring Boot Version: 4.1.0
+__________            _____.___.__         ____   ____                     __________.__
+\______   \__ __  ____\__  |   |__|        \   \ /   /_ __   ____          \______   \  |  __ __  ______
+ |       _/  |  \/  _ \/   |   |  |  ______ \   Y   /  |  \_/ __ \   ______ |     ___/  | |  |  \/  ___/
+ |    |   \  |  (  <_> )____   |  | /_____/  \     /|  |  /\  ___/  /_____/ |    |   |  |_|  |  /\___ \
+ |____|_  /____/ \____// ______|__|           \___/ |____/  \___  >         |____|   |____/____//____  >
+        \/             \/                                       \/                                   \/
+
+[36m2026-09-23 15:23:55[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35morg.namewta.NamewtaApplication
+[0;39m - Starting NamewtaApplication using Java 21.0.12.1 with PID 3594067 (/srv/WTA-plus/backend/wta-admin/target/wta-admin.jar started by root in /tmp/wta-t34-harness/runs/fd9a7f08ddb41a50)
+[36m2026-09-23 15:23:55[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35morg.namewta.NamewtaApplication
+[0;39m - The following 1 profile is active: "dev"
+[36m2026-09-23 15:23:56[0;39m [32m[background-preinit][0;39m [34mINFO [0;39m [1;35mo.h.validator.internal.util.Version
+[0;39m - HV000001: Hibernate Validator 9.1.0.Final
+[36m2026-09-23 15:24:04[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mc.g.y.a.MybatisPlusJoinAutoConfiguration
+[0;39m - MPJ SqlSessionFactory bean definition: sqlSessionFactory factoryBeanName: com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration factoryMethodName: sqlSessionFactory source: public org.apache.ibatis.session.SqlSessionFactory com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration.sqlSessionFactory(javax.sql.DataSource)
+[36m2026-09-23 15:24:06[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+[0;39m - Bean 'org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerAutoConfiguration' of type [org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [serverAnnotatedMethodBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+[36m2026-09-23 15:24:06[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+[0;39m - Bean 'serverAnnotatedBeanRegistry' of type [org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerAutoConfiguration$ServerMcpAnnotatedBeans] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [serverAnnotatedMethodBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+[36m2026-09-23 15:24:06[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+[0;39m - Bean 'spring.ai.mcp.server.annotation-scanner-org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerProperties' of type [org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [serverAnnotatedMethodBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+[36m2026-09-23 15:24:07[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35morg.eclipse.jetty.server.Server
+[0;39m - jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+[36m2026-09-23 15:24:08[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.n.common.json.config.JacksonConfig
+[0;39m - 初始化 jackson 配置
+[36m2026-09-23 15:24:08[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mc.g.y.a.MybatisPlusJoinAutoConfiguration
+[0;39m - mybatis plus join properties config complete
+[36m2026-09-23 15:24:08[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mcom.zaxxer.hikari.HikariDataSource
+[0;39m - master - Starting...
+[36m2026-09-23 15:24:08[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mcom.zaxxer.hikari.pool.HikariPool
+[0;39m - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@195c5803
+[36m2026-09-23 15:24:08[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mcom.zaxxer.hikari.HikariDataSource
+[0;39m - master - Start completed.
+[36m2026-09-23 15:24:08[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mc.b.d.d.DynamicRoutingDataSource
+[0;39m - dynamic-datasource - add a datasource named [master] success
+[36m2026-09-23 15:24:08[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mc.b.d.d.DynamicRoutingDataSource
+[0;39m - dynamic-datasource initial loaded [1] datasource,primary datasource named [master]
+[36m2026-09-23 15:24:09[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mc.g.y.a.MybatisPlusJoinAutoConfiguration
+[0;39m - mybatis plus join SqlInjector init
+ _ _   |_  _ _|_. ___ _ |    _ 
+| | |\/|_)(_| | |_\  |_)||_|_\ 
+     /               |         
+                        null 
+[36m2026-09-23 15:24:12[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.n.common.redis.config.RedisConfig
+[0;39m - 初始化 redis 配置
+[36m2026-09-23 15:24:12[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35morg.redisson.Version
+[0;39m - Redisson 4.6.1
+[36m2026-09-23 15:24:13[0;39m [32m[redisson-netty-1-5][0;39m [34mINFO [0;39m [1;35mo.r.connection.ConnectionsHolder
+[0;39m - 1 connections initialized for 127.0.0.1/127.0.0.1:32781
+[36m2026-09-23 15:24:13[0;39m [32m[redisson-netty-1-3][0;39m [34mINFO [0;39m [1;35mo.r.connection.ConnectionsHolder
+[0;39m - 8 connections initialized for 127.0.0.1/127.0.0.1:32781
+[36m2026-09-23 15:24:14[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.e.j.s.DefaultSessionIdManager
+[0;39m - Session workerName=node0
+[36m2026-09-23 15:24:14[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.e.j.server.handler.ContextHandler
+[0;39m - Started osbjs.JettyEmbeddedWebAppContext@38a7f7a2{application,/,b=file:///tmp/jetty-docbase.47767.10249404540059143238/,a=AVAILABLE,h=oeje11s.SessionHandler@27ca3040{STARTED}}
+[36m2026-09-23 15:24:14[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.e.j.e.s.ServletContextHandler
+[0;39m - Started osbjs.JettyEmbeddedWebAppContext@38a7f7a2{application,/,b=file:///tmp/jetty-docbase.47767.10249404540059143238/,a=AVAILABLE,h=oeje11s.SessionHandler@27ca3040{STARTED}}
+[36m2026-09-23 15:24:14[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35morg.eclipse.jetty.server.Server
+[0;39m - Started oejs.Server@251d3913{STARTING}[12.1.10,sto=0] @6661ms
+____ ____    ___ ____ _  _ ____ _  _ 
+[__  |__| __  |  |  | |_/  |___ |\ | 
+___] |  |     |  |__| | \_ |___ | \| 
+https://sa-token.cc (v1.45.0)
+[36m2026-09-23 15:24:17[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mc.b.m.s.MybatisPlusApplicationContextAware
+[0;39m - Register ApplicationContext instances org.springframework.boot.web.server.servlet.context.AnnotationConfigServletWebServerApplicationContext@17814b1c
+ _ _   |_  _ _|_. ___ _ |    _  .  _  .  _  
+| | |\/|_)(_| | |_\  |_)||_|_\  | (_) | | | 
+     /               |          /
+                                    1.5.9
+[36m2026-09-23 15:24:18[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.s.a.m.a.p.tool.SyncMcpToolProvider
+[0;39m - No tool methods found in the provided tool objects: []
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.s.a.m.a.p.s.SyncMcpSamplingProvider
+[0;39m - No sampling methods found
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.s.a.m.a.p.e.SyncMcpElicitationProvider
+[0;39m - No elicitation methods found
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.e.j.s.h.ContextHandler.application
+[0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.e.jetty.server.AbstractConnector
+[0;39m - Started oejs.ServerConnector@29673fc0{HTTP/1.1, (http/1.1)}{127.0.0.1:47767}
+ ________  _____ ______   ________  ___   ___        ___     
+|\   ____\|\   _ \  _   \|\   ____\|\  \ |\  \      |\  \    
+\ \  \___|\ \  \\\__\ \  \ \  \___|\ \  \\_\  \     \ \  \   
+ \ \_____  \ \  \\|__| \  \ \_____  \ \______  \  __ \ \  \  
+  \|____|\  \ \  \    \ \  \|____|\  \|_____|\  \|\  \\_\  \ 
+    ____\_\  \ \__\    \ \__\____\_\  \     \ \__\ \________\
+   |\_________\|__|     \|__|\_________\     \|__|\|________|
+   \|_________|             \|_________|                     
+V 3.3.5
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35morg.namewta.NamewtaApplication
+[0;39m - Started NamewtaApplication in 25.04 seconds (process running for 26.555)
+[36m2026-09-23 15:24:19[0;39m [32m[schedule-pool-1][0;39m [34mINFO [0;39m [1;35mo.n.n.a.worker.NotifyOutboxWorker
+[0;39m - notify outbox drain trigger=POLL claimed=0 batches=1
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35mo.n.s.runner.SystemApplicationRunner
+[0;39m - 初始化OSS配置成功
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.n.s.o.upload.OssUploadDiagnostics
+[0;39m - OSS存储配置 [minio] readiness 未通过: DIAGNOSTIC_OBJECT_MISSING
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.n.s.o.upload.OssUploadDiagnostics
+[0;39m - OSS存储配置 [qiniu] readiness 未通过: DIAGNOSTIC_OBJECT_MISSING
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.n.s.o.upload.OssUploadDiagnostics
+[0;39m - OSS存储配置 [aliyun] readiness 未通过: DIAGNOSTIC_OBJECT_MISSING
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.n.s.o.upload.OssUploadDiagnostics
+[0;39m - OSS存储配置 [qcloud] readiness 未通过: DIAGNOSTIC_OBJECT_MISSING
+[36m2026-09-23 15:24:19[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.n.s.o.upload.OssUploadDiagnostics
+[0;39m - OSS存储配置 [image] readiness 未通过: DIAGNOSTIC_OBJECT_MISSING
+[36m2026-09-23 15:24:19[0;39m [32m[qtp567826739-40][0;39m [34mINFO [0;39m [1;35morg.namewta.system.http
+[0;39m - {"记录时间":"2026-09-23T07:24:19.936492117Z","事件类型":"请求进入","请求标识":"66e4aebd-4e86-473c-9847-a4ab96741898","请求方法":"GET","请求路径":"/auth/code","请求参数":{},"请求头":{"Accept-Encoding":["identity"],"Host":["127.0.0.1:47767"],"User-Agent":["Python-urllib/3.14"],"Connection":["close"]},"内容类型":null,"内容长度":-1,"正文已记录":false,"正文长度":0,"正文已截断":false,"正文省略原因":"未提供内容类型"}
+[36m2026-09-23 15:24:20[0;39m [32m[qtp567826739-40][0;39m [34mINFO [0;39m [1;35morg.namewta.system.http
+[0;39m - {"记录时间":"2026-09-23T07:24:20.048251804Z","事件类型":"响应返回","请求标识":"66e4aebd-4e86-473c-9847-a4ab96741898","请求方法":"GET","请求路径":"/auth/code","响应状态":200,"响应头":{"Date":["Wed, 23 Sep 2026 07:24:19 GMT"],"X-Request-Id":["66e4aebd-4e86-473c-9847-a4ab96741898"],"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"]},"内容类型":"application/json","内容长度":-1,"耗时毫秒":114,"处理完成":true,"正文已记录":true,"正文长度":101,"正文已截断":false,"正文":"{\"code\":200,\"data\":{\"captchaEnabled\":false,\"uuid\":null,\"img\":null},\"error\":\"[REDACTED]\",\"msg\":\"[REDACTED]\"}"}
+[36m2026-09-23 15:24:20[0;39m [32m[main][0;39m [31mWARN [0;39m [1;35mo.n.s.o.upload.OssUploadDiagnostics
+[0;39m - OSS Direct Upload配置 [minio] CORS/Lifecycle 辅助检查未通过
+[36m2026-09-23 15:24:20[0;39m [32m[main][0;39m [34mINFO [0;39m [1;35morg.namewta.NamewtaApplication
+[0;39m - 
+==================
+访问地址：http://127.0.0.1:47767/
+启动时间：2026-09-23 15:23:56
+运行的系统：Linux 7.0.0-31-generic（amd64）
+启动耗时：27.18 秒
+运行内存：已用 133.81 MB / 最大 768.00 MB
+==================
+[36m2026-09-23 15:27:14[0;39m [32m[master:housekeeper][0;39m [31mWARN [0;39m [1;35mcom.zaxxer.hikari.pool.PoolBase
+[0;39m - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@195c5803 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+[36m2026-09-23 15:27:14[0;39m [32m[master:housekeeper][0;39m [31mWARN [0;39m [1;35mcom.zaxxer.hikari.pool.HikariPool
+[0;39m - master - Thread starvation or clock leap detected (housekeeper delta=2m35s119ms434µs413ns).
+[36m2026-09-23 15:27:22[0;39m [32m[schedule-pool-5][0;39m [34mINFO [0;39m [1;35mo.n.n.a.worker.NotifyOutboxWorker
+[0;39m - notify outbox drain trigger=POLL claimed=0 batches=1
+[36m2026-09-23 15:27:56[0;39m [32m[qtp567826739-38][0;39m [34mINFO [0;39m [1;35morg.namewta.system.http
+[0;39m - {"记录时间":"2026-09-23T07:27:56.513279464Z","事件类型":"请求进入","请求标识":"76467898-7053-49a4-9e28-c23bd05521cf","请求方法":"GET","请求路径":"/auth/client/context","请求参数":{},"请求头":{"Host":["127.0.0.1:47767"],"Connection":["close"],"sec-ch-ua-platform":["\"Windows\""],"Accept-Language":["en-US"],"sec-ch-ua":["\"Google Chrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\""],"clientid":["e5cd7e4891bf95d1d19206ce24a7b32e"],"sec-ch-ua-mobile":["?0"],"User-Agent":["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.7922.34 Safari/537.36"],"Accept":["application/json, text/plain, */*"],"Content-Language":["zh_CN"],"sec-fetch-site":["same-origin"],"sec-fetch-mode":["cors"],"sec-fetch-dest":["empty"],"Referer":["[REDACTED]"],"Accept-Encoding":["gzip, deflate, br, zstd"]},"内容类型":null,"内容长度":-1,"正文已记录":false,"正文长度":0,"正文已截断":false,"正文省略原因":"未提供内容类型"}
+[36m2026-09-23 15:27:57[0;39m [32m[qtp567826739-38][0;39m [34mINFO [0;39m [1;35morg.namewta.system.http
+[0;39m - {"记录时间":"2026-09-23T07:27:57.302786032Z","事件类型":"响应返回","请求标识":"76467898-7053-49a4-9e28-c23bd05521cf","请求方法":"GET","请求路径":"/auth/client/context","响应状态":200,"响应头":{"Date":["Wed, 23 Sep 2026 07:27:56 GMT"],"X-Request-Id":["76467898-7053-49a4-9e28-c23bd05521cf"],"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"]},"内容类型":"application/json","内容长度":-1,"耗时毫秒":789,"处理完成":true,"正文已记录":true,"正文长度":353,"正文已截断":false,"正文":"{\"code\":200,\"data\":{\"authMode\":\"both\",\"clientEnabled\":true,\"passwordPolicy\":{\"minimumLength\":8,\"maximumLength\":30,\"requiredCharacterClasses\":[\"UPPERCASE\",\"LOWERCASE\",\"DIGIT\",\"SPECIAL\"],\"allowedSpecialCharacters\":\"@$!%*?&\"},\"registerEnabled\":false,\"ssoAuthorizeUrl\":\"http://127.0.0.1:41215/authorize\",\"ssoEnabled\":true},\"error\":\"[REDACTED]\",\"msg\":\"[REDACTED]\"}"}
+[36m2026-09-23 15:27:57[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mo.e.jetty.server.AbstractConnector
+[0;39m - Stopped oejs.ServerConnector@29673fc0{HTTP/1.1, (http/1.1)}{127.0.0.1:47767}
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mo.n.c.core.config.ThreadPoolConfig
+[0;39m - ====关闭后台任务任务线程池====
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mc.b.d.d.DynamicRoutingDataSource
+[0;39m - dynamic-datasource start closing ....
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mcom.zaxxer.hikari.HikariDataSource
+[0;39m - master - Shutdown initiated...
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mcom.zaxxer.hikari.HikariDataSource
+[0;39m - master - Shutdown completed.
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mc.b.d.d.d.DefaultDataSourceDestroyer
+[0;39m - dynamic-datasource close the datasource named [master] success,
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mc.b.d.d.DynamicRoutingDataSource
+[0;39m - dynamic-datasource all closed success,bye
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35morg.eclipse.jetty.server.Server
+[0;39m - Stopped oejs.Server@251d3913{STOPPING}[12.1.10,sto=0]
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mo.e.j.s.h.ContextHandler.application
+[0;39m - Destroying Spring FrameworkServlet 'dispatcherServlet'
+[36m2026-09-23 15:27:58[0;39m [32m[SpringApplicationShutdownHook][0;39m [34mINFO [0;39m [1;35mo.e.j.e.s.ServletContextHandler
+[0;39m - Stopped osbjs.JettyEmbeddedWebAppContext@38a7f7a2{application,/,b=file:///tmp/jetty-docbase.47767.10249404540059143238/,a=AVAILABLE,h=oeje11s.SessionHandler@27ca3040{STOPPED}}

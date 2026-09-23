@@ -1,0 +1,15 @@
+[WebServer] (node:3579107) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 4 tests using 1 worker
+
+(node:3579187) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/4] e2e/inbox-without-realtime.spec.ts:70:1 › T-34 message box distinguishes loading, failure, retry, notice category and read state without realtime
+[2/4] e2e/inbox-without-realtime.spec.ts:95:1 › T-34 old inbox failure cannot leak into the next login
+[3/4] e2e/inbox-without-realtime.spec.ts:114:1 › T-34 old read failure and detail are gone after unmount and next login
+[4/4] e2e/inbox-without-realtime.spec.ts:140:1 › T-34 successful empty inbox is distinct from loading and failure
+  4 passed (15.3s)

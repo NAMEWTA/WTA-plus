@@ -1,0 +1,47 @@
+[WebServer] (node:3581965) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 1 test using 1 worker
+
+(node:3582067) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] e2e/inbox-without-realtime.spec.ts:151:1 › T-34 opening during the initial request refreshes a notice arriving after its snapshot
+  1) e2e/inbox-without-realtime.spec.ts:151:1 › T-34 opening during the initial request refreshes a notice arriving after its snapshot 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.content-box-item').filter({ hasText: 'A 的公告' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('.content-box-item').filter({ hasText: 'A 的公告' })
+
+
+      159 |   // 初始查询已获取空快照；打开时已存在的公告只能由后续查询得到。
+      160 |   await reply(state.heldInbox!, []);
+    > 161 |   await expect(page.locator('.content-box-item').filter({ hasText: 'A 的公告' })).toBeVisible();
+          |                                                                                ^
+      162 |   expect(state.inboxCalls).toBe(2);
+      163 |   expect(state.pushRequests).toEqual([]);
+      164 | });
+        at /srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts:161:80
+
+    Error Context: ../../../tmp/wta-t34/accept2-synthetic-artifacts/inbox-without-realtime-T-3-652bc-arriving-after-its-snapshot/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../tmp/wta-t34/accept2-synthetic-artifacts/inbox-without-realtime-T-3-652bc-arriving-after-its-snapshot/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../tmp/wta-t34/accept2-synthetic-artifacts/inbox-without-realtime-T-3-652bc-arriving-after-its-snapshot/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    e2e/inbox-without-realtime.spec.ts:151:1 › T-34 opening during the initial request refreshes a notice arriving after its snapshot 

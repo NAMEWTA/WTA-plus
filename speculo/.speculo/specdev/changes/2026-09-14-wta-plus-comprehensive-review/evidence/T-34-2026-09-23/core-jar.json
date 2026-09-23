@@ -1,0 +1,7 @@
+{
+  "path": "backend/wta-admin/target/wta-admin.jar",
+  "sha256": "8c1fbefbbb4e00d2c8dbaeac4bbcbc5b43333be79db559c979810f9b15420e60",
+  "build_head": "6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04",
+  "command_record": "core-package-v2.json",
+  "bundle_record": "core-bundle.json"
+}

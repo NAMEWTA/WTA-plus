@@ -1,0 +1,18 @@
+{
+  "command": [
+    "./mvnw",
+    "-q",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Pdev,bundle-core",
+    "-DskipTests",
+    "clean",
+    "package"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T07:00:51.028273+00:00",
+  "finished_at": "2026-09-23T07:01:31.651878+00:00",
+  "exit_code": 1,
+  "log": "core-package.log"
+}

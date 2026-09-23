@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-09-23T07:32:35.121930+00:00",
+  "from": "24909df0e49208535097f03d174c0592ea6836d3",
+  "to": "e78d886119d773f47ac985762a5459d6a1832609",
+  "changed_product_files": [
+    "frontend/e2e/inbox-real.md",
+    "frontend/e2e/run-inbox-real.py"
+  ],
+  "unchanged": [
+    "all frontend TypeScript/Vue/runtime/package/lock/config inputs",
+    "5 synthetic and 1 real Playwright test sources/configs",
+    "backend and SQL inputs"
+  ],
+  "reused_records": [
+    "accept3-unit.json",
+    "accept3-unit-counts.json",
+    "accept3-synthetic.json",
+    "accept3-synthetic-results.json",
+    "accept3-lint.json",
+    "accept3-typecheck.json",
+    "accept3-openapi.json",
+    "accept3-build-prod.json",
+    "accept3-handbooks.json"
+  ],
+  "new_script_validation": "Python compile/help exit0; dedicated real E2E executed against final clean commit; independent review covers new script"
+}

@@ -1,0 +1,42 @@
+{
+  "ticket": "T-34",
+  "provider": "gpt-6-sol/xhigh",
+  "owner": "cors_audit",
+  "base": "6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04",
+  "commit": null,
+  "state": "product writer returned; Lead committed d3549fb5d9965a2799c14c67326890172288b4b3",
+  "red": {
+    "command": "pnpm --dir frontend --filter @namewta/admin-web exec vitest run src/utils/push.test.ts",
+    "exit": 1,
+    "tests": 11,
+    "failed": 4,
+    "passed": 7,
+    "evidence": "agent terminal observed, raw log unavailable; not independent Lead proof"
+  },
+  "prechecks": [
+    {
+      "command": "pnpm --dir frontend --filter @namewta/admin-web test",
+      "exit": 0,
+      "tests": 71,
+      "skipped": 0,
+      "log": "admin-test.log"
+    },
+    {
+      "command": "pnpm --dir frontend typecheck",
+      "exit": 2,
+      "log": "typecheck.log",
+      "cause": "unchanged OSS two column generic inference"
+    },
+    {
+      "command": "pnpm --dir frontend typecheck",
+      "exit": 0,
+      "log": "typecheck-after-addendum.log"
+    },
+    {
+      "command": "pnpm --dir frontend lint",
+      "exit": 0,
+      "log": "lint.log"
+    }
+  ],
+  "build_e2e": "not executed by subagent; Lead owns current acceptance"
+}

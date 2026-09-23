@@ -1,0 +1,147 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/srv/WTA-plus/frontend/e2e/playwright.inbox-real.config.ts",
+      "--grep",
+      "T-34 real Admin inbox without realtime",
+      "--workers=1",
+      "--reporter=json",
+      "--output",
+      "/tmp/wta-t34-harness/runs/fd9a7f08ddb41a50/playwright-artifacts"
+    ],
+    "configFile": "/srv/WTA-plus/frontend/e2e/playwright.inbox-real.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/wta-t34-harness/runs/fd9a7f08ddb41a50/playwright-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "inbox-real.e2e.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "inbox-real.e2e.ts",
+      "file": "inbox-real.e2e.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T-34 real Admin inbox without realtime",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 163435,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 90000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 90000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 90000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/srv/WTA-plus/frontend/e2e/inbox-real.e2e.ts",
+                        "column": 47,
+                        "line": 30
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeEnabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.login-form').locator('input').first()\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeEnabled\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.login-form').locator('input').first()\u001b[22m\n\n\n  28 |   await page.goto(new URL('/login', origin).toString());\n  29 |   const form = page.locator('.login-form');\n> 30 |   await expect(form.locator('input').first()).toBeEnabled();\n     |                                               ^\n  31 |   await form.locator('input').first().fill(username);\n  32 |   await form.locator('input[type=\"password\"]').fill(password);\n  33 |   await form.locator('.submit-button').click();\n    at /srv/WTA-plus/frontend/e2e/inbox-real.e2e.ts:30:47"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T07:24:25.052Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/wta-t34-harness/runs/fd9a7f08ddb41a50/playwright-artifacts/inbox-real.e2e.ts-T-34-real-Admin-inbox-without-realtime/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/wta-t34-harness/runs/fd9a7f08ddb41a50/playwright-artifacts/inbox-real.e2e.ts-T-34-real-Admin-inbox-without-realtime/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "5e854674a9cff4697ce7-f4a62a57a378008aa5ae",
+          "file": "inbox-real.e2e.ts",
+          "line": 9,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-23T07:24:24.440Z",
+    "duration": 213017.775,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

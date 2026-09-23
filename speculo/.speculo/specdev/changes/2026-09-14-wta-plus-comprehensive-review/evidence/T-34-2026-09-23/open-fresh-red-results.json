@@ -1,0 +1,164 @@
+{
+  "config": {
+    "argv": [
+      "/root/.volta/tools/image/node/24.21.0/bin/node",
+      "/srv/WTA-plus/frontend/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/tmp/wta-t34/playwright.synthetic-v2.config.ts",
+      "--grep",
+      "opening during the initial request"
+    ],
+    "configFile": "/tmp/wta-t34/playwright.synthetic-v2.config.ts",
+    "rootDir": "/srv/WTA-plus/frontend/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/wta-t34/accept2-synthetic-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/srv/WTA-plus/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "inbox-without-realtime.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/tmp/wta-t34/accept2-synthetic-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "node /srv/WTA-plus/frontend/apps/admin-web/node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 38205 --strictPort",
+      "cwd": "/srv/WTA-plus/frontend/apps/admin-web",
+      "url": "http://127.0.0.1:38205/login",
+      "reuseExistingServer": false,
+      "timeout": 60000
+    }
+  },
+  "suites": [
+    {
+      "title": "inbox-without-realtime.spec.ts",
+      "file": "inbox-without-realtime.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T-34 opening during the initial request refreshes a notice arriving after its snapshot",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 7036,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.content-box-item').filter({ hasText: 'A 的公告' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.content-box-item').filter({ hasText: 'A 的公告' })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.content-box-item').filter({ hasText: 'A 的公告' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.content-box-item').filter({ hasText: 'A 的公告' })\u001b[22m\n\n    at /srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts:161:80",
+                    "location": {
+                      "file": "/srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts",
+                      "column": 80,
+                      "line": 161
+                    },
+                    "snippet": "  159 |   // 初始查询已获取空快照；打开时已存在的公告只能由后续查询得到。\n  160 |   await reply(state.heldInbox!, []);\n> 161 |   await expect(page.locator('.content-box-item').filter({ hasText: 'A 的公告' })).toBeVisible();\n      |                                                                                ^\n  162 |   expect(state.inboxCalls).toBe(2);\n  163 |   expect(state.pushRequests).toEqual([]);\n  164 | });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts",
+                        "column": 80,
+                        "line": 161
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.content-box-item').filter({ hasText: 'A 的公告' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.content-box-item').filter({ hasText: 'A 的公告' })\u001b[22m\n\n\n  159 |   // 初始查询已获取空快照；打开时已存在的公告只能由后续查询得到。\n  160 |   await reply(state.heldInbox!, []);\n> 161 |   await expect(page.locator('.content-box-item').filter({ hasText: 'A 的公告' })).toBeVisible();\n      |                                                                                ^\n  162 |   expect(state.inboxCalls).toBe(2);\n  163 |   expect(state.pushRequests).toEqual([]);\n  164 | });\n    at /srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts:161:80"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T07:20:43.122Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/wta-t34/accept2-synthetic-artifacts/inbox-without-realtime-T-3-652bc-arriving-after-its-snapshot/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/wta-t34/accept2-synthetic-artifacts/inbox-without-realtime-T-3-652bc-arriving-after-its-snapshot/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts",
+                    "column": 80,
+                    "line": 161
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "a7ade6a9043456e7faa9-9b52b447b13b1ba096e4",
+          "file": "inbox-without-realtime.spec.ts",
+          "line": 151,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-23T07:20:40.777Z",
+    "duration": 9839.078,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

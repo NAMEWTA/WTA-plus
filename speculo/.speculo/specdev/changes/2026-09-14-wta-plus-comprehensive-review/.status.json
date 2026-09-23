@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T06:59:00.229236+00:00",
+  "updated_at": "2026-09-23T07:43:03.717251+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -98,7 +98,8 @@
     "2026-09-23 user authorized deployment-informed replacement under /srv/ops/minio-main /srv/ops/mysql-main /srv/ops/wta-plus; Lead backed up and rotated WTA app MySQL, dedicated Redis and MinIO credentials, updated ignored local/env/4 exact OSS rows, verified old rejection/new success. Shared roots unchanged. Private report in temp/relase; redacted evidence G-security-external-2026-09-23.md.",
     "2026-09-23用户确认追加退役AI token/模型凭据、禁用qcloud密钥“已经撤销停用，没有其他进行系统进行使用”。记录为负责人处置确认，非供应商接口复核；与实际DB/Redis/MinIO轮换证据共同关闭G-security-external。其余票据验收和归档授权要求不变。",
     "T34 cycle1 stopped after 3 acceptance rounds at 24909df: fixture timing/selector fix, real open-freshness fix, then login page resource timeout. Lead mandatory retrospective preserved in evidence/T-34-recovery.md; no timeout/assertion weakening.",
-    "T34 Lead retrospective complete; new Packet T-34-20260923-02 changes real E2E to exclusive resources and commits reusable isolated runner. Prior cycle3 retained; current attempts reset0 only after recorded decision."
+    "T34 Lead retrospective complete; new Packet T-34-20260923-02 changes real E2E to exclusive resources and commits reusable isolated runner. Prior cycle3 retained; current attempts reset0 only after recorded decision.",
+    "T34 recovery cycle attempt1 at e78d886: real inbox 1/1 passed and clean; independent driver reviews request corrections to failure cleanup/test identity. Packet03 assigns only driver/docs/regressions to cors_audit; ticket remains in_progress, no acceptance claimed."
   ],
   "worktrees": [
     {
@@ -190,16 +191,16 @@
     {
       "ticket_id": "T-34",
       "owner": "single-agent",
-      "implementation_owner": "single-agent",
+      "implementation_owner": "cors_audit",
       "integration_owner": "single-agent",
       "provider": "git",
       "base_sha": "6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04",
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "24909df0e49208535097f03d174c0592ea6836d3",
+      "source_checkpoint": "e78d886119d773f47ac985762a5459d6a1832609",
       "status": "active",
-      "updated_at": "2026-09-23T07:30:12.641541+00:00",
+      "updated_at": "2026-09-23T07:43:03.717251+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
@@ -226,7 +227,7 @@
           "evidence": null
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-34.md</Path>",
-        "attempts": 0,
+        "attempts": 1,
         "promotion_status": "pending"
       }
     }

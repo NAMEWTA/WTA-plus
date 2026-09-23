@@ -1,0 +1,97 @@
+[WebServer] (node:3572526) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 4 tests using 1 worker
+
+(node:3572608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/4] e2e/inbox-without-realtime.spec.ts:70:1 › T-34 message box distinguishes loading, failure, retry, notice category and read state without realtime
+  1) e2e/inbox-without-realtime.spec.ts:70:1 › T-34 message box distinguishes loading, failure, retry, notice category and read state without realtime 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: '重试' })
+        - locator resolved to <button type="button" data-v-0045f626="" aria-disabled="false" class="el-button el-button--primary el-button--default is-link">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+        - waiting 20ms
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      - retrying click action
+        - waiting 100ms
+        - waiting for element to be visible, enabled and stable
+      - element was detached from the DOM, retrying
+
+
+      79 |   await expect(page.getByRole('alert').filter({ hasText: '消息加载失败，请重试' })).toBeVisible();
+      80 |   await expect(page.getByText('暂无消息')).toHaveCount(0);
+    > 81 |   await page.getByRole('button', { name: '重试' }).click();
+         |                                                  ^
+      82 |   const row = page.locator('.content-box-item').filter({ hasText: 'A 的公告' });
+      83 |   await expect(row).toBeVisible();
+      84 |   await expect(row.getByText('A 的正文', { exact: true })).toHaveCount(1);
+        at /srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts:81:50
+
+    Error Context: ../../../tmp/wta-t34/synthetic-artifacts/inbox-without-realtime-T-3-56c48-read-state-without-realtime/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../tmp/wta-t34/synthetic-artifacts/inbox-without-realtime-T-3-56c48-read-state-without-realtime/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../tmp/wta-t34/synthetic-artifacts/inbox-without-realtime-T-3-56c48-read-state-without-realtime/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:3574874) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/4] e2e/inbox-without-realtime.spec.ts:92:1 › T-34 old inbox failure cannot leak into the next login
+[3/4] e2e/inbox-without-realtime.spec.ts:111:1 › T-34 old read failure and detail are gone after unmount and next login
+  2) e2e/inbox-without-realtime.spec.ts:111:1 › T-34 old read failure and detail are gone after unmount and next login 
+
+    Error: locator.click: Error: strict mode violation: getByRole('dialog', { name: '通知详情' }).getByRole('button', { name: '关闭' }) resolved to 2 elements:
+        1) <button type="button" aria-label="关闭此对话框" class="el-dialog__headerbtn">…</button> aka getByRole('button', { name: '关闭此对话框' })
+        2) <button type="button" data-v-0045f626="" aria-disabled="false" class="el-button el-button--default">…</button> aka getByRole('button', { name: '关闭', exact: true })
+
+    Call log:
+      - waiting for getByRole('dialog', { name: '通知详情' }).getByRole('button', { name: '关闭' })
+
+
+      120 |   await expect(detail).toBeVisible();
+      121 |   await expect.poll(() => Boolean(state.heldRead)).toBe(true);
+    > 122 |   await detail.getByRole('button', { name: '关闭' }).click();
+          |                                                    ^
+      123 |   await page.locator('.avatar-wrapper').click();
+      124 |   await page.getByRole('menuitem', { name: /退出/ }).click();
+      125 |   await page.getByRole('button', { name: '确定', exact: true }).click();
+        at /srv/WTA-plus/frontend/e2e/inbox-without-realtime.spec.ts:122:52
+
+    Error Context: ../../../tmp/wta-t34/synthetic-artifacts/inbox-without-realtime-T-3-77250-fter-unmount-and-next-login/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../tmp/wta-t34/synthetic-artifacts/inbox-without-realtime-T-3-77250-fter-unmount-and-next-login/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../tmp/wta-t34/synthetic-artifacts/inbox-without-realtime-T-3-77250-fter-unmount-and-next-login/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:3575480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[4/4] e2e/inbox-without-realtime.spec.ts:137:1 › T-34 successful empty inbox is distinct from loading and failure
+  2 failed
+    e2e/inbox-without-realtime.spec.ts:70:1 › T-34 message box distinguishes loading, failure, retry, notice category and read state without realtime 
+    e2e/inbox-without-realtime.spec.ts:111:1 › T-34 old read failure and detail are gone after unmount and next login 
+  2 passed (46.2s)

@@ -1,0 +1,15 @@
+{
+  "owner": "cors_audit",
+  "fixed_head": "e78d886119d773f47ac985762a5459d6a1832609",
+  "writer_lock": "returned",
+  "commit": null,
+  "paths": [
+    "frontend/e2e/run-inbox-real.py",
+    "frontend/e2e/inbox-real.md",
+    "frontend/e2e/test_run_inbox_real.py"
+  ],
+  "non_docker_tests": 9,
+  "exit_code": 0,
+  "real_e2e": "pending Lead",
+  "independent_review": "pending fixed new SHA"
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs",
+    "backend/wta-modules/wta-notify",
+    "--mode",
+    "layered"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T07:10:10.967684+00:00",
+  "finished_at": "2026-09-23T07:10:11.129590+00:00",
+  "exit_code": 0,
+  "log": "module-layered.log"
+}
