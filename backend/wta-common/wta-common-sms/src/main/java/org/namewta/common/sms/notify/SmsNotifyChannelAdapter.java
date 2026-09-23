@@ -41,14 +41,15 @@ public final class SmsNotifyChannelAdapter implements NotifyChannelAdapter {
                 long costTime = elapsedMillis(startedAt);
                 if (receipt != null && receipt.success()) {
                     results.add(NotifyTargetResult.accepted(target, receipt.providerMessageId(), costTime));
+                } else if (receipt != null && receipt.outcome() == org.namewta.common.notify.model.NotifyDeliveryStatus.UNSENT_RETRYABLE) {
+                    results.add(NotifyTargetResult.unsentRetryable(target, "PROVIDER_RATE_LIMIT_30S", costTime));
                 } else {
                     // 供应商错误正文不可信，可能原样回显手机号或验证码。
                     results.add(NotifyTargetResult.failed(target, "PROVIDER_REJECTED",
                         "SMS Provider 未接受请求", costTime));
                 }
             } catch (RuntimeException exception) {
-                results.add(NotifyTargetResult.failed(target, "PROVIDER_ERROR", "SMS Provider 调用失败",
-                    elapsedMillis(startedAt)));
+                results.add(NotifyTargetResult.outcomeUnknown(target, elapsedMillis(startedAt)));
             }
         }
         return new NotifyAdapterResult(provider.providerKey(), results);

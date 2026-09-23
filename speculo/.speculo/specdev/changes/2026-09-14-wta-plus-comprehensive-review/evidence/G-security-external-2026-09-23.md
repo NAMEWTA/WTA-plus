@@ -21,3 +21,7 @@ G-security-external已关闭：原DB/Redis披露及关联MinIO由实际轮换和
 `deploy-namewta-environment`：takeover限定范围；真实Compose labels/路径/服务/挂载/端口/账号读取、备份校验、定向切换、连接与旧值失效、私有对象及签名验证、0600最新报告。使用其v1审计兼容profile记录多项目维护，validate-profile exit0；没有伪造v2双后端完整发布。MySQL双密码按[MySQL 8.4官方语法](https://dev.mysql.com/doc/refman/8.4/en/alter-user.html)；MinIO当前mc帮助及[官方实现](https://github.com/minio/mc/blob/master/cmd/admin-user-add.go)确认从stdin传入用户/新密钥，未把secret放入命令参数。README中通用轮换清单由本环境记录落实。
 
 唯一最新部署报告：`temp/relase/namewta-deployment.md` 与 `/srv/ops/wta-plus/deployment/namewta-deployment.md`，内容含凭据、0600、未跟踪、不回显。失败过程及前向恢复边界在脱敏JSON/私有报告中保留。
+
+## T-29 后续路径迁移
+
+上述 `temp/relase/` 为原处置时点路径；T-29 已将当前私有恢复资料与本地报告迁到 `temp/release/`，受限备份和 0600 权限保留。当前本地报告为 `temp/release/namewta-deployment.md`，服务器报告路径不变。迁移证据见 evidence/T-29.md；本补记不回显或再次轮换凭据。

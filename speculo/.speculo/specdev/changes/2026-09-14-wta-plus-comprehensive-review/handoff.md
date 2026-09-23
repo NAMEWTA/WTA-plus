@@ -1,6 +1,6 @@
 # 恢复入口
 
-当前revision157：7done/1cancelled/42ready，无产品writer，下一T37；T36的64d67d5已验收，Goal仍active。以下旧状态按时间保留，不能覆盖当前段。
+当前revision159：7done/1cancelled/T37 in_progress/41ready，cors_audit唯一产品writer；T36的64d67d5已验收，Goal仍active。以下旧状态按时间保留，不能覆盖当前段。
 
 当前revision156：Goal仍active；6done/1cancelled/1in_progress/42ready，T-36唯一产品writer cors_audit。T-35已在fd8c346以170+8项零skip验收。使用gpt-6-sol/xhigh原生子代理、current单writer、Lead治理/E2E；不新建worktree。以下revision138起段落属于历史计划，不能覆盖本段执行状态。
 
@@ -110,3 +110,15 @@ Revision154: T36 active at 5118051403de0648540646d98536d8c4f3f9f26d; cors_audit 
 ## revision157 — T36完成
 
 Revision157: T36 accepted at64d67d5; C3 Atomic66+Wake1 zero skips; exact unchanged-input reuse of C2 unit178/SMS8 and gates, original run sources explicit. Both reviews pass; clean exact HEAD/tree and owned cleanup. Three attempts preserved. 7done/1cancelled/42ready; next T37; goal active, no archive.
+
+## revision158 — T37启动
+
+Revision158: T37 active at 38032d24335c52cafea855b19d51fb36295162ef;7done/1cancelled/1in_progress/41ready;cors_audit sole product writer, Lead governance/commit/isolated E2E. Typed retryable unsent facts and owner-CAS RETRYABLE preserving digest/TTL; unknown remains closed; T38 owns precise manual retry.
+
+## revision159 单次SDK请求的实例事实闭环
+
+编辑前新增精确写集：<Path>backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/config/SmsAutoConfiguration.java</Path>。在现有Sms4jBlendRegistry维护自身以maxRetries=0创建的实际代理实例identity；使用已验证的BaseProviderFactory.createSms→SmsProxyFactory.getProxySmsBlend→SmsFactory.register同一引用，保留原SDK初始化所需钩子，不将void create后再get的可覆盖对象盲认证。remove先撤认证；注册/更新失败不保留认证，按账号并发更新需一致，不暴露配置对象。common-sms notify目录内小型SmsSingleAttemptBlendVerifier SPI由Registry实现，Resolver经AutoConfiguration ObjectProvider注入，缺失/identity不匹配即不把拒绝标成可重试；严格腾讯结构allowlist只有该证明成立才启用。已有Registry拥有这一事实，不新增第二套全局注册平台，不反射SDK，不让common反向依赖业务。固定对象捕获到send，避免查验A发送B。公共SPI/构造/配置方法调用者与测试同步。
+
+### 新事实：T02真实在线token路径，下一独立安全修复候选
+
+legacy只读核查确认UserLoginSuccessListener将真实tokenValue赋UserOnlineDTO.tokenId，系统在线设备/myself接口和前端常规强退使用该tokenId路径变量；SysLogFilter记录原始servletPath，异常处理URI也需核验。区别于任意客户端元数据猜测，这是AC002的真实业务凭据副本。保持T37单writer当前实施；完成后优先串行复核/修复T02（与T38无依赖冲突），再推进Notify后续。统一现有path sanitizer及HTTP/OperLog/错误sink，不以改API或删正常观测规避。X-Request-Id泛canary不列阻断，仅可选格式有界加固。报告/tmp/wta-t02-t03-current-audit.md生成后作后续Packet输入，当前不关闭T02。

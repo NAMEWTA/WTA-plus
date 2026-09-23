@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.namewta.common.notify.exception.NotifyValidationException;
 import org.namewta.common.notify.model.NotifyTemplateContent;
+import org.namewta.common.notify.model.NotifyDeliveryStatus;
 import org.namewta.common.sms.notify.Sms4jNotificationProviderResolver;
 
 import java.util.LinkedHashMap;
@@ -78,6 +79,47 @@ class Sms4jReceiptTest {
             assertFalse(result.success());
             assertNull(result.providerMessageId());
         });
+    }
+
+    @Test
+    void tencentThirtySecondRejectionRequiresTheExactSelectedSingleAttemptBlend() throws Exception {
+        String response = "{\"Response\":{\"RequestId\":\"owned-request\",\"SendStatusSet\":["
+            + "{\"PhoneNumber\":\"+8613800000000\",\"SerialNo\":\"\",\"Fee\":0,"
+            + "\"Code\":\"LimitExceeded.PhoneNumberThirtySecondLimit\"}]}}";
+        withBlend("tencent", response, false, (blend, key) -> {
+            var content = template(Map.of("1", "123456"));
+            assertEquals(NotifyDeliveryStatus.FAILED,
+                new Sms4jNotificationProviderResolver().resolve(key).sender().send("13800000000", content).outcome());
+            assertEquals(NotifyDeliveryStatus.UNSENT_RETRYABLE,
+                new Sms4jNotificationProviderResolver(selected -> selected == blend)
+                    .resolve(key).sender().send("13800000000", content).outcome());
+            assertEquals(NotifyDeliveryStatus.FAILED,
+                new Sms4jNotificationProviderResolver(selected -> false)
+                    .resolve(key).sender().send("13800000000", content).outcome());
+            verify(blend, times(3)).sendMessage(anyString(), anyString(), any(LinkedHashMap.class));
+        });
+    }
+
+    @Test
+    void tencentAmbiguousOrMalformedRejectionsNeverGainRetryAuthority() throws Exception {
+        String status = "{\"PhoneNumber\":\"+8613800000000\",\"SerialNo\":\"\",\"Fee\":0,"
+            + "\"Code\":\"LimitExceeded.PhoneNumberThirtySecondLimit\"}";
+        String valid = "{\"Response\":{\"RequestId\":\"owned-request\",\"SendStatusSet\":[" + status + "]}}";
+        for (String response : List.of(
+            valid.replace("\"RequestId\":\"owned-request\",", ""),
+            valid.replace("+8613800000000", "+8613900000000"),
+            valid.replace("[" + status + "]", "[" + status + "," + status + "]"),
+            valid.replace("\"RequestId\"", "\"Error\":{\"Code\":\"LimitExceeded\"},\"RequestId\""),
+            valid.replace("\"SerialNo\":\"\"", "\"SerialNo\":\"accepted-id\""),
+            valid.replace("\"SerialNo\":\"\"", "\"SerialNo\":\" \""),
+            valid.replace("\"Fee\":0", "\"Fee\":0.5"),
+            valid.replace("\"Fee\":0", "\"Fee\":4294967296"),
+            valid.replace("\"Code\":\"LimitExceeded.PhoneNumberThirtySecondLimit\"",
+                "\"Code\":\"InternalError.Timeout\""))) {
+            withBlend("tencent", response, false, (blend, key) -> assertEquals(NotifyDeliveryStatus.FAILED,
+                new Sms4jNotificationProviderResolver(selected -> selected == blend)
+                    .resolve(key).sender().send("13800000000", template(Map.of("1", "123456"))).outcome()));
+        }
     }
 
     private NotifyTemplateContent template(Map<String, String> params) {

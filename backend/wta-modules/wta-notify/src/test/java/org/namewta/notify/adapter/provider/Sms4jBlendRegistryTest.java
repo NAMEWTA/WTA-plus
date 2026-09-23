@@ -16,7 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 厂商 Config 必须是 AlibabaConfig/TencentConfig，否则 SMS4J Factory checkcast 失败。
@@ -49,6 +55,8 @@ class Sms4jBlendRegistryTest {
         assertEquals("tx-prod", tencent.getConfigId());
         assertNotEquals(alibaba.getClass(), BaseConfig.class);
         assertTrue(AlibabaConfig.class.isAssignableFrom(alibaba.getClass()));
+        assertEquals(0, alibaba.getMaxRetries());
+        assertEquals(0, tencent.getMaxRetries());
     }
 
     @Test
@@ -73,6 +81,42 @@ class Sms4jBlendRegistryTest {
 
         registry.remove("ali-prod");
         assertNull(SmsFactory.getSmsBlend("ali-prod"));
+    }
+
+    @Test
+    void exactRegisteredInstanceIsTrustedButRebuiltRemovedAndExternallyOverriddenOnesAreNot() {
+        registry.upsert(smsAccount("tx-prod", "tencent"));
+        SmsBlend first = SmsFactory.getSmsBlend("tx-prod");
+        assertTrue(registry.isSingleAttempt(first));
+
+        registry.upsert(smsAccount("tx-prod", "tencent"));
+        SmsBlend second = SmsFactory.getSmsBlend("tx-prod");
+        assertNotSame(first, second);
+        assertFalse(registry.isSingleAttempt(first));
+        assertTrue(registry.isSingleAttempt(second));
+
+        SmsBlend external = mock(SmsBlend.class);
+        when(external.getConfigId()).thenReturn("tx-prod");
+        when(external.getSupplier()).thenReturn("tencent");
+        SmsFactory.register(external);
+        try {
+            assertSame(external, SmsFactory.getSmsBlend("tx-prod"));
+            assertFalse(registry.isSingleAttempt(external), "same supplier/key must not certify an external replacement");
+        } finally {
+            registry.remove("tx-prod");
+            // SMS4J load balancer has a second entry under the same key after external register.
+            org.dromara.sms4j.core.load.SmsLoad.getBeanLoad().removeLoadServer(external);
+        }
+        assertFalse(registry.isSingleAttempt(second));
+    }
+
+    @Test
+    void failedRegistrationNeverRetainsSingleAttemptProof() {
+        registry.upsert(smsAccount("tx-prod", "tencent"));
+        SmsBlend old = SmsFactory.getSmsBlend("tx-prod");
+        assertTrue(registry.isSingleAttempt(old));
+        assertThrows(IllegalArgumentException.class, () -> registry.upsert(smsAccount("tx-prod", "unsupported")));
+        assertFalse(registry.isSingleAttempt(old));
     }
 
     private NotifyChannelAccount smsAccount(String configKey, String supplier) {

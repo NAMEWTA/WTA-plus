@@ -5,12 +5,14 @@ import org.namewta.common.sms.handler.SmsExceptionHandler;
 import org.namewta.common.sms.notify.Sms4jNotificationProviderResolver;
 import org.namewta.common.sms.notify.SmsNotificationProviderResolver;
 import org.namewta.common.sms.notify.SmsNotifyChannelAdapter;
+import org.namewta.common.sms.notify.SmsSingleAttemptBlendVerifier;
 import org.dromara.sms4j.api.dao.SmsDao;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.beans.factory.ObjectProvider;
 
 /**
  * 短信配置类
@@ -39,8 +41,9 @@ public class SmsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SmsNotificationProviderResolver smsNotificationProviderResolver() {
-        return new Sms4jNotificationProviderResolver();
+    public SmsNotificationProviderResolver smsNotificationProviderResolver(
+        ObjectProvider<SmsSingleAttemptBlendVerifier> verifier) {
+        return new Sms4jNotificationProviderResolver(verifier.getIfAvailable());
     }
 
     @Bean

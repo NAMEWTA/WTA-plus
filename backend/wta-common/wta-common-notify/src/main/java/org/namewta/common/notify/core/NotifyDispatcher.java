@@ -111,8 +111,25 @@ public final class NotifyDispatcher implements NotifyClient {
         }
 
         NotifyResult result = aggregate(request, adapterResult);
-        complete(claim, result, request, context, snapshotBatch);
-        publish(request, context, result, snapshotBatch);
+        SnapshotBatch eventSnapshots = snapshotBatch;
+        if (allUnsentRetryable(result)) {
+            // Provider 已明确拒绝全部目标。先原子释放当前 owner，再让 Outbox 进入 READY；
+            // 转态/ACK 有歧义时异常外溢，绝不把数据库标成安全可重发。
+            if (claim instanceof NotifyIdempotencyStore.Acquired acquired) {
+                try {
+                    idempotencyCoordinator.markRetryable(acquired);
+                } catch (RuntimeException exception) {
+                    cleanupSnapshots(snapshotBatch.snapshots());
+                    publish(request, context, result, SnapshotBatch.empty());
+                    throw exception;
+                }
+            }
+            cleanupSnapshots(snapshotBatch.snapshots());
+            eventSnapshots = SnapshotBatch.empty();
+        } else {
+            complete(claim, result, request, context, snapshotBatch);
+        }
+        publish(request, context, result, eventSnapshots);
         return requireAccepted(result);
     }
 
@@ -260,13 +277,18 @@ public final class NotifyDispatcher implements NotifyClient {
             if (item == null || !request.targets().get(index).equals(item.target()) || item.status() == null) {
                 throw new IllegalStateException("通知渠道返回的目标结果与请求不匹配");
             }
+            if ((item.status() == NotifyDeliveryStatus.UNSENT_RETRYABLE
+                || item.status() == NotifyDeliveryStatus.UNSENT_TERMINAL)
+                && item.providerMessageId() != null) {
+                throw new IllegalStateException("未受理目标不得携带供应商消息流水号");
+            }
         }
     }
 
     private NotifyAdapterResult providerFailure(NotifyRequest request) {
         String provider = isBlank(request.providerKey()) ? "unresolved" : request.providerKey();
         List<NotifyTargetResult> failures = request.targets().stream()
-            .map(target -> NotifyTargetResult.failed(target, "PROVIDER_ERROR", "Provider 调用失败", 0L))
+            .map(target -> NotifyTargetResult.outcomeUnknown(target, 0L))
             .toList();
         return new NotifyAdapterResult(provider, failures);
     }
@@ -280,6 +302,11 @@ public final class NotifyDispatcher implements NotifyClient {
             : accepted == 0 ? NotifyStatus.FAILED : NotifyStatus.PARTIAL_FAILURE;
         return new NotifyResult(request.requestId(), request.channel(), adapterResult.providerKey(), status,
             adapterResult.deliveries());
+    }
+
+    private boolean allUnsentRetryable(NotifyResult result) {
+        return !result.deliveries().isEmpty() && result.deliveries().stream()
+            .allMatch(item -> item.status() == NotifyDeliveryStatus.UNSENT_RETRYABLE);
     }
 
     private void publish(NotifyRequest request, NotifyContext context, NotifyResult result,

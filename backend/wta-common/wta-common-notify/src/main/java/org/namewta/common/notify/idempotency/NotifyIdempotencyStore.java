@@ -13,6 +13,9 @@ public interface NotifyIdempotencyStore {
 
     void complete(Acquired acquired, NotifyResult result);
 
+    /** 仅当前 owner 可将明确未受理的占位转为可重取，且不得延长原 TTL。 */
+    void markRetryable(Acquired acquired);
+
     void release(Acquired acquired);
 
     sealed interface Claim permits Acquired, InProgress, Completed, Conflict {

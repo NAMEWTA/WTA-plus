@@ -19,4 +19,19 @@ public record NotifyTargetResult(
     public static NotifyTargetResult failed(NotifyTarget target, String errorCode, String errorMessage, long costTime) {
         return new NotifyTargetResult(target, NotifyDeliveryStatus.FAILED, null, errorCode, errorMessage, costTime);
     }
+
+    public static NotifyTargetResult unsentRetryable(NotifyTarget target, String errorCode, long costTime) {
+        return new NotifyTargetResult(target, NotifyDeliveryStatus.UNSENT_RETRYABLE, null, errorCode,
+            "Provider 明确未受理", costTime);
+    }
+
+    public static NotifyTargetResult unsentTerminal(NotifyTarget target, String errorCode, long costTime) {
+        return new NotifyTargetResult(target, NotifyDeliveryStatus.UNSENT_TERMINAL, null, errorCode,
+            "Provider 明确未受理", costTime);
+    }
+
+    public static NotifyTargetResult outcomeUnknown(NotifyTarget target, long costTime) {
+        return new NotifyTargetResult(target, NotifyDeliveryStatus.OUTCOME_UNKNOWN, null,
+            "PROVIDER_OUTCOME_UNKNOWN", "Provider 调用结果未知", costTime);
+    }
 }

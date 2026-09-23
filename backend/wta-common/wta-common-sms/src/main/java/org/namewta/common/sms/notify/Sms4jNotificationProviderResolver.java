@@ -16,6 +16,17 @@ import java.util.Map;
  */
 public final class Sms4jNotificationProviderResolver implements SmsNotificationProviderResolver {
 
+    private final SmsSingleAttemptBlendVerifier singleAttemptVerifier;
+
+    /** 独立使用 common Resolver 时无注册来源证据，供应商失败一律保守处理。 */
+    public Sms4jNotificationProviderResolver() {
+        this(blend -> false);
+    }
+
+    public Sms4jNotificationProviderResolver(SmsSingleAttemptBlendVerifier singleAttemptVerifier) {
+        this.singleAttemptVerifier = singleAttemptVerifier == null ? blend -> false : singleAttemptVerifier;
+    }
+
     @Override
     public SmsNotificationProvider resolve(String requestedProviderKey) {
         if (requestedProviderKey == null || requestedProviderKey.isBlank()) {
@@ -44,9 +55,34 @@ public final class Sms4jNotificationProviderResolver implements SmsNotificationP
         } else {
             response = blend.sendMessage(phone, content.contentSnapshot());
         }
-        return response != null && response.isSuccess()
-            ? SmsNotificationReceipt.accepted(providerMessageId(blend.getSupplier(), phone, response.getData()))
-            : SmsNotificationReceipt.failed("PROVIDER_REJECTED", "SMS Provider 未接受请求");
+        if (response != null && response.isSuccess()) {
+            return SmsNotificationReceipt.accepted(providerMessageId(blend.getSupplier(), phone, response.getData()));
+        }
+        if (singleAttemptVerifier.isSingleAttempt(blend) && tencentThirtySecondReject(blend, phone, response)) {
+            return SmsNotificationReceipt.unsentRetryable("PROVIDER_RATE_LIMIT_30S");
+        }
+        return SmsNotificationReceipt.failed("PROVIDER_REJECTED", "SMS Provider 未接受请求");
+    }
+
+    /** 仅供应商完整结构化单号码拒绝可证明未受理；传输异常/多目标/缺字段一律未知。 */
+    private boolean tencentThirtySecondReject(SmsBlend blend, String phone, SmsResponse response) {
+        if (!"tencent".equals(blend.getSupplier()) || response == null || response.isSuccess()
+            || !blend.getConfigId().equals(response.getConfigId())
+            || !(response.getData() instanceof Map<?, ?> body)
+            || !(body.get("Response") instanceof Map<?, ?> result)
+            || result.containsKey("Error") || nonblankString(result.get("RequestId")) == null
+            || !(result.get("SendStatusSet") instanceof Iterable<?> statuses)) return false;
+        String expectedPhone = phone.contains("-") ? phone.replace("-", "")
+            : phone.startsWith("+86") ? phone : "+86" + phone;
+        java.util.Iterator<?> iterator = statuses.iterator();
+        if (!iterator.hasNext()) return false;
+        Object item = iterator.next();
+        if (iterator.hasNext() || !(item instanceof Map<?, ?> status)) return false;
+        return expectedPhone.equals(status.get("PhoneNumber"))
+            && "LimitExceeded.PhoneNumberThirtySecondLimit".equals(status.get("Code"))
+            && status.get("SerialNo") instanceof String serial && serial.isEmpty()
+            && (status.get("Fee") instanceof Integer integerFee && integerFee == 0
+                || status.get("Fee") instanceof Long longFee && longFee == 0L);
     }
 
     /** 腾讯位置参数不能依赖不可变Map的迭代顺序；阿里仍保留供应商参数名。 */

@@ -2,15 +2,20 @@ package org.namewta.notify.adapter.provider;
 
 import org.namewta.notify.domain.entity.NotifyChannelAccount;
 import org.namewta.notify.port.SmsBlendRegistryPort;
+import org.namewta.common.sms.notify.SmsSingleAttemptBlendVerifier;
+import org.dromara.sms4j.api.SmsBlend;
 import org.dromara.sms4j.aliyun.config.AlibabaFactory;
 import org.dromara.sms4j.api.universal.SupplierConfig;
 import org.dromara.sms4j.core.factory.SmsFactory;
+import org.dromara.sms4j.core.proxy.SmsProxyFactory;
 import org.dromara.sms4j.provider.config.BaseConfig;
 import org.dromara.sms4j.provider.factory.BeanFactory;
 import org.dromara.sms4j.provider.factory.BaseProviderFactory;
 import org.dromara.sms4j.provider.factory.ProviderFactoryHolder;
 import org.dromara.sms4j.tencent.config.TencentFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 把短信渠道账号注册为 SMS4J blend。
@@ -19,7 +24,9 @@ import org.springframework.stereotype.Component;
  * 否则 {@code AlibabaFactory.createSms} 会 ClassCastException。</p>
  */
 @Component
-public class Sms4jBlendRegistry implements SmsBlendRegistryPort {
+public class Sms4jBlendRegistry implements SmsBlendRegistryPort, SmsSingleAttemptBlendVerifier {
+
+    private final ConcurrentHashMap<String, SmsBlend> singleAttemptBlends = new ConcurrentHashMap<>();
 
     static {
         ProviderFactoryHolder.registerFactory(AlibabaFactory.instance());
@@ -32,13 +39,37 @@ public class Sms4jBlendRegistry implements SmsBlendRegistryPort {
      * @param account 短信账号
      */
     @Override
-    public void upsert(NotifyChannelAccount account) {
+    public synchronized void upsert(NotifyChannelAccount account) {
         if (account == null || account.getConfigKey() == null) {
             return;
         }
         remove(account.getConfigKey());
         BeanFactory.getSmsConfig();
-        SmsFactory.createSmsBlend(vendorConfig(account));
+        BaseConfig config = vendorConfig(account);
+        // SMS4J 3.3.5 会对任何失败（包括传输结果不明）内部重发；本账号只能单次请求。
+        config.setMaxRetries(0);
+        BaseProviderFactory<?, ?> factory = ProviderFactoryHolder.requireForSupplier(config.getSupplier());
+        SmsBlend selected = createOwnedBlend(factory, config);
+        try {
+            SmsFactory.register(selected);
+            // 保存创建时的确切对象引用，不能在注册后重新从可被外部覆盖的全局 Map 读取并认证。
+            singleAttemptBlends.put(config.getConfigId(), selected);
+        } catch (RuntimeException failure) {
+            singleAttemptBlends.remove(config.getConfigId());
+            throw failure;
+        }
+    }
+
+    private <C extends SupplierConfig> SmsBlend createOwnedBlend(
+        BaseProviderFactory<? extends SmsBlend, C> factory, BaseConfig config) {
+        C typed = factory.getConfigClass().cast(config);
+        // 与 SmsFactory.createSmsBlend 内部相同的 provider factory + SMS4J proxy 装配路径。
+        return SmsProxyFactory.getProxySmsBlend(factory.createSms(typed));
+    }
+
+    @Override
+    public boolean isSingleAttempt(SmsBlend selectedBlend) {
+        return selectedBlend != null && selectedBlend == singleAttemptBlends.get(selectedBlend.getConfigId());
     }
 
     /**
@@ -78,10 +109,11 @@ public class Sms4jBlendRegistry implements SmsBlendRegistryPort {
      * @param configKey 账号标识
      */
     @Override
-    public void remove(String configKey) {
+    public synchronized void remove(String configKey) {
         if (configKey == null || configKey.isBlank()) {
             return;
         }
+        singleAttemptBlends.remove(configKey);
         try {
             SmsFactory.unregister(configKey);
         } catch (RuntimeException ignored) {

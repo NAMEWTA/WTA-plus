@@ -97,6 +97,34 @@ class NotifyAttachmentDispatcherUnitTest {
         assertEquals(1, snapshots.cleanupCalls.get());
     }
 
+    @Test
+    void explicitUnsentRetryableCleansSnapshotAndPublishesNoStaleAttachmentReference() {
+        RecordingSnapshotService snapshots = new RecordingSnapshotService(false);
+        List<NotifyDeliveryEvent> events = new ArrayList<>();
+        NotifyChannelAdapter adapter = new NotifyChannelAdapter() {
+            @Override
+            public NotifyChannel channel() { return NotifyChannel.of("test"); }
+
+            @Override
+            public NotifyAdapterResult send(NotifyAdapterRequest request) {
+                assertEquals(List.of(1010L), request.attachments().stream()
+                    .map(item -> item.resource().ossId()).toList());
+                return new NotifyAdapterResult("provider-a", List.of(
+                    NotifyTargetResult.unsentRetryable(request.request().targets().getFirst(),
+                        "RATE_LIMIT_30S", 1L)));
+            }
+        };
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, events::add, null, snapshots, () -> 7001L);
+
+        assertThrows(org.namewta.common.notify.exception.NotifyDeliveryException.class,
+            () -> dispatcher.send(request(List.of(10L))));
+        assertEquals(1, snapshots.cleanupCalls.get());
+        assertEquals(1, events.size());
+        assertNull(events.getFirst().notifyLogId());
+        assertTrue(events.getFirst().attachmentSnapshotOssIds().isEmpty());
+    }
+
     private NotifyDispatcher dispatcher(RecordingAdapter adapter, RecordingSnapshotService snapshots,
                                         List<NotifyDeliveryEvent> events) {
         return new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)), NotifyContext::empty,

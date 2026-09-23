@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，正在执行全部50票。当前revision157：7票done（T-29/T-32/T-33/T-34/T-35/T-36/T-47），T-01取消重复施工但AC-001仍由T-30最终复验，其余42票ready。Goal保持active、ready_for_execution=true；current/main单产品writer，下一T-37。
+用户已激活Goal，正在执行全部50票。当前revision159：7票done（T-29/T-32/T-33/T-34/T-35/T-36/T-47），T-01取消重复施工但AC-001仍由T-30最终复验，T-37实施中，其余41票ready。Goal保持active、ready_for_execution=true；current/main单产品writer，当前产品writer为cors_audit。
 
 最近验收产品为T-36的 `64d67d5fb150620b25ada107115ea2207736c039`；最终候选真实Atomic66/Wake1零skip，178单元/SMS8按未变输入复用原C2证据，完整失败历史保留。权威状态见Ticket、Map、goal-plan Current Status与.status.json。change尚未完成，T-30同源完整候选与归档前置仍待执行。
 

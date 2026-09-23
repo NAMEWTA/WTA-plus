@@ -100,6 +100,11 @@ class NotifyIdempotencyDispatcherUnitTest {
             }
 
             @Override
+            public void markRetryable(Acquired acquired) {
+                throw new IllegalStateException("redis down");
+            }
+
+            @Override
             public void release(Acquired acquired) {
                 throw new IllegalStateException("redis down");
             }
@@ -176,6 +181,148 @@ class NotifyIdempotencyDispatcherUnitTest {
     }
 
     @Test
+    void explicitUnsentRetryableResultPermitsOneNewPhysicalAttempt() {
+        MemoryStore store = new MemoryStore();
+        AtomicInteger providerCalls = new AtomicInteger();
+        NotifyChannelAdapter adapter = new NotifyChannelAdapter() {
+            @Override
+            public NotifyChannel channel() { return NotifyChannel.of("test"); }
+
+            @Override
+            public NotifyAdapterResult send(NotifyAdapterRequest adapterRequest) {
+                int call = providerCalls.incrementAndGet();
+                NotifyTarget target = adapterRequest.request().targets().getFirst();
+                NotifyTargetResult attempt = call == 1
+                    ? new NotifyTargetResult(target, NotifyDeliveryStatus.valueOf("UNSENT_RETRYABLE"),
+                        null, "RATE_LIMIT_30S", "Provider 明确未受理", 1L)
+                    : NotifyTargetResult.accepted(target, "message-2", 1L);
+                return new NotifyAdapterResult("provider-a", List.of(attempt));
+            }
+        };
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, event -> {},
+            new NotifyIdempotencyCoordinator(store, new NotifyIdempotencyProperties()));
+
+        NotifyDeliveryException first = assertThrows(NotifyDeliveryException.class,
+            () -> dispatcher.send(request("same-id", "order-100", "content")));
+        assertEquals("UNSENT_RETRYABLE", first.result().deliveries().getFirst().status().name());
+        NotifyResult accepted = dispatcher.send(request("same-id", "order-100", "content"));
+        assertEquals(NotifyStatus.ACCEPTED, accepted.status());
+        assertEquals(2, providerCalls.get(), "第二次必须实际进入 Adapter，不能复用第一笔失败缓存");
+        assertEquals(accepted, dispatcher.send(request("same-id", "order-100", "content")));
+        assertEquals(2, providerCalls.get());
+    }
+
+    @Test
+    void retryableTransitionFailureKeepsTheProviderOutcomeButNeverReentersProvider() {
+        AtomicInteger providerCalls = new AtomicInteger();
+        List<NotifyDeliveryEvent> events = new ArrayList<>();
+        MemoryStore store = new MemoryStore() {
+            @Override
+            public synchronized void markRetryable(Acquired acquired) {
+                throw new IllegalStateException("redis transition unavailable");
+            }
+        };
+        NotifyChannelAdapter adapter = new NotifyChannelAdapter() {
+            @Override
+            public NotifyChannel channel() { return NotifyChannel.of("test"); }
+
+            @Override
+            public NotifyAdapterResult send(NotifyAdapterRequest adapterRequest) {
+                providerCalls.incrementAndGet();
+                return new NotifyAdapterResult("provider-a", List.of(
+                    NotifyTargetResult.unsentRetryable(adapterRequest.request().targets().getFirst(),
+                        "RATE_LIMIT_30S", 1L)));
+            }
+        };
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, events::add,
+            new NotifyIdempotencyCoordinator(store, new NotifyIdempotencyProperties()));
+
+        NotifyIdempotencyUnavailableException failure = assertThrows(NotifyIdempotencyUnavailableException.class,
+            () -> dispatcher.send(request("same-id", "order-100", "content")));
+        assertEquals("RETRYABLE_TRANSITION", failure.phase());
+        assertEquals(NotifyDeliveryStatus.UNSENT_RETRYABLE, events.getFirst().result().deliveries().getFirst().status());
+        assertThrows(NotifyInProgressException.class,
+            () -> dispatcher.send(request("same-id", "order-100", "content")));
+        assertEquals(1, providerCalls.get());
+    }
+
+    @Test
+    void outcomeUnknownMayRetainProviderIdInternallyButRedactsPublishedEventAndNeverResends() {
+        MemoryStore store = new MemoryStore();
+        AtomicInteger providerCalls = new AtomicInteger();
+        List<NotifyDeliveryEvent> events = new ArrayList<>();
+        NotifyChannelAdapter adapter = new NotifyChannelAdapter() {
+            @Override
+            public NotifyChannel channel() { return NotifyChannel.of("test"); }
+
+            @Override
+            public NotifyAdapterResult send(NotifyAdapterRequest adapterRequest) {
+                providerCalls.incrementAndGet();
+                return new NotifyAdapterResult("provider-a", List.of(new NotifyTargetResult(
+                    adapterRequest.request().targets().getFirst(), NotifyDeliveryStatus.OUTCOME_UNKNOWN,
+                    "canary-provider-id", "PROVIDER_ERROR", "结果待核对", 1L)));
+            }
+        };
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, events::add,
+            new NotifyIdempotencyCoordinator(store, new NotifyIdempotencyProperties()));
+        NotifyRequest sensitive = NotifyRequest.builder()
+            .requestId("canary-request")
+            .bizType("order").bizId("100")
+            .channel(NotifyChannel.of("test"))
+            .targets(List.of(NotifyTarget.phone("13800000000")))
+            .content(new NotifyTextContent("subject", "content"))
+            .idempotencyKey("order-100")
+            .auditPolicy(NotifyAuditPolicy.REDACT_SENSITIVE).build();
+
+        NotifyDeliveryException first = assertThrows(NotifyDeliveryException.class,
+            () -> dispatcher.send(sensitive));
+        assertEquals("canary-provider-id", first.result().deliveries().getFirst().providerMessageId());
+        assertNull(events.getFirst().result().deliveries().getFirst().providerMessageId());
+        NotifyDeliveryException duplicate = assertThrows(NotifyDeliveryException.class,
+            () -> dispatcher.send(sensitive));
+        assertEquals(first.result(), duplicate.result());
+        assertEquals(1, providerCalls.get());
+        assertFalse(events.toString().contains("canary-provider-id"));
+        assertFalse(events.toString().contains("canary-request"));
+    }
+
+    @Test
+    void oneRetryableTargetCannotReleaseAMixedOrUnknownBatch() {
+        MemoryStore store = new MemoryStore();
+        AtomicInteger providerCalls = new AtomicInteger();
+        NotifyChannelAdapter adapter = new NotifyChannelAdapter() {
+            @Override
+            public NotifyChannel channel() { return NotifyChannel.of("test"); }
+
+            @Override
+            public NotifyAdapterResult send(NotifyAdapterRequest adapterRequest) {
+                providerCalls.incrementAndGet();
+                List<NotifyTarget> targets = adapterRequest.request().targets();
+                return new NotifyAdapterResult("provider-a", List.of(
+                    NotifyTargetResult.unsentRetryable(targets.get(0), "RATE_LIMIT_30S", 1L),
+                    NotifyTargetResult.outcomeUnknown(targets.get(1), 1L)));
+            }
+        };
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, event -> {},
+            new NotifyIdempotencyCoordinator(store, new NotifyIdempotencyProperties()));
+        NotifyRequest request = NotifyRequest.builder()
+            .requestId("same-id").bizType("order").bizId("100")
+            .channel(NotifyChannel.of("test"))
+            .targets(List.of(NotifyTarget.phone("13800000000"), NotifyTarget.phone("13900000000")))
+            .content(new NotifyTextContent("subject", "content"))
+            .idempotencyKey("order-100").build();
+
+        NotifyDeliveryException first = assertThrows(NotifyDeliveryException.class, () -> dispatcher.send(request));
+        NotifyDeliveryException duplicate = assertThrows(NotifyDeliveryException.class, () -> dispatcher.send(request));
+        assertEquals(first.result(), duplicate.result());
+        assertEquals(1, providerCalls.get());
+    }
+
+    @Test
     void shouldExposeCompletionFailureAfterPublishingActualProviderResult() {
         AtomicInteger providerCalls = new AtomicInteger();
         List<NotifyDeliveryEvent> events = new ArrayList<>();
@@ -246,13 +393,15 @@ class NotifyIdempotencyDispatcherUnitTest {
         private Claim current;
         private Duration lastWindow;
         private String lastStorageKey;
+        private boolean retryable;
+        private int generation;
 
         @Override
         public synchronized Claim acquire(String storageKey, String digest, String requestId, Duration window) {
             lastStorageKey = storageKey;
             lastWindow = window;
             if (current == null) {
-                current = new Acquired(storageKey, digest, requestId, "pending", window);
+                current = new Acquired(storageKey, digest, requestId, "pending-" + ++generation, window);
                 return current;
             }
             String existingDigest = current instanceof Acquired acquired ? acquired.digest()
@@ -263,6 +412,12 @@ class NotifyIdempotencyDispatcherUnitTest {
                 return new Conflict(originalRequestId);
             }
             if (current instanceof Acquired) {
+                if (retryable) {
+                    retryable = false;
+                    current = new Acquired(storageKey, digest, originalRequestId,
+                        "pending-" + ++generation, window);
+                    return current;
+                }
                 return new InProgress(originalRequestId);
             }
             return current;
@@ -270,7 +425,14 @@ class NotifyIdempotencyDispatcherUnitTest {
 
         @Override
         public synchronized void complete(Acquired acquired, NotifyResult result) {
+            if (current != acquired) throw new IllegalStateException("stale owner");
             current = new Completed(acquired.digest(), acquired.requestId(), result);
+        }
+
+        @Override
+        public synchronized void markRetryable(Acquired acquired) {
+            if (current != acquired) throw new IllegalStateException("stale owner");
+            retryable = true;
         }
 
         @Override

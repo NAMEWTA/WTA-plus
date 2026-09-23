@@ -221,6 +221,7 @@ public class NotifyDispatchResultService {
         return code != null && (code.startsWith("UNBOUND") || code.startsWith("ACCOUNT_") || code.startsWith("MISSING_")
             || code.startsWith("SMS_") || code.endsWith("_QUOTA")
             || "CONTENT_SNAPSHOT_REQUIRED".equals(code) || "UNKNOWN_PROVIDER".equals(code)
-            || "INVALID_TEMPLATE_PARAMETERS".equals(code) || "LOCAL_DISPATCH_ERROR".equals(code));
+            || "INVALID_TEMPLATE_PARAMETERS".equals(code) || "LOCAL_DISPATCH_ERROR".equals(code)
+            || "PROVIDER_UNSENT_TERMINAL".equals(code));
     }
 }

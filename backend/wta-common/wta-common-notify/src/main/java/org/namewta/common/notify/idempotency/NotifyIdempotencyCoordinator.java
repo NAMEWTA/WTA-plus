@@ -49,6 +49,14 @@ public final class NotifyIdempotencyCoordinator {
         }
     }
 
+    public void markRetryable(NotifyIdempotencyStore.Acquired acquired) {
+        try {
+            store.markRetryable(acquired);
+        } catch (RuntimeException e) {
+            throw unavailable("RETRYABLE_TRANSITION", e);
+        }
+    }
+
     public void releaseQuietly(NotifyIdempotencyStore.Acquired acquired) {
         try {
             store.release(acquired);

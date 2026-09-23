@@ -24,6 +24,7 @@ import org.namewta.common.notify.core.NotifyDispatcher;
 import org.namewta.common.notify.event.NotifyDeliveryEvent;
 import org.namewta.common.notify.idempotency.NotifyIdempotencyCoordinator;
 import org.namewta.common.notify.idempotency.NotifyIdempotencyProperties;
+import org.namewta.common.notify.idempotency.NotifyIdempotencyStore;
 import org.namewta.common.notify.idempotency.RedisNotifyIdempotencyStore;
 import org.namewta.common.notify.model.*;
 import org.namewta.common.notify.registry.NotifyChannelRegistry;
@@ -33,7 +34,9 @@ import org.namewta.notify.dao.NotifyConfigDao;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.mapper.*;
 import org.namewta.notify.port.NotifyQuotaPort;
+import org.namewta.notify.port.NotifyDispatchResultPort;
 import org.namewta.notify.service.runtime.DispatchNotificationService;
+import org.namewta.notify.service.runtime.NotifyOutboxClaimService;
 import org.namewta.notify.service.runtime.NotificationApplicationRuntimeService;
 import org.namewta.notify.service.runtime.NotifyDispatchResultService;
 import org.namewta.notify.adapter.store.RedisNotifyQuotaAdapter;
@@ -48,15 +51,27 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.dromara.sms4j.api.SmsBlend;
+import org.dromara.sms4j.api.entity.SmsResponse;
+import org.dromara.sms4j.core.factory.SmsFactory;
+import org.dromara.sms4j.provider.factory.BaseProviderFactory;
+import org.dromara.sms4j.provider.factory.ProviderFactoryHolder;
+import org.dromara.sms4j.tencent.config.TencentConfig;
+import org.dromara.sms4j.tencent.config.TencentFactory;
+import org.namewta.notify.adapter.provider.Sms4jBlendRegistry;
+import cn.hutool.json.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 /** 隔离 MySQL/Redis 的提交、规划、Dispatcher、SMS Adapter 和结果事务真实链路。 */
 @Tag("dev")
@@ -73,6 +88,9 @@ class NotifySmsDispatchIntegrationTest {
     private JdbcTemplate db;
     private RedissonClient redis;
     private NotifyNotificationDao dao;
+    private NotifyConfigDao configDao;
+    private NotifyQuotaPort quota;
+    private NotifyDispatchResultPort resultPort;
     private NotificationApplicationUseCase application;
     private DispatchNotificationService dispatch;
     private NotifyIdempotencyCoordinator idempotency;
@@ -166,13 +184,13 @@ class NotifySmsDispatchIntegrationTest {
             sessions.getMapper(NotifyRecipientMapper.class), sessions.getMapper(NotifyDeliveryMapper.class),
             sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
             sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
-        NotifyConfigDao configDao = new NotifyConfigDao(sessions.getMapper(NotifyChannelAccountMapper.class),
+        configDao = new NotifyConfigDao(sessions.getMapper(NotifyChannelAccountMapper.class),
             sessions.getMapper(NotifySceneBindingMapper.class));
 
         redis = sharedRedis;
         idempotency = new NotifyIdempotencyCoordinator(new RedisNotifyIdempotencyStore(redis),
             new NotifyIdempotencyProperties());
-        NotifyQuotaPort quota = new RedisNotifyQuotaAdapter();
+        quota = new RedisNotifyQuotaAdapter();
         SmsNotifyChannelAdapter adapter = new SmsNotifyChannelAdapter(key -> new SmsNotificationProvider(key,
             (phone, content) -> {
                 supplierCalls.incrementAndGet();
@@ -183,7 +201,7 @@ class NotifySmsDispatchIntegrationTest {
             }));
         NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
             NotifyContext::empty, events::add, idempotency);
-        var resultPort = transactional(new NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)),
+        resultPort = transactional(new NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)),
             NotifyDispatchResultUseCase.class);
         dispatch = new DispatchNotificationService(dao, dispatcher, null, configDao, quota, resultPort);
         application = transactional(new NotificationApplicationUseCase(new NotificationApplicationRuntimeService(
@@ -403,6 +421,147 @@ class NotifySmsDispatchIntegrationTest {
         dispatch.dispatch(dao.outbox(outboxId));
         assertEquals(1, supplierCalls.get(), "WAITING_RECEIPT re-entry must not resend");
         assertEquals("WAITING_RECEIPT", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+    }
+
+    @Test
+    void retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend() {
+        RedisNotifyIdempotencyStore realStore = new RedisNotifyIdempotencyStore(redis);
+        NotifyIdempotencyStore lostAckStore = new NotifyIdempotencyStore() {
+            @Override
+            public Claim acquire(String key, String digest, String requestId, java.time.Duration window) {
+                return realStore.acquire(key, digest, requestId, window);
+            }
+
+            @Override
+            public void complete(Acquired owner, NotifyResult result) { realStore.complete(owner, result); }
+
+            @Override
+            public void markRetryable(Acquired owner) {
+                realStore.markRetryable(owner);
+                throw new IllegalStateException("synthetic lost Redis transition ACK");
+            }
+
+            @Override
+            public void release(Acquired owner) { realStore.release(owner); }
+        };
+        SmsNotifyChannelAdapter adapter = new SmsNotifyChannelAdapter(key -> new SmsNotificationProvider(key,
+            (phone, content) -> {
+                supplierCalls.incrementAndGet();
+                return SmsNotificationReceipt.unsentRetryable("PROVIDER_RATE_LIMIT_30S");
+            }));
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, events::add,
+            new NotifyIdempotencyCoordinator(lostAckStore, new NotifyIdempotencyProperties()));
+        dispatch = new DispatchNotificationService(dao, dispatcher, null, configDao, quota, resultPort);
+
+        long intentId = Long.parseLong(application.submit(command("2468")).notificationId());
+        claimAndDispatch(intentId);
+        assertEquals(1, supplierCalls.get());
+        assertTrue(String.valueOf(redis.getBucket(idempotencyBucket(intentId)).get())
+            .contains("\"state\":\"RETRYABLE\""), "real Redis CAS completed before the injected lost ACK");
+        assertEquals("UNKNOWN", db.queryForObject("select status from notify_delivery where intent_id=?",
+            String.class, intentId));
+        assertEquals("WAITING_RECEIPT", db.queryForObject("select status from notify_outbox where intent_id=?",
+            String.class, intentId));
+        assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?",
+            Integer.class, intentId));
+        long outboxId = db.queryForObject("select outbox_id from notify_outbox where intent_id=?",
+            Long.class, intentId);
+        dispatch.dispatch(dao.outbox(outboxId));
+        assertEquals(1, supplierCalls.get(), "lost ACK must not make a waiting outbox resend");
+    }
+
+    @Test
+    void exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice() {
+        Sms4jBlendRegistry registry = new Sms4jBlendRegistry();
+        ProviderFactoryHolder.registerFactory(tencentResponseFactory());
+        String configKey = "owned-" + runId;
+        try {
+            db.update("update notify_channel_account set supplier='tencent' where account_id=?", accountId);
+            db.update("update notify_scene_binding set sms_param_mapping_json=? where binding_id=?",
+                JsonUtils.toJsonString(Map.of("1", "code", "2", "expireMinutes")), bindingId);
+            var account = new org.namewta.notify.domain.entity.NotifyChannelAccount();
+            account.setConfigKey(configKey);
+            account.setSupplier("tencent");
+            account.setAccessKeyId("owned-ak");
+            account.setAccessKeySecret("owned-sk");
+            account.setSignature("owned-sign");
+            account.setSdkAppId("owned-app");
+            registry.upsert(account);
+            assertTrue(registry.isSingleAttempt(SmsFactory.getSmsBlend(configKey)));
+            SmsNotifyChannelAdapter adapter = new SmsNotifyChannelAdapter(
+                new Sms4jNotificationProviderResolver(registry));
+            NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+                NotifyContext::empty, events::add, idempotency);
+            dispatch = new DispatchNotificationService(dao, dispatcher, null, configDao, quota, resultPort);
+
+            long intentId = Long.parseLong(application.submit(command("t37-code")).notificationId());
+            long outboxId = db.queryForObject("select outbox_id from notify_outbox where intent_id=?", Long.class, intentId);
+            NotifyOutboxClaimService claims = new NotifyOutboxClaimService(dao);
+            var first = claims.claim("owned-first-" + runId).stream()
+                .filter(item -> item.getOutboxId() == outboxId).findFirst().orElseThrow();
+            dispatch.dispatch(first);
+            assertEquals(1, supplierCalls.get());
+            assertEquals("PENDING", db.queryForObject("select status from notify_delivery where intent_id=?",
+                String.class, intentId));
+            assertEquals("READY", db.queryForObject("select status from notify_outbox where intent_id=?",
+                String.class, intentId));
+            assertEquals("PROVIDER_UNSENT_RETRYABLE", db.queryForObject(
+                "select error_code from notify_delivery where intent_id=?", String.class, intentId));
+            assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+            assertTrue(claims.claim("owned-too-early-" + runId).isEmpty(), "Outbox owns retry cadence");
+
+            assertEquals(1, db.update("update notify_outbox set next_attempt_at=timestampadd(second,-1,utc_timestamp()) "
+                + "where outbox_id=? and status='READY'", outboxId));
+            var second = claims.claim("owned-second-" + runId).stream()
+                .filter(item -> item.getOutboxId() == outboxId).findFirst().orElseThrow();
+            dispatch.dispatch(second);
+            assertEquals(2, supplierCalls.get(), "second logical attempt must enter the actual SMS4J blend");
+            assertEquals("ACCEPTED", db.queryForObject("select status from notify_delivery where intent_id=?",
+                String.class, intentId));
+            assertEquals("DONE", db.queryForObject("select status from notify_outbox where intent_id=?",
+                String.class, intentId));
+            assertEquals(2, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+            dispatch.dispatch(second);
+            assertEquals(2, supplierCalls.get(), "completed/outdated lease must never resend");
+            assertFalse(JsonUtils.toJsonString(events).contains("t37-code"));
+        } finally {
+            registry.remove(configKey);
+            ProviderFactoryHolder.registerFactory(TencentFactory.instance());
+        }
+    }
+
+    private BaseProviderFactory<SmsBlend, TencentConfig> tencentResponseFactory() {
+        return new BaseProviderFactory<>() {
+            @Override
+            public SmsBlend createSms(TencentConfig config) {
+                assertEquals(0, config.getMaxRetries(), "owned Registry must disable SMS4J internal retries");
+                SmsBlend blend = mock(SmsBlend.class);
+                when(blend.getConfigId()).thenReturn(config.getConfigId());
+                when(blend.getSupplier()).thenReturn("tencent");
+                when(blend.sendMessage(anyString(), anyString(), any(LinkedHashMap.class)))
+                    .thenAnswer(invocation -> {
+                        int call = supplierCalls.incrementAndGet();
+                        SmsResponse response = new SmsResponse();
+                        response.setConfigId(config.getConfigId());
+                        response.setSuccess(call != 1);
+                        String code = call == 1 ? "LimitExceeded.PhoneNumberThirtySecondLimit" : "Ok";
+                        String serial = call == 1 ? "" : "owned-serial";
+                        int fee = call == 1 ? 0 : 1;
+                        response.setData(JSONUtil.parseObj("{\"Response\":{\"RequestId\":\"owned-request\","
+                            + "\"SendStatusSet\":[{\"PhoneNumber\":\"+8613812345678\",\"SerialNo\":\""
+                            + serial + "\",\"Fee\":" + fee + ",\"Code\":\"" + code + "\"}]}}"));
+                        return response;
+                    });
+                return blend;
+            }
+
+            @Override
+            public Class<TencentConfig> getConfigClass() { return TencentConfig.class; }
+
+            @Override
+            public String getSupplier() { return "tencent"; }
+        };
     }
 
     private NotificationCommand command(String code) {

@@ -9,6 +9,8 @@ import org.namewta.common.notify.model.NotifyResult;
 import org.namewta.common.notify.model.NotifyRichContent;
 import org.namewta.common.notify.model.NotifyTemplateContent;
 import org.namewta.common.notify.model.NotifyTarget;
+import org.namewta.common.notify.model.NotifyTargetResult;
+import org.namewta.common.notify.model.NotifyDeliveryStatus;
 import org.namewta.common.notify.exception.NotifyDeliveryException;
 import org.namewta.common.notify.exception.NotifyIdempotencyUnavailableException;
 import org.namewta.common.notify.exception.NotifyValidationException;
@@ -114,33 +116,15 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                     .build();
                 smsClientEntered = NotificationChannel.SMS.name().equals(delivery.getChannel());
                 result = notifyClient.send(request);
-                delivery.setStatus(result.status().name());
-                if (!result.deliveries().isEmpty()) {
-                    delivery.setProviderKey(result.providerKey());
-                    delivery.setProviderMessageId(result.deliveries().getFirst().providerMessageId());
-                    errorCode = result.deliveries().getFirst().errorCode();
-                    errorMessage = result.deliveries().getFirst().errorMessage();
-                }
-                if (unknownSmsProviderOutcome(delivery, errorCode)) {
-                    delivery.setStatus("UNKNOWN");
-                    errorCode = "PROVIDER_OUTCOME_UNKNOWN";
-                    errorMessage = "短信供应商调用结果未知";
-                }
+                ProviderOutcome outcome = providerOutcome(result, delivery);
+                errorCode = outcome.errorCode();
+                errorMessage = outcome.errorMessage();
             }
         } catch (NotifyDeliveryException exception) {
             result = exception.result();
-            delivery.setStatus(result.status().name());
-            if (!result.deliveries().isEmpty()) {
-                delivery.setProviderKey(result.providerKey());
-                delivery.setProviderMessageId(result.deliveries().getFirst().providerMessageId());
-                errorCode = result.deliveries().getFirst().errorCode();
-                errorMessage = result.deliveries().getFirst().errorMessage();
-            }
-            if (unknownSmsProviderOutcome(delivery, errorCode)) {
-                delivery.setStatus("UNKNOWN");
-                errorCode = "PROVIDER_OUTCOME_UNKNOWN";
-                errorMessage = "短信供应商调用结果未知";
-            }
+            ProviderOutcome outcome = providerOutcome(result, delivery);
+            errorCode = outcome.errorCode();
+            errorMessage = outcome.errorMessage();
         } catch (NotifyValidationException exception) {
             if (NotificationChannel.SMS.name().equals(delivery.getChannel())) {
                 delivery.setStatus("FAILED");
@@ -282,9 +266,37 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         if (!plan.ok()) throw new ServiceException(plan.errorMessage());
     }
 
-    private boolean unknownSmsProviderOutcome(NotifyDelivery delivery, String errorCode) {
-        return NotificationChannel.SMS.name().equals(delivery.getChannel()) && "PROVIDER_ERROR".equals(errorCode);
+    /** 只有单目标的明确未受理事实可以给 Outbox 重发权；旧 FAILED 和邮件/短信异常均未知。 */
+    private ProviderOutcome providerOutcome(NotifyResult result, NotifyDelivery delivery) {
+        delivery.setProviderKey(result.providerKey());
+        if (result.deliveries().size() != 1) {
+            if (result.status() == org.namewta.common.notify.model.NotifyStatus.ACCEPTED) {
+                delivery.setStatus("ACCEPTED");
+                return new ProviderOutcome(null, null);
+            }
+            delivery.setStatus("UNKNOWN");
+            return new ProviderOutcome("PROVIDER_OUTCOME_UNKNOWN", "供应商调用结果未知");
+        }
+        NotifyTargetResult target = result.deliveries().getFirst();
+        delivery.setProviderMessageId(target.providerMessageId());
+        NotifyDeliveryStatus status = target.status();
+        if (status == NotifyDeliveryStatus.ACCEPTED) {
+            delivery.setStatus("ACCEPTED");
+            return new ProviderOutcome(null, null);
+        }
+        if (status == NotifyDeliveryStatus.UNSENT_RETRYABLE) {
+            delivery.setStatus("FAILED");
+            return new ProviderOutcome("PROVIDER_UNSENT_RETRYABLE", "供应商明确未受理，可在预算内重试");
+        }
+        if (status == NotifyDeliveryStatus.UNSENT_TERMINAL) {
+            delivery.setStatus("FAILED");
+            return new ProviderOutcome("PROVIDER_UNSENT_TERMINAL", "供应商明确未受理，不能自动恢复");
+        }
+        delivery.setStatus("UNKNOWN");
+        return new ProviderOutcome("PROVIDER_OUTCOME_UNKNOWN", "供应商调用结果未知");
     }
+
+    private record ProviderOutcome(String errorCode, String errorMessage) {}
 
     private String safeValidationCode(String code) {
         return code != null && LOCAL_VALIDATION_CODES.contains(code) ? code : "VALIDATION_ERROR";

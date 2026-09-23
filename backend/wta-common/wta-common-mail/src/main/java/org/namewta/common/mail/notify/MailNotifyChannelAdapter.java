@@ -79,7 +79,7 @@ public final class MailNotifyChannelAdapter implements NotifyChannelAdapter {
             } catch (RuntimeException exception) {
                 long costTime = elapsedMillis(startedAt);
                 List<NotifyTargetResult> results = request.targets().stream()
-                    .map(target -> NotifyTargetResult.failed(target, "PROVIDER_ERROR", "邮件 Provider 调用失败", costTime))
+                    .map(target -> NotifyTargetResult.outcomeUnknown(target, costTime))
                     .toList();
                 return new NotifyAdapterResult(PROVIDER, results);
             }
