@@ -28,6 +28,7 @@ class OssStorageMigrationServiceUnitTest {
     private MemoryStore store;
     private FakeObjects objects;
     private MutableAccessVerifier accessVerifier;
+    private OssStorageMigrationProperties properties;
     private OssStorageMigrationService service;
 
     @BeforeEach
@@ -35,13 +36,56 @@ class OssStorageMigrationServiceUnitTest {
         store = new MemoryStore();
         objects = new FakeObjects();
         accessVerifier = new MutableAccessVerifier();
-        OssStorageMigrationProperties properties = new OssStorageMigrationProperties();
+        properties = new OssStorageMigrationProperties();
         properties.setCleanupDelay(Duration.ofHours(1));
         properties.setMaxVerifyBytes(1024);
-        OssStorageReadinessRegistry readiness = readiness();
-        service = new OssStorageMigrationService(store, objects, accessVerifier, readiness, properties,
-            Clock.fixed(NOW, ZoneOffset.UTC));
+        useReadiness(readiness());
         store.objects.put(10L, object(10L, "private", "docs/10.txt"));
+    }
+
+    @Test
+    void missingOrExpiredDiagnosticMustNotBlockActualMigrationRoute() {
+        OssStorageReadinessProperties diagnosticProperties = new OssStorageReadinessProperties();
+        diagnosticProperties.setMaxSnapshotAge(Duration.ofDays(1));
+        Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
+        OssStorageReadinessRegistry empty = new OssStorageReadinessRegistry(diagnosticProperties, clock);
+        useReadiness(empty);
+
+        var preflight = service.dryRun(new MigrationRequest(List.of(10L), "public"));
+        assertThat(preflight.ready()).isTrue();
+        assertThat(objects.copyCalls).hasValue(0);
+        assertThat(store.batches).isEmpty();
+
+        OssStorageReadinessRegistry expired = new OssStorageReadinessRegistry(diagnosticProperties, clock);
+        expired.replace(Map.of(
+            "private", new OssStorageReadinessEntry("private", AccessPolicy.PRIVATE, true, Set.of("TEST"),
+                OssStorageReadinessEntry.Status.SERVING, OssStorageReadinessEntry.Reason.READY, NOW.minus(Duration.ofDays(2))),
+            "public", new OssStorageReadinessEntry("public", AccessPolicy.PUBLIC_READ, true, Set.of("TEST"),
+                OssStorageReadinessEntry.Status.SERVING, OssStorageReadinessEntry.Reason.READY, NOW.minus(Duration.ofDays(2)))
+        ), Set.of("private", "public"), true);
+        assertThat(expired.isServing("private")).isFalse();
+        assertThat(expired.isServing("public")).isFalse();
+        useReadiness(expired);
+
+        long batchId = service.start(new MigrationRequest(List.of(10L), "public"));
+
+        assertThat(store.objects.get(10L).getService()).isEqualTo("public");
+        assertThat(service.batch(batchId).successCount()).isEqualTo(1);
+        assertThat(objects.copyCalls).hasValue(1);
+    }
+
+    @Test
+    void actualProviderPolicyMismatchStillFailsBeforeMigrationCopy() {
+        objects.accessPolicyMismatch = true;
+
+        var report = service.dryRun(new MigrationRequest(List.of(10L), "public"));
+
+        assertThat(report.ready()).isFalse();
+        assertThat(report.items()).singleElement()
+            .extracting(OssMigrationContracts.PreflightItem::reason)
+            .isEqualTo(OssMigrationError.ACCESS_POLICY_MISMATCH.name());
+        assertThat(objects.copyCalls).hasValue(0);
+        assertThat(store.batches).isEmpty();
     }
 
     @Test
@@ -247,6 +291,11 @@ class OssStorageMigrationServiceUnitTest {
         return registry;
     }
 
+    private void useReadiness(OssStorageReadinessRegistry readiness) {
+        service = new OssStorageMigrationService(store, objects, accessVerifier, readiness, properties,
+            Clock.fixed(NOW, ZoneOffset.UTC));
+    }
+
     private OssStorageReadinessEntry serving(String key, AccessPolicy policy) {
         return new OssStorageReadinessEntry(key, policy, true, Set.of("TEST"),
             OssStorageReadinessEntry.Status.SERVING, OssStorageReadinessEntry.Reason.READY, NOW);
@@ -323,11 +372,16 @@ class OssStorageMigrationServiceUnitTest {
         private final AtomicInteger deleteCalls = new AtomicInteger();
         private final Set<String> absentServices = new HashSet<>();
         private boolean targetExists;
+        private boolean accessPolicyMismatch;
         private int deleteFailures;
         private RuntimeException transferError;
         private Runnable beforeTransfer = () -> { };
 
         @Override public Inspection inspect(String source, String target, String key, long maxVerifyBytes) {
+            if (accessPolicyMismatch) {
+                throw new OssMigrationException(OssMigrationError.ACCESS_POLICY_MISMATCH,
+                    "当前存储访问类型与迁移策略不一致");
+            }
             return new Inspection(true, targetExists, false, 10, "etag");
         }
         @Override public Transfer transferAndVerify(String source, String target, String key, long maxVerifyBytes) {

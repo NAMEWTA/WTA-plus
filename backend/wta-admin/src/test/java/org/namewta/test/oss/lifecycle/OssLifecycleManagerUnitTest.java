@@ -1,6 +1,5 @@
 package org.namewta.test.oss.lifecycle;
 
-import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.oss.enums.AccessPolicy;
 import org.namewta.common.oss.model.OssPresignedRequest;
 import org.namewta.system.api.OssService;
@@ -12,6 +11,8 @@ import org.namewta.system.oss.exception.OssLifecycleError;
 import org.namewta.system.oss.exception.OssLifecycleException;
 import org.namewta.system.oss.mapper.SysOssRefMapper;
 import org.namewta.system.oss.provider.OssObjectStore;
+import org.namewta.system.oss.readiness.OssStorageReadinessEntry;
+import org.namewta.system.oss.readiness.OssStorageReadinessProperties;
 import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
 import org.namewta.system.oss.service.OssLifecycleManager;
 import org.junit.jupiter.api.Tag;
@@ -19,10 +20,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -380,17 +385,34 @@ class OssLifecycleManagerUnitTest {
     }
 
     @Test
-    void shouldFailClosedWhenStorageIsNotServing() {
-        Fixture fixture = fixture();
-        SysOss oss = oss(10L, "N", null);
-        when(fixture.ossMapper.selectById(10L)).thenReturn(oss);
-        doThrow(new ServiceException("not serving")).when(fixture.readinessRegistry).requireServing("minio");
+    void missingOrExpiredDiagnosticMustNotBlockCurrentPrivateObject() {
+        Instant now = Instant.parse("2026-09-23T10:00:00Z");
+        OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
+        properties.setMaxSnapshotAge(Duration.ofMinutes(1));
+        Clock clock = Clock.fixed(now, ZoneOffset.UTC);
+        OssStorageReadinessRegistry empty = new OssStorageReadinessRegistry(properties, clock);
+        OssStorageReadinessRegistry expired = new OssStorageReadinessRegistry(properties, clock);
+        expired.replace(Map.of("minio", new OssStorageReadinessEntry("minio", AccessPolicy.PRIVATE,
+            true, Set.of("TEST"), OssStorageReadinessEntry.Status.SERVING,
+            OssStorageReadinessEntry.Reason.READY, now.minusSeconds(120))), Set.of("minio"), true);
+        assertFalse(empty.isServing("minio"));
+        assertFalse(expired.isServing("minio"));
 
-        OssLifecycleException exception = assertThrows(OssLifecycleException.class,
-            () -> fixture.manager.resolveAccessUrl(10L));
+        for (OssStorageReadinessRegistry diagnostic : List.of(empty, expired)) {
+            Fixture fixture = fixture(diagnostic);
+            SysOss oss = oss(10L, "N", null);
+            Instant expiresAt = now.plusSeconds(120);
+            when(fixture.ossMapper.selectById(10L)).thenReturn(oss);
+            when(fixture.objectStore.accessPolicy(oss)).thenReturn(AccessPolicy.PRIVATE);
+            when(fixture.objectStore.presign(oss, Duration.ofMinutes(2)))
+                .thenReturn(new OssPresignedRequest("GET", "https://oss.example/signed", Map.of(), expiresAt));
 
-        assertEquals(OssLifecycleError.STORAGE_NOT_SERVING, exception.error());
-        verifyNoInteractions(fixture.objectStore);
+            OssService.OssAccessUrl result = fixture.manager.resolveAccessUrl(10L);
+
+            assertEquals("PRIVATE", result.accessType());
+            assertEquals(expiresAt, result.expiresAt());
+            verify(fixture.objectStore).presign(oss, Duration.ofMinutes(2));
+        }
     }
 
     @Test
@@ -408,6 +430,18 @@ class OssLifecycleManagerUnitTest {
     }
 
     @Test
+    void shouldRejectMissingObjectServiceBeforeAnyProviderAccess() {
+        Fixture fixture = fixture();
+        SysOss oss = oss(10L, "N", null);
+        oss.setService(" ");
+        when(fixture.ossMapper.selectById(10L)).thenReturn(oss);
+
+        assertThrows(OssLifecycleException.class, () -> fixture.manager.resolveAccessUrl(10L));
+
+        verifyNoInteractions(fixture.objectStore);
+    }
+
+    @Test
     void lifecycleDefaultsRequireExplicitCleanupEnablement() {
         OssLifecycleProperties properties = new OssLifecycleProperties();
 
@@ -418,11 +452,14 @@ class OssLifecycleManagerUnitTest {
     }
 
     private Fixture fixture() {
+        return fixture(mock(OssStorageReadinessRegistry.class));
+    }
+
+    private Fixture fixture(OssStorageReadinessRegistry readinessRegistry) {
         SysOssMapper ossMapper = mock(SysOssMapper.class);
         SysOssRefMapper refMapper = mock(SysOssRefMapper.class);
         OssObjectStore objectStore = mock(OssObjectStore.class);
         OssLifecycleProperties properties = new OssLifecycleProperties();
-        OssStorageReadinessRegistry readinessRegistry = mock(OssStorageReadinessRegistry.class);
         return new Fixture(ossMapper, refMapper, objectStore, properties, readinessRegistry,
             new OssLifecycleManager(ossMapper, refMapper, objectStore, properties, readinessRegistry));
     }

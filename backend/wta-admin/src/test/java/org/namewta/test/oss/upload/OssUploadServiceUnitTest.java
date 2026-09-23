@@ -78,22 +78,30 @@ class OssUploadServiceUnitTest {
     }
 
     @Test
-    void shouldRejectUnreadyOrMismatchedStorageBeforeProviderAndTicketSideEffects() {
-        replaceReadiness("minio", AccessPolicy.PRIVATE, OssStorageReadinessEntry.Status.NOT_SERVING);
-        OssUploadException unavailable = assertThrows(OssUploadException.class,
-            () -> service.init(new InitRequest("general", "file.bin", 8,
-                "application/octet-stream", "fp-unready")));
-        assertEquals(OssUploadError.STORAGE_NOT_SERVING, unavailable.error());
-        assertEquals(0, objects.prepareCalls.get());
-        assertTrue(tickets.tickets.isEmpty());
+    void missingOrExpiredDiagnosticMustNotBlockInitButActualPolicyStillRejects() {
+        readiness.replace(Map.of(), Set.of(), false);
+        InitResponse withoutDiagnostic = service.init(new InitRequest("general", "file.bin", 8,
+            "application/octet-stream", "fp-no-diagnostic"));
+        assertNotNull(withoutDiagnostic.uploadToken());
+        assertEquals("minio", objects.preparedStorageConfigKey);
+        assertEquals(1, objects.prepareCalls.get());
 
-        replaceReadiness("minio", AccessPolicy.PUBLIC_READ, OssStorageReadinessEntry.Status.SERVING);
+        readiness.replace(Map.of("minio", new OssStorageReadinessEntry("minio", AccessPolicy.PRIVATE,
+            true, Set.of("UPLOAD_POLICY:general"), OssStorageReadinessEntry.Status.SERVING,
+            OssStorageReadinessEntry.Reason.READY, Instant.EPOCH)), Set.of("minio"), true);
+        assertEquals(OssStorageReadinessEntry.Status.NOT_SERVING, readiness.snapshot().get("minio").status());
+        InitResponse expiredDiagnostic = service.init(new InitRequest("general", "next.bin", 8,
+            "application/octet-stream", "fp-expired-diagnostic"));
+        assertNotNull(expiredDiagnostic.uploadToken());
+        assertEquals(2, objects.prepareCalls.get());
+
+        objects.actualAccessPolicy = AccessPolicy.PUBLIC_READ;
         OssUploadException mismatch = assertThrows(OssUploadException.class,
             () -> service.init(new InitRequest("general", "file.bin", 8,
                 "application/octet-stream", "fp-mismatch")));
         assertEquals(OssUploadError.STORAGE_ACCESS_POLICY_MISMATCH, mismatch.error());
-        assertEquals(0, objects.prepareCalls.get());
-        assertTrue(tickets.tickets.isEmpty());
+        assertEquals(3, objects.prepareCalls.get());
+        assertEquals(2, tickets.tickets.size());
     }
 
     @Test
@@ -384,6 +392,7 @@ class OssUploadServiceUnitTest {
         private final AtomicInteger prepareCalls = new AtomicInteger();
         private String preparedStorageConfigKey;
         private AccessPolicy preparedExpectedAccessPolicy;
+        private AccessPolicy actualAccessPolicy = AccessPolicy.PRIVATE;
         private String lastTicketService;
         private String lastCleanupService;
         private boolean objectPresent;
@@ -400,6 +409,10 @@ class OssUploadServiceUnitTest {
             prepareCalls.incrementAndGet();
             preparedStorageConfigKey = storageConfigKey;
             preparedExpectedAccessPolicy = expectedAccessPolicy;
+            if (actualAccessPolicy != expectedAccessPolicy) {
+                throw new OssUploadException(OssUploadError.STORAGE_ACCESS_POLICY_MISMATCH,
+                    "当前存储访问类型与服务端策略不一致");
+            }
             this.contentType = contentType;
             this.fingerprintDigest = fingerprintDigest;
             OssPresignedRequest request = mode == OssUploadMode.SINGLE
