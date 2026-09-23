@@ -209,3 +209,5 @@ Revision138执行：T-32先行；额外写集为backend/pom.xml资源排除、sc
 ## revision140派单
 
 T-33唯一产品writer为原生子代理cors_audit（gpt-6-sol/xhigh），Lead仍为票/父分支/E2E owner；原ticket写集在此次租约内授予该子代理。其他agent只读。固定base `dd8179e1cd394b092bfb36b8b91c0e04386563ce`，完整Packet见 evidence/dispatch-T-33.md。
+
+T-33审查写集补充：backend/wta-modules/wta-sso/AGENTS.md由Lead独占修正其过时CORS说明，不改变已确认来源合同。

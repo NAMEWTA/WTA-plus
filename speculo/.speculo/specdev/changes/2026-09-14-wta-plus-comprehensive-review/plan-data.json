@@ -2754,7 +2754,8 @@
       "backend/wta-admin/src/main/resources/application-prod.yml",
       "backend/wta-admin/src/main/resources/application-local.example.yml",
       "backend/wta-admin/src/test/java/org/namewta/test/sso/",
-      "backend/README.md"
+      "backend/README.md",
+      "backend/wta-modules/wta-sso/AGENTS.md"
     ],
     "tests": [
       "真实 Servlet/CorsFilter 测试与 Spring profile 绑定"
