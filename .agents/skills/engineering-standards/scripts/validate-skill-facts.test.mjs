@@ -57,6 +57,24 @@ test('obsolete private output spelling is rejected', t => {
   assert.match(result.stderr, /旧私密发布目录/);
 });
 
+test('obsolete private output spelling in deployment Skill is rejected', t => {
+  const directory = fixture(t);
+  const skill = join(directory, '.agents/skills/deploy-namewta-environment/SKILL.md');
+  writeFileSync(skill, readFileSync(skill, 'utf8') + '\n`temp/relase/fixture`\n');
+  const result = validate(directory);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /过时事实: temp\/relase/);
+});
+
+test('obsolete private output spelling in customization Skill is rejected', t => {
+  const directory = fixture(t);
+  const skill = join(directory, '.agents/skills/project-customization-delivery/SKILL.md');
+  writeFileSync(skill, readFileSync(skill, 'utf8') + '\n`temp/relase/fixture`\n');
+  const result = validate(directory);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /过时事实: temp\/relase/);
+});
+
 test('missing report output owner is rejected', t => {
   const directory = fixture(t);
   rmSync(join(directory, '.agents/skills/deploy-namewta-environment/scripts/lib.mjs'));

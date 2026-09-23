@@ -5,7 +5,7 @@ description: 执行 NAMEWTA 环境审计、接管、部署、升级或回滚时�
 
 # NAMEWTA 全栈环境部署
 
-以仓库内发布资产为事实源完成部署、检测和交接。只维护一份最新部署报告：本地为 `temp/relase/namewta-deployment.md`，服务器为 `<server-root>/deployment/namewta-deployment.md`；每次部署或检测后原地更新，不生成过程记录。报告可包含账密，但只能写入被忽略目录并保持 `0600`，不得回显或提交。本文将本地交付目录固定为 `temp/relase/`。
+以仓库内发布资产为事实源完成部署、检测和交接。只维护一份最新部署报告：本地为 `temp/release/namewta-deployment.md`，服务器为 `<server-root>/deployment/namewta-deployment.md`；每次部署或检测后原地更新，不生成过程记录。报告可包含账密，但只能写入被忽略目录并保持 `0600`，不得回显或提交。本文将本地交付目录固定为 `temp/release/`。
 
 ## 加载项目规范
 
@@ -29,10 +29,10 @@ description: 执行 NAMEWTA 环境审计、接管、部署、升级或回滚时�
 
 ```bash
 node .agents/skills/deploy-namewta-environment/scripts/validate-profile.mjs \
-  --profile temp/relase/deployment-profile.json
+  --profile temp/release/deployment-profile.json
 ```
 
-不得提交密码、令牌、私钥、`.env`、`*local.yml` 或生成的报告；不得将它们粘贴到 SpecDev 文档、终端输出、对话或日志中。只有 `temp/relase/namewta-deployment.md` 这类权限为 `0600` 的本地私密交接文件可以保存明文账密。
+不得提交密码、令牌、私钥、`.env`、`*local.yml` 或生成的报告；不得将它们粘贴到 SpecDev 文档、终端输出、对话或日志中。只有 `temp/release/namewta-deployment.md` 这类权限为 `0600` 的本地私密交接文件可以保存明文账密。
 
 ## 先盘点再写入
 
@@ -46,9 +46,9 @@ node .agents/skills/deploy-namewta-environment/scripts/validate-profile.mjs \
 
 ```bash
 node .agents/skills/deploy-namewta-environment/scripts/render-local-config.mjs \
-  --profile temp/relase/deployment-profile.json \
-  --secrets temp/relase/deployment-secrets.json \
-  --output temp/relase/rendered
+  --profile temp/release/deployment-profile.json \
+  --secrets temp/release/deployment-secrets.json \
+  --output temp/release/rendered
 ```
 
 只检查脚本输出的路径和权限，不回显敏感文件内容。仅安装当前模式需要的文件。中间件初始化顺序与 OSS 不变量见 [中间件、数据库与 OSS](references/middleware-database-oss.md)。
@@ -93,23 +93,23 @@ docker compose \
 
 ```bash
 node .agents/skills/deploy-namewta-environment/scripts/verify-frontend-artifact.mjs \
-  --profile temp/relase/deployment-profile.json \
+  --profile temp/release/deployment-profile.json \
   --index frontend/apps/admin-web/dist/index.html
 node .agents/skills/deploy-namewta-environment/scripts/verify-release-candidate.mjs \
-  --profile temp/relase/deployment-profile.json \
-  --state temp/relase/deployment-state.json
+  --profile temp/release/deployment-profile.json \
+  --state temp/release/deployment-state.json
 ```
 
 ```bash
 node .agents/skills/deploy-namewta-environment/scripts/generate-deployment-report.mjs \
-  --profile temp/relase/deployment-profile.json \
-  --secrets temp/relase/deployment-secrets.json \
-  --env-file temp/relase/namewta-release.env \
-  --state temp/relase/deployment-state.json \
-  --output temp/relase/namewta-deployment.md
+  --profile temp/release/deployment-profile.json \
+  --secrets temp/release/deployment-secrets.json \
+  --env-file temp/release/namewta-release.env \
+  --state temp/release/deployment-state.json \
+  --output temp/release/namewta-deployment.md
 ```
 
-部署成功后将同一份最新报告写入服务器 `<server-root>/deployment/namewta-deployment.md`（权限 `0600`），并在本地保留 `temp/relase/namewta-deployment.md`（权限 `0600`）。报告必须列出服务器与中间件 IP/端口、账号密码、Compose 文件、版本、服务器和本地持久化路径、检测结论及证据路径；每次检测后原地更新。
+部署成功后将同一份最新报告写入服务器 `<server-root>/deployment/namewta-deployment.md`（权限 `0600`），并在本地保留 `temp/release/namewta-deployment.md`（权限 `0600`）。报告必须列出服务器与中间件 IP/端口、账号密码、Compose 文件、版本、服务器和本地持久化路径、检测结论及证据路径；每次检测后原地更新。
 
 报告生成器必须使用中文标题、字段和状态；服务名、镜像标签、路径、URL、Schema、SHA-256 等标识符保留原文。报告的“账号与凭据”表必须包含服务器 SSH 账号和密码：密码从 `deployment-secrets.json.sshPassword` 或 `SSH_PASSWORD` 读取，未读取到时必须明确标注来源和补充位置，不能写“故意不记录”或编造值。报告必须包含入口、端口、账号、持久化路径、版本、验证证据、升级流程、回滚流程与未决风险。后续迭代按 [升级与回滚](references/upgrade-and-rollback.md) 执行。
 

@@ -56,7 +56,7 @@ profile 中每个 Compose/env 路径必须是授权根目录下的绝对路径�
 
    ```bash
    node .agents/skills/deploy-namewta-environment/scripts/verify-frontend-artifact.mjs \
-     --profile temp/relase/deployment-profile.json \
+     --profile temp/release/deployment-profile.json \
      --index frontend/apps/admin-web/dist/index.html
    ```
 
@@ -119,8 +119,8 @@ profile 中每个 Compose/env 路径必须是授权根目录下的绝对路径�
 
 ```bash
 node .agents/skills/deploy-namewta-environment/scripts/verify-release-candidate.mjs \
-  --profile temp/relase/deployment-profile.json \
-  --state temp/relase/deployment-state.json
+  --profile temp/release/deployment-profile.json \
+  --state temp/release/deployment-state.json
 ```
 
 随后使用全新登录会话验证关键用户路径。每个探针同时记录 HTTP 状态、业务码和可观察页面状态。允许值属于具体探针，例如“缺失凭据”可以是业务 404，而接口目录应为业务 200；不得全局把 404 当成能力关闭，也不得把 HTTP 200 当成业务成功。

@@ -14,7 +14,7 @@ planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
 ready: true
 risk: "medium"
-blocked_by: []
+blocked_by: ["T-29"]
 contract_ids: ["AC-001"]
 owner: "single-agent"
 expected_changes: ["<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.mjs</Path>", "<Path>.agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs</Path>", "<Path>.agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs</Path>", "<Path>scripts/ci/verify-dev-build-guard.sh</Path>", "<Path>scripts/README.md</Path>", "<Path>.github/workflows/quality-gates.yml</Path>", "<Path>release-artifacts/tests/release-integration-contract.test.mjs</Path>", "<Path>release-artifacts/tests/wta-rename-keep-contract.test.mjs</Path>"]
@@ -144,3 +144,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/01-restore-trustworthy-gates.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
 旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。
+
+## 当前验收前置重排
+
+当前部署Skill要求旧私有目录但facts拒绝该目录，T01当前复验须等T29修复；历史T01实现早于T29且仍在父链，旧施工边已履行。本轮T29无需等重复验收，改为T29→T01，不取消合同或伪造Done。 当前仍Ready，T29完成后独立重验全部本票合同；无需新实现的取消仅在真实证明之后办理。

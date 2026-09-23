@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T08:17:20.669997+00:00",
+  "updated_at": "2026-09-23T08:17:50.455346+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -105,7 +105,8 @@
     "Revision143: T34 accepted at 177eb5b; 714 tests+5 synthetic+1 real pass, clean before/after. Cycle1 3 attempts preserved; mandatory Lead retrospective/new dispatch, recovery cycle attempt3 passed. T29 facts checker private path conflict remains explicit.",
     "Revision144: T47 starts at 97e1ee9e1ad40de75deffd025379a6a5488c4882; only OSS page/tests writable, cors_audit sole product writer; Lead owns commits and acceptance. T34 is closed before transfer.",
     "T47 first candidate2d60e1a full frontend728/lint/typecheck/prod build pass, clean before/after. Specification review identifies list blocked on optional image previews; keep in_progress, Packet02 repairs progressive preview without dropping ownership guards.",
-    "Revision145: T47 accepted at 7cd6fb22b28b7d464b9648ba77f2a2308e5b2016;731 frontend tests, lint/typecheck/three-app production build/current OpenAPI pass; clean exact HEAD before/after, independent axes pass. Next replan T29→T01→T35 to remove factual gate contradiction."
+    "Revision145: T47 accepted at 7cd6fb22b28b7d464b9648ba77f2a2308e5b2016;731 frontend tests, lint/typecheck/three-app production build/current OpenAPI pass; clean exact HEAD before/after, independent axes pass. Next replan T29→T01→T35 to remove factual gate contradiction.",
+    "Revision146: 当前部署Skill要求旧私有目录但facts拒绝该目录，T01当前复验须等T29修复；历史T01实现早于T29且仍在父链，旧施工边已履行。本轮T29无需等重复验收，改为T29→T01，不取消合同或伪造Done。 T29 sole product writer cors_audit, base 7a1810288d3292ceeb4987f488b13353af1a1286; Lead alone owns private backup/restore/move, no new rotation/deployment."
   ],
   "worktrees": [
     {
@@ -278,6 +279,49 @@
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-47.md</Path>",
         "attempts": 2,
         "promotion_status": "applied"
+      }
+    },
+    {
+      "ticket_id": "T-29",
+      "owner": "single-agent",
+      "implementation_owner": "cors_audit",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "7a1810288d3292ceeb4987f488b13353af1a1286",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "7a1810288d3292ceeb4987f488b13353af1a1286",
+      "status": "active",
+      "updated_at": "2026-09-23T08:17:50.455346+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "7a1810288d3292ceeb4987f488b13353af1a1286",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Source-fact fixtures, handbook ownership audit and private backup/restore verification directly cover this documentation/data-path change.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-replan-2026-09-23.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
       }
     }
   ]

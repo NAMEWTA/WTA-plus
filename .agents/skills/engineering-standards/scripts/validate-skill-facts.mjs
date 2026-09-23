@@ -35,7 +35,6 @@ const canonicalText = markdownFiles
   .map(file => readFileSync(file, 'utf8'))
   .join('\n');
 const forbidden = [
-  'temp/relase',
   'wta-' + 'profile-module-guide',
   'wta-' + 'system-module-guide',
   'wta-' + 'workflow-module-guide',
@@ -44,6 +43,8 @@ const forbidden = [
   'controller/SnailAiController.java',
   'config/SnailAiConfig.java',
 ];
+const obsoletePrivateOutput = 'temp/relase';
+if (all.includes(obsoletePrivateOutput)) fail(`Skills 残留过时事实: ${obsoletePrivateOutput}`);
 for (const value of forbidden) {
   if (canonicalText.includes(value)) fail(`Skills 残留过时事实: ${value}`);
 }

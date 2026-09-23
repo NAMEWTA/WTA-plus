@@ -35,7 +35,9 @@
       "每个声明命令可在对应cwd解析，Maven/前端测试与package分开记录"
     ],
     "decision": "既有合同保持；本轮重新评审与验收；门禁实现保留；本次11条common Skill摘要漂移已核对入口后重绑，未修改历史Skill执行记录。",
-    "blocked_by": [],
+    "blocked_by": [
+      "T-29"
+    ],
     "depth": "standard",
     "risk": "medium",
     "skills": [
@@ -51,7 +53,7 @@
     "status": "ready",
     "ready": true,
     "e2e_disposition": "not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界",
-    "plan_revision": 136,
+    "plan_revision": 146,
     "implementation_commits": [
       "3aa047b85033afd7588923ffa7b37481dc2d1645"
     ],
@@ -2321,7 +2323,17 @@
       "scripts/ci/verify-agent-handbooks.test.mjs",
       ".github/workflows/quality-gates.yml",
       "frontend/packages/domains/third/AGENTS.md",
-      "frontend/packages/web-domains/third/AGENTS.md"
+      "frontend/packages/web-domains/third/AGENTS.md",
+      ".agents/skills/deploy-namewta-environment/SKILL.md",
+      ".agents/skills/deploy-namewta-environment/references/existing-site-takeover.md",
+      ".agents/skills/deploy-namewta-environment/references/middleware-database-oss.md",
+      ".agents/skills/deploy-namewta-environment/references/rolling-full-stack-release.md",
+      ".agents/skills/deploy-namewta-environment/references/upgrade-and-rollback.md",
+      ".agents/skills/project-customization-delivery/SKILL.md",
+      ".agents/skills/project-customization-delivery/references/inputs.md",
+      ".agents/skills/project-customization-delivery/references/verification.md",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
+      ".agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs"
     ],
     "steps": [
       "回读本票历史Evidence和实际实现提交，使用当前源码核对本票验收合同；旧施工步骤仅在before快照保存，不重复实施。",
@@ -2332,20 +2344,19 @@
     ],
     "checks": [
       "每个删除文件有owner、内容迁移落点和无丢失硬约束证据",
-      "50POM/3App/247后端测试基线与最终源码变化一致（最终重算）",
+      "当前源码动态库存与最终事实一致，JUnit实际数量另记",
       "所有当前引用和cwd命令可解析",
       "文档不把候选CI、未跑服务或未批准设计写成已完成"
     ],
     "decision": "既有合同保持；本轮重新评审与验收；旧删除37份重复手册的证据保持；本轮重新审查所有当前文档，旧清单不再作为待删除任务。",
-    "blocked_by": [
-      "T-01"
-    ],
+    "blocked_by": [],
     "depth": "deep",
     "risk": "medium",
     "skills": [
       "engineering-standards",
       "wta-module-guide",
-      "namewta-fullstack-development"
+      "namewta-fullstack-development",
+      "deploy-namewta-environment"
     ],
     "commands": [
       "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
@@ -2354,10 +2365,10 @@
     "contract": "AC-029",
     "review_date": "2026-09-23",
     "notes": "旧删除37份重复手册的证据保持；本轮重新审查所有当前文档，旧清单不再作为待删除任务。",
-    "status": "ready",
+    "status": "in_progress",
     "ready": true,
     "e2e_disposition": "not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付",
-    "plan_revision": 136,
+    "plan_revision": 146,
     "implementation_commits": [
       "70eed51acb703ed19a48a47d182f2476f3eabcf7"
     ],

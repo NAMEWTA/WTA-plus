@@ -17,7 +17,7 @@
 
 Compose 身份必须形成一个不可拆分快照：project、按命令实际顺序排列的全部 `-f` 文件、`--env-file`、service 名、容器 Compose labels、当前镜像标签/image ID 和 bind host。目录名、容器名前缀或仓库样例都不能单独证明 project 身份。
 
-优先保存机器可读盘点结果。敏感结果只能放在被忽略的 `temp/relase/`，权限为 `0600`。
+优先保存机器可读盘点结果。敏感结果只能放在被忽略的 `temp/release/`，权限为 `0600`。
 
 ## 差异分类
 

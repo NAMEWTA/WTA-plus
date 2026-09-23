@@ -42,7 +42,7 @@
 | `wta-common/wta-common-satoken` | Spring/Sa-Token 认证基础 | package surface | none |
 | `wta-common/wta-common-security` | 安全注解/权限合同 | package surface | none |
 | `wta-common/wta-common-sensitive` | 敏感数据处理 | package surface | none |
-| `wta-common/wta-common-sms` | Spring SMS 集成 | package surface | none |
+| `wta-common/wta-common-sms` | Spring SMS 集成 | package surface | `src/test/java`; `SmsDeliveryQueryClientTest` |
 | `wta-common/wta-common-social` | 社交登录适配 | package surface | none |
 | `wta-common/wta-common-translation` | 翻译/字典适配 | package surface | none |
 | `wta-common/wta-common-web` | Spring MVC、错误映射、Actuator 基础 | package surface | `src/test/java`; 实际模块测试 |

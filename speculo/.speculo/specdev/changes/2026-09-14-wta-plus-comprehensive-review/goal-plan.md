@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision145，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision146，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -56,13 +56,13 @@ Notify主链：T-36/T-37→T-38→T-39→T-50，并分支到T-40/T-43；附件�
 | W-close | T-42/43/48/49 | 各自前置闭合，附件D-009已接受 | 附件/schema/脚本/配置独占 | G-feature-complete |
 | W-final | T-30 | 其余49票闭合 | 同一候选/测试环境/产物独占 | G-integrated/G-complete |
 
-current模式Wave仍串行。推荐顺序：T-32 → T-33 → T-34 → T-47 → T-35 → T-36 → T-37 → T-38 → T-39 → T-50 → T-41 → T-40 → T-44 → T-45 → T-46 → T-42 → T-43 → T-48 → T-49 → T-30；可以在DAG允许时调整独立票顺序，必须记录资源交接和新HEAD，不能借调整绕过安全或外部处置Gate。
+current模式Wave仍串行。推荐顺序：T-32 → T-33 → T-34 → T-47 → T-29 → T-01 → T-35 → T-36 → T-37 → T-38 → T-39 → T-50 → T-41 → T-40 → T-44 → T-45 → T-46 → T-42 → T-43 → T-48 → T-49 → T-30；可以在DAG允许时调整独立票顺序，必须记录资源交接和新HEAD，不能借调整绕过安全或外部处置Gate。
 
 ### Ticket Quick Reference
 
 | ID | 可观察产出 | Dependencies | Workspace | Implementation owner | E2E disposition | Evidence |
 |---|---|---|---|---|---|---|
-| T-01 | 干净clone不创建temp/release也通过事实检查 | — | current | single-agent | not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path> |
+| T-01 | 干净clone不创建temp/release也通过事实检查 | T-29 | current | single-agent | not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path> |
 | T-02 | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | — | current | single-agent | required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02-replan-2026-09-23.md</Path> |
 | T-03 | 大小边界前/等于/超限一字节结果可判定 | T-02 | current | single-agent | required: 通过真实HTTP发送定长/chunked边界请求、伪签名大正文及正常签名正文 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-replan-2026-09-23.md</Path> |
 | T-04 | 任意外来XFF不改变直连或正常入口的授权结果 | — | current | single-agent | required: 隔离单/双Nginx链发IPv4/IPv6和伪造XFF请求，比较白名单、限流、审计来源 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-04-replan-2026-09-23.md</Path> |
@@ -90,7 +90,7 @@ current模式Wave仍串行。推荐顺序：T-32 → T-33 → T-34 → T-47 → 
 | T-26 | 每个候选有迁移或保留理由，不遗漏调用者 | T-02, T-16, T-25 | current | single-agent | required: 各受影响资源代表读/写/批量删除与越权请求，旧CRUD方法拒绝、生成合同一致 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26-replan-2026-09-23.md</Path> |
 | T-27 | 保存/删除路径不再有虚假校验TODO | T-26 | current | single-agent | required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27-replan-2026-09-23.md</Path> |
 | T-28 | 慢provider不阻塞业务提交线程 | T-22 | current | single-agent | required: 慢provider下提交耗时、Redis失败/丢wake后poll及双worker fence | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-28-replan-2026-09-23.md</Path> |
-| T-29 | 每个删除文件有owner、内容迁移落点和无丢失硬约束证据 | T-01 | current | single-agent | not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-replan-2026-09-23.md</Path> |
+| T-29 | 每个删除文件有owner、内容迁移落点和无丢失硬约束证据 | — | current | single-agent | not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29-replan-2026-09-23.md</Path> |
 | T-30 | 全部已接受AC均有实际命令/退出码/环境/源码checkpoint | T-01, T-02, T-03, T-04, T-05, T-06, T-07, T-08, T-09, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-31, T-32, T-33, T-34, T-35, T-36, T-37, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-48, T-49, T-50 | current | single-agent | required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-replan-2026-09-23.md</Path> |
 | T-31 | 真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交 | T-22 | current | single-agent | required: 真Profile→Notify QUEUED、worker受理→确认及DB/Redis部分失败、重复确认/错用户/绑定变更 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31-replan-2026-09-23.md</Path> |
 | T-32 | 新 clone 的当前检出与发布产物不含真实凭据；历史对象仍可能保留披露值，必须另外轮换。部署者从未跟踪的本地文件或环境变量注入。公开模板可启动到明确的缺配置错误，日志不回显 secret。 | — | current | single-agent | required: Git 跟踪清单、合成配置加载、日志脱敏；实际轮换是 G-security-external 的外部动作 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-32-replan-2026-09-23.md</Path> |
@@ -259,3 +259,7 @@ T47取得唯一产品writer，base 97e1ee9e1ad40de75deffd025379a6a5488c4882，3d
 ## revision145当前验收
 
 4done/46ready，T47result 7cd6fb22b28b7d464b9648ba77f2a2308e5b2016；731前端测试/完整静态与三App生产构建通过。下一T29→T01→T35，正式DAG重排先于派单。
+
+## revision146当前
+
+当前部署Skill要求旧私有目录但facts拒绝该目录，T01当前复验须等T29修复；历史T01实现早于T29且仍在父链，旧施工边已履行。本轮T29无需等重复验收，改为T29→T01，不取消合同或伪造Done。 队列T29→T01→T35；4done/1in_progress/45ready。T29 base 7a1810288d3292ceeb4987f488b13353af1a1286；12条精确新增写集与私有备份/恢复/无覆盖迁移边界见Ticket及Packet。历史证据不改写。

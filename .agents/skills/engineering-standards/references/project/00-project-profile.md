@@ -68,7 +68,7 @@ rg --files backend -g '**/src/test/java/**/*.java' -g '!**/target/**'
 
 ## 发布产物合同
 
-`release-manage.sh` 通过 `release-state.py` 从同一干净 Git 归档完成全量构建，生成 `builds/versions/<ID>` 不可变目录及逐文件来源/摘要 manifest。局部构建仅写 development；显式 stage 校验后一次替换 current 符号链接。docker-manage 每次命令固定版本路径，显式重建容器；数据、日志、证书留在独立运行目录。运行时多容器切换不承诺原子性，源 SQL 仍只有六份基座。三端 Origin 和 callback/authorize 矩阵进入 manifest，消费时拒绝运行参数漂移；生产 SSO 使用独立 hostname/HTTPS 入口及根 /sso API，不进入业务 LB。SSO_WEB_BASE_PATH由版本prefix派生，真实AuthController的clientContext包含同一base授权地址。
+`release-manage.sh` 通过 `release-state.mjs` 从同一干净 Git 归档完成全量构建，生成 `builds/versions/<ID>` 不可变目录及逐文件来源/摘要 manifest。局部构建仅写 development；显式 stage 校验后一次替换 current 符号链接。docker-manage 每次命令固定版本路径，显式重建容器；数据、日志、证书留在独立运行目录。运行时多容器切换不承诺原子性，源 SQL 仍只有六份基座。三端 Origin 和 callback/authorize 矩阵进入 manifest，消费时拒绝运行参数漂移；生产 SSO 使用独立 hostname/HTTPS 入口及根 /sso API，不进入业务 LB。SSO_WEB_BASE_PATH由版本prefix派生，真实AuthController的clientContext包含同一base授权地址。
 
 ## 未知与冲突
 

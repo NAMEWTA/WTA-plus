@@ -15,7 +15,7 @@
 
 新库通过 `release-artifacts/scripts/init-mysql-container.sh` 只读消费 `release-artifacts/docker/infrastructure/mysql/init/` 中由 Git 跟踪的六份完整基座，统一初始化业务库 `wta-plus`：`10-cde-base-ddl`、job、workflow、ai、`50-cde-base-dml`；`60-cde-nacos.sql` 初始化独立库 `nacos`。保护脚本必须拒绝已有数据库或账号；失败时只能清理本次创建的资源。`stage-mysql` 只校验这些资产，不复制、不生成、不删除文件。
 
-接管或升级已有库时，必须记录源 Git Tag 和目标 Git Tag，先做一致性备份，再依据两 Tag 的六文件差异形成、评审并在隔离副本演练升级 SQL；不得对已填充数据库重放初始化基座。差异 SQL 与执行记录只写入被忽略的 `temp/relase/` 私密报告目录。
+接管或升级已有库时，必须记录源 Git Tag 和目标 Git Tag，先做一致性备份，再依据两 Tag 的六文件差异形成、评审并在隔离副本演练升级 SQL；不得对已填充数据库重放初始化基座。差异 SQL 与执行记录只写入被忽略的 `temp/release/` 私密报告目录。
 
 数据库写入前先验证执行器的事务能力。工具拒绝 `START TRANSACTION`、多语句或自动提交控制时，必须在第一条持久写入前停止，记录差异并改用可验证的固定 session 事务方式；失败路径通过回滚或关闭 session 终止。不得因工具语法差异改为逐语句自动提交。
 

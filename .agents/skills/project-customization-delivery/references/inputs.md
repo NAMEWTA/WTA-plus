@@ -11,7 +11,7 @@
 | `logo_path` | 必填，本地可读图像；检查格式、尺寸、透明度后替换实际使用的 Logo/favicon。 |
 | `source_root` | 默认当前项目根；从文件证据识别前后端目录，不假定它们叫 backend/frontend。 |
 | `local_root` | 必填，定制项目最终所在的绝对目录；不是仅报告目录。若用户表达不清，再澄清用途。 |
-| `report_root` | 默认 `<local_root>/temp/relase`；其中固定创建 `deployment-docs/` 和 `tests/`，用户指定根目录时覆盖。 |
+| `report_root` | 默认 `<local_root>/temp/release`；其中固定创建 `deployment-docs/` 和 `tests/`，用户指定根目录时覆盖。 |
 | `middleware` | 可省略或 `none`；省略不代表允许安装本地 Docker 或部署远程服务。已有连接配置可继续验证。 |
 | `middleware.host / ssh_port / ssh_user / credential_source` | 部署时需要的主机、端口、账户和凭据来源；支持 SSH key/agent 或私密密码配置，不强制 root 或明文密码。 |
 | `middleware.data_root` | 部署时必填，远程持久化根目录，与 `local_root` 分开；端口、数据库、Compose project、bucket 等在审计后确定并记录。 |
