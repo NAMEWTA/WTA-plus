@@ -1,0 +1,16 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--check",
+    "--",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifySmsDispatchIntegrationTest.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T09:35:07.877790+00:00",
+  "finished_at": "2026-09-23T09:35:07.886288+00:00",
+  "exit_code": 0,
+  "log": "diff-check.log"
+}

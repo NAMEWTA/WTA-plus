@@ -1,0 +1,312 @@
+{
+  "candidate": "41882b54a2b644f7ae661b84205cfcc9d1b72886",
+  "coverage_passed": false,
+  "reason": "test selector used source filename instead of declared class for one pre-existing test",
+  "missing": [
+    "org.namewta.notify.service.NotifyNoticePublisherTest"
+  ],
+  "classes": [
+    {
+      "class": "org.namewta.common.json.utils.LogSanitizerTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "55bbc16c1e2482864ef6260ae7c534a2cb8aeaac862ef7aaddaa72e4bfc076e2"
+    },
+    {
+      "class": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "3df3c19c05726be67b8a9256bf6dd6759eac3da95dd924d746def1eeac0b145a"
+    },
+    {
+      "class": "org.namewta.common.sms.notify.SmsDeliveryQueryClientTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "207f8c8acad63cf0ea9e907de2cff1d023053a3c0f4b414dbe8f9b86f62b80ef"
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "c6fbf2b1877310018cf50df553babf5ccb23c9467a0e8fca324ee3dd73a74e81"
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFilterTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "246e95599988e9609455a9da67098639e3feff8811321d1588a5904802a6fa66"
+    },
+    {
+      "class": "org.namewta.notify.NotifyOutboxWakeScopeGateTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "f9b0df1c1a308d91b887a9a180fcd67b1fc013e57034e88b6a56846a045e8866"
+    },
+    {
+      "class": "org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "430d1e5e0b70f81cadb5deca8541b31d52bef1556ac4a2595213257654a855a8"
+    },
+    {
+      "class": "org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "87bfe9b98c0363ca3d75de1041a06684df6c40577cf815b7d3980d76d647b514"
+    },
+    {
+      "class": "org.namewta.notify.adapter.provider.Sms4jReceiptTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "f15c7a28019f00419d1a2c774376c8cd5496883d8049c803700a374571dd62e1"
+    },
+    {
+      "class": "org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "db32fe6d359b598cce8a58076c90d48f82d75b4664fe5f9075b8d35cd429eb3c"
+    },
+    {
+      "class": "org.namewta.notify.controller.admin.NotifyConfigControllerContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "ca982a43750a3b554e75bf581ab2bb90b2d00f1b0330861e19ca186d8cc195c5"
+    },
+    {
+      "class": "org.namewta.notify.domain.policy.NoticeAudiencePolicyTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "97b39838d54138e3a40de554bbafc55ff5ef2a5400e6715c6441da681cfcfc6b"
+    },
+    {
+      "class": "org.namewta.notify.domain.policy.NotificationAggregatePolicyTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "49bb55b1590a2d5c49003c4cd3e163aced382e50e23e0d5c0003725af37929ff"
+    },
+    {
+      "class": "org.namewta.notify.service.NotifyConfigServiceTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "a939f2c4b0d6f7b62506da7a9b73f3d755e040bf1cc11d79783b4f26d971dfb7"
+    },
+    {
+      "class": "org.namewta.notify.service.NotifyNoticeServiceTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "c8e25608515df4e7b57f7fc1f6bee9c191fafa09380b8b97b25817aad1a39378"
+    },
+    {
+      "class": "org.namewta.notify.service.NotifyTestSendServiceTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "e1a9750349d11f284df27d5adf6abbf72aa390ba3c341cb5b8771af2afa745cd"
+    },
+    {
+      "class": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "f0be951f5ecb1ad98ab5789170f4e9aa4c83ac5f5c20d2d2d2e2584df12d2090"
+    },
+    {
+      "class": "org.namewta.notify.service.runtime.NotificationMonitorServiceTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "ff568c582d6538917b7a57a041d84a84bcb0693fa0fc57f409f2cd01a5b35143"
+    },
+    {
+      "class": "org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "e57ad653f2b2b5cd6c80e6820d5e1ba6afbb855c5e10219755dc44cb9350e973"
+    },
+    {
+      "class": "org.namewta.notify.support.NotifyAuditSupportTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "204ac3bd41bcc6b67613b5115fe493a324fd6eb80c8116c4331f00d7498ee405"
+    },
+    {
+      "class": "org.namewta.notify.support.NotifySendPlannerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "a1eb866dfd670b43399ce8473299c1b73ec79d93dc50725ee91d81cdd6f1c9cf"
+    },
+    {
+      "class": "org.namewta.notify.usecase.NotifyNoticeUseCaseTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "3ac276560ebefc715a16c3193cfafea06c890274a94cf956cfba287c03b7a89c"
+    },
+    {
+      "class": "org.namewta.test.notify.NotifySmsLogEntryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "6daef2b8cbf07889f193069815692287f1092a6fa3610a8ceab14c4728fb1813"
+    },
+    {
+      "class": "org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "3dffcc858ca8756ae5bfe9948c0ac1829530c08cf2763d2c8d65aa20cc534898"
+    },
+    {
+      "class": "org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "e3a8cb73954e4c75fe8e54d2789e7570e11307364cb9b7b10a32052b80e51296"
+    },
+    {
+      "class": "org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "a3315028a9e6f5e99c8bd01a4744550e59d2f655ee315a44d7266df9107d0b33"
+    },
+    {
+      "class": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "b92c700a9fc2f1843c2fec36c012d5d75f8fbfd9770ed12279d2ba96337f36e3"
+    },
+    {
+      "class": "org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "fe2eaa497e75a04d9d318c4c83360a4e03e40cea513425b93da61020bea0daf3"
+    },
+    {
+      "class": "org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "478875438092d04b8731b9f9478374b14bf304c40a7b56753f1ab2382e00b6e1"
+    },
+    {
+      "class": "org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "cabf5cbb42fa78f224edfdbe2ac477a56b67dc9ac201f4557061aa54df222397"
+    },
+    {
+      "class": "org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "57f92a71f0c48603682915bca13a6bafd390e8f9d39cc76f67643fcf926c39b0"
+    },
+    {
+      "class": "org.namewta.test.notify.core.NotifyAutoConfigurationUnitTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "bc28a9b1f86688da36174de190e1bc0886a20d9abe6b9d2fa8164084175900a4"
+    },
+    {
+      "class": "org.namewta.test.notify.core.NotifyChannelUnitTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "3bf875b9bcba67fab15cc4fdb9e590dc2a87805a8e78649f7bc8f1e9b9f7b2cd"
+    },
+    {
+      "class": "org.namewta.test.notify.core.NotifyDispatcherUnitTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "291f08935e91a8b65dea4cafac1e7bf445822ebf6344a11f5fa110f3feef7fee"
+    },
+    {
+      "class": "org.namewta.test.notify.core.SmsNotifyChannelAdapterUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "3a5cb7222094ddf17f37ff805c1d1ef2d56c9ac887dd114a7a1bb3fc2f3c786e"
+    },
+    {
+      "class": "org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "fa4ad2775410e755d6deea33444e3e8c12bd253cb4650cee8ebd93f210802263"
+    },
+    {
+      "class": "org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "15f9bfe20048ed0f230e86c28d4af84380043f98ae6e6f2655417260e4a9636e"
+    }
+  ],
+  "totals": {
+    "tests": 163,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

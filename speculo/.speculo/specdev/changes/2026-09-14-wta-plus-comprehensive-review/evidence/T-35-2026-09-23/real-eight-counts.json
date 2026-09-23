@@ -1,0 +1,20 @@
+{
+  "source": "fd8c34644d2cb36f96deccce81fe35f586701f94",
+  "counts": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml_sha256": "96080d6e4675ca4771fa64802f7ec980edb3e1a6deaf39fb11e3927cb8026b79",
+  "methods": [
+    "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery",
+    "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend",
+    "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall",
+    "supplierIoAmbiguityStaysUnknownAndNeverRequeues",
+    "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers",
+    "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues",
+    "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall",
+    "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction"
+  ]
+}

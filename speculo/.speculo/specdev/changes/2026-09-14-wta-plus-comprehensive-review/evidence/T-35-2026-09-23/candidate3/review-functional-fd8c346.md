@@ -1,0 +1,17 @@
+# T-35 candidate 3 功能/工程增量审查
+
+**Static result: pass; required real acceptance pending.** 固定 base `8b758ea8074a63835659b9731e3a4c74c5c029c5`；candidate 1 `41882b54a2b644f7ae661b84205cfcc9d1b72886`；candidate 2 `0b14311c9652b4d765c4db8c8898d28662eb5adb`；本次 candidate 3 `fd8c34644d2cb36f96deccce81fe35f586701f94`，tree `ae8068dde29ef30364f540006aac73edb44836af`，direct parent 为 candidate 2。当前只审 `git diff 0b14311..fd8c346 -- backend` 的三路径和固定 `git show fd8c346:<path>`；候选 1/2 未变范围沿用 `/tmp/wta-t35/review-functional-41882b5.md`、`/tmp/wta-t35/review-functional-0b14311.md` 中已核对的满足项。规范为本 change AC-035、T-35 票第 4–10 节及原报告 N-02；依 SpecDev code-review Skill 的固定点、风险和轴隔离约束。未运行构建、Maven、Docker、服务或改仓库。此处的 pass 仅指静态审查三路径未发现未闭合缺口，不代表整票/E2E 已通过。
+
+## 上轮唯一 finding：代码及测试设计已关闭
+
+- `backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java:171-183` 现在专门捕获 `NotifyIdempotencyUnavailableException`：仅 SMS 且 `phase="ACQUIRE"` 转 `FAILED/PREPARATION_RETRYABLE`；该错误码不在 `NotifyDispatchResultService.configFailure`，因此结果事务将 Outbox 置 `READY`、有指数退避和最大尝试次数，到上限 `DEAD_LETTER/FAILED`，不会落入虚假的 `WAITING_RECEIPT`。生产 `NotifyDispatcher.send:73-78` 的 acquire 在 Adapter 的实际供应商调用 `:98-100` 之前，`NotifyIdempotencyCoordinator.begin:30-41` 只在该阶段产生 `ACQUIRE`，所以此分支有确定未发出的依据。
+- `phase="COMPLETE"` 由 `NotifyIdempotencyCoordinator.complete:44-49` 在 Adapter 结果之后产生。新 catch 的 else 保留 `UNKNOWN/DISPATCH_ERROR`，随后 `WAITING_RECEIPT` 而不重发；未知阶段和其他渠道仍保守。原 `NotifyValidationException` 的 SMS 终态 `FAILED/SMS_LOCAL_VALIDATION_*` 分支未改；供应商 `PROVIDER_ERROR` 的未知状态及普通 Runtime 的保守路径未改。`NotifyInProgressException`/`NotifyIdempotencyConflictException` 来自 `NotifyDispatcher.send:79-84`，不匹配新 typed catch，仍走原 `RuntimeException` 的保守 `UNKNOWN` 路径，避免根据本次请求“未发送”就无视别的在途/先前尝试；common 的现有 `NotifyIdempotencyDispatcherUnitTest` 覆盖这两种 claim 的拒绝合同。T-37 继续负责更广的失败缓存/幂等重试模型，本审查没有把它的事项伪称已完成。
+- 新 `DispatchNotificationServiceTest` 两例通过真实 `NotifyDispatcher` + `SmsNotifyChannelAdapter`、仅 mock `NotifyIdempotencyStore`/假 supplier：ACQUIRE 故障断言 supplier 0、Delivery `PENDING`、Outbox `READY`、代码 `PREPARATION_RETRYABLE`；COMPLETE 故障断言 supplier 1、Delivery `UNKNOWN`、Outbox `WAITING_RECEIPT`。它们会真实经过生产异常包装与外层分类，不是只手工抛 typed 异常给被测 Service。
+
+## 八例真实集成增量及局限
+
+`backend/wta-admin/src/test/java/org/namewta/test/notify/NotifySmsDispatchIntegrationTest.java` 在固定 candidate 3 有 **8 个 `@Test`**。新增第七例 `:369-389` 在隔离 Redis 的本例幂等 bucket 写入非法状态，生产 `RedisNotifyIdempotencyStore.acquire` 读取/反序列化异常经 coordinator 变成 `ACQUIRE`；它断言 sender 0、第一次 `PENDING/READY` 与 Attempt 1，清除仅本例 key 后再 dispatch，断言 sender 1、`ACCEPTED/DONE` 与 Attempt 2。新增第八例 `:391-406` 在 fake supplier 收到请求时改写本例 bucket，使真实 Redis `complete` CAS 失败；它断言 supplier 已调用一次、`UNKNOWN/WAITING_RECEIPT`、Attempt 1，随后直接重入 Dispatch 仍无第二次 sender 调用。两例使用生产 DAO/结果事务、MySQL、生产 Redis 幂等与 quota、真实 Dispatcher/SMS Adapter，供应商 sender 是唯一替身。测试属性、类 selector、`T35_MYSQL_PASSWORD` 子进程环境及隔离库 guard 未改；类级 Redis/context 和固定 seed 绑定的受控恢复逻辑未改。
+
+这些测试在本审查时**尚未实际运行**，因此不能预填 8/8 或零 skip。Lead 的精确目标是新候选 clean SHA/tree 前后相同、目标 Surefire XML `org.namewta.test.notify.NotifySmsDispatchIntegrationTest` 的 `tests=8, failures=errors=skipped=0`、独占 MySQL/Redis 与资源清理通过。现有 `/tmp/wta-t35/run-notify-sms-integration.py` 只要求该精确类 XML `tests>0` 且零失败/错误/跳过，未把数量写死为 6；Lead 应在最终验收记录里显式核对 `tests=8`。新增用例直接把 READY 任务标为 PROCESSING 以触发二次 dispatch，仍不独立证明正常 scheduler 的时间门禁；退避/上限由结果事务已有合同和单元测试核对。
+
+**Findings: none in this fixed three-path delta.** 若八例或完整 38 类当前门禁失败，应保留实际错误与定位后再修候选；本静态结论不抵消真实验收失败。

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t35/test_driver_safety.py"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T08:58:15.613579+00:00",
+  "finished_at": "2026-09-23T08:58:15.724455+00:00",
+  "exit_code": 0,
+  "tests": 6,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "driver_sha256": "4911cec06497a4730174e83b4381cb7920457d52f0f0ef4d1ebb52fda462ec1f",
+  "log": "driver-synthetic-final-20260923.log",
+  "scope": "synthetic safety only; no Docker/Maven"
+}

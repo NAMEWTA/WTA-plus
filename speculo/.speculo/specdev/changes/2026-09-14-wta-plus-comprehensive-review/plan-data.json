@@ -2931,15 +2931,15 @@
       "notify:dispatch",
       "notify:content-snapshot"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 152,
+    "plan_revision": 153,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: DispatchNotificationServiceTest、NotifyDispatcherUnitTest、CaptchaNotifyCallerUnitTest 的真实跨层组合",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "DispatchNotificationService.toContent 传空快照，真实 NotifyDispatcher.validateRequest 抛 CONTENT_SNAPSHOT_REQUIRED；外层 RuntimeException 被归 UNKNOWN。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "41882b54a2b644f7ae661b84205cfcc9d1b72886",
+    "result_sha": "fd8c34644d2cb36f96deccce81fe35f586701f94",
     "contract_ids": [
       "AC-035"
     ],

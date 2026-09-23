@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify,wta-admin",
+    "-am",
+    "-Dtest=DispatchNotificationServiceTest,NotifyAuditSupportTest,NotificationMonitorServiceTest,NotifyDispatcherUnitTest,NotifySmsLogEntryTest,NotifySmsDispatchIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T09:12:29.044677+00:00",
+  "finished_at": "2026-09-23T09:13:09.846212+00:00",
+  "exit_code": 0,
+  "log": "final-smoke-no-e2e.log"
+}

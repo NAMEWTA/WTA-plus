@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-35"
 title: "打通短信内容快照与真实分发器合同"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -98,9 +98,10 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 空快照仍被拒绝；本地错误无 WAITING_RECEIPT | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 敏感值不进入普通日志、管理快照或 Evidence | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。当前验收采用下列精确选集与真实环境命令，完整argv及计数见Evidence：
 
-- `cd backend && ./mvnw -pl wta-modules/wta-notify,wta-admin -am test`
+- backend下Maven `-Pdev -pl wta-modules/wta-notify,wta-admin -am -Dtest=<38类精确选择器> -Dsurefire.failIfNoSpecifiedTests=false test`；38类170项零skip。
+- Lead隔离驱动 `run-notify-sms-integration.py --execute --expected-head fd8c34644d2cb36f96deccce81fe35f586701f94`；8真实MySQL/Redis用例零skip。
 
 - Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
 - E2E disposition：required: DispatchNotificationServiceTest、NotifyDispatcherUnitTest、CaptchaNotifyCallerUnitTest 的真实跨层组合。
@@ -119,13 +120,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-035`：有效 SMS 实际适配器调用一次，模板参数正确且快照非空。
-- [ ] `AC-035`：空快照仍被拒绝；本地错误无 WAITING_RECEIPT。
-- [ ] `AC-035`：敏感值不进入普通日志、管理快照或 Evidence。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-035`：有效 SMS 实际适配器调用一次，模板参数正确且快照非空。
+- [x] `AC-035`：空快照仍被拒绝；本地错误无 WAITING_RECEIPT。
+- [x] `AC-035`：敏感值不进入普通日志、管理快照或 Evidence。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -152,3 +153,7 @@ java-api-compatibility已绑定：源码/二进制签名不变，REDACT事件安
 ## revision152 敏感管理投影边界
 
 REDACT_SENSITIVE 通知的供应商消息标识仅保留内部持久化用于回执关联；query、重复提交 receipt 和 monitor 公开投影隐藏该值，FULL 原行为保持。监控查询按本次有界结果批量读取 Intent 审计策略，不引入逐行查询；空ID集合不扫描全表。新增 NotifyAuditSupport 可统一策略与公开投影判断，NotificationReceipt 仅补公开字段的安全语义说明，不改签名。测试覆盖真实供应商返回手机号/验证码作为ID、内部值保留与公开值隐藏、FULL、重复提交及回执关联。
+
+## revision153 已验收
+
+最终 source/result `fd8c34644d2cb36f96deccce81fe35f586701f94`；详见evidence/T-35.md与原始170+8验收。供应商前明确ACQUIRE/准备暂态有限重试；调用后COMPLETE未知保留WAITING。内部Plan/monitor签名已同步调用者，wta-api/common签名不变。

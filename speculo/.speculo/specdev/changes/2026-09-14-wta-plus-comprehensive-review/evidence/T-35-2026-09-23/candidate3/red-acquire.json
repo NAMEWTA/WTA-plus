@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify",
+    "-am",
+    "-Dtest=DispatchNotificationServiceTest#realDispatcherIdempotencyAcquireFailureRetriesBeforeSupplier",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T09:31:24.257344+00:00",
+  "finished_at": "2026-09-23T09:31:34.726346+00:00",
+  "exit_code": 1,
+  "log": "red-acquire.log"
+}

@@ -1,0 +1,73 @@
+{
+  "base": "0b14311c9652b4d765c4db8c8898d28662eb5adb",
+  "head": "fd8c34644d2cb36f96deccce81fe35f586701f94",
+  "exact_unchanged_roots": [
+    ".agents/skills",
+    "frontend",
+    "scripts/ci",
+    "backend/pom.xml"
+  ],
+  "changes": [
+    "M\tbackend/wta-admin/src/test/java/org/namewta/test/notify/NotifySmsDispatchIntegrationTest.java",
+    "M\tbackend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+    "M\tbackend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java",
+    "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/.status.json",
+    "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/dispatch-T-35.md",
+    "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/handoff.md",
+    "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/worklog.md"
+  ],
+  "reused": {
+    "facts": {
+      "command": [
+        "node",
+        ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "started_at": "2026-09-23T09:25:31.675260+00:00",
+      "finished_at": "2026-09-23T09:25:31.863891+00:00",
+      "exit_code": 0,
+      "log": "acceptance-facts.log"
+    },
+    "openapi": {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@namewta/tooling-openapi",
+        "openapi:check"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "started_at": "2026-09-23T09:25:31.780699+00:00",
+      "finished_at": "2026-09-23T09:25:35.565079+00:00",
+      "exit_code": 0,
+      "log": "acceptance-openapi.log"
+    },
+    "handbooks": {
+      "previous_source": "41882b54a2b644f7ae661b84205cfcc9d1b72886",
+      "current_source": "0b14311c9652b4d765c4db8c8898d28662eb5adb",
+      "previous_run": {
+        "command": [
+          "node",
+          "scripts/ci/verify-agent-handbooks.mjs"
+        ],
+        "cwd": "/srv/WTA-plus",
+        "started_at": "2026-09-23T09:14:43.890346+00:00",
+        "finished_at": "2026-09-23T09:14:44.066857+00:00",
+        "exit_code": 0,
+        "log": "acceptance-handbooks.log"
+      },
+      "changes": [
+        "M\tbackend/wta-admin/src/test/java/org/namewta/test/notify/NotifySmsDispatchIntegrationTest.java",
+        "M\tbackend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+        "M\tbackend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySendPlanner.java",
+        "M\tbackend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java",
+        "M\tbackend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/NotifySendPlannerTest.java",
+        "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/.status.json",
+        "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/dispatch-T-35.md",
+        "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/handoff.md",
+        "M\tspeculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/worklog.md"
+      ],
+      "reason": "Only existing Java contents and change-local governance changed; no manifests, AGENTS, navigation files, checker inputs or file names changed; reuse existing handbooks/owner gate."
+    }
+  },
+  "reason": "Only three existing Java files and four change governance files changed; no files added/removed or gate/frontend/schema/Skill/manifest/handbook inputs changed. Java behavioral tests and layered gate rerun."
+}

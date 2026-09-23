@@ -1,5 +1,7 @@
 # 恢复入口
 
+当前revision153：Goal仍active；6done/1cancelled/43ready，无产品writer，下一T-36。T-35已在fd8c346以170+8项零skip验收。使用gpt-6-sol/xhigh原生子代理、current单writer、Lead治理/E2E；不新建worktree。以下revision138起段落属于历史计划，不能覆盖本段执行状态。
+
 先读<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/README.md</Path>→<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>→<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>→适用Skill→当前票。当前revision138，50票Ready、0done、0在途writer；G共识已确认，S/T/P(plan)顺序完成，current_work=specdev/goal-plan。Goal schema状态draft、ready_for_execution=false仅因为用户保留自行激活与新的执行授权，不能误读成待设计答复。
 
 用户已确认D-002—009及LOG-018整体共识，不重复询问撤回、OSS共同锁、SSO归属、分页、模式收缩、凭据Gate、硬readiness规则替代、附件真实owner。之后由用户自行激活目标；Lead先核对HEAD/归属/实际产品与commit授权，设置run条件后从Map恢复。已有决定不因新会话丢失。
@@ -73,3 +75,7 @@ T35第1候选41882b54a2b644f7ae661b84205cfcc9d1b72886未通过：真实隔离5�
 ## T35候选2验证与类型化幂等返工
 
 候选2 0b14311c9652b4d765c4db8c8898d28662eb5adb的38类168项单测与6项真实MySQL/Redis用例全部0失败/0skip；run b7ae5911512726de两个容器/进程组已清理、32790/32791关闭、clean前后HEAD/tree不变。安全增量审查通过已审范围，但功能轴指出Typed NotifyIdempotencyUnavailableException.phase=ACQUIRE仍在供应商调用前错误进入UNKNOWN/WAITING，整体验收不通过，attempts=2。返工只区分SMS明确ACQUIRE准备错误的有界重试和COMPLETE/未知phase的不确定结果；已有原请求的InProgress/Conflict不推断未发送，仍保守处理并保留T37/T38责任。不自动删除生产幂等key，故障恢复用例只清本轮受控注入的隔离key。第三候选由原writer在原20条写集内修复。
+
+## revision153 — T35完成
+
+Revision153: T35 accepted at fd8c346;38classes170unit+8real MySQL/Redis zero skips, both reviews pass, clean exact HEAD/tree before/after and owned cleanup verified. All three candidates and failed governance missing-link evidence retained; concrete evidence link repaired after source verification, no product change or attempt reset. 6done/1cancelled/43ready; next T36.

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify",
+    "-am",
+    "-Dtest=DispatchNotificationServiceTest#captchaSmsTraversesRealDispatcherAndAdapterWithSafeSnapshot",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T08:51:49.824078+00:00",
+  "finished_at": "2026-09-23T08:51:58.961046+00:00",
+  "exit_code": 1,
+  "log": "diagnose-real-dispatch.log"
+}

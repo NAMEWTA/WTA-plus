@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify,wta-admin",
+    "-am",
+    "-Dtest=DispatchNotificationServiceTest,NotifyDispatcherUnitTest,LogSanitizerTest,SmsNotifyChannelAdapterUnitTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T08:55:16.505420+00:00",
+  "finished_at": "2026-09-23T08:56:08.088982+00:00",
+  "exit_code": 0,
+  "log": "green-core-selected.log"
+}

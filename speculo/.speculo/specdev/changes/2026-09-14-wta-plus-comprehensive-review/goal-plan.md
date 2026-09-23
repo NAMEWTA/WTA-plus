@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision152，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision153，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision152；T-29/T-32/T-33/T-34/T-47 done，T-01 因当前合同已满足而取消本轮重复施工，T-35 in_progress，其余43票 ready。T-01 的 AC-001 仍由 T-30 在最终候选复验。当前产品写者为 cors_audit，Lead 负责治理、隔离环境与固定提交验收；历史阶段记录见下文，各票旧证据仅证明原执行输入。G-security-external 已根据实际轮换验证和用户的追加撤销确认关闭。整个 change 尚未完成，归档尚未获授权。
+revision153；T-29/T-32/T-33/T-34/T-35/T-47 done，T-01取消重复施工，其余43票ready。T-35固定result fd8c346，170单元+8真实服务用例零skip，下一T-36；目前无产品writer。T-01的AC-001仍由T-30最终复验；G-security-external已关闭。整个change尚未完成，归档未获授权。
 
 ### Pending Decisions and Blockers
 
@@ -287,3 +287,7 @@ T35新增5个安全实现/测试/语义文档路径及java-api-compatibility绑�
 ## revision152当前
 
 T35新增6个精确写集先于实施登记；REDACT_SENSITIVE 通知的供应商消息标识仅保留内部持久化用于回执关联；query、重复提交 receipt 和 monitor 公开投影隐藏该值，FULL 原行为保持。监控查询按本次有界结果批量读取 Intent 审计策略，不引入逐行查询；空ID集合不扫描全表。新增 NotifyAuditSupport 可统一策略与公开投影判断，NotificationReceipt 仅补公开字段的安全语义说明，不改签名。测试覆盖真实供应商返回手机号/验证码作为ID、内部值保留与公开值隐藏、FULL、重复提交及回执关联。
+
+## revision153 — T35完成
+
+Revision153: T35 accepted at fd8c346;38classes170unit+8real MySQL/Redis zero skips, both reviews pass, clean exact HEAD/tree before/after and owned cleanup verified. All three candidates and failed governance missing-link evidence retained; concrete evidence link repaired after source verification, no product change or attempt reset. 6done/1cancelled/43ready; next T36.

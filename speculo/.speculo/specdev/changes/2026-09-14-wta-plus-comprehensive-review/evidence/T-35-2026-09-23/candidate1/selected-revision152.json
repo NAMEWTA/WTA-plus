@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify,wta-admin",
+    "-am",
+    "-Dtest=DispatchNotificationServiceTest,NotifySendPlannerTest,NotifyAuditSupportTest,NotificationMonitorServiceTest,NotifyDispatcherUnitTest,SmsNotifyChannelAdapterUnitTest,NotifySmsLogEntryTest,NotifySmsDispatchIntegrationTest,LogSanitizerTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T09:07:17.390888+00:00",
+  "finished_at": "2026-09-23T09:08:14.485909+00:00",
+  "exit_code": 1,
+  "log": "selected-revision152.log"
+}

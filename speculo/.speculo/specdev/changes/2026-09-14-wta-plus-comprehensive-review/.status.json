@@ -45,13 +45,13 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T09:31:01.419132+00:00",
+  "updated_at": "2026-09-23T09:45:48.006090+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
     "HISTORY: original31 require factual reconciliation and current acceptance; old shared result is not per-ticket proof.",
-    "INTEGRATION: remaining44 tickets and final combined candidate gates pending."
+    "INTEGRATION: remaining43 tickets and final combined candidate gates pending."
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",
@@ -112,7 +112,8 @@
     "Revision150: T35 active at 8b758ea8074a63835659b9731e3a4c74c5c029c5; sole product writer cors_audit; exact paths expanded before edits for result classification and real SMS adapter; Lead owns isolated services and current acceptance.",
     "Revision152: T35 public sensitive projection six exact paths declared before edits; internal provider IDs retained, REDACT read projections hide values, FULL unchanged; batch intent reads avoid N+1.",
     "T35 candidate1 41882b5 failed: isolated integration5 setup errors due existing seeded binding; security review pre-send Redis error wrongly waits for receipt. Unit37classes163passed but one declared class selector missing. Owned cleanup and clean after verified; writer rework within revision152, attempt1 retained.",
-    "T35 candidate2 0b14311:38classes168tests and6real MySQL/Redis cases zero skips passed, source clean unchanged and owned cleanup verified. Functional review blocks typed idempotency ACQUIRE->UNKNOWN. Third candidate rework within same scope separates ACQUIRE retry from COMPLETE/unknown-phase ambiguity; no auto cache deletion or blind repeat."
+    "T35 candidate2 0b14311:38classes168tests and6real MySQL/Redis cases zero skips passed, source clean unchanged and owned cleanup verified. Functional review blocks typed idempotency ACQUIRE->UNKNOWN. Third candidate rework within same scope separates ACQUIRE retry from COMPLETE/unknown-phase ambiguity; no auto cache deletion or blind repeat.",
+    "Revision153: T35 accepted at fd8c346;38classes170unit+8real MySQL/Redis zero skips, both reviews pass, clean exact HEAD/tree before/after and owned cleanup verified. All three candidates and failed governance missing-link evidence retained; concrete evidence link repaired after source verification, no product change or attempt reset. 6done/1cancelled/43ready; next T36."
   ],
   "worktrees": [
     {
@@ -340,37 +341,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "0b14311c9652b4d765c4db8c8898d28662eb5adb",
-      "status": "active",
-      "updated_at": "2026-09-23T09:31:01.419132+00:00",
+      "source_checkpoint": "fd8c34644d2cb36f96deccce81fe35f586701f94",
+      "status": "integrated",
+      "updated_at": "2026-09-23T09:45:48.006090+00:00",
       "integration": {
-        "status": "failed",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "8b758ea8074a63835659b9731e3a4c74c5c029c5",
-        "source_sha": "0b14311c9652b4d765c4db8c8898d28662eb5adb",
+        "source_sha": "fd8c34644d2cb36f96deccce81fe35f586701f94",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "fd8c34644d2cb36f96deccce81fe35f586701f94",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "failed",
+        "verification": "passed",
         "full_suite": {
           "required": true,
           "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-35.md</Path>"
         },
         "e2e": {
           "required": true,
           "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-35.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-35.md</Path>",
-        "attempts": 2,
-        "promotion_status": "pending"
+        "attempts": 3,
+        "promotion_status": "applied"
       }
     }
   ]
