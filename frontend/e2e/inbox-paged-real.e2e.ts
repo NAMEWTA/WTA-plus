@@ -109,8 +109,11 @@ test('T-41 real Admin inbox page 26 and global read-all', async ({ browser }) =>
     await inbox(b, origin);
     await expect(b.getByText('通知收件箱 · 未读 2')).toBeVisible();
     await expect(b.locator('.el-table__body-wrapper tbody tr')).toHaveCount(2);
-    await expect(b.getByText(manifest.shared.title)).toBeVisible();
-    await expect(b.getByText(manifest.bOnly.title)).toBeVisible();
+    for (const title of [manifest.shared.title, manifest.bOnly.title]) {
+      const row = b.locator('.el-table__body-wrapper tbody tr').filter({ hasText: title });
+      await expect(row).toHaveCount(1);
+      await expect(row.locator('td').first()).toHaveText(title);
+    }
     await expect(b.getByText(manifest.aOldest.title)).toHaveCount(0);
 
     const oldestDetailResponse = a.waitForResponse(response =>
