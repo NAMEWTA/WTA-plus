@@ -110,7 +110,7 @@ integration_tests=(
   AiRetirementMySqlIntegrationTest
 )
 test_selector=$(IFS=,; echo "${integration_tests[*]}")
-test_started_ns=$(python3 -c 'import time; print(time.time_ns())')
+test_started_ns=$(node -e 'process.stdout.write(String(BigInt(Date.now()) * 1000000n))')
 ./mvnw -Pdev -pl wta-admin -am test \
   -Dtest="$test_selector" \
   -Dsurefire.failIfNoSpecifiedTests=false \
@@ -131,5 +131,5 @@ test_started_ns=$(python3 -c 'import time; print(time.time_ns())')
   -Doss.minio.integration.access-key=namewta \
   -Doss.minio.integration.secret-key=namewta123 \
   -Dnamewta.sql.root="$workspace_root/release-artifacts/docker/infrastructure/mysql/init"
-python3 "$workspace_root/scripts/ci/verify-external-tests.py" \
+node "$workspace_root/scripts/ci/verify-external-tests.mjs" \
   "$workspace_root/backend" "$test_started_ns" "${integration_tests[@]}"

@@ -26,7 +26,7 @@
 实时台账：
 
 ```bash
-python release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py --list
+node release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.mjs --list
 ```
 
 端口/服务/模板以 apps.json 与 Compose 双向校验为准；真实运行端口可由 env 指定，Origin 必须与浏览器实际入口匹配。SSO hostname 必须与业务 App 分离，不能仅换端口。

@@ -70,16 +70,20 @@ env_value() {
   local key="$1"
   local fallback="$2"
   local value
-  value="$(python3 - "${ENV_FILE}" "${key}" <<'PYTHON'
-import re
-import sys
-from pathlib import Path
-for line in Path(sys.argv[1]).read_text().splitlines():
-    match = re.fullmatch(r'\s*(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=\s*(.*?)\s*', line)
-    if match and match[1] == sys.argv[2]:
-        print(match[2].strip("'\""))
-        break
-PYTHON
+  value="$(node --input-type=module - "${ENV_FILE}" "${key}" <<'JS'
+import fs from 'node:fs';
+const file = process.argv[2];
+const key = process.argv[3];
+if (fs.existsSync(file)) {
+  for (const line of fs.readFileSync(file, 'utf8').split(/\r\n|\n|\r/)) {
+    const match = line.match(/^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=\s*(.*?)\s*$/);
+    if (match && match[1] === key) {
+      process.stdout.write(match[2].replace(/^['"]+|['"]+$/g, ''));
+      break;
+    }
+  }
+}
+JS
 )"
   printf '%s' "${value:-${fallback}}"
 }
@@ -87,7 +91,7 @@ PYTHON
 
 select_release() {
   # Resolve once per operation, including all categories: later pointer switches cannot mix paths.
-  RELEASE_VERSION="$(python3 "${SCRIPT_DIR}/release-state.py" resolve \
+  RELEASE_VERSION="$(node "${SCRIPT_DIR}/release-state.mjs" resolve \
     --env "${RELEASE_ENV:-prod}" --env-file "${ENV_FILE}")"
   local data_root cert_root
   data_root="${NAMEWTA_DATA_ROOT:-$(env_value NAMEWTA_DATA_ROOT "${RELEASE_ROOT}/docker/runtime")}"
@@ -100,20 +104,21 @@ select_release() {
   # Read the already resolved version, never resolve current again during this operation.
   local value origin_values=()
   while IFS= read -r value; do origin_values+=("${value}"); done < <(
-    python3 - "${RELEASE_VERSION}" <<'PYTHON'
-import json
-import sys
-from pathlib import Path
-version = Path(sys.argv[1])
-manifest = json.loads((version / 'release-manifest.json').read_text())
-registry = json.loads((version / 'apps.json').read_text())
-print(','.join(sorted(set(manifest['appOrigins'].values()))))
-sso = [app for app in registry['apps'] if app['shipped'] and app['apiKind'] == 'sso']
-if len(sso) != 1:
-    raise SystemExit('exactly one shipped SSO App is required')
-print(manifest['appOrigins'][sso[0]['id']])
-print('/' + manifest['apps'][sso[0]['id']] + '/')
-PYTHON
+    node --input-type=module - "${RELEASE_VERSION}" <<'JS'
+import fs from 'node:fs';
+import path from 'node:path';
+const version = process.argv[2];
+const manifest = JSON.parse(fs.readFileSync(path.join(version, 'release-manifest.json'), 'utf8'));
+const registry = JSON.parse(fs.readFileSync(path.join(version, 'apps.json'), 'utf8'));
+const sso = registry.apps.filter((app) => app.shipped && app.apiKind === 'sso');
+if (sso.length !== 1) {
+  console.error('exactly one shipped SSO App is required');
+  process.exit(1);
+}
+console.log([...new Set(Object.values(manifest.appOrigins))].sort().join(','));
+console.log(manifest.appOrigins[sso[0].id]);
+console.log('/' + manifest.apps[sso[0].id] + '/');
+JS
   )
   [[ ${#origin_values[@]} -eq 3 ]] || { error "无法读取固定版本的Origin矩阵"; return 1; }
   export WEB_CORS_ALLOWED_ORIGINS="${origin_values[0]}" SSO_WEB_ORIGIN="${origin_values[1]}"

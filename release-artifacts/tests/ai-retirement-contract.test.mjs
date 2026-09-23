@@ -9,11 +9,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 
 test('release inventory contains the three retained Java applications', () => {
-  const inventory = execFileSync('python3', ['-c', `
-import importlib.util,json
-s=importlib.util.spec_from_file_location('release_state','release-artifacts/scripts/release-state.py')
-m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
-print(json.dumps(list(m.BACKENDS)))
+  const inventory = execFileSync(process.execPath, ['--input-type=module', '-e', `
+import { BACKENDS } from './release-artifacts/scripts/release-state.mjs';
+console.log(JSON.stringify(Object.keys(BACKENDS)));
 `], { cwd: root, encoding: 'utf8' });
   assert.deepEqual(JSON.parse(inventory), ['wta-admin', 'wta-monitor-admin', 'wta-snailjob-server']);
   assert.equal(fs.existsSync(path.join(root, 'backend/wta-extend/wta-snailai-server/pom.xml')), false);

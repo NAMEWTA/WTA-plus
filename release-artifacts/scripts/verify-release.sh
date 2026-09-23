@@ -13,13 +13,9 @@ for script in "${RELEASE_ROOT}"/scripts/*.sh; do
   bash -n "${script}"
 done
 
-info "校验 Python 发布入口语法"
-python3 - "${RELEASE_ROOT}/scripts/release-state.py" <<'PYTHON'
-import ast
-import pathlib
-import sys
-ast.parse(pathlib.Path(sys.argv[1]).read_text())
-PYTHON
+info "校验发布入口语法"
+node --check "${RELEASE_ROOT}/scripts/release-state.mjs"
+node --check "${RELEASE_ROOT}/skills/wta-namewta-nginx-config/scripts/add_app.mjs"
 
 info "校验显式 App 清单与发布配套"
 bash "${SCRIPT_DIR}/release-manage.sh" check-apps
@@ -28,7 +24,7 @@ info "执行全部发布合同测试"
 node --test --test-concurrency=1 "${RELEASE_ROOT}"/tests/*.test.mjs
 
 info "执行 Nginx Skill 台账检查"
-python3 "${RELEASE_ROOT}/skills/wta-namewta-nginx-config/scripts/add_app.py" \
+node "${RELEASE_ROOT}/skills/wta-namewta-nginx-config/scripts/add_app.mjs" \
   --repo-root "${RELEASE_ROOT}" --list >/dev/null
 
 if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then

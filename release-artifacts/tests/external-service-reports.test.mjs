@@ -21,7 +21,7 @@ for (const scenario of ['success', 'missing', 'stale', 'zero', 'skipped', 'failu
           if (scenario === 'stale') utimesSync(report, new Date(0), new Date(0));
         }
       }
-      const result = spawnSync('python3', ['scripts/ci/verify-external-tests.py', directory, String(since), 'RequiredTest'],
+      const result = spawnSync(process.execPath, [path.join(root, 'scripts/ci/verify-external-tests.mjs'), directory, String(since), 'RequiredTest'],
         { cwd: root, encoding: 'utf8' });
       assert.equal(result.status === 0, scenario === 'success', result.stdout + result.stderr);
     } finally { rmSync(directory, { recursive: true, force: true }); }

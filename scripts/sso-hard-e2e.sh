@@ -3,26 +3,32 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 if [[ "${1:-}" == --release-origin ]]; then
   shift
-  exec python3 "${ROOT}/release-artifacts/tests/fixtures/sso-release-origin.py" "$@"
+  exec node "${ROOT}/release-artifacts/tests/fixtures/sso-release-origin.mjs" "$@"
 fi
 # Same-session three-gate launcher for AC-001/002/003.
 # Requires live MySQL, Redis, backend 38888, admin 4174, home 4175, sso-web 4176.
 
 need_port() {
-  python3 - "$1" <<'PY'
-import socket, sys
-port = int(sys.argv[1])
-s = socket.socket()
-s.settimeout(1)
-try:
-    s.connect(("127.0.0.1", port))
-except OSError as exc:
-    print(f"CLOSED 127.0.0.1:{port} ({exc})", file=sys.stderr)
-    sys.exit(1)
-finally:
-    s.close()
-print(f"OPEN 127.0.0.1:{port}")
-PY
+  node --input-type=module - "$1" <<'JS'
+import net from 'node:net';
+const port = Number(process.argv[2]);
+const socket = net.connect({ host: '127.0.0.1', port });
+const timer = setTimeout(() => {
+  console.error(`CLOSED 127.0.0.1:${port} (timeout)`);
+  socket.destroy();
+  process.exit(1);
+}, 1000);
+socket.on('connect', () => {
+  clearTimeout(timer);
+  console.log(`OPEN 127.0.0.1:${port}`);
+  socket.end();
+});
+socket.on('error', (error) => {
+  clearTimeout(timer);
+  console.error(`CLOSED 127.0.0.1:${port} (${error.message})`);
+  process.exit(1);
+});
+JS
 }
 
 need_port 3306

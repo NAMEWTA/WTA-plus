@@ -227,7 +227,7 @@ test('Nacos MySQL schema is pinned and both initialization paths are idempotent'
   assert.match(script, /schema table-name verification failed/);
   assert.doesNotMatch(script, /DROP DATABASE|DROP USER|GRANT ALL PRIVILEGES/);
 
-  const releaseScript = read('scripts/release-state.py');
+  const releaseScript = read('scripts/release-state.mjs');
   assert.match(releaseScript, /60-cde-nacos\.sql/);
   assert.doesNotMatch(releaseScript, /15-nacos-init\.sh/);
   assert.doesNotMatch(releaseScript, /nacos\/mysql-schema\.sql/);
@@ -313,7 +313,7 @@ test('stage-mysql validates the canonical SQL baseline without writing it', () =
 
 test('MySQL initialization targets one protected wta-plus database', () => {
   const script = read('scripts/init-mysql-container.sh');
-  const releaseScript = read('scripts/release-state.py');
+  const releaseScript = read('scripts/release-state.mjs');
   const expectedSql = [
     '10-cde-base-ddl.sql',
     '20-cde-job.sql',
@@ -352,21 +352,13 @@ test('admin instances receive the private MinIO readiness canary contract', () =
 });
 
 test('reserved ingress routes cannot be used as an app prefix', () => {
-  const script = read('scripts/release-state.py');
+  const script = read('scripts/release-state.mjs');
   for (const route of ['admin', 'monitor', 'snail-job', 'snail-ai', 'dev-api', 'prod-api', 'actuator']) {
     assert.match(script, new RegExp(`\\b${route.replace('-', '\\-')}\\b`));
   }
 });
 
-const pythonExecutable = process.platform === 'win32' ? 'python' : 'python3';
-let pythonAvailable = true;
-try {
-  execFileSync(pythonExecutable, ['--version'], { stdio: 'ignore' });
-} catch {
-  pythonAvailable = false;
-}
-
-(pythonAvailable ? test : test.skip)('add_app.py registers a buildable app across compose and both LBs', () => {
+test('add_app.mjs registers a buildable app across compose and both LBs', () => {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'namewta-release-test-'));
   try {
     fs.cpSync(releaseRoot, path.join(tempRoot, 'release-artifacts'), { recursive: true });
@@ -377,8 +369,8 @@ try {
       '{"name":"@namewta/sample-web","scripts":{"build:dev":"vite","build:prod":"vite"}}\n',
     );
 
-    execFileSync(pythonExecutable, [
-      path.join(tempRoot, 'release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py'),
+    execFileSync(process.execPath, [
+      path.join(tempRoot, 'release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.mjs'),
       '--repo-root', tempRoot,
       '--app', 'sample-web',
       '--prefix', 'sample',

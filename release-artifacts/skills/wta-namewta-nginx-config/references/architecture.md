@@ -59,7 +59,7 @@ Vite 会优先使用进程环境，因此无需修改 App 的 `.env.development`
 
 ## 新 App 修改面
 
-`add_app.py` 维护以下位置：
+`add_app.mjs` 维护以下位置：
 
 1. `docker/frontend/nginx/apps/nginx-<app>.conf.template`
 2. `docker/frontend/nginx/html/<app>` 与 `cert/<app>`

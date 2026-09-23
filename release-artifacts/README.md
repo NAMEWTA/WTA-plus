@@ -55,11 +55,11 @@ bash release-artifacts/scripts/release-manage.sh stage-mysql
 bash release-artifacts/scripts/release-manage.sh bundle --env prod
 ```
 
-需要 Linux、Bash、Python 3.12+、Git、JDK/Maven Wrapper、Node/pnpm 和 Docker Compose。完整构建拒绝 tracked/untracked 脏源码，将同一 Git revision 归档到本次临时目录，从该快照完成后端 clean package、依赖安装和逐 App 构建；不创建 Git worktree，不复用原工作树 target/dist。局部开发构建不产生可晋升的 manifest。
+需要 Linux、Bash、Git、JDK/Maven Wrapper、Node.js >=20.19、pnpm、Docker Compose，以及发布锁使用的 `flock`（util-linux）。完整构建拒绝 tracked/untracked 脏源码，将同一 Git revision 归档到本次临时目录，从该快照完成后端 clean package、依赖安装和逐 App 构建；不创建 Git worktree，不复用原工作树 target/dist。局部开发构建不产生可晋升的 manifest。
 
 `release-manifest.json` schema 2 记录唯一 source revision、tree、源码归档摘要、构建模式、三端 Origin/入口矩阵和每文件的来源、SHA-256、大小、可执行位。版本内同时包含四个 JAR、各 App、六份 SQL 快照、Nginx/Compose 配置与运行脚本。SQL 快照是构建输出，唯一编辑源仍是本仓六份基座。manifest 校验用于检测错件、损坏和混源，不替代可信发布者签名或真实 MySQL schema 门禁。
 
-build 完成后仍不改变 current。stage 重新校验完整版本，再在同一目录内用一次 rename 替换符号链接；此前失败或中断保持旧指针和所有源 Docker 上下文不变。跨过该原子边界后看到完整新版本；不能承诺进程在切换后被强杀仍返回成功。发布操作通过固定 inode 的 flock 串行，失败只清理本次随机临时目录，不扫描删除历史或他人的 stage。SIGKILL 留下的临时目录不自动清理，需核对 owner 后单独处理。旧的实体 current 目录被明确拒绝，不自动迁移或删除。
+build 完成后仍不改变 current。stage 重新校验完整版本，再在同一目录内用一次 rename 替换符号链接；此前失败或中断保持旧指针和所有源 Docker 上下文不变。跨过该原子边界后看到完整新版本；不能承诺进程在切换后被强杀仍返回成功。发布操作通过固定 inode 的 `flock` 串行，失败只清理本次随机临时目录，不扫描删除历史或他人的 stage。SIGKILL 留下的临时目录不自动清理，需核对 owner 后单独处理。旧的实体 current 目录被明确拒绝，不自动迁移或删除。
 
 恢复使用同一 `stage --env prod --release <旧ID>` 选择已校验历史版本，再显式重建对应容器。backup 只增加引用，bundle 只封装已校验的固定版本，不复制运行 env、日志、证书或原 Docker 上下文。解包后创建本地 `.env`；`resolve --env prod` 可重新验证并输出固定版本路径。
 

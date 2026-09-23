@@ -25,7 +25,7 @@ test('public entry replaces forwarding chains while internal app proxies append'
 });
 
 test('generated public app routes also replace client supplied XFF', () => {
-  const generator = fs.readFileSync(path.join(root, 'skills/wta-namewta-nginx-config/scripts/add_app.py'), 'utf8');
+  const generator = fs.readFileSync(path.join(root, 'skills/wta-namewta-nginx-config/scripts/add_app.mjs'), 'utf8');
   assert.match(generator, /proxy_set_header X-Forwarded-For \$remote_addr;/);
   assert.doesNotMatch(generator, /proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;/);
 });

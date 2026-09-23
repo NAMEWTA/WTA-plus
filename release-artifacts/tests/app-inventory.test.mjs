@@ -98,7 +98,7 @@ test('SSO registration preserves runtime configuration and is idempotent, includ
   const f = fixture();
   try {
     const runtime = fs.readFileSync(path.join(f.release, '.env'));
-    const generate = () => spawnSync('python3', [path.join(f.release, 'skills/wta-namewta-nginx-config/scripts/add_app.py'),
+    const generate = () => spawnSync(process.execPath, [path.join(f.release, 'skills/wta-namewta-nginx-config/scripts/add_app.mjs'),
       '--repo-root', f.root, '--app', 'sso-web', '--prefix', 'sso-app', '--port', '41084'], { encoding: 'utf8' });
     let result = generate(); assert.equal(result.status, 0, result.stderr);
     const first = snapshot(f.release);

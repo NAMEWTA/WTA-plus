@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 import { fixture, snapshot } from './fixtures/atomic-release-fixture.mjs';
 const sha = (value) => crypto.createHash('sha256').update(value).digest('hex');
@@ -276,18 +277,11 @@ test('interruption immediately before the one pointer rename preserves current a
     const before = snapshot(f.version(a));
     const contexts = snapshot(path.join(f.release, 'docker'));
     const marker = path.join(f.scratch, 'rename-wait');
-    const wrapper = `import os,runpy,sys,time
-from pathlib import Path
-marker=sys.argv[1]
-def hold(source,target):
- Path(marker).write_text(str(source))
- while True:time.sleep(.02)
-os.replace=hold
-script=sys.argv[2];sys.argv=[script,'stage','--env','prod','--release',sys.argv[3]]
-runpy.run_path(script,run_name='__main__')
-`;
+    const preload = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures/hold-rename.mjs');
     // Fault injection wraps only the OS rename seam; the production CLI parser/lock/verify/cleanup run unchanged.
-    child = spawn('python3', ['-c', wrapper, marker, path.join(f.release, 'scripts/release-state.py'), b], { stdio: 'ignore' });
+    child = spawn(process.execPath, ['--import', preload, path.join(f.release, 'scripts/release-state.mjs'), 'stage', '--env', 'prod', '--release', b], {
+      stdio: 'ignore', env: { ...process.env, RELEASE_RENAME_HOLD: marker },
+    });
     const ended = new Promise((resolve) => child.on('exit', resolve));
     await waitFile(marker, child);
     assert.equal(fs.readlinkSync(f.current), 'versions/' + a);

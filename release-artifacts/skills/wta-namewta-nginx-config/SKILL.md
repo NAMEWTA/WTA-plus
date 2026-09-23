@@ -1,6 +1,6 @@
 ---
 name: wta-namewta-nginx-config
-description: 维护 wta-vue-plus-docs 的 release-artifacts 多 App Nginx 部署体系，包括统一 nginx-lb、每 App 独立 HTTP Nginx、路径前缀、独立端口、可选 TLS、docker-compose-frontend.yml、发布构建前缀与新增 App 自动化。处理新增或删除 frontend/apps 前端 App、Nginx 404/400/502、静态资源或 API 前缀错误、LB 重定向、证书、端口台账、add_app.py 或 release-artifacts 前端容器时使用。
+description: 维护 wta-vue-plus-docs 的 release-artifacts 多 App Nginx 部署体系，包括统一 nginx-lb、每 App 独立 HTTP Nginx、路径前缀、独立端口、可选 TLS、docker-compose-frontend.yml、发布构建前缀与新增 App 自动化。处理新增或删除 frontend/apps 前端 App、Nginx 404/400/502、静态资源或 API 前缀错误、LB 重定向、证书、端口台账、add_app.mjs 或 release-artifacts 前端容器时使用。
 ---
 
 # NAMEWTA 多 App Nginx 配置
@@ -19,16 +19,16 @@ description: 维护 wta-vue-plus-docs 的 release-artifacts 多 App Nginx 部署
 
 ```bash
 # 公开 App
-python release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py \
+node release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.mjs \
   --app home-web --prefix portal
 
 # 敏感 App：生成 10 位私有前缀；提交配置只保存占位值，真实值由操作者写本地 .env
-python release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py \
+node release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.mjs \
   --app secret-web --sensitive
 
 # 预览和台账
-python release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py --list
-python release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.py \
+node release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.mjs --list
+node release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.mjs \
   --app home-web --prefix portal --dry-run
 ```
 

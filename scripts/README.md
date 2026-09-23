@@ -15,7 +15,7 @@ scripts/
 │   ├── run-external-services.sh
 │   ├── verify-admin-bundle.sh
 │   ├── verify-dev-build-guard.sh
-│   └── verify-external-tests.py
+│   └── verify-external-tests.mjs
 └── lib/
     ├── backend-build-guard.sh
     └── dev-runtime.sh
@@ -198,7 +198,7 @@ Redis、MySQL 和兼容 S3 协议的 MinIO 协作，而不只是通过 mock 或�
    - `ThirdRedisIntegrationTest`
 5. 无论测试成功还是中途失败，`EXIT` trap 都按记录的 ID 删除本轮容器、匿名卷和 Docker 网络；名称冲突时不删除既有资源。
 
-Maven 成功后还由 `verify-external-tests.py` 检查本轮七个测试类的 XML 报告；缺失、旧报告、零测试或任何跳过均失败。
+Maven 成功后还由 `verify-external-tests.mjs` 检查本轮七个测试类的 XML 报告；缺失、旧报告、零测试或任何跳过均失败。
 通知监控通过当前 UseCase/Service/DAO/Mapper 读取真实投递表；菜单验证当前基座 DSL-004 的删除与保留行为。
 
 ### 可配置端口
