@@ -48,8 +48,15 @@ MYSQL_STAGES = frozenset(('rotate_login', 'baseline_tables', 'baseline_outboxes'
     'seed_insert', 'role_existing', 'role_menus', 'role_collision', 'role_insert',
     'role_effective', 'role_denied', 'notice_lookup', 'real_delivery', 'real_identity', 'real_after',
     'notice_retracted', 'notice_after'))
-HTTP_STAGES = frozenset(('control_login', 'notice_save', 'notice_publish', 'notice_retract',
-                         'recipient_notice_denied'))
+LOGIN_STAGES = frozenset(('login_control', 'login_a', 'login_b'))
+HTTP_STAGES = LOGIN_STAGES | frozenset(('notice_save', 'notice_publish', 'notice_retract',
+                                       'recipient_notice_denied'))
+RUN_PHASES = frozenset(('setup', 'backend_probe', 'login_control', 'login_a', 'login_b',
+                        'notice_control', 'recipient_permission', 'seed', 'vite_probe',
+                        'browser', 'post_browser'))
+CONTROL_FAILURE_KINDS = frozenset(('transport', 'response_too_large', 'invalid_json',
+                                   'invalid_shape', 'login_rejected', 'token_missing',
+                                   'action_rejected'))
 
 
 class OwnedSqlError(RuntimeError):
@@ -65,6 +72,29 @@ class OwnedSqlError(RuntimeError):
     def safe_details(self):
         return {'stage': self.stage, 'exit_code': self.exit_code,
                 'mysql_error_number': self.number, 'sqlstate': self.sqlstate}
+
+
+def safe_http_status(value):
+    return value if type(value) is int and 100 <= value <= 599 else None
+
+
+def safe_business_code(value):
+    return value if type(value) is int and -999_999 <= value <= 999_999 else None
+
+
+class OwnedControlFailure(RuntimeError):
+    """Only fixed stages/kinds and bounded numbers may leave the HTTP control path."""
+
+    def __init__(self, stage, kind, http_status=None, business_code=None):
+        self.stage = stage if stage in HTTP_STAGES else None
+        self.kind = kind if kind in CONTROL_FAILURE_KINDS else 'transport'
+        self.http_status = safe_http_status(http_status)
+        self.business_code = safe_business_code(business_code)
+        super().__init__('Owned control HTTP failed')
+
+    def safe_details(self):
+        return {'stage': self.stage, 'kind': self.kind,
+                'http_status': self.http_status, 'business_code': self.business_code}
 
 
 def safe_env(**updates):
@@ -120,13 +150,42 @@ def redact(value, secrets_to_redact):
     return result
 
 
-def safe_failure(exc):
+def runner_source_line(exc):
+    """Retain only an in-range line in this fixed runner, never a traceback string."""
+    source = Path(__file__).resolve()
+    maximum = len(source.read_text().splitlines())
+    location = None
+    cursor = exc.__traceback__
+    while cursor is not None:
+        if Path(cursor.tb_frame.f_code.co_filename).resolve() == source \
+            and type(cursor.tb_lineno) is int and 1 <= cursor.tb_lineno <= maximum:
+            location = cursor.tb_lineno
+        cursor = cursor.tb_next
+    return location
+
+
+def failed_backend_exit_code(processes):
+    """Inspect the backend before cleanup sends TERM; never infer from cleanup exit."""
+    for name, process in processes:
+        if name == 'backend':
+            code = process.poll()
+            return code if type(code) is int and -255 <= code <= 255 else None
+    return None
+
+
+def safe_failure(exc, phase=None):
     """Arbitrary exception text may contain a temporary bearer or request body."""
     name = type(exc).__name__
     allowed = {'RuntimeError', 'TimeoutExpired', 'OSError', 'ValueError', 'KeyError',
-               'TypeError', 'AssertionError', 'JSONDecodeError', 'HTTPException'}
-    return {'error_type': name if name in allowed else 'Exception',
-            'error': 'T40 owned browser gate failed'}
+               'TypeError', 'AssertionError', 'JSONDecodeError', 'HTTPException',
+               'OwnedControlFailure', 'OwnedSqlError'}
+    result = {'error_type': name if name in allowed else 'Exception',
+              'error': 'T40 owned browser gate failed',
+              'phase': phase if phase in RUN_PHASES else None,
+              'runner_line': runner_source_line(exc)}
+    if isinstance(exc, OwnedControlFailure):
+        result['control_failure'] = exc.safe_details()
+    return result
 
 
 def random_password():
@@ -637,39 +696,50 @@ def control_request(port, stage, path, *, token=None, body=None):
     if token:
         headers['Authorization'] = 'Bearer ' + token
     connection = None
+    status = None
     try:
         connection = http.client.HTTPConnection('127.0.0.1', port, timeout=20)
         connection.request('GET' if payload is None else 'POST', path, body=payload, headers=headers)
         response = connection.getresponse()
+        status = safe_http_status(response.status)
         encoded = response.read(1_000_001)
         if len(encoded) > 1_000_000:
-            raise RuntimeError('Owned control response exceeded bound at ' + stage)
-        data = json.loads(encoded)
+            raise OwnedControlFailure(stage, 'response_too_large', status)
+        try:
+            data = json.loads(encoded)
+        except (ValueError, UnicodeError):
+            raise OwnedControlFailure(stage, 'invalid_json', status) from None
         if not isinstance(data, dict):
-            raise RuntimeError('Owned control response was not an object at ' + stage)
+            raise OwnedControlFailure(stage, 'invalid_shape', status)
         return response.status, data
+    except OwnedControlFailure:
+        raise
     except (OSError, ValueError, http.client.HTTPException):
-        raise RuntimeError('Owned control HTTP failed at ' + stage) from None
+        raise OwnedControlFailure(stage, 'transport', status) from None
     finally:
         if connection is not None:
             connection.close()
 
 
-def control_login(port, username, password):
-    status, response = control_request(port, 'control_login', '/auth/login', body={
+def control_login(port, username, password, stage):
+    if stage not in LOGIN_STAGES:
+        raise RuntimeError('Invalid owned control login stage')
+    status, response = control_request(port, stage, '/auth/login', body={
         'username': username, 'password': password, 'clientId': ADMIN_CLIENT_ID,
         'grantType': 'password'})
     data = response.get('data')
     token = data.get('access_token') if isinstance(data, dict) else None
-    if status != 200 or response.get('code') != 200 or not isinstance(token, str) or len(token) < 16:
-        raise RuntimeError('Owned control login failed')
+    if status != 200 or response.get('code') != 200:
+        raise OwnedControlFailure(stage, 'login_rejected', status, response.get('code'))
+    if not isinstance(token, str) or len(token) < 16:
+        raise OwnedControlFailure(stage, 'token_missing', status, response.get('code'))
     return token
 
 
 def require_control_success(result, stage):
     status, response = result
     if status != 200 or response.get('code') != 200:
-        raise RuntimeError('Owned control action failed at ' + stage)
+        raise OwnedControlFailure(stage, 'action_rejected', status, response.get('code'))
 
 
 def real_notice_control(cid, port, token, run_id, a_user, b_user):
@@ -912,6 +982,7 @@ def main():
     mysql_id = None
     browser_complete = False
     manifest = None
+    phase = 'setup'
     secret_paths = [run_dir / name for name in ('mysql-container.env', 'redis.conf',
                                                 'minio-container.env', 'init.env', 'owned.yml')]
     raw_logs = [(run_dir / (name + '.raw.log'), run_dir / (name + '.log'))
@@ -1073,18 +1144,25 @@ def main():
                                                     TMPDIR=str(run_dir / 'tmp')))
         processes.append(('backend', backend))
         report['owned']['backend_pgid'] = backend.pid
+        phase = 'backend_probe'
         wait_http(backend_port, '/auth/code', backend, 240)
+        report['owned']['backend_probe_http_status'] = 200
 
-        control_token = control_login(backend_port, 'WTA', control_password)
+        phase = 'login_control'
+        control_token = control_login(backend_port, 'WTA', control_password, phase)
         redactions.append(control_token)
         recipient_tokens = []
-        for username, password in ((account_env['T40_A_USERNAME'], account_env['T40_A_PASSWORD']),
-                                   (account_env['T40_B_USERNAME'], account_env['T40_B_PASSWORD'])):
-            token = control_login(backend_port, username, password)
+        for login_stage, username, password in (
+            ('login_a', account_env['T40_A_USERNAME'], account_env['T40_A_PASSWORD']),
+            ('login_b', account_env['T40_B_USERNAME'], account_env['T40_B_PASSWORD'])):
+            phase = login_stage
+            token = control_login(backend_port, username, password, phase)
             redactions.append(token)
             recipient_tokens.append(token)
         report['owned']['control_and_recipient_logins_validated'] = 3
+        phase = 'notice_control'
         real = real_notice_control(mysql_id, backend_port, control_token, run_id, a_user, b_user)
+        phase = 'recipient_permission'
         for token in recipient_tokens:
             denied = control_request(backend_port, 'recipient_notice_denied',
                                      f'/notify/notice/{real["notice_id"]}', token=token)
@@ -1095,6 +1173,7 @@ def main():
                                       'message_id': str(real['message_id']),
                                       'worker_delivered_before_retract': True,
                                       'retracted_after_delivery': True}
+        phase = 'seed'
         seed_sql, manifest = seed_plan(run_id, a_user, b_user, real['message_id'],
                                        real['notice_id'], real['title'], real['content'])
         mysql(mysql_id, seed_sql, stage='seed_insert')
@@ -1116,9 +1195,11 @@ def main():
                                     start_new_session=True)
         processes.append(('vite', vite))
         report['owned']['vite_pgid'] = vite.pid
+        phase = 'vite_probe'
         wait_http(vite_port, '/login', vite, 120)
         report['owned']['loopback_ports'].update({'backend': backend_port, 'vite': vite_port})
 
+        phase = 'browser'
         playwright_env = safe_env(T40_ADMIN_ORIGIN=f'http://127.0.0.1:{vite_port}',
                                    T40_BACKEND_ORIGIN=f'http://127.0.0.1:{backend_port}',
                                    T40_SEED_MANIFEST=str(seed_path), T40_RUN_ID=run_id,
@@ -1154,14 +1235,16 @@ def main():
         if playwright.returncode != 0:
             raise RuntimeError('Real Playwright browser gate failed')
         browser_complete = True
+        phase = 'post_browser'
         report['seed_after'] = verify_after_browser(mysql_id, manifest)
         report['exit_code'] = 0
     except BaseException as exc:
+        report.update(safe_failure(exc, phase))
+        backend_exit = failed_backend_exit_code(processes)
+        if backend_exit is not None:
+            report['backend_exit_code'] = backend_exit
         if isinstance(exc, OwnedSqlError):
             report['sql_failure'] = exc.safe_details()
-            report['error'] = str(exc)
-        else:
-            report.update(safe_failure(exc))
     finally:
         if mysql_id is not None and browser_complete and manifest is not None and 'seed_after' not in report:
             try:

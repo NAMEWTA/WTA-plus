@@ -150,14 +150,88 @@ class T40OfflineSafety(unittest.TestCase):
     def test_control_http_keeps_password_and_bearer_out_of_errors(self):
         canary = 'credential-canary-private'
         with patch.object(driver.http.client, 'HTTPConnection', side_effect=OSError(canary)):
-            with self.assertRaises(RuntimeError) as raised:
-                driver.control_request(32801, 'control_login', '/auth/login',
+            try:
+                driver.control_request(32801, 'login_control', '/auth/login',
                                        body={'password': canary})
-        self.assertNotIn(canary, str(raised.exception))
+            except driver.OwnedControlFailure as error:
+                failure = driver.safe_failure(error, 'login_control')
+                self.assertNotIn(canary, str(error))
+            else:
+                self.fail('control request must preserve its fixed transport failure')
         self.assertNotIn(canary, json.dumps(driver.safe_failure(RuntimeError(canary))))
         self.assertEqual(driver.safe_failure(RuntimeError(canary))['error_type'], 'RuntimeError')
+        self.assertEqual(failure['control_failure'], {
+            'stage': 'login_control', 'kind': 'transport',
+            'http_status': None, 'business_code': None})
+        self.assertIsInstance(failure['runner_line'], int)
+        self.assertNotIn(canary, json.dumps(failure))
         with self.assertRaises(RuntimeError):
             driver.control_request(32801, 'unlisted', '/auth/login')
+
+    def test_control_login_records_only_fixed_stage_and_numeric_http_business_codes(self):
+        canary = 'credential-canary-private'
+        token = 'token-' + canary
+        replies = ((401, {'code': 403, 'msg': canary, 'data': {'secret': token}},
+                    'login_rejected', 401, 403),
+                   (200, {'code': 401, 'msg': canary, 'data': {'secret': token}},
+                    'login_rejected', 200, 401),
+                   (200, {'code': 200, 'msg': canary, 'data': {}},
+                    'token_missing', 200, 200),
+                   (200, {'code': True, 'msg': canary},
+                    'login_rejected', 200, None))
+        for status, body, kind, expected_status, expected_code in replies:
+            with self.subTest(kind=kind, status=status, code=body['code']):
+                with patch.object(driver, 'control_request', return_value=(status, body)):
+                    with self.assertRaises(driver.OwnedControlFailure) as raised:
+                        driver.control_login(32801, 'WTA', canary, 'login_control')
+                summary = driver.safe_failure(raised.exception, 'login_control')
+                self.assertEqual(summary['control_failure'], {
+                    'stage': 'login_control', 'kind': kind,
+                    'http_status': expected_status, 'business_code': expected_code})
+                self.assertNotIn(canary, json.dumps(summary))
+        with patch.object(driver, 'control_request', return_value=(200, {
+                'code': 200, 'data': {'access_token': token}})):
+            self.assertEqual(driver.control_login(32801, 'WTA', canary, 'login_control'), token)
+        with self.assertRaises(RuntimeError):
+            driver.control_login(32801, 'WTA', canary, canary)
+        self.assertEqual(driver.OwnedControlFailure(canary, canary, True, 10**30).safe_details(), {
+            'stage': None, 'kind': 'transport', 'http_status': None, 'business_code': None})
+
+    def test_control_response_parse_failures_and_backend_exit_keep_no_payload(self):
+        canary = 'credential-canary-private'
+
+        def connection(status, payload):
+            response = types.SimpleNamespace(status=status, read=lambda _size: payload)
+            return types.SimpleNamespace(request=lambda *_args, **_kwargs: None,
+                                         getresponse=lambda: response, close=lambda: None)
+
+        for status, payload, kind in ((200, b'{}' + canary.encode() * 100_000,
+                                      'response_too_large'),
+                                      (401, canary.encode(), 'invalid_json'),
+                                      (200, b'[]', 'invalid_shape')):
+            with self.subTest(kind=kind), \
+                 patch.object(driver.http.client, 'HTTPConnection', return_value=connection(status, payload)):
+                with self.assertRaises(driver.OwnedControlFailure) as raised:
+                    driver.control_request(32801, 'login_a', '/auth/login', body={'password': canary})
+                summary = driver.safe_failure(raised.exception, 'login_a')
+                self.assertEqual(summary['control_failure']['kind'], kind)
+                self.assertEqual(summary['control_failure']['http_status'], status)
+                self.assertNotIn(canary, json.dumps(summary))
+        with patch.object(driver.http.client, 'HTTPConnection', return_value=connection(
+                200, b'{"code":200,"data":{"access_token":"owned-token-123456"}}')):
+            status, body = driver.control_request(32801, 'login_b', '/auth/login')
+        self.assertEqual((status, body['code']), (200, 200))
+        self.assertEqual(driver.failed_backend_exit_code([
+            ('backend', types.SimpleNamespace(poll=lambda: 7))]), 7)
+        self.assertIsNone(driver.failed_backend_exit_code([
+            ('backend', types.SimpleNamespace(poll=lambda: None))]))
+        exited = types.SimpleNamespace(poll=lambda: 7)
+        with self.assertRaises(RuntimeError) as probe:
+            driver.wait_http(32801, '/auth/code', exited, 1)
+        self.assertIn('exited before readiness', str(probe.exception))
+        self.assertEqual(driver.failed_backend_exit_code([('backend', exited)]), 7)
+        self.assertIsNone(driver.safe_failure(RuntimeError(canary), canary)['phase'])
+        self.assertIsNone(driver.safe_failure(RuntimeError(canary))['runner_line'])
 
     def test_sql_error_retains_only_allowlisted_stage_and_numeric_diagnostics(self):
         canary = 'credential-canary-private'
