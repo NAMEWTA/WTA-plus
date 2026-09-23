@@ -635,6 +635,17 @@ def verify_real_delivery(cid, notice_id, a_user, b_user, *, stage):
     return message_id
 
 
+def positive_int64(value):
+    """Accept only Java int or canonical ASCII positive decimal text within signed long."""
+    if type(value) is int:
+        number = value
+    elif type(value) is str and re.fullmatch(r'[1-9][0-9]{0,18}', value):
+        number = int(value)
+    else:
+        return None
+    return number if 1 <= number <= 9_223_372_036_854_775_807 else None
+
+
 def notice_version_fact(cid, notice_id, message_id, *, stage):
     snapshot_id = mysql(cid, f'SELECT snapshot_id FROM notify_notice_snapshot '
                         f'WHERE notice_id={notice_id} AND snapshot_version=1;', stage=stage)
@@ -644,9 +655,13 @@ def notice_version_fact(cid, notice_id, message_id, *, stage):
         marker = json.loads(raw)
     except (ValueError, TypeError):
         marker = None
-    if (not snapshot_id.isdigit() or not isinstance(marker, dict)
-        or marker.get('noticeId') != notice_id or marker.get('snapshotId') != int(snapshot_id)
-        or marker.get('version') != 1 or type(marker.get('retracted')) is not bool):
+    expected_notice = positive_int64(notice_id)
+    expected_snapshot = positive_int64(snapshot_id)
+    if (expected_notice is None or expected_snapshot is None or not isinstance(marker, dict)
+        or positive_int64(marker.get('noticeId')) != expected_notice
+        or positive_int64(marker.get('snapshotId')) != expected_snapshot
+        or positive_int64(marker.get('version')) != 1
+        or type(marker.get('retracted')) is not bool):
         raise RuntimeError('Owned Notice/Intent version identity differs')
     return marker
 

@@ -70,9 +70,36 @@ class T40OfflineSafety(unittest.TestCase):
         with patch.object(driver, 'mysql', side_effect=['901', valid]):
             self.assertFalse(driver.notice_version_fact('a' * 64, 601, 701,
                                                         stage='real_identity')['retracted'])
+        large = json.dumps({'noticeId': '1761800000000000601',
+                            'snapshotId': '1761800000000000901',
+                            'version': '1', 'retracted': False})
+        with patch.object(driver, 'mysql', side_effect=['1761800000000000901', large]):
+            self.assertFalse(driver.notice_version_fact('a' * 64, 1761800000000000601, 701,
+                                                        stage='real_identity')['retracted'])
         with patch.object(driver, 'mysql', side_effect=['901', valid.replace('901', '902')]):
             with self.assertRaises(RuntimeError):
                 driver.notice_version_fact('a' * 64, 601, 701, stage='real_identity')
+        with patch.object(driver, 'mysql', side_effect=['1761800000000000901',
+                                                       large.replace('1761800000000000901', '1761800000000000902')]):
+            with self.assertRaises(RuntimeError):
+                driver.notice_version_fact('a' * 64, 1761800000000000601, 701, stage='real_identity')
+
+    def test_version_identity_rejects_noncanonical_or_out_of_range_numbers(self):
+        self.assertEqual(driver.positive_int64(9_223_372_036_854_775_807), 9_223_372_036_854_775_807)
+        self.assertEqual(driver.positive_int64('9223372036854775807'), 9_223_372_036_854_775_807)
+        for invalid in (True, False, 41.0, 0, -1, '', '0', '01', '+1', '-1', '1.0',
+                        '1e0', ' 1', '1\n', '１', '١', '9223372036854775808', 10**30):
+            with self.subTest(value=invalid):
+                self.assertIsNone(driver.positive_int64(invalid))
+        for field, value in (('noticeId', True), ('noticeId', 601.0), ('noticeId', '0601'),
+                             ('snapshotId', '0901'), ('version', '01'),
+                             ('noticeId', '9223372036854775808')):
+            marker = {'noticeId': 601, 'snapshotId': 901, 'version': 1, 'retracted': False}
+            marker[field] = value
+            with self.subTest(field=field, value=value), \
+                 patch.object(driver, 'mysql', side_effect=['901', json.dumps(marker)]):
+                with self.assertRaises(RuntimeError):
+                    driver.notice_version_fact('a' * 64, 601, 701, stage='real_identity')
 
     def test_two_exact_chrome_cases_and_zero_skip_are_mandatory(self):
         with tempfile.TemporaryDirectory() as place:

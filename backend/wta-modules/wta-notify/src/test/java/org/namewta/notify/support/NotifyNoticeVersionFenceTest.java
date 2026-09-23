@@ -42,13 +42,23 @@ class NotifyNoticeVersionFenceTest {
             assertThat(NotifyNoticeVersionFence.state(intent)).isEqualTo(NotifyNoticeVersionFence.State.ACTIVE);
             intent.setMetadataJson(NotifyNoticeVersionFence.retractedMetadata(intent, noticeId, snapshotId, 2));
             assertThat(NotifyNoticeVersionFence.state(intent)).isEqualTo(NotifyNoticeVersionFence.State.RETRACTED);
+
+            long largestId = Long.MAX_VALUE;
+            Map<String, String> boundary = NotifyNoticeVersionFence.initial(largestId, largestId - 1, 2);
+            NotifyIntent boundaryIntent = notice(JsonUtils.toJsonString(boundary));
+            boundaryIntent.setBizId(String.valueOf(largestId));
+            boundaryIntent.setIdempotencyKey(NotifyNoticeVersionFence.idempotencyKey(largestId, 2));
+            assertThatNoException().isThrownBy(() -> NotifyNoticeVersionFence.requirePublishedIdentity(
+                boundaryIntent, largestId, largestId - 1, 2));
+            assertThat(NotifyNoticeVersionFence.state(boundaryIntent))
+                .isEqualTo(NotifyNoticeVersionFence.State.ACTIVE);
         }
     }
 
     @Test
-    void malformedDecimalIdStringsNeverAuthorizeNoticeDelivery() {
-        for (String invalid : new String[] {"", " 41", "+41", "-41", "041", "41.0", "4.1e1",
-            "9223372036854775808"}) {
+    void malformedIdRepresentationsNeverAuthorizeNoticeDelivery() {
+        for (Object invalid : new Object[] {"", " 41", "+41", "-41", "041", "41.0", "4.1e1",
+            "9223372036854775808", "４１", "41\n", Boolean.TRUE, 41.0D}) {
             String marker = JsonUtils.toJsonString(Map.of("noticeId", invalid, "snapshotId", 91,
                 "version", 2, "retracted", false));
             NotifyIntent intent = notice(JsonUtils.toJsonString(Map.of(

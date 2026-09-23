@@ -121,7 +121,18 @@ public final class NotifyNoticeVersionFence {
     }
 
     private static Long integer(Object raw) {
-        if (!(raw instanceof Integer || raw instanceof Long || raw instanceof BigInteger)) return null;
+        if (raw instanceof String decimal) {
+            // 全局 JSON 映射器将超过 JS 安全整数的 Long 写成字符串；仅接受规范的正十进制值。
+            if (decimal.isEmpty() || decimal.length() > 19 || decimal.charAt(0) < '1' || decimal.charAt(0) > '9') {
+                return null;
+            }
+            for (int index = 1; index < decimal.length(); index++) {
+                char digit = decimal.charAt(index);
+                if (digit < '0' || digit > '9') return null;
+            }
+        } else if (!(raw instanceof Integer || raw instanceof Long || raw instanceof BigInteger)) {
+            return null;
+        }
         try { return new BigInteger(raw.toString()).longValueExact(); }
         catch (ArithmeticException malformed) { return null; }
     }
