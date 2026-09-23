@@ -35,9 +35,11 @@ import org.namewta.notify.service.NotifyNoticePublisherService;
 import org.namewta.notify.service.NotifyNoticeService;
 import org.namewta.notify.service.runtime.DispatchNotificationService;
 import org.namewta.notify.service.runtime.NotificationApplicationRuntimeService;
+import org.namewta.notify.service.runtime.NotifyDispatchResultService;
 import org.namewta.notify.usecase.NotificationApplicationUseCase;
 import org.namewta.notify.usecase.NotifyNoticeUseCase;
 import org.namewta.notify.usecase.NotifyOutboxClaimUseCase;
+import org.namewta.notify.usecase.NotifyDispatchResultUseCase;
 import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
@@ -59,6 +61,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 
@@ -565,6 +569,77 @@ class NotifyNoticeRetractionIntegrationTest {
             current.getIntentId())).isZero();
         assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
             current.getIntentId())).isEqualTo("CANCELLED");
+        assertThat(realtimeCalls.get()).isZero();
+    }
+
+    @Test
+    void realIntentRowLockMakesWorkerObserveCommittedRetractionOnAnotherConnection() throws Exception {
+        insertDraft(POSITIVE_NOTICE, "T40 competing transactions");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        NotifyOutbox lease = claimOne(current.getIntentId(), "t40-row-lock-worker");
+        CountDownLatch retractHoldsIntent = new CountDownLatch(1);
+        CountDownLatch releaseRetract = new CountDownLatch(1);
+        CountDownLatch workerEnteringIntentLock = new CountDownLatch(1);
+        CountDownLatch workerReturnedFromIntentLock = new CountDownLatch(1);
+        AtomicReference<Long> retractConnection = new AtomicReference<>();
+        AtomicReference<Long> workerConnection = new AtomicReference<>();
+
+        NotifyNotificationDao retractDao = spy(runtimeDao);
+        doAnswer(invocation -> {
+            NotifyIntent locked = (NotifyIntent) invocation.callRealMethod();
+            retractConnection.set(db.queryForObject("select connection_id()", Long.class));
+            retractHoldsIntent.countDown();
+            assertThat(releaseRetract.await(10, TimeUnit.SECONDS)).isTrue();
+            return locked;
+        }).when(retractDao).lockNoticeIntent(NotifyNoticeVersionFence.idempotencyKey(POSITIVE_NOTICE, 1));
+        var persistence = new NotifyPersistenceDao(fixture.sessions.getMapper(NotifyNoticeMapper.class),
+            fixture.sessions.getMapper(NotifyNoticeSnapshotMapper.class));
+        var retracting = transactional(new NotifyNoticeUseCase(
+            new NotifyNoticeService(persistence, mock(UserService.class), retractDao),
+            mock(NotifyNoticePublisherService.class)), NotifyNoticeUseCase.class);
+
+        NotifyNotificationDao gateDao = spy(runtimeDao);
+        doAnswer(invocation -> {
+            workerConnection.set(db.queryForObject("select connection_id()", Long.class));
+            workerEnteringIntentLock.countDown();
+            NotifyIntent locked = (NotifyIntent) invocation.callRealMethod();
+            workerReturnedFromIntentLock.countDown();
+            return locked;
+        }).when(gateDao).lockIntent(current.getIntentId());
+        NotifyDispatchResultPort gate = transactional(new NotifyDispatchResultUseCase(
+            new NotifyDispatchResultService(gateDao)), NotifyDispatchResultUseCase.class);
+
+        var workers = Executors.newFixedThreadPool(2);
+        try {
+            var retract = workers.submit(() -> retracting.retract(POSITIVE_NOTICE));
+            assertThat(retractHoldsIntent.await(10, TimeUnit.SECONDS))
+                .as("retraction has obtained the real Intent FOR UPDATE lock").isTrue();
+            var worker = workers.submit(() -> gate.deadlineGate(lease));
+            assertThat(workerEnteringIntentLock.await(10, TimeUnit.SECONDS))
+                .as("the Worker has a second JDBC connection and is entering the same lock").isTrue();
+            assertThat(retractConnection.get()).isNotNull().isNotEqualTo(workerConnection.get());
+            assertThat(workerReturnedFromIntentLock.await(250, TimeUnit.MILLISECONDS))
+                .as("Worker must wait while the retract transaction owns the Intent row").isFalse();
+            releaseRetract.countDown();
+            assertThat(retract.get(10, TimeUnit.SECONDS)).isEqualTo(1);
+            assertThat(worker.get(10, TimeUnit.SECONDS)).isFalse();
+            assertThat(workerReturnedFromIntentLock.getCount()).isZero();
+        } finally {
+            releaseRetract.countDown();
+            workers.shutdownNow();
+            assertThat(workers.awaitTermination(10, TimeUnit.SECONDS)).as("owned workers stopped").isTrue();
+        }
+        assertRetractedMetadata(current.getIntentId());
+        assertThat(count("notify_message", current.getIntentId())).isZero();
+        assertThat(count("notify_message_recipient", current.getIntentId())).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
+            current.getIntentId())).isZero();
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("CANCELLED");
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("DONE");
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
         assertThat(realtimeCalls.get()).isZero();
     }
 
