@@ -249,7 +249,7 @@ public class OssConfigGovernanceUnitTest {
                 config(2L, "private-b", "bucket-b", "0", "Y"), optional));
             assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key")).isNull();
             assertThat(defaultPointer.get()).isNull();
-            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
 
             scenario.set("BROKEN_DEFAULT");
             seedOldCacheAndDefault();
@@ -258,15 +258,15 @@ public class OssConfigGovernanceUnitTest {
             bootstrap(List.of(broken, optional));
             assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key")).isNull();
             assertThat(defaultPointer.get()).isNull();
-            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "private-bad")).isNull();
-            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "private-bad")).isNull();
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
 
             scenario.set("VALID_PRIVATE_DEFAULT");
             seedOldCacheAndDefault();
             bootstrap(List.of(config(5L, "private-good", "bucket-good", "0", "Y"), optional));
             assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key")).isNull();
             assertThat(defaultPointer.get()).isEqualTo("private-good");
-            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
         }
     }
 
