@@ -3,17 +3,63 @@ package org.namewta.notify.support;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.namewta.common.core.exception.ServiceException;
+import org.namewta.common.json.config.JacksonConfig;
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.notify.domain.entity.NotifyIntent;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockStatic;
 
 /** 公告版本元数据须保留审计键，且损坏/旧来源不能默许 Worker 发送。 */
 @Tag("dev")
 class NotifyNoticeVersionFenceTest {
+    @Test
+    void largePublishedIdsRoundTripThroughProductionJacksonModule() {
+        long noticeId = 1761800000000000041L;
+        long snapshotId = 1761800000000000091L;
+        JsonMapper productionMapper = JsonMapper.builder()
+            .addModule(new JacksonConfig().registerJavaTimeModule()).build();
+
+        // JsonUtils has a process-wide cached mapper; scope this test without mutating that cache.
+        try (var json = mockStatic(JsonUtils.class, CALLS_REAL_METHODS)) {
+            json.when(JsonUtils::getJsonMapper).thenReturn(productionMapper);
+            Map<String, String> initial = NotifyNoticeVersionFence.initial(noticeId, snapshotId, 2);
+            assertThat(initial.get("noticeVersion"))
+                .contains("\"noticeId\":\"" + noticeId + "\"")
+                .contains("\"snapshotId\":\"" + snapshotId + "\"");
+            NotifyIntent intent = notice(JsonUtils.toJsonString(initial));
+            intent.setBizId(String.valueOf(noticeId));
+            intent.setIdempotencyKey(NotifyNoticeVersionFence.idempotencyKey(noticeId, 2));
+
+            assertThatNoException().isThrownBy(() -> NotifyNoticeVersionFence.requirePublishedIdentity(
+                intent, noticeId, snapshotId, 2));
+            assertThat(NotifyNoticeVersionFence.state(intent)).isEqualTo(NotifyNoticeVersionFence.State.ACTIVE);
+            intent.setMetadataJson(NotifyNoticeVersionFence.retractedMetadata(intent, noticeId, snapshotId, 2));
+            assertThat(NotifyNoticeVersionFence.state(intent)).isEqualTo(NotifyNoticeVersionFence.State.RETRACTED);
+        }
+    }
+
+    @Test
+    void malformedDecimalIdStringsNeverAuthorizeNoticeDelivery() {
+        for (String invalid : new String[] {"", " 41", "+41", "-41", "041", "41.0", "4.1e1",
+            "9223372036854775808"}) {
+            String marker = JsonUtils.toJsonString(Map.of("noticeId", invalid, "snapshotId", 91,
+                "version", 2, "retracted", false));
+            NotifyIntent intent = notice(JsonUtils.toJsonString(Map.of(
+                "audit", "NOTICE_SNAPSHOT", "noticeVersion", marker)));
+            assertThat(NotifyNoticeVersionFence.state(intent)).as("invalid noticeId=%s", invalid)
+                .isEqualTo(NotifyNoticeVersionFence.State.UNVERIFIED);
+            assertThatThrownBy(() -> NotifyNoticeVersionFence.requirePublishedIdentity(intent, 41L, 91L, 2))
+                .as("invalid noticeId=%s", invalid).isInstanceOf(ServiceException.class);
+        }
+    }
+
     @Test
     void exactVersionChangesToRetractedWithoutLosingOtherMetadata() {
         Map<String, String> initial = NotifyNoticeVersionFence.initial(41L, 91L, 2);
