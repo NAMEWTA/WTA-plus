@@ -1,0 +1,16 @@
+{
+  "head": "6e1d7f8e9f3d67495a361634779b7f7f050e68ab",
+  "product_diff_from_c2": [],
+  "tracked_changes": [
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/.status.json",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/README.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/handoff.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/plan-data.json",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/39-enforce-notification-deadlines.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/worklog.md"
+  ],
+  "scope": "after typecheck: only current change governance/evidence differs; no claim of whole worktree clean during supplemental gate",
+  "pnpm_path_prefix": "/tmp/wta-t02-c1/tool-bin"
+}

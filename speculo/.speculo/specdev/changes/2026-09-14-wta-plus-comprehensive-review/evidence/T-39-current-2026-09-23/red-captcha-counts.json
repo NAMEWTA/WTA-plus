@@ -1,0 +1,29 @@
+{
+  "source": "162d405642d88825f59b23bb9a61d4063ac2aaa4",
+  "clean": true,
+  "counts": {
+    "tests": 4,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml_sha256": "0f6d1347678542de6fc0e7d33800b520f733106b5478e45fe45f69e0cb392139",
+  "methods": [
+    {
+      "name": "emailCaptchaUsesNotifyClientAndCachesAfterQueuedSubmission",
+      "failed": true
+    },
+    {
+      "name": "smsCaptchaReturnsFailureAndDoesNotCacheWhenSubmissionFails",
+      "failed": false
+    },
+    {
+      "name": "smsCaptchaUsesTemplateSnapshotAndCachesAfterQueuedSubmission",
+      "failed": true
+    },
+    {
+      "name": "emailCaptchaDoesNotCacheWhenNotificationFails",
+      "failed": false
+    }
+  ]
+}

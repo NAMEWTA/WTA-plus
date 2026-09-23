@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "docs/fm/scripts/validate.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T14:06:46.774739+00:00",
+  "finished_at": "2026-09-23T14:06:46.825217+00:00",
+  "exit_code": 0,
+  "log": "c2-fm.log"
+}

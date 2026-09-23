@@ -1,5 +1,7 @@
 # 恢复入口
 
+当前revision168：11done/2cancelled/37ready；T39已在6e1d7f8验收。无产品writer，下一T50；/tmp/wta-t50-implementation-outline.md仅只读实施输入。以下旧记录保持原时点。
+
 当前revision166：10done/2cancelled/38ready，T38已验收a3b289e；无产品writer，下一T39。预研/tmp/wta-t39-implementation-outline.md与/tmp/wta-t50-current-audit.md仅实施输入；以下旧状态保留。
 
 当前revision163：9done/2cancelled/39ready，T02已验收617a369，T03取消重复施工但AC003由T30保留；下一T38。以下是历史状态。
@@ -172,3 +174,7 @@ Revision166: T38 accepted at a3b289e, backend sourceA7a6f75 explicit; final real
 ## revision167 — T39启动
 
 Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1in_progress/37ready. cors_audit sole product writer; Lead integration/governance. Absolute Captcha/Redis deadline, safe expiry and reclaimed-provider uncertainty; no production data repair.
+
+## revision168 — T39完成
+
+Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive.

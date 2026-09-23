@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-39"
 title: "让验证码与通知截止时间在发送前生效"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -119,13 +119,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-039`：未来消息不早发；now>=expiresAt 不调用供应商。
-- [ ] `AC-039`：验证码 TTL 与 command 截止一致；重试不延长有效期。
-- [ ] `AC-039`：过期 Outbox 可终結，不永久 READY/WAIT；转移/绑定确认仍拒绝旧码。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-039`：未来消息不早发；now>=expiresAt 不调用供应商。
+- [x] `AC-039`：验证码 TTL 与 command 截止一致；重试不延长有效期。
+- [x] `AC-039`：过期 Outbox 可终結，不永久 READY/WAIT；转移/绑定确认仍拒绝旧码。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -154,3 +154,7 @@ claim保留领取前READY/PROCESSING的非持久证据，并在dispatch重读时
 安全反例证明旧READY/0也可能由旧PROCESSING外呼崩溃后WAIT回流产生。最终最小方案：仅新建外部Outbox写现有last_error_code=DEADLINE_UNSENT_READY、attempt=0；本次领取前READY + token绑定非持久来源 + 持久标记仍在 + attempt0 + PENDING + 无相反投递事实，才可确定过期未发。PROCESSING重领或缺来源先收敛UNKNOWN/WAITING_RECEIPT，绝不进入route WAIT回READY，也不再外呼。旧无标记/已有尝试史到期同样保守UNKNOWN；未到期READY的既有T37/T38安全重试保持。正常结果替换标记，不给历史行补标记，不重置预算；IN_APP保持原子事实/本人关系规则。无需新DDL、Mapper或发送前新状态机。部署交接必须先停旧Worker，不能混跑忽略此规则的旧版本；不将本地代码验证声称已完成部署。
 
 Captcha同分钟不同新code不能共用旧分钟幂等key：每次生成code绑定独立安全随机nonce，保持限流；nonce不含code，通知仍走现有submit幂等API，不新增幂等平台。测试需证明新命令、缓存code及deadline对应一致。
+
+## revision168 当前验收完成
+
+result `6e1d7f8e9f3d67495a361634779b7f7f050e68ab`，tree`602161ee794da46728f76a140b6617b9b3e010f8`，formal final candidates=2。C1真实117项3failure保留；C2真实118零skip、默认861实际执行/181环境skip、full/core及双轴审查通过。详见evidence/T-39.md；部署前旧Worker停止/旧队列分类交接T30，不声称已操作生产。下一T50，Goal active。

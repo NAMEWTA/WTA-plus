@@ -1,0 +1,91 @@
+{
+  "source": {
+    "head": "c2ab3d63225d2d1406aa9ecc9c072fecc83da297",
+    "tree": "5be3152f5fbf11e3bc12e3fd3620f2d97f96894c",
+    "clean": true
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "tests": 7,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "tests": 66,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "files": [
+    {
+      "path": "wta-admin/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+      "sha256": "f9428751ea262afc433530b2076eba8feb6349e265ed5624bdb8138c379002ee"
+    },
+    {
+      "path": "wta-admin/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+      "sha256": "4480cf81d2e703c2ceece7f37b9291e40f846a7c55ae0624132069e7ad0ee81f"
+    },
+    {
+      "path": "wta-admin/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+      "sha256": "0c2d904579dc41d75ec080d32414abc40118a08d38b1d6b6ebdf44321b2575c5"
+    },
+    {
+      "path": "wta-common/wta-common-redis/TEST-org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest.xml",
+      "sha256": "f920d7b7b5499124d01762156cce9e6190542aa4b9fb1fd7f1c29100bd9ea517"
+    },
+    {
+      "path": "wta-admin/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+      "sha256": "9657c0d73c2553340e49d8abec9cfae553092292ff3254f07c6ae9147f8500ff"
+    },
+    {
+      "path": "wta-admin/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+      "sha256": "847237bff50dd6dab4ac571bbe7722f90f848fdee63ce6286347467f587c2169"
+    },
+    {
+      "path": "wta-admin/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+      "sha256": "3b99a3ccc187f9625867c4be4843067a04187fc6e6e4130f1f2c630171c7feb6"
+    },
+    {
+      "path": "wta-admin/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+      "sha256": "b6d8389fd99a1df2274598f4b1e777d566ba7c3cde9ed45f5bd2dbdae5af65b6"
+    }
+  ]
+}

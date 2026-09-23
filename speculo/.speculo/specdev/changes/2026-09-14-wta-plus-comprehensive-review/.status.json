@@ -45,13 +45,13 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T13:22:52.727538+00:00",
+  "updated_at": "2026-09-23T14:07:22.572810+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
     "HISTORY: original31 require factual reconciliation and current acceptance; old shared result is not per-ticket proof.",
-    "INTEGRATION: remaining38 tickets and final combined candidate gates pending."
+    "INTEGRATION: remaining37 tickets and final combined candidate gates pending."
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",
@@ -130,7 +130,8 @@
     "T38 test-only9f8fa2b clean behavioral red: Controller path101/body202 reached service,1test1failure0error0skip. No formal candidate yet. Product writer released to complete T38 within declared paths; owned driver prepared only, no live services.",
     "revision165：NotifyDelivery已有真实PENDING状态，但notify_delivery_status基座字典缺该值，重试后监控会显示未知。提前扩50-cde-base-dml.sql写集，只补唯一PENDING=待投递字典项，保留同六SQL基座与其他初始化；前端Delivery类型/字典渲染同步，不新增后端状态。不得执行生产DML或重放基座；当前新隔离库验收，存量Tag差异由T30持有。",
     "Revision166: T38 accepted at a3b289e, backend sourceA7a6f75 explicit; final real14 and frontend736 zeroSkip, defaultA854 executed/163 environment skips, fullA/coreB and complete frontend gates passed. Live Redis config failure preserved; correct raw HTTP provenance and clean owned cleanup.10done/2cancelled/38ready; nextT39; Goal active, no archive.",
-    "Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1in_progress/37ready. cors_audit sole product writer; Lead integration/governance. Absolute Captcha/Redis deadline, safe expiry and reclaimed-provider uncertainty; no production data repair."
+    "Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1in_progress/37ready. cors_audit sole product writer; Lead integration/governance. Absolute Captcha/Redis deadline, safe expiry and reclaimed-provider uncertainty; no production data repair.",
+    "Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive."
   ],
   "worktrees": [
     {
@@ -573,37 +574,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "bec94ae442966864a74ff52ffb3e4e305a37441d",
-      "status": "active",
-      "updated_at": "2026-09-23T13:22:52.727538+00:00",
+      "source_checkpoint": "6e1d7f8e9f3d67495a361634779b7f7f050e68ab",
+      "status": "integrated",
+      "updated_at": "2026-09-23T14:07:22.572810+00:00",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "bec94ae442966864a74ff52ffb3e4e305a37441d",
-        "source_sha": "bec94ae442966864a74ff52ffb3e4e305a37441d",
+        "source_sha": "6e1d7f8e9f3d67495a361634779b7f7f050e68ab",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "6e1d7f8e9f3d67495a361634779b7f7f050e68ab",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-39.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-39.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-39.md</Path>",
-        "attempts": 0,
-        "promotion_status": "pending"
+        "attempts": 2,
+        "promotion_status": "applied"
       }
     }
   ]

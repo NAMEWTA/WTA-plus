@@ -3236,15 +3236,15 @@
       "notify:dispatch",
       "notify:deadline"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 167,
+    "plan_revision": 168,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 可控时钟 runtime/worker、CaptchaNotifyCallerUnitTest、真实 DB 过期任务终结",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "expiresAt 只检查相对 scheduledAt；领取和 dispatch 不按到期阻止 I/O；Captcha command 传 null，EnterpriseTransfer 已传 expiresAt。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "c2ab3d63225d2d1406aa9ecc9c072fecc83da297",
+    "result_sha": "6e1d7f8e9f3d67495a361634779b7f7f050e68ab",
     "contract_ids": [
       "AC-039"
     ],

@@ -1,0 +1,48 @@
+{
+  "source": {
+    "head": "6e1d7f8e9f3d67495a361634779b7f7f050e68ab",
+    "tree": "602161ee794da46728f76a140b6617b9b3e010f8",
+    "clean": true
+  },
+  "command_record": "c2-core-package.json",
+  "started_at": "2026-09-23T14:05:49.614857+00:00",
+  "finished_at": "2026-09-23T14:06:44.873084+00:00",
+  "jar": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "df9781babf1c550a6b70eafd7ffb0383525ac443511d51864c927515a121df6b",
+    "size_bytes": 167945615
+  },
+  "wta_libraries": [
+    "BOOT-INF/lib/wta-api-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-core-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-doc-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-encrypt-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-excel-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-json-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-log-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-mail-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-mcp-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-mybatis-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-nacos-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-notify-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-openapi-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-oss-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-push-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-redis-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-satoken-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-security-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-sensitive-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-sms-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-social-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-translation-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-web-6.0.0.jar",
+    "BOOT-INF/lib/wta-notify-6.0.0.jar",
+    "BOOT-INF/lib/wta-profile-enterprise-6.0.0.jar",
+    "BOOT-INF/lib/wta-profile-person-6.0.0.jar",
+    "BOOT-INF/lib/wta-sso-6.0.0.jar",
+    "BOOT-INF/lib/wta-system-6.0.0.jar",
+    "BOOT-INF/lib/wta-third-6.0.0.jar"
+  ],
+  "build_log_sha256": "7c1745ef31a9da77509e0cabb54e368e052e20bcb5fd46080a79dc2ee2b775d8",
+  "retention": "manifest retained; next clean bundle may replace target artifact"
+}

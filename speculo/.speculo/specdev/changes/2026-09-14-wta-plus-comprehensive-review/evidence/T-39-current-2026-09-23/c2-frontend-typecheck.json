@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/tmp/wta-t02-c1/tool-bin/pnpm",
+    "typecheck"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T14:07:41.886623+00:00",
+  "finished_at": "2026-09-23T14:07:42.785824+00:00",
+  "exit_code": 1,
+  "log": "c2-frontend-typecheck.log"
+}

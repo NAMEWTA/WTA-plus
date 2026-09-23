@@ -1,0 +1,26 @@
+{
+  "base": "bec94ae442966864a74ff52ffb3e4e305a37441d",
+  "source": "6e1d7f8e9f3d67495a361634779b7f7f050e68ab",
+  "product_paths": [
+    ".agents/skills/engineering-standards/references/notification.md",
+    ".agents/skills/wta-common-modules-guide/references/other-utils.md",
+    "backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/EnterpriseQueuedNotificationIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyDeadlineIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifySmsDispatchIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/CaptchaNotifyCallerUnitTest.java",
+    "backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java",
+    "backend/wta-common/wta-common-redis/src/test/java/org/namewta/common/redis/utils/RedisUtilsDeadlineIntegrationTest.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/NotifyDispatchResultPort.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyDispatchResultService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxClaimService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotifyDispatchResultUseCase.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotificationDeadlineRuntimeTest.java"
+  ],
+  "all_in_declared_scope": true
+}

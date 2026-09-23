@@ -1,0 +1,287 @@
+{
+  "gate": "T-39 real deadline and T-36/T-37/T-38 eight-class regression",
+  "run_id": "92c675af47abf448",
+  "mode": "acceptance",
+  "acceptance": false,
+  "started_utc": "2026-09-23T13:50:38.021842+00:00",
+  "exit_code": 1,
+  "owned": {
+    "mysql_container_id": "e81de64a421969285f39c41e8f4fa1b249bb6ead7f844c9857c7642a00e61f49",
+    "application_table_count": 103,
+    "redis_container_id": "af10f960e8ad8d5b5d3847b0532bf17cc8287019dc0be8cc055fb1805ac3a186",
+    "loopback_ports": {
+      "mysql": 32826,
+      "redis": 32827
+    },
+    "captured_anonymous_volume_names": [
+      "02d6a2a3f6c81f06162dfa54b76cce8b8b5432aba1c67e8c83fa575296943d6e"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 329348,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "02d6a2a3f6c81f06162dfa54b76cce8b8b5432aba1c67e8c83fa575296943d6e": true
+    },
+    "loopback_ports_closed": {
+      "32826": true,
+      "32827": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "tests": 7,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "tests": 66,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "c2ab3d63225d2d1406aa9ecc9c072fecc83da297",
+    "tree": "5be3152f5fbf11e3bc12e3fd3620f2d97f96894c",
+    "clean": true
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifyDeadlineIntegrationTest,EnterpriseQueuedNotificationIntegrationTest,NotifyWakeIntegrationTest,RedisUtilsDeadlineIntegrationTest,NotifyAtomicResultIntegrationTest,NotifyManualRetryIntegrationTest,NotifySmsDispatchIntegrationTest,RedisNotifyIdempotencyStoreIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.deadline.integration=true",
+    "-Dprofile.notify.integration=true",
+    "-Dnotify.wake.integration=true",
+    "-Dnotify.deadline.redis.integration=true",
+    "-Dnotify.atomic.integration=true",
+    "-Dnotify.manual.retry.integration=true",
+    "-Dnotify.sms.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32826/namewta_notify_test_92c675af47abf448?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t39_92c675af47abf448",
+    "-Dnotify.redis.integration.port=32827"
+  ],
+  "maven_exit_code": 1,
+  "methods": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": [
+      "submitRoundsScheduleUpAndExpiryDownWithoutEarlyClaim",
+      "expiredPersistedIntentRejectsManualRetryWithoutRequeue",
+      "reclaimedExternalProcessingBeforeDeadlineNeverReturnsReadyOrResends",
+      "providerAcceptedAfterDeadlineStillPersistsActualAcceptedResult",
+      "expiredInAppWithoutFactsStopsBeforeBudgetAndMessage",
+      "futureAvailableAtIsNotClaimedEarly",
+      "historicalReadyWithoutProofBecomesUnknownWithoutProvider",
+      "expiredNewReadyIsFailedDoneWithoutProviderOrAttempt",
+      "cancelledIntentCannotBeRevivedByAClaimedTask",
+      "expiredInAppOrphanRelationIsLocalFailureNotExternalWait",
+      "oldLeaseCannotTerminalizeAfterTokenChanges",
+      "waitSettlementRechecksCurrentDeadlineUnderLease",
+      "expiredInAppWithDurableRecipientRecoversDeliveredWithoutNewPush",
+      "duplicateSubmissionCannotExtendPersistedDeadline",
+      "expirationResultRollbackLeavesDeliveryAndLeaseIntact"
+    ],
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": [
+      "consumedOtpAndRolledBackBindingsRecoverBySendingANewChallenge",
+      "redisConsumeFailureRollsBackAllBindingAndEventWrites",
+      "outerRollbackLeavesOnlyAnUnconfirmableRedisChallengeWithItsOriginalTtl",
+      "queuedSubmissionWaitsForTheActualWorkerAndTransfersOnlyOnce",
+      "changedSourceVersionRejectsEvenAnAcceptedNotificationAndCorrectCode",
+      "expiredAssociationAndFailedDeliveryCannotActivateButPermitResend",
+      "recordWriteFailureRollsBackTheNotificationAndRevokesTheStagedChallenge"
+    ],
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": [
+      "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake"
+    ],
+    "org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest": [
+      "absoluteExpirySurvivesProductionCodecAndNameMapping",
+      "expiredAbsoluteDeadlineNeverWritesOrExtendsKey"
+    ],
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": [
+      "duplicateEventWithChangedFactsMustBeRejected",
+      "callbackRevalidatesCorrelationAfterWaitingForCurrentResult",
+      "concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations",
+      "callbackRollbackMustAllowSameEventRetry",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[1]",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[2]",
+      "nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation",
+      "callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler",
+      "anyResultWriteFailureRollsBackAllOtherRows",
+      "restartedJvmsSeeCommittedReceiptAndRejectChangedFacts",
+      "oldWorkerCannotOverwriteAReclaimedAndCompletedResult",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[1]",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[2]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[1]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[2]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[1]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[2]",
+      "finishZeroRollsBackDeliveryAttemptAndAggregate",
+      "nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending",
+      "twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim",
+      "genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact",
+      "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt",
+      "freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved",
+      "longUnicodeBodyKeepsFullContentAndBoundedSummary",
+      "receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry",
+      "concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate",
+      "sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[1]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[2]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[3]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[4]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[5]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[6]",
+      "sameAccountKeyAndEventAcrossChannelsRemainIndependent",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[1]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[2]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[3]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[4]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[5]",
+      "twoConcurrentClaimersOnlyDispatchOneCommittedResult",
+      "existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent",
+      "simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[1]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[2]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[3]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[4]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[5]",
+      "twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce",
+      "deliveredCallbackCannotBeOverwrittenByLateAcceptedResult",
+      "expiredOwnerCannotRenewOrFinishWithoutAReclaim",
+      "nativeQueryCredentialEditOrReadFailureDoesNotApplyResult",
+      "invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite",
+      "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable",
+      "reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist",
+      "leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete",
+      "cancelledBeforeInAppTransactionCannotWriteInboxFact",
+      "providerCompletingAfterExpiryDoesNotReviveTheLease",
+      "receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract",
+      "nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries",
+      "expiredLeaseCannotSkipCancelOrDefer",
+      "earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult",
+      "realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus",
+      "genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt",
+      "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate",
+      "sameEventFromDifferentAccountsMustNotCollide",
+      "externalChannelClaimPreservesSameLiteralErrorCode"
+    ],
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": [
+      "retryUsesRemainingBudgetAndRollsBackIfDeliveryUpdateFails",
+      "completedCancelledAndUnsupportedFailureNeverCreateWork",
+      "actualPlannerFailureCanBeRepairedAndThenCallsControlledSenderOnce",
+      "inAppUnknownReplaysExistingMessageWithoutAnotherRelationOrPush",
+      "exhaustedBudgetAndMultipleOutboxesDoNotCreateAnotherTask",
+      "foreignDeliveryAndExternalUnknownAreRejectedWithoutWrites",
+      "inAppUnknownWithoutMessageCreatesOneAtomicMessageAndRelation",
+      "inAppUnknownRejectsOrphanRelationWithoutChangingTask",
+      "concurrentRetrySerializesOnIntentAndKeepsOneOutbox",
+      "inAppUnknownAddsMissingRelationAndPushesOnlyOnce",
+      "claimDuringRetryCommitCannotTakeUncommittedTaskOrStealNewLease",
+      "targetedFailedLocalPreflightOnlyQueuesItsDelivery",
+      "batchRetryRejectsExternalUnknownBeforeChangingSafeSibling"
+    ],
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": [
+      "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery",
+      "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend",
+      "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall",
+      "supplierIoAmbiguityStaysUnknownAndNeverRequeues",
+      "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers",
+      "retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend",
+      "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues",
+      "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall",
+      "exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice",
+      "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction"
+    ],
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": [
+      "shouldAtomicallyAcquireCompleteReuseAndExpire",
+      "retryableOwnerCasRetainsTtlAndReadsLegacyStateWithProductionCompositeCodec",
+      "retryableOwnerCasRetainsTtlAndRejectsStaleOwnerWithStringCodec"
+    ]
+  },
+  "error": "RuntimeError: Selected Maven test command failed",
+  "source_after": {
+    "head": "c2ab3d63225d2d1406aa9ecc9c072fecc83da297",
+    "tree": "5be3152f5fbf11e3bc12e3fd3620f2d97f96894c",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T13:53:14.125213+00:00"
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=EnterpriseQueuedNotificationIntegrationTest,NotifyAtomicResultIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T13:56:41.353133+00:00",
+  "finished_at": "2026-09-23T13:57:04.070635+00:00",
+  "exit_code": 0,
+  "log": "c1-test-fix-compile.log"
+}

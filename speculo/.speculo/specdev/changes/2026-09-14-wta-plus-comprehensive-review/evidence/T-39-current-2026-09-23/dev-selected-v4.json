@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin,wta-common/wta-common-redis",
+    "-am",
+    "-Dtest=CaptchaNotifyCallerUnitTest,DispatchNotificationServiceTest,NotificationDeadlineRuntimeTest,NotifyDeadlineIntegrationTest,RedisUtilsDeadlineIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T13:47:07.355635+00:00",
+  "finished_at": "2026-09-23T13:47:59.926238+00:00",
+  "exit_code": 0,
+  "log": "dev-selected-v4.log"
+}
