@@ -75,6 +75,9 @@ test('T-34 message box distinguishes loading, failure, retry, notice category an
   await page.locator('.message-trigger').click();
   await expect(page.getByRole('status').filter({ hasText: '正在加载消息…' })).toBeVisible();
   await expect(page.getByText('暂无消息')).toHaveCount(0);
+  // Popover 的 show 在进入动画结束后刷新；先等它与仍在途的查询合并，再注入失败。
+  await expect(page.locator('.el-popover').filter({ hasText: '消息盒子' })).not.toHaveClass(/el-zoom-in-top-enter/);
+  expect(state.inboxCalls).toBe(1);
   await state.heldInbox!.abort('failed');
   await expect(page.getByRole('alert').filter({ hasText: '消息加载失败，请重试' })).toBeVisible();
   await expect(page.getByText('暂无消息')).toHaveCount(0);
@@ -119,7 +122,7 @@ test('T-34 old read failure and detail are gone after unmount and next login', a
   const detail = page.getByRole('dialog', { name: '通知详情' });
   await expect(detail).toBeVisible();
   await expect.poll(() => Boolean(state.heldRead)).toBe(true);
-  await detail.getByRole('button', { name: '关闭' }).click();
+  await detail.getByRole('button', { name: '关闭', exact: true }).click();
   await page.locator('.avatar-wrapper').click();
   await page.getByRole('menuitem', { name: /退出/ }).click();
   await page.getByRole('button', { name: '确定', exact: true }).click();
