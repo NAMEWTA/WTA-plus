@@ -1,6 +1,6 @@
 # 工作记录
 
-当前revision173：12done/2cancelled/T41 in_progress/35ready；base d7d534cb，cors_audit阶段1测试writer，Lead治理/实测；以下记录按原时点保留。
+当前revision174：12done/2cancelled/T41 in_progress/35ready；base d7d534cb，cors_audit阶段1测试writer，Lead治理/实测；以下记录按原时点保留。
 
 ## Goal
 
@@ -272,3 +272,7 @@ Revision172: T50 accepted at84ce0a9/treec118348; prior batch3 retained and Lead-
 ## revision173 — T41启动
 
 Revision173: T41 active from d7d534cb after T50 closure;12done/2cancelled/T41in_progress/35ready. Bounded personal JOIN pagination/detail, global unread/read-all, session fencing and real 501 evidence. cors_audit sole writer; Lead serial build/services/commit/governance. Goal active, no production operations.
+
+## revision174 — 读投影路径纠正
+
+Revision174: before production edits, correct T41 Mapper read projection to domain/model/read/NotifyInboxRow.java per FILES-002/005; no dto exception. 23 declared entries, same red-only phase;12done/2cancelled/T41in_progress/35ready.

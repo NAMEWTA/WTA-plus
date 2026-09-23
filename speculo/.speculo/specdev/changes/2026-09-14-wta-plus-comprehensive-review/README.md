@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，执行全部50票。当前revision173：12done、2cancelled（AC保留）、T41 in_progress、35ready。cors_audit唯一产品writer，Lead串行治理/验收；Goal active。
+用户已激活Goal，执行全部50票。当前revision174：12done、2cancelled（AC保留）、T41 in_progress、35ready。cors_audit唯一产品writer，Lead串行治理/验收；Goal active。
 
 最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
@@ -20,3 +20,7 @@
 计划质量审查：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/plan-quality-review-2026-09-23.md</Path>。结构校验通过；共享写路径告警由已锁定的single-agent/current串行策略处理，不授权并行。
 
 G-security-external已由实际MySQL/Redis/WTA MinIO轮换验证及用户对退役AI/qcloud密钥的撤销确认关闭。不得重复轮换。全应用部署、远程推送、真实存量数据修复及归档没有由当前本地实施授权自动涵盖。
+
+## revision174 — 读投影路径纠正
+
+Revision174: before production edits, correct T41 Mapper read projection to domain/model/read/NotifyInboxRow.java per FILES-002/005; no dto exception. 23 declared entries, same red-only phase;12done/2cancelled/T41in_progress/35ready.
