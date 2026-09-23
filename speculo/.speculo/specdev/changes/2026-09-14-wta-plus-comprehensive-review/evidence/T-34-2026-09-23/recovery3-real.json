@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "frontend/e2e/run-inbox-real.py",
+    "--expected-head",
+    "177eb5bd889afd2ab54f4a8e162dc8358d80f140",
+    "--jar-build-head",
+    "6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04",
+    "--expected-jar-sha256",
+    "8c1fbefbbb4e00d2c8dbaeac4bbcbc5b43333be79db559c979810f9b15420e60"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T07:48:48.396258+00:00",
+  "finished_at": "2026-09-23T07:49:23.661841+00:00",
+  "exit_code": 0,
+  "log": "recovery3-real.log"
+}

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-09-23T07:50:06.266295+00:00",
+  "validated_frontend_sha": "24909df0e49208535097f03d174c0592ea6836d3",
+  "real_e2e_source": "177eb5bd889afd2ab54f4a8e162dc8358d80f140",
+  "changed_product_paths": [
+    "frontend/e2e/inbox-real.md",
+    "frontend/e2e/run-inbox-real.py",
+    "frontend/e2e/test_run_inbox_real.py"
+  ],
+  "unchanged_inputs": [
+    "TS/Vue production and tests",
+    "Playwright test/config",
+    "frontend dependencies",
+    "backend/SQL"
+  ],
+  "reused_actual_records": [
+    "accept3-unit",
+    "accept3-typecheck",
+    "accept3-lint",
+    "accept3-build-prod",
+    "accept3-synthetic",
+    "accept3-openapi",
+    "accept3-handbooks"
+  ],
+  "new_python_regressions": "driver-unit-fullids-final:9 passed"
+}

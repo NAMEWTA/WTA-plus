@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-34"
 title: "关闭实时连接时仍加载本人消息盒子"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -98,7 +98,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 退出 A 登录 B，A 延迟结果及错误不能污染 B；无 token 才清空 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 正文不重复，加载失败可重试且不冒充空列表 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下命令已实际执行，结果见Evidence：
 
 - `pnpm --dir frontend --filter @namewta/admin-web test`
 - `pnpm --dir frontend typecheck`
@@ -120,13 +120,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-034`：flag=false 仍有 GET inbox，后端实时服务关闭仍可读。
-- [ ] `AC-034`：退出 A 登录 B，A 延迟结果及错误不能污染 B；无 token 才清空。
-- [ ] `AC-034`：正文不重复，加载失败可重试且不冒充空列表。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-034`：flag=false 仍有 GET inbox，后端实时服务关闭仍可读。
+- [x] `AC-034`：退出 A 登录 B，A 延迟结果及错误不能污染 B；无 token 才清空。
+- [x] `AC-034`：正文不重复，加载失败可重试且不冒充空列表。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -145,3 +145,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 登录初始GET仍在途时，用户打开盒子须标记fresh/dirty并在初始查询结束后补查；被动重复初始化仍合并。否则关闭实时连接下可能漏掉初始快照后新增公告。新增Navbar.vue精确写集仅打开回调传递fresh，不广播无关事件；补受控Promise及真实UI场景。此为AC034第6节落实，不改后端/分页。
 
 第三轮达到复盘点，见 evidence/T-34-recovery.md。Lead自行完成可复用真实驱动与独占环境验收；原消息产品及断言冻结，当前周期由新Packet重置，旧3次记录保留。
+
+## 13. 验收结果
+
+source/result `177eb5bd889afd2ab54f4a8e162dc8358d80f140`；精确clean current验收前后通过。714单元/工具、5合成UI、1真实服务登录均通过；双轴审查完成。旧周期3轮后Lead复盘及新周期3轮完整保留。Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-34.md</Path>。

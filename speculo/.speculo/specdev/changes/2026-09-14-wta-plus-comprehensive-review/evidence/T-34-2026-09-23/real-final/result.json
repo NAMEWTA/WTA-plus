@@ -1,0 +1,117 @@
+{
+  "gate": "T-34 real Admin inbox without realtime",
+  "run_id": "975259239d9d9ade",
+  "started_utc": "2026-09-23T07:48:48.453889+00:00",
+  "run_dir": "/tmp/namewta-inbox-e2e/975259239d9d9ade",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "e00a8eaf26519808ad2d6bf72a1484312788cd3308b27da8136c4f380f205398",
+    "redis_container_id": "51a36586625b4886b6ff38ec51eef27a332412ed8baed019e61fdefbc0db8dc6",
+    "backend_pid": 3641542,
+    "vite_pid": 3642170
+  },
+  "cleanup": {
+    "process_group_3642319": {
+      "live_members": []
+    },
+    "process_group_3642170": {
+      "live_members": []
+    },
+    "process_group_3641542": {
+      "live_members": []
+    },
+    "e00a8eaf26519808ad2d6bf72a1484312788cd3308b27da8136c4f380f205398": "removed",
+    "51a36586625b4886b6ff38ec51eef27a332412ed8baed019e61fdefbc0db8dc6": "removed",
+    "owned_containers_remaining": [],
+    "ports_closed": {
+      "49539": true,
+      "53785": true,
+      "32786": true,
+      "32787": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "expected": 1,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "source": {
+    "head": "177eb5bd889afd2ab54f4a8e162dc8358d80f140",
+    "tree": "9f3b9f0d98c39ca54b36abe3e0c7e6e8582b5cf3",
+    "clean": true,
+    "jar_build_head": "6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04",
+    "backend_sql_equal_to_jar_build": true
+  },
+  "transport_disabled_contract": {
+    "backend_message_enabled": false,
+    "frontend_message_enabled": false,
+    "transport_condition_source": "backend/wta-common/wta-common-push/src/main/java/org/namewta/common/push/condition/MessageTransportCondition.java",
+    "transport_condition_sha256": "23a0427e5b5e58c971c3fb6a22a9b37d136b6e40894883db7a3522458f568609",
+    "auto_configuration_source": "backend/wta-common/wta-common-push/src/main/java/org/namewta/common/push/config/MessageAutoConfiguration.java",
+    "auto_configuration_sha256": "f8edc84e6fb084dfcce48db235ef6eeab7e716a96cc8fbc5aafc30c6bd6a3011",
+    "browser_must_make_zero_ticket_and_stream_requests": true
+  },
+  "artifact": {
+    "jar": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "8c1fbefbbb4e00d2c8dbaeac4bbcbc5b43333be79db559c979810f9b15420e60",
+    "playwright_config": "frontend/e2e/playwright.inbox-real.config.ts",
+    "playwright_config_sha256": "72203cc6f4abfb9cf0a3b20f6fe6f0f977ac0bf4fa0e850e3037dd33c953e430",
+    "playwright_test": "frontend/e2e/inbox-real.e2e.ts",
+    "playwright_test_sha256": "b4ab5ae2620c2a29fee7e9d9dd6f9cf548d911da9a0c87423fa91ac440efe84c"
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "62f6f4ea845c22acd5c8e8322ba810c78570132bb5510d289301da969ad2de9c",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "24ec3355759905263057ec4bfd08d637b29b69993cb94ae62996d96c27abd84e",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "seed": {
+    "message_id": "8057316114787201215",
+    "recipient_id": "8102812114686293985",
+    "user_id": "1761100000000000001",
+    "joined_rows": 1,
+    "category": "notice",
+    "read_time": "2026-09-23 10:00:00"
+  },
+  "playwright_exit_code": 0,
+  "playwright_identity": {
+    "file": "frontend/e2e/inbox-real.e2e.ts",
+    "title": "T-34 real Admin inbox without realtime",
+    "project": "",
+    "attempts": 1
+  },
+  "source_after": {
+    "head": "177eb5bd889afd2ab54f4a8e162dc8358d80f140",
+    "tree": "9f3b9f0d98c39ca54b36abe3e0c7e6e8582b5cf3",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T07:49:23.645403+00:00"
+}

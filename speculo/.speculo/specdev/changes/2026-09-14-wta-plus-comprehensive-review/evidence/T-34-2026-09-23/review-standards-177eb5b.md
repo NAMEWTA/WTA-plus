@@ -1,0 +1,10 @@
+# T-34 final standard-axis review — 177eb5b
+
+- Base: `6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04`
+- Fixed head: `177eb5bd889afd2ab54f4a8e162dc8358d80f140` (direct child of `7c983838c1de52aa086d8335b1d33684da1cb83e`).
+- Scope: three-dot `git diff base...head -- frontend`, plus the fixed head's incremental diff. Applied relevant AGENTS, engineering/fullstack standards, and `speculo/workflows/specdev/common/skills/code-review/SKILL.md` with source-discovery, Fowler, risk, and reviewer-contract references. No other review axis was read.
+- Verdict: **standard-axis pass, subject to Lead's still-running real E2E and cleanup evidence**. No outstanding static blocking finding in the fixed frontend diff.
+
+The 7c98383 request-changes finding is closed at `frontend/e2e/run-inbox-real.py:161-165`: Docker discovery now specifies `--no-trunc`, yielding full IDs compatible with `docker run -d` IDs captured at lines 319-325 and 360-365 and the exact membership comparison at lines 240-243. `frontend/e2e/test_run_inbox_real.py:99-127` checks the CLI flag and both containers discovered without a captured ID and containers captured with a full ID. The change retains exact owner and random-run label filters and inspect verification before removal. This fixes the false failed gate without widening deletion scope. The historical finding remains in `/tmp/wta-t34/review-standards-7c98383.md`.
+
+The prior fixed-head review found the process-group handling, cleanup-failure verdict, reporter file/title/count binding, loopback services, synthetic owned database seed, JAR/backend/SQL provenance checks, and documented scope consistent with the applicable standard axis. The latest commit changes no production TS or browser assertion. `git diff --check base...head -- frontend` exited 0. Lead reports the 9 no-Docker tests passed, but this reviewer did not rerun them. Real browser behavior, actual Docker removal, closed ports, and clean source-after state require Lead's independently owned live result; this static pass does not claim those exits. No Maven, services, E2E, or build were run by this reviewer. Raw historical log whitespace is not a product code finding.

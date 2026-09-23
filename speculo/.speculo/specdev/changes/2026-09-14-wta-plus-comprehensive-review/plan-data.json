@@ -2841,15 +2841,15 @@
     "resources": [
       "ui:admin-inbox"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 142,
+    "plan_revision": 143,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 现有 push.test.ts、notice 组件、真实 Admin 登录→打开盒子",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "push.ts:initMessageBox 同时检查 MESSAGE_ENABLED 与 token；notice 展示与加载失败状态不足。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "d3549fb5d9965a2799c14c67326890172288b4b3",
+    "result_sha": "177eb5bd889afd2ab54f4a8e162dc8358d80f140",
     "contract_ids": [
       "AC-034"
     ],

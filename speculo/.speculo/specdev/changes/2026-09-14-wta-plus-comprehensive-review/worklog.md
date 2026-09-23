@@ -59,3 +59,7 @@ T34已按I流程在第3轮停止并完成Lead复盘；旧3次不删除，新Pack
 T34恢复候选e78d886真实场景1/1且clean，但双轴发现新驱动失败路径资源清理/选集来源问题，未验收Done。新Packet T-34-20260923-03由cors_audit唯一writer修.py及无Docker回归；产品消息行为/超时不变，Lead独占后续E2E。
 
 T34恢复周期第2次：7c98383真实浏览器1/1，资源全回收；Docker短/全ID比较误报失败，Lead统一完整ID并测试captured/uncaptured两路径。所有失败保留，仍in_progress。公开原始日志保留原样空白，产品diff-check无空白问题。
+
+## revision143 — T34完成
+
+T34result 177eb5bd889afd2ab54f4a8e162dc8358d80f140；3done/47ready。714前端测试、5合成浏览器及1真实Admin登录通过；两轴审查通过。第3轮资源超时后有强制Lead复盘/独占恢复；旧失败未覆盖。G-security-external用户追加撤销确认已关闭。下票T47，预研/tmp/wta-t47-audit.md；T29预研/tmp/wta-t29-audit.md，必须保全私有恢复资料。未推送/归档。
