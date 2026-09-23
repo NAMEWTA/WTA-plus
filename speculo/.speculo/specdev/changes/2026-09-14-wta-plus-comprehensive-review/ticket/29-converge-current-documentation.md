@@ -144,3 +144,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/29-converge-current-documentation.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
 旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。
+
+## 当前执行新增事实（2026-09-23）
+
+T-34附加facts检查exit1：部署Skill仍明确固定本地私有报告为temp/relase，现场凭据维护按该规范已生成0600报告/恢复状态；validate-skill-facts.mjs又禁止此目录，同时仅对deploy Skill排除旧文本扫描。需核对规范权威，统一Skill/引用/检查器的当前路径合同并安全迁移本轮私有资料（如采用temp/release需冲突检查、保留权限/哈希和服务器报告对应关系）。不得删除恢复资料或只放宽检查求绿。此问题属T29文档/事实同步，执行前扩精确写集并重绑实际变更Skill，历史证据不改写。

@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision141，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision142，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -145,7 +145,7 @@ Map完整50行AC矩阵及<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus
 
 ### Lead Orchestration
 
-Implementation subagents：上限1、当前1；Read-only agents：当前1。execution-time dynamic由Lead分配有界任务；用户已明确允许gpt-6-sol/xhigh子代理，撤销此前禁止。current产品保持单writer，不创建新worktree。
+Implementation subagents：上限1、当前1；Read-only agents：当前2。execution-time dynamic由Lead分配有界任务；用户已明确允许gpt-6-sol/xhigh子代理，撤销此前禁止。current产品保持单writer，不创建新worktree。
 
 Lead=single-agent，负责状态与direct-parent集成。implementation_agent_limit=1；只读研究/审查可并行且不得写产品。实际派遣使用gpt-6-sol/xhigh，按任务固定输入及路径返回Lead验收。integration_attempt_limit=3，来自config上限。subagent-delivery operation=plan仅核对空task_kind集合、唯一Lead/状态/父分支/E2E owner，不dispatch、不创建新workspace。
 
@@ -175,7 +175,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 | implementation commit / direct-parent父分支更新 | authorized | 本change既有全部commit授权持续有效；本次目标激活明确要求按含逐票提交验收的Goal执行 |
 | source/candidate worktree | not-applicable | current策略，原用户禁止新worktree |
 | push/PR/merge/分支清理 | not-authorized | 不从计划或旧批次继承 |
-| 部署/凭据轮换/真实数据修复 | not-authorized | 具体环境、对象、diff、恢复方案准备后最终批准 |
+| 部署/凭据轮换/真实数据修复 | scoped-authorized / completed | 用户指定三个/srv/ops目录并要求据部署调整；仅WTA MySQL/Redis/MinIO凭据及必要消费者已按备份执行。额外AI/qcloud用户确认已撤销；整套产品部署和其他真实数据修复未授权 |
 | 归档/永久知识写入 | not-authorized | completed后走A与原网关 |
 
 ### Evidence Return
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision141；T-32/T-33 done，48票Ready（31历史票重开＋17新票）；历史review状态只保留在原快照。G整体共识已确认，S/T Ready，P run已由用户激活，正在串行落实，当前T-32验收完成，下一票T-33。历史47份活动工件已快照，旧reviews/evidence未篡改。
+revision142；T-32/T-33 done，48票Ready（31历史票重开＋17新票）；历史review状态只保留在原快照。G整体共识已确认，S/T Ready，P run已由用户激活，正在串行落实，当前T-32验收完成，下一票T-33。历史47份活动工件已快照，旧reviews/evidence未篡改。
 
 ### Pending Decisions and Blockers
 
@@ -226,7 +226,7 @@ G→S→T→P(plan)已完成。用户主动激活目标/授权时，先重读已
 
 本节覆盖上文规划时点的“本轮不实施/未激活”表述。执行已授权，当前先T-32；历史closeout与全量集成仍必须完成，不能把新19票代替全部50票。远程写入、真实凭据轮换和归档继续独立批准。
 
-## 2026-09-23 revision141执行更新
+## 2026-09-23 revision142执行更新
 
 T-32 product/result `bafd5d512a5d17c4848db278f2350fcc6631fbd7`，clean exact tree两端取证完成；适用发布128项与Spring3项0skip。用户修订目标允许gpt-6-sol/xhigh子代理；撤销之前零子代理限制，其余current单writer/无新worktree继续。部署目录已由用户指明并要求按现场替换调整；先核对精确身份、影响面、备份和可逆方案，再执行授权范围内动作。凭据轮换未完成，不关闭G-security-external。
 
@@ -234,6 +234,14 @@ T-32 product/result `bafd5d512a5d17c4848db278f2350fcc6631fbd7`，clean exact tre
 
 base `dd8179e1cd394b092bfb36b8b91c0e04386563ce`；依赖为空、T-32已关闭；产品writer cors_audit，Lead治理/E2E/提交验收；Packet见 evidence/dispatch-T-33.md。
 
-## revision141验收与环境处置
+## revision142验收与环境处置
 
 T-33 source/result `da48f850cf34d8d23c09f1ad9c92ed433d5617b0`正式验收通过，独立双轴审查通过；失败/恢复及真实clean前后证据见evidence/T-33.md。下一票T-34。用户授权的WTA MySQL/Redis/MinIO凭据已实际轮换、消费者同步、旧值拒绝；共享root不变。G-security-external原披露项已处置，额外退役AI及禁用qcloud非种子凭据正在等待用户提供归属/外部撤销记录，不阻止独立代码票。未获push/归档授权，不发布整套应用。
+
+## revision142当前
+
+T-34 in_progress，cors_audit唯一产品writer；2done/1in_progress/47ready。Lead准备隔离真实Admin登录与消息盒子E2E，其他agent无写锁。base `6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04`。
+
+## 外部凭据门关闭 — 用户处置确认
+
+2026-09-23用户确认追加退役AI token/模型凭据、禁用qcloud密钥“已经撤销停用，没有其他进行系统进行使用”。记录为负责人处置确认，非供应商接口复核；与实际DB/Redis/MinIO轮换证据共同关闭G-security-external。其余票据验收和归档授权要求不变。

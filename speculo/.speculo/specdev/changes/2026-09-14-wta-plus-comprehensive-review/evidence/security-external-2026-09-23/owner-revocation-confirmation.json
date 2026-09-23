@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-09-23T07:06:49.186490+00:00",
+  "source": "user reply to call_gCVm1uGOh3o7SKBDHEQwkDOc",
+  "scope": [
+    "retired AI app token",
+    "retired AI model credential",
+    "disabled non-seed qcloud credential"
+  ],
+  "user_statement": "已经撤销停用，没有其他进行系统进行使用",
+  "disposition": "owner confirms revoked/inactive and no other consumers",
+  "provider_api_verified": false,
+  "gate": "G-security-external closed for inventoried scope"
+}

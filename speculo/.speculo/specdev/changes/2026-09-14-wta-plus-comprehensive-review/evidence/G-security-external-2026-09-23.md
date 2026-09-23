@@ -10,11 +10,11 @@
 
 脱敏结果在 `security-external-2026-09-23/rotation-result.json` 与 `tracked-credential-scan.json`。实际备份在 `/srv/ops/wta-plus/backups/owned/review-credentials-20260923T063047Z`，manifest哈希可回读。凭据与恢复检查点仅位于0600的 `temp/relase/` 和服务器授权目录；不得从这里复制到公开Evidence。
 
-## 仍待处置的边界
+## 追加凭据的负责人处置确认
 
-历史Git没有重写，旧值已失效；旧备份受限保留，不恢复泄漏密码。追加盘点发现：退役AI的sai_app.token、sai_model_config JSON存在非公开种子的凭据式值；wta-plus禁用qcloud配置也与公开种子不同。当前代码没有AI旧表消费者，停用也不能证明供应商已撤销。已向用户询问其他消费者/管理来源/撤销证据，未连接供应商或盲目修改业务身份。其余Client/SnailJob默认值与公开基座相同，禁用qiniu/aliyun为种子示例，不因此宣称外部有效或替换它们。
+历史Git没有重写，旧值已失效；旧备份受限保留，不恢复泄漏密码。追加盘点发现：退役AI的sai_app.token、sai_model_config JSON存在非公开种子的凭据式值；wta-plus禁用qcloud配置也与公开种子不同。当前代码没有AI旧表消费者，停用也不能证明供应商已撤销。用户2026-09-23回复：“已经撤销停用，没有其他进行系统进行使用”。据此记录为负责人确认已撤销、无其他消费者；Lead未连接供应商复核，不将此确认表述为独立接口验证，也未删除历史业务记录。其余Client/SnailJob默认值与公开基座相同，禁用qiniu/aliyun为种子示例，不因此宣称外部有效或替换它们。
 
-G-security-external原DB/Redis披露及关联MinIO处置已完成；额外环境凭据风险仍pending，阻止未经裁决的完整风险关闭/归档，不阻塞独立代码票。本次不是整套产品发布，未宣称双后端/前端业务候选验收完成。
+G-security-external已关闭：原DB/Redis披露及关联MinIO由实际轮换和旧值失效验证闭合；追加AI/qcloud项由上述用户明确处置确认闭合。此结论限定于已盘点范围，不代表未发现的任意外部账户均已审计。本次不是整套产品发布，未宣称双后端/前端业务候选验收完成。
 
 ## Skill实际执行
 

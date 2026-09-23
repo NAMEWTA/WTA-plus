@@ -11,6 +11,8 @@ let pushConnection: ReturnType<typeof createPushConnection> | undefined;
 let pushKicked = false;
 let resumePushTimer: ReturnType<typeof setTimeout> | undefined;
 let inboxRequest = 0;
+let inboxToken: string | undefined;
+let pendingInbox: { token: string; promise: Promise<void>; dirty: boolean } | undefined;
 let removeResumeListeners: (() => void) | undefined;
 
 const refreshInbox = () => {
@@ -20,7 +22,7 @@ const refreshInbox = () => {
 /** 通知所有收件箱视图刷新，消息盒子也重新读取服务端事实。 */
 export const refreshMessageInbox = async () => {
   window.dispatchEvent(new Event('notify:inbox-updated'));
-  await initMessageBox();
+  await initMessageBox(true);
 };
 
 const handlePushMessage = (raw: string) => {
@@ -72,7 +74,7 @@ const requestPushTicket = async () => {
 };
 
 export const initPush = async () => {
-  closePush();
+  closePushTransport();
   if (import.meta.env.VITE_APP_MESSAGE_ENABLED === 'false' || !getToken()) return;
 
   const path = import.meta.env.VITE_APP_MESSAGE_PATH || '/resource/message';
@@ -97,27 +99,72 @@ export const initPush = async () => {
   await pushConnection.start();
 };
 
-export const initMessageBox = async () => {
+const loadMessageBox = (token: string): Promise<void> => {
   const currentRequest = ++inboxRequest;
-  const token = getToken();
-  if (import.meta.env.VITE_APP_MESSAGE_ENABLED === 'false' || !token) {
-    useNoticeStore().clearNotice();
-    return;
+  const noticeStore = useNoticeStore();
+  noticeStore.beginLoad(token);
+  const isCurrent = () => currentRequest === inboxRequest && inboxToken === token && token === getToken();
+  let request: ReturnType<typeof notificationService.inbox.list>;
+  try {
+    request = notificationService.inbox.list();
+  } catch {
+    if (isCurrent()) noticeStore.failLoad(token);
+    return Promise.resolve();
   }
-  const { data } = await notificationService.inbox.list();
-  if (currentRequest !== inboxRequest || token !== getToken()) return;
-  useNoticeStore().setNotices((data ?? []).map(toNoticeItem));
+  const settled = request
+    .then(({ data }) => {
+      if (isCurrent() && !pendingInbox?.dirty) noticeStore.setNotices((data ?? []).map(toNoticeItem), token);
+    })
+    .catch(() => {
+      // 失败进入可重试状态；旧身份和已被新事件失效的查询均不改变当前界面。
+      if (isCurrent() && !pendingInbox?.dirty) noticeStore.failLoad(token);
+    })
+    .then(async () => {
+      if (pendingInbox?.promise !== settled) return;
+      const dirty = pendingInbox.dirty;
+      pendingInbox = undefined;
+      if (dirty && isCurrent()) await loadMessageBox(token);
+    });
+  pendingInbox = { token, promise: settled, dirty: false };
+  return settled;
 };
 
-export const closePush = () => {
+export const initMessageBox = (fresh = false): Promise<void> => {
+  const token = getToken();
+  if (!token) {
+    inboxRequest++;
+    inboxToken = undefined;
+    pendingInbox = undefined;
+    useNoticeStore().clearNotice();
+    return Promise.resolve();
+  }
+  if (inboxToken !== token) {
+    inboxRequest++;
+    inboxToken = token;
+    pendingInbox = undefined;
+  }
+  if (pendingInbox?.token === token) {
+    if (fresh) pendingInbox.dirty = true;
+    return pendingInbox.promise;
+  }
+  return loadMessageBox(token);
+};
+
+const closePushTransport = () => {
   pushKicked = false;
-  inboxRequest++;
   clearTimeout(resumePushTimer);
   resumePushTimer = undefined;
   pushConnection?.close();
   pushConnection = undefined;
   removeResumeListeners?.();
   removeResumeListeners = undefined;
+};
+
+export const closePush = () => {
+  inboxRequest++;
+  inboxToken = undefined;
+  pendingInbox = undefined;
+  closePushTransport();
 };
 
 const resumePushIfNeeded = () => {

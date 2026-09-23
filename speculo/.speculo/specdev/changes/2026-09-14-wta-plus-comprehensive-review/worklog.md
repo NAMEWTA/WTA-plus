@@ -37,3 +37,17 @@ T-32固定产品提交 `bafd5d512a5d17c4848db278f2350fcc6631fbd7`验收通过，
 ## revision141 — T-33完成
 
 T-32/T-33 done，48待办。T-33最终result `da48f850cf34d8d23c09f1ad9c92ed433d5617b0`；默认932项809通过/123其他环境skip，专用24项+2Chrome零skip，独立review通过。组合运行超时失败记录保留，分离默认与专用环境后同一clean提交通过。环境实际轮换见G-security-external-2026-09-23，额外退役AI/qcloud处置等待用户来源信息。下一票T-34，子代理已只读调查，无writer已派遣。
+
+## 当前可恢复状态 — T-34
+
+HEAD 6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04，T34已in_progress。原生cors_audit(gpt-6-sol/xhigh)拥有唯一frontend产品写锁，Packet为evidence/dispatch-T-34.md；Lead只写治理、编译backend core并拥有required E2E。legacy_audit只在/tmp/wta-t34-harness准备真实Admin/ownedDB Redis/六SQL运行器，不执行E2E或写产品。Lead core build日志/tmp/wta-t34/core-package.log，首次 -DskipTests 在core profile的full模块测试编译失败；按仓库已声明命令改为-Pdev,bundle-core -Dmaven.test.skip=true clean package，core-package-v2 exit0；打包不冒充测试，后端上游T33测试已通过。产品后端在T34不变。
+
+历史只读审查已确认：T01当前facts7/7、mode26/26、CI shell等通过，可在clean当前时点复验后依法cancelled并用AC001证据重算下游；T09尚缺当前全部dev/prod三App/full-core/真实服务；T10发布128通过但缺当前完整stage/容器恢复E2E；T23回调核心paths未变但当前真实MySQL/Redis/签名矩阵未跑。T29确需修：工程profile仍引用不存在的release-state.py，实际mjs；票里50POM/247测试数过期，当前49POM（测试数随新票增加，必须最终重算）。不要把旧共享result或旧测试绿补造为Done。
+
+已完成环境凭据轮换原DB/Redis和关联MinIO，私有恢复state与报告位于temp/relase，旧值均拒绝；额外已退役AI、禁用非seed qcloud管理来源/撤销记录已通过async问用户，不阻止独立代码。不要重新运行轮换脚本或打印私有报告/旧Compose healthcheck内容。Goal仍active，48票未完成，未归档/push。
+
+## 外部凭据门关闭 — 用户处置确认
+
+2026-09-23用户确认追加退役AI token/模型凭据、禁用qcloud密钥“已经撤销停用，没有其他进行系统进行使用”。记录为负责人处置确认，非供应商接口复核；与实际DB/Redis/MinIO轮换证据共同关闭G-security-external。其余票据验收和归档授权要求不变。
+
+T-34前置类型修复已声明OssPage.vue精确写集：只补两表列OssVO泛型，实际列表竞态由T-47继续负责。另，附加skill-facts检查发现部署Skill固定temp/relase与工程事实检查禁止该目录冲突；现场维护依据该Skill生成了私有报告，当前报告须保全。该仓库治理矛盾登记T-29修复，不把本次附加检查写成passed；T-34不改变该检查器或删除私密恢复数据。

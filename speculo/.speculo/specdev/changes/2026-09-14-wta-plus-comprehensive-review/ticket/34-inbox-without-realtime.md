@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-34"
 title: "关闭实时连接时仍加载本人消息盒子"
-status: "ready"
+status: "in_progress"
 kind: "bug"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -17,17 +17,17 @@ risk: "medium"
 blocked_by: []
 contract_ids: ["AC-034"]
 owner: "single-agent"
-expected_changes: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path>", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path>", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path>", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path>", "<Path>frontend/e2e/</Path>"]
-writable_paths: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path>", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path>", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path>", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path>", "<Path>frontend/e2e/</Path>"]
+expected_changes: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path>", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path>", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path>", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path>"]
+writable_paths: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path>", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path>", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path>", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
-shared_paths: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path>", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path>", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path>", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path>", "<Path>frontend/e2e/</Path>"]
-shared_path_owners: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/e2e/</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)"]
+shared_paths: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path>", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path>", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path>", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path>"]
+shared_path_owners: ["<Path>frontend/apps/admin-web/src/utils/push.ts</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/apps/admin-web/src/utils/push.test.ts</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/apps/admin-web/src/layout/components/notice/</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/apps/admin-web/src/store/modules/notice.ts</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/e2e/</Path> => single-agent (Lead; exclusive current workspace; T-34 turn only)", "<Path>frontend/packages/web-domains/system/src/oss/OssPage.vue</Path> => single-agent (Lead; T-34 gate prerequisite: two column generic annotations only)"]
 ---
 
 # T-34：关闭实时连接时仍加载本人消息盒子
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。用户已激活Goal且允许gpt-6-sol/xhigh子代理。产品由cors_audit在current串行锁内实施，Lead拥有治理/提交/E2E；不创建新worktree。
 
 ## 1. 战略与来源
 
@@ -39,7 +39,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 已锁定决策
 
-保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。用户已授权实施及本地提交验收。
 
 ### 已确认方案
 
@@ -115,7 +115,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
 - 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
 - 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
-- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。本地实施/提交已授权；环境动作按明确授权范围，归档仍须另批。
 - 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
@@ -135,3 +135,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ## 12. 停止、检查点与交付
 
 交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。
+
+## 门禁前置范围补充（2026-09-23，实施前登记）
+
+全量typecheck实际exit2：未改动的OssPage.vue两表列将scope.row推断为DefaultRow而非OssVO。已核对与base字节一致及同包SsoAppPage.vue的@vue-generic既有方案。本票仅补文件展示/操作两列的OssVO泛型声明，不改运行行为、不削弱domain字段、不实施T-47竞态合同。恢复全量typecheck后再验收；前置失败日志保留。唯一writer仍cors_audit。

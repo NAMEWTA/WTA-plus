@@ -4,7 +4,9 @@ const harness = vi.hoisted(() => ({
   list: vi.fn(),
   request: vi.fn(),
   token: 'session-1' as string | undefined,
+  beginLoad: vi.fn(),
   setNotices: vi.fn(),
+  failLoad: vi.fn(),
   clearNotice: vi.fn(),
   notification: vi.fn(),
   start: vi.fn().mockResolvedValue(undefined),
@@ -27,7 +29,7 @@ vi.mock('@/utils/push-connection', () => ({
   createPushUrl: vi.fn()
 }));
 
-import { closePush, initMessageBox, initPush } from './push';
+import { closePush, initMessageBox, initPush, refreshMessageInbox } from './push';
 
 describe('message box synchronization', () => {
   beforeEach(() => {
@@ -69,7 +71,25 @@ describe('message box synchronization', () => {
         content: '内容',
         read: false
       })
-    ]);
+    ], 'session-1');
+  });
+
+  it('reads the inbox with realtime disabled but never opens a push connection', async () => {
+    vi.stubEnv('VITE_APP_MESSAGE_ENABLED', 'false');
+    await initMessageBox();
+    await initPush();
+    expect(harness.list).toHaveBeenCalledOnce();
+    expect(harness.beginLoad).toHaveBeenCalledWith('session-1');
+    expect(harness.clearNotice).not.toHaveBeenCalled();
+    expect(harness.start).not.toHaveBeenCalled();
+  });
+
+  it('clears the inbox only when the token is absent', async () => {
+    vi.stubEnv('VITE_APP_MESSAGE_ENABLED', 'false');
+    harness.token = undefined;
+    await initMessageBox();
+    expect(harness.clearNotice).toHaveBeenCalledOnce();
+    expect(harness.list).not.toHaveBeenCalled();
   });
 
   it('discards an older response when an event refresh finishes first', async () => {
@@ -82,11 +102,55 @@ describe('message box synchronization', () => {
     );
     const first = initMessageBox();
     harness.list.mockResolvedValueOnce({ data: [{ messageId: 'new', category: 'system' }] });
-    await initMessageBox();
+    const second = refreshMessageInbox();
     resolveOlder({ data: [{ messageId: 'old', category: 'system' }] });
-    await first;
+    await Promise.all([first, second]);
     expect(harness.setNotices).toHaveBeenCalledOnce();
     expect(harness.setNotices.mock.calls[0][0][0].messageId).toBe('new');
+  });
+
+  it('coalesces simultaneous passive loads for one session', async () => {
+    let resolveList: (result: unknown) => void = () => undefined;
+    harness.list.mockImplementationOnce(() => new Promise(resolve => { resolveList = resolve; }));
+    const first = initMessageBox();
+    const second = initMessageBox();
+    expect(harness.list).toHaveBeenCalledOnce();
+    resolveList({ data: [] });
+    await Promise.all([first, second]);
+    expect(harness.setNotices).toHaveBeenCalledOnce();
+  });
+
+  it('ignores both late success and late failure from the previous identity', async () => {
+    let resolveA: (result: unknown) => void = () => undefined;
+    harness.list.mockImplementationOnce(() => new Promise(resolve => { resolveA = resolve; }));
+    const oldSuccess = initMessageBox();
+    harness.token = 'session-2';
+    harness.list.mockResolvedValueOnce({ data: [{ messageId: 'b', category: 'notice' }] });
+    await initMessageBox();
+    resolveA({ data: [{ messageId: 'a', category: 'notice' }] });
+    await oldSuccess;
+    expect(harness.setNotices).toHaveBeenCalledOnce();
+    expect(harness.setNotices.mock.calls[0][0][0].messageId).toBe('b');
+
+    let rejectA: (error: Error) => void = () => undefined;
+    harness.token = 'session-3';
+    harness.list.mockImplementationOnce(() => new Promise((_, reject) => { rejectA = reject; }));
+    const oldFailure = initMessageBox();
+    harness.token = 'session-4';
+    harness.list.mockResolvedValueOnce({ data: [{ messageId: 'd', category: 'notice' }] });
+    await initMessageBox();
+    rejectA(new Error('old session failed'));
+    await oldFailure;
+    expect(harness.failLoad).not.toHaveBeenCalled();
+    expect(harness.setNotices.mock.calls.at(-1)?.[0][0].messageId).toBe('d');
+  });
+
+  it('surfaces the active session failure so the box can retry', async () => {
+    harness.list.mockRejectedValueOnce(new Error('network failed'));
+    await initMessageBox();
+    expect(harness.failLoad).toHaveBeenCalledWith('session-1');
+    await initMessageBox();
+    expect(harness.setNotices).toHaveBeenCalledOnce();
   });
 
   it('ignores a response from a session that has signed out', async () => {
@@ -111,8 +175,7 @@ describe('message box synchronization', () => {
     await initPush();
     harness.options?.onConnected();
     harness.options?.onMessage('{"type":"message","data":{"notificationId":"1","title":"公告"}}');
-    await Promise.resolve();
-    expect(harness.list).toHaveBeenCalledTimes(2);
+    await vi.waitFor(() => expect(harness.list).toHaveBeenCalledTimes(2));
     expect(updated).toHaveBeenCalledTimes(2);
     expect(harness.notification).toHaveBeenCalledWith(expect.objectContaining({ title: '公告' }));
   });

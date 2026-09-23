@@ -114,6 +114,7 @@
         <el-table-column label="文件名" align="center" prop="fileName" />
         <el-table-column label="原名" align="center" prop="originalName" />
         <el-table-column label="文件后缀" align="center" prop="fileSuffix" />
+        <!-- @vue-generic {OssVO} -->
         <el-table-column label="文件展示" align="center" prop="url">
           <template #default="scope">
             <ImagePreview
@@ -160,6 +161,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
+        <!-- @vue-generic {OssVO} -->
         <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="下载" placement="top">
