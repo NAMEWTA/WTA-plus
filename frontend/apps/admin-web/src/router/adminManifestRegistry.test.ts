@@ -87,6 +87,8 @@ describe('admin selected manifest registry', () => {
     const cancelled = vi.fn();
     const stopBeforeImport = port!.subscribe(cancelled);
     stopBeforeImport();
+    await vi.dynamicImportSettled();
+    expect(cancelled).not.toHaveBeenCalled();
     const snapshots: Array<{ active: boolean; messageId: unknown }> = [];
     const stop = port!.subscribe(value => snapshots.push(value));
     await vi.waitFor(() => expect(snapshots).toEqual([{ active: true, messageId: '41' }]));
