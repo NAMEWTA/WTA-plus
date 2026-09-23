@@ -1,0 +1,19 @@
+{
+  "source": {
+    "head": "9f8fa2b1e36c851be8cee6763a84ebf6e2072928",
+    "tree": "ce402951a0c57655c8b1601297495610abf33960",
+    "clean": true
+  },
+  "time": "2026-09-23T12:17:57.257340+00:00",
+  "counts": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml_sha256": "45b04b8486078667c4ca4a33e9ad8f3f31a326b03ea87a2da3832e8ad9c13060",
+  "red_valid": true,
+  "assertion": "POST path101/body202 reached NotificationApplicationService via old Controller line48; verifyNoInteractions failed at line29",
+  "limits": "Standalone MockMvc with actual Controller and mocked Service, not full authorization/DB journey; later ServiceException assertion aborted after first failure",
+  "formal_attempts": 0
+}

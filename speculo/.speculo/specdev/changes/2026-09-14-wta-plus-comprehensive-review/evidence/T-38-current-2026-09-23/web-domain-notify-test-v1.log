@@ -1,0 +1,427 @@
+
+> @namewta/web-domain-notify@0.0.0 test /srv/WTA-plus/frontend/packages/web-domains/notify
+> vitest run src
+
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/notify
+
+stderr | src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 按行精确重试且挂起期间只发一次，成功刷新当前列表
+[Vue warn]: injection "Symbol(v-scx)" not found. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Server rendering context not provided. Make sure to only call useSSRContext() conditionally in the server build. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Unhandled error during execution of setup function 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+
+stderr | src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 零任务显示真实状态；失败能恢复按钮，缺ID和权限时无请求
+[Vue warn]: injection "Symbol(v-scx)" not found. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Server rendering context not provided. Make sure to only call useSSRContext() conditionally in the server build. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Unhandled error during execution of setup function 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+
+stderr | src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 取消明确作用整个通知，确认等待期间重复点击不再发请求
+[Vue warn]: injection "Symbol(v-scx)" not found. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Server rendering context not provided. Make sure to only call useSSRContext() conditionally in the server build. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Unhandled error during execution of setup function 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+
+stderr | src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 卸载后晚到的重试结果不提示也不刷新
+[Vue warn]: injection "Symbol(v-scx)" not found. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Server rendering context not provided. Make sure to only call useSSRContext() conditionally in the server build. 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+[Vue warn]: Unhandled error during execution of setup function 
+  at <NotificationPage runtime= {
+  service: {
+    deliveries: [Function: Mock] {
+      _isMockFunction: true,
+      getMockImplementation: [Function (anonymous)],
+      mock: [Object],
+      mockImplementation: [Function: mockImplementation],
+      mockImplementationOnce: [Function: mockImplementationOnce],
+      withImplementation: [Function: withImplementation],
+      mockReturnThis: [Function: mockReturnThis],
+      mockReturnValue: [Function: mockReturnValue],
+      mockReturnValueOnce: [Function: mockReturnValueOnce],
+      mockThrow: [Function: mockThrow],
+      mockThrowOnce: [Function: mockThrowOnce],
+      mockResolvedValue: [Function: mockResolvedValue],
+      mockResolvedValueOnce: [Function: mockResolvedValueOnce],
+      mockRejectedValue: [Function: mockRejectedValue],
+      mockRejectedValueOnce: [Function: mockRejectedValueOnce],
+      mockClear: [Function: mockClear],
+      mockReset: [Function: mockReset],
+      mockRestore: [Function: mockRestore],
+      mockName: [Function: mockName],
+      getMockName: [Function: getMockName],
+      Symbol(Symbol.dispose): [Function (anonymous)]
+    },
+    notification: { retry: [Function], cancel: [Function] }
+  },
+  hasPermission: [Function: hasPermission],
+  dicts: [Function: dicts]
+} >
+
+ ❯ src/NotificationPage.test.ts (4 tests | 4 failed) 23ms
+     × 按行精确重试且挂起期间只发一次，成功刷新当前列表 13ms
+     × 零任务显示真实状态；失败能恢复按钮，缺ID和权限时无请求 3ms
+     × 取消明确作用整个通知，确认等待期间重复点击不再发请求 2ms
+     × 卸载后晚到的重试结果不提示也不刷新 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 按行精确重试且挂起期间只发一次，成功刷新当前列表
+ FAIL  src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 零任务显示真实状态；失败能恢复按钮，缺ID和权限时无请求
+ FAIL  src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 取消明确作用整个通知，确认等待期间重复点击不再发请求
+ FAIL  src/NotificationPage.test.ts > 通知监控真实 SFC 人工操作 > 卸载后晚到的重试结果不提示也不刷新
+TypeError: Cannot read properties of undefined (reading 'modules')
+ ❯ _sfc_main.setup src/NotificationPage.vue:902:14
+    174| onMounted(load);
+    175| onBeforeUnmount(() => { ++queryGeneration; ++lifetime; });
+    176| </script>
+       |          ^
+    177|
+ ❯ callWithErrorHandling ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:200:19
+ ❯ setupStatefulComponent ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8151:25
+ ❯ setupComponent ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8113:36
+ ❯ mountComponent ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6023:7
+ ❯ processComponent ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:5989:9
+ ❯ patch ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:5494:11
+ ❯ render ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6818:7
+ ❯ Object.mount ../../../node_modules/.pnpm/@vue+runtime-core@3.5.40/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:4272:13
+ ❯ fixture src/NotificationPage.test.ts:54:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  4 failed | 9 passed (13)
+   Start at  08:32:09
+   Duration  660ms (transform 467ms, setup 0ms, import 747ms, tests 46ms, environment 2ms)
+
+/srv/WTA-plus/frontend/packages/web-domains/notify:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @namewta/web-domain-notify@0.0.0 test: `vitest run src`
+Exit status 1

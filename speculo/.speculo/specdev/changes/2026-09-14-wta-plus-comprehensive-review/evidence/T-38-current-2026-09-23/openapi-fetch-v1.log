@@ -1,0 +1,5 @@
+
+> @namewta/tooling-openapi@0.0.0 openapi:fetch /srv/WTA-plus/frontend/tooling/openapi
+> node src/cli.mjs fetch --source /tmp/wta-t38/openapi-live/26d29e5a680cf899/source.json --backend-commit 7a6f75ac9238399daf7936797d07da141f0f5a03 --backend-repository NAMEWTA/WTA-plus --runtime-endpoint /v3/api-docs
+
+OpenAPI snapshot updated: 436 paths, 445 schemas, sha256=8f57fc94ab0936c48d57b5947879ea0e7280a6b559dc4895852a9670ae97b3c7

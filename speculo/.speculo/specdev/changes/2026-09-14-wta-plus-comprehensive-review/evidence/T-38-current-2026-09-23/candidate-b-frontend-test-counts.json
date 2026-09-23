@@ -1,0 +1,232 @@
+{
+  "source": "a3b289efbaf5862e55a40a6c58a6ad66c79b40b2",
+  "log_sha256": "63fa2ed181a9c5fd564b7e9ee2e78e79e0adbb4cec38392d753c05c81f991879",
+  "packages": [
+    {
+      "package": "packages/platform/contracts",
+      "framework": "vitest",
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0
+    },
+    {
+      "package": "packages/platform/permission",
+      "framework": "vitest",
+      "tests": 13,
+      "passed": 13,
+      "skipped": 0
+    },
+    {
+      "package": "apps/sso-web",
+      "framework": "vitest",
+      "tests": 5,
+      "passed": 5,
+      "skipped": 0
+    },
+    {
+      "package": "packages/platform/validation",
+      "framework": "vitest",
+      "tests": 3,
+      "passed": 3,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-kit/rich-text",
+      "framework": "vitest",
+      "tests": 4,
+      "passed": 4,
+      "skipped": 0
+    },
+    {
+      "package": "packages/adapters/storage-browser",
+      "framework": "vitest",
+      "tests": 5,
+      "passed": 5,
+      "skipped": 0
+    },
+    {
+      "package": "packages/adapters/oss-upload-browser",
+      "framework": "vitest",
+      "tests": 8,
+      "passed": 8,
+      "skipped": 0
+    },
+    {
+      "package": "packages/platform/auth",
+      "framework": "vitest",
+      "tests": 18,
+      "passed": 18,
+      "skipped": 0
+    },
+    {
+      "package": "packages/platform/app-runtime",
+      "framework": "vitest",
+      "tests": 23,
+      "passed": 23,
+      "skipped": 0
+    },
+    {
+      "package": "packages/platform/http",
+      "framework": "vitest",
+      "tests": 7,
+      "passed": 7,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-kit/file-upload",
+      "framework": "vitest",
+      "tests": 7,
+      "passed": 7,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-kit/permission",
+      "framework": "vitest",
+      "tests": 16,
+      "passed": 16,
+      "skipped": 0
+    },
+    {
+      "package": "packages/domains/notify",
+      "framework": "vitest",
+      "tests": 4,
+      "passed": 4,
+      "skipped": 0
+    },
+    {
+      "package": "packages/domains/demo",
+      "framework": "vitest",
+      "tests": 4,
+      "passed": 4,
+      "skipped": 0
+    },
+    {
+      "package": "packages/domains/admin",
+      "framework": "vitest",
+      "tests": 63,
+      "passed": 63,
+      "skipped": 0
+    },
+    {
+      "package": "packages/adapters/axios-browser",
+      "framework": "vitest",
+      "tests": 46,
+      "passed": 46,
+      "skipped": 0
+    },
+    {
+      "package": "packages/domains/profile",
+      "framework": "vitest",
+      "tests": 22,
+      "passed": 22,
+      "skipped": 0
+    },
+    {
+      "package": "packages/domains/third",
+      "framework": "vitest",
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0
+    },
+    {
+      "package": "packages/domains/system",
+      "framework": "vitest",
+      "tests": 95,
+      "passed": 95,
+      "skipped": 0
+    },
+    {
+      "package": "packages/domains/workflow",
+      "framework": "vitest",
+      "tests": 7,
+      "passed": 7,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-domains/demo",
+      "framework": "vitest",
+      "tests": 2,
+      "passed": 2,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-domains/admin",
+      "framework": "vitest",
+      "tests": 6,
+      "passed": 6,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-domains/notify",
+      "framework": "vitest",
+      "tests": 13,
+      "passed": 13,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-domains/profile",
+      "framework": "vitest",
+      "tests": 36,
+      "passed": 36,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-domains/third",
+      "framework": "vitest",
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-domains/system",
+      "framework": "vitest",
+      "tests": 73,
+      "passed": 73,
+      "skipped": 0
+    },
+    {
+      "package": "apps/home-web",
+      "framework": "vitest",
+      "tests": 15,
+      "passed": 15,
+      "skipped": 0
+    },
+    {
+      "package": "packages/web-domains/workflow",
+      "framework": "vitest",
+      "tests": 59,
+      "passed": 59,
+      "skipped": 0
+    },
+    {
+      "package": "apps/admin-web",
+      "framework": "vitest",
+      "tests": 71,
+      "passed": 71,
+      "skipped": 0
+    },
+    {
+      "package": "tooling/openapi",
+      "framework": "node-test",
+      "tests": 7,
+      "passed": 7,
+      "skipped": 0
+    },
+    {
+      "package": "tooling/architecture",
+      "framework": "node-test",
+      "tests": 101,
+      "passed": 101,
+      "skipped": 0
+    }
+  ],
+  "compile_only_packages": [
+    "packages/api-contracts"
+  ],
+  "parser_note": "Initial strict coverage assertion found api-contracts absent from test summaries; inspected script is tsc --noEmit, recorded separately rather than counting as tests. The workspace command itself exited 0.",
+  "totals": {
+    "test_packages": 31,
+    "tests": 736,
+    "skipped": 0
+  }
+}

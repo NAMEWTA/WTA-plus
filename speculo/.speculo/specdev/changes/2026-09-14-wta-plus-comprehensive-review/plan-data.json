@@ -3162,15 +3162,15 @@
       "notify:outbox",
       "openapi:notify"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 165,
+    "plan_revision": 166,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: HTTP ID 冲突、真实 DB requeue 并发、API/领域合同测试",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "retry 忽略 deliveryId，无任务仍返回 QUEUED；Controller 在有 body 时不使用 path ID。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "7a6f75ac9238399daf7936797d07da141f0f5a03",
+    "result_sha": "a3b289efbaf5862e55a40a6c58a6ad66c79b40b2",
     "contract_ids": [
       "AC-038"
     ],

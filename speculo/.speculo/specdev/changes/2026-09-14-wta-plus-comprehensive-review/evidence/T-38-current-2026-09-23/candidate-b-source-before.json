@@ -1,0 +1,18 @@
+{
+  "head": "a3b289efbaf5862e55a40a6c58a6ad66c79b40b2",
+  "tree": "e2997f977fbbb2d3b48590233b38865b689e5a87",
+  "clean": true,
+  "backend_source": "7a6f75ac9238399daf7936797d07da141f0f5a03",
+  "byte_identical_scopes": [
+    "backend",
+    "release-artifacts",
+    ".agents"
+  ],
+  "delta_paths": [
+    "frontend/packages/api-contracts/README.md",
+    "frontend/packages/api-contracts/generated/openapi.ts",
+    "frontend/packages/api-contracts/openapi/current.json",
+    "frontend/packages/api-contracts/openapi/revisions/5f2afc58f2a31e4c172fbf12076d43f1aba8fbfbba6e71079701bc335c976302/provenance.json",
+    "frontend/packages/api-contracts/openapi/revisions/5f2afc58f2a31e4c172fbf12076d43f1aba8fbfbba6e71079701bc335c976302/source.json"
+  ]
+}

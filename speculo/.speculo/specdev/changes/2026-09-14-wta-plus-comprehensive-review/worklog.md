@@ -234,3 +234,7 @@ writer 的 selected-dev-v2 退出0，13项通过、8项真实数据库用例因o
 legacy对/tmp/wta-t38/preliminary-source的21文件哈希冻结副本预审未发现已证新增生产安全阻断，提出混合外部UNKNOWN整批零写、IN_APP缺关系幂等和确定性锁竞争验证缺口。writer已补部分场景，继续在原测试白名单补真实Planner失败后修配置重试、剩余预算、orphan与claim交错，并补真实SaInterceptor权限负例；standalone无拦截器HTTP红灯不冒充权限实证。唯一产品writer/开发构建窗仍属cors_audit；Lead不并行Maven/前端构建/服务。
 
 ops在/tmp/wta-t38准备完整JAR的owned MySQL/Redis/MinIO live OpenAPI捕获驱动，仅静态和合成自检；旧target JAR不属于T38。待后端固定clean SHA并独立检查、clean full package后，才运行该JAR并直接捕获/v3/api-docs；生成合同回写后另固定最终候选，不混淆backend source SHA与最终前端生成物SHA。当前尚未启动上述真实服务。
+
+## revision166 — T38完成
+
+Revision166: T38 accepted at a3b289e, backend sourceA7a6f75 explicit; final real14 and frontend736 zeroSkip, defaultA854 executed/163 environment skips, fullA/coreB and complete frontend gates passed. Live Redis config failure preserved; correct raw HTTP provenance and clean owned cleanup.10done/2cancelled/38ready; nextT39; Goal active, no archive.

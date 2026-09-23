@@ -1,0 +1,19 @@
+
+> @namewta/tooling-openapi@0.0.0 test /srv/WTA-plus/frontend/tooling/openapi
+> node --test test/*.test.mjs
+
+✔ invalid and missing sources preserve the last-known-good active revision (30.727996ms)
+✔ valid fetch persists an immutable revision before atomically activating its pointer (20.3669ms)
+✔ identical snapshots with different provenance activate distinct immutable revisions (24.930855ms)
+✔ an unactivated revision cannot change the last-known-good contract (39.886799ms)
+✔ generation rejects stale or invalid provenance in the active immutable revision (32.586313ms)
+✔ check detects source drift and manual generated-file edits without writing (48.447198ms)
+✔ HTTP source errors redact credentials and query parameters for normalized schemes (1.168897ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 827.863325

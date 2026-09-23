@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-38"
 title: "重试与取消接口准确定位资源和任务"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -121,13 +121,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-038`：A/B 失败仅指定 A 排队；外部 UNKNOWN 拒绝，归属错误/ID 冲突拒绝。
-- [ ] `AC-038`：全部完成时状态不变且 queuedCount=0；重复请求无多份活跃 outbox。
-- [ ] `AC-038`：取消返回的对象与 URL 一致；鉴权和日志保持。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-038`：A/B 失败仅指定 A 排队；外部 UNKNOWN 拒绝，归属错误/ID 冲突拒绝。
+- [x] `AC-038`：全部完成时状态不变且 queuedCount=0；重复请求无多份活跃 outbox。
+- [x] `AC-038`：取消返回的对象与 URL 一致；鉴权和日志保持。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -154,3 +154,7 @@ Intent→Outbox→Delivery统一锁序；先当前读完整候选/校验，再�
 ## revision165 PENDING字典合同
 
 revision165：NotifyDelivery已有真实PENDING状态，但notify_delivery_status基座字典缺该值，重试后监控会显示未知。提前扩50-cde-base-dml.sql写集，只补唯一PENDING=待投递字典项，保留同六SQL基座与其他初始化；前端Delivery类型/字典渲染同步，不新增后端状态。不得执行生产DML或重放基座；当前新隔离库验收，存量Tag差异由T30持有。
+
+## revision166 当前验收完成
+
+产品A `7a6f75ac9238399daf7936797d07da141f0f5a03`，完整合同/result B `a3b289efbaf5862e55a40a6c58a6ad66c79b40b2`，formal final candidates=1。真实14、前端736零skip，默认A854执行/163环境skip如实保留；full/core与合同/双轴审查通过。详见evidence/T-38.md。下一T39，Goal仍active。

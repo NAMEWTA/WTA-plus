@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotificationRetryControllerContractTest#retryRejectsConflictingBodyIntentBeforeCallingService",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T12:16:26.015103+00:00",
+  "finished_at": "2026-09-23T12:16:56.001820+00:00",
+  "exit_code": 1,
+  "log": "red-http-identity.log"
+}

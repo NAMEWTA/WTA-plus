@@ -1,0 +1,4 @@
+
+> @namewta/tooling-openapi@0.0.0 typecheck /srv/WTA-plus/frontend/tooling/openapi
+> node --check src/index.mjs && node --check src/cli.mjs && node --check test/openapi.test.mjs
+

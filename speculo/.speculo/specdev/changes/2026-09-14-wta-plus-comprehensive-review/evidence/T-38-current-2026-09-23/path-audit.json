@@ -1,0 +1,33 @@
+{
+  "base": "b47ff8b91cfef02a9f28de0e201edcd1575a950f",
+  "source": "a3b289efbaf5862e55a40a6c58a6ad66c79b40b2",
+  "product_paths": [
+    ".agents/skills/engineering-standards/references/notification.md",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotificationRetryControllerContractTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyManualRetryIntegrationTest.java",
+    "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationApplicationService.java",
+    "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationRetryCommand.java",
+    "backend/wta-api/src/main/java/org/namewta/notify/api/RetryReceipt.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/admin/NotificationController.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyOutboxMapper.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java",
+    "backend/wta-modules/wta-notify/src/main/resources/mapper/notify/NotifyOutboxMapper.xml",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java",
+    "frontend/packages/api-contracts/README.md",
+    "frontend/packages/api-contracts/generated/openapi.ts",
+    "frontend/packages/api-contracts/openapi/current.json",
+    "frontend/packages/api-contracts/openapi/revisions/5f2afc58f2a31e4c172fbf12076d43f1aba8fbfbba6e71079701bc335c976302/provenance.json",
+    "frontend/packages/api-contracts/openapi/revisions/5f2afc58f2a31e4c172fbf12076d43f1aba8fbfbba6e71079701bc335c976302/source.json",
+    "frontend/packages/domains/notify/src/index.ts",
+    "frontend/packages/domains/notify/src/transport.test.ts",
+    "frontend/packages/domains/notify/src/transport.ts",
+    "frontend/packages/domains/notify/src/types.ts",
+    "frontend/packages/web-domains/notify/src/NotificationPage.test.ts",
+    "frontend/packages/web-domains/notify/src/NotificationPage.vue",
+    "frontend/packages/web-domains/notify/src/index.test.ts",
+    "frontend/packages/web-domains/notify/src/index.ts",
+    "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql"
+  ],
+  "all_in_declared_scope": true
+}

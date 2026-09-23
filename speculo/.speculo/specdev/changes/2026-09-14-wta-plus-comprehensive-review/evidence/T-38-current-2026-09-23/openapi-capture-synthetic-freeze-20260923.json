@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t38/test_openapi_capture_safety.py"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T12:39:19.644516+00:00",
+  "finished_at": "2026-09-23T12:39:19.899824+00:00",
+  "exit_code": 0,
+  "log": "openapi-capture-synthetic-freeze-20260923.log"
+}

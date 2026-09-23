@@ -1,5 +1,7 @@
 # 恢复入口
 
+当前revision166：10done/2cancelled/38ready，T38已验收a3b289e；无产品writer，下一T39。预研/tmp/wta-t39-implementation-outline.md与/tmp/wta-t50-current-audit.md仅实施输入；以下旧状态保留。
+
 当前revision163：9done/2cancelled/39ready，T02已验收617a369，T03取消重复施工但AC003由T30保留；下一T38。以下是历史状态。
 
 当前revision162：9done/1cancelled/40ready，T02已验收617a369；无产品writer，下一T03裁决再T38；以下旧状态按时间保留。
@@ -162,3 +164,7 @@ Revision164: T38 started fromb47ff8b after acceptedT02 and no-new-workT03 closur
 ## revision165 T38字典合同补齐
 
 revision165：NotifyDelivery已有真实PENDING状态，但notify_delivery_status基座字典缺该值，重试后监控会显示未知。提前扩50-cde-base-dml.sql写集，只补唯一PENDING=待投递字典项，保留同六SQL基座与其他初始化；前端Delivery类型/字典渲染同步，不新增后端状态。不得执行生产DML或重放基座；当前新隔离库验收，存量Tag差异由T30持有。
+
+## revision166 — T38完成
+
+Revision166: T38 accepted at a3b289e, backend sourceA7a6f75 explicit; final real14 and frontend736 zeroSkip, defaultA854 executed/163 environment skips, fullA/coreB and complete frontend gates passed. Live Redis config failure preserved; correct raw HTTP provenance and clean owned cleanup.10done/2cancelled/38ready; nextT39; Goal active, no archive.

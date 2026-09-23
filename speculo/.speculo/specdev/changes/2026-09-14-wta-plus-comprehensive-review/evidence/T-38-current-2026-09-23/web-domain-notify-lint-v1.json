@@ -1,0 +1,15 @@
+{
+  "command": [
+    "env",
+    "PATH=/tmp/wta-t02-c1/tool-bin:/root/.volta/tools/image/packages/@openai/codex/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/root/go/bin:/usr/local/go/bin:/root/.codex/tmp/arg0/codex-arg0v5ESqe:/root/.volta/tools/image/packages/@openai/codex/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/root/.volta/tools/image/npm/12.0.2/bin:/root/.volta/tools/image/pnpm/11.1.3/bin:/root/.volta/tools/image/node/24.21.0/bin:/root/.orca-relay/bin:/usr/local/go/bin:/root/go/bin:/usr/local/go/bin:/root/go/bin:/root/go/bin:/usr/local/go/bin:/root/.volta/tools/image/npm/12.0.2/bin:/root/.volta/tools/image/pnpm/11.1.3/bin:/root/.volta/tools/image/node/24.21.0/bin:/root/.volta/bin:/root/.local/bin:/root/.sdkman/candidates/maven/current/bin:/root/.sdkman/candidates/java/current/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+    "pnpm",
+    "--filter",
+    "@namewta/web-domain-notify",
+    "lint"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T12:33:57.289048+00:00",
+  "finished_at": "2026-09-23T12:33:57.958972+00:00",
+  "exit_code": 0,
+  "log": "web-domain-notify-lint-v1.log"
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "typecheck"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T12:59:42.939866+00:00",
+  "finished_at": "2026-09-23T13:00:35.738492+00:00",
+  "exit_code": 0,
+  "log": "candidate-b-frontend-typecheck.log"
+}

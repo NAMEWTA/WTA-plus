@@ -1,0 +1,18 @@
+{
+  "mode": "static-preflight-only",
+  "service_started": false,
+  "expected_images": [
+    "mysql:8.4.9",
+    "redis:8.6.3",
+    "pgsty/minio@sha256:83885c27b3b5b673049e33ddf4029afe2c134fd51ce4309e65e4f39d3b9ca282"
+  ],
+  "helper_sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e",
+  "helper_matches_frozen_sha": true,
+  "initializer_exists": true,
+  "six_sql_files_present": true,
+  "baseline_revision": "b36ef1c512d1af0e1196e3867dc836af692e5f15873617e168fbf166e140f0a8",
+  "source_head": "7a6f75ac9238399daf7936797d07da141f0f5a03",
+  "source_clean": true,
+  "jar_exists": true,
+  "jar_sha256_if_present": "01678e64ede453a387d352b7961cb97ee382bd945ed2a2935851f46ee52c1ef4"
+}

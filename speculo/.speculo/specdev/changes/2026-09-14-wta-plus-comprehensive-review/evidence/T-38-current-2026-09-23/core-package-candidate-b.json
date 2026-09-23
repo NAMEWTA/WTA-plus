@@ -1,0 +1,14 @@
+{
+  "command": [
+    "./mvnw",
+    "clean",
+    "package",
+    "-Pbundle-core",
+    "-Dmaven.test.skip=true"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T13:02:56.398348+00:00",
+  "finished_at": "2026-09-23T13:03:44.695504+00:00",
+  "exit_code": 0,
+  "log": "core-package-candidate-b.log"
+}

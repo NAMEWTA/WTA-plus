@@ -1,0 +1,4 @@
+
+> @namewta/domain-notify@0.0.0 typecheck /srv/WTA-plus/frontend/packages/domains/notify
+> tsc --noEmit -p tsconfig.json
+

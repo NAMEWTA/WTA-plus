@@ -1,0 +1,13 @@
+
+> @namewta/web-domain-notify@0.0.0 test /srv/WTA-plus/frontend/packages/web-domains/notify
+> vitest run src
+
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/notify
+
+
+ Test Files  4 passed (4)
+      Tests  13 passed (13)
+   Start at  08:32:29
+   Duration  1.02s (transform 622ms, setup 0ms, import 999ms, tests 332ms, environment 3ms)
+

@@ -1,0 +1,4 @@
+
+> @namewta/web-domain-notify@0.0.0 typecheck /srv/WTA-plus/frontend/packages/web-domains/notify
+> vue-tsc --noEmit -p tsconfig.json
+

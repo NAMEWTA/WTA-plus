@@ -1,0 +1,510 @@
+
+> wta-vue-plus@6.0.0 build:prod /srv/WTA-plus/frontend
+> pnpm architecture:check && pnpm build:dependencies && pnpm --filter @namewta/admin-web build:prod && pnpm --filter @namewta/home-web build:prod && pnpm --filter @namewta/sso-web build:prod
+
+
+> wta-vue-plus@6.0.0 architecture:check /srv/WTA-plus/frontend
+> namewta-architecture check --root .
+
+Architecture check passed: 33 workspace package(s), 0 reviewed baseline violation(s).
+
+> wta-vue-plus@6.0.0 build:dependencies /srv/WTA-plus/frontend
+> pnpm -r --workspace-concurrency=1 --filter '!./apps/**' --filter '!wta-vue-plus' --if-present build
+
+Scope: 29 of 33 workspace projects
+
+> @namewta/api-contracts@0.0.0 build /srv/WTA-plus/frontend/packages/api-contracts
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/platform-contracts@0.0.0 build /srv/WTA-plus/frontend/packages/platform/contracts
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/platform-permission@0.0.0 build /srv/WTA-plus/frontend/packages/platform/permission
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/platform-validation@0.0.0 build /srv/WTA-plus/frontend/packages/platform/validation
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-kit-rich-text@0.0.0 build /srv/WTA-plus/frontend/packages/web-kit/rich-text
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/architecture@0.0.0 build /srv/WTA-plus/frontend/tooling/architecture
+> node --check ./src/index.mjs && node --check ./src/cli.mjs
+
+
+> @namewta/tooling-openapi@0.0.0 build /srv/WTA-plus/frontend/tooling/openapi
+> node --check src/index.mjs && node --check src/cli.mjs
+
+
+> @namewta/adapter-oss-upload-browser@0.0.0 build /srv/WTA-plus/frontend/packages/adapters/oss-upload-browser
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/adapter-storage-browser@0.0.0 build /srv/WTA-plus/frontend/packages/adapters/storage-browser
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/platform-app-runtime@0.0.0 build /srv/WTA-plus/frontend/packages/platform/app-runtime
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/platform-auth@0.0.0 build /srv/WTA-plus/frontend/packages/platform/auth
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/platform-http@0.0.0 build /srv/WTA-plus/frontend/packages/platform/http
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-kit-file-upload@0.0.0 build /srv/WTA-plus/frontend/packages/web-kit/file-upload
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-kit-permission@0.0.0 build /srv/WTA-plus/frontend/packages/web-kit/permission
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/adapter-axios-browser@0.0.0 build /srv/WTA-plus/frontend/packages/adapters/axios-browser
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/domain-admin@0.0.0 build /srv/WTA-plus/frontend/packages/domains/admin
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/domain-demo@0.0.0 build /srv/WTA-plus/frontend/packages/domains/demo
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/domain-notify@0.0.0 build /srv/WTA-plus/frontend/packages/domains/notify
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/domain-profile@0.0.0 build /srv/WTA-plus/frontend/packages/domains/profile
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/domain-system@0.0.0 build /srv/WTA-plus/frontend/packages/domains/system
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/domain-third@0.0.0 build /srv/WTA-plus/frontend/packages/domains/third
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/domain-workflow@0.0.0 build /srv/WTA-plus/frontend/packages/domains/workflow
+> tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-domain-admin@0.0.0 build /srv/WTA-plus/frontend/packages/web-domains/admin
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-domain-demo@0.0.0 build /srv/WTA-plus/frontend/packages/web-domains/demo
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-domain-notify@0.0.0 build /srv/WTA-plus/frontend/packages/web-domains/notify
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-domain-profile@0.0.0 build /srv/WTA-plus/frontend/packages/web-domains/profile
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-domain-system@0.0.0 build /srv/WTA-plus/frontend/packages/web-domains/system
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-domain-third@0.0.0 build /srv/WTA-plus/frontend/packages/web-domains/third
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/web-domain-workflow@0.0.0 build /srv/WTA-plus/frontend/packages/web-domains/workflow
+> vue-tsc --noEmit -p tsconfig.json
+
+
+> @namewta/admin-web@0.0.0 build:prod /srv/WTA-plus/frontend/apps/admin-web
+> vite build --mode production
+
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 3446 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/build-mode.json                                       0.03 kB │ gzip:   0.05 kB
+dist/assets/404_cloud-CPexjtDj.png                         4.76 kB
+dist/assets/iconfont.1785140083044-G0HNy9M3.woff           5.70 kB
+dist/assets/maxkey-BQHOSwiS.svg                            9.48 kB │ gzip:   7.19 kB
+dist/assets/iconfont.1785140083044-DQWiQZ_I.ttf           10.31 kB
+dist/assets/iconfont.1784893283450-B_rcQgS3.woff          31.42 kB
+dist/assets/iconfont.1784893283450-BKeHq76J.ttf           55.88 kB
+dist/assets/profile-BDh5Iahw.jpg                          86.45 kB
+dist/assets/404-N4aRkdWY.png                              98.07 kB
+dist/index.html                                          119.15 kB │ gzip:  51.47 kB
+dist/assets/401-HGF6Q5qM.gif                             164.22 kB
+dist/assets/OpenApiAdminPage-BfTp1EUp.css                  0.04 kB │ gzip:   0.06 kB
+dist/assets/DepartmentPage-DlZETFJk.css                    0.04 kB │ gzip:   0.06 kB
+dist/assets/PostPage-Uao_uA3R.css                          0.04 kB │ gzip:   0.06 kB
+dist/assets/DictTag-Cu_YEvWw.css                           0.05 kB │ gzip:   0.06 kB
+dist/assets/PersonProfileDetailPage-Bb9Bx0Xe.css           0.05 kB │ gzip:   0.07 kB
+dist/assets/EnterpriseProfileDetailPage-B_ZP-wGC.css       0.05 kB │ gzip:   0.07 kB
+dist/assets/UserSelect-DbDxdMWB.css                        0.08 kB │ gzip:   0.10 kB
+dist/assets/LeaveEditPage-Cb_s_e2-.css                     0.09 kB │ gzip:   0.11 kB
+dist/assets/SsoAppPage-5qutSfkM.css                        0.10 kB │ gzip:   0.11 kB
+dist/assets/external-BbxLxmZe.css                          0.13 kB │ gzip:   0.13 kB
+dist/assets/TaskListPage-D-Avtq8q.css                      0.14 kB │ gzip:   0.13 kB
+dist/assets/InstancePage-BTT1ZIX8.css                      0.18 kB │ gzip:   0.15 kB
+dist/assets/DesignPage-pdvQjObe.css                        0.18 kB │ gzip:   0.14 kB
+dist/assets/LoginInfoPage-L9PEipKM.css                     0.18 kB │ gzip:   0.17 kB
+dist/assets/OnlinePage-CJdRovzm.css                        0.18 kB │ gzip:   0.16 kB
+dist/assets/UserAuthRolePage-DKJEJMSn.css                  0.19 kB │ gzip:   0.13 kB
+dist/assets/SpelPage-CL3D2KMu.css                          0.22 kB │ gzip:   0.18 kB
+dist/assets/RoleAuthUserPage-BlVtJdAJ.css                  0.23 kB │ gzip:   0.15 kB
+dist/assets/OssPage-umJ9ao0E.css                           0.23 kB │ gzip:   0.19 kB
+dist/assets/SvgIcon-BoZ58hz6.css                           0.24 kB │ gzip:   0.17 kB
+dist/assets/PersonProfileDetailPanel-BqfTf6Ac.css          0.26 kB │ gzip:   0.19 kB
+dist/assets/CachePage-C1JpoT49.css                         0.27 kB │ gzip:   0.16 kB
+dist/assets/Pagination-CEeABPRO.css                        0.30 kB │ gzip:   0.18 kB
+dist/assets/EnterpriseProfileDetailPanel-sOlOb0zB.css      0.31 kB │ gzip:   0.20 kB
+dist/assets/sso-callback-Bg75ek1e.css                      0.33 kB │ gzip:   0.21 kB
+dist/assets/OssConfigPage-DQZ1pNN_.css                     0.39 kB │ gzip:   0.25 kB
+dist/assets/ImagePreview-C1j9o2DN.css                      0.41 kB │ gzip:   0.25 kB
+dist/assets/FileUpload-Dr62WhGK.css                        0.47 kB │ gzip:   0.26 kB
+dist/assets/PersonProfileReviewPage-CIZ7rZ4d.css           0.50 kB │ gzip:   0.28 kB
+dist/assets/ClientPage-LpEFgi-l.css                        0.57 kB │ gzip:   0.25 kB
+dist/assets/Editor-Wlu47-0I.css                            0.57 kB │ gzip:   0.26 kB
+dist/assets/MaterialTagPage-4mA3DaLI.css                   0.59 kB │ gzip:   0.30 kB
+dist/assets/EnterpriseProfileReviewPage-qlck7bBl.css       0.60 kB │ gzip:   0.31 kB
+dist/assets/401-CfTqbcXt.css                               0.74 kB │ gzip:   0.29 kB
+dist/assets/ConfigPage-CrDYPNfM.css                        0.75 kB │ gzip:   0.34 kB
+dist/assets/RightToolbar-B9vxLAUp.css                      0.82 kB │ gzip:   0.38 kB
+dist/assets/OpenApiWorkspace-ClLgx5Je.css                  0.95 kB │ gzip:   0.44 kB
+dist/assets/NoticePage-tjOTjMfr.css                        0.96 kB │ gzip:   0.41 kB
+dist/assets/DictPage-1loac5KI.css                          0.98 kB │ gzip:   0.41 kB
+dist/assets/UserPage-D1zqCWb2.css                          0.99 kB │ gzip:   0.47 kB
+dist/assets/PersonProfilePage-C6MYsOHc.css                 1.27 kB │ gzip:   0.44 kB
+dist/assets/RichTextPage-Bh3u9d6c.css                      1.29 kB │ gzip:   0.51 kB
+dist/assets/EnterpriseProfilePage-CClfruEM.css             1.30 kB │ gzip:   0.43 kB
+dist/assets/MenuPage-BJayexiR.css                          1.58 kB │ gzip:   0.63 kB
+dist/assets/LoginPage-C1v9ymVV.css                         2.08 kB │ gzip:   0.69 kB
+dist/assets/404-0PdgweGG.css                               2.85 kB │ gzip:   0.73 kB
+dist/assets/RolePage-B9jwoAGb.css                          3.05 kB │ gzip:   0.75 kB
+dist/assets/OperationLogPage-C93Q2MzJ.css                  3.50 kB │ gzip:   1.12 kB
+dist/assets/views-DlXg0PLj.css                             4.38 kB │ gzip:   1.13 kB
+dist/assets/DefinitionPage-DcNb5_tZ.css                    4.49 kB │ gzip:   0.94 kB
+dist/assets/register-uhAu0-p8.css                          4.77 kB │ gzip:   1.40 kB
+dist/assets/login-CcjOshtk.css                             5.49 kB │ gzip:   1.52 kB
+dist/assets/profile-BEsf5Gmw.css                           7.77 kB │ gzip:   2.17 kB
+dist/assets/index-C0VX9F1P.css                            34.71 kB │ gzip:   6.63 kB
+dist/assets/access-Bw0k-ArY.css                           39.70 kB │ gzip:   6.13 kB
+dist/assets/index-CjNbimWi.css                           992.83 kB │ gzip: 155.85 kB
+dist/assets/typescript-DOc6skV4.js                         0.02 kB │ gzip:   0.04 kB
+dist/assets/maxkey-BmdfR6mp.js                             0.05 kB │ gzip:   0.07 kB
+dist/assets/_plugin-vue_export-helper-BDNMzG2s.js          0.08 kB │ gzip:   0.09 kB
+dist/assets/validator-B2gtG0YD.js                          0.09 kB │ gzip:   0.11 kB
+dist/assets/runtime-B3fcm4GK.js                            0.09 kB │ gzip:   0.10 kB
+dist/assets/await-to-js.es5-B7SVWeu9.js                    0.13 kB │ gzip:   0.12 kB
+dist/assets/ossContent-BKyptpXl.js                         0.16 kB │ gzip:   0.15 kB
+dist/assets/chart-CHqf941c.js                              0.25 kB │ gzip:   0.20 kB
+dist/assets/clamp-DludkI29.js                              0.27 kB │ gzip:   0.19 kB
+dist/assets/wta-CMA0FYlC.js                                0.28 kB │ gzip:   0.22 kB
+dist/assets/size-Nt5BB8xT.js                               0.28 kB │ gzip:   0.22 kB
+dist/assets/redirect-CSkT-Ksg.js                           0.29 kB │ gzip:   0.24 kB
+dist/assets/caret-back-DIbQCOlN.js                         0.32 kB │ gzip:   0.24 kB
+dist/assets/caret-forward-BPDk5UNW.js                      0.32 kB │ gzip:   0.24 kB
+dist/assets/utils-qRDw9BHp.js                              0.36 kB │ gzip:   0.25 kB
+dist/assets/link-DUxDAT2H.js                               0.37 kB │ gzip:   0.26 kB
+dist/assets/guide-SN0BjgaZ.js                              0.42 kB │ gzip:   0.30 kB
+dist/assets/money-t0EXrcbp.js                              0.43 kB │ gzip:   0.30 kB
+dist/assets/drag-C95PbiP4.js                               0.44 kB │ gzip:   0.30 kB
+dist/assets/email-BVYRSa7R.js                              0.48 kB │ gzip:   0.29 kB
+dist/assets/runtime-actions-v_4j10uZ.js                    0.48 kB │ gzip:   0.35 kB
+dist/assets/use-attrs-CUIeUoiB.js                          0.49 kB │ gzip:   0.36 kB
+dist/assets/documentation-D5yRYLBv.js                      0.51 kB │ gzip:   0.34 kB
+dist/assets/fullscreen-BHX6-z7R.js                         0.54 kB │ gzip:   0.34 kB
+dist/assets/excel-D47gcPEw.js                              0.55 kB │ gzip:   0.31 kB
+dist/assets/dict-BHPHOFql.js                               0.55 kB │ gzip:   0.32 kB
+dist/assets/user-BpWUKMet.js                               0.56 kB │ gzip:   0.34 kB
+dist/assets/lock-BAc6mhq4.js                               0.57 kB │ gzip:   0.34 kB
+dist/assets/dict-DAWnR3pX.js                               0.59 kB │ gzip:   0.39 kB
+dist/assets/repeat-click-DZeSICRv.js                       0.61 kB │ gzip:   0.38 kB
+dist/assets/example-CSpWvF3-.js                            0.63 kB │ gzip:   0.35 kB
+dist/assets/rolldown-runtime-QTnfLwEv.js                   0.69 kB │ gzip:   0.42 kB
+dist/assets/table-WP0slQlc.js                              0.69 kB │ gzip:   0.24 kB
+dist/assets/star-DBV4mAJx.js                               0.70 kB │ gzip:   0.43 kB
+dist/assets/slider-DZdhXI2U.js                             0.72 kB │ gzip:   0.43 kB
+dist/assets/PersonProfileDetailPage-BSOXgqr8.js            0.73 kB │ gzip:   0.49 kB
+dist/assets/education-CY8NEUoe.js                          0.75 kB │ gzip:   0.45 kB
+dist/assets/EnterpriseProfileDetailPage-BZG87ig8.js        0.75 kB │ gzip:   0.51 kB
+dist/assets/utils-Cf_7xd83.js                              0.76 kB │ gzip:   0.50 kB
+dist/assets/logic-Ct7wEnp-.js                              0.76 kB │ gzip:   0.49 kB
+dist/assets/search-IG8M9Uk_.js                             0.78 kB │ gzip:   0.41 kB
+dist/assets/tab-Cp8PI-DK.js                                0.79 kB │ gzip:   0.36 kB
+dist/assets/divider-BhWZLAy_.js                            0.80 kB │ gzip:   0.48 kB
+dist/assets/useApi-CROJJdhE-Tx267Zfl.js                    0.83 kB │ gzip:   0.45 kB
+dist/assets/message-8mNV8-lu.js                            0.84 kB │ gzip:   0.39 kB
+dist/assets/use-lockscreen-BUI8hRYI.js                     0.87 kB │ gzip:   0.52 kB
+dist/assets/code-B9v3wObW.js                               0.88 kB │ gzip:   0.51 kB
+dist/assets/theme-3KEYzenB.js                              0.88 kB │ gzip:   0.48 kB
+dist/assets/switch-DKdG5xmz.js                             0.89 kB │ gzip:   0.48 kB
+dist/assets/peoples-TUEgbSDv.js                            0.90 kB │ gzip:   0.49 kB
+dist/assets/row-DQPS6oAz.js                                0.90 kB │ gzip:   0.53 kB
+dist/assets/druid-CtexqBsc.js                              0.92 kB │ gzip:   0.52 kB
+dist/assets/logic-B7bxyUQY.js                              0.94 kB │ gzip:   0.58 kB
+dist/assets/input-KtbAq99A.js                              0.96 kB │ gzip:   0.52 kB
+dist/assets/SocialCallback-BxMAdLTv.js                     0.97 kB │ gzip:   0.57 kB
+dist/assets/edit-T4sGlshT.js                               1.00 kB │ gzip:   0.51 kB
+dist/assets/nested-2rKm2HTs.js                             1.00 kB │ gzip:   0.42 kB
+dist/assets/textarea-Dyga3Ivn.js                           1.01 kB │ gzip:   0.54 kB
+dist/assets/server-2DkOxjXF.js                             1.01 kB │ gzip:   0.49 kB
+dist/assets/row-DElIn9_T.js                                1.04 kB │ gzip:   0.57 kB
+dist/assets/time-DjjfEJLX.js                               1.05 kB │ gzip:   0.55 kB
+dist/assets/debounce-CVut1EkA.js                           1.06 kB │ gzip:   0.56 kB
+dist/assets/workflow-B4UwMsj1.js                           1.07 kB │ gzip:   0.44 kB
+dist/assets/sso-r0m7cAeg.js                                1.08 kB │ gzip:   0.66 kB
+dist/assets/monitor-1b2h1MtH.js                            1.09 kB │ gzip:   0.64 kB
+dist/assets/card-DfWoZmqg.js                               1.12 kB │ gzip:   0.56 kB
+dist/assets/tree-table-bd5li_eL.js                         1.14 kB │ gzip:   0.46 kB
+dist/assets/eye-B8eieakk.js                                1.14 kB │ gzip:   0.59 kB
+dist/assets/clipboard-CJKF08hE.js                          1.19 kB │ gzip:   0.57 kB
+dist/assets/build-BsDonvaj.js                              1.19 kB │ gzip:   0.60 kB
+dist/assets/scroll-62_KJfhN.js                             1.19 kB │ gzip:   0.63 kB
+dist/assets/list-NIuscxli.js                               1.23 kB │ gzip:   0.43 kB
+dist/assets/composables-DSq8CfHM.js                        1.28 kB │ gzip:   0.62 kB
+dist/assets/icon-BbBePj10.js                               1.28 kB │ gzip:   0.63 kB
+dist/assets/composables-nnfd3g51.js                        1.32 kB │ gzip:   0.68 kB
+dist/assets/download-D7SOsxTD.js                           1.35 kB │ gzip:   0.63 kB
+dist/assets/404-CzLeIAIh.js                                1.35 kB │ gzip:   0.78 kB
+dist/assets/skill-5CsIhXVB.js                              1.40 kB │ gzip:   0.71 kB
+dist/assets/401-Bw8H3NP-.js                                1.40 kB │ gzip:   0.92 kB
+dist/assets/category-BYL6Ocla.js                           1.40 kB │ gzip:   0.55 kB
+dist/assets/col-DYT5bcTL.js                                1.40 kB │ gzip:   0.67 kB
+dist/assets/international-B3W6UR6A.js                      1.42 kB │ gzip:   0.67 kB
+dist/assets/question-DVlK4zZC.js                           1.45 kB │ gzip:   0.57 kB
+dist/assets/wechat-Bk3TMO7j.js                             1.45 kB │ gzip:   0.66 kB
+dist/assets/people-PyFFkQvA.js                             1.48 kB │ gzip:   0.68 kB
+dist/assets/checkbox-DSbiRe0g.js                           1.51 kB │ gzip:   0.68 kB
+dist/assets/composables-JJKha0_d.js                        1.51 kB │ gzip:   0.72 kB
+dist/assets/post-Dun9e8Fb.js                               1.52 kB │ gzip:   0.68 kB
+dist/assets/gitee-6rwmrYXl.js                              1.52 kB │ gzip:   0.64 kB
+dist/assets/language-Dl3zNfoy.js                           1.54 kB │ gzip:   0.69 kB
+dist/assets/eye-open-DayWt7_Q.js                           1.54 kB │ gzip:   0.74 kB
+dist/assets/radio-CgPu_6wq.js                              1.61 kB │ gzip:   0.76 kB
+dist/assets/select-DLWmP7UA.js                             1.61 kB │ gzip:   0.73 kB
+dist/assets/company-Bn0V1CA_.js                            1.64 kB │ gzip:   0.71 kB
+dist/assets/validCode-B3Pj3dzV.js                          1.65 kB │ gzip:   0.86 kB
+dist/assets/zip-BwnlsU_5.js                                1.65 kB │ gzip:   0.84 kB
+dist/assets/collapse-transition-Df0qGp_u.js                1.66 kB │ gzip:   0.57 kB
+dist/assets/external-Dh9pEvDC.js                           1.67 kB │ gzip:   0.98 kB
+dist/assets/link-BBlLNyLF.js                               1.71 kB │ gzip:   0.89 kB
+dist/assets/404-CWSkB8B3.js                                1.72 kB │ gzip:   0.83 kB
+dist/assets/src-DtUDEBmM.js                                1.73 kB │ gzip:   0.41 kB
+dist/assets/upload-BPuxJU_u.js                             1.74 kB │ gzip:   0.84 kB
+dist/assets/DictTag-CSx-iWcL.js                            1.75 kB │ gzip:   0.86 kB
+dist/assets/model-BCJXMnux.js                              1.76 kB │ gzip:   0.75 kB
+dist/assets/sso-callback-BJlcUb90.js                       1.78 kB │ gzip:   1.04 kB
+dist/assets/phone-CXYRsJHH.js                              1.82 kB │ gzip:   0.87 kB
+dist/assets/DesignPage-DpGTj55I.js                         1.83 kB │ gzip:   1.05 kB
+dist/assets/my-copy-Z7BMiMAx.js                            1.85 kB │ gzip:   0.89 kB
+dist/assets/bug-EsSWyQZ9.js                                1.87 kB │ gzip:   0.85 kB
+dist/assets/log-DILdBFpM.js                                1.88 kB │ gzip:   0.95 kB
+dist/assets/github-BRxPlQ8I.js                             1.95 kB │ gzip:   0.85 kB
+dist/assets/pdf-ErojbNMy.js                                2.00 kB │ gzip:   1.00 kB
+dist/assets/rate-BVPUnoih.js                               2.02 kB │ gzip:   0.96 kB
+dist/assets/tag-8NwLagY0.js                                2.07 kB │ gzip:   0.93 kB
+dist/assets/alert-MjmV1NdG.js                              2.07 kB │ gzip:   0.97 kB
+dist/assets/job-DEAzopgx.js                                2.10 kB │ gzip:   0.69 kB
+dist/assets/Pagination-1GJSX8y0.js                         2.11 kB │ gzip:   1.04 kB
+dist/assets/exit-fullscreen-BW2NryC1.js                    2.12 kB │ gzip:   0.98 kB
+dist/assets/swagger-SC3-px5X.js                            2.12 kB │ gzip:   0.79 kB
+dist/assets/use-aria--rJNL0Uu.js                           2.13 kB │ gzip:   1.08 kB
+dist/assets/logininfo-Cdj5mlm5.js                          2.15 kB │ gzip:   0.60 kB
+dist/assets/tree-DIEUNBXj.js                               2.16 kB │ gzip:   0.91 kB
+dist/assets/password-BM9dY3mU.js                           2.18 kB │ gzip:   1.07 kB
+dist/assets/OpenApiAdminPage-wcOYHIND.js                   2.24 kB │ gzip:   1.31 kB
+dist/assets/composables-DhyyvDNw.js                        2.26 kB │ gzip:   1.08 kB
+dist/assets/overlay-Dze_uMot.js                            2.30 kB │ gzip:   1.05 kB
+dist/assets/finish-CIAxQb_O.js                             2.31 kB │ gzip:   0.85 kB
+dist/assets/RightToolbar-Ck-SCpkA.js                       2.38 kB │ gzip:   1.20 kB
+dist/assets/date-range-DYWYxZ2i.js                         2.43 kB │ gzip:   0.83 kB
+dist/assets/cascader-DCSfdqcy.js                           2.58 kB │ gzip:   0.92 kB
+dist/assets/waiting-FIxR4ECq.js                            2.60 kB │ gzip:   0.93 kB
+dist/assets/process-definition-BVobC5xP.js                 2.68 kB │ gzip:   1.01 kB
+dist/assets/shopping-B-7ys15-.js                           2.75 kB │ gzip:   1.16 kB
+dist/assets/dashboard-B9Yi0qSI.js                          2.79 kB │ gzip:   0.91 kB
+dist/assets/download-Cz2N6b68.js                           2.83 kB │ gzip:   1.55 kB
+dist/assets/button-CPpgogPJ.js                             2.84 kB │ gzip:   1.17 kB
+dist/assets/component-BWq62Vd6.js                          2.95 kB │ gzip:   1.26 kB
+dist/assets/form-8R2P20h5.js                               3.00 kB │ gzip:   1.28 kB
+dist/assets/tool-CCtQtbbe.js                               3.03 kB │ gzip:   1.16 kB
+dist/assets/redis-list-CzdkYm_A.js                         3.13 kB │ gzip:   1.37 kB
+dist/assets/redis-D47iUOwp.js                              3.21 kB │ gzip:   1.24 kB
+dist/assets/segmented-BXbCPW3r.js                          3.30 kB │ gzip:   1.59 kB
+dist/assets/time-range-CaJi18Qo.js                         3.34 kB │ gzip:   1.39 kB
+dist/assets/dict-CpqTaAtt.js                               3.42 kB │ gzip:   1.46 kB
+dist/assets/system-C5w5aR-U.js                             3.44 kB │ gzip:   1.56 kB
+dist/assets/views-CHiM3MEe.js                              3.48 kB │ gzip:   1.76 kB
+dist/assets/my-task-URmfNoi6.js                            3.53 kB │ gzip:   1.23 kB
+dist/assets/number-KLb1JYy3.js                             3.67 kB │ gzip:   1.70 kB
+dist/assets/date-rIJ1eBab.js                               3.71 kB │ gzip:   0.88 kB
+dist/assets/topiam-BEFcIsqm.js                             3.86 kB │ gzip:   1.47 kB
+dist/assets/qq-l8GTeRuk.js                                 3.98 kB │ gzip:   1.82 kB
+dist/assets/InboxPage-BBpjofY1.js                          4.05 kB │ gzip:   1.80 kB
+dist/assets/Editor-BOMihRNe.js                             4.07 kB │ gzip:   1.93 kB
+dist/assets/online-DDm8BVzQ.js                             4.24 kB │ gzip:   1.89 kB
+dist/assets/PersonProfileReviewPage-CpfEu84J.js            4.40 kB │ gzip:   1.99 kB
+dist/assets/collapse-eiWGT_0e.js                           4.41 kB │ gzip:   1.98 kB
+dist/assets/empty-rX-HjXZD.js                              4.50 kB │ gzip:   1.63 kB
+dist/assets/descriptions-g_WtVpIH.js                       4.51 kB │ gzip:   1.81 kB
+dist/assets/LeaveListPage-DuATQ51F.js                      4.53 kB │ gzip:   1.91 kB
+dist/assets/color-DawnhuEP.js                              4.57 kB │ gzip:   1.64 kB
+dist/assets/EnterpriseProfileReviewPage-DUszR1u8.js        4.64 kB │ gzip:   2.10 kB
+dist/assets/MyDocumentPage-B_uxHFrg.js                     4.65 kB │ gzip:   2.00 kB
+dist/assets/directive-CHxItWVd.js                          4.72 kB │ gzip:   2.01 kB
+dist/assets/OnlinePage-TH4ga6aH.js                         4.76 kB │ gzip:   2.13 kB
+dist/assets/_baseClone-CMy1fyK7.js                         4.78 kB │ gzip:   1.94 kB
+dist/assets/cache-BKK68mOU.js                              4.89 kB │ gzip:   1.89 kB
+dist/assets/LoginPage-uCD-47tj.js                          4.90 kB │ gzip:   2.25 kB
+dist/assets/drawer-74RLOHRK.js                             5.08 kB │ gzip:   2.33 kB
+dist/assets/switch-B6E3dkym.js                             5.10 kB │ gzip:   1.78 kB
+dist/assets/radio-lMuzdG7K.js                              5.28 kB │ gzip:   2.20 kB
+dist/assets/UserAuthRolePage-Dk7vGAP4.js                   5.56 kB │ gzip:   2.47 kB
+dist/assets/NotificationPage-D8x4OnhK.js                   5.67 kB │ gzip:   2.47 kB
+dist/assets/feedback-DUaA2TRq.js                           5.92 kB │ gzip:   2.74 kB
+dist/assets/src-Bv1_JWPk.js                                6.05 kB │ gzip:   2.03 kB
+dist/assets/pinia-DdEFp6SF.js                              6.09 kB │ gzip:   2.88 kB
+dist/assets/UserSelect-Di0urmcF.js                         6.14 kB │ gzip:   2.58 kB
+dist/assets/tree-select-CthdJYcs.js                        6.37 kB │ gzip:   2.65 kB
+dist/assets/focus-trap-CXa1aruv.js                         6.59 kB │ gzip:   2.80 kB
+dist/assets/SsoAppPage-yCPvC3VL.js                         6.88 kB │ gzip:   2.97 kB
+dist/assets/TreePage-BZQ8rtQ0.js                           6.98 kB │ gzip:   2.74 kB
+dist/assets/TaskListPage-DdrFKN57.js                       7.03 kB │ gzip:   2.78 kB
+dist/assets/input-number-CiTuCQ6S.js                       7.15 kB │ gzip:   2.92 kB
+dist/assets/propTypes-CqBmvObO.js                          7.28 kB │ gzip:   2.82 kB
+dist/assets/CategoryPage-D0ZHX7m1.js                       7.30 kB │ gzip:   2.93 kB
+dist/assets/register-ChbIOzFV.js                           7.46 kB │ gzip:   3.25 kB
+dist/assets/LoginInfoPage-C6PdcAE6.js                      7.65 kB │ gzip:   3.16 kB
+dist/assets/DemoPage-DYneJXec.js                           7.70 kB │ gzip:   2.85 kB
+dist/assets/MaterialTagPage-CsJ3gQ43.js                    8.06 kB │ gzip:   3.15 kB
+dist/assets/message-SmRxzGtQ.js                            8.17 kB │ gzip:   3.52 kB
+dist/assets/login-CYINE5Nh.js                              8.35 kB │ gzip:   3.46 kB
+dist/assets/PersonProfilePage-CK8bSwrv.js                  8.37 kB │ gzip:   3.39 kB
+dist/assets/LeaveEditPage-KlgBVKGm.js                      8.44 kB │ gzip:   3.49 kB
+dist/assets/EnterpriseProfilePage-8Kg5Ew6G.js              8.65 kB │ gzip:   3.47 kB
+dist/assets/ConfigPage-rZwzFt59.js                         8.69 kB │ gzip:   3.34 kB
+dist/assets/UserTypePage-BlapUXu4.js                       8.70 kB │ gzip:   3.24 kB
+dist/assets/dialog-CZyxuh4U.js                             8.90 kB │ gzip:   3.52 kB
+dist/assets/RoleAuthUserPage-B60jIHRn.js                   9.01 kB │ gzip:   3.34 kB
+dist/assets/InstancePage-DTsCChAi.js                       9.34 kB │ gzip:   3.35 kB
+dist/assets/use-global-config-6OgNkfhH.js                  9.64 kB │ gzip:   3.91 kB
+dist/assets/SpelPage-jhKzObId.js                           9.81 kB │ gzip:   3.61 kB
+dist/assets/DepartmentPage-BD958ese.js                    10.26 kB │ gzip:   3.76 kB
+dist/assets/PostPage-BINjs53v.js                          11.03 kB │ gzip:   3.97 kB
+dist/assets/PersonProfileDetailPanel-B5eJWeJn.js          11.28 kB │ gzip:   3.87 kB
+dist/assets/message-box-CmSCEWay.js                       11.48 kB │ gzip:   4.29 kB
+dist/assets/pagination-cKu0rkp3.js                        11.57 kB │ gzip:   4.03 kB
+dist/assets/FileUpload-BVVNKJGz.js                        11.75 kB │ gzip:   4.34 kB
+dist/assets/ImagePreview-DZNBC-kH.js                      12.29 kB │ gzip:   4.74 kB
+dist/assets/tabs-CVrnOt29.js                              12.33 kB │ gzip:   5.15 kB
+dist/assets/OpenApiWorkspace-BwWoEoBl.js                  12.85 kB │ gzip:   4.84 kB
+dist/assets/ProcessActionDialog-B2eKr5Pw.js               13.35 kB │ gzip:   4.62 kB
+dist/assets/OssConfigPage-CU8ZOyF1.js                     13.45 kB │ gzip:   4.50 kB
+dist/assets/browser-xVa2TDE1.js                           13.76 kB │ gzip:   5.51 kB
+dist/assets/dropdown-CgYb1Pwv.js                          13.87 kB │ gzip:   5.10 kB
+dist/assets/input-CCMfqXfL.js                             15.02 kB │ gzip:   5.42 kB
+dist/assets/EnterpriseProfileDetailPanel-D5a4sx8h.js      15.98 kB │ gzip:   4.71 kB
+dist/assets/NoticePage-_veToZzm.js                        16.66 kB │ gzip:   6.08 kB
+dist/assets/DictPage-1Qc2hnsD.js                          16.84 kB │ gzip:   4.78 kB
+dist/assets/DefinitionPage-Beum9nwl.js                    17.84 kB │ gzip:   6.09 kB
+dist/assets/ClientPage-BGMeWZws.js                        17.93 kB │ gzip:   5.68 kB
+dist/assets/upload-CSSG7sRD.js                            17.96 kB │ gzip:   6.34 kB
+dist/assets/install-BR6LthUp.js                           18.50 kB │ gzip:   7.69 kB
+dist/assets/ConfigPage-BwF3raUm.js                        19.64 kB │ gzip:   6.26 kB
+dist/assets/MenuPage-DlCUWcd2.js                          20.65 kB │ gzip:   6.82 kB
+dist/assets/button-WjD_hvLk.js                            22.22 kB │ gzip:   8.04 kB
+dist/assets/RolePage-BNwyrxSO.js                          22.91 kB │ gzip:   7.59 kB
+dist/assets/OssPage-DIcLUwmo.js                           23.69 kB │ gzip:   8.55 kB
+dist/assets/runtime-dom.esm-bundler-BDccWgbe.js           23.75 kB │ gzip:   9.38 kB
+dist/assets/form-D-uVvtpE.js                              26.75 kB │ gzip:   9.24 kB
+dist/assets/tree-Cxr7q5qE.js                              28.36 kB │ gzip:   9.36 kB
+dist/assets/select-DX149gYQ.js                            31.23 kB │ gzip:  10.72 kB
+dist/assets/RichTextPage-Com4y9k0.js                      33.44 kB │ gzip:  13.67 kB
+dist/assets/UserPage-BWyJ3vB9.js                          35.09 kB │ gzip:  11.07 kB
+dist/assets/OperationLogPage-DoOLcpfn.js                  38.18 kB │ gzip:  12.72 kB
+dist/assets/profile-BloP_A2W.js                           47.73 kB │ gzip:  14.36 kB
+dist/assets/runtime-core.esm-bundler-r30AjZCt.js          84.84 kB │ gzip:  33.10 kB
+dist/assets/date-picker-Chcw3qiF.js                       98.12 kB │ gzip:  27.89 kB
+dist/assets/table-C9BzS0Rv.js                            132.17 kB │ gzip:  44.67 kB
+dist/assets/icon-CF5Hf5A_.js                             172.50 kB │ gzip:  44.75 kB
+dist/assets/access-DAWe8Dxm.js                           423.59 kB │ gzip: 135.29 kB
+dist/assets/index.esm-hdAR3jdm.js                        644.25 kB │ gzip: 201.81 kB
+dist/assets/CachePage-CD6FllP9.js                      1,124.10 kB │ gzip: 372.96 kB
+dist/assets/index-DtW7n5Ln.js                          1,382.17 kB │ gzip: 435.31 kB
+dist/assets/SvgIcon-uUDKxb0N.js                        1,921.61 kB │ gzip: 308.02 kB
+
+[33m[INEFFECTIVE_DYNAMIC_IMPORT] [0msrc/utils/push.ts is dynamically imported by src/router/adminManifestRegistry.ts but also statically imported by src/layout/components/Navbar.vue?vue&type=script&setup=true&lang.ts, src/layout/components/notice/index.vue?vue&type=script&setup=true&name=layoutBreadcrumbUserNews&lang.ts, src/layout/index.vue?vue&type=script&setup=true&lang.ts, src/store/modules/user.ts, dynamic import will not move module into another chunk.
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 1500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+[33m[INEFFECTIVE_DYNAMIC_IMPORT] [0msrc/application/host/navigation.ts is dynamically imported by src/router/adminManifestRegistry.ts but also statically imported by src/layout/components/TagsView/index.vue?vue&type=script&setup=true&lang.ts, src/views/system/user/profile/onlineDevice.vue?vue&type=script&setup=true&name=Online&lang.ts, src/views/system/user/profile/resetPwd.vue?vue&type=script&setup=true&lang.ts, src/views/system/user/profile/thirdParty.vue?vue&type=script&setup=true&lang.ts, src/views/system/user/profile/userInfo.vue?vue&type=script&setup=true&lang.ts, dynamic import will not move module into another chunk.
+
+[33m[INEFFECTIVE_DYNAMIC_IMPORT] [0msrc/router/index.ts is dynamically imported by src/router/adminManifestRegistry.ts but also statically imported by src/application/host/navigation.ts, src/application/http.ts, src/components/TopNav/index.vue?vue&type=script&setup=true&lang.ts, src/layout/components/Navbar.vue?vue&type=script&setup=true&lang.ts, src/layout/components/notice/index.vue?vue&type=script&setup=true&name=layoutBreadcrumbUserNews&lang.ts, ..., dynamic import will not move module into another chunk.
+
+[33m[INEFFECTIVE_DYNAMIC_IMPORT] [0msrc/application/http.ts is dynamically imported by src/router/adminManifestRegistry.ts but also statically imported by src/application/host/download.ts, src/application/services.ts, src/permission.ts, src/store/modules/user.ts, src/utils/push.ts, dynamic import will not move module into another chunk.
+
+[33m[INEFFECTIVE_DYNAMIC_IMPORT] [0msrc/store/modules/user.ts is dynamically imported by src/application/http.ts but also statically imported by src/application/access.ts, src/layout/components/Navbar.vue?vue&type=script&setup=true&lang.ts, src/permission.ts, src/views/login.vue?vue&type=script&setup=true&lang.ts, src/views/sso-callback.vue?vue&type=script&setup=true&lang.ts, ..., dynamic import will not move module into another chunk.
+
+✓ built in 8.00s
+
+> @namewta/home-web@0.0.0 build:prod /srv/WTA-plus/frontend/apps/home-web
+> vite build --mode production
+
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 1778 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/build-mode.json                                     0.03 kB │ gzip:   0.05 kB
+dist/index.html                                          0.44 kB │ gzip:   0.29 kB
+dist/assets/EnterpriseVerificationPage-CkO0b18C.css      0.96 kB │ gzip:   0.43 kB
+dist/assets/PersonVerificationPage-ufPLdM5k.css          0.96 kB │ gzip:   0.43 kB
+dist/assets/SelfMaterials-kKTtTnFt.css                   1.02 kB │ gzip:   0.39 kB
+dist/assets/LoginPage-C1v9ymVV.css                       2.08 kB │ gzip:   0.69 kB
+dist/assets/ProfileCenterPage-ClRT-e24.css               2.21 kB │ gzip:   0.72 kB
+dist/assets/index-Y7iTiRLh.css                         362.32 kB │ gzip:  48.96 kB
+dist/assets/LoginPage-DH1XzjjB.js                        4.62 kB │ gzip:   2.12 kB
+dist/assets/PersonVerificationPage-bXm9sbvq.js           5.80 kB │ gzip:   2.43 kB
+dist/assets/ProfileCenterPage-B4R3T2kM.js                6.40 kB │ gzip:   2.72 kB
+dist/assets/EnterpriseVerificationPage-CGmcWGlx.js       8.34 kB │ gzip:   2.88 kB
+dist/assets/SelfMaterials-BuCCcljo.js                   10.09 kB │ gzip:   4.16 kB
+dist/assets/index-C8Lr3VPj.js                        1,119.07 kB │ gzip: 364.08 kB
+
+[33m[INEFFECTIVE_DYNAMIC_IMPORT] [0msrc/store/user.ts is dynamically imported by src/application/http.ts but also statically imported by src/application/access.ts, src/layout/HomeShell.vue?vue&type=script&setup=true&lang.ts, src/router/index.ts, src/views/SsoCallbackPage.vue?vue&type=script&setup=true&lang.ts, dynamic import will not move module into another chunk.
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.18s
+
+> @namewta/sso-web@0.0.0 build:prod /srv/WTA-plus/frontend/apps/sso-web
+> vite build --mode production
+
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 25 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/build-mode.json             0.03 kB │ gzip:  0.05 kB
+dist/index.html                  0.39 kB │ gzip:  0.27 kB
+dist/assets/index-RIrkMDAK.css   0.95 kB │ gzip:  0.45 kB
+dist/assets/index-B-Ga7djb.js   90.07 kB │ gzip: 35.10 kB
+
+✓ built in 229ms

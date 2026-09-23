@@ -1,0 +1,4 @@
+
+> @namewta/tooling-openapi@0.0.0 lint /srv/WTA-plus/frontend/tooling/openapi
+> oxlint src test
+

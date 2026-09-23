@@ -1,0 +1,29 @@
+# T-38 source A — fixed functional/engineering review
+
+**Verdict: pass for the 21 product paths in source A; whole-ticket acceptance remains pending source B live OpenAPI/generated-contract work and Lead's remaining gates.** I found no actionable implementation blocker in the fixed source-A diff. This is a read-only review, not a new test run.
+
+- Base: `b47ff8b91cfef02a9f28de0e201edcd1575a950f`
+- Source A: `7a6f75ac9238399daf7936797d07da141f0f5a03`; tree `3c519c0cad48d11ec1331a92884332a0ca230f4b`
+- Diff: `git diff b47ff8b91cfef02a9f28de0e201edcd1575a950f...7a6f75ac9238399daf7936797d07da141f0f5a03 -- <21 product paths>`; one fixed product commit, `fix(notify): target manual retries and preserve task ownership`. Governance files in the same commit were read only as source/scope, not counted as product behavior.
+- Contract: current `spec.md` AC-038, `ticket/38-precise-notification-retry.md` revisions 164–165, `evidence/dispatch-T-38-20260923-01.md`, notification and engineering standards, existing `wta-api` and full-stack contract. The ticket explicitly permits an in-repo atomic public API switch, and distinguishes external UNKNOWN from the T-36 IN_APP repair path.
+
+## Fixed-source findings
+
+No `request-changes` finding. The following concrete checks support the source-A pass:
+
+| Contract | Fixed-source evidence | Result |
+|---|---|---|
+| URL/body identity, permission and POST audit | `NotificationController.java:42-70` rejects conflicting body ID before Service, reconstructs retry/cancel commands from the path, retains separate `@SaCheckPermission` and `@Log`. `NotificationRetryControllerContractTest.java` has conflict, no-body and real Sa-Token interceptor cases. | Pass |
+| Target ownership and precise requeue | `NotificationApplicationRuntimeService.java:170-252` validates selected delivery belongs to locked intent, locks tasks before delivery, requires exactly one task and matching delivery/outbox error/owner/budget, then increments `queuedCount` only after exact row updates. DAO and `NotifyOutboxMapper.xml:56-67` use exact outbox/intent/delivery/status/error and reject leases/budget exhaustion. A failed row count throws, allowing the `@DSTransactional` UseCase rollback. | Pass |
+| UNKNOWN / pre-send classification | External UNKNOWN fails before any writes even in a batch. IN_APP UNKNOWN is limited to the T-36 `DISPATCH_ERROR`/WAITING_RECEIPT path with a consistent message/recipient fact; other shapes return zero. Manual external retries accept only named `NotifySendPlanner` pre-client codes (`DispatchNotificationService.java:80-122`), with no generic FAILED/UNKNOWN, old cache or provider response inference. | Pass |
+| Zero and concurrent behavior | Terminal intents return current status/count 0; no eligible task leaves persisted state untouched. Requeue retains `attempt_count`, never resets a lease and publishes wake only after an actual update. `NotifyManualRetryIntegrationTest.java` exercises A/B, batch UNKNOWN, zero/budget/multiple tasks, two-transactions same intent, claim interleaving, rollback, IN_APP idempotent message/relationship/push, and real planner→controlled sender repair. | Pass |
+| Frontend resource semantics | `domain-notify/transport.ts` validates positive path IDs and sends selected delivery only for retry, while cancel sends the whole intent ID. `NotificationPage.vue:33-44,107-175` labels those distinct actions, checks permissions, disables duplicate clicks, confirms whole-intent cancel and ignores late action responses after unmount; query-generation guards old list responses. `NotificationPage.test.ts`, transport and manifest tests cover method calls, zero count, error recovery, duplicate and unmount behavior. | Pass |
+| Public callers, dictionary, module boundaries | `RetryReceipt` adds `queuedCount`; the only in-repo Java constructor sites, one frontend domain transport, web-domain and manifest consumers were updated. The layered Controller→UseCase→runtime Service→DAO→Mapper/XML direction is preserved; the only SQL seed edit adds a unique PENDING delivery dictionary row in the six-file baseline. | Pass |
+
+## Actual evidence available at review time
+
+Lead's immutable owned run `/tmp/wta-t38/runs/83150f82cac60fb5/result.json` records the same source/head/tree clean before and after, `NotifyManualRetryIntegrationTest` **13/13** and `NotifyWakeIntegrationTest` **1/1** with zero failures, errors and skips. It records acceptance true and complete resource cleanup: no live process-group member, no owned container, the captured anonymous volume absent and both loopback ports closed. I read its counts/cleanup only and did not run Maven, Docker, a JVM or frontend gates. The sender in the planner-repair case is a controlled substitute; the DAO, MyBatis, dynamic transaction, Redis claim and AFTER_COMMIT wake are real owned-service seams. This does not prove a real supplier network protocol, which AC-038 does not require.
+
+Source A intentionally has no new full backend `/v3/api-docs` capture or `frontend/packages/api-contracts` generated revision. They are required by the ticket and belong to source B. Existing SFC tests invoke setup-state operations using a custom renderer; they establish method/permission guards and lifecycle behavior but do not independently verify rendered Element Plus button visibility in a browser. The code's `v-if` and backend authorization were inspected; any current browser/render gate remains Lead-owned. At the time of this report Lead's broader Maven run was still in progress, so it is not represented as passed here.
+
+Lead subsequently supplied `/tmp/wta-t38/backend-default-source-a-counts.json`: fresh 251 Surefire classes, 1,017 total cases, zero failures/errors, 163 explicitly skipped environment cases, hence **854 executed successes**. This is a separate source-A default-suite result, not a replacement for the 13+1 owned real run and not a source-B/full-JAR acceptance.

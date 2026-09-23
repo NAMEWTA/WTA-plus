@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t38/capture-live-openapi.py",
+    "--preflight"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T12:39:19.604097+00:00",
+  "finished_at": "2026-09-23T12:39:19.891252+00:00",
+  "exit_code": 0,
+  "log": "openapi-capture-preflight-freeze-20260923.log"
+}

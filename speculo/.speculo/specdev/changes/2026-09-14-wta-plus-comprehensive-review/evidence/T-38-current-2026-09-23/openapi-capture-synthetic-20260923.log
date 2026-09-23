@@ -1,0 +1,13 @@
+test_0600_private_bytes_and_runtime_port_scope (__main__.CaptureSafetyTest.test_0600_private_bytes_and_runtime_port_scope) ... ok
+test_cli_requires_explicit_exact_source_and_jar (__main__.CaptureSafetyTest.test_cli_requires_explicit_exact_source_and_jar) ... ok
+test_full_spec_preserves_every_path_method_schema_and_queued_count (__main__.CaptureSafetyTest.test_full_spec_preserves_every_path_method_schema_and_queued_count) ... ok
+test_http_capture_is_direct_local_bounded_and_requires_200 (__main__.CaptureSafetyTest.test_http_capture_is_direct_local_bounded_and_requires_200) ... ok
+test_no_vendor_work_fresh_db_preflight (__main__.CaptureSafetyTest.test_no_vendor_work_fresh_db_preflight) ... ok
+test_owned_config_overrides_external_urls_and_local_paths (__main__.CaptureSafetyTest.test_owned_config_overrides_external_urls_and_local_paths) ... ok
+test_owned_dual_labels_and_full_id_cleanup (__main__.CaptureSafetyTest.test_owned_dual_labels_and_full_id_cleanup) ... ok
+test_package_proof_binds_clean_command_log_time_and_jar (__main__.CaptureSafetyTest.test_package_proof_binds_clean_command_log_time_and_jar) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.090s
+
+OK

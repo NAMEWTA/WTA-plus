@@ -1,0 +1,130 @@
+{
+  "gate": "T-38 real manual retry and Outbox concurrency",
+  "run_id": "83150f82cac60fb5",
+  "mode": "acceptance",
+  "acceptance": true,
+  "started_utc": "2026-09-23T12:42:26.842286+00:00",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "051f7a2893de4e1d30eed53270ada06abe09a7faff7044ab74f1373ef0e53f5f",
+    "application_table_count": 103,
+    "redis_container_id": "532649ce9ffe1daf7a4a75013407f77db2eb6e775d5a89c1461863641694716b",
+    "loopback_ports": {
+      "mysql": 32816,
+      "redis": 32817
+    },
+    "captured_anonymous_volume_names": [
+      "63880d1b51506b93b003db3d3f44a270b8f0b4398e02052005edd0a28227154b"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 186545,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "63880d1b51506b93b003db3d3f44a270b8f0b4398e02052005edd0a28227154b": true
+    },
+    "loopback_ports_closed": {
+      "32816": true,
+      "32817": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "7a6f75ac9238399daf7936797d07da141f0f5a03",
+    "tree": "3c519c0cad48d11ec1331a92884332a0ca230f4b",
+    "clean": true
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifyManualRetryIntegrationTest,NotifyWakeIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.manual.retry.integration=true",
+    "-Dnotify.wake.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32816/namewta_notify_test_83150f82cac60fb5?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t38_83150f82cac60fb5",
+    "-Dnotify.redis.integration.port=32817"
+  ],
+  "maven_exit_code": 0,
+  "methods": {
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": [
+      "retryUsesRemainingBudgetAndRollsBackIfDeliveryUpdateFails",
+      "completedCancelledAndUnsupportedFailureNeverCreateWork",
+      "actualPlannerFailureCanBeRepairedAndThenCallsControlledSenderOnce",
+      "inAppUnknownReplaysExistingMessageWithoutAnotherRelationOrPush",
+      "exhaustedBudgetAndMultipleOutboxesDoNotCreateAnotherTask",
+      "foreignDeliveryAndExternalUnknownAreRejectedWithoutWrites",
+      "inAppUnknownWithoutMessageCreatesOneAtomicMessageAndRelation",
+      "inAppUnknownRejectsOrphanRelationWithoutChangingTask",
+      "concurrentRetrySerializesOnIntentAndKeepsOneOutbox",
+      "inAppUnknownAddsMissingRelationAndPushesOnlyOnce",
+      "claimDuringRetryCommitCannotTakeUncommittedTaskOrStealNewLease",
+      "targetedFailedLocalPreflightOnlyQueuesItsDelivery",
+      "batchRetryRejectsExternalUnknownBeforeChangingSafeSibling"
+    ],
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": [
+      "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake"
+    ]
+  },
+  "source_after": {
+    "head": "7a6f75ac9238399daf7936797d07da141f0f5a03",
+    "tree": "3c519c0cad48d11ec1331a92884332a0ca230f4b",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T12:43:20.967280+00:00"
+}
