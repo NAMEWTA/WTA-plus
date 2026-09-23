@@ -1,0 +1,80 @@
+{
+  "source_before": {
+    "head": "11960110ff4f5a8c99a885dbf2866578fc8493af",
+    "tree": "c16b1e5d5d93eb9416a5c2d4df41ee60821623af",
+    "clean": true
+  },
+  "source_after": {
+    "head": "11960110ff4f5a8c99a885dbf2866578fc8493af",
+    "tree": "c16b1e5d5d93eb9416a5c2d4df41ee60821623af",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest.xml",
+      "sha256": "3d18483aec8e2a0a3cc2149872e831eae1447f60ed2b4c6386be99d6b3261dee",
+      "suite": "org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest",
+      "counts": {
+        "tests": 25,
+        "failures": 1,
+        "errors": 1,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "shouldRejectMissingObjectServiceBeforeAnyProviderAccess",
+          "kind": "failure",
+          "type": "org.mockito.exceptions.verification.NoInteractionsWanted"
+        },
+        {
+          "name": "missingOrExpiredDiagnosticMustNotBlockCurrentPrivateObject",
+          "kind": "error",
+          "type": "org.namewta.system.oss.exception.OssLifecycleException"
+        }
+      ]
+    },
+    {
+      "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest.xml",
+      "sha256": "603fe9e61b4b58b48ee23fa016abf28d6d0873b2a7fafa1c8364904b1c5b6fc1",
+      "suite": "org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 1,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "missingOrExpiredDiagnosticMustNotBlockActualMigrationRoute",
+          "kind": "error",
+          "type": "org.namewta.system.oss.migration.OssMigrationException"
+        }
+      ]
+    },
+    {
+      "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadServiceUnitTest.xml",
+      "sha256": "881064a1fd349accf8a9cb4738c08f5c9b20043bde438110894660779f65b11c",
+      "suite": "org.namewta.test.oss.upload.OssUploadServiceUnitTest",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 1,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "missingOrExpiredDiagnosticMustNotBlockInitButActualPolicyStillRejects",
+          "kind": "error",
+          "type": "org.namewta.system.oss.upload.OssUploadException"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tests": 53,
+    "failures": 1,
+    "errors": 3,
+    "skipped": 0
+  }
+}

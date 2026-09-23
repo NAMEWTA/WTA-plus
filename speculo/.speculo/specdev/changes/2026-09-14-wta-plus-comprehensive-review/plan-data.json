@@ -3655,7 +3655,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 199,
+    "plan_revision": 200,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",

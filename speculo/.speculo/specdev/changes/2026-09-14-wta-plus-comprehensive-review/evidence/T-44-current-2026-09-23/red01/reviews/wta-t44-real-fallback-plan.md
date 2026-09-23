@@ -1,0 +1,25 @@
+# T-44：Notify 定时兜底的隔离 full-app 验收方案
+
+只读设计输入：干净产品 `8db922e1971b4781b2b53f8db837c06f7b60c4e7`、`/tmp/wta-t44-activation-audit.md`、`/tmp/wta-t44-writer-plan.md`、`/tmp/wta-t44-lead-plan-notes.md`。随后 HEAD 到 `b85f438c32b233e928e5a75957ea815e7abb119b` 仅为治理提交；相关 Notify/Scheduling 与 T-40 runner 路径的两点 diff 为空。未构建、启动服务、运行测试或接触生产配置。此方案供 T-44 最终候选固定后由 Lead 实施，不能作为已通过的证据。
+
+## 为什么必须用 full app
+
+- 当前唯一无条件 `@EnableScheduling` 在 `backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/OssStorageReadinessSchedulingConfiguration.java:9-11`；`backend/wta-common/wta-common-job/src/main/java/org/namewta/common/job/config/SnailJobConfig.java:20-24` 仅在 `snail-job.enabled=true` 时启用调度。T-44 移除 OSS 自动巡检时应把无条件调度移到常驻应用配置；以源注解检查只能证明写法，不能证明最终 full app 注册并执行定时任务。
+- `NotifyOutboxWorker.java:32-35,51-67` 的 `@Scheduled(fixedDelayString="${notify.outbox.poll-delay-ms:60000}")` 与 Redis `onWake` 共用 claim/dispatch，但日志标出 `trigger=POLL|WAKE`。`NotifyOutboxWakePublisher.java:51-79` 在事务提交后只经 `RedisUtils.getClient().getTopic(...).publishAsync(...)` 发 Redis 唤醒，最多等待 250 ms；失败被捕获，已提交 Outbox 不应回滚。`NotifyOutboxWakeSubscriber.java:51-59,78-96` 是唯一进入 `onWake` 的生产 Redis 接缝；`NotificationApplicationRuntimeService.java:153-158,305-313` 仅登记 AFTER_COMMIT 事件，不直接调用 Worker。因此在**仅 PUBLISH 被拒**、订阅仍在且没有手调 `poll()` 时，实际送达应由全局 `@Scheduled` 承担。
+
+## 独占环境与故障注入
+
+1. 以最终 T-44 exact clean SHA 全量构建 full JAR，保存 source/tree、JAR hash、包构建记录；不能复用 T-40 的旧 JAR。新 `/tmp/wta-t44/` 独立 driver 可复用 `frontend/e2e/run-notice-retraction-real.py:154,253-355,395-423,1043-1088,1190-1278,1310-1326` 的 source proof、双标签/完整容器 ID、随机 loopback 端口、六 SQL 103 表、受限环境文件、进程组和清理护栏。owner/run 标签改为 T44 独占；MySQL、Redis、必要的 MinIO 均为本次自有实例。Java overlay 显式 `snail-job.enabled=false`、`notify.outbox.poll-delay-ms=8000`（毫秒、正数）、Redis loopback/password/default ACL 用户、外部服务禁用或指向 loopback:1；IN_APP 单渠道且基线 `notify_outbox=0`、外部 Delivery/启用账号=0。为避免与 OSS 退化矩阵混淆，本 arm 使用正常的随机自有 MinIO 配置。秘密只写 0600 私有 config/env，绝不进入 argv、公开报告或 raw Docker inspect。
+2. 将 T-40 的私有 `redis.conf` 模式改为**仅 owned Redis** 的 ACL：应用 `default` 用户用随机密码、`~* &* +@all -publish`；另设仅 driver 使用的随机管理用户以执行 `ACL DRYRUN/LOG`，不向应用传管理凭据。`spring.data.redis.password` 使用应用密码，显式验证默认用户连接；`RedisConfig.java:80-89` 只定制 Redisson 连接池，生产 Publisher 复用同一 `RedisUtils` 客户端。配置文件以容器 Redis UID 可读的 0600 bind-ro 文件挂载，参照 T-40 runner `:1209-1224`；健康检查以容器内读取私有文件设置 `REDISCLI_AUTH`，不把密码拼入 argv。此方法只禁命令 `PUBLISH`，保留 `SUBSCRIBE`、普通缓存/Lua/数据库访问；不使用 Redis `CLIENT PAUSE`、全断网或禁 Pub/Sub channel，因为它们会同时破坏其它接缝。Redis 官方 [ACL 规则](https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/) 支持从 `+@all` 单独移除命令，[ACL LOG](https://redis.io/docs/latest/commands/acl-log/) 可辨识 `reason=command` 的拒绝。
+3. App ready 后，管理连接预检 `ACL DRYRUN default PUBLISH notify:outbox:wake <固定无敏感探针>` 必须被拒，`ACL DRYRUN default SUBSCRIBE notify:outbox:wake` 与普通 app PING/读写必须可用；管理 `PUBSUB NUMSUB notify:outbox:wake` 应见实际订阅者。若 Redisson 连接或缓存基础操作失败、订阅者为零，判此 arm 未正确隔离，不将服务启动失败算作兜底失败。预检完对**自有 Redis** 执行 `ACL LOG RESET`；仅在内存解析随后日志的 `username=default, reason=command, object=PUBLISH, count>=1`，不保存原 `client-info`、payload 或密码。
+
+## 一个可判别的业务序列
+
+1. full app 启动并确认日志出现一次 `notify outbox drain trigger=POLL claimed=0`；此时核最终候选的常驻 `@EnableScheduling`，以及实际运行的 `snail-job.enabled=false`。用 T-40 `run-notice-retraction-real.py:907-929,1263-1288,1330-1352` 已证过的真实控制账号/HTTP `POST /notify/notice/save`、`POST /notify/notice/{id}/publish`，只向一个自有正常 A 用户发布一条 `IN_APP` 公告；不调用撤回、不直接写消息/Recipient/Attempt、也不手调 `worker.poll()`。控制 API 的 HTTP200且业务 code200 是提交正控制。提交紧接一个空轮询 tick，并使用 8 秒间隔为读取中间态留窗口；若错过窗口，应在新隔离 run 重试，不事后补造 READY 证据。
+2. 按本次唯一 `notice_id/version/idempotency_key` 定位 Intent，必须在下一次 poll 前保存脱敏的 `READY` Outbox、`PENDING` Delivery、无 Attempt/Message/Recipient 计数及 `available_at<=DB NOW()`；这证明异步任务已提交且未由唤醒路径提前处理。与此同时记录 ACL 拒绝计数和 `NotifyOutboxWakePublisher` 的固定格式失败摘要与同一 owned outbox ID（仅在私有记录保留 ID）；提交 HTTP 仍成功。不要把“没有 WAKE 日志”单独当成 PUBLISH 拒绝证明。
+3. 不发送任何测试唤醒，等待下一个自动定时 tick（上限例如 30 秒）。要求 Worker 自己的日志出现 `trigger=POLL claimed=1`，期间无 `trigger=WAKE claimed>0`；由于全新库只有这一个 READY Outbox，日志可与唯一业务行关联。复用 T-40 `:652-678` 的严格 SQL 验证：同版本 Snapshot/Intent 深链、Outbox DONE、Delivery IN_APP DELIVERED、单条 Message 和 A 关系、B 零关系；另核恰一 Attempt/Outbox，不变预算，后续至少两次 poll 不增第二条 Message/Attempt。可用本人 inbox GET 做 HTTP 正控制，但它不能代替 DB 状态与 POLL 来源证明。
+4. 仅保存白名单证据：固定 source/JAR hash、开关与间隔的非敏感值、HTTP status/code、阶段时间、Redis ACL 的 `reason/object/username/count`、`POLL/WAKE` 日志提取的 trigger/claimed、精确表计数与最终状态、fresh XML 若设 Java opt-in class、source 前后与资源清理。raw Redis ACL LOG、HTTP body/token、后端原始日志、env、密码、完整 Docker inspect 均仅在 0700 run 目录短暂存在并在 finally 删除；清理所有完整 ID 容器/匿名卷、进程组、端口及私有配置。PUBLISH ACL 条目可能与同窗口其他模块发布合并；**只有**新库唯一任务、同一 outbox 的 publisher 失败摘要、事前 READY、自动 POLL 和单条最终投递同时成立才给通过。
+
+## 与现有测试的关系和失败判定
+
+`NotifyOutboxWorkerWakePollTest.java:37-42,110-120` 只反射注解/直接调用 `poll()`；`NotifyWakeIntegrationTest.java:118-138` 在真实 MySQL/Redis 上覆盖失唤醒与 Redis 暂停，但也是直接调用 `workerA/B.poll()`，且不启动 full app。这些可作局部回归，不能替代上面的 `snail-job=false` 自动调度证据。若 ACL 并非仅 PUBLISH 拒绝、没有 READY 中间态、没有真实订阅者、后台可能有第二个待处理任务、日志缺 `POLL` 来源或任何资源未清，则结果为失败/不可归因，不标通过。完整 T-44 还须另跑 OSS URL、启动/health、MinIO 最小权限和默认/全量门禁；本方案只验证移走 OSS 调度配置后 Notify 的恢复路径。

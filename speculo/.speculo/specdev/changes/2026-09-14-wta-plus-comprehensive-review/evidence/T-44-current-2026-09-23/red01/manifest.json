@@ -1,0 +1,47 @@
+[
+  {
+    "file": "red01-source-and-counts.json",
+    "bytes": 2613,
+    "sha256": "24719cb447c69057d0c02149d377f1984ec0ddad7280bbb9999bffb95310ea9d"
+  },
+  {
+    "file": "red01-source.json",
+    "bytes": 384,
+    "sha256": "4603f682e5ee2ee2b771ee796acee14aa4bed664163e48487cd0c2fa0e97605c"
+  },
+  {
+    "file": "red01.json",
+    "bytes": 505,
+    "sha256": "99192d08c98eda168a22cc6330cfbfd9c10b5fc621a98d0a4ec3790f645a9fc1"
+  },
+  {
+    "file": "red01.log",
+    "bytes": 69577,
+    "sha256": "accc9ba620dd6cf62c7d49585432e3e81e50929a1de684f92af6a18dd19e9e4d"
+  },
+  {
+    "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest.xml",
+    "bytes": 99656,
+    "sha256": "3d18483aec8e2a0a3cc2149872e831eae1447f60ed2b4c6386be99d6b3261dee"
+  },
+  {
+    "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest.xml",
+    "bytes": 95733,
+    "sha256": "603fe9e61b4b58b48ee23fa016abf28d6d0873b2a7fafa1c8364904b1c5b6fc1"
+  },
+  {
+    "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadServiceUnitTest.xml",
+    "bytes": 95521,
+    "sha256": "881064a1fd349accf8a9cb4738c08f5c9b20043bde438110894660779f65b11c"
+  },
+  {
+    "file": "reviews/wta-t44-config-health-review.md",
+    "bytes": 9426,
+    "sha256": "b4df13e132ffeca715704ce60beef9a7e3a7de787a7c4871d365572663e18404"
+  },
+  {
+    "file": "reviews/wta-t44-real-fallback-plan.md",
+    "bytes": 8043,
+    "sha256": "99b33588646381afc1e9c18593d05c5f4ae5c05198c356b4180180b9b92b83cf"
+  }
+]

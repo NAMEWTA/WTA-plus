@@ -1,0 +1,8 @@
+{
+  "head": "11960110ff4f5a8c99a885dbf2866578fc8493af",
+  "files": [
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/lifecycle/OssLifecycleManagerUnitTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationServiceUnitTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/upload/OssUploadServiceUnitTest.java"
+  ]
+}
