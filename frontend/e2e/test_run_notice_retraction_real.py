@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """T40 runner safety and fixture tests only; never starts a service or Docker."""
 
+import datetime as dt
 import importlib.util
 import json
 from pathlib import Path
@@ -45,8 +46,40 @@ class T40OfflineSafety(unittest.TestCase):
         self.assertNotIn('(701,', text)
         self.assertEqual(text.count("JSON_ARRAY('IN_APP')"), 22)
         self.assertEqual(text.count(',202,NULL,NULL,101,@stamp)'), 1)
+        self.assertIn('SET @stamp = (SELECT DATE_ADD(r.create_time, INTERVAL 1 SECOND) '
+                      'FROM notify_message_recipient r WHERE r.message_id=701 AND r.user_id=101);', text)
+        self.assertNotIn('NOW(0)', text)
+        self.assertNotIn('MAX(', text)
+        self.assertNotIn('UPDATE notify_message_recipient', text)
         self.assertIn(driver.hexsql('/notify/notice?noticeId=' + manifest['legacy']['noticeId']), text)
         self.assertTrue(text.endswith('COMMIT;'))
+
+    def test_seed_anchor_requires_one_exact_v1_owner_relation_with_time(self):
+        with patch.object(driver, 'mysql', return_value='1\t1') as query:
+            driver.verify_seed_anchor('a' * 64, 701, 101)
+        self.assertEqual(query.call_args.kwargs['stage'], 'seed_anchor')
+        self.assertIn('WHERE message_id=701 AND user_id=101;', query.call_args.args[1])
+        self.assertIn('COUNT(*),COUNT(create_time)', query.call_args.args[1])
+        for facts in ('0\t0', '2\t2', '1\t0', '', '1\t1\t1', 'credential-canary\t1'):
+            with self.subTest(facts=facts), patch.object(driver, 'mysql', return_value=facts):
+                with self.assertRaises(RuntimeError) as raised:
+                    driver.verify_seed_anchor('a' * 64, 701, 101)
+                self.assertNotIn('credential-canary',
+                                 json.dumps(driver.safe_failure(raised.exception, 'seed')))
+
+    def test_old_mysql_clock_can_put_real_v1_on_page_but_relation_anchor_cannot(self):
+        real_v1_time = dt.datetime(2026, 9, 23, 16, 0, 0)
+        mysql_session_now = real_v1_time - dt.timedelta(hours=8)
+        old_stamp = mysql_session_now + dt.timedelta(seconds=1)
+        anchored_stamp = real_v1_time + dt.timedelta(seconds=1)
+        synthetic_ids = range(8_000_000_000_000_000_001, 8_000_000_000_000_000_022)
+
+        def first_page(stamp):
+            rows = [(real_v1_time, 701)] + [(stamp, mid) for mid in synthetic_ids]
+            return [mid for _, mid in sorted(rows, reverse=True)[:20]]
+
+        self.assertIn(701, first_page(old_stamp))
+        self.assertNotIn(701, first_page(anchored_stamp))
 
     def test_seed_rejects_aliases_and_duplicate_user(self):
         with self.assertRaises(RuntimeError):
@@ -62,8 +95,45 @@ class T40OfflineSafety(unittest.TestCase):
         with patch.object(driver, 'mysql', side_effect=[top, '22\t1\t22\t1\t0']):
             self.assertTrue(driver.verify_seed('a' * 64, manifest, stage='counts_seed')['v1_off_page_one'])
         with patch.object(driver, 'mysql', side_effect=[top, '22\t1\t22\t1\t1']):
-            with self.assertRaises(RuntimeError):
+            with self.assertRaises(driver.OwnedSeedFailure) as raised:
                 driver.verify_seed('a' * 64, manifest, stage='counts_seed')
+        self.assertEqual(raised.exception.safe_details()['absent_rows'], 1)
+        bad_pages = (('\n'.join(top.splitlines()[:19] + ['701']), 'v1_off_page_one', False),
+                     ('\n'.join(top.splitlines()[:19]), 'top20_count', 19),
+                     ('\n'.join(['8000000000000000001'] + top.splitlines()[1:]),
+                      'legacy_in_top_ten', False))
+        for page, field, expected in bad_pages:
+            with self.subTest(field=field), \
+                 patch.object(driver, 'mysql', side_effect=[page, '22\t1\t22\t1\t0']):
+                with self.assertRaises(driver.OwnedSeedFailure) as raised:
+                    driver.verify_seed('a' * 64, manifest, stage='counts_seed')
+                self.assertEqual(raised.exception.safe_details()[field], expected)
+        canary = 'credential-canary-private'
+        with patch.object(driver, 'mysql', side_effect=[top, canary + '\t1\t22\t1\t0']):
+            with self.assertRaises(driver.OwnedSeedFailure) as raised:
+                driver.verify_seed('a' * 64, manifest, stage='counts_seed')
+        diagnostic = driver.safe_failure(raised.exception, 'seed')
+        self.assertIsNone(diagnostic['seed_failure']['a_rows'])
+        self.assertNotIn(canary, json.dumps(diagnostic))
+
+    def test_seed_failure_exposes_only_bounded_counts_and_real_booleans(self):
+        canary = 'credential-canary-private'
+        forged = driver.OwnedSeedFailure({
+            'a_rows': canary, 'b_rows': True, 'synthetic_rows': 1001,
+            'real_v1_rows': -1, 'absent_rows': 0, 'top20_count': 21,
+            'v1_off_page_one': 1, 'legacy_in_top_ten': False,
+            'extra': canary})
+        forged.details.update({'extra': canary, 'a_rows': canary})
+        details = driver.safe_failure(forged, 'seed')['seed_failure']
+        self.assertEqual(set(details), {'a_rows', 'b_rows', 'synthetic_rows',
+                                        'real_v1_rows', 'absent_rows', 'top20_count',
+                                        'v1_off_page_one', 'legacy_in_top_ten'})
+        self.assertEqual(details['absent_rows'], 0)
+        self.assertIs(details['legacy_in_top_ten'], False)
+        for field in ('a_rows', 'b_rows', 'synthetic_rows', 'real_v1_rows',
+                      'top20_count', 'v1_off_page_one'):
+            self.assertIsNone(details[field])
+        self.assertNotIn(canary, json.dumps(details))
 
     def test_notice_version_fact_requires_exact_snapshot_identity(self):
         valid = json.dumps({'noticeId': 601, 'snapshotId': 901, 'version': 1, 'retracted': False})

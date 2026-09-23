@@ -47,7 +47,7 @@ CHROME_CONTROL_UA = ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
 MYSQL_STAGES = frozenset(('rotate_login', 'baseline_tables', 'baseline_outboxes',
     'baseline_external', 'baseline_accounts', 'baseline_oss', 'lookup_a', 'lookup_b',
     'lookup_control', 'lookup_client', 'counts_before', 'counts_seed', 'counts_after',
-    'seed_insert', 'role_existing', 'role_menus', 'role_collision', 'role_insert',
+    'seed_anchor', 'seed_insert', 'role_existing', 'role_menus', 'role_collision', 'role_insert',
     'role_effective', 'role_denied', 'notice_lookup', 'real_delivery', 'real_identity', 'real_after',
     'notice_retracted', 'notice_after', 'audit_client', 'audit_baseline', 'audit_login'))
 LOGIN_STAGES = frozenset(('login_control', 'login_a', 'login_b', 'login_chrome'))
@@ -75,6 +75,31 @@ class OwnedSqlError(RuntimeError):
     def safe_details(self):
         return {'stage': self.stage, 'exit_code': self.exit_code,
                 'mysql_error_number': self.number, 'sqlstate': self.sqlstate}
+
+
+class OwnedSeedFailure(RuntimeError):
+    """Expose only bounded counts and placement booleans from an owned seed check."""
+
+    def __init__(self, details):
+        self.details = self._safe_details(details)
+        super().__init__('Owned synthetic inbox placement or owner counts differ')
+
+    @staticmethod
+    def _safe_details(details):
+        source = details if type(details) is dict else {}
+        def bounded(value, maximum):
+            return value if type(value) is int and 0 <= value <= maximum else None
+
+        counts = ('a_rows', 'b_rows', 'synthetic_rows', 'real_v1_rows', 'absent_rows')
+        result = {field: bounded(source.get(field), 1000) for field in counts}
+        result['top20_count'] = bounded(source.get('top20_count'), 20)
+        for field in ('v1_off_page_one', 'legacy_in_top_ten'):
+            value = source.get(field)
+            result[field] = value if type(value) is bool else None
+        return result
+
+    def safe_details(self):
+        return self._safe_details(self.details)
 
 
 def safe_http_status(value):
@@ -181,13 +206,15 @@ def safe_failure(exc, phase=None):
     name = type(exc).__name__
     allowed = {'RuntimeError', 'TimeoutExpired', 'OSError', 'ValueError', 'KeyError',
                'TypeError', 'AssertionError', 'JSONDecodeError', 'HTTPException',
-               'OwnedControlFailure', 'OwnedSqlError'}
+               'OwnedControlFailure', 'OwnedSqlError', 'OwnedSeedFailure'}
     result = {'error_type': name if name in allowed else 'Exception',
               'error': 'T40 owned browser gate failed',
               'phase': phase if phase in RUN_PHASES else None,
               'runner_line': runner_source_line(exc)}
     if isinstance(exc, OwnedControlFailure):
         result['control_failure'] = exc.safe_details()
+    if isinstance(exc, OwnedSeedFailure):
+        result['seed_failure'] = exc.safe_details()
     return result
 
 
@@ -582,7 +609,10 @@ def seed_plan(run_id, a_user, b_user, v1_message_id, notice_id, title, content, 
     messages.extend(((legacy_id, legacy_title, legacy_content,
                       f'/notify/notice?noticeId={legacy_notice}'),
                      (b_id, b_title, b_content, None)))
-    sql = ['START TRANSACTION;', 'SET @stamp = DATE_ADD(NOW(0), INTERVAL 1 SECOND);',
+    sql = ['START TRANSACTION;',
+           'SET @stamp = (SELECT DATE_ADD(r.create_time, INTERVAL 1 SECOND) '
+           'FROM notify_message_recipient r '
+           f'WHERE r.message_id={v1_message_id} AND r.user_id={a_user});',
            'INSERT INTO notify_message(message_id,category,channels_json,type,source,title,message,content,path,create_by,create_time) VALUES',
            ',\n'.join(f"({mid},'notice',JSON_ARRAY('IN_APP'),'NOTICE','NOTICE',"
                       f"{hexsql(row_title)},{hexsql(row_title)},{hexsql(body)},"
@@ -604,6 +634,17 @@ def seed_plan(run_id, a_user, b_user, v1_message_id, notice_id, title, content, 
         'synthetic_filler_count': 20,
         'a_user_id': str(a_user), 'b_user_id': str(b_user)}
     return '\n'.join(sql).encode(), manifest
+
+
+def verify_seed_anchor(cid, message_id, a_user):
+    """Require the exact persisted V1/A relation before deriving synthetic time."""
+    if positive_int64(message_id) is None or positive_int64(a_user) is None:
+        raise RuntimeError('Owned V1 seed anchor identity is invalid')
+    facts = mysql(cid, 'SELECT COUNT(*),COUNT(create_time) FROM notify_message_recipient '
+                  f'WHERE message_id={message_id} AND user_id={a_user};',
+                  stage='seed_anchor').split('\t')
+    if facts != ['1', '1']:
+        raise RuntimeError('Owned V1 seed anchor is missing, ambiguous or has no time')
 
 
 def verify_real_delivery(cid, notice_id, a_user, b_user, *, stage):
@@ -686,7 +727,20 @@ def verify_seed(cid, manifest, *, stage):
                    stage=stage).split('\t')
     if (counts != ['22', '1', '22', '1', '0'] or len(rows) != 20 or str(v1) in rows
         or manifest['legacy']['messageId'] not in rows[:10]):
-        raise RuntimeError('Owned synthetic inbox placement or owner counts differ')
+        def bounded_count(index):
+            raw = counts[index] if index < len(counts) else None
+            if raw is None or not re.fullmatch(r'0|[1-9][0-9]{0,3}', raw):
+                return None
+            number = int(raw)
+            return number if number <= 1000 else None
+
+        raise OwnedSeedFailure({
+            'a_rows': bounded_count(0), 'b_rows': bounded_count(1),
+            'synthetic_rows': bounded_count(2), 'real_v1_rows': bounded_count(3),
+            'absent_rows': bounded_count(4),
+            'top20_count': len(rows) if len(rows) <= 20 else None,
+            'v1_off_page_one': str(v1) not in rows,
+            'legacy_in_top_ten': manifest['legacy']['messageId'] in rows[:10]})
     return {'a_rows': int(counts[0]), 'b_rows': int(counts[1]),
             'synthetic_rows': int(counts[2]), 'v1_off_page_one': True,
             'legacy_in_top_ten': True}
@@ -1298,6 +1352,7 @@ def main():
         phase = 'seed'
         seed_sql, manifest = seed_plan(run_id, a_user, b_user, real['message_id'],
                                        real['notice_id'], real['title'], real['content'])
+        verify_seed_anchor(mysql_id, real['message_id'], a_user)
         mysql(mysql_id, seed_sql, stage='seed_insert')
         report['seed_before'] = verify_seed(mysql_id, manifest, stage='counts_seed')
         seed_path = run_dir / 'seed.json'

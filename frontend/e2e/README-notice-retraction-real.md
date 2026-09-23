@@ -1,6 +1,6 @@
 # T-40 真实公告撤回浏览器验收
 
-`run-notice-retraction-real.py` 使用独占、随机 loopback MySQL/Redis/MinIO 和完整 Admin JAR。控制账号与普通用户 A/B 先分别通过无 User-Agent 的真实 HTTP 登录；运行器在内存中核对各自在线会话，并按登录前 `info_id` 基线等待对应的异步成功审计（浏览器、系统均为 `Unknown`）。控制账号随后以固定非秘密 Chrome User-Agent 再登录，验证正常浏览器/系统审计并使用新令牌保存、发布公告，等待真实 Worker 为 A 送达 V1，再撤回该版本；随后仅为分页和负例插入显式合成消息。两例 Chrome 用例验证 A 的离页本人详情、旧管理链接安全转换，以及 B 对外人/不存在消息的一致拒绝。合成行不能代替真实 V1 发布证据。
+`run-notice-retraction-real.py` 使用独占、随机 loopback MySQL/Redis/MinIO 和完整 Admin JAR。控制账号与普通用户 A/B 先分别通过无 User-Agent 的真实 HTTP 登录；运行器在内存中核对各自在线会话，并按登录前 `info_id` 基线等待对应的异步成功审计（浏览器、系统均为 `Unknown`）。控制账号随后以固定非秘密 Chrome User-Agent 再登录，验证正常浏览器/系统审计并使用新令牌保存、发布公告，等待真实 Worker 为 A 送达 V1，再撤回该版本；随后仅为分页和负例插入显式合成消息。合成消息时间严格取已持久化的 V1/A 收件关系时间加一秒；缺失、歧义或空时间均停止。两例 Chrome 用例验证 A 的离页本人详情、旧管理链接安全转换，以及 B 对外人/不存在消息的一致拒绝。合成行不能代替真实 V1 发布证据。
 
 离线安全检查：
 
