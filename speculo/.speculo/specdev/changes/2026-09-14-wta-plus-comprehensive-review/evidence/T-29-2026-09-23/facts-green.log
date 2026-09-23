@@ -1,0 +1,17 @@
+✔ fresh repository passes without creating private release output (77.752627ms)
+✔ unprotected private output fails even before it exists (76.867283ms)
+✔ force-tracked private output is rejected even with ignore rules (87.139804ms)
+✔ obsolete private output spelling is rejected (69.261401ms)
+✔ obsolete private output spelling in deployment Skill is rejected (75.266768ms)
+✔ obsolete private output spelling in customization Skill is rejected (71.105098ms)
+✔ missing report output owner is rejected (59.859886ms)
+✔ retired AI source references cannot return to the module map (68.00286ms)
+✔ both AI placeholder responsibilities must remain documented (71.331251ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 726.315308

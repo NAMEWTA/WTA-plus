@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    ".agents/skills/namewta-fullstack-development/scripts/validate-skill.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T08:25:24.356575+00:00",
+  "finished_at": "2026-09-23T08:25:24.402306+00:00",
+  "exit_code": 0,
+  "log": "acceptance-fullstack.log"
+}

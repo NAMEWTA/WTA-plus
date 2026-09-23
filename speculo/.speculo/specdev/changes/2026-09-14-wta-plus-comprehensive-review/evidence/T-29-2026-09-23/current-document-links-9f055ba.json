@@ -1,0 +1,3092 @@
+{
+  "fixed_base": "7a1810288d3292ceeb4987f488b13353af1a1286",
+  "fixed_head": "9f055ba15d9d5a828fb08cdfb0b24efa32642889",
+  "scope": "tracked Git-tree product/docs/Skill Markdown; excludes generated builds and private temp",
+  "document_count": 177,
+  "relative_link_count": 308,
+  "missing_link_count": 0,
+  "affected_document_count": 10,
+  "affected_relative_link_count": 14,
+  "anchor_validation": "not performed in this all-doc scan; historical targeted audit separately validates captured anchors",
+  "documents": [
+    ".agents/skills/deploy-namewta-environment/SKILL.md",
+    ".agents/skills/deploy-namewta-environment/references/build-transfer-release.md",
+    ".agents/skills/deploy-namewta-environment/references/environment-modes.md",
+    ".agents/skills/deploy-namewta-environment/references/existing-site-takeover.md",
+    ".agents/skills/deploy-namewta-environment/references/middleware-database-oss.md",
+    ".agents/skills/deploy-namewta-environment/references/nacos-runtime-contract.md",
+    ".agents/skills/deploy-namewta-environment/references/rolling-full-stack-release.md",
+    ".agents/skills/deploy-namewta-environment/references/server-layout-and-permissions.md",
+    ".agents/skills/deploy-namewta-environment/references/upgrade-and-rollback.md",
+    ".agents/skills/deploy-namewta-environment/references/verification-and-troubleshooting.md",
+    ".agents/skills/engineering-standards/SKILL.md",
+    ".agents/skills/engineering-standards/references/java/core.md",
+    ".agents/skills/engineering-standards/references/java/crud-query-and-common.md",
+    ".agents/skills/engineering-standards/references/java/frameworks/spring-boot.md",
+    ".agents/skills/engineering-standards/references/java/persistence-transactions-and-ddl.md",
+    ".agents/skills/engineering-standards/references/notification.md",
+    ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+    ".agents/skills/engineering-standards/references/project/01-module-map.md",
+    ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md",
+    ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+    ".agents/skills/engineering-standards/references/project/review-checklist.md",
+    ".agents/skills/engineering-standards/references/rules/api-errors-resources.md",
+    ".agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md",
+    ".agents/skills/engineering-standards/references/rules/documentation-and-comments.md",
+    ".agents/skills/engineering-standards/references/rules/files-and-naming.md",
+    ".agents/skills/engineering-standards/references/rules/quality-gates.md",
+    ".agents/skills/engineering-standards/references/rules/review-and-delivery.md",
+    ".agents/skills/engineering-standards/references/rules/security-and-data.md",
+    ".agents/skills/engineering-standards/references/rules/testing.md",
+    ".agents/skills/engineering-standards/references/typescript/code-organization-and-comments.md",
+    ".agents/skills/engineering-standards/references/typescript/core.md",
+    ".agents/skills/engineering-standards/references/typescript/crud-api-and-pages.md",
+    ".agents/skills/engineering-standards/references/typescript/frameworks/vue.md",
+    ".agents/skills/engineering-standards/references/typescript/runtimes/browser.md",
+    ".agents/skills/java-api-compatibility/SKILL.md",
+    ".agents/skills/namewta-fullstack-development/SKILL.md",
+    ".agents/skills/namewta-fullstack-development/references/backend/architecture.md",
+    ".agents/skills/namewta-fullstack-development/references/backend/framework-usage.md",
+    ".agents/skills/namewta-fullstack-development/references/backend/implementation.md",
+    ".agents/skills/namewta-fullstack-development/references/backend/mapper-and-sql.md",
+    ".agents/skills/namewta-fullstack-development/references/backend/module-layout.md",
+    ".agents/skills/namewta-fullstack-development/references/backend/verification.md",
+    ".agents/skills/namewta-fullstack-development/references/contract-mapping.md",
+    ".agents/skills/namewta-fullstack-development/references/frontend/architecture.md",
+    ".agents/skills/namewta-fullstack-development/references/frontend/coding-style.md",
+    ".agents/skills/namewta-fullstack-development/references/frontend/comments.md",
+    ".agents/skills/namewta-fullstack-development/references/frontend/crud-resource-slices.md",
+    ".agents/skills/namewta-fullstack-development/references/frontend/implementation.md",
+    ".agents/skills/namewta-fullstack-development/references/frontend/naming-and-layout.md",
+    ".agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md",
+    ".agents/skills/namewta-fullstack-development/references/verification-matrix.md",
+    ".agents/skills/namewta-fullstack-development/references/vertical-slice.md",
+    ".agents/skills/project-customization-delivery/SKILL.md",
+    ".agents/skills/project-customization-delivery/references/infrastructure.md",
+    ".agents/skills/project-customization-delivery/references/inputs.md",
+    ".agents/skills/project-customization-delivery/references/migration.md",
+    ".agents/skills/project-customization-delivery/references/verification.md",
+    ".agents/skills/wta-common-modules-guide/SKILL.md",
+    ".agents/skills/wta-common-modules-guide/references/core-utils.md",
+    ".agents/skills/wta-common-modules-guide/references/module-map.md",
+    ".agents/skills/wta-common-modules-guide/references/other-utils.md",
+    ".agents/skills/wta-module-guide/SKILL.md",
+    ".agents/skills/wta-module-guide/references/modules/notify/index.md",
+    ".agents/skills/wta-module-guide/references/modules/profile/capability-map.md",
+    ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+    ".agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md",
+    ".agents/skills/wta-module-guide/references/modules/system/capability-map.md",
+    ".agents/skills/wta-module-guide/references/modules/system/dictionary-management.md",
+    ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+    ".agents/skills/wta-module-guide/references/modules/system/how-other-modules-call.md",
+    ".agents/skills/wta-module-guide/references/modules/system/index.md",
+    ".agents/skills/wta-module-guide/references/modules/third/index.md",
+    ".agents/skills/wta-module-guide/references/modules/workflow/capability-map.md",
+    ".agents/skills/wta-module-guide/references/modules/workflow/index.md",
+    ".agents/skills/wta-module-guide/references/modules/workflow/integration-guide.md",
+    ".agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md",
+    "README.md",
+    "backend/AGENTS.md",
+    "backend/README.md",
+    "backend/wta-common/AGENTS.md",
+    "backend/wta-common/wta-common-ai/README.md",
+    "backend/wta-common/wta-common-openapi/README.md",
+    "backend/wta-extend/AGENTS.md",
+    "backend/wta-modules/AGENTS.md",
+    "backend/wta-modules/wta-ai/README.md",
+    "backend/wta-modules/wta-demo/AGENTS.md",
+    "backend/wta-modules/wta-demo/docs/rich-text.md",
+    "backend/wta-modules/wta-demo/src/main/resources/mapper/package-info.md",
+    "backend/wta-modules/wta-notify/AGENTS.md",
+    "backend/wta-modules/wta-profile/AGENTS.md",
+    "backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md",
+    "backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md",
+    "backend/wta-modules/wta-sso/AGENTS.md",
+    "backend/wta-modules/wta-system/AGENTS.md",
+    "backend/wta-modules/wta-system/src/main/resources/mapper/package-info.md",
+    "backend/wta-modules/wta-third/AGENTS.md",
+    "backend/wta-modules/wta-workflow/src/main/resources/mapper/package-info.md",
+    "docs/README.md",
+    "docs/error/oss-login-and-direct-upload-troubleshooting.md",
+    "docs/fm/README.md",
+    "docs/fm/context-contract.md",
+    "docs/fm/tests/README.md",
+    "docs/fm/vue/README.md",
+    "docs/namewta-enhancements.md",
+    "docs/notify-providers.md",
+    "docs/oss-public-private-operations.md",
+    "docs/runtime-nacos-hard-cut.md",
+    "frontend/AGENTS.md",
+    "frontend/README.md",
+    "frontend/apps/README.md",
+    "frontend/apps/admin-web/AGENTS.md",
+    "frontend/apps/admin-web/README.md",
+    "frontend/apps/home-web/AGENTS.md",
+    "frontend/apps/home-web/README.md",
+    "frontend/apps/sso-web/AGENTS.md",
+    "frontend/docs/architecture-baseline.md",
+    "frontend/e2e/inbox-real.md",
+    "frontend/packages/README.md",
+    "frontend/packages/adapters/axios-browser/AGENTS.md",
+    "frontend/packages/adapters/axios-browser/README.md",
+    "frontend/packages/adapters/oss-upload-browser/AGENTS.md",
+    "frontend/packages/adapters/storage-browser/AGENTS.md",
+    "frontend/packages/adapters/storage-browser/README.md",
+    "frontend/packages/adapters/taro-request/README.md",
+    "frontend/packages/adapters/taro-storage/README.md",
+    "frontend/packages/api-contracts/AGENTS.md",
+    "frontend/packages/api-contracts/README.md",
+    "frontend/packages/domains/admin/AGENTS.md",
+    "frontend/packages/domains/admin/README.md",
+    "frontend/packages/domains/demo/AGENTS.md",
+    "frontend/packages/domains/demo/README.md",
+    "frontend/packages/domains/notify/AGENTS.md",
+    "frontend/packages/domains/profile/AGENTS.md",
+    "frontend/packages/domains/profile/README.md",
+    "frontend/packages/domains/system/AGENTS.md",
+    "frontend/packages/domains/system/README.md",
+    "frontend/packages/domains/third/AGENTS.md",
+    "frontend/packages/domains/workflow/AGENTS.md",
+    "frontend/packages/domains/workflow/README.md",
+    "frontend/packages/platform/app-runtime/AGENTS.md",
+    "frontend/packages/platform/app-runtime/README.md",
+    "frontend/packages/platform/auth/AGENTS.md",
+    "frontend/packages/platform/auth/README.md",
+    "frontend/packages/platform/contracts/AGENTS.md",
+    "frontend/packages/platform/contracts/README.md",
+    "frontend/packages/platform/http/AGENTS.md",
+    "frontend/packages/platform/http/README.md",
+    "frontend/packages/platform/permission/AGENTS.md",
+    "frontend/packages/platform/permission/README.md",
+    "frontend/packages/web-domains/admin/AGENTS.md",
+    "frontend/packages/web-domains/admin/README.md",
+    "frontend/packages/web-domains/demo/AGENTS.md",
+    "frontend/packages/web-domains/demo/README.md",
+    "frontend/packages/web-domains/notify/AGENTS.md",
+    "frontend/packages/web-domains/profile/AGENTS.md",
+    "frontend/packages/web-domains/profile/README.md",
+    "frontend/packages/web-domains/system/AGENTS.md",
+    "frontend/packages/web-domains/system/README.md",
+    "frontend/packages/web-domains/third/AGENTS.md",
+    "frontend/packages/web-domains/workflow/AGENTS.md",
+    "frontend/packages/web-domains/workflow/README.md",
+    "frontend/packages/web-kit/file-upload/AGENTS.md",
+    "frontend/packages/web-kit/permission/AGENTS.md",
+    "frontend/packages/web-kit/permission/README.md",
+    "frontend/packages/web-kit/ui-element/README.md",
+    "frontend/tooling/architecture/AGENTS.md",
+    "frontend/tooling/architecture/README.md",
+    "frontend/tooling/generators/README.md",
+    "frontend/tooling/openapi/AGENTS.md",
+    "frontend/tooling/openapi/README.md",
+    "release-artifacts/README.md",
+    "release-artifacts/docker/frontend/nginx/CLIENT-ADDRESS.md",
+    "release-artifacts/skills/wta-namewta-nginx-config/SKILL.md",
+    "release-artifacts/skills/wta-namewta-nginx-config/references/architecture.md",
+    "release-artifacts/skills/wta-namewta-nginx-config/references/port-registry.md",
+    "release-artifacts/skills/wta-namewta-nginx-config/references/troubleshooting.md",
+    "scripts/README.md"
+  ],
+  "links": [
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 19,
+      "literal": "references/environment-modes.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/environment-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 39,
+      "literal": "references/existing-site-takeover.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/existing-site-takeover.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 39,
+      "literal": "references/server-layout-and-permissions.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/server-layout-and-permissions.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 54,
+      "literal": "references/middleware-database-oss.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/middleware-database-oss.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 58,
+      "literal": "references/rolling-full-stack-release.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/rolling-full-stack-release.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 58,
+      "literal": "references/build-transfer-release.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/build-transfer-release.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 86,
+      "literal": "references/nacos-runtime-contract.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/nacos-runtime-contract.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 90,
+      "literal": "references/verification-and-troubleshooting.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/verification-and-troubleshooting.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 114,
+      "literal": "references/upgrade-and-rollback.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/upgrade-and-rollback.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/references/build-transfer-release.md",
+      "line": 34,
+      "literal": "rolling-full-stack-release.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/rolling-full-stack-release.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 14,
+      "literal": "references/project/00-project-profile.md",
+      "target": ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 14,
+      "literal": "references/project/01-module-map.md",
+      "target": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 16,
+      "literal": "references/project/03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/architecture-and-boundaries.md",
+      "target": ".agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/files-and-naming.md",
+      "target": ".agents/skills/engineering-standards/references/rules/files-and-naming.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/documentation-and-comments.md",
+      "target": ".agents/skills/engineering-standards/references/rules/documentation-and-comments.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/api-errors-resources.md",
+      "target": ".agents/skills/engineering-standards/references/rules/api-errors-resources.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/testing.md",
+      "target": ".agents/skills/engineering-standards/references/rules/testing.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/security-and-data.md",
+      "target": ".agents/skills/engineering-standards/references/rules/security-and-data.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/quality-gates.md",
+      "target": ".agents/skills/engineering-standards/references/rules/quality-gates.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 17,
+      "literal": "references/rules/review-and-delivery.md",
+      "target": ".agents/skills/engineering-standards/references/rules/review-and-delivery.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 18,
+      "literal": "references/typescript/core.md",
+      "target": ".agents/skills/engineering-standards/references/typescript/core.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 18,
+      "literal": "references/typescript/code-organization-and-comments.md",
+      "target": ".agents/skills/engineering-standards/references/typescript/code-organization-and-comments.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 18,
+      "literal": "references/typescript/frameworks/vue.md",
+      "target": ".agents/skills/engineering-standards/references/typescript/frameworks/vue.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 18,
+      "literal": "references/typescript/runtimes/browser.md",
+      "target": ".agents/skills/engineering-standards/references/typescript/runtimes/browser.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 18,
+      "literal": "references/typescript/crud-api-and-pages.md",
+      "target": ".agents/skills/engineering-standards/references/typescript/crud-api-and-pages.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 19,
+      "literal": "references/java/core.md",
+      "target": ".agents/skills/engineering-standards/references/java/core.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 19,
+      "literal": "references/java/frameworks/spring-boot.md",
+      "target": ".agents/skills/engineering-standards/references/java/frameworks/spring-boot.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 19,
+      "literal": "references/java/persistence-transactions-and-ddl.md",
+      "target": ".agents/skills/engineering-standards/references/java/persistence-transactions-and-ddl.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 19,
+      "literal": "references/java/crud-query-and-common.md",
+      "target": ".agents/skills/engineering-standards/references/java/crud-query-and-common.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 20,
+      "literal": "references/project/02-decisions-and-exceptions.md",
+      "target": ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 22,
+      "literal": "references/project/review-checklist.md",
+      "target": ".agents/skills/engineering-standards/references/project/review-checklist.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 24,
+      "literal": "references/notification.md",
+      "target": ".agents/skills/engineering-standards/references/notification.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 30,
+      "literal": "references/java/crud-query-and-common.md",
+      "target": ".agents/skills/engineering-standards/references/java/crud-query-and-common.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 39,
+      "literal": "../namewta-fullstack-development/SKILL.md",
+      "target": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 40,
+      "literal": "../wta-module-guide/SKILL.md",
+      "target": ".agents/skills/wta-module-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/SKILL.md",
+      "line": 41,
+      "literal": "../wta-common-modules-guide/SKILL.md",
+      "target": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/java/crud-query-and-common.md",
+      "line": 25,
+      "literal": "persistence-transactions-and-ddl.md",
+      "target": ".agents/skills/engineering-standards/references/java/persistence-transactions-and-ddl.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/java/crud-query-and-common.md",
+      "line": 73,
+      "literal": "../rules/api-errors-resources.md",
+      "target": ".agents/skills/engineering-standards/references/rules/api-errors-resources.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/java/crud-query-and-common.md",
+      "line": 133,
+      "literal": "../rules/api-errors-resources.md",
+      "target": ".agents/skills/engineering-standards/references/rules/api-errors-resources.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/java/frameworks/spring-boot.md",
+      "line": 37,
+      "literal": "../persistence-transactions-and-ddl.md",
+      "target": ".agents/skills/engineering-standards/references/java/persistence-transactions-and-ddl.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "line": 83,
+      "literal": "03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md",
+      "line": 35,
+      "literal": "03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/project/review-checklist.md",
+      "line": 10,
+      "literal": "03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md",
+      "line": 39,
+      "literal": "../project/03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/rules/security-and-data.md",
+      "line": 47,
+      "literal": "../java/persistence-transactions-and-ddl.md",
+      "target": ".agents/skills/engineering-standards/references/java/persistence-transactions-and-ddl.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 8,
+      "literal": "../engineering-standards/SKILL.md",
+      "target": ".agents/skills/engineering-standards/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 8,
+      "literal": "../wta-module-guide/SKILL.md",
+      "target": ".agents/skills/wta-module-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 8,
+      "literal": "../wta-common-modules-guide/SKILL.md",
+      "target": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 31,
+      "literal": "references/verification-matrix.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/verification-matrix.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 33,
+      "literal": "references/frontend/permission-routing.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 33,
+      "literal": "references/contract-mapping.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/contract-mapping.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 33,
+      "literal": "references/backend/mapper-and-sql.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/backend/mapper-and-sql.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 37,
+      "literal": "references/vertical-slice.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/vertical-slice.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 38,
+      "literal": "references/contract-mapping.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/contract-mapping.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 39,
+      "literal": "references/verification-matrix.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/verification-matrix.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 42,
+      "literal": "../wta-module-guide/SKILL.md",
+      "target": ".agents/skills/wta-module-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "line": 42,
+      "literal": "../wta-common-modules-guide/SKILL.md",
+      "target": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/backend/architecture.md",
+      "line": 40,
+      "literal": "module-layout.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/backend/module-layout.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/backend/architecture.md",
+      "line": 53,
+      "literal": "../frontend/permission-routing.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/frontend/permission-routing.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/backend/architecture.md",
+      "line": 53,
+      "literal": "../contract-mapping.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/contract-mapping.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/backend/framework-usage.md",
+      "line": 3,
+      "literal": "../../../wta-common-modules-guide/SKILL.md",
+      "target": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/backend/implementation.md",
+      "line": 5,
+      "literal": "module-layout.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/backend/module-layout.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/backend/verification.md",
+      "line": 107,
+      "literal": "../../../engineering-standards/references/project/00-project-profile.md",
+      "target": ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/frontend/implementation.md",
+      "line": 16,
+      "literal": "crud-resource-slices.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/frontend/crud-resource-slices.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/namewta-fullstack-development/references/frontend/naming-and-layout.md",
+      "line": 5,
+      "literal": "architecture.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/frontend/architecture.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 14,
+      "literal": "references/inputs.md",
+      "target": ".agents/skills/project-customization-delivery/references/inputs.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 26,
+      "literal": "references/migration.md",
+      "target": ".agents/skills/project-customization-delivery/references/migration.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 28,
+      "literal": "references/infrastructure.md",
+      "target": ".agents/skills/project-customization-delivery/references/infrastructure.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 29,
+      "literal": "references/verification.md",
+      "target": ".agents/skills/project-customization-delivery/references/verification.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 18,
+      "literal": "../engineering-standards/SKILL.md",
+      "target": ".agents/skills/engineering-standards/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 19,
+      "literal": "../wta-module-guide/SKILL.md",
+      "target": ".agents/skills/wta-module-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 22,
+      "literal": "../engineering-standards/SKILL.md",
+      "target": ".agents/skills/engineering-standards/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 22,
+      "literal": "../namewta-fullstack-development/SKILL.md",
+      "target": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 22,
+      "literal": "../namewta-fullstack-development/references/backend/framework-usage.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/backend/framework-usage.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 45,
+      "literal": "references/module-map.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 51,
+      "literal": "references/module-map.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 52,
+      "literal": "references/core-utils.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/core-utils.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "line": 53,
+      "literal": "references/other-utils.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/other-utils.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/references/core-utils.md",
+      "line": 35,
+      "literal": "module-map.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/references/module-map.md",
+      "line": 67,
+      "literal": "core-utils.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/core-utils.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/references/module-map.md",
+      "line": 301,
+      "literal": "../../wta-module-guide/SKILL.md",
+      "target": ".agents/skills/wta-module-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/references/other-utils.md",
+      "line": 5,
+      "literal": "core-utils.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/core-utils.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/references/other-utils.md",
+      "line": 7,
+      "literal": "module-map.md",
+      "target": ".agents/skills/wta-common-modules-guide/references/module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-common-modules-guide/references/other-utils.md",
+      "line": 9,
+      "literal": "../../namewta-fullstack-development/references/backend/framework-usage.md",
+      "target": ".agents/skills/namewta-fullstack-development/references/backend/framework-usage.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 8,
+      "literal": "../engineering-standards/references/project/01-module-map.md",
+      "target": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 21,
+      "literal": "references/modules/profile/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 22,
+      "literal": "references/modules/system/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 23,
+      "literal": "references/modules/workflow/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 24,
+      "literal": "references/modules/third/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/third/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 25,
+      "literal": "references/modules/notify/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/notify/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 46,
+      "literal": "references/modules/profile/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 47,
+      "literal": "references/modules/system/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 48,
+      "literal": "references/modules/workflow/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/SKILL.md",
+      "line": 49,
+      "literal": "references/modules/notify/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/notify/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "line": 9,
+      "literal": "capability-map.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/capability-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "line": 10,
+      "literal": "layered-boundaries.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "line": 11,
+      "literal": "../system/how-other-modules-call.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/how-other-modules-call.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "line": 11,
+      "literal": "../system/domains.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "line": 12,
+      "literal": "../workflow/integration-guide.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/integration-guide.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+      "line": 86,
+      "literal": "dictionary-management.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/dictionary-management.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+      "line": 113,
+      "literal": "../notify/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/notify/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/system/index.md",
+      "line": 9,
+      "literal": "capability-map.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/capability-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/system/index.md",
+      "line": 10,
+      "literal": "how-other-modules-call.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/how-other-modules-call.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/system/index.md",
+      "line": 11,
+      "literal": "domains.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/system/index.md",
+      "line": 12,
+      "literal": "dictionary-management.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/system/dictionary-management.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/workflow/capability-map.md",
+      "line": 186,
+      "literal": "leave-sample.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/workflow/index.md",
+      "line": 9,
+      "literal": "capability-map.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/capability-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/workflow/index.md",
+      "line": 10,
+      "literal": "integration-guide.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/integration-guide.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/workflow/index.md",
+      "line": 11,
+      "literal": "leave-sample.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/workflow/index.md",
+      "line": 12,
+      "literal": "../profile/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/workflow/integration-guide.md",
+      "line": 5,
+      "literal": "leave-sample.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/leave-sample.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/wta-module-guide/references/modules/workflow/integration-guide.md",
+      "line": 5,
+      "literal": "capability-map.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/workflow/capability-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 5,
+      "literal": "docs/namewta-enhancements.md",
+      "target": "docs/namewta-enhancements.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 9,
+      "literal": "docs/README.md",
+      "target": "docs/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 10,
+      "literal": "frontend/README.md",
+      "target": "frontend/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 11,
+      "literal": "backend/README.md",
+      "target": "backend/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 32,
+      "literal": "docs/image/architecture-overview.png",
+      "target": "docs/image/architecture-overview.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 53,
+      "literal": ".agents/skills",
+      "target": ".agents/skills",
+      "target_kind": "directory",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 53,
+      "literal": ".agents/skills/engineering-standards/SKILL.md",
+      "target": ".agents/skills/engineering-standards/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 75,
+      "literal": "docs/image/admin-login.png",
+      "target": "docs/image/admin-login.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 77,
+      "literal": "docs/image/admin-home.png",
+      "target": "docs/image/admin-home.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 83,
+      "literal": "docs/image/admin-system-user.png",
+      "target": "docs/image/admin-system-user.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 85,
+      "literal": "docs/image/admin-system-role.png",
+      "target": "docs/image/admin-system-role.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 87,
+      "literal": "docs/image/admin-system-menu.png",
+      "target": "docs/image/admin-system-menu.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 89,
+      "literal": "docs/image/admin-system-dept.png",
+      "target": "docs/image/admin-system-dept.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 91,
+      "literal": "docs/image/admin-system-post.png",
+      "target": "docs/image/admin-system-post.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 93,
+      "literal": "docs/image/admin-system-dict.png",
+      "target": "docs/image/admin-system-dict.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 95,
+      "literal": "docs/image/admin-system-config.png",
+      "target": "docs/image/admin-system-config.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 97,
+      "literal": "docs/image/admin-system-log-operlog.png",
+      "target": "docs/image/admin-system-log-operlog.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 99,
+      "literal": "docs/image/admin-system-openapi.png",
+      "target": "docs/image/admin-system-openapi.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 105,
+      "literal": "docs/image/admin-system-login-domain.png",
+      "target": "docs/image/admin-system-login-domain.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 107,
+      "literal": "docs/image/admin-system-client.png",
+      "target": "docs/image/admin-system-client.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 109,
+      "literal": "docs/image/admin-system-sso.png",
+      "target": "docs/image/admin-system-sso.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 115,
+      "literal": "docs/image/admin-notify-notice.png",
+      "target": "docs/image/admin-notify-notice.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 117,
+      "literal": "docs/image/admin-notify-config-mail.png",
+      "target": "docs/image/admin-notify-config-mail.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 119,
+      "literal": "docs/image/admin-notify-config-sms.png",
+      "target": "docs/image/admin-notify-config-sms.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 121,
+      "literal": "docs/image/admin-notify-inbox.png",
+      "target": "docs/image/admin-notify-inbox.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 123,
+      "literal": "docs/image/admin-notify-monitor.png",
+      "target": "docs/image/admin-notify-monitor.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 129,
+      "literal": "docs/image/admin-oss-objects.png",
+      "target": "docs/image/admin-oss-objects.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 131,
+      "literal": "docs/image/admin-oss-config.png",
+      "target": "docs/image/admin-oss-config.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 137,
+      "literal": "docs/image/admin-monitor-online.png",
+      "target": "docs/image/admin-monitor-online.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 139,
+      "literal": "docs/image/admin-monitor-cache.png",
+      "target": "docs/image/admin-monitor-cache.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 145,
+      "literal": "docs/image/admin-workflow-category.png",
+      "target": "docs/image/admin-workflow-category.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 147,
+      "literal": "docs/image/admin-workflow-definition.png",
+      "target": "docs/image/admin-workflow-definition.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 149,
+      "literal": "docs/image/admin-workflow-spel.png",
+      "target": "docs/image/admin-workflow-spel.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 151,
+      "literal": "docs/image/admin-workflow-processmonitor-processinstance.png",
+      "target": "docs/image/admin-workflow-processmonitor-processinstance.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 153,
+      "literal": "docs/image/admin-workflow-processmonitor-alltaskwaiting.png",
+      "target": "docs/image/admin-workflow-processmonitor-alltaskwaiting.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 155,
+      "literal": "docs/image/admin-task-mydocument.png",
+      "target": "docs/image/admin-task-mydocument.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 157,
+      "literal": "docs/image/admin-task-taskwaiting.png",
+      "target": "docs/image/admin-task-taskwaiting.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 159,
+      "literal": "docs/image/admin-task-taskfinish.png",
+      "target": "docs/image/admin-task-taskfinish.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 161,
+      "literal": "docs/image/admin-task-taskcopylist.png",
+      "target": "docs/image/admin-task-taskcopylist.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 167,
+      "literal": "docs/image/admin-profile-person.png",
+      "target": "docs/image/admin-profile-person.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 169,
+      "literal": "docs/image/admin-profile-enterprise.png",
+      "target": "docs/image/admin-profile-enterprise.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 171,
+      "literal": "docs/image/admin-profile-material-tag.png",
+      "target": "docs/image/admin-profile-material-tag.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 173,
+      "literal": "docs/image/admin-system-third-provider.png",
+      "target": "docs/image/admin-system-third-provider.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 175,
+      "literal": "docs/image/admin-system-third-endpoint.png",
+      "target": "docs/image/admin-system-third-endpoint.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 177,
+      "literal": "docs/image/admin-system-third-invocation.png",
+      "target": "docs/image/admin-system-third-invocation.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 179,
+      "literal": "docs/image/admin-system-third-statistics.png",
+      "target": "docs/image/admin-system-third-statistics.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 181,
+      "literal": "docs/image/admin-demo.png",
+      "target": "docs/image/admin-demo.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 183,
+      "literal": "docs/image/admin-demo-tree.png",
+      "target": "docs/image/admin-demo-tree.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 185,
+      "literal": "docs/image/admin-demo-rich-text.png",
+      "target": "docs/image/admin-demo-rich-text.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 187,
+      "literal": "docs/image/admin-demo-leave.png",
+      "target": "docs/image/admin-demo-leave.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 193,
+      "literal": "docs/image/home-portal.png",
+      "target": "docs/image/home-portal.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 195,
+      "literal": "docs/image/home-login.png",
+      "target": "docs/image/home-login.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 197,
+      "literal": "docs/image/sso-login.png",
+      "target": "docs/image/sso-login.png",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 242,
+      "literal": "docs/namewta-enhancements.md",
+      "target": "docs/namewta-enhancements.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 243,
+      "literal": "docs/README.md",
+      "target": "docs/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 244,
+      "literal": "docs/error/oss-login-and-direct-upload-troubleshooting.md",
+      "target": "docs/error/oss-login-and-direct-upload-troubleshooting.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 245,
+      "literal": "frontend/README.md",
+      "target": "frontend/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 245,
+      "literal": "frontend/docs/architecture-baseline.md",
+      "target": "frontend/docs/architecture-baseline.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 246,
+      "literal": "backend/README.md",
+      "target": "backend/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "README.md",
+      "line": 247,
+      "literal": "release-artifacts/README.md",
+      "target": "release-artifacts/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 3,
+      "literal": "../.agents/skills/engineering-standards/SKILL.md",
+      "target": ".agents/skills/engineering-standards/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 3,
+      "literal": "../.agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 3,
+      "literal": "../.agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 7,
+      "literal": "pom.xml",
+      "target": "backend/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 7,
+      "literal": "mvnw",
+      "target": "backend/mvnw",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 8,
+      "literal": "wta-admin/pom.xml",
+      "target": "backend/wta-admin/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 9,
+      "literal": "wta-api/pom.xml",
+      "target": "backend/wta-api/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 9,
+      "literal": "../.agents/skills/java-api-compatibility/SKILL.md",
+      "target": ".agents/skills/java-api-compatibility/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 10,
+      "literal": "wta-common/AGENTS.md",
+      "target": "backend/wta-common/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 10,
+      "literal": "wta-modules/AGENTS.md",
+      "target": "backend/wta-modules/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/AGENTS.md",
+      "line": 10,
+      "literal": "wta-extend/AGENTS.md",
+      "target": "backend/wta-extend/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/README.md",
+      "line": 51,
+      "literal": "wta-admin/src/main/resources/application-local.example.yml",
+      "target": "backend/wta-admin/src/main/resources/application-local.example.yml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/README.md",
+      "line": 87,
+      "literal": "AGENTS.md",
+      "target": "backend/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/README.md",
+      "line": 87,
+      "literal": "../.agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/README.md",
+      "line": 135,
+      "literal": "../.agents/skills/namewta-fullstack-development/SKILL.md",
+      "target": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/README.md",
+      "line": 136,
+      "literal": "wta-modules/wta-notify/AGENTS.md",
+      "target": "backend/wta-modules/wta-notify/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/README.md",
+      "line": 137,
+      "literal": "wta-modules/wta-sso/AGENTS.md",
+      "target": "backend/wta-modules/wta-sso/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-common/AGENTS.md",
+      "line": 3,
+      "literal": "pom.xml",
+      "target": "backend/wta-common/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-common/AGENTS.md",
+      "line": 3,
+      "literal": "wta-common-bom/pom.xml",
+      "target": "backend/wta-common/wta-common-bom/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-common/AGENTS.md",
+      "line": 3,
+      "literal": "../../.agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-common/AGENTS.md",
+      "line": 5,
+      "literal": "../../.agents/skills/wta-common-modules-guide/SKILL.md",
+      "target": ".agents/skills/wta-common-modules-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-common/AGENTS.md",
+      "line": 5,
+      "literal": "../../.agents/skills/engineering-standards/SKILL.md",
+      "target": ".agents/skills/engineering-standards/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-common/AGENTS.md",
+      "line": 7,
+      "literal": "../AGENTS.md#验证",
+      "target": "backend/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-extend/AGENTS.md",
+      "line": 3,
+      "literal": "pom.xml",
+      "target": "backend/wta-extend/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-extend/AGENTS.md",
+      "line": 3,
+      "literal": "../../.agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-extend/AGENTS.md",
+      "line": 5,
+      "literal": "wta-monitor-admin/pom.xml",
+      "target": "backend/wta-extend/wta-monitor-admin/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-extend/AGENTS.md",
+      "line": 6,
+      "literal": "wta-snailjob-server/pom.xml",
+      "target": "backend/wta-extend/wta-snailjob-server/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-extend/AGENTS.md",
+      "line": 8,
+      "literal": "../AGENTS.md",
+      "target": "backend/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 3,
+      "literal": "pom.xml",
+      "target": "backend/wta-modules/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 3,
+      "literal": "../../.agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 3,
+      "literal": "../../.agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 3,
+      "literal": "../../.agents/skills/engineering-standards/SKILL.md",
+      "target": ".agents/skills/engineering-standards/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 3,
+      "literal": "../../.agents/skills/wta-module-guide/SKILL.md",
+      "target": ".agents/skills/wta-module-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 5,
+      "literal": "wta-system/AGENTS.md",
+      "target": "backend/wta-modules/wta-system/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 5,
+      "literal": "wta-demo/AGENTS.md",
+      "target": "backend/wta-modules/wta-demo/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 5,
+      "literal": "wta-profile/AGENTS.md",
+      "target": "backend/wta-modules/wta-profile/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 5,
+      "literal": "wta-notify/AGENTS.md",
+      "target": "backend/wta-modules/wta-notify/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 5,
+      "literal": "wta-sso/AGENTS.md",
+      "target": "backend/wta-modules/wta-sso/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 5,
+      "literal": "wta-third/AGENTS.md",
+      "target": "backend/wta-modules/wta-third/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 7,
+      "literal": "wta-workflow/pom.xml",
+      "target": "backend/wta-modules/wta-workflow/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 7,
+      "literal": "wta-job/pom.xml",
+      "target": "backend/wta-modules/wta-job/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 7,
+      "literal": "wta-ai/pom.xml",
+      "target": "backend/wta-modules/wta-ai/pom.xml",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/AGENTS.md",
+      "line": 9,
+      "literal": "../AGENTS.md#验证",
+      "target": "backend/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/wta-profile/AGENTS.md",
+      "line": 33,
+      "literal": "../../../.agents/skills/wta-module-guide/SKILL.md",
+      "target": ".agents/skills/wta-module-guide/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md",
+      "line": 33,
+      "literal": "../../../../.agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md",
+      "line": 33,
+      "literal": "../../../../.agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/layered-boundaries.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 7,
+      "literal": "./namewta-enhancements.md",
+      "target": "docs/namewta-enhancements.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 8,
+      "literal": "./oss-public-private-operations.md",
+      "target": "docs/oss-public-private-operations.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 9,
+      "literal": "./runtime-nacos-hard-cut.md",
+      "target": "docs/runtime-nacos-hard-cut.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 10,
+      "literal": "./fm/README.md",
+      "target": "docs/fm/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 11,
+      "literal": "./error/oss-login-and-direct-upload-troubleshooting.md",
+      "target": "docs/error/oss-login-and-direct-upload-troubleshooting.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 15,
+      "literal": "../frontend/README.md",
+      "target": "frontend/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 16,
+      "literal": "../frontend/docs/architecture-baseline.md",
+      "target": "frontend/docs/architecture-baseline.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 17,
+      "literal": "../backend/README.md",
+      "target": "backend/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/README.md",
+      "line": 18,
+      "literal": "../release-artifacts/README.md",
+      "target": "release-artifacts/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/fm/README.md",
+      "line": 9,
+      "literal": "./catalog.json",
+      "target": "docs/fm/catalog.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/fm/README.md",
+      "line": 9,
+      "literal": "./context-contract.md",
+      "target": "docs/fm/context-contract.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/fm/README.md",
+      "line": 33,
+      "literal": "./vue/README.md",
+      "target": "docs/fm/vue/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/fm/README.md",
+      "line": 94,
+      "literal": "./tests/README.md",
+      "target": "docs/fm/tests/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/fm/context-contract.md",
+      "line": 71,
+      "literal": "./catalog.json",
+      "target": "docs/fm/catalog.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/namewta-enhancements.md",
+      "line": 21,
+      "literal": "../release-artifacts/apps.json",
+      "target": "release-artifacts/apps.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/namewta-enhancements.md",
+      "line": 21,
+      "literal": "../release-artifacts/README.md",
+      "target": "release-artifacts/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "docs/runtime-nacos-hard-cut.md",
+      "line": 5,
+      "literal": "../release-artifacts/README.md#可选-nacos-配置中心",
+      "target": "release-artifacts/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/AGENTS.md",
+      "line": 13,
+      "literal": "apps/admin-web/AGENTS.md",
+      "target": "frontend/apps/admin-web/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/AGENTS.md",
+      "line": 13,
+      "literal": "apps/home-web/AGENTS.md",
+      "target": "frontend/apps/home-web/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/AGENTS.md",
+      "line": 13,
+      "literal": "apps/sso-web/AGENTS.md",
+      "target": "frontend/apps/sso-web/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/AGENTS.md",
+      "line": 13,
+      "literal": "../.agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "target": ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/AGENTS.md",
+      "line": 22,
+      "literal": "../.agents/skills/namewta-fullstack-development/SKILL.md",
+      "target": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/README.md",
+      "line": 38,
+      "literal": "../release-artifacts/apps.json",
+      "target": "release-artifacts/apps.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/README.md",
+      "line": 38,
+      "literal": "../release-artifacts/README.md",
+      "target": "release-artifacts/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/README.md",
+      "line": 44,
+      "literal": "docs/architecture-baseline.md",
+      "target": "frontend/docs/architecture-baseline.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/README.md",
+      "line": 62,
+      "literal": "package.json",
+      "target": "frontend/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/README.md",
+      "line": 89,
+      "literal": "../release-artifacts/README.md#nginx-请求链路",
+      "target": "release-artifacts/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/README.md",
+      "line": 6,
+      "literal": "../package.json",
+      "target": "frontend/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/README.md",
+      "line": 6,
+      "literal": "../../release-artifacts/apps.json",
+      "target": "release-artifacts/apps.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/admin-web/AGENTS.md",
+      "line": 13,
+      "literal": "src/main.ts",
+      "target": "frontend/apps/admin-web/src/main.ts",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/admin-web/AGENTS.md",
+      "line": 13,
+      "literal": "src/application/services.ts",
+      "target": "frontend/apps/admin-web/src/application/services.ts",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/admin-web/AGENTS.md",
+      "line": 13,
+      "literal": "src/router/adminManifestRegistry.ts",
+      "target": "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/admin-web/AGENTS.md",
+      "line": 13,
+      "literal": "src/permission.ts",
+      "target": "frontend/apps/admin-web/src/permission.ts",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/home-web/AGENTS.md",
+      "line": 24,
+      "literal": "../../../.agents/skills/namewta-fullstack-development/SKILL.md",
+      "target": ".agents/skills/namewta-fullstack-development/SKILL.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/home-web/AGENTS.md",
+      "line": 24,
+      "literal": "../../packages/domains/profile/AGENTS.md",
+      "target": "frontend/packages/domains/profile/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/apps/home-web/AGENTS.md",
+      "line": 24,
+      "literal": "../../packages/web-domains/profile/AGENTS.md",
+      "target": "frontend/packages/web-domains/profile/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/docs/architecture-baseline.md",
+      "line": 51,
+      "literal": "../../release-artifacts/README.md#nginx-请求链路",
+      "target": "release-artifacts/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/adapters/axios-browser/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/adapters/axios-browser/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/adapters/axios-browser/AGENTS.md",
+      "line": 22,
+      "literal": "../../platform/http/AGENTS.md",
+      "target": "frontend/packages/platform/http/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/adapters/oss-upload-browser/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/adapters/oss-upload-browser/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/adapters/oss-upload-browser/AGENTS.md",
+      "line": 22,
+      "literal": "../../domains/system/AGENTS.md",
+      "target": "frontend/packages/domains/system/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/adapters/storage-browser/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/adapters/storage-browser/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/adapters/storage-browser/AGENTS.md",
+      "line": 22,
+      "literal": "../../../apps/admin-web/AGENTS.md",
+      "target": "frontend/apps/admin-web/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/api-contracts/AGENTS.md",
+      "line": 10,
+      "literal": "../../tooling/openapi/AGENTS.md",
+      "target": "frontend/tooling/openapi/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/api-contracts/AGENTS.md",
+      "line": 15,
+      "literal": "package.json",
+      "target": "frontend/packages/api-contracts/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/admin/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/domains/admin/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/admin/AGENTS.md",
+      "line": 22,
+      "literal": "../../web-domains/admin/AGENTS.md",
+      "target": "frontend/packages/web-domains/admin/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/demo/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/domains/demo/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/demo/AGENTS.md",
+      "line": 22,
+      "literal": "../../web-domains/demo/AGENTS.md",
+      "target": "frontend/packages/web-domains/demo/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/profile/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/domains/profile/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/profile/AGENTS.md",
+      "line": 15,
+      "literal": "../../../../.agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "target": ".agents/skills/wta-module-guide/references/modules/profile/index.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/profile/AGENTS.md",
+      "line": 24,
+      "literal": "../../web-domains/profile/AGENTS.md",
+      "target": "frontend/packages/web-domains/profile/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/system/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/domains/system/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/system/AGENTS.md",
+      "line": 22,
+      "literal": "../../web-domains/system/AGENTS.md",
+      "target": "frontend/packages/web-domains/system/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/workflow/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/domains/workflow/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/domains/workflow/AGENTS.md",
+      "line": 22,
+      "literal": "../../web-domains/workflow/AGENTS.md",
+      "target": "frontend/packages/web-domains/workflow/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/app-runtime/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/platform/app-runtime/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/app-runtime/AGENTS.md",
+      "line": 22,
+      "literal": "../../../apps/admin-web/AGENTS.md",
+      "target": "frontend/apps/admin-web/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/auth/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/platform/auth/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/auth/AGENTS.md",
+      "line": 22,
+      "literal": "../../domains/admin/AGENTS.md",
+      "target": "frontend/packages/domains/admin/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/contracts/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/platform/contracts/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/contracts/AGENTS.md",
+      "line": 22,
+      "literal": "../../../AGENTS.md",
+      "target": "frontend/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/http/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/platform/http/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/http/AGENTS.md",
+      "line": 22,
+      "literal": "../../adapters/axios-browser/AGENTS.md",
+      "target": "frontend/packages/adapters/axios-browser/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/permission/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/platform/permission/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/platform/permission/AGENTS.md",
+      "line": 22,
+      "literal": "../../web-kit/permission/AGENTS.md",
+      "target": "frontend/packages/web-kit/permission/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/admin/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/web-domains/admin/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/admin/AGENTS.md",
+      "line": 22,
+      "literal": "../../domains/admin/AGENTS.md",
+      "target": "frontend/packages/domains/admin/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/demo/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/web-domains/demo/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/demo/AGENTS.md",
+      "line": 22,
+      "literal": "../../domains/demo/AGENTS.md",
+      "target": "frontend/packages/domains/demo/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/profile/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/web-domains/profile/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/profile/AGENTS.md",
+      "line": 24,
+      "literal": "../../domains/profile/AGENTS.md",
+      "target": "frontend/packages/domains/profile/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/system/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/web-domains/system/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/system/AGENTS.md",
+      "line": 22,
+      "literal": "../../domains/system/AGENTS.md",
+      "target": "frontend/packages/domains/system/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/workflow/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/web-domains/workflow/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-domains/workflow/AGENTS.md",
+      "line": 22,
+      "literal": "../../domains/workflow/AGENTS.md",
+      "target": "frontend/packages/domains/workflow/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-kit/file-upload/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/web-kit/file-upload/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-kit/file-upload/AGENTS.md",
+      "line": 22,
+      "literal": "../../adapters/oss-upload-browser/AGENTS.md",
+      "target": "frontend/packages/adapters/oss-upload-browser/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-kit/permission/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/packages/web-kit/permission/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/packages/web-kit/permission/AGENTS.md",
+      "line": 22,
+      "literal": "../../platform/permission/AGENTS.md",
+      "target": "frontend/packages/platform/permission/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/tooling/architecture/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/tooling/architecture/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/tooling/architecture/AGENTS.md",
+      "line": 22,
+      "literal": "../../AGENTS.md",
+      "target": "frontend/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/tooling/openapi/AGENTS.md",
+      "line": 13,
+      "literal": "package.json",
+      "target": "frontend/tooling/openapi/package.json",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "frontend/tooling/openapi/AGENTS.md",
+      "line": 22,
+      "literal": "../../packages/api-contracts/AGENTS.md",
+      "target": "frontend/packages/api-contracts/AGENTS.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "release-artifacts/skills/wta-namewta-nginx-config/SKILL.md",
+      "line": 12,
+      "literal": "references/architecture.md",
+      "target": "release-artifacts/skills/wta-namewta-nginx-config/references/architecture.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "release-artifacts/skills/wta-namewta-nginx-config/SKILL.md",
+      "line": 13,
+      "literal": "references/port-registry.md",
+      "target": "release-artifacts/skills/wta-namewta-nginx-config/references/port-registry.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "release-artifacts/skills/wta-namewta-nginx-config/SKILL.md",
+      "line": 14,
+      "literal": "references/troubleshooting.md",
+      "target": "release-artifacts/skills/wta-namewta-nginx-config/references/troubleshooting.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": "scripts/README.md",
+      "line": 85,
+      "literal": "../backend/README.md#本地配置与凭据",
+      "target": "backend/README.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    }
+  ],
+  "affected_links": [
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 19,
+      "literal": "references/environment-modes.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/environment-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 39,
+      "literal": "references/existing-site-takeover.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/existing-site-takeover.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 39,
+      "literal": "references/server-layout-and-permissions.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/server-layout-and-permissions.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 54,
+      "literal": "references/middleware-database-oss.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/middleware-database-oss.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 58,
+      "literal": "references/rolling-full-stack-release.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/rolling-full-stack-release.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 58,
+      "literal": "references/build-transfer-release.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/build-transfer-release.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 86,
+      "literal": "references/nacos-runtime-contract.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/nacos-runtime-contract.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 90,
+      "literal": "references/verification-and-troubleshooting.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/verification-and-troubleshooting.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/deploy-namewta-environment/SKILL.md",
+      "line": 114,
+      "literal": "references/upgrade-and-rollback.md",
+      "target": ".agents/skills/deploy-namewta-environment/references/upgrade-and-rollback.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "line": 83,
+      "literal": "03-backend-module-modes.md",
+      "target": ".agents/skills/engineering-standards/references/project/03-backend-module-modes.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 14,
+      "literal": "references/inputs.md",
+      "target": ".agents/skills/project-customization-delivery/references/inputs.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 26,
+      "literal": "references/migration.md",
+      "target": ".agents/skills/project-customization-delivery/references/migration.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 28,
+      "literal": "references/infrastructure.md",
+      "target": ".agents/skills/project-customization-delivery/references/infrastructure.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    },
+    {
+      "source": ".agents/skills/project-customization-delivery/SKILL.md",
+      "line": 29,
+      "literal": "references/verification.md",
+      "target": ".agents/skills/project-customization-delivery/references/verification.md",
+      "target_kind": "file",
+      "exists": true,
+      "anchor_checked": false
+    }
+  ]
+}

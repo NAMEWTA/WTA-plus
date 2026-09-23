@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t29/acceptance-doc-audit.py"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T08:29:13.548589+00:00",
+  "finished_at": "2026-09-23T08:29:14.084829+00:00",
+  "exit_code": 0,
+  "log": "acceptance-doc-audit.log"
+}

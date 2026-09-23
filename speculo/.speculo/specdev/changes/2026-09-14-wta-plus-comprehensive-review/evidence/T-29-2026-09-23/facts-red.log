@@ -1,0 +1,61 @@
+✔ fresh repository passes without creating private release output (86.273486ms)
+✔ unprotected private output fails even before it exists (61.667833ms)
+✔ force-tracked private output is rejected even with ignore rules (73.080913ms)
+✔ obsolete private output spelling is rejected (72.582381ms)
+✖ obsolete private output spelling in deployment Skill is rejected (69.869141ms)
+✖ obsolete private output spelling in customization Skill is rejected (69.588036ms)
+✔ missing report output owner is rejected (60.696237ms)
+✔ retired AI source references cannot return to the module map (66.778073ms)
+✔ both AI placeholder responsibilities must remain documented (62.982115ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 7
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 688.360367
+
+✖ failing tests:
+
+test at .agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs:60:1
+✖ obsolete private output spelling in deployment Skill is rejected (69.869141ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///srv/WTA-plus/.agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs:65:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs:69:1
+✖ obsolete private output spelling in customization Skill is rejected (69.588036ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///srv/WTA-plus/.agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs:74:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

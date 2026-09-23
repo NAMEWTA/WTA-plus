@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t29-private-move.py",
+    "move",
+    "/srv/WTA-plus/temp/.t29-private-backup/85ff77275b658433921876901ef2edfa"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T08:26:59.820910+00:00",
+  "finished_at": "2026-09-23T08:26:59.904613+00:00",
+  "exit_code": 0,
+  "log": "private-move.log"
+}

@@ -1,0 +1,25 @@
+✔ 有效配置档案通过校验 (2.462925ms)
+✔ 拒绝占位发布编号、危险根目录和端口冲突 (0.556607ms)
+✔ 部署状态校验覆盖私有 OSS 与 Nacos 收敛 (0.316041ms)
+✔ 本地配置和私密报告可生成且权限为 0600 (101.281423ms)
+✔ schema v2 固定完整发布身份并通过校验 (2.676656ms)
+✔ schema v1 保持可读取兼容 (0.428002ms)
+✔ schema v2 拒绝未确认身份和授权根目录外的 Compose 文件 (2.74577ms)
+✔ schema v2 拒绝不一致的 Compose project 与重复服务 (1.074561ms)
+✔ schema v2 拒绝错误前端路径和无效稳定窗口 (0.444618ms)
+✔ 启用 OpenAPI 时只要求 KEK 元数据而不允许 secret 进入 profile (0.303589ms)
+✔ 渲染 production 前端与 OpenAPI release env，文件均为 0600 且 stdout 不泄密 (57.184764ms)
+✔ 启用 OpenAPI 时缺少 KEK 必须在生成任何文件前失败 (41.551192ms)
+✔ schema v1 profile 继续支持本地配置渲染 (40.576813ms)
+✔ 严格 v2 报告记录 Compose、构件、尝试、前端、数据保护和恢复资产 (40.999717ms)
+✔ 环境文件中的 SSH 密码不会被 secrets 模板占位值覆盖 (43.263825ms)
+✔ 报告使用 profile 严格拒绝错误 Compose 候选并返回 2 (39.165697ms)
+✔ 旧 state 只生成带升级提示的兼容审计 (35.643138ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 396.814484

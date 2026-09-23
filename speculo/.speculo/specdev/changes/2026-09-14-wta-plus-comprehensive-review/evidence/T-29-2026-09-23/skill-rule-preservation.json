@@ -1,0 +1,34 @@
+[
+  {
+    "path": ".agents/skills/deploy-namewta-environment/SKILL.md",
+    "only_literal_path_replacement": true
+  },
+  {
+    "path": ".agents/skills/deploy-namewta-environment/references/existing-site-takeover.md",
+    "only_literal_path_replacement": true
+  },
+  {
+    "path": ".agents/skills/deploy-namewta-environment/references/middleware-database-oss.md",
+    "only_literal_path_replacement": true
+  },
+  {
+    "path": ".agents/skills/deploy-namewta-environment/references/rolling-full-stack-release.md",
+    "only_literal_path_replacement": true
+  },
+  {
+    "path": ".agents/skills/deploy-namewta-environment/references/upgrade-and-rollback.md",
+    "only_literal_path_replacement": true
+  },
+  {
+    "path": ".agents/skills/project-customization-delivery/SKILL.md",
+    "only_literal_path_replacement": true
+  },
+  {
+    "path": ".agents/skills/project-customization-delivery/references/inputs.md",
+    "only_literal_path_replacement": true
+  },
+  {
+    "path": ".agents/skills/project-customization-delivery/references/verification.md",
+    "only_literal_path_replacement": true
+  }
+]

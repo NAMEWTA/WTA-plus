@@ -2365,15 +2365,15 @@
     "contract": "AC-029",
     "review_date": "2026-09-23",
     "notes": "旧删除37份重复手册的证据保持；本轮重新审查所有当前文档，旧清单不再作为待删除任务。",
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
     "e2e_disposition": "not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付",
-    "plan_revision": 146,
+    "plan_revision": 147,
     "implementation_commits": [
       "70eed51acb703ed19a48a47d182f2476f3eabcf7"
     ],
-    "implementation_commit": "70eed51acb703ed19a48a47d182f2476f3eabcf7",
-    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+    "implementation_commit": "9f055ba15d9d5a828fb08cdfb0b24efa32642889",
+    "result_sha": "9f055ba15d9d5a828fb08cdfb0b24efa32642889",
     "fact": "旧删除37份重复手册的证据保持；本轮重新审查所有当前文档，旧清单不再作为待删除任务。",
     "behavior": "每个删除文件有owner、内容迁移落点和无丢失硬约束证据",
     "tests": [

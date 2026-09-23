@@ -1,0 +1,24 @@
+{
+  "effective_uid": 0,
+  "matching_private_writers": 0,
+  "metadata": [
+    {
+      "path": "/srv/WTA-plus",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": "0o755"
+    },
+    {
+      "path": "/srv/WTA-plus/temp",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": "0o755"
+    },
+    {
+      "path": "/srv/WTA-plus/temp/relase",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o2700"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "fixed_base": "7a1810288d3292ceeb4987f488b13353af1a1286",
+  "fixed_head": "9f055ba15d9d5a828fb08cdfb0b24efa32642889",
+  "exit_code": 0,
+  "errors": [],
+  "tracked_markdown": 177,
+  "relative_links": 308,
+  "affected_relative_links": 14,
+  "missing_links": 0,
+  "v4_same": 65,
+  "v4_changed": 7,
+  "protected_exact": 854,
+  "protected_changed_paths": [
+    "AGENTS.md"
+  ],
+  "root_agents_blank_only_reviewed": true,
+  "removed_rows": 37,
+  "effective_owner_deltas": 1,
+  "generated_builds_excluded": true,
+  "anchors_not_checked_in_all_doc_scan": true
+}

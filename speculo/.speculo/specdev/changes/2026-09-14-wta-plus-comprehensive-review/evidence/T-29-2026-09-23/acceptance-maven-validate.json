@@ -1,0 +1,16 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin,wta-common/wta-common-richtext,wta-extend/wta-monitor-admin,wta-modules/wta-demo,wta-modules/wta-notify,wta-modules/wta-profile,wta-modules/wta-profile/wta-profile-enterprise,wta-modules/wta-profile/wta-profile-person,wta-modules/wta-sso,wta-modules/wta-third",
+    "-am",
+    "validate"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T08:29:14.131749+00:00",
+  "finished_at": "2026-09-23T08:29:15.668001+00:00",
+  "exit_code": 0,
+  "log": "acceptance-maven-validate.log"
+}

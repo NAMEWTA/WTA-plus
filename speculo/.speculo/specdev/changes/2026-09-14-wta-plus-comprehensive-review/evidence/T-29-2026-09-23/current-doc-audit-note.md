@@ -1,0 +1,11 @@
+# T29 fixed-tree document audit (read-only)
+
+Run from any cwd: `python3 /tmp/wta-t29/run-current-doc-audit.py`. The script reads only public tracked Git blobs at fixed commit `9f055ba15d9d5a828fb08cdfb0b24efa32642889` and historical T29 public evidence; it never traverses `temp/` or reads ignored release builds. It writes only `/tmp/wta-t29/*.json` with mode 0600. Executed after the source was fixed: exit 0; exact output in `run-current-doc-audit.log`.
+
+- `current-document-links-9f055ba.json`: all 177 tracked scope Markdown files and 308 relative inline links, including each source line/target/result. Zero missing paths. All 14 links in the ten changed Markdown files resolve. Anchors and non-inline Markdown forms are not validated by this all-document scan; the historical targeted T29 audit separately checked its 147 captured links/anchors.
+- `current-v4-delta-9f055ba.json`: all 72 historical v4 paths and SHA comparisons: 65 same, 7 changed after v4. Every current hash is derived from the fixed Git tree; the old v4 JSON is untouched.
+- `current-protected-9f055ba.json`: current SHA-256 for each of 855 protected files and historical comparison: 854 exact, root `AGENTS.md` changed. The script compares the old root blob against its historical checkpoint and verifies that every nonblank byte line, including its line ending, is identical; only blank-line removal is accepted. It does not silently replace the old checkpoint.
+- `current-owner-9f055ba.json`: all 37 removed manuals, their original SHA verification, historical owner, current nearest effective owner, independent public MUST `rule_destination` and navigation destination. One expected difference is Profile BOM: historical owner `backend/wta-modules/AGENTS.md`, effective owner `backend/wta-modules/wta-profile/AGENTS.md`, shared rule at `backend/AGENTS.md`.
+- `current-doc-audit-summary-9f055ba.json`: machine-readable counts/verdict/source SHA; `run-current-doc-audit.log` is the actual exit record.
+
+The earlier filesystem scan's 189 Markdown / 314 relative links included 12 ignored generated files below `release-artifacts/builds/versions/`. They are not authoritative tracked source and were excluded from this fixed-commit audit. Counts are observed facts, not permanent thresholds. This audit does not run the facts gate, services, tests, build, private migration or remote CI.

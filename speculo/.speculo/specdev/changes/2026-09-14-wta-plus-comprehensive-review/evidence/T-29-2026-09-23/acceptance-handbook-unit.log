@@ -1,0 +1,16 @@
+✔ modules inherit the nearest guide; meaningful local guides remain owners (6.342259ms)
+✔ missing product navigation fails even when the workspace root has a guide (1.006785ms)
+✔ missing, out-of-workspace and malformed local links fail (4.712575ms)
+✔ encoded paths and links with spaces work without enforcing template sections (0.924568ms)
+✔ empty or non-Chinese guides and nested CLAUDE copies fail (1.197265ms)
+✔ missing manifests cannot produce a zero-input green result (0.949181ms)
+✔ dependency and build outputs are excluded; similar filenames are not handbooks (0.882225ms)
+✔ CLI handles a workspace with spaces and returns failure for broken navigation (142.670621ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 240.848719

@@ -1,0 +1,484 @@
+{
+  "fixed_head": "9f055ba15d9d5a828fb08cdfb0b24efa32642889",
+  "historical_checkpoint": "T-29-checkpoint-v4.json",
+  "paths": 72,
+  "same": 65,
+  "changed": [
+    {
+      "path": ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "v4_sha256": "a5e866ff7ed6b306d8a51d79b12fa8b2f44b7e9e7ff98945e0a909311fbe58ac",
+      "current_sha256": "c15159b767b784068249c14e41d770c9cf49233caad476b4ae0f0d95490285ec",
+      "status": "changed"
+    },
+    {
+      "path": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "v4_sha256": "7e1df77d6f6a48b3b41e4b45a2db52f99e1265e64a4fcfe73bf8399bdc87f158",
+      "current_sha256": "d295f4ea154d2882bbbcc1c876089070b4514a8fffd06c4648aa3d4b3567fc4b",
+      "status": "changed"
+    },
+    {
+      "path": "README.md",
+      "v4_sha256": "55e726d52b4d3b2b66d677ee2d8d5e3e0ce5fa7de2a81cd728050df54335562b",
+      "current_sha256": "5f228e86c3ff1a8d8db327c420d1b7555c1a385e98573bf02230fb796b11e2f1",
+      "status": "changed"
+    },
+    {
+      "path": "backend/README.md",
+      "v4_sha256": "889f3b614aad6d40b21a66a4867532c52b8ae0acf8f154b8d53a1ba0b0fa3590",
+      "current_sha256": "7064589304ba369eeca045e1d9022b2145684ace4fb5da47f74efaf52850602d",
+      "status": "changed"
+    },
+    {
+      "path": "backend/wta-extend/AGENTS.md",
+      "v4_sha256": "7daaf48c52d18dae3c34f541a32db16f573d62a9ff722cb9cf3e7837d9239587",
+      "current_sha256": "53a86c8d6afdbe9cf9c63d131e1622fb0b3a43f3739b58954d0d3a07994eb53c",
+      "status": "changed"
+    },
+    {
+      "path": "release-artifacts/README.md",
+      "v4_sha256": "8c7f2ee0a6e9a5041aa62d371eeed17bea955a964f8bfb8310a6da295e347379",
+      "current_sha256": "d02e15e8b45c31c909e1685f8c99afb9526106ff0dad05746c2327822751c140",
+      "status": "changed"
+    },
+    {
+      "path": "scripts/README.md",
+      "v4_sha256": "c23e952a2c6e4da8580e625b955e2f06c0ab87d93a02c825e7be4ff280b93fd4",
+      "current_sha256": "f633af6ace6d22ec5a0b48b08cea959cae25f19769789030af371b1fa781e59e",
+      "status": "changed"
+    }
+  ],
+  "all_paths": [
+    {
+      "path": ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      "v4_sha256": "a5e866ff7ed6b306d8a51d79b12fa8b2f44b7e9e7ff98945e0a909311fbe58ac",
+      "current_sha256": "c15159b767b784068249c14e41d770c9cf49233caad476b4ae0f0d95490285ec",
+      "status": "changed"
+    },
+    {
+      "path": ".agents/skills/engineering-standards/references/project/01-module-map.md",
+      "v4_sha256": "7e1df77d6f6a48b3b41e4b45a2db52f99e1265e64a4fcfe73bf8399bdc87f158",
+      "current_sha256": "d295f4ea154d2882bbbcc1c876089070b4514a8fffd06c4648aa3d4b3567fc4b",
+      "status": "changed"
+    },
+    {
+      "path": ".agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md",
+      "v4_sha256": "d53864d7c2bc923d243ffd55c4fc8c63b07c2577fabad0560272a84ab882b8ca",
+      "current_sha256": "d53864d7c2bc923d243ffd55c4fc8c63b07c2577fabad0560272a84ab882b8ca",
+      "status": "same"
+    },
+    {
+      "path": ".agents/skills/engineering-standards/references/rules/architecture-and-boundaries.md",
+      "v4_sha256": "44a7a003572eb1ce43aeab810d41f0236ea506ac23c2b8a648edac3b56d33fb7",
+      "current_sha256": "44a7a003572eb1ce43aeab810d41f0236ea506ac23c2b8a648edac3b56d33fb7",
+      "status": "same"
+    },
+    {
+      "path": ".agents/skills/engineering-standards/references/rules/review-and-delivery.md",
+      "v4_sha256": "edc7c8cdbef93f95fc281b52e4453ce9ed48559a3d5bf95536dc56ef34f70977",
+      "current_sha256": "edc7c8cdbef93f95fc281b52e4453ce9ed48559a3d5bf95536dc56ef34f70977",
+      "status": "same"
+    },
+    {
+      "path": ".agents/skills/engineering-standards/references/rules/testing.md",
+      "v4_sha256": "0a14505f5b6058f781abd02b3b9f891f447b62e6aa4e12f19d4bb3a9f35a0edf",
+      "current_sha256": "0a14505f5b6058f781abd02b3b9f891f447b62e6aa4e12f19d4bb3a9f35a0edf",
+      "status": "same"
+    },
+    {
+      "path": ".agents/skills/namewta-fullstack-development/references/frontend/naming-and-layout.md",
+      "v4_sha256": "c38509848416f1af1e7fdd452105a8f033b0890de301203eec3d067b9a62ba87",
+      "current_sha256": "c38509848416f1af1e7fdd452105a8f033b0890de301203eec3d067b9a62ba87",
+      "status": "same"
+    },
+    {
+      "path": ".agents/skills/wta-module-guide/SKILL.md",
+      "v4_sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3",
+      "current_sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3",
+      "status": "same"
+    },
+    {
+      "path": ".github/workflows/quality-gates.yml",
+      "v4_sha256": "ac973363a72201ca0c5e8346990e11448b05c4b0aca71c16b1e6468fcc5707ac",
+      "current_sha256": "ac973363a72201ca0c5e8346990e11448b05c4b0aca71c16b1e6468fcc5707ac",
+      "status": "same"
+    },
+    {
+      "path": "README.md",
+      "v4_sha256": "55e726d52b4d3b2b66d677ee2d8d5e3e0ce5fa7de2a81cd728050df54335562b",
+      "current_sha256": "5f228e86c3ff1a8d8db327c420d1b7555c1a385e98573bf02230fb796b11e2f1",
+      "status": "changed"
+    },
+    {
+      "path": "backend/AGENTS.md",
+      "v4_sha256": "3d51e1369f1fd8a309f09ea938ee45e26e5e7cf67cdaa44f69436ee690550329",
+      "current_sha256": "3d51e1369f1fd8a309f09ea938ee45e26e5e7cf67cdaa44f69436ee690550329",
+      "status": "same"
+    },
+    {
+      "path": "backend/README.md",
+      "v4_sha256": "889f3b614aad6d40b21a66a4867532c52b8ae0acf8f154b8d53a1ba0b0fa3590",
+      "current_sha256": "7064589304ba369eeca045e1d9022b2145684ace4fb5da47f74efaf52850602d",
+      "status": "changed"
+    },
+    {
+      "path": "backend/wta-admin/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-api/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/AGENTS.md",
+      "v4_sha256": "1269f546328c6578e371608246cb29b875035ccc323e8fc3f2e3c1260e254b4e",
+      "current_sha256": "1269f546328c6578e371608246cb29b875035ccc323e8fc3f2e3c1260e254b4e",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-ai/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-bom/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-core/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-doc/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-elasticsearch/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-encrypt/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-excel/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-job/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-json/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-liteflow/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-log/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mail/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mcp/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mqtt/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-mybatis/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-nacos/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-notify/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-openapi/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-oss/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-push/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-redis/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-satoken/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-security/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-sensitive/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-sms/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-social/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-translation/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-extend/AGENTS.md",
+      "v4_sha256": "7daaf48c52d18dae3c34f541a32db16f573d62a9ff722cb9cf3e7837d9239587",
+      "current_sha256": "53a86c8d6afdbe9cf9c63d131e1622fb0b3a43f3739b58954d0d3a07994eb53c",
+      "status": "changed"
+    },
+    {
+      "path": "backend/wta-extend/wta-monitor-admin/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-extend/wta-snailai-server/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-extend/wta-snailjob-server/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/AGENTS.md",
+      "v4_sha256": "f32de8ec38638b014411b8f49a37daa06b9c8a9bc8ec63a014c93d76105f70dc",
+      "current_sha256": "f32de8ec38638b014411b8f49a37daa06b9c8a9bc8ec63a014c93d76105f70dc",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-ai/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/AGENTS.md",
+      "v4_sha256": "a58f53da8a101cfa94d7f21522bc9dfe296b1e64b3a006c710386c1ba163c6d5",
+      "current_sha256": "a58f53da8a101cfa94d7f21522bc9dfe296b1e64b3a006c710386c1ba163c6d5",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-job/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/AGENTS.md",
+      "v4_sha256": "9fe691ebe94e467b2ad6661678a8626ffef6e423553a51cfdeaf1ff27f973c09",
+      "current_sha256": "9fe691ebe94e467b2ad6661678a8626ffef6e423553a51cfdeaf1ff27f973c09",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/AGENTS.md",
+      "v4_sha256": "3283b2461d7fb16ae7dcaf77e5075c9a66bc025f80b43d9c38aecf8b23381429",
+      "current_sha256": "3283b2461d7fb16ae7dcaf77e5075c9a66bc025f80b43d9c38aecf8b23381429",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-bom/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/AGENTS.md",
+      "v4_sha256": "dc7175bbb823ce63fb651035e76ac64b8c2481e808bbf75eee53d5e6aa72ba79",
+      "current_sha256": "dc7175bbb823ce63fb651035e76ac64b8c2481e808bbf75eee53d5e6aa72ba79",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/AGENTS.md",
+      "v4_sha256": "86b5c28b2d54656f033ce8043e35e5e549c4e36208050255be3f6cf699061336",
+      "current_sha256": "86b5c28b2d54656f033ce8043e35e5e549c4e36208050255be3f6cf699061336",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-third/AGENTS.md",
+      "v4_sha256": "7acd9b070fe10611439ee85502c39952cb2914bbdd92eb146de1fee958d52f1b",
+      "current_sha256": "7acd9b070fe10611439ee85502c39952cb2914bbdd92eb146de1fee958d52f1b",
+      "status": "same"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/AGENTS.md",
+      "v4_sha256": null,
+      "current_sha256": null,
+      "status": "same"
+    },
+    {
+      "path": "docs/README.md",
+      "v4_sha256": "9dd0355f2fd9351749da24240158a0b589557a9df1dd198b10c1ab7f554ed451",
+      "current_sha256": "9dd0355f2fd9351749da24240158a0b589557a9df1dd198b10c1ab7f554ed451",
+      "status": "same"
+    },
+    {
+      "path": "docs/namewta-enhancements.md",
+      "v4_sha256": "0f8801c778edf682418c4b9510265bc45921b7ee24e9c287980e8bc68b0ca08e",
+      "current_sha256": "0f8801c778edf682418c4b9510265bc45921b7ee24e9c287980e8bc68b0ca08e",
+      "status": "same"
+    },
+    {
+      "path": "docs/oss-public-private-operations.md",
+      "v4_sha256": "6f1937c1f1306c12a70e8cfce9b74da142552c88ea3fdbf9db999d9bbeee3184",
+      "current_sha256": "6f1937c1f1306c12a70e8cfce9b74da142552c88ea3fdbf9db999d9bbeee3184",
+      "status": "same"
+    },
+    {
+      "path": "docs/runtime-nacos-hard-cut.md",
+      "v4_sha256": "daa7f0241741b812bca98b696f29fa505e13e55c746f6b72b0d755d676a84a56",
+      "current_sha256": "daa7f0241741b812bca98b696f29fa505e13e55c746f6b72b0d755d676a84a56",
+      "status": "same"
+    },
+    {
+      "path": "frontend/AGENTS.md",
+      "v4_sha256": "723efc57853b8493cf9fd3bd38daa12e18be32ef270f51c3c26924ebb74a0988",
+      "current_sha256": "723efc57853b8493cf9fd3bd38daa12e18be32ef270f51c3c26924ebb74a0988",
+      "status": "same"
+    },
+    {
+      "path": "frontend/README.md",
+      "v4_sha256": "4ece5e61d1de635accc62c3fc5e50bc1a444a7fc6b20c4daa64c1d2945e89b5c",
+      "current_sha256": "4ece5e61d1de635accc62c3fc5e50bc1a444a7fc6b20c4daa64c1d2945e89b5c",
+      "status": "same"
+    },
+    {
+      "path": "frontend/apps/README.md",
+      "v4_sha256": "c5ef7244002b3faa38b2b2484f95a330632b25b362fcb19693d34fd8c0ce898e",
+      "current_sha256": "c5ef7244002b3faa38b2b2484f95a330632b25b362fcb19693d34fd8c0ce898e",
+      "status": "same"
+    },
+    {
+      "path": "frontend/docs/architecture-baseline.md",
+      "v4_sha256": "374c40a1ee87f84cdc5223eebc5e9ab9e4f521e45d11732bf90a9af457ba43e6",
+      "current_sha256": "374c40a1ee87f84cdc5223eebc5e9ab9e4f521e45d11732bf90a9af457ba43e6",
+      "status": "same"
+    },
+    {
+      "path": "frontend/packages/domains/third/AGENTS.md",
+      "v4_sha256": "880d08b6a3ed6e6d70dbace9919f63585f0351ed7c2cc341d05a57cc6317b9f2",
+      "current_sha256": "880d08b6a3ed6e6d70dbace9919f63585f0351ed7c2cc341d05a57cc6317b9f2",
+      "status": "same"
+    },
+    {
+      "path": "frontend/packages/web-domains/third/AGENTS.md",
+      "v4_sha256": "b4dea8ccffb58c7137198b2c234a807d511defcb79dddd1260b96e7934ff0f04",
+      "current_sha256": "b4dea8ccffb58c7137198b2c234a807d511defcb79dddd1260b96e7934ff0f04",
+      "status": "same"
+    },
+    {
+      "path": "release-artifacts/README.md",
+      "v4_sha256": "8c7f2ee0a6e9a5041aa62d371eeed17bea955a964f8bfb8310a6da295e347379",
+      "current_sha256": "d02e15e8b45c31c909e1685f8c99afb9526106ff0dad05746c2327822751c140",
+      "status": "changed"
+    },
+    {
+      "path": "scripts/README.md",
+      "v4_sha256": "c23e952a2c6e4da8580e625b955e2f06c0ab87d93a02c825e7be4ff280b93fd4",
+      "current_sha256": "f633af6ace6d22ec5a0b48b08cea959cae25f19769789030af371b1fa781e59e",
+      "status": "changed"
+    },
+    {
+      "path": "scripts/ci/verify-agent-handbooks.mjs",
+      "v4_sha256": "22c2866f8e83e1efb5751023882304fe7fc6fa3d0b4329f1b4b1835ee442e08b",
+      "current_sha256": "22c2866f8e83e1efb5751023882304fe7fc6fa3d0b4329f1b4b1835ee442e08b",
+      "status": "same"
+    },
+    {
+      "path": "scripts/ci/verify-agent-handbooks.test.mjs",
+      "v4_sha256": "7c14d94b5ee6a20f6d53092ae6717adb4f7d4e6aef0fadb0b2e5a7bda3ae6974",
+      "current_sha256": "7c14d94b5ee6a20f6d53092ae6717adb4f7d4e6aef0fadb0b2e5a7bda3ae6974",
+      "status": "same"
+    }
+  ]
+}

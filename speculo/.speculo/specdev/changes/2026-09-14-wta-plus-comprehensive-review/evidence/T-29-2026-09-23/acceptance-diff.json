@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--check",
+    "7a1810288d3292ceeb4987f488b13353af1a1286...9f055ba15d9d5a828fb08cdfb0b24efa32642889"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T08:29:37.246417+00:00",
+  "finished_at": "2026-09-23T08:29:37.255692+00:00",
+  "exit_code": 0,
+  "log": "acceptance-diff.log"
+}

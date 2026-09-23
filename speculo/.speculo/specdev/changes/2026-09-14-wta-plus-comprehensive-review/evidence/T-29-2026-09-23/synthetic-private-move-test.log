@@ -1,0 +1,11 @@
+AST: PASS
+synthetic checks: 9/9 passed
+PASS shared-positive
+PASS repo-writable-negative
+PASS temp-writable-negative
+PASS repo-owner-negative
+PASS temp-owner-negative
+PASS move-owner-drift-negative
+PASS source-symlink-negative
+PASS source-mutation-negative
+PASS target-exists-negative

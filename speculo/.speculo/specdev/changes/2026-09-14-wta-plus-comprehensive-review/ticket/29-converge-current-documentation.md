@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-29"
 title: "清理过时文档与重复AGENTS权威"
-status: "in_progress"
+status: "done"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -98,7 +98,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 当前POM/App/Java测试源码库存与最终源码一致（用rg动态盘点，源码文件数不冒充JUnit运行数） | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 所有当前引用和cwd命令可解析；文档不把候选CI、未跑服务或未批准设计写成已完成 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下命令本轮已实际执行，结果见当前Evidence：
 
 - `node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs`
 - `node docs/fm/scripts/validate.mjs`
@@ -120,14 +120,14 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-029`：每个删除文件有owner、内容迁移落点和无丢失硬约束证据。
-- [ ] `AC-029`：当前POM/App/Java测试源码库存与最终源码一致（用rg动态盘点，源码文件数不冒充JUnit运行数）。
-- [ ] `AC-029`：所有当前引用和cwd命令可解析。
-- [ ] `AC-029`：文档不把候选CI、未跑服务或未批准设计写成已完成。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-029`：每个删除文件有owner、内容迁移落点和无丢失硬约束证据。
+- [x] `AC-029`：当前POM/App/Java测试源码库存与最终源码一致（用rg动态盘点，源码文件数不冒充JUnit运行数）。
+- [x] `AC-029`：所有当前引用和cwd命令可解析。
+- [x] `AC-029`：文档不把候选CI、未跑服务或未批准设计写成已完成。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -156,3 +156,7 @@ T-34附加facts检查exit1：部署Skill仍明确固定本地私有报告为temp
 新增精确12文件写集：统一全部部署/显式项目定制Skill的默认路径为temp/release，保留项目定制report_root覆盖（只维护事实，不激活该Skill）；工程Profile使用实际release-state.mjs；facts扫描全部Skill Markdown旧路径并增加两类负向夹具，保留ignore/跟踪/旧目录检查。原37手册收敛事实仍需当前复核，不重删文件。
 
 Lead私有操作单独独占：temp/relase→temp/release，先lstat/归属/目标不存在/ignore/零tracked及无symlink特殊文件；新0700 temp/.t29-private-backup/<随机ID>存完整保模式备份与私有0600 manifest/hash，独立恢复演练并逐项一致后，才用同父renameat2(RENAME_NOREPLACE)原子改名，后验字节/inode/权限。保留备份和演练，不清理、不覆盖。仅统计必要旧路径引用；确有引用时，先登记精确私有文件白名单、备份后做字面路径替换并验证除此字节不变；不运行轮换、数据库或服务命令。若最新报告含旧本地映射，按既有授权更新本地/服务器唯一报告且0600，不输出内容。所有原始清单/哈希/凭据只在私有目录，公开Evidence仅布尔/数量/安全备份根和退出码。任何预检/备份/恢复/权限失败停止本地移动。
+
+## 13. 当前验收
+
+<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29.md</Path>；固定result `9f055ba15d9d5a828fb08cdfb0b24efa32642889`，当前clean前后/双轴与实际适用门禁通过；历史证据原文保留。

@@ -1,0 +1,11 @@
+{
+  "entries": 33,
+  "same_entry_set": true,
+  "postmove_changes_only_registered_pointers_and_root_mtime": true,
+  "backup_and_rehearsal_still_unchanged": true,
+  "private_owner_permissions_valid": true,
+  "git_ignored_zero_tracked": true,
+  "shared_parent_identity_unchanged": true,
+  "old_path_absent": true,
+  "exit_code": 0
+}

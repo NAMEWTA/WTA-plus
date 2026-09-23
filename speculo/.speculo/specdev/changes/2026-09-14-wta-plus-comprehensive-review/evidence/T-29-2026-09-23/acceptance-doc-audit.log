@@ -1,0 +1,66 @@
+{
+  "exit_code": 0,
+  "errors": [],
+  "special_rules_checked": 28,
+  "protected_files_count": 855,
+  "protected_files_unchanged": false,
+  "commands": [
+    {
+      "command": [
+        "rg",
+        "--files",
+        "backend",
+        "-g",
+        "pom.xml",
+        "-g",
+        "!**/target/**"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "count": 49
+    },
+    {
+      "command": [
+        "rg",
+        "--files",
+        "frontend/apps",
+        "-g",
+        "package.json",
+        "-g",
+        "!**/node_modules/**",
+        "-g",
+        "!**/dist/**"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "count": 3
+    },
+    {
+      "command": [
+        "rg",
+        "--files",
+        "backend",
+        "-g",
+        "**/src/test/java/**/*.java",
+        "-g",
+        "!**/target/**"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "count": 296
+    }
+  ],
+  "maven_selectors": [
+    "wta-admin",
+    "wta-common/wta-common-richtext",
+    "wta-extend/wta-monitor-admin",
+    "wta-modules/wta-demo",
+    "wta-modules/wta-notify",
+    "wta-modules/wta-profile",
+    "wta-modules/wta-profile/wta-profile-enterprise",
+    "wta-modules/wta-profile/wta-profile-person",
+    "wta-modules/wta-sso",
+    "wta-modules/wta-third"
+  ]
+}
+links 147 module rows 48 removed references 0 effective-owner deltas 1 blank-only-root-reviewed True
