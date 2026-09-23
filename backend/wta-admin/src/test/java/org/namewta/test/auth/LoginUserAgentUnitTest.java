@@ -93,8 +93,8 @@ public class LoginUserAgentUnitTest {
 
     /** RedisUtils/MapstructUtils 缓存 Spring Bean，故父 Surefire JVM 只管理隔离进程。 */
     private void runIsolated(String consumer, String userAgentCase) throws Exception {
-        Path result = temporary.resolve(consumer + '-' + userAgentCase + '.result');
-        Path log = temporary.resolve(consumer + '-' + userAgentCase + '.log');
+        Path result = temporary.resolve(consumer + '-' + userAgentCase + ".result");
+        Path log = temporary.resolve(consumer + '-' + userAgentCase + ".log");
         String classpath = System.getProperty("surefire.test.class.path", System.getProperty("java.class.path"));
         assertThat(classpath).as("Surefire test classpath").isNotBlank();
         Process child = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
