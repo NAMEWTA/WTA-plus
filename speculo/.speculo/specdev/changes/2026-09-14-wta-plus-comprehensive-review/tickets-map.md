@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 174
+plan_revision: 175
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-用户Goal执行中。当前12done/2cancelled/T41 in_progress/35ready，cors_audit唯一产品writer，Lead验收；Ticket41 revision173的23条路径为当前硬写集，新增DTO/session port及迁移测试均已登记。
+用户Goal执行中。当前12done/2cancelled/T41 in_progress/35ready，cors_audit唯一产品writer，Lead验收；Ticket41 revision174的23条路径为当前硬写集，新增DTO/session port及迁移测试均已登记。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -380,3 +380,7 @@ Revision173: T41 active from d7d534cb after T50 closure;12done/2cancelled/T41in_
 ## revision174 — 读投影路径纠正
 
 Revision174: before production edits, correct T41 Mapper read projection to domain/model/read/NotifyInboxRow.java per FILES-002/005; no dto exception. 23 declared entries, same red-only phase;12done/2cancelled/T41in_progress/35ready.
+
+## revision175 — T41后端检查点，前端在实施
+
+Revision175: T41 backend checkpoints A1 b08105f failed (fixture MPJ result mapping), A2 662b351 passed3, A3 9d748aa passed4 after atomic first-time preservation. Full JAR/live OpenAPI fetched and generated in42f07eb. Frontend sole writer cors_audit active;12done/2cancelled/T41in_progress/35ready. This is partial implementation feedback, not complete-ticket integration; default full suite/frontend/browser still pending.

@@ -1,0 +1,23 @@
+{
+  "source_backend_head": "9d748aa9df9310cb64320e5e0db83d6dad8aeff7",
+  "old_revision": "6dcd90b63abedf4d897c710e0b73709c7d202b18bc993b2ccc24a353d70fa1ce",
+  "new_revision": "4ab6abdaf712861468eb9bc86b8d52c607a82402a600261ddf02776862c54bf3",
+  "raw_sha256": "36c4388a99a2f3dd7cb1d528846af5b07669ea1c8f810264a82028c25e98eab6",
+  "changed_shared_schemas": [],
+  "changed_common_paths": [
+    "/notify/inbox"
+  ],
+  "new_paths": [
+    "/notify/inbox/{messageId}"
+  ],
+  "new_schemas": [
+    "NotifyInboxPageVo",
+    "RNotifyInboxMessageVo",
+    "RNotifyInboxPageVo"
+  ],
+  "retired_schemas": [
+    "RListNotifyInboxMessageVo"
+  ],
+  "raw_source_byte_exact": true,
+  "ts_sha256": "8d3e64dd2f1b62f4a3c945462b20439415a4dca1505495f258367d470570cffd"
+}

@@ -1,0 +1,227 @@
+[
+  {
+    "file": "backend-a1/result.json",
+    "sha256": "15d5e48df8dab21949ab0191685a6ec0499868b3d7a469f90c54d656a488e00e",
+    "bytes": 4075
+  },
+  {
+    "file": "backend-a1/maven.log",
+    "sha256": "1df28c417090322d42bd031df64a84911e1768c8cb6085bec7054b88b9dc20c8",
+    "bytes": 79077
+  },
+  {
+    "file": "backend-a1/xml/TEST-org.namewta.test.notify.NotifyInboxPagingIntegrationTest.xml",
+    "sha256": "20760b8086c95b32382a32f858e8f6fdc35978358bbf80f614035c33b086fc25",
+    "bytes": 107594
+  },
+  {
+    "file": "backend-a2/result.json",
+    "sha256": "cba552e817b97fd87cdeaddc37cfd436001632031f0e7620f8b94cbb35b73e7b",
+    "bytes": 4011
+  },
+  {
+    "file": "backend-a2/maven.log",
+    "sha256": "89b25a35138270b7853ea95d59e6b416d6e4679e962f4cbcf61671f05563b47f",
+    "bytes": 76438
+  },
+  {
+    "file": "backend-a2/xml/TEST-org.namewta.test.notify.NotifyInboxPagingIntegrationTest.xml",
+    "sha256": "638dd858eea3601c33b2c30ceea9481d9fdedeb7c5c4172e014330b44c649745",
+    "bytes": 107248
+  },
+  {
+    "file": "backend-a3/result.json",
+    "sha256": "2bb44b00364a260c0acefd751d619c6f872676d4fcfca1e66e6c542990ba21d5",
+    "bytes": 4071
+  },
+  {
+    "file": "backend-a3/maven.log",
+    "sha256": "50a5c5ceec7bd1afa54cb89aa016b2c8b6069bf041215322ecfa79910c95f559",
+    "bytes": 80760
+  },
+  {
+    "file": "backend-a3/xml/TEST-org.namewta.test.notify.NotifyInboxPagingIntegrationTest.xml",
+    "sha256": "7aabce7eafe9563b14278bc8586a945a2c83e5e9001673a949d3afc9fa0e0360",
+    "bytes": 110913
+  },
+  {
+    "file": "live-v1-rejected/result.json",
+    "sha256": "de231eafb2a055ffedc8fc3b5bfcafc59c22ad1113b055a51810c3e6bf444f9c",
+    "bytes": 4310
+  },
+  {
+    "file": "live-v1-rejected/source.json",
+    "sha256": "05a699473ac96644aeb3483fdcf75709744be84eb8e876c3e7020b11a25c951a",
+    "bytes": 510375
+  },
+  {
+    "file": "live-v2-accepted/result.json",
+    "sha256": "dec77140d58f6e5fec2484aaa763bc342ebc86e491824df3f21d9723cb73823c",
+    "bytes": 4727
+  },
+  {
+    "file": "live-v2-accepted/source.json",
+    "sha256": "36c4388a99a2f3dd7cb1d528846af5b07669ea1c8f810264a82028c25e98eab6",
+    "bytes": 510375
+  },
+  {
+    "file": "backend-and-contract/a3-full-package.json",
+    "sha256": "a790def27dcae9b24e9f624417324b83662c3431747591c2e9c5146034a0f6c3",
+    "bytes": 294
+  },
+  {
+    "file": "backend-and-contract/a3-full-package.log",
+    "sha256": "14fa1e35071824de85349095b02ccf6d69a93cb003c72370d3022ded9f24dcc2",
+    "bytes": 101892
+  },
+  {
+    "file": "backend-and-contract/a3-full-bundle.json",
+    "sha256": "c1141982bedf3a82f93e8a9dde2fc3f4f5f850305e96d518b78d0912bea028e5",
+    "bytes": 267
+  },
+  {
+    "file": "backend-and-contract/a3-full-bundle.log",
+    "sha256": "a442d98c1e0f14d0543077fadd2c76d217885ae4a1325e7dd77976d3030780aa",
+    "bytes": 30
+  },
+  {
+    "file": "backend-and-contract/a3-full-package-proof.json",
+    "sha256": "327e9f953d0bf48bc362c19c23442a776f2fd18dce12616120941ac629404b83",
+    "bytes": 741
+  },
+  {
+    "file": "backend-and-contract/a3-source-before.json",
+    "sha256": "ecf40dda1ad00c2180b13e516c04abb8c3d6fc172d958df73e8d4130f3dae4c3",
+    "bytes": 128
+  },
+  {
+    "file": "backend-and-contract/a3-source-after.json",
+    "sha256": "ecf40dda1ad00c2180b13e516c04abb8c3d6fc172d958df73e8d4130f3dae4c3",
+    "bytes": 128
+  },
+  {
+    "file": "backend-and-contract/a3-openapi-fetch.json",
+    "sha256": "cc392ceff3054c1d19bba2db47faf526c617eb618c50fd131b3d67b48e4a5ffa",
+    "bytes": 491
+  },
+  {
+    "file": "backend-and-contract/a3-openapi-fetch.log",
+    "sha256": "b9f003773a24fb1db889b02abfcbc1fb43b8992f2bc0ea03d7765cebc244aa93",
+    "bytes": 122
+  },
+  {
+    "file": "backend-and-contract/a3-openapi-generate.json",
+    "sha256": "563b82de2b29cc2fd0afbb7b09e215d3be8c68c895c8f3cd3c2c846b4f099d21",
+    "bytes": 279
+  },
+  {
+    "file": "backend-and-contract/a3-openapi-generate.log",
+    "sha256": "c45eaed1da755add925d3b33ea5b2336199bf6d76b9b15b8165bbbb85831fc57",
+    "bytes": 114
+  },
+  {
+    "file": "backend-and-contract/a3-openapi-check.json",
+    "sha256": "e3282ed99c90bd40c8793444e2997e024b668ee8c65f570b4b8738b5146904e0",
+    "bytes": 273
+  },
+  {
+    "file": "backend-and-contract/a3-openapi-check.log",
+    "sha256": "4c5903c23e29b2e22dce739c9bf08808009b4626b5bfed8c234d3c14db4ac9d5",
+    "bytes": 115
+  },
+  {
+    "file": "backend-and-contract/a3-generated-contract-audit.json",
+    "sha256": "3ac29694006e594cceb2934a477060347c3e7afce3f8b69731b1b7d3484d8b44",
+    "bytes": 746
+  },
+  {
+    "file": "backend-and-contract/capture-v2-freeze.json",
+    "sha256": "038c9f67775d663ae3ba5afe902521a25a5b3d28de97ecc81f6876698c7c3752",
+    "bytes": 968
+  },
+  {
+    "file": "backend-and-contract/capture-v2-offline.json",
+    "sha256": "f89fa94f17ff393c740c640fbb63a40a2360023fb0e2c24ad80d480fc49b3b23",
+    "bytes": 270
+  },
+  {
+    "file": "backend-and-contract/capture-v2-offline.log",
+    "sha256": "39c21ea592659f09432ce8dbdf584596a0fc86784e3a84fce42c1bc70f4cce5b",
+    "bytes": 1382
+  },
+  {
+    "file": "backend-and-contract/version-freeze-v1.json",
+    "sha256": "08c90a96776481ba2910a23cfd840974061643df05a2a3b47272c6383b53b4b4",
+    "bytes": 1646
+  },
+  {
+    "file": "backend-and-contract/environment-plan-v1.md",
+    "sha256": "746a3a0239c9a61850f59fc011ad34e6480f292dd7ee7d87f69a014fe3aea07b",
+    "bytes": 4984
+  },
+  {
+    "file": "backend-and-contract/offline-synthetic-v1-final.json",
+    "sha256": "b1e20f3a639088c1f6a3bff50dd3e037aa991bcdee93bf7151167951051ccd70",
+    "bytes": 576
+  },
+  {
+    "file": "backend-and-contract/offline-synthetic-v1-final.log",
+    "sha256": "ae155ef8443e767f46bb96445f3e816efa0ac6481562e7f58d0a5273d8529836",
+    "bytes": 1725
+  },
+  {
+    "file": "backend-and-contract/run-notify-inbox-paging-integration-v1.py",
+    "sha256": "81ecc9db1fc4ecbde4ae1332b90f753d499ca18e26ed3c361b3f9ac21eeef6b9",
+    "bytes": 22162
+  },
+  {
+    "file": "backend-and-contract/capture-live-openapi-v1.py",
+    "sha256": "e5ec0e5ada965c1a9df2fe007af3258627a32c1676c9643a3eac412aeff15b54",
+    "bytes": 30531
+  },
+  {
+    "file": "backend-and-contract/capture-live-openapi-v2.py",
+    "sha256": "92ad110cf52d7ab6570e07bfc68d5631627b6a55c4c31712d23439dda999b08c",
+    "bytes": 34298
+  },
+  {
+    "file": "backend-and-contract/test_capture_v2.py",
+    "sha256": "7078e0454debabff0dbf28d026bea78d03bec56c286e7eb18f134d5946f66458",
+    "bytes": 2966
+  },
+  {
+    "file": "backend-and-contract/test_driver_safety_v1.py",
+    "sha256": "2252402d2b535e3549f01f31783b5067780fbe12f00474e29b6bb4c25c755bcb",
+    "bytes": 10189
+  },
+  {
+    "file": "backend-and-contract/prepare-full-only.py",
+    "sha256": "4639932e7778e8bcbe88a2dfa98f12d18120d46c899defa8d969cc1eb55a3e33",
+    "bytes": 2904
+  },
+  {
+    "file": "backend-and-contract/full-only-tool-preparation.json",
+    "sha256": "fa89fd2f9bb690f860d2c5fbd3ddc146fb8b5eaa9133f33e9229e8d1788797d6",
+    "bytes": 298
+  },
+  {
+    "file": "reviews/wta-t41-environment-review.md",
+    "sha256": "73d84d177795fc20e76e56232317539fc281b0c1a8eb28e8ea10964589aa86e0",
+    "bytes": 6726
+  },
+  {
+    "file": "reviews/wta-t41-red-source-review.md",
+    "sha256": "4fdaaccc7a6ab41606cca770b5f38ab6daa82efd4409d113095ac1f39fb2d8fb",
+    "bytes": 6793
+  },
+  {
+    "file": "reviews/wta-t41-backend-a-review.md",
+    "sha256": "d6b990d4ae1fa7bcbda6fd53be5c0ab9497341e376ac8594a81a8bd68c6ce57d",
+    "bytes": 6940
+  },
+  {
+    "file": "reviews/wta-t41-browser-runner-review.md",
+    "sha256": "fba404a69e47dc27037ca5ed03c7327c88e8b1039960a998eb14a329cdfd0c46",
+    "bytes": 5607
+  }
+]

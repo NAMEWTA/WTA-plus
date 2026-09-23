@@ -1,0 +1,16 @@
+test_already_migrated_baseline_retains_positive_contract (__main__.CaptureMigration.test_already_migrated_baseline_retains_positive_contract) ... ok
+test_detail_missing_rejected (__main__.CaptureMigration.test_detail_missing_rejected) ... ok
+test_missing_global_unread_rejected (__main__.CaptureMigration.test_missing_global_unread_rejected) ... ok
+test_missing_old_method_rejected (__main__.CaptureMigration.test_missing_old_method_rejected) ... ok
+test_missing_old_path_rejected (__main__.CaptureMigration.test_missing_old_path_rejected) ... ok
+test_observed_live_migration_has_exact_one_retirement (__main__.CaptureMigration.test_observed_live_migration_has_exact_one_retirement) ... ok
+test_other_missing_schema_rejected (__main__.CaptureMigration.test_other_missing_schema_rejected) ... ok
+test_retired_schema_with_second_consumer_rejected (__main__.CaptureMigration.test_retired_schema_with_second_consumer_rejected) ... ok
+test_retired_schema_with_wrong_original_items_rejected (__main__.CaptureMigration.test_retired_schema_with_wrong_original_items_rejected) ... ok
+test_untyped_page_query_rejected (__main__.CaptureMigration.test_untyped_page_query_rejected) ... ok
+test_wrong_rows_projection_rejected (__main__.CaptureMigration.test_wrong_rows_projection_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.185s
+
+OK

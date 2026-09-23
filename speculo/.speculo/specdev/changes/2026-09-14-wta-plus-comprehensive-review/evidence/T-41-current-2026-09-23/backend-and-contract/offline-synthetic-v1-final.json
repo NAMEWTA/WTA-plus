@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t41/test_driver_safety_v1.py",
+    "-v"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_utc": "2026-09-23T15:33:50.438336+00:00",
+  "finished_utc": "2026-09-23T15:33:50.763289+00:00",
+  "exit_code": 0,
+  "tests": 12,
+  "failures": 0,
+  "errors": 0,
+  "test_source_sha256": "2252402d2b535e3549f01f31783b5067780fbe12f00474e29b6bb4c25c755bcb",
+  "integration_driver_sha256": "81ecc9db1fc4ecbde4ae1332b90f753d499ca18e26ed3c361b3f9ac21eeef6b9",
+  "capture_driver_sha256": "e5ec0e5ada965c1a9df2fe007af3258627a32c1676c9643a3eac412aeff15b54"
+}

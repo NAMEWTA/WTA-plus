@@ -1,0 +1,41 @@
+{
+  "status": "prepared_not_executed",
+  "created_utc": "2026-09-23T15:34:12.184474+00:00",
+  "prepared_against_head": "d7d534cb03aa000d603a53c092c4bf1d48bb5cc3",
+  "target_class": "org.namewta.test.notify.NotifyInboxPagingIntegrationTest",
+  "target_class_present_at_preparation": false,
+  "source_exact_head_required_at_execution": true,
+  "files": {
+    "integration_v1": {
+      "path": "/tmp/wta-t41/run-notify-inbox-paging-integration-v1.py",
+      "sha256": "81ecc9db1fc4ecbde4ae1332b90f753d499ca18e26ed3c361b3f9ac21eeef6b9"
+    },
+    "capture_v1": {
+      "path": "/tmp/wta-t41/capture-live-openapi-v1.py",
+      "sha256": "e5ec0e5ada965c1a9df2fe007af3258627a32c1676c9643a3eac412aeff15b54"
+    },
+    "offline_test_v1": {
+      "path": "/tmp/wta-t41/test_driver_safety_v1.py",
+      "sha256": "2252402d2b535e3549f01f31783b5067780fbe12f00474e29b6bb4c25c755bcb"
+    },
+    "integration_template": {
+      "path": "/tmp/wta-t50/run-notify-supported-mode-integration-v2.py",
+      "sha256": "518a0c1946ba026d84f5e637e9ce00cc125306134f077f2d310a0614e09fe5a9"
+    },
+    "capture_template": {
+      "path": "/tmp/wta-t50/capture-live-openapi.py",
+      "sha256": "267f825eb6cb57a93413622aff2d9d5b3c33b231f73fa39c14c93b1cccfa9176"
+    },
+    "capture_helper": {
+      "path": "/tmp/wta-t38/run-notify-manual-retry-integration.py",
+      "sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e"
+    }
+  },
+  "offline_synthetic": {
+    "record": "/tmp/wta-t41/offline-synthetic-v1-final.json",
+    "exit_code": 0,
+    "tests": 12
+  },
+  "real_docker_maven_http_runs": 0,
+  "execute_only_by_lead_after_fixed_candidate": true
+}

@@ -1,0 +1,17 @@
+test_anonymous_volume_capture_and_absence (__main__.T41DriverSafety.test_anonymous_volume_capture_and_absence) ... ok
+test_capture_has_separate_owner_and_pinned_images (__main__.T41DriverSafety.test_capture_has_separate_owner_and_pinned_images) ... ok
+test_capture_retains_raw_http_before_strict_loss_failure (__main__.T41DriverSafety.test_capture_retains_raw_http_before_strict_loss_failure) ... ok
+test_cli_denies_implicit_launch (__main__.T41DriverSafety.test_cli_denies_implicit_launch) ... ok
+test_exited_leader_still_checks_process_group (__main__.T41DriverSafety.test_exited_leader_still_checks_process_group) ... ok
+test_failed_maven_cannot_be_accepted_and_red_xml_is_retained_for_diagnosis (__main__.T41DriverSafety.test_failed_maven_cannot_be_accepted_and_red_xml_is_retained_for_diagnosis) ... ok
+test_fresh_xml_positive_and_fail_skip_stale_are_not_green (__main__.T41DriverSafety.test_fresh_xml_positive_and_fail_skip_stale_are_not_green) ... ok
+test_full_id_dual_label_cleanup_rejects_foreign (__main__.T41DriverSafety.test_full_id_dual_label_cleanup_rejects_foreign) ... ok
+test_only_one_exact_report_and_selector (__main__.T41DriverSafety.test_only_one_exact_report_and_selector) ... ok
+test_owned_mysql_is_loopback_labelled_and_not_argv_secret (__main__.T41DriverSafety.test_owned_mysql_is_loopback_labelled_and_not_argv_secret) ... ok
+test_secret_only_child_env_and_redaction (__main__.T41DriverSafety.test_secret_only_child_env_and_redaction) ... ok
+test_source_preflight_requires_exact_opt_in_and_owned_fixture (__main__.T41DriverSafety.test_source_preflight_requires_exact_opt_in_and_owned_fixture) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.190s
+
+OK

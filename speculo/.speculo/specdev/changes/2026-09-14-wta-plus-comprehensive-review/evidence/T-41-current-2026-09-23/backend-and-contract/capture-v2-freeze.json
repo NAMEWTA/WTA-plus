@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "sha256": "92ad110cf52d7ab6570e07bfc68d5631627b6a55c4c31712d23439dda999b08c",
+  "base_v1_sha256": "e5ec0e5ada965c1a9df2fe007af3258627a32c1676c9643a3eac412aeff15b54",
+  "changed_existing_functions": [
+    "validate_full_openapi"
+  ],
+  "new_functions": [
+    "validate_inbox_migration"
+  ],
+  "all_resource_proof_and_cleanup_functions_unchanged": true,
+  "observed_v1_run": "7671ef3441f17602",
+  "observed_raw_sha256": "05a699473ac96644aeb3483fdcf75709744be84eb8e876c3e7020b11a25c951a",
+  "observed_missing_schemas": [
+    "RListNotifyInboxMessageVo"
+  ],
+  "sole_old_ref": [
+    "paths",
+    "/notify/inbox",
+    "get",
+    "responses",
+    "200",
+    "content",
+    "*/*",
+    "schema",
+    "$ref"
+  ],
+  "migration_authority": "T41 revision174 changes same-candidate inbox array into bounded PageResult and adds owned detail; does not allow other schema/path/method losses",
+  "offline_tests": 11,
+  "offline_exit_code": 0,
+  "executed": false
+}

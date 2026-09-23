@@ -1,0 +1,6 @@
+{
+  "file": "/tmp/wta-t41/prepare-full-only.py",
+  "sha256": "4639932e7778e8bcbe88a2dfa98f12d18120d46c899defa8d969cc1eb55a3e33",
+  "purpose": "intermediate backend source full JAR for live contract capture; default full-suite deferred to complete frontend/backend candidate",
+  "executed": false
+}

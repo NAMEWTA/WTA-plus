@@ -1,0 +1,118 @@
+{
+  "gate": "T-41 full-JAR live OpenAPI capture",
+  "run_id": "7671ef3441f17602",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T16:00:20.599554+00:00",
+  "source_before": {
+    "head": "9d748aa9df9310cb64320e5e0db83d6dad8aeff7",
+    "tree": "55a2e62c782675a25b7ca1a0603fd53ede0070c6",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "2da66e55cea75a4ba65ab4c4ab4cc69ebebf2c37b5c9dae5ede8d207eddab8f2",
+    "size_bytes": 214186495
+  },
+  "owned": {
+    "mysql_container_id": "dc42fed4f8a0ca1f023ca053481409c5ac7f585ab42490e33d08aadcc199f747",
+    "redis_container_id": "3936e51f2f894ccb63fc67cef46be12e3505f55b70a60ad43ece0a4e46718012",
+    "minio_container_id": "b5c2bd296449d60326658ad3e4e80eb7fd2061b6dd38012a225464af29ce0a1d",
+    "loopback_ports": {
+      "mysql": 32852,
+      "redis": 32853,
+      "minio": 32854,
+      "backend": 37727
+    },
+    "database_counts": {
+      "business_tables": 103,
+      "claimable_outboxes": 0,
+      "all_outboxes": 0,
+      "accepted_sms": 0,
+      "all_external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "backend_pgid": 679099,
+    "captured_anonymous_volume_names": [
+      "ff84554ac2c2ab848afeccd0e632ef97ee18330afb8b56ba19025cd4f71dfbb4",
+      "44a756da662b21893f8d3928ecbf4cde1b25e940c08912f29f5162f3c0064c5f"
+    ]
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 679099,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "ff84554ac2c2ab848afeccd0e632ef97ee18330afb8b56ba19025cd4f71dfbb4": true,
+      "44a756da662b21893f8d3928ecbf4cde1b25e940c08912f29f5162f3c0064c5f": true
+    },
+    "loopback_ports_closed": {
+      "32852": true,
+      "32853": true,
+      "32854": true,
+      "37727": true
+    },
+    "errors": []
+  },
+  "helper_sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e",
+  "package_proof_sha256": "327e9f953d0bf48bc362c19c23442a776f2fd18dce12616120941ac629404b83",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "baseline_revision": "6dcd90b63abedf4d897c710e0b73709c7d202b18bc993b2ccc24a353d70fa1ce",
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "java_command_redacted": [
+    "java",
+    "-Xms256m",
+    "-Xmx1024m",
+    "-Duser.home=/tmp/wta-t41/openapi-live/7671ef3441f17602",
+    "-Djava.io.tmpdir=/tmp/wta-t41/openapi-live/7671ef3441f17602/tmp",
+    "-jar",
+    "/srv/WTA-plus/backend/wta-admin/target/wta-admin.jar",
+    "--spring.profiles.active=prod",
+    "--spring.config.additional-location=file:/tmp/wta-t41/openapi-live/7671ef3441f17602/owned.yml"
+  ],
+  "openapi_raw": {
+    "http_status": 200,
+    "content_type": "application/json",
+    "bytes": 510375,
+    "raw_sha256": "05a699473ac96644aeb3483fdcf75709744be84eb8e876c3e7020b11a25c951a",
+    "source_path": "/tmp/wta-t41/openapi-live/7671ef3441f17602/source.json"
+  },
+  "openapi_missing": {
+    "paths": [],
+    "operations": [],
+    "schemas": [
+      "RListNotifyInboxMessageVo"
+    ]
+  },
+  "error": "OpenApiLossError: Live full document lost paths, methods or schemas from the active snapshot",
+  "source_after": {
+    "head": "9d748aa9df9310cb64320e5e0db83d6dad8aeff7",
+    "tree": "55a2e62c782675a25b7ca1a0603fd53ede0070c6",
+    "clean": true
+  },
+  "artifact_after_sha256": "2da66e55cea75a4ba65ab4c4ab4cc69ebebf2c37b5c9dae5ede8d207eddab8f2",
+  "helper_after_sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e",
+  "finished_utc": "2026-09-23T16:01:10.093140+00:00"
+}

@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，执行全部50票。当前revision174：12done、2cancelled（AC保留）、T41 in_progress、35ready。cors_audit唯一产品writer，Lead串行治理/验收；Goal active。
+当前revision175：12done/2cancelled/T41 in_progress/35ready；后端A3=9d748aa四项真实通过，正式生成42f07eb，cors_audit正在前端实施；完整票据尚未验收。以下旧记录按原时点保留。
 
 最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
@@ -24,3 +24,7 @@ G-security-external已由实际MySQL/Redis/WTA MinIO轮换验证及用户对退�
 ## revision174 — 读投影路径纠正
 
 Revision174: before production edits, correct T41 Mapper read projection to domain/model/read/NotifyInboxRow.java per FILES-002/005; no dto exception. 23 declared entries, same red-only phase;12done/2cancelled/T41in_progress/35ready.
+
+## revision175 — T41分段检查点
+
+Revision175: T41 backend checkpoints A1 b08105f failed (fixture MPJ result mapping), A2 662b351 passed3, A3 9d748aa passed4 after atomic first-time preservation. Full JAR/live OpenAPI fetched and generated in42f07eb. Frontend sole writer cors_audit active;12done/2cancelled/T41in_progress/35ready. This is partial implementation feedback, not complete-ticket integration; default full suite/frontend/browser still pending.

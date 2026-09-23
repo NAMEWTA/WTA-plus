@@ -1,0 +1,118 @@
+{
+  "gate": "T-41 inbox paging exact one-class real MySQL/Redis integration",
+  "run_id": "ff7664968f5f9976",
+  "mode": "acceptance",
+  "acceptance": true,
+  "started_utc": "2026-09-23T15:52:54.345941+00:00",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "d3aa0aec5016ea6b671273f07f2a0862b37de0760fac31e25bb113bf3a47ab4d",
+    "application_table_count": 103,
+    "redis_container_id": "64c6fdaadf8dec32633416024b67bb24ff4c68eb692e517582d720ab0b6926a7",
+    "loopback_ports": {
+      "mysql": 32848,
+      "redis": 32849
+    },
+    "captured_anonymous_volume_names": [
+      "678ae6e8ab6fa5a15dfe4602d6c7ea0578f9f133450b1344e574f5413a51cc8e"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 659959,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "678ae6e8ab6fa5a15dfe4602d6c7ea0578f9f133450b1344e574f5413a51cc8e": true
+    },
+    "loopback_ports_closed": {
+      "32848": true,
+      "32849": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyInboxPagingIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "662b351fca76a9e50ae8fba699e9e26aa65225f8",
+    "tree": "d8e35fd68052d2c5f8211ccc13de5309e4a320f4",
+    "clean": true
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifyInboxPagingIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.inbox.paging.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32848/namewta_notify_test_ff7664968f5f9976?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t41_ff7664968f5f9976",
+    "-Dnotify.redis.integration.port=32849"
+  ],
+  "maven_exit_code": 0,
+  "methods": {
+    "org.namewta.test.notify.NotifyInboxPagingIntegrationTest": [
+      "authenticatedOwnerCanPageToMessage501WithoutLosingTotal",
+      "ownerDetailAndReadAllUseAllRelationsWithoutChangingOtherUser",
+      "orphanAndExtremePageCannotDistortCountsOrFixedOrder"
+    ]
+  },
+  "retained_xml": [
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifyInboxPagingIntegrationTest.xml",
+      "sha256": "638dd858eea3601c33b2c30ceea9481d9fdedeb7c5c4172e014330b44c649745",
+      "bytes": 107248,
+      "source_mtime_ns": 1790178817932600987
+    }
+  ],
+  "source_after": {
+    "head": "662b351fca76a9e50ae8fba699e9e26aa65225f8",
+    "tree": "d8e35fd68052d2c5f8211ccc13de5309e4a320f4",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T15:53:38.783634+00:00"
+}

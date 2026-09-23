@@ -1,0 +1,18 @@
+{
+  "command": [
+    "node",
+    "tooling/openapi/src/cli.mjs",
+    "fetch",
+    "--source",
+    "/tmp/wta-t41/openapi-live/743626759bcb709c/source.json",
+    "--backend-commit",
+    "9d748aa9df9310cb64320e5e0db83d6dad8aeff7",
+    "--runtime-endpoint",
+    "http://127.0.0.1:46141/v3/api-docs"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T16:04:56.456957+00:00",
+  "finished_at": "2026-09-23T16:04:57.032108+00:00",
+  "exit_code": 0,
+  "log": "a3-openapi-fetch.log"
+}

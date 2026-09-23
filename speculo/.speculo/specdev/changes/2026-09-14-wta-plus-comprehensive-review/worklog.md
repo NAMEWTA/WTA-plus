@@ -1,6 +1,6 @@
 # 工作记录
 
-当前revision174：12done/2cancelled/T41 in_progress/35ready；base d7d534cb，cors_audit阶段1测试writer，Lead治理/实测；以下记录按原时点保留。
+当前revision175：12done/2cancelled/T41 in_progress/35ready；后端A3=9d748aa四项真实通过，正式生成42f07eb，cors_audit正在前端实施；完整票据尚未验收。以下旧记录按原时点保留。
 
 ## Goal
 
@@ -276,3 +276,7 @@ Revision173: T41 active from d7d534cb after T50 closure;12done/2cancelled/T41in_
 ## revision174 — 读投影路径纠正
 
 Revision174: before production edits, correct T41 Mapper read projection to domain/model/read/NotifyInboxRow.java per FILES-002/005; no dto exception. 23 declared entries, same red-only phase;12done/2cancelled/T41in_progress/35ready.
+
+## revision175 — T41分段检查点
+
+Revision175: T41 backend checkpoints A1 b08105f failed (fixture MPJ result mapping), A2 662b351 passed3, A3 9d748aa passed4 after atomic first-time preservation. Full JAR/live OpenAPI fetched and generated in42f07eb. Frontend sole writer cors_audit active;12done/2cancelled/T41in_progress/35ready. This is partial implementation feedback, not complete-ticket integration; default full suite/frontend/browser still pending.
