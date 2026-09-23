@@ -73,6 +73,7 @@ class NotifyAtomicResultIntegrationTest {
     private HikariDataSource pool;
     private RedissonClient redis;
     private JdbcTemplate db;
+    SqlSessionTemplate sessions;
     private NotifyNotificationDao dao;
     private DispatchNotificationService dispatch;
     private NotifyDispatchResultUseCase results;
@@ -136,8 +137,9 @@ class NotifyAtomicResultIntegrationTest {
         GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults()
             .setMetaObjectHandler(new InjectionMetaObjectHandler()).setSqlInjector(new MPJSqlInjector()));
         for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
-            NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, NotifyProviderReceiptMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class)) config.addMapper(mapper);
-        for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml", "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml")) {
+            NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, NotifyProviderReceiptMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class,
+            NotifyNoticeMapper.class, NotifyNoticeSnapshotMapper.class)) config.addMapper(mapper);
+        for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml", "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml", "/mapper/notify/NotifyNoticeMapper.xml")) {
             try (var stream = getClass().getResourceAsStream(resource)) {
                 assertThat(stream).isNotNull();
                 new XMLMapperBuilder(stream, config, resource, config.getSqlFragments()).parse();
@@ -146,7 +148,7 @@ class NotifyAtomicResultIntegrationTest {
         var sessionFactory = new MybatisSqlSessionFactoryBuilder().build(config);
         // 手装夹具须与生产MPJ自动配置一样，在factory生成后安装动态结果映射与分页包装。
         new MPJInterceptorConfig(List.of(sessionFactory), new MPJInterceptor(), false);
-        var sessions = new SqlSessionTemplate(sessionFactory);
+        sessions = new SqlSessionTemplate(sessionFactory);
         dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class), sessions.getMapper(NotifyRecipientMapper.class),
             sessions.getMapper(NotifyDeliveryMapper.class), sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
             sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
