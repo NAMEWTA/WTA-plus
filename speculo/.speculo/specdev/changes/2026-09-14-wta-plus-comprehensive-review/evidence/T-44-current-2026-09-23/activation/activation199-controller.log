@@ -1,0 +1,623 @@
+{
+  "schema_version": 1,
+  "scope": "2026-09-14-wta-plus-comprehensive-review",
+  "mode": "read-only-analysis",
+  "authorization_checked": false,
+  "transaction_gateway_checked": false,
+  "workspace_policy": "current",
+  "implementation_limit": 1,
+  "input_digest": "f349e03b812c2e55538831e3e31e9087713384d69c79b29e57f885e56e6c2504",
+  "goal_contract_digest": "159c93ffbe899170a6da3f5f7ba1dc3b2c21e933b8c82a3323a97437a39aa701",
+  "contract_digests": {
+    "T-01": "655c2b444f04f56a23ea274b2aaac4d69a2adbbac11eb53e7ddf01240f986e40",
+    "T-02": "cdd032cf94c0191eebf2fb1ed172894933d533f415f050f9c25dfb108f295c69",
+    "T-03": "2abfd971fcd310b295bc97105c1bf4d9a69b07d2ef996ef4ee7bb143bf754c3e",
+    "T-04": "59355ad03ca4b0b5d89dc542174b3d9d1eeda89107cdb8ec7cadd465827d366b",
+    "T-05": "fda678a488de960da913cc524337ba9b04b95e183f2a7e65798d955320418d71",
+    "T-06": "9c275abc5247f99711b3e9775abcce08a15c9a49ee3ca56a02a5329e622b49b0",
+    "T-07": "1a1208b67bdbe6f649d183fcaff10fba80d8735c2190a2c5d5851542dd8a9979",
+    "T-08": "4343cffe205fe7ea9294c8d92c22e70a115bdfd112d16283a23031fafca459ed",
+    "T-09": "a0c3998cb3e8fd14c32d0e9d846d708742bca0ec39f632cf994bf6a272627e66",
+    "T-10": "24a0cf73945384880ad46f0034e620320b7f824850da9c9768963502cb068c20",
+    "T-11": "dc6730ba6ba483d6b06067c26ec2bacb055b2dd2fa49634b8dc2d9045aee441a",
+    "T-12": "0e5ed044d634be8272d7a60a1113d923ac13d76f958684f1d0b986122cfd4969",
+    "T-13": "442d72a91b111fda191127ab29e68a002f6e4f8f71c63a7ab1a6d1483d6c9102",
+    "T-14": "0999432f57669b1e283ebe759743ff19d22849a4620a74a60fce0ee22e2ba1bd",
+    "T-15": "37119c21fca796eef9f3f02575d6510c2decd0a7373aeaf0d8f1d33513463db7",
+    "T-16": "fb1dabcdadcced96ee1bfc52501ba86c3bd31479dd43be2eea6d559b0aff885f",
+    "T-17": "d803d0bdaf94ebb8a1e186b319cbb854fa2057db4418bbc13b4d8f7e4dcabb06",
+    "T-18": "b6d2df67856f3c8805b0b2aaa440ee94a86d7fd726fda9ba3bcef51e88a46c9c",
+    "T-19": "41257f51e48a84d9f6c53268ee0636fd30bb3dee1ceb6ed593a6320cd81656ee",
+    "T-20": "e88ace6853bc6dd3fcef12980c400dbdf363ee9652810049da18cc7862e6f640",
+    "T-21": "0b4844bf67cd1d3958ba3eac1aa3a08a90b7bc3264309ae4b71d1b575f2213dc",
+    "T-22": "5c85c96df0f8eee0863692a9be2705c957b3c643bf8cb2d8ce8891def64a4aaa",
+    "T-23": "cf4895eca52f21fd537b8d798c6f71c6b150e1b0150494b146173607b7460cbb",
+    "T-24": "2ba6b943f5a3de349a44091c1408ae93c7c8425deee57038588bf222436ff961",
+    "T-25": "5005e747ec1864d31e45a2b09e32b9e249dcbd4408b279c9c43887a903fd5685",
+    "T-26": "ab726c135bfe8b421169b43b05206db00fa465b15394c991590f6bfd3faa48c5",
+    "T-27": "c2844ce4db07f0c9bef45109102f72d2f4a66298c7cfe8efd5c5491f5d6099c6",
+    "T-28": "8280b03c953a60cfc34c62403f6d55d72c0b332c674212bcb739f52a665343b7",
+    "T-29": "a99fa471ea32968444c2d629dcd53030255f41bb68813039da5b98be5cd4683b",
+    "T-30": "d4d856123df32f964358fff293ae2484b1cb5766332e0d7f0236aed4e4f4ec51",
+    "T-31": "1a6c95b3dcfaa8e0a0b46321e86d58bf48afab69c0c5e6fe462e5146829a0105",
+    "T-32": "5ab53cee6bcfb5ffc0062a75b94b5153c7d607360cd232da397dbf39be051b24",
+    "T-33": "9f3f73e99cfe98ec84dd691edd68c0f7162553ce43b587b68cda246e49e7eed0",
+    "T-34": "cb3bfc97040c26095ca69b76e57c048a9eae1e504b6f5ae2247cdda22f39761d",
+    "T-35": "8152ae88573c97c84d74a5f6bd892e903975723ff62bbdba1fbcfd5cfb5f9401",
+    "T-36": "1c59d07b18963589366deae645a790a3631ac0648eaea52152f069cf857b7202",
+    "T-37": "2523b8e78b21e13fcb589295d2016e6c8e974f8792dcc21abe8e4623606c6e58",
+    "T-38": "3d78d9ff7841dc898ae7b8a670a771b1bc2208ce3be7b289e6b4ae29d5d18787",
+    "T-39": "bc3c86e0d8f10b2c6386c1405c572f81e6e0a4fe2c594a62caf94dfa076e921d",
+    "T-40": "089c5912c20330cd18fddcc85fd1e09c1f2b590ce409451704e29eb9685b2b15",
+    "T-41": "9a599e2203605b4234001dd4cab70f4a354d60fcb41e9681ddc9cb87bd8ac0a3",
+    "T-42": "c415dca4865f68aaa87cef9f16a64191f232e65d3fbe50375b281bc8b77bbd01",
+    "T-43": "d156d9a09cf203ff9cc0d72b537cec7ecf039a2f9e26674f5f3dad5ecfc4fadd",
+    "T-44": "c4ce9d146e2ca14983f450366f21e480f71fd7d029255179018cde13ddbdd3ca",
+    "T-45": "b9a2b140e185d48e1871c2ad6948ac4c95a5fd7bb343934c5aec658000a4ff1c",
+    "T-46": "4dd8bbb006d315df58a2dccb99c1e59b99d0c167c98c492275520923c75fa238",
+    "T-47": "9ab79e5b0a81293bccb429a29a39fda9fa9eaf820105249063272e15e0627cb0",
+    "T-48": "af69f4b5ed0981ba11311ad5f2c2de915f9ad96a2cb62475bf13295486018f0b",
+    "T-49": "13c187866b77e2395c36cf34097a8bcad7373aa1a11a9407e17b3479a37257c5",
+    "T-50": "44d32eb150dc0eed6ecc821eb76d5f704fa579796d5d0c6984a008e54de9673e"
+  },
+  "frontier": [],
+  "deferred": [],
+  "in_flight": [
+    {
+      "id": "T-44",
+      "owner": "single-agent"
+    }
+  ],
+  "done": [
+    "T-02",
+    "T-29",
+    "T-32",
+    "T-33",
+    "T-34",
+    "T-35",
+    "T-36",
+    "T-37",
+    "T-38",
+    "T-39",
+    "T-40",
+    "T-41",
+    "T-47",
+    "T-50"
+  ],
+  "cancelled": [
+    "T-01",
+    "T-03"
+  ],
+  "blocked": [
+    {
+      "id": "T-04",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-05",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-06",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-07",
+      "reasons": [
+        "dependency not successfully satisfied: T-06",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-06"
+      ]
+    },
+    {
+      "id": "T-08",
+      "reasons": [
+        "dependency not successfully satisfied: T-07",
+        "dependency not successfully satisfied: T-09",
+        "dependency not successfully satisfied: T-10",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-07",
+        "blocked dependency closure: T-09",
+        "blocked dependency closure: T-10"
+      ]
+    },
+    {
+      "id": "T-09",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-10",
+      "reasons": [
+        "dependency not successfully satisfied: T-09",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-09"
+      ]
+    },
+    {
+      "id": "T-11",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-12",
+      "reasons": [
+        "dependency not successfully satisfied: T-07",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-07"
+      ]
+    },
+    {
+      "id": "T-13",
+      "reasons": [
+        "dependency not successfully satisfied: T-12",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-12"
+      ]
+    },
+    {
+      "id": "T-14",
+      "reasons": [
+        "dependency not successfully satisfied: T-18",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-18"
+      ]
+    },
+    {
+      "id": "T-15",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-16",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-17",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-18",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-19",
+      "reasons": [
+        "dependency not successfully satisfied: T-18",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-18"
+      ]
+    },
+    {
+      "id": "T-20",
+      "reasons": [
+        "dependency not successfully satisfied: T-12",
+        "dependency not successfully satisfied: T-14",
+        "dependency not successfully satisfied: T-19",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-12",
+        "blocked dependency closure: T-14",
+        "blocked dependency closure: T-19"
+      ]
+    },
+    {
+      "id": "T-21",
+      "reasons": [
+        "dependency not successfully satisfied: T-13",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-13"
+      ]
+    },
+    {
+      "id": "T-22",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-23",
+      "reasons": [
+        "dependency not successfully satisfied: T-22",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-22"
+      ]
+    },
+    {
+      "id": "T-24",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-25",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-26",
+      "reasons": [
+        "dependency not successfully satisfied: T-16",
+        "dependency not successfully satisfied: T-25",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-16",
+        "blocked dependency closure: T-25"
+      ]
+    },
+    {
+      "id": "T-27",
+      "reasons": [
+        "dependency not successfully satisfied: T-26",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-26"
+      ]
+    },
+    {
+      "id": "T-28",
+      "reasons": [
+        "dependency not successfully satisfied: T-22",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-22"
+      ]
+    },
+    {
+      "id": "T-30",
+      "reasons": [
+        "dependency not successfully satisfied: T-04",
+        "dependency not successfully satisfied: T-05",
+        "dependency not successfully satisfied: T-06",
+        "dependency not successfully satisfied: T-07",
+        "dependency not successfully satisfied: T-08",
+        "dependency not successfully satisfied: T-09",
+        "dependency not successfully satisfied: T-10",
+        "dependency not successfully satisfied: T-11",
+        "dependency not successfully satisfied: T-12",
+        "dependency not successfully satisfied: T-13",
+        "dependency not successfully satisfied: T-14",
+        "dependency not successfully satisfied: T-15",
+        "dependency not successfully satisfied: T-16",
+        "dependency not successfully satisfied: T-17",
+        "dependency not successfully satisfied: T-18",
+        "dependency not successfully satisfied: T-19",
+        "dependency not successfully satisfied: T-20",
+        "dependency not successfully satisfied: T-21",
+        "dependency not successfully satisfied: T-22",
+        "dependency not successfully satisfied: T-23",
+        "dependency not successfully satisfied: T-24",
+        "dependency not successfully satisfied: T-25",
+        "dependency not successfully satisfied: T-26",
+        "dependency not successfully satisfied: T-27",
+        "dependency not successfully satisfied: T-28",
+        "dependency not successfully satisfied: T-31",
+        "dependency not successfully satisfied: T-42",
+        "dependency not successfully satisfied: T-43",
+        "dependency not successfully satisfied: T-44",
+        "dependency not successfully satisfied: T-45",
+        "dependency not successfully satisfied: T-46",
+        "dependency not successfully satisfied: T-48",
+        "dependency not successfully satisfied: T-49",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-04",
+        "blocked dependency closure: T-05",
+        "blocked dependency closure: T-06",
+        "blocked dependency closure: T-07",
+        "blocked dependency closure: T-08",
+        "blocked dependency closure: T-09",
+        "blocked dependency closure: T-10",
+        "blocked dependency closure: T-11",
+        "blocked dependency closure: T-12",
+        "blocked dependency closure: T-13",
+        "blocked dependency closure: T-14",
+        "blocked dependency closure: T-15",
+        "blocked dependency closure: T-16",
+        "blocked dependency closure: T-17",
+        "blocked dependency closure: T-18",
+        "blocked dependency closure: T-19",
+        "blocked dependency closure: T-20",
+        "blocked dependency closure: T-21",
+        "blocked dependency closure: T-22",
+        "blocked dependency closure: T-23",
+        "blocked dependency closure: T-24",
+        "blocked dependency closure: T-25",
+        "blocked dependency closure: T-26",
+        "blocked dependency closure: T-27",
+        "blocked dependency closure: T-28",
+        "blocked dependency closure: T-31",
+        "blocked dependency closure: T-42",
+        "blocked dependency closure: T-43",
+        "blocked dependency closure: T-45",
+        "blocked dependency closure: T-46",
+        "blocked dependency closure: T-48",
+        "blocked dependency closure: T-49"
+      ]
+    },
+    {
+      "id": "T-31",
+      "reasons": [
+        "dependency not successfully satisfied: T-22",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-22"
+      ]
+    },
+    {
+      "id": "T-42",
+      "reasons": [
+        "dependency not successfully satisfied: T-44",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-43",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-45",
+      "reasons": [
+        "dependency not successfully satisfied: T-44",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-46",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-48",
+      "reasons": [
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer"
+      ]
+    },
+    {
+      "id": "T-49",
+      "reasons": [
+        "dependency not successfully satisfied: T-44",
+        "dependency not successfully satisfied: T-48",
+        "in-flight owner single-agent (T-44): current workspace already has an implementation writer",
+        "blocked dependency closure: T-48"
+      ]
+    }
+  ],
+  "invalidated": [],
+  "eligible_for_final_verification": false,
+  "validation_errors": [],
+  "errors": [],
+  "warnings": [
+    "concurrent Ready Tickets T-04/T-05 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-04/T-06 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-04/T-08 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-04/T-11 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-04/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-04/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-06/T-09 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-06/T-11 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-06/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-06/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-07/T-16 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-07/T-17 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-07/T-18 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-07/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-07/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-07/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-11 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-12 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-13 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-14 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-16 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-17 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-18 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-20 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-21 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-23 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-48 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-08/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-09/T-11 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-09/T-14 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-09/T-23 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-09/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-09/T-48 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-10/T-11 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-10/T-20 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-10/T-23 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-10/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-10/T-48 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-12 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-13 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-14 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-16 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-17 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-18 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-20 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-21 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-11/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-12/T-14 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-12/T-16 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-12/T-17 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-12/T-18 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-12/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-12/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-12/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-14 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-16 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-17 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-18 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-20 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-13/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-15 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-16 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-17 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-21 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-22 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-23 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-14/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-16 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-20 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-15/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-17 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-18 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-21 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-22 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-23 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-16/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-17/T-18 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-17/T-19 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-17/T-21 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-17/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-17/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-21 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-18/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-19/T-21 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-19/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-19/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-19/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-20/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-20/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-21/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-21/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-22/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-22/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-22/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-22/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-22/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-22/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-22/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-24 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-23/T-48 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-25 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-26 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-27 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-24/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-25/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-26/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-28 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-27/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-28/T-31 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-28/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-28/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-28/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-28/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-28/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-28/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-31/T-42 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-31/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-31/T-44 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-31/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-31/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-31/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-42/T-43 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-42/T-45 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-42/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-42/T-49 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-44/T-46 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-44/T-48 share owned paths; an explicit owner or serialization is required",
+    "concurrent Ready Tickets T-45/T-49 share owned paths; an explicit owner or serialization is required"
+  ],
+  "next": "Lead must verify real authorization, existing transaction/ownership gateways, Skill execution and Goal acceptance; this output does not execute anything."
+}

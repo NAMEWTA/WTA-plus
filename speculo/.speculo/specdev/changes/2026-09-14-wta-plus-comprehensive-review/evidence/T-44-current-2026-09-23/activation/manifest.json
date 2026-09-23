@@ -1,0 +1,52 @@
+[
+  {
+    "file": "wta-t44-activation-audit.md",
+    "bytes": 10506,
+    "sha256": "410b9b94c5f2c18d0272fc1657ba32e6d1f89334fe199f074e4e151f299ef865"
+  },
+  {
+    "file": "wta-t44-writer-plan.md",
+    "bytes": 8092,
+    "sha256": "3ec52770f6805a11e028c72041288b43a3d3fdcf0957faa67d10bf12c9814ea4"
+  },
+  {
+    "file": "wta-t44-lead-plan-notes.md",
+    "bytes": 1287,
+    "sha256": "ce852dc05485e3d943a59c2bf065181830f3f0d950ee68142b0869d9ccce4b6a"
+  },
+  {
+    "file": "wta-t44-http-path-registration.md",
+    "bytes": 6456,
+    "sha256": "5d5ea71ea6fb56b3adf4acdc83c8c80c1e11082c9ee1873a5558e605b052f0cd"
+  },
+  {
+    "file": "activation199-controller.json",
+    "bytes": 421,
+    "sha256": "885539be8bc70025de2ab8df0e19a9e0fa9a2de357b0d2d79b2b0053a7533597"
+  },
+  {
+    "file": "activation199-controller.log",
+    "bytes": 39270,
+    "sha256": "1bbdbf2e11a03eb1cd43f92a6ede01d8caf41f4c523efc81e2d6636bd228a1dd"
+  },
+  {
+    "file": "activation199-fixed-validator.json",
+    "bytes": 432,
+    "sha256": "8e17aa703a64e77299dcef3d1b8a440fbda75a5800cdef35f412499d59ba1dfd"
+  },
+  {
+    "file": "activation199-fixed-validator.log",
+    "bytes": 23906,
+    "sha256": "82cbc9c4e953e28ad5571eba97564d5a5fa2a1047cce377b5a822176318c5c2f"
+  },
+  {
+    "file": "activation199-validator.json",
+    "bytes": 426,
+    "sha256": "431182de48dfe5093e11c6cf5520a6b54edd730943a74f5d92b7c0e7f5be356d"
+  },
+  {
+    "file": "activation199-validator.log",
+    "bytes": 24000,
+    "sha256": "7f8ba871377c6f6f8fa6d9da719cdb9680491017d9fefe144917e9ece0b7acbd"
+  }
+]

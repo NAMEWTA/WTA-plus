@@ -3621,7 +3621,15 @@
       "backend/wta-admin/src/test/java/org/namewta/test/oss/",
       "backend/README.md",
       "release-artifacts/docker/",
-      ".agents/skills/wta-module-guide/references/modules/system/"
+      ".agents/skills/wta-module-guide/references/modules/system/",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssConfigServiceImpl.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/listener/OssConfigChangeListener.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/system/SysOssConfigController.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/domain/vo/OssStorageDiagnosticVo.java",
+      "backend/wta-admin/src/main/java/org/namewta/NamewtaApplication.java",
+      "frontend/packages/api-contracts/openapi/current.json",
+      "frontend/packages/api-contracts/openapi/revisions/",
+      "frontend/packages/api-contracts/generated/openapi.ts"
     ],
     "tests": [
       "OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组"
@@ -3633,7 +3641,8 @@
     "skills": [
       "engineering-standards",
       "namewta-fullstack-development",
-      "wta-module-guide"
+      "wta-module-guide",
+      "wta-common-modules-guide"
     ],
     "depth": "deep",
     "risk": "high",
@@ -3644,9 +3653,9 @@
       "oss:access-route",
       "health:core"
     ],
-    "status": "ready",
+    "status": "in_progress",
     "ready": true,
-    "plan_revision": 136,
+    "plan_revision": 199,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
