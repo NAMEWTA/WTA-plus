@@ -7391,10 +7391,30 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * 查询当前用户收件箱。
-         * @description 查询当前用户收件箱。
+         * 查询当前用户的有界收件箱页面。
+         * @description 查询当前用户的有界收件箱页面。
          */
         get: operations["list_24"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notify/inbox/{messageId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 仅返回当前用户确有收件关系的消息正文。
+         * @description 仅返回当前用户确有收件关系的消息正文。
+         */
+        get: operations["detail_2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -9035,11 +9055,11 @@ export interface components {
             definitionId?: number;
             nextNodeCode?: string;
             nowNodeCode?: string;
-            skipCondition?: string;
             tenantId?: string;
             coordinate?: string;
             skipType?: string;
             skipName?: string;
+            skipCondition?: string;
         };
         User: {
             /** Format: int64 */
@@ -14966,8 +14986,20 @@ export interface components {
             /** Format: date-time */
             readTime?: string;
         };
+        /** @description 本人收件箱分页结果；未读数覆盖所有有效收件关系，而非当前页。 */
+        NotifyInboxPageVo: {
+            /**
+             * Format: int64
+             * @description 总记录数
+             */
+            total?: number;
+            /** @description 列表数据 */
+            rows?: components["schemas"]["NotifyInboxMessageVo"][];
+            /** Format: int64 */
+            unreadTotal?: number;
+        };
         /** @description 响应信息主体 */
-        RListNotifyInboxMessageVo: {
+        RNotifyInboxPageVo: {
             /**
              * Format: int32
              * @description 响应状态码
@@ -14976,7 +15008,21 @@ export interface components {
             /** @description 响应提示信息 */
             msg?: string;
             /** @description 响应业务数据 */
-            data?: components["schemas"]["NotifyInboxMessageVo"][];
+            data?: components["schemas"]["NotifyInboxPageVo"];
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        /** @description 响应信息主体 */
+        RNotifyInboxMessageVo: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /** @description 响应业务数据 */
+            data?: components["schemas"]["NotifyInboxMessageVo"];
             /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
             error?: components["schemas"]["ErrorInfo"];
         };
@@ -28406,7 +28452,10 @@ export interface operations {
     };
     list_24: {
         parameters: {
-            query?: never;
+            query?: {
+                pageNum?: number;
+                pageSize?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -28419,7 +28468,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["RListNotifyInboxMessageVo"];
+                    "*/*": components["schemas"]["RNotifyInboxPageVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    detail_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                messageId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RNotifyInboxMessageVo"];
                 };
             };
             /** @description Unauthorized */
