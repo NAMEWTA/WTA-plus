@@ -1,0 +1,87 @@
+[
+  {
+    "file": "gates/recovery02a3-ua-isolated-red.json",
+    "bytes": 428,
+    "sha256": "afba29e71fc7d0d9f3699e99caf660aaac9c62a9a0697173355e91fe1f9ead5f"
+  },
+  {
+    "file": "gates/recovery02a3-ua-isolated-red.log",
+    "bytes": 64543,
+    "sha256": "69547f9bf50c9d30216c2590119815ab4af45c72960dd79782e3b8ef34dfecc4"
+  },
+  {
+    "file": "reports/recovery02a4-harness-reports/TEST-org.namewta.test.auth.LoginUserAgentUnitTest.xml",
+    "bytes": 99330,
+    "sha256": "166ae3520457451b5ae899491c697538a602aa4bb0bce8388839fb921a0a2e76"
+  },
+  {
+    "file": "gates/recovery02a4-harness-verification.json",
+    "bytes": 253,
+    "sha256": "66f15e542656a10795744c0b0dd5e8da9cbed1b2b3dd6618220c4783aaefc543"
+  },
+  {
+    "file": "gates/recovery02a4-ua-isolated-red.json",
+    "bytes": 428,
+    "sha256": "2a12e5750e8481432044608027338fa7520afa9d68eae18fa6b4c1d240c02acd"
+  },
+  {
+    "file": "gates/recovery02a4-ua-isolated-red.log",
+    "bytes": 70810,
+    "sha256": "881fa8534052e5a714d28ecde01f9501cdfa61d59a82ae0772855df1ef245138"
+  },
+  {
+    "file": "gates/recovery02a5-child-diagnostic.json",
+    "bytes": 486,
+    "sha256": "b424d8599233cae7b57c5b690044fcb137626656565f4ff3ec4ba95802e9483a"
+  },
+  {
+    "file": "gates/recovery02a5-child-diagnostic.log",
+    "bytes": 73131,
+    "sha256": "05b31dc395b2cbab05b946fc1f7f84541839345f070612c2ccb22525cf5b4b75"
+  },
+  {
+    "file": "reports/recovery02a6-red-reports/TEST-org.namewta.test.auth.LoginUserAgentUnitTest.xml",
+    "bytes": 101369,
+    "sha256": "04fd5b046bb041127803d6083fa690acc200478436074852f527b13638e1acc1"
+  },
+  {
+    "file": "gates/recovery02a6-red-verification.json",
+    "bytes": 367,
+    "sha256": "8af17ada11d5c6002ba3aea1e49687e4c047e9d881541b41950dc5ecf4300dc0"
+  },
+  {
+    "file": "gates/recovery02a6-ua-isolated-red.json",
+    "bytes": 428,
+    "sha256": "e432b198fd4f4fb7dcb7357bed8af1a013bcfea6face5bd27dd99a425be5df31"
+  },
+  {
+    "file": "gates/recovery02a6-ua-isolated-red.log",
+    "bytes": 72106,
+    "sha256": "657a825f93b020cf53004de021e1a7aae271306b1141b0bd693c7ef26c668448"
+  },
+  {
+    "file": "reviews/ua-isolated-fixture-review.md",
+    "bytes": 4250,
+    "sha256": "23c12a0970291a42e5189221baef214b7f315089f1512280864299ac7a0f4589"
+  },
+  {
+    "file": "reviews/ua-browser-proof-audit.md",
+    "bytes": 4399,
+    "sha256": "33062e78785ae505dc965db5e232b4a1caf0ad882b3bd6e3e22bcd7dfd651c96"
+  },
+  {
+    "file": "bounded-runner-diffs.json",
+    "bytes": 1587,
+    "sha256": "898acefb5b458ceecf63a902424d05eeb06cb11ae6243450bd834c00a99f37fb"
+  },
+  {
+    "file": "runners/run-notify-notice-retraction-integration-v2.py",
+    "bytes": 24443,
+    "sha256": "5174502a9f2d274a993738e495ccdf63e38fbdbd08a1ef134f7e01c60aeff73e"
+  },
+  {
+    "file": "runners/run-notify-supported-mode-integration-v3.py",
+    "bytes": 27372,
+    "sha256": "0c8781975a01828317fad67b25899f83d15b5bde3a78adddacfc281b6e40d397"
+  }
+]

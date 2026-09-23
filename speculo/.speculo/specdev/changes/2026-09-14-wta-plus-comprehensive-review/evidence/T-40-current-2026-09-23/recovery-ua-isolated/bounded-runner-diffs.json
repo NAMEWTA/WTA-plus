@@ -1,0 +1,16 @@
+[
+  {
+    "source": "/tmp/wta-t40/run-notify-notice-retraction-integration-v1.py",
+    "source_sha256": "6f38c05ccb6a41ad2d038377d90f85c768bb1d52458200cb652a9cb044b6550e",
+    "bounded_copy": "/tmp/wta-t40/run-notify-notice-retraction-integration-v2.py",
+    "bounded_sha256": "5174502a9f2d274a993738e495ccdf63e38fbdbd08a1ef134f7e01c60aeff73e",
+    "diff": "--- /tmp/wta-t40/run-notify-notice-retraction-integration-v1.py\n+++ /tmp/wta-t40/run-notify-notice-retraction-integration-v2.py\n@@ -39,6 +39,7 @@\n def safe_env(**updates):\n     allowed = ('PATH', 'HOME', 'LANG', 'LC_ALL', 'JAVA_HOME', 'TMPDIR')\n     env = {key: os.environ[key] for key in allowed if key in os.environ}\n+    env[\"JAVA_TOOL_OPTIONS\"] = \"-Xms128m -Xmx1536m\"\n     env.update(updates)\n     return env\n \n"
+  },
+  {
+    "source": "/tmp/wta-t50/run-notify-supported-mode-integration-v2.py",
+    "source_sha256": "518a0c1946ba026d84f5e637e9ce00cc125306134f077f2d310a0614e09fe5a9",
+    "bounded_copy": "/tmp/wta-t50/run-notify-supported-mode-integration-v3.py",
+    "bounded_sha256": "0c8781975a01828317fad67b25899f83d15b5bde3a78adddacfc281b6e40d397",
+    "diff": "--- /tmp/wta-t50/run-notify-supported-mode-integration-v2.py\n+++ /tmp/wta-t50/run-notify-supported-mode-integration-v3.py\n@@ -59,6 +59,7 @@\n def safe_env(**updates):\n     allowed = ('PATH', 'HOME', 'LANG', 'LC_ALL', 'JAVA_HOME', 'TMPDIR')\n     result = {key: os.environ[key] for key in allowed if key in os.environ}\n+    result[\"JAVA_TOOL_OPTIONS\"] = \"-Xms128m -Xmx1536m\"\n     result.update(updates)\n     return result\n \n"
+  }
+]

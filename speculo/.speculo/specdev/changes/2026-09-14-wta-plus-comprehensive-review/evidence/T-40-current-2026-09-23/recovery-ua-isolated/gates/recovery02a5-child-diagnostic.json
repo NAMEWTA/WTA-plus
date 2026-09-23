@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "JAVA_TOOL_OPTIONS=-Xms128m -Xmx1536m",
+    "./mvnw",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=LoginUserAgentUnitTest#publicLoginKeepsPreviouslyKnownBrowserAndOsWithoutHeader",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T21:16:26.543992+00:00",
+  "finished_at": "2026-09-23T21:16:41.631632+00:00",
+  "exit_code": 1,
+  "log": "recovery02a5-child-diagnostic.log"
+}

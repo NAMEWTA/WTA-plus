@@ -1,0 +1,9 @@
+{
+  "source": "b7a12bc185f4c890afa4d7de2f48b62640e1b209",
+  "tests": 10,
+  "failures": 10,
+  "errors": 0,
+  "skipped": 0,
+  "outcome": "all HARNESS; not business red",
+  "xml_sha256": "166ae3520457451b5ae899491c697538a602aa4bb0bce8388839fb921a0a2e76"
+}

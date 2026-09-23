@@ -1,0 +1,14 @@
+{
+  "source_head": "828ad32f461a812fdca1f444797a28a413737867",
+  "source_tree": "38c27eb06545889cac714535566e99973a14cd82",
+  "clean": true,
+  "counts": {
+    "tests": 10,
+    "failures": 6,
+    "errors": 0,
+    "skipped": 0
+  },
+  "positive_passed": 4,
+  "whole_candidate": false,
+  "xml_sha256": "04fd5b046bb041127803d6083fa690acc200478436074852f527b13638e1acc1"
+}
