@@ -1,0 +1,17 @@
+[
+  {
+    "file": "result.json",
+    "sha256": "4f1a1eeb3dca0f109e94609d1de9d948b618d938b3c36fb77be3e6a85151f236",
+    "bytes": 3943
+  },
+  {
+    "file": "maven.log",
+    "sha256": "962f498902e920504fce3b6c551c16f47c27b037cf7911dfd48067f29be8c83d",
+    "bytes": 69271
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.NotifyInboxPagingIntegrationTest.xml",
+    "sha256": "b03f994d37ab07823f7b42366a5506ed54b683ed2c8b55ffac566ab1010a5113",
+    "bytes": 98559
+  }
+]

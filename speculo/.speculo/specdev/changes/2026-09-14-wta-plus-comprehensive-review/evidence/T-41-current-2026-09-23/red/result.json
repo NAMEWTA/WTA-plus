@@ -1,0 +1,117 @@
+{
+  "gate": "T-41 inbox paging exact one-class real MySQL/Redis integration",
+  "run_id": "afc15f3575e3b1f6",
+  "mode": "acceptance",
+  "acceptance": false,
+  "started_utc": "2026-09-23T15:40:53.719387+00:00",
+  "exit_code": 1,
+  "owned": {
+    "mysql_container_id": "2c6fa5e2f4c687b4f342dc64008077321c324570975327f2825f01d2319774d5",
+    "application_table_count": 103,
+    "redis_container_id": "7f855ec2e7ad831ef9eebb46a3d86e6dbbc595b678fe67d1cd68345177a21575",
+    "loopback_ports": {
+      "mysql": 32844,
+      "redis": 32845
+    },
+    "captured_anonymous_volume_names": [
+      "5b4e97c5d610920d6c6f5669897d4cdad79b86a5d916813ad3f12facfa4c9860"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 631930,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "5b4e97c5d610920d6c6f5669897d4cdad79b86a5d916813ad3f12facfa4c9860": true
+    },
+    "loopback_ports_closed": {
+      "32844": true,
+      "32845": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyInboxPagingIntegrationTest": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "8a90e404fcd899aa68482f3f52bb902521dc6aa0",
+    "tree": "392b77364be5798c7e111879391fa522c43f9ba8",
+    "clean": true
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifyInboxPagingIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.inbox.paging.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32844/namewta_notify_test_afc15f3575e3b1f6?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t41_afc15f3575e3b1f6",
+    "-Dnotify.redis.integration.port=32845"
+  ],
+  "maven_exit_code": 1,
+  "methods": {
+    "org.namewta.test.notify.NotifyInboxPagingIntegrationTest": [
+      "authenticatedOwnerCanPageToMessage501WithoutLosingTotal"
+    ]
+  },
+  "error": "RuntimeError: Selected Maven test command failed",
+  "retained_xml": [
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifyInboxPagingIntegrationTest.xml",
+      "sha256": "b03f994d37ab07823f7b42366a5506ed54b683ed2c8b55ffac566ab1010a5113",
+      "bytes": 98559,
+      "source_mtime_ns": 1790178094777343183
+    }
+  ],
+  "source_after": {
+    "head": "8a90e404fcd899aa68482f3f52bb902521dc6aa0",
+    "tree": "392b77364be5798c7e111879391fa522c43f9ba8",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T15:41:35.824716+00:00"
+}
