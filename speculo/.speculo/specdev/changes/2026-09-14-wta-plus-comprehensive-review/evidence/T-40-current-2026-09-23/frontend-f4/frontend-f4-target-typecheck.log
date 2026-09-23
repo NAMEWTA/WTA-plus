@@ -1,0 +1,7 @@
+Scope: 3 of 33 workspace projects
+packages/domains/notify typecheck$ tsc --noEmit -p tsconfig.json
+packages/domains/notify typecheck: Done
+packages/web-domains/notify typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/notify typecheck: Done
+apps/admin-web typecheck$ vue-tsc --noEmit -p tsconfig.json
+apps/admin-web typecheck: Done

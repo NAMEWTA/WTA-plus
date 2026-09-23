@@ -1,0 +1,22 @@
+Scope: 3 of 33 workspace projects
+packages/domains/notify test$ vitest run src
+packages/domains/notify test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/notify
+packages/domains/notify test:  Test Files  2 passed (2)
+packages/domains/notify test:       Tests  7 passed (7)
+packages/domains/notify test:    Start at  15:02:44
+packages/domains/notify test:    Duration  177ms (transform 81ms, setup 0ms, import 105ms, tests 10ms, environment 1ms)
+packages/domains/notify test: Done
+packages/web-domains/notify test$ vitest run src
+packages/web-domains/notify test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/notify
+packages/web-domains/notify test:  Test Files  5 passed (5)
+packages/web-domains/notify test:       Tests  25 passed (25)
+packages/web-domains/notify test:    Start at  15:02:44
+packages/web-domains/notify test:    Duration  1.70s (transform 950ms, setup 0ms, import 1.58s, tests 1.39s, environment 2ms)
+packages/web-domains/notify test: Done
+apps/admin-web test$ vitest run src
+apps/admin-web test:  RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web
+apps/admin-web test:  Test Files  17 passed (17)
+apps/admin-web test:       Tests  80 passed (80)
+apps/admin-web test:    Start at  15:02:47
+apps/admin-web test:    Duration  2.86s (transform 5.13s, setup 0ms, import 7.98s, tests 1.05s, environment 7ms)
+apps/admin-web test: Done

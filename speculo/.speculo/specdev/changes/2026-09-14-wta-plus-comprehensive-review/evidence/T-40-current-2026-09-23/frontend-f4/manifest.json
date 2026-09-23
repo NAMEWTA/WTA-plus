@@ -1,0 +1,37 @@
+[
+  {
+    "file": "frontend-f4-host-test.json",
+    "bytes": 373,
+    "sha256": "2b35ba98c1c6a40959b340a84337f8757c172f106cda90200681da749ec696f3"
+  },
+  {
+    "file": "frontend-f4-host-test.log",
+    "bytes": 221,
+    "sha256": "5f6fa627f61d2f41bc2d5938e001045d26a701c64f86cc5acbfe284d3b5b3159"
+  },
+  {
+    "file": "frontend-f4-target-test.json",
+    "bytes": 398,
+    "sha256": "7da826532e126a8d5fa90aab9ab1c5435f51abbc1da014992b33795438b890fe"
+  },
+  {
+    "file": "frontend-f4-target-test.log",
+    "bytes": 1369,
+    "sha256": "cfadbd3ddf0edfbf12970df9141724f7dd21f53be66298520ec6ebdc3ca79820"
+  },
+  {
+    "file": "frontend-f4-target-typecheck.json",
+    "bytes": 408,
+    "sha256": "c8c722ae7ad240d958282bf45b6643ef3ec56b5f21b91caf03d9ff7812830b66"
+  },
+  {
+    "file": "frontend-f4-target-typecheck.log",
+    "bytes": 347,
+    "sha256": "526864705930e9a8e2ccd3c8e29cc1e57cb9c91f0745c5d52aff8bc27defe659"
+  },
+  {
+    "file": "frontend-f4-source.json",
+    "bytes": 129,
+    "sha256": "599f7124f3f241e05857792f9b023f777b748ec0ecef76fd472682320ece629d"
+  }
+]

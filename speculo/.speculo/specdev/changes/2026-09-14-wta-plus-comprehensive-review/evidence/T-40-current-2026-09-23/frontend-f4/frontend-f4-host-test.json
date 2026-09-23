@@ -1,0 +1,17 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/admin-web",
+    "exec",
+    "vitest",
+    "run",
+    "src/router/adminManifestRegistry.test.ts"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T19:02:20.734619+00:00",
+  "finished_at": "2026-09-23T19:02:24.961055+00:00",
+  "exit_code": 0,
+  "log": "frontend-f4-host-test.log"
+}
