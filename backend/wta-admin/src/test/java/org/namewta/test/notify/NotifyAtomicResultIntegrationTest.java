@@ -528,6 +528,8 @@ class NotifyAtomicResultIntegrationTest {
         assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isEqualTo(1);
         assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(1);
         assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(1);
+        // 首笔故障已经取证；下一笔验证正常提交后的线程恢复，不再注入故障。
+        duringProvider = () -> {};
         int priorPushes = realtimeCalls.get();
         long nextDelivery = DELIVERY + 20, nextOutbox = OUTBOX + 20;
         db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,create_time) "

@@ -156,3 +156,7 @@ Revision154: T36 active at 5118051403de0648540646d98536d8c4f3f9f26d; cors_audit 
 ### T36 依赖事件清理的限定范围
 
 dynamic-datasource 4.5.0 的提交异常可能跳过同步清理，依赖源码与实际class由ops专项复核。本票仅在自己的IN_APP代理结果调用失败、调用前无XID且同步集合为空、退出后无XID时清理，保留原异常；不能在入口按“无XID+有sync”泛清，因为正常AFTER_COMMIT回调阶段也有该形态。本地修复不代表所有UseCase的依赖问题已消失；T22/T30当前候选复验应核查其他提交失败后线程复用与事件传播，不能把本票局部证明扩成全局保证。
+
+## T36 第二候选验收未通过
+
+固定a2749a7dcc0bbc5c0643e07eba938446611c995a，39类178单元/Wake1/SMS8通过零skip；Atomic66零failure/1error，AFTER参数分支未清duringProvider故障钩子，下一正常投递再次被注入lost ACK。C1三断言及多渠道/列边界已通过。run909ae637d59b2ebe与0abb8a5220460930全部清理、clean源前后一致；正式attempt2保留。Lead接管唯一测试写锁，仅在两分支汇合后重置钩子，不改生产代码、不删弱断言。第三候选须完整Atomic/Wake真实复验；178单元与SMS8输入未变可严格等价复用，明确原实际运行SHA。

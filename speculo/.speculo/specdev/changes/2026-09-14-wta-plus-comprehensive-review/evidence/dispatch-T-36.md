@@ -61,3 +61,7 @@ OUT：T37缓存重试模型、T38截止、T42附件、真实存量恢复。提�
 ## T36 第一候选验收未通过
 
 固定54cf715c2829ff95cf994401ff52f02668c1e171，39类175单元/Wake1/SMS8零失败零skip，但Atomic61有3断言失败（两项提交后推送计数0、一项取消收尾PROCESSING）；run 0e830cfa64189d7f与d5a41784604fd16a全部owned清理完成，clean前后源一致。功能审查还发现多渠道JSON文本比较与确定字段长度预检缺口。正式attempt=1，保留原始记录/tmp/wta-t36-c1；不标done，不重置次数。writer在原授权写集内按根因修复第二候选，禁止放宽断言。
+
+## T36 第二候选验收未通过
+
+固定a2749a7dcc0bbc5c0643e07eba938446611c995a，39类178单元/Wake1/SMS8通过零skip；Atomic66零failure/1error，AFTER参数分支未清duringProvider故障钩子，下一正常投递再次被注入lost ACK。C1三断言及多渠道/列边界已通过。run909ae637d59b2ebe与0abb8a5220460930全部清理、clean源前后一致；正式attempt2保留。Lead接管唯一测试写锁，仅在两分支汇合后重置钩子，不改生产代码、不删弱断言。第三候选须完整Atomic/Wake真实复验；178单元与SMS8输入未变可严格等价复用，明确原实际运行SHA。
