@@ -1,9 +1,24 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { reactive } from 'vue';
 import { adminProfileWebRuntime, adminSystemWebRuntime, resolveAdminWebRegistration } from './adminManifestRegistry';
 
-vi.mock('@/store/modules/user', () => ({
-  useUserStore: () => ({ token: '', sessionGeneration: 0, userId: '', identityLoaded: false })
+const inboxHost = vi.hoisted(() => ({
+  user: { token: '', sessionGeneration: 0, userId: '', identityLoaded: false },
+  session: undefined as undefined | { snapshot: () => { epoch: number; active: boolean } }
 }));
+vi.mock('@/store/modules/user', () => ({
+  useUserStore: () => inboxHost.user
+}));
+vi.mock('@namewta/web-domain-notify', async importOriginal => {
+  const actual = await importOriginal<typeof import('@namewta/web-domain-notify')>();
+  return {
+    ...actual,
+    createNotifyWebDomain: (runtime: Parameters<typeof actual.createNotifyWebDomain>[0]) => {
+      inboxHost.session = runtime.inboxSession;
+      return actual.createNotifyWebDomain(runtime);
+    }
+  };
+});
 vi.mock('@/application/services', () => {
   const createService = () => {
     const service = new Proxy(vi.fn(), {
@@ -55,6 +70,35 @@ vi.mock('@/application/access', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 describe('admin selected manifest registry', () => {
+  it('uses the real Admin inbox host session epoch across pending logout and the next identity', () => {
+    const session = inboxHost.session;
+    expect(session).toBeDefined();
+    inboxHost.user = reactive({
+      token: 't41-A-token-canary', sessionGeneration: 10, userId: '101', identityLoaded: true
+    });
+    const a = session!.snapshot();
+    expect(a).toEqual({ epoch: expect.any(Number), active: true });
+
+    // 退出先改变代次；远端请求悬挂时旧 token、userId 和 loaded 仍未清理。
+    inboxHost.user.sessionGeneration++;
+    const suspended = session!.snapshot();
+    expect(suspended.epoch).toBeGreaterThan(a.epoch);
+    expect(suspended.active).toBe(false);
+    expect(session!.snapshot()).toEqual(suspended);
+
+    inboxHost.user.token = 't41-B-token-canary';
+    inboxHost.user.userId = '202';
+    inboxHost.user.identityLoaded = false;
+    const loading = session!.snapshot();
+    expect(loading.epoch).toBeGreaterThan(suspended.epoch);
+    expect(loading.active).toBe(false);
+    inboxHost.user.identityLoaded = true;
+    const b = session!.snapshot();
+    expect(b.epoch).toBeGreaterThan(loading.epoch);
+    expect(b).toEqual({ epoch: expect.any(Number), active: true });
+    expect(JSON.stringify([a, suspended, loading, b])).not.toContain('token-canary');
+  });
+
   it('does not register retired AI pages while keeping unrelated monitor registrations', () => {
     expect(resolveAdminWebRegistration('ai/chat/index', 'ai')).toBeUndefined();
     expect(resolveAdminWebRegistration('monitor/snailai/index', 'system')).toBeUndefined();
