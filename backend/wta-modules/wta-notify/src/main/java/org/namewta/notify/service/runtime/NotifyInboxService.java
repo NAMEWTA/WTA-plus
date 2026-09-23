@@ -65,9 +65,8 @@ public class NotifyInboxService {
     public boolean mark(Long messageId, Long userId, boolean read) {
         NotifyMessageRecipient item = dao.messageRecipient(messageId, userId);
         if (item == null) return false;
-        if (item.getSeenTime() == null) item.setSeenTime(LocalDateTime.now());
-        if (read && item.getReadTime() == null) item.setReadTime(LocalDateTime.now());
-        return dao.update(item) > 0;
+        dao.markMessage(messageId, userId, read, LocalDateTime.now());
+        return true;
     }
 
     /** 将当前用户全部收件消息标记为已见已读。 */

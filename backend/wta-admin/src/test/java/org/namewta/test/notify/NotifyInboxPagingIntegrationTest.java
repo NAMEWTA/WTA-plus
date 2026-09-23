@@ -196,6 +196,72 @@ class NotifyInboxPagingIntegrationTest {
     }
 
     @Test
+    void readAllAndSingleMarksPreserveFirstInteractionTimes() throws Exception {
+        seedMessages();
+        long seenOnly = FIRST_MESSAGE + 1;
+        long readOnly = FIRST_MESSAGE + 2;
+        long complete = FIRST_MESSAGE + 3;
+        long singleRead = FIRST_MESSAGE + 4;
+        long singleSeen = FIRST_MESSAGE + 5;
+        LocalDateTime oldSeen = SHARED_TIME.minusDays(2);
+        LocalDateTime oldRead = SHARED_TIME.minusDays(1);
+        db.update("update notify_message_recipient set seen_time=? where user_id=? and message_id=?",
+            Timestamp.valueOf(oldSeen), USER_A, seenOnly);
+        db.update("update notify_message_recipient set read_time=? where user_id=? and message_id=?",
+            Timestamp.valueOf(oldRead), USER_A, readOnly);
+        db.update("update notify_message_recipient set seen_time=?,read_time=? where user_id=? and message_id=?",
+            Timestamp.valueOf(oldSeen), Timestamp.valueOf(oldRead), USER_A, complete);
+        db.update("update notify_message_recipient set seen_time=? where user_id=? and message_id=?",
+            Timestamp.valueOf(oldSeen), USER_A, singleRead);
+
+        var controller = new NotifyInboxController(new NotifyInboxUseCase(new NotifyInboxService(dao)));
+        try (OwnedSaSession sessions = new OwnedSaSession(); OwnedHttp http = new OwnedHttp(controller)) {
+            String tokenA = sessions.login(USER_A);
+            var beforeB = times(USER_B, FIRST_MESSAGE + 250);
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/" + singleRead + "/read").body())
+                .get("code")).isEqualTo(200);
+            var firstRead = times(USER_A, singleRead);
+            assertThat(firstRead.seen()).isEqualTo(oldSeen);
+            assertThat(firstRead.read()).isNotNull();
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/" + singleRead + "/read").body())
+                .get("code")).isEqualTo(200);
+            assertThat(times(USER_A, singleRead)).isEqualTo(firstRead);
+
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/" + singleSeen + "/seen").body())
+                .get("code")).isEqualTo(200);
+            var firstSeen = times(USER_A, singleSeen);
+            assertThat(firstSeen.seen()).isNotNull();
+            assertThat(firstSeen.read()).isNull();
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/" + singleSeen + "/seen").body())
+                .get("code")).isEqualTo(200);
+            assertThat(times(USER_A, singleSeen)).isEqualTo(firstSeen);
+
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/read-all").body()).get("code"))
+                .isEqualTo(200);
+            assertThat(times(USER_A, seenOnly).seen()).isEqualTo(oldSeen);
+            assertThat(times(USER_A, seenOnly).read()).isNotNull();
+            assertThat(times(USER_A, readOnly).seen()).isNotNull();
+            assertThat(times(USER_A, readOnly).read()).isEqualTo(oldRead);
+            assertThat(times(USER_A, complete)).isEqualTo(new InteractionTimes(oldSeen, oldRead));
+            assertThat(times(USER_A, singleRead)).isEqualTo(firstRead);
+            assertThat(times(USER_A, singleSeen).seen()).isEqualTo(firstSeen.seen());
+            assertThat(times(USER_A, singleSeen).read()).isNotNull();
+            assertThat(times(USER_B, FIRST_MESSAGE + 250)).isEqualTo(beforeB);
+
+            var afterFirstReadAll = times(USER_A, seenOnly);
+            var afterFirstReadAllReadOnly = times(USER_A, readOnly);
+            var afterFirstReadAllSingleSeen = times(USER_A, singleSeen);
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/read-all").body()).get("code"))
+                .isEqualTo(200);
+            assertThat(times(USER_A, seenOnly)).isEqualTo(afterFirstReadAll);
+            assertThat(times(USER_A, readOnly)).isEqualTo(afterFirstReadAllReadOnly);
+            assertThat(times(USER_A, singleSeen)).isEqualTo(afterFirstReadAllSingleSeen);
+            assertThat(times(USER_A, complete)).isEqualTo(new InteractionTimes(oldSeen, oldRead));
+            assertThat(times(USER_B, FIRST_MESSAGE + 250)).isEqualTo(beforeB);
+        }
+    }
+
+    @Test
     void orphanAndExtremePageCannotDistortCountsOrFixedOrder() throws Exception {
         seedMessages();
         db.update("insert into notify_message_recipient(message_recipient_id,message_id,user_id,create_time) "
@@ -227,6 +293,16 @@ class NotifyInboxPagingIntegrationTest {
             + "and read_time is null and message_id between ? and ?", Long.class,
             userId, FIRST_MESSAGE, B_ONLY_MESSAGE);
     }
+
+    private InteractionTimes times(long userId, long messageId) {
+        return db.queryForObject("select seen_time,read_time from notify_message_recipient where user_id=? and message_id=?",
+            (rs, rowNum) -> new InteractionTimes(
+                rs.getTimestamp(1) == null ? null : rs.getTimestamp(1).toLocalDateTime(),
+                rs.getTimestamp(2) == null ? null : rs.getTimestamp(2).toLocalDateTime()),
+            userId, messageId);
+    }
+
+    private record InteractionTimes(LocalDateTime seen, LocalDateTime read) { }
 
     @SuppressWarnings("unchecked")
     private static Map<String, Object> page(HttpResponse<String> response) {

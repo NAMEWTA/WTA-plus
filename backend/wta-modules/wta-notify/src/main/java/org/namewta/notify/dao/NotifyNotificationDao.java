@@ -272,10 +272,27 @@ public class NotifyNotificationDao {
             .eq(NotifyMessageRecipient::getMessageId, messageId).eq(NotifyMessageRecipient::getUserId, userId));
     }
     public int update(NotifyMessageRecipient value) { return messageRecipientMapper.updateById(value); }
+    /** 单条互动时间只填首次空值；数据库条件更新避免并发读改写覆盖首次时间。 */
+    public int markMessage(Long messageId, Long userId, boolean read, LocalDateTime now) {
+        var update = new LambdaUpdateWrapper<NotifyMessageRecipient>()
+            .eq(NotifyMessageRecipient::getMessageId, messageId)
+            .eq(NotifyMessageRecipient::getUserId, userId);
+        if (read) {
+            update.and(wrapper -> wrapper.isNull(NotifyMessageRecipient::getSeenTime)
+                .or().isNull(NotifyMessageRecipient::getReadTime))
+                .setSql("seen_time = COALESCE(seen_time, {0}), read_time = COALESCE(read_time, {1})", now, now);
+        } else {
+            update.isNull(NotifyMessageRecipient::getSeenTime)
+                .setSql("seen_time = COALESCE(seen_time, {0})", now);
+        }
+        return messageRecipientMapper.update(null, update);
+    }
+
+    /** 本人全部收件关系在同一 SQL 内补齐空时间，重复调用保留首次时间。 */
     public int markAllMessages(Long userId, LocalDateTime now) {
         return messageRecipientMapper.update(null, new LambdaUpdateWrapper<NotifyMessageRecipient>()
             .eq(NotifyMessageRecipient::getUserId, userId)
             .and(wrapper -> wrapper.isNull(NotifyMessageRecipient::getSeenTime).or().isNull(NotifyMessageRecipient::getReadTime))
-            .set(NotifyMessageRecipient::getSeenTime, now).set(NotifyMessageRecipient::getReadTime, now));
+            .setSql("seen_time = COALESCE(seen_time, {0}), read_time = COALESCE(read_time, {1})", now, now));
     }
 }
