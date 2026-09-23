@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 160
+plan_revision: 161
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -43,7 +43,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
 | T-01 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/01-restore-trustworthy-gates.md</Path> | 干净clone不创建temp/release也通过事实检查 | T-29 | standard | medium | no | single-agent | AC-001 | W-legacy / G-legacy | cancelled |
-| T-02 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path> | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | — | deep | high | yes | single-agent | AC-002 | W-legacy / G-legacy | ready |
+| T-02 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path> | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | — | deep | high | yes | single-agent | AC-002 | W-legacy / G-legacy | in_progress |
 | T-03 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/03-bound-request-capture.md</Path> | 大小边界前/等于/超限一字节结果可判定 | T-02 | deep | high | yes | single-agent | AC-003 | W-legacy / G-legacy | ready |
 | T-04 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/04-trusted-client-address.md</Path> | 任意外来XFF不改变直连或正常入口的授权结果 | — | deep | high | yes | single-agent | AC-004 | W-legacy / G-legacy | ready |
 | T-05 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/05-repeat-submit-lease.md</Path> | A失败不得删除B的键 | — | deep | high | yes | single-agent | AC-005 | W-legacy / G-legacy | ready |
@@ -297,3 +297,17 @@ base `38032d24335c52cafea855b19d51fb36295162ef`；cors_audit唯一产品writer�
 ## revision159 单次SDK请求的实例事实闭环
 
 编辑前新增精确写集：<Path>backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/config/SmsAutoConfiguration.java</Path>。在现有Sms4jBlendRegistry维护自身以maxRetries=0创建的实际代理实例identity；使用已验证的BaseProviderFactory.createSms→SmsProxyFactory.getProxySmsBlend→SmsFactory.register同一引用，保留原SDK初始化所需钩子，不将void create后再get的可覆盖对象盲认证。remove先撤认证；注册/更新失败不保留认证，按账号并发更新需一致，不暴露配置对象。common-sms notify目录内小型SmsSingleAttemptBlendVerifier SPI由Registry实现，Resolver经AutoConfiguration ObjectProvider注入，缺失/identity不匹配即不把拒绝标成可重试；严格腾讯结构allowlist只有该证明成立才启用。已有Registry拥有这一事实，不新增第二套全局注册平台，不反射SDK，不让common反向依赖业务。固定对象捕获到send，避免查验A发送B。公共SPI/构造/配置方法调用者与测试同步。
+
+### revision161 T02当前修复
+
+## revision161 当前实际缺口与最小修复
+
+base `c16966167526f9b6ab6eb213265034b3bbe53e46`。T37已在3a87bf7通过187+13+67零skip，current单产品writer转交cors_audit实施T02；Lead独占治理、提交、隔离真实验收。
+
+当前真实链：UserLoginSuccessListener把已签发tokenValue放入UserOnlineDTO.tokenId，前端在线设备操作把它放入 /monitor/online/{tokenId} 与 /monitor/online/myself/{tokenId}；SysLogFilter原始path和GlobalExceptionHandler原始URI会复制凭据。LogAspect目前使用匹配路由模板，未证实OperLogEvent/DB已有该泄漏，不扩大断言。历史T02不是无需施工票，保留旧实现/证据，新增真实修复提交及当前验收；历史canonical先按原字节保存在evidence/T-02-history-before-2026-09-23.md，原引用日志不变；验收完成后当前canonical使用验证器要求的evidence/T-02.md，replan入口指向它，不补造旧时点。
+
+复用已有LogSanitizer提供共享安全路径策略，HTTP sink和异常日志使用；必要时操作日志统一策略但保留路由模板。精确处理上述正常凭据路径及实际context/path语义，保留 /monitor/online/list、普通路由、操作者、耗时、失败状态。不得以改前端/HTTP接口/会话存储规避日志缺陷，不发动对任意用户可控元数据的无限脱敏；X-Request-Id格式加固仅建议，不是本票新增blocker。
+
+先取得真实可观察日志红灯，再最小实现。当前候选验收需真实签发或既有真实token生产链的canary通过正常在线操作URL进入HTTP，检查HTTP sink、异常日志、OperLogEvent和真实MySQL行零凭据且审计非空，正常响应仍保留可用token。隔离测试若采用替身必须明确边界，不把任意塞入metadata的字符串冒称生产凭据链；原有签名/加解密/SSE/正文边界消费者回归。仅生产代码白名单路径的最小修复，测试均在现有admin测试根及common根，无需改业务API。
+
+允许测试读取合成MySQL密码的子进程环境，避免JVM系统属性/日志泄漏；环境root/app凭据不进入argv/XML/Evidence。真实服务与Maven由Lead协调，不并行构建。不得删除历史日志/业务表或轮换凭据；G-security-external已独立关闭，用户AI/qcloud撤销确认不重新索要。治理原始日志按字节保留含Maven尾空格，产品与治理源文件的diff-check独立通过，不修改原日志制造全量空格绿灯。

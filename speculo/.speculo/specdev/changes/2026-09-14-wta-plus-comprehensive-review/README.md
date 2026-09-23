@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，执行全部50票。当前revision160：8票done（T-29/T-32/T-33/T-34/T-35/T-36/T-37/T-47），T-01取消重复施工但AC仍由T30最终复验，其余41票ready。Goal active；current/main单产品writer，下一优先T02登录token路径日志修复，再T38。
+用户已激活Goal，执行全部50票。当前revision161：8票done（T-29/T-32/T-33/T-34/T-35/T-36/T-37/T-47），T-01取消重复施工，T02实施中，40票ready。current/main唯一产品writer cors_audit修复在线操作token路径日志泄漏；Lead治理/提交/隔离验收。
 
 最近验收产品T37 `3a87bf71876d92e4afdd227de156045226e52be2`：187单元+13真实重试/Redis+67站内信回归，全部零skip。首候选失败与驱动修正证据保留。整个change及T30完整同源候选尚未完成。
 

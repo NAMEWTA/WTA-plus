@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision160，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision161，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision160；T-29/T-32/T-33/T-34/T-35/T-36/T-37/T-47 done，T-01取消重复施工，其余41票ready。T37固定3a87bf7通过187单元+13真实重试/Redis+67站内信回归，全部零skip，两个正式候选历史保留。下一优先T02真实token路径日志修复，再T38；目前无产品writer。G-security-external已关闭，整个change仍未完成，归档未授权。
+revision161；8done/1cancelled/T02 in_progress/40ready。base c16966167526f9b6ab6eb213265034b3bbe53e46，cors_audit唯一产品writer；T37已验收187+13+67零skip。优先修复在线操作token路径日志泄漏，随后T38；Lead治理/提交/隔离验收，Goal active，整个change未完成。
 
 ### Pending Decisions and Blockers
 
@@ -323,3 +323,7 @@ Revision158: T37 active at 38032d24335c52cafea855b19d51fb36295162ef;7done/1cance
 ## revision160 — T37完成
 
 Revision160: T37 accepted at3a87bf7, attempts2; current187units+13real retry/Redis+67Atomic/Wake zeroSkip, both reviews pass, clean source and owned cleanup. C1 two errors and driver cleanup-evidence limitation retained.8done/1cancelled/41ready; next T02 real token-path log fix, thenT38; Goal active, no archive.
+
+## revision161 — T02启动
+
+Revision161: T02 implementation active atc16966167526f9b6ab6eb213265034b3bbe53e46;8done/1cancelled/1in_progress/40ready. Real login token in online device URL leaks to HTTP/error logs; minimal shared LogSanitizer path fix with current HTTP/MySQL canary acceptance. cors_audit sole product writer; Lead services/commits/governance. T37 closed, no active services.

@@ -8,8 +8,8 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-02"
 title: "消除HTTP与操作日志中的凭据副本"
-status: "ready"
-kind: "review"
+status: "in_progress"
+kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
 ready: true
@@ -21,13 +21,13 @@ expected_changes: ["<Path>backend/wta-common/wta-common-log/</Path>", "<Path>bac
 writable_paths: ["<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path>", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>backend/wta-common/wta-common-json/src/</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
 shared_paths: ["<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path>", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>backend/wta-common/wta-common-json/src/</Path>"]
-shared_path_owners: ["<Path>backend/wta-common/wta-common-log/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-common/wta-common-web/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-common/wta-common-json/src/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)"]
+shared_path_owners: ["<Path>backend/wta-common/wta-common-log/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only; delegated sole product writer cors_audit)", "<Path>backend/wta-common/wta-common-web/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only; delegated sole product writer cors_audit)", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only; delegated sole product writer cors_audit)", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only; delegated sole product writer cors_audit)", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only; delegated sole product writer cors_audit)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only; delegated sole product writer cors_audit)", "<Path>backend/wta-common/wta-common-json/src/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only; delegated sole product writer cors_audit)"]
 ---
 
 # T-02：消除HTTP与操作日志中的凭据副本
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。用户已激活Goal并授权gpt-6-sol/xhigh子代理；current/main单产品writer cors_audit，无新worktree，Lead治理/提交/真实验收。
 
 ## 1. 战略与来源
 
@@ -39,7 +39,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 已锁定决策
 
-保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。用户已授权本地实施、逐票提交与direct-parent；外部发布及真实数据处置不由此推断。
 
 ### 已确认方案
 
@@ -114,7 +114,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
 - 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
 - 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
-- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。本地实施、逐票提交与direct-parent已授权；推送、部署、真实数据修改及归档须独立授权。
 - 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
@@ -143,3 +143,19 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/02-unify-log-redaction.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
 旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。
+
+## revision161 当前实际缺口与最小修复
+
+base `c16966167526f9b6ab6eb213265034b3bbe53e46`。T37已在3a87bf7通过187+13+67零skip，current单产品writer转交cors_audit实施T02；Lead独占治理、提交、隔离真实验收。
+
+当前真实链：UserLoginSuccessListener把已签发tokenValue放入UserOnlineDTO.tokenId，前端在线设备操作把它放入 /monitor/online/{tokenId} 与 /monitor/online/myself/{tokenId}；SysLogFilter原始path和GlobalExceptionHandler原始URI会复制凭据。LogAspect目前使用匹配路由模板，未证实OperLogEvent/DB已有该泄漏，不扩大断言。历史T02不是无需施工票，保留旧实现/证据，新增真实修复提交及当前验收；历史canonical先按原字节保存在evidence/T-02-history-before-2026-09-23.md，原引用日志不变；验收完成后当前canonical使用验证器要求的evidence/T-02.md，replan入口指向它，不补造旧时点。
+
+复用已有LogSanitizer提供共享安全路径策略，HTTP sink和异常日志使用；必要时操作日志统一策略但保留路由模板。精确处理上述正常凭据路径及实际context/path语义，保留 /monitor/online/list、普通路由、操作者、耗时、失败状态。不得以改前端/HTTP接口/会话存储规避日志缺陷，不发动对任意用户可控元数据的无限脱敏；X-Request-Id格式加固仅建议，不是本票新增blocker。
+
+先取得真实可观察日志红灯，再最小实现。当前候选验收需真实签发或既有真实token生产链的canary通过正常在线操作URL进入HTTP，检查HTTP sink、异常日志、OperLogEvent和真实MySQL行零凭据且审计非空，正常响应仍保留可用token。隔离测试若采用替身必须明确边界，不把任意塞入metadata的字符串冒称生产凭据链；原有签名/加解密/SSE/正文边界消费者回归。仅生产代码白名单路径的最小修复，测试均在现有admin测试根及common根，无需改业务API。
+
+允许测试读取合成MySQL密码的子进程环境，避免JVM系统属性/日志泄漏；环境root/app凭据不进入argv/XML/Evidence。真实服务与Maven由Lead协调，不并行构建。不得删除历史日志/业务表或轮换凭据；G-security-external已独立关闭，用户AI/qcloud撤销确认不重新索要。治理原始日志按字节保留含Maven尾空格，产品与治理源文件的diff-check独立通过，不修改原日志制造全量空格绿灯。
+
+### revision161 同一在线会话响应字段闭环
+
+补充当前源码：SysUserOnline.tokenId未经JSON忽略直接随GET /monitor/online/list及GET /monitor/online返回，LogSanitizer敏感名当前不含tokenid，且两条GET不省略响应日志，因此同一个有效token还会经在线列表HTTP响应正文复制。既有LogSanitizer字段策略需补tokenId，仅改变日志副本，业务响应仍保留可用于正常设备操作的tokenId；canary验收覆盖列表响应→正常操作URL，而非仅路径静态替换。未扩大写集或改业务API。

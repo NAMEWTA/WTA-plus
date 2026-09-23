@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T11:25:08.253307+00:00",
+  "updated_at": "2026-09-23T11:28:27.478124+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -121,7 +121,8 @@
     "Revision158: T37 active at 38032d24335c52cafea855b19d51fb36295162ef;7done/1cancelled/1in_progress/41ready;cors_audit sole product writer, Lead governance/commit/isolated E2E. Typed retryable unsent facts and owner-CAS RETRYABLE preserving digest/TTL; unknown remains closed; T38 owns precise manual retry.",
     "Revision159: T37 preauthorized SmsAutoConfiguration path and existing Registry instance-identity single-attempt proof via common SPI; no reverse dependency/global registry/reflection; strict structured Tencent retry only with proof.",
     "T37 C1 e2907c4 failed real13: SMS fixture mapping1error, production CompositeCodec completion CAS1error; unit39classes187zeroSkip and static gates pass. Driver volume-absence verification error retained, owned containers/pgid/ports gone. Product corrections assigned sole writer cors_audit; no Done verdict.",
-    "Revision160: T37 accepted at3a87bf7, attempts2; current187units+13real retry/Redis+67Atomic/Wake zeroSkip, both reviews pass, clean source and owned cleanup. C1 two errors and driver cleanup-evidence limitation retained.8done/1cancelled/41ready; next T02 real token-path log fix, thenT38; Goal active, no archive."
+    "Revision160: T37 accepted at3a87bf7, attempts2; current187units+13real retry/Redis+67Atomic/Wake zeroSkip, both reviews pass, clean source and owned cleanup. C1 two errors and driver cleanup-evidence limitation retained.8done/1cancelled/41ready; next T02 real token-path log fix, thenT38; Goal active, no archive.",
+    "Revision161: T02 implementation active atc16966167526f9b6ab6eb213265034b3bbe53e46;8done/1cancelled/1in_progress/40ready. Real login token in online device URL leaks to HTTP/error logs; minimal shared LogSanitizer path fix with current HTTP/MySQL canary acceptance. cors_audit sole product writer; Lead services/commits/governance. T37 closed, no active services."
   ],
   "worktrees": [
     {
@@ -466,6 +467,49 @@
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-37.md</Path>",
         "attempts": 2,
         "promotion_status": "applied"
+      }
+    },
+    {
+      "ticket_id": "T-02",
+      "owner": "single-agent",
+      "implementation_owner": "cors_audit",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "c16966167526f9b6ab6eb213265034b3bbe53e46",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "c16966167526f9b6ab6eb213265034b3bbe53e46",
+      "status": "active",
+      "updated_at": "2026-09-23T11:28:27.478124+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "c16966167526f9b6ab6eb213265034b3bbe53e46",
+        "source_sha": "c16966167526f9b6ab6eb213265034b3bbe53e46",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
       }
     }
   ]

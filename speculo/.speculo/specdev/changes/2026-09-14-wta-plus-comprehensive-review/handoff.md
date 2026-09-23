@@ -1,5 +1,7 @@
 # 恢复入口
 
+当前revision161：8done/1cancelled/T02 in_progress/40ready，cors_audit唯一产品writer，base c16966167526f9b6ab6eb213265034b3bbe53e46；T37已闭合。以下旧状态按时间保留，不覆盖本段。
+
 当前revision160：8done/1cancelled/41ready，无产品writer，下一T02；T37的3a87bf7已验收，Goal仍active。以下旧状态按时间保留，不覆盖本段。
 
 当前revision159：7done/1cancelled/T37 in_progress/41ready，cors_audit唯一产品writer；T36的64d67d5已验收，Goal仍active。以下旧状态按时间保留，不能覆盖当前段。
@@ -132,3 +134,7 @@ legacy只读核查确认UserLoginSuccessListener将真实tokenValue赋UserOnline
 ## revision160 — T37完成
 
 Revision160: T37 accepted at3a87bf7, attempts2; current187units+13real retry/Redis+67Atomic/Wake zeroSkip, both reviews pass, clean source and owned cleanup. C1 two errors and driver cleanup-evidence limitation retained.8done/1cancelled/41ready; next T02 real token-path log fix, thenT38; Goal active, no archive.
+
+## revision161 — T02启动
+
+Revision161: T02 implementation active atc16966167526f9b6ab6eb213265034b3bbe53e46;8done/1cancelled/1in_progress/40ready. Real login token in online device URL leaks to HTTP/error logs; minimal shared LogSanitizer path fix with current HTTP/MySQL canary acceptance. cors_audit sole product writer; Lead services/commits/governance. T37 closed, no active services.

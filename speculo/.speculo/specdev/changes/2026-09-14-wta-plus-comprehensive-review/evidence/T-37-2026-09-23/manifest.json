@@ -180,6 +180,16 @@
     "bytes": 37770
   },
   {
+    "path": "candidate2/governance-source-diff.json",
+    "sha256": "d17fef88116a3dd54e190400b81771e717533cebb12efba3172aa4960c995746",
+    "bytes": 358
+  },
+  {
+    "path": "candidate2/governance-source-diff.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
     "path": "candidate2/real-atomic-wake-counts.json",
     "sha256": "dcb2e398daa471364274f595b1337079f535376d982ec65ba0617b1b7a1bfc2c",
     "bytes": 6062
