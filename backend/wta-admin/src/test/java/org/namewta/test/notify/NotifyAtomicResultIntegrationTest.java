@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.github.yulichang.config.MPJInterceptorConfig;
 import com.github.yulichang.injector.MPJSqlInjector;
+import com.github.yulichang.interceptor.MPJInterceptor;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.mapping.Environment;
@@ -141,7 +143,10 @@ class NotifyAtomicResultIntegrationTest {
                 new XMLMapperBuilder(stream, config, resource, config.getSqlFragments()).parse();
             }
         }
-        var sessions = new SqlSessionTemplate(new MybatisSqlSessionFactoryBuilder().build(config));
+        var sessionFactory = new MybatisSqlSessionFactoryBuilder().build(config);
+        // 手装夹具须与生产MPJ自动配置一样，在factory生成后安装动态结果映射与分页包装。
+        new MPJInterceptorConfig(List.of(sessionFactory), new MPJInterceptor(), false);
+        var sessions = new SqlSessionTemplate(sessionFactory);
         dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class), sessions.getMapper(NotifyRecipientMapper.class),
             sessions.getMapper(NotifyDeliveryMapper.class), sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
             sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));

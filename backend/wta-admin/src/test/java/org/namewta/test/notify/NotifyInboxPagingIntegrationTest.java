@@ -106,6 +106,11 @@ class NotifyInboxPagingIntegrationTest {
     @Test
     void authenticatedOwnerCanPageToMessage501WithoutLosingTotal() throws Exception {
         seedMessages();
+        assertThat(dao.inboxTotal(USER_A)).isEqualTo(501);
+        assertThat(dao.inboxUnreadTotal(USER_A)).isEqualTo(500);
+        assertThat(dao.inboxRows(USER_A, 26, 20, 501)).extracting(row -> row.getMessageId())
+            .containsExactly(FIRST_MESSAGE);
+        assertThat(dao.inboxDetail(USER_A, FIRST_MESSAGE).getContent()).isEqualTo("Full body " + FIRST_MESSAGE);
         var controller = new NotifyInboxController(new NotifyInboxUseCase(new NotifyInboxService(dao)));
         try (OwnedSaSession sessions = new OwnedSaSession(); OwnedHttp http = new OwnedHttp(controller)) {
             String tokenA = sessions.login(USER_A);
