@@ -1,0 +1,12 @@
+{
+  "base": "c860480914b5fc563dd119e760e37d5eb99064e3",
+  "candidate": "8a387192e5a7787d1c51731dfc982506207c5482",
+  "changed_product_paths": [
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifyNoticeVersionFence.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/NotifyNoticeVersionFenceTest.java",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "frontend/e2e/test_run_notice_retraction_real.py"
+  ],
+  "frontend_reuse": "C1 actual760 tests/3App329 artifact hashes remain valid for unchanged product/dependency/TS inputs; R1 artifact equivalence retained in recovery-json-red",
+  "r2_required": "new default, exact full/core, real18/shared135, browser2; Python22 already passed"
+}

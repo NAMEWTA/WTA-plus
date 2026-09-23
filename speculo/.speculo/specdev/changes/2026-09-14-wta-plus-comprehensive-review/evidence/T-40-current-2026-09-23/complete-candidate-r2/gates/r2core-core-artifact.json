@@ -1,0 +1,48 @@
+{
+  "source": {
+    "head": "8a387192e5a7787d1c51731dfc982506207c5482",
+    "tree": "f3fe463cff773c0178e2b99e692c71464cc12caa",
+    "clean": true
+  },
+  "command_record": "r2core-core-package.json",
+  "started_at": "2026-09-23T21:52:13.969374+00:00",
+  "finished_at": "2026-09-23T21:52:47.176789+00:00",
+  "jar": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "6440b05c96b1568b19246861f4662311d38cae1d808c8181b021d50de993667c",
+    "size_bytes": 167967918
+  },
+  "wta_libraries": [
+    "BOOT-INF/lib/wta-api-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-core-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-doc-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-encrypt-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-excel-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-json-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-log-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-mail-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-mcp-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-mybatis-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-nacos-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-notify-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-openapi-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-oss-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-push-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-redis-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-satoken-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-security-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-sensitive-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-sms-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-social-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-translation-6.0.0.jar",
+    "BOOT-INF/lib/wta-common-web-6.0.0.jar",
+    "BOOT-INF/lib/wta-notify-6.0.0.jar",
+    "BOOT-INF/lib/wta-profile-enterprise-6.0.0.jar",
+    "BOOT-INF/lib/wta-profile-person-6.0.0.jar",
+    "BOOT-INF/lib/wta-sso-6.0.0.jar",
+    "BOOT-INF/lib/wta-system-6.0.0.jar",
+    "BOOT-INF/lib/wta-third-6.0.0.jar"
+  ],
+  "build_log_sha256": "4a60a13ea157e1b15f59ef9e748b420cd60c847d8e196e7c1e19170d7d929ef7",
+  "retention": "manifest retained; next clean bundle may replace target artifact"
+}

@@ -1,0 +1,113 @@
+{
+  "gate": "T-40 real notice retraction recipient Chrome",
+  "run_id": "318e1b1d8873fa80",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T21:47:08.715517+00:00",
+  "owned": {
+    "mysql_container_id": "67f27de537df889db09d927ba271b013708432204cfd8e06d5ea5d1a9abf7438",
+    "redis_container_id": "fd29ae4e2f61d702e59b37bc30a43bcaa54fad40d78ce67fc5be58d63b2b3208",
+    "minio_container_id": "1056a33d03534b067058784050d8b5a81b316042ef823c46e75f9b10df16db8f",
+    "loopback_ports": {
+      "mysql": 32900,
+      "redis": 32901,
+      "minio": 32902
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "login_passwords_rotated_in_fresh_schema": 3,
+    "recipient_role_ids": [
+      8200087224602040125,
+      8200098765093287235
+    ],
+    "backend_pgid": 1315991,
+    "backend_probe_http_status": 200,
+    "control_and_recipient_logins_validated": 3,
+    "headerless_online_matches": 3,
+    "headerless_success_audits": 3,
+    "chrome_control_online_match": true,
+    "chrome_control_success_audit": true,
+    "recipient_notice_get_denials": 2,
+    "captured_anonymous_volume_names": [
+      "c4a7c4e454ae1c2321b87ad426201dd5408213ab24fc4192b2eecdea7f79fddf",
+      "e7a5de4871778c9f1112a616cf644d9ecdfcdc3ed254cc0196b941e88fc4938a"
+    ]
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 1315991,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "c4a7c4e454ae1c2321b87ad426201dd5408213ab24fc4192b2eecdea7f79fddf": true,
+      "e7a5de4871778c9f1112a616cf644d9ecdfcdc3ed254cc0196b941e88fc4938a": true
+    },
+    "loopback_ports_closed": {
+      "32900": true,
+      "32901": true,
+      "32902": true,
+      "51559": true,
+      "32881": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "8a387192e5a7787d1c51731dfc982506207c5482",
+    "tree": "f3fe463cff773c0178e2b99e692c71464cc12caa",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "c2b023231d0713b1c17ca9940b94a6937af53b627205d574151ad589126d79a9",
+    "size_bytes": 214199008
+  },
+  "package_proof_sha256": "6beeacf7b2fae22e0bd4896ae9c76e06747b5d478b94c8d35337378cc1927ade",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/notice-retraction-real.e2e.ts": "41a0c019e18bf9c0071d048a62ce5c9f953f19d85c0d2bd1fc98907fd805d12b",
+    "frontend/e2e/playwright.notice-retraction-real.config.ts": "0824670ffef0a993b000b1b9024825503460e9bb1bb1ff22bbb3d7d7c05afd4b"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "real_publication": {
+    "notice_id": "2102877590686642177",
+    "message_id": "2102877591122849794",
+    "worker_delivered_before_retract": true,
+    "retracted_after_delivery": true
+  },
+  "error_type": "RuntimeError",
+  "error": "T40 owned browser gate failed",
+  "phase": "seed",
+  "runner_line": 689,
+  "source_after": {
+    "head": "8a387192e5a7787d1c51731dfc982506207c5482",
+    "tree": "f3fe463cff773c0178e2b99e692c71464cc12caa",
+    "clean": true
+  },
+  "artifact_after_sha256": "c2b023231d0713b1c17ca9940b94a6937af53b627205d574151ad589126d79a9",
+  "finished_utc": "2026-09-23T21:47:44.782821+00:00"
+}

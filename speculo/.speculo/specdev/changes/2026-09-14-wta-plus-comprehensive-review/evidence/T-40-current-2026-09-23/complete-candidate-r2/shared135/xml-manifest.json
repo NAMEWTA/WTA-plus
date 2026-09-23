@@ -1,0 +1,90 @@
+[
+  {
+    "file": "xml/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+    "sha256": "6df826c9a97766b08f35725aa71272e00f53e2d725118506e6ab08e62ad0bdaf",
+    "counts": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200236574874743
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+    "sha256": "3f241234ba683fad4a41bcf93cb26c2cbd9e56f3f94ca1cd32c3df419fe8d330",
+    "counts": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200264904213517
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+    "sha256": "a8a37edc23d207ff192381b9a708591e4de3b088057c8844ba8eb948ff132c24",
+    "counts": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200241935752725
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+    "sha256": "01b472a8c9af1f36c80f7693cd237c31a11e5fd6469d3d5a2ccd6a8c1426f3d4",
+    "counts": {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200257054494126
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+    "sha256": "f01e30c5e5b603064bd4c2dba6143e83980aeaf316807896cfe18bdd8b6071dd",
+    "counts": {
+      "tests": 66,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200291946624310
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+    "sha256": "3973d732a2889555c5dc30a4fd265f98f3d3a0e917ada86d889ef85d861d972f",
+    "counts": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200299304180673
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+    "sha256": "bd37b58ac23e4e9c712b82e840f036bf803b98de2550e97d96c235a6d8431f09",
+    "counts": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200247859860321
+  },
+  {
+    "file": "xml/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+    "sha256": "3441f3b188a410edf822b89b83d6a126bda6abe25964134da31156f8e510a891",
+    "counts": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mtime_ns": 1790200266564022046
+  }
+]
