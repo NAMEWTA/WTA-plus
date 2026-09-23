@@ -29,6 +29,7 @@ import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.entity.NotifySceneBinding;
 import org.namewta.notify.port.NotifyQuotaPort;
+import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -454,8 +455,7 @@ class DispatchNotificationServiceTest {
         Fixture first = fixture("MAIL", quota);
         Fixture second = fixture("MAIL", quota);
         Fixture otherScene = fixture("MAIL", quota);
-        otherScene.intent.setSceneCode("notice-published");
-        otherScene.intent.setTemplateCode("notice-published");
+        publishedNotice(otherScene, 41L);
         otherScene.intent.setTemplateParamsJson(JsonUtils.toJsonString(
             Map.of("title", "公告标题", "content", "公告正文", "path", "/notify/notice")));
         NotifySceneBinding captcha = binding(11L, "MAIL", "${code}", "${expireMinutes}");
@@ -523,8 +523,7 @@ class DispatchNotificationServiceTest {
     @Test
     void noticePublishedMailRendersWrapperNotCallerSnapshot() {
         Fixture fixture = fixture("MAIL");
-        fixture.intent.setSceneCode("notice-published");
-        fixture.intent.setTemplateCode("notice-published");
+        publishedNotice(fixture, 42L);
         fixture.intent.setTitleSnapshot("caller-title");
         fixture.intent.setContentSnapshot("caller-raw-body");
         fixture.intent.setTemplateParamsJson(JsonUtils.toJsonString(
@@ -544,6 +543,36 @@ class DispatchNotificationServiceTest {
         assertEquals("包装正文<p>/n/1</p>", content.content());
         assertTrue(!content.subject().contains("caller-title"));
         assertTrue(!content.content().contains("caller-raw-body"));
+    }
+
+    @Test
+    void noticePublishedWithoutVersionMarkerNeverCallsProvider() {
+        Fixture fixture = fixture("MAIL");
+        publishedNotice(fixture, 43L);
+        fixture.intent.setMetadataJson(JsonUtils.toJsonString(Map.of("audit", "NOTICE_SNAPSHOT")));
+        NotifySceneBinding binding = binding(11L, "MAIL", "${title}", "${content}");
+        binding.setSceneCode("notice-published");
+        when(fixture.configDao.findBinding("notice-published", "MAIL")).thenReturn(binding);
+        when(fixture.configDao.findAccount(11L)).thenReturn(mailAccount(11L, "smtp-main", "Y"));
+
+        fixture.service.dispatch(fixture.outbox);
+
+        verify(fixture.notifyClient, never()).send(any());
+        assertEquals("UNKNOWN", fixture.delivery.getStatus());
+        assertEquals("NOTICE_VERSION_OUTCOME_UNKNOWN", fixture.delivery.getErrorCode());
+        assertEquals("WAITING_RECEIPT", fixture.outbox.getStatus());
+        verify(fixture.dao, never()).insert(any(org.namewta.notify.domain.entity.NotifyAttempt.class));
+    }
+
+    private void publishedNotice(Fixture fixture, long noticeId) {
+        fixture.intent.setAppId("notify");
+        fixture.intent.setSceneCode("notice-published");
+        fixture.intent.setTemplateCode("notice-published");
+        fixture.intent.setBizType("NOTICE_PUBLISHED");
+        fixture.intent.setBizId(String.valueOf(noticeId));
+        fixture.intent.setIdempotencyKey(NotifyNoticeVersionFence.idempotencyKey(noticeId, 1));
+        fixture.intent.setMetadataJson(JsonUtils.toJsonString(
+            NotifyNoticeVersionFence.initial(noticeId, noticeId + 100, 1)));
     }
 
     private Fixture fixture(String channel) {
