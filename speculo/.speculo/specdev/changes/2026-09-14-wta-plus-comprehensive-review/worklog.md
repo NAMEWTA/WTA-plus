@@ -308,3 +308,11 @@ Revision181: T41 accepted at c21de75f, recovery attempt3; G real501 Chrome1/0/0/
 ## revision182 — T40实施开始
 
 revision182：T40开始，base601b9273；13done/2cancelled/1in_progress/34ready。T41已完成，新增为前置。cors_audit唯一产品writer；Lead治理/提交/隔离验收。先现API真实撤回红灯，再版本栅栏、三处链接一致、本人深链与竞争/回滚/浏览器验收。
+
+## Dispatch01A真实红灯与01B实施
+
+固定test-only源码 `9077bb8d22251f2f44f5e22ad3d734fe5cb7da21`，tree `76a985b74bed05eecdcb8c9b72cd91fafaf79836`，run `f41d49a19908ed48`。六SQL103表/MySQL8.4.9/Redis8.6.3，实际选择唯一方法 `retractBeforeWorkerClaimStopsCurrentVersionAfterPositiveDeliveryControl`；先真实发布/领取/站内落库/提交后push成功，再发布并撤回后恢复Worker。fresh XML 1test/1failure/0error/0skip，在第142行消息数expected0/actual1，证实业务缺陷，不以鉴权/编译或夹具失败代替红灯。命令退出1是预期红灯，acceptance仍false。before/after同clean源码，cleanup.errors=[]，两容器/匿名卷/两个loopback端口及Maven进程组无残留。
+
+原始字节、命令、时刻、精确计数和来源哈希见 `T-40-current-2026-09-23/red/manifest.json`。XML及日志均0必要脱敏，保留完整业务断言。驱动11项离线检查属于安全辅助，不计业务验收。本次为预定test-only反馈，完整候选attempts仍0。
+
+Lead Dispatch01B：在Ticket22写集内实施版本metadata栅栏、exact-key撤回事务/窄基座例外、Worker/retry边界、三处path回填和本人query端口/旧路径导向；补真实竞争/回滚/版本/模板/权限测试及SFC状态测试，更新对应两条Skill事实reference。cors_audit唯一产品writer，Lead拥有治理/提交/服务/构建；不自行运行构建或启动服务。先交完整可编译候选和精确验证选择器，所有required验收由Lead串行运行；新增路径必须先登记。

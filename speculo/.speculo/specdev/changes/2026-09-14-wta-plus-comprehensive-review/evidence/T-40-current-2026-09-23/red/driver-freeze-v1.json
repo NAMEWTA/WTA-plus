@@ -1,0 +1,25 @@
+{
+  "status": "frozen_private_driver_not_executed",
+  "source_head": "9077bb8d22251f2f44f5e22ad3d734fe5cb7da21",
+  "source_clean_preflight": true,
+  "selector": "org.namewta.test.notify.NotifyNoticeRetractionIntegrationTest",
+  "required_method": "retractBeforeWorkerClaimStopsCurrentVersionAfterPositiveDeliveryControl",
+  "opt_in": "notify.notice.retraction.integration",
+  "owned_password_env": [
+    "T40_MYSQL_PASSWORD",
+    "T36_MYSQL_PASSWORD"
+  ],
+  "runner": "/tmp/wta-t40/run-notify-notice-retraction-integration-v1.py",
+  "runner_sha256": "6f38c05ccb6a41ad2d038377d90f85c768bb1d52458200cb652a9cb044b6550e",
+  "offline_test": "/tmp/wta-t40/test_runner_safety_v1.py",
+  "offline_test_sha256": "711388c2ca86b09ec6609de11352093f3a6d51c38f49815acee953bfc5484751",
+  "source_sha256": "82f3e446f596d3f4ae7a7d65389dd2abebd4c84131cb204aaec1d883aeffe6ce",
+  "offline": {
+    "command": "python3 /tmp/wta-t40/test_runner_safety_v1.py",
+    "exit_code": 0,
+    "tests": 11,
+    "failed": 0,
+    "errors": 0
+  },
+  "actual_docker_maven_service": "not_started"
+}

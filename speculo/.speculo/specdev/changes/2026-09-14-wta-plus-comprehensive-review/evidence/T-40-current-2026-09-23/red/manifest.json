@@ -1,0 +1,32 @@
+[
+  {
+    "file": "result.json",
+    "sha256": "2102303c35764dc9c835417b90e4ed19aff42eb64382d89fb2cdd7df9dde82b6",
+    "bytes": 4531
+  },
+  {
+    "file": "selected-surefire.xml",
+    "sha256": "5678699d81aee674e40929a07f4da945e44ed36d7be0b48216bd54e75d2dd077",
+    "bytes": 96388
+  },
+  {
+    "file": "maven.log",
+    "sha256": "00b86dffc45f273c864e11ee8ed2b8b74900c87f6e1c5317838b1ebd0d0f4d97",
+    "bytes": 67205
+  },
+  {
+    "file": "run-notify-notice-retraction-integration-v1.py",
+    "sha256": "6f38c05ccb6a41ad2d038377d90f85c768bb1d52458200cb652a9cb044b6550e",
+    "bytes": 24391
+  },
+  {
+    "file": "test_runner_safety_v1.py",
+    "sha256": "711388c2ca86b09ec6609de11352093f3a6d51c38f49815acee953bfc5484751",
+    "bytes": 7991
+  },
+  {
+    "file": "driver-freeze-v1.json",
+    "sha256": "d261a75d7044a275049709ae924e4f436bfe83d8a430fadbce201bed0e7bdd68",
+    "bytes": 1060
+  }
+]

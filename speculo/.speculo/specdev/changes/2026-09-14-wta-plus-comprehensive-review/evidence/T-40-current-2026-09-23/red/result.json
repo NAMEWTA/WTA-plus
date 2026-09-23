@@ -1,0 +1,134 @@
+{
+  "gate": "T40 owned notice-version retraction integration",
+  "run_id": "f41d49a19908ed48",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T18:00:10.050791+00:00",
+  "source_before": {
+    "head": "9077bb8d22251f2f44f5e22ad3d734fe5cb7da21",
+    "tree": "76a985b74bed05eecdcb8c9b72cd91fafaf79836",
+    "clean": true
+  },
+  "owned": {
+    "table_count": 103,
+    "baseline_counts": {
+      "outbox": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0
+    },
+    "container_full_ids": [
+      "134d454d78d39dac528e7b1180a4a2e7adcc1bdfe4d2c0623d3928c5373b455d",
+      "0ada6cb527b1912e17262d86729983cf465cb8c0735e6cfe93296466273a245e"
+    ],
+    "loopback_ports": {
+      "mysql": 32875,
+      "redis": 32876
+    },
+    "captured_anonymous_volume_names": [
+      "53056255e0f8cab00442708ffa0e6a91c1f2f9da11f245e0acb02530d95f4eee"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "errors": [],
+    "maven_process_group": {
+      "pgid": 948138,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "53056255e0f8cab00442708ffa0e6a91c1f2f9da11f245e0acb02530d95f4eee": true
+    },
+    "loopback_ports_closed": {
+      "32875": true,
+      "32876": true
+    }
+  },
+  "test_source": {
+    "class": "org.namewta.test.notify.NotifyNoticeRetractionIntegrationTest",
+    "source_sha256": "82f3e446f596d3f4ae7a7d65389dd2abebd4c84131cb204aaec1d883aeffe6ce",
+    "opt_in": "notify.notice.retraction.integration",
+    "atomic_fixture": true,
+    "direct_fixture": true
+  },
+  "maven_command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotifyNoticeRetractionIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.notice.retraction.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32875/namewta_notify_test_f41d49a19908ed48?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t40_f41d49a19908ed48",
+    "-Dnotify.redis.integration.port=32876",
+    "test"
+  ],
+  "maven_exit_code": 1,
+  "counts": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "methods": [
+    {
+      "name": "retractBeforeWorkerClaimStopsCurrentVersionAfterPositiveDeliveryControl",
+      "failure_types": [
+        "org.opentest4j.AssertionFailedError"
+      ]
+    }
+  ],
+  "xml_provenance": {
+    "source_sha256": "5678699d81aee674e40929a07f4da945e44ed36d7be0b48216bd54e75d2dd077",
+    "retained_sha256": "5678699d81aee674e40929a07f4da945e44ed36d7be0b48216bd54e75d2dd077",
+    "exact_owned_secret_replacements": 0
+  },
+  "error_type": "RuntimeError",
+  "error": "Exact T40 class failed, skipped or ran zero tests",
+  "maven_log_provenance": {
+    "source_sha256": "00b86dffc45f273c864e11ee8ed2b8b74900c87f6e1c5317838b1ebd0d0f4d97",
+    "retained_sha256": "00b86dffc45f273c864e11ee8ed2b8b74900c87f6e1c5317838b1ebd0d0f4d97",
+    "exact_owned_secret_replacements": 0
+  },
+  "source_after": {
+    "head": "9077bb8d22251f2f44f5e22ad3d734fe5cb7da21",
+    "tree": "76a985b74bed05eecdcb8c9b72cd91fafaf79836",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T18:00:46.823940+00:00"
+}
