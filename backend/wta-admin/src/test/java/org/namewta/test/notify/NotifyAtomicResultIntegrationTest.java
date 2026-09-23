@@ -537,6 +537,9 @@ class NotifyAtomicResultIntegrationTest {
         db.update("insert into notify_outbox(outbox_id,intent_id,delivery_id,status,available_at,lease_owner,lease_token,"
             + "lease_until,create_time) values(?,?,?,'PROCESSING',utc_timestamp(),'worker-c','token-c',"
             + "timestampadd(second,60,utc_timestamp()),utc_timestamp())", nextOutbox, INTENT, nextDelivery);
+        // 新增 PENDING 投递必须同步恢复聚合为 PROCESSING；DELIVERED Intent 是旧快照矛盾形状。
+        db.update("update notify_intent set status='PROCESSING' where intent_id=?", INTENT);
+        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("PROCESSING");
         dispatch.dispatch(dao.outbox(nextOutbox));
         assertThat(realtimeCalls.get()).as("later normal commit on the same thread must emit AFTER_COMMIT")
             .isEqualTo(priorPushes + 1);

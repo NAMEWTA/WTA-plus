@@ -188,17 +188,47 @@ class EnterpriseQueuedNotificationIntegrationTest {
     }
 
     @Test
-    void expiredAssociationAndFailedDeliveryCannotActivateButPermitResend() {
+    void expiredAssociationAndTypedUnsentTerminalCannotActivateButPermitResend() {
         var expired = application.send(SOURCE, send());
         db.update("update profile_enterprise_transfer_record set expires_time=? where challenge_id=?", java.sql.Timestamp.from(Instant.now().minusSeconds(1)), expired.challengeId());
         assertThat(confirm(expired).status()).isEqualTo("EXPIRED");
         var failed = application.send(SOURCE, send());
-        // 本场景验证最终失败；默认五次可重试失败应继续保持等待，不能误当终态。
-        db.update("update notify_outbox set max_attempts=1 where intent_id=(select notification_id from profile_enterprise_transfer_record where challenge_id=?)", failed.challengeId());
-        when(provider.send(any())).thenReturn(new NotifyResult("owned", NotifyChannel.SMS, "owned-t31", NotifyStatus.FAILED, List.of()));
+        // 只有单目标明确未受理才是最终失败；泛 FAILED/empty 属结果未知。
+        doAnswer(call -> {
+            NotifyRequest request = call.getArgument(0, NotifyRequest.class);
+            return new NotifyResult(request.requestId(), NotifyChannel.SMS, "owned-t31", NotifyStatus.FAILED,
+                List.of(NotifyTargetResult.unsentTerminal(request.targets().getFirst(), "OWNED_TERMINAL", 1)));
+        }).when(provider).send(any());
         worker.poll();
         assertThat(confirm(failed).status()).isEqualTo("FAILED"); unchangedBinding();
+        long notificationId = db.queryForObject("select notification_id from profile_enterprise_transfer_record where challenge_id=?",
+            Long.class, failed.challengeId());
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class, notificationId))
+            .isEqualTo("FAILED");
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class, notificationId))
+            .isEqualTo("DONE");
         assertThat(application.send(SOURCE, send()).status()).isEqualTo("QUEUED");
+    }
+
+    @Test
+    void genericFailedWithoutSingleTargetRemainsUnknownAndCannotActivate() {
+        var sent = application.send(SOURCE, send());
+        db.update("update notify_outbox set max_attempts=1 where intent_id=(select notification_id "
+            + "from profile_enterprise_transfer_record where challenge_id=?)", sent.challengeId());
+        doReturn(new NotifyResult("owned", NotifyChannel.SMS, "owned-t31", NotifyStatus.FAILED, List.of()))
+            .when(provider).send(any());
+
+        worker.poll();
+
+        assertThat(confirm(sent).status()).isEqualTo("QUEUED");
+        unchangedBinding();
+        long notificationId = db.queryForObject("select notification_id from profile_enterprise_transfer_record where challenge_id=?",
+            Long.class, sent.challengeId());
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class, notificationId))
+            .isEqualTo("UNKNOWN");
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class, notificationId))
+            .isEqualTo("WAITING_RECEIPT");
+        verify(provider, times(1)).send(any());
     }
 
     private void assertNoCommittedSend() {
