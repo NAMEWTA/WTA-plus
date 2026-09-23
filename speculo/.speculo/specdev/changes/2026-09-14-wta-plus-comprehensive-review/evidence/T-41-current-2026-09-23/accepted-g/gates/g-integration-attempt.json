@@ -1,0 +1,13 @@
+{
+  "source": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
+  "tree": "fea078b0dfa5917dc4375311e9aa455f843560cd",
+  "batch": 2,
+  "attempt": 3,
+  "old_batch_attempts": 3,
+  "status": "passed",
+  "started_at": "2026-09-23T17:33:22.080594+00:00",
+  "finished_at": "2026-09-23T17:40:06.067860+00:00",
+  "browser_result": "browser-runs/61b121b3b258cc3c/result.json",
+  "source_equivalence": "g-source-equivalence.json",
+  "result_sha": "c21de75f030688d274dd24e9d6075eff1bdbd5a6"
+}

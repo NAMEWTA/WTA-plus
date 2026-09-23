@@ -1,0 +1,17 @@
+{
+  "source": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
+  "both_axes_passed": true,
+  "lead_read_actual_browser_and_reviews": true,
+  "reports": [
+    {
+      "file": "/tmp/wta-t41-g-security-review.md",
+      "sha256": "ca105ec46cb5ea1271a671d5f36bc7949e6e5361f4d56525df2329121b3f4740"
+    },
+    {
+      "file": "/tmp/wta-t41-g-implementation-review.md",
+      "sha256": "734a4fa16eedfccd12489a29bbf4fd2adc13aa23dca6b4a757f579f8a3343c55"
+    }
+  ],
+  "path_manifest_independently_verified": "52actualGfiles,24scopes,zero mismatch",
+  "at": "2026-09-23T17:40:05.999844+00:00"
+}

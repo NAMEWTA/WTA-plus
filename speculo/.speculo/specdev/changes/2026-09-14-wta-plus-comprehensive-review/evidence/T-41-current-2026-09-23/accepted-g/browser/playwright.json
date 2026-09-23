@@ -1,0 +1,21 @@
+{
+  "source_reporter_sha256": "2744b2c8a0d0aabf34b4cb50132399cbcc00c61857e22836d1379144203b6685",
+  "counts": {
+    "expected": 1,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "diagnostic": {
+    "file": "frontend/e2e/inbox-paged-real.e2e.ts",
+    "title": "T-41 real Admin inbox page 26 and global read-all",
+    "project": "chromium",
+    "attempts": 1,
+    "status": "passed",
+    "case_declaration": {
+      "line": 51,
+      "column": 1
+    },
+    "assertion_location": null
+  }
+}

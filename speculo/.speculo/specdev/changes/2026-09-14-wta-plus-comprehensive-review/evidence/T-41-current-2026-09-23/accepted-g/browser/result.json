@@ -1,0 +1,156 @@
+{
+  "gate": "T-41 real Admin inbox page 26 and global read-all",
+  "run_id": "61b121b3b258cc3c",
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-23T17:34:06.801987+00:00",
+  "owned": {
+    "mysql_container_id": "5f6aae7f389a5f834cb9bea2ce9efb703db9a3f8f0e657cb4272772731592b88",
+    "redis_container_id": "070ef4aed227bf3ed60e988f679c8aa3b0b4fd7ec059c4e4e537f5bb3c49747e",
+    "minio_container_id": "1b2de17381d6708c685126c1233d9087954769119561abcb3552d4220788e868",
+    "loopback_ports": {
+      "mysql": 32872,
+      "redis": 32873,
+      "minio": 32874,
+      "backend": 39947,
+      "vite": 33875
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "login_passwords_rotated_in_fresh_schema": 2,
+    "b_role_id": 8200046710343721226,
+    "backend_pgid": 896236,
+    "vite_pgid": 896874,
+    "playwright_pgid": 896984,
+    "captured_anonymous_volume_names": [
+      "64644e03ec751130c29a3c8fd09467a8a219b391663b1da95da5d2351988955e",
+      "f6ff185df3539576ec0c38d815c55ab49001e8c2f1b3bf16a3dc4b342ac3182f"
+    ]
+  },
+  "cleanup": {
+    "playwright_process_group": {
+      "pgid": 896984,
+      "live_members": []
+    },
+    "vite_process_group": {
+      "pgid": 896874,
+      "live_members": []
+    },
+    "backend_process_group": {
+      "pgid": 896236,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "64644e03ec751130c29a3c8fd09467a8a219b391663b1da95da5d2351988955e": true,
+      "f6ff185df3539576ec0c38d815c55ab49001e8c2f1b3bf16a3dc4b342ac3182f": true
+    },
+    "loopback_ports_closed": {
+      "32872": true,
+      "32873": true,
+      "32874": true,
+      "39947": true,
+      "33875": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
+    "tree": "fea078b0dfa5917dc4375311e9aa455f843560cd",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "488f4fe2a0b99e09ccd01090ec280e8bd326efa78764f645019619899f6154e3",
+    "size_bytes": 214186552
+  },
+  "package_proof_sha256": "9a65bfaf00494df7006f7e6430ce2ad7766d9b58fe87513cdc49d6b176c6cc7d",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/inbox-paged-real.e2e.ts": "6d0895cd3b67b55171d6fb531e95893dc07e7a09f743d4bbea9d9c5fb388243f",
+    "frontend/e2e/playwright.inbox-paged-real.config.ts": "860f0254ef131fa9c8a42eaf83850fe2352ac323de9d1031f7b8bab6a8186545"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "seed_before": {
+    "a": {
+      "total": 501,
+      "unread": 481
+    },
+    "b": {
+      "total": 2,
+      "unread": 2
+    },
+    "synthetic_messages": 502,
+    "synthetic_relations": 503,
+    "shared_relationships": 2
+  },
+  "seed_manifest_sha256": "0c095b6cb23654ab3da51f6507ec7a4ff1b8818141dc186db9777b48c74fa576",
+  "playwright_exit_code": 0,
+  "playwright_raw_sha256": "2744b2c8a0d0aabf34b4cb50132399cbcc00c61857e22836d1379144203b6685",
+  "playwright_counts": {
+    "expected": 1,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "playwright_diagnostic": {
+    "file": "frontend/e2e/inbox-paged-real.e2e.ts",
+    "title": "T-41 real Admin inbox page 26 and global read-all",
+    "project": "chromium",
+    "attempts": 1,
+    "status": "passed",
+    "case_declaration": {
+      "line": 51,
+      "column": 1
+    },
+    "assertion_location": null
+  },
+  "playwright_identity": {
+    "file": "frontend/e2e/inbox-paged-real.e2e.ts",
+    "title": "T-41 real Admin inbox page 26 and global read-all",
+    "project": "chromium",
+    "attempts": 1
+  },
+  "seed_after": {
+    "a": {
+      "total": 501,
+      "unread": 0
+    },
+    "b": {
+      "total": 2,
+      "unread": 2
+    }
+  },
+  "preexisting_read_and_seen_timestamps_preserved": true,
+  "source_after": {
+    "head": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
+    "tree": "fea078b0dfa5917dc4375311e9aa455f843560cd",
+    "clean": true
+  },
+  "artifact_after_sha256": "488f4fe2a0b99e09ccd01090ec280e8bd326efa78764f645019619899f6154e3",
+  "finished_utc": "2026-09-23T17:34:57.306078+00:00"
+}

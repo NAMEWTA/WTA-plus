@@ -1,0 +1,8 @@
+{
+  "full_raw_diff_check_exit": 2,
+  "raw_diagnostic_sha256": "5cebbdb41dc79404c7075d0716d9ae49465a2f4430f7c58ccf1aed439128dd2c",
+  "raw_diagnostic_lines": 9302,
+  "all_diagnostic_paths_are_retained_evidence": true,
+  "authored_diff_check_exit": 0,
+  "disposition": "Preserve original raw log/XML whitespace; all authored/product changes clean, no tests weakened"
+}

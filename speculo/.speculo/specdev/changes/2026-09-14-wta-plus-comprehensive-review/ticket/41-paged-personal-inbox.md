@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-41"
 title: "本人收件箱提供完整分页与准确读取状态"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -32,7 +32,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 ## 1. 战略与来源
 
 - 来源：R64-N-08；AC-041；本轮用户请求与<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>。
-- 当前事实：messageRecipients 查询 limit<=500，REST 为 List；readAll 已操作本人全部未读关系。
+- 实施前事实：messageRecipients 查询 limit<=500，REST 为 List；readAll 已操作本人全部未读关系。
 - 可观察产出：完整收件箱使用项目 PageQuery/PageResult 分页，稳定 create_time/message_id 排序；本人第501条可取，顶部只取最近摘要。全部已读仍作用本人全部消息。
 
 ## 2. 决策状态
@@ -98,7 +98,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | unreadTotal 为本人真实未读总数；全部已读不限当前页且按钮说明清晰 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 顶部摘要与完整页已读结果同步；API/domain/typecheck 和生成合同一致 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为原规划命令；实际验收命令、来源SHA及复用边界以Evidence §5为准：
 
 - `cd backend && ./mvnw -pl wta-modules/wta-notify,wta-admin -am test`
 - `pnpm --dir frontend --filter @namewta/web-domain-notify test`
@@ -122,13 +122,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-041`：501条全部可分页访问、顺序稳定、他人关系不可见不可改。
-- [ ] `AC-041`：unreadTotal 为本人真实未读总数；全部已读不限当前页且按钮说明清晰。
-- [ ] `AC-041`：顶部摘要与完整页已读结果同步；API/domain/typecheck 和生成合同一致。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-041`：501条全部可分页访问、顺序稳定、他人关系不可见不可改。
+- [x] `AC-041`：unreadTotal 为本人真实未读总数；全部已读不限当前页且按钮说明清晰。
+- [x] `AC-041`：顶部摘要与完整页已读结果同步；API/domain/typecheck 和生成合同一致。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -177,3 +177,7 @@ Revision179: recovery E a0dcbac8 attempt1 failed real Chrome at spec90 close loc
 ## revision180 — 恢复F检查点
 
 Revision180: recovery F cb8063b6 attempt2 failed Chrome at B shared-title locator112 after Apage26/oldest/foreign-negative and Blogin/unread2/two rows. Seed title=summary renders twice; authorize two unique table-row/title-cell assertions, retaining counts and all negative/readAll checks. Ffull/core/static/OpenAPI pass, source/JAR stable cleanup[]. Oldbatch3 and recoveryE/F retained; nextG attempt3.12done/2cancelled/T41in_progress/35ready.
+
+## revision181 当前候选验收完成
+
+Revision181: T41 accepted at c21de75f, recovery attempt3; G real501 Chrome1/0/0/0 and SQL A501unread0/B2 unchanged, original timestamps preserved, exactclean source/JAR and cleanup[]. Prior3 plus recoveryE/F failures immutable. Explicit D/C/E/F same-input test/build/contract reuse; both reviews pass.13done/2cancelled/35ready; nextT40; Goal active, no archive.

@@ -1,0 +1,271 @@
+{
+  "base": "d7d534cb03aa000d603a53c092c4bf1d48bb5cc3",
+  "source": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
+  "tree": "fea078b0dfa5917dc4375311e9aa455f843560cd",
+  "declared_entries": 24,
+  "product_paths": [
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyInboxPagingIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/admin/NotifyInboxController.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/model/read/NotifyInboxRow.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/vo/NotifyInboxMessageVo.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/vo/NotifyInboxPageVo.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyMessageRecipientMapper.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyInboxService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotifyInboxUseCase.java",
+    "frontend/apps/admin-web/src/layout/components/notice/index.test.ts",
+    "frontend/apps/admin-web/src/layout/components/notice/index.vue",
+    "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts",
+    "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+    "frontend/apps/admin-web/src/store/modules/notice.test.ts",
+    "frontend/apps/admin-web/src/store/modules/notice.ts",
+    "frontend/apps/admin-web/src/utils/push.test.ts",
+    "frontend/apps/admin-web/src/utils/push.ts",
+    "frontend/e2e/app-runtime-baseline.spec.ts",
+    "frontend/e2e/client-auth-context.spec.ts",
+    "frontend/e2e/demo-manifest.spec.ts",
+    "frontend/e2e/inbox-paged-real.e2e.ts",
+    "frontend/e2e/inbox-paged-real.md",
+    "frontend/e2e/inbox-real.e2e.ts",
+    "frontend/e2e/inbox-without-realtime.spec.ts",
+    "frontend/e2e/nacos-console.spec.ts",
+    "frontend/e2e/operations-domain.spec.ts",
+    "frontend/e2e/oss-config-access-policy.spec.ts",
+    "frontend/e2e/playwright.inbox-paged-real.config.ts",
+    "frontend/e2e/profile-management.spec.ts",
+    "frontend/e2e/run-inbox-paged-real.py",
+    "frontend/e2e/system-identity.spec.ts",
+    "frontend/e2e/system-resources.spec.ts",
+    "frontend/e2e/test_run_inbox_paged_real.py",
+    "frontend/e2e/third-party-management.spec.ts",
+    "frontend/e2e/upload-import-lifecycle.spec.ts",
+    "frontend/e2e/workflow-definition.spec.ts",
+    "frontend/e2e/workflow-runtime.spec.ts",
+    "frontend/packages/api-contracts/generated/openapi.ts",
+    "frontend/packages/api-contracts/openapi/current.json",
+    "frontend/packages/api-contracts/openapi/revisions/4ab6abdaf712861468eb9bc86b8d52c607a82402a600261ddf02776862c54bf3/provenance.json",
+    "frontend/packages/api-contracts/openapi/revisions/4ab6abdaf712861468eb9bc86b8d52c607a82402a600261ddf02776862c54bf3/source.json",
+    "frontend/packages/domains/notify/src/inbox/index.ts",
+    "frontend/packages/domains/notify/src/inbox/types.ts",
+    "frontend/packages/domains/notify/src/index.ts",
+    "frontend/packages/domains/notify/src/transport.test.ts",
+    "frontend/packages/domains/notify/src/transport.ts",
+    "frontend/packages/domains/notify/src/types.ts",
+    "frontend/packages/web-domains/notify/src/InboxPage.test.ts",
+    "frontend/packages/web-domains/notify/src/InboxPage.vue",
+    "frontend/packages/web-domains/notify/src/runtime.ts"
+  ],
+  "all_in_declared_scope": true,
+  "files": [
+    {
+      "file": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+      "sha256": "df510a13147e43a412f36a75d281bc4f5c40c8ac4bed23b0c702f60670d25e60"
+    },
+    {
+      "file": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyInboxPagingIntegrationTest.java",
+      "sha256": "7ea36976dcdcaeb8f989c64abd06ed0ee072a260715a94dff5badf2af352c26f"
+    },
+    {
+      "file": "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "sha256": "43447d35c694c5c80a7fde6b3b5e0cb142b9cb1969c973c6f3d9e9889c19bf44"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/admin/NotifyInboxController.java",
+      "sha256": "377920e2996a9edd596ddc225a4c2ff490e26ffd0ffc5d10b82216cb0d4e3734"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java",
+      "sha256": "6ff326867113a3529d473872405587feb150c2bd3f9318616c284bb1c4367029"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/model/read/NotifyInboxRow.java",
+      "sha256": "afd58f6652ab0ece4a08bb7db3a68feb934e9e6c41efc6f942ba6a7619697d07"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/vo/NotifyInboxMessageVo.java",
+      "sha256": "aa025c17fb0ca075944e62cf5a9a2b5c3a021175328555f82fd6b798aef2326a"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/vo/NotifyInboxPageVo.java",
+      "sha256": "ac2cb2f06c2e0fdefe57cb93d547a0092dea7e139c5ff095650cea6f6e203feb"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyMessageRecipientMapper.java",
+      "sha256": "2e7dc4a69dceeb7b0a62707824e7cd47bbab10a20d6c2d7c93e0277d2575cad7"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyInboxService.java",
+      "sha256": "a30cb3b66f8ff9d833aedbc0d13efe74c08acb24a9169ca705bd60aec85d7a85"
+    },
+    {
+      "file": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotifyInboxUseCase.java",
+      "sha256": "3819fa573fdb4ddc3f9ed52f7ea921224af6a0013d813aad66b0993a1ca1104d"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/layout/components/notice/index.test.ts",
+      "sha256": "7a6088cf0e2fa3316e61ebe1df2879be0d8090361407cc9a6519923b0326a902"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/layout/components/notice/index.vue",
+      "sha256": "a7018ad1fb5fb6dd8df66cba83c0049c44ed1930f0e995837f107bc980001635"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts",
+      "sha256": "63406ba28d32ea34864e2b86cf584a0386eb1280bc45fddc5cb0b54c44aa718e"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+      "sha256": "2339fa27cf7a91169ccbc144e3b91c6933258270fc4b984cf690506041d94e36"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/store/modules/notice.test.ts",
+      "sha256": "75bcccea210883ceb55e5a7967605bb3775614573f6270c4f041992b85863c29"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/store/modules/notice.ts",
+      "sha256": "dc33ef63f59fe59b0d11d08dd0eb04334ccab654f09564c2b883bf965aeea587"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/utils/push.test.ts",
+      "sha256": "d68adc912d13a08480b5ced05595a528c3e82362b83aee07181d2bb067934121"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/utils/push.ts",
+      "sha256": "89a398a052e6af32c277fdd0adbe051720472b15a914b3d0bd766a3a6a357011"
+    },
+    {
+      "file": "frontend/e2e/app-runtime-baseline.spec.ts",
+      "sha256": "22635a170138ba23c9796c41907f71b9fd02fdbc0fda92f255be52dc2ce5b165"
+    },
+    {
+      "file": "frontend/e2e/client-auth-context.spec.ts",
+      "sha256": "ca919e9329f4c87d5afb5f1f29bfa1fabfcfd258db83edfcaa9798e70c667845"
+    },
+    {
+      "file": "frontend/e2e/demo-manifest.spec.ts",
+      "sha256": "dc4dd88d1a2d9c298282439a3ff1173ddae94d773b06420c9025d4e461ebfb43"
+    },
+    {
+      "file": "frontend/e2e/inbox-paged-real.e2e.ts",
+      "sha256": "6d0895cd3b67b55171d6fb531e95893dc07e7a09f743d4bbea9d9c5fb388243f"
+    },
+    {
+      "file": "frontend/e2e/inbox-paged-real.md",
+      "sha256": "2c598914fda32003cf7f4eb237bca283fd781b615e2af9ae59815d0140178c8c"
+    },
+    {
+      "file": "frontend/e2e/inbox-real.e2e.ts",
+      "sha256": "35b41449122bf07a77bb63452a52f918eba0d71ca557dfa33631822d51637688"
+    },
+    {
+      "file": "frontend/e2e/inbox-without-realtime.spec.ts",
+      "sha256": "32e34f3268062628b41303903227732e609f9ad625de5f5f2ceaaeb2f5467ad2"
+    },
+    {
+      "file": "frontend/e2e/nacos-console.spec.ts",
+      "sha256": "a53fe3892ed9cf3166327f433d490403ed176fec59de27d8072480fb0dbf7d3b"
+    },
+    {
+      "file": "frontend/e2e/operations-domain.spec.ts",
+      "sha256": "52edfde3378a3ac79420ec3a3aa12478ac4d6575829d14d9b92c021a66882b51"
+    },
+    {
+      "file": "frontend/e2e/oss-config-access-policy.spec.ts",
+      "sha256": "d02b2b7275e74b7ac56525b4ff689b487dba0d49071506307ad12dc2cb4d1b94"
+    },
+    {
+      "file": "frontend/e2e/playwright.inbox-paged-real.config.ts",
+      "sha256": "860f0254ef131fa9c8a42eaf83850fe2352ac323de9d1031f7b8bab6a8186545"
+    },
+    {
+      "file": "frontend/e2e/profile-management.spec.ts",
+      "sha256": "0bebeba6bfe10145480036da0eca7c3dc0fb38f8b27d8774e457d6b45c8f8473"
+    },
+    {
+      "file": "frontend/e2e/run-inbox-paged-real.py",
+      "sha256": "ad7dd09ba26f479d3e70060858b5a8a4f5aa8a8439c13ac4e952b459dca0e901"
+    },
+    {
+      "file": "frontend/e2e/system-identity.spec.ts",
+      "sha256": "5ab2652c202dad8418f47ff604d4c8c47ac9e929d294746760eb30c8146057dc"
+    },
+    {
+      "file": "frontend/e2e/system-resources.spec.ts",
+      "sha256": "f140d72bb1592bc75658600b21ff6b67b528ab9704a705aae18599742ca498ec"
+    },
+    {
+      "file": "frontend/e2e/test_run_inbox_paged_real.py",
+      "sha256": "0daac5e6550588323b6a8141fea151c410502236d7824c16a6bf13418f12f8f5"
+    },
+    {
+      "file": "frontend/e2e/third-party-management.spec.ts",
+      "sha256": "5e81dabfa2b51bfc79b026e2f4c34fc081dbedcf205739be91f4803924e1b6f5"
+    },
+    {
+      "file": "frontend/e2e/upload-import-lifecycle.spec.ts",
+      "sha256": "a76803c63a7d4a9ddd15dea7440e25f586fd3d1aee82028bf042293bd6affe87"
+    },
+    {
+      "file": "frontend/e2e/workflow-definition.spec.ts",
+      "sha256": "db289765a6433253d798ed540290cf218b3ec71d8b73f7509550070a91523182"
+    },
+    {
+      "file": "frontend/e2e/workflow-runtime.spec.ts",
+      "sha256": "81f3753b3095961cc69f6a715252db606b86a206bfd4c31533f427eaf08d1bca"
+    },
+    {
+      "file": "frontend/packages/api-contracts/generated/openapi.ts",
+      "sha256": "8d3e64dd2f1b62f4a3c945462b20439415a4dca1505495f258367d470570cffd"
+    },
+    {
+      "file": "frontend/packages/api-contracts/openapi/current.json",
+      "sha256": "434cf590f909835f22bf9a1f33df9f17b2e85f5b207434dfbb93e2bdc73ce185"
+    },
+    {
+      "file": "frontend/packages/api-contracts/openapi/revisions/4ab6abdaf712861468eb9bc86b8d52c607a82402a600261ddf02776862c54bf3/provenance.json",
+      "sha256": "329c26bf6054298a7c2806be039a93e126a2ea418680632da34783e2e5e625ca"
+    },
+    {
+      "file": "frontend/packages/api-contracts/openapi/revisions/4ab6abdaf712861468eb9bc86b8d52c607a82402a600261ddf02776862c54bf3/source.json",
+      "sha256": "36c4388a99a2f3dd7cb1d528846af5b07669ea1c8f810264a82028c25e98eab6"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/inbox/index.ts",
+      "sha256": "d9afb62bcfe577d4a684632f8d4dbae90609f8d19b4a4b0b38175dbeef5a6731"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/inbox/types.ts",
+      "sha256": "cb2023141fd801bc417d09c17d5d013a7f6348673cb227e0374eedf202c3e59e"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/index.ts",
+      "sha256": "2e021f30639ea06dca2de1100d9032816a187002d54948c0e6f288be9d7b2456"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/transport.test.ts",
+      "sha256": "47053de1487caf48e331cb3079d1bdaba8e77d0ee85778c0d7a9c3f5842aa8f3"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/transport.ts",
+      "sha256": "e052a3f1ddcefaf20cb2c0930e22180ac7613e6d3134779175490ac2762864b1"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/types.ts",
+      "sha256": "201e5a49fd213b556be6e638be1ce38518ecd0b01500c3c4b932d7cbf9765679"
+    },
+    {
+      "file": "frontend/packages/web-domains/notify/src/InboxPage.test.ts",
+      "sha256": "1c0b37b4abfa787bdea130694d326dc4f172e3b0a4ef62784704021b6db81d3a"
+    },
+    {
+      "file": "frontend/packages/web-domains/notify/src/InboxPage.vue",
+      "sha256": "e824bf36fd8c68ad4bff44d53b17c637f8fcee522f857bb7d6e41e42f4c3615c"
+    },
+    {
+      "file": "frontend/packages/web-domains/notify/src/runtime.ts",
+      "sha256": "30e17d50d4ec5968fc44075f0adb4861a8c27e89df2dcec3d90da89bb62cd1d4"
+    }
+  ]
+}

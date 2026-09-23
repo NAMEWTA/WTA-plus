@@ -56,3 +56,7 @@ T-34关闭实时仍REST；T-35真实dispatcher短信；T-36双收件人同意图
 T-30汇总AC/样本/命令/源码/产物和旧票处置，按<Path>{roots.workflows}/specdev/common/rules/change-completion.md</Path>真实clean/direct-parent证据完成；无权限部署不冒充已部署。所有仍适用的外部凭据风险必须处置或用户明确决定，不能以“计划写完”归档。A单独授权，永久ADR只在毕业网关提升。
 
 完整性检查：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-integrity.json</Path>证明47份before快照与HEAD原文件逐字节一致、旧31票验收条目全部保留、原报告完整复制，产品/相邻change/永久知识与旧Evidence均未变。本轮修正Ready模板中的未决问题段格式；失败曾为Spec 1条与Ticket 50条格式判定，修正后重跑通过，未修改校验器或放宽规则。
+
+## revision181 — T41完成
+
+Revision181: T41 accepted at c21de75f, recovery attempt3; G real501 Chrome1/0/0/0 and SQL A501unread0/B2 unchanged, original timestamps preserved, exactclean source/JAR and cleanup[]. Prior3 plus recoveryE/F failures immutable. Explicit D/C/E/F same-input test/build/contract reuse; both reviews pass.13done/2cancelled/35ready; nextT40; Goal active, no archive.

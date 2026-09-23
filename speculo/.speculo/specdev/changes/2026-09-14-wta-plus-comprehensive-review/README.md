@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-当前revision180：12done/2cancelled/T41 in_progress/35ready。F第2次浏览器失败已定位到重复文本断言，core/静态/合同门禁通过；下一G第3次。
+当前revision181：13done/2cancelled/35ready。T41已在c21de75f通过完整验收；下一T40，Goal持续实施，尚未归档。
 
 最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
@@ -48,3 +48,7 @@ Revision179: recovery E a0dcbac8 attempt1 failed real Chrome at spec90 close loc
 ## revision180 — 恢复F检查点
 
 Revision180: recovery F cb8063b6 attempt2 failed Chrome at B shared-title locator112 after Apage26/oldest/foreign-negative and Blogin/unread2/two rows. Seed title=summary renders twice; authorize two unique table-row/title-cell assertions, retaining counts and all negative/readAll checks. Ffull/core/static/OpenAPI pass, source/JAR stable cleanup[]. Oldbatch3 and recoveryE/F retained; nextG attempt3.12done/2cancelled/T41in_progress/35ready.
+
+## revision181 — T41完成
+
+Revision181: T41 accepted at c21de75f, recovery attempt3; G real501 Chrome1/0/0/0 and SQL A501unread0/B2 unchanged, original timestamps preserved, exactclean source/JAR and cleanup[]. Prior3 plus recoveryE/F failures immutable. Explicit D/C/E/F same-input test/build/contract reuse; both reviews pass.13done/2cancelled/35ready; nextT40; Goal active, no archive.

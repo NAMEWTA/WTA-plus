@@ -45,13 +45,13 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T17:32:00.714319+00:00",
+  "updated_at": "2026-09-23T17:40:06.067860+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
     "HISTORY: original31 require factual reconciliation and current acceptance; old shared result is not per-ticket proof.",
-    "INTEGRATION: remaining36 tickets and final combined candidate gates pending."
+    "INTEGRATION: remaining35 tickets and final combined candidate gates pending."
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",
@@ -143,7 +143,8 @@
     "Revision177: T41 current batch reached3 complete-candidate attempts: B frontend fixture failure; C frontend750/buildpassed but missing declared actual-host coverage; D frontend751/default870+201skip/full/realHTTP4/shared135 passed but owned browser seed SQL exec failed before JVM/Chrome. D sourceclean/cleanup[] preserved; ticket/workspace blocked, result null. Stop automatic resend. Lead diagnosis and materially changed dispatch required before resetting a recovery batch.12done/2cancelled/T41blocked/35ready; Goal remains active.",
     "Revision178: clean d58fc3d owned SQL diagnostic proves four1267/HY000 failures and collated controls pass;501/2 fixture and cleanup pass, acceptance=false. Separate login40>30 fixture defect confirmed. Four-part Lead review and materially changed Dispatch02 recorded before recovery attempts reset0; old B/C/D three attempts immutable.12done/2cancelled/T41in_progress/35ready; Goal active.",
     "Revision179: recovery E a0dcbac8 attempt1 failed real Chrome at spec90 close locator after SQL501/2, real login, top10/detail body passed; source/JAR clean and cleanup[]. Five API-controlled Chrome cases passed5/0/0/0 on exactE using independently verified C production328 artifacts. Retain E failed result; two exact-name close locator fixes authorized within existing e2e scope; no runtime or assertion relaxation.12done/2cancelled/T41in_progress/35ready; oldbatch3 retained.",
-    "Revision180: recovery F cb8063b6 attempt2 failed Chrome at B shared-title locator112 after Apage26/oldest/foreign-negative and Blogin/unread2/two rows. Seed title=summary renders twice; authorize two unique table-row/title-cell assertions, retaining counts and all negative/readAll checks. Ffull/core/static/OpenAPI pass, source/JAR stable cleanup[]. Oldbatch3 and recoveryE/F retained; nextG attempt3.12done/2cancelled/T41in_progress/35ready."
+    "Revision180: recovery F cb8063b6 attempt2 failed Chrome at B shared-title locator112 after Apage26/oldest/foreign-negative and Blogin/unread2/two rows. Seed title=summary renders twice; authorize two unique table-row/title-cell assertions, retaining counts and all negative/readAll checks. Ffull/core/static/OpenAPI pass, source/JAR stable cleanup[]. Oldbatch3 and recoveryE/F retained; nextG attempt3.12done/2cancelled/T41in_progress/35ready.",
+    "Revision181: T41 accepted at c21de75f, recovery attempt3; G real501 Chrome1/0/0/0 and SQL A501unread0/B2 unchanged, original timestamps preserved, exactclean source/JAR and cleanup[]. Prior3 plus recoveryE/F failures immutable. Explicit D/C/E/F same-input test/build/contract reuse; both reviews pass.13done/2cancelled/35ready; nextT40; Goal active, no archive."
   ],
   "worktrees": [
     {
@@ -672,37 +673,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "cb8063b686fcd82d0a91064061e674a59fb6fc14",
-      "status": "active",
-      "updated_at": "2026-09-23T17:32:00.714319+00:00",
+      "source_checkpoint": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
+      "status": "integrated",
+      "updated_at": "2026-09-23T17:40:06.067860+00:00",
       "integration": {
-        "status": "failed",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "d7d534cb03aa000d603a53c092c4bf1d48bb5cc3",
-        "source_sha": "cb8063b686fcd82d0a91064061e674a59fb6fc14",
+        "source_sha": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "c21de75f030688d274dd24e9d6075eff1bdbd5a6",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "failed",
+        "verification": "passed",
         "full_suite": {
           "required": true,
           "status": "passed",
-          "reason": "Full/core/static/contract gates passed; unchanged-input frontend/backend results retain original attribution",
-          "evidence": null
+          "reason": null,
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-41.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "failed",
-          "reason": "F real501 Bpositive textlocator fails; other true gates preserved",
-          "evidence": null
+          "status": "passed",
+          "reason": null,
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-41.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-41.md</Path>",
-        "attempts": 2,
-        "promotion_status": "pending"
+        "attempts": 3,
+        "promotion_status": "applied"
       }
     }
   ]
