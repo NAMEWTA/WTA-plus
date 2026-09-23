@@ -1,0 +1,30 @@
+{
+  "kind": "T41_E_API_CONTROLLED_PREVIEW_V2_FREEZE",
+  "fixed_e_source": "a0dcbac8fd33a754c74c154551f7090a8878fb48",
+  "fixed_e_tree": "0edf8653fede967b034662afd95559283efe08e7",
+  "files_sha256": {
+    "run-inbox-api-controlled-dist.py": "14dea8acd0c495022a56389f328beb3670557ba475c2c0dec5d8ddcc99751a3f",
+    "run-inbox-api-controlled-dist-v2.py": "dd3b825329fe6716379558b5e921578eb14066744276c922d4bd1a1a243bdcf0",
+    "verify-e-prod-dist-equivalence.py": "8b981dddf291045744d74d3fe9757324e85619d88e2b7eb46830e3153bd59b2e",
+    "test_preview_v2_offline.py": "bc7bfce44a52da8f2e663e132c22f84bfd1a51b1aa1a65198d51760d73536e1b",
+    "e-prod-dist-equivalence.json": "71c3ad3cccc268fb4f093e66e06cfae731df1fef912b7c6b64b39fc1339d49eb"
+  },
+  "v1_preserved": true,
+  "offline_v2_tests": {
+    "command": "python3 /tmp/wta-t41/test_preview_v2_offline.py",
+    "exit_code": 0,
+    "tests": 6,
+    "failures": 0,
+    "errors": 0
+  },
+  "equivalence": {
+    "command": "python3 /tmp/wta-t41/verify-e-prod-dist-equivalence.py --expected-head a0dcbac8fd33a754c74c154551f7090a8878fb48 --output /tmp/wta-t41/e-prod-dist-equivalence.json",
+    "exit_code": 0,
+    "artifacts_exact_hash": 328,
+    "c_to_e_reviewed_frontend_paths": 3
+  },
+  "service_execution": false,
+  "build_execution": false,
+  "real_preview_execution": false,
+  "real_browser_execution": false
+}

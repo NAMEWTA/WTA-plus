@@ -1,0 +1,26 @@
+{
+  "kind": "T41_API_CONTROLLED_PREVIEW_V2_PREPARED",
+  "v1_preserved_sha256": "14dea8acd0c495022a56389f328beb3670557ba475c2c0dec5d8ddcc99751a3f",
+  "v2_sha256": "0c41c55ba4a2b84797886e7ba492f42c79e1fd4dfb13f5c6eae4055b0d3b5e11",
+  "equivalence_script_sha256": "8b981dddf291045744d74d3fe9757324e85619d88e2b7eb46830e3153bd59b2e",
+  "offline_test_sha256": "03ddcf5c285f17f7750237fb4db57bb39613c4387f73bfa6f65c4926fb7d5300",
+  "e_source_sha": "PENDING_FIXED_CANDIDATE",
+  "preflight_required_before_launch": true,
+  "expected_c_to_e_frontend_delta": [
+    "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts",
+    "frontend/e2e/run-inbox-paged-real.py",
+    "frontend/e2e/test_run_inbox_paged_real.py"
+  ],
+  "offline_checks": {
+    "command": "python3 /tmp/wta-t41/test_preview_v2_offline.py",
+    "exit_code": 0,
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "py_compile_exit_code": 0
+  },
+  "service_execution": false,
+  "build_execution": false,
+  "real_acceptance": false,
+  "next": "After fixed clean E SHA, set v2 EXPECTED_HEAD, record new hash, run equivalence checker read-only, then Lead alone may execute preview v2."
+}

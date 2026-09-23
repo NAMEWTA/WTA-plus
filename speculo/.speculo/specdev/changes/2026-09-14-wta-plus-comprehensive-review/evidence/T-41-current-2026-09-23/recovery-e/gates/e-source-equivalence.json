@@ -1,0 +1,22 @@
+{
+  "source": "a0dcbac8fd33a754c74c154551f7090a8878fb48",
+  "d_source": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+  "backend_and_build_inputs_d_to_e": [],
+  "frontend_d_to_e": [
+    "frontend/e2e/run-inbox-paged-real.py",
+    "frontend/e2e/test_run_inbox_paged_real.py"
+  ],
+  "actual_prior_results_reused": {
+    "D_default": "1071 total =870 executed,201 environment skips; not E rerun",
+    "D_notify_owned_HTTP": "4 executed,0fail/error/skip, run52a850c3db470a58",
+    "D_shared_Notify": "135 executed,0fail/error/skip, run675004b2d820e928",
+    "D_frontend": "architecture/lint/typecheck/test passed;751 tests; unchanged inputs except unselected Python tools"
+  },
+  "a3_capture_source": "9d748aa9df9310cb64320e5e0db83d6dad8aeff7",
+  "a3_backend_delta": [
+    "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java"
+  ],
+  "generated_checkpoint": "42f07ebbd0d68417b37ed94c84463606cac8d820",
+  "generated_difference": [],
+  "reuse_explanation": "Only two Python browser tool files differ from D executable inputs. Backend, package/config/lock and all frontend JS/TS/Vue/generated inputs byte-identical; no prior test relabelled as E. A3 capture actual prior backend production same, HTTPS test-only later delta. C build artifact equivalence recorded separately."
+}

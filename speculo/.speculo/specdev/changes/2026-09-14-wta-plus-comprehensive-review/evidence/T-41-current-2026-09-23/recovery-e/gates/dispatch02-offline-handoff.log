@@ -1,0 +1,29 @@
+test_browser_config_disables_sensitive_recorders (__main__.T41OfflineSafety.test_browser_config_disables_sensitive_recorders) ... ok
+test_cleanup_missing_captured_full_id_blocks_acceptance (__main__.T41OfflineSafety.test_cleanup_missing_captured_full_id_blocks_acceptance) ... ok
+test_cleanup_removes_only_discovered_owned_full_ids (__main__.T41OfflineSafety.test_cleanup_removes_only_discovered_owned_full_ids) ... ok
+test_comparison_collation_only_on_owned_general_ci_predicates (__main__.T41OfflineSafety.test_comparison_collation_only_on_owned_general_ci_predicates) ... ok
+test_docker_label_filter_is_exact (__main__.T41OfflineSafety.test_docker_label_filter_is_exact) ... ok
+test_failed_reporter_retains_only_exact_numeric_location (__main__.T41OfflineSafety.test_failed_reporter_retains_only_exact_numeric_location) ... ok
+test_isolated_overlay_uses_owned_addresses_and_no_push (__main__.T41OfflineSafety.test_isolated_overlay_uses_owned_addresses_and_no_push) ... ok
+test_login_password_is_separate_from_infrastructure_secret (__main__.T41OfflineSafety.test_login_password_is_separate_from_infrastructure_secret) ... ok
+test_owned_b_role_requires_empty_prior_role_and_exact_four_menus (__main__.T41OfflineSafety.test_owned_b_role_requires_empty_prior_role_and_exact_four_menus) ... ok
+test_owned_bcrypt_matches_application_variant_without_plaintext_sql (__main__.T41OfflineSafety.test_owned_bcrypt_matches_application_variant_without_plaintext_sql) ... ok
+test_owned_lookup_rejects_absent_duplicate_and_wrong_identity (__main__.T41OfflineSafety.test_owned_lookup_rejects_absent_duplicate_and_wrong_identity) ... ok
+test_package_proof_rejects_wrong_source_before_files (__main__.T41OfflineSafety.test_package_proof_rejects_wrong_source_before_files) ... ok
+test_private_file_is_0600_and_exclusive (__main__.T41OfflineSafety.test_private_file_is_0600_and_exclusive) ... ok
+test_read_and_seen_preservation_snapshot_requires_20_real_rows (__main__.T41OfflineSafety.test_read_and_seen_preservation_snapshot_requires_20_real_rows) ... ok
+test_reporter_counts_reject_skip_and_empty (__main__.T41OfflineSafety.test_reporter_counts_reject_skip_and_empty) ... ok
+test_reporter_requires_one_chromium_case_and_one_pass (__main__.T41OfflineSafety.test_reporter_requires_one_chromium_case_and_one_pass) ... ok
+test_requires_explicit_exact_execute (__main__.T41OfflineSafety.test_requires_explicit_exact_execute) ... ok
+test_seed_is_501_plus_two_and_interleaved (__main__.T41OfflineSafety.test_seed_is_501_plus_two_and_interleaved) ... ok
+test_seed_rejects_same_or_invalid_identity (__main__.T41OfflineSafety.test_seed_rejects_same_or_invalid_identity) ... ok
+test_seed_verification_rejects_wrong_shared_owner (__main__.T41OfflineSafety.test_seed_verification_rejects_wrong_shared_owner) ... ok
+test_source_identity_requires_clean_exact_head (__main__.T41OfflineSafety.test_source_identity_requires_clean_exact_head) ... ok
+test_sql_error_retains_only_stage_exit_and_mysql_diagnostics (__main__.T41OfflineSafety.test_sql_error_retains_only_stage_exit_and_mysql_diagnostics) ... ok
+test_static_script_has_no_private_helper_and_requires_pinned_images (__main__.T41OfflineSafety.test_static_script_has_no_private_helper_and_requires_pinned_images) ... ok
+test_volume_absence_requires_exact_lower_or_upper_error (__main__.T41OfflineSafety.test_volume_absence_requires_exact_lower_or_upper_error) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.337s
+
+OK

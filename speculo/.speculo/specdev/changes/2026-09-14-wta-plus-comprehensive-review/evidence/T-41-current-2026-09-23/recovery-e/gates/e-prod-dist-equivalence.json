@@ -1,0 +1,28 @@
+{
+  "source_head": "a0dcbac8fd33a754c74c154551f7090a8878fb48",
+  "source_tree": "0edf8653fede967b034662afd95559283efe08e7",
+  "source_clean": true,
+  "c_build_source": "eff81f642f08a1590f85a1f1f813a592a8232451",
+  "d_source": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+  "c_to_d_frontend": [
+    "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts"
+  ],
+  "d_to_e_frontend": [
+    "frontend/e2e/run-inbox-paged-real.py",
+    "frontend/e2e/test_run_inbox_paged_real.py"
+  ],
+  "c_to_e_frontend": [
+    "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts",
+    "frontend/e2e/run-inbox-paged-real.py",
+    "frontend/e2e/test_run_inbox_paged_real.py"
+  ],
+  "manifest_sha256": "e3a32c6886aa500b1846871a26aaaf84dd0ce0f31bfec00e95b25fccc1f19d84",
+  "artifact_count": 328,
+  "artifact_app_counts": {
+    "admin-web": 310,
+    "home-web": 14,
+    "sso-web": 4
+  },
+  "controlled_test_sha256": "32e34f3268062628b41303903227732e609f9ad625de5f5f2ceaaeb2f5467ad2",
+  "production_dist_byte_equivalent_to_c": true
+}

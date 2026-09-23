@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "frontend/e2e/test_run_inbox_paged_real.py"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T17:18:01.516114+00:00",
+  "finished_at": "2026-09-23T17:18:01.985623+00:00",
+  "exit_code": 0,
+  "log": "dispatch02-offline.log"
+}

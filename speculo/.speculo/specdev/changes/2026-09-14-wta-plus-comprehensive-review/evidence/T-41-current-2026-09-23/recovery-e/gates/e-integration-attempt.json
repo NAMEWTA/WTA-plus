@@ -1,0 +1,14 @@
+{
+  "source": "a0dcbac8fd33a754c74c154551f7090a8878fb48",
+  "tree": "0edf8653fede967b034662afd95559283efe08e7",
+  "batch": 2,
+  "attempt": 1,
+  "old_batch_attempts": 3,
+  "dispatch_commit": "f8edabc50f2df03a4b89da8f23f3c321bd277174",
+  "status": "failed",
+  "started_at": "2026-09-23T17:20:23.898699+00:00",
+  "scope": "only browser runner and offline tests; D/C unchanged-input gate reuse requires explicit proof",
+  "finished_at": "2026-09-23T17:22:24.561497+00:00",
+  "failure": "real Chrome run969f43a52216aebb failed at close-button locator spec90col57 after top detail body passed; SQL/login pass; exact source and cleanup pass",
+  "browser_result": "browser-runs/969f43a52216aebb/result.json"
+}

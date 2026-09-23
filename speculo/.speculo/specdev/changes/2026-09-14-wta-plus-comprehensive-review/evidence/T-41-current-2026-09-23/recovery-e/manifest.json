@@ -1,0 +1,172 @@
+[
+  {
+    "file": "gates/api-controlled-v2-e-freeze.json",
+    "sha256": "f1a3280b309fd8934f4ab0ccb93efa8b12a1c3574005872f1f7fe21a07f36f10",
+    "bytes": 1355
+  },
+  {
+    "file": "gates/api-controlled-v2-preparation.json",
+    "sha256": "f89edabf4f486373f61ca02d10d59e8a48014e20cd4e07670eed38bb07e50edf",
+    "bytes": 1152
+  },
+  {
+    "file": "gates/dispatch02-offline-final.json",
+    "sha256": "646b73c55d0ffc23f7559cbae33d91bbc119d24e3b13c15624ec2b9073d26bdb",
+    "bytes": 276
+  },
+  {
+    "file": "gates/dispatch02-offline-final.log",
+    "sha256": "0d855f3e3593ab6fbd381a94e29b66fcd3dfdbc536a6b10cf482486765cdb3e3",
+    "bytes": 3356
+  },
+  {
+    "file": "gates/dispatch02-offline-handoff.json",
+    "sha256": "ae2e83ddf3f9446d33711a9332f1e052f991f971c233a2e5a95691cde53dcf25",
+    "bytes": 278
+  },
+  {
+    "file": "gates/dispatch02-offline-handoff.log",
+    "sha256": "c03934ebac2cb383d7482e5f23991dbdb7c6683fe81eb2e06d0f6b749394948e",
+    "bytes": 3491
+  },
+  {
+    "file": "gates/dispatch02-offline.json",
+    "sha256": "5a62cdda6f4e80e7a184b5932a17ec6833c0cf24ebaea619994b235665a5102a",
+    "bytes": 270
+  },
+  {
+    "file": "gates/dispatch02-offline.log",
+    "sha256": "df2ed36861be555ddf7f4f419ed350647b04c63312c6693f99d6b158ea451645",
+    "bytes": 3197
+  },
+  {
+    "file": "gates/e-browser-preflight.json",
+    "sha256": "8fb7467142a61c1b6e915eb501cf38551f1969cbe28adb74173d94cba2a3cd64",
+    "bytes": 285
+  },
+  {
+    "file": "gates/e-browser-preflight.log",
+    "sha256": "45fbd205503e240d380c22a68096fadc757ad38d2f3d605df658c9d9b7a54320",
+    "bytes": 962
+  },
+  {
+    "file": "gates/e-browser-source-freeze.json",
+    "sha256": "ad8f7fc6b4ad0fb0d9de2da0773a5434df3b905b984bf1469c9ecea3b7fb942d",
+    "bytes": 462
+  },
+  {
+    "file": "gates/e-full-bundle.json",
+    "sha256": "981592042bcd375c0d7c428bfb1c6f032da771f9e2d04eb4b9fd70e27f974702",
+    "bytes": 266
+  },
+  {
+    "file": "gates/e-full-bundle.log",
+    "sha256": "a442d98c1e0f14d0543077fadd2c76d217885ae4a1325e7dd77976d3030780aa",
+    "bytes": 30
+  },
+  {
+    "file": "gates/e-full-package-proof.json",
+    "sha256": "16a623b21f9785f8539bec968c4fe4b13110d3bd9242244fa0409c352adc8391",
+    "bytes": 740
+  },
+  {
+    "file": "gates/e-full-package.json",
+    "sha256": "3d0ca6d7eccdadb07fd1d30dabe6efa4f39659fc8fcebf7d81fefef0ad0a6790",
+    "bytes": 293
+  },
+  {
+    "file": "gates/e-full-package.log",
+    "sha256": "6547e1a1dbb710590cc1605cfe0d1f382af6974571a0c8d229fac7efe204da22",
+    "bytes": 101892
+  },
+  {
+    "file": "gates/e-integration-attempt.json",
+    "sha256": "46f3736c58ca07f9ccf5b98d8c67a5cec96011e3c684c8ebab147c56882a7a3e",
+    "bytes": 702
+  },
+  {
+    "file": "gates/e-prod-dist-equivalence.json",
+    "sha256": "71c3ad3cccc268fb4f093e66e06cfae731df1fef912b7c6b64b39fc1339d49eb",
+    "bytes": 1031
+  },
+  {
+    "file": "gates/e-source-after.json",
+    "sha256": "9b7198c5e445848c303d07b7fe7dbd7722760d5a490463a7289a21d89270f518",
+    "bytes": 128
+  },
+  {
+    "file": "gates/e-source-before.json",
+    "sha256": "9b7198c5e445848c303d07b7fe7dbd7722760d5a490463a7289a21d89270f518",
+    "bytes": 128
+  },
+  {
+    "file": "gates/e-source-equivalence.json",
+    "sha256": "31ccb1470720c2e42be89f7122a0da97b8aebc95202094b4dcdfd1bf70e8224d",
+    "bytes": 1317
+  },
+  {
+    "file": "gates/recovery178-validator-v2.log",
+    "sha256": "12b2de31040c91abb2b91a6b5d08bb5a7ab880bbd41d8dc29023fe5c7fd43f2e",
+    "bytes": 28636
+  },
+  {
+    "file": "gates/recovery178-validator.log",
+    "sha256": "796ffc3720d9146a35d4d15edd51160d53cbb7eb3c138e2a5684704eddbb096c",
+    "bytes": 28693
+  },
+  {
+    "file": "browser-failed/result.json",
+    "sha256": "b6c5d514f5cae186fcd1da5f605e6f7e962d14ec35cd52d1fb0367b03a6f923c",
+    "bytes": 4686
+  },
+  {
+    "file": "browser-failed/playwright.json",
+    "sha256": "a853415274dc1ac40fdb8ccd6b17b488cf2cab631350f5f62a28340e355d623f",
+    "bytes": 542
+  },
+  {
+    "file": "five-cases/result.json",
+    "sha256": "6b47caef7f13302774000cdf929f8e2a25024da79cf4b6e8ebed0ed102341eb3",
+    "bytes": 2521
+  },
+  {
+    "file": "full-artifact-manifest.json",
+    "sha256": "5159ddbf040215c9c775d4fe26a70c3dcbf72f8c2fade09eeda1e1bd2b36a08e",
+    "bytes": 2455
+  },
+  {
+    "file": "tools/run-inbox-api-controlled-dist-v2.py",
+    "sha256": "dd3b825329fe6716379558b5e921578eb14066744276c922d4bd1a1a243bdcf0",
+    "bytes": 16641
+  },
+  {
+    "file": "tools/verify-e-prod-dist-equivalence.py",
+    "sha256": "8b981dddf291045744d74d3fe9757324e85619d88e2b7eb46830e3153bd59b2e",
+    "bytes": 5501
+  },
+  {
+    "file": "tools/test_preview_v2_offline.py",
+    "sha256": "bc7bfce44a52da8f2e663e132c22f84bfd1a51b1aa1a65198d51760d73536e1b",
+    "bytes": 5638
+  },
+  {
+    "file": "reviews/wta-t41-e-security-review.md",
+    "sha256": "82c51e8c63ba5bd54cd180a74cefdcb0c05607bf2fb1c9b8afb30fc443b9b71b",
+    "bytes": 6063
+  },
+  {
+    "file": "reviews/wta-t41-e-implementation-review.md",
+    "sha256": "79db04f965e23676d4421c43e18b83693123f4bb4f45b622c2b3dbf407c7adaf",
+    "bytes": 5693
+  },
+  {
+    "file": "reviews/wta-t41-recovery-diagnosis-review.md",
+    "sha256": "7e8a62fb7ebdac685a5a9a46866128efd8e744e01308e9a46b57f1ad33fda8f6",
+    "bytes": 7396
+  },
+  {
+    "file": "reviews/wta-t41-recovery-security-review.md",
+    "sha256": "4ebd8618784cab8e0eb3748f8862776fc7d68d9070e9b74c321646fa2877c3f5",
+    "bytes": 4297
+  }
+]

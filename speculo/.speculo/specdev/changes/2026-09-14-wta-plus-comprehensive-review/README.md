@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-当前revision178：12done/2cancelled/T41 in_progress/35ready。隔离SQL诊断已证实根因；四项复盘和Dispatch02已保存，恢复批0次，原三次保留。
+当前revision179：12done/2cancelled/T41 in_progress/35ready。恢复E第一次失败及五项Chrome通过均保存，继续两处关闭按钮测试定位修复。
 
 最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
@@ -40,3 +40,7 @@ Revision177: T41 current batch reached3 complete-candidate attempts: B frontend 
 ## revision178 — T41恢复派单
 
 Revision178: clean d58fc3d owned SQL diagnostic proves four1267/HY000 failures and collated controls pass;501/2 fixture and cleanup pass, acceptance=false. Separate login40>30 fixture defect confirmed. Four-part Lead review and materially changed Dispatch02 recorded before recovery attempts reset0; old B/C/D three attempts immutable.12done/2cancelled/T41in_progress/35ready; Goal active.
+
+## revision179 — 恢复E检查点
+
+Revision179: recovery E a0dcbac8 attempt1 failed real Chrome at spec90 close locator after SQL501/2, real login, top10/detail body passed; source/JAR clean and cleanup[]. Five API-controlled Chrome cases passed5/0/0/0 on exactE using independently verified C production328 artifacts. Retain E failed result; two exact-name close locator fixes authorized within existing e2e scope; no runtime or assertion relaxation.12done/2cancelled/T41in_progress/35ready; oldbatch3 retained.

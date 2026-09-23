@@ -1,0 +1,89 @@
+{
+  "source_before": {
+    "head": "a0dcbac8fd33a754c74c154551f7090a8878fb48",
+    "tree": "0edf8653fede967b034662afd95559283efe08e7",
+    "clean": true
+  },
+  "proof_before": {
+    "manifest_sha256": "e3a32c6886aa500b1846871a26aaaf84dd0ce0f31bfec00e95b25fccc1f19d84",
+    "build_source": "eff81f642f08a1590f85a1f1f813a592a8232451",
+    "artifacts": 328,
+    "apps": {
+      "admin-web": 310,
+      "home-web": 14,
+      "sso-web": 4
+    },
+    "test_sha256": "32e34f3268062628b41303903227732e609f9ad625de5f5f2ceaaeb2f5467ad2"
+  },
+  "run_id": "2fe330f006dff4ae",
+  "loopback_port": 33119,
+  "acceptance": true,
+  "cleanup": {
+    "errors": [],
+    "playwright_group": {
+      "pgid": 866549,
+      "live_members": []
+    },
+    "preview_group": {
+      "pgid": 866464,
+      "live_members": []
+    },
+    "port_closed": true
+  },
+  "preview_pgid": 866464,
+  "playwright_pgid": 866549,
+  "playwright_exit_code": 0,
+  "playwright_raw_sha256": "b441b619f564f99130db23e2603948c6bd0744cf388fd1ecbf3ae08589632000",
+  "playwright": {
+    "counts": {
+      "expected": 5,
+      "unexpected": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "T-34 message box distinguishes loading, failure, retry, notice category and read state without realtime",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "title": "T-34 old inbox failure cannot leak into the next login",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "title": "T-34 old read failure and detail are gone after unmount and next login",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "title": "T-34 successful empty inbox is distinct from loading and failure",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "title": "T-34 opening during the initial request refreshes a notice arriving after its snapshot",
+        "status": "passed",
+        "attempts": 1
+      }
+    ]
+  },
+  "source_after": {
+    "head": "a0dcbac8fd33a754c74c154551f7090a8878fb48",
+    "tree": "0edf8653fede967b034662afd95559283efe08e7",
+    "clean": true
+  },
+  "proof_after": {
+    "manifest_sha256": "e3a32c6886aa500b1846871a26aaaf84dd0ce0f31bfec00e95b25fccc1f19d84",
+    "build_source": "eff81f642f08a1590f85a1f1f813a592a8232451",
+    "artifacts": 328,
+    "apps": {
+      "admin-web": 310,
+      "home-web": 14,
+      "sso-web": 4
+    },
+    "test_sha256": "32e34f3268062628b41303903227732e609f9ad625de5f5f2ceaaeb2f5467ad2"
+  },
+  "exit_code": 0
+}
