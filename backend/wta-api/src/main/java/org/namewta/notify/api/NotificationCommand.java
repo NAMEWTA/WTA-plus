@@ -1,5 +1,7 @@
 package org.namewta.notify.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ import java.util.Map;
  * @param channels 请求渠道
  * @param strategy 编排策略；新提交仅支持 ALL，旧枚举值只用于读取历史事实
  * @param mode 执行模式；新提交仅支持 ASYNC
- * @param priority 当前只支持 0，Worker 不按此字段排序
+ * @param priority 当前只支持 0，Worker 不按此字段排序；HTTP JSON 必须显式传入 0
  * @param scheduledAt 计划时间
  * @param expiresAt 截止时间
  * @param idempotencyKey 幂等键
@@ -27,7 +29,8 @@ import java.util.Map;
 public record NotificationCommand(String appId, String sceneCode, String bizType, String bizId,
                                   String recipientType, List<String> recipientIds, String templateCode,
                                   Map<String, Object> templateParams, List<NotificationChannel> channels,
-                                  NotificationStrategy strategy, NotificationMode mode, int priority,
+                                  NotificationStrategy strategy, NotificationMode mode,
+                                  @JsonProperty(required = true) int priority,
                                   Instant scheduledAt, Instant expiresAt, String idempotencyKey,
                                   Map<String, String> metadata) {
     public NotificationCommand {

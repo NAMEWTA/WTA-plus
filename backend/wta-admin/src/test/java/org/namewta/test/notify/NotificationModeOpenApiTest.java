@@ -19,6 +19,7 @@ class NotificationModeOpenApiTest {
     void publicSchemaOnlyOffersTheImplementedQueuedMode() throws Exception {
         Schema<?> schema = ModelConverters.getInstance().read(NotificationCommand.class).get("NotificationCommand");
         assertThat(schema).isNotNull();
+        assertThat(schema.getRequired()).contains("priority");
         Schema<?> mode = schema.getProperties().get("mode");
         var modes = mode.getEnum().stream().map(Object::toString).toList();
         assertThat(modes).containsExactly("ASYNC");
