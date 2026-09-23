@@ -87,7 +87,7 @@ test('T-41 real Admin inbox page 26 and global read-all', async ({ browser }) =>
     const topDetail = a.getByRole('dialog', { name: '通知详情' });
     await expect(topDetail).toBeVisible();
     await expect(topDetail.locator('.el-descriptions__content').last()).toHaveText(latestTitle);
-    await topDetail.getByRole('button', { name: '关闭' }).click();
+    await topDetail.getByRole('button', { name: '关闭', exact: true }).click();
 
     await inbox(a, origin);
     await expect(a.getByText('通知收件箱 · 未读 481')).toBeVisible();
@@ -121,7 +121,7 @@ test('T-41 real Admin inbox page 26 and global read-all', async ({ browser }) =>
     const fullDetail = a.getByRole('dialog', { name: '通知详情' });
     await expect(fullDetail.locator('.el-descriptions__content').last()).toHaveText(manifest.aOldest.title);
     await expect(a.getByText('通知收件箱 · 未读 480')).toBeVisible();
-    await fullDetail.getByRole('button', { name: '关闭' }).click();
+    await fullDetail.getByRole('button', { name: '关闭', exact: true }).click();
     await a.getByRole('button', { name: /全部已读/ }).click();
     await expect(a.getByText('通知收件箱 · 未读 0')).toBeVisible();
     await a.locator('.message-trigger').click();
