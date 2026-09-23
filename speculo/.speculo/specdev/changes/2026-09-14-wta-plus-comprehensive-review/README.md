@@ -1,8 +1,8 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，正在执行全部50票。当前revision159：7票done（T-29/T-32/T-33/T-34/T-35/T-36/T-47），T-01取消重复施工但AC-001仍由T-30最终复验，T-37实施中，其余41票ready。Goal保持active、ready_for_execution=true；current/main单产品writer，当前产品writer为cors_audit。
+用户已激活Goal，执行全部50票。当前revision160：8票done（T-29/T-32/T-33/T-34/T-35/T-36/T-37/T-47），T-01取消重复施工但AC仍由T30最终复验，其余41票ready。Goal active；current/main单产品writer，下一优先T02登录token路径日志修复，再T38。
 
-最近验收产品为T-36的 `64d67d5fb150620b25ada107115ea2207736c039`；最终候选真实Atomic66/Wake1零skip，178单元/SMS8按未变输入复用原C2证据，完整失败历史保留。权威状态见Ticket、Map、goal-plan Current Status与.status.json。change尚未完成，T-30同源完整候选与归档前置仍待执行。
+最近验收产品T37 `3a87bf71876d92e4afdd227de156045226e52be2`：187单元+13真实重试/Redis+67站内信回归，全部零skip。首候选失败与驱动修正证据保留。整个change及T30完整同源候选尚未完成。
 
 本轮重规划基线为 `1264980c74e594bc594e88561bb292fbe5d968a1`：保留原31票编号与历史实现，新增19票覆盖新报告18项，T-30承担全部AC的最终集成。G共识和设计选择已确认，无需再次确认；2026-09-23早期“仅规划、目标未激活”是已被后续授权替代的历史状态。
 

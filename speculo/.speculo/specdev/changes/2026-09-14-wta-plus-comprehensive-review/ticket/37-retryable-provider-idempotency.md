@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-37"
 title: "让 Outbox 重试真正重新调用可重试供应商"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -98,9 +98,9 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 已接受重复及响应丢失 UNKNOWN 不盲目重发 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | Redis complete 故障、过期 owner 和不同 digest 保持可解释且安全 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下由当前Evidence的精确受影响选集及真实隔离命令落实；完整argv/计数见Evidence：
 
-- `cd backend && ./mvnw -pl wta-modules/wta-notify,wta-admin -am test`
+- 当前C2：backend Maven39类187项、真实SMS10/Redis3、Atomic66/Wake1全部零skip；完整后端最终组合门禁归T30。
 
 - Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
 - E2E disposition：required: NotifyIdempotencyDispatcherUnitTest、RedisNotifyIdempotencyStoreIntegrationTest、真实 runtime/Dispatcher 组合。
@@ -119,13 +119,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-037`：拒绝且可重试→接受产生两次实际发送，非两次缓存异常。
-- [ ] `AC-037`：已接受重复及响应丢失 UNKNOWN 不盲目重发。
-- [ ] `AC-037`：Redis complete 故障、过期 owner 和不同 digest 保持可解释且安全。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-037`：拒绝且可重试→接受产生两次实际发送，非两次缓存异常。
+- [x] `AC-037`：已接受重复及响应丢失 UNKNOWN 不盲目重发。
+- [x] `AC-037`：Redis complete 故障、过期 owner 和不同 digest 保持可解释且安全。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -154,3 +154,7 @@ base `38032d24335c52cafea855b19d51fb36295162ef`；cors_audit唯一产品writer�
 ### revision159 Redis序列化与剩余TTL实证
 
 生产RedisConfig默认CompositeCodec(StringCodec,TypedJsonJackson3Codec)，旧Store bucket采用client默认codec；SMS真实fixture默认codec，Redis专项fixture显式StringCodec。新单键脚本必须沿用旧值的codec及NameMapper，不能改成StringCodec后让旧key不可读/比较失败。Redisson4.6.1源码的CompareAndSetArgs不指定TTL会SET并清TTL，不能作为保留期限实现；使用与bucket一致编码的原子CAS+PTTL/KEEPTTL，在同脚本内验证key存在且有正剩余TTL。真实回归需涵盖项目CompositeCodec及名称前缀、旧四字段StoredState，不只StringCodec绿色。
+
+## revision160 已验收
+
+最终source/result `3a87bf71876d92e4afdd227de156045226e52be2`，formal attempts=2，详见evidence/T-37.md。人工retry仍由T38闭合；下一T02优先修复真实token路径日志泄漏。

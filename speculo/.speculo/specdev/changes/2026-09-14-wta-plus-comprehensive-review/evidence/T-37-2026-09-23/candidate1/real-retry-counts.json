@@ -1,0 +1,62 @@
+{
+  "source": {
+    "head": "e2907c41f4b1bef442c68b95a0fc09aa9c3b273a",
+    "tree": "3f09371a2fea57ceb19fb000629e7c0b84494c7a",
+    "clean": true
+  },
+  "run": "b0d200e1eaf3766e",
+  "counts": {
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    }
+  },
+  "methods": {
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": [
+      "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery",
+      "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend",
+      "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall",
+      "supplierIoAmbiguityStaysUnknownAndNeverRequeues",
+      "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers",
+      "retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend",
+      "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues",
+      "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall",
+      "exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice",
+      "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction"
+    ],
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": [
+      "shouldAtomicallyAcquireCompleteReuseAndExpire",
+      "retryableOwnerCasRetainsTtlAndReadsLegacyStateWithProductionCompositeCodec",
+      "retryableOwnerCasRetainsTtlAndRejectsStaleOwnerWithStringCodec"
+    ]
+  },
+  "acceptance": false,
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 4186719,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "loopback_ports_closed": {
+      "32808": true,
+      "32809": true
+    },
+    "errors": [
+      "owned_volume_absence_check_failed"
+    ]
+  },
+  "source_after": {
+    "head": "e2907c41f4b1bef442c68b95a0fc09aa9c3b273a",
+    "tree": "3f09371a2fea57ceb19fb000629e7c0b84494c7a",
+    "clean": true
+  },
+  "result_sha256": "214037a26d16cd5440bc58b43d8a2b9c1069bcf084dc20d80aa0c934ac81a1bc"
+}

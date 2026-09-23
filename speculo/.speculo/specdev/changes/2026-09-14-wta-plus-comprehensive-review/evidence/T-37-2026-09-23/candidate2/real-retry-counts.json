@@ -1,0 +1,63 @@
+{
+  "source": {
+    "head": "3a87bf71876d92e4afdd227de156045226e52be2",
+    "tree": "d60c20e385db3f3b7b064e9a13e0df4474a120ef",
+    "clean": true
+  },
+  "run": "e30e8562a767e12d",
+  "counts": {
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "methods": {
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": [
+      "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery",
+      "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend",
+      "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall",
+      "supplierIoAmbiguityStaysUnknownAndNeverRequeues",
+      "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers",
+      "retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend",
+      "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues",
+      "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall",
+      "exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice",
+      "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction"
+    ],
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": [
+      "shouldAtomicallyAcquireCompleteReuseAndExpire",
+      "retryableOwnerCasRetainsTtlAndReadsLegacyStateWithProductionCompositeCodec",
+      "retryableOwnerCasRetainsTtlAndRejectsStaleOwnerWithStringCodec"
+    ]
+  },
+  "acceptance": true,
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 14410,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "823828aa7667b6aa36ca75ce7146a2239ecbbe1fee56a4b181131439eb786963": true
+    },
+    "loopback_ports_closed": {
+      "32810": true,
+      "32811": true
+    },
+    "errors": []
+  },
+  "source_after": {
+    "head": "3a87bf71876d92e4afdd227de156045226e52be2",
+    "tree": "d60c20e385db3f3b7b064e9a13e0df4474a120ef",
+    "clean": true
+  },
+  "result_sha256": "53fd4d2c181ed70e9a1458648a009a34582a06df26160ac56136de1833449768"
+}

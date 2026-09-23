@@ -1,0 +1,15 @@
+{
+  "run_id": "b0d200e1eaf3766e",
+  "run_utc": "2026-09-23T11:13:09Z/2026-09-23T11:13:57Z",
+  "scan_utc": "2026-09-23T11:17:28.237693+00:00",
+  "window_utc": [
+    "2026-09-23T11:12:00+00:00",
+    "2026-09-23T11:16:00+00:00"
+  ],
+  "total_current_volumes_inspected": 39,
+  "matched_current_volume_count": 0,
+  "matched_current_volumes": [],
+  "bounded_volume_events_exit": 0,
+  "bounded_volume_events_count": 0,
+  "limitation": "Original runner did not persist captured anonymous volume names. Historical exact names cannot be reconstructed from current state or this bounded event query."
+}

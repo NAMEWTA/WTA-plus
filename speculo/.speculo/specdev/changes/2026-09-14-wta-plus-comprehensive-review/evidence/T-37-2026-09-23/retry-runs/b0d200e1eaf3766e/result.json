@@ -1,0 +1,125 @@
+{
+  "gate": "T-37 real SMS runtime and Redis idempotency",
+  "run_id": "b0d200e1eaf3766e",
+  "mode": "acceptance",
+  "acceptance": false,
+  "started_utc": "2026-09-23T11:13:09.484383+00:00",
+  "exit_code": 1,
+  "owned": {
+    "mysql_container_id": "3afe15f3877c0bf159ba2214bed1501b8e0c90857aa2f742f7a6e36dbe9b767c",
+    "application_table_count": 103,
+    "redis_container_id": "424a4acaa87144ce13a273b70677730914b5791830a7b996cc0d8443178ae7f7",
+    "loopback_ports": {
+      "mysql": 32808,
+      "redis": 32809
+    }
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "24ec3355759905263057ec4bfd08d637b29b69993cb94ae62996d96c27abd84e",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 4186719,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "loopback_ports_closed": {
+      "32808": true,
+      "32809": true
+    },
+    "errors": [
+      "owned_volume_absence_check_failed"
+    ]
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "e2907c41f4b1bef442c68b95a0fc09aa9c3b273a",
+    "tree": "3f09371a2fea57ceb19fb000629e7c0b84494c7a",
+    "clean": true
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifySmsDispatchIntegrationTest,RedisNotifyIdempotencyStoreIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.sms.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32808/namewta_notify_test_b0d200e1eaf3766e?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t37_b0d200e1eaf3766e",
+    "-Dnotify.redis.integration.port=32809"
+  ],
+  "maven_exit_code": 1,
+  "methods": {
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": [
+      "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery",
+      "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend",
+      "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall",
+      "supplierIoAmbiguityStaysUnknownAndNeverRequeues",
+      "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers",
+      "retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend",
+      "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues",
+      "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall",
+      "exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice",
+      "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction"
+    ],
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": [
+      "shouldAtomicallyAcquireCompleteReuseAndExpire",
+      "retryableOwnerCasRetainsTtlAndReadsLegacyStateWithProductionCompositeCodec",
+      "retryableOwnerCasRetainsTtlAndRejectsStaleOwnerWithStringCodec"
+    ]
+  },
+  "error": "RuntimeError: Selected Maven test command failed",
+  "source_after": {
+    "head": "e2907c41f4b1bef442c68b95a0fc09aa9c3b273a",
+    "tree": "3f09371a2fea57ceb19fb000629e7c0b84494c7a",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T11:13:57.983626+00:00"
+}

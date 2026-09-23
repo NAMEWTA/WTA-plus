@@ -1,0 +1,113 @@
+{
+  "run_id": "a95977475de71093",
+  "acceptance": true,
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 18013,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "loopback_ports_closed": {
+      "32812": true,
+      "32813": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "tests": 66,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "3a87bf71876d92e4afdd227de156045226e52be2",
+    "tree": "d60c20e385db3f3b7b064e9a13e0df4474a120ef",
+    "clean": true
+  },
+  "methods": {
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": [
+      "duplicateEventWithChangedFactsMustBeRejected",
+      "callbackRevalidatesCorrelationAfterWaitingForCurrentResult",
+      "concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations",
+      "callbackRollbackMustAllowSameEventRetry",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[1]",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[2]",
+      "nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation",
+      "callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler",
+      "anyResultWriteFailureRollsBackAllOtherRows",
+      "restartedJvmsSeeCommittedReceiptAndRejectChangedFacts",
+      "oldWorkerCannotOverwriteAReclaimedAndCompletedResult",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[1]",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[2]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[1]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[2]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[1]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[2]",
+      "finishZeroRollsBackDeliveryAttemptAndAggregate",
+      "nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending",
+      "twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim",
+      "genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact",
+      "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt",
+      "freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved",
+      "longUnicodeBodyKeepsFullContentAndBoundedSummary",
+      "receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry",
+      "concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate",
+      "sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[1]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[2]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[3]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[4]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[5]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[6]",
+      "sameAccountKeyAndEventAcrossChannelsRemainIndependent",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[1]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[2]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[3]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[4]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[5]",
+      "twoConcurrentClaimersOnlyDispatchOneCommittedResult",
+      "existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent",
+      "simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[1]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[2]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[3]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[4]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[5]",
+      "twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce",
+      "deliveredCallbackCannotBeOverwrittenByLateAcceptedResult",
+      "expiredOwnerCannotRenewOrFinishWithoutAReclaim",
+      "nativeQueryCredentialEditOrReadFailureDoesNotApplyResult",
+      "invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite",
+      "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable",
+      "reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist",
+      "leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete",
+      "cancelledBeforeInAppTransactionCannotWriteInboxFact",
+      "providerCompletingAfterExpiryDoesNotReviveTheLease",
+      "receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract",
+      "nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries",
+      "expiredLeaseCannotSkipCancelOrDefer",
+      "earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult",
+      "realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus",
+      "genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt",
+      "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate",
+      "sameEventFromDifferentAccountsMustNotCollide",
+      "externalChannelClaimPreservesSameLiteralErrorCode"
+    ],
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": [
+      "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake"
+    ]
+  },
+  "source_after": {
+    "head": "3a87bf71876d92e4afdd227de156045226e52be2",
+    "tree": "d60c20e385db3f3b7b064e9a13e0df4474a120ef",
+    "clean": true
+  }
+}

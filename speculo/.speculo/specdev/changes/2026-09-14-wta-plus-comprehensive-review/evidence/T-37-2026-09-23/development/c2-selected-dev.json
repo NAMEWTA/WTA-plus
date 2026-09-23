@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotifyIdempotencyDispatcherUnitTest,RedisNotifyIdempotencyStoreIntegrationTest,NotifySmsDispatchIntegrationTest,Sms4jBlendRegistryTest,Sms4jReceiptTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T11:17:36.383895+00:00",
+  "finished_at": "2026-09-23T11:18:19.764558+00:00",
+  "exit_code": 0,
+  "log": "c2-selected-dev.log"
+}

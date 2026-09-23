@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify,wta-admin",
+    "-am",
+    "-Dtest=NotifyIdempotencyDispatcherUnitTest,Sms4jBlendRegistryTest,Sms4jReceiptTest,DispatchNotificationServiceTest,SmsNotifyChannelAdapterUnitTest,MailNotifyChannelAdapterUnitTest,NotifySmsDispatchIntegrationTest,RedisNotifyIdempotencyStoreIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T11:04:34.411760+00:00",
+  "finished_at": "2026-09-23T11:05:09.450778+00:00",
+  "exit_code": 0,
+  "log": "selected-v1.log"
+}

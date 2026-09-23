@@ -1,0 +1,12 @@
+test_both_exact_fresh_classes_positive_zero_skip (__main__.DriverSafetyTest.test_both_exact_fresh_classes_positive_zero_skip) ... ok
+test_exited_leader_still_checks_process_group (__main__.DriverSafetyTest.test_exited_leader_still_checks_process_group) ... ok
+test_full_id_and_dual_label_discovery (__main__.DriverSafetyTest.test_full_id_and_dual_label_discovery) ... ok
+test_only_verified_full_id_is_removed (__main__.DriverSafetyTest.test_only_verified_full_id_is_removed) ... ok
+test_owned_mysql_labels_loopback_and_trigger_option (__main__.DriverSafetyTest.test_owned_mysql_labels_loopback_and_trigger_option) ... ok
+test_password_only_child_environment (__main__.DriverSafetyTest.test_password_only_child_environment) ... ok
+test_volume_capture_and_absence_verdict (__main__.DriverSafetyTest.test_volume_capture_and_absence_verdict) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.003s
+
+OK

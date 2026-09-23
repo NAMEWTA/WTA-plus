@@ -1,0 +1,32 @@
+{
+  "actual_typecheck_source": "5118051403de0648540646d98536d8c4f3f9f26d",
+  "actual_openapi_source": "e2907c41f4b1bef442c68b95a0fc09aa9c3b273a",
+  "candidate": "3a87bf71876d92e4afdd227de156045226e52be2",
+  "frontend_trees": {
+    "5118051403de0648540646d98536d8c4f3f9f26d": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+    "e2907c41f4b1bef442c68b95a0fc09aa9c3b273a": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+    "3a87bf71876d92e4afdd227de156045226e52be2": "5a4d246baa671f3538bdb47ee790055dcf83e88b"
+  },
+  "c1_to_c2_paths": [
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifySmsDispatchIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/idempotency/RedisNotifyIdempotencyStoreIntegrationTest.java",
+    "backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/idempotency/RedisNotifyIdempotencyStore.java",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/.status.json",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/handoff.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/worklog.md"
+  ],
+  "openapi_record": {
+    "command": [
+      "pnpm",
+      "--filter",
+      "@namewta/tooling-openapi",
+      "openapi:check"
+    ],
+    "cwd": "/srv/WTA-plus/frontend",
+    "started_at": "2026-09-23T11:12:40.371089+00:00",
+    "finished_at": "2026-09-23T11:12:43.171605+00:00",
+    "exit_code": 0,
+    "log": "acceptance-openapi.log"
+  },
+  "reuse": "Frontend byte-identical; C2 changes no HTTP declarations, DTO or OpenAPI consumers. Original runtime sources retained, not claimed rerun."
+}

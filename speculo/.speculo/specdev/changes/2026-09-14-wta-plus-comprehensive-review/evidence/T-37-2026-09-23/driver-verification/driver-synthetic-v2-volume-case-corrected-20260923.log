@@ -1,0 +1,16 @@
+.......E
+======================================================================
+ERROR: test_volume_capture_and_absence_verdict (__main__.DriverSafetyTest.test_volume_capture_and_absence_verdict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/wta-t37/test_driver_safety_v2.py", line 63, in test_volume_capture_and_absence_verdict
+    self.assertTrue(driver.volume_absent(name))
+                    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/tmp/wta-t37/run-notify-retry-integration-v2.py", line 273, in volume_absent
+    raise RuntimeError('Owned volume absence could not be verified')
+RuntimeError: Owned volume absence could not be verified
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.004s
+
+FAILED (errors=1)
