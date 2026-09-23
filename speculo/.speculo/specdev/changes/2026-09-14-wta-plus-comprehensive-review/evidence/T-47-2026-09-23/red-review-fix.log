@@ -1,0 +1,36 @@
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/system
+
+ ❯ src/oss/page-query.test.ts (16 tests | 1 failed | 15 skipped) 667ms
+     × shows a successful list and completes getList while its image preview never settles 666ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/oss/page-query.test.ts > OSS real SFC query ownership > shows a successful list and completes getList while its image preview never settles
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ vi.waitFor.timeout src/oss/page-query.test.ts:316:46
+    314|     let completed = false;
+    315|     void pending.then(() => { completed = true; });
+    316|     await vi.waitFor(() => expect(completed).toBe(true), { timeout: 50…
+       |                                              ^
+    317|     expect(f.state.ossList.map(item => item.ossId)).toEqual(['image']);
+    318|     expect(f.state.total).toBe(8);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 skipped (16)
+   Start at  16:07:42
+   Duration  1.46s (transform 602ms, setup 0ms, import 679ms, tests 667ms, environment 0ms)
+
+undefined
+/srv/WTA-plus/frontend/packages/web-domains/system:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/oss/page-query.test.ts -t shows a successful list and completes getList

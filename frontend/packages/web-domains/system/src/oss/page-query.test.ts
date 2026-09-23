@@ -42,6 +42,7 @@ function deferred<T>() {
   const promise = new Promise<T>((yes, no) => { resolve = yes; reject = no; });
   return { promise, resolve, reject };
 }
+const settle = () => new Promise<void>(resolve => setImmediate(resolve));
 
 const row = (id: string, fileSuffix = '.png', deleteState: OssRow['deleteState'] = 'ACTIVE'): OssRow =>
   ({ ossId: id, fileName: id, fileSuffix, deleteState, url: 'untrusted-list-url' });
@@ -143,26 +144,27 @@ describe('OSS real SFC query ownership', () => {
     expect(f.state.total).toBe(2);
   });
 
-  it('waits for authorized preview resolution and ignores A preview after B commits', async () => {
+  it('commits rows before preview and ignores A preview after B commits', async () => {
     const f = await fixture();
     const a = f.start('A'); f.config(0, true);
     await vi.waitFor(() => expect(f.lists).toHaveLength(1));
     f.finishList(0, [row('A')]);
     await vi.waitFor(() => expect(f.previews).toHaveLength(1));
-    expect(f.state.ossList).toEqual([]);
-    expect(f.state.loading).toBe(true);
+    await a;
+    expect(f.state.ossList.map(item => item.ossId)).toEqual(['A']);
+    expect(f.state.loading).toBe(false);
     const b = f.start('B'); f.config(1, true);
     await vi.waitFor(() => expect(f.lists).toHaveLength(2));
     f.finishList(1, [row('B'), row('pending', '.png', 'PENDING')], 6);
     await vi.waitFor(() => expect(f.previews).toHaveLength(2));
     expect(f.previews.map(item => item.id)).toEqual(['A', 'B']);
-    f.previews[1].gate.reject(new Error('该文件已删除'));
     await b;
     expect(f.state.ossList.map(item => item.ossId)).toEqual(['B', 'pending']);
     expect(f.state.total).toBe(6);
     expect(f.state.previewUrls).toEqual({});
-    expect(f.state.deletedPreviewIds).toEqual({ B: true });
-    f.previews[0].gate.resolve(access('A', 'https://example.test/authorized-A')); await a;
+    f.previews[1].gate.reject(new Error('该文件已删除'));
+    await vi.waitFor(() => expect(f.state.deletedPreviewIds).toEqual({ B: true }));
+    f.previews[0].gate.resolve(access('A', 'https://example.test/authorized-A')); await settle();
     expect(f.state.previewUrls).toEqual({});
     expect(f.state.deletedPreviewIds).toEqual({ B: true });
     expect(f.state.loading).toBe(false);
@@ -224,14 +226,18 @@ describe('OSS real SFC query ownership', () => {
     if (stage === 'preview') {
       f.finishList(0, [row('late')]);
       await vi.waitFor(() => expect(f.previews).toHaveLength(1));
+      await pending;
     }
+    const priorRows = f.state.ossList;
+    const priorTotal = f.state.total;
     f.unmount();
     if (stage === 'config') f.config(0, true);
     if (stage === 'list') f.finishList(0, [row('late', '.pdf')]);
     if (stage === 'preview') f.previews[0].gate.resolve(access('late', 'https://example.test/authorized-late'));
     await pending;
-    expect(f.state.ossList).toEqual([]);
-    expect(f.state.total).toBe(0);
+    await settle();
+    expect(f.state.ossList).toBe(priorRows);
+    expect(f.state.total).toBe(priorTotal);
     expect(f.state.previewUrls).toEqual({});
     expect(f.state.queryError).toBe('');
     expect(f.state.loading).toBe(false);
@@ -279,10 +285,12 @@ describe('OSS real SFC query ownership', () => {
     await vi.waitFor(() => expect(f.lists).toHaveLength(1));
     f.finishList(0, [row('image')]);
     await vi.waitFor(() => expect(f.previews).toHaveLength(1));
-    f.previews[0].gate.reject(new Error('temporary URL failure')); await pending;
+    await pending;
+    f.previews[0].gate.reject(new Error('temporary URL failure')); await settle();
     expect(f.state.ossList[0].url).toBe('');
     expect(f.state.previewUrls).toEqual({});
     expect(f.state.deletedPreviewIds).toEqual({});
+    expect(f.state.queryError).toBe('');
   });
 
   it('uses an authorized URL for a current image without exposing the list URL', async () => {
@@ -291,9 +299,58 @@ describe('OSS real SFC query ownership', () => {
     await vi.waitFor(() => expect(f.lists).toHaveLength(1));
     f.finishList(0, [row('image')]);
     await vi.waitFor(() => expect(f.previews).toHaveLength(1));
-    f.previews[0].gate.resolve(access('image', 'https://example.test/authorized-current-image')); await pending;
+    await pending;
+    expect(f.state.previewUrls).toEqual({});
+    f.previews[0].gate.resolve(access('image', 'https://example.test/authorized-current-image'));
+    await vi.waitFor(() => expect(f.state.previewUrls).toEqual({ image: 'https://example.test/authorized-current-image' }));
     expect(f.state.ossList[0].url).toBe('');
     expect(f.state.previewUrls).toEqual({ image: 'https://example.test/authorized-current-image' });
     expect(f.state.deletedPreviewIds).toEqual({});
+  });
+
+  it('shows each authorized preview as it resolves without waiting for another image', async () => {
+    const f = await fixture();
+    const pending = f.start('images'); f.config(0, true);
+    await vi.waitFor(() => expect(f.lists).toHaveLength(1));
+    f.finishList(0, [row('slow'), row('fast')]);
+    await vi.waitFor(() => expect(f.previews).toHaveLength(2));
+    await pending;
+    f.previews[1].gate.resolve(access('fast', 'https://example.test/fast'));
+    await vi.waitFor(() => expect(f.state.previewUrls).toEqual({ fast: 'https://example.test/fast' }));
+    expect(f.state.loading).toBe(false);
+    f.previews[0].gate.resolve(access('slow', 'https://example.test/slow'));
+    await vi.waitFor(() => expect(f.state.previewUrls).toEqual({
+      fast: 'https://example.test/fast', slow: 'https://example.test/slow'
+    }));
+  });
+
+  it('shows a successful list and completes getList while its image preview never settles', async () => {
+    const f = await fixture();
+    const pending = f.start('image'); f.config(0, true);
+    await vi.waitFor(() => expect(f.lists).toHaveLength(1));
+    f.finishList(0, [row('image')], 8);
+    await vi.waitFor(() => expect(f.previews).toHaveLength(1));
+    let completed = false;
+    void pending.then(() => { completed = true; });
+    await vi.waitFor(() => expect(completed).toBe(true), { timeout: 500 });
+    expect(f.state.ossList.map(item => item.ossId)).toEqual(['image']);
+    expect(f.state.total).toBe(8);
+    expect(f.state.previewListResource).toBe(true);
+    expect(f.state.previewUrls).toEqual({});
+    expect(f.state.loading).toBe(false);
+  });
+
+  it('finishes an operation refresh while its optional preview remains pending', async () => {
+    const f = await fixture();
+    const changing = f.state.handlePreviewListResource(true);
+    await vi.waitFor(() => expect(f.configs).toHaveLength(1));
+    f.config(0, true); await vi.waitFor(() => expect(f.lists).toHaveLength(1));
+    f.finishList(0, [row('image')]);
+    await vi.waitFor(() => expect(f.previews).toHaveLength(1));
+    let completed = false;
+    void changing.then(() => { completed = true; });
+    await vi.waitFor(() => expect(completed).toBe(true), { timeout: 500 });
+    expect(f.runtime.success).toHaveBeenCalledWith('启用成功');
+    expect(f.state.loading).toBe(false);
   });
 });

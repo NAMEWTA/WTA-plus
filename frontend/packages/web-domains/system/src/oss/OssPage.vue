@@ -384,30 +384,25 @@ const publicConfigs = ref<OssConfigVO[]>([]);
 const previewUrl = (row: OssVO) => previewUrls.value[rowKey(row)] || '';
 
 // 管理列表不带可访问地址。待删除对象不能申请下载地址；活动图片只使用本次查询的短时授权。
-const resolvePreviewUrls = async (rows: OssVO[], enabled: boolean) => {
-  const urls: Record<string, string> = {};
-  const deleted: Record<string, true> = {};
-  if (!enabled) return { urls, deleted };
-  const images = rows.filter(row => ossFilePresentation(row, true) === 'image');
-  const resolved = await Promise.all(
-    images.map(async row => {
-      try {
-        const response = await downloadUrl(row.ossId);
-        return { id: rowKey(row), url: response.data?.url ?? '', deleted: false };
-      } catch (error) {
-        const message = error instanceof Error ? error.message : '';
-        return { id: rowKey(row), url: '', deleted: message === deletedMessage };
+const hydratePreviewUrls = (rows: OssVO[], enabled: boolean, current: () => boolean) => {
+  if (!enabled) return;
+  for (const row of rows) {
+    if (ossFilePresentation(row, true) !== 'image') continue;
+    const id = rowKey(row);
+    void downloadUrl(row.ossId).then(response => {
+      if (!current()) return;
+      const url = response.data?.url;
+      if (url) previewUrls.value = { ...previewUrls.value, [id]: url };
+    }).catch((error: unknown) => {
+      if (!current()) return;
+      if (error instanceof Error && error.message === deletedMessage) {
+        deletedPreviewIds.value = { ...deletedPreviewIds.value, [id]: true };
       }
-    })
-  );
-  for (const item of resolved) {
-    if (item.deleted) deleted[item.id] = true;
-    else if (item.url) urls[item.id] = item.url;
+    });
   }
-  return { urls, deleted };
 };
 
-/** 配置、列表与授权预览统一归属本轮查询，完成后才回填页面。 */
+/** 列表先提交；可选授权预览随后按同一代次渐进回填。 */
 const getList = async (): Promise<'applied' | 'failed' | 'stale'> => {
   if (disposed) return 'stale';
   const generation = ++listGeneration;
@@ -422,14 +417,13 @@ const getList = async (): Promise<'applied' | 'failed' | 'stale'> => {
     const response = await listOss(snapshot);
     if (!current()) return 'stale';
     const rows = response.data?.rows ?? [];
-    const previews = await resolvePreviewUrls(rows, enabled);
-    if (!current()) return 'stale';
     previewListResource.value = enabled;
     ossList.value = rows;
     total.value = response.data?.total ?? 0;
-    previewUrls.value = previews.urls;
-    deletedPreviewIds.value = previews.deleted;
+    previewUrls.value = {};
+    deletedPreviewIds.value = {};
     showTable.value = true;
+    hydratePreviewUrls(rows, enabled, current);
     return 'applied';
   } catch (error: unknown) {
     if (!current()) return 'stale';

@@ -231,3 +231,5 @@ T32/T33/T34 done，47ready，无在途writer；T34result 177eb5bd889afd2ab54f4a8
 ## revision144当前
 
 T32/T33/T34 done，T47 in_progress，46ready。T47 base 97e1ee9e1ad40de75deffd025379a6a5488c4882；cors_audit仅写OSS目录，Lead独占治理/提交/验收。
+
+T47首候选2d60e1a全前端728/静态/构建及clean通过，但规范轴发现可选预览阻塞列表。Packet02保持写集，列表结果先提交、预览同代渐进，不改授权/旧响应边界；仍in_progress。

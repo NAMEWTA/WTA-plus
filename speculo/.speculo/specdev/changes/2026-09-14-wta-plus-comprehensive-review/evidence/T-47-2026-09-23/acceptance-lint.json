@@ -1,0 +1,11 @@
+{
+  "command": [
+    "pnpm",
+    "lint"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T08:01:25.101996+00:00",
+  "finished_at": "2026-09-23T08:01:31.788074+00:00",
+  "exit_code": 0,
+  "log": "acceptance-lint.log"
+}

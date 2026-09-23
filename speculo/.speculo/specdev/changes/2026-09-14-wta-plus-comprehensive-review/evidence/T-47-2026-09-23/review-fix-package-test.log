@@ -1,0 +1,13 @@
+
+> @namewta/web-domain-system@0.0.0 test /srv/WTA-plus/frontend/packages/web-domains/system
+> vitest run src
+
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/system
+
+
+ Test Files  11 passed (11)
+      Tests  73 passed (73)
+   Start at  16:09:15
+   Duration  4.18s (transform 2.52s, setup 0ms, import 4.52s, tests 4.75s, environment 6ms)
+

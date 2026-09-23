@@ -1,0 +1,22 @@
+{
+  "owner": "cors_audit",
+  "source": "2d60e1af730036837576685a56657bf630a391cb",
+  "writer_lock": "returned",
+  "commit": null,
+  "cwd": "/srv/WTA-plus",
+  "red": {
+    "command": "pnpm --dir frontend --filter @namewta/web-domain-system exec vitest run src/oss/page-query.test.ts (never-settling preview selector)",
+    "exit_code": 1,
+    "failed": 1,
+    "selector_skipped": 15
+  },
+  "package": {
+    "command": "pnpm --dir frontend --filter @namewta/web-domain-system test",
+    "exit_code": 0,
+    "passed": 73,
+    "skipped": 0
+  },
+  "typecheck_exit": 0,
+  "lint_exit": 0,
+  "lead_acceptance": "pending fixed new SHA"
+}

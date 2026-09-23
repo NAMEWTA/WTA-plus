@@ -103,7 +103,8 @@
     "T34 recovery cycle attempt1 at e78d886: real inbox 1/1 passed and clean; independent driver reviews request corrections to failure cleanup/test identity. Packet03 assigns only driver/docs/regressions to cors_audit; ticket remains in_progress, no acceptance claimed.",
     "T34 recovery attempt2: real browser1/1 passed; processes/ports/containers fully removed, but cleanup verdict failed from short/full Docker ID mismatch. Lead adds --no-trunc and tests both captured/lost full IDs. No done claim; next final acceptance is attempt3. Verbatim captured logs retain tool whitespace; product diff-check passes.",
     "Revision143: T34 accepted at 177eb5b; 714 tests+5 synthetic+1 real pass, clean before/after. Cycle1 3 attempts preserved; mandatory Lead retrospective/new dispatch, recovery cycle attempt3 passed. T29 facts checker private path conflict remains explicit.",
-    "Revision144: T47 starts at 97e1ee9e1ad40de75deffd025379a6a5488c4882; only OSS page/tests writable, cors_audit sole product writer; Lead owns commits and acceptance. T34 is closed before transfer."
+    "Revision144: T47 starts at 97e1ee9e1ad40de75deffd025379a6a5488c4882; only OSS page/tests writable, cors_audit sole product writer; Lead owns commits and acceptance. T34 is closed before transfer.",
+    "T47 first candidate2d60e1a full frontend728/lint/typecheck/prod build pass, clean before/after. Specification review identifies list blocked on optional image previews; keep in_progress, Packet02 repairs progressive preview without dropping ownership guards."
   ],
   "worktrees": [
     {
@@ -245,7 +246,7 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "97e1ee9e1ad40de75deffd025379a6a5488c4882",
+      "source_checkpoint": "2d60e1af730036837576685a56657bf630a391cb",
       "status": "active",
       "updated_at": "2026-09-23T07:50:52.638165+00:00",
       "integration": {
@@ -274,7 +275,7 @@
           "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-47.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-47.md</Path>",
-        "attempts": 0,
+        "attempts": 1,
         "promotion_status": "pending"
       }
     }
