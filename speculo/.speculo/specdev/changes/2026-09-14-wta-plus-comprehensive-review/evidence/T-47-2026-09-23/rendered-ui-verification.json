@@ -1,0 +1,15 @@
+{
+  "counts": {
+    "expected": 1,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "port": 58503,
+  "port_closed": true,
+  "api": "synthetic fixtures; not real backend",
+  "screenshots_reviewed_by_lead": [
+    "oss-error.png",
+    "oss-pending-preview.png"
+  ]
+}

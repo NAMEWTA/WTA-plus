@@ -1,0 +1,11 @@
+{
+  "command": [
+    "pnpm",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T08:11:43.814891+00:00",
+  "finished_at": "2026-09-23T08:12:06.175334+00:00",
+  "exit_code": 0,
+  "log": "acceptance2-unit.log"
+}

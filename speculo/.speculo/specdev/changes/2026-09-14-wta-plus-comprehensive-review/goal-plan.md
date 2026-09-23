@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision144，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision145，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -255,3 +255,7 @@ T32/T33/T34 done，47ready；T34固定result 177eb5bd889afd2ab54f4a8e162dc8358d8
 ## revision144当前执行
 
 T47取得唯一产品writer，base 97e1ee9e1ad40de75deffd025379a6a5488c4882，3done/1in_progress/46ready；下一Notify T35，T29事实检查路径矛盾仍待闭合。
+
+## revision145当前验收
+
+4done/46ready，T47result 7cd6fb22b28b7d464b9648ba77f2a2308e5b2016；731前端测试/完整静态与三App生产构建通过。下一T29→T01→T35，正式DAG重排先于派单。

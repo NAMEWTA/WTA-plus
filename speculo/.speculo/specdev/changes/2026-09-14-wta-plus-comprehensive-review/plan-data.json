@@ -3755,15 +3755,15 @@
     "resources": [
       "ui:oss-list"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 144,
+    "plan_revision": 145,
     "review_date": "2026-09-23",
     "e2e_disposition": "not-required: 受控Promise组件与类型检查能直接判定全部竞态；T-30执行页面组合回归",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "OssPage.getList 在 withLoading 内先写 rows/total，之后才判断generation；保护只覆盖后续预览。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "7cd6fb22b28b7d464b9648ba77f2a2308e5b2016",
+    "result_sha": "7cd6fb22b28b7d464b9648ba77f2a2308e5b2016",
     "contract_ids": [
       "AC-047"
     ],

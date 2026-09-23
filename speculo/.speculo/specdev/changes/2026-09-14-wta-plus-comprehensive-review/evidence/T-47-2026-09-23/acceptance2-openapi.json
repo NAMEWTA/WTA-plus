@@ -1,0 +1,13 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@namewta/tooling-openapi",
+    "openapi:check"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T08:13:18.715251+00:00",
+  "finished_at": "2026-09-23T08:13:20.345791+00:00",
+  "exit_code": 0,
+  "log": "acceptance2-openapi.log"
+}

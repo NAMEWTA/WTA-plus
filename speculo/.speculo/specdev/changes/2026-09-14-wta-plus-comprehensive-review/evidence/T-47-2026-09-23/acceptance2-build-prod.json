@@ -1,0 +1,11 @@
+{
+  "command": [
+    "pnpm",
+    "build:prod"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T08:14:14.090400+00:00",
+  "finished_at": "2026-09-23T08:15:08.122193+00:00",
+  "exit_code": 0,
+  "log": "acceptance2-build-prod.log"
+}
