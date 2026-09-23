@@ -1,5 +1,7 @@
 # 恢复入口
 
+当前revision173：12done/2cancelled/T41 in_progress/35ready；base d7d534cb，cors_audit阶段1测试writer，Lead治理/实测；以下记录按原时点保留。
+
 当前revision172：12done/2cancelled/36ready；T50最终84ce0a9已验收。无产品writer，下一T41；/tmp/wta-t41-implementation-design.md及real-environment-outline.md为只读准备。以下历史保持原时点。
 
 当前revision168：11done/2cancelled/37ready；T39已在6e1d7f8验收。无产品writer，下一T50；/tmp/wta-t50-implementation-outline.md仅只读实施输入。以下旧记录保持原时点。
@@ -200,3 +202,7 @@ Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but
 ## revision172 — T50完成
 
 Revision172: T50 accepted at84ce0a9/treec118348; prior batch3 retained and Lead-reviewed recovery batch1 real135 zeroSkip/source-clean/owned cleanup passed. A3 default870 executed/197skip/full/live and B frontend736/core reused only for identical inputs; C static+OpenAPI check passed.37 paths within17 scope entries;12done/2cancelled/36ready. NextT41; Goal active, no production queue action/deployment/archive.
+
+## revision173 — T41启动
+
+Revision173: T41 active from d7d534cb after T50 closure;12done/2cancelled/T41in_progress/35ready. Bounded personal JOIN pagination/detail, global unread/read-all, session fencing and real 501 evidence. cors_audit sole writer; Lead serial build/services/commit/governance. Goal active, no production operations.

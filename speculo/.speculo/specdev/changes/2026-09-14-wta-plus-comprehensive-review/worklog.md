@@ -1,5 +1,7 @@
 # 工作记录
 
+当前revision173：12done/2cancelled/T41 in_progress/35ready；base d7d534cb，cors_audit阶段1测试writer，Lead治理/实测；以下记录按原时点保留。
+
 ## Goal
 
 依用户2026-09-23请求，按G→S→T→P(plan)全面调整当前change所有活动文档，为审查和后续目标执行提供完整票据、验证和可归档完成条件。只规划，不执行产品。
@@ -266,3 +268,7 @@ Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but
 ## revision172 — T50完成
 
 Revision172: T50 accepted at84ce0a9/treec118348; prior batch3 retained and Lead-reviewed recovery batch1 real135 zeroSkip/source-clean/owned cleanup passed. A3 default870 executed/197skip/full/live and B frontend736/core reused only for identical inputs; C static+OpenAPI check passed.37 paths within17 scope entries;12done/2cancelled/36ready. NextT41; Goal active, no production queue action/deployment/archive.
+
+## revision173 — T41启动
+
+Revision173: T41 active from d7d534cb after T50 closure;12done/2cancelled/T41in_progress/35ready. Bounded personal JOIN pagination/detail, global unread/read-all, session fencing and real 501 evidence. cors_audit sole writer; Lead serial build/services/commit/governance. Goal active, no production operations.

@@ -3333,10 +3333,10 @@
       "R64-N-08"
     ],
     "fact": "messageRecipients 查询 limit<=500，REST 为 List；readAll 已操作本人全部未读关系。",
-    "behavior": "完整收件箱使用项目 PageQuery/PageResult 分页，稳定 create_time/message_id 排序；本人第501条可取，顶部只取最近摘要。全部已读仍作用本人全部消息。",
+    "behavior": "完整收件箱使用项目 PageQuery/PageResult 分页，稳定 create_time/message_id 排序；本人第501条可取，顶部只取最近摘要。全部已读仍作用本人全部消息。 createTime统一收件关系时间；宿主非密钥session epoch隔离会话切换旧响应。",
     "steps": [
       "以501条本人关系和另一用户数据固定分页/计数/越权测试。",
-      "GET inbox 接受有界 pageNum/pageSize，返回 rows/total，单独在响应带本人 unreadTotal；默认与上限沿用项目分页合同。",
+      "GET inbox使用默认1/20、上限100、有界long偏移和固定收件时间/ID顺序，flat rows/total/unreadTotal。",
       "详情 GET messageId 必须经当前用户关系过滤；已有 seen/read/readAll 保持 POST，补安全 @Log。",
       "同步 domain/transport/生成 OpenAPI、InboxPage 与顶部读取；不得把 page rows 当总数。",
       "测试同时间排序、翻页后标记、全已读/另一用户隔离、失败重试和 generation；同版部署前后端。"
@@ -3361,7 +3361,15 @@
       "frontend/packages/api-contracts/",
       "frontend/tooling/openapi/",
       "backend/wta-admin/src/test/java/org/namewta/test/notify/",
-      "frontend/e2e/"
+      "frontend/e2e/",
+      "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/dto/NotifyInboxRow.java",
+      "frontend/apps/admin-web/src/store/modules/notice.ts",
+      "frontend/apps/admin-web/src/store/modules/notice.test.ts",
+      "frontend/apps/admin-web/src/utils/push.test.ts",
+      "frontend/packages/web-domains/notify/src/InboxPage.test.ts",
+      "frontend/packages/web-domains/notify/src/runtime.ts",
+      "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+      "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java"
     ],
     "tests": [
       "真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器"
@@ -3390,9 +3398,9 @@
       "ui:admin-inbox",
       "openapi:notify"
     ],
-    "status": "ready",
+    "status": "in_progress",
     "ready": true,
-    "plan_revision": 136,
+    "plan_revision": 173,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
