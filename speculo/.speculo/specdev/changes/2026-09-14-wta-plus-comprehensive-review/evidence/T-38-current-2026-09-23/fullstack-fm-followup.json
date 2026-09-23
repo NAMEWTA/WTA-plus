@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "docs/fm/scripts/validate.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T13:14:11.126893+00:00",
+  "finished_at": "2026-09-23T13:14:11.184866+00:00",
+  "exit_code": 0,
+  "log": "fullstack-fm-followup.log"
+}

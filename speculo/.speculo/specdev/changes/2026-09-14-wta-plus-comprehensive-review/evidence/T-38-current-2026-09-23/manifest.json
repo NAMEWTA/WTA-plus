@@ -245,6 +245,16 @@
     "bytes": 61
   },
   {
+    "path": "fullstack-fm-followup.json",
+    "sha256": "fa29623e0615598a0b28f1e946a55a928f4a6a1fc7acaa62f3b6744324525d15",
+    "bytes": 257
+  },
+  {
+    "path": "fullstack-fm-followup.log",
+    "sha256": "4d0676dcee9f562db19be0c5825d88dac69417fb3f7cb3d74b8072c86af71254",
+    "bytes": 35
+  },
+  {
     "path": "governance-close-revision166-v2.json",
     "sha256": "deb58c85d5b08c8c562deba4472055870a0ee3ccbbe024f8aa17abaf4f50f7b3",
     "bytes": 434
