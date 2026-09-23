@@ -3,6 +3,7 @@ package org.namewta.test.notify;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
 import com.baomidou.dynamic.datasource.aop.DynamicLocalTransactionInterceptor;
+import com.baomidou.dynamic.datasource.tx.TransactionContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -16,9 +17,15 @@ import org.namewta.common.notify.model.NotifyResult;
 import org.namewta.common.notify.model.NotifyRichContent;
 import org.namewta.common.notify.model.NotifyStatus;
 import org.namewta.common.notify.model.NotifyTargetResult;
+import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.notify.dao.NotifyConfigDao;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.dao.NotifyPersistenceDao;
+import org.namewta.notify.api.NotificationApplicationService;
+import org.namewta.notify.api.NotificationCommand;
+import org.namewta.notify.api.NotificationReceipt;
+import org.namewta.notify.api.NotificationRetryCommand;
+import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.mapper.NotifyNoticeMapper;
@@ -42,7 +49,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -59,6 +71,7 @@ class NotifyNoticeRetractionIntegrationTest {
     private static final long USER = 7L;
     private static final long MAIL_ACCOUNT = 9_640_000_003L;
     private static final long MAIL_BINDING = 2_100_630_000_000_000_009L;
+    private static final long FOREIGN_INTENT = 9_640_000_004L;
 
     private NotifyAtomicResultIntegrationTest fixture;
     private JdbcTemplate db;
@@ -70,6 +83,9 @@ class NotifyNoticeRetractionIntegrationTest {
     private AtomicInteger realtimeCalls;
     private Long restoreStaticSeed;
     private boolean restoreMailBinding;
+    private NotificationApplicationService application;
+    private final AtomicReference<NotificationCommand> publishedCommand = new AtomicReference<>();
+    private final AtomicInteger wakeEvents = new AtomicInteger();
 
     @BeforeEach
     void open() throws Exception {
@@ -97,11 +113,18 @@ class NotifyNoticeRetractionIntegrationTest {
         user.setEmail("t40-owned@example.test");
         var users = mock(UserService.class);
         when(users.selectNotificationUsers(List.of(USER))).thenReturn(List.of(user));
-        var application = transactional(new NotificationApplicationUseCase(
-            new NotificationApplicationRuntimeService(runtimeDao, users, dispatch, event -> {})),
+        application = transactional(new NotificationApplicationUseCase(
+            new NotificationApplicationRuntimeService(runtimeDao, users, dispatch,
+                event -> wakeEvents.incrementAndGet())),
             NotificationApplicationUseCase.class);
+        NotificationApplicationService publication = mock(NotificationApplicationService.class);
+        when(publication.submit(any(NotificationCommand.class))).thenAnswer(invocation -> {
+            NotificationCommand command = invocation.getArgument(0);
+            publishedCommand.set(command);
+            return application.submit(command);
+        });
         notices = transactional(new NotifyNoticeUseCase(new NotifyNoticeService(noticeDao, users, runtimeDao),
-            new NotifyNoticePublisherService(application, noticeDao, users, runtimeDao)), NotifyNoticeUseCase.class);
+            new NotifyNoticePublisherService(publication, noticeDao, users, runtimeDao)), NotifyNoticeUseCase.class);
     }
 
     @AfterEach
@@ -109,6 +132,7 @@ class NotifyNoticeRetractionIntegrationTest {
         try {
             if (db != null) {
                 db.execute("drop trigger if exists owned_t40_path_failure");
+                db.execute("drop trigger if exists owned_t40_retract_failure");
                 if (restoreMailBinding) {
                     db.update("update notify_scene_binding set account_id=null where binding_id=? and account_id=?",
                         MAIL_BINDING, MAIL_ACCOUNT);
@@ -232,6 +256,52 @@ class NotifyNoticeRetractionIntegrationTest {
     }
 
     @Test
+    void lateNoticeLifecycleFailureRollsBackEarlierVersionMetadataWrite() {
+        insertDraft(POSITIVE_NOTICE, "T40 retract rollback");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        String beforeMetadata = db.queryForObject("select metadata_json from notify_intent where intent_id=?",
+            String.class, current.getIntentId());
+        db.execute("create trigger owned_t40_retract_failure before update on notify_notice "
+            + "for each row signal sqlstate '45000' set message_text='owned retract update failure'");
+
+        assertThatThrownBy(() -> notices.retract(POSITIVE_NOTICE)).isInstanceOf(RuntimeException.class);
+        assertThat(db.queryForObject("select lifecycle from notify_notice where notice_id=?", String.class,
+            POSITIVE_NOTICE)).isEqualTo("PUBLISHED");
+        assertThat(db.queryForObject("select metadata_json from notify_intent where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo(beforeMetadata);
+        assertThat(NotifyNoticeVersionFence.state(runtimeDao.intent(current.getIntentId())))
+            .isEqualTo(NotifyNoticeVersionFence.State.ACTIVE);
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("READY");
+    }
+
+    @Test
+    void externalOnlyConflictingIdempotencyIdentityRollsBackNewNoticePublication() {
+        insertDraft(POSITIVE_NOTICE, "T40 conflicting external", "[\"MAIL\"]");
+        String wrongSnapshot = JsonUtils.toJsonString(NotifyNoticeVersionFence.initial(
+            POSITIVE_NOTICE, 9_640_000_005L, 1));
+        assertThat(db.update("insert into notify_intent(intent_id,app_id,scene_code,biz_type,biz_id,"
+            + "template_code,template_params_json,strategy,mode,status,idempotency_key,metadata_json,create_time) "
+            + "values(?,'notify','notice-published','NOTICE_PUBLISHED',?,'notice-published','{}',"
+            + "'ALL','ASYNC','QUEUED',?,?,utc_timestamp())", FOREIGN_INTENT,
+            String.valueOf(POSITIVE_NOTICE), NotifyNoticeVersionFence.idempotencyKey(POSITIVE_NOTICE, 1),
+            wrongSnapshot)).isEqualTo(1);
+
+        assertThatThrownBy(() -> notices.publish(POSITIVE_NOTICE)).isInstanceOf(RuntimeException.class);
+        assertThat(db.queryForObject("select lifecycle from notify_notice where notice_id=?", String.class,
+            POSITIVE_NOTICE)).isEqualTo("DRAFT");
+        assertThat(db.queryForObject("select count(*) from notify_notice_snapshot where notice_id=?",
+            Integer.class, POSITIVE_NOTICE)).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_outbox where intent_id=?", Integer.class,
+            FOREIGN_INTENT)).isZero();
+        assertThat(db.queryForObject("select metadata_json from notify_intent where intent_id=?", String.class,
+            FOREIGN_INTENT)).contains("noticeVersion");
+        assertThat(NotifyNoticeVersionFence.state(runtimeDao.intent(FOREIGN_INTENT)))
+            .isEqualTo(NotifyNoticeVersionFence.State.ACTIVE);
+    }
+
+    @Test
     void republishedVersionCanDeliverWhileRetractedVersionAndSnapshotStaySeparate() {
         insertDraft(POSITIVE_NOTICE, "T40 first version");
         notices.publish(POSITIVE_NOTICE);
@@ -258,10 +328,116 @@ class NotifyNoticeRetractionIntegrationTest {
         assertThat(count("notify_message", second.getIntentId())).isEqualTo(1);
         assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
             first.getIntentId())).isEqualTo("CANCELLED");
+        assertRetractedMetadata(first.getIntentId());
         assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
             second.getIntentId())).isEqualTo("DELIVERED");
         assertThat(db.queryForObject("select count(*) from notify_notice_snapshot where notice_id=?", Integer.class,
             POSITIVE_NOTICE)).isEqualTo(2);
+    }
+
+    @Test
+    void exactDuplicateKeepsOriginalReceiptButManualRetryCannotWakeRetractedVersion() {
+        insertDraft(POSITIVE_NOTICE, "T40 duplicate notice");
+        notices.publish(POSITIVE_NOTICE);
+        NotificationCommand original = publishedCommand.get();
+        assertThat(original).isNotNull();
+        NotifyIntent first = intent(POSITIVE_NOTICE);
+        long deliveryId = db.queryForObject("select delivery_id from notify_delivery where intent_id=?",
+            Long.class, first.getIntentId());
+        int wakeBefore = wakeEvents.get();
+        assertThat(notices.retract(POSITIVE_NOTICE)).isEqualTo(1);
+        assertThat(notices.retract(POSITIVE_NOTICE)).as("the same version remains withdrawn").isEqualTo(1);
+
+        NotificationReceipt duplicate = application.submit(original);
+        assertThat(duplicate.notificationId()).isEqualTo(String.valueOf(first.getIntentId()));
+        assertThatThrownBy(() -> application.retry(new NotificationRetryCommand(
+            String.valueOf(first.getIntentId()), String.valueOf(deliveryId), "owned retry", null)))
+            .hasMessageContaining("公告版本");
+        assertThat(wakeEvents.get()).isEqualTo(wakeBefore);
+        assertThat(db.queryForObject("select count(*) from notify_outbox where intent_id=?", Integer.class,
+            first.getIntentId())).isEqualTo(1);
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class,
+            first.getIntentId())).isEqualTo("READY");
+    }
+
+    @Test
+    void legacyAuditOnlyVersionIsUnverifiedAndNeverBlindlyDelivered() {
+        insertDraft(POSITIVE_NOTICE, "T40 legacy metadata");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        assertThat(db.update("update notify_intent set metadata_json='{\"audit\":\"NOTICE_SNAPSHOT\"}' "
+            + "where intent_id=?", current.getIntentId())).isEqualTo(1);
+        assertThat(NotifyNoticeVersionFence.state(runtimeDao.intent(current.getIntentId())))
+            .isEqualTo(NotifyNoticeVersionFence.State.UNVERIFIED);
+        assertThatThrownBy(() -> application.retry(new NotificationRetryCommand(
+            String.valueOf(current.getIntentId()), null, "owned legacy", null)))
+            .hasMessageContaining("公告版本");
+        int wakeBefore = wakeEvents.get();
+        dispatch.dispatch(claimOne(current.getIntentId(), "t40-legacy-unverified"));
+        assertThat(count("notify_message", current.getIntentId())).isZero();
+        assertThat(count("notify_message_recipient", current.getIntentId())).isZero();
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("CANCELLED");
+        assertThat(db.queryForObject("select error_code from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("NOTICE_VERSION_UNVERIFIED");
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
+            current.getIntentId())).isZero();
+        assertThat(wakeEvents.get()).isEqualTo(wakeBefore);
+        assertThat(realtimeCalls.get()).isZero();
+    }
+
+    @Test
+    void legacyExternalWithoutUnsentProvenanceWaitsForReconciliationInsteadOfResend() {
+        bindOwnedMailAccount();
+        insertDraft(POSITIVE_NOTICE, "T40 legacy external", "[\"MAIL\"]");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        assertThat(db.update("update notify_intent set metadata_json='{\"audit\":\"NOTICE_SNAPSHOT\"}' "
+            + "where intent_id=?", current.getIntentId())).isEqualTo(1);
+        assertThat(db.update("update notify_outbox set last_error_code=null where intent_id=?",
+            current.getIntentId())).isEqualTo(1);
+        AtomicInteger sends = new AtomicInteger();
+        NotifyClient provider = mock(NotifyClient.class);
+        when(provider.send(any(NotifyRequest.class))).thenAnswer(invocation -> {
+            sends.incrementAndGet();
+            throw new AssertionError("historical provenance cannot authorize a new external call");
+        });
+        mailDispatcher(provider).dispatch(claimOne(current.getIntentId(), "t40-legacy-external"));
+        assertThat(sends.get()).isZero();
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("UNKNOWN");
+        assertThat(db.queryForObject("select error_code from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("NOTICE_VERSION_OUTCOME_UNKNOWN");
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("WAITING_RECEIPT");
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
+            current.getIntentId())).isZero();
+    }
+
+    @Test
+    void oldLeaseOwnerCannotSettleRetractedNoticeAfterRealReclaim() {
+        insertDraft(POSITIVE_NOTICE, "T40 stale owner");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        NotifyOutbox old = claimOne(current.getIntentId(), "t40-old-owner");
+        assertThat(db.update("update notify_outbox set lease_until=timestampadd(second,-1,utc_timestamp()) "
+            + "where outbox_id=? and lease_token=?", old.getOutboxId(), old.getLeaseToken())).isEqualTo(1);
+        NotifyOutbox fresh = claimOne(current.getIntentId(), "t40-new-owner");
+        assertThat(fresh.getLeaseToken()).isNotEqualTo(old.getLeaseToken());
+        assertThat(notices.retract(POSITIVE_NOTICE)).isEqualTo(1);
+        dispatch.dispatch(old);
+        assertThat(db.queryForObject("select status from notify_outbox where outbox_id=?", String.class,
+            old.getOutboxId())).isEqualTo("PROCESSING");
+        assertThat(db.queryForObject("select lease_token from notify_outbox where outbox_id=?", String.class,
+            old.getOutboxId())).isEqualTo(fresh.getLeaseToken());
+        assertThat(count("notify_message", current.getIntentId())).isZero();
+        dispatch.dispatch(fresh);
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("CANCELLED");
+        assertThat(db.queryForObject("select status from notify_outbox where outbox_id=?", String.class,
+            old.getOutboxId())).isEqualTo("DONE");
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
+            current.getIntentId())).isZero();
     }
 
     @Test
@@ -276,11 +452,7 @@ class NotifyNoticeRetractionIntegrationTest {
                 NotifyStatus.ACCEPTED, List.of(NotifyTargetResult.accepted(request.targets().getFirst(),
                     "owned-t40-mail-receipt", 1)));
         });
-        @SuppressWarnings("unchecked")
-        ObjectProvider<org.namewta.notify.api.InAppNotificationPort> inApp = mock(ObjectProvider.class);
-        var mailDispatch = new DispatchNotificationService(runtimeDao, provider, inApp,
-            field("configDao", NotifyConfigDao.class), (key, limit, window) -> true,
-            field("results", NotifyDispatchResultPort.class));
+        var mailDispatch = mailDispatcher(provider);
 
         insertDraft(POSITIVE_NOTICE, "T40 external only", "[\"MAIL\"]");
         notices.publish(POSITIVE_NOTICE);
@@ -309,6 +481,93 @@ class NotifyNoticeRetractionIntegrationTest {
             .contains("/notify/inbox?messageId=" + mixed.getIntentId());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"ACCEPTED", "OUTCOME_UNKNOWN", "UNSENT_TERMINAL"})
+    void retractionAfterProviderGatePreservesActualExternalResult(String outcome) throws Exception {
+        bindOwnedMailAccount();
+        insertDraft(POSITIVE_NOTICE, "T40 in-flight external", "[\"MAIL\"]");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        NotifyOutbox leased = claimOne(current.getIntentId(), "t40-before-retract");
+        CountDownLatch enteredProvider = new CountDownLatch(1);
+        CountDownLatch finishProvider = new CountDownLatch(1);
+        AtomicInteger sends = new AtomicInteger();
+        NotifyClient provider = mock(NotifyClient.class);
+        when(provider.send(any(NotifyRequest.class))).thenAnswer(invocation -> {
+            NotifyRequest request = invocation.getArgument(0);
+            assertThat(TransactionContext.getXID()).as("external Provider I/O stays outside the DB transaction")
+                .isNull();
+            sends.incrementAndGet();
+            enteredProvider.countDown();
+            assertThat(finishProvider.await(10, TimeUnit.SECONDS)).isTrue();
+            NotifyTargetResult target = switch (outcome) {
+                case "ACCEPTED" -> NotifyTargetResult.accepted(request.targets().getFirst(), "owned-result", 1);
+                case "OUTCOME_UNKNOWN" -> NotifyTargetResult.outcomeUnknown(request.targets().getFirst(), 1);
+                default -> NotifyTargetResult.unsentTerminal(request.targets().getFirst(), "OWNED_REJECT", 1);
+            };
+            return new NotifyResult(request.requestId(), request.channel(), request.providerKey(),
+                "ACCEPTED".equals(outcome) ? NotifyStatus.ACCEPTED : NotifyStatus.FAILED, List.of(target));
+        });
+        try (var workers = Executors.newVirtualThreadPerTaskExecutor()) {
+            var delivery = workers.submit(() -> mailDispatcher(provider).dispatch(leased));
+            try {
+                assertThat(enteredProvider.await(10, TimeUnit.SECONDS))
+                    .as("the first DB gate finished before retraction, and Provider was entered").isTrue();
+                assertThat(notices.retract(POSITIVE_NOTICE)).isEqualTo(1);
+            } finally {
+                finishProvider.countDown();
+            }
+            delivery.get(10, TimeUnit.SECONDS);
+        }
+        assertThat(sends.get()).isEqualTo(1);
+        String expected = switch (outcome) {
+            case "ACCEPTED" -> "ACCEPTED";
+            case "OUTCOME_UNKNOWN" -> "UNKNOWN";
+            default -> "FAILED";
+        };
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo(expected);
+        assertThat(db.queryForObject("select status from notify_attempt where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo(expected);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
+            current.getIntentId())).isEqualTo(1);
+        assertRetractedMetadata(current.getIntentId());
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("OUTCOME_UNKNOWN".equals(outcome) ? "WAITING_RECEIPT" : "DONE");
+    }
+
+    @Test
+    void retractionBeforeSecondThreadGateStopsItsClaimWithoutInAppSideEffects() throws Exception {
+        insertDraft(POSITIVE_NOTICE, "T40 gate after retract");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        NotifyOutbox leased = claimOne(current.getIntentId(), "t40-gate-after");
+        CountDownLatch workerReady = new CountDownLatch(1);
+        CountDownLatch beginGate = new CountDownLatch(1);
+        try (var workers = Executors.newVirtualThreadPerTaskExecutor()) {
+            var delivery = workers.submit(() -> {
+                workerReady.countDown();
+                assertThat(beginGate.await(10, TimeUnit.SECONDS)).isTrue();
+                dispatch.dispatch(leased);
+                return null;
+            });
+            assertThat(workerReady.await(10, TimeUnit.SECONDS)).isTrue();
+            try {
+                assertThat(notices.retract(POSITIVE_NOTICE)).isEqualTo(1);
+            } finally {
+                beginGate.countDown();
+            }
+            delivery.get(10, TimeUnit.SECONDS);
+        }
+        assertThat(count("notify_message", current.getIntentId())).isZero();
+        assertThat(count("notify_message_recipient", current.getIntentId())).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
+            current.getIntentId())).isZero();
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("CANCELLED");
+        assertThat(realtimeCalls.get()).isZero();
+    }
+
     private void bindOwnedMailAccount() {
         assertThat(db.update("insert into notify_channel_account(account_id,channel,config_key,enabled,"
             + "minute_max,create_time) values(?,'MAIL','owned-t40-mail','Y',60,utc_timestamp())",
@@ -316,6 +575,14 @@ class NotifyNoticeRetractionIntegrationTest {
         restoreMailBinding = true;
         assertThat(db.update("update notify_scene_binding set account_id=? where binding_id=? and account_id is null",
             MAIL_ACCOUNT, MAIL_BINDING)).isEqualTo(1);
+    }
+
+    private DispatchNotificationService mailDispatcher(NotifyClient provider) {
+        @SuppressWarnings("unchecked")
+        ObjectProvider<InAppNotificationPort> inApp = mock(ObjectProvider.class);
+        return new DispatchNotificationService(runtimeDao, provider, inApp,
+            field("configDao", NotifyConfigDao.class), (key, limit, window) -> true,
+            field("results", NotifyDispatchResultPort.class));
     }
 
     private void insertPublishedWithoutIntent(long noticeId) {
@@ -337,6 +604,17 @@ class NotifyNoticeRetractionIntegrationTest {
             + "from notify_intent where intent_id=?", String.class, intentId)).isEqualTo(path);
         assertThat(db.queryForObject("select path_snapshot from notify_notice_snapshot "
             + "where notice_id=? and snapshot_version=?", String.class, noticeId, version)).isEqualTo(path);
+    }
+
+    private void assertRetractedMetadata(long intentId) {
+        String json = db.queryForObject("select metadata_json from notify_intent where intent_id=?", String.class,
+            intentId);
+        Map<?, ?> metadata = JsonUtils.parseObject(json, Map.class);
+        assertThat(metadata.get("noticeVersion")).isInstanceOf(String.class);
+        Map<?, ?> version = JsonUtils.parseObject((String) metadata.get("noticeVersion"), Map.class);
+        assertThat(version.get("retracted")).isEqualTo(Boolean.TRUE);
+        assertThat(NotifyNoticeVersionFence.state(runtimeDao.intent(intentId)))
+            .isEqualTo(NotifyNoticeVersionFence.State.RETRACTED);
     }
 
     private void assertGenericLink(long intentId, long noticeId) {
