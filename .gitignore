@@ -73,6 +73,6 @@ venv/
 specdev-worktree/
 temp/
 
-# local secrets for box E2E
-# tracked per CTO: local box E2E config (intranet-only)
-# backend/wta-admin/src/main/resources/application-local.yml
+# Developer configuration is loaded explicitly and excluded from release resources.
+backend/**/src/main/resources/application-local.yml
+backend/**/src/main/resources/application-local.yaml

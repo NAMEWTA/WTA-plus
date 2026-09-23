@@ -1,0 +1,32 @@
+# Copy to application-local.yml for local use; neither file enters the JAR.
+# Supply credentials through the process environment or the ignored local copy.
+server:
+  port: 38888
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dynamic:
+      primary: master
+      strict: true
+      datasource:
+        master:
+          type: ${spring.datasource.type}
+          driverClassName: com.mysql.cj.jdbc.Driver
+          url: ${DB_URL}
+          username: ${DB_USERNAME}
+          password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      database: ${REDIS_DATABASE:0}
+      password: ${REDIS_PASSWORD}
+      timeout: 10s
+  boot:
+    admin:
+      client:
+        enabled: false
+
+snail-job:
+  enabled: false

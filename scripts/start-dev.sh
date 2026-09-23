@@ -589,6 +589,15 @@ start_backend() {
   prepare_backend_reactor "${mode}"
   verify_system_artifacts
   backend_build_lock_release
+  # Private configuration is excluded from classpath resources and release JARs.
+  # Keep an operator-provided external location authoritative.
+  if [[ -z "${SPRING_CONFIG_ADDITIONAL_LOCATION:-}" ]]; then
+    local runtime_config="${backend_dir}/${backend_local_config}"
+    case "$(uname -s 2>/dev/null)" in
+      MINGW* | MSYS* | CYGWIN*) runtime_config=$(cygpath -m -- "${runtime_config}") ;;
+    esac
+    export SPRING_CONFIG_ADDITIONAL_LOCATION="optional:file:${runtime_config}"
+  fi
   echo "正在以前台 dev,local profiles 启动 wta-admin，端口 ${backend_port}，按 Ctrl+C 停止..."
   exec "${mvnw_cmd[@]}" -pl wta-admin -Dmaven.test.skip=true -Pdev spring-boot:run \
     -Dspring-boot.run.profiles=dev,local \

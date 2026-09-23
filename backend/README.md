@@ -45,6 +45,35 @@ wta-extend/      monitor、SnailJob 独立应用
 
 新增前端 App 不需要在后端复制 Controller。它应申请或配置独立 ClientId，并复用相同的领域接口；需要不同准入、默认角色、菜单和权限时，通过 Client 级数据配置实现。
 
+## 本地配置与凭据
+
+`wta-admin/src/main/resources/application-local.yml` 是被 Git 忽略的本机文件。
+首次开发时，从 [公开模板](wta-admin/src/main/resources/application-local.example.yml) 复制一份，
+通过进程环境提供 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD` 和 `REDIS_PASSWORD`；
+Redis 地址、端口和逻辑库可由 `REDIS_HOST`、`REDIS_PORT`、`REDIS_DATABASE` 覆盖。
+模板没有密码默认值，缺少必需变量会明确报出缺失的配置键。不要把真实值写回模板、提交或粘贴到日志。
+
+仓根 `scripts/start-dev.sh` 显式加载这份外部文件；已有 `SPRING_CONFIG_ADDITIONAL_LOCATION`
+保持优先。直接通过 Maven 启动时，从 `backend/` 为该变量指定
+`optional:file:$PWD/wta-admin/src/main/resources/application-local.yml`。生产配置由部署环境注入。
+HTTP 本地 SSO 如需关闭 Secure Cookie，必须仅在 dev/local 显式设置 `SSO_COOKIE_SECURE=false`；
+模板不关闭验证码或生产安全默认值。
+
+本地配置和 `.example.yml/.yaml` 同时从 Maven 资源复制和 JAR 打包中排除，
+旧 `target/classes` 残留也不能进入新 JAR。升级时先在仓库外安全备份原本机配置，更新后恢复到忽略路径；
+不从旧 Git 历史恢复已披露密码。取消跟踪不会清除历史、已发布产物或旧日志。
+
+已披露凭据的处置必须由对应环境负责人批准并逐项留存证据：
+
+| 对象 | 执行前确认 | 执行与核验 | 当前状态 |
+|---|---|---|---|
+| MySQL 应用账号 | 环境、账号、依赖应用、最小权限与维护窗口 | 轮换后更新所有消费者，验证连接及必要操作；确认旧密码失效 | 待环境负责人执行 |
+| Redis 应用账号 | 环境、ACL 用户、所有连接池/任务与维护窗口 | 轮换后更新消费者，验证授权命令及重连；确认旧凭据失效 | 待环境负责人执行 |
+| 历史产物与日志 | 发布物/镜像/缓存/日志的保管人和披露范围 | 依据批准清单限制访问、替换或清理；只记录定位与摘要，不复制凭据 | 待范围核实与批准 |
+
+记录应包含执行人、时间、受控证据位置和失败恢复步骤；失败时修正新配置，不恢复已披露值。
+重写 Git 历史需单独批准，不能代替轮换。上述外部动作未执行前，不宣称泄漏风险已关闭。
+
 ## 构建与验证
 
 以下命令 cwd 为 `backend/`；工作区入口见 [AGENTS.md](AGENTS.md)，模块与测试事实见[模块地图](../.agents/skills/engineering-standards/references/project/01-module-map.md)。

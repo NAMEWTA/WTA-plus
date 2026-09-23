@@ -2711,7 +2711,7 @@
     "resources": [
       "config:local-secret-source"
     ],
-    "status": "ready",
+    "status": "in_progress",
     "ready": true,
     "plan_revision": 136,
     "review_date": "2026-09-23",

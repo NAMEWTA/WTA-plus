@@ -3,7 +3,7 @@
   "artifact": "change-status",
   "change": "2026-09-14-wta-plus-comprehensive-review",
   "change_status": "active",
-  "current_work": "specdev/goal-plan",
+  "current_work": "specdev/implement",
   "works_run": [
     "specdev/grill-with-docs",
     "specdev/spec",
@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T06:02:10.486269+00:00",
+  "updated_at": "2026-09-23T06:03:15.984695+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -94,5 +94,49 @@
     "Revision137：用户已逐项接受D-002—009并明确确认整体G共识；顺序定稿G/S/T/P(plan)，Spec与50票Ready，0done、0在途writer。Goal计划完成但用户保留自行激活目标，ready_for_execution=false；无新产品实施、commit、push或部署。",
     "Revision138：用户已激活Goal，要求完成全部Ticket并以代码为证。恢复本地实施、逐票commit/direct-parent验收；旧all-commit授权未被用户撤销，本次激活解除plan-only限制。不推断远程push、部署、轮换或归档批准。优先T-32，发现ignore不足以排除JAR泄漏，补登记root POM/开发启动/配置绑定测试写集。"
   ],
-  "worktrees": []
+  "worktrees": [
+    {
+      "ticket_id": "T-32",
+      "owner": "single-agent",
+      "implementation_owner": "single-agent",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "077c814682a8594c870a4e7d320f114160328f09",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": null,
+      "status": "active",
+      "updated_at": "2026-09-23T06:03:15.984695+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "077c814682a8594c870a4e7d320f114160328f09",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-32.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
+      }
+    }
+  ]
 }

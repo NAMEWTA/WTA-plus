@@ -79,8 +79,10 @@ bash scripts/start-dev.sh
 
 - 前端需要可用的 Node.js、Corepack 或 pnpm，以及完整的 `frontend/package.json` 和 lockfile。Git Bash 会识别 `pnpm.cmd`。
 - 后端需要 Java 21、可执行的 Maven Wrapper，以及非空的
-  `backend/wta-admin/src/main/resources/application-local.yml`；该配置允许纳入 Git 跟踪，
-  启动脚本不校验其忽略状态。
+  `backend/wta-admin/src/main/resources/application-local.yml`。从同目录的
+  `application-local.example.yml` 复制并通过环境注入必需凭据；本机文件被 Git 忽略，不能提交。
+  Maven 资源复制及 JAR 打包均排除本地配置，脚本通过 `SPRING_CONFIG_ADDITIONAL_LOCATION`
+  显式加载磁盘文件；操作者已设置该变量时保持原值。完整变量与轮换流程见 [后端说明](../backend/README.md#本地配置与凭据)。
 - 前端端口取所选应用的 `VITE_APP_PORT`。后端只解析本地配置里顶层 `server.port`；没有该键时使用 `38888`，键存在但不是 1–65535 的纯数字时退出。两种情况都不打印该文件的其他内容。
 - 启动前检查对应端口：优先 `lsof`，Windows 上回退到 `netstat`；端口被占用时只报告进程并退出，不会自动终止任何现有服务，也不会先删缓存。
 - 前端缓存删除只允许 `.vite`、`.cache`、`.unocss`、`dist` 和 `*.tsbuildinfo`。解析后的路径必须仍在 `frontend/` 内；`node_modules` 本身、pnpm store 和源码不删除。

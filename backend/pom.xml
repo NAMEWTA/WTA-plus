@@ -496,6 +496,19 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <!-- Incremental builds may retain private files from an older resource copy. -->
+                    <excludes>
+                        <exclude>**/application-local.*</exclude>
+                        <exclude>**/*.example.yml</exclude>
+                        <exclude>**/*.example.yaml</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
@@ -578,6 +591,11 @@
                 <directory>src/main/resources</directory>
                 <!-- 关闭过滤 -->
                 <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/application-local.*</exclude>
+                    <exclude>**/*.example.yml</exclude>
+                    <exclude>**/*.example.yaml</exclude>
+                </excludes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
@@ -589,6 +607,11 @@
                 </includes>
                 <!-- 启用过滤 即该资源中的变量将会被过滤器中的值替换 -->
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/application-local.*</exclude>
+                    <exclude>**/*.example.yml</exclude>
+                    <exclude>**/*.example.yaml</exclude>
+                </excludes>
             </resource>
         </resources>
     </build>
