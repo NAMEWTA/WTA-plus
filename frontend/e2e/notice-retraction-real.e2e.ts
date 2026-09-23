@@ -18,7 +18,7 @@ async function cleanupPreserving(primary: unknown, cleanup: () => Promise<void>,
   try {
     await bounded(cleanup(), label);
   } catch (error) {
-    if (primary !== undefined) throw new AggregateError([primary, error], `${label} failed after primary error`);
+    if (primary !== undefined) throw new AggregateError([primary, error], `${label} failed after primary error`, { cause: error });
     throw error;
   }
 }
