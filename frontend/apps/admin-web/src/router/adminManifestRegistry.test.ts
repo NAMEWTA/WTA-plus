@@ -83,6 +83,7 @@ describe('admin selected manifest registry', () => {
     const route = ref({ path: '/notify/inbox', fullPath: '/notify/inbox?messageId=41',
       query: { messageId: '41' as unknown } });
     inboxHost.route = route;
+    expect(await port!.snapshot()).toEqual({ active: true, messageId: '41' });
     const cancelled = vi.fn();
     const stopBeforeImport = port!.subscribe(cancelled);
     stopBeforeImport();
@@ -90,7 +91,6 @@ describe('admin selected manifest registry', () => {
     const stop = port!.subscribe(value => snapshots.push(value));
     await vi.waitFor(() => expect(snapshots).toEqual([{ active: true, messageId: '41' }]));
     expect(cancelled).not.toHaveBeenCalled();
-    expect(await port!.snapshot()).toEqual({ active: true, messageId: '41' });
     route.value = { path: '/notify/inbox', fullPath: '/notify/inbox?messageId=42', query: { messageId: '42' } };
     await vi.waitFor(() => expect(snapshots.at(-1)).toEqual({ active: true, messageId: '42' }));
     route.value = { path: '/notify/notice', fullPath: '/notify/notice?noticeId=9',
