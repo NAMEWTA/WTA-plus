@@ -212,3 +212,9 @@ Revision162: T02 accepted at617a369; current real39 zeroSkip, consumers70+HTTPS1
 ## revision163 — T03当前复验
 
 Revision163: T03 cancelled as no new product work after current617a369 real bounded HTTP/signature/heap and consumers/full-core proof. Historical214de538 remains; AC003 retained by T30 and only redundant implementation edge removed.9done/2cancelled/39ready; nextT38; Goal active.
+
+## revision164 — T38启动
+
+Revision164: T38 started fromb47ff8b after acceptedT02 and no-new-workT03 closure.9done/2cancelled/1in_progress/38ready. cors_audit sole product writer, Lead governance/commit/isolated acceptance; exact ID and safe actual requeue contracts; no new schema or Client/owner model.
+
+T38 revision164方案复核：保留原Ticket的IN_APP安全重做条款，澄清仅外部UNKNOWN/WAITING不可重发；定向只作用其所属一项，批量含外部未知写前拒绝。尚无产品实现/真实运行，HTTP红灯测试由writer编写。
