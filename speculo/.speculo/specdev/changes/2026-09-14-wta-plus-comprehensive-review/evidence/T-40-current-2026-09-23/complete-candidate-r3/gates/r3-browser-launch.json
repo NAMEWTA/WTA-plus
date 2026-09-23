@@ -1,0 +1,19 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "--execute",
+    "--expected-head",
+    "378f8481deae56bf7b6971ef1b1b2e66c47ca8fe",
+    "--expected-jar-sha256",
+    "f8e7bdb0723e7f5543f674f59c11b92121e87ff46b401b49341c8fe275ccf50e",
+    "--package-proof",
+    "/tmp/wta-t40/r3full-full-package-proof.json"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T22:03:44.049974+00:00",
+  "finished_at": "2026-09-23T22:06:30.330187+00:00",
+  "exit_code": 1,
+  "log": "r3-browser-launch.log"
+}

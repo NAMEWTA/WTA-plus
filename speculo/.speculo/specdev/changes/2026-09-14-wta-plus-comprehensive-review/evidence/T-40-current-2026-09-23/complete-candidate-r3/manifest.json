@@ -1,0 +1,114 @@
+[
+  {
+    "file": "gates/r3-browser-launch.json",
+    "bytes": 543,
+    "sha256": "2a056857f4c1715349e4739ef2d8032c26116fcb00540f7cb1ec4d2db62c420b",
+    "source_sha256": "2a056857f4c1715349e4739ef2d8032c26116fcb00540f7cb1ec4d2db62c420b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3-browser-launch.log",
+    "bytes": 85,
+    "sha256": "366e8347340905e81b54556ebd6e996137b4067a307813180ce197c765f77108",
+    "source_sha256": "366e8347340905e81b54556ebd6e996137b4067a307813180ce197c765f77108",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3-offline.json",
+    "bytes": 347,
+    "sha256": "71ea903fe23522e29ca826375b955b277ec13b0218e22ee2f0d42c13ddc521f9",
+    "source_sha256": "71ea903fe23522e29ca826375b955b277ec13b0218e22ee2f0d42c13ddc521f9",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3-offline.log",
+    "bytes": 124,
+    "sha256": "ad59aa60db5fa1b0ac1318f018266c5abf692e025609aa9d905b84654bb057b7",
+    "source_sha256": "ad59aa60db5fa1b0ac1318f018266c5abf692e025609aa9d905b84654bb057b7",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3-source-equivalence.json",
+    "bytes": 729,
+    "sha256": "1648a647fd941dc15bf1deb8a186f52c4c722030be12dac51d420ed0dece7619",
+    "source_sha256": "1648a647fd941dc15bf1deb8a186f52c4c722030be12dac51d420ed0dece7619",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3full-full-bundle.json",
+    "bytes": 271,
+    "sha256": "419e3972fabec69d3b4caddfd86ed85ab6c2ab054e7bb06ea01a30e0010070c5",
+    "source_sha256": "419e3972fabec69d3b4caddfd86ed85ab6c2ab054e7bb06ea01a30e0010070c5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3full-full-bundle.log",
+    "bytes": 78,
+    "sha256": "00003c5b4292294cb4718d8c643d576ea582c1bf3af13f1c90506478bb71a558",
+    "source_sha256": "00003c5b4292294cb4718d8c643d576ea582c1bf3af13f1c90506478bb71a558",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3full-full-package-proof.json",
+    "bytes": 745,
+    "sha256": "9d064b896db5dbc75b61df80fe9271f258c74f395442ca3bdb52881cd89580c5",
+    "source_sha256": "9d064b896db5dbc75b61df80fe9271f258c74f395442ca3bdb52881cd89580c5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3full-full-package.json",
+    "bytes": 298,
+    "sha256": "8f863c64b9bc3ab62e988273a9d07e3463205fae680a25e2228be0fce7e311e6",
+    "source_sha256": "8f863c64b9bc3ab62e988273a9d07e3463205fae680a25e2228be0fce7e311e6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3full-full-package.log",
+    "bytes": 101926,
+    "sha256": "534cdf88fe7b1eb714e17bd4d9592e41d5c36b857f07c15e1125268d11baca97",
+    "source_sha256": "534cdf88fe7b1eb714e17bd4d9592e41d5c36b857f07c15e1125268d11baca97",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3full-source-after.json",
+    "bytes": 128,
+    "sha256": "df866cc287c76e7f8c189c3a68b3028f9e81f51f3093396e2d1c9027f5d614df",
+    "source_sha256": "df866cc287c76e7f8c189c3a68b3028f9e81f51f3093396e2d1c9027f5d614df",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r3full-source-before.json",
+    "bytes": 128,
+    "sha256": "df866cc287c76e7f8c189c3a68b3028f9e81f51f3093396e2d1c9027f5d614df",
+    "source_sha256": "df866cc287c76e7f8c189c3a68b3028f9e81f51f3093396e2d1c9027f5d614df",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "browser-failed/result.json",
+    "bytes": 5594,
+    "sha256": "344aa66c18b5202b934f41945724043d56a983027fd834f3a3dec41244f028d1",
+    "source_sha256": "344aa66c18b5202b934f41945724043d56a983027fd834f3a3dec41244f028d1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "browser-failed/playwright.json",
+    "bytes": 965,
+    "sha256": "bdb6c0742587739dd6685ca9baeb14db5059b35d52a1388ead8cdb92d651f33d",
+    "source_sha256": "bdb6c0742587739dd6685ca9baeb14db5059b35d52a1388ead8cdb92d651f33d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "full-artifact-manifest.json",
+    "bytes": 2460,
+    "sha256": "c7ead1491315249dc172787b100ae126d33ef08bec571b0bb4d900d515fa28e8",
+    "source_sha256": "c7ead1491315249dc172787b100ae126d33ef08bec571b0bb4d900d515fa28e8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "reviews/seed-final-review.md",
+    "bytes": 3168,
+    "sha256": "5135e17dec6749097a163a0c5a1adcf12b73106da830b3a4a6725bbcf3e16648",
+    "source_sha256": "5135e17dec6749097a163a0c5a1adcf12b73106da830b3a4a6725bbcf3e16648",
+    "test_jwt_redactions": 0
+  }
+]

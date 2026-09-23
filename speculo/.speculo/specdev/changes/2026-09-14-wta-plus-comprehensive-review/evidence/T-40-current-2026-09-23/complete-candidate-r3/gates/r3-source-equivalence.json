@@ -1,0 +1,12 @@
+{
+  "base": "8a387192e5a7787d1c51731dfc982506207c5482",
+  "candidate": "378f8481deae56bf7b6971ef1b1b2e66c47ca8fe",
+  "changed_product_paths": [
+    "frontend/e2e/README-notice-retraction-real.md",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "frontend/e2e/test_run_notice_retraction_real.py"
+  ],
+  "backend_reuse": "R2 default889pass216skip, real18, shared135, core and static; backend/config/SQL/dependency/Skill input bytes unchanged",
+  "frontend_reuse": "C1 actual760 tests and three production builds, artifact equivalence retained recovery-json-red; TS/config/dependency unchanged",
+  "required_fresh": "Python25, full exact-source package+bundle, real Chrome2 zero skip/retry, source/JAR identity and cleanup"
+}
