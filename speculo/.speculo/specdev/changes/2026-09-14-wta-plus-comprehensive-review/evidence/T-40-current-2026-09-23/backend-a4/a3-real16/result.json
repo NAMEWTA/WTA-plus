@@ -1,0 +1,190 @@
+{
+  "gate": "T40 owned notice-version retraction integration",
+  "run_id": "5102c97369fbecac",
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-23T18:29:21.941230+00:00",
+  "source_before": {
+    "head": "270bd94e3f59a784929448e2cfa84ae913b686b7",
+    "tree": "f79f6ebfd307814618862fd4868d7e2513928eda",
+    "clean": true
+  },
+  "owned": {
+    "table_count": 103,
+    "baseline_counts": {
+      "outbox": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0
+    },
+    "container_full_ids": [
+      "85bb7a8270f48e7d451dbdcb25613f41226a7a96bc22d471bbd805ec52d71f15",
+      "59e3c2c7da4c63ad0be59a2438905f677c3ead18dc2024e68ca0c75da67fb5a3"
+    ],
+    "loopback_ports": {
+      "mysql": 32879,
+      "redis": 32880
+    },
+    "captured_anonymous_volume_names": [
+      "d97992dbe26bcb828062cf33eec6f3f41c0e30f217092f307dada1cfab4b9d53"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "errors": [],
+    "maven_process_group": {
+      "pgid": 1005754,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "d97992dbe26bcb828062cf33eec6f3f41c0e30f217092f307dada1cfab4b9d53": true
+    },
+    "loopback_ports_closed": {
+      "32879": true,
+      "32880": true
+    }
+  },
+  "test_source": {
+    "class": "org.namewta.test.notify.NotifyNoticeRetractionIntegrationTest",
+    "source_sha256": "77088c1ef1d1423a5e7884dbf3a02804c085508424bcc1b053831cc81796cead",
+    "opt_in": "notify.notice.retraction.integration",
+    "atomic_fixture": true,
+    "direct_fixture": true
+  },
+  "maven_command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotifyNoticeRetractionIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.notice.retraction.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32879/namewta_notify_test_5102c97369fbecac?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t40_5102c97369fbecac",
+    "-Dnotify.redis.integration.port=32880",
+    "test"
+  ],
+  "maven_exit_code": 0,
+  "counts": {
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "methods": [
+    {
+      "name": "retractBeforeWorkerClaimStopsCurrentVersionAfterPositiveDeliveryControl",
+      "failure_types": []
+    },
+    {
+      "name": "onlyExactStaticSeedMayRetractWithoutAnIntent(long)[1]",
+      "failure_types": []
+    },
+    {
+      "name": "onlyExactStaticSeedMayRetractWithoutAnIntent(long)[2]",
+      "failure_types": []
+    },
+    {
+      "name": "lateNoticeLifecycleFailureRollsBackEarlierVersionMetadataWrite",
+      "failure_types": []
+    },
+    {
+      "name": "realMailPlannerUsesGenericPathWithoutInAppAndPersonalPathWhenMixed",
+      "failure_types": []
+    },
+    {
+      "name": "legacyAuditOnlyVersionIsUnverifiedAndNeverBlindlyDelivered",
+      "failure_types": []
+    },
+    {
+      "name": "exactDuplicateKeepsOriginalReceiptButManualRetryCannotWakeRetractedVersion",
+      "failure_types": []
+    },
+    {
+      "name": "retractionAfterProviderGatePreservesActualExternalResult(String)[1]",
+      "failure_types": []
+    },
+    {
+      "name": "retractionAfterProviderGatePreservesActualExternalResult(String)[2]",
+      "failure_types": []
+    },
+    {
+      "name": "retractionAfterProviderGatePreservesActualExternalResult(String)[3]",
+      "failure_types": []
+    },
+    {
+      "name": "externalOnlyConflictingIdempotencyIdentityRollsBackNewNoticePublication",
+      "failure_types": []
+    },
+    {
+      "name": "retractionBeforeSecondThreadGateStopsItsClaimWithoutInAppSideEffects",
+      "failure_types": []
+    },
+    {
+      "name": "republishedVersionCanDeliverWhileRetractedVersionAndSnapshotStaySeparate",
+      "failure_types": []
+    },
+    {
+      "name": "oldLeaseOwnerCannotSettleRetractedNoticeAfterRealReclaim",
+      "failure_types": []
+    },
+    {
+      "name": "legacyExternalWithoutUnsentProvenanceWaitsForReconciliationInsteadOfResend",
+      "failure_types": []
+    },
+    {
+      "name": "lateSnapshotPathFailureRollsBackNoticeIntentAndOutbox",
+      "failure_types": []
+    }
+  ],
+  "xml_provenance": {
+    "source_sha256": "698302c2490ef2430b98083ddf6a67daad4019168541fe484eb31c6ddbfd7728",
+    "retained_sha256": "698302c2490ef2430b98083ddf6a67daad4019168541fe484eb31c6ddbfd7728",
+    "exact_owned_secret_replacements": 0
+  },
+  "maven_log_provenance": {
+    "source_sha256": "55b7ce9f11db815b52935ef7561384fc5e7e8fe00ec2e8216e056f2a9878ae41",
+    "retained_sha256": "55b7ce9f11db815b52935ef7561384fc5e7e8fe00ec2e8216e056f2a9878ae41",
+    "exact_owned_secret_replacements": 0
+  },
+  "source_after": {
+    "head": "270bd94e3f59a784929448e2cfa84ae913b686b7",
+    "tree": "f79f6ebfd307814618862fd4868d7e2513928eda",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T18:29:59.678518+00:00"
+}

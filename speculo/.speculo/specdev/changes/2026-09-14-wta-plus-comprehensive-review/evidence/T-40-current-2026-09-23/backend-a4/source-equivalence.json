@@ -1,0 +1,9 @@
+{
+  "a2": "a638ef485c3819bfc8d67553877fd7c106ef9579",
+  "a3": "270bd94e3f59a784929448e2cfa84ae913b686b7",
+  "a4": "5fc319ed58d9586a92166459b3296618e7dc47dc",
+  "changed_product_or_test_paths": [
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyNoticeRetractionIntegrationTest.java"
+  ],
+  "reuse": "A2 unit16 and A3 shared135 keep original source coordinates; only T40 integration class expanded. Production, unit/shared fixtures, POM and SQL unchanged. Not relabelled as A4 executions."
+}

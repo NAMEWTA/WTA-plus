@@ -1,0 +1,102 @@
+[
+  {
+    "file": "a3-real16/result.json",
+    "bytes": 6199,
+    "sha256": "47ccd73b51a97d1d1d651f9c0693db5ddd8e7886aa4f68b6ca7be2ddeb815d15"
+  },
+  {
+    "file": "a3-real16/maven.log",
+    "bytes": 84663,
+    "sha256": "55b7ce9f11db815b52935ef7561384fc5e7e8fe00ec2e8216e056f2a9878ae41"
+  },
+  {
+    "file": "a3-real16/selected-surefire.xml",
+    "bytes": 118385,
+    "sha256": "698302c2490ef2430b98083ddf6a67daad4019168541fe484eb31c6ddbfd7728"
+  },
+  {
+    "file": "a4-real17/result.json",
+    "bytes": 6329,
+    "sha256": "277acdcfb7f267ac428ad86ff027140cf58275dd45ec7cffe120453101de45cf"
+  },
+  {
+    "file": "a4-real17/maven.log",
+    "bytes": 85921,
+    "sha256": "e50b94e6e4ec78dbeae75fa3d067ba6b39a1ceecf36470a7c8fc3941316dc528"
+  },
+  {
+    "file": "a4-real17/selected-surefire.xml",
+    "bytes": 119881,
+    "sha256": "0444903dfac90b83bebc3015e07d08375da8777ee4527370fd4f2e751aad44fd"
+  },
+  {
+    "file": "a3-shared135/result.json",
+    "bytes": 15305,
+    "sha256": "3b43fe999d27fb499e0dd1e908a16cae57ebd0c9dbf5ffb7b4fb026b2aca40fe"
+  },
+  {
+    "file": "a3-shared135/maven.log",
+    "bytes": 467291,
+    "sha256": "77059f6b3ad825c5cbe0f76ad669500af20cb3be654c247f9f5a584e63b76fc2"
+  },
+  {
+    "file": "a3-shared135/xml-manifest.json",
+    "bytes": 2530,
+    "sha256": "8d80d1545a951fce74658be31779c302948ddf30c5ca2d42547c8527e441a27d"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+    "bytes": 107687,
+    "sha256": "927d0a4efa89016c70c68bd4d356150ecb1b653265a8783cf7deb47646eb7b8e"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+    "bytes": 408293,
+    "sha256": "efd0d1735f320e3941a44b7a52c41d0ccd28efd10e66d0b7a38afcc1a07eb122"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+    "bytes": 116835,
+    "sha256": "2ec6f6de273669c8a2bba3e6ae1acd758991941cb9621dc37f8521b088f83082"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+    "bytes": 114315,
+    "sha256": "a758056780cae508a52c6dc68112698e6c0f874783364e82d26d7b3c3e051496"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+    "bytes": 108097,
+    "sha256": "6cb6115834f47d1f42af23f426e4f685b3297197ec0e11c91d4be768dd7ebc95"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+    "bytes": 127687,
+    "sha256": "452d059e85f1da6b5dbc29e270c358bdf3bc134ffdd43c7a048cda32f505e5fe"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+    "bytes": 105279,
+    "sha256": "ddedffd18197eea33a2ae53a4dc9eb3ae005b48f84f956081c6cc43a420f2665"
+  },
+  {
+    "file": "a3-shared135/xml/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+    "bytes": 95705,
+    "sha256": "ecd07b174ad6e2c8e87e77fc072c79b51475e22f4d88f4a6e404f49028f4ad88"
+  },
+  {
+    "file": "a3-shared135/xml-verification.json",
+    "bytes": 3215,
+    "sha256": "60076d74583c03890647b6a62fb9a36951e7db5d898e1967911489964b6d50b9"
+  },
+  {
+    "file": "bounded-a2-security-review.md",
+    "bytes": 4699,
+    "sha256": "23601bce3bb681bd43cad05ff6b4727a89dc6fa51521b8af08689c461494d7d8"
+  },
+  {
+    "file": "source-equivalence.json",
+    "bytes": 508,
+    "sha256": "8fb297f63049b0b9da0a109141951e721829b38be4791fd5ad0124701b5f42e4"
+  }
+]
