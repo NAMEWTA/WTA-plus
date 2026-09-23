@@ -68,9 +68,9 @@ public class SysLoginInfoServiceImpl implements ISysLoginInfoService {
         // 打印信息到日志
         log.info(s, loginInfoEvent.getArgs());
         // 获取客户端操作系统
-        String os = userAgent.getOs().getName();
+        String os = userAgent == null ? "Unknown" : userAgent.getOs().getName();
         // 获取客户端浏览器
-        String browser = userAgent.getBrowser().getName();
+        String browser = userAgent == null ? "Unknown" : userAgent.getBrowser().getName();
         // 封装对象
         SysLoginInfoBo loginInfo = new SysLoginInfoBo();
         loginInfo.setUserName(loginInfoEvent.getUsername());

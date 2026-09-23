@@ -42,17 +42,20 @@ DOCKER = ('docker', '--host', 'unix:///var/run/docker.sock')
 MINIO_IMAGE = 'pgsty/minio@sha256:83885c27b3b5b673049e33ddf4029afe2c134fd51ce4309e65e4f39d3b9ca282'
 REDIS_CONFIG_USER = 65534
 ADMIN_CLIENT_ID = 'e5cd7e4891bf95d1d19206ce24a7b32e'
+CHROME_CONTROL_UA = ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
+                     '(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36')
 MYSQL_STAGES = frozenset(('rotate_login', 'baseline_tables', 'baseline_outboxes',
     'baseline_external', 'baseline_accounts', 'baseline_oss', 'lookup_a', 'lookup_b',
     'lookup_control', 'lookup_client', 'counts_before', 'counts_seed', 'counts_after',
     'seed_insert', 'role_existing', 'role_menus', 'role_collision', 'role_insert',
     'role_effective', 'role_denied', 'notice_lookup', 'real_delivery', 'real_identity', 'real_after',
-    'notice_retracted', 'notice_after'))
-LOGIN_STAGES = frozenset(('login_control', 'login_a', 'login_b'))
+    'notice_retracted', 'notice_after', 'audit_client', 'audit_baseline', 'audit_login'))
+LOGIN_STAGES = frozenset(('login_control', 'login_a', 'login_b', 'login_chrome'))
+ONLINE_STAGES = frozenset(('online_control', 'online_a', 'online_b', 'online_chrome'))
 HTTP_STAGES = LOGIN_STAGES | frozenset(('notice_save', 'notice_publish', 'notice_retract',
-                                       'recipient_notice_denied'))
+                                       'recipient_notice_denied')) | ONLINE_STAGES
 RUN_PHASES = frozenset(('setup', 'backend_probe', 'login_control', 'login_a', 'login_b',
-                        'notice_control', 'recipient_permission', 'seed', 'vite_probe',
+                        'login_chrome', 'notice_control', 'recipient_permission', 'seed', 'vite_probe',
                         'browser', 'post_browser'))
 CONTROL_FAILURE_KINDS = frozenset(('transport', 'response_too_large', 'invalid_json',
                                    'invalid_shape', 'login_rejected', 'token_missing',
@@ -687,12 +690,16 @@ def verify_after_browser(cid, manifest):
     return verify_seed(cid, manifest, stage='counts_after')
 
 
-def control_request(port, stage, path, *, token=None, body=None):
+def control_request(port, stage, path, *, token=None, body=None, user_agent=None):
     """Real loopback HTTP; never log request, response, bearer or password."""
-    if stage not in HTTP_STAGES or not path.startswith('/'):
+    if (stage not in HTTP_STAGES or not path.startswith('/')
+        or (user_agent is not None and
+            (stage != 'login_chrome' or user_agent != CHROME_CONTROL_UA))):
         raise RuntimeError('Invalid owned control request stage or path')
     payload = None if body is None else json.dumps(body, ensure_ascii=False).encode()
     headers = {'clientid': ADMIN_CLIENT_ID, 'Content-Type': 'application/json'}
+    if user_agent is not None:
+        headers['User-Agent'] = user_agent
     if token:
         headers['Authorization'] = 'Bearer ' + token
     connection = None
@@ -721,18 +728,108 @@ def control_request(port, stage, path, *, token=None, body=None):
             connection.close()
 
 
-def control_login(port, username, password, stage):
+def control_login(port, username, password, stage, *, user_agent=None):
     if stage not in LOGIN_STAGES:
         raise RuntimeError('Invalid owned control login stage')
-    status, response = control_request(port, stage, '/auth/login', body={
-        'username': username, 'password': password, 'clientId': ADMIN_CLIENT_ID,
-        'grantType': 'password'})
+    if (stage == 'login_chrome') != (user_agent == CHROME_CONTROL_UA) or (
+        user_agent is not None and user_agent != CHROME_CONTROL_UA):
+        raise RuntimeError('Owned login User-Agent does not match its fixed stage')
+    request = {'body': {'username': username, 'password': password,
+                        'clientId': ADMIN_CLIENT_ID, 'grantType': 'password'}}
+    if user_agent is not None:
+        request['user_agent'] = user_agent
+    status, response = control_request(port, stage, '/auth/login', **request)
     data = response.get('data')
     token = data.get('access_token') if isinstance(data, dict) else None
     if status != 200 or response.get('code') != 200:
         raise OwnedControlFailure(stage, 'login_rejected', status, response.get('code'))
     if not isinstance(token, str) or len(token) < 16:
         raise OwnedControlFailure(stage, 'token_missing', status, response.get('code'))
+    return token
+
+
+def audit_client_identity(cid):
+    """Read the owned Admin Client identity for private cross-checks only."""
+    rows = mysql(cid, 'SELECT client_key,device_type FROM sys_client WHERE client_id='
+                 + compared_hexsql(ADMIN_CLIENT_ID) + " AND status='0' AND del_flag='0';",
+                 stage='audit_client').splitlines()
+    if len(rows) != 1:
+        raise RuntimeError('Owned audit Admin Client is absent or ambiguous')
+    fields = rows[0].split('\t')
+    if len(fields) != 2 or not all(value and value != 'NULL' for value in fields):
+        raise RuntimeError('Owned audit Admin Client fields differ')
+    return tuple(fields)
+
+
+def audit_baseline(cid, username):
+    """Capture the latest owned audit ID before this individual real HTTP login."""
+    value = mysql(cid, 'SELECT COALESCE(MAX(info_id),0) FROM sys_login_info WHERE user_name='
+                  + compared_hexsql(username) + ';', stage='audit_baseline')
+    if not re.fullmatch(r'[0-9]+', value):
+        raise RuntimeError('Owned login audit baseline is invalid')
+    return int(value)
+
+
+def verify_login_audit(cid, username, baseline, client_identity,
+                       expected_browser, expected_os, seconds=30):
+    """Wait for exactly one new asynchronous success row with the expected UA facts."""
+    if type(baseline) is not int or baseline < 0 or len(client_identity) != 2:
+        raise RuntimeError('Owned login audit arguments differ')
+    client_key, device_type = client_identity
+    sql = ('SELECT COUNT(*),COALESCE(SUM(status=\'0\' AND client_key='
+           + compared_hexsql(client_key) + ' AND device_type=' + compared_hexsql(device_type)
+           + ' AND browser=' + compared_hexsql(expected_browser)
+           + ' AND os=' + compared_hexsql(expected_os)
+           + '),0) FROM sys_login_info WHERE info_id>' + str(baseline)
+           + ' AND user_name=' + compared_hexsql(username) + ';')
+    deadline = time.monotonic() + seconds
+    while True:
+        values = mysql(cid, sql, stage='audit_login').split('\t')
+        if len(values) != 2 or any(not re.fullmatch(r'[0-9]+', value) for value in values):
+            raise RuntimeError('Owned login audit result is invalid')
+        total, expected = map(int, values)
+        if total == expected == 1:
+            return True
+        if total > 1 or (total == 1 and expected != 1):
+            raise RuntimeError('Owned login audit row differs')
+        if time.monotonic() >= deadline:
+            raise RuntimeError('Owned asynchronous login audit timed out')
+        time.sleep(.2)
+
+
+def verify_online_login(port, token, username, client_identity, stage,
+                        expected_browser, expected_os):
+    """Match the issued bearer only in memory; never persist an online DTO."""
+    if stage not in ONLINE_STAGES:
+        raise RuntimeError('Invalid owned online verification stage')
+    status, response = control_request(port, stage, '/monitor/online', token=token)
+    data = response.get('data')
+    rows = data.get('rows') if isinstance(data, dict) else None
+    if status != 200 or response.get('code') != 200:
+        raise OwnedControlFailure(stage, 'action_rejected', status, response.get('code'))
+    if not isinstance(rows, list):
+        raise OwnedControlFailure(stage, 'invalid_shape', status, response.get('code'))
+    matches = [row for row in rows if isinstance(row, dict) and row.get('tokenId') == token]
+    if (len(matches) != 1 or matches[0].get('userName') != username
+        or matches[0].get('clientKey') != ADMIN_CLIENT_ID
+        or matches[0].get('deviceType') != client_identity[1]
+        or matches[0].get('browser') != expected_browser
+        or matches[0].get('os') != expected_os):
+        raise RuntimeError('Owned issued token online identity differs')
+    return True
+
+
+def verified_owned_login(cid, port, username, password, login_stage, online_stage,
+                         client_identity, redactions, *, user_agent=None):
+    """Prove the same real login in HTTP, its own online DTO, and async audit."""
+    baseline = audit_baseline(cid, username)
+    token = control_login(port, username, password, login_stage, user_agent=user_agent)
+    redactions.append(token)
+    expected_browser, expected_os = ('Chrome', 'Linux') if user_agent else ('Unknown', 'Unknown')
+    verify_online_login(port, token, username, client_identity, online_stage,
+                        expected_browser, expected_os)
+    verify_login_audit(cid, username, baseline, client_identity,
+                       expected_browser, expected_os)
     return token
 
 
@@ -1149,17 +1246,27 @@ def main():
         report['owned']['backend_probe_http_status'] = 200
 
         phase = 'login_control'
-        control_token = control_login(backend_port, 'WTA', control_password, phase)
-        redactions.append(control_token)
+        client_identity = audit_client_identity(mysql_id)
+        control_token = verified_owned_login(
+            mysql_id, backend_port, 'WTA', control_password, phase, 'online_control',
+            client_identity, redactions)
         recipient_tokens = []
-        for login_stage, username, password in (
-            ('login_a', account_env['T40_A_USERNAME'], account_env['T40_A_PASSWORD']),
-            ('login_b', account_env['T40_B_USERNAME'], account_env['T40_B_PASSWORD'])):
+        for login_stage, online_stage, username, password in (
+            ('login_a', 'online_a', account_env['T40_A_USERNAME'], account_env['T40_A_PASSWORD']),
+            ('login_b', 'online_b', account_env['T40_B_USERNAME'], account_env['T40_B_PASSWORD'])):
             phase = login_stage
-            token = control_login(backend_port, username, password, phase)
-            redactions.append(token)
+            token = verified_owned_login(mysql_id, backend_port, username, password,
+                                         phase, online_stage, client_identity, redactions)
             recipient_tokens.append(token)
         report['owned']['control_and_recipient_logins_validated'] = 3
+        report['owned']['headerless_online_matches'] = 3
+        report['owned']['headerless_success_audits'] = 3
+        phase = 'login_chrome'
+        control_token = verified_owned_login(
+            mysql_id, backend_port, 'WTA', control_password, phase, 'online_chrome',
+            client_identity, redactions, user_agent=CHROME_CONTROL_UA)
+        report['owned']['chrome_control_online_match'] = True
+        report['owned']['chrome_control_success_audit'] = True
         phase = 'notice_control'
         real = real_notice_control(mysql_id, backend_port, control_token, run_id, a_user, b_user)
         phase = 'recipient_permission'

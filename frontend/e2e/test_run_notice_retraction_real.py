@@ -197,6 +197,97 @@ class T40OfflineSafety(unittest.TestCase):
         self.assertEqual(driver.OwnedControlFailure(canary, canary, True, 10**30).safe_details(), {
             'stage': None, 'kind': 'transport', 'http_status': None, 'business_code': None})
 
+    def test_only_fixed_chrome_control_sends_user_agent(self):
+        requests = []
+
+        def connection():
+            response = types.SimpleNamespace(status=200, read=lambda _size: b'{"code":200}')
+            return types.SimpleNamespace(
+                request=lambda *args, **kwargs: requests.append((args, kwargs)),
+                getresponse=lambda: response, close=lambda: None)
+
+        with patch.object(driver.http.client, 'HTTPConnection', side_effect=lambda *_args, **_kw: connection()):
+            driver.control_request(32801, 'login_control', '/auth/login', body={'password': 'synthetic'})
+            driver.control_request(32801, 'login_chrome', '/auth/login', body={'password': 'synthetic'},
+                                   user_agent=driver.CHROME_CONTROL_UA)
+        self.assertNotIn('User-Agent', requests[0][1]['headers'])
+        self.assertEqual(requests[1][1]['headers']['User-Agent'], driver.CHROME_CONTROL_UA)
+        with self.assertRaises(RuntimeError):
+            driver.control_request(32801, 'login_control', '/auth/login', user_agent=driver.CHROME_CONTROL_UA)
+        with self.assertRaises(RuntimeError):
+            driver.control_request(32801, 'login_chrome', '/auth/login', user_agent='credential-canary')
+        with self.assertRaises(RuntimeError):
+            driver.control_login(32801, 'WTA', 'synthetic', 'login_chrome')
+
+    def test_online_proof_matches_only_current_private_token_and_safe_fields(self):
+        token = 'credential-canary-token-123456'
+        expected = {'tokenId': token, 'userName': 'owned-a', 'clientKey': driver.ADMIN_CLIENT_ID,
+                    'deviceType': 'pc', 'browser': 'Unknown', 'os': 'Unknown'}
+        body = {'code': 200, 'data': {'total': 7, 'rows': [
+            {'tokenId': 'other-token', 'browser': 'Chrome'}, expected]}}
+        with patch.object(driver, 'control_request', return_value=(200, body)) as request:
+            self.assertTrue(driver.verify_online_login(
+                32801, token, 'owned-a', ('admin', 'pc'), 'online_a', 'Unknown', 'Unknown'))
+        self.assertEqual(request.call_args.kwargs, {'token': token})
+        self.assertEqual(request.call_args.args[2], '/monitor/online')
+        with patch.object(driver, 'control_request', return_value=(200, {
+                'code': 200, 'data': {'rows': [dict(expected, browser='Chrome')]}})):
+            with self.assertRaises(RuntimeError) as raised:
+                driver.verify_online_login(32801, token, 'owned-a', ('admin', 'pc'),
+                                           'online_a', 'Unknown', 'Unknown')
+        self.assertNotIn(token, str(raised.exception))
+        with patch.object(driver, 'control_request', return_value=(403, {
+                'code': 403, 'msg': token})):
+            with self.assertRaises(driver.OwnedControlFailure) as denied:
+                driver.verify_online_login(32801, token, 'owned-a', ('admin', 'pc'),
+                                           'online_a', 'Unknown', 'Unknown')
+        self.assertNotIn(token, json.dumps(driver.safe_failure(denied.exception, 'login_a')))
+
+    def test_audit_proof_uses_prelogin_id_then_exact_new_success_row(self):
+        seen = []
+        replies = iter(('admin\tpc', '101', '0\t0', '1\t1'))
+
+        def fake_mysql(_cid, sql, *, stage):
+            seen.append((stage, sql))
+            return next(replies)
+
+        with patch.object(driver, 'mysql', side_effect=fake_mysql), \
+             patch.object(driver.time, 'sleep'):
+            client = driver.audit_client_identity('a' * 64)
+            baseline = driver.audit_baseline('a' * 64, 'owned-a')
+            self.assertTrue(driver.verify_login_audit('a' * 64, 'owned-a', baseline, client,
+                                                      'Unknown', 'Unknown', seconds=10))
+        self.assertEqual(client, ('admin', 'pc'))
+        self.assertEqual(baseline, 101)
+        self.assertEqual([stage for stage, _sql in seen],
+                         ['audit_client', 'audit_baseline', 'audit_login', 'audit_login'])
+        self.assertIn('info_id>101', seen[-1][1])
+        self.assertIn("status='0'", seen[-1][1])
+        self.assertIn(driver.compared_hexsql('Unknown'), seen[-1][1])
+        self.assertIn(driver.compared_hexsql('owned-a'), seen[-1][1])
+        with patch.object(driver, 'mysql', return_value='1\t0'):
+            with self.assertRaises(RuntimeError):
+                driver.verify_login_audit('a' * 64, 'owned-a', 101, client,
+                                          'Unknown', 'Unknown', seconds=0)
+        with patch.object(driver, 'mysql', return_value='2\t2'):
+            with self.assertRaises(RuntimeError):
+                driver.verify_login_audit('a' * 64, 'owned-a', 101, client,
+                                          'Unknown', 'Unknown', seconds=0)
+
+    def test_verified_login_sequences_baseline_token_online_and_audit_without_output(self):
+        token = 'credential-canary-token-123456'
+        order = []
+        redactions = []
+        with patch.object(driver, 'audit_baseline', side_effect=lambda *_args: (order.append('baseline'), 101)[1]), \
+             patch.object(driver, 'control_login', side_effect=lambda *_args, **_kw: (order.append('login'), token)[1]), \
+             patch.object(driver, 'verify_online_login', side_effect=lambda *_args: order.append('online')), \
+             patch.object(driver, 'verify_login_audit', side_effect=lambda *_args: order.append('audit')):
+            self.assertEqual(driver.verified_owned_login(
+                'a' * 64, 32801, 'owned-a', 'synthetic', 'login_a', 'online_a',
+                ('admin', 'pc'), redactions), token)
+        self.assertEqual(order, ['baseline', 'login', 'online', 'audit'])
+        self.assertEqual(redactions, [token])
+
     def test_control_response_parse_failures_and_backend_exit_keep_no_payload(self):
         canary = 'credential-canary-private'
 

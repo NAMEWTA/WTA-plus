@@ -47,8 +47,8 @@ public class UserLoginSuccessListener {
         UserOnlineDTO dto = new UserOnlineDTO();
         dto.setIpaddr(ip);
         dto.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
-        dto.setBrowser(userAgent.getBrowser().getName());
-        dto.setOs(userAgent.getOs().getName());
+        dto.setBrowser(userAgent == null ? "Unknown" : userAgent.getBrowser().getName());
+        dto.setOs(userAgent == null ? "Unknown" : userAgent.getOs().getName());
         dto.setLoginTime(System.currentTimeMillis());
         dto.setTokenId(tokenValue);
         dto.setUserName(username);

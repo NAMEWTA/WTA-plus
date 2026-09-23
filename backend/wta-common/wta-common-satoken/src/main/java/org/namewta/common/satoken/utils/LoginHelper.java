@@ -84,10 +84,10 @@ public class LoginHelper {
         }
         UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         if (StringUtils.isBlank(loginUser.getBrowser())) {
-            loginUser.setBrowser(userAgent.getBrowser().getName());
+            loginUser.setBrowser(userAgent == null ? "Unknown" : userAgent.getBrowser().getName());
         }
         if (StringUtils.isBlank(loginUser.getOs())) {
-            loginUser.setOs(userAgent.getOs().getName());
+            loginUser.setOs(userAgent == null ? "Unknown" : userAgent.getOs().getName());
         }
         if (StringUtils.isBlank(loginUser.getDeviceType()) && StringUtils.isNotBlank(model.getDeviceType())) {
             loginUser.setDeviceType(model.getDeviceType());
