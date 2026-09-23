@@ -22,8 +22,8 @@ public final class NotifyNoticeVersionFence {
     public enum State { NOT_NOTICE, ACTIVE, RETRACTED, UNVERIFIED }
 
     /** 新发布只引用本次不可变公告快照，不把管理页地址作为收件人权限。 */
-    public static Map<String, Object> initial(long noticeId, long snapshotId, int version) {
-        return Map.of("audit", AUDIT, KEY, version(noticeId, snapshotId, version, false));
+    public static Map<String, String> initial(long noticeId, long snapshotId, int version) {
+        return Map.of("audit", AUDIT, KEY, JsonUtils.toJsonString(version(noticeId, snapshotId, version, false)));
     }
 
     public static String idempotencyKey(long noticeId, int version) {
@@ -69,7 +69,7 @@ public final class NotifyNoticeVersionFence {
                 || marker.version() != version) throw invalid();
         }
         Map<String, Object> copy = new LinkedHashMap<>(metadata);
-        copy.put(KEY, version(noticeId, snapshotId, version, true));
+        copy.put(KEY, JsonUtils.toJsonString(version(noticeId, snapshotId, version, true)));
         return JsonUtils.toJsonString(copy);
     }
 
@@ -107,7 +107,11 @@ public final class NotifyNoticeVersionFence {
     }
 
     private static Version parseVersion(Object raw) {
-        if (!(raw instanceof Map<?, ?> values) || !(values.get("retracted") instanceof Boolean retracted)) return null;
+        if (!(raw instanceof String encoded)) return null;
+        Map<?, ?> values;
+        try { values = JsonUtils.parseObject(encoded, Map.class); }
+        catch (RuntimeException malformed) { return null; }
+        if (values == null || !(values.get("retracted") instanceof Boolean retracted)) return null;
         Long noticeId = integer(values.get("noticeId"));
         Long snapshotId = integer(values.get("snapshotId"));
         Long version = integer(values.get("version"));

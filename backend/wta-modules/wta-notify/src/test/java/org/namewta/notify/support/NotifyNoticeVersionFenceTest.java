@@ -16,8 +16,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class NotifyNoticeVersionFenceTest {
     @Test
     void exactVersionChangesToRetractedWithoutLosingOtherMetadata() {
+        Map<String, String> initial = NotifyNoticeVersionFence.initial(41L, 91L, 2);
+        assertThat(initial.get("noticeVersion")).contains("\"snapshotId\":91");
         NotifyIntent intent = notice(JsonUtils.toJsonString(Map.of("audit", "NOTICE_SNAPSHOT", "other", "keep",
-            "noticeVersion", Map.of("noticeId", 41L, "snapshotId", 91L, "version", 2, "retracted", false))));
+            "noticeVersion", initial.get("noticeVersion"))));
         assertThat(NotifyNoticeVersionFence.state(intent)).isEqualTo(NotifyNoticeVersionFence.State.ACTIVE);
         intent.setMetadataJson(NotifyNoticeVersionFence.retractedMetadata(intent, 41L, 91L, 2));
         assertThat(NotifyNoticeVersionFence.state(intent)).isEqualTo(NotifyNoticeVersionFence.State.RETRACTED);

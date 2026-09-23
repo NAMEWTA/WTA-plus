@@ -9,6 +9,7 @@ import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.domain.entity.NotifyNotice;
 import org.namewta.notify.domain.entity.NotifyNoticeSnapshot;
 import org.namewta.notify.domain.entity.NotifyIntent;
+import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.namewta.notify.api.NotificationReceipt;
 import org.namewta.notify.api.NotificationStatus;
 import org.namewta.common.json.utils.JsonUtils;
@@ -20,7 +21,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -117,8 +117,7 @@ class NotifyNoticePublisherServiceTest {
         old.setBizType("NOTICE_PUBLISHED");
         old.setBizId("1");
         old.setIdempotencyKey("notice-published:1:1");
-        old.setMetadataJson(JsonUtils.toJsonString(Map.of("audit", "NOTICE_SNAPSHOT", "noticeVersion",
-            Map.of("noticeId", 1L, "snapshotId", 98L, "version", 1, "retracted", false))));
+        old.setMetadataJson(JsonUtils.toJsonString(NotifyNoticeVersionFence.initial(1L, 98L, 1)));
         when(notifications.lockNoticeIntent("notice-published:1:1")).thenReturn(old);
 
         try (var ids = mockStatic(IdGeneratorUtil.class)) {
