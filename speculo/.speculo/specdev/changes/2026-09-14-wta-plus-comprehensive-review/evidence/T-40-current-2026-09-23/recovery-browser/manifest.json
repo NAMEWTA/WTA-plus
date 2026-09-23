@@ -1,0 +1,17 @@
+[
+  {
+    "file": "wta-t40-r3-browser-diagnosis.md",
+    "sha256": "5edff21478c880fce37031e5f0e929624be70cc9bb4555dbbe4fe3624beb2794",
+    "bytes": 5659
+  },
+  {
+    "file": "wta-t40-r3-browser-independent.md",
+    "sha256": "9c8e4435383e8955b0ae363a77ffa6fd683785af8620aeb2ad0cafc52c9b9522",
+    "bytes": 5374
+  },
+  {
+    "file": "wta-t40-final-contract-review.md",
+    "sha256": "a52eb9795de0c9b95f87e404fe662af14b0093a4896abc02816a1da9e04d9378",
+    "bytes": 7615
+  }
+]
