@@ -217,3 +217,5 @@ T-33审查写集补充：backend/wta-modules/wta-sso/AGENTS.md由Lead独占修�
 T-34唯一产品writer为cors_audit（gpt-6-sol/xhigh），Lead保持状态/提交/E2E owner；Ticket写集在该轮租约内授予子代理。base `6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04`；完整Packet见 evidence/dispatch-T-34.md。2done、1in_progress、47ready。
 
 T-34前置类型修复已声明OssPage.vue精确写集：只补两表列OssVO泛型，实际列表竞态由T-47继续负责。另，附加skill-facts检查发现部署Skill固定temp/relase与工程事实检查禁止该目录冲突；现场维护依据该Skill生成了私有报告，当前报告须保全。该仓库治理矛盾登记T-29修复，不把本次附加检查写成passed；T-34不改变该检查器或删除私密恢复数据。
+
+T34独立规范轴发现打开盒子与初始查询重叠时未保证补查。已在修改前追加Navbar.vue精确写集；仅打开动作fresh=true，登录被动查询仍合并。前两轮证据保留，下一轮补对应UI/Promise回归。

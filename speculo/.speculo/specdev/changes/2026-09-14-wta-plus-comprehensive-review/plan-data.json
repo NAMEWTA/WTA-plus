@@ -2818,7 +2818,8 @@
       "frontend/apps/admin-web/src/layout/components/notice/",
       "frontend/apps/admin-web/src/store/modules/notice.ts",
       "frontend/e2e/",
-      "frontend/packages/web-domains/system/src/oss/OssPage.vue"
+      "frontend/packages/web-domains/system/src/oss/OssPage.vue",
+      "frontend/apps/admin-web/src/layout/components/Navbar.vue"
     ],
     "tests": [
       "现有 push.test.ts、notice 组件、真实 Admin 登录→打开盒子"

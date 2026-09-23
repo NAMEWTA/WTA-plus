@@ -1,0 +1,3 @@
+# T-34 review addendum 02
+
+base保持6fcbfeb，当前修正checkpoint a94f7707bb9d91a340543b78006b81ff02882770；Lead接回唯一writer。追加Navbar.vue仅refreshMessageBox回调initMessageBox(true)，补原测试目录的打开期间刷新竞态测试。标准/规范轴仍各自只读独立复核；其余Packet授权不变。

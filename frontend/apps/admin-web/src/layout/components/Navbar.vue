@@ -130,7 +130,7 @@ const showLogo = computed(() => settingsStore.sidebarLogo);
 const displayName = computed(() => userStore.nickname || '管理员');
 
 const refreshMessageBox = () => {
-  void initMessageBox().catch(error => console.warn('消息盒子刷新失败:', error));
+  void initMessageBox(true).catch(error => console.warn('消息盒子刷新失败:', error));
 };
 
 // 搜索菜单

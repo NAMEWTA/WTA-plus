@@ -41,7 +41,7 @@ async function install(page: Page, state: InboxFixture) {
     if (path === '/notify/inbox') {
       state.inboxCalls++;
       if (state.holdFirst && state.inboxCalls === 1) { state.heldInbox = route; return; }
-      if (state.failFirst && state.inboxCalls === 1) return route.abort('failed');
+      if (state.failFirst && state.inboxCalls <= 2) return route.abort('failed');
       return reply(route, state.empty ? [] : [message(state)]);
     }
     if (/^\/notify\/inbox\/\d+\/read$/.test(path)) {
@@ -68,7 +68,7 @@ async function login(page: Page) {
 }
 
 test('T-34 message box distinguishes loading, failure, retry, notice category and read state without realtime', async ({ page }) => {
-  const state = fixture({ holdFirst: true });
+  const state = fixture({ holdFirst: true, failFirst: true });
   await install(page, state);
   await login(page);
   await expect.poll(() => Boolean(state.heldInbox)).toBe(true);
@@ -145,5 +145,20 @@ test('T-34 successful empty inbox is distinct from loading and failure', async (
   await expect(page.getByText('暂无消息', { exact: true })).toBeVisible();
   await expect(page.getByRole('status')).toHaveCount(0);
   await expect(page.getByRole('alert').filter({ hasText: '消息加载失败，请重试' })).toHaveCount(0);
+  expect(state.pushRequests).toEqual([]);
+});
+
+test('T-34 opening during the initial request refreshes a notice arriving after its snapshot', async ({ page }) => {
+  const state = fixture({ holdFirst: true });
+  await install(page, state);
+  await login(page);
+  await expect.poll(() => Boolean(state.heldInbox)).toBe(true);
+  await page.locator('.message-trigger').click();
+  await expect(page.getByRole('status').filter({ hasText: '正在加载消息…' })).toBeVisible();
+  await expect(page.locator('.el-popover').filter({ hasText: '消息盒子' })).not.toHaveClass(/el-zoom-in-top-enter/);
+  // 初始查询已获取空快照；打开时已存在的公告只能由后续查询得到。
+  await reply(state.heldInbox!, []);
+  await expect(page.locator('.content-box-item').filter({ hasText: 'A 的公告' })).toBeVisible();
+  expect(state.inboxCalls).toBe(2);
   expect(state.pushRequests).toEqual([]);
 });
