@@ -1,5 +1,27 @@
 import { readFileSync } from 'node:fs';
-import { expect, test, type Page, type Response } from '@playwright/test';
+import { expect, test, type Page, type Request, type Response } from '@playwright/test';
+
+const stepTimeout = 15_000;
+
+async function bounded<T>(promise: Promise<T>, label: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([promise, new Promise<never>((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`${label} exceeded 15 seconds`)), stepTimeout);
+    })]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+async function cleanupPreserving(primary: unknown, cleanup: () => Promise<void>, label: string) {
+  try {
+    await bounded(cleanup(), label);
+  } catch (error) {
+    if (primary !== undefined) throw new AggregateError([primary, error], `${label} failed after primary error`);
+    throw error;
+  }
+}
 
 interface Manifest {
   schema_version: 1;
@@ -35,7 +57,7 @@ async function login(page: Page, origin: string, username: string, password: str
   await form.locator('input').first().fill(username);
   await form.locator('input[type="password"]').fill(password);
   await form.locator('.submit-button').click();
-  await expect(page.locator('.message-trigger')).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator('.message-trigger')).toBeVisible({ timeout: stepTimeout });
 }
 
 async function samePageQuery(page: Page, messageId?: string) {
@@ -52,10 +74,14 @@ function detail(page: Page) {
   return page.getByRole('dialog', { name: '通知详情' });
 }
 
+async function painted(page: Page) {
+  await bounded(page.evaluate(() => new Promise<void>(resolve =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve())))), 'browser paint');
+}
+
 async function renderedAfter(page: Page, response: Response) {
-  await response.finished();
-  await page.evaluate(() => new Promise<void>(resolve =>
-    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+  expect(await bounded(response.finished(), 'page response completion')).toBeNull();
+  await painted(page);
 }
 
 test('T-40 real published V1 survives retract in A personal off-page inbox', async ({ browser }) => {
@@ -63,6 +89,7 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
   const owned = manifest();
   const origin = required('T40_ADMIN_ORIGIN');
   const context = await browser.newContext();
+  let testFailure: unknown;
   try {
     const page = await context.newPage();
     const managementGets: string[] = [];
@@ -73,7 +100,7 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
     await login(page, origin, required('T40_A_USERNAME'), required('T40_A_PASSWORD'));
     await page.goto(new URL(owned.v1.path, origin).toString());
     const v1Detail = detail(page);
-    await expect(v1Detail).toBeVisible({ timeout: 30_000 });
+    await expect(v1Detail).toBeVisible({ timeout: stepTimeout });
     await expect(v1Detail.locator('.el-descriptions__content').last()).toHaveText(owned.v1.content);
     await expect(v1Detail.getByText(owned.v1.title, { exact: true })).toBeVisible();
     await v1Detail.getByRole('button', { name: '关闭', exact: true }).click();
@@ -88,9 +115,13 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
     let forwarded = (_completed: boolean) => {};
     const finished = new Promise<boolean>(resolve => { forwarded = resolve; });
     let fetched = 0;
-    await page.route(`**/notify/inbox/${owned.v1.messageId}`, async route => {
+    let samePageRequest: Request | undefined;
+    const samePagePattern = `**/notify/inbox/${owned.v1.messageId}`;
+    await page.route(samePagePattern, async route => {
+      samePageRequest = route.request();
       try {
         const response = await route.fetch();
+        expect(response.status()).toBe(200);
         ++fetched;
         await held;
         await route.fulfill({ response });
@@ -100,20 +131,28 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
         throw error;
       }
     }, { times: 1 });
+    let samePageFailure: unknown;
     try {
       await samePageQuery(page, owned.v1.messageId);
-      await expect.poll(() => fetched).toBe(1);
+      await expect.poll(() => fetched, { timeout: stepTimeout }).toBe(1);
+      expect(samePageRequest).toBeDefined();
       await samePageQuery(page, owned.legacy.messageId);
       await expect(detail(page).locator('.el-descriptions__content').last()).toHaveText(owned.legacy.content);
-      const staleResponse = page.waitForResponse(response => response.request().method() === 'GET' &&
-        new URL(response.url()).pathname.endsWith('/notify/inbox/' + owned.v1.messageId));
+      const staleResponse = page.waitForResponse(response => response.request() === samePageRequest,
+        { timeout: stepTimeout });
       release();
-      expect(await finished).toBe(true);
-      await renderedAfter(page, await staleResponse);
+      const [routeCompleted, response] = await Promise.all([
+        bounded(finished, 'same-page route completion'), staleResponse,
+      ]);
+      expect(routeCompleted).toBe(true);
+      await renderedAfter(page, response);
       await expect(detail(page).locator('.el-descriptions__content').last()).toHaveText(owned.legacy.content);
+    } catch (error) {
+      samePageFailure = error;
+      throw error;
     } finally {
       release();
-      await page.unroute(`**/notify/inbox/${owned.v1.messageId}`);
+      await cleanupPreserving(samePageFailure, () => page.unroute(samePagePattern), 'same-page unroute');
     }
     await detail(page).getByRole('button', { name: '关闭', exact: true }).click();
     await expect(detail(page)).toBeHidden();
@@ -141,41 +180,71 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
     await expect(detail(page)).toBeHidden();
     let unblock = () => {};
     const pending = new Promise<void>(resolve => { unblock = resolve; });
-    let sessionForwarded = (_completed: boolean) => {};
-    const sessionFinished = new Promise<boolean>(resolve => { sessionForwarded = resolve; });
+    type SessionRouteOutcome = 'fulfilled' | 'failed';
+    let sessionForwarded = (_outcome: SessionRouteOutcome) => {};
+    const sessionFinished = new Promise<SessionRouteOutcome>(resolve => { sessionForwarded = resolve; });
     let oldFetched = 0;
-    await page.route(`**/notify/inbox/${owned.v1.messageId}`, async route => {
+    let oldRequest: Request | undefined;
+    let oldFailure: string | undefined;
+    let oldResponses = 0;
+    const oldResponse = (response: Response) => { if (response.request() === oldRequest) oldResponses++; };
+    const oldRequestFailed = (request: Request) => {
+      if (request === oldRequest) oldFailure = request.failure()?.errorText;
+    };
+    page.on('response', oldResponse);
+    page.on('requestfailed', oldRequestFailed);
+    const sessionPattern = `**/notify/inbox/${owned.v1.messageId}`;
+    await page.route(sessionPattern, async route => {
+      oldRequest = route.request();
+      let outcome: SessionRouteOutcome = 'failed';
       try {
         const response = await route.fetch();
+        expect(response.status()).toBe(200);
         ++oldFetched;
         await pending;
         await route.fulfill({ response });
-        sessionForwarded(true);
-      } catch (error) {
-        sessionForwarded(false);
-        throw error;
+        outcome = 'fulfilled';
+      } finally {
+        sessionForwarded(outcome);
       }
     }, { times: 1 });
+    let sessionFailure: unknown;
     try {
       await samePageQuery(page, owned.v1.messageId);
-      await expect.poll(() => oldFetched).toBe(1);
+      await expect.poll(() => oldFetched, { timeout: stepTimeout }).toBe(1);
+      expect(oldRequest).toBeDefined();
       await page.locator('.avatar-wrapper').click();
       await page.getByText('退出登录', { exact: true }).click();
       await page.getByRole('button', { name: '确定', exact: true }).click();
       await expect(page).toHaveURL(/\/login(?:\?|$)/);
       await login(page, origin, required('T40_B_USERNAME'), required('T40_B_PASSWORD'));
-      const staleSessionResponse = page.waitForResponse(response => response.request().method() === 'GET' &&
-        new URL(response.url()).pathname.endsWith('/notify/inbox/' + owned.v1.messageId));
+      // B 的 redirect 可能请求同 URL，必须以 Request 身份区分，不能把 B 的 403 当成 A 响应。
+      await expect(page).toHaveURL(/\/notify\/inbox(?:\?|$)/);
+      await samePageQuery(page, owned.bControl.messageId);
+      await expect(detail(page).locator('.el-descriptions__content').last()).toHaveText(owned.bControl.content);
+      expect(oldResponses).toBe(0);
       unblock();
-      expect(await sessionFinished).toBe(true);
-      await renderedAfter(page, await staleSessionResponse);
+      const outcome = await bounded(sessionFinished, 'old A route completion');
+      expect(outcome).toBe('fulfilled');
+      await expect.poll(() => oldFailure, { timeout: stepTimeout }).toBe('net::ERR_ABORTED');
+      await painted(page);
+      expect(oldResponses).toBe(0);
+      await expect(detail(page).locator('.el-descriptions__content').last()).toHaveText(owned.bControl.content);
       await expect(page.getByText(owned.v1.content, { exact: true })).toHaveCount(0);
+    } catch (error) {
+      sessionFailure = error;
+      throw error;
     } finally {
       unblock();
-      await page.unroute(`**/notify/inbox/${owned.v1.messageId}`);
+      page.off('response', oldResponse);
+      page.off('requestfailed', oldRequestFailed);
+      await cleanupPreserving(sessionFailure, () => page.unroute(sessionPattern), 'session unroute');
     }
+  } catch (error) {
+    testFailure = error;
+    throw error;
   } finally {
-    await context.close();
+    await cleanupPreserving(testFailure, () => context.close(), 'A browser context close');
   }
 });
 
