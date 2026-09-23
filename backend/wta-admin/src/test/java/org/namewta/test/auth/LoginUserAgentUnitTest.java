@@ -156,6 +156,14 @@ public class LoginUserAgentUnitTest {
         } catch (RuntimeException | AssertionError failure) {
             outcome = failure instanceof NullPointerException ? "NPE"
                 : failure instanceof AssertionError ? "ASSERTION" : "HARNESS";
+            // Retain only exception types and code locations, never exception messages.
+            Throwable cause = failure;
+            for (int depth = 0; cause != null && depth < 8; depth++, cause = cause.getCause()) {
+                outcome += "\n" + cause.getClass().getName();
+                for (StackTraceElement frame : cause.getStackTrace()) {
+                    outcome += "\n" + frame.getClassName() + "." + frame.getMethodName() + ":" + frame.getLineNumber();
+                }
+            }
         } finally {
             try {
                 restoreStaticUtilities();
