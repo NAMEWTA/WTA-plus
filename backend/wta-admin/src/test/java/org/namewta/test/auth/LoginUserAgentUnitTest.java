@@ -4,6 +4,7 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import io.github.linpeilie.Converter;
+import io.github.linpeilie.mapstruct.SpringConverterFactory;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -19,6 +20,7 @@ import org.namewta.common.satoken.utils.LoginHelper;
 import org.namewta.system.api.domain.UserOnlineDTO;
 import org.namewta.system.api.model.LoginUser;
 import org.namewta.system.domain.SysLoginInfo;
+import org.namewta.system.domain.bo.SysLoginInfoBoToSysLoginInfoMapperImpl;
 import org.namewta.system.domain.vo.SysClientVo;
 import org.namewta.system.mapper.SysLoginInfoMapper;
 import org.namewta.system.service.ISysClientService;
@@ -195,7 +197,8 @@ public class LoginUserAgentUnitTest {
         }
         context = new GenericApplicationContext();
         context.registerBean(SpringUtils.class);
-        context.registerBean(Converter.class, () -> new Converter());
+        context.registerBean(SysLoginInfoBoToSysLoginInfoMapperImpl.class);
+        context.registerBean(Converter.class, () -> new Converter(new SpringConverterFactory(context)));
         context.registerBean(RedissonClient.class, () -> mock(RedissonClient.class));
         context.refresh();
     }
