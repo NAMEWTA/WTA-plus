@@ -19,7 +19,7 @@ public final class LogSanitizer {
     public static final String REDACTED = "[REDACTED]";
 
     private static final Set<String> SENSITIVE_NAMES = Set.of(
-        "passwordhash", "temporarypassword", "token", "accesstoken", "refreshtoken", "idtoken",
+        "passwordhash", "temporarypassword", "token", "tokenid", "accesstoken", "refreshtoken", "idtoken",
         "secret", "appsecret", "signature", "canonicalrequest", "machinetoken", "internaltoken",
         "clientsecret", "secretkey", "accesskey", "apikey", "privatekey", "signingkey",
         "authorization", "cookie", "sessionid", "credential", "credentials", "captcha", "captchacode",
@@ -113,6 +113,41 @@ public final class LogSanitizer {
     /** 异常消息及 cause 可含原始输入；日志只记录类型，原异常仍由业务链抛出。 */
     public static String failure(Throwable failure) {
         return failure == null ? null : failure.getClass().getName();
+    }
+
+    /** 仅转换日志路径副本；在线设备的两个 token 路由隐藏整段令牌，业务路由仍使用原路径。 */
+    public static String path(String applicationPath) {
+        if (applicationPath == null) {
+            return null;
+        }
+        String prefix = "/monitor/online/";
+        if (!applicationPath.startsWith(prefix)) {
+            return applicationPath;
+        }
+        String remaining = applicationPath.substring(prefix.length());
+        String selfPrefix = "myself/";
+        if (remaining.startsWith(selfPrefix)) {
+            String tokenSegment = remaining.substring(selfPrefix.length());
+            return isSingleTokenSegment(tokenSegment)
+                ? prefix + selfPrefix + REDACTED + trailingSlash(tokenSegment) : applicationPath;
+        }
+        if ("list".equals(remaining) || "list/".equals(remaining) || "myself".equals(remaining)) {
+            return applicationPath;
+        }
+        return isSingleTokenSegment(remaining)
+            ? prefix + REDACTED + trailingSlash(remaining) : applicationPath;
+    }
+
+    private static boolean isSingleTokenSegment(String segment) {
+        if (segment.isEmpty()) {
+            return false;
+        }
+        int slash = segment.indexOf('/');
+        return slash == -1 || (slash == segment.length() - 1 && segment.length() > 1);
+    }
+
+    private static String trailingSlash(String segment) {
+        return segment.endsWith("/") ? "/" : "";
     }
 
     private static void redact(JsonNode node, String requestPath, String[] excludedNames) {

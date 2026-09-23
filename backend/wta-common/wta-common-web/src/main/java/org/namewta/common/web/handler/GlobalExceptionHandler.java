@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public R<Void> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
                                                        HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
         return R.fail(HttpStatus.HTTP_BAD_METHOD, e.getMessage());
     }
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(org.springframework.http.HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(SseException.class)
     public String handleNotLoginException(SseException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         log.debug("请求地址'{}',认证失败'{}',无法访问系统资源", requestURI, LogSanitizer.failure(e));
         return JsonUtils.toJsonString(R.fail(HttpStatus.HTTP_UNAUTHORIZED, "认证失败，无法访问系统资源"));
     }
@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ServletException.class)
     public R<Void> handleServletException(ServletException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         log.error("请求地址'{}',发生未知异常，类型={}", requestURI, LogSanitizer.failure(e));
         return R.fail("发生未知异常，请联系管理员");
     }
@@ -104,7 +104,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MissingPathVariableException.class)
     public R<Void> handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI);
         return R.fail(String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
     }
@@ -114,7 +114,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public R<Void> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI);
         return R.fail(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), e.getValue()));
     }
@@ -124,7 +124,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public R<Void> handleNoHandlerFoundException(NoHandlerFoundException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         log.error("请求地址'{}'不存在.", requestURI);
         return R.fail(HttpStatus.HTTP_NOT_FOUND, "请求地址不存在");
     }
@@ -141,7 +141,7 @@ public class GlobalExceptionHandler {
             // sse 经常性连接中断 例如关闭浏览器 直接屏蔽
             return;
         }
-        log.error("请求地址'{}',连接中断，类型={}", requestURI, LogSanitizer.failure(e));
+        log.error("请求地址'{}',连接中断，类型={}", safeRequestUri(request), LogSanitizer.failure(e));
     }
 
     /**
@@ -156,7 +156,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public R<Void> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         String errorId = RandomUtil.randomNumbers(8);
         log.error("请求地址'{}',发生未知异常, 错误编号: {}，类型={}", requestURI, errorId, LogSanitizer.failure(e));
         return R.fail("发生未知异常，请联系管理员 [错误编号: " + errorId + "]");
@@ -167,7 +167,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public R<Void> handleException(Exception e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         String errorId = RandomUtil.randomNumbers(8);
         log.error("请求地址'{}',发生系统异常, 错误编号: {}，类型={}", requestURI, errorId, LogSanitizer.failure(e));
         return R.fail("发生系统异常，请联系管理员 [错误编号: " + errorId + "]");
@@ -254,7 +254,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(JsonParseException.class)
     public R<Void> handleJsonParseException(JsonParseException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = safeRequestUri(request);
         log.error("请求地址'{}' 发生 JSON 解析异常: {}", requestURI, LogSanitizer.failure(e));
         return R.fail(HttpStatus.HTTP_BAD_REQUEST, "请求数据格式错误");
     }
@@ -264,7 +264,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public R<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request) {
-        log.error("请求地址'{}', 参数解析失败: {}", request.getRequestURI(), LogSanitizer.failure(e));
+        log.error("请求地址'{}', 参数解析失败: {}", safeRequestUri(request), LogSanitizer.failure(e));
         return R.fail(HttpStatus.HTTP_BAD_REQUEST, "请求参数格式错误");
     }
 
@@ -273,8 +273,18 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ExpressionException.class)
     public R<Void> handleSpelException(ExpressionException e, HttpServletRequest request) {
-        log.error("请求地址'{}'，SpEL解析异常: {}", request.getRequestURI(), LogSanitizer.failure(e));
+        log.error("请求地址'{}'，SpEL解析异常: {}", safeRequestUri(request), LogSanitizer.failure(e));
         return R.fail(HttpStatus.HTTP_INTERNAL_ERROR, "SpEL解析失败：" + e.getMessage());
+    }
+
+    private static String safeRequestUri(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String context = request.getContextPath();
+        if (uri == null || context == null || !uri.startsWith(context)
+            || (!context.isEmpty() && uri.length() > context.length() && uri.charAt(context.length()) != '/')) {
+            return LogSanitizer.REDACTED;
+        }
+        return context + LogSanitizer.path(uri.substring(context.length()));
     }
 
 }

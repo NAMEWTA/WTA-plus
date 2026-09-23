@@ -302,7 +302,7 @@ public class SysLogFilter implements Filter {
             event.put("event", "HTTP_REQUEST");
             event.put("requestId", requestId);
             event.put("method", method);
-            event.put("path", path);
+            event.put("path", LogSanitizer.path(path));
             event.put("parameters", requestParameters(request));
             event.put("requestHeaders", requestHeaders(request));
             event.put("contentType", request.getContentType());
@@ -356,7 +356,7 @@ public class SysLogFilter implements Filter {
                 event.put("event", "HTTP_RESPONSE");
                 event.put("requestId", requestId);
                 event.put("method", method);
-                event.put("path", path);
+                event.put("path", LogSanitizer.path(path));
                 event.put("status", response.getStatus());
                 event.put("responseHeaders", responseHeaders(response));
                 event.put("contentType", response.getContentType());

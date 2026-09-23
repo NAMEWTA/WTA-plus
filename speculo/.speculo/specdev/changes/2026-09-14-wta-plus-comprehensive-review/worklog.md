@@ -200,3 +200,7 @@ Revision161: T02 implementation active atc16966167526f9b6ab6eb213265034b3bbe53e4
 ### revision161 同一在线会话响应字段闭环
 
 补充当前源码：SysUserOnline.tokenId未经JSON忽略直接随GET /monitor/online/list及GET /monitor/online返回，LogSanitizer敏感名当前不含tokenid，且两条GET不省略响应日志，因此同一个有效token还会经在线列表HTTP响应正文复制。既有LogSanitizer字段策略需补tokenId，仅改变日志副本，业务响应仍保留可用于正常设备操作的tokenId；canary验收覆盖列表响应→正常操作URL，而非仅路径静态替换。未扩大写集或改业务API。
+
+## T02 真实行为红灯（正式验收0次）
+
+测试专用checkpoint `8a88965363ca295122efadabf0bc97e99c6704c4`，未改生产。冻结driver cff4e66c3f108c71a212623fdab88f88783415f977d33803ed2bf2180024f452，run4e81e6d59c798f07，七类35项仅新canary一failure、零error/skip；有效token及真实controller强退已执行，HTTP审计仍含token断言失败。后续error/OperLog/DB断言因首断言失败尚未执行。隔离MySQL、匿名卷、进程组、32814端口全清，source前后clean。cors恢复唯一产品writer作最小修复，Lead当前无服务/Maven；原red及两次编译开发记录保留。

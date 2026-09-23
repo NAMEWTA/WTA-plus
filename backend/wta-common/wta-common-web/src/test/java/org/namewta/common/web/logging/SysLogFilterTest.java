@@ -97,6 +97,34 @@ class SysLogFilterTest {
     }
 
     @Test
+    void onlineOperationPathsAndListTokenIdAreSafeOnlyInHttpEvents() throws Exception {
+        String token = "credential-canary-online-filter";
+        List<Map<String, Object>> events = new ArrayList<>();
+        SysLogFilter filter = new SysLogFilter(1024, 2 * 1024 * 1024, events::add);
+        MockHttpServletRequest listRequest = new MockHttpServletRequest("GET", "/monitor/online/list");
+        MockHttpServletResponse listResponse = new MockHttpServletResponse();
+        filter.doFilter(listRequest, listResponse, (request, response) -> {
+            var httpResponse = (jakarta.servlet.http.HttpServletResponse) response;
+            httpResponse.setContentType("application/json");
+            httpResponse.getWriter().write("{\"rows\":[{\"tokenId\":\"" + token + "\",\"userName\":\"visible\"}]}");
+        });
+        assertThat(events).hasSize(2);
+        assertThat(events.getFirst()).containsEntry("path", "/monitor/online/list");
+        assertThat(events.getLast()).containsEntry("path", "/monitor/online/list");
+        assertThat(events.getLast().toString()).doesNotContain(token).contains("visible");
+        assertThat(listResponse.getContentAsString()).contains(token);
+
+        MockHttpServletRequest operation = new MockHttpServletRequest("POST", "/monitor/online/myself/" + token);
+        filter.doFilter(operation, new MockHttpServletResponse(), (request, response) -> {
+            assertThat(((jakarta.servlet.http.HttpServletRequest) request).getRequestURI()).contains(token);
+        });
+        assertThat(events).hasSize(4);
+        assertThat(events.get(2)).containsEntry("path", "/monitor/online/myself/[REDACTED]");
+        assertThat(events.get(3)).containsEntry("path", "/monitor/online/myself/[REDACTED]");
+        assertThat(events.toString()).doesNotContain(token);
+    }
+
+    @Test
     void concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
         SysLogFilter filter = new SysLogFilter(20, 2 * 1024 * 1024, events::add);

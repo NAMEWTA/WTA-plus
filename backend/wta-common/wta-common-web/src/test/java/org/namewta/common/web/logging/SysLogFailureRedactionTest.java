@@ -47,6 +47,33 @@ class SysLogFailureRedactionTest {
     }
 
     @Test
+    void exceptionLogsHideOnlineTokenWithServletContextButKeepOrdinaryPaths() {
+        String token = "credential-canary-online-error";
+        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        ListAppender<ILoggingEvent> appender = new ListAppender<>();
+        appender.start();
+        root.addAppender(appender);
+        try {
+            for (String path : new String[]{"/monitor/online/" + token, "/monitor/online/myself/" + token,
+                "/monitor/online/list"}) {
+                MockHttpServletRequest request = new MockHttpServletRequest("POST", "/app" + path);
+                request.setContextPath("/app");
+                new GlobalExceptionHandler().handleRuntimeException(new IllegalStateException(token), request);
+                assertThat(request.getRequestURI()).isEqualTo("/app" + path);
+            }
+            var handlerLogs = appender.list.stream().filter(event ->
+                GlobalExceptionHandler.class.getName().equals(event.getLoggerName())).toList();
+            assertThat(handlerLogs).hasSize(3);
+            assertThat(handlerLogs.get(0).getFormattedMessage()).contains("/app/monitor/online/[REDACTED]").doesNotContain(token);
+            assertThat(handlerLogs.get(1).getFormattedMessage()).contains("/app/monitor/online/myself/[REDACTED]").doesNotContain(token);
+            assertThat(handlerLogs.get(2).getFormattedMessage()).contains("/app/monitor/online/list");
+        } finally {
+            root.detachAppender(appender);
+            appender.stop();
+        }
+    }
+
+    @Test
     void formRepeatsRemainVisibleWhileNestedSecretsAndOAuthCodeDisappear() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/context/sso/oauth2/token");

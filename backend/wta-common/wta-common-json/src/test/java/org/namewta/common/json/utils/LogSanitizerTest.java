@@ -101,4 +101,31 @@ class LogSanitizerTest {
         assertTrue(sanitized.contains("auth-captcha"));
         assertTrue(LogSanitizer.json("{\"code\":1234}", "/business").contains("1234"));
     }
+
+    @Test
+    void onlineTokenIdIsRedactedOnlyInLogCopies() {
+        Map<String, Object> response = Map.of("rows", java.util.List.of(Map.of(
+            "tokenId", CANARY, "userName", "visible")));
+        String safe = LogSanitizer.object(response, "/monitor/online/list");
+        assertFalse(safe.contains(CANARY));
+        assertTrue(safe.contains("visible"));
+        assertEquals(CANARY, ((Map<?, ?>) ((java.util.List<?>) response.get("rows")).getFirst()).get("tokenId"));
+        assertTrue(LogSanitizer.isSensitiveName("token_id", "/monitor/online"));
+        assertTrue(LogSanitizer.json("{\"code\":200}", "/ordinary").contains("200"));
+    }
+
+    @Test
+    void onlineOperationPathsHideOnlyTheTokenSegment() {
+        assertEquals("/monitor/online/" + LogSanitizer.REDACTED,
+            LogSanitizer.path("/monitor/online/" + CANARY));
+        assertEquals("/monitor/online/myself/" + LogSanitizer.REDACTED + "/",
+            LogSanitizer.path("/monitor/online/myself/" + CANARY + "/"));
+        assertEquals("/monitor/online/" + LogSanitizer.REDACTED,
+            LogSanitizer.path("/monitor/online/" + CANARY + ";tracking=1"));
+        for (String ordinary : new String[]{"/monitor/online", "/monitor/online/list", "/monitor/online/list/",
+            "/monitor/online/myself", "/monitor/online/myself/", "/business/" + CANARY,
+            "/monitor/online/list/other", "/unrelated/monitor/online/" + CANARY}) {
+            assertEquals(ordinary, LogSanitizer.path(ordinary));
+        }
+    }
 }
