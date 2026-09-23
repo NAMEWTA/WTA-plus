@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-当前revision179：12done/2cancelled/T41 in_progress/35ready。恢复E第一次失败及五项Chrome通过均保存，继续两处关闭按钮测试定位修复。
+当前revision180：12done/2cancelled/T41 in_progress/35ready。F第2次浏览器失败已定位到重复文本断言，core/静态/合同门禁通过；下一G第3次。
 
 最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
@@ -44,3 +44,7 @@ Revision178: clean d58fc3d owned SQL diagnostic proves four1267/HY000 failures a
 ## revision179 — 恢复E检查点
 
 Revision179: recovery E a0dcbac8 attempt1 failed real Chrome at spec90 close locator after SQL501/2, real login, top10/detail body passed; source/JAR clean and cleanup[]. Five API-controlled Chrome cases passed5/0/0/0 on exactE using independently verified C production328 artifacts. Retain E failed result; two exact-name close locator fixes authorized within existing e2e scope; no runtime or assertion relaxation.12done/2cancelled/T41in_progress/35ready; oldbatch3 retained.
+
+## revision180 — 恢复F检查点
+
+Revision180: recovery F cb8063b6 attempt2 failed Chrome at B shared-title locator112 after Apage26/oldest/foreign-negative and Blogin/unread2/two rows. Seed title=summary renders twice; authorize two unique table-row/title-cell assertions, retaining counts and all negative/readAll checks. Ffull/core/static/OpenAPI pass, source/JAR stable cleanup[]. Oldbatch3 and recoveryE/F retained; nextG attempt3.12done/2cancelled/T41in_progress/35ready.

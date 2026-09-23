@@ -1,0 +1,1654 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] WTA-Plus                                                           [pom]
+[INFO] wta-common                                                         [pom]
+[INFO] wta-common-core                                                    [jar]
+[INFO] wta-common-doc                                                     [jar]
+[INFO] wta-common-json                                                    [jar]
+[INFO] wta-common-redis                                                   [jar]
+[INFO] wta-common-social                                                  [jar]
+[INFO] wta-common-nacos                                                   [jar]
+[INFO] wta-common-notify                                                  [jar]
+[INFO] wta-common-mail                                                    [jar]
+[INFO] wta-common-mcp                                                     [jar]
+[INFO] wta-api                                                            [jar]
+[INFO] wta-common-satoken                                                 [jar]
+[INFO] wta-common-openapi                                                 [jar]
+[INFO] wta-common-mybatis                                                 [jar]
+[INFO] wta-common-translation                                             [jar]
+[INFO] wta-common-oss                                                     [jar]
+[INFO] wta-common-log                                                     [jar]
+[INFO] wta-common-excel                                                   [jar]
+[INFO] wta-common-sms                                                     [jar]
+[INFO] wta-common-security                                                [jar]
+[INFO] wta-common-web                                                     [jar]
+[INFO] wta-common-sensitive                                               [jar]
+[INFO] wta-common-encrypt                                                 [jar]
+[INFO] wta-common-push                                                    [jar]
+[INFO] wta-modules                                                        [pom]
+[INFO] wta-system                                                         [jar]
+[INFO] wta-third                                                          [jar]
+[INFO] wta-notify                                                         [jar]
+[INFO] wta-sso                                                            [jar]
+[INFO] wta-profile                                                        [pom]
+[INFO] wta-profile-person                                                 [jar]
+[INFO] wta-profile-enterprise                                             [jar]
+[INFO] wta-admin                                                          [jar]
+[INFO] wta-common-bom                                                     [pom]
+[INFO] wta-common-job                                                     [jar]
+[INFO] wta-common-elasticsearch                                           [jar]
+[INFO] wta-common-liteflow                                                [jar]
+[INFO] wta-common-mqtt                                                    [jar]
+[INFO] wta-common-ai                                                      [jar]
+[INFO] wta-common-richtext                                                [jar]
+[INFO] wta-extend                                                         [pom]
+[INFO] wta-monitor-admin                                                  [jar]
+[INFO] wta-snailjob-server                                                [jar]
+[INFO] wta-demo                                                           [jar]
+[INFO] wta-job                                                            [jar]
+[INFO] wta-workflow                                                       [jar]
+[INFO] wta-ai                                                             [jar]
+[INFO] wta-profile-bom                                                    [pom]
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-vue-plus >----------------------
+[INFO] Building WTA-Plus 6.0.0                                           [1/49]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-vue-plus ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-vue-plus ---
+[INFO] Deleting /srv/WTA-plus/backend/.flattened-pom.xml
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-vue-plus ---
+[INFO] Generating flattened POM of project org.namewta:wta-vue-plus:pom:6.0.0...
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-common >-----------------------
+[INFO] Building wta-common 6.0.0                                         [2/49]
+[INFO]   from wta-common/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/.flattened-pom.xml
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common ---
+[INFO] Generating flattened POM of project org.namewta:wta-common:pom:6.0.0...
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-core >---------------------
+[INFO] Building wta-common-core 6.0.0                                    [3/49]
+[INFO]   from wta-common/wta-common-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-core ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-core/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-core ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-core/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-core ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-core ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-core:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 76 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/StringUtils.java: /srv/WTA-plus/backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/StringUtils.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/utils/StringUtils.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-core ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-core ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-core ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-core ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-core/target/wta-common-core-6.0.0.jar
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-doc >---------------------
+[INFO] Building wta-common-doc 6.0.0                                     [4/49]
+[INFO]   from wta-common/wta-common-doc/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-doc ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-doc/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-doc ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-doc/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-doc ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-doc ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-doc:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-doc ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-doc ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-doc ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-doc ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-doc ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-doc/target/wta-common-doc-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-json >---------------------
+[INFO] Building wta-common-json 6.0.0                                    [5/49]
+[INFO]   from wta-common/wta-common-json/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-json ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-json/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-json ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-json/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-json ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-json ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-json:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-json ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 14 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java: /srv/WTA-plus/backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-json ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-json ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-json ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-json ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-json/target/wta-common-json-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-redis >--------------------
+[INFO] Building wta-common-redis 6.0.0                                   [6/49]
+[INFO]   from wta-common/wta-common-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-redis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-redis/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-redis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-redis/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-redis ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-redis ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-redis:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-redis ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 26 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-redis ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-redis ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-redis ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-redis ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-redis/target/wta-common-redis-6.0.0.jar
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-social >--------------------
+[INFO] Building wta-common-social 6.0.0                                  [7/49]
+[INFO]   from wta-common/wta-common-social/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-social ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-social/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-social ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-social/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-social ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-social ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-social:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-social ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-social ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-social ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-social ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-social ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-social/target/wta-common-social-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-nacos >--------------------
+[INFO] Building wta-common-nacos 6.0.0                                   [8/49]
+[INFO]   from wta-common/wta-common-nacos/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-nacos ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-nacos/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-nacos ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-nacos/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-nacos ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-nacos ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-nacos:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-nacos ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 21 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-nacos ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-nacos ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-nacos ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-nacos ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-nacos/target/wta-common-nacos-6.0.0.jar
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-notify >--------------------
+[INFO] Building wta-common-notify 6.0.0                                  [9/49]
+[INFO]   from wta-common/wta-common-notify/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-notify/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-notify/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-notify ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-notify ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-notify:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-notify ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 40 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-notify ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-notify ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-notify ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-notify ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-notify/target/wta-common-notify-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-mail >---------------------
+[INFO] Building wta-common-mail 6.0.0                                   [10/49]
+[INFO]   from wta-common/wta-common-mail/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mail ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mail/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mail ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mail/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mail ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mail ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mail:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mail ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mail ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mail ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mail ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-mail ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-mail/target/wta-common-mail-6.0.0.jar
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-mcp >---------------------
+[INFO] Building wta-common-mcp 6.0.0                                    [11/49]
+[INFO]   from wta-common/wta-common-mcp/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mcp ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mcp/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mcp ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mcp/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mcp ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mcp ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mcp:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mcp ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-mcp/src/main/java/org/namewta/common/mcp/core/McpClientTemplate.java: /srv/WTA-plus/backend/wta-common/wta-common-mcp/src/main/java/org/namewta/common/mcp/core/McpClientTemplate.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-mcp/src/main/java/org/namewta/common/mcp/core/McpClientTemplate.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mcp ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mcp ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mcp ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-mcp ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-mcp/target/wta-common-mcp-6.0.0.jar
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-api >-------------------------
+[INFO] Building wta-api 6.0.0                                           [12/49]
+[INFO]   from wta-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-api ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-api/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-api ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-api/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-api ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-api ---
+[INFO] Generating flattened POM of project org.namewta:wta-api:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 65 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-api ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-api ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-api ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-api/target/wta-api-6.0.0.jar
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-satoken >-------------------
+[INFO] Building wta-common-satoken 6.0.0                                [13/49]
+[INFO]   from wta-common/wta-common-satoken/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-satoken ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-satoken/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-satoken ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-satoken/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-satoken ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-satoken ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-satoken:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-satoken ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-satoken ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-satoken ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-satoken ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-satoken ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-satoken/target/wta-common-satoken-6.0.0.jar
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-openapi >-------------------
+[INFO] Building wta-common-openapi 6.0.0                                [14/49]
+[INFO]   from wta-common/wta-common-openapi/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-openapi ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-openapi/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-openapi ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-openapi/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-openapi ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-openapi ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-openapi:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-openapi ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 36 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-openapi ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-openapi ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-openapi ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-openapi ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-openapi/target/wta-common-openapi-6.0.0.jar
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-mybatis >-------------------
+[INFO] Building wta-common-mybatis 6.0.0                                [15/49]
+[INFO]   from wta-common/wta-common-mybatis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mybatis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mybatis/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mybatis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mybatis/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mybatis ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mybatis ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mybatis:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mybatis ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 34 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/core/query/LambdaQueryBuilder.java: /srv/WTA-plus/backend/wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/core/query/LambdaQueryBuilder.java uses unchecked or unsafe operations.
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-mybatis/src/main/java/org/namewta/common/mybatis/core/query/LambdaQueryBuilder.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mybatis ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mybatis ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mybatis ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-mybatis ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-mybatis/target/wta-common-mybatis-6.0.0.jar
+[INFO] 
+[INFO] -----------------< org.namewta:wta-common-translation >-----------------
+[INFO] Building wta-common-translation 6.0.0                            [16/49]
+[INFO]   from wta-common/wta-common-translation/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-translation ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-translation/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-translation ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-translation/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-translation ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-translation ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-translation:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-translation ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 11 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-translation/src/main/java/org/namewta/common/translation/core/impl/OssUrlTranslationImpl.java: /srv/WTA-plus/backend/wta-common/wta-common-translation/src/main/java/org/namewta/common/translation/core/impl/OssUrlTranslationImpl.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-translation/src/main/java/org/namewta/common/translation/core/impl/OssUrlTranslationImpl.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-translation ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-translation ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-translation ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-translation ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-translation/target/wta-common-translation-6.0.0.jar
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-oss >---------------------
+[INFO] Building wta-common-oss 6.0.0                                    [17/49]
+[INFO]   from wta-common/wta-common-oss/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-oss ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-oss/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-oss ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-oss/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-oss ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-oss/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-oss/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-oss ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-oss:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-oss ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 31 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java: /srv/WTA-plus/backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-oss ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-oss ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-oss ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-oss ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-oss/target/wta-common-oss-6.0.0.jar
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-log >---------------------
+[INFO] Building wta-common-log 6.0.0                                    [18/49]
+[INFO]   from wta-common/wta-common-log/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-log ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-log/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-log ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-log/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-log ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-log ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-log:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-log ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-log ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-log ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-log ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-log ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-log/target/wta-common-log-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-excel >--------------------
+[INFO] Building wta-common-excel 6.0.0                                  [19/49]
+[INFO]   from wta-common/wta-common-excel/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-excel ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-excel/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-excel ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-excel/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-excel ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-excel/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-excel/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-excel ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-excel:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-excel ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 21 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-excel ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-excel ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-excel ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-excel ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-excel/target/wta-common-excel-6.0.0.jar
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-sms >---------------------
+[INFO] Building wta-common-sms 6.0.0                                    [20/49]
+[INFO]   from wta-common/wta-common-sms/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-sms ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sms/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-sms ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sms/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-sms ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-sms ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-sms:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-sms ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 13 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsDeliveryQueryClient.java: /srv/WTA-plus/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsDeliveryQueryClient.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-common/wta-common-sms/src/main/java/org/namewta/common/sms/notify/SmsDeliveryQueryClient.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-sms ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-sms ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-sms ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-sms ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-sms/target/wta-common-sms-6.0.0.jar
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-security >-------------------
+[INFO] Building wta-common-security 6.0.0                               [21/49]
+[INFO]   from wta-common/wta-common-security/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-security ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-security/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-security ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-security/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-security ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-security ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-security:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-security ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-security ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-security ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-security ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-security ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-security/target/wta-common-security-6.0.0.jar
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-web >---------------------
+[INFO] Building wta-common-web 6.0.0                                    [22/49]
+[INFO]   from wta-common/wta-common-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-web ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-web/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-web ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-web/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-web ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-web ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-web:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-web ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 31 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-web ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-web ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-web ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-web ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-web/target/wta-common-web-6.0.0.jar
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-sensitive >------------------
+[INFO] Building wta-common-sensitive 6.0.0                              [23/49]
+[INFO]   from wta-common/wta-common-sensitive/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-sensitive ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sensitive/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-sensitive ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sensitive/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-sensitive ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-sensitive ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-sensitive:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-sensitive ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-sensitive ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-sensitive ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-sensitive ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-sensitive ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-sensitive/target/wta-common-sensitive-6.0.0.jar
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-encrypt >-------------------
+[INFO] Building wta-common-encrypt 6.0.0                                [24/49]
+[INFO]   from wta-common/wta-common-encrypt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-encrypt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-encrypt/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-encrypt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-encrypt/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-encrypt ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-encrypt ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-encrypt:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-encrypt ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 19 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-encrypt ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-encrypt ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-encrypt ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-encrypt ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-encrypt/target/wta-common-encrypt-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-push >---------------------
+[INFO] Building wta-common-push 6.0.0                                   [25/49]
+[INFO]   from wta-common/wta-common-push/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-push ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-push/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-push ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-push/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-push ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-push ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-push:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-push ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 19 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-push ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-push ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-push ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-push ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-push/target/wta-common-push-6.0.0.jar
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-modules >-----------------------
+[INFO] Building wta-modules 6.0.0                                       [26/49]
+[INFO]   from wta-modules/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-modules ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-modules ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/.flattened-pom.xml
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-modules ---
+[INFO] Generating flattened POM of project org.namewta:wta-modules:pom:6.0.0...
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-system >-----------------------
+[INFO] Building wta-system 6.0.0                                        [27/49]
+[INFO]   from wta-modules/wta-system/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-system ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-system/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-system ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-system/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-system ---
+[INFO] Copying 23 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-system ---
+[INFO] Generating flattened POM of project org.namewta:wta-system:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-system ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 260 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/MybatisOssMigrationStore.java: Some input files use or override a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/MybatisOssMigrationStore.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-system ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-system ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-system ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-system ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-system/target/wta-system-6.0.0.jar
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-third >------------------------
+[INFO] Building wta-third 6.0.0                                         [28/49]
+[INFO]   from wta-modules/wta-third/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-third ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-third/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-third ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-third/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-third ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-third ---
+[INFO] Generating flattened POM of project org.namewta:wta-third:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-third ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 71 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-third/src/main/java/org/namewta/third/adapter/gateway/ThirdGatewayAdapter.java: Some input files use or override a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-third/src/main/java/org/namewta/third/adapter/gateway/ThirdGatewayAdapter.java: Recompile with -Xlint:deprecation for details.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-third/src/main/java/org/namewta/third/adapter/gateway/ThirdGatewayAdapter.java: /srv/WTA-plus/backend/wta-modules/wta-third/src/main/java/org/namewta/third/adapter/gateway/ThirdGatewayAdapter.java uses unchecked or unsafe operations.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-third/src/main/java/org/namewta/third/adapter/gateway/ThirdGatewayAdapter.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-third ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-third ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-third ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-third ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-third/target/wta-third-6.0.0.jar
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-notify >-----------------------
+[INFO] Building wta-notify 6.0.0                                        [29/49]
+[INFO]   from wta-modules/wta-notify/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-notify/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-notify/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-notify ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-notify ---
+[INFO] Generating flattened POM of project org.namewta:wta-notify:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-notify ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 103 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java: Some input files use or override a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java: Recompile with -Xlint:deprecation for details.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java: Some input files use unchecked or unsafe operations.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-notify ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-notify ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-notify ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-notify ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-notify/target/wta-notify-6.0.0.jar
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-sso >-------------------------
+[INFO] Building wta-sso 6.0.0                                           [30/49]
+[INFO]   from wta-modules/wta-sso/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-sso ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-sso/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-sso ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-sso/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-sso ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-sso ---
+[INFO] Generating flattened POM of project org.namewta:wta-sso:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-sso ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 32 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-sso ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-sso ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-sso ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-sso ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-sso/target/wta-sso-6.0.0.jar
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-profile >-----------------------
+[INFO] Building wta-profile 6.0.0                                       [31/49]
+[INFO]   from wta-modules/wta-profile/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-profile ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/.flattened-pom.xml
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-profile ---
+[INFO] Generating flattened POM of project org.namewta:wta-profile:pom:6.0.0...
+[INFO] 
+[INFO] -------------------< org.namewta:wta-profile-person >-------------------
+[INFO] Building wta-profile-person 6.0.0                                [32/49]
+[INFO]   from wta-modules/wta-profile/wta-profile-person/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile-person ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-person/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-profile-person ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-person/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-profile-person ---
+[INFO] Copying 6 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-profile-person ---
+[INFO] Generating flattened POM of project org.namewta:wta-profile-person:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-profile-person ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 165 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-profile-person ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-profile-person ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-profile-person ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-profile-person ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-person/target/wta-profile-person-6.0.0.jar
+[INFO] 
+[INFO] -----------------< org.namewta:wta-profile-enterprise >-----------------
+[INFO] Building wta-profile-enterprise 6.0.0                            [33/49]
+[INFO]   from wta-modules/wta-profile/wta-profile-enterprise/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile-enterprise ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-enterprise/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-profile-enterprise ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-enterprise/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-profile-enterprise ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-profile-enterprise ---
+[INFO] Generating flattened POM of project org.namewta:wta-profile-enterprise:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-profile-enterprise ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 127 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-profile-enterprise ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-profile-enterprise ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-profile-enterprise ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-profile-enterprise ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-enterprise/target/wta-profile-enterprise-6.0.0.jar
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-admin >------------------------
+[INFO] Building wta-admin 6.0.0                                         [34/49]
+[INFO]   from wta-admin/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-admin/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-admin/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-admin ---
+[INFO] Copying 9 resources from src/main/resources to target/classes
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-admin ---
+[INFO] Generating flattened POM of project org.namewta:wta-admin:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-admin ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 21 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-admin ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-admin ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-admin ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-admin ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-admin/target/wta-admin.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.0:repackage (default) @ wta-admin ---
+[INFO] Replacing main artifact /srv/WTA-plus/backend/wta-admin/target/wta-admin.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /srv/WTA-plus/backend/wta-admin/target/wta-admin.jar.original
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-bom >---------------------
+[INFO] Building wta-common-bom 6.0.0                                    [35/49]
+[INFO]   from wta-common/wta-common-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-bom ---
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-job >---------------------
+[INFO] Building wta-common-job 6.0.0                                    [36/49]
+[INFO]   from wta-common/wta-common-job/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-job/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-job/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-job ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-job ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-job:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-job ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-job ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-job ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-job ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-job ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-job/target/wta-common-job-6.0.0.jar
+[INFO] 
+[INFO] ----------------< org.namewta:wta-common-elasticsearch >----------------
+[INFO] Building wta-common-elasticsearch 6.0.0                          [37/49]
+[INFO]   from wta-common/wta-common-elasticsearch/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-elasticsearch ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-elasticsearch/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-elasticsearch ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-elasticsearch/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-elasticsearch ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-elasticsearch ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-elasticsearch:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-elasticsearch ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 2 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-elasticsearch ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-elasticsearch ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-elasticsearch ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-elasticsearch ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-elasticsearch/target/wta-common-elasticsearch-6.0.0.jar
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-liteflow >-------------------
+[INFO] Building wta-common-liteflow 6.0.0                               [38/49]
+[INFO]   from wta-common/wta-common-liteflow/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-liteflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-liteflow/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-liteflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-liteflow/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-liteflow ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-liteflow ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-liteflow:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-liteflow ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-liteflow ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-liteflow ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-liteflow ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-liteflow ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-liteflow/target/wta-common-liteflow-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-mqtt >---------------------
+[INFO] Building wta-common-mqtt 6.0.0                                   [39/49]
+[INFO]   from wta-common/wta-common-mqtt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mqtt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mqtt/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mqtt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mqtt/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mqtt ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mqtt ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mqtt:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mqtt ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mqtt ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mqtt ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mqtt ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-mqtt ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-mqtt/target/wta-common-mqtt-6.0.0.jar
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-ai >----------------------
+[INFO] Building wta-common-ai 6.0.0                                     [40/49]
+[INFO]   from wta-common/wta-common-ai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-ai/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-ai/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-ai ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-ai ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-ai:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-ai ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-ai ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-ai ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-ai ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-ai ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-ai/target/wta-common-ai-6.0.0.jar
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-richtext >-------------------
+[INFO] Building wta-common-richtext 6.0.0                               [41/49]
+[INFO]   from wta-common/wta-common-richtext/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-richtext ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-richtext/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-richtext ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-richtext/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-richtext ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-richtext/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-richtext/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-richtext ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-richtext:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-richtext ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 4 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-richtext ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-richtext ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-richtext ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-common-richtext ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-common/wta-common-richtext/target/wta-common-richtext-6.0.0.jar
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-extend >-----------------------
+[INFO] Building wta-extend 6.0.0                                        [42/49]
+[INFO]   from wta-extend/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-extend ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-extend ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/.flattened-pom.xml
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-extend ---
+[INFO] Generating flattened POM of project org.namewta:wta-extend:pom:6.0.0...
+[INFO] 
+[INFO] -------------------< org.namewta:wta-monitor-admin >--------------------
+[INFO] Building wta-monitor-admin 6.0.0                                 [43/49]
+[INFO]   from wta-extend/wta-monitor-admin/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-monitor-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-monitor-admin/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-monitor-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-monitor-admin/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-monitor-admin ---
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-monitor-admin ---
+[INFO] Generating flattened POM of project org.namewta:wta-monitor-admin:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-monitor-admin ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-monitor-admin ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-monitor-admin ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-monitor-admin ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-monitor-admin ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-extend/wta-monitor-admin/target/wta-monitor-admin.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.0:repackage (default) @ wta-monitor-admin ---
+[INFO] Replacing main artifact /srv/WTA-plus/backend/wta-extend/wta-monitor-admin/target/wta-monitor-admin.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /srv/WTA-plus/backend/wta-extend/wta-monitor-admin/target/wta-monitor-admin.jar.original
+[INFO] 
+[INFO] ------------------< org.namewta:wta-snailjob-server >-------------------
+[INFO] Building wta-snailjob-server 6.0.0                               [44/49]
+[INFO]   from wta-extend/wta-snailjob-server/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-snailjob-server ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-snailjob-server/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-snailjob-server ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-snailjob-server/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-snailjob-server ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-snailjob-server ---
+[INFO] Generating flattened POM of project org.namewta:wta-snailjob-server:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-snailjob-server ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-snailjob-server ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-snailjob-server ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-snailjob-server ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-snailjob-server ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-extend/wta-snailjob-server/target/wta-snailjob-server.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.0:repackage (default) @ wta-snailjob-server ---
+[INFO] Replacing main artifact /srv/WTA-plus/backend/wta-extend/wta-snailjob-server/target/wta-snailjob-server.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /srv/WTA-plus/backend/wta-extend/wta-snailjob-server/target/wta-snailjob-server.jar.original
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-demo >------------------------
+[INFO] Building wta-demo 6.0.0                                          [45/49]
+[INFO]   from wta-modules/wta-demo/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-demo ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-demo/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-demo ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-demo/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-demo ---
+[INFO] Copying 6 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-demo ---
+[INFO] Generating flattened POM of project org.namewta:wta-demo:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-demo ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 61 source files with javac [debug release 21] to target/classes
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/mcp/McpDemoClientHandlers.java: /srv/WTA-plus/backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/mcp/McpDemoClientHandlers.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/mcp/McpDemoClientHandlers.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-demo ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-demo ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-demo ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-demo ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-demo/target/wta-demo-6.0.0.jar
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-job >-------------------------
+[INFO] Building wta-job 6.0.0                                           [46/49]
+[INFO]   from wta-modules/wta-job/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-job/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-job/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-job ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-modules/wta-job/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-modules/wta-job/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-job ---
+[INFO] Generating flattened POM of project org.namewta:wta-job:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-job ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 11 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-job ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-job ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-job ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-job ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-job/target/wta-job-6.0.0.jar
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-workflow >----------------------
+[INFO] Building wta-workflow 6.0.0                                      [47/49]
+[INFO]   from wta-modules/wta-workflow/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-workflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-workflow/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-workflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-workflow/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-workflow ---
+[INFO] Copying 11 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-workflow ---
+[INFO] Generating flattened POM of project org.namewta:wta-workflow:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-workflow ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 111 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-workflow ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-workflow ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-workflow ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-workflow ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-workflow/target/wta-workflow-6.0.0.jar
+[INFO] 
+[INFO] -------------------------< org.namewta:wta-ai >-------------------------
+[INFO] Building wta-ai 6.0.0                                            [48/49]
+[INFO]   from wta-modules/wta-ai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-ai/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-ai/.flattened-pom.xml
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-ai ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-modules/wta-ai/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-modules/wta-ai/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-ai ---
+[INFO] Generating flattened POM of project org.namewta:wta-ai:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-ai ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-ai ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-ai ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-ai ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ wta-ai ---
+[INFO] Building jar: /srv/WTA-plus/backend/wta-modules/wta-ai/target/wta-ai-6.0.0.jar
+[INFO] 
+[INFO] --------------------< org.namewta:wta-profile-bom >---------------------
+[INFO] Building wta-profile-bom 6.0.0                                   [49/49]
+[INFO]   from wta-modules/wta-profile/wta-profile-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile-bom ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for WTA-Plus 6.0.0:
+[INFO] 
+[INFO] WTA-Plus ........................................... SUCCESS [  0.334 s]
+[INFO] wta-common ......................................... SUCCESS [  0.088 s]
+[INFO] wta-common-core .................................... SUCCESS [  3.148 s]
+[INFO] wta-common-doc ..................................... SUCCESS [  0.751 s]
+[INFO] wta-common-json .................................... SUCCESS [  0.578 s]
+[INFO] wta-common-redis ................................... SUCCESS [  1.040 s]
+[INFO] wta-common-social .................................. SUCCESS [  0.442 s]
+[INFO] wta-common-nacos ................................... SUCCESS [  0.474 s]
+[INFO] wta-common-notify .................................. SUCCESS [  0.556 s]
+[INFO] wta-common-mail .................................... SUCCESS [  0.521 s]
+[INFO] wta-common-mcp ..................................... SUCCESS [  0.480 s]
+[INFO] wta-api ............................................ SUCCESS [  0.779 s]
+[INFO] wta-common-satoken ................................. SUCCESS [  0.422 s]
+[INFO] wta-common-openapi ................................. SUCCESS [  0.583 s]
+[INFO] wta-common-mybatis ................................. SUCCESS [  1.145 s]
+[INFO] wta-common-translation ............................. SUCCESS [  0.448 s]
+[INFO] wta-common-oss ..................................... SUCCESS [  0.875 s]
+[INFO] wta-common-log ..................................... SUCCESS [  0.382 s]
+[INFO] wta-common-excel ................................... SUCCESS [  0.686 s]
+[INFO] wta-common-sms ..................................... SUCCESS [  0.463 s]
+[INFO] wta-common-security ................................ SUCCESS [  0.425 s]
+[INFO] wta-common-web ..................................... SUCCESS [  0.786 s]
+[INFO] wta-common-sensitive ............................... SUCCESS [  0.285 s]
+[INFO] wta-common-encrypt ................................. SUCCESS [  0.514 s]
+[INFO] wta-common-push .................................... SUCCESS [  0.518 s]
+[INFO] wta-modules ........................................ SUCCESS [  0.027 s]
+[INFO] wta-system ......................................... SUCCESS [  4.705 s]
+[INFO] wta-third .......................................... SUCCESS [  1.004 s]
+[INFO] wta-notify ......................................... SUCCESS [  1.444 s]
+[INFO] wta-sso ............................................ SUCCESS [  0.668 s]
+[INFO] wta-profile ........................................ SUCCESS [  0.027 s]
+[INFO] wta-profile-person ................................. SUCCESS [  1.719 s]
+[INFO] wta-profile-enterprise ............................. SUCCESS [  1.458 s]
+[INFO] wta-admin .......................................... SUCCESS [  2.580 s]
+[INFO] wta-common-bom ..................................... SUCCESS [  0.001 s]
+[INFO] wta-common-job ..................................... SUCCESS [  0.300 s]
+[INFO] wta-common-elasticsearch ........................... SUCCESS [  0.261 s]
+[INFO] wta-common-liteflow ................................ SUCCESS [  0.322 s]
+[INFO] wta-common-mqtt .................................... SUCCESS [  0.304 s]
+[INFO] wta-common-ai ...................................... SUCCESS [  0.059 s]
+[INFO] wta-common-richtext ................................ SUCCESS [  0.246 s]
+[INFO] wta-extend ......................................... SUCCESS [  0.025 s]
+[INFO] wta-monitor-admin .................................. SUCCESS [  0.634 s]
+[INFO] wta-snailjob-server ................................ SUCCESS [  1.194 s]
+[INFO] wta-demo ........................................... SUCCESS [  1.750 s]
+[INFO] wta-job ............................................ SUCCESS [  0.274 s]
+[INFO] wta-workflow ....................................... SUCCESS [  2.007 s]
+[INFO] wta-ai ............................................. SUCCESS [  0.045 s]
+[INFO] wta-profile-bom .................................... SUCCESS [  0.001 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  38.400 s
+[INFO] Finished at: 2026-09-23T13:30:01-04:00
+[INFO] ------------------------------------------------------------------------

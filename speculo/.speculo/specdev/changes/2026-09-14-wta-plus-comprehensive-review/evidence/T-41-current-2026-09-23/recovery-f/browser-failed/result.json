@@ -1,0 +1,143 @@
+{
+  "gate": "T-41 real Admin inbox page 26 and global read-all",
+  "run_id": "62047a08743c9ffa",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T17:26:34.534523+00:00",
+  "owned": {
+    "mysql_container_id": "7ed9ad9ba17dea711c193dde5d9f4a655c27a5c47ee5d9fa3c515a855d5ba26e",
+    "redis_container_id": "b9fb450e06fa42171ddf470e2e9c172fd28cada2d6d0d39577819e00506d222b",
+    "minio_container_id": "a9813c4d69e8bd8ecf1c902907f3892134c31a6d8fb8119be17f80e9d7563755",
+    "loopback_ports": {
+      "mysql": 32869,
+      "redis": 32870,
+      "minio": 32871,
+      "backend": 36195,
+      "vite": 60711
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "login_passwords_rotated_in_fresh_schema": 2,
+    "b_role_id": 8200027195954348207,
+    "backend_pgid": 877915,
+    "vite_pgid": 878577,
+    "playwright_pgid": 878759,
+    "captured_anonymous_volume_names": [
+      "46f3694ddcf3dc721dbf9322fa29a86a078530366c9c72803bc9d7214c43f2b4",
+      "8091659fec109ad7adb70d560acba5ac994023ed350e83c6e8462597472874f1"
+    ]
+  },
+  "cleanup": {
+    "playwright_process_group": {
+      "pgid": 878759,
+      "live_members": []
+    },
+    "vite_process_group": {
+      "pgid": 878577,
+      "live_members": []
+    },
+    "backend_process_group": {
+      "pgid": 877915,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "46f3694ddcf3dc721dbf9322fa29a86a078530366c9c72803bc9d7214c43f2b4": true,
+      "8091659fec109ad7adb70d560acba5ac994023ed350e83c6e8462597472874f1": true
+    },
+    "loopback_ports_closed": {
+      "32869": true,
+      "32870": true,
+      "32871": true,
+      "36195": true,
+      "60711": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "cb8063b686fcd82d0a91064061e674a59fb6fc14",
+    "tree": "2ee339a27589ea393baca0d4131f598981f5abae",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "486989a5a86ac601f5587236e44e0856754057a3bd63c5a21d8d62cca95d95e3",
+    "size_bytes": 214186517
+  },
+  "package_proof_sha256": "edaa350477c21b18e2345963ffb0f23ba52a0a3de153a1331b178a7317efd5a5",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/inbox-paged-real.e2e.ts": "5ffad77ebe168d398d208563b7f90f8b3283e72d73a3708ffa223450954b1e1d",
+    "frontend/e2e/playwright.inbox-paged-real.config.ts": "860f0254ef131fa9c8a42eaf83850fe2352ac323de9d1031f7b8bab6a8186545"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "seed_before": {
+    "a": {
+      "total": 501,
+      "unread": 481
+    },
+    "b": {
+      "total": 2,
+      "unread": 2
+    },
+    "synthetic_messages": 502,
+    "synthetic_relations": 503,
+    "shared_relationships": 2
+  },
+  "seed_manifest_sha256": "23a86febbbe3232275263de2265ed8261edcdf756fef56444d4be8485b594e6e",
+  "playwright_exit_code": 1,
+  "playwright_raw_sha256": "d6c6c0b11baac44656788e939cfd36d8577c9c828d3d2bc1387f0c051ad26cf8",
+  "playwright_counts": {
+    "expected": 0,
+    "unexpected": 1,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "playwright_diagnostic": {
+    "file": "frontend/e2e/inbox-paged-real.e2e.ts",
+    "title": "T-41 real Admin inbox page 26 and global read-all",
+    "project": "chromium",
+    "attempts": 1,
+    "status": "failed",
+    "case_declaration": {
+      "line": 51,
+      "column": 1
+    },
+    "assertion_location": {
+      "line": 112,
+      "column": 54
+    }
+  },
+  "error": "RuntimeError: Playwright expected/unexpected/skipped/flaky counts differ",
+  "source_after": {
+    "head": "cb8063b686fcd82d0a91064061e674a59fb6fc14",
+    "tree": "2ee339a27589ea393baca0d4131f598981f5abae",
+    "clean": true
+  },
+  "artifact_after_sha256": "486989a5a86ac601f5587236e44e0856754057a3bd63c5a21d8d62cca95d95e3",
+  "finished_utc": "2026-09-23T17:27:25.100567+00:00"
+}

@@ -1,6 +1,6 @@
 # 恢复入口
 
-当前revision179：12done/2cancelled/T41 in_progress/35ready。恢复E第一次失败及五项Chrome通过均保存，继续两处关闭按钮测试定位修复。
+当前revision180：12done/2cancelled/T41 in_progress/35ready。F第2次浏览器失败已定位到重复文本断言，core/静态/合同门禁通过；下一G第3次。
 
 当前revision172：12done/2cancelled/36ready；T50最终84ce0a9已验收。无产品writer，下一T41；/tmp/wta-t41-implementation-design.md及real-environment-outline.md为只读准备。以下历史保持原时点。
 
@@ -230,3 +230,7 @@ Revision178: clean d58fc3d owned SQL diagnostic proves four1267/HY000 failures a
 ## revision179 — 恢复E检查点
 
 Revision179: recovery E a0dcbac8 attempt1 failed real Chrome at spec90 close locator after SQL501/2, real login, top10/detail body passed; source/JAR clean and cleanup[]. Five API-controlled Chrome cases passed5/0/0/0 on exactE using independently verified C production328 artifacts. Retain E failed result; two exact-name close locator fixes authorized within existing e2e scope; no runtime or assertion relaxation.12done/2cancelled/T41in_progress/35ready; oldbatch3 retained.
+
+## revision180 — 恢复F检查点
+
+Revision180: recovery F cb8063b6 attempt2 failed Chrome at B shared-title locator112 after Apage26/oldest/foreign-negative and Blogin/unread2/two rows. Seed title=summary renders twice; authorize two unique table-row/title-cell assertions, retaining counts and all negative/readAll checks. Ffull/core/static/OpenAPI pass, source/JAR stable cleanup[]. Oldbatch3 and recoveryE/F retained; nextG attempt3.12done/2cancelled/T41in_progress/35ready.

@@ -1,0 +1,12 @@
+{
+  "source": "cb8063b686fcd82d0a91064061e674a59fb6fc14",
+  "tree": "2ee339a27589ea393baca0d4131f598981f5abae",
+  "batch": 2,
+  "attempt": 2,
+  "old_batch_attempts": 3,
+  "status": "failed",
+  "started_at": "2026-09-23T17:25:52.492128+00:00",
+  "finished_at": "2026-09-23T17:29:22.884534+00:00",
+  "failure": "actual62047a08743c9ffa at B shared title locator spec112:54 after Apage26 and Blogin/2rows; cleanup[] sourceclean",
+  "browser_result": "browser-runs/62047a08743c9ffa/result.json"
+}
