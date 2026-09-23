@@ -1,6 +1,6 @@
 # 工作记录
 
-当前revision177：12done/2cancelled/T41 blocked/35ready。D多数门禁通过但browser在owned SQL准备失败；三次上限已保留并停止自动重派，Lead诊断中，Goal active。
+当前revision178：12done/2cancelled/T41 in_progress/35ready。隔离SQL诊断已证实根因；四项复盘和Dispatch02已保存，恢复批0次，原三次保留。
 
 ## Goal
 
@@ -288,3 +288,7 @@ Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at fro
 ## revision177 — T41三次复盘
 
 Revision177: T41 current batch reached3 complete-candidate attempts: B frontend fixture failure; C frontend750/buildpassed but missing declared actual-host coverage; D frontend751/default870+201skip/full/realHTTP4/shared135 passed but owned browser seed SQL exec failed before JVM/Chrome. D sourceclean/cleanup[] preserved; ticket/workspace blocked, result null. Stop automatic resend. Lead diagnosis and materially changed dispatch required before resetting a recovery batch.12done/2cancelled/T41blocked/35ready; Goal remains active.
+
+## revision178 — T41恢复派单
+
+Revision178: clean d58fc3d owned SQL diagnostic proves four1267/HY000 failures and collated controls pass;501/2 fixture and cleanup pass, acceptance=false. Separate login40>30 fixture defect confirmed. Four-part Lead review and materially changed Dispatch02 recorded before recovery attempts reset0; old B/C/D three attempts immutable.12done/2cancelled/T41in_progress/35ready; Goal active.

@@ -1,0 +1,207 @@
+{
+  "kind": "T41_SQL_DIAG_ONLY",
+  "acceptance": false,
+  "diagnostic_complete": true,
+  "run_id": "dac0c6bfd5c2159b",
+  "source_before": {
+    "head": "d58fc3d1fdc7e0fd885b3fd217e76395d0ff5347",
+    "tree": "96d25291826f59d9f9e5edf46c91f7239e83be29",
+    "clean": true
+  },
+  "helper_sha256": "bd1798bba7a3ea78640e054e11f04905faf56ca38b8594196e18fc379c4c1f88",
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "stages": [
+    {
+      "stage": "metadata_columns",
+      "exit_code": 0
+    },
+    {
+      "stage": "metadata_expression",
+      "exit_code": 0
+    },
+    {
+      "stage": "baseline_tables",
+      "exit_code": 0,
+      "count": 103
+    },
+    {
+      "stage": "baseline_outbox",
+      "exit_code": 0,
+      "count": 0
+    },
+    {
+      "stage": "baseline_external",
+      "exit_code": 0,
+      "count": 0
+    },
+    {
+      "stage": "baseline_accounts",
+      "exit_code": 0,
+      "count": 0
+    },
+    {
+      "stage": "baseline_private_oss",
+      "exit_code": 0,
+      "count": 1
+    },
+    {
+      "stage": "lookup_A_original",
+      "exit_code": 1,
+      "mysql_error_number": 1267,
+      "sqlstate": "HY000"
+    },
+    {
+      "stage": "lookup_A_collated",
+      "exit_code": 0,
+      "row_count": 1
+    },
+    {
+      "stage": "lookup_B_original",
+      "exit_code": 1,
+      "mysql_error_number": 1267,
+      "sqlstate": "HY000"
+    },
+    {
+      "stage": "lookup_B_collated",
+      "exit_code": 0,
+      "row_count": 1
+    },
+    {
+      "stage": "lookup_client_original",
+      "exit_code": 1,
+      "mysql_error_number": 1267,
+      "sqlstate": "HY000"
+    },
+    {
+      "stage": "lookup_client_collated",
+      "exit_code": 0,
+      "row_count": 1
+    },
+    {
+      "stage": "rotate_A",
+      "exit_code": 0,
+      "affected_rows": 1
+    },
+    {
+      "stage": "rotate_B",
+      "exit_code": 0,
+      "affected_rows": 1
+    },
+    {
+      "stage": "role_existing",
+      "exit_code": 0
+    },
+    {
+      "stage": "role_menus",
+      "exit_code": 0
+    },
+    {
+      "stage": "role_collision",
+      "exit_code": 0
+    },
+    {
+      "stage": "role_insert",
+      "exit_code": 0
+    },
+    {
+      "stage": "role_effective",
+      "exit_code": 0
+    },
+    {
+      "stage": "seed_insert",
+      "exit_code": 0
+    },
+    {
+      "stage": "seed_count",
+      "exit_code": 0
+    },
+    {
+      "stage": "title_like_original",
+      "exit_code": 1,
+      "mysql_error_number": 1267,
+      "sqlstate": "HY000"
+    },
+    {
+      "stage": "title_like_collated",
+      "exit_code": 0
+    },
+    {
+      "stage": "seed_ownership",
+      "exit_code": 0
+    },
+    {
+      "stage": "preserve_A_reads",
+      "exit_code": 0
+    },
+    {
+      "stage": "preserve_A_seen",
+      "exit_code": 0
+    },
+    {
+      "stage": "preserve_B",
+      "exit_code": 0
+    }
+  ],
+  "owned": {
+    "mysql_container_full_id": "340861e145ce6932e0d8e8620db2066780b61f5d9ce1ffa6f276b6f3ddbdb48e",
+    "loopback_port": 32865,
+    "captured_anonymous_volumes": [
+      "bd2575cfb8fca3b69ee026fd6841f56b67e12d471cb15733a8eff55fd297e2d0"
+    ]
+  },
+  "cleanup": {
+    "errors": [],
+    "initializer_process_group": {
+      "pgid": 838561,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "bd2575cfb8fca3b69ee026fd6841f56b67e12d471cb15733a8eff55fd297e2d0": true
+    },
+    "loopback_ports_closed": {
+      "32865": true
+    }
+  },
+  "started_utc": "2026-09-23T17:11:42.344767+00:00",
+  "initializer_exit_code": 0,
+  "collations": {
+    "notify_message.title": "utf8mb4_general_ci",
+    "sys_client.client_id": "utf8mb4_general_ci",
+    "sys_user.user_name": "utf8mb4_general_ci"
+  },
+  "expression_collation": {
+    "label": "utf8mb4_0900_ai_ci",
+    "coercibility": 2
+  },
+  "role_created_and_effective": true,
+  "fixture_counts": {
+    "a_total": 501,
+    "a_unread": 481,
+    "b_total": 2,
+    "b_unread": 2,
+    "messages": 502,
+    "relations": 503,
+    "shared_relationships": 2
+  },
+  "preservation_baseline": {
+    "a_prior_read_rows": 20,
+    "a_oldest_seen": true,
+    "b_unchanged_row_baseline": 2
+  },
+  "source_after": {
+    "head": "d58fc3d1fdc7e0fd885b3fd217e76395d0ff5347",
+    "tree": "96d25291826f59d9f9e5edf46c91f7239e83be29",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T17:11:55.388396+00:00",
+  "diagnostic_success": true,
+  "exit_code": 0
+}

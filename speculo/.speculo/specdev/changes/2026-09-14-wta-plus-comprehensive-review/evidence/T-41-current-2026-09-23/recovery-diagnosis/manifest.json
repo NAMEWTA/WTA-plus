@@ -1,0 +1,32 @@
+[
+  {
+    "file": "result.json",
+    "sha256": "c7de5906bdb26bb0149725d2311474a5b0955c849e3bf93b712ac491fae7c572",
+    "bytes": 4864
+  },
+  {
+    "file": "diagnose-browser-seed-sql.py",
+    "sha256": "8bfd286110bf54b2752302c542cb224f896b0ecf443eaba45b25c9ba96b53d86",
+    "bytes": 18262
+  },
+  {
+    "file": "test_diagnose_browser_seed_sql.py",
+    "sha256": "ecbd0fc1ad9be62ec283a25bc89add2c4eb17c086b63e9e448cf41cb5842f6e7",
+    "bytes": 4574
+  },
+  {
+    "file": "diagnose-browser-seed-sql-offline.json",
+    "sha256": "8300c76c1dd54af218ea9163514b0010ec6383fa0e98653eef6268818b613037",
+    "bytes": 1383
+  },
+  {
+    "file": "login-fixture-contract-audit.json",
+    "sha256": "1f34b79f4495b0c6abf879e102c4fb6829c9e4df132ebe3b674d4d5bfd3a16be",
+    "bytes": 807
+  },
+  {
+    "file": "attempt-limit-state.json",
+    "sha256": "a827f1aace468ce9044986989dde160305ac13c17e2bdcd6f5d8f563fdb6f6bf",
+    "bytes": 1752
+  }
+]

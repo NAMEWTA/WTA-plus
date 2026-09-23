@@ -1,0 +1,41 @@
+{
+  "kind": "T41_SQL_DIAG_OFFLINE_ONLY",
+  "source_head": "d58fc3d1fdc7e0fd885b3fd217e76395d0ff5347",
+  "source_tree": "96d25291826f59d9f9e5edf46c91f7239e83be29",
+  "diagnostic_script": "/tmp/wta-t41/diagnose-browser-seed-sql.py",
+  "diagnostic_sha256": "8bfd286110bf54b2752302c542cb224f896b0ecf443eaba45b25c9ba96b53d86",
+  "test_script": "/tmp/wta-t41/test_diagnose_browser_seed_sql.py",
+  "test_sha256": "ecbd0fc1ad9be62ec283a25bc89add2c4eb17c086b63e9e448cf41cb5842f6e7",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "py_compile",
+        "/tmp/wta-t41/diagnose-browser-seed-sql.py"
+      ],
+      "exit": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "/tmp/wta-t41/diagnose-browser-seed-sql.py"
+      ],
+      "exit": 0,
+      "result": "read-only preflight; execution not started"
+    },
+    {
+      "argv": [
+        "python3",
+        "/tmp/wta-t41/test_diagnose_browser_seed_sql.py"
+      ],
+      "exit": 0,
+      "tests": 7,
+      "failures": 0,
+      "errors": 0
+    }
+  ],
+  "service_execution": false,
+  "acceptance": false,
+  "future_browser_blocker": "Owned login password generator remains 40 characters while PasswordLoginBody limits password to 30; separate product recovery must generate a 24-character login password and adjust BCrypt validation. Diagnostic uses 40 characters only for isolated SQL update testing."
+}

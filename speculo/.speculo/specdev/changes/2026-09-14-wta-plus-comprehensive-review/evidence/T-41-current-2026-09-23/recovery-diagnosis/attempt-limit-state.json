@@ -1,0 +1,51 @@
+{
+  "checkpoint_commit": "d58fc3d1fdc7e0fd885b3fd217e76395d0ff5347",
+  "workspace": {
+    "ticket_id": "T-41",
+    "owner": "single-agent",
+    "implementation_owner": "cors_audit",
+    "integration_owner": "single-agent",
+    "provider": "git",
+    "base_sha": "d7d534cb03aa000d603a53c092c4bf1d48bb5cc3",
+    "parent_branch": "main",
+    "branch": "main",
+    "workspace_ref": "current",
+    "source_checkpoint": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+    "status": "blocked",
+    "updated_at": "2026-09-23T16:56:51.884181+00:00",
+    "integration": {
+      "status": "failed",
+      "parent_ref": "main",
+      "parent_before_sha": "d7d534cb03aa000d603a53c092c4bf1d48bb5cc3",
+      "source_sha": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+      "candidate_sha": null,
+      "candidate_tree_sha": null,
+      "candidate_branch": null,
+      "candidate_workspace_ref": null,
+      "result_sha": null,
+      "method": "direct-parent",
+      "conflict_paths": [],
+      "verification": "failed",
+      "full_suite": {
+        "required": true,
+        "status": "pending",
+        "reason": "frontend/default/full passed; core still pending",
+        "evidence": null
+      },
+      "e2e": {
+        "required": true,
+        "status": "failed",
+        "reason": "owned browser seed SQL failed before Chrome; real HTTP4/shared135 passed",
+        "evidence": null
+      },
+      "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-41.md</Path>",
+      "attempts": 3,
+      "promotion_status": "pending"
+    }
+  },
+  "preserved_complete_attempts": [
+    "05d0f3443dc3364917a8149ce9290f7dc6785670",
+    "eff81f642f08a1590f85a1f1f813a592a8232451",
+    "d93eb1d8d6095464a9606619f4161b3dd4ef35c7"
+  ]
+}

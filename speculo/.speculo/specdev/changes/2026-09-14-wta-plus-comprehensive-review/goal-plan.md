@@ -2,7 +2,7 @@
 schema_version: 6
 artifact: "goal-plan"
 change: "2026-09-14-wta-plus-comprehensive-review"
-status: "blocked"
+status: "in_progress"
 modes: ["high-assurance", "release-coordination", "migration"]
 orchestration: "lead-directed"
 lead: "single-agent"
@@ -10,14 +10,14 @@ implementation_agent_limit: 1
 integration_attempt_limit: 3
 ticket_workspace_policy: "current"
 integration_gate: "direct-parent"
-ready_for_execution: false
+ready_for_execution: true
 ---
 
 # Goal Plan：完成本review change并满足归档前置
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision177，ready_for_execution=false（T41等待Lead恢复派单；Goal继续诊断工作）。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision178，ready_for_execution=true；T41 Dispatch02 已发出，旧三次记录保留。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision177；12done/2cancelled/T41 blocked/35ready。完整批次三次检查未验收，D browser在owned SQL准备失败且cleanup通过；停止自动重派，Lead诊断/复盘中，Goal active。
+revision178；12done/2cancelled/T41 in_progress/35ready。SQL根因已由隔离对照证实，恢复批0次，Goal active。
 
 ### Pending Decisions and Blockers
 
@@ -391,3 +391,7 @@ Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at fro
 ## revision177 — T41三次复盘
 
 Revision177: T41 current batch reached3 complete-candidate attempts: B frontend fixture failure; C frontend750/buildpassed but missing declared actual-host coverage; D frontend751/default870+201skip/full/realHTTP4/shared135 passed but owned browser seed SQL exec failed before JVM/Chrome. D sourceclean/cleanup[] preserved; ticket/workspace blocked, result null. Stop automatic resend. Lead diagnosis and materially changed dispatch required before resetting a recovery batch.12done/2cancelled/T41blocked/35ready; Goal remains active.
+
+## revision178 — T41恢复派单
+
+Revision178: clean d58fc3d owned SQL diagnostic proves four1267/HY000 failures and collated controls pass;501/2 fixture and cleanup pass, acceptance=false. Separate login40>30 fixture defect confirmed. Four-part Lead review and materially changed Dispatch02 recorded before recovery attempts reset0; old B/C/D three attempts immutable.12done/2cancelled/T41in_progress/35ready; Goal active.

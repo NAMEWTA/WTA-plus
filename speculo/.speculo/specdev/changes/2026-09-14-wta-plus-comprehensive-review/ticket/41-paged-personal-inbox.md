@@ -8,11 +8,11 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-41"
 title: "本人收件箱提供完整分页与准确读取状态"
-status: "blocked"
+status: "in_progress"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
-ready: false
+ready: true
 risk: "high"
 blocked_by: ["T-34"]
 contract_ids: ["AC-041"]
@@ -164,3 +164,8 @@ Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at fro
 
 Revision177: T41 current batch reached3 complete-candidate attempts: B frontend fixture failure; C frontend750/buildpassed but missing declared actual-host coverage; D frontend751/default870+201skip/full/realHTTP4/shared135 passed but owned browser seed SQL exec failed before JVM/Chrome. D sourceclean/cleanup[] preserved; ticket/workspace blocked, result null. Stop automatic resend. Lead diagnosis and materially changed dispatch required before resetting a recovery batch.12done/2cancelled/T41blocked/35ready; Goal remains active.
 详见 evidence/T-41-three-attempt-review-2026-09-23.md；必须根因/具体修改/新责任派单后才能恢复新批，旧三次不可抹去。
+
+## revision178 恢复派单
+
+Revision178: clean d58fc3d owned SQL diagnostic proves four1267/HY000 failures and collated controls pass;501/2 fixture and cleanup pass, acceptance=false. Separate login40>30 fixture defect confirmed. Four-part Lead review and materially changed Dispatch02 recorded before recovery attempts reset0; old B/C/D three attempts immutable.12done/2cancelled/T41in_progress/35ready; Goal active.
+详见 evidence/T-41-recovery-2026-09-23.md 与 dispatch-T-41-20260923-02.md。

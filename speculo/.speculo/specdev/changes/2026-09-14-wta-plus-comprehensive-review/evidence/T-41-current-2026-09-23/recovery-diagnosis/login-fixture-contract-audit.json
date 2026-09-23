@@ -1,0 +1,13 @@
+{
+  "source_head": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+  "backend_file": "backend/wta-api/src/main/java/org/namewta/system/api/model/PasswordLoginBody.java",
+  "backend_sha256": "807340874827e75afe49b51f7796dd4c6af9784a68a3c229add6f89135fdc6f4",
+  "login_password_length_contract": {
+    "min": 5,
+    "max": 30
+  },
+  "driver_file": "frontend/e2e/run-inbox-paged-real.py",
+  "driver_sha256": "bd1798bba7a3ea78640e054e11f04905faf56ca38b8594196e18fc379c4c1f88",
+  "driver_login_password_length": 40,
+  "finding": "Certain subsequent login validation blocker; not the cause observed in runf2ed71eeedb7b8e2, which failed before starting backend/browser. Keep infrastructure credentials at40; generate isolated login credentials separately within real DTO bounds. Do not alter production validation."
+}
