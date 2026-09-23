@@ -1,0 +1,15 @@
+# T-36 Lead acceptance plan (not execution evidence)
+
+Base 5118051403de0648540646d98536d8c4f3f9f26d. Current workspace main, one product writer cors_audit, Lead commits/services/governance. No production service or real data repair.
+
+1. Development red: exact Atomic attempt-insert-failure method at old product implementation plus new zero-message/recipient assertion and temporary credentials. Preserve first trigger-privilege setup error as non-behavioral. Owned trust_function_creators enables only synthetic test triggers.
+2. Implementation review: all changed product paths must match T36. Real runtime IN_APP atomic branch, common SMS/MAIL I/O remains outside result transaction, fixed error categories and REDACT protection preserved. Both review axes fixed base/result, increment reviews only with exact source equivalence.
+3. Unit selection: refresh previous T35 38 actual declared class names (not filenames), add changed/new T36 tests. Require fresh per-class XML, all positive executed, zero skip. Record actual test totals and method identifiers.
+4. Real T36 driver: exact clean candidate HEAD/tree before/after, all NotifyAtomicResultIntegrationTest cases and NotifyWakeIntegrationTest in fresh forks, real isolated MySQL/Redis/six SQL with app-only grants, temporary secret via env. At least real two-connection concurrent IN_APP, SQL failure matrix, before/after commit faults, valid/expired/stolen leases, durable bounded reservation and duplicate same lease, post-commit event/no event rollback/push failure. No fake client replacing local persistence boundary.
+5. Real T35 regression driver: rerun all eight real runtime/Dispatcher/SMS-adapter cases on the new source because shared Dispatch/Result constructors and behavior changed. Never count old T35 proof as current-source acceptance.
+6. Source gates: Notify layered, facts/OpenAPI/handbooks as affected inputs or documented immutable input reuse; diff-check. Full final release/three-App/whole-repository candidate remains T30.
+7. Recovery: review bounded IN_APP-only inventory and explicit-ID operation draft; no existing broad retry API use, no SMS/MAIL mutation, no production execution. Distinguish unresolved DELIVERED missing-relation reconstruction from safe UNKNOWN-only requeue.
+8. Cleanup: every isolated service/process/port owned, exact full Docker IDs+dual labels, process-group TERM/KILL when needed, secret env/raw logs removed/sanitized, full result logs and checksums. Any cleanup failure invalidates the run.
+9. Capture source after before governance writes; canonical evidence/state with three-attempt policy, no fabricated skipped tests, no attempt reset without mandated retrospective. Commit evidence only after passing applicable gates.
+
+Automatic attempt budget: IN_APP outbox count records begun persistence attempts per automatic scheduling cycle; Delivery/Attempt records only committed outcomes. Explicit approved manual retry is a new cycle, addressed by T38. RESERVED guard before max check; lock-current fields override stale claimant snapshot. Entire DB unavailability cannot promise terminal write but cannot permit unreserved persistence.

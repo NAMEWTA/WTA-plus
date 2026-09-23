@@ -1,0 +1,47 @@
+{
+  "run_id": "d94e38e7bb34a5b9",
+  "behavioral_red": true,
+  "maven_exit_code": 1,
+  "counts": {
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "failure": {
+    "message": "\nexpected: 0\n but was: 1",
+    "type": "org.opentest4j.AssertionFailedError"
+  },
+  "xml_sha256": "5133210049e2e9875aa13eb91456d950f60462f195073a760bbe69c0e78ad832",
+  "source_before": {
+    "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+    "tree": "bf9d82dbbb0a8c8f7588581bc8a484746f73cecb",
+    "clean": false,
+    "dirty_status_sha256": "3403281728d717eeda6a80fe579fe14d9d9a628352599cdd21b4c8099b94d1dc",
+    "dirty_tracked_diff_sha256": "44a0675c41cfeea837a48b42d9b9b07c4adc9c7bc2f1e1c82c31e71a2abf8da1",
+    "target_test_sha256": "4f899b327fecfbd64e76b054db0f71c27e4d19385bd4665bc383780f1934e75a"
+  },
+  "source_after": {
+    "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+    "tree": "bf9d82dbbb0a8c8f7588581bc8a484746f73cecb",
+    "clean": false,
+    "dirty_status_sha256": "3403281728d717eeda6a80fe579fe14d9d9a628352599cdd21b4c8099b94d1dc",
+    "dirty_tracked_diff_sha256": "44a0675c41cfeea837a48b42d9b9b07c4adc9c7bc2f1e1c82c31e71a2abf8da1",
+    "target_test_sha256": "4f899b327fecfbd64e76b054db0f71c27e4d19385bd4665bc383780f1934e75a"
+  },
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 4018527,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "loopback_ports_closed": {
+      "32796": true,
+      "32797": true
+    },
+    "errors": []
+  },
+  "driver_sha256": "1df40c7edc067c240dbb24686c1879c5ceb406215a438d9ceb7a48342002907f"
+}

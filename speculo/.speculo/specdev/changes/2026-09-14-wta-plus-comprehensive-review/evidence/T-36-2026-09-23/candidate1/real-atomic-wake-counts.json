@@ -1,0 +1,106 @@
+[
+  {
+    "test_class": "NotifyAtomicResultIntegrationTest",
+    "sha256": "64ee327f767449c343cae00db9d10171d67ece94f870f5de55c76f45ae59bc35",
+    "counts": {
+      "tests": 61,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "method": "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt",
+        "message": "\nexpected: 1\n but was: 0",
+        "stack": "org.opentest4j.AssertionFailedError: \n\nexpected: 1\n but was: 0\n\tat org.namewta.test.notify.NotifyAtomicResultIntegrationTest.successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt(NotifyAtomicResultIntegrationTest.java:389)\n"
+      },
+      {
+        "method": "cancelledBeforeInAppTransactionCannotWriteInboxFact",
+        "message": "\nexpected: \"DONE\"\n but was: \"PROCESSING\"",
+        "stack": "org.opentest4j.AssertionFailedError: \n\nexpected: \"DONE\"\n but was: \"PROCESSING\"\n\tat org.namewta.test.notify.NotifyAtomicResultIntegrationTest.cancelledBeforeInAppTransactionCannotWriteInboxFact(NotifyAtomicResultIntegrationTest.java:648)\n"
+      },
+      {
+        "method": "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate",
+        "message": "[real DsTx AFTER_COMMIT listener was invoked] \nexpected: 1\n but was: 0",
+        "stack": "org.opentest4j.AssertionFailedError: \n[real DsTx AFTER_COMMIT listener was invoked] \nexpected: 1\n but was: 0\n\tat org.namewta.test.notify.NotifyAtomicResultIntegrationTest.afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate(NotifyAtomicResultIntegrationTest.java:291)\n"
+      }
+    ],
+    "methods": [
+      "duplicateEventWithChangedFactsMustBeRejected",
+      "callbackRevalidatesCorrelationAfterWaitingForCurrentResult",
+      "concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations",
+      "callbackRollbackMustAllowSameEventRetry",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[1]",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[2]",
+      "nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation",
+      "callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler",
+      "anyResultWriteFailureRollsBackAllOtherRows",
+      "restartedJvmsSeeCommittedReceiptAndRejectChangedFacts",
+      "oldWorkerCannotOverwriteAReclaimedAndCompletedResult",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[1]",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[2]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[1]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[2]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[1]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[2]",
+      "finishZeroRollsBackDeliveryAttemptAndAggregate",
+      "nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending",
+      "twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim",
+      "genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact",
+      "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt",
+      "freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved",
+      "longUnicodeBodyKeepsFullContentAndBoundedSummary",
+      "receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry",
+      "concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate",
+      "sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[1]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[2]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[3]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[4]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[5]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[6]",
+      "sameAccountKeyAndEventAcrossChannelsRemainIndependent",
+      "twoConcurrentClaimersOnlyDispatchOneCommittedResult",
+      "existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent",
+      "simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[1]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[2]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[3]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[4]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[5]",
+      "twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce",
+      "deliveredCallbackCannotBeOverwrittenByLateAcceptedResult",
+      "expiredOwnerCannotRenewOrFinishWithoutAReclaim",
+      "nativeQueryCredentialEditOrReadFailureDoesNotApplyResult",
+      "invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite",
+      "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable",
+      "reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist",
+      "leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete",
+      "cancelledBeforeInAppTransactionCannotWriteInboxFact",
+      "providerCompletingAfterExpiryDoesNotReviveTheLease",
+      "receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract",
+      "nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries",
+      "expiredLeaseCannotSkipCancelOrDefer",
+      "earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult",
+      "realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus",
+      "genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt",
+      "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate",
+      "sameEventFromDifferentAccountsMustNotCollide",
+      "externalChannelClaimPreservesSameLiteralErrorCode"
+    ]
+  },
+  {
+    "test_class": "NotifyWakeIntegrationTest",
+    "sha256": "f1317cecc76411ca2b9b84d22f22b06e439a3ad705ccf9d4eb0d5e41029b17d3",
+    "counts": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "methods": [
+      "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake"
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+ERROR: org/namewta/notify/usecase/InAppCommittedPushUseCase.java: usecase 层禁止依赖 com.baomidou.dynamic.datasource.annotation.DsTxEventListener

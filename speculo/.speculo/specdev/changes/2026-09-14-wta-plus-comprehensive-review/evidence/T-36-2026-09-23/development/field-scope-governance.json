@@ -1,0 +1,16 @@
+{
+  "command": [
+    "node",
+    "speculo/workflows/specdev/common/tools/validate-specdev.mjs",
+    "--stage",
+    "implement",
+    "--repo",
+    ".",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T09:59:28.916938+00:00",
+  "finished_at": "2026-09-23T09:59:29.796255+00:00",
+  "exit_code": 0,
+  "log": "field-scope-governance.log"
+}

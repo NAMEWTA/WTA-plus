@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify,wta-admin",
+    "-am",
+    "-Dtest=DispatchNotificationServiceTest,InAppNotificationServiceTest,NotifyOutboxClaimConcurrencyTest,NotifyAtomicResultIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T10:15:06.812639+00:00",
+  "finished_at": "2026-09-23T10:15:19.975827+00:00",
+  "exit_code": 1,
+  "log": "selected-final-local.log"
+}

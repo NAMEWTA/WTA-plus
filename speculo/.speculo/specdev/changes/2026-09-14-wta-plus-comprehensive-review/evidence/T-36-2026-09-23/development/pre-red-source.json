@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-09-23T09:52:25.461911+00:00",
+  "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+  "tree": "bf9d82dbbb0a8c8f7588581bc8a484746f73cecb",
+  "status": " M backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/.status.json\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/handoff.md\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/plan-data.json\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/36-atomic-in-app-delivery.md\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/worklog.md\n?? speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/dispatch-T-36.md\n",
+  "product_diff_sha256": "fb01517e05b11edbe11979446e3d41cc3833fce5e87d78a3d04a26416bcc3952",
+  "note": "Development red fixture at existing implementation; dirty is recorded, not formal acceptance"
+}

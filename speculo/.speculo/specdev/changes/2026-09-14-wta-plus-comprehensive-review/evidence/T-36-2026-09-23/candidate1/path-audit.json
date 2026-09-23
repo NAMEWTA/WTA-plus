@@ -1,0 +1,41 @@
+{
+  "base": "5118051403de0648540646d98536d8c4f3f9f26d",
+  "actual_product_paths": [
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyCallbackProcessProbe.java",
+    "backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/NotifyOutboxMapper.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/NotifyDispatchResultPort.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/InAppNotificationService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyDispatchResultService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxClaimService.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotifyDispatchResultUseCase.java",
+    "backend/wta-modules/wta-notify/src/main/resources/mapper/notify/NotifyOutboxMapper.xml",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotifyOutboxClaimConcurrencyTest.java",
+    "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/InAppCommittedPushListener.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/InAppCommittedPushPort.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/InAppDeliveryCommittedEvent.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/InAppCommittedPushUseCase.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/InAppNotificationServiceTest.java"
+  ],
+  "writable_entries": [
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/",
+    "backend/wta-modules/wta-notify/src/main/resources/mapper/notify/",
+    "backend/wta-modules/wta-notify/src/test/",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/",
+    "backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java",
+    "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql"
+  ],
+  "violations": []
+}

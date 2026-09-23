@@ -1,8 +1,8 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，正在执行全部50票的实现、逐票提交和当前候选验收。当前revision156：6票done（T-29/T-32/T-33/T-34/T-35/T-47），T-01取消本轮重复施工但AC-001仍由T-30最终复验，T-36 in_progress，其余42票ready。Goal保持active、ready_for_execution=true；current/main单产品writer，允许已授权的gpt-6-sol/xhigh原生子代理，Lead独占治理、提交与真实环境验收。
+用户已激活Goal，正在执行全部50票。当前revision157：7票done（T-29/T-32/T-33/T-34/T-35/T-36/T-47），T-01取消重复施工但AC-001仍由T-30最终复验，其余42票ready。Goal保持active、ready_for_execution=true；current/main单产品writer，下一T-37。
 
-最近已验收产品是T-35的 `fd8c34644d2cb36f96deccce81fe35f586701f94`，38类170单元和8项真实MySQL/Redis均零skip；T-36从治理提交 `5118051403de0648540646d98536d8c4f3f9f26d` 开始。实时最新状态以Ticket frontmatter、tickets-map、goal-plan Current Status及.status.json为准。change尚未完成，T-30同源完整候选及归档前置仍待执行。
+最近验收产品为T-36的 `64d67d5fb150620b25ada107115ea2207736c039`；最终候选真实Atomic66/Wake1零skip，178单元/SMS8按未变输入复用原C2证据，完整失败历史保留。权威状态见Ticket、Map、goal-plan Current Status与.status.json。change尚未完成，T-30同源完整候选与归档前置仍待执行。
 
 本轮重规划基线为 `1264980c74e594bc594e88561bb292fbe5d968a1`：保留原31票编号与历史实现，新增19票覆盖新报告18项，T-30承担全部AC的最终集成。G共识和设计选择已确认，无需再次确认；2026-09-23早期“仅规划、目标未激活”是已被后续授权替代的历史状态。
 

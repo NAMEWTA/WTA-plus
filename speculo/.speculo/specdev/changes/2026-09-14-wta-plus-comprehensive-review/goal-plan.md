@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision156，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision157，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision156；6done/1cancelled/T-36 in_progress/42ready。T-35固定result fd8c346已验收，当前base 5118051403de0648540646d98536d8c4f3f9f26d，cors_audit唯一产品writer；Lead治理、commit、隔离环境与E2E。G-security-external已关闭；T-01的AC-001仍由T-30最终复验。整个change尚未完成，归档未获授权。
+revision157；T-29/T-32/T-33/T-34/T-35/T-36/T-47 done，T-01取消重复施工，其余42票ready。T-36固定result64d67d5通过第三候选真实66+1，178单元/SMS8严格输入等价复用；下一T-37，目前无产品writer。G-security-external已关闭；T-01的AC-001仍由T-30复验。整个change尚未完成，归档未获授权。
 
 ### Pending Decisions and Blockers
 
@@ -307,3 +307,7 @@ Revision154: T36 active at 5118051403de0648540646d98536d8c4f3f9f26d; cors_audit 
 ## revision156 预算字段语义文档写集
 
 编辑前增加两条精确路径：NotifyOutbox.java字段Javadoc，以及唯一六SQL中的10-cde-base-ddl.sql，仅notify_outbox.attempt_count/last_error_code中文注释。已有DDL“领取次数”不符合旧结果计数也不符合新预算语义，须同步为IN_APP已开始尝试预算、外部渠道已提交结果次数，固定IN_APP_ATTEMPT_RESERVED内部标记。无列/类型/索引/结构变化、不重放存量基座；全新隔离六SQL装载复核仍必需。预算上限指一次自动调度周期；合法人工重试新周期由T38精确API合同负责。
+
+## revision157 — T36完成
+
+Revision157: T36 accepted at64d67d5; C3 Atomic66+Wake1 zero skips; exact unchanged-input reuse of C2 unit178/SMS8 and gates, original run sources explicit. Both reviews pass; clean exact HEAD/tree and owned cleanup. Three attempts preserved. 7done/1cancelled/42ready; next T37; goal active, no archive.

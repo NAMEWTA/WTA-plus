@@ -1,0 +1,18 @@
+{
+  "run_id": "c8ae375d4258fb06",
+  "runner_exit": 0,
+  "maven_exit": 1,
+  "tests": 1,
+  "failures": 0,
+  "errors": 1,
+  "skipped": 0,
+  "behavioral_red": false,
+  "reason": "CREATE TRIGGER failed before dispatch: MySQL 1419, app identity lacks SUPER while binlog enabled; configure only owned test server trust_function_creators for fault triggers",
+  "xml_sha256": "f0f935d857ab24ae724c882e14e56ff0682dd168730dc1461398229551b526e3",
+  "methods": [
+    "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable"
+  ],
+  "cleanup": "passed",
+  "driver_at_launch_sha256": "5e927de29061d52a7c343793315082545af190feedfcd3354eeb3ad760bd93c2",
+  "driver_changed_during_run": "09:54:40.946402001Z; only stricter red attribution/output, no product/source/environment drift; retain old evidence and freeze future runs"
+}

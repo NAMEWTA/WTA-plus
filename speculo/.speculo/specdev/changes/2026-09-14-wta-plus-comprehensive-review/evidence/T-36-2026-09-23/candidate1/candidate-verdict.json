@@ -1,0 +1,8 @@
+{
+  "source": "54cf715c2829ff95cf994401ff52f02668c1e171",
+  "attempt": 1,
+  "status": "rejected",
+  "reason": "Atomic61 had 3 assertion failures; functional review JSON normalization and deterministic field lengths unresolved. Unit175/Wake1/SMS8 otherwise pass, no skips. Preserve all runs.",
+  "atomic_run": "/tmp/wta-t36/runs/0e830cfa64189d7f/result.json",
+  "sms_run": "/tmp/wta-t35/runs/d5a41784604fd16a/result.json"
+}

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t36/test_driver_safety.py"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T09:56:40.190226+00:00",
+  "finished_at": "2026-09-23T09:56:40.304457+00:00",
+  "exit_code": 0,
+  "log": "driver-synthetic-owned-trigger-20260923.log"
+}

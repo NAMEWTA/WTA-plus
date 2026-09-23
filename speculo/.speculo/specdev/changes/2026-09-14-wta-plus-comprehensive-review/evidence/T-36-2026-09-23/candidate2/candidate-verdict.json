@@ -1,0 +1,8 @@
+{
+  "source": "a2749a7dcc0bbc5c0643e07eba938446611c995a",
+  "attempt": 2,
+  "status": "rejected",
+  "reason": "Atomic66 had one fixture error: AFTER branch retained duringProvider ACK fault for intended normal next delivery. C1 three failures resolved. Unit178/Wake1/SMS8 pass. No assertions weakened.",
+  "atomic_run": "/tmp/wta-t36/runs/909ae637d59b2ebe/result.json",
+  "sms_run": "/tmp/wta-t35/runs/0abb8a5220460930/result.json"
+}

@@ -1,0 +1,207 @@
+{
+  "status": "planned-not-run",
+  "corrections": [
+    [
+      "NotifyNoticePublisherTest",
+      "NotifyNoticePublisherServiceTest"
+    ]
+  ],
+  "classes": [
+    {
+      "path": "backend/wta-common/wta-common-json/src/test/java/org/namewta/common/json/utils/LogSanitizerTest.java",
+      "class": "org.namewta.common.json.utils.LogSanitizerTest",
+      "selector": "LogSanitizerTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-log/src/test/java/org/namewta/common/log/aspect/LogAspectRedactionTest.java",
+      "class": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+      "selector": "LogAspectRedactionTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-sms/src/test/java/org/namewta/common/sms/notify/SmsDeliveryQueryClientTest.java",
+      "class": "org.namewta.common.sms.notify.SmsDeliveryQueryClientTest",
+      "selector": "SmsDeliveryQueryClientTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java",
+      "class": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "selector": "SysLogFailureRedactionTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java",
+      "class": "org.namewta.common.web.logging.SysLogFilterTest",
+      "selector": "SysLogFilterTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/NotifyOutboxWakeScopeGateTest.java",
+      "class": "org.namewta.notify.NotifyOutboxWakeScopeGateTest",
+      "selector": "NotifyOutboxWakeScopeGateTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java",
+      "class": "org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest",
+      "selector": "NotifyOutboxWakePublisherTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/provider/Sms4jBlendRegistryTest.java",
+      "class": "org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest",
+      "selector": "Sms4jBlendRegistryTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/provider/Sms4jReceiptTest.java",
+      "class": "org.namewta.notify.adapter.provider.Sms4jReceiptTest",
+      "selector": "Sms4jReceiptTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/worker/NotifyOutboxWorkerWakePollTest.java",
+      "class": "org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest",
+      "selector": "NotifyOutboxWorkerWakePollTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/controller/admin/NotifyConfigControllerContractTest.java",
+      "class": "org.namewta.notify.controller.admin.NotifyConfigControllerContractTest",
+      "selector": "NotifyConfigControllerContractTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/domain/policy/NoticeAudiencePolicyTest.java",
+      "class": "org.namewta.notify.domain.policy.NoticeAudiencePolicyTest",
+      "selector": "NoticeAudiencePolicyTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/domain/policy/NotificationAggregatePolicyTest.java",
+      "class": "org.namewta.notify.domain.policy.NotificationAggregatePolicyTest",
+      "selector": "NotificationAggregatePolicyTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyConfigServiceTest.java",
+      "class": "org.namewta.notify.service.NotifyConfigServiceTest",
+      "selector": "NotifyConfigServiceTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyNoticePublisherTest.java",
+      "class": "org.namewta.notify.service.NotifyNoticePublisherServiceTest",
+      "selector": "NotifyNoticePublisherServiceTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyNoticeServiceTest.java",
+      "class": "org.namewta.notify.service.NotifyNoticeServiceTest",
+      "selector": "NotifyNoticeServiceTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyTestSendServiceTest.java",
+      "class": "org.namewta.notify.service.NotifyTestSendServiceTest",
+      "selector": "NotifyTestSendServiceTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java",
+      "class": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+      "selector": "DispatchNotificationServiceTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotificationMonitorServiceTest.java",
+      "class": "org.namewta.notify.service.runtime.NotificationMonitorServiceTest",
+      "selector": "NotificationMonitorServiceTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotifyOutboxClaimConcurrencyTest.java",
+      "class": "org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest",
+      "selector": "NotifyOutboxClaimConcurrencyTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/NotifyAuditSupportTest.java",
+      "class": "org.namewta.notify.support.NotifyAuditSupportTest",
+      "selector": "NotifyAuditSupportTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/NotifySendPlannerTest.java",
+      "class": "org.namewta.notify.support.NotifySendPlannerTest",
+      "selector": "NotifySendPlannerTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/usecase/NotifyNoticeUseCaseTest.java",
+      "class": "org.namewta.notify.usecase.NotifyNoticeUseCaseTest",
+      "selector": "NotifyNoticeUseCaseTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifySmsLogEntryTest.java",
+      "class": "org.namewta.test.notify.NotifySmsLogEntryTest",
+      "selector": "NotifySmsLogEntryTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/attachment/MailAttachmentSnapshotUnitTest.java",
+      "class": "org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest",
+      "selector": "MailAttachmentSnapshotUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/attachment/NotifyAttachmentDispatcherUnitTest.java",
+      "class": "org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest",
+      "selector": "NotifyAttachmentDispatcherUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/CaptchaNotifyCallerUnitTest.java",
+      "class": "org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest",
+      "selector": "CaptchaNotifyCallerUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/DemoNotifyCallerUnitTest.java",
+      "class": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "selector": "DemoNotifyCallerUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/NotifyCallerMigrationContractUnitTest.java",
+      "class": "org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest",
+      "selector": "NotifyCallerMigrationContractUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/WorkflowNotifyCallerUnitTest.java",
+      "class": "org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest",
+      "selector": "WorkflowNotifyCallerUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/context/RequestNotifyContextResolverUnitTest.java",
+      "class": "org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest",
+      "selector": "RequestNotifyContextResolverUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/core/MailNotifyChannelAdapterUnitTest.java",
+      "class": "org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest",
+      "selector": "MailNotifyChannelAdapterUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/core/NotifyAutoConfigurationUnitTest.java",
+      "class": "org.namewta.test.notify.core.NotifyAutoConfigurationUnitTest",
+      "selector": "NotifyAutoConfigurationUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/core/NotifyChannelUnitTest.java",
+      "class": "org.namewta.test.notify.core.NotifyChannelUnitTest",
+      "selector": "NotifyChannelUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/core/NotifyDispatcherUnitTest.java",
+      "class": "org.namewta.test.notify.core.NotifyDispatcherUnitTest",
+      "selector": "NotifyDispatcherUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/core/SmsNotifyChannelAdapterUnitTest.java",
+      "class": "org.namewta.test.notify.core.SmsNotifyChannelAdapterUnitTest",
+      "selector": "SmsNotifyChannelAdapterUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/idempotency/NotifyIdempotencyAutoConfigurationUnitTest.java",
+      "class": "org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest",
+      "selector": "NotifyIdempotencyAutoConfigurationUnitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/idempotency/NotifyIdempotencyDispatcherUnitTest.java",
+      "class": "org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest",
+      "selector": "NotifyIdempotencyDispatcherUnitTest"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/InAppNotificationServiceTest.java",
+      "selector": "InAppNotificationServiceTest",
+      "class": "org.namewta.notify.service.runtime.InAppNotificationServiceTest"
+    }
+  ],
+  "selector": "LogSanitizerTest,LogAspectRedactionTest,SmsDeliveryQueryClientTest,SysLogFailureRedactionTest,SysLogFilterTest,NotifyOutboxWakeScopeGateTest,NotifyOutboxWakePublisherTest,Sms4jBlendRegistryTest,Sms4jReceiptTest,NotifyOutboxWorkerWakePollTest,NotifyConfigControllerContractTest,NoticeAudiencePolicyTest,NotificationAggregatePolicyTest,NotifyConfigServiceTest,NotifyNoticePublisherServiceTest,NotifyNoticeServiceTest,NotifyTestSendServiceTest,DispatchNotificationServiceTest,NotificationMonitorServiceTest,NotifyOutboxClaimConcurrencyTest,NotifyAuditSupportTest,NotifySendPlannerTest,NotifyNoticeUseCaseTest,NotifySmsLogEntryTest,MailAttachmentSnapshotUnitTest,NotifyAttachmentDispatcherUnitTest,CaptchaNotifyCallerUnitTest,DemoNotifyCallerUnitTest,NotifyCallerMigrationContractUnitTest,WorkflowNotifyCallerUnitTest,RequestNotifyContextResolverUnitTest,MailNotifyChannelAdapterUnitTest,NotifyAutoConfigurationUnitTest,NotifyChannelUnitTest,NotifyDispatcherUnitTest,SmsNotifyChannelAdapterUnitTest,NotifyIdempotencyAutoConfigurationUnitTest,NotifyIdempotencyDispatcherUnitTest,InAppNotificationServiceTest"
+}

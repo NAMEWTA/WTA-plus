@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-09-23T10:00:52.452552+00:00",
+  "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+  "frontend_tree": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+  "frontend_status": "",
+  "purpose": "Source input for frontend typecheck; current Java development dirty is unrelated, final reuse only if exact frontend tree/worktree remains unchanged"
+}

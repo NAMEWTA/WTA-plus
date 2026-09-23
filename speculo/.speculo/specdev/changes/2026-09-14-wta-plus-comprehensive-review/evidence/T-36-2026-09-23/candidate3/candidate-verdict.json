@@ -1,0 +1,8 @@
+{
+  "source": "64d67d5fb150620b25ada107115ea2207736c039",
+  "attempt": 3,
+  "status": "passed",
+  "atomic_run": "/tmp/wta-t36/runs/73d067c0826b1803/result.json",
+  "actual_c3": "Atomic66+Wake1 zero fail/error/skip; exact clean source before/after; owned cleanup passed",
+  "reused": "C2 unit178 and SMS8, gates: exact input equivalence documented; both axes C3 static pass"
+}

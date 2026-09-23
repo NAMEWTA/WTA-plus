@@ -1,5 +1,7 @@
 # 恢复入口
 
+当前revision157：7done/1cancelled/42ready，无产品writer，下一T37；T36的64d67d5已验收，Goal仍active。以下旧状态按时间保留，不能覆盖当前段。
+
 当前revision156：Goal仍active；6done/1cancelled/1in_progress/42ready，T-36唯一产品writer cors_audit。T-35已在fd8c346以170+8项零skip验收。使用gpt-6-sol/xhigh原生子代理、current单writer、Lead治理/E2E；不新建worktree。以下revision138起段落属于历史计划，不能覆盖本段执行状态。
 
 先读<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/README.md</Path>→<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>→<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>→适用Skill→当前票。当前revision138，50票Ready、0done、0在途writer；G共识已确认，S/T/P(plan)顺序完成，current_work=specdev/goal-plan。Goal schema状态draft、ready_for_execution=false仅因为用户保留自行激活与新的执行授权，不能误读成待设计答复。
@@ -104,3 +106,7 @@ Revision154: T36 active at 5118051403de0648540646d98536d8c4f3f9f26d; cors_audit 
 
 - backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java
 - release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql
+
+## revision157 — T36完成
+
+Revision157: T36 accepted at64d67d5; C3 Atomic66+Wake1 zero skips; exact unchanged-input reuse of C2 unit178/SMS8 and gates, original run sources explicit. Both reviews pass; clean exact HEAD/tree and owned cleanup. Three attempts preserved. 7done/1cancelled/42ready; next T37; goal active, no archive.

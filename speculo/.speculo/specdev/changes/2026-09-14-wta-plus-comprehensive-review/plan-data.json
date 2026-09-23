@@ -2957,7 +2957,7 @@
     "steps": [
       "以两真实 DB 连接和屏障复现同 intent 两 delivery 并发；注入关系/Attempt/finish/commit 失败。",
       "复用已有 PK/唯一键，DAO 原子插入或仅捕获明确重复键并核验快照相同，不吞其他 SQL 错误。",
-      "在被代理 UseCase 的短 DSTransactional 内完成 IN_APP message/recipient/result/attempt/outbox/aggregate；沿用 intent→delivery/outbox 的一致锁序和 fence。",
+      "在被代理 UseCase 的短 DSTransactional 内完成 IN_APP message/recipient/result/attempt/outbox/aggregate；沿用 Intent→Outbox→Delivery 的一致锁序和 fence。",
       "本地明确回滚可有限重试；确定参数失败终结；禁止 IN_APP 进入供应商 WAITING_RECEIPT。实时通过 DsTxEventListener AFTER_COMMIT 隔离。",
       "形成存量 IN_APP UNKNOWN/缺关系只读清单及按指定 ID 幂等重做操作稿；不执行真实数据修复。"
     ],
@@ -3004,15 +3004,15 @@
       "table:notify_message",
       "table:notify_message_recipient"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 156,
+    "plan_revision": 157,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 扩展 NotifyAtomicResultIntegrationTest；真实 DSTransactional 代理、MySQL 双连接、提交故障与 AFTER_COMMIT",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "共享消息/关系先查后插；已有 uk_notify_message_recipient(message_id,user_id)，无需盲目新增唯一键。persist 在结果事务之前。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "54cf715c2829ff95cf994401ff52f02668c1e171",
+    "result_sha": "64d67d5fb150620b25ada107115ea2207736c039",
     "contract_ids": [
       "AC-036"
     ],

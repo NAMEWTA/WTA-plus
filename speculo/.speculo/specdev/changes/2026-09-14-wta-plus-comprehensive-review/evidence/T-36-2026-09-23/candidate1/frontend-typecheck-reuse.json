@@ -1,0 +1,26 @@
+{
+  "current_source": "54cf715c2829ff95cf994401ff52f02668c1e171",
+  "frontend_tree": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+  "status": "",
+  "actual_run": {
+    "command": [
+      "pnpm",
+      "--dir",
+      "frontend",
+      "typecheck"
+    ],
+    "cwd": "/srv/WTA-plus",
+    "started_at": "2026-09-23T10:00:39.887057+00:00",
+    "finished_at": "2026-09-23T10:01:29.249269+00:00",
+    "exit_code": 0,
+    "log": "frontend-typecheck.log"
+  },
+  "prior_source": {
+    "timestamp": "2026-09-23T10:00:52.452552+00:00",
+    "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+    "frontend_tree": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+    "frontend_status": "",
+    "purpose": "Source input for frontend typecheck; current Java development dirty is unrelated, final reuse only if exact frontend tree/worktree remains unchanged"
+  },
+  "reason": "Exact frontend input tree and worktree unchanged; Java-only candidate reuses actual typecheck, not a claimed rerun."
+}

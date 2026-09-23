@@ -1,0 +1,75 @@
+{
+  "previous": "54cf715c2829ff95cf994401ff52f02668c1e171",
+  "current": "a2749a7dcc0bbc5c0643e07eba938446611c995a",
+  "unchanged_roots": [
+    ".agents/skills",
+    "frontend",
+    "scripts/ci",
+    "backend/pom.xml",
+    "release-artifacts"
+  ],
+  "reused": {
+    "facts": {
+      "command": [
+        "node",
+        ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "started_at": "2026-09-23T10:23:33.588945+00:00",
+      "finished_at": "2026-09-23T10:23:33.691527+00:00",
+      "exit_code": 0,
+      "log": "acceptance-facts.log"
+    },
+    "handbooks": {
+      "command": [
+        "node",
+        "scripts/ci/verify-agent-handbooks.mjs"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "started_at": "2026-09-23T10:23:33.590610+00:00",
+      "finished_at": "2026-09-23T10:23:33.789587+00:00",
+      "exit_code": 0,
+      "log": "acceptance-handbooks.log"
+    },
+    "openapi": {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@namewta/tooling-openapi",
+        "openapi:check"
+      ],
+      "cwd": "/srv/WTA-plus/frontend",
+      "started_at": "2026-09-23T10:23:33.614790+00:00",
+      "finished_at": "2026-09-23T10:23:36.376477+00:00",
+      "exit_code": 0,
+      "log": "acceptance-openapi.log"
+    }
+  },
+  "frontend_typecheck": {
+    "current_source": "54cf715c2829ff95cf994401ff52f02668c1e171",
+    "frontend_tree": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+    "status": "",
+    "actual_run": {
+      "command": [
+        "pnpm",
+        "--dir",
+        "frontend",
+        "typecheck"
+      ],
+      "cwd": "/srv/WTA-plus",
+      "started_at": "2026-09-23T10:00:39.887057+00:00",
+      "finished_at": "2026-09-23T10:01:29.249269+00:00",
+      "exit_code": 0,
+      "log": "frontend-typecheck.log"
+    },
+    "prior_source": {
+      "timestamp": "2026-09-23T10:00:52.452552+00:00",
+      "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+      "frontend_tree": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+      "frontend_status": "",
+      "purpose": "Source input for frontend typecheck; current Java development dirty is unrelated, final reuse only if exact frontend tree/worktree remains unchanged"
+    },
+    "reason": "Exact frontend input tree and worktree unchanged; Java-only candidate reuses actual typecheck, not a claimed rerun."
+  },
+  "reason": "Four existing Java files and change governance only; no gate/manifest/API/DDL/frontend inputs changed. Layered and all affected behavior rerun."
+}

@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-36"
 title: "站内信落库与结果同事务且可安全重试"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -98,9 +98,9 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 任一 SQL/提交失败不留下消息与结果部分提交，失效租约零写入 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 实时发送失败不回滚或重复已落库消息；本地暂时失败能重试收敛 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下由当前Evidence中实际39类定向门禁与真实隔离命令取代，完整argv和源复用边界见Evidence：
 
-- `cd backend && ./mvnw -pl wta-modules/wta-notify,wta-admin -am test`
+- backend Maven精确39类178项，C2执行并在C3按未变输入复用；最终C3真实Atomic66/Wake1、C2真实SMS8未变输入复用，均零skip。
 
 - Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
 - E2E disposition：required: 扩展 NotifyAtomicResultIntegrationTest；真实 DSTransactional 代理、MySQL 双连接、提交故障与 AFTER_COMMIT。
@@ -119,13 +119,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-036`：并发两个用户一条共享消息、每人一条关系；重复任务不增加关系。
-- [ ] `AC-036`：任一 SQL/提交失败不留下消息与结果部分提交，失效租约零写入。
-- [ ] `AC-036`：实时发送失败不回滚或重复已落库消息；本地暂时失败能重试收敛。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-036`：并发两个用户一条共享消息、每人一条关系；重复任务不增加关系。
+- [x] `AC-036`：任一 SQL/提交失败不留下消息与结果部分提交，失效租约零写入。
+- [x] `AC-036`：实时发送失败不回滚或重复已落库消息；本地暂时失败能重试收敛。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -162,3 +162,7 @@ base `5118051403de0648540646d98536d8c4f3f9f26d`；cors_audit唯一产品writer�
 ### revision156 持久化摘要长度核查
 
 当前InAppNotificationService把完整content同时写入varchar(1000)的message摘要和longtext正文；公告内容只NotBlank，合法长文会因摘要列溢出失败。现有写集内修正字段映射：message至多1000个Unicode code point、不截断代理对，content保持完整，幂等快照比较仍比较完整content。真实MySQL覆盖长文/emoji边界，不通过扩列、放宽SQL模式或截断正文规避。
+
+## revision157 已验收
+
+最终source/result `64d67d5fb150620b25ada107115ea2207736c039`，formal attempts=3，详见evidence/T-36.md。当前脚本操作稿未执行生产修复；完整最终候选仍归T30。

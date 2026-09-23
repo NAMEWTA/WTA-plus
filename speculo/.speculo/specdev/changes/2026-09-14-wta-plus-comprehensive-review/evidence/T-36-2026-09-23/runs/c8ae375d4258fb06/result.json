@@ -1,0 +1,104 @@
+{
+  "gate": "T-36 real DAO/Outbox/Redis with IN_APP wake",
+  "run_id": "c8ae375d4258fb06",
+  "mode": "development-red",
+  "acceptance": false,
+  "started_utc": "2026-09-23T09:54:11.704450+00:00",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "90d608dbf31a910238748fc061b72d2a06f3b139dc800a91aef1b1fbdb59eca1",
+    "application_table_count": 103,
+    "redis_container_id": "304507af0e9d870cdec15618734adabad8ba77503fbf6dab7d1d73f0407543a2",
+    "loopback_ports": {
+      "mysql": 32794,
+      "redis": 32795
+    }
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "62f6f4ea845c22acd5c8e8322ba810c78570132bb5510d289301da969ad2de9c",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "24ec3355759905263057ec4bfd08d637b29b69993cb94ae62996d96c27abd84e",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 4010737,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "loopback_ports_closed": {
+      "32794": true,
+      "32795": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+    "tree": "bf9d82dbbb0a8c8f7588581bc8a484746f73cecb",
+    "clean": false,
+    "dirty_status_sha256": "3403281728d717eeda6a80fe579fe14d9d9a628352599cdd21b4c8099b94d1dc",
+    "dirty_tracked_diff_sha256": "1224bcdc65e238e34312834f04af927c9ba54f66299c3b300f3406bf761d052e",
+    "target_test_sha256": "4f899b327fecfbd64e76b054db0f71c27e4d19385bd4665bc383780f1934e75a"
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifyAtomicResultIntegrationTest#attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.atomic.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32794/namewta_notify_test_c8ae375d4258fb06?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t36_c8ae375d4258fb06",
+    "-Dnotify.redis.integration.port=32795"
+  ],
+  "maven_exit_code": 1,
+  "development_red_observed": true,
+  "source_after": {
+    "head": "5118051403de0648540646d98536d8c4f3f9f26d",
+    "tree": "bf9d82dbbb0a8c8f7588581bc8a484746f73cecb",
+    "clean": false,
+    "dirty_status_sha256": "3403281728d717eeda6a80fe579fe14d9d9a628352599cdd21b4c8099b94d1dc",
+    "dirty_tracked_diff_sha256": "1224bcdc65e238e34312834f04af927c9ba54f66299c3b300f3406bf761d052e",
+    "target_test_sha256": "4f899b327fecfbd64e76b054db0f71c27e4d19385bd4665bc383780f1934e75a"
+  },
+  "finished_utc": "2026-09-23T09:54:49.044342+00:00"
+}

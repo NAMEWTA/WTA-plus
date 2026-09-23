@@ -1,0 +1,1 @@
+ERROR: org/namewta/notify/adapter/event/InAppCommittedPushListener.java: adapter 层禁止依赖 org.namewta.notify.usecase.InAppCommittedPushUseCase

@@ -1,0 +1,615 @@
+{
+  "source": "54cf715c2829ff95cf994401ff52f02668c1e171",
+  "classes": [
+    {
+      "class": "org.namewta.common.json.utils.LogSanitizerTest",
+      "path": "wta-common/wta-common-json/target/surefire-reports/TEST-org.namewta.common.json.utils.LogSanitizerTest.xml",
+      "sha256": "61f06bcdc73d982e315dc236d7ac721e54f19f6bd2b621a062ae62d7b8d60d48",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "smsCaptchaAndNotificationSubmissionHidePhoneAndCodeOnlyOnTheirRoutes",
+        "protectsOAuthFieldsOnlyInOAuthContext",
+        "preservesTreeAndMapInputs",
+        "notificationCallbacksKeepOnlyMetadataWithoutChangingBusinessValues",
+        "errorTextCannotEchoCredentialsInOtherwiseValidJson",
+        "redactsNestedAliasesArraysAndCustomExclusions",
+        "failsClosedOnMalformedTrailingOrUnstructuredJson",
+        "failureSummaryContainsNoMessageOrCause",
+        "protectsNestedFormNamesAndCredentialHeaders"
+      ]
+    },
+    {
+      "class": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+      "path": "wta-common/wta-common-log/target/surefire-reports/TEST-org.namewta.common.log.aspect.LogAspectRedactionTest.xml",
+      "sha256": "e79c37bfbcb86c39d3c9bd2330ba10e3e7a92efd690f9993994de6a20899d62d",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "sanitizesNestedResponseBeforeCreatingEventWithoutMutatingBusinessResult"
+      ]
+    },
+    {
+      "class": "org.namewta.common.sms.notify.SmsDeliveryQueryClientTest",
+      "path": "wta-common/wta-common-sms/target/surefire-reports/TEST-org.namewta.common.sms.notify.SmsDeliveryQueryClientTest.xml",
+      "sha256": "bcaa4998804ec4a4e1d37aa82c39fc42d42d05560258da639fbd46ecb73dcde4",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "tencentDoesNotPromoteTruncatedInconsistentOrAmbiguousResults",
+        "actualProtocolClientRunsThroughLocalHttpAndNeverCallsSendAction",
+        "alibabaRequiresSingleMatchingRecordAcrossBothDates",
+        "tencentWaitingAbsentAndUnknownStatusDoNotMeanFailure",
+        "realHttpTransportPostsBodyAndRejectsRedirectsErrorsAndOversize",
+        "queryWindowAndMissingIdentityPreventAnyNetworkCall",
+        "transportReadTimeoutIsBoundedAndDoesNotExposeServerBody",
+        "tencentQueriesExactAccountPhoneAndMessageAcrossAllPages",
+        "alibabaSignsBizIdQueryAndChecksPreviousDayAtMidnight",
+        "signaturesMatchIndependentPythonVectorsIncludingUtf8AndQueryEscaping",
+        "malformedProviderPayloadNeverEscapesWithItsPrivateContents"
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "path": "wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFailureRedactionTest.xml",
+      "sha256": "f06cf579271162fe5f83ad7a434faba1cbd0ed2db1c7b6b1394893c00acd6d49",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "malformedJsonHasOnlySafeSummaryAndOriginalBytesReachApplication",
+        "formRepeatsRemainVisibleWhileNestedSecretsAndOAuthCodeDisappear",
+        "sinkAndHandlerFailuresNeverPrintExceptionPayloadOrCause",
+        "utf8PrefixNeverContainsPartialCodePoint"
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFilterTest",
+      "path": "wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+      "sha256": "87af161f125842adf233c608fef732f1a1817db59df7638fee25945a0fbc22e0",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "omitsBinaryResponseBodyButKeepsMetadata",
+        "completesAsyncResponseExactlyOnce",
+        "recordsCompleteRequestAndResponseWithServerRequestId",
+        "loggingFailureDoesNotChangeBusinessResponse",
+        "preservesUnhandledExceptionAndMarksResponseIncomplete",
+        "recordsAsyncTimeoutOnceAndRestoresCallbackMdc",
+        "preservesPlainJsonThroughNestedWrappersAndRedactsAuditCopies",
+        "concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext",
+        "restoresPreexistingMdcValue",
+        "excludesMultipartRequestAndSseResponseBodies",
+        "neverCopiesRawOAuthQueryAndRedirectIntoLogEvents",
+        "hidesUnstructuredTextWithoutChangingUtf8BusinessBody",
+        "recursivelyRedactsOpenApiCredentialMaterial"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.NotifyOutboxWakeScopeGateTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.NotifyOutboxWakeScopeGateTest.xml",
+      "sha256": "9be6103728c2a37ca827be3f4fcf2eeed06803194a0b05902185238e2478bb04",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "outboxWakeComponentsStayOutsideConfigControlPlaneAndDirectChannelCalls",
+        "commonDispatcherFinishesProviderAndEventOnCallerThreadBeforeReturning",
+        "rejectsConfigInjectionAndDirectProviderCallsButAcceptsClaimPort"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest.xml",
+      "sha256": "521778f4ea9f3d38df2e2606857827f67bf633bf3bd2e1c06a43de6215133226",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "redisPublishFailureDoesNotEscapeAfterCommit",
+        "interruptedPublishPreservesInterruptAndCancelsPendingOperation",
+        "submitDoesNotPublishWakeUntilTransactionCommits",
+        "doesNotPublishOnRedisUntilDynamicDatasourceTransactionCommits",
+        "retryDoesNotPublishWakeUntilTransactionCommits",
+        "listenerUsesExplicitAfterCommitPhase",
+        "stalledRedisPublishIsBoundedAndCancelled",
+        "cancelDoesNotRequestWake",
+        "committingThreadDoesNotWaitForLocalProvider",
+        "wakePayloadOmitsPiiBodyAndSecret"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest.xml",
+      "sha256": "d2134f083249548a1c7737d817a4724a3f99b67d70facb816d5f5d6f4d54938d",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "removeUnregistersBlend",
+        "upsertRegistersBlendRetrievableByConfigKeyWithoutClassCast",
+        "vendorConfigUsesAlibabaAndTencentClassesNotGenericBaseConfig"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.adapter.provider.Sms4jReceiptTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.provider.Sms4jReceiptTest.xml",
+      "sha256": "516e39eab8acccc5bddce0e27f8fefcbca67b92d14459f717648cef8a711b925",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "explicitProviderRejectionRemainsFailed",
+        "tencentInvalidPositionsAreRejectedBeforeTheProviderCall",
+        "alibabaPreservesBizIdInsteadOfTheRequestId",
+        "acceptedWithoutAUsableMessageIdDoesNotBecomeAFailureOrAnotherTargetsId",
+        "tencentCorrelatesTheRequestedPhoneAndSortsNumericTemplatePositions"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest.xml",
+      "sha256": "a52e6087f7a8b63f4700611111dcf3eb0c77e15cae4721247801f75a14fcfdab",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "wakeDoesNotDirectDispatchFutureNextAttemptHint",
+        "wakeAndScheduledShareClaimDispatchLoopAndSameOwner",
+        "overlappingWakeStormIsCoalescedAndPollWorksAfterCompletion",
+        "suppressedWakeStillClaimsOnScheduledPoll",
+        "subscribeFailureDoesNotPreventConstruction",
+        "failedDrainReleasesTheCoalescingFlagForPollRecovery",
+        "drainContinuesClaimUntilEmptyBatch",
+        "defaultPollDelayIsSixtySecondsNotOneSecond",
+        "subscriberBindsT01ChannelAndForwardsWakeWithoutBypass"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.controller.admin.NotifyConfigControllerContractTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.controller.admin.NotifyConfigControllerContractTest.xml",
+      "sha256": "7852f56cd76b5275dc55d6bcb4be79fd6ab00ac7728ab3a47b767ea90af7991a",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "mutationsArePostWithLogAndDoNotSaveSecretBodies"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.domain.policy.NoticeAudiencePolicyTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.domain.policy.NoticeAudiencePolicyTest.xml",
+      "sha256": "1ce7fc423bc184e00723680e8eddde2cf3329ed833a339cc39768aff60cf704b",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "allAndUserTypeRejectMismatchedTargetLists",
+        "nullTypeDefaultsToAllAndNullChannelsDefaultsToInApp",
+        "idsArePositiveDeduplicatedAndKeepFirstSeenOrder",
+        "explicitEmptyOrNullOrUnknownChannelIsRejected"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.domain.policy.NotificationAggregatePolicyTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.domain.policy.NotificationAggregatePolicyTest.xml",
+      "sha256": "af5bcdce267ea17081c1b56cb4f7b131013d36c655861220e944dc0e93ef24c8",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "acceptedIsNotDelivered",
+        "cancelledFallbackDoesNotHideSuccessfulChannel",
+        "deliveredAndFailureIsPartialFailure"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.NotifyConfigServiceTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyConfigServiceTest.xml",
+      "sha256": "5650f97330923820995dbc53048150687f15e4bb44566d7d3790d8478d86ba25",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "accountNamespaceCannotBeRenamedOrReusedAfterDeletion",
+        "disabledPresetsNeedNoCredentialsAndDoNotRegisterASender",
+        "templateMinuteMaxCannotExceedAccountCap",
+        "cannotEnableSmsAccountWithoutSecret",
+        "smsMappingsRejectDuplicateAndMissingPositionsBeforePersistence",
+        "cannotEnableMailAccountWithoutSecret",
+        "smtpPresetRequiresLoginAndAValidPortBeforeEnable",
+        "disablingSmsAccountUnregistersBlend",
+        "accountVoOmitsSecretFields",
+        "mailBindingRejectsRenamedRequiredTokenAndAcceptsMovedToken",
+        "smsProviderCannotChangeWithinAnExistingNamespace",
+        "blankSecretOnEditKeepsPreviousValue",
+        "commonSmsProvidersRequireApprovedSignatureAndTencentAppId",
+        "missingChannelAccountTableDoesNotAbortStartup"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.NotifyNoticePublisherServiceTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyNoticePublisherServiceTest.xml",
+      "sha256": "b05b3eac13601bdbbb16ff48e87d3ba310d9b8e1211cbe478b6a58703731f9da",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "userTypeWithoutResolvedUsersFailsBeforeSnapshotOrSubmit",
+        "userAudienceUsesAuthorizedUsersAndAllKeepsEmptyRecipientIds"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.NotifyNoticeServiceTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyNoticeServiceTest.xml",
+      "sha256": "d68dfd70597197fe47fd3a6a2bb02c706223df2ac32ce1adf5f83baaec3f23b5",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "publishingUnknownNoticeFailsClearly"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.NotifyTestSendServiceTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyTestSendServiceTest.xml",
+      "sha256": "1cbbb674cd5ee1c6cfadc919432a93acb56108e047d6a21f7b8dc26e9c27c1fb",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "disabledAccountTestSendFailsClosed",
+        "unboundTemplateTestSendFailsClosed",
+        "templateTestSendSubmitsSceneVariablesWithoutProviderKey"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.DispatchNotificationServiceTest.xml",
+      "sha256": "e43f2f07601560356a721b3749d1c5ebe750d3407348190df4d4c878ea07684d",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "secondSendWithinAccountMinuteCapFailsClosed",
+        "captchaSmsTraversesRealDispatcherAndAdapterWithSafeSnapshot",
+        "inAppUsesReservedBudgetAndCommitsOneLocalResult",
+        "recipientMinuteCapIsIsolatedByScene",
+        "inAppPortFailureClosesLocallyWithoutWaitingForSupplierReceipt",
+        "boundMailUsesRenderedTemplateNotCallerSnapshots",
+        "unboundSmsFailsClosedWithoutProviderSend",
+        "arbitraryValidationCodeCannotPersistNumericCanary",
+        "realDispatcherIdempotencyCompleteFailureWaitsAfterSupplier",
+        "boundSmsUsesVendorTemplateOnBoundAccountOnly",
+        "exhaustedInAppBudgetClosesWithoutPersistOrAttempt",
+        "dispatcherLocalValidationClosesOutboxWithoutRetry",
+        "sameInAppLeaseCannotReserveTwiceOrExhaustItsOwnLastSlot",
+        "laterLayerFailureDoesNotLeakAccountQuota",
+        "unboundMailFailsClosedWithoutProviderSend",
+        "disabledAccountFailsClosedWithoutProviderSend",
+        "smsQuotaFailureBeforeClientIsRetryableWithoutProviderCall",
+        "realDispatcherIdempotencyAcquireFailureRetriesBeforeSupplier",
+        "noticePublishedMailRendersWrapperNotCallerSnapshot"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.runtime.NotificationMonitorServiceTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationMonitorServiceTest.xml",
+      "sha256": "36b60b5ef676515bede997528ddcf46e37551e147f87a293d670881b4ff2dad7",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "emptyMonitorPageNeverLoadsAllIntents",
+        "batchesOnlyCurrentIntentIdsAndMasksMissingOrSensitiveMetadata"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest.xml",
+      "sha256": "757441081f421cf407c2eb9b2048e5bcc32f29407d0f3a713ce7ad9dffea564e",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "concurrentOwnersAtMostOneLeaseAndOneFinishWriteback"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.support.NotifyAuditSupportTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.support.NotifyAuditSupportTest.xml",
+      "sha256": "f92cd967c0980a6be2d9c3084cc589839ae1c4a141fb9c90f6fb5f4d79696eac",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "missingOrDamagedIntentFailsClosedButLegacyFullRemainsVisible"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.support.NotifySendPlannerTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.support.NotifySendPlannerTest.xml",
+      "sha256": "46dbf88db6ab071addfbd9a0470bfc6f7f908973a92b98a20225f8ce441bb231",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "recipientQuotaTokenIsStableDigestNotHashCode",
+        "laterQuotaExceptionReleasesEarlierHeldAccountSlot",
+        "quotaReleaseFailureIsSuppressedWithoutReplacingOriginalFailure",
+        "invalidMappedVariableFailsBeforeQuotaAndProviderParamsRemainExact"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.usecase.NotifyNoticeUseCaseTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.usecase.NotifyNoticeUseCaseTest.xml",
+      "sha256": "00b745a620ba8635ff7f006d234eaae55ef0b44652610f0e0929f24d446cbbc4",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "alreadyPublishedNoticeSkipsPublisher",
+        "newlyPublishedNoticeIsSubmittedToPublisher",
+        "saveRetractAndRemoveAreTransactionalBoundaries"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.NotifySmsLogEntryTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifySmsLogEntryTest.xml",
+      "sha256": "f8fc80dda01983342e48b665d83cb80a6cd858f254a011ad507e9579a39f5208",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "captchaGetEmitsNoPhoneToSysLogSink",
+        "notificationPostEmitsNoPhoneOrOtpToHttpAndOperationSinks"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest.xml",
+      "sha256": "9fd462b4cc7b0564490bf16f1ea12bdce1b577383200cf040f6a5f9545cd6099",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "shouldMaterializeSnapshotsForSenderAndDeleteLocalFilesAfterward",
+        "messageWithoutAttachmentsMustRemainSourceCompatible",
+        "materializeFailureMustPreventSmtpInvocation"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest.xml",
+      "sha256": "baab7d91a56fca238f0a89fab091658ae852d89f22ac99f88f2c03aecdd9e8bc",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "snapshotFailureMustReleaseRequestBeforeProvider",
+        "shouldCopyUniqueSourcesBeforeProviderAndPublishSnapshotIds",
+        "materializeFailureMustCleanupSnapshotsAndReleaseBeforeProvider",
+        "providerFailureAndEventFailureMustRetainSnapshotObjects"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest.xml",
+      "sha256": "d27374d3848385dcaa2487b20ceab6092487a3e23f952de994c5d01462214f75",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "emailCaptchaUsesNotifyClientAndCachesAfterQueuedSubmission",
+        "smsCaptchaReturnsFailureAndDoesNotCacheWhenSubmissionFails",
+        "smsCaptchaUsesTemplateSnapshotAndCachesAfterQueuedSubmission",
+        "emailCaptchaDoesNotCacheWhenNotificationFails"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+      "sha256": "480ce5d34b930cf79b4996306a775336d7ade16d4fed6c47b446e06656cad06d",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "mailDemoUsesOssIdsForAttachmentSnapshots",
+        "smsDemoUsesExplicitProviderAndCompleteTemplateSnapshot"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest.xml",
+      "sha256": "d57bf91f9ff22061942ecdca6cd48dfbec0bd3095456ff5a0b33d1ca71ecb1c9",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "notificationCallersUseApplicationServiceAndDeclareApiDependency"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest.xml",
+      "sha256": "f92f2cde955d2a2843f68cfe8fe1bac605902846d5bdeca7072a82f951774fcc",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "providerFailureDoesNotBreakWorkflowSideEffect",
+        "resolvesUserEmailAndPhoneTargetsWithoutClientScope"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.xml",
+      "sha256": "b8321dc101f2bd6247075c518e435714d63a5dd0590313fbd80eba46f77e3d77",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "applicationConfigurationShouldReplaceEmptyAutoConfigurationFallback",
+        "shouldAllowBackgroundExecutionWithoutAuthenticationOrClientScope",
+        "shouldSnapshotAuthenticatedRequestSource"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest.xml",
+      "sha256": "747eef7c108e69de62ec40eabd28ec2247e46f38ed4bdd4192af9081b958472a",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "shouldKeepMailRecipientRolesAndShareProviderMessageId",
+        "resolverRequiresProviderKeyAndResolvedAccount"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.core.NotifyAutoConfigurationUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyAutoConfigurationUnitTest.xml",
+      "sha256": "8cfb27d2299ffb4a5519f11aef42788e4baaa066d210b9411034e74e83ae4853",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "shouldDiscoverEnabledMailAndSmsAdapters"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.core.NotifyChannelUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyChannelUnitTest.xml",
+      "sha256": "85ffbd3f9669181c44082ed03ebbcaa184448aa28a4bbfd1d428ad388b94eea5",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "shouldSerializeAsScalarJson",
+        "shouldNormalizeStandardAndCustomChannels",
+        "shouldRejectInvalidChannelNames"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.core.NotifyDispatcherUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyDispatcherUnitTest.xml",
+      "sha256": "711f2f93f7c630efd5877cd196ebe68ef2cd73693ee6698802b8da47c5b6a11f",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "failedEventPublisherLogsNoSensitiveRequestIdForNormalOrDuplicate",
+        "shouldResolveContextAndPublishAcceptedEvent",
+        "shouldRejectWellFormedButUnregisteredChannel",
+        "shouldNotChangeProviderResultWhenEventPublishingFails",
+        "redactedDuplicateEventMasksKeyAndOriginalRequestWithoutResending",
+        "shouldRejectLogicalUserAndTemplateWithoutSnapshotBeforeProvider",
+        "shouldRejectDuplicateChannelAdapters",
+        "redactedEventCannotExposeRequestOrProviderResultWhileAdapterGetsOriginal",
+        "shouldAttemptEveryTargetBeforeThrowingPartialFailure"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.core.SmsNotifyChannelAdapterUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.SmsNotifyChannelAdapterUnitTest.xml",
+      "sha256": "f228cfcffdb89d76986580fa3eac554f93e993983513bf768e1975e77951a885",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "shouldResolveExplicitProviderAndAttemptEveryPhone",
+        "supplierFailureTextNeverReachesResult"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest.xml",
+      "sha256": "63987eb30424c3b97aea96617bcffab860a80390217519b1e7cb8bb6ee9386b3",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "shouldKeepNotifyClientAvailableWithoutRedissonAndFailClosedOnlyForKeyedRequests",
+        "shouldCreateRedisStoreWhenRedissonClientExists"
+      ]
+    },
+    {
+      "class": "org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest.xml",
+      "sha256": "2b3b6f9962c87532f640e650ea66e7bb25c7756a932d65e0bea1d02c425891f2",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "shouldRejectSameBusinessKeyWithDifferentDigest",
+        "shouldUseFiveMinuteDefaultAndHashSensitiveScope",
+        "shouldReuseFailedResultWithoutCallingProviderAgain",
+        "shouldReuseCompletedResultAndPublishSkipWithoutDelivery",
+        "shouldRejectConcurrentInProgressImmediately",
+        "shouldFailClosedOnlyWhenRequestRequiresIdempotency",
+        "shouldExposeCompletionFailureAfterPublishingActualProviderResult"
+      ]
+    },
+    {
+      "class": "org.namewta.notify.service.runtime.InAppNotificationServiceTest",
+      "path": "wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.InAppNotificationServiceTest.xml",
+      "sha256": "8782206b70daf317740233c9450f9f6e5cd8e731981f5949f5d5422feac7c859",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "recipientInsertZeroStopsBeforeEvent",
+        "messageInsertZeroStopsBeforeRecipientAndEvent"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 175,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

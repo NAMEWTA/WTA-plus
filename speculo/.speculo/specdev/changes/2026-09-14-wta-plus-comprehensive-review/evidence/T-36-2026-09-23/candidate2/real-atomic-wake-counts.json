@@ -1,0 +1,101 @@
+[
+  {
+    "test_class": "NotifyAtomicResultIntegrationTest",
+    "sha256": "9c558efc8582be690f7ccb5d8e175d8dbabfa2f0f52102da0ecc1dc3b852b02b",
+    "counts": {
+      "tests": 66,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "method": "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[2]",
+        "message": null,
+        "stack": "java.lang.reflect.UndeclaredThrowableException\n\tat org.namewta.notify.usecase.NotifyDispatchResultUseCase$$SpringCGLIB$$16.completeInApp(<generated>)\n\tat org.namewta.notify.service.runtime.DispatchNotificationService.dispatchInApp(DispatchNotificationService.java:229)\n\tat org.namewta.notify.service.runtime.DispatchNotificationService.dispatch(DispatchNotificationService.java:88)\n\tat org.namewta.test.notify.NotifyAtomicResultIntegrationTest.uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(NotifyAtomicResultIntegrationTest.java:538)\nCaused by: java.sql.SQLRecoverableException: owned lost commit acknowledgement\n\tat org.namewta.test.notify.NotifyAtomicResultIntegrationTest$1.lambda$getConnection$0(NotifyAtomicResultIntegrationTest.java:115)\n\tat jdk.proxy2/jdk.proxy2.$Proxy129.commit(Unknown Source)\n\tat com.baomidou.dynamic.datasource.tx.ConnectionProxy.notify(ConnectionProxy.java:62)\n\tat com.baomidou.dynamic.datasource.tx.ConnectionFactory.notify(ConnectionFactory.java:153)\n\tat com.baomidou.dynamic.datasource.tx.LocalTxUtil.commit(LocalTxUtil.java:91)\n\tat com.baomidou.dynamic.datasource.tx.TransactionalTemplate.doExecute(TransactionalTemplate.java:126)\n\tat com.baomidou.dynamic.datasource.tx.TransactionalTemplate.execute(TransactionalTemplate.java:94)\n\tat com.baomidou.dynamic.datasource.aop.DynamicLocalTransactionInterceptor.invoke(DynamicLocalTransactionInterceptor.java:59)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)\n\t... 4 more\n"
+      }
+    ],
+    "methods": [
+      "duplicateEventWithChangedFactsMustBeRejected",
+      "callbackRevalidatesCorrelationAfterWaitingForCurrentResult",
+      "concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations",
+      "callbackRollbackMustAllowSameEventRetry",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[1]",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[2]",
+      "nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation",
+      "callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler",
+      "anyResultWriteFailureRollsBackAllOtherRows",
+      "restartedJvmsSeeCommittedReceiptAndRejectChangedFacts",
+      "oldWorkerCannotOverwriteAReclaimedAndCompletedResult",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[1]",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[2]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[1]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[2]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[1]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[2]",
+      "finishZeroRollsBackDeliveryAttemptAndAggregate",
+      "nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending",
+      "twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim",
+      "genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact",
+      "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt",
+      "freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved",
+      "longUnicodeBodyKeepsFullContentAndBoundedSummary",
+      "receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry",
+      "concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate",
+      "sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[1]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[2]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[3]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[4]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[5]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[6]",
+      "sameAccountKeyAndEventAcrossChannelsRemainIndependent",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[1]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[2]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[3]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[4]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[5]",
+      "twoConcurrentClaimersOnlyDispatchOneCommittedResult",
+      "existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent",
+      "simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[1]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[2]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[3]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[4]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[5]",
+      "twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce",
+      "deliveredCallbackCannotBeOverwrittenByLateAcceptedResult",
+      "expiredOwnerCannotRenewOrFinishWithoutAReclaim",
+      "nativeQueryCredentialEditOrReadFailureDoesNotApplyResult",
+      "invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite",
+      "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable",
+      "reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist",
+      "leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete",
+      "cancelledBeforeInAppTransactionCannotWriteInboxFact",
+      "providerCompletingAfterExpiryDoesNotReviveTheLease",
+      "receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract",
+      "nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries",
+      "expiredLeaseCannotSkipCancelOrDefer",
+      "earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult",
+      "realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus",
+      "genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt",
+      "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate",
+      "sameEventFromDifferentAccountsMustNotCollide",
+      "externalChannelClaimPreservesSameLiteralErrorCode"
+    ]
+  },
+  {
+    "test_class": "NotifyWakeIntegrationTest",
+    "sha256": "537e2450a947a9bd08f946880e89b173ccb9240c8f7d45c1918de494d9555364",
+    "counts": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "methods": [
+      "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake"
+    ]
+  }
+]

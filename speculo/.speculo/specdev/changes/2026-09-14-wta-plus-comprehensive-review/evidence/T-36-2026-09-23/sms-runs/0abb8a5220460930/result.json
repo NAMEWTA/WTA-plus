@@ -1,0 +1,93 @@
+{
+  "gate": "T-35 real DAO/Outbox/Redis with fake SMS sender",
+  "run_id": "0abb8a5220460930",
+  "started_utc": "2026-09-23T10:36:51.624583+00:00",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "63812f36de2777267e041cd07ce14c04b3cab0393b71cad7c708ad19953bb3e2",
+    "application_table_count": 103,
+    "redis_container_id": "a63695ebad131d0a14ab00e90c0b47b36e824451f366cd032ebb048939fab3df",
+    "loopback_ports": {
+      "mysql": 32804,
+      "redis": 32805
+    }
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "24ec3355759905263057ec4bfd08d637b29b69993cb94ae62996d96c27abd84e",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 4107260,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "loopback_ports_closed": {
+      "32804": true,
+      "32805": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_before": {
+    "head": "a2749a7dcc0bbc5c0643e07eba938446611c995a",
+    "tree": "ff190a2f846c3b1545832bc05fbab744913d3bf2",
+    "clean": true
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifySmsDispatchIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.sms.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32804/namewta_notify_test_0abb8a5220460930?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t35_0abb8a5220460930",
+    "-Dnotify.redis.integration.port=32805"
+  ],
+  "maven_exit_code": 0,
+  "source_after": {
+    "head": "a2749a7dcc0bbc5c0643e07eba938446611c995a",
+    "tree": "ff190a2f846c3b1545832bc05fbab744913d3bf2",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T10:37:32.697589+00:00"
+}
