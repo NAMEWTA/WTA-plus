@@ -1,0 +1,15 @@
+{
+  "ticket": "T-41",
+  "attempt": 2,
+  "source": "eff81f642f08a1590f85a1f1f813a592a8232451",
+  "tree": "d8143ce10fca585d001af46dd94bb9a272074a42",
+  "started_at": "2026-09-23T16:35:39.219653+00:00",
+  "status": "not_accepted",
+  "prior_attempt": "B05d0f34 failed frontend fixture setup; immutable complete-candidate-b evidence retained",
+  "change_from_B": "only two test fixture files and revision176 governance; all product/runtime inputs unchanged",
+  "targeted_feedback": "c-targeted-two:9 tests pass, not whole-ticket acceptance",
+  "finished_at": "2026-09-23T16:38:55.564000+00:00",
+  "frontend": "architecture/lint/typecheck/test/build all exit0;750 tests zero failure/skip;328 production artifacts",
+  "reason": "Independent review: revision176 requires actual Admin host session port timing; current test only mocks Store and does not exercise actual snapshot. Add one contract test before complete-ticket attempt3; no product runtime defect claimed.",
+  "later_stages": "not run: backend default/full/core, real HTTP and browser, shared fixture regression"
+}

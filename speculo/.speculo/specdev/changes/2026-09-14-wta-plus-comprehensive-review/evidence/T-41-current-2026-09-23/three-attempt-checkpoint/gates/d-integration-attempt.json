@@ -1,0 +1,18 @@
+{
+  "ticket": "T-41",
+  "attempt": 3,
+  "source": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+  "tree": "668f14e67b3e21ac91f76e7c9b64e224ae29e3f5",
+  "started_at": "2026-09-23T16:40:45.458619+00:00",
+  "status": "failed",
+  "prior_attempts": [
+    "B05d0f34 failed frontend fixture setup",
+    "Ceff81f6 frontend750/buildpassed but review requested declared actual-host coverage; not accepted"
+  ],
+  "change_from_C": "one existing registry test adds actual host session lifecycle assertions, no production change",
+  "targeted_feedback": "d-host-port five tests pass; full-ticket acceptance pending",
+  "finished_at": "2026-09-23T16:56:51.884181+00:00",
+  "failure": "browser run f2ed71eeedb7b8e2: owned SQL exec failed after successful six-SQL baseline counts but before rotated-login checkpoint; no JVM/Vite/Chrome started; source clean/cleanup passed",
+  "passed": "frontend751/default870 executed+201skip/full bundle/realHTTP4/shared135 all passed; C prod artifacts328 explicitly reused",
+  "remaining": "core/browser501/five API-controlled/final reviews"
+}

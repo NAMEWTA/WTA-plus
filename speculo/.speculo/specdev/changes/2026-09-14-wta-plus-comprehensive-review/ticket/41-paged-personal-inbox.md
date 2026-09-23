@@ -8,11 +8,11 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-41"
 title: "本人收件箱提供完整分页与准确读取状态"
-status: "in_progress"
+status: "blocked"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
-ready: true
+ready: false
 risk: "high"
 blocked_by: ["T-34"]
 contract_ids: ["AC-041"]
@@ -159,3 +159,8 @@ FILES-002/005要求Mapper读投影在domain/model/read，revision173预审建议
 Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at frontend tests: missing Notice SFC SSR context and existing manifest registry test reaches browser Router through new user Store import. Architecture/lint/typecheck passed; later stages not run. Preserve raw failed evidence; add exact registry test path before fixture repair.24 declared entries;12done/2cancelled/T41in_progress/35ready. No product assertion weakened; Goal active.
 
 仅补测试装配：Notice SFC提供与已有InboxPage测试相同的ssrContextKey；既有adminManifestRegistry测试mock宿主user Store以隔离node环境中的浏览器Router，并覆盖真实宿主session端口时序。先登记精确test路径再修改，保留全部既有断言和测试。cors_audit继续唯一产品writer；Lead治理与验收。
+
+## revision177 三次上限停止重派
+
+Revision177: T41 current batch reached3 complete-candidate attempts: B frontend fixture failure; C frontend750/buildpassed but missing declared actual-host coverage; D frontend751/default870+201skip/full/realHTTP4/shared135 passed but owned browser seed SQL exec failed before JVM/Chrome. D sourceclean/cleanup[] preserved; ticket/workspace blocked, result null. Stop automatic resend. Lead diagnosis and materially changed dispatch required before resetting a recovery batch.12done/2cancelled/T41blocked/35ready; Goal remains active.
+详见 evidence/T-41-three-attempt-review-2026-09-23.md；必须根因/具体修改/新责任派单后才能恢复新批，旧三次不可抹去。

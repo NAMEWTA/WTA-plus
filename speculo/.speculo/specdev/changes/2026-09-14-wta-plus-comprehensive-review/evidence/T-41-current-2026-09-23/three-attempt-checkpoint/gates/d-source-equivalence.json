@@ -1,0 +1,15 @@
+{
+  "source": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+  "a3_live_openapi_source": "9d748aa9df9310cb64320e5e0db83d6dad8aeff7",
+  "a3_backend_difference": [
+    "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java"
+  ],
+  "a3_backend_production_and_build_config_unchanged": true,
+  "generated_checkpoint": "42f07ebbd0d68417b37ed94c84463606cac8d820",
+  "generated_difference": [],
+  "frontend_build_source": "eff81f642f08a1590f85a1f1f813a592a8232451",
+  "frontend_build_difference": [
+    "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts"
+  ],
+  "reuse_boundary": "A3 live raw/provenance is an actual prior full-JAR capture with unchanged backend production/build inputs. C production frontend build is prior actual build with only one non-imported Vitest fixture difference. D executes fresh default/full/core backend, real integrations/browser and all test-sensitive frontend gates; no prior run relabelled as D."
+}

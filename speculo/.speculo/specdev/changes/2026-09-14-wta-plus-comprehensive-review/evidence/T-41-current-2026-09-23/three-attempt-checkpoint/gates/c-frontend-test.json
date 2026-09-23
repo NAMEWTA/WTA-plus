@@ -1,0 +1,12 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T16:36:37.784211+00:00",
+  "finished_at": "2026-09-23T16:37:03.313759+00:00",
+  "exit_code": 0,
+  "log": "c-frontend-test.log"
+}

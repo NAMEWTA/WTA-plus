@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/tmp/wta-t02-c1/tool-bin/pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "src/router/adminManifestRegistry.test.ts"
+  ],
+  "cwd": "/srv/WTA-plus/frontend/apps/admin-web",
+  "started_at": "2026-09-23T16:39:50.428675+00:00",
+  "finished_at": "2026-09-23T16:39:55.158025+00:00",
+  "exit_code": 0,
+  "log": "d-host-port.log"
+}

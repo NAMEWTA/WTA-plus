@@ -1,0 +1,27 @@
+{
+  "source_commit": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+  "build_source_commit": "eff81f642f08a1590f85a1f1f813a592a8232451",
+  "status": "passed",
+  "disposition": "reuse identical production inputs; build not rerun",
+  "only_frontend_difference": [
+    "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts"
+  ],
+  "reason": "One Vitest-only fixture file is not imported by production applications; runtime/package/config/lock/generated contracts unchanged. All new test-sensitive gates rerun on D.",
+  "build_record": "c-frontend-build.json",
+  "artifacts_manifest": "c-frontend-artifacts.json",
+  "artifacts_verified": 328,
+  "production_modes": {
+    "admin-web": {
+      "app": "admin-web",
+      "mode": "production"
+    },
+    "home-web": {
+      "app": "home-web",
+      "mode": "production"
+    },
+    "sso-web": {
+      "app": "sso-web",
+      "mode": "production"
+    }
+  }
+}

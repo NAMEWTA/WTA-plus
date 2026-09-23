@@ -1,0 +1,85 @@
+{
+  "gate": "T-41 real Admin inbox page 26 and global read-all",
+  "run_id": "f2ed71eeedb7b8e2",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T16:51:25.419878+00:00",
+  "owned": {
+    "mysql_container_id": "a55d0b3df253e3c8a52e2a3cf594f61b2d3979896214932e6d00fcfd3f56e2c3",
+    "redis_container_id": "41572b0f167d6452e2dc440ac3267da7d11266fbe3bf7e7461de5b75304bffdf",
+    "minio_container_id": "16c99397ab1e728b85132dee3f425deff014933f8bf0476f4d492dc4c8af40ac",
+    "loopback_ports": {
+      "mysql": 32862,
+      "redis": 32863,
+      "minio": 32864
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "captured_anonymous_volume_names": [
+      "693e2e6bc6da1ee8de86d677a88eb9f38aa02a9436df483f3c66e8db431d9749",
+      "637bf3e41401215ce5e6833d74605843385235d5e77478428a271a4364a1debb"
+    ]
+  },
+  "cleanup": {
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "693e2e6bc6da1ee8de86d677a88eb9f38aa02a9436df483f3c66e8db431d9749": true,
+      "637bf3e41401215ce5e6833d74605843385235d5e77478428a271a4364a1debb": true
+    },
+    "loopback_ports_closed": {
+      "32862": true,
+      "32863": true,
+      "32864": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+    "tree": "668f14e67b3e21ac91f76e7c9b64e224ae29e3f5",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "97f1e73bdbaedd6f9f409b30a002ec702c240b31c16d4ee9e175f27a72f10e47",
+    "size_bytes": 214186517
+  },
+  "package_proof_sha256": "95d9aa601018596aa76f1044817f1166c92800f10f8cb1535c30bee975036c17",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/inbox-paged-real.e2e.ts": "bc2905b9a1e0ddb5db949d4eb3b2f94cdc4ecf512f768541a12d294412636603",
+    "frontend/e2e/playwright.inbox-paged-real.config.ts": "860f0254ef131fa9c8a42eaf83850fe2352ac323de9d1031f7b8bab6a8186545"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "error": "RuntimeError: Owned Docker operation failed: exec -i",
+  "source_after": {
+    "head": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+    "tree": "668f14e67b3e21ac91f76e7c9b64e224ae29e3f5",
+    "clean": true
+  },
+  "artifact_after_sha256": "97f1e73bdbaedd6f9f409b30a002ec702c240b31c16d4ee9e175f27a72f10e47",
+  "finished_utc": "2026-09-23T16:51:39.990442+00:00"
+}

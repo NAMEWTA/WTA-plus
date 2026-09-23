@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T16:32:59.577350+00:00",
+  "updated_at": "2026-09-23T16:56:51.884181+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -139,7 +139,8 @@
     "Revision173: T41 active from d7d534cb after T50 closure;12done/2cancelled/T41in_progress/35ready. Bounded personal JOIN pagination/detail, global unread/read-all, session fencing and real 501 evidence. cors_audit sole writer; Lead serial build/services/commit/governance. Goal active, no production operations.",
     "Revision174: before production edits, correct T41 Mapper read projection to domain/model/read/NotifyInboxRow.java per FILES-002/005; no dto exception. 23 declared entries, same red-only phase;12done/2cancelled/T41in_progress/35ready.",
     "Revision175: T41 backend checkpoints A1 b08105f failed (fixture MPJ result mapping), A2 662b351 passed3, A3 9d748aa passed4 after atomic first-time preservation. Full JAR/live OpenAPI fetched and generated in42f07eb. Frontend sole writer cors_audit active;12done/2cancelled/T41in_progress/35ready. This is partial implementation feedback, not complete-ticket integration; default full suite/frontend/browser still pending.",
-    "Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at frontend tests: missing Notice SFC SSR context and existing manifest registry test reaches browser Router through new user Store import. Architecture/lint/typecheck passed; later stages not run. Preserve raw failed evidence; add exact registry test path before fixture repair.24 declared entries;12done/2cancelled/T41in_progress/35ready. No product assertion weakened; Goal active."
+    "Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at frontend tests: missing Notice SFC SSR context and existing manifest registry test reaches browser Router through new user Store import. Architecture/lint/typecheck passed; later stages not run. Preserve raw failed evidence; add exact registry test path before fixture repair.24 declared entries;12done/2cancelled/T41in_progress/35ready. No product assertion weakened; Goal active.",
+    "Revision177: T41 current batch reached3 complete-candidate attempts: B frontend fixture failure; C frontend750/buildpassed but missing declared actual-host coverage; D frontend751/default870+201skip/full/realHTTP4/shared135 passed but owned browser seed SQL exec failed before JVM/Chrome. D sourceclean/cleanup[] preserved; ticket/workspace blocked, result null. Stop automatic resend. Lead diagnosis and materially changed dispatch required before resetting a recovery batch.12done/2cancelled/T41blocked/35ready; Goal remains active."
   ],
   "worktrees": [
     {
@@ -668,14 +669,14 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "05d0f3443dc3364917a8149ce9290f7dc6785670",
-      "status": "active",
-      "updated_at": "2026-09-23T16:32:59.577350+00:00",
+      "source_checkpoint": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+      "status": "blocked",
+      "updated_at": "2026-09-23T16:56:51.884181+00:00",
       "integration": {
         "status": "failed",
         "parent_ref": "main",
         "parent_before_sha": "d7d534cb03aa000d603a53c092c4bf1d48bb5cc3",
-        "source_sha": "05d0f3443dc3364917a8149ce9290f7dc6785670",
+        "source_sha": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
@@ -686,18 +687,18 @@
         "verification": "failed",
         "full_suite": {
           "required": true,
-          "status": "failed",
-          "reason": "frontend test fixture setup failed; see complete-candidate-b evidence",
+          "status": "pending",
+          "reason": "frontend/default/full passed; core still pending",
           "evidence": null
         },
         "e2e": {
           "required": true,
-          "status": "pending",
-          "reason": null,
+          "status": "failed",
+          "reason": "owned browser seed SQL failed before Chrome; real HTTP4/shared135 passed",
           "evidence": null
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-41.md</Path>",
-        "attempts": 1,
+        "attempts": 3,
         "promotion_status": "pending"
       }
     }

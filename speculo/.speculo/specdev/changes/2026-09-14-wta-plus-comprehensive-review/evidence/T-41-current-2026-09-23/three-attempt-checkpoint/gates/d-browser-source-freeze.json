@@ -1,0 +1,21 @@
+{
+  "source": "d93eb1d8d6095464a9606619f4161b3dd4ef35c7",
+  "files": [
+    {
+      "file": "frontend/e2e/run-inbox-paged-real.py",
+      "sha256": "bd1798bba7a3ea78640e054e11f04905faf56ca38b8594196e18fc379c4c1f88"
+    },
+    {
+      "file": "frontend/e2e/test_run_inbox_paged_real.py",
+      "sha256": "96295d752946205f604c1a7223f549650368f44d11d9fd9e388fe607dc2537c5"
+    },
+    {
+      "file": "frontend/e2e/inbox-paged-real.e2e.ts",
+      "sha256": "bc2905b9a1e0ddb5db949d4eb3b2f94cdc4ecf512f768541a12d294412636603"
+    },
+    {
+      "file": "frontend/e2e/playwright.inbox-paged-real.config.ts",
+      "sha256": "860f0254ef131fa9c8a42eaf83850fe2352ac323de9d1031f7b8bab6a8186545"
+    }
+  ]
+}

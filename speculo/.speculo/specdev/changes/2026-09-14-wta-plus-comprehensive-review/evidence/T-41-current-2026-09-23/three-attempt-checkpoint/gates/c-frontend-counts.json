@@ -1,0 +1,265 @@
+{
+  "source_commit": "eff81f642f08a1590f85a1f1f813a592a8232451",
+  "log_sha256": "deb6788bc6704454368c2bcca632d0b3bde3c6b7676daad3d0800f8b86a2a1ee",
+  "vitest_packages": {
+    "packages/platform/contracts": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/platform/permission": {
+      "passed": 13,
+      "total": 13
+    },
+    "apps/sso-web": {
+      "passed": 5,
+      "total": 5
+    },
+    "packages/platform/validation": {
+      "passed": 3,
+      "total": 3
+    },
+    "packages/web-kit/rich-text": {
+      "passed": 4,
+      "total": 4
+    },
+    "packages/adapters/storage-browser": {
+      "passed": 5,
+      "total": 5
+    },
+    "packages/platform/auth": {
+      "passed": 18,
+      "total": 18
+    },
+    "packages/adapters/oss-upload-browser": {
+      "passed": 8,
+      "total": 8
+    },
+    "packages/platform/app-runtime": {
+      "passed": 23,
+      "total": 23
+    },
+    "packages/platform/http": {
+      "passed": 7,
+      "total": 7
+    },
+    "packages/web-kit/file-upload": {
+      "passed": 7,
+      "total": 7
+    },
+    "packages/web-kit/permission": {
+      "passed": 16,
+      "total": 16
+    },
+    "packages/domains/demo": {
+      "passed": 4,
+      "total": 4
+    },
+    "packages/domains/notify": {
+      "passed": 5,
+      "total": 5
+    },
+    "packages/domains/admin": {
+      "passed": 63,
+      "total": 63
+    },
+    "packages/adapters/axios-browser": {
+      "passed": 46,
+      "total": 46
+    },
+    "packages/domains/third": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/domains/profile": {
+      "passed": 22,
+      "total": 22
+    },
+    "packages/domains/system": {
+      "passed": 95,
+      "total": 95
+    },
+    "packages/web-domains/demo": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/web-domains/admin": {
+      "passed": 6,
+      "total": 6
+    },
+    "packages/domains/workflow": {
+      "passed": 7,
+      "total": 7
+    },
+    "packages/web-domains/notify": {
+      "passed": 20,
+      "total": 20
+    },
+    "packages/web-domains/profile": {
+      "passed": 36,
+      "total": 36
+    },
+    "packages/web-domains/third": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-domains/system": {
+      "passed": 73,
+      "total": 73
+    },
+    "apps/home-web": {
+      "passed": 15,
+      "total": 15
+    },
+    "packages/web-domains/workflow": {
+      "passed": 59,
+      "total": 59
+    },
+    "apps/admin-web": {
+      "passed": 77,
+      "total": 77
+    }
+  },
+  "vitest_files": {
+    "packages/platform/contracts": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/platform/permission": {
+      "passed": 1,
+      "total": 1
+    },
+    "apps/sso-web": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/platform/validation": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-kit/rich-text": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/adapters/storage-browser": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/platform/auth": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/adapters/oss-upload-browser": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/platform/app-runtime": {
+      "passed": 4,
+      "total": 4
+    },
+    "packages/platform/http": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-kit/file-upload": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/web-kit/permission": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/domains/demo": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/domains/notify": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/domains/admin": {
+      "passed": 3,
+      "total": 3
+    },
+    "packages/adapters/axios-browser": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/domains/third": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/domains/profile": {
+      "passed": 4,
+      "total": 4
+    },
+    "packages/domains/system": {
+      "passed": 10,
+      "total": 10
+    },
+    "packages/web-domains/demo": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-domains/admin": {
+      "passed": 3,
+      "total": 3
+    },
+    "packages/domains/workflow": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/web-domains/notify": {
+      "passed": 5,
+      "total": 5
+    },
+    "packages/web-domains/profile": {
+      "passed": 8,
+      "total": 8
+    },
+    "packages/web-domains/third": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-domains/system": {
+      "passed": 11,
+      "total": 11
+    },
+    "apps/home-web": {
+      "passed": 7,
+      "total": 7
+    },
+    "packages/web-domains/workflow": {
+      "passed": 6,
+      "total": 6
+    },
+    "apps/admin-web": {
+      "passed": 17,
+      "total": 17
+    }
+  },
+  "node_packages": {
+    "tooling/openapi": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0
+    },
+    "tooling/architecture": {
+      "tests": 101,
+      "pass": 101,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "totals": {
+    "vitest_executed": 642,
+    "vitest_files": 102,
+    "node_executed": 108,
+    "failed": 0,
+    "skipped": 0,
+    "total_executed": 750
+  },
+  "not_test_counted": [
+    "api-contracts test is tsc compile-only"
+  ]
+}

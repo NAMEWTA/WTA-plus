@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-当前revision176：12done/2cancelled/T41 in_progress/35ready。候选B首次前端测试失败，仅测试装配待修；原失败保留，未声称整票通过。
+当前revision177：12done/2cancelled/T41 blocked/35ready。D多数门禁通过但browser在owned SQL准备失败；三次上限已保留并停止自动重派，Lead诊断中，Goal active。
 
 最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
@@ -32,3 +32,7 @@ Revision175: T41 backend checkpoints A1 b08105f failed (fixture MPJ result mappi
 ## revision176 — T41测试夹具修复
 
 Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at frontend tests: missing Notice SFC SSR context and existing manifest registry test reaches browser Router through new user Store import. Architecture/lint/typecheck passed; later stages not run. Preserve raw failed evidence; add exact registry test path before fixture repair.24 declared entries;12done/2cancelled/T41in_progress/35ready. No product assertion weakened; Goal active.
+
+## revision177 — T41三次复盘
+
+Revision177: T41 current batch reached3 complete-candidate attempts: B frontend fixture failure; C frontend750/buildpassed but missing declared actual-host coverage; D frontend751/default870+201skip/full/realHTTP4/shared135 passed but owned browser seed SQL exec failed before JVM/Chrome. D sourceclean/cleanup[] preserved; ticket/workspace blocked, result null. Stop automatic resend. Lead diagnosis and materially changed dispatch required before resetting a recovery batch.12done/2cancelled/T41blocked/35ready; Goal remains active.
