@@ -1,0 +1,27 @@
+[
+  {
+    "file": "three-attempt-diagnosis.md",
+    "bytes": 9884,
+    "sha256": "c38a811dca7e9e759298c207037b906b76547f34d8dc79031edd989a0c33d601"
+  },
+  {
+    "file": "independent-recovery-review.md",
+    "bytes": 5113,
+    "sha256": "00c2eb46c17460117069de4336e92f6a1d4b9f336bc2001b3b05182e181e14c3"
+  },
+  {
+    "file": "WtaT40UaProbe.java",
+    "bytes": 858,
+    "sha256": "9206a22fe4100de7e2253fcdaee7739219e3c5231b5babe325e86fc99a07c0b0"
+  },
+  {
+    "file": "ua-parser-probe.json",
+    "bytes": 438,
+    "sha256": "ad5239693f281990cd3c6fe815a7f148a8f74a6b5e718bf62dd65e1da7c60105"
+  },
+  {
+    "file": "ua-parser-probe.log",
+    "bytes": 98,
+    "sha256": "866112c9400f5bafbc713f68b67b16c493e920cbf875b6f1dad0e9d94a048af2"
+  }
+]

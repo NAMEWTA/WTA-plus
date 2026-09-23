@@ -3294,7 +3294,11 @@
       "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/NotifyNoticeVersionFenceTest.java",
       ".agents/skills/wta-module-guide/references/modules/notify/index.md",
       ".agents/skills/engineering-standards/references/notification.md",
-      "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java"
+      "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java",
+      "backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/utils/LoginHelper.java",
+      "backend/wta-admin/src/main/java/org/namewta/web/listener/UserLoginSuccessListener.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysLoginInfoServiceImpl.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/auth/LoginUserAgentUnitTest.java"
     ],
     "tests": [
       "真实发布→撤回→Worker→inbox；普通用户浏览器详情与越权"
@@ -3311,7 +3315,8 @@
     "skills": [
       "engineering-standards",
       "namewta-fullstack-development",
-      "wta-module-guide"
+      "wta-module-guide",
+      "wta-common-modules-guide"
     ],
     "depth": "deep",
     "risk": "high",
@@ -3324,7 +3329,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 188,
+    "plan_revision": 189,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 真实发布→撤回→Worker→inbox；普通用户浏览器详情与越权",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",

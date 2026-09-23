@@ -1,0 +1,14 @@
+{
+  "command": [
+    "java",
+    "-Xmx128m",
+    "-cp",
+    "/tmp/wta-t40-ua-probe:/root/.m2/repository/cn/hutool/hutool-http/5.8.47/hutool-http-5.8.47.jar:/root/.m2/repository/cn/hutool/hutool-core/5.8.47/hutool-core-5.8.47.jar",
+    "WtaT40UaProbe"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T20:51:50.778271+00:00",
+  "finished_at": "2026-09-23T20:51:50.836015+00:00",
+  "exit_code": 0,
+  "log": "ua-parser-probe.log"
+}

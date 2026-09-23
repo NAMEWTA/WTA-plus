@@ -1,0 +1,4 @@
+absent_is_null=true
+chrome_browser=Chrome
+chrome_os=Linux
+absent_dereference=NullPointerException
