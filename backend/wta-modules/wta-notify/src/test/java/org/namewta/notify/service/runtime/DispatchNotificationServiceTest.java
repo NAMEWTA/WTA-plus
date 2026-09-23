@@ -230,6 +230,25 @@ class DispatchNotificationServiceTest {
     }
 
     @Test
+    void smsQuotaFailureBeforeClientIsRetryableWithoutProviderCall() {
+        Fixture fixture = fixture("SMS", (key, limit, window) -> {
+            throw new IllegalStateException("synthetic quota unavailable");
+        });
+        NotifySceneBinding binding = binding(22L, "SMS", null, null);
+        binding.setSmsTemplateCode("SMS_BOUND");
+        binding.setSmsParamMappingJson(JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")));
+        when(fixture.configDao.findBinding("auth-captcha", "SMS")).thenReturn(binding);
+        when(fixture.configDao.findAccount(22L)).thenReturn(smsAccount(22L, "ali-owned"));
+
+        fixture.service.dispatch(fixture.outbox);
+
+        verify(fixture.notifyClient, never()).send(any());
+        assertEquals("PENDING", fixture.delivery.getStatus());
+        assertEquals("READY", fixture.outbox.getStatus());
+        assertEquals("PREPARATION_RETRYABLE", fixture.delivery.getErrorCode());
+    }
+
+    @Test
     void inAppExceptionKeepsOriginalUnknownDisposition() {
         Fixture fixture = fixture("IN_APP");
         when(fixture.inApp.getIfAvailable()).thenThrow(new IllegalStateException("local in-app failure"));

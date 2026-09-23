@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * 收件人限额键使用规范化 SHA-256 摘要，而不是 {@code hashCode}。
@@ -63,5 +64,65 @@ class NotifySendPlannerTest {
         assertFalse(valid.smsSnapshot().contains("1234"));
         assertFalse(valid.smsSnapshot().contains("13812345678"));
         assertTrue(quotaCalls.get() > 0);
+    }
+
+    @Test
+    void laterQuotaExceptionReleasesEarlierHeldAccountSlot() {
+        NotifySceneBinding binding = new NotifySceneBinding();
+        binding.setAccountId(10L);
+        binding.setSmsTemplateCode("SMS_TEMPLATE");
+        binding.setSmsParamMappingJson("{\"code\":\"code\",\"expireMinutes\":\"min\"}");
+        binding.setTemplateMinuteMax(10);
+        NotifyChannelAccount account = new NotifyChannelAccount();
+        account.setAccountId(10L);
+        account.setChannel("SMS");
+        account.setEnabled("Y");
+        account.setConfigKey("sms-owned");
+        account.setMinuteMax(10);
+        AtomicInteger heldAccount = new AtomicInteger();
+        var quota = new org.namewta.notify.port.NotifyQuotaPort() {
+            @Override public boolean tryAcquire(String key, int limit, java.time.Duration window) {
+                if (key.startsWith("acct:")) { heldAccount.incrementAndGet(); return true; }
+                throw new IllegalStateException("synthetic template quota failure");
+            }
+            @Override public void release(String key) {
+                if (key.startsWith("acct:")) heldAccount.decrementAndGet();
+            }
+        };
+
+        assertThrows(IllegalStateException.class, () -> NotifySendPlanner.plan("auth-captcha", "SMS",
+            "13812345678", Map.of("code", "1234", "expireMinutes", "5"), binding, account, quota));
+        assertEquals(0, heldAccount.get());
+    }
+
+    @Test
+    void quotaReleaseFailureIsSuppressedWithoutReplacingOriginalFailure() {
+        NotifySceneBinding binding = new NotifySceneBinding();
+        binding.setAccountId(10L);
+        binding.setSmsTemplateCode("SMS_TEMPLATE");
+        binding.setSmsParamMappingJson("{\"code\":\"code\",\"expireMinutes\":\"min\"}");
+        binding.setTemplateMinuteMax(10);
+        NotifyChannelAccount account = new NotifyChannelAccount();
+        account.setAccountId(10L);
+        account.setChannel("SMS");
+        account.setEnabled("Y");
+        account.setConfigKey("sms-owned");
+        account.setMinuteMax(10);
+        var quota = new org.namewta.notify.port.NotifyQuotaPort() {
+            @Override public boolean tryAcquire(String key, int limit, java.time.Duration window) {
+                if (key.startsWith("acct:")) return true;
+                throw new IllegalStateException("original template outage");
+            }
+            @Override public void release(String key) {
+                throw new IllegalStateException("account release outage");
+            }
+        };
+
+        IllegalStateException failure = assertThrows(IllegalStateException.class, () -> NotifySendPlanner.plan(
+            "auth-captcha", "SMS", "13812345678", Map.of("code", "1234", "expireMinutes", "5"),
+            binding, account, quota));
+        assertEquals("original template outage", failure.getMessage());
+        assertEquals(1, failure.getSuppressed().length);
+        assertEquals("account release outage", failure.getSuppressed()[0].getMessage());
     }
 }

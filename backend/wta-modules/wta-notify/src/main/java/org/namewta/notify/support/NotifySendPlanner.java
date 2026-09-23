@@ -125,29 +125,38 @@ public final class NotifySendPlanner {
     private static Plan finish(NotifyChannelAccount account, NotifySceneBinding binding, String sceneCode,
                                String channel, String target, NotifyQuotaPort quotaPort, Plan prepared) {
         List<String> held = new ArrayList<>();
-        if (!acquireQuota(quotaPort, held, "acct:" + account.getAccountId(), account.getMinuteMax(), Duration.ofMinutes(1))) {
-            return Plan.fail("ACCOUNT_QUOTA", "账号每分钟发送上限已用尽");
-        }
-        int templateMax = binding.getTemplateMinuteMax() == null ? account.getMinuteMax() : binding.getTemplateMinuteMax();
-        if (!acquireQuota(quotaPort, held, "tpl:" + sceneCode + ":" + channel, templateMax, Duration.ofMinutes(1))) {
-            releaseHeld(quotaPort, held);
-            return Plan.fail("TEMPLATE_QUOTA", "模板每分钟发送上限已用尽");
-        }
-        if ("Y".equals(binding.getRestricted()) && target != null && !target.isBlank()) {
-            int minute = binding.getRecipientMinuteMax() == null ? 0 : binding.getRecipientMinuteMax();
-            int day = binding.getRecipientDayMax() == null ? 0 : binding.getRecipientDayMax();
-            String safeTarget = recipientQuotaToken(target);
-            if (!acquireQuota(quotaPort, held, "rcpt-m:" + sceneCode + ":" + channel + ":" + safeTarget, minute, Duration.ofMinutes(1))) {
-                releaseHeld(quotaPort, held);
-                return Plan.fail("RECIPIENT_MINUTE_QUOTA", "收件人每分钟拦截上限已用尽");
+        try {
+            if (!acquireQuota(quotaPort, held, "acct:" + account.getAccountId(), account.getMinuteMax(), Duration.ofMinutes(1))) {
+                return Plan.fail("ACCOUNT_QUOTA", "账号每分钟发送上限已用尽");
             }
-            if (!acquireQuota(quotaPort, held, "rcpt-d:" + sceneCode + ":" + channel + ":" + safeTarget + ":"
-                + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE), day, Duration.ofDays(1))) {
+            int templateMax = binding.getTemplateMinuteMax() == null ? account.getMinuteMax() : binding.getTemplateMinuteMax();
+            if (!acquireQuota(quotaPort, held, "tpl:" + sceneCode + ":" + channel, templateMax, Duration.ofMinutes(1))) {
                 releaseHeld(quotaPort, held);
-                return Plan.fail("RECIPIENT_DAY_QUOTA", "收件人每天拦截上限已用尽");
+                return Plan.fail("TEMPLATE_QUOTA", "模板每分钟发送上限已用尽");
             }
+            if ("Y".equals(binding.getRestricted()) && target != null && !target.isBlank()) {
+                int minute = binding.getRecipientMinuteMax() == null ? 0 : binding.getRecipientMinuteMax();
+                int day = binding.getRecipientDayMax() == null ? 0 : binding.getRecipientDayMax();
+                String safeTarget = recipientQuotaToken(target);
+                if (!acquireQuota(quotaPort, held, "rcpt-m:" + sceneCode + ":" + channel + ":" + safeTarget, minute, Duration.ofMinutes(1))) {
+                    releaseHeld(quotaPort, held);
+                    return Plan.fail("RECIPIENT_MINUTE_QUOTA", "收件人每分钟拦截上限已用尽");
+                }
+                if (!acquireQuota(quotaPort, held, "rcpt-d:" + sceneCode + ":" + channel + ":" + safeTarget + ":"
+                    + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE), day, Duration.ofDays(1))) {
+                    releaseHeld(quotaPort, held);
+                    return Plan.fail("RECIPIENT_DAY_QUOTA", "收件人每天拦截上限已用尽");
+                }
+            }
+            return prepared;
+        } catch (RuntimeException failure) {
+            try {
+                releaseHeld(quotaPort, held);
+            } catch (RuntimeException cleanupFailure) {
+                if (cleanupFailure != failure) failure.addSuppressed(cleanupFailure);
+            }
+            throw failure;
         }
-        return prepared;
     }
 
     /**
@@ -185,10 +194,17 @@ public final class NotifySendPlanner {
         if (quotaPort == null) {
             return;
         }
+        RuntimeException failure = null;
         for (int i = held.size() - 1; i >= 0; i--) {
-            quotaPort.release(held.get(i));
+            try {
+                quotaPort.release(held.get(i));
+            } catch (RuntimeException exception) {
+                if (failure == null) failure = exception;
+                else if (failure != exception) failure.addSuppressed(exception);
+            }
         }
         held.clear();
+        if (failure != null) throw failure;
     }
 
     private static Map<String, String> mapping(String json) {

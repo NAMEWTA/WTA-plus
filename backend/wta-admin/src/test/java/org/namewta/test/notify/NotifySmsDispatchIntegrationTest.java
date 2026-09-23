@@ -12,6 +12,8 @@ import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.mapping.Environment;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.namewta.common.core.exception.ServiceException;
@@ -59,7 +61,9 @@ import static org.junit.jupiter.api.Assertions.*;
 /** 隔离 MySQL/Redis 的提交、规划、Dispatcher、SMS Adapter 和结果事务真实链路。 */
 @Tag("dev")
 @EnabledIfSystemProperty(named = "notify.sms.integration", matches = "true")
+@Execution(ExecutionMode.SAME_THREAD)
 class NotifySmsDispatchIntegrationTest {
+    private static final long SEEDED_SMS_BINDING_ID = 2100630000000000002L;
     private static RedissonClient sharedRedis;
     private static AnnotationConfigApplicationContext sharedContext;
     private static Object previousSpringContext;
@@ -81,6 +85,9 @@ class NotifySmsDispatchIntegrationTest {
     private String appId;
     private long accountId;
     private long bindingId;
+    private BindingSeed seededBinding;
+    private boolean accountInserted;
+    private boolean bindingReplaced;
 
     @BeforeAll
     static void openRedis() {
@@ -122,7 +129,7 @@ class NotifySmsDispatchIntegrationTest {
         runId = UUID.randomUUID().toString().replace("-", "");
         appId = "owned-t35-" + runId;
         accountId = Math.abs(UUID.randomUUID().getMostSignificantBits() >>> 1);
-        bindingId = Math.abs(UUID.randomUUID().getLeastSignificantBits() >>> 1);
+        bindingId = SEEDED_SMS_BINDING_ID;
 
         pool = new HikariDataSource();
         pool.setJdbcUrl(url);
@@ -182,10 +189,20 @@ class NotifySmsDispatchIntegrationTest {
 
         db.update("insert into notify_channel_account(account_id,channel,config_key,enabled,supplier,minute_max,create_time) "
             + "values(?,'SMS',?,'Y','aliyun',10,utc_timestamp())", accountId, "owned-" + runId);
-        db.update("insert into notify_scene_binding(binding_id,scene_code,channel,account_id,sms_template_code,"
-            + "sms_param_mapping_json,template_minute_max,restricted,create_time) "
-            + "values(?,'auth-captcha','SMS',?,'SMS_OWNED',?,10,'N',utc_timestamp())",
-            bindingId, accountId, JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")));
+        accountInserted = true;
+        seededBinding = db.queryForObject("select account_id,sms_template_code,sms_param_mapping_json,"
+            + "template_minute_max,restricted from notify_scene_binding "
+            + "where binding_id=? and scene_code='auth-captcha' and channel='SMS'", (rs, row) ->
+            new BindingSeed(rs.getObject("account_id", Long.class), rs.getString("sms_template_code"),
+                rs.getString("sms_param_mapping_json"), rs.getInt("template_minute_max"),
+                rs.getString("restricted")), bindingId);
+        assertNotNull(seededBinding, "six-file base must contain the known SMS binding");
+        assertNull(seededBinding.accountId(), "owned fixture only replaces the unbound seed");
+        assertEquals(1, db.update("update notify_scene_binding set account_id=?,sms_template_code='SMS_OWNED',"
+            + "sms_param_mapping_json=?,template_minute_max=10,restricted='N' "
+            + "where binding_id=? and scene_code='auth-captcha' and channel='SMS' and account_id is null",
+            accountId, JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")), bindingId));
+        bindingReplaced = true;
     }
 
     @AfterEach
@@ -204,12 +221,21 @@ class NotifySmsDispatchIntegrationTest {
                     db.update("delete from notify_recipient where intent_id=?", intentId);
                     db.update("delete from notify_intent where intent_id=?", intentId);
                 }
-                db.update("delete from notify_scene_binding where binding_id=?", bindingId);
-                db.update("delete from notify_channel_account where account_id=?", accountId);
+                if (bindingReplaced) {
+                    assertEquals(1, db.update("update notify_scene_binding set account_id=?,sms_template_code=?,"
+                        + "sms_param_mapping_json=?,template_minute_max=?,restricted=? "
+                        + "where binding_id=? and scene_code='auth-captcha' and channel='SMS'",
+                        seededBinding.accountId(), seededBinding.smsTemplateCode(), seededBinding.mappingJson(),
+                        seededBinding.templateMinuteMax(), seededBinding.restricted(), bindingId));
+                }
+                if (accountInserted) {
+                    db.update("delete from notify_channel_account where account_id=? and config_key=?",
+                        accountId, "owned-" + runId);
+                }
             }
             if (redis != null) {
-                redis.getAtomicLong("acct:" + accountId).delete();
-                redis.getAtomicLong("tpl:auth-captcha:SMS").delete();
+                if (accountInserted) redis.getAtomicLong("acct:" + accountId).delete();
+                if (bindingReplaced) redis.getAtomicLong("tpl:auth-captcha:SMS").delete();
             }
         } finally {
             if (routing != null) routing.destroy();
@@ -248,7 +274,8 @@ class NotifySmsDispatchIntegrationTest {
         assertNull(monitor.deliveries(null, "SMS", null).stream()
             .filter(item -> item.intentId() == intentId).findFirst().orElseThrow().errorCode());
 
-        db.update("delete from notify_scene_binding where binding_id=?", bindingId);
+        assertEquals(1, db.update("update notify_scene_binding set account_id=null where binding_id=? and account_id=?",
+            bindingId, accountId));
         NotificationReceipt duplicate = application.submit(command);
         assertEquals(receipt.notificationId(), duplicate.notificationId(),
             "an existing idempotent request keeps its receipt after binding changes");
@@ -289,7 +316,8 @@ class NotifySmsDispatchIntegrationTest {
     @Test
     void removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall() {
         long intentId = Long.parseLong(application.submit(command("9012")).notificationId());
-        db.update("delete from notify_scene_binding where binding_id=?", bindingId);
+        assertEquals(1, db.update("update notify_scene_binding set account_id=null where binding_id=? and account_id=?",
+            bindingId, accountId));
         claimAndDispatch(intentId);
 
         assertEquals(0, supplierCalls.get());
@@ -310,6 +338,30 @@ class NotifySmsDispatchIntegrationTest {
         assertEquals("SMS_LOCAL_VALIDATION_INVALID_TARGET", db.queryForObject(
             "select error_code from notify_delivery where intent_id=?", String.class, intentId));
         assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+    }
+
+    @Test
+    void brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery() {
+        long intentId = Long.parseLong(application.submit(command("4567")).notificationId());
+        String templateKey = "tpl:auth-captcha:SMS";
+        redis.getBucket(templateKey).set("synthetic-not-an-integer");
+        claimAndDispatch(intentId);
+
+        assertEquals(0, supplierCalls.get());
+        assertEquals("PENDING", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("READY", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals("PREPARATION_RETRYABLE", db.queryForObject(
+            "select error_code from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals(0, redis.getAtomicLong("acct:" + accountId).get(), "held account quota must be released");
+        assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+
+        redis.getBucket(templateKey).delete();
+        claimAndDispatch(intentId);
+        assertEquals(1, supplierCalls.get());
+        assertEquals("ACCEPTED", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("DONE", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals(1, redis.getAtomicLong("acct:" + accountId).get());
+        assertEquals(2, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
     }
 
     private NotificationCommand command(String code) {
@@ -335,4 +387,7 @@ class NotifySmsDispatchIntegrationTest {
             DSTransactional.class));
         return type.cast(proxy.getProxy());
     }
+
+    private record BindingSeed(Long accountId, String smsTemplateCode, String mappingJson,
+                               int templateMinuteMax, String restricted) { }
 }

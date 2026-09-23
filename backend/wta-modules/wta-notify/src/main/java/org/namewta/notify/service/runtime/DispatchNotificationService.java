@@ -86,6 +86,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         NotifyResult result = null;
         String errorCode = null;
         String errorMessage = null;
+        boolean smsClientEntered = false;
         try {
             if (NotificationChannel.IN_APP.name().equals(delivery.getChannel())) {
                 InAppNotificationPort port = inAppPort.getIfAvailable();
@@ -126,6 +127,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                             ? NotifyAuditPolicy.REDACT_SENSITIVE : NotifyAuditPolicy.FULL)
                         .idempotencyKey(String.valueOf(delivery.getDeliveryId()))
                         .build();
+                    smsClientEntered = NotificationChannel.SMS.name().equals(delivery.getChannel());
                     result = notifyClient.send(request);
                     delivery.setStatus(result.status().name());
                     if (!result.deliveries().isEmpty()) {
@@ -166,9 +168,16 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorMessage = "供应商调用结果未知";
             }
         } catch (RuntimeException exception) {
-            delivery.setStatus("UNKNOWN");
-            errorCode = "DISPATCH_ERROR";
-            errorMessage = "供应商调用结果未知";
+            if (NotificationChannel.SMS.name().equals(delivery.getChannel()) && !smsClientEntered) {
+                // 尚未进入 NotifyClient，供应商必定未被调用；保留有界 Outbox 重试。
+                delivery.setStatus("FAILED");
+                errorCode = "PREPARATION_RETRYABLE";
+                errorMessage = "短信发送准备暂不可用";
+            } else {
+                delivery.setStatus("UNKNOWN");
+                errorCode = "DISPATCH_ERROR";
+                errorMessage = "供应商调用结果未知";
+            }
         }
         resultPort.complete(outbox, new NotifyDispatchResultPort.Result(delivery.getStatus(),
             result == null ? (NotificationChannel.IN_APP.name().equals(delivery.getChannel()) ? "in-app" : delivery.getProviderKey()) : result.providerKey(),
