@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "--input-type=module",
+    "-e",
+    "import assert from \"node:assert/strict\"; const primary=new Error(\"owned primary\"); const cleanup=new Error(\"owned cleanup\"); let captured; try { try { throw cleanup; } catch(error) { const combined=new AggregateError([primary,error],\"cleanup failed after primary\",{cause:error}); throw combined; } } catch(error) { captured=error; } assert.equal(captured.cause,cleanup); assert.deepEqual(captured.errors,[primary,cleanup]); console.log(\"primary and cleanup errors and caught cause preserved\");"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T22:25:04.727638+00:00",
+  "finished_at": "2026-09-23T22:25:04.755141+00:00",
+  "exit_code": 0,
+  "log": "s2-aggregate-semantics.log"
+}

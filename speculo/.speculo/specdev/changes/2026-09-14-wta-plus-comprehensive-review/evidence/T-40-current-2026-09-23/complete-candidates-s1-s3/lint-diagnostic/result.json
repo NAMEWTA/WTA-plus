@@ -1,0 +1,38 @@
+[
+  {
+    "case": "aggregate_inline",
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "/tmp/wta-t40/lint-cause-diagnostic/aggregate_inline.ts"
+    ],
+    "exit_code": 1,
+    "output": "/tmp/wta-t40/lint-cause-diagnostic/aggregate_inline.ts:1:92: error eslint(preserve-caught-error): There is no cause error attached to this new thrown error. help: Preserve the original error by using the `cause` property when re-throwing errors.\n"
+  },
+  {
+    "case": "aggregate_named",
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "/tmp/wta-t40/lint-cause-diagnostic/aggregate_named.ts"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "case": "error_inline",
+    "command": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "oxlint",
+      "/tmp/wta-t40/lint-cause-diagnostic/error_inline.ts"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]

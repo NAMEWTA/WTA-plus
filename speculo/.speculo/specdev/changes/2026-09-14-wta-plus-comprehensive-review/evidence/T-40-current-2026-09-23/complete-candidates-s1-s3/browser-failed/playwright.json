@@ -1,0 +1,38 @@
+{
+  "source_reporter_sha256": "2b9ea9c6f707f951f3e2a7df263053ad593a31f61c9f5652962880ab58addfaf",
+  "counts": {
+    "expected": 1,
+    "unexpected": 1,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "diagnostic": [
+    {
+      "file": "frontend/e2e/notice-retraction-real.e2e.ts",
+      "title": "T-40 real published V1 survives retract in A personal off-page inbox",
+      "project": "chromium",
+      "attempts": 1,
+      "status": "timedOut",
+      "case_declaration": {
+        "line": 90,
+        "column": 1
+      },
+      "assertion_location": {
+        "line": 22,
+        "column": 24
+      }
+    },
+    {
+      "file": "frontend/e2e/notice-retraction-real.e2e.ts",
+      "title": "T-40 real B foreign and absent inbox details fail with the same owner response",
+      "project": "chromium",
+      "attempts": 1,
+      "status": "passed",
+      "case_declaration": {
+        "line": 254,
+        "column": 1
+      },
+      "assertion_location": null
+    }
+  ]
+}

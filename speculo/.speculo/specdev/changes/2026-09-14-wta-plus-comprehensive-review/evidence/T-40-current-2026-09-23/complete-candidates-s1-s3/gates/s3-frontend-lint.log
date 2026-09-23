@@ -1,0 +1,78 @@
+
+> wta-vue-plus@6.0.0 lint /srv/WTA-plus/frontend
+> oxlint e2e playwright.config.ts vitest.config.ts && pnpm lint:workspace
+
+
+> wta-vue-plus@6.0.0 lint:workspace /srv/WTA-plus/frontend
+> pnpm architecture:check && pnpm -r --if-present lint
+
+
+> wta-vue-plus@6.0.0 architecture:check /srv/WTA-plus/frontend
+> namewta-architecture check --root .
+
+Architecture check passed: 33 workspace package(s), 0 reviewed baseline violation(s).
+Scope: 32 of 33 workspace projects
+apps/sso-web lint$ oxlint src vite.config.ts e2e playwright.security.config.ts
+packages/api-contracts lint$ oxlint src
+packages/platform/contracts lint$ oxlint src
+packages/platform/permission lint$ oxlint src
+packages/api-contracts lint: Done
+packages/platform/contracts lint: Done
+packages/platform/validation lint$ oxlint src
+packages/web-kit/rich-text lint$ oxlint src
+packages/platform/permission lint: Done
+tooling/architecture lint$ oxlint src test
+apps/sso-web lint: Done
+tooling/openapi lint$ oxlint src test
+packages/platform/validation lint: Done
+packages/web-kit/rich-text lint: Done
+tooling/architecture lint: Done
+tooling/openapi lint: Done
+packages/adapters/oss-upload-browser lint$ oxlint src
+packages/adapters/storage-browser lint$ oxlint src
+packages/platform/auth lint$ oxlint src
+packages/platform/app-runtime lint$ oxlint src
+packages/platform/auth lint: Done
+packages/platform/http lint$ oxlint src
+packages/adapters/oss-upload-browser lint: Done
+packages/web-kit/file-upload lint$ oxlint src
+packages/adapters/storage-browser lint: Done
+packages/web-kit/permission lint$ oxlint src
+packages/platform/http lint: Done
+packages/web-kit/permission lint: Done
+packages/web-kit/file-upload lint: Done
+packages/platform/app-runtime lint: Done
+packages/adapters/axios-browser lint$ oxlint src
+packages/domains/admin lint$ oxlint src
+packages/domains/demo lint$ oxlint src
+packages/domains/notify lint$ oxlint src
+packages/adapters/axios-browser lint: Done
+packages/domains/profile lint$ oxlint src
+packages/domains/demo lint: Done
+packages/domains/system lint$ oxlint src
+packages/domains/notify lint: Done
+packages/domains/admin lint: Done
+packages/domains/third lint$ oxlint src
+packages/domains/third lint: Done
+packages/domains/profile lint: Done
+packages/domains/system lint: Done
+packages/domains/workflow lint$ oxlint src
+packages/web-domains/demo lint$ oxlint src
+packages/web-domains/admin lint$ oxlint src
+packages/web-domains/notify lint$ oxlint src
+packages/web-domains/admin lint: Done
+packages/web-domains/profile lint$ oxlint src
+packages/domains/workflow lint: Done
+packages/web-domains/system lint$ oxlint src
+packages/web-domains/notify lint: Done
+packages/web-domains/third lint$ oxlint src
+packages/web-domains/demo lint: Done
+packages/web-domains/third lint: Done
+packages/web-domains/profile lint: Done
+packages/web-domains/system lint: Done
+apps/home-web lint$ oxlint src vite.config.ts
+packages/web-domains/workflow lint$ oxlint src
+packages/web-domains/workflow lint: Done
+apps/home-web lint: Done
+apps/admin-web lint$ oxlint src vite.config.ts vite
+apps/admin-web lint: Done

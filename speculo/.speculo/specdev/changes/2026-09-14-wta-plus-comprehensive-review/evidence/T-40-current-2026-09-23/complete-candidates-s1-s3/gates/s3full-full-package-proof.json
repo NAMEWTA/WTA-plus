@@ -1,0 +1,26 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "clean",
+    "package",
+    "-DskipTests"
+  ],
+  "cwd": "backend",
+  "exit_code": 0,
+  "source_clean_at_build": true,
+  "source_head": "ddc0b51d6c3278f9e55e9c0aa21bde614958e6cb",
+  "source_tree": "67eeb3947790d010933d43e566d40ec6491a950a",
+  "artifact": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "5a7db069f3f9fd27d32f457b0c0c773d78df3303260646415491b3b8e6f4379a",
+    "size_bytes": 214199008
+  },
+  "build_log": {
+    "path": "/tmp/wta-t40/s3full-full-package.log",
+    "sha256": "7178fb02d8ddb78552c5eeac885d2a74b1cdfb4b2b038d43b13cf9121efb25b0"
+  },
+  "started_utc": "2026-09-23T22:28:09.375042+00:00",
+  "finished_utc": "2026-09-23T22:28:51.550318+00:00"
+}

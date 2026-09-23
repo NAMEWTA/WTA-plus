@@ -1,0 +1,26 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "exec",
+    "tsc",
+    "--ignoreConfig",
+    "--noEmit",
+    "--target",
+    "es2022",
+    "--module",
+    "esnext",
+    "--moduleResolution",
+    "bundler",
+    "--strict",
+    "--skipLibCheck",
+    "--types",
+    "node",
+    "e2e/notice-retraction-real.e2e.ts"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T22:25:45.041012+00:00",
+  "finished_at": "2026-09-23T22:25:46.044695+00:00",
+  "exit_code": 0,
+  "log": "s3-e2e-types.log"
+}

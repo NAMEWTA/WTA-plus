@@ -1,0 +1,14 @@
+{
+  "base": "8a387192e5a7787d1c51731dfc982506207c5482",
+  "candidate": "c4e0d597826e941dca9629b75c33d69a2fc7895b",
+  "changed_product_paths": [
+    "frontend/e2e/README-notice-retraction-real.md",
+    "frontend/e2e/notice-retraction-real.e2e.ts",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "frontend/e2e/test_run_notice_retraction_real.py"
+  ],
+  "backend_reuse": "R2 default889pass216skip real18/shared135 core/static: identical backend/SQL/config/dependency/Skill inputs",
+  "python_reuse": "R3 Python25 unchanged exact runner/test bytes",
+  "fresh_required": "strict E2E types; all frontend gates and3Appbuild; full exact-source JAR; actual Chrome2 no skip/retry source/JAR same cleanup empty",
+  "prior_s1": "failed lint preserved, one-line cause repair; no prior frontend/full/browser pass claimed"
+}

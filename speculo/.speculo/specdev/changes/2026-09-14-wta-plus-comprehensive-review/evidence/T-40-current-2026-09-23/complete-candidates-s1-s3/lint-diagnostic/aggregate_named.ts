@@ -1,0 +1,1 @@
+export function probe(primary: unknown) { try { throw new Error('owned'); } catch(error) { const combined = new AggregateError([primary, error], 'cleanup failed after primary', { cause: error }); throw combined; } }

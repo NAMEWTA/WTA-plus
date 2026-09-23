@@ -1,0 +1,7 @@
+{
+  "vitest_passed": 652,
+  "node_tests": 108,
+  "total": 760,
+  "source_log": "s3-frontend-test.log",
+  "method": "sum per-workspace final Tests N passed and node \u2139 tests N summaries; architecture-test command separate"
+}

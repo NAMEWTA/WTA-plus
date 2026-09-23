@@ -1,0 +1,14 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/tooling-openapi",
+    "openapi:check"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T22:22:40.889422+00:00",
+  "finished_at": "2026-09-23T22:22:41.964932+00:00",
+  "exit_code": 0,
+  "log": "s1-frontend-openapi.log"
+}

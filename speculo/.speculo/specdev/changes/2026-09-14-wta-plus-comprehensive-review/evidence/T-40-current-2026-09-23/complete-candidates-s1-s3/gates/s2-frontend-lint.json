@@ -1,0 +1,12 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "lint"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T22:23:58.059229+00:00",
+  "finished_at": "2026-09-23T22:23:58.468446+00:00",
+  "exit_code": 1,
+  "log": "s2-frontend-lint.log"
+}

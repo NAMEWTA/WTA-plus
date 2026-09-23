@@ -1,0 +1,78 @@
+
+> wta-vue-plus@6.0.0 typecheck /srv/WTA-plus/frontend
+> pnpm typecheck:workspace
+
+
+> wta-vue-plus@6.0.0 typecheck:workspace /srv/WTA-plus/frontend
+> pnpm architecture:check && pnpm -r --if-present typecheck
+
+
+> wta-vue-plus@6.0.0 architecture:check /srv/WTA-plus/frontend
+> namewta-architecture check --root .
+
+Architecture check passed: 33 workspace package(s), 0 reviewed baseline violation(s).
+Scope: 32 of 33 workspace projects
+apps/sso-web typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/api-contracts typecheck$ tsc --noEmit -p tsconfig.json
+packages/platform/contracts typecheck$ tsc --noEmit -p tsconfig.json
+packages/platform/permission typecheck$ tsc --noEmit -p tsconfig.json
+packages/platform/contracts typecheck: Done
+packages/platform/validation typecheck$ tsc --noEmit -p tsconfig.json
+packages/platform/permission typecheck: Done
+packages/web-kit/rich-text typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/api-contracts typecheck: Done
+tooling/architecture typecheck$ node --check ./src/index.mjs && node --check ./src/cli.mjs && node --check ./test/architecture.test.mjs
+tooling/architecture typecheck: Done
+tooling/openapi typecheck$ node --check src/index.mjs && node --check src/cli.mjs && node --check test/openapi.test.mjs
+tooling/openapi typecheck: Done
+packages/platform/validation typecheck: Done
+apps/sso-web typecheck: Done
+packages/web-kit/rich-text typecheck: Done
+packages/adapters/oss-upload-browser typecheck$ tsc --noEmit -p tsconfig.json
+packages/adapters/storage-browser typecheck$ tsc --noEmit -p tsconfig.json
+packages/platform/auth typecheck$ tsc --noEmit -p tsconfig.json
+packages/platform/app-runtime typecheck$ tsc --noEmit -p tsconfig.json
+packages/adapters/storage-browser typecheck: Done
+packages/platform/http typecheck$ tsc --noEmit -p tsconfig.json
+packages/platform/auth typecheck: Done
+packages/web-kit/file-upload typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/adapters/oss-upload-browser typecheck: Done
+packages/web-kit/permission typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/platform/app-runtime typecheck: Done
+packages/platform/http typecheck: Done
+packages/web-kit/permission typecheck: Done
+packages/web-kit/file-upload typecheck: Done
+packages/adapters/axios-browser typecheck$ tsc --noEmit -p tsconfig.json
+packages/domains/admin typecheck$ tsc --noEmit -p tsconfig.json
+packages/domains/demo typecheck$ tsc --noEmit -p tsconfig.json
+packages/domains/notify typecheck$ tsc --noEmit -p tsconfig.json
+packages/adapters/axios-browser typecheck: Done
+packages/domains/profile typecheck$ tsc --noEmit -p tsconfig.json
+packages/domains/demo typecheck: Done
+packages/domains/system typecheck$ tsc --noEmit -p tsconfig.json
+packages/domains/notify typecheck: Done
+packages/domains/third typecheck$ tsc --noEmit -p tsconfig.json
+packages/domains/admin typecheck: Done
+packages/domains/third typecheck: Done
+packages/domains/profile typecheck: Done
+packages/domains/system typecheck: Done
+packages/domains/workflow typecheck$ tsc --noEmit -p tsconfig.json
+packages/web-domains/admin typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/notify typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/demo typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/domains/workflow typecheck: Done
+packages/web-domains/profile typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/admin typecheck: Done
+packages/web-domains/system typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/demo typecheck: Done
+packages/web-domains/third typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/notify typecheck: Done
+packages/web-domains/third typecheck: Done
+packages/web-domains/profile typecheck: Done
+packages/web-domains/system typecheck: Done
+apps/home-web typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/workflow typecheck$ vue-tsc --noEmit -p tsconfig.json
+packages/web-domains/workflow typecheck: Done
+apps/home-web typecheck: Done
+apps/admin-web typecheck$ vue-tsc --noEmit -p tsconfig.json
+apps/admin-web typecheck: Done

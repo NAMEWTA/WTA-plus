@@ -1,0 +1,6 @@
+
+> wta-vue-plus@6.0.0 lint /srv/WTA-plus/frontend
+> oxlint e2e playwright.config.ts vitest.config.ts && pnpm lint:workspace
+
+e2e/notice-retraction-real.e2e.ts:21:32: error eslint(preserve-caught-error): There is no cause error attached to this new thrown error. help: Preserve the original error by using the `cause` property when re-throwing errors.
+ ELIFECYCLE  Command failed with exit code 1.

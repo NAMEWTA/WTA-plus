@@ -1,0 +1,1 @@
+/tmp/wta-t40/lint-cause-diagnostic/aggregate_inline.ts:1:92: error eslint(preserve-caught-error): There is no cause error attached to this new thrown error. help: Preserve the original error by using the `cause` property when re-throwing errors.

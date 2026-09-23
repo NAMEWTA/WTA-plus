@@ -1,0 +1,170 @@
+{
+  "gate": "T-40 real notice retraction recipient Chrome",
+  "run_id": "434baf70aa25766e",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T22:29:04.203817+00:00",
+  "owned": {
+    "mysql_container_id": "08bf0671a1522368e09458d3c0a0ccc894fe0cefd1172807e43456e14a56c3a3",
+    "redis_container_id": "84209b7923e8bf02d10b9cecc86bcc683410edbdcec2a296dafa8094fc0dab2f",
+    "minio_container_id": "0404305175e96584fc544a044b2b7eee3934e771e0acd587121b35bf4b234213",
+    "loopback_ports": {
+      "mysql": 32910,
+      "redis": 32911,
+      "minio": 32912,
+      "backend": 35905,
+      "vite": 56679
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "login_passwords_rotated_in_fresh_schema": 3,
+    "recipient_role_ids": [
+      8200018154669755552,
+      8200068519101766233
+    ],
+    "backend_pgid": 1412209,
+    "backend_probe_http_status": 200,
+    "control_and_recipient_logins_validated": 3,
+    "headerless_online_matches": 3,
+    "headerless_success_audits": 3,
+    "chrome_control_online_match": true,
+    "chrome_control_success_audit": true,
+    "recipient_notice_get_denials": 2,
+    "vite_pgid": 1413412,
+    "playwright_pgid": 1413572,
+    "captured_anonymous_volume_names": [
+      "89e718089bc2c4abc2d3b71d40eab1037dcf79bde541008a67f13037d2caee44",
+      "3c9fef76e172b5d29e242ae8c659bb9bbaf4cd75f3042a03b2fb1d12dcbb5de3"
+    ]
+  },
+  "cleanup": {
+    "playwright_process_group": {
+      "pgid": 1413572,
+      "live_members": []
+    },
+    "vite_process_group": {
+      "pgid": 1413412,
+      "live_members": []
+    },
+    "backend_process_group": {
+      "pgid": 1412209,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "89e718089bc2c4abc2d3b71d40eab1037dcf79bde541008a67f13037d2caee44": true,
+      "3c9fef76e172b5d29e242ae8c659bb9bbaf4cd75f3042a03b2fb1d12dcbb5de3": true
+    },
+    "loopback_ports_closed": {
+      "32910": true,
+      "32911": true,
+      "32912": true,
+      "35905": true,
+      "56679": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "ddc0b51d6c3278f9e55e9c0aa21bde614958e6cb",
+    "tree": "67eeb3947790d010933d43e566d40ec6491a950a",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "5a7db069f3f9fd27d32f457b0c0c773d78df3303260646415491b3b8e6f4379a",
+    "size_bytes": 214199008
+  },
+  "package_proof_sha256": "3407596260ab6bb8d0d8656af1a1e90e32f3fbb720904f7846453d399f9a9a42",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/notice-retraction-real.e2e.ts": "c7f14634dd11a3018238c4080511533e123d7e2bb5d8989f9b0576e6dd25ce2f",
+    "frontend/e2e/playwright.notice-retraction-real.config.ts": "0824670ffef0a993b000b1b9024825503460e9bb1bb1ff22bbb3d7d7c05afd4b"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "real_publication": {
+    "notice_id": "2102888137041670145",
+    "message_id": "2102888137565958145",
+    "worker_delivered_before_retract": true,
+    "retracted_after_delivery": true
+  },
+  "seed_before": {
+    "a_rows": 22,
+    "b_rows": 1,
+    "synthetic_rows": 22,
+    "v1_off_page_one": true,
+    "legacy_in_top_ten": true
+  },
+  "seed_manifest_sha256": "942d2cffaee7ccfc7dbbd66866af57d824fdbba393aba9f2c72a53bff8f421c6",
+  "playwright_exit_code": 1,
+  "playwright_raw_sha256": "2b9ea9c6f707f951f3e2a7df263053ad593a31f61c9f5652962880ab58addfaf",
+  "playwright_counts": {
+    "expected": 1,
+    "unexpected": 1,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "playwright_diagnostic": [
+    {
+      "file": "frontend/e2e/notice-retraction-real.e2e.ts",
+      "title": "T-40 real published V1 survives retract in A personal off-page inbox",
+      "project": "chromium",
+      "attempts": 1,
+      "status": "timedOut",
+      "case_declaration": {
+        "line": 90,
+        "column": 1
+      },
+      "assertion_location": {
+        "line": 22,
+        "column": 24
+      }
+    },
+    {
+      "file": "frontend/e2e/notice-retraction-real.e2e.ts",
+      "title": "T-40 real B foreign and absent inbox details fail with the same owner response",
+      "project": "chromium",
+      "attempts": 1,
+      "status": "passed",
+      "case_declaration": {
+        "line": 254,
+        "column": 1
+      },
+      "assertion_location": null
+    }
+  ],
+  "error_type": "RuntimeError",
+  "error": "T40 owned browser gate failed",
+  "phase": "browser",
+  "runner_line": 1083,
+  "source_after": {
+    "head": "ddc0b51d6c3278f9e55e9c0aa21bde614958e6cb",
+    "tree": "67eeb3947790d010933d43e566d40ec6491a950a",
+    "clean": true
+  },
+  "artifact_after_sha256": "5a7db069f3f9fd27d32f457b0c0c773d78df3303260646415491b3b8e6f4379a",
+  "finished_utc": "2026-09-23T22:31:47.217834+00:00"
+}
