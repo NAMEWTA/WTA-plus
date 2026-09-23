@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T14:22:06.273592+00:00",
+  "updated_at": "2026-09-23T15:15:44.118089+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -133,7 +133,8 @@
     "Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1in_progress/37ready. cors_audit sole product writer; Lead integration/governance. Absolute Captcha/Redis deadline, safe expiry and reclaimed-provider uncertainty; no production data repair.",
     "Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive.",
     "Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations.",
-    "Revision170: T50 adds two exact existing Profile consumer tests before editing; 17 write entries, same sole writer and no production scope expansion."
+    "Revision170: T50 adds two exact existing Profile consumer tests before editing; 17 write entries, same sole writer and no production scope expansion.",
+    "Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but exact-clean gate failed during overlapping Vite build. Lead review and new Dispatch02 saved before reset0; serial-only recovery, no relaxed checks. API README provenance correction is within existing directory scope. 11done/2cancelled/T50in_progress/36ready; Goal active."
   ],
   "worktrees": [
     {
@@ -619,14 +620,14 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "d1c3548424f696022292cf1a2fb6ec9b432c011f",
+      "source_checkpoint": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
       "status": "active",
-      "updated_at": "2026-09-23T14:16:51.166748+00:00",
+      "updated_at": "2026-09-23T15:15:44.118089+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
         "parent_before_sha": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
-        "source_sha": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+        "source_sha": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,

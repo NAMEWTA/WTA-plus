@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision170，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision171，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision170；11done/2cancelled/T50 in_progress/36ready。base d544f02，阶段1在d1c3548实际4项断言失败/0error/skip，当前阶段2完整实施；cors_audit唯一产品writer、Lead治理/验收。Goal active。
+revision171；11done/2cancelled/T50 in_progress/36ready。前批三次尝试保留，Lead复盘后Dispatch02要求构建结束、独占串行真实验收，新批attempts0。待README来源修正与恢复记录提交成新clean checkpoint。Goal active。
 
 ### Pending Decisions and Blockers
 
@@ -363,3 +363,7 @@ Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_pr
 ## revision170 — T50补齐消费者验证写集
 
 实施前登记两条既有Profile测试精确路径，17项硬写集；状态11done/2cancelled/T50in_progress/36ready不变。
+
+## revision171 — T50恢复
+
+Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but exact-clean gate failed during overlapping Vite build. Lead review and new Dispatch02 saved before reset0; serial-only recovery, no relaxed checks. API README provenance correction is within existing directory scope. 11done/2cancelled/T50in_progress/36ready; Goal active.

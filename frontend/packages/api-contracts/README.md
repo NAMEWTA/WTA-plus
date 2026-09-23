@@ -12,7 +12,9 @@
 
 ## 当前合同来源
 
-当前快照来自已提交后端 `7a6f75ac9238399daf7936797d07da141f0f5a03` 的真实 full JAR，在任务专属 MySQL/Redis/MinIO 上以 prod 配置启动后读取完整 `/v3/api-docs`，包含 436 条路径、445 个 schema。provenance 保存真实 HTTP 来源和后端提交，历史 revisions 保持不变。相比上一快照，新增的三条 OSS 发布、撤销发布、恢复接口及 `PublishRequest` schema 源自 `SysOssController`；通知 `RetryReceipt.queuedCount` 是整数。
+当前版本由 `openapi/current.json` 指向；对应 `openapi/revisions/<revision>/provenance.json` 保存后端提交、运行端点与源文档摘要，`source.json` 保留该次真实 full JAR 的完整 `/v3/api-docs` 原文。以这些文件为唯一来源，不在本说明中重复固定提交号或路径/schema数量。历史 revisions 保持不可变。
+
+通知提交当前仅支持 ALL、ASYNC 和 priority=0；HTTP JSON 必须显式传入 `priority`，生成类型也将其标为必填。历史策略枚举可读取，但不代表新提交支持对应编排；`RetryReceipt.queuedCount` 是整数。
 
 注册 `RegisterBody.phoneNumber` 已必填；当前合同无 Snail AI 路径或 schema，NAMEWTA `/system/openApi/**` 管理合同保留。机器调用网关使用业务 URL 上的签名头，不以 `/openapi` 前缀判断是否存在。domain 在资源边界映射 transport，不直接用作页面状态；生成器从该不可变 source 正式生成并检查。
 

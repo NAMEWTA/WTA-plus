@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-09-23T15:15:44.118089+00:00",
+  "ticket_status": "blocked",
+  "workspace": {
+    "ticket_id": "T-50",
+    "owner": "single-agent",
+    "implementation_owner": "cors_audit",
+    "integration_owner": "single-agent",
+    "provider": "git",
+    "base_sha": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+    "parent_branch": "main",
+    "branch": "main",
+    "workspace_ref": "current",
+    "source_checkpoint": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
+    "status": "blocked",
+    "updated_at": "2026-09-23T15:15:44.118089+00:00",
+    "integration": {
+      "status": "failed",
+      "parent_ref": "main",
+      "parent_before_sha": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+      "source_sha": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
+      "candidate_sha": null,
+      "candidate_tree_sha": null,
+      "candidate_branch": null,
+      "candidate_workspace_ref": null,
+      "result_sha": null,
+      "method": "direct-parent",
+      "conflict_paths": [],
+      "verification": "failed",
+      "full_suite": {
+        "required": true,
+        "status": "pending",
+        "reason": null,
+        "evidence": null
+      },
+      "e2e": {
+        "required": true,
+        "status": "pending",
+        "reason": null,
+        "evidence": null
+      },
+      "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-50.md</Path>",
+      "attempts": 3,
+      "promotion_status": "pending"
+    }
+  },
+  "prior_runs": [
+    "35e14468040352c5",
+    "e29ae3ce94c6942c",
+    "e5e3229eb2500be7"
+  ],
+  "meaning": "Actual Lead transition before recovery; preserve prior batch attempts=3"
+}

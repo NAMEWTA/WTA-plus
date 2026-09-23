@@ -149,3 +149,8 @@ T39 result6e1d7f8已完成，当前base d544f02只增治理；保留其绝对截
 ## revision170 Profile消费者测试写集
 
 动手前增加PersonRebindNotificationTest和EnterpriseTransferServiceTest两个既有测试精确路径（见frontmatter），只核对实际业务产生priority0并保留原期限、幂等和目标；复用测试而不复制业务装配到admin。不扩生产边界，其他规则不变。当前硬写集17项。
+
+## revision171 Lead恢复派单
+
+Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but exact-clean gate failed during overlapping Vite build. Lead review and new Dispatch02 saved before reset0; serial-only recovery, no relaxed checks. API README provenance correction is within existing directory scope. 11done/2cancelled/T50in_progress/36ready; Goal active.
+详见evidence/T-50-recovery-2026-09-23.md与dispatch-T-50-20260923-02.md。

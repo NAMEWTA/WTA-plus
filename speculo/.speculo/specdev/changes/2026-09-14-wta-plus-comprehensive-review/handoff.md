@@ -190,3 +190,7 @@ Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_pr
 ### revision170 T50 Profile消费者测试
 
 已预登记PersonRebindNotificationTest和EnterpriseTransferServiceTest两个精确测试路径，原15项变17项。cors_audit单writer，其他边界不变。
+
+## revision171 — T50恢复
+
+Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but exact-clean gate failed during overlapping Vite build. Lead review and new Dispatch02 saved before reset0; serial-only recovery, no relaxed checks. API README provenance correction is within existing directory scope. 11done/2cancelled/T50in_progress/36ready; Goal active.
