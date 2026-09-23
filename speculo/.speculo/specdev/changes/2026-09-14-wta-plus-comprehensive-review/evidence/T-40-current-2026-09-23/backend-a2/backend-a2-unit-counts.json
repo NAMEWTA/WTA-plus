@@ -1,0 +1,37 @@
+[
+  {
+    "suite": "org.namewta.notify.service.NotifyNoticeServiceTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "org.namewta.notify.support.NotifyNoticeVersionFenceTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "org.namewta.notify.domain.policy.NoticeAudiencePolicyTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "org.namewta.notify.service.NotifyNoticePublisherServiceTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "org.namewta.notify.usecase.NotifyNoticeUseCaseTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+]

@@ -36,3 +36,7 @@ Use `NotifyNotificationDao`/`NotifyPersistenceDao` in already declared `dao/` fo
 ## Activation cautions
 
 The existing DML has external MAIL/SMS `path` requirements, so a null path is a deterministic regression. The old handoff's sentence “no IN_APP → null link” is superseded by a generic safe inbox landing path for external-only notices. This path does **not** claim a corresponding detail exists. Mixed-channel messages intentionally carry the personal deep link in both IN_APP and external templates; if the external message is seen first, its detail remains inaccessible until the IN_APP relation exists, and an IN_APP failure remains an ordinary owner-scoped 404/denial. The real transaction test must prove all three path fields are replaced before wake/worker sees the Intent. Historical already-retracted versions lacking a persisted per-version fence cannot be proven from current Notice lifecycle after a later republish; rollout must stop old workers and explicitly audit/fail closed on any active legacy notice tasks with ambiguous metadata, rather than infer safety from `bizId` or current lifecycle. No automatic resend of UNKNOWN is allowed.
+
+## revision183 内部编码落实
+
+公共NotificationCommand.metadata保持Map<String,String>。noticeVersion值为包含noticeId/snapshotId/version/retracted的JSON字符串，helper先要求String再严格解析；外层持久JSON及其他metadata不变。原设计的嵌套结构描述是逻辑模型，不修改公共API。

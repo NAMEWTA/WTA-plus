@@ -1,0 +1,19 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-Pdev",
+    "-pl",
+    "wta-modules/wta-notify",
+    "-am",
+    "-Dtest=NotifyNotice*,NoticeAudiencePolicyTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T18:19:23.540153+00:00",
+  "finished_at": "2026-09-23T18:19:33.497520+00:00",
+  "exit_code": 0,
+  "log": "backend-a2-units.log"
+}

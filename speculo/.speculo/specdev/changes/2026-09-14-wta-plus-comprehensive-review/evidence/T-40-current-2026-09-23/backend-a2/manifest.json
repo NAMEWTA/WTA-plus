@@ -1,0 +1,72 @@
+[
+  {
+    "file": "backend-a-units.json",
+    "bytes": 424,
+    "sha256": "0cea736df25388340ed66767c703d1d7eeee6640956052f08ec060ed088b6ffe"
+  },
+  {
+    "file": "backend-a-units.log",
+    "bytes": 25375,
+    "sha256": "845f2e49c8f0fd276d5bd1c4b5d0f54f0d9e9052faec304031cf8d3dd279d12a"
+  },
+  {
+    "file": "backend-a2-units.json",
+    "bytes": 425,
+    "sha256": "e2ea620ddc72e30b46eed96434bac7a59aab42e426038f2f60579d6a6b39ebfd"
+  },
+  {
+    "file": "backend-a2-units.log",
+    "bytes": 27419,
+    "sha256": "df9ce5d2f2c9826b0fbac634c7c1014e0810816398500fe161bf329bcd618c97"
+  },
+  {
+    "file": "backend-a2-unit-counts.json",
+    "bytes": 749,
+    "sha256": "4bef373779919b2d5486d7353a7ae8de0d9c42aa19e5c6def2cf71fb1604d551"
+  },
+  {
+    "file": "backend-a2-run-plan.json",
+    "bytes": 333,
+    "sha256": "4fd80e6d452a5d20e04469eb3dbdfbb29b99c1a624e99062fb34ad6e93c6b22d"
+  },
+  {
+    "file": "unit-xml/TEST-org.namewta.notify.usecase.NotifyNoticeUseCaseTest.xml",
+    "bytes": 57106,
+    "sha256": "9075d0124c192b20c232b73a344fec2fd57a92c9e5db17c5577d228d7f70cbf3"
+  },
+  {
+    "file": "unit-xml/TEST-org.namewta.notify.service.NotifyNoticePublisherServiceTest.xml",
+    "bytes": 57066,
+    "sha256": "bd12dc99fc3aa9e89ed065f2912a5afb8a8a0ee08a3ea5108beea7d95730ba70"
+  },
+  {
+    "file": "unit-xml/TEST-org.namewta.notify.domain.policy.NoticeAudiencePolicyTest.xml",
+    "bytes": 57158,
+    "sha256": "ac3459cf36f5b4b0c49f80a8eec0ad03a6c8ac8c789ad308b3c8285dec53d6fd"
+  },
+  {
+    "file": "unit-xml/TEST-org.namewta.notify.support.NotifyNoticeVersionFenceTest.xml",
+    "bytes": 57033,
+    "sha256": "8a5aaa7b72316e53ca0f5ccac1003e36c14bfe0ddf39958e9bbe5216efe97799"
+  },
+  {
+    "file": "unit-xml/TEST-org.namewta.notify.service.NotifyNoticeServiceTest.xml",
+    "bytes": 57642,
+    "sha256": "dc2a072bb43b51cbd0b22e206d5bc921229994ed5ba1f46e1c45359cd5e80bbe"
+  },
+  {
+    "file": "actual-db/result.json",
+    "bytes": 4963,
+    "sha256": "3fd818373ab1284de5eed42b41aa4605922fc78a21abcca27cbc11a7f9cc6aaf"
+  },
+  {
+    "file": "actual-db/maven.log",
+    "bytes": 72017,
+    "sha256": "dd3040d40d23420b6c1e202ce782de2cf0fb503b3c4e3c9e04280d044b9a7459"
+  },
+  {
+    "file": "actual-db/selected-surefire.xml",
+    "bytes": 103435,
+    "sha256": "bf8c067785cb7536d9a364c1bddeb624056c7bc2ec2e79e288dd797bbc4e7411"
+  }
+]

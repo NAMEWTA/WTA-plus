@@ -1,0 +1,7 @@
+{
+  "source": "a638ef485c3819bfc8d67553877fd7c106ef9579",
+  "driver_sha256": "6f38c05ccb6a41ad2d038377d90f85c768bb1d52458200cb652a9cb044b6550e",
+  "suite": "org.namewta.test.notify.NotifyNoticeRetractionIntegrationTest",
+  "expected_tests": 6,
+  "stage": "backend partial feedback; concurrency/retry/legacy/frontend still pending"
+}
