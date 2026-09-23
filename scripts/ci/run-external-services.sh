@@ -56,7 +56,7 @@ create_container mysql_container --name "$mysql_container" --network "$network_i
   --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
 create_container minio_container --name "$minio_container" --network "$network_id" --network-alias namewta-minio -p "127.0.0.1:$minio_port:9000" \
   -e MINIO_ROOT_USER=namewta -e MINIO_ROOT_PASSWORD=namewta123 \
-  pgsty/minio:RELEASE.2026-04-17T00-00-00Z server --address ':9000' /data
+  quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z server --address ':9000' /data
 
 redis_port=$(docker port "$redis_container" 6379/tcp)
 redis_port=${redis_port##*:}

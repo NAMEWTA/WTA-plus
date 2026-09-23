@@ -1,3 +1,4 @@
+# json 文件日志，单文件 100MB，保留 5 个。
 x-default-logging: &default-logging
   driver: json-file
   options:
@@ -5,18 +6,29 @@ x-default-logging: &default-logging
     max-file: "5"
 
 services:
+  # 业务库 MySQL 8.4。全项目只使用一个业务库，默认名 wta-plus。
+  # 宿主机端口 43306，数据在 NAMEWTA_DATA_ROOT/mysql/data。
   mysql:
     image: mysql:8.4.9
     container_name: namewta-mysql
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # root 密码，必填。
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}"
+      # 业务库名，默认 wta-plus。
       MYSQL_DATABASE: "${MYSQL_DATABASE:-wta-plus}"
+      # 应用账号，读取 MYSQL_APP_USER，必填。
       MYSQL_USER: "${MYSQL_APP_USER:?MYSQL_APP_USER is required}"
+      # 应用账号密码，读取 MYSQL_APP_PASSWORD，必填。
       MYSQL_PASSWORD: "${MYSQL_APP_PASSWORD:?MYSQL_APP_PASSWORD is required}"
+      # 是否在首次初始化时创建 Nacos 库。默认 false；只有叠上 nacos-enabled 覆盖后才应为 true。
       NACOS_MYSQL_INIT_ENABLED: "${NACOS_MYSQL_INIT_ENABLED:-false}"
+      # Nacos 独立库名，默认 nacos，不建在 wta-plus 里。
       NACOS_DB_NAME: "${NACOS_DB_NAME:-nacos}"
+      # Nacos 库账号，默认 nacos。
       NACOS_DB_USER: "${NACOS_DB_USER:-nacos}"
+      # Nacos 库密码。未启用 Nacos 时可以为空。
       NACOS_DB_PASSWORD: "${NACOS_DB_PASSWORD:-}"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:43306:3306"
@@ -38,30 +50,52 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 可选配置中心，profile nacos 才启动。官方镜像 v2.5.4，单机模式，元数据放在同一个 MySQL。
+  # 控制台宿主机端口 8848，客户端 gRPC 9848。
   nacos:
     image: nacos/nacos-server:v2.5.4
     container_name: namewta-nacos
     profiles: [nacos]
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 部署模式。这里固定单机 standalone。
       MODE: standalone
+      # 注册时使用主机名，而不是容器 IP。
       PREFER_HOST_MODE: hostname
+      # 元数据存储使用 MySQL。
       SPRING_DATASOURCE_PLATFORM: mysql
+      # MySQL 的 Compose 服务名。
       MYSQL_SERVICE_HOST: mysql
+      # 容器内 MySQL 端口，不是宿主机 43306。
       MYSQL_SERVICE_PORT: 3306
+      # Nacos 库名，默认 nacos。
       MYSQL_SERVICE_DB_NAME: "${NACOS_DB_NAME:-nacos}"
+      # Nacos 库账号，默认 nacos。
       MYSQL_SERVICE_USER: "${NACOS_DB_USER:-nacos}"
+      # Nacos 库密码。未启用 profile 时可以为空；启用前必须换成真实密码。
       MYSQL_SERVICE_PASSWORD: "${NACOS_DB_PASSWORD:-}"
+      # JDBC 参数：字符集、超时、上海时区，并关闭 SSL。
       MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      # 打开鉴权。启用该 profile 后保持 true。
       NACOS_AUTH_ENABLE: "true"
+      # 关闭鉴权结果缓存。
       NACOS_AUTH_CACHE_ENABLE: "false"
+      # 再次关闭服务端鉴权缓存，避免旧缓存放过未授权请求。
       JAVA_OPT: -Dnacos.core.auth.caching.enabled=false
+      # 鉴权令牌，Base64 且长于 32 字节。未启用 profile 时可以为空。
       NACOS_AUTH_TOKEN: "${NACOS_AUTH_TOKEN:-}"
+      # 服务端身份键。未启用 profile 时可以为空。
       NACOS_AUTH_IDENTITY_KEY: "${NACOS_AUTH_IDENTITY_KEY:-}"
+      # 服务端身份值。未启用 profile 时可以为空。
       NACOS_AUTH_IDENTITY_VALUE: "${NACOS_AUTH_IDENTITY_VALUE:-}"
+      # 关闭按 User-Agent 放行鉴权。
       NACOS_AUTH_USER_AGENT_AUTH_WHITE_ENABLE: "false"
+      # JVM 初始堆。
       JVM_XMS: 512m
+      # JVM 最大堆。
       JVM_XMX: 512m
+      # JVM 年轻代。
       JVM_XMN: 256m
     depends_on:
       mysql:
@@ -82,11 +116,14 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 缓存、会话和分布式锁。宿主机端口 46379，数据在 NAMEWTA_DATA_ROOT/redis/data，已开启 AOF。
   redis:
     image: redis:8.6.3
     container_name: namewta-redis
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 访问密码，必填。同时用于 redis-server --requirepass 和健康检查。
       REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD is required}"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:46379:6379"
@@ -107,14 +144,21 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 默认对象存储。使用最后一个完全开源的 AGPL 社区版，不要改成更新的官方标签或 latest。
+  # S3 API 宿主机端口 49000，控制台 49001。数据在 NAMEWTA_DATA_ROOT/minio。
   minio:
-    image: pgsty/minio:RELEASE.2026-04-17T00-00-00Z
+    image: quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
     container_name: namewta-minio
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 根访问账号，必填。
       MINIO_ROOT_USER: "${MINIO_ROOT_USER:?MINIO_ROOT_USER is required}"
+      # 根密钥，必填。
       MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD is required}"
+      # 允许浏览器直传的 Origin，逗号分隔。默认 *；* 不能用于带 Cookie 的跨域请求。
       MINIO_API_CORS_ALLOW_ORIGIN: "${MINIO_API_CORS_ALLOW_ORIGIN:-*}"
+      # 关闭网关压缩，避免对象内容被改写。
       MINIO_COMPRESS: "off"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49000:9000"
@@ -132,14 +176,85 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 一次性修正 RustFS 数据目录属主，只在 profile rustfs 下运行，改完即退出。
+  # 主进程用户是 10001:10001；Docker 新建的绑定目录属主是 root，不改则无法写入。
+  rustfs-perms:
+    image: rustfs/rustfs:1.0.0
+    container_name: namewta-rustfs-perms
+    profiles: [rustfs]
+    user: "0:0"
+    entrypoint: ["chown", "-R", "10001:10001", "/data", "/logs"]
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/rustfs/data:/data"
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/rustfs/logs:/logs"
+    restart: "no"
+    networks: [namewta]
+
+  # 备用 S3 对象存储，profile rustfs 才启动。不复制 MinIO 已有对象，也不替代默认 OSS。
+  # S3 API 宿主机端口 49002，控制台 49003。单目录 /data，不能原地扩成多盘。
+  rustfs:
+    image: rustfs/rustfs:1.0.0
+    container_name: namewta-rustfs
+    profiles: [rustfs]
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      rustfs-perms:
+        condition: service_completed_successfully
+    environment:
+      # 容器时区，固定 Asia/Shanghai。
+      TZ: Asia/Shanghai
+      # 根访问账号。留空时容器拒绝启动。不要使用镜像内置的公开默认凭证。
+      RUSTFS_ACCESS_KEY: "${RUSTFS_ACCESS_KEY:-}"
+      # 根密钥。留空时容器拒绝启动。
+      RUSTFS_SECRET_KEY: "${RUSTFS_SECRET_KEY:-}"
+      # S3 API 监听地址，容器内端口 9000。
+      RUSTFS_ADDRESS: ":9000"
+      # 控制台监听地址，容器内端口 9001。
+      RUSTFS_CONSOLE_ADDRESS: ":9001"
+      # 打开 Web 控制台。
+      RUSTFS_CONSOLE_ENABLE: "true"
+      # 单块数据盘。入口脚本把它追加为启动参数。
+      RUSTFS_VOLUMES: "/data"
+      # 浏览器直传 S3 的 Origin，逗号分隔。默认 *，且 * 不能带浏览器凭据。
+      # 此值未设置时，RustFS 不给 S3 API 返回 CORS 头。
+      RUSTFS_CORS_ALLOWED_ORIGINS: "${RUSTFS_CORS_ALLOWED_ORIGINS:-*}"
+      # 只作用于控制台页面的跨域来源，与 S3 API 分开。默认 *。
+      RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS: "${RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS:-*}"
+      # 服务日志级别，与镜像生产默认一致。
+      RUSTFS_OBS_LOGGER_LEVEL: "warn"
+      # 日志目录，对应宿主机 NAMEWTA_DATA_ROOT/rustfs/logs。
+      RUSTFS_OBS_LOG_DIRECTORY: "/logs"
+    ports:
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49002:9000"
+      - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49003:9001"
+    volumes:
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/rustfs/data:/data"
+      - "${NAMEWTA_DATA_ROOT:-./runtime}/rustfs/logs:/logs"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:9000/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    logging: *default-logging
+    restart: unless-stopped
+    networks: [namewta]
+
+  # 可选搜索引擎，profile ai 才启动。单节点，未开启内置安全，只供内网可选 AI 使用。
+  # 宿主机端口 49200，数据在 NAMEWTA_DATA_ROOT/elasticsearch/data。
   elasticsearch:
     image: "${ELASTICSEARCH_IMAGE:-docker.elastic.co/elasticsearch/elasticsearch:9.4.2}"
     container_name: namewta-elasticsearch
     profiles: [ai]
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 单节点，不组建集群。
       discovery.type: single-node
+      # 关闭 xpack 安全。不要把 49200 暴露到公网。
       xpack.security.enabled: "false"
+      # JVM 堆，初始和上限都是 512MB。
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49200:9200"
@@ -159,6 +274,7 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+# 四类 Compose 共用的外部网络，名称必须一致。
 networks:
   namewta:
     external: true

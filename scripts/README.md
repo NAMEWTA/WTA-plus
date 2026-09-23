@@ -184,7 +184,7 @@ Redis、MySQL 和兼容 S3 协议的 MinIO 协作，而不只是通过 mock 或�
    | --- | --- | --- | --- |
    | Redis | `redis:8.6.3` | 127.0.0.1 随机端口 | 通知幂等存储、OSS 上传票据存储集成测试。 |
    | MySQL | `mysql:8.4.9` | 127.0.0.1 随机端口 | 通知监控、业务菜单退役集成测试。 |
-   | MinIO | `pgsty/minio:RELEASE.2026-04-17T00-00-00Z` | 127.0.0.1 随机端口 | OSS/S3 客户端集成测试。 |
+   | MinIO | `quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z` | 127.0.0.1 随机端口 | OSS/S3 客户端集成测试；钉死最后一个完全开源（AGPL）社区版，不要升到更新的官方标签。 |
 
 3. 分别使用 `redis-cli ping`、`mysqladmin ping` 和 MinIO readiness endpoint 等待服务就绪；超时或健康检查
    失败时脚本退出。

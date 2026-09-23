@@ -1,3 +1,4 @@
+# json 文件日志，单文件 100MB，保留 5 个。
 x-default-logging: &default-logging
   driver: json-file
   options:
@@ -5,20 +6,31 @@ x-default-logging: &default-logging
     max-file: "5"
 
 services:
+  # Spring Boot Admin。收集后端实例的健康状态。宿主机端口 49090，容器端口 9090。
+  # 日志写到 NAMEWTA_DATA_ROOT/logs/monitor。
   namewta-monitor-admin:
     image: "${NAMEWTA_MONITOR_IMAGE:-namewta/namewta-monitor-admin:6.0.0}"
     build:
       context: ./backend/images/wta-monitor-admin
     container_name: namewta-monitor-admin
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # Spring profile，默认 prod。
       SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
+      # 应用名，固定 namewta-monitor-admin。
       SPRING_APPLICATION_NAME: namewta-monitor-admin
+      # JVM 参数，默认堆 256MB 到 512MB。
       JAVA_OPTS: "${JAVA_OPTS:--Xms256m -Xmx512m}"
+      # 监控控制台登录名，必填。
       SPRING_SECURITY_USER_NAME: "${MONITOR_USERNAME:?MONITOR_USERNAME is required}"
+      # 监控控制台密码，必填。
       SPRING_SECURITY_USER_PASSWORD: "${MONITOR_PASSWORD:?MONITOR_PASSWORD is required}"
+      # 本服务作为客户端注册到自己的地址。
       SPRING_BOOT_ADMIN_CLIENT_URL: http://namewta-monitor-admin:9090/admin
+      # 注册到自身时使用的账号，与控制台登录名相同。
       SPRING_BOOT_ADMIN_CLIENT_USERNAME: "${MONITOR_USERNAME:?MONITOR_USERNAME is required}"
+      # 注册到自身时使用的密码，与控制台密码相同。
       SPRING_BOOT_ADMIN_CLIENT_PASSWORD: "${MONITOR_PASSWORD:?MONITOR_PASSWORD is required}"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:49090:9090"
@@ -28,6 +40,8 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 日志存储。配置只读挂载 observability/loki/loki.yml，数据在 NAMEWTA_DATA_ROOT/observability/loki。
+  # user 0:0 是为了让 root 属主的绑定目录可写。
   loki:
     image: grafana/loki:3.6.0
     container_name: namewta-loki
@@ -40,6 +54,7 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 日志采集。读取 NAMEWTA_DATA_ROOT/logs，按 observability/alloy/config.alloy 写入 Loki。无对外端口。
   alloy:
     image: grafana/alloy:v1.11.0
     container_name: namewta-alloy
@@ -53,17 +68,27 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 日志看板。宿主机端口 43000。关闭自助注册和官方遥测。
+  # 数据在 NAMEWTA_DATA_ROOT/observability/grafana。
   grafana:
     image: grafana/grafana:12.2.8
     container_name: namewta-grafana
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 管理员登录名，必填。
       GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:?GRAFANA_ADMIN_USER is required}"
+      # 管理员密码，必填。
       GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD is required}"
+      # 关闭自助注册。
       GF_USERS_ALLOW_SIGN_UP: "false"
+      # 关闭向 Grafana 官方上报使用数据。
       GF_ANALYTICS_REPORTING_ENABLED: "false"
+      # 关闭启动时检查官方更新。
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      # false 表示保留连续登录失败锁定。
       GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION: "false"
+      # false 表示保留按用户名的登录保护。
       GF_SECURITY_DISABLE_USERNAME_LOGIN_PROTECTION: "false"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:43000:3000"
@@ -76,6 +101,7 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 指标库，profile metrics 才启动。样本保留 30 天。宿主机端口 49091，容器端口 9090。
   prometheus:
     image: prom/prometheus:v3.5.0
     container_name: namewta-prometheus
@@ -93,6 +119,7 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 主机指标，profile metrics 才启动。只读挂载宿主机根目录，并与主机共享 PID 命名空间。
   node-exporter:
     image: prom/node-exporter:v1.9.1
     container_name: namewta-node-exporter
@@ -107,6 +134,7 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 容器指标，profile metrics 才启动。只读挂载 Docker 运行时，并需要 /dev/kmsg。
   cadvisor:
     image: ghcr.io/google/cadvisor:v0.57.0
     container_name: namewta-cadvisor
@@ -123,6 +151,7 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+# 四类 Compose 共用的外部网络，名称必须一致。
 networks:
   namewta:
     external: true

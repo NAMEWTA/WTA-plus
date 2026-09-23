@@ -90,7 +90,7 @@ NACOS_E2E_CONFIRM=1 \
 
 | 分类 | Compose | 主要服务 |
 |---|---|---|
-| 基础设施 | `docker-compose-infrastructure.yml` | MySQL、Redis、MinIO；可选 Elasticsearch |
+| 基础设施 | `docker-compose-infrastructure.yml` | MySQL、Redis、MinIO；可选 Nacos、RustFS、Elasticsearch |
 | 日志监控 | `docker-compose-observability.yml` | Monitor Admin、Loki、Alloy、Grafana；可选 Prometheus/exporters |
 | 后端 | `docker-compose-backend.yml` | 双实例 Admin、SnailJob |
 | 前端 | `docker-compose-frontend.yml` | 业务 App LB、各 App 独立 Nginx、可选 LB/独立 SSO TLS |
@@ -111,13 +111,22 @@ bash release-artifacts/scripts/docker-manage.sh up frontend --profile tls
 
 # Linux 主机指标与容器指标
 bash release-artifacts/scripts/docker-manage.sh up observability --profile metrics
+
+# 启用备用对象存储 RustFS。不替代 MinIO，也不复制已有对象。
+bash release-artifacts/scripts/docker-manage.sh up infrastructure --profile rustfs
 ```
 
 每条 docker-manage 命令先解析并校验一次 current，整个命令固定该版本的 Compose、镜像上下文和只读挂载；`up` 显式使用 `--build --force-recreate`，应用镜像标签包含版本 ID。已运行容器的 bind mount 不会自动跟随指针。多服务的运行时升级不是原子事务；失败需选择旧版本并重建受影响服务，再验证健康。
 
 运行前缀及 Origin 必须与 manifest 一致，否则 Docker 操作前拒绝。docker-manage 从固定版本导出精确 `WEB_CORS_ALLOWED_ORIGINS` 和 `SSO_WEB_ORIGIN`，后端 Compose 传入配置；`SSO_WEB_BASE_PATH` 从固定版本的 SSO prefix 派生为 `/<prefix>/`，真实 `/auth/client/context` 将它与独立 Origin 组合为授权页面地址。该 base 不进入 CORS Origin。`TRUSTED_PROXY_CIDRS` 仍需按真实拓扑显式配置，不能猜测可信网段。`RELEASE_ENV` 默认 `prod`，`RELEASE_ENV_FILE` 指定运行 env。持久数据默认仍位于发布根的 `docker/runtime`，相对 `NAMEWTA_DATA_ROOT` 也锚定发布根的 docker 目录；Nginx 日志在其 `nginx/log/` 下。证书由 `NAMEWTA_CERT_ROOT` 指定，默认发布根的 `docker/frontend/nginx/cert`。这些运行目录不进入不可变版本，不随版本切换迁移。
 
-不要使用 `docker compose down -v`。MySQL、Redis、MinIO、Loki、Grafana 和 Prometheus 数据均需按 `NAMEWTA_DATA_ROOT` 单独备份。
+不要使用 `docker compose down -v`。MySQL、Redis、MinIO、RustFS、Loki、Grafana 和 Prometheus 数据均需按 `NAMEWTA_DATA_ROOT` 单独备份。
+
+## 可选 RustFS 备用对象存储
+
+RustFS 提供与 MinIO 同类的 S3 API 和控制台，只在 profile `rustfs` 下启动，不替代默认 OSS。镜像钉死 `rustfs/rustfs:1.0.0`。S3 API 宿主机端口 `49002`，控制台 `49003`，只绑定 `NAMEWTA_BIND_HOST`。数据在 `NAMEWTA_DATA_ROOT/rustfs/data`，日志在 `NAMEWTA_DATA_ROOT/rustfs/logs`。进程用户是 `10001:10001`；`rustfs-perms` 会在启动前把这两个目录改成该属主。
+
+这是单目录部署，不能原地扩成多盘，也不会复制 MinIO 里已有的对象。切换业务流量前，先迁桶和对象，再手改 `sys_oss_config` 的 endpoint、访问密钥和桶，并保持 `access_policy=0`。不要把 RustFS 设成第二个 `status=Y` 的默认配置；初始化合同仍然只允许一个名为 `minio` 的私有默认 OSS。`RUSTFS_ACCESS_KEY` 或 `RUSTFS_SECRET_KEY` 为空时容器拒绝启动。
 
 ## MySQL 单库初始化
 

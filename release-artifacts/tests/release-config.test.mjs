@@ -161,6 +161,35 @@ test('both admin instances inherit a default-off OpenAPI secret contract', () =>
   assert.doesNotMatch(env, /^OPENAPI_ENABLED=true$/m);
 });
 
+test('MinIO stays on the last fully AGPL community release', () => {
+  const compose = read('docker/docker-compose-infrastructure.yml');
+  assert.match(compose, /^    image: quay\.io\/minio\/minio:RELEASE\.2025-04-22T22-12-26Z$/m);
+  assert.doesNotMatch(compose, /minio\/minio:latest/);
+  assert.doesNotMatch(compose, /pgsty\/minio/);
+});
+
+test('RustFS standby is pinned, profile-gated, and locally bound', () => {
+  const compose = read('docker/docker-compose-infrastructure.yml');
+  const env = read('.env.example');
+  assert.match(compose, /^  rustfs:$/m);
+  assert.match(compose, /^  rustfs-perms:$/m);
+  assert.equal((compose.match(/profiles: \[rustfs\]/g) ?? []).length, 2);
+  assert.equal((compose.match(/^    image: rustfs\/rustfs:1\.0\.0$/gm) ?? []).length, 2);
+  assert.doesNotMatch(compose, /rustfs\/rustfs:latest/);
+  assert.doesNotMatch(compose, /1\.0\.1-preview/);
+  assert.match(compose, /\$\{NAMEWTA_BIND_HOST:-127\.0\.0\.1\}:49002:9000/);
+  assert.match(compose, /\$\{NAMEWTA_BIND_HOST:-127\.0\.0\.1\}:49003:9001/);
+  assert.match(compose, /http:\/\/127\.0\.0\.1:9000\/health\/ready/);
+  assert.match(compose, /service_completed_successfully/);
+  assert.match(compose, /RUSTFS_ACCESS_KEY: "\$\{RUSTFS_ACCESS_KEY:-\}"/);
+  assert.match(compose, /RUSTFS_SECRET_KEY: "\$\{RUSTFS_SECRET_KEY:-\}"/);
+  assert.match(compose, /RUSTFS_CORS_ALLOWED_ORIGINS: "\$\{RUSTFS_CORS_ALLOWED_ORIGINS:-\*\}"/);
+  assert.match(compose, /chown", "-R", "10001:10001", "\/data", "\/logs"/);
+  assert.doesNotMatch(compose, /rustfsadmin/);
+  assert.match(env, /^RUSTFS_ACCESS_KEY=namewta$/m);
+  assert.match(env, /^RUSTFS_SECRET_KEY=replace-/m);
+});
+
 test('Nacos infrastructure is optional, pinned, authenticated, and locally bound', () => {
   const compose = read('docker/docker-compose-infrastructure.yml');
   assert.match(compose, /^  nacos:$/m);

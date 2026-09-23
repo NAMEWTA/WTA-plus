@@ -1,3 +1,4 @@
+# json 文件日志，单文件 100MB，保留 5 个。
 x-nginx-logging: &nginx-logging
   driver: json-file
   options:
@@ -5,14 +6,21 @@ x-nginx-logging: &nginx-logging
     max-file: "5"
 
 services:
+  # 业务 HTTP 入口。按管理端和门户前缀把请求转到对应前端 Nginx，不承载 SSO。
+  # 宿主机端口 LB_HTTP_PORT，默认 40080。
   namewta-nginx-lb:
     image: "${NGINX_IMAGE:-nginx:1.31.1}"
     container_name: namewta-nginx-lb
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 管理端 URL 前缀，必填。不要使用 admin、monitor、snail-job 或 snail-ai。
       APP_ADMIN_WEB_PREFIX: "${ADMIN_WEB_PREFIX:?ADMIN_WEB_PREFIX is required}"
+      # 门户 URL 前缀，必填。
       APP_HOME_WEB_PREFIX: "${HOME_WEB_PREFIX:?HOME_WEB_PREFIX is required}"
+      # Nginx server_name。HTTP 入口默认 localhost。
       LB_SERVER_NAME: "${LB_SERVER_NAME:-localhost}"
+      # 只替换 APP_、BACKEND_、LB_ 开头的变量，避免 envsubst 改写 Nginx 自己的变量。
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${LB_HTTP_PORT:-40080}:80"
@@ -24,15 +32,22 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 业务 HTTPS 入口，profile tls 才启动。证书读取 NAMEWTA_CERT_ROOT/lb。
+  # 宿主机端口 LB_HTTPS_PORT，默认 40443。
   namewta-nginx-lb-tls:
     image: "${NGINX_IMAGE:-nginx:1.31.1}"
     container_name: namewta-nginx-lb-tls
     profiles: [tls]
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 管理端 URL 前缀，必填。不要使用 admin、monitor、snail-job 或 snail-ai。
       APP_ADMIN_WEB_PREFIX: "${ADMIN_WEB_PREFIX:?ADMIN_WEB_PREFIX is required}"
+      # 门户 URL 前缀，必填。
       APP_HOME_WEB_PREFIX: "${HOME_WEB_PREFIX:?HOME_WEB_PREFIX is required}"
+      # Nginx server_name，必填，必须与证书和浏览器主机名一致。
       LB_SERVER_NAME: "${LB_SERVER_NAME:?LB_SERVER_NAME is required}"
+      # 只替换 APP_、BACKEND_、LB_ 开头的变量，避免 envsubst 改写 Nginx 自己的变量。
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${LB_HTTPS_PORT:-40443}:443"
@@ -45,14 +60,20 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 管理端静态站。独立端口 ADMIN_WEB_PORT，默认 41080，路径带前缀；业务 LB 则以根路径转发进来。
   namewta-nginx-admin-web:
     image: "${NGINX_IMAGE:-nginx:1.31.1}"
     container_name: namewta-nginx-admin-web
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 本 App 的 URL 前缀，必填。
       APP_PREFIX: "${ADMIN_WEB_PREFIX:?ADMIN_WEB_PREFIX is required}"
+      # 后端实例 2 的容器地址，默认 namewta-server2:8080。
       BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      # 后端实例 1 的容器地址，默认 namewta-server1:8080。
       BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
+      # 只替换 APP_、BACKEND_、LB_ 开头的变量，避免 envsubst 改写 Nginx 自己的变量。
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${ADMIN_WEB_PORT:-41080}:80"
@@ -64,14 +85,20 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 门户静态站。独立端口 HOME_WEB_PORT，默认 41082，路径带前缀；业务 LB 则以根路径转发进来。
   namewta-nginx-home-web:
     image: "${NGINX_IMAGE:-nginx:1.31.1}"
     container_name: namewta-nginx-home-web
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # 本 App 的 URL 前缀，必填。
       APP_PREFIX: "${HOME_WEB_PREFIX:?HOME_WEB_PREFIX is required}"
+      # 后端实例 2 的容器地址，默认 namewta-server2:8080。
       BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      # 后端实例 1 的容器地址，默认 namewta-server1:8080。
       BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
+      # 只替换 APP_、BACKEND_、LB_ 开头的变量，避免 envsubst 改写 Nginx 自己的变量。
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${HOME_WEB_PORT:-41082}:80"
@@ -83,15 +110,23 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # 独立 SSO 入口，不加入业务 LB。独立端口 SSO_WEB_PORT，默认 41083。
+  # /<prefix>/ 提供授权页，根路径不跳登录；/healthz 供容器健康检查。
   namewta-nginx-sso-web:
     image: "${NGINX_IMAGE:-nginx:1.31.1}"
     container_name: namewta-nginx-sso-web
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # SSO URL 前缀，必填。
       APP_PREFIX: "${SSO_WEB_PREFIX:?SSO_WEB_PREFIX is required}"
+      # 浏览器实际访问的 Origin，必填。模板用它拒绝其他站点发来的 API 请求。
       APP_ORIGIN: "${SSO_WEB_ORIGIN:?SSO_WEB_ORIGIN is required}"
+      # 后端实例 2 的容器地址，默认 namewta-server2:8080。
       BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      # 后端实例 1 的容器地址，默认 namewta-server1:8080。
       BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
+      # 只替换 APP_、BACKEND_、LB_ 开头的变量，避免 envsubst 改写 Nginx 自己的变量。
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${SSO_WEB_PORT:-41083}:80"
@@ -108,16 +143,24 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+  # SSO 的 HTTPS 入口，profile tls 才启动，不加入业务 LB。
+  # 证书读取 NAMEWTA_CERT_ROOT/sso-web。宿主机端口 SSO_WEB_HTTPS_PORT，默认 41483。
   namewta-nginx-sso-web-tls:
     image: "${NGINX_IMAGE:-nginx:1.31.1}"
     container_name: namewta-nginx-sso-web-tls
     profiles: [tls]
     environment:
+      # 容器时区，固定 Asia/Shanghai。
       TZ: Asia/Shanghai
+      # SSO URL 前缀，必填。
       APP_PREFIX: "${SSO_WEB_PREFIX:?SSO_WEB_PREFIX is required}"
+      # 浏览器实际访问的 Origin，必填。模板用它拒绝其他站点发来的 API 请求。
       APP_ORIGIN: "${SSO_WEB_ORIGIN:?SSO_WEB_ORIGIN is required}"
+      # 后端实例 2 的容器地址，默认 namewta-server2:8080。
       BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"
+      # 后端实例 1 的容器地址，默认 namewta-server1:8080。
       BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"
+      # 只替换 APP_、BACKEND_、LB_ 开头的变量，避免 envsubst 改写 Nginx 自己的变量。
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "${NAMEWTA_BIND_HOST:-127.0.0.1}:${SSO_WEB_HTTPS_PORT:-41483}:443"
@@ -135,6 +178,7 @@ services:
     restart: unless-stopped
     networks: [namewta]
 
+# 四类 Compose 共用的外部网络，名称必须一致。
 networks:
   namewta:
     external: true
