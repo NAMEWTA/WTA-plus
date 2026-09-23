@@ -12,6 +12,7 @@ import org.namewta.notify.domain.entity.NotifyRecipient;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.support.outbox.NotifyOutboxWakeRequestedEvent;
 import org.namewta.notify.support.NotifyAuditSupport;
+import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
 import org.springframework.context.ApplicationEventPublisher;
@@ -188,6 +189,11 @@ public class NotificationApplicationRuntimeService {
             throw new ServiceException("通知不存在");
         }
         requireUnexpired(intent);
+        NotifyNoticeVersionFence.State noticeVersion = NotifyNoticeVersionFence.state(intent);
+        if (noticeVersion == NotifyNoticeVersionFence.State.RETRACTED
+            || noticeVersion == NotifyNoticeVersionFence.State.UNVERIFIED) {
+            throw new ServiceException("公告版本已撤回或来源无法核对，不能重试");
+        }
         // 先按不可变归属读取 ID，再按 Intent→Outbox→Delivery 锁序取得当前行；不能先锁 Delivery。
         if (deliveryId != null) {
             NotifyDelivery selected = dao.delivery(deliveryId);

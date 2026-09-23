@@ -10,6 +10,7 @@ import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.policy.NotificationAggregatePolicy;
 import org.namewta.notify.domain.policy.NotificationDeliveryPolicy;
+import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.namewta.notify.port.NotifyDispatchResultPort.Disposition;
 import org.namewta.notify.port.NotifyDispatchResultPort.Result;
 import org.springframework.stereotype.Service;
@@ -115,6 +116,12 @@ public class NotifyDispatchResultService {
             settleUnsupported(lease, outbox, delivery, now);
             return false;
         }
+        NotifyNoticeVersionFence.State noticeVersion = NotifyNoticeVersionFence.state(intent);
+        if (noticeVersion == NotifyNoticeVersionFence.State.RETRACTED
+            || noticeVersion == NotifyNoticeVersionFence.State.UNVERIFIED) {
+            settleNoticeFence(lease, outbox, delivery, now, noticeVersion);
+            return false;
+        }
         if (intent.getScheduledAt() != null && intent.getScheduledAt().isAfter(now)) {
             outbox.setStatus("READY");
             outbox.setNextAttemptAt(intent.getScheduledAt());
@@ -122,6 +129,34 @@ public class NotifyDispatchResultService {
             return false;
         }
         return true;
+    }
+
+    /** 只阻止尚未取得发送权的版本；旧来源不明的外部任务保留核对态。 */
+    private void settleNoticeFence(NotifyOutbox lease, NotifyOutbox outbox, NotifyDelivery delivery,
+                                   LocalDateTime now, NotifyNoticeVersionFence.State state) {
+        String reason = state == NotifyNoticeVersionFence.State.RETRACTED
+            ? "NOTICE_VERSION_RETRACTED" : "NOTICE_VERSION_UNVERIFIED";
+        if ("IN_APP".equals(delivery.getChannel())) {
+            if (!recoverInAppFacts(outbox, delivery, now)) noticeUnsent(outbox, delivery, reason);
+        } else if (provenExternalUnsent(lease, outbox, delivery)) {
+            noticeUnsent(outbox, delivery, reason);
+        } else {
+            uncertain(outbox, delivery, state == NotifyNoticeVersionFence.State.RETRACTED
+                ? "NOTICE_RETRACTED_OUTCOME_UNKNOWN" : "NOTICE_VERSION_OUTCOME_UNKNOWN");
+        }
+    }
+
+    /** 本地或外部已证明未开始的版本只关闭本任务，不伪造 Provider Attempt。 */
+    private void noticeUnsent(NotifyOutbox outbox, NotifyDelivery delivery, String reason) {
+        delivery.setStatus("CANCELLED");
+        delivery.setErrorCode(reason);
+        delivery.setErrorMessage("公告版本不再允许投递");
+        outbox.setStatus("DONE");
+        outbox.setLastErrorCode(reason);
+        outbox.setLastErrorMessage("公告版本不再允许投递");
+        requireOne(dao.saveDeliveryResult(delivery));
+        finish(outbox);
+        refreshAggregate(outbox.getIntentId());
     }
 
     /** 只接受新规则持久标记与本次 READY 领取的合取证明，旧 READY/零次数并不足以证明未外呼。 */

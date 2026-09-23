@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,6 +44,13 @@ class NotifyNoticeUseCaseTest {
         new NotifyNoticeUseCase(noticeService, publisher).publish(12L);
 
         verify(publisher).publish(notice);
+    }
+
+    @Test
+    void failedLifecycleWriteNeverStartsPublisher() {
+        when(noticeService.publish(12L)).thenThrow(new IllegalStateException("owned zero-row write"));
+        assertThrows(IllegalStateException.class, () -> new NotifyNoticeUseCase(noticeService, publisher).publish(12L));
+        verify(publisher, never()).publish(org.mockito.ArgumentMatchers.any());
     }
 
     @Test

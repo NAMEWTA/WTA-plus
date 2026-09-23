@@ -8,12 +8,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.namewta.common.notify.core.NotifyClient;
+import org.namewta.common.notify.model.NotifyRequest;
+import org.namewta.common.notify.model.NotifyResult;
+import org.namewta.common.notify.model.NotifyRichContent;
+import org.namewta.common.notify.model.NotifyStatus;
+import org.namewta.common.notify.model.NotifyTargetResult;
+import org.namewta.notify.dao.NotifyConfigDao;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.dao.NotifyPersistenceDao;
 import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.mapper.NotifyNoticeMapper;
 import org.namewta.notify.mapper.NotifyNoticeSnapshotMapper;
+import org.namewta.notify.port.NotifyDispatchResultPort;
 import org.namewta.notify.service.NotifyNoticePublisherService;
 import org.namewta.notify.service.NotifyNoticeService;
 import org.namewta.notify.service.runtime.DispatchNotificationService;
@@ -21,19 +31,24 @@ import org.namewta.notify.service.runtime.NotificationApplicationRuntimeService;
 import org.namewta.notify.usecase.NotificationApplicationUseCase;
 import org.namewta.notify.usecase.NotifyNoticeUseCase;
 import org.namewta.notify.usecase.NotifyOutboxClaimUseCase;
+import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
 import org.redisson.api.RedissonClient;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 /** 真实六 SQL、动态事务与 Worker：撤回必须在站内投递领取前建立版本栅栏。 */
 @Tag("dev")
@@ -42,6 +57,8 @@ class NotifyNoticeRetractionIntegrationTest {
     private static final long POSITIVE_NOTICE = 9_640_000_001L;
     private static final long RETRACTED_NOTICE = 9_640_000_002L;
     private static final long USER = 7L;
+    private static final long MAIL_ACCOUNT = 9_640_000_003L;
+    private static final long MAIL_BINDING = 2_100_630_000_000_000_009L;
 
     private NotifyAtomicResultIntegrationTest fixture;
     private JdbcTemplate db;
@@ -51,6 +68,8 @@ class NotifyNoticeRetractionIntegrationTest {
     private NotifyNoticeUseCase notices;
     private RedissonClient redis;
     private AtomicInteger realtimeCalls;
+    private Long restoreStaticSeed;
+    private boolean restoreMailBinding;
 
     @BeforeEach
     void open() throws Exception {
@@ -75,19 +94,28 @@ class NotifyNoticeRetractionIntegrationTest {
         var user = new UserDTO();
         user.setUserId(USER);
         user.setStatus("0");
+        user.setEmail("t40-owned@example.test");
         var users = mock(UserService.class);
         when(users.selectNotificationUsers(List.of(USER))).thenReturn(List.of(user));
         var application = transactional(new NotificationApplicationUseCase(
             new NotificationApplicationRuntimeService(runtimeDao, users, dispatch, event -> {})),
             NotificationApplicationUseCase.class);
-        notices = transactional(new NotifyNoticeUseCase(new NotifyNoticeService(noticeDao, users),
-            new NotifyNoticePublisherService(application, noticeDao, users)), NotifyNoticeUseCase.class);
+        notices = transactional(new NotifyNoticeUseCase(new NotifyNoticeService(noticeDao, users, runtimeDao),
+            new NotifyNoticePublisherService(application, noticeDao, users, runtimeDao)), NotifyNoticeUseCase.class);
     }
 
     @AfterEach
     void close() {
         try {
             if (db != null) {
+                db.execute("drop trigger if exists owned_t40_path_failure");
+                if (restoreMailBinding) {
+                    db.update("update notify_scene_binding set account_id=null where binding_id=? and account_id=?",
+                        MAIL_BINDING, MAIL_ACCOUNT);
+                    db.update("delete from notify_channel_account where account_id=?", MAIL_ACCOUNT);
+                }
+                if (restoreStaticSeed != null) db.update("update notify_notice set lifecycle='PUBLISHED',"
+                    + "retracted_at=null where notice_id=?", restoreStaticSeed);
                 for (long noticeId : List.of(POSITIVE_NOTICE, RETRACTED_NOTICE)) {
                     List<Long> ids = db.queryForList("select intent_id from notify_intent "
                         + "where app_id='notify' and biz_type='NOTICE_PUBLISHED' and biz_id=?", Long.class,
@@ -118,6 +146,9 @@ class NotifyNoticeRetractionIntegrationTest {
         dispatch.dispatch(claimOne(positive.getIntentId(), "t40-positive"));
         assertThat(count("notify_message", positive.getIntentId())).isEqualTo(1);
         assertThat(count("notify_message_recipient", positive.getIntentId())).isEqualTo(1);
+        assertThat(db.queryForObject("select category from notify_message where message_id=?", String.class,
+            positive.getIntentId())).isEqualTo("notice");
+        assertDeepLink(positive.getIntentId(), POSITIVE_NOTICE, 1);
         long persistedCalls = redis.getAtomicLong("owned-t22-provider-calls").get();
         int pushed = realtimeCalls.get();
         assertThat(persistedCalls).isEqualTo(1);
@@ -132,6 +163,7 @@ class NotifyNoticeRetractionIntegrationTest {
         assertThat(runtimeDao.outbox(outboxId).getStatus()).isEqualTo("READY");
         assertThat(count("notify_message", withdrawn.getIntentId())).isZero();
         assertThat(count("notify_message_recipient", withdrawn.getIntentId())).isZero();
+        assertDeepLink(withdrawn.getIntentId(), RETRACTED_NOTICE, 1);
 
         assertThat(notices.retract(RETRACTED_NOTICE)).isEqualTo(1);
         assertThat(db.queryForObject("select lifecycle from notify_notice where notice_id=?", String.class,
@@ -151,11 +183,180 @@ class NotifyNoticeRetractionIntegrationTest {
         assertThat(count("notify_message", positive.getIntentId())).isEqualTo(1);
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = {1761800000000000001L, 1761800000000000002L})
+    void onlyExactStaticSeedMayRetractWithoutAnIntent(long seedId) {
+        assertThat(db.queryForObject("select lifecycle from notify_notice where notice_id=?", String.class, seedId))
+            .isEqualTo("PUBLISHED");
+        assertThat(db.queryForObject("select count(*) from notify_notice_snapshot where notice_id=?", Integer.class,
+            seedId)).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_intent where biz_type='NOTICE_PUBLISHED' "
+            + "and biz_id=?", Integer.class, String.valueOf(seedId))).isZero();
+        restoreStaticSeed = seedId;
+        assertThat(notices.retract(seedId)).isEqualTo(1);
+        assertThat(notices.retract(seedId)).as("verified seed repeat is idempotent").isEqualTo(1);
+        assertThat(db.queryForObject("select lifecycle from notify_notice where notice_id=?", String.class, seedId))
+            .isEqualTo("RETRACTED");
+        assertThat(db.queryForObject("select count(*) from notify_notice_snapshot where notice_id=?", Integer.class,
+            seedId)).isEqualTo(1);
+
+        insertPublishedWithoutIntent(POSITIVE_NOTICE);
+        assertThatThrownBy(() -> notices.retract(POSITIVE_NOTICE)).isInstanceOf(RuntimeException.class);
+        assertThat(db.queryForObject("select lifecycle from notify_notice where notice_id=?", String.class,
+            POSITIVE_NOTICE)).isEqualTo("PUBLISHED");
+    }
+
+    @Test
+    void lateSnapshotPathFailureRollsBackNoticeIntentAndOutbox() {
+        insertDraft(POSITIVE_NOTICE, "T40 rollback notice");
+        List<Integer> before = List.of("notify_intent", "notify_recipient", "notify_delivery", "notify_outbox",
+            "notify_attempt", "notify_message", "notify_message_recipient").stream()
+            .map(table -> db.queryForObject("select count(*) from " + table, Integer.class)).toList();
+        db.execute("create trigger owned_t40_path_failure before update on notify_notice_snapshot "
+            + "for each row signal sqlstate '45000' set message_text='owned snapshot update failure'");
+
+        assertThatThrownBy(() -> notices.publish(POSITIVE_NOTICE)).isInstanceOf(RuntimeException.class);
+        assertThat(db.queryForObject("select lifecycle from notify_notice where notice_id=?", String.class,
+            POSITIVE_NOTICE)).isEqualTo("DRAFT");
+        assertThat(db.queryForObject("select count(*) from notify_notice_snapshot where notice_id=?", Integer.class,
+            POSITIVE_NOTICE)).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_intent where app_id='notify' "
+            + "and biz_type='NOTICE_PUBLISHED' and biz_id=?", Integer.class,
+            String.valueOf(POSITIVE_NOTICE))).isZero();
+        assertThat(List.of("notify_intent", "notify_recipient", "notify_delivery", "notify_outbox",
+            "notify_attempt", "notify_message", "notify_message_recipient").stream()
+            .map(table -> db.queryForObject("select count(*) from " + table, Integer.class)).toList())
+            .containsExactlyElementsOf(before);
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
+        assertThat(realtimeCalls.get()).isZero();
+    }
+
+    @Test
+    void republishedVersionCanDeliverWhileRetractedVersionAndSnapshotStaySeparate() {
+        insertDraft(POSITIVE_NOTICE, "T40 first version");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent first = intent(POSITIVE_NOTICE);
+        assertThat(first).isNotNull();
+        assertThat(notices.retract(POSITIVE_NOTICE)).isEqualTo(1);
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent second = runtimeDao.intentByIdempotency("notify",
+            "notice-published:" + POSITIVE_NOTICE + ":2");
+        assertThat(second).isNotNull();
+        assertThat(second.getIntentId()).isNotEqualTo(first.getIntentId());
+        assertThat(NotifyNoticeVersionFence.state(runtimeDao.intent(first.getIntentId())))
+            .isEqualTo(NotifyNoticeVersionFence.State.RETRACTED);
+        assertThat(NotifyNoticeVersionFence.state(second)).isEqualTo(NotifyNoticeVersionFence.State.ACTIVE);
+        assertDeepLink(first.getIntentId(), POSITIVE_NOTICE, 1);
+        assertDeepLink(second.getIntentId(), POSITIVE_NOTICE, 2);
+
+        List<NotifyOutbox> claimed = claims.claim("t40-two-versions").stream()
+            .filter(row -> row.getIntentId().equals(first.getIntentId())
+                || row.getIntentId().equals(second.getIntentId())).toList();
+        assertThat(claimed).hasSize(2);
+        claimed.forEach(dispatch::dispatch);
+        assertThat(count("notify_message", first.getIntentId())).isZero();
+        assertThat(count("notify_message", second.getIntentId())).isEqualTo(1);
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            first.getIntentId())).isEqualTo("CANCELLED");
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            second.getIntentId())).isEqualTo("DELIVERED");
+        assertThat(db.queryForObject("select count(*) from notify_notice_snapshot where notice_id=?", Integer.class,
+            POSITIVE_NOTICE)).isEqualTo(2);
+    }
+
+    @Test
+    void realMailPlannerUsesGenericPathWithoutInAppAndPersonalPathWhenMixed() {
+        bindOwnedMailAccount();
+        var sent = new ArrayList<NotifyRequest>();
+        NotifyClient provider = mock(NotifyClient.class);
+        when(provider.send(any(NotifyRequest.class))).thenAnswer(invocation -> {
+            NotifyRequest request = invocation.getArgument(0);
+            sent.add(request);
+            return new NotifyResult(request.requestId(), request.channel(), request.providerKey(),
+                NotifyStatus.ACCEPTED, List.of(NotifyTargetResult.accepted(request.targets().getFirst(),
+                    "owned-t40-mail-receipt", 1)));
+        });
+        @SuppressWarnings("unchecked")
+        ObjectProvider<org.namewta.notify.api.InAppNotificationPort> inApp = mock(ObjectProvider.class);
+        var mailDispatch = new DispatchNotificationService(runtimeDao, provider, inApp,
+            field("configDao", NotifyConfigDao.class), (key, limit, window) -> true,
+            field("results", NotifyDispatchResultPort.class));
+
+        insertDraft(POSITIVE_NOTICE, "T40 external only", "[\"MAIL\"]");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent external = intent(POSITIVE_NOTICE);
+        assertThat(external).isNotNull();
+        assertGenericLink(external.getIntentId(), POSITIVE_NOTICE);
+        mailDispatch.dispatch(claimOne(external.getIntentId(), "t40-external-mail"));
+        assertThat(sent).hasSize(1);
+        assertThat(sent.getFirst().content()).isInstanceOf(NotifyRichContent.class);
+        assertThat(((NotifyRichContent) sent.getFirst().content()).content()).contains("/notify/inbox")
+            .doesNotContain("messageId=");
+
+        insertDraft(RETRACTED_NOTICE, "T40 mixed", "[\"IN_APP\",\"MAIL\"]");
+        notices.publish(RETRACTED_NOTICE);
+        NotifyIntent mixed = intent(RETRACTED_NOTICE);
+        assertThat(mixed).isNotNull();
+        assertDeepLink(mixed.getIntentId(), RETRACTED_NOTICE, 1);
+        List<NotifyOutbox> mixedTasks = claims.claim("t40-mixed-mail").stream()
+            .filter(row -> row.getIntentId().equals(mixed.getIntentId())).toList();
+        assertThat(mixedTasks).hasSize(2);
+        NotifyOutbox mail = mixedTasks.stream().filter(row -> "MAIL".equals(
+            runtimeDao.delivery(row.getDeliveryId()).getChannel())).findFirst().orElseThrow();
+        mailDispatch.dispatch(mail);
+        assertThat(sent).hasSize(2);
+        assertThat(((NotifyRichContent) sent.get(1).content()).content())
+            .contains("/notify/inbox?messageId=" + mixed.getIntentId());
+    }
+
+    private void bindOwnedMailAccount() {
+        assertThat(db.update("insert into notify_channel_account(account_id,channel,config_key,enabled,"
+            + "minute_max,create_time) values(?,'MAIL','owned-t40-mail','Y',60,utc_timestamp())",
+            MAIL_ACCOUNT)).isEqualTo(1);
+        restoreMailBinding = true;
+        assertThat(db.update("update notify_scene_binding set account_id=? where binding_id=? and account_id is null",
+            MAIL_ACCOUNT, MAIL_BINDING)).isEqualTo(1);
+    }
+
+    private void insertPublishedWithoutIntent(long noticeId) {
+        db.update("insert into notify_notice(notice_id,notice_title,notice_type,notice_content,recipient_type,"
+                + "recipient_ids_json,user_type_ids_json,channels_json,status,lifecycle,published_at,create_time) "
+                + "values(?,'Owned missing task','1','Owned body','ALL','[]','[]','[\"IN_APP\"]','0','PUBLISHED',"
+                + "utc_timestamp(),utc_timestamp())", noticeId);
+        db.update("insert into notify_notice_snapshot(snapshot_id,notice_id,snapshot_version,title_snapshot,"
+                + "content_snapshot,notice_type,path_snapshot,published_at,create_time) "
+                + "select notice_id,notice_id,1,notice_title,notice_content,notice_type,'/notify/inbox',"
+                + "published_at,create_time from notify_notice where notice_id=?", noticeId);
+    }
+
+    private void assertDeepLink(long intentId, long noticeId, int version) {
+        String path = "/notify/inbox?messageId=" + intentId;
+        assertThat(db.queryForObject("select path_snapshot from notify_intent where intent_id=?", String.class,
+            intentId)).isEqualTo(path);
+        assertThat(db.queryForObject("select json_unquote(json_extract(template_params_json,'$.path')) "
+            + "from notify_intent where intent_id=?", String.class, intentId)).isEqualTo(path);
+        assertThat(db.queryForObject("select path_snapshot from notify_notice_snapshot "
+            + "where notice_id=? and snapshot_version=?", String.class, noticeId, version)).isEqualTo(path);
+    }
+
+    private void assertGenericLink(long intentId, long noticeId) {
+        assertThat(db.queryForObject("select path_snapshot from notify_intent where intent_id=?", String.class,
+            intentId)).isEqualTo("/notify/inbox");
+        assertThat(db.queryForObject("select json_unquote(json_extract(template_params_json,'$.path')) "
+            + "from notify_intent where intent_id=?", String.class, intentId)).isEqualTo("/notify/inbox");
+        assertThat(db.queryForObject("select path_snapshot from notify_notice_snapshot where notice_id=?",
+            String.class, noticeId)).isEqualTo("/notify/inbox");
+    }
+
     private void insertDraft(long noticeId, String title) {
+        insertDraft(noticeId, title, "[\"IN_APP\"]");
+    }
+
+    private void insertDraft(long noticeId, String title, String channels) {
         db.update("insert into notify_notice(notice_id,notice_title,notice_type,notice_content,recipient_type,"
                 + "recipient_ids_json,user_type_ids_json,channels_json,status,lifecycle,create_time) "
-                + "values(?,?,'1',?,'USER','[7]','[]','[\"IN_APP\"]','1','DRAFT',utc_timestamp())",
-            noticeId, title, "Owned synthetic notice body " + noticeId);
+                + "values(?,?,'1',?,'USER','[7]','[]',?,'1','DRAFT',utc_timestamp())",
+            noticeId, title, "Owned synthetic notice body " + noticeId, channels);
     }
 
     private NotifyIntent intent(long noticeId) {

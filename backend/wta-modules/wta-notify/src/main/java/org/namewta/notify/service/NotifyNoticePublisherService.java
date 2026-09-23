@@ -7,7 +7,10 @@ import org.namewta.notify.api.*;
 import org.namewta.notify.domain.entity.NotifyNotice;
 import org.namewta.notify.domain.entity.NotifyNoticeSnapshot;
 import org.namewta.notify.dao.NotifyPersistenceDao;
+import org.namewta.notify.dao.NotifyNotificationDao;
+import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.policy.NoticeAudiencePolicy;
+import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.namewta.common.core.exception.ServiceException;
 import org.namewta.system.api.UserService;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ public class NotifyNoticePublisherService {
     private final NotificationApplicationService notificationService;
     private final NotifyPersistenceDao dao;
     private final UserService userService;
+    private final NotifyNotificationDao notificationDao;
 
     public void publish(NotifyNotice notice) {
         var audience = NoticeAudiencePolicy.normalize(notice.getRecipientType(),
@@ -48,21 +52,49 @@ public class NotifyNoticePublisherService {
         snapshot.setTitleSnapshot(notice.getNoticeTitle());
         snapshot.setContentSnapshot(notice.getNoticeContent());
         snapshot.setNoticeType(notice.getNoticeType());
-        snapshot.setPathSnapshot("/notify/notice?noticeId=" + notice.getNoticeId());
+        snapshot.setPathSnapshot("/notify/inbox");
         snapshot.setPublishedAt(notice.getPublishedAt());
         snapshot.setCreateTime(notice.getPublishedAt());
-        dao.insertSnapshot(snapshot);
+        if (dao.insertSnapshot(snapshot) != 1) throw new IllegalStateException("公告发布快照写入冲突");
         Map<String, Object> params = new HashMap<>();
         params.put("title", Objects.toString(notice.getNoticeTitle(), ""));
         params.put("content", Objects.toString(notice.getNoticeContent(), ""));
         params.put("path", snapshot.getPathSnapshot());
         params.put("noticeType", notice.getNoticeType());
         params.put("channels", audience.channels());
-        notificationService.submit(new NotificationCommand("notify", "notice-published", "NOTICE_PUBLISHED",
+        NotificationReceipt receipt = notificationService.submit(new NotificationCommand("notify", "notice-published", "NOTICE_PUBLISHED",
             String.valueOf(notice.getNoticeId()), recipientType, recipientIds.stream().map(String::valueOf).toList(), "notice-published", params,
             channels,
             NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
-            "notice-published:" + notice.getNoticeId() + ":" + version, Map.of("audit", "NOTICE_SNAPSHOT")));
+            NotifyNoticeVersionFence.idempotencyKey(notice.getNoticeId(), version),
+            NotifyNoticeVersionFence.initial(notice.getNoticeId(), snapshot.getSnapshotId(), version)));
+        long intentId = receiptId(receipt);
+        NotifyIntent intent = notificationDao.lockNoticeIntent(
+            NotifyNoticeVersionFence.idempotencyKey(notice.getNoticeId(), version));
+        if (intent == null || !Objects.equals(intent.getIntentId(), intentId)) {
+            throw new IllegalStateException("公告发布回执与意图不一致");
+        }
+        NotifyNoticeVersionFence.requirePublishedIdentity(intent, notice.getNoticeId(), snapshot.getSnapshotId(), version);
+        if (channels.contains(NotificationChannel.IN_APP)) {
+            Map<String, Object> persistedParams = JsonUtils.parseObject(intent.getTemplateParamsJson(), Map.class);
+            if (persistedParams == null || !"/notify/inbox".equals(persistedParams.get("path"))) {
+                throw new IllegalStateException("公告发布路径快照不一致");
+            }
+            String path = "/notify/inbox?messageId=" + intentId;
+            Map<String, Object> deepParams = new HashMap<>(persistedParams);
+            deepParams.put("path", path);
+            if (notificationDao.updateNoticePath(intent, JsonUtils.toJsonString(deepParams), path) != 1
+                || dao.updateSnapshotPath(snapshot, path) != 1) {
+                throw new IllegalStateException("公告发布深链写入冲突");
+            }
+        }
+    }
+
+    private long receiptId(NotificationReceipt receipt) {
+        String id = receipt == null ? null : receipt.notificationId();
+        if (id == null || !id.matches("[1-9][0-9]*")) throw new IllegalStateException("公告发布回执编号无效");
+        try { return Long.parseLong(id); }
+        catch (NumberFormatException invalid) { throw new IllegalStateException("公告发布回执编号无效", invalid); }
     }
 
 }

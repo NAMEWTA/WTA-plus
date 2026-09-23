@@ -117,6 +117,7 @@ public class InAppNotificationService implements InAppNotificationPort {
     private String resolveCategory(String path) {
         if (path != null && path.startsWith("/workflow")) return "workflow";
         if (path != null && path.startsWith("/notify/notice")) return "notice";
+        if (path != null && path.startsWith("/notify/inbox?messageId=")) return "notice";
         return "system";
     }
 

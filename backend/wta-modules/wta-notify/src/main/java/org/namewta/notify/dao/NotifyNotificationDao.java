@@ -96,6 +96,34 @@ public class NotifyNotificationDao {
         return intentMapper.selectOne(new LambdaQueryWrapper<NotifyIntent>()
             .eq(NotifyIntent::getAppId, appId).eq(NotifyIntent::getIdempotencyKey, key).last("limit 1"));
     }
+    /** 公告先锁 Notice，再只锁该发布版本的 Intent；不得由 Worker 反向取 Notice 锁。 */
+    public NotifyIntent lockNoticeIntent(String key) {
+        return intentMapper.selectOne(new LambdaQueryWrapper<NotifyIntent>()
+            .eq(NotifyIntent::getAppId, "notify").eq(NotifyIntent::getIdempotencyKey, key)
+            .last("for update"));
+    }
+    /** 固定 DML 静态公告的缺 Intent 例外还须排除相同业务公告的其他任务。 */
+    public long countNoticeBusinessIntents(Long noticeId) {
+        return intentMapper.selectCount(new LambdaQueryWrapper<NotifyIntent>()
+            .eq(NotifyIntent::getAppId, "notify").eq(NotifyIntent::getBizType, "NOTICE_PUBLISHED")
+            .eq(NotifyIntent::getBizId, String.valueOf(noticeId)));
+    }
+    /** 持有精确版本 Intent 锁时只写版本栅栏，不覆盖结果事务可能更新的聚合列。 */
+    public int saveNoticeMetadata(NotifyIntent intent, String metadataJson) {
+        return intentMapper.update(null, new LambdaUpdateWrapper<NotifyIntent>()
+            .eq(NotifyIntent::getIntentId, intent.getIntentId())
+            .eq(NotifyIntent::getAppId, "notify").eq(NotifyIntent::getIdempotencyKey, intent.getIdempotencyKey())
+            .set(NotifyIntent::getMetadataJson, metadataJson));
+    }
+    /** 发布事务内同时改路径快照与外部模板变量；整笔事务失败则三处均回滚。 */
+    public int updateNoticePath(NotifyIntent intent, String templateParamsJson, String path) {
+        return intentMapper.update(null, new LambdaUpdateWrapper<NotifyIntent>()
+            .eq(NotifyIntent::getIntentId, intent.getIntentId())
+            .eq(NotifyIntent::getAppId, "notify").eq(NotifyIntent::getIdempotencyKey, intent.getIdempotencyKey())
+            .eq(NotifyIntent::getPathSnapshot, "/notify/inbox")
+            .set(NotifyIntent::getPathSnapshot, path)
+            .set(NotifyIntent::getTemplateParamsJson, templateParamsJson));
+    }
     public int insert(NotifyIntent value) { return intentMapper.insert(value); }
     public int update(NotifyIntent value) { return intentMapper.updateById(value); }
     public NotifyRecipient insert(NotifyRecipient value) { recipientMapper.insert(value); return value; }

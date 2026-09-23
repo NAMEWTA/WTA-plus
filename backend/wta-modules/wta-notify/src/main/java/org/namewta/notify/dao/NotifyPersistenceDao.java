@@ -2,6 +2,7 @@ package org.namewta.notify.dao;
 
 import lombok.RequiredArgsConstructor;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.namewta.common.core.domain.PageResult;
 import org.namewta.common.mybatis.core.page.PageQuery;
 import org.namewta.notify.domain.bo.NotifyNoticeBo;
@@ -40,4 +41,17 @@ public class NotifyPersistenceDao {
             .orderByDesc(NotifyNoticeSnapshot::getSnapshotVersion).last("limit 1"));
     }
     public int insertSnapshot(NotifyNoticeSnapshot snapshot) { return snapshotMapper.insert(snapshot); }
+    public long countSnapshots(Long noticeId) {
+        return snapshotMapper.selectCount(new LambdaQueryWrapper<NotifyNoticeSnapshot>()
+            .eq(NotifyNoticeSnapshot::getNoticeId, noticeId));
+    }
+    /** 仅本次发布的通用入口可转为本人消息深链；不改标题、正文和旧版本。 */
+    public int updateSnapshotPath(NotifyNoticeSnapshot snapshot, String path) {
+        return snapshotMapper.update(null, new LambdaUpdateWrapper<NotifyNoticeSnapshot>()
+            .eq(NotifyNoticeSnapshot::getSnapshotId, snapshot.getSnapshotId())
+            .eq(NotifyNoticeSnapshot::getNoticeId, snapshot.getNoticeId())
+            .eq(NotifyNoticeSnapshot::getSnapshotVersion, snapshot.getSnapshotVersion())
+            .eq(NotifyNoticeSnapshot::getPathSnapshot, "/notify/inbox")
+            .set(NotifyNoticeSnapshot::getPathSnapshot, path));
+    }
 }

@@ -5,15 +5,21 @@ import org.namewta.common.core.domain.PageResult;
 import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.notify.dao.NotifyPersistenceDao;
+import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.domain.bo.NotifyNoticeBo;
 import org.namewta.notify.domain.entity.NotifyNotice;
+import org.namewta.notify.domain.entity.NotifyNoticeSnapshot;
+import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.policy.NoticeAudiencePolicy;
 import org.namewta.notify.domain.vo.NotifyNoticeVo;
+import org.namewta.notify.support.NotifyNoticeVersionFence;
 import org.namewta.system.api.UserService;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /** 公告草稿和生命周期规则，持久化操作统一经过 DAO。 */
 @Service
@@ -21,6 +27,8 @@ import java.util.List;
 public class NotifyNoticeService {
     private final NotifyPersistenceDao dao;
     private final UserService userService;
+    private final NotifyNotificationDao notificationDao;
+    private static final Set<Long> STATIC_NOTICE_IDS = Set.of(1761800000000000001L, 1761800000000000002L);
 
     public PageResult<NotifyNoticeVo> page(NotifyNoticeBo query, Integer pageNum, Integer pageSize) {
         var page = dao.page(query, pageNum, pageSize);
@@ -106,18 +114,60 @@ public class NotifyNoticeService {
         entity.setLifecycle("PUBLISHED");
         entity.setPublishedAt(LocalDateTime.now());
         entity.setRetractedAt(null);
-        dao.update(entity);
+        if (dao.update(entity) != 1) throw new IllegalStateException("公告发布状态写入冲突");
         return entity;
     }
 
     public NotifyNotice retract(Long id) {
         NotifyNotice entity = requireLocked(id);
-        if ("RETRACTED".equals(entity.getLifecycle())) return entity;
-        if (!"PUBLISHED".equals(entity.getLifecycle())) throw new ServiceException("仅已发布通知允许撤回");
-        entity.setLifecycle("RETRACTED");
-        entity.setRetractedAt(LocalDateTime.now());
-        dao.update(entity);
+        if (!"PUBLISHED".equals(entity.getLifecycle()) && !"RETRACTED".equals(entity.getLifecycle())) {
+            throw new ServiceException("仅已发布通知允许撤回");
+        }
+        NotifyNoticeSnapshot snapshot = dao.latestSnapshot(id);
+        if (snapshot == null || snapshot.getSnapshotVersion() == null || snapshot.getSnapshotVersion() <= 0) {
+            throw new ServiceException("公告发布版本事实不一致");
+        }
+        String key = NotifyNoticeVersionFence.idempotencyKey(id, snapshot.getSnapshotVersion());
+        NotifyIntent intent = notificationDao.lockNoticeIntent(key);
+        if (intent == null) {
+            if (!staticSeedWithoutIntent(entity, snapshot)) throw new ServiceException("公告发布任务缺失");
+        } else {
+            String metadata = NotifyNoticeVersionFence.retractedMetadata(intent, id,
+                snapshot.getSnapshotId(), snapshot.getSnapshotVersion());
+            if (NotifyNoticeVersionFence.state(intent) != NotifyNoticeVersionFence.State.RETRACTED
+                && notificationDao.saveNoticeMetadata(intent, metadata) != 1) {
+                throw new IllegalStateException("公告版本撤回写入冲突");
+            }
+        }
+        if ("PUBLISHED".equals(entity.getLifecycle())) {
+            entity.setLifecycle("RETRACTED");
+            entity.setRetractedAt(LocalDateTime.now());
+            if (dao.update(entity) != 1) throw new IllegalStateException("公告撤回状态写入冲突");
+        }
         return entity;
+    }
+
+    /** 只有六 SQL 中两条可精确证明未创建投递任务的静态 V1 公告允许无 Intent 撤回。 */
+    private boolean staticSeedWithoutIntent(NotifyNotice notice, NotifyNoticeSnapshot snapshot) {
+        if (!STATIC_NOTICE_IDS.contains(notice.getNoticeId()) || !Integer.valueOf(1).equals(snapshot.getSnapshotVersion())
+            || !Objects.equals(snapshot.getSnapshotId(), notice.getNoticeId())
+            || !Objects.equals(snapshot.getNoticeId(), notice.getNoticeId())
+            || dao.countSnapshots(notice.getNoticeId()) != 1
+            || notificationDao.countNoticeBusinessIntents(notice.getNoticeId()) != 0
+            || !"0".equals(notice.getStatus()) || !"ALL".equals(notice.getRecipientType())
+            || !Objects.equals(notice.getNoticeTitle(), snapshot.getTitleSnapshot())
+            || !Objects.equals(notice.getNoticeContent(), snapshot.getContentSnapshot())
+            || !Objects.equals(notice.getNoticeType(), snapshot.getNoticeType())
+            || !Objects.equals(notice.getPublishedAt(), snapshot.getPublishedAt())
+            || !Objects.equals(notice.getCreateTime(), snapshot.getCreateTime())
+            || !Objects.equals(notice.getCreateBy(), snapshot.getCreateBy())) return false;
+        try {
+            return JsonUtils.parseArray(notice.getRecipientIdsJson(), Long.class).isEmpty()
+                && JsonUtils.parseArray(notice.getUserTypeIdsJson(), Long.class).isEmpty()
+                && List.of("IN_APP").equals(JsonUtils.parseArray(notice.getChannelsJson(), String.class));
+        } catch (RuntimeException invalidSeed) {
+            return false;
+        }
     }
 
     private NotifyNotice requireLocked(Long id) {
