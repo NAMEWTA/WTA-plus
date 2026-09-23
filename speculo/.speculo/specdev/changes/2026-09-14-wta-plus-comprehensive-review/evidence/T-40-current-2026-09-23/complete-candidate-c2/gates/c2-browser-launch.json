@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "--execute",
+    "--expected-head",
+    "851a6d6eb0edf9b53876bf43b56bb1747f1f7b4a",
+    "--expected-jar-sha256",
+    "a6cece4cdbe349f3529870ee39d2397c85477513da1d603c2d40d1eda2c369a1",
+    "--package-proof",
+    "/tmp/wta-t40/c2bounded-full-package-proof.json"
+  ],
+  "head": "851a6d6eb0edf9b53876bf43b56bb1747f1f7b4a",
+  "jar": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "a6cece4cdbe349f3529870ee39d2397c85477513da1d603c2d40d1eda2c369a1",
+    "size_bytes": 214198680
+  },
+  "note": "No inherited credential environment; driver owns isolated resources and self-contained final cleanup"
+}

@@ -1,0 +1,17 @@
+{
+  "source_head": "851a6d6eb0edf9b53876bf43b56bb1747f1f7b4a",
+  "source_tree": "a6d6fe1e3c5c372372ceb34bae8a191d44c46d47",
+  "clean": true,
+  "c1": "2c8047a2bfca47389557e4261ff5a55036e1c72e",
+  "c1_backend_diff": [
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java"
+  ],
+  "c1_frontend_skill_build_input_diff": [],
+  "c1_dist_files_verified": 329,
+  "reuse": {
+    "frontend": "C1 exact-clean full checks,652Vitest+108tools,3App build; all329 artifacts identical",
+    "browser_offline": "C1 15 and preflight, all5 browser files unchanged",
+    "real18": "F1 eb8cefe0 original execution retained; only other unit fixture changed since F1",
+    "shared135": "A3 270bd94e original execution retained; production,selected classes,POM,SQL unchanged"
+  }
+}

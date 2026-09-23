@@ -1,0 +1,26 @@
+{
+  "final_head": "851a6d6eb0edf9b53876bf43b56bb1747f1f7b4a",
+  "diffs": {
+    "a2": {
+      "head": "a638ef485c3819bfc8d67553877fd7c106ef9579",
+      "paths_changed": [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyNoticeRetractionIntegrationTest.java",
+        "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java"
+      ]
+    },
+    "a3": {
+      "head": "270bd94e3f59a784929448e2cfa84ae913b686b7",
+      "paths_changed": [
+        "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyNoticeRetractionIntegrationTest.java",
+        "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java"
+      ]
+    },
+    "f1": {
+      "head": "eb8cefe0f67895e75832b2a15d8f955b7b01e447",
+      "paths_changed": [
+        "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java"
+      ]
+    }
+  },
+  "interpretation": "F1 selected real18 identical; A3 selected shared135 and all production/build/SQL identical; A2 targeted16 identical. New fixture class separately rerun by C2 default suite."
+}

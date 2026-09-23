@@ -1,0 +1,20 @@
+{
+  "head": "851a6d6eb0edf9b53876bf43b56bb1747f1f7b4a",
+  "failed_command_record": "c2-backend-default.json",
+  "failure": "forked JVM exit137; kernel OOM killed Java PID1142623",
+  "kernel_evidence": [
+    "2026-09-23T16:30:58,285137-04:00 Out of memory: Killed process 1142623 (java) total-vm:12128628kB, anon-rss:5082964kB, file-rss:220kB, shmem-rss:36kB, UID:0 pgtables:12052kB oom_score_adj:0"
+  ],
+  "completed_fresh_reports": {
+    "classes": 237,
+    "tests": 1009,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 198
+  },
+  "disposition": "incomplete and failed; same-source retry with bounded JVM heap; no tests excluded or rules changed",
+  "retry_environment": {
+    "JAVA_TOOL_OPTIONS": "-Xms128m -Xmx1536m"
+  },
+  "other_services_changed": false
+}
