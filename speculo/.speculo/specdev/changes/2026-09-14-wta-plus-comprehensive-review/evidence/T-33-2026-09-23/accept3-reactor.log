@@ -1,0 +1,694 @@
+14:51:54.266 [main] WARN org.namewta.common.nacos.NacosConfigBootstrap -- Nacos 配置启动读取失败，已使用本地配置并等待服务恢复，profile=local dataId=wta-namewta.yml
+14:51:54.690 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.logback12.LogbackNacosLoggingAdapterBuilder
+14:51:54.693 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.logback14.LogbackNacosLoggingAdapterBuilder
+14:51:54.693 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter: com.alibaba.nacos.logger.adapter.logback14.LogbackNacosLoggingAdapter match ch.qos.logback.classic.Logger success.
+14:51:54.697 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.log4j2.Log4j2NacosLoggingAdapterBuilder
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+14:51:58.724 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.0.Final
+14:52:09.049 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=请求事件输出，请求标识=a505e4f1-1a37-49e5-9d91-94f913981de2，异常类型=java.lang.IllegalStateException
+14:52:09.056 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=响应事件输出，请求标识=a505e4f1-1a37-49e5-9d91-94f913981de2，异常类型=java.lang.IllegalStateException
+14:52:09.065 [main] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/failed',发生未知异常, 错误编号: 68032594，类型=java.lang.IllegalStateException
+14:52:09.115 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=请求事件输出，请求标识=98eef56b-a287-4f87-a05b-19e35141f136，异常类型=java.lang.IllegalStateException
+14:52:09.117 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=响应事件输出，请求标识=98eef56b-a287-4f87-a05b-19e35141f136，异常类型=java.lang.IllegalStateException
+14:52:09.153 [main] INFO org.namewta.system.http -- {"事件类型":"请求进入","请求标识":"request-id","正文已记录":true,"正文":"line1\n\"quoted\"\u0001"}
+14:52:09.156 [main] INFO org.namewta.system.http -- {"事件类型":"响应返回","响应状态":200,"正文已记录":false,"正文省略原因":"非文本内容"}
+14:52:09.737 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:52:09.760 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@117d32e{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@51d387d3{STARTED}}
+14:52:09.764 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@117d32e{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@51d387d3{STARTED}}
+14:52:09.769 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@5492da08{HTTP/1.1, (http/1.1)}{127.0.0.1:43133}
+14:52:09.770 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@7d3fb0ef{STARTING}[12.1.10,sto=0] @34ms
+14:52:09.903 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@7d3fb0ef{STOPPING}[12.1.10,sto=0]
+14:52:09.908 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@5492da08{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+14:52:09.910 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@117d32e{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@51d387d3{STOPPED}}
+14:52:09.920 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:52:09.922 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@3c98781a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@3f736a16{STARTED}}
+14:52:09.922 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@3c98781a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@3f736a16{STARTED}}
+14:52:09.923 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@4601203a{HTTP/1.1, (http/1.1)}{127.0.0.1:41971}
+14:52:09.924 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@53abfc07{STARTING}[12.1.10,sto=0] @3ms
+14:52:09.940 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@53abfc07{STOPPING}[12.1.10,sto=0]
+14:52:09.942 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@4601203a{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+14:52:09.943 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@3c98781a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@3f736a16{STOPPED}}
+14:52:09.950 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:52:09.953 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@61bfc9bf{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2c7106d9{STARTED}}
+14:52:09.953 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@61bfc9bf{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2c7106d9{STARTED}}
+14:52:09.954 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@329bad59{HTTP/1.1, (http/1.1)}{127.0.0.1:36639}
+14:52:09.955 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@862f408{STARTING}[12.1.10,sto=0] @4ms
+14:52:10.000 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@862f408{STOPPING}[12.1.10,sto=0]
+14:52:10.002 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@329bad59{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+14:52:10.002 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@61bfc9bf{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2c7106d9{STOPPED}}
+14:52:10.281 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.0.Final
+14:52:10.618 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:52:10.636 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:52:10.655 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:52:10.672 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:52:10.687 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 0: Error creating bean with name 'sys.log-org.namewta.common.web.config.SysLogProperties': Could not bind properties to 'SysLogProperties' : prefix=sys.log, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:52:10.697 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 0: Error creating bean with name 'sys.log-org.namewta.common.web.config.SysLogProperties': Could not bind properties to 'SysLogProperties' : prefix=sys.log, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:52:10.706 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 0: Error creating bean with name 'sys.log-org.namewta.common.web.config.SysLogProperties': Could not bind properties to 'SysLogProperties' : prefix=sys.log, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:52:10.733 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'clientAddressFilter' defined in org.namewta.common.web.config.ClientAddressConfig: Failed to instantiate [org.namewta.common.web.filter.ClientAddressFilter]: Factory method 'clientAddressFilter' threw exception with message: Invalid IPv4 literal
+14:52:10.738 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'clientAddressFilter' defined in org.namewta.common.web.config.ClientAddressConfig: Failed to instantiate [org.namewta.common.web.filter.ClientAddressFilter]: Factory method 'clientAddressFilter' threw exception with message: Client address resolution requires server.forward-headers-strategy=none
+14:52:10.742 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'clientAddressFilter' defined in org.namewta.common.web.config.ClientAddressConfig: Failed to instantiate [org.namewta.common.web.filter.ClientAddressFilter]: Factory method 'clientAddressFilter' threw exception with message: Client address resolution requires server.forward-headers-strategy=none
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+14:52:21.116 [main] WARN com.baomidou.mybatisplus.core.toolkit.Sequence -- Unable to get network interface for wta-ubuntu/127.0.1.1
+14:52:21.623 [main] WARN org.namewta.notify.service.NotifyConfigService -- 加载短信渠道账号失败，进程继续启动；发送将失败关闭。原因=select; bad SQL grammar [SELECT * FROM notify_channel_account]
+14:52:21.821 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=WAKE claimed=0 batches=1
+14:52:21.823 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=1 batches=2
+14:52:21.823 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=WAKE claimed=1 batches=2
+14:52:21.828 [pool-4-thread-1] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=1 batches=2
+14:52:21.829 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=0 batches=1
+14:52:21.831 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=1 batches=2
+14:52:21.834 [main] WARN org.namewta.notify.adapter.worker.NotifyOutboxWakeSubscriber -- notify outbox wake subscribe failed, slow poll remains
+java.lang.IllegalStateException: redis down
+	at org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest$1.subscribe(NotifyOutboxWorkerWakePollTest.java:159)
+	at org.namewta.notify.adapter.worker.NotifyOutboxWakeSubscriber.afterPropertiesSet(NotifyOutboxWakeSubscriber.java:54)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:52)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:39)
+	at org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3295)
+	at org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest.subscribeFailureDoesNotPreventConstruction(NotifyOutboxWorkerWakePollTest.java:167)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:57)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:56)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.api.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:125)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithCancellationToken(LauncherAdapter.java:68)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:54)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:203)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:168)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+14:52:21.839 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=0 batches=1
+14:52:21.842 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=2 batches=3
+14:52:21.851 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=WAKE claimed=0 batches=1
+14:52:21.999 [main] WARN org.namewta.notify.adapter.event.NotifyOutboxWakePublisher -- notify outbox cross-process wake publish failed, outboxId=7, reason=IllegalStateException, fallback poll remains
+14:52:22.003 [main] WARN org.namewta.notify.adapter.event.NotifyOutboxWakePublisher -- notify outbox wake interrupted, outboxId=1, fallback poll remains
+14:52:22.100 [junit-timeout-thread-1] WARN org.namewta.notify.adapter.event.NotifyOutboxWakePublisher -- notify outbox cross-process wake publish failed, outboxId=1, reason=TimeoutException, fallback poll remains
+14:52:23.289 [main] WARN com.baomidou.mybatisplus.core.toolkit.Sequence -- Unable to get network interface for wta-ubuntu/127.0.1.1
+14:52:23.774 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ssoAutoConfiguration': Failed to instantiate [org.namewta.sso.config.SsoAutoConfiguration]: Constructor threw exception
+14:52:23.792 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ssoAutoConfiguration': Failed to instantiate [org.namewta.sso.config.SsoAutoConfiguration]: Constructor threw exception
+14:52:23.805 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ssoAutoConfiguration': Failed to instantiate [org.namewta.sso.config.SsoAutoConfiguration]: Constructor threw exception
+14:52:23.817 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ssoAutoConfiguration': Failed to instantiate [org.namewta.sso.config.SsoAutoConfiguration]: Constructor threw exception
+14:52:23.826 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ssoAutoConfiguration': Failed to instantiate [org.namewta.sso.config.SsoAutoConfiguration]: Constructor threw exception
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+14:52:30.335 [main] WARN com.baomidou.mybatisplus.core.toolkit.Sequence -- Unable to get network interface for wta-ubuntu/127.0.1.1
+14:52:31.871 [main] WARN org.namewta.profile.person.service.PersonRebindNotificationService -- 个人换绑通知失败，channel=PERSON_REBIND_INTERNAL，category=DELIVERY_FAILED
+14:52:31.872 [main] WARN org.namewta.profile.person.service.PersonRebindNotificationService -- 个人换绑通知失败，channel=PERSON_REBIND_SMS，category=DELIVERY_FAILED
+14:52:32.425 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.0.Final
+14:52:32.725 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:32.726 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:32.727 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:52:33.199 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.199 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.200 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:52:33.262 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.262 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.262 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:52:33.271 [main] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/profile/person/materials/WORKING/123',权限码校验失败'无此权限：profile:person:material:self'
+14:52:33.290 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.290 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.291 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:52:33.333 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.333 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.333 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:52:33.341 [main] WARN org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver -- Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'documentTypeCode' for method parameter type String is not present]
+14:52:33.348 [main] WARN org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver -- Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'profileType': Failed to convert value of type 'java.lang.String' to required type 'org.namewta.profile.api.domain.ProfileType'; Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.RequestParam org.namewta.profile.api.domain.ProfileType] for value [OTHER]]
+14:52:33.357 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.357 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.357 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:52:33.365 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.365 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.366 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:52:33.370 [main] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/profile/person/materials/WORKING/123',认证失败'login',无法访问系统资源
+14:52:33.382 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.383 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.383 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:52:33.400 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.400 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.401 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:52:33.411 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:33.411 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:33.411 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+14:52:40.908 [main] WARN com.baomidou.mybatisplus.core.toolkit.Sequence -- Unable to get network interface for wta-ubuntu/127.0.1.1
+14:52:42.719 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.0.Final
+14:52:43.060 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:43.061 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:43.063 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+14:52:56.950 [main] INFO org.namewta.NamewtaApplication -- 
+==================
+访问地址：https://localhost:9090/api
+启动时间：2026-08-26 09:02:03
+运行的系统：Linux 7.0.0-31-generic（amd64）
+启动耗时：2.50 秒
+运行内存：已用 58.34 MB / 最大 5.79 GB
+==================
+2026-09-23 14:52:57 [main] INFO  org.namewta.system.http
+ - {"请求标识":"request-id","正文":"line1\n\"quoted\"\u0001","事件类型":"响应返回"}
+2026-09-23 14:52:57 [main] INFO  example.normal
+ - normal marker
+14:52:57.943 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.0.Final
+14:52:58.382 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:52:58.382 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:52:58.383 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:52:58.433 [main] WARN org.springframework.web.servlet.PageNotFound -- No mapping for POST /snail-ai/user/register
+14:52:58.435 [main] WARN org.springframework.web.servlet.PageNotFound -- No endpoint POST /snail-ai/user/register.
+14:52:58.436 [main] WARN org.springframework.web.servlet.PageNotFound -- No mapping for POST /snail-chat/chat
+14:52:58.436 [main] WARN org.springframework.web.servlet.PageNotFound -- No endpoint POST /snail-chat/chat.
+14:52:58.437 [main] WARN org.springframework.web.servlet.PageNotFound -- No mapping for POST /api/snail/chat/chat
+14:52:58.437 [main] WARN org.springframework.web.servlet.PageNotFound -- No endpoint POST /api/snail/chat/chat.
+14:52:58.647 [main] ERROR org.namewta.workflow.service.impl.FlwCommonServiceImpl -- 【消息发送失败】类型=EMAIL_MESSAGE，异常类型=IllegalStateException
+14:52:58.666 [main] ERROR org.namewta.web.controller.CaptchaController -- 验证码短信发送失败，异常类型=IllegalStateException
+14:52:58.674 [main] ERROR org.namewta.web.controller.CaptchaController -- 验证码邮件发送失败，异常类型=IllegalStateException
+14:52:59.207 [main] WARN org.namewta.common.notify.core.NotifyDispatcher -- 通知监控事件发布失败，requestId=request-1, exception=IllegalStateException
+14:52:59.301 [main] WARN org.namewta.common.notify.core.NotifyDispatcher -- 通知监控事件发布失败，requestId=00e2ee31-a61a-437c-ab1a-e71efafe7c7b, exception=IllegalStateException
+14:53:00.060 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:00.085 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@102e9731{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@f5a1b27{STARTED}}
+14:53:00.088 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-28debadc'
+14:53:00.089 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-28debadc'
+14:53:00.092 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 3 ms
+14:53:00.093 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@102e9731{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@f5a1b27{STARTED}}
+14:53:00.103 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@7a320ec4{HTTP/1.1, (http/1.1)}{localhost:37145}
+14:53:00.105 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@1b7a2459{STARTING}[12.1.10,sto=0] @48ms
+14:53:00.643 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@1b7a2459{STOPPING}[12.1.10,sto=0]
+14:53:00.646 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@7a320ec4{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:00.648 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-28debadc'
+14:53:00.649 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@102e9731{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@f5a1b27{STOPPED}}
+14:53:00.691 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:00.694 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@4968deb9{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@32828624{STARTED}}
+14:53:00.694 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-5a0d25ba'
+14:53:00.694 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-5a0d25ba'
+14:53:00.695 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:00.695 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@4968deb9{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@32828624{STARTED}}
+14:53:00.697 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@2dc09072{HTTP/1.1, (http/1.1)}{localhost:38529}
+14:53:00.698 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@7e654c{STARTING}[12.1.10,sto=0] @6ms
+14:53:00.732 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@7e654c{STOPPING}[12.1.10,sto=0]
+14:53:00.742 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@2dc09072{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:00.742 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-5a0d25ba'
+14:53:00.743 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@4968deb9{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@32828624{STOPPED}}
+14:53:00.785 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:00.788 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@3327337a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@29d534ce{STARTED}}
+14:53:00.788 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-553c74cc'
+14:53:00.788 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-553c74cc'
+14:53:00.789 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:00.789 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@3327337a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@29d534ce{STARTED}}
+14:53:00.790 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@5aaab2b0{HTTP/1.1, (http/1.1)}{localhost:40145}
+14:53:00.790 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@33458d84{STARTING}[12.1.10,sto=0] @5ms
+14:53:00.831 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@33458d84{STOPPING}[12.1.10,sto=0]
+14:53:00.834 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@5aaab2b0{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:00.834 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-553c74cc'
+14:53:00.835 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@3327337a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@29d534ce{STOPPED}}
+14:53:00.864 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:00.866 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@9a1b870{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@4d484eda{STARTED}}
+14:53:00.867 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-73ccc475'
+14:53:00.867 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-73ccc475'
+14:53:00.867 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 0 ms
+14:53:00.867 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@9a1b870{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@4d484eda{STARTED}}
+14:53:00.868 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@39090979{HTTP/1.1, (http/1.1)}{localhost:39301}
+14:53:00.868 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@702f99a5{STARTING}[12.1.10,sto=0] @3ms
+14:53:00.886 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@702f99a5{STOPPING}[12.1.10,sto=0]
+14:53:00.888 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@39090979{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:00.888 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-73ccc475'
+14:53:00.888 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@9a1b870{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@4d484eda{STOPPED}}
+14:53:00.918 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:00.920 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@6f939588{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2ba0948f{STARTED}}
+14:53:00.921 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-7c1e569'
+14:53:00.921 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-7c1e569'
+14:53:00.922 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:00.922 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@6f939588{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2ba0948f{STARTED}}
+14:53:00.923 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@30f454f4{HTTP/1.1, (http/1.1)}{localhost:39595}
+14:53:00.923 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@d9ef223{STARTING}[12.1.10,sto=0] @5ms
+14:53:00.936 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@d9ef223{STOPPING}[12.1.10,sto=0]
+14:53:00.937 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@30f454f4{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:00.937 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-7c1e569'
+14:53:00.938 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@6f939588{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2ba0948f{STOPPED}}
+14:53:00.967 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:00.969 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@6ec2be63{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@79658fe5{STARTED}}
+14:53:00.970 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-6b951ee5'
+14:53:00.970 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-6b951ee5'
+14:53:00.970 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 0 ms
+14:53:00.970 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@6ec2be63{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@79658fe5{STARTED}}
+14:53:00.972 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@2e00ad90{HTTP/1.1, (http/1.1)}{localhost:35721}
+14:53:00.972 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@68aa505b{STARTING}[12.1.10,sto=0] @5ms
+14:53:00.981 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@68aa505b{STOPPING}[12.1.10,sto=0]
+14:53:00.983 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@2e00ad90{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:00.983 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-6b951ee5'
+14:53:00.983 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@6ec2be63{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@79658fe5{STOPPED}}
+14:53:01.017 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:01.020 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@1b694a00{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@12d432ea{STARTED}}
+14:53:01.020 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-7ef35d1f'
+14:53:01.020 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-7ef35d1f'
+14:53:01.021 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:01.021 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@1b694a00{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@12d432ea{STARTED}}
+14:53:01.023 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@10c1dae9{HTTP/1.1, (http/1.1)}{localhost:45297}
+14:53:01.024 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@497c267a{STARTING}[12.1.10,sto=0] @6ms
+14:53:01.034 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@497c267a{STOPPING}[12.1.10,sto=0]
+14:53:01.036 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@10c1dae9{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:01.037 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-7ef35d1f'
+14:53:01.037 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@1b694a00{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@12d432ea{STOPPED}}
+14:53:01.062 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:01.064 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@2fcd0756{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@285d33f3{STARTED}}
+14:53:01.064 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-6ca404b'
+14:53:01.064 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-6ca404b'
+14:53:01.065 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 0 ms
+14:53:01.065 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@2fcd0756{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@285d33f3{STARTED}}
+14:53:01.065 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@7759d4be{HTTP/1.1, (http/1.1)}{localhost:42857}
+14:53:01.065 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@1c537671{STARTING}[12.1.10,sto=0] @3ms
+14:53:01.075 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@1c537671{STOPPING}[12.1.10,sto=0]
+14:53:01.077 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@7759d4be{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:01.077 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-6ca404b'
+14:53:01.078 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@2fcd0756{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@285d33f3{STOPPED}}
+14:53:01.106 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:01.109 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@3982fdf7{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@1933e1dc{STARTED}}
+14:53:01.109 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-3bf8feec'
+14:53:01.109 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-3bf8feec'
+14:53:01.110 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:01.110 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@3982fdf7{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@1933e1dc{STARTED}}
+14:53:01.111 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@24a6655d{HTTP/1.1, (http/1.1)}{localhost:33633}
+14:53:01.112 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@221b4175{STARTING}[12.1.10,sto=0] @5ms
+14:53:01.147 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@221b4175{STOPPING}[12.1.10,sto=0]
+14:53:01.148 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@24a6655d{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:01.148 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-3bf8feec'
+14:53:01.149 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@3982fdf7{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@1933e1dc{STOPPED}}
+14:53:01.177 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:01.180 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@49c819c7{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@17d28c1d{STARTED}}
+14:53:01.180 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-1d18e5ad'
+14:53:01.180 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-1d18e5ad'
+14:53:01.181 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:01.181 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@49c819c7{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@17d28c1d{STARTED}}
+14:53:01.182 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@4041b733{HTTP/1.1, (http/1.1)}{localhost:33937}
+14:53:01.182 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@3543c9a4{STARTING}[12.1.10,sto=0] @4ms
+14:53:01.190 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@3543c9a4{STOPPING}[12.1.10,sto=0]
+14:53:01.191 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@4041b733{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:01.191 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-1d18e5ad'
+14:53:01.192 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@49c819c7{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@17d28c1d{STOPPED}}
+14:53:01.220 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:01.223 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@2655ccbd{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@62d42eb7{STARTED}}
+14:53:01.223 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-76795a95'
+14:53:01.223 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-76795a95'
+14:53:01.224 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:01.224 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@2655ccbd{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@62d42eb7{STARTED}}
+14:53:01.225 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@5b6bb86c{HTTP/1.1, (http/1.1)}{localhost:35671}
+14:53:01.225 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@6987f367{STARTING}[12.1.10,sto=0] @4ms
+14:53:01.529 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@6987f367{STOPPING}[12.1.10,sto=0]
+14:53:01.535 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@5b6bb86c{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:01.535 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-76795a95'
+14:53:01.536 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@2655ccbd{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@62d42eb7{STOPPED}}
+14:53:01.562 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:01.565 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@2d2bda62{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@33918d45{STARTED}}
+14:53:01.565 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-3b00c9f6'
+14:53:01.565 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-3b00c9f6'
+14:53:01.566 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:01.566 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@2d2bda62{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@33918d45{STARTED}}
+14:53:01.567 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@29abec7e{HTTP/1.1, (http/1.1)}{localhost:46105}
+14:53:01.567 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@21b33459{STARTING}[12.1.10,sto=0] @4ms
+14:53:01.577 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@21b33459{STOPPING}[12.1.10,sto=0]
+14:53:01.578 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@29abec7e{HTTP/1.1, (http/1.1)}{localhost:0}
+14:53:01.579 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-3b00c9f6'
+14:53:01.579 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@2d2bda62{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@33918d45{STOPPED}}
+@BeforeEach ==================
+@AfterEach ==================
+14:53:02.837 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:02.837 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:02.837 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:02.903 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:02.903 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:02.903 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:02.999 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.002 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=StreamReadException
+14:53:03.004 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.004 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.004 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.004 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.005 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.005 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.010 [main] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.namewta.common.core.exception.ServiceException
+14:53:03.011 [main] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.namewta.common.core.exception.ServiceException
+14:53:03.069 [main] WARN org.namewta.system.password.PasswordPolicyConfigParser -- 密码策略配置不可用，configKey=sys.user.passwordPolicy，exception=IllegalArgumentException
+14:53:03.081 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:03.081 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:03.081 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:03.133 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:03.133 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:03.133 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:03.178 [main] WARN org.namewta.system.temporarypassword.TemporaryPasswordService -- 临时密码校验存储不可用: userId=42, error=IllegalStateException
+14:53:03.678 [main] INFO org.namewta.system.service.ClientSessionService -- 授权会话失效完成 targetType=client userId=null clientPk=10 matched=2 invalidated=2 clusterAcknowledged=true
+14:53:03.681 [main] INFO org.namewta.system.service.ClientSessionService -- 授权会话失效完成 targetType=userClient userId=1 clientPk=10 matched=2 invalidated=2 clusterAcknowledged=true
+14:53:03.684 [main] ERROR org.namewta.system.service.ClientSessionService -- 授权会话失效失败 targetType=client userId=null clientPk=10 matched=2 invalidated=1 errorType=IllegalStateException
+14:53:03.685 [main] INFO org.namewta.system.service.ClientSessionService -- 授权会话失效完成 targetType=client userId=null clientPk=10 matched=1 invalidated=1 clusterAcknowledged=true
+14:53:04.302 [main] WARN org.namewta.system.controller.advice.OssControllerExceptionHandler -- OSS 访问被拒绝，错误码=OBJECT_DELETE_PENDING
+14:53:04.304 [main] ERROR org.namewta.system.controller.advice.OssControllerExceptionHandler -- 请求地址'/resource/oss/1/download-url',发生未知异常, 错误编号: 08462928，类型=org.namewta.system.oss.exception.OssLifecycleException
+14:53:05.997 [main] ERROR org.namewta.system.oss.readiness.OssStorageReadinessService -- OSS readiness 必检集合发现失败: DISCOVERY_FAILED (IllegalStateException)
+14:53:06.980 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'oss.lifecycle-org.namewta.system.oss.config.OssLifecycleProperties': 命名下载策略 TTL: preview 超出安全范围
+14:53:06.992 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'oss.lifecycle-org.namewta.system.oss.config.OssLifecycleProperties': 默认下载签名 TTL 超出安全范围
+14:53:07.040 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'oss.direct-upload-org.namewta.system.oss.upload.OssUploadProperties': uploadPolicy objectPrefix 不安全: general
+14:53:07.052 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'oss.direct-upload-org.namewta.system.oss.upload.OssUploadProperties': Could not bind properties to 'OssUploadProperties' : prefix=oss.direct-upload, ignoreInvalidFields=false, ignoreUnknownFields=true
+____ ____    ___ ____ _  _ ____ _  _ 
+[__  |__| __  |  |  | |_/  |___ |\ | 
+___] |  |     |  |__| | \_ |___ | \| 
+https://sa-token.cc (v1.45.0)
+14:53:09.235 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:53:09.236 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@7fddeb5{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@4098b2ec{STARTED}}
+14:53:09.236 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Initializing Spring DispatcherServlet 'org.springframework.web.servlet.DispatcherServlet-4acd47cf'
+14:53:09.236 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Initializing Servlet 'org.springframework.web.servlet.DispatcherServlet-4acd47cf'
+14:53:09.237 [main] INFO org.springframework.web.servlet.DispatcherServlet -- Completed initialization in 1 ms
+14:53:09.237 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@7fddeb5{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@4098b2ec{STARTED}}
+14:53:09.237 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@539e714c{HTTP/1.1, (http/1.1)}{127.0.0.1:43875}
+14:53:09.237 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@9443150{STARTING}[12.1.10,sto=0] @2ms
+14:53:09.821 [qtp1355234036-280] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/auth/unlock/17',不支持'DELETE'请求
+14:53:09.856 [qtp1355234036-281] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/es/update',不支持'PUT'请求
+14:53:09.874 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/es/delete/17',不支持'DELETE'请求
+14:53:09.884 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/batch',不支持'DELETE'请求
+14:53:09.892 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/demo',不支持'PUT'请求
+14:53:09.914 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:09.921 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/demo/demo/update',权限码校验失败'无此权限：demo:demo:edit'
+14:53:09.924 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/demo/17',不支持'DELETE'请求
+14:53:09.945 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/demo/demo/17',权限码校验失败'无此权限：demo:demo:remove'
+14:53:09.950 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/tree',不支持'PUT'请求
+14:53:09.960 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:09.964 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/demo/tree/update',权限码校验失败'无此权限：demo:tree:edit'
+14:53:09.967 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/tree/17',不支持'DELETE'请求
+14:53:09.979 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/demo/tree/17',权限码校验失败'无此权限：demo:tree:remove'
+14:53:09.984 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/leave',不支持'PUT'请求
+14:53:09.999 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.003 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/leave/update',权限码校验失败'无此权限：workflow:leave:edit'
+14:53:10.006 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/leave/17',不支持'DELETE'请求
+14:53:10.018 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/leave/17',权限码校验失败'无此权限：workflow:leave:remove'
+14:53:10.027 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/instance/deleteByBusinessIds/17',不支持'DELETE'请求
+14:53:10.038 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/instance/deleteByBusinessIds/17',权限码校验失败'无此权限：workflow:instance:remove'
+14:53:10.043 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/instance/deleteByInstanceIds/17',不支持'DELETE'请求
+14:53:10.053 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/instance/deleteByInstanceIds/17',权限码校验失败'无此权限：workflow:instance:remove'
+14:53:10.056 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/instance/deleteHisByInstanceIds/17',不支持'DELETE'请求
+14:53:10.065 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/instance/deleteHisByInstanceIds/17',权限码校验失败'无此权限：workflow:instance:remove'
+14:53:10.070 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/instance/cancelProcessApply',不支持'PUT'请求
+14:53:10.081 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/instance/cancelProcessApply',权限码校验失败'无此权限：workflow:instance:cancel'
+14:53:10.085 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/instance/active/17',不支持'PUT'请求
+14:53:10.091 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/instance/active/17',发生未知异常，类型=org.springframework.web.bind.MissingServletRequestParameterException
+14:53:10.095 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/instance/active/17',权限码校验失败'无此权限：workflow:instance:active'
+14:53:10.098 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/instance/updateVariable',不支持'PUT'请求
+14:53:10.111 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/instance/updateVariable',权限码校验失败'无此权限：workflow:instance:variable'
+14:53:10.115 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/task/updateAssignee/17',不支持'PUT'请求
+14:53:10.121 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/task/updateAssignee/17', 参数解析失败: org.springframework.http.converter.HttpMessageNotReadableException
+14:53:10.125 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/task/updateAssignee/17',权限码校验失败'无此权限：workflow:task:edit'
+14:53:10.129 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/definition',不支持'PUT'请求
+14:53:10.150 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/definition/update',权限码校验失败'无此权限：workflow:definition:edit'
+14:53:10.155 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/definition/publish/17',不支持'PUT'请求
+14:53:10.164 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/definition/publish/17',权限码校验失败'无此权限：workflow:definition:publish'
+14:53:10.167 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/definition/unPublish/17',不支持'PUT'请求
+14:53:10.175 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/definition/unPublish/17',权限码校验失败'无此权限：workflow:definition:publish'
+14:53:10.179 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/definition/17',不支持'DELETE'请求
+14:53:10.189 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/definition/17',权限码校验失败'无此权限：workflow:definition:remove'
+14:53:10.192 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/definition/active/17',不支持'PUT'请求
+14:53:10.196 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/definition/active/17',发生未知异常，类型=org.springframework.web.bind.MissingServletRequestParameterException
+14:53:10.200 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/definition/active/17',权限码校验失败'无此权限：workflow:definition:active'
+14:53:10.203 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/spel',不支持'PUT'请求
+14:53:10.212 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.217 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/spel/update',权限码校验失败'无此权限：workflow:spel:edit'
+14:53:10.220 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/spel/17',不支持'DELETE'请求
+14:53:10.229 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/spel/17',权限码校验失败'无此权限：workflow:spel:remove'
+14:53:10.234 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/category',不支持'PUT'请求
+14:53:10.248 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.253 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/category/update',权限码校验失败'无此权限：workflow:category:edit'
+14:53:10.259 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/category/17',不支持'DELETE'请求
+14:53:10.271 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/workflow/category/17',权限码校验失败'无此权限：workflow:category:remove'
+14:53:10.278 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/monitor/operlog/17',不支持'DELETE'请求
+14:53:10.291 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/monitor/operlog/17',权限码校验失败'无此权限：monitor:operlog:remove'
+14:53:10.298 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/monitor/operlog/clean',不支持'DELETE'请求
+14:53:10.309 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/monitor/operlog/clean',权限码校验失败'无此权限：monitor:operlog:remove'
+14:53:10.315 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/monitor/loginInfo/17',不支持'DELETE'请求
+14:53:10.330 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/monitor/loginInfo/17',权限码校验失败'无此权限：monitor:logininfo:remove'
+14:53:10.335 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/monitor/loginInfo/clean',不支持'DELETE'请求
+14:53:10.353 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/monitor/loginInfo/clean',权限码校验失败'无此权限：monitor:logininfo:remove'
+14:53:10.361 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/monitor/online/17',不支持'DELETE'请求
+14:53:10.371 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/monitor/online/17',权限码校验失败'无此权限：monitor:online:forceLogout'
+14:53:10.376 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/monitor/online/myself/17',不支持'DELETE'请求
+14:53:10.387 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/dict/data',不支持'PUT'请求
+14:53:10.401 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.406 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dict/data/update',权限码校验失败'无此权限：system:dict:edit'
+14:53:10.409 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/dict/data/17',不支持'DELETE'请求
+14:53:10.418 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dict/data/17',权限码校验失败'无此权限：system:dict:remove'
+14:53:10.422 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/role',不支持'PUT'请求
+14:53:10.435 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.440 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/role/update',权限码校验失败'无此权限：system:role:edit'
+14:53:10.443 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/role/permission',不支持'PUT'请求
+14:53:10.455 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/role/permission',权限码校验失败'无此权限：system:role:edit'
+14:53:10.457 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/role/changeStatus',不支持'PUT'请求
+14:53:10.471 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/role/changeStatus',权限码校验失败'无此权限：system:role:edit'
+14:53:10.476 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/role/17',不支持'DELETE'请求
+14:53:10.486 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/role/17',权限码校验失败'无此权限：system:role:remove'
+14:53:10.490 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/role/authUser/cancel',不支持'PUT'请求
+14:53:10.502 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/role/authUser/cancel',权限码校验失败'无此权限：system:role:edit'
+14:53:10.506 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/role/authUser/cancelAll',不支持'PUT'请求
+14:53:10.515 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/role/authUser/cancelAll',权限码校验失败'无此权限：system:role:edit'
+14:53:10.518 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/role/authUser/selectAll',不支持'PUT'请求
+14:53:10.527 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/role/authUser/selectAll',权限码校验失败'无此权限：system:role:edit'
+14:53:10.534 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user/profile',不支持'PUT'请求
+14:53:10.547 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user/profile/updatePwd',不支持'PUT'请求
+14:53:10.559 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.563 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/menu',不支持'PUT'请求
+14:53:10.578 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.581 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/menu/update',角色权限校验失败'无此角色：superadmin'
+14:53:10.585 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/menu/17',不支持'DELETE'请求
+14:53:10.595 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/menu/17',角色权限校验失败'无此角色：superadmin'
+14:53:10.599 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/menu/cascade/17',不支持'DELETE'请求
+14:53:10.608 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/menu/cascade/17',角色权限校验失败'无此角色：superadmin'
+14:53:10.612 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/dict/type',不支持'PUT'请求
+14:53:10.621 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.626 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dict/type/update',权限码校验失败'无此权限：system:dict:edit'
+14:53:10.630 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/dict/type/17',不支持'DELETE'请求
+14:53:10.644 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dict/type/17',权限码校验失败'无此权限：system:dict:remove'
+14:53:10.649 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/dict/type/refreshCache',不支持'DELETE'请求
+14:53:10.663 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dict/type/refreshCache',权限码校验失败'无此权限：system:dict:remove'
+14:53:10.669 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/resource/oss/17',不支持'DELETE'请求
+14:53:10.682 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/resource/oss/17',权限码校验失败'无此权限：system:oss:remove'
+14:53:10.685 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/client',不支持'PUT'请求
+14:53:10.693 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.698 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/client/update',权限码校验失败'无此权限：system:client:edit'
+14:53:10.701 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/client/changeStatus',不支持'PUT'请求
+14:53:10.710 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/client/changeStatus',权限码校验失败'无此权限：system:client:edit'
+14:53:10.714 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/client/17',不支持'DELETE'请求
+14:53:10.724 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/client/17',权限码校验失败'无此权限：system:client:remove'
+14:53:10.728 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/resource/oss/uploads/17',不支持'DELETE'请求
+14:53:10.736 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/resource/oss/uploads/17',权限码校验失败'无此权限：system:oss:upload'
+14:53:10.739 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/userType',不支持'PUT'请求
+14:53:10.749 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.754 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/userType/update',权限码校验失败'无此权限：system:userType:edit'
+14:53:10.757 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/userType/changeStatus',不支持'PUT'请求
+14:53:10.768 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/userType/changeStatus',权限码校验失败'无此权限：system:userType:edit'
+14:53:10.771 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/userType/17',不支持'DELETE'请求
+14:53:10.781 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/userType/17',权限码校验失败'无此权限：system:userType:remove'
+14:53:10.784 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/dept',不支持'PUT'请求
+14:53:10.792 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.795 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dept/update',权限码校验失败'无此权限：system:dept:edit'
+14:53:10.800 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/dept/17',不支持'DELETE'请求
+14:53:10.808 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dept/17',权限码校验失败'无此权限：system:dept:remove'
+14:53:10.811 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/post',不支持'PUT'请求
+14:53:10.820 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.825 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/post/update',权限码校验失败'无此权限：system:post:edit'
+14:53:10.829 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/post/17',不支持'DELETE'请求
+14:53:10.841 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/post/17',权限码校验失败'无此权限：system:post:remove'
+14:53:10.844 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/config',不支持'PUT'请求
+14:53:10.854 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.858 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/config/update',权限码校验失败'无此权限：system:config:edit'
+14:53:10.860 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/config/updateByKey',不支持'PUT'请求
+14:53:10.869 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/config/updateByKey',权限码校验失败'无此权限：system:config:edit'
+14:53:10.871 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/config/17',不支持'DELETE'请求
+14:53:10.878 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/config/17',权限码校验失败'无此权限：system:config:remove'
+14:53:10.881 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/config/refreshCache',不支持'DELETE'请求
+14:53:10.888 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/config/refreshCache',权限码校验失败'无此权限：system:config:remove'
+14:53:10.891 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user',不支持'PUT'请求
+14:53:10.899 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.springframework.web.bind.MethodArgumentNotValidException
+14:53:10.902 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/user/update',权限码校验失败'无此权限：system:user:edit'
+14:53:10.906 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user/17',不支持'DELETE'请求
+14:53:10.917 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/user/17',权限码校验失败'无此权限：system:user:remove'
+14:53:10.920 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user/resetPwd',不支持'PUT'请求
+14:53:10.926 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/user/resetPwd',权限码校验失败'无此权限：system:user:resetPwd'
+14:53:10.928 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user/changeStatus',不支持'PUT'请求
+14:53:10.933 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/user/changeStatus',权限码校验失败'无此权限：system:user:edit'
+14:53:10.935 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user/authRole',不支持'PUT'请求
+14:53:10.941 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/user/authRole',权限码校验失败'无此权限：system:user:edit'
+14:53:10.944 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/websocket/send',不支持'GET'请求
+14:53:10.950 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/mail/sendSimpleMessage',不支持'GET'请求
+14:53:10.957 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/mail/sendMessageWithAttachment',不支持'GET'请求
+14:53:10.963 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/demo/mail/sendMessageWithAttachment',权限码校验失败'无此权限：system:oss:download'
+14:53:10.966 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/mail/sendMessageWithAttachments',不支持'GET'请求
+14:53:10.971 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/mail/sendMessageWithAttachments',发生未知异常, 错误编号: 00986365，类型=java.lang.IllegalStateException
+14:53:10.976 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/demo/mail/sendMessageWithAttachments',权限码校验失败'无此权限：system:oss:download'
+14:53:10.979 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/mcp/receive',不支持'GET'请求
+14:53:10.987 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/mqtt/send',不支持'GET'请求
+14:53:10.997 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/cache/test2',不支持'GET'请求
+14:53:11.005 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/cache/test3',不支持'GET'请求
+14:53:11.011 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/cache/test6',不支持'GET'请求
+14:53:11.017 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/redis/pubsub/pub',不支持'GET'请求
+14:53:11.024 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/redis/pubsub/sub',不支持'GET'请求
+14:53:11.029 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/sms/sendAliyun',不支持'GET'请求
+14:53:11.035 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/sms/sendTencent',不支持'GET'请求
+14:53:11.042 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/sms/addBlacklist',不支持'GET'请求
+14:53:11.048 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/sms/removeBlacklist',不支持'GET'请求
+14:53:11.054 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/queue/priority/add',不支持'GET'请求
+14:53:11.060 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/queue/priority/remove',不支持'GET'请求
+14:53:11.066 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/demo/queue/priority/get',不支持'GET'请求
+14:53:11.074 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/monitor/loginInfo/unlock/17',不支持'GET'请求
+14:53:11.080 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/monitor/loginInfo/unlock/17',权限码校验失败'无此权限：monitor:logininfo:unlock'
+14:53:11.082 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/system/user/unlock/17',不支持'GET'请求
+14:53:11.089 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/user/unlock/17',权限码校验失败'无此权限：system:user:edit'
+14:53:11.092 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/task/getNextNodeList',不支持'POST'请求
+14:53:11.098 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/workflow/task/getNextNodeList',发生未知异常，类型=org.springframework.web.bind.MissingServletRequestParameterException
+14:53:11.101 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dept/update',认证失败'未能读取到有效 token',无法访问系统资源
+14:53:11.105 [qtp1355234036-274] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/system/dept/update',认证失败'客户端ID与Token不匹配：eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOiJzeXNfdXNlcjoyNjAwMSIsInJuU3RyIjoieWt5UGI3MlFYYk84NlFrMUt3MzFvTDlSY2oxOGc2REciLCJjbGllbnRQayI6MSwiY2xpZW50aWQiOiJvd25lZC1jcnVkIiwidXNlcklkIjoyNjAwMSwidXNlck5hbWUiOiJvd25lZC1jcnVkLTI2MDAxIiwiZGVwdElkIjoxLCJ1c2VyVHlwZSI6InN5c191c2VyIn0.iofwloMGPlSxVINin7qeuqvFI_7kiWc0gqt8lt7dBAs',无法访问系统资源
+14:53:11.108 [qtp1355234036-277] ERROR org.namewta.common.satoken.handler.SaTokenExceptionHandler -- 请求地址'/auth/unlock/17',认证失败'未能读取到有效 token',无法访问系统资源
+14:53:11.123 [qtp1355234036-277] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.namewta.common.core.exception.ServiceException
+14:53:11.129 [qtp1355234036-274] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.namewta.common.core.exception.ServiceException
+14:53:11.133 [qtp1355234036-280] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求处理失败，异常类型=org.namewta.common.core.exception.ServiceException
+14:53:11.135 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@9443150{STOPPING}[12.1.10,sto=0]
+14:53:11.136 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@539e714c{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+14:53:11.136 [main] INFO org.eclipse.jetty.server.handler.ContextHandler.ROOT -- Destroying Spring FrameworkServlet 'org.springframework.web.servlet.DispatcherServlet-4acd47cf'
+14:53:11.136 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@7fddeb5{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@4098b2ec{STOPPED}}
+____ ____    ___ ____ _  _ ____ _  _ 
+[__  |__| __  |  |  | |_/  |___ |\ | 
+___] |  |     |  |__| | \_ |___ | \| 
+https://sa-token.cc (v1.45.0)
+14:53:17.045 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.045 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.045 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:17.357 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'openApiNonceStore' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: Unsatisfied dependency expressed through method 'openApiNonceStore' parameter 0: No qualifying bean of type 'org.redisson.api.RedissonClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+14:53:17.371 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'openApiGatewayFilterRegistration' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: Unsatisfied dependency expressed through method 'openApiGatewayFilterRegistration' parameter 2: No qualifying bean of type 'org.namewta.common.openapi.spi.OpenApiCredentialResolver' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+14:53:17.383 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.kek-version must contain 1-64 letters, digits, dots, underscores, or hyphens
+14:53:17.390 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.nonce-ttl must be positive
+14:53:17.399 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.app-rate-limit-per-minute must be positive
+14:53:17.414 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.kek must be a Base64-encoded 32-byte key
+14:53:17.422 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.kek must be a Base64-encoded 32-byte key
+14:53:17.619 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.619 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.620 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:53:17.658 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.max-body-size 必须为正数且在JVM数组范围内
+14:53:17.665 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.max-body-size 必须为正数且在JVM数组范围内
+14:53:17.676 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: openapi.max-body-size 必须为正数且在JVM数组范围内
+14:53:17.686 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'openApiStartupValidator' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: Unsatisfied dependency expressed through method 'openApiStartupValidator' parameter 0: Error creating bean with name 'openapi-org.namewta.common.openapi.config.properties.OpenApiProperties': Could not bind properties to 'OpenApiProperties' : prefix=openapi, ignoreInvalidFields=false, ignoreUnknownFields=true
+14:53:17.697 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'openApiGatewayFilterRegistration' defined in org.namewta.common.openapi.config.OpenApiAutoConfiguration: Unsatisfied dependency expressed through method 'openApiGatewayFilterRegistration' parameter 2: No qualifying bean of type 'org.namewta.common.openapi.spi.OpenApiCredentialResolver' available: expected single matching bean but found 2: openApiCredentialResolver,secondCredentialResolver
+14:53:17.740 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.740 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.740 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:17.796 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.796 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.797 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:53:17.824 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.824 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.824 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:17.846 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.846 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.846 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:17.874 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.874 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.875 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:53:17.908 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.908 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.909 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+14:53:17.934 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:17.934 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:17.934 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:18.492 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+14:53:18.492 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+14:53:18.492 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+14:53:18.701 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'corsFilter' defined in org.namewta.common.web.config.ResourcesConfig: Failed to instantiate [org.springframework.web.filter.CorsFilter]: Factory method 'corsFilter' threw exception with message: CORS requires exact HTTP(S) origins without wildcards
+14:53:18.833 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'credentials' defined in org.namewta.test.config.LocalConfigurationUnitTest$CredentialProbe: Failed to instantiate [org.namewta.test.config.LocalConfigurationUnitTest$Credentials]: Factory method 'credentials' threw exception with message: Could not resolve placeholder 'DB_PASSWORD' in value "${DB_PASSWORD}"
+14:53:18.850 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'credentials' defined in org.namewta.test.config.LocalConfigurationUnitTest$CredentialProbe: Failed to instantiate [org.namewta.test.config.LocalConfigurationUnitTest$Credentials]: Factory method 'credentials' threw exception with message: Could not resolve placeholder 'REDIS_PASSWORD' in value "${REDIS_PASSWORD}"

@@ -1,0 +1,40 @@
+{
+  "captured_at": "2026-09-23T06:53:34.439611+00:00",
+  "images": {
+    "mysql": "mysql:8.4.9@sha256:c36050afdca850f23cef85703f84c7531a5ae155a11b5ee1c60acb09937c4084",
+    "redis": "redis:7.4-alpine@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+  },
+  "containers": [
+    "namewta-sso-mysql-9a2a04261c5c",
+    "namewta-sso-redis-9a2a04261c5c"
+  ],
+  "cleanup": [
+    {
+      "container": "namewta-sso-redis-9a2a04261c5c",
+      "exit_code": 0
+    },
+    {
+      "container": "namewta-sso-mysql-9a2a04261c5c",
+      "exit_code": 0
+    }
+  ],
+  "log_redaction": "Owned OAuth query credentials omitted",
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=CorsPolicyTest,CorsServletHttpTest,SsoCorsProfileBindingTest,SsoHttpsSessionIntegrationTest,SsoSessionCookieTest,SsoCookieConfigurationTest,AuthClientContextSsoUnitTest,PkceS256Test",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-Dsso.redis.integration.port=32777",
+    "-Dsso.mysql.integration.url=jdbc:mysql://127.0.0.1:32776/namewta_sso_test_9a2a04261c5c?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnamewta.repo.root=/srv/WTA-plus",
+    "-Dnamewta.sql.root=/srv/WTA-plus/release-artifacts/docker/infrastructure/mysql/init"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "log": "accept3-sso-https.log",
+  "exit_code": 0
+}

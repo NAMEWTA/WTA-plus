@@ -1,0 +1,16 @@
+{
+  "command": [
+    "./mvnw",
+    "-q",
+    "-pl",
+    "wta-common/wta-common-web,wta-admin",
+    "-am",
+    "-Pdev",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T06:40:51.781574+00:00",
+  "finished_at": "2026-09-23T06:42:35.625678+00:00",
+  "exit_code": 0,
+  "log": "accept-reactor.log"
+}

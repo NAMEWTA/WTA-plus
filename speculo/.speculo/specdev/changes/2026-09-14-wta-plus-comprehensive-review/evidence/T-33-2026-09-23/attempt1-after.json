@@ -1,0 +1,37 @@
+{
+  "time": "2026-09-23T06:43:17.940098+00:00",
+  "result": "not-final: review found stale SSO handbook; repair changes pending",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "c417379530603a9d46fc4e769957f4b512389b49\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "exit_code": 0,
+      "stdout": "2aedf10a548e86f45861b37367bf7bc3ce21a7df\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit_code": 0,
+      "stdout": " M backend/wta-modules/wta-sso/AGENTS.md\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/plan-data.json\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/33-safe-cors-defaults.md\n M speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -45,12 +45,14 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T06:22:52.452300+00:00",
+  "updated_at": "2026-09-23T06:56:46.828256+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
-    "CLOSEOUT: historical shared result/empty worktrees require factual reconciliation; external credential disposition and new integrated acceptance pending."
+    "HISTORY: original31 require factual reconciliation and current acceptance; old shared result is not per-ticket proof.",
+    "EXTERNAL: MySQL/Redis/WTA MinIO rotation complete; retired AI and disabled non-seed qcloud credential ownership/revocation needs user input.",
+    "INTEGRATION: remaining48 tickets and final combined candidate gates pending."
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",
@@ -93,7 +95,8 @@
     "Revision136状态校正：31历史review记录已保留；当前50票全部重开draft、ready=false，避免历史review被控制器误当在途writer。合法无改动取消须按证据改写下游施工依赖，不能当成功或删AC。",
     "Revision137：用户已逐项接受D-002—009并明确确认整体G共识；顺序定稿G/S/T/P(plan)，Spec与50票Ready，0done、0在途writer。Goal计划完成但用户保留自行激活目标，ready_for_execution=false；无新产品实施、commit、push或部署。",
     "Revision138：用户已激活Goal，要求完成全部Ticket并以代码为证。恢复本地实施、逐票commit/direct-parent验收；旧all-commit授权未被用户撤销，本次激活解除plan-only限制。不推断远程push、部署、轮换或归档批准。优先T-32，发现ignore不足以排除JAR泄漏，补登记root POM/开发启动/配置绑定测试写集。",
-    "2026-09-23 USER updates Goal: subagents authorized, model gpt-6-sol reasoning xhigh. Current remains serial product writer, no new worktree. Lead owns integration/status; read-only ops_audit and cors_audit delegated at bafd5d5. User supplies /srv/ops/minio-main, /srv/ops/mysql-main, /srv/ops/wta-plus and authorizes deployment-informed adjustments; identity, backup and affected consumers must be verified before writes."
+    "2026-09-23 USER updates Goal: subagents authorized, model gpt-6-sol reasoning xhigh. Current remains serial product writer, no new worktree. Lead owns integration/status; read-only ops_audit and cors_audit delegated at bafd5d5. User supplies /srv/ops/minio-main, /srv/ops/mysql-main, /srv/ops/wta-plus and authorizes deployment-informed adjustments; identity, backup and affected consumers must be verified before writes.",
+    "2026-09-23 user authorized deployment-informed replacement under /srv/ops/minio-main /srv/ops/mysql-main /srv/ops/wta-plus; Lead backed up and rotated WTA app MySQL, dedicated Redis and MinIO credentials, updated ignored local/env/4 exact OSS rows, verified old rejection/new success. Shared roots unchanged. Private report in temp/relase; redacted evidence G-security-external-2026-09-23.md."
   ],
   "worktrees": [
     {
@@ -149,37 +152,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": null,
-      "status": "active",
-      "updated_at": "2026-09-23T06:22:52.452300+00:00",
+      "source_checkpoint": "da48f850cf34d8d23c09f1ad9c92ed433d5617b0",
+      "status": "integrated",
+      "updated_at": "2026-09-23T06:56:46.828256+00:00",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "dd8179e1cd394b092bfb36b8b91c0e04386563ce",
-        "source_sha": null,
+        "source_sha": "da48f850cf34d8d23c09f1ad9c92ed433d5617b0",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "da48f850cf34d8d23c09f1ad9c92ed433d5617b0",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-33.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-33.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-33.md</Path>",
-        "attempts": 0,
-        "promotion_status": "pending"
+        "attempts": 3,
+        "promotion_status": "applied"
       }
     }
   ]

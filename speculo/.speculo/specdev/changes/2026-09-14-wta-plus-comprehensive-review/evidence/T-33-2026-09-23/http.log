@@ -1,0 +1,24 @@
+14:33:25.841 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:33:25.873 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@1ddd3478{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@f973499{STARTED}}
+14:33:25.879 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@1ddd3478{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@f973499{STARTED}}
+14:33:25.886 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@6ff37443{HTTP/1.1, (http/1.1)}{127.0.0.1:42355}
+14:33:25.889 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@76b224cd{STARTING}[12.1.10,sto=0] @51ms
+14:33:26.092 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@76b224cd{STOPPING}[12.1.10,sto=0]
+14:33:26.095 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@6ff37443{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+14:33:26.097 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@1ddd3478{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@f973499{STOPPED}}
+14:33:26.111 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:33:26.117 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@9a2ec9b{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@58112bc4{STARTED}}
+14:33:26.117 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@9a2ec9b{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@58112bc4{STARTED}}
+14:33:26.118 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@2301b75{HTTP/1.1, (http/1.1)}{127.0.0.1:33373}
+14:33:26.118 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@3104f7bd{STARTING}[12.1.10,sto=0] @7ms
+14:33:26.140 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@3104f7bd{STOPPING}[12.1.10,sto=0]
+14:33:26.141 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@2301b75{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+14:33:26.141 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@9a2ec9b{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@58112bc4{STOPPED}}
+14:33:26.147 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+14:33:26.150 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@2e3cdec2{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2e34384c{STARTED}}
+14:33:26.151 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@2e3cdec2{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2e34384c{STARTED}}
+14:33:26.152 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@3051e0b2{HTTP/1.1, (http/1.1)}{127.0.0.1:45983}
+14:33:26.152 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@1f52eb6f{STARTING}[12.1.10,sto=0] @5ms
+14:33:26.216 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@1f52eb6f{STOPPING}[12.1.10,sto=0]
+14:33:26.218 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@3051e0b2{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+14:33:26.218 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@2e3cdec2{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@2e34384c{STOPPED}}

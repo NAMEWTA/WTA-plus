@@ -1,0 +1,66 @@
+{
+  "summary": {
+    "tests": 24,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "suite": "org.namewta.common.web.config.CorsPolicyTest",
+      "tests": 7,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "org.namewta.common.web.config.CorsServletHttpTest",
+      "tests": 3,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "org.namewta.test.sso.SsoCorsProfileBindingTest",
+      "tests": 4,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "org.namewta.test.sso.SsoHttpsSessionIntegrationTest",
+      "tests": 1,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "org.namewta.sso.support.PkceS256Test",
+      "tests": 3,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "org.namewta.sso.adapter.http.SsoSessionCookieTest",
+      "tests": 2,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "org.namewta.sso.config.SsoCookieConfigurationTest",
+      "tests": 1,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "org.namewta.web.controller.AuthClientContextSsoUnitTest",
+      "tests": 3,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    }
+  ]
+}

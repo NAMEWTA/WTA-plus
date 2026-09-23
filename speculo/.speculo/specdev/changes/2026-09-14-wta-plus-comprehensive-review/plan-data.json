@@ -2776,15 +2776,15 @@
       "config:cors",
       "http:origin-trust"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 140,
+    "plan_revision": 141,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 真实 Servlet/CorsFilter 测试与 Spring profile 绑定",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "公共 application.yml 与 ResourcesConfig 允许通配 origin pattern 携带 credentials；Java 默认空列表被 YAML 覆盖。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "c417379530603a9d46fc4e769957f4b512389b49",
+    "result_sha": "da48f850cf34d8d23c09f1ad9c92ed433d5617b0",
     "contract_ids": [
       "AC-033"
     ],

@@ -1,0 +1,14 @@
+
+> @namewta/sso-web@0.0.0 build:prod /srv/WTA-plus/frontend/apps/sso-web
+> vite build --mode production
+
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 25 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/build-mode.json             0.03 kB │ gzip:  0.05 kB
+dist/index.html                  0.39 kB │ gzip:  0.27 kB
+dist/assets/index-RIrkMDAK.css   0.95 kB │ gzip:  0.45 kB
+dist/assets/index-B-Ga7djb.js   90.07 kB │ gzip: 35.10 kB
+
+✓ built in 596ms

@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-33"
 title: "恢复精确来源的 CORS 默认边界"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -98,7 +98,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 生产通配+credentials 明确配置失败，无按请求 Origin 自动加入白名单 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | SSO Cookie/预检回归通过，桶权限不因后端 CORS 改动而扩大 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下命令及required E2E均已执行，结果见Evidence：
 
 - `cd backend && ./mvnw -pl wta-common/wta-common-web,wta-admin -am test`
 
@@ -119,13 +119,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-033`：恶意 Origin 无许可响应头，受信来源与同源开发可用。
-- [ ] `AC-033`：生产通配+credentials 明确配置失败，无按请求 Origin 自动加入白名单。
-- [ ] `AC-033`：SSO Cookie/预检回归通过，桶权限不因后端 CORS 改动而扩大。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-033`：恶意 Origin 无许可响应头，受信来源与同源开发可用。
+- [x] `AC-033`：生产通配+credentials 明确配置失败，无按请求 Origin 自动加入白名单。
+- [x] `AC-033`：SSO Cookie/预检回归通过，桶权限不因后端 CORS 改动而扩大。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -138,3 +138,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ### 审查修正写集
 
 独立review在c417379发现SSO模块AGENTS仍声明默认通配，已先扩展写集再修正为实际空默认/显式精确列表/通配启动拒绝。未修改SSO协议或相邻OIDC change。
+
+## 13. 验收结果
+
+实现c417379，审查修正后不可变source/result `da48f850cf34d8d23c09f1ad9c92ed433d5617b0`；Lead在同一HEAD/tree clean前后完成默认后端全套932项（809通过、123其他环境门控skip）及本票24项专用矩阵零skip、2真实Chrome场景。独立双轴review通过。Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-33.md</Path>。

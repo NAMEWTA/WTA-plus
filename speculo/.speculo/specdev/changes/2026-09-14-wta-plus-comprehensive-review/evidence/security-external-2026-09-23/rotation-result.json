@@ -1,0 +1,34 @@
+{
+  "phase": "wta-service-credentials-rotated",
+  "time": "20260923T063047Z",
+  "completed_at": "2026-09-23T06:38:24.069814+00:00",
+  "backup": "/srv/ops/wta-plus/backups/owned/review-credentials-20260923T063047Z",
+  "checks": {
+    "backupGzipVerified": true,
+    "redisRdbVerified": true,
+    "activeAppConnectionsBefore": 0,
+    "mysqlNewAccepted": true,
+    "mysqlOldRejected": true,
+    "mysqlSecondaryRemoved": true,
+    "redisNewAccepted": true,
+    "redisOldRejected": true,
+    "ownedServicesHealthy": true,
+    "schemaGuardPresent": true,
+    "minioNewAccepted": true,
+    "minioOldRejected": true,
+    "minioPolicyUnchanged": true,
+    "minioAnonymousDenied": true,
+    "ossRowsUpdated": 4,
+    "initConsumersHealthy": true,
+    "privateFileModes": true,
+    "minioSignedReadAndExpiry": true,
+    "redisDb1KeysAfter": 36,
+    "redisAofEnabled": true,
+    "localExactDevCorsConfigured": true
+  },
+  "recovery_notes": [
+    "Initial docker cp snapshot retrieval failed; explicit docker exec cat plus redis-check-rdb verified retained RDB backup.",
+    "OSS transaction first failed on cross-schema collation and rolled back; byte-exact comparison fixed it before committing exactly four rows.",
+    "IAM policy raw comparison differed only in unordered Action entries; canonical full-policy comparison passed without permission changes."
+  ]
+}

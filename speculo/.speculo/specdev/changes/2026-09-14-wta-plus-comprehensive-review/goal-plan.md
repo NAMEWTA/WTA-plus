@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision140，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision141，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision140；T-32 done，49票Ready（31历史票重开＋18新票）；历史review状态只保留在原快照。G整体共识已确认，S/T Ready，P run已由用户激活，正在串行落实，当前T-32验收完成，下一票T-33。历史47份活动工件已快照，旧reviews/evidence未篡改。
+revision141；T-32/T-33 done，48票Ready（31历史票重开＋17新票）；历史review状态只保留在原快照。G整体共识已确认，S/T Ready，P run已由用户激活，正在串行落实，当前T-32验收完成，下一票T-33。历史47份活动工件已快照，旧reviews/evidence未篡改。
 
 ### Pending Decisions and Blockers
 
@@ -226,10 +226,14 @@ G→S→T→P(plan)已完成。用户主动激活目标/授权时，先重读已
 
 本节覆盖上文规划时点的“本轮不实施/未激活”表述。执行已授权，当前先T-32；历史closeout与全量集成仍必须完成，不能把新19票代替全部50票。远程写入、真实凭据轮换和归档继续独立批准。
 
-## 2026-09-23 revision140执行更新
+## 2026-09-23 revision141执行更新
 
 T-32 product/result `bafd5d512a5d17c4848db278f2350fcc6631fbd7`，clean exact tree两端取证完成；适用发布128项与Spring3项0skip。用户修订目标允许gpt-6-sol/xhigh子代理；撤销之前零子代理限制，其余current单writer/无新worktree继续。部署目录已由用户指明并要求按现场替换调整；先核对精确身份、影响面、备份和可逆方案，再执行授权范围内动作。凭据轮换未完成，不关闭G-security-external。
 
 ## T-33派单
 
 base `dd8179e1cd394b092bfb36b8b91c0e04386563ce`；依赖为空、T-32已关闭；产品writer cors_audit，Lead治理/E2E/提交验收；Packet见 evidence/dispatch-T-33.md。
+
+## revision141验收与环境处置
+
+T-33 source/result `da48f850cf34d8d23c09f1ad9c92ed433d5617b0`正式验收通过，独立双轴审查通过；失败/恢复及真实clean前后证据见evidence/T-33.md。下一票T-34。用户授权的WTA MySQL/Redis/MinIO凭据已实际轮换、消费者同步、旧值拒绝；共享root不变。G-security-external原披露项已处置，额外退役AI及禁用qcloud非种子凭据正在等待用户提供归属/外部撤销记录，不阻止独立代码票。未获push/归档授权，不发布整套应用。
