@@ -80,6 +80,7 @@ class NotifySmsDispatchIntegrationTest {
     private final AtomicInteger supplierCalls = new AtomicInteger();
     private final AtomicReference<NotifyContent> supplierContent = new AtomicReference<>();
     private boolean supplierThrows;
+    private Runnable duringSupplier = () -> {};
     private String supplierMessageId = "13812345678-1234";
     private String runId;
     private String appId;
@@ -176,6 +177,7 @@ class NotifySmsDispatchIntegrationTest {
             (phone, content) -> {
                 supplierCalls.incrementAndGet();
                 supplierContent.set(content);
+                duringSupplier.run();
                 if (supplierThrows) throw new IllegalStateException("synthetic supplier I/O ambiguity");
                 return SmsNotificationReceipt.accepted(supplierMessageId);
             }));
@@ -364,6 +366,45 @@ class NotifySmsDispatchIntegrationTest {
         assertEquals(2, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
     }
 
+    @Test
+    void corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers() {
+        long intentId = Long.parseLong(application.submit(command("6789")).notificationId());
+        String bucketKey = idempotencyBucket(intentId);
+        redis.getBucket(bucketKey).set("synthetic-invalid-stored-state");
+        claimAndDispatch(intentId);
+
+        assertEquals(0, supplierCalls.get());
+        assertEquals("PENDING", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("READY", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals("PREPARATION_RETRYABLE", db.queryForObject(
+            "select error_code from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+
+        redis.getBucket(bucketKey).delete();
+        claimAndDispatch(intentId);
+        assertEquals(1, supplierCalls.get());
+        assertEquals("ACCEPTED", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("DONE", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals(2, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+    }
+
+    @Test
+    void redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend() {
+        long intentId = Long.parseLong(application.submit(command("7890")).notificationId());
+        String bucketKey = idempotencyBucket(intentId);
+        duringSupplier = () -> redis.getBucket(bucketKey).set("synthetic-cas-conflict");
+        claimAndDispatch(intentId);
+
+        assertEquals(1, supplierCalls.get());
+        assertEquals("UNKNOWN", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("WAITING_RECEIPT", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+        long outboxId = db.queryForObject("select outbox_id from notify_outbox where intent_id=?", Long.class, intentId);
+        dispatch.dispatch(dao.outbox(outboxId));
+        assertEquals(1, supplierCalls.get(), "WAITING_RECEIPT re-entry must not resend");
+        assertEquals("WAITING_RECEIPT", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+    }
+
     private NotificationCommand command(String code) {
         return new NotificationCommand(appId, "auth-captcha", "auth_captcha", "13812345678",
             "PHONE", List.of("13812345678"), "auth-captcha",
@@ -378,6 +419,12 @@ class NotifySmsDispatchIntegrationTest {
             + "lease_token=?,lease_until=timestampadd(second,60,utc_timestamp()) where outbox_id=? and status='READY'",
             runId, outboxId));
         dispatch.dispatch(dao.outbox(outboxId));
+    }
+
+    private String idempotencyBucket(long intentId) {
+        long deliveryId = db.queryForObject("select delivery_id from notify_delivery where intent_id=?", Long.class, intentId);
+        return idempotency.storageKey(NotifyRequest.builder().channel(NotifyChannel.SMS)
+            .idempotencyKey(String.valueOf(deliveryId)).build());
     }
 
     private static <T> T transactional(T target, Class<T> type) {

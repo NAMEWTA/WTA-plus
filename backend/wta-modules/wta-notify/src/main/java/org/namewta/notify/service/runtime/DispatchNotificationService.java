@@ -9,6 +9,7 @@ import org.namewta.common.notify.model.NotifyRichContent;
 import org.namewta.common.notify.model.NotifyTemplateContent;
 import org.namewta.common.notify.model.NotifyTarget;
 import org.namewta.common.notify.exception.NotifyDeliveryException;
+import org.namewta.common.notify.exception.NotifyIdempotencyUnavailableException;
 import org.namewta.common.notify.exception.NotifyValidationException;
 import org.namewta.common.notify.model.NotifyAuditPolicy;
 import org.namewta.common.core.exception.ServiceException;
@@ -163,6 +164,19 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorCode = "SMS_LOCAL_VALIDATION_" + safeValidationCode(exception.code());
                 errorMessage = "短信请求本地校验失败";
             } else {
+                delivery.setStatus("UNKNOWN");
+                errorCode = "DISPATCH_ERROR";
+                errorMessage = "供应商调用结果未知";
+            }
+        } catch (NotifyIdempotencyUnavailableException exception) {
+            if (NotificationChannel.SMS.name().equals(delivery.getChannel())
+                && "ACQUIRE".equals(exception.phase())) {
+                // 幂等占位读取失败发生在供应商调用前，可走现有有界 Outbox 重试。
+                delivery.setStatus("FAILED");
+                errorCode = "PREPARATION_RETRYABLE";
+                errorMessage = "短信发送准备暂不可用";
+            } else {
+                // COMPLETE 已在供应商调用之后；未知阶段和其他渠道沿用保守状态。
                 delivery.setStatus("UNKNOWN");
                 errorCode = "DISPATCH_ERROR";
                 errorMessage = "供应商调用结果未知";

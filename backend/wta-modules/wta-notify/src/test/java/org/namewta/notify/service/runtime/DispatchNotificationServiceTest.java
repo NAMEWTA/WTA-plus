@@ -249,6 +249,40 @@ class DispatchNotificationServiceTest {
     }
 
     @Test
+    void realDispatcherIdempotencyAcquireFailureRetriesBeforeSupplier() {
+        AtomicInteger calls = new AtomicInteger();
+        NotifyIdempotencyStore store = mock(NotifyIdempotencyStore.class);
+        when(store.acquire(anyString(), anyString(), anyString(), any()))
+            .thenThrow(new IllegalStateException("synthetic Redis acquire failure"));
+        Fixture fixture = realSmsFixture(store, calls);
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals(0, calls.get());
+        assertEquals("PENDING", fixture.delivery.getStatus());
+        assertEquals("READY", fixture.outbox.getStatus());
+        assertEquals("PREPARATION_RETRYABLE", fixture.delivery.getErrorCode());
+    }
+
+    @Test
+    void realDispatcherIdempotencyCompleteFailureWaitsAfterSupplier() {
+        AtomicInteger calls = new AtomicInteger();
+        NotifyIdempotencyStore store = mock(NotifyIdempotencyStore.class);
+        when(store.acquire(anyString(), anyString(), anyString(), any())).thenAnswer(call ->
+            new NotifyIdempotencyStore.Acquired(call.getArgument(0), call.getArgument(1),
+                call.getArgument(2), "owned", call.getArgument(3)));
+        org.mockito.Mockito.doThrow(new IllegalStateException("synthetic Redis complete failure"))
+            .when(store).complete(any(), any());
+        Fixture fixture = realSmsFixture(store, calls);
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals(1, calls.get());
+        assertEquals("UNKNOWN", fixture.delivery.getStatus());
+        assertEquals("WAITING_RECEIPT", fixture.outbox.getStatus());
+    }
+
+    @Test
     void inAppExceptionKeepsOriginalUnknownDisposition() {
         Fixture fixture = fixture("IN_APP");
         when(fixture.inApp.getIfAvailable()).thenThrow(new IllegalStateException("local in-app failure"));
@@ -381,6 +415,24 @@ class DispatchNotificationServiceTest {
 
     private Fixture fixture(String channel) {
         return fixture(channel, (key, limit, window) -> true);
+    }
+
+    private Fixture realSmsFixture(NotifyIdempotencyStore store, AtomicInteger calls) {
+        SmsNotifyChannelAdapter adapter = new SmsNotifyChannelAdapter(key -> new SmsNotificationProvider(key,
+            (phone, content) -> {
+                calls.incrementAndGet();
+                return SmsNotificationReceipt.accepted("owned-sms-message");
+            }));
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, event -> {},
+            new NotifyIdempotencyCoordinator(store, new NotifyIdempotencyProperties()));
+        Fixture fixture = fixture("SMS", (key, limit, window) -> true, dispatcher);
+        NotifySceneBinding binding = binding(22L, "SMS", null, null);
+        binding.setSmsTemplateCode("SMS_BOUND");
+        binding.setSmsParamMappingJson(JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")));
+        when(fixture.configDao.findBinding("auth-captcha", "SMS")).thenReturn(binding);
+        when(fixture.configDao.findAccount(22L)).thenReturn(smsAccount(22L, "ali-owned"));
+        return fixture;
     }
 
     @SuppressWarnings("unchecked")
