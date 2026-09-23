@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T06:03:15.984695+00:00",
+  "updated_at": "2026-09-23T06:21:02.619773+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -92,7 +92,8 @@
     "Revision136: all active documents replanned against HEAD 1264980c74e594bc594e88561bb292fbe5d968a1; 31 historical IDs retained, 19 new slices, 50 total; G unanswered frontier remains explicit. Spec/Tickets/Goal review drafts only, no fabricated consensus or Ready. Old evidence unchanged; digest bindings refreshed after source read; global index unchanged because membership unchanged.",
     "Revision136状态校正：31历史review记录已保留；当前50票全部重开draft、ready=false，避免历史review被控制器误当在途writer。合法无改动取消须按证据改写下游施工依赖，不能当成功或删AC。",
     "Revision137：用户已逐项接受D-002—009并明确确认整体G共识；顺序定稿G/S/T/P(plan)，Spec与50票Ready，0done、0在途writer。Goal计划完成但用户保留自行激活目标，ready_for_execution=false；无新产品实施、commit、push或部署。",
-    "Revision138：用户已激活Goal，要求完成全部Ticket并以代码为证。恢复本地实施、逐票commit/direct-parent验收；旧all-commit授权未被用户撤销，本次激活解除plan-only限制。不推断远程push、部署、轮换或归档批准。优先T-32，发现ignore不足以排除JAR泄漏，补登记root POM/开发启动/配置绑定测试写集。"
+    "Revision138：用户已激活Goal，要求完成全部Ticket并以代码为证。恢复本地实施、逐票commit/direct-parent验收；旧all-commit授权未被用户撤销，本次激活解除plan-only限制。不推断远程push、部署、轮换或归档批准。优先T-32，发现ignore不足以排除JAR泄漏，补登记root POM/开发启动/配置绑定测试写集。",
+    "2026-09-23 USER updates Goal: subagents authorized, model gpt-6-sol reasoning xhigh. Current remains serial product writer, no new worktree. Lead owns integration/status; read-only ops_audit and cors_audit delegated at bafd5d5. User supplies /srv/ops/minio-main, /srv/ops/mysql-main, /srv/ops/wta-plus and authorizes deployment-informed adjustments; identity, backup and affected consumers must be verified before writes."
   ],
   "worktrees": [
     {
@@ -105,37 +106,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": null,
-      "status": "active",
-      "updated_at": "2026-09-23T06:03:15.984695+00:00",
+      "source_checkpoint": "bafd5d512a5d17c4848db278f2350fcc6631fbd7",
+      "status": "integrated",
+      "updated_at": "2026-09-23T06:21:02.619773+00:00",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "077c814682a8594c870a4e7d320f114160328f09",
-        "source_sha": null,
+        "source_sha": "bafd5d512a5d17c4848db278f2350fcc6631fbd7",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "bafd5d512a5d17c4848db278f2350fcc6631fbd7",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-32.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-32.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-32.md</Path>",
-        "attempts": 0,
-        "promotion_status": "pending"
+        "attempts": 1,
+        "promotion_status": "applied"
       }
     }
   ]

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "./mvnw",
+    "-q",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Pdev",
+    "-Dtest=LocalConfigurationUnitTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T06:05:52.120680+00:00",
+  "finished_at": "2026-09-23T06:06:37.692942+00:00",
+  "exit_code": 1,
+  "log": "red-template.log"
+}

@@ -2711,15 +2711,15 @@
     "resources": [
       "config:local-secret-source"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 136,
+    "plan_revision": 139,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: Git 跟踪清单、合成配置加载、日志脱敏；实际轮换是 G-security-external 的外部动作",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "application-local.yml 仍被 Git 跟踪，数据库及 Redis password 为非环境表达式字面量；未验证有效性，未连接这些服务。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "bafd5d512a5d17c4848db278f2350fcc6631fbd7",
+    "result_sha": "bafd5d512a5d17c4848db278f2350fcc6631fbd7",
     "contract_ids": [
       "AC-032"
     ],

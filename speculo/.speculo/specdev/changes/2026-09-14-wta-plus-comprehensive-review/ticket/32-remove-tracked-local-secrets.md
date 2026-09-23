@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-32"
 title: "移除受跟踪本地凭据并交付轮换清单"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -27,7 +27,7 @@ shared_path_owners: ["<Path>.gitignore</Path> => single-agent (Lead; exclusive c
 # T-32：移除受跟踪本地凭据并交付轮换清单
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。本票由Lead串行实施并验收完成，产品提交与证据见第12节。最新用户允许 gpt-6-sol/xhigh 子代理；current仍保持单writer且不创建新worktree。
 
 ## 1. 战略与来源
 
@@ -98,7 +98,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 使用合成凭据覆盖配置加载与脱敏，缺 secret 不被弱默认值替代 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 轮换清单逐项记录环境、账号、依赖连接、负责人和证据状态；未执行保持未验证 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下命令已执行，完整结果见Evidence：
 
 - `git ls-files -- backend/wta-admin/src/main/resources/application-local.yml`
 - `git check-ignore --no-index backend/wta-admin/src/main/resources/application-local.yml`
@@ -116,18 +116,18 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
 - 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
 - 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
-- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。本地提交已授权；环境动作以最新用户指令及核实后的范围为准，归档另批。
 - 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
 
-- [ ] `AC-032`：git ls-files 不再包含本地真实配置；示例与公开产物无真实凭据。
-- [ ] `AC-032`：使用合成凭据覆盖配置加载与脱敏，缺 secret 不被弱默认值替代。
-- [ ] `AC-032`：轮换清单逐项记录环境、账号、依赖连接、负责人和证据状态；未执行保持未验证。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-032`：git ls-files 不再包含本地真实配置；示例与公开产物无真实凭据。
+- [x] `AC-032`：使用合成凭据覆盖配置加载与脱敏，缺 secret 不被弱默认值替代。
+- [x] `AC-032`：轮换清单逐项记录环境、账号、依赖连接、负责人和证据状态；未执行保持未验证。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -140,3 +140,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ### 执行发现与写集补充
 
 ignore只影响Git；parent POM两份资源集合仍复制本地配置，必须同时从过滤/非过滤资源排除local及example文件。start-dev显式加载磁盘本地文件并保留操作者额外配置优先级；真实Spring绑定与合成凭据缺失/脱敏验证在新增配置测试中覆盖。新写集已在实现前登记，未改变产品合同。
+
+## 13. 已验收结果
+
+2026-09-23：done；实现/result `bafd5d512a5d17c4848db278f2350fcc6631fbd7`，direct-parent，clean HEAD/tree验证前后相同。发布128项与Spring3项均零skip；所需Git、实际打包、合成配置加载与日志检查通过。轮换清单交付完成；G-security-external继续由独立环境处置承接，未声称真实凭据已失效。Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-32.md</Path>。

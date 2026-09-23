@@ -1,0 +1,6 @@
+{
+  "artifact": "backend/wta-admin/target/wta-admin.jar",
+  "sha256": "f3a509a9577ae5b07c5aa21dfcbdacbe6083bccc839e480a51193632cff1cd2b",
+  "configurationEntries": 948,
+  "forbiddenEntries": []
+}

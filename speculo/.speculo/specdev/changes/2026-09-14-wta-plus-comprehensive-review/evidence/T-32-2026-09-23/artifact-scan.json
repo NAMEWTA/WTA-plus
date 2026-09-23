@@ -1,0 +1,6 @@
+{
+  "artifact": "backend/wta-admin/target/wta-admin.jar",
+  "config_resources_checked": 2598,
+  "private_secret_match_paths": [],
+  "forbidden_config_entries": []
+}

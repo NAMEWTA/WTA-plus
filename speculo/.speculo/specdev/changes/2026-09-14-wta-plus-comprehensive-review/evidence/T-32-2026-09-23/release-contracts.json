@@ -1,0 +1,11 @@
+{
+  "command": [
+    "bash",
+    "release-artifacts/scripts/verify-release.sh"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T06:10:42.961715+00:00",
+  "finished_at": "2026-09-23T06:11:36.678535+00:00",
+  "exit_code": 0,
+  "log": "release-contracts.log"
+}

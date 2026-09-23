@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "release-artifacts/tests/local-config-safety.test.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T06:06:22.172398+00:00",
+  "finished_at": "2026-09-23T06:06:26.264353+00:00",
+  "exit_code": 1,
+  "log": "green-packaging-v2.log"
+}
