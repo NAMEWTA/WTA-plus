@@ -1,0 +1,10 @@
+{
+  "head": "d5b4f5f83e43afdc30ad30b3577a1531b030fc11",
+  "tree": "677d65d13a191d617f1192d9aa13648c80c2c074",
+  "clean": true,
+  "c2_product_diff": [
+    "frontend/e2e/run-notice-retraction-real.py",
+    "frontend/e2e/test_run_notice_retraction_real.py"
+  ],
+  "reuse": "C2bounded default877pass216skip/core+static and C1 frontend full gates unchanged; browser Python offline newly17passed; fresh full package then browser required"
+}

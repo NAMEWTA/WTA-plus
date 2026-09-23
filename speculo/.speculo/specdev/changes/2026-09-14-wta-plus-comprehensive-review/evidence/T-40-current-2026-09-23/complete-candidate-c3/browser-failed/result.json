@@ -1,0 +1,107 @@
+{
+  "gate": "T-40 real notice retraction recipient Chrome",
+  "run_id": "630336ccabc8052b",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T20:45:03.174342+00:00",
+  "owned": {
+    "mysql_container_id": "41d0b6fced1af649d1c8f6ce2ef222b68586a3a6fc9efe57c09efdf25ce98b51",
+    "redis_container_id": "7ced8cdcb26f344e01d65ad5e1f1a40ed4223fea0519bd40d05968d5c74c8d30",
+    "minio_container_id": "9e9c9dc8e6e503b7c39adbfbf502689c4b492fa0e23d21b5fbc6ad959974a3c1",
+    "loopback_ports": {
+      "mysql": 32890,
+      "redis": 32891,
+      "minio": 32892
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "login_passwords_rotated_in_fresh_schema": 3,
+    "recipient_role_ids": [
+      8200027332808346917,
+      8200050581946451270
+    ],
+    "backend_pgid": 1183167,
+    "backend_probe_http_status": 200,
+    "captured_anonymous_volume_names": [
+      "f5b0ced002fb93872424ebc070aec2a95331ca50d99029cd065296b6dd033d5b",
+      "b8f360a6116a2cc19e70b42c68351acbe608489c1904eba9a0814bb998c9a9af"
+    ]
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 1183167,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "f5b0ced002fb93872424ebc070aec2a95331ca50d99029cd065296b6dd033d5b": true,
+      "b8f360a6116a2cc19e70b42c68351acbe608489c1904eba9a0814bb998c9a9af": true
+    },
+    "loopback_ports_closed": {
+      "32890": true,
+      "32891": true,
+      "32892": true,
+      "35073": true,
+      "55711": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "d5b4f5f83e43afdc30ad30b3577a1531b030fc11",
+    "tree": "677d65d13a191d617f1192d9aa13648c80c2c074",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "18fcf6ce0fa664b3cc5c03a36d9ecd8f44cc48c0b22c0984b34db25732ee8845",
+    "size_bytes": 214198675
+  },
+  "package_proof_sha256": "80c3263da0cecf3bf2cc48cf7b7fa1956e5f6e24b682369ce45e5b5e34206822",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/notice-retraction-real.e2e.ts": "41a0c019e18bf9c0071d048a62ce5c9f953f19d85c0d2bd1fc98907fd805d12b",
+    "frontend/e2e/playwright.notice-retraction-real.config.ts": "0824670ffef0a993b000b1b9024825503460e9bb1bb1ff22bbb3d7d7c05afd4b"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "error_type": "OwnedControlFailure",
+  "error": "T40 owned browser gate failed",
+  "phase": "login_control",
+  "runner_line": 733,
+  "control_failure": {
+    "stage": "login_control",
+    "kind": "login_rejected",
+    "http_status": 200,
+    "business_code": 500
+  },
+  "source_after": {
+    "head": "d5b4f5f83e43afdc30ad30b3577a1531b030fc11",
+    "tree": "677d65d13a191d617f1192d9aa13648c80c2c074",
+    "clean": true
+  },
+  "artifact_after_sha256": "18fcf6ce0fa664b3cc5c03a36d9ecd8f44cc48c0b22c0984b34db25732ee8845",
+  "finished_utc": "2026-09-23T20:45:35.276074+00:00"
+}

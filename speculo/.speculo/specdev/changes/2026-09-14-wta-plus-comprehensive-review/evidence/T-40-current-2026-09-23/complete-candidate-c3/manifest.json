@@ -1,0 +1,72 @@
+[
+  {
+    "file": "gates/c3-browser-launch.json",
+    "bytes": 590,
+    "sha256": "3970f46a0f22b62c20089817209202783c8f2d587106e8eda324f4c522521023"
+  },
+  {
+    "file": "gates/c3-browser-offline.json",
+    "bytes": 312,
+    "sha256": "cdd54f69df4a0e4bdcd32b2c21e27d1916f066a8233cc6bc27f6bcb0ee72c068"
+  },
+  {
+    "file": "gates/c3-browser-offline.log",
+    "bytes": 116,
+    "sha256": "3cafd2f969dd50ad010f407f11ca4f30e2cdc505303fcdeacf91fe04a51b20b7"
+  },
+  {
+    "file": "gates/c3-full-bundle.json",
+    "bytes": 267,
+    "sha256": "e8161a10eb42e7034c2ec86353dd6f73813eeb055e260cdc39db87bac4f320f2"
+  },
+  {
+    "file": "gates/c3-full-bundle.log",
+    "bytes": 78,
+    "sha256": "00003c5b4292294cb4718d8c643d576ea582c1bf3af13f1c90506478bb71a558"
+  },
+  {
+    "file": "gates/c3-full-package-proof.json",
+    "bytes": 741,
+    "sha256": "80c3263da0cecf3bf2cc48cf7b7fa1956e5f6e24b682369ce45e5b5e34206822"
+  },
+  {
+    "file": "gates/c3-full-package.json",
+    "bytes": 294,
+    "sha256": "2bc94a15d8a7805ee7add40fe9937e735b2582b3e7cc313715b5b82870f8fcde"
+  },
+  {
+    "file": "gates/c3-full-package.log",
+    "bytes": 101926,
+    "sha256": "d27040bdb331a40102390daa8b93882135493815e4e1d50cf7460748332e3e49"
+  },
+  {
+    "file": "gates/c3-source-after.json",
+    "bytes": 128,
+    "sha256": "38f18510b09c5fe24d9b97d025491aec9a6dbc54a0f12dbe033440dd0c8104bd"
+  },
+  {
+    "file": "gates/c3-source-before.json",
+    "bytes": 128,
+    "sha256": "38f18510b09c5fe24d9b97d025491aec9a6dbc54a0f12dbe033440dd0c8104bd"
+  },
+  {
+    "file": "gates/c3-source-equivalence.json",
+    "bytes": 435,
+    "sha256": "2e28cadfcbaecc66dca6351695a340c70fac7cdc7c322142e501e48b1d7a11eb"
+  },
+  {
+    "file": "browser-failed/result.json",
+    "bytes": 3783,
+    "sha256": "a07a655a50c4cbf74fb21b7982adc642112aa63f4baa409ba0b9f2249a8ddc5a"
+  },
+  {
+    "file": "full-artifact-manifest.json",
+    "bytes": 2456,
+    "sha256": "dcfe96ad47d3e79b5da1af9c19cc1e126359b707257e0c19050b516cf14b317a"
+  },
+  {
+    "file": "reviews/diagnostic-review.md",
+    "bytes": 3106,
+    "sha256": "1ff50b610026c62776a950a83e679d38b09e43a352c9ac42affb74c03ca5b481"
+  }
+]

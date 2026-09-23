@@ -1,0 +1,20 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "--execute",
+    "--expected-head",
+    "d5b4f5f83e43afdc30ad30b3577a1531b030fc11",
+    "--expected-jar-sha256",
+    "18fcf6ce0fa664b3cc5c03a36d9ecd8f44cc48c0b22c0984b34db25732ee8845",
+    "--package-proof",
+    "/tmp/wta-t40/c3-full-package-proof.json"
+  ],
+  "head": "d5b4f5f83e43afdc30ad30b3577a1531b030fc11",
+  "jar": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "18fcf6ce0fa664b3cc5c03a36d9ecd8f44cc48c0b22c0984b34db25732ee8845",
+    "size_bytes": 214198675
+  }
+}
