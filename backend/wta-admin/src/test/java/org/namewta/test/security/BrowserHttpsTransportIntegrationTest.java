@@ -264,7 +264,10 @@ class BrowserHttpsTransportIntegrationTest {
             return R.ok(List.of(Map.of("path", admin ? "/transport-users" : "/profile", "name", admin ? "TransportUsers" : "ProfileCenter",
                 "component", admin ? "system/user/index" : "profile/center/index", "meta", Map.of("title", admin ? "用户列表" : "档案中心"))));
         }
-        @GetMapping({"/notify/inbox", "/system/dept/treeselect", "/system/dict/data/type/{type}"}) R<?> empty() { return R.ok(List.of()); }
+        @GetMapping("/notify/inbox") R<?> inbox() {
+            return R.ok(Map.of("rows", List.of(), "total", 0, "unreadTotal", 0));
+        }
+        @GetMapping({"/system/dept/treeselect", "/system/dict/data/type/{type}"}) R<?> empty() { return R.ok(List.of()); }
         @GetMapping("/system/user/list") Map<String, Object> users() { return Map.of("code", 200, "rows", List.of(), "total", 0); }
         @PostMapping("/system/user/export") void export(HttpServletRequest request, HttpServletResponse response) throws IOException {
             fixture.requireSession(request);

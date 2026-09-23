@@ -81,7 +81,7 @@ async function installApi(page: Page, state: State, permissions: string[]) {
       state.requests.push({ clientId: request.headers()['clientid'] ?? '', method, path });
       return json(route, {
         code: 200,
-        data: [{ messageId: 1, title: '系统资源消息', message: '已完成', category: 'system' }]
+        data: { rows: [{ messageId: 1, title: '系统资源消息', message: '已完成', category: 'system' }], total: 1, unreadTotal: 1 }
       });
     }
     if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'test-push-ticket' });

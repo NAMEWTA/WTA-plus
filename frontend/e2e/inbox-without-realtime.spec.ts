@@ -28,6 +28,11 @@ const message = (state: InboxFixture) => ({
   message: `${state.identity} 的正文`, content: `${state.identity} 的正文`,
   readTime: state.read ? '2026-09-23 10:00:00' : null
 });
+const inboxPage = (state: InboxFixture) => ({
+  rows: state.empty ? [] : [{ ...message(state), content: undefined }],
+  total: state.empty ? 0 : 1,
+  unreadTotal: state.empty || state.read ? 0 : 1
+});
 
 async function install(page: Page, state: InboxFixture) {
   await page.route('**/prod-api/**', route => {
@@ -42,8 +47,9 @@ async function install(page: Page, state: InboxFixture) {
       state.inboxCalls++;
       if (state.holdFirst && state.inboxCalls === 1) { state.heldInbox = route; return; }
       if (state.failFirst && state.inboxCalls <= 2) return route.abort('failed');
-      return reply(route, state.empty ? [] : [message(state)]);
+      return reply(route, inboxPage(state));
     }
+    if (/^\/notify\/inbox\/\d+$/.test(path)) return reply(route, message(state));
     if (/^\/notify\/inbox\/\d+\/read$/.test(path)) {
       state.readCalls++;
       if (state.holdFirstRead && state.readCalls === 1) { state.heldRead = route; return; }
@@ -157,7 +163,7 @@ test('T-34 opening during the initial request refreshes a notice arriving after 
   await expect(page.getByRole('status').filter({ hasText: '正在加载消息…' })).toBeVisible();
   await expect(page.locator('.el-popover').filter({ hasText: '消息盒子' })).not.toHaveClass(/el-zoom-in-top-enter/);
   // 初始查询已获取空快照；打开时已存在的公告只能由后续查询得到。
-  await reply(state.heldInbox!, []);
+  await reply(state.heldInbox!, { rows: [], total: 0, unreadTotal: 0 });
   await expect(page.locator('.content-box-item').filter({ hasText: 'A 的公告' })).toBeVisible();
   expect(state.inboxCalls).toBe(2);
   expect(state.pushRequests).toEqual([]);

@@ -37,6 +37,7 @@ import {
 } from '@/application/services';
 import WorkflowTreePanel from '@/components/TreePanel/index.vue';
 import { sanitizeHtml } from '@/utils/sanitize';
+import { useUserStore } from '@/store/modules/user';
 
 const WorkflowFileUpload = defineAsyncComponent(() => import('@/components/FileUpload/index.vue'));
 const SystemEditor = defineAsyncComponent(() => import('@/components/Editor/index.vue'));
@@ -264,9 +265,40 @@ export const adminMonitorWebRuntime: MonitorWebRuntime = {
   hasPermission: permission => createAdminAccessEvaluator().hasPermission(permission)
 };
 const monitorManifest = createMonitorWebDomain(adminMonitorWebRuntime);
+let inboxSessionEpoch = 0;
+let inboxSessionToken: string | undefined;
+let inboxSessionGeneration: number | undefined;
+let inboxSessionUserId: string | number | undefined;
+let inboxIdentityLoaded: boolean | undefined;
+let inboxSessionSuspended = false;
 const notifyManifest = createNotifyWebDomain({
   service: notificationService,
   directory: notificationDirectory,
+  inboxSession: {
+    snapshot: () => {
+      const user = useUserStore();
+      const token = user.token;
+      const generation = user.sessionGeneration;
+      const userId = user.userId;
+      const loaded = user.identityLoaded;
+      // 登录或退出的代次先变化、令牌稍后才清理时，旧身份不能再次激活收件箱。
+      if (inboxSessionGeneration !== undefined && generation !== inboxSessionGeneration &&
+          token === inboxSessionToken && userId === inboxSessionUserId && loaded === inboxIdentityLoaded) {
+        inboxSessionSuspended = true;
+      } else if (token !== inboxSessionToken || userId !== inboxSessionUserId || loaded !== inboxIdentityLoaded) {
+        inboxSessionSuspended = false;
+      }
+      if (token !== inboxSessionToken || generation !== inboxSessionGeneration ||
+          userId !== inboxSessionUserId || loaded !== inboxIdentityLoaded) {
+        inboxSessionEpoch++;
+        inboxSessionToken = token;
+        inboxSessionGeneration = generation;
+        inboxSessionUserId = userId;
+        inboxIdentityLoaded = loaded;
+      }
+      return { epoch: inboxSessionEpoch, active: Boolean(token && loaded && userId && !inboxSessionSuspended) };
+    }
+  },
   subscribeInbox: handler => {
     window.addEventListener('notify:inbox-updated', handler);
     return () => window.removeEventListener('notify:inbox-updated', handler);

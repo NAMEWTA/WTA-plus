@@ -17,6 +17,7 @@ export type {
   RetryReceipt,
   CancelReceipt,
   NotifyInboxMessage,
+  NotifyInboxPage,
   NotifyChannelAccount,
   NotifyConfigChannel,
   NotifyNotice,

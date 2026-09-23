@@ -2,6 +2,25 @@ import { describe, expect, it, vi } from 'vitest';
 import { createNotificationService } from './transport';
 
 describe('通知传输映射', () => {
+  it('将服务端分页和详情分别映射为领域消息，保留全局未读总数', async () => {
+    const request = vi.fn()
+      .mockResolvedValueOnce({ data: { rows: [{ messageId: '9000000000000000001', category: 'notice', message: '摘要' }], total: 501, unreadTotal: 481 } })
+      .mockResolvedValueOnce({ data: { messageId: '9000000000000000001', category: 'notice', content: '完整正文' } });
+    const service = createNotificationService({ request } as never);
+    const page = await service.inbox.list(26, 20);
+    expect(request).toHaveBeenNthCalledWith(1, {
+      url: '/notify/inbox', method: 'get', params: { pageNum: 26, pageSize: 20 }
+    });
+    expect(page.data).toEqual({ rows: [{ messageId: '9000000000000000001', category: 'notice', message: '摘要' }], total: 501, unreadTotal: 481 });
+    const detail = await service.inbox.detail('9000000000000000001');
+    expect(request).toHaveBeenNthCalledWith(2, { url: '/notify/inbox/9000000000000000001', method: 'get' });
+    expect(detail.data.content).toBe('完整正文');
+    await expect(service.inbox.detail('../2')).rejects.toThrow('收件箱消息编号无效');
+    expect(() => service.inbox.read('../2')).toThrow('收件箱消息编号无效');
+    expect(() => service.inbox.seen(Number.MAX_SAFE_INTEGER + 1)).toThrow('收件箱消息编号无效');
+    expect(request).toHaveBeenCalledTimes(2);
+  });
+
   it('保存三类目标及渠道快照，发布为独立请求', async () => {
     const request = vi.fn().mockResolvedValue({ data: null });
     const service = createNotificationService({ request } as never);

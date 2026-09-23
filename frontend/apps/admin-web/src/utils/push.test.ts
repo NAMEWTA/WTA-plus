@@ -31,11 +31,15 @@ vi.mock('@/utils/push-connection', () => ({
 
 import { closePush, initMessageBox, initPush, refreshMessageInbox } from './push';
 
+const inboxPage = (rows: Record<string, unknown>[], unreadTotal = rows.length) => ({
+  data: { rows, total: rows.length, unreadTotal }
+});
+
 describe('message box synchronization', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     harness.token = 'session-1';
-    harness.list.mockResolvedValue({ data: [] });
+    harness.list.mockResolvedValue(inboxPage([]));
     harness.request.mockResolvedValue({ data: 'ticket' });
     vi.stubEnv('VITE_APP_MESSAGE_ENABLED', 'true');
     vi.stubEnv('VITE_APP_MESSAGE_TRANSPORT', 'sse');
@@ -50,28 +54,25 @@ describe('message box synchronization', () => {
   });
 
   it('loads the authoritative inbox fields and server read state', async () => {
-    harness.list.mockResolvedValue({
-      data: [
-        {
-          messageId: '9000000000000000001',
-          category: 'notice',
-          title: '公告',
-          content: '内容',
-          createTime: '2026-09-05 20:00:00',
-          readTime: null
-        }
-      ]
-    });
+    harness.list.mockResolvedValue(inboxPage([{
+      messageId: '9000000000000000001',
+      category: 'notice',
+      title: '公告',
+      message: '摘要',
+      createTime: '2026-09-05 20:00:00',
+      readTime: null
+    }], 481));
     await initMessageBox();
     expect(harness.setNotices).toHaveBeenCalledWith([
       expect.objectContaining({
         messageId: '9000000000000000001',
         category: 'notice',
         title: '公告',
-        content: '内容',
+        message: '摘要',
         read: false
       })
-    ], 'session-1');
+    ], 481, 'session-1');
+    expect(harness.list).toHaveBeenCalledWith(1, 10);
   });
 
   it('reads the inbox with realtime disabled but never opens a push connection', async () => {
@@ -101,9 +102,9 @@ describe('message box synchronization', () => {
         })
     );
     const first = initMessageBox();
-    harness.list.mockResolvedValueOnce({ data: [{ messageId: 'new', category: 'system' }] });
+    harness.list.mockResolvedValueOnce(inboxPage([{ messageId: 'new', category: 'system' }]));
     const second = refreshMessageInbox();
-    resolveOlder({ data: [{ messageId: 'old', category: 'system' }] });
+    resolveOlder(inboxPage([{ messageId: 'old', category: 'system' }]));
     await Promise.all([first, second]);
     expect(harness.setNotices).toHaveBeenCalledOnce();
     expect(harness.setNotices.mock.calls[0][0][0].messageId).toBe('new');
@@ -115,7 +116,7 @@ describe('message box synchronization', () => {
     const first = initMessageBox();
     const second = initMessageBox();
     expect(harness.list).toHaveBeenCalledOnce();
-    resolveList({ data: [] });
+    resolveList(inboxPage([]));
     await Promise.all([first, second]);
     expect(harness.setNotices).toHaveBeenCalledOnce();
   });
@@ -125,9 +126,9 @@ describe('message box synchronization', () => {
     harness.list.mockImplementationOnce(() => new Promise(resolve => { resolveA = resolve; }));
     const oldSuccess = initMessageBox();
     harness.token = 'session-2';
-    harness.list.mockResolvedValueOnce({ data: [{ messageId: 'b', category: 'notice' }] });
+    harness.list.mockResolvedValueOnce(inboxPage([{ messageId: 'b', category: 'notice' }]));
     await initMessageBox();
-    resolveA({ data: [{ messageId: 'a', category: 'notice' }] });
+    resolveA(inboxPage([{ messageId: 'a', category: 'notice' }]));
     await oldSuccess;
     expect(harness.setNotices).toHaveBeenCalledOnce();
     expect(harness.setNotices.mock.calls[0][0][0].messageId).toBe('b');
@@ -137,7 +138,7 @@ describe('message box synchronization', () => {
     harness.list.mockImplementationOnce(() => new Promise((_, reject) => { rejectA = reject; }));
     const oldFailure = initMessageBox();
     harness.token = 'session-4';
-    harness.list.mockResolvedValueOnce({ data: [{ messageId: 'd', category: 'notice' }] });
+    harness.list.mockResolvedValueOnce(inboxPage([{ messageId: 'd', category: 'notice' }]));
     await initMessageBox();
     rejectA(new Error('old session failed'));
     await oldFailure;
@@ -164,7 +165,7 @@ describe('message box synchronization', () => {
     const loading = initMessageBox();
     closePush();
     harness.token = undefined;
-    resolveList({ data: [{ messageId: 'old', category: 'system' }] });
+    resolveList(inboxPage([{ messageId: 'old', category: 'system' }]));
     await loading;
     expect(harness.setNotices).not.toHaveBeenCalled();
   });

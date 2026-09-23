@@ -154,7 +154,7 @@ const installBaselineApi = async (page: Page, state: BaselineApiState) => {
     if (path === '/notify/inbox') {
       return fulfillJson(route, {
         code: state.messageBoxCode ?? 200,
-        data: []
+        data: { rows: [], total: 0, unreadTotal: 0 }
       });
     }
     if (path === '/demo/demo/list') {

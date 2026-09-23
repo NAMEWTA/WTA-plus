@@ -1,11 +1,11 @@
 <template>
   <div v-loading="state.loading || isLoading" class="layout-navbars-breadcrumb-user-news">
     <div class="head-box">
-      <div class="head-box-title">消息盒子</div>
-      <el-button link type="primary" :loading="state.loading" :disabled="!newsList.length || isLoading" @click="readAll">全部已读</el-button>
+      <div class="head-box-title">消息盒子 <span>未读 {{ unreadCount }}</span></div>
+      <el-button v-if="canRead" link type="primary" :loading="state.loading" :disabled="!unreadCount || isLoading" @click="readAll">全部已读（包括历史消息）</el-button>
     </div>
     <el-tabs v-model="activeTab" class="message-tabs" stretch>
-      <el-tab-pane :label="`全部 ${newsList.length}`" name="all"></el-tab-pane>
+      <el-tab-pane :label="`最近全部 ${newsList.length}`" name="all"></el-tab-pane>
       <el-tab-pane :label="`系统 ${tabCount.system}`" name="system"></el-tab-pane>
       <el-tab-pane :label="`通知 ${tabCount.notice}`" name="notice"></el-tab-pane>
       <el-tab-pane :label="`工作 ${tabCount.workflow}`" name="workflow"></el-tab-pane>
@@ -39,7 +39,12 @@
       <el-empty v-else-if="loadState === 'ready'" :description="emptyDescription"></el-empty>
     </div>
     <el-dialog v-model="detailVisible" title="通知详情" width="520px">
-      <el-descriptions v-if="selectedNews" :column="1" border>
+      <div v-if="detailLoading" role="status">正在加载详情…</div>
+      <div v-else-if="detailError" role="alert">
+        {{ detailError }}
+        <el-button link type="primary" @click="retryDetail">重试</el-button>
+      </div>
+      <el-descriptions v-else-if="selectedNews" :column="1" border>
         <el-descriptions-item label="标题">{{ selectedNews.title || '通知' }}</el-descriptions-item>
         <el-descriptions-item label="时间">{{ selectedNews.time }}</el-descriptions-item>
         <el-descriptions-item label="内容">
@@ -56,14 +61,17 @@
 
 <script setup lang="ts" name="layoutBreadcrumbUserNews">
 import { ElMessage } from 'element-plus';
+import { createAdminAccessEvaluator } from '@/application/access';
 import { notificationService } from '@/application/services';
 import { getToken } from '@/application/session';
 import router from '@/router';
 import { useNoticeStore, type NoticeItem } from '@/store/modules/notice';
+import { useUserStore } from '@/store/modules/user';
 import { initMessageBox, refreshMessageInbox } from '@/utils/push';
 import { NOTICE_GROUP } from '@/utils/push-message';
 
 const noticeStore = useNoticeStore();
+const userStore = useUserStore();
 let mounted = true;
 
 // 定义变量内容
@@ -73,18 +81,37 @@ const state = reactive({
 const activeTab = ref<string>('all');
 const detailVisible = ref(false);
 const selectedNews = ref<NoticeItem>();
+const detailLoading = ref(false);
+const detailError = ref('');
+const unreadCount = computed(() => noticeStore.unreadCount);
+const canRead = computed(() => createAdminAccessEvaluator().hasPermission('notify:inbox:read'));
 const newsList = computed(() => noticeStore.state.notices);
 const loadState = computed(() => noticeStore.state.loadState);
 const isLoading = computed(() => loadState.value === 'loading');
+let detailRequest = 0;
 
-watch(() => noticeStore.state.identityVersion, () => {
+const clearDetail = () => {
+  detailRequest++;
   detailVisible.value = false;
   selectedNews.value = undefined;
+  detailLoading.value = false;
+  detailError.value = '';
   activeTab.value = 'all';
   state.loading = false;
-});
+};
+watch(() => noticeStore.state.identityVersion, clearDetail, { flush: 'sync' });
+watch(() => [userStore.sessionGeneration, userStore.token, userStore.identityLoaded], clearDetail, { flush: 'sync' });
 
-onUnmounted(() => { mounted = false; });
+watch(detailVisible, visible => {
+  if (!visible) {
+    detailRequest++;
+    selectedNews.value = undefined;
+    detailLoading.value = false;
+    detailError.value = '';
+    state.loading = false;
+  }
+});
+onUnmounted(() => { mounted = false; detailRequest++; });
 
 const tabCount = computed(() => ({
   system: newsList.value.filter(item => (item.category || NOTICE_GROUP.SYSTEM) === NOTICE_GROUP.SYSTEM).length,
@@ -111,47 +138,75 @@ const emptyDescription = computed(() => {
 });
 
 const retryLoad = () => { void initMessageBox(); };
-const isCurrentIdentity = (token: string | undefined, version: number) =>
-  mounted && token === getToken() && version === noticeStore.state.identityVersion;
+const identity = () => ({
+  token: getToken(),
+  version: noticeStore.state.identityVersion,
+  generation: userStore.sessionGeneration,
+  loaded: userStore.identityLoaded
+});
+const isCurrentIdentity = (owner: ReturnType<typeof identity>) =>
+  mounted && owner.token === getToken() && owner.version === noticeStore.state.identityVersion &&
+  owner.generation === userStore.sessionGeneration && owner.loaded && userStore.identityLoaded;
 
 // 已读事实由服务端维护，并同步刷新消息盒子和收件箱页面。
 const onNewsClick = async (current: NoticeItem) => {
-  const token = getToken();
-  const version = noticeStore.state.identityVersion;
-  selectedNews.value = current;
+  const owner = identity();
+  const request = ++detailRequest;
+  selectedNews.value = { ...current, content: undefined };
   detailVisible.value = true;
-  if (!current.read && current.messageId && !state.loading) {
+  detailLoading.value = true;
+  detailError.value = '';
+  try {
+    const detail = await notificationService.inbox.detail(current.messageId);
+    if (!isCurrentIdentity(owner) || request !== detailRequest || !detailVisible.value) return;
+    selectedNews.value = { ...current, content: detail.data.content, path: detail.data.path };
+  } catch (error) {
+    if (isCurrentIdentity(owner) && request === detailRequest && detailVisible.value) {
+      detailError.value = error instanceof Error ? error.message : '消息详情加载失败';
+    }
+    return;
+  } finally {
+    if (isCurrentIdentity(owner) && request === detailRequest && detailVisible.value) detailLoading.value = false;
+  }
+  if (detailVisible.value && canRead.value && !current.read && current.messageId && !state.loading) {
     state.loading = true;
     try {
       await notificationService.inbox.read(current.messageId);
-      if (isCurrentIdentity(token, version)) await refreshMessageInbox();
+      if (isCurrentIdentity(owner)) await refreshMessageInbox();
     } catch (error) {
-      if (isCurrentIdentity(token, version)) ElMessage.error(error instanceof Error ? error.message : '标记已读失败');
+      if (isCurrentIdentity(owner) && request === detailRequest && detailVisible.value) {
+        ElMessage.error(error instanceof Error ? error.message : '标记已读失败');
+      }
     } finally {
-      if (isCurrentIdentity(token, version)) state.loading = false;
+      if (isCurrentIdentity(owner) && request === detailRequest) state.loading = false;
     }
   }
 };
 
+const retryDetail = () => {
+  const current = selectedNews.value;
+  if (current) void onNewsClick(current);
+};
+
 const readAll = async () => {
-  if (state.loading) return;
-  const token = getToken();
-  const version = noticeStore.state.identityVersion;
+  if (state.loading || !canRead.value) return;
+  const owner = identity();
   state.loading = true;
   try {
     await notificationService.inbox.readAll();
-    if (isCurrentIdentity(token, version)) await refreshMessageInbox();
+    if (isCurrentIdentity(owner)) await refreshMessageInbox();
   } catch (error) {
-    if (isCurrentIdentity(token, version)) ElMessage.error(error instanceof Error ? error.message : '全部已读失败');
+    if (isCurrentIdentity(owner)) ElMessage.error(error instanceof Error ? error.message : '全部已读失败');
   } finally {
-    if (isCurrentIdentity(token, version)) state.loading = false;
+    if (isCurrentIdentity(owner)) state.loading = false;
   }
 };
 
 const openNewsPath = async () => {
-  if (!selectedNews.value?.path) return;
+  const path = selectedNews.value?.path;
+  if (!path) return;
   detailVisible.value = false;
-  await router.push(selectedNews.value.path);
+  await router.push(path);
 };
 </script>
 

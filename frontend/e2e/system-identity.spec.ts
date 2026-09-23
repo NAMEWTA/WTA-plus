@@ -69,7 +69,7 @@ async function installAdminApi(page: Page, state: AdminState) {
     }
     if (path === '/system/menu/getRouters') return json(route, { code: 200, data: routes });
     if (path === '/notify/inbox') {
-      return json(route, { code: 200, data: [] });
+      return json(route, { code: 200, data: { rows: [], total: 0, unreadTotal: 0 } });
     }
     if (path === '/resource/message/close') return json(route, { code: 200, data: null });
     if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });

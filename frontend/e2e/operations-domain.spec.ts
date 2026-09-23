@@ -70,7 +70,7 @@ async function installApi(page: Page, permissions: string[], state: ApiState) {
         data: { notificationId: '71', status: 'FAILED', createdAt: new Date().toISOString(), deliveries: [] }
       });
     if (path === '/notify/inbox')
-      return json(route, { code: 200, data: [] });
+      return json(route, { code: 200, data: { rows: [], total: 0, unreadTotal: 0 } });
     if (path === '/resource/message/close') return json(route, { code: 200, data: null });
     if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });

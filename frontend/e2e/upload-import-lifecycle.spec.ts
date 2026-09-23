@@ -35,7 +35,8 @@ async function install(page: Page, state: State) {
     if (path === '/auth/logout') return json(route, { code: 200 });
     if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-stream' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
-    if (path === '/resource/message/close' || path === '/notify/inbox' || path.startsWith('/system/dict/data/type/')) return json(route, { code: 200, data: [] });
+    if (path === '/notify/inbox') return json(route, { code: 200, data: { rows: [], total: 0, unreadTotal: 0 } });
+    if (path === '/resource/message/close' || path.startsWith('/system/dict/data/type/')) return json(route, { code: 200, data: [] });
     if (['/system/user/deptTree', '/system/userType/options'].includes(path)) return json(route, { code: 200, data: [] });
     if (path.startsWith('/system/config/configKey/')) return json(route, { code: 200, data: 'false' });
     if (['/system/user/list', '/system/client/list', '/resource/oss/list', '/workflow/definition/list', '/workflow/definition/unPublishList'].includes(path)) return json(route, { code: 200, data: { rows: [], total: 0 } });

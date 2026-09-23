@@ -13,7 +13,7 @@ test('T-34 real Admin inbox without realtime', async ({ page }, testInfo) => {
   const password = required('T34_PASSWORD');
   const title = required('T34_NOTICE_TITLE');
   const body = required('T34_NOTICE_BODY');
-  const inboxBodies: Array<{ code?: number; data?: Array<{ title?: string; category?: string }> }> = [];
+  const inboxBodies: Array<{ code?: number; data?: { rows?: Array<{ title?: string; category?: string }> } }> = [];
   const pushRequests: string[] = [];
 
   page.on('request', request => {
@@ -33,7 +33,7 @@ test('T-34 real Admin inbox without realtime', async ({ page }, testInfo) => {
   await form.locator('.submit-button').click();
   await expect(page.locator('.message-trigger')).toBeVisible({ timeout: 30_000 });
   await page.locator('.message-trigger').click();
-  await expect.poll(() => inboxBodies.some(result => result.code === 200 && result.data?.some(item => item.title === title && item.category === 'notice'))).toBe(true);
+  await expect.poll(() => inboxBodies.some(result => result.code === 200 && result.data?.rows?.some(item => item.title === title && item.category === 'notice'))).toBe(true);
   const row = page.locator('.content-box-item').filter({ hasText: title });
   await expect(row).toBeVisible();
   await expect(row.getByText(body, { exact: true })).toHaveCount(1);

@@ -96,7 +96,7 @@ async function installAdminApi(page: Page, state: AdminState, protectedReadCode 
     if (path === '/notify/inbox') {
       return fulfillJson(route, {
         code: 200,
-        data: []
+        data: { rows: [], total: 0, unreadTotal: 0 }
       });
     }
     if (path === '/resource/message/close') return fulfillJson(route, { code: 200, data: null });

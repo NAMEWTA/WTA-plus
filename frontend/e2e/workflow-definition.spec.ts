@@ -168,7 +168,7 @@ async function installApi(page: Page, state: State, permissions: string[]) {
       return json(route, { code: 200, data: null });
     }
     if (path === '/notify/inbox')
-      return json(route, { code: 200, data: [] });
+      return json(route, { code: 200, data: { rows: [], total: 0, unreadTotal: 0 } });
     if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
     state.unknown.push(method + ' ' + path);

@@ -161,3 +161,9 @@ export interface NotifyInboxMessage {
   seenTime?: string | null;
   readTime?: string | null;
 }
+
+export interface NotifyInboxPage {
+  rows: NotifyInboxMessage[];
+  total: number;
+  unreadTotal: number;
+}

@@ -1,1 +1,1 @@
-export type { NotifyInboxMessage } from '../types';
+export type { NotifyInboxMessage, NotifyInboxPage } from '../types';

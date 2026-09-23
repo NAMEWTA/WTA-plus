@@ -54,7 +54,6 @@ const toNoticeItem = (item: NotifyInboxMessage) => {
     type: item.type ?? 'message',
     source: item.source ?? 'backend',
     message: item.message ?? '',
-    content: item.content,
     data: item.data ?? null,
     path: item.path,
     read: Boolean(item.readTime),
@@ -106,14 +105,14 @@ const loadMessageBox = (token: string): Promise<void> => {
   const isCurrent = () => currentRequest === inboxRequest && inboxToken === token && token === getToken();
   let request: ReturnType<typeof notificationService.inbox.list>;
   try {
-    request = notificationService.inbox.list();
+    request = notificationService.inbox.list(1, 10);
   } catch {
     if (isCurrent()) noticeStore.failLoad(token);
     return Promise.resolve();
   }
   const settled = request
     .then(({ data }) => {
-      if (isCurrent() && !pendingInbox?.dirty) noticeStore.setNotices((data ?? []).map(toNoticeItem), token);
+      if (isCurrent() && !pendingInbox?.dirty) noticeStore.setNotices(data.rows.map(toNoticeItem), data.unreadTotal, token);
     })
     .catch(() => {
       // 失败进入可重试状态；旧身份和已被新事件失效的查询均不改变当前界面。
