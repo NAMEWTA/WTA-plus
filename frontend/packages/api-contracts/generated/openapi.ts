@@ -9017,9 +9017,9 @@ export interface components {
         };
         Skip: {
             /** Format: int32 */
-            nextNodeType?: number;
-            /** Format: int32 */
             nowNodeType?: number;
+            /** Format: int32 */
+            nextNodeType?: number;
             /** Format: int64 */
             id?: number;
             /** Format: int64 */
@@ -9035,11 +9035,11 @@ export interface components {
             definitionId?: number;
             nextNodeCode?: string;
             nowNodeCode?: string;
+            skipCondition?: string;
             tenantId?: string;
             coordinate?: string;
             skipType?: string;
             skipName?: string;
-            skipCondition?: string;
         };
         User: {
             /** Format: int64 */
@@ -11042,20 +11042,20 @@ export interface components {
             /** @description 请求渠道 */
             channels?: ("IN_APP" | "SMS" | "MAIL")[];
             /**
-             * @description 编排策略
+             * @description 编排策略；新提交仅支持 ALL，旧枚举值只用于读取历史事实
              * @enum {string}
              */
             strategy?: "ALL" | "ORDERED_FALLBACK" | "ESCALATION";
             /**
-             * @description 执行模式
+             * @description 执行模式；新提交仅支持 ASYNC
              * @enum {string}
              */
             mode?: "ASYNC";
             /**
              * Format: int32
-             * @description 优先级
+             * @description 当前只支持 0，Worker 不按此字段排序；HTTP JSON 必须显式传入 0
              */
-            priority?: number;
+            priority: number;
             /**
              * Format: date-time
              * @description 计划时间
