@@ -1,0 +1,151 @@
+{
+  "vitest_packages": [
+    {
+      "package": "packages/platform/permission test",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "package": "packages/platform/contracts test",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "apps/sso-web test",
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "package": "packages/platform/validation test",
+      "passed": 3,
+      "total": 3
+    },
+    {
+      "package": "packages/web-kit/rich-text test",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "package": "packages/adapters/storage-browser test",
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "package": "packages/adapters/oss-upload-browser test",
+      "passed": 8,
+      "total": 8
+    },
+    {
+      "package": "packages/platform/auth test",
+      "passed": 18,
+      "total": 18
+    },
+    {
+      "package": "packages/platform/app-runtime test",
+      "passed": 23,
+      "total": 23
+    },
+    {
+      "package": "packages/platform/http test",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-kit/file-upload test",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-kit/permission test",
+      "passed": 16,
+      "total": 16
+    },
+    {
+      "package": "packages/domains/demo test",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "package": "packages/domains/notify test",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/domains/admin test",
+      "passed": 63,
+      "total": 63
+    },
+    {
+      "package": "packages/adapters/axios-browser test",
+      "passed": 46,
+      "total": 46
+    },
+    {
+      "package": "packages/domains/third test",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "packages/domains/profile test",
+      "passed": 22,
+      "total": 22
+    },
+    {
+      "package": "packages/domains/system test",
+      "passed": 95,
+      "total": 95
+    },
+    {
+      "package": "packages/web-domains/admin test",
+      "passed": 6,
+      "total": 6
+    },
+    {
+      "package": "packages/web-domains/demo test",
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "package": "packages/domains/workflow test",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-domains/profile test",
+      "passed": 36,
+      "total": 36
+    },
+    {
+      "package": "packages/web-domains/third test",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "packages/web-domains/notify test",
+      "passed": 25,
+      "total": 25
+    },
+    {
+      "package": "packages/web-domains/system test",
+      "passed": 73,
+      "total": 73
+    },
+    {
+      "package": "apps/home-web test",
+      "passed": 15,
+      "total": 15
+    },
+    {
+      "package": "packages/web-domains/workflow test",
+      "passed": 59,
+      "total": 59
+    },
+    {
+      "package": "apps/admin-web test",
+      "passed": 80,
+      "total": 80
+    }
+  ],
+  "vitest_total": 652,
+  "note": "Other node test groups remain separately in raw log"
+}

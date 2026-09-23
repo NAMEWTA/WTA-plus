@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "--preflight"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T19:29:39.475683+00:00",
+  "finished_at": "2026-09-23T19:29:39.557387+00:00",
+  "exit_code": 0,
+  "log": "c1-browser-preflight.log"
+}

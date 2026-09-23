@@ -1,0 +1,5 @@
+
+> @namewta/tooling-openapi@0.0.0 openapi:check /srv/WTA-plus/frontend/tooling/openapi
+> node src/cli.mjs check
+
+OpenAPI contract is current: 903193 bytes, sha256=8d3e64dd2f1b62f4a3c945462b20439415a4dca1505495f258367d470570cffd

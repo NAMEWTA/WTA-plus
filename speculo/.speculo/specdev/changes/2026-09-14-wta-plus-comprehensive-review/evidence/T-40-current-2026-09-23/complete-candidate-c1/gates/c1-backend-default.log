@@ -1,0 +1,1202 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] WTA-Plus                                                           [pom]
+[INFO] wta-common                                                         [pom]
+[INFO] wta-common-core                                                    [jar]
+[INFO] wta-common-doc                                                     [jar]
+[INFO] wta-common-json                                                    [jar]
+[INFO] wta-common-redis                                                   [jar]
+[INFO] wta-common-social                                                  [jar]
+[INFO] wta-common-nacos                                                   [jar]
+[INFO] wta-common-notify                                                  [jar]
+[INFO] wta-common-mail                                                    [jar]
+[INFO] wta-common-mcp                                                     [jar]
+[INFO] wta-api                                                            [jar]
+[INFO] wta-common-satoken                                                 [jar]
+[INFO] wta-common-openapi                                                 [jar]
+[INFO] wta-common-mybatis                                                 [jar]
+[INFO] wta-common-translation                                             [jar]
+[INFO] wta-common-oss                                                     [jar]
+[INFO] wta-common-log                                                     [jar]
+[INFO] wta-common-excel                                                   [jar]
+[INFO] wta-common-sms                                                     [jar]
+[INFO] wta-common-security                                                [jar]
+[INFO] wta-common-web                                                     [jar]
+[INFO] wta-common-sensitive                                               [jar]
+[INFO] wta-common-encrypt                                                 [jar]
+[INFO] wta-common-push                                                    [jar]
+[INFO] wta-modules                                                        [pom]
+[INFO] wta-system                                                         [jar]
+[INFO] wta-third                                                          [jar]
+[INFO] wta-notify                                                         [jar]
+[INFO] wta-sso                                                            [jar]
+[INFO] wta-common-job                                                     [jar]
+[INFO] wta-job                                                            [jar]
+[INFO] wta-common-ai                                                      [jar]
+[INFO] wta-ai                                                             [jar]
+[INFO] wta-common-richtext                                                [jar]
+[INFO] wta-common-elasticsearch                                           [jar]
+[INFO] wta-common-mqtt                                                    [jar]
+[INFO] wta-demo                                                           [jar]
+[INFO] wta-common-liteflow                                                [jar]
+[INFO] wta-workflow                                                       [jar]
+[INFO] wta-profile                                                        [pom]
+[INFO] wta-profile-person                                                 [jar]
+[INFO] wta-profile-enterprise                                             [jar]
+[INFO] wta-admin                                                          [jar]
+[INFO] wta-common-bom                                                     [pom]
+[INFO] wta-extend                                                         [pom]
+[INFO] wta-monitor-admin                                                  [jar]
+[INFO] wta-snailjob-server                                                [jar]
+[INFO] wta-profile-bom                                                    [pom]
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-vue-plus >----------------------
+[INFO] Building WTA-Plus 6.0.0                                           [1/49]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-vue-plus ---
+[INFO] Generating flattened POM of project org.namewta:wta-vue-plus:pom:6.0.0...
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-common >-----------------------
+[INFO] Building wta-common 6.0.0                                         [2/49]
+[INFO]   from wta-common/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common ---
+[INFO] Generating flattened POM of project org.namewta:wta-common:pom:6.0.0...
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-core >---------------------
+[INFO] Building wta-common-core 6.0.0                                    [3/49]
+[INFO]   from wta-common/wta-common-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-core ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-core ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-core:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-core ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-core ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-core ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.core.utils.ServletUtilsClientAddressTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.109 s -- in org.namewta.common.core.utils.ServletUtilsClientAddressTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-doc >---------------------
+[INFO] Building wta-common-doc 6.0.0                                     [4/49]
+[INFO]   from wta-common/wta-common-doc/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-doc ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-doc ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-doc:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-doc ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-doc ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-doc/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-doc ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-doc ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-json >---------------------
+[INFO] Building wta-common-json 6.0.0                                    [5/49]
+[INFO]   from wta-common/wta-common-json/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-json ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-json ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-json:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-json ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-json ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-json/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-json ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-json ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.json.utils.LogSanitizerTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.282 s -- in org.namewta.common.json.utils.LogSanitizerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-redis >--------------------
+[INFO] Building wta-common-redis 6.0.0                                   [6/49]
+[INFO]   from wta-common/wta-common-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-redis ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-redis ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-redis:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-redis ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-redis ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-redis/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-redis ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-redis ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest
+[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.008 s -- in org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest
+[INFO] Running org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 2
+[INFO] 
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-social >--------------------
+[INFO] Building wta-common-social 6.0.0                                  [7/49]
+[INFO]   from wta-common/wta-common-social/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-social ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-social ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-social:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-social ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-social ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-social/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-social ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-social ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-nacos >--------------------
+[INFO] Building wta-common-nacos 6.0.0                                   [8/49]
+[INFO]   from wta-common/wta-common-nacos/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-nacos ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-nacos ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-nacos:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-nacos ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-nacos ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-nacos/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-nacos ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-nacos ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.nacos.NacosConfigBootstrapTest
+15:32:06.118 [main] WARN org.namewta.common.nacos.NacosConfigBootstrap -- Nacos 配置启动读取失败，已使用本地配置并等待服务恢复，profile=local dataId=wta-namewta.yml
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.210 s -- in org.namewta.common.nacos.NacosConfigBootstrapTest
+[INFO] Running org.namewta.common.nacos.NacosConfigManagerTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.168 s -- in org.namewta.common.nacos.NacosConfigManagerTest
+[INFO] Running org.namewta.common.nacos.NacosConfigAutoConfigurationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.158 s -- in org.namewta.common.nacos.NacosConfigAutoConfigurationTest
+[INFO] Running org.namewta.common.nacos.NacosSnapshotPolicyUnitTest
+15:32:06.510 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.logback12.LogbackNacosLoggingAdapterBuilder
+15:32:06.517 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.logback14.LogbackNacosLoggingAdapterBuilder
+15:32:06.517 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter: com.alibaba.nacos.logger.adapter.logback14.LogbackNacosLoggingAdapter match ch.qos.logback.classic.Logger success.
+15:32:06.522 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.log4j2.Log4j2NacosLoggingAdapterBuilder
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.139 s -- in org.namewta.common.nacos.NacosSnapshotPolicyUnitTest
+[INFO] Running org.namewta.common.nacos.NacosConfigSettingsTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in org.namewta.common.nacos.NacosConfigSettingsTest
+[INFO] Running org.namewta.common.nacos.NacosPropertySourceRegistrarTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in org.namewta.common.nacos.NacosPropertySourceRegistrarTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-notify >--------------------
+[INFO] Building wta-common-notify 6.0.0                                  [9/49]
+[INFO]   from wta-common/wta-common-notify/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-notify ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-notify ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-notify:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-notify ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-notify ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-notify/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-notify ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-notify ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-mail >---------------------
+[INFO] Building wta-common-mail 6.0.0                                   [10/49]
+[INFO]   from wta-common/wta-common-mail/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mail ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mail ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mail:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mail ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mail ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-mail/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mail ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mail ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-mcp >---------------------
+[INFO] Building wta-common-mcp 6.0.0                                    [11/49]
+[INFO]   from wta-common/wta-common-mcp/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mcp ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mcp ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mcp:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mcp ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mcp ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-mcp/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mcp ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mcp ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-api >-------------------------
+[INFO] Building wta-api 6.0.0                                           [12/49]
+[INFO]   from wta-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-api ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-api ---
+[INFO] Generating flattened POM of project org.namewta:wta-api:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-api ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-api ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-satoken >-------------------
+[INFO] Building wta-common-satoken 6.0.0                                [13/49]
+[INFO]   from wta-common/wta-common-satoken/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-satoken ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-satoken ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-satoken:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-satoken ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-satoken ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-satoken/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-satoken ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-satoken ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-openapi >-------------------
+[INFO] Building wta-common-openapi 6.0.0                                [14/49]
+[INFO]   from wta-common/wta-common-openapi/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-openapi ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-openapi ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-openapi:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-openapi ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-openapi ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-openapi/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-openapi ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-openapi ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.376 s -- in org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest
+[INFO] Running org.namewta.common.openapi.session.OpenApiMachineSessionBridgeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s -- in org.namewta.common.openapi.session.OpenApiMachineSessionBridgeTest
+[INFO] Running org.namewta.common.openapi.registry.OpenApiOperationRegistryTest
+15:32:10.297 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.0.Final
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.696 s -- in org.namewta.common.openapi.registry.OpenApiOperationRegistryTest
+[INFO] Running org.namewta.common.openapi.gateway.OpenApiGatewayStateStoreTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.139 s -- in org.namewta.common.openapi.gateway.OpenApiGatewayStateStoreTest
+[INFO] Running org.namewta.common.openapi.protocol.OpenApiProtocolTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in org.namewta.common.openapi.protocol.OpenApiProtocolTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-mybatis >-------------------
+[INFO] Building wta-common-mybatis 6.0.0                                [15/49]
+[INFO]   from wta-common/wta-common-mybatis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mybatis ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mybatis ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mybatis:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mybatis ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mybatis ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-mybatis/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mybatis ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mybatis ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -----------------< org.namewta:wta-common-translation >-----------------
+[INFO] Building wta-common-translation 6.0.0                            [16/49]
+[INFO]   from wta-common/wta-common-translation/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-translation ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-translation ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-translation:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-translation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-translation ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-translation/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-translation ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-translation ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-oss >---------------------
+[INFO] Building wta-common-oss 6.0.0                                    [17/49]
+[INFO]   from wta-common/wta-common-oss/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-oss ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-oss/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-oss/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-oss ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-oss:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-oss ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-oss ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-oss/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-oss ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-oss ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-log >---------------------
+[INFO] Building wta-common-log 6.0.0                                    [18/49]
+[INFO]   from wta-common/wta-common-log/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-log ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-log ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-log:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-log ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-log ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-log/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-log ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-log ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.log.aspect.LogAspectRedactionTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.328 s -- in org.namewta.common.log.aspect.LogAspectRedactionTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-excel >--------------------
+[INFO] Building wta-common-excel 6.0.0                                  [19/49]
+[INFO]   from wta-common/wta-common-excel/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-excel ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-excel/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-excel/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-excel ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-excel:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-excel ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-excel ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-excel/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-excel ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-excel ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-sms >---------------------
+[INFO] Building wta-common-sms 6.0.0                                    [20/49]
+[INFO]   from wta-common/wta-common-sms/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-sms ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-sms ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-sms:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-sms ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-sms ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-sms/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-sms ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-sms ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.sms.notify.SmsDeliveryQueryClientTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.786 s -- in org.namewta.common.sms.notify.SmsDeliveryQueryClientTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-security >-------------------
+[INFO] Building wta-common-security 6.0.0                               [21/49]
+[INFO]   from wta-common/wta-common-security/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-security ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-security ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-security:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-security ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-security ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-security/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-security ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-security ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-web >---------------------
+[INFO] Building wta-common-web 6.0.0                                    [22/49]
+[INFO]   from wta-common/wta-common-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-web ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-web ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-web:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-web ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-web ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-web/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-web ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-web ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.common.web.logging.SysLogFailureRedactionTest
+15:32:20.345 [main] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/app/monitor/online/[REDACTED]',发生未知异常, 错误编号: 47638859，类型=java.lang.IllegalStateException
+15:32:20.350 [main] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/app/monitor/online/myself/[REDACTED]',发生未知异常, 错误编号: 39138032，类型=java.lang.IllegalStateException
+15:32:20.351 [main] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/app/monitor/online/list',发生未知异常, 错误编号: 59647598，类型=java.lang.IllegalStateException
+15:32:20.358 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=请求事件输出，请求标识=32690b24-5eb5-4c92-87bc-4bcf839f1d22，异常类型=java.lang.IllegalStateException
+15:32:20.363 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=响应事件输出，请求标识=32690b24-5eb5-4c92-87bc-4bcf839f1d22，异常类型=java.lang.IllegalStateException
+15:32:20.363 [main] ERROR org.namewta.common.web.handler.GlobalExceptionHandler -- 请求地址'/failed',发生未知异常, 错误编号: 10057515，类型=java.lang.IllegalStateException
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.393 s -- in org.namewta.common.web.logging.SysLogFailureRedactionTest
+[INFO] Running org.namewta.common.web.logging.SysLogFilterTest
+15:32:20.410 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=请求事件输出，请求标识=a1dbee98-9949-464e-aac3-4f3309bebb49，异常类型=java.lang.IllegalStateException
+15:32:20.411 [main] ERROR org.namewta.common.web.logging.SysLogFilter -- 系统 HTTP 日志采集失败：阶段=响应事件输出，请求标识=a1dbee98-9949-464e-aac3-4f3309bebb49，异常类型=java.lang.IllegalStateException
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s -- in org.namewta.common.web.logging.SysLogFilterTest
+[INFO] Running org.namewta.common.web.logging.SysLogEventWriterTest
+15:32:20.458 [main] INFO org.namewta.system.http -- {"事件类型":"请求进入","请求标识":"request-id","正文已记录":true,"正文":"line1\n\"quoted\"\u0001"}
+15:32:20.463 [main] INFO org.namewta.system.http -- {"事件类型":"响应返回","响应状态":200,"正文已记录":false,"正文省略原因":"非文本内容"}
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in org.namewta.common.web.logging.SysLogEventWriterTest
+[INFO] Running org.namewta.common.web.filter.ClientAddressFilterTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s -- in org.namewta.common.web.filter.ClientAddressFilterTest
+[INFO] Running org.namewta.common.web.filter.RequestBodyLimitTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.070 s -- in org.namewta.common.web.filter.RequestBodyLimitTest
+[INFO] Running org.namewta.common.web.config.CorsPolicyTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s -- in org.namewta.common.web.config.CorsPolicyTest
+[INFO] Running org.namewta.common.web.config.CorsServletHttpTest
+15:32:21.040 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+15:32:21.063 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@74fab04a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@3c83468e{STARTED}}
+15:32:21.067 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@74fab04a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@3c83468e{STARTED}}
+15:32:21.075 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@3b27b497{HTTP/1.1, (http/1.1)}{127.0.0.1:46287}
+15:32:21.076 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@b1534d3{STARTING}[12.1.10,sto=0] @37ms
+15:32:21.202 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@b1534d3{STOPPING}[12.1.10,sto=0]
+15:32:21.206 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@3b27b497{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+15:32:21.208 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@74fab04a{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@3c83468e{STOPPED}}
+15:32:21.217 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+15:32:21.229 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@33ecbd6c{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@5c723f2d{STARTED}}
+15:32:21.229 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@33ecbd6c{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@5c723f2d{STARTED}}
+15:32:21.231 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@daf8aaa{HTTP/1.1, (http/1.1)}{127.0.0.1:34537}
+15:32:21.231 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@432f521f{STARTING}[12.1.10,sto=0] @14ms
+15:32:21.254 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@432f521f{STOPPING}[12.1.10,sto=0]
+15:32:21.256 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@daf8aaa{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+15:32:21.257 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@33ecbd6c{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@5c723f2d{STOPPED}}
+15:32:21.261 [main] INFO org.eclipse.jetty.server.Server -- jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+15:32:21.265 [main] INFO org.eclipse.jetty.server.handler.ContextHandler -- Started oeje11s.ServletContextHandler@69923ac3{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@1f1ff879{STARTED}}
+15:32:21.266 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Started oeje11s.ServletContextHandler@69923ac3{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@1f1ff879{STARTED}}
+15:32:21.267 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Started oejs.ServerConnector@73d60e76{HTTP/1.1, (http/1.1)}{127.0.0.1:36241}
+15:32:21.268 [main] INFO org.eclipse.jetty.server.Server -- Started oejs.Server@24f870ee{STARTING}[12.1.10,sto=0] @6ms
+15:32:21.318 [main] INFO org.eclipse.jetty.server.Server -- Stopped oejs.Server@24f870ee{STOPPING}[12.1.10,sto=0]
+15:32:21.320 [main] INFO org.eclipse.jetty.server.AbstractConnector -- Stopped oejs.ServerConnector@73d60e76{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+15:32:21.321 [main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler -- Stopped oeje11s.ServletContextHandler@69923ac3{ROOT,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@1f1ff879{STOPPED}}
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.696 s -- in org.namewta.common.web.config.CorsServletHttpTest
+[INFO] Running org.namewta.common.web.config.SysLogConfigTest
+15:32:21.564 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.0.Final
+15:32:21.912 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+15:32:21.934 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+15:32:21.954 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+15:32:21.968 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 1: Error creating bean with name 'namewta.web.request-body-org.namewta.common.web.config.properties.RequestBodyProperties': Could not bind properties to 'RequestBodyProperties' : prefix=namewta.web.request-body, ignoreInvalidFields=false, ignoreUnknownFields=true
+15:32:21.985 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 0: Error creating bean with name 'sys.log-org.namewta.common.web.config.SysLogProperties': Could not bind properties to 'SysLogProperties' : prefix=sys.log, ignoreInvalidFields=false, ignoreUnknownFields=true
+15:32:22.001 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 0: Error creating bean with name 'sys.log-org.namewta.common.web.config.SysLogProperties': Could not bind properties to 'SysLogProperties' : prefix=sys.log, ignoreInvalidFields=false, ignoreUnknownFields=true
+15:32:22.020 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogFilter' defined in org.namewta.common.web.config.SysLogConfig: Unsatisfied dependency expressed through method 'sysLogFilter' parameter 0: Error creating bean with name 'sys.log-org.namewta.common.web.config.SysLogProperties': Could not bind properties to 'SysLogProperties' : prefix=sys.log, ignoreInvalidFields=false, ignoreUnknownFields=true
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.695 s -- in org.namewta.common.web.config.SysLogConfigTest
+[INFO] Running org.namewta.common.web.config.ClientAddressConfigTest
+15:32:22.047 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'clientAddressFilter' defined in org.namewta.common.web.config.ClientAddressConfig: Failed to instantiate [org.namewta.common.web.filter.ClientAddressFilter]: Factory method 'clientAddressFilter' threw exception with message: Invalid IPv4 literal
+15:32:22.052 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'clientAddressFilter' defined in org.namewta.common.web.config.ClientAddressConfig: Failed to instantiate [org.namewta.common.web.filter.ClientAddressFilter]: Factory method 'clientAddressFilter' threw exception with message: Client address resolution requires server.forward-headers-strategy=none
+15:32:22.060 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'clientAddressFilter' defined in org.namewta.common.web.config.ClientAddressConfig: Failed to instantiate [org.namewta.common.web.filter.ClientAddressFilter]: Factory method 'clientAddressFilter' threw exception with message: Client address resolution requires server.forward-headers-strategy=none
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in org.namewta.common.web.config.ClientAddressConfigTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-sensitive >------------------
+[INFO] Building wta-common-sensitive 6.0.0                              [23/49]
+[INFO]   from wta-common/wta-common-sensitive/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-sensitive ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-sensitive ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-sensitive:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-sensitive ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-sensitive ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-sensitive/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-sensitive ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-sensitive ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-encrypt >-------------------
+[INFO] Building wta-common-encrypt 6.0.0                                [24/49]
+[INFO]   from wta-common/wta-common-encrypt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-encrypt ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-encrypt ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-encrypt:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-encrypt ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-encrypt ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-encrypt/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-encrypt ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-encrypt ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-push >---------------------
+[INFO] Building wta-common-push 6.0.0                                   [25/49]
+[INFO]   from wta-common/wta-common-push/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-push ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-push ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-push:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-push ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-push ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-push/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-push ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-push ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-modules >-----------------------
+[INFO] Building wta-modules 6.0.0                                       [26/49]
+[INFO]   from wta-modules/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-modules ---
+[INFO] Generating flattened POM of project org.namewta:wta-modules:pom:6.0.0...
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-system >-----------------------
+[INFO] Building wta-system 6.0.0                                        [27/49]
+[INFO]   from wta-modules/wta-system/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-system ---
+[INFO] Copying 23 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-system ---
+[INFO] Generating flattened POM of project org.namewta:wta-system:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-system ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-system ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-modules/wta-system/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-system ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-system ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.system.service.impl.SysClientServiceSsoUnitTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.360 s -- in org.namewta.system.service.impl.SysClientServiceSsoUnitTest
+[INFO] Running org.namewta.system.phone.UserPhoneWriteServiceTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.032 s -- in org.namewta.system.phone.UserPhoneWriteServiceTest
+[INFO] Running org.namewta.system.sso.SsoClientFieldsSupportTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.265 s -- in org.namewta.system.sso.SsoClientFieldsSupportTest
+[INFO] Running org.namewta.system.sso.ClientAccessPathsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s -- in org.namewta.system.sso.ClientAccessPathsTest
+[INFO] Running org.namewta.system.sso.SsoAppRegistrationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in org.namewta.system.sso.SsoAppRegistrationTest
+[INFO] Running org.namewta.system.sso.SsoRedirectUrisTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in org.namewta.system.sso.SsoRedirectUrisTest
+[INFO] Running org.namewta.system.sso.SsoAccessSupportTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in org.namewta.system.sso.SsoAccessSupportTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-third >------------------------
+[INFO] Building wta-third 6.0.0                                         [28/49]
+[INFO]   from wta-modules/wta-third/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-third ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-third ---
+[INFO] Generating flattened POM of project org.namewta:wta-third:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-third ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-third ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-modules/wta-third/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-third ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-third ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-notify >-----------------------
+[INFO] Building wta-notify 6.0.0                                        [29/49]
+[INFO]   from wta-modules/wta-notify/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-notify ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-notify ---
+[INFO] Generating flattened POM of project org.namewta:wta-notify:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-notify ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-notify ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-modules/wta-notify/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-notify ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 24 source files with javac [debug release 21] to target/test-classes
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/outbox/NotifyOutboxWakeRedisGate.java: /srv/WTA-plus/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/outbox/NotifyOutboxWakeRedisGate.java uses or overrides a deprecated API.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/support/outbox/NotifyOutboxWakeRedisGate.java: Recompile with -Xlint:deprecation for details.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/provider/Sms4jReceiptTest.java: Some input files use unchecked or unsafe operations.
+[INFO] /srv/WTA-plus/backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/provider/Sms4jReceiptTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-notify ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.namewta.notify.service.runtime.InAppNotificationServiceTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+15:32:31.838 [main] WARN com.baomidou.mybatisplus.core.toolkit.Sequence -- Unable to get network interface for wta-ubuntu/127.0.1.1
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.340 s -- in org.namewta.notify.service.runtime.InAppNotificationServiceTest
+[INFO] Running org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.133 s -- in org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest
+[INFO] Running org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.092 s -- in org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest
+[INFO] Running org.namewta.notify.service.runtime.DispatchNotificationServiceTest
+[ERROR] Tests run: 23, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.503 s <<< FAILURE! -- in org.namewta.notify.service.runtime.DispatchNotificationServiceTest
+[ERROR] org.namewta.notify.service.runtime.DispatchNotificationServiceTest.recipientMinuteCapIsIsolatedByScene -- Time elapsed: 0.038 s <<< FAILURE!
+Wanted but not invoked:
+notifyClient.send(<any>);
+-> at org.namewta.notify.service.runtime.DispatchNotificationServiceTest.recipientMinuteCapIsIsolatedByScene(DispatchNotificationServiceTest.java:486)
+Actually, there were zero interactions with this mock.
+
+	at org.namewta.notify.service.runtime.DispatchNotificationServiceTest.recipientMinuteCapIsIsolatedByScene(DispatchNotificationServiceTest.java:486)
+
+[ERROR] org.namewta.notify.service.runtime.DispatchNotificationServiceTest.noticePublishedMailRendersWrapperNotCallerSnapshot -- Time elapsed: 0.003 s <<< FAILURE!
+Wanted but not invoked:
+notifyClient.send(
+    <Capturing argument: NotifyRequest>
+);
+-> at org.namewta.notify.service.runtime.DispatchNotificationServiceTest.noticePublishedMailRendersWrapperNotCallerSnapshot(DispatchNotificationServiceTest.java:541)
+Actually, there were zero interactions with this mock.
+
+	at org.namewta.notify.service.runtime.DispatchNotificationServiceTest.noticePublishedMailRendersWrapperNotCallerSnapshot(DispatchNotificationServiceTest.java:541)
+
+[INFO] Running org.namewta.notify.service.runtime.NotificationMonitorServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in org.namewta.notify.service.runtime.NotificationMonitorServiceTest
+[INFO] Running org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest
+[INFO] Running org.namewta.notify.service.NotifyTestSendServiceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s -- in org.namewta.notify.service.NotifyTestSendServiceTest
+[INFO] Running org.namewta.notify.service.NotifyNoticeServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in org.namewta.notify.service.NotifyNoticeServiceTest
+[INFO] Running org.namewta.notify.service.NotifyNoticePublisherServiceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in org.namewta.notify.service.NotifyNoticePublisherServiceTest
+[INFO] Running org.namewta.notify.service.NotifyConfigServiceTest
+15:32:32.861 [main] WARN org.namewta.notify.service.NotifyConfigService -- 加载短信渠道账号失败，进程继续启动；发送将失败关闭。原因=select; bad SQL grammar [SELECT * FROM notify_channel_account]
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.079 s -- in org.namewta.notify.service.NotifyConfigServiceTest
+[INFO] Running org.namewta.notify.support.NotifyNoticeVersionFenceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s -- in org.namewta.notify.support.NotifyNoticeVersionFenceTest
+[INFO] Running org.namewta.notify.support.NotifySendPlannerTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in org.namewta.notify.support.NotifySendPlannerTest
+[INFO] Running org.namewta.notify.support.NotifyAuditSupportTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in org.namewta.notify.support.NotifyAuditSupportTest
+[INFO] Running org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s -- in org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest
+[INFO] Running org.namewta.notify.adapter.provider.Sms4jReceiptTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.042 s -- in org.namewta.notify.adapter.provider.Sms4jReceiptTest
+[INFO] Running org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest
+15:32:33.035 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=WAKE claimed=0 batches=1
+15:32:33.038 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=1 batches=2
+15:32:33.038 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=WAKE claimed=1 batches=2
+15:32:33.042 [pool-4-thread-1] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=1 batches=2
+15:32:33.042 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=0 batches=1
+15:32:33.044 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=1 batches=2
+15:32:33.046 [main] WARN org.namewta.notify.adapter.worker.NotifyOutboxWakeSubscriber -- notify outbox wake subscribe failed, slow poll remains
+java.lang.IllegalStateException: redis down
+	at org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest$1.subscribe(NotifyOutboxWorkerWakePollTest.java:159)
+	at org.namewta.notify.adapter.worker.NotifyOutboxWakeSubscriber.afterPropertiesSet(NotifyOutboxWakeSubscriber.java:54)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:52)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:39)
+	at org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3295)
+	at org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest.subscribeFailureDoesNotPreventConstruction(NotifyOutboxWorkerWakePollTest.java:167)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:57)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:56)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.api.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:125)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithCancellationToken(LauncherAdapter.java:68)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:54)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:203)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:168)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+15:32:33.051 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=0 batches=1
+15:32:33.053 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=POLL claimed=2 batches=3
+15:32:33.057 [main] INFO org.namewta.notify.adapter.worker.NotifyOutboxWorker -- notify outbox drain trigger=WAKE claimed=0 batches=1
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest
+[INFO] Running org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest
+15:32:33.185 [main] WARN org.namewta.notify.adapter.event.NotifyOutboxWakePublisher -- notify outbox cross-process wake publish failed, outboxId=7, reason=IllegalStateException, fallback poll remains
+15:32:33.187 [main] WARN org.namewta.notify.adapter.event.NotifyOutboxWakePublisher -- notify outbox wake interrupted, outboxId=1, fallback poll remains
+15:32:33.242 [junit-timeout-thread-1] WARN org.namewta.notify.adapter.event.NotifyOutboxWakePublisher -- notify outbox cross-process wake publish failed, outboxId=1, reason=TimeoutException, fallback poll remains
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.211 s -- in org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest
+[INFO] Running org.namewta.notify.NotifyOutboxWakeScopeGateTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in org.namewta.notify.NotifyOutboxWakeScopeGateTest
+[INFO] Running org.namewta.notify.domain.policy.NotificationAggregatePolicyTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in org.namewta.notify.domain.policy.NotificationAggregatePolicyTest
+[INFO] Running org.namewta.notify.domain.policy.NoticeAudiencePolicyTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in org.namewta.notify.domain.policy.NoticeAudiencePolicyTest
+[INFO] Running org.namewta.notify.usecase.NotifyNoticeUseCaseTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.079 s -- in org.namewta.notify.usecase.NotifyNoticeUseCaseTest
+[INFO] Running org.namewta.notify.controller.admin.NotifyConfigControllerContractTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in org.namewta.notify.controller.admin.NotifyConfigControllerContractTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DispatchNotificationServiceTest.noticePublishedMailRendersWrapperNotCallerSnapshot:541 
+Wanted but not invoked:
+notifyClient.send(
+    <Capturing argument: NotifyRequest>
+);
+-> at org.namewta.notify.service.runtime.DispatchNotificationServiceTest.noticePublishedMailRendersWrapperNotCallerSnapshot(DispatchNotificationServiceTest.java:541)
+Actually, there were zero interactions with this mock.
+
+[ERROR]   DispatchNotificationServiceTest.recipientMinuteCapIsIsolatedByScene:486 
+Wanted but not invoked:
+notifyClient.send(<any>);
+-> at org.namewta.notify.service.runtime.DispatchNotificationServiceTest.recipientMinuteCapIsIsolatedByScene(DispatchNotificationServiceTest.java:486)
+Actually, there were zero interactions with this mock.
+
+[INFO] 
+[ERROR] Tests run: 112, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for WTA-Plus 6.0.0:
+[INFO] 
+[INFO] WTA-Plus ........................................... SUCCESS [  0.246 s]
+[INFO] wta-common ......................................... SUCCESS [  0.077 s]
+[INFO] wta-common-core .................................... SUCCESS [  1.533 s]
+[INFO] wta-common-doc ..................................... SUCCESS [  0.257 s]
+[INFO] wta-common-json .................................... SUCCESS [  0.950 s]
+[INFO] wta-common-redis ................................... SUCCESS [  0.818 s]
+[INFO] wta-common-social .................................. SUCCESS [  0.073 s]
+[INFO] wta-common-nacos ................................... SUCCESS [  1.505 s]
+[INFO] wta-common-notify .................................. SUCCESS [  0.064 s]
+[INFO] wta-common-mail .................................... SUCCESS [  0.066 s]
+[INFO] wta-common-mcp ..................................... SUCCESS [  0.102 s]
+[INFO] wta-api ............................................ SUCCESS [  0.056 s]
+[INFO] wta-common-satoken ................................. SUCCESS [  0.078 s]
+[INFO] wta-common-openapi ................................. SUCCESS [  4.006 s]
+[INFO] wta-common-mybatis ................................. SUCCESS [  0.262 s]
+[INFO] wta-common-translation ............................. SUCCESS [  0.053 s]
+[INFO] wta-common-oss ..................................... SUCCESS [  0.167 s]
+[INFO] wta-common-log ..................................... SUCCESS [  1.042 s]
+[INFO] wta-common-excel ................................... SUCCESS [  0.126 s]
+[INFO] wta-common-sms ..................................... SUCCESS [  6.469 s]
+[INFO] wta-common-security ................................ SUCCESS [  0.045 s]
+[INFO] wta-common-web ..................................... SUCCESS [  2.895 s]
+[INFO] wta-common-sensitive ............................... SUCCESS [  0.037 s]
+[INFO] wta-common-encrypt ................................. SUCCESS [  0.051 s]
+[INFO] wta-common-push .................................... SUCCESS [  0.567 s]
+[INFO] wta-modules ........................................ SUCCESS [  0.028 s]
+[INFO] wta-system ......................................... SUCCESS [  3.712 s]
+[INFO] wta-third .......................................... SUCCESS [  0.861 s]
+[INFO] wta-notify ......................................... FAILURE [  6.059 s]
+[INFO] wta-sso ............................................ SKIPPED
+[INFO] wta-common-job ..................................... SKIPPED
+[INFO] wta-job ............................................ SKIPPED
+[INFO] wta-common-ai ...................................... SKIPPED
+[INFO] wta-ai ............................................. SKIPPED
+[INFO] wta-common-richtext ................................ SKIPPED
+[INFO] wta-common-elasticsearch ........................... SKIPPED
+[INFO] wta-common-mqtt .................................... SKIPPED
+[INFO] wta-demo ........................................... SKIPPED
+[INFO] wta-common-liteflow ................................ SKIPPED
+[INFO] wta-workflow ....................................... SKIPPED
+[INFO] wta-profile ........................................ SKIPPED
+[INFO] wta-profile-person ................................. SKIPPED
+[INFO] wta-profile-enterprise ............................. SKIPPED
+[INFO] wta-admin .......................................... SKIPPED
+[INFO] wta-common-bom ..................................... SKIPPED
+[INFO] wta-extend ......................................... SKIPPED
+[INFO] wta-monitor-admin .................................. SKIPPED
+[INFO] wta-snailjob-server ................................ SKIPPED
+[INFO] wta-profile-bom .................................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  32.812 s
+[INFO] Finished at: 2026-09-23T15:32:33-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.5:test (default-test) on project wta-notify: There are test failures.
+[ERROR] 
+[ERROR] See /srv/WTA-plus/backend/wta-modules/wta-notify/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :wta-notify
