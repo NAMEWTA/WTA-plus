@@ -57,26 +57,57 @@ class CorsPolicyTest {
     }
 
     @Test
-    void wildcardOriginAllowsCredentialedRequestAndReflectsOrigin() throws Exception {
+    void wildcardIsRejectedEvenWhenCredentialsAreDisabled() {
+        var properties = new CorsProperties();
+        properties.setAllowCredentials(false);
+        properties.setAllowedOrigins(List.of("*"));
+        assertThatThrownBy(() -> new ResourcesConfig().corsFilter(properties))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void wildcardConfigurationFailsBeforeAnyRequestIsServed() {
         var properties = new CorsProperties();
         properties.setAllowedOrigins(List.of("*"));
-        var request = new MockHttpServletRequest("POST", "/auth/login");
-        request.addHeader("Origin", "http://172.16.105.9:5177");
+        assertThatThrownBy(() -> new ResourcesConfig().corsFilter(properties))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void emptyConfigurationAllowsNoCrossOriginAndNoOriginRequestPasses() throws Exception {
+        var properties = new CorsProperties();
+        properties.setAllowedOrigins(List.of(""));
+        var filter = new ResourcesConfig().corsFilter(properties);
+        assertThat(properties.validatedOrigins()).isEmpty();
+        var request = new MockHttpServletRequest("POST", "/sso/login");
         var response = new MockHttpServletResponse();
         var reached = new AtomicBoolean();
-        new ResourcesConfig().corsFilter(properties).doFilter(request, response,
-            (req, res) -> reached.set(true));
+        filter.doFilter(request, response, (req, res) -> reached.set(true));
         assertThat(reached).isTrue();
         assertThat(response.getStatus()).isNotEqualTo(403);
-        assertThat(response.getHeader("Access-Control-Allow-Origin")).isEqualTo("http://172.16.105.9:5177");
-        assertThat(response.getHeader("Access-Control-Allow-Credentials")).isEqualTo("true");
+        assertThat(response.getHeader("Access-Control-Allow-Origin")).isNull();
+    }
+
+    @Test
+    void exactOriginWithoutCredentialsDoesNotAdvertiseCredentialAccess() throws Exception {
+        var properties = new CorsProperties();
+        properties.setAllowCredentials(false);
+        properties.setAllowedOrigins(List.of("https://admin.example.test"));
+        var request = new MockHttpServletRequest("GET", "/api/resource");
+        request.setServerName("backend.example.test");
+        request.addHeader("Origin", "https://admin.example.test");
+        var response = new MockHttpServletResponse();
+        new ResourcesConfig().corsFilter(properties).doFilter(request, response, (req, res) -> { });
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.getHeader("Access-Control-Allow-Origin")).isEqualTo("https://admin.example.test");
+        assertThat(response.getHeader("Access-Control-Allow-Credentials")).isNull();
     }
 
     @Test
     void invalidOriginConfigurationIsRejected() {
         for (String invalid : List.of("https://*.example.test", "null", "file:///tmp", "https://user@example.test",
             "https://example.test/", "https://example.test/path", "https://example.test?x=1",
-            "https://example.test#fragment", "https://example.test:65536")) {
+            "https://example.test#fragment", "https://example.test:65536", "https://example.test:")) {
             var properties = new CorsProperties();
             properties.setAllowedOrigins(List.of(invalid));
             assertThatThrownBy(() -> new ResourcesConfig().corsFilter(properties)).as(invalid)

@@ -39,24 +39,33 @@ public class CorsProperties {
     private Long maxAge = 1800L;
 
     /**
-     * @return 经校验的来源；单独的 {@code *} 表示临时允许任意 Origin，其余值必须是不带路径的精确 HTTP(S) origin
+     * @return 经校验的精确 HTTP(S) 来源；空配置不允许跨来源访问
      * @throws IllegalArgumentException 错误配置时拒绝启动，不自动放宽信任
      */
     public List<String> validatedOrigins() {
+        if (allowedOrigins == null) {
+            throw new IllegalArgumentException("CORS allowed origins must be configured as a list");
+        }
+        if (allowedOrigins.isEmpty() || (allowedOrigins.size() == 1 && allowedOrigins.getFirst() != null
+            && allowedOrigins.getFirst().isBlank())) {
+            return List.of();
+        }
         return allowedOrigins.stream().map(origin -> {
+            if (origin == null) {
+                throw new IllegalArgumentException("CORS origin cannot be null");
+            }
             String value = origin.trim();
-            if ("*".equals(value)) {
-                if (allowedOrigins.size() != 1) {
-                    throw new IllegalArgumentException("CORS wildcard cannot be combined with explicit origins");
-                }
-                return value;
+            if (value.isEmpty() || value.contains("*")) {
+                throw new IllegalArgumentException("CORS requires exact HTTP(S) origins without wildcards");
             }
             URI uri = URI.create(value);
             if ((!"http".equalsIgnoreCase(uri.getScheme()) && !"https".equalsIgnoreCase(uri.getScheme()))
-                || uri.getHost() == null || value.contains("*") || uri.getUserInfo() != null
+                || uri.getHost() == null || uri.getUserInfo() != null
                 || uri.getRawQuery() != null || uri.getRawFragment() != null
                 || (uri.getRawPath() != null && !uri.getRawPath().isEmpty())
-                || uri.getPort() == 0 || uri.getPort() > 65535) {
+                || uri.getPort() == 0 || uri.getPort() > 65535
+                || uri.getRawAuthority().endsWith(":")
+                || !value.equals(uri.getScheme() + "://" + uri.getRawAuthority())) {
                 throw new IllegalArgumentException("CORS requires exact HTTP(S) origins without paths or wildcards");
             }
             return value;

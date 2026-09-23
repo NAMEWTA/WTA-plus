@@ -1,0 +1,11 @@
+✔ machine-local credentials are ignored and absent from the Git index (13.653784ms)
+✔ the developer launcher loads the private file externally and preserves an explicit override (1148.81539ms)
+✔ Maven excludes private configuration and examples, including stale target files, from JARs (4212.941868ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5433.574723

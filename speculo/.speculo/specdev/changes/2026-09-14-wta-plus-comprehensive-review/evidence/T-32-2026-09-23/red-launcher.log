@@ -1,0 +1,31 @@
+✖ the developer launcher loads the private file externally and preserves an explicit override (535.244051ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 593.834433
+
+✖ failing tests:
+
+test at release-artifacts/tests/local-config-safety.test.mjs:19:1
+✖ the developer launcher loads the private file externally and preserves an explicit override (535.244051ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'CONFIG='
+  - 'CONFIG=optional:file:/tmp/wta config launcher Dk6PkN/backend/wta-admin/src/main/resources/application-local.yml'
+  
+      at TestContext.<anonymous> (file:///srv/WTA-plus/release-artifacts/tests/local-config-safety.test.mjs:64:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'CONFIG=',
+    expected: 'CONFIG=optional:file:/tmp/wta config launcher Dk6PkN/backend/wta-admin/src/main/resources/application-local.yml',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

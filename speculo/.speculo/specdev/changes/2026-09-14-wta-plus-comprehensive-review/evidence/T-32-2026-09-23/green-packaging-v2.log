@@ -1,0 +1,33 @@
+✔ machine-local credentials are ignored and absent from the Git index (12.003398ms)
+✖ Maven excludes private configuration and examples, including stale target files, from JARs (3914.06291ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4032.291493
+
+✖ failing tests:
+
+test at release-artifacts/tests/local-config-safety.test.mjs:18:1
+✖ Maven excludes private configuration and examples, including stale target files, from JARs (3914.06291ms)
+  Error: Command failed: /srv/WTA-plus/backend/mvnw -q -f /tmp/wta-local-config-7acOp2/pom.xml resources:resources
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at checkExecSyncError (node:child_process:942:11)
+      at execFileSync (node:child_process:978:15)
+      at maven (file:///srv/WTA-plus/release-artifacts/tests/local-config-safety.test.mjs:31:33)
+      at TestContext.<anonymous> (file:///srv/WTA-plus/release-artifacts/tests/local-config-safety.test.mjs:34:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19) {
+    status: 1,
+    signal: null,
+    output: [ null, "[ERROR] [ERROR] Some problems were encountered while processing the POMs:\n[FATAL] Non-resolvable parent POM for org.namewta:local-config-fixture:1: The following artifacts could not be resolved: org.namewta:wta-vue-plus:pom:${revision} (absent): Could not find artifact org.namewta:wta-vue-plus:pom:${revision} in aliyun-public (https://maven.aliyun.com/repository/public) and 'parent.relativePath' points at wrong local POM @ line 2, column 49\n @ \n[ERROR] The build could not read 1 project -> [Help 1]\n[ERROR]   \n[ERROR]   The project org.namewta:local-config-fixture:1 (/tmp/wta-local-config-7acOp2/pom.xml) has 1 error\n[ERROR]     Non-resolvable parent POM for org.namewta:local-config-fixture:1: The following artifacts could not be resolved: org.namewta:wta-vue-plus:pom:${revision} (absent): Could not find artifact org.namewta:wta-vue-plus:pom:${revision} in aliyun-public (https://maven.aliyun.com/repository/public) and 'parent.relativePath' points at wrong local POM @ line 2, column 49 -> [Help 2]\n[ERROR] \n[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.\n[ERROR] Re-run Maven using the -X switch to enable full debug logging.\n[ERROR] \n[ERROR] For more information about the errors and possible solutions, please read the following articles:\n[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/ProjectBuildingException\n[ERROR] [Help 2] http://cwiki.apache.org/confluence/display/MAVEN/UnresolvableModelException\n", '' ],
+    pid: 3375948,
+    stdout: "[ERROR] [ERROR] Some problems were encountered while processing the POMs:\n[FATAL] Non-resolvable parent POM for org.namewta:local-config-fixture:1: The following artifacts could not be resolved: org.namewta:wta-vue-plus:pom:${revision} (absent): Could not find artifact org.namewta:wta-vue-plus:pom:${revision} in aliyun-public (https://maven.aliyun.com/repository/public) and 'parent.relativePath' points at wrong local POM @ line 2, column 49\n @ \n[ERROR] The build could not read 1 project -> [Help 1]\n[ERROR]   \n[ERROR]   The project org.namewta:local-config-fixture:1 (/tmp/wta-local-config-7acOp2/pom.xml) has 1 error\n[ERROR]     Non-resolvable parent POM for org.namewta:local-config-fixture:1: The following artifacts could not be resolved: org.namewta:wta-vue-plus:pom:${revision} (absent): Could not find artifact org.namewta:wta-vue-plus:pom:${revision} in aliyun-public (https://maven.aliyun.com/repository/public) and 'parent.relativePath' points at wrong local POM @ line 2, column 49 -> [Help 2]\n[ERROR] \n[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.\n[ERROR] Re-run Maven using the -X switch to enable full debug logging.\n[ERROR] \n[ERROR] For more information about the errors and possible solutions, please read the following articles:\n[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/ProjectBuildingException\n[ERROR] [Help 2] http://cwiki.apache.org/confluence/display/MAVEN/UnresolvableModelException\n",
+    stderr: ''
+  }

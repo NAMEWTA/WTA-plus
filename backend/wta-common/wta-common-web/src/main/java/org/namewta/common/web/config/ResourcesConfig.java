@@ -18,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 通用配置
@@ -60,13 +59,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
     public CorsFilter corsFilter(CorsProperties corsProperties) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(corsProperties.getAllowCredentials());
-        // allowCredentials=true 时 Spring 拒绝 allowedOrigins 里的字面量 *，只能用 pattern 回写请求 Origin。
-        List<String> origins = corsProperties.validatedOrigins();
-        if (origins.contains("*")) {
-            config.setAllowedOriginPatterns(List.of("*"));
-        } else {
-            config.setAllowedOrigins(origins);
-        }
+        config.setAllowedOrigins(corsProperties.validatedOrigins());
         config.setAllowedHeaders(corsProperties.getAllowedHeaders());
         config.setAllowedMethods(corsProperties.getAllowedMethods());
         config.setMaxAge(corsProperties.getMaxAge());

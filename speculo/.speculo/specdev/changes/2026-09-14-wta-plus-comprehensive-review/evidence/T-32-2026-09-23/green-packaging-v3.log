@@ -1,0 +1,10 @@
+✔ machine-local credentials are ignored and absent from the Git index (11.016062ms)
+✔ Maven excludes private configuration and examples, including stale target files, from JARs (3629.339461ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3699.613111

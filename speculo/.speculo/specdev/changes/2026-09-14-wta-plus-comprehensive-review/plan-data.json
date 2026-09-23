@@ -2775,9 +2775,9 @@
       "config:cors",
       "http:origin-trust"
     ],
-    "status": "ready",
+    "status": "in_progress",
     "ready": true,
-    "plan_revision": 136,
+    "plan_revision": 140,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 真实 Servlet/CorsFilter 测试与 Spring profile 绑定",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",

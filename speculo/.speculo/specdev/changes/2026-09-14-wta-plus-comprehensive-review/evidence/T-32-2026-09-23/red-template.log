@@ -1,0 +1,38 @@
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.474 s <<< FAILURE! -- in org.namewta.test.config.LocalConfigurationUnitTest
+[ERROR] org.namewta.test.config.LocalConfigurationUnitTest.loadsInjectedCredentialsWithoutLoggingThem(CapturedOutput) -- Time elapsed: 0.409 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <null> but was: <org.springframework.boot.context.config.ConfigDataResourceNotFoundException: Config data resource 'file [/srv/WTA-plus/backend/wta-admin/src/main/resources/application-local.example.yml]' via location 'file:///srv/WTA-plus/backend/wta-admin/src/main/resources/application-local.example.yml' cannot be found>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+	at org.junit.jupiter.api.AssertNull.failNotNull(AssertNull.java:56)
+	at org.junit.jupiter.api.AssertNull.assertNull(AssertNull.java:40)
+	at org.junit.jupiter.api.AssertNull.assertNull(AssertNull.java:34)
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:297)
+	at org.namewta.test.config.LocalConfigurationUnitTest.lambda$loadsInjectedCredentialsWithoutLoggingThem$0(LocalConfigurationUnitTest.java:35)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.accept(AbstractApplicationContextRunner.java:457)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.consumeAssertableContext(AbstractApplicationContextRunner.java:371)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.lambda$run$1(AbstractApplicationContextRunner.java:349)
+	at org.springframework.boot.test.util.TestPropertyValues.lambda$applyToSystemProperties$0(TestPropertyValues.java:176)
+	at org.springframework.boot.test.util.TestPropertyValues.applyToSystemProperties(TestPropertyValues.java:190)
+	at org.springframework.boot.test.util.TestPropertyValues.applyToSystemProperties(TestPropertyValues.java:175)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.lambda$run$0(AbstractApplicationContextRunner.java:349)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.withContextClassLoader(AbstractApplicationContextRunner.java:377)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.run(AbstractApplicationContextRunner.java:348)
+	at org.namewta.test.config.LocalConfigurationUnitTest.loadsInjectedCredentialsWithoutLoggingThem(LocalConfigurationUnitTest.java:34)
+
+[ERROR] Failures: 
+[ERROR]   LocalConfigurationUnitTest.loadsInjectedCredentialsWithoutLoggingThem:34->lambda$loadsInjectedCredentialsWithoutLoggingThem$0:35 expected: <null> but was: <org.springframework.boot.context.config.ConfigDataResourceNotFoundException: Config data resource 'file [/srv/WTA-plus/backend/wta-admin/src/main/resources/application-local.example.yml]' via location 'file:///srv/WTA-plus/backend/wta-admin/src/main/resources/application-local.example.yml' cannot be found>
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.5:test (default-test) on project wta-admin: There are test failures.
+[ERROR] 
+[ERROR] See /srv/WTA-plus/backend/wta-admin/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :wta-admin
