@@ -9,6 +9,14 @@ public interface NotifyDispatchResultPort {
     boolean renew(NotifyOutbox lease);
 
     /**
+     * 在短事务中核对计划/截止与本次领取来源；到期或外部重领不确定时原子收敛结果。
+     *
+     * @param lease 带原领取状态及 owner/token 的任务
+     * @return 仍可开始下一步本地编排或外部发送时为 true
+     */
+    boolean deadlineGate(NotifyOutbox lease);
+
+    /**
      * 提交一次投递结果。
      * @param lease 本次领取的 owner/token
      * @param result 事务外调用的结果快照

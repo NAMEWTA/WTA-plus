@@ -63,6 +63,33 @@ import static org.mockito.Mockito.when;
 class DispatchNotificationServiceTest {
 
     @Test
+    void exactDatabaseDeadlineBlocksProviderButEarlierTimeStillAllowsIt() {
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        for (int seconds : List.of(-1, 0)) {
+            Fixture expired = fixture("MAIL");
+            expired.intent.setExpiresAt(now.plusSeconds(seconds));
+            expired.outbox.setLastErrorCode(NotifyOutbox.DEADLINE_UNSENT_READY);
+            when(expired.dao.databaseNow()).thenReturn(now);
+            expired.service.dispatch(expired.outbox);
+            assertEquals("FAILED", expired.delivery.getStatus());
+            assertEquals("NOTIFICATION_EXPIRED", expired.delivery.getErrorCode());
+            assertEquals("DONE", expired.outbox.getStatus());
+            verify(expired.notifyClient, never()).send(any());
+        }
+        Fixture live = fixture("MAIL");
+        live.intent.setExpiresAt(now.plusSeconds(30));
+        live.outbox.setLastErrorCode(NotifyOutbox.DEADLINE_UNSENT_READY);
+        when(live.dao.databaseNow()).thenReturn(now);
+        when(live.configDao.findBinding("auth-captcha", "MAIL"))
+            .thenReturn(binding(11L, "MAIL", "Owned ${code}", "Owned body ${code}"));
+        when(live.configDao.findAccount(11L)).thenReturn(mailAccount(11L, "owned-mail", "Y"));
+        when(live.notifyClient.send(any())).thenReturn(accepted("owned-mail", NotifyChannel.MAIL));
+        live.service.dispatch(live.outbox);
+        verify(live.notifyClient).send(any());
+        assertEquals("ACCEPTED", live.delivery.getStatus());
+    }
+
+    @Test
     void unboundMailFailsClosedWithoutProviderSend() {
         Fixture fixture = fixture("MAIL");
         when(fixture.configDao.findBinding("auth-captcha", "MAIL")).thenReturn(null);
@@ -327,6 +354,7 @@ class DispatchNotificationServiceTest {
         when(fixture.inApp.getIfAvailable()).thenReturn(inbox);
         org.namewta.notify.port.NotifyDispatchResultPort result = mock(org.namewta.notify.port.NotifyDispatchResultPort.class);
         when(result.renew(fixture.outbox)).thenReturn(true);
+        when(result.deadlineGate(fixture.outbox)).thenReturn(true);
         when(result.beginInAppAttempt(fixture.outbox)).thenThrow(new IllegalStateException("owned result failure"));
         var service = new DispatchNotificationService(fixture.dao, fixture.notifyClient, fixture.inApp,
             fixture.configDao, (key, limit, window) -> true, result);
@@ -577,6 +605,7 @@ class DispatchNotificationServiceTest {
         outbox.setLeaseUntil(LocalDateTime.now(ZoneOffset.UTC).plusMinutes(1));
         outbox.setAttemptCount(0);
         outbox.setMaxAttempts(5);
+        outbox.setClaimedFromReady(true);
         when(dao.outbox(3L)).thenReturn(outbox);
         when(dao.intent(1L)).thenReturn(intent);
         when(dao.delivery(2L)).thenAnswer(invocation -> copyDelivery(delivery));

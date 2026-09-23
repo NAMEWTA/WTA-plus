@@ -53,6 +53,123 @@ public class NotifyDispatchResultService {
     }
 
     /**
+     * 到期及重领不确定性均在同一锁序和活租约内结算，绝不从 PENDING 单独推断未发送。
+     * @param lease 本次领取的 owner/token 与领取前状态
+     * @return 仍可开始下一步发送时为 true
+     */
+    public boolean deadlineGate(NotifyOutbox lease) {
+        NotifyOutbox outbox = lockActive(lease);
+        if (outbox == null) return false;
+        NotifyIntent intent = dao.lockIntent(outbox.getIntentId());
+        NotifyDelivery delivery = dao.lockDelivery(outbox.getDeliveryId());
+        return deadlineGateLocked(lease, intent, outbox, delivery);
+    }
+
+    /** 持有 Intent→Outbox→Delivery 锁后，按来源证据、DB 时钟和本地消息事实决定下一步。 */
+    private boolean deadlineGateLocked(NotifyOutbox lease, NotifyIntent intent,
+                                       NotifyOutbox outbox, NotifyDelivery delivery) {
+        if (!unexpired(outbox)) return false;
+        if (intent == null || delivery == null || !Objects.equals(delivery.getIntentId(), outbox.getIntentId())
+            || !"PENDING".equals(delivery.getStatus())) {
+            outbox.setStatus("DONE"); finish(outbox); return false;
+        }
+        // 旧 PROCESSING 可能已经进入外部 Provider；它不能再经 WAIT 回到 READY。
+        if (!"IN_APP".equals(delivery.getChannel()) && !Boolean.TRUE.equals(lease.getClaimedFromReady())) {
+            uncertain(outbox, delivery, "RECLAIMED_OUTCOME_UNKNOWN");
+            return false;
+        }
+        if ("CANCELLED".equals(intent.getStatus())) {
+            delivery.setStatus("CANCELLED");
+            requireOne(dao.saveDeliveryResult(delivery));
+            outbox.setStatus("DONE"); finish(outbox);
+            // cancel 已持久化 Intent 终态；本次只清理残留任务，不能重算后复活它。
+            return false;
+        }
+        if ("DELIVERED".equals(intent.getStatus()) || "EXPIRED".equals(intent.getStatus())) {
+            if ("IN_APP".equals(delivery.getChannel())) localInconsistent(outbox, delivery, "IN_APP_TERMINAL_INTENT");
+            else uncertain(outbox, delivery, "TERMINAL_INTENT_OUTCOME_UNKNOWN");
+            return false;
+        }
+        var now = dao.databaseNow();
+        if (intent.getExpiresAt() != null && !intent.getExpiresAt().isAfter(now)) {
+            if ("IN_APP".equals(delivery.getChannel()) && delivery.getUserId() != null) {
+                var relation = dao.messageRecipient(outbox.getIntentId(), delivery.getUserId());
+                if (relation != null) {
+                    if (dao.message(outbox.getIntentId()) == null) {
+                        localInconsistent(outbox, delivery, "IN_APP_FACTS_INCONSISTENT");
+                    } else {
+                        delivery.setStatus("DELIVERED");
+                        if (delivery.getDeliveredAt() == null) delivery.setDeliveredAt(now);
+                        delivery.setErrorCode(null);
+                        delivery.setErrorMessage(null);
+                        outbox.setStatus("DONE");
+                        outbox.setLastErrorCode(null);
+                        outbox.setLastErrorMessage(null);
+                        requireOne(dao.saveDeliveryResult(delivery));
+                        finish(outbox);
+                        refreshAggregate(outbox.getIntentId());
+                    }
+                    return false;
+                }
+            }
+            boolean provenUnsent = "IN_APP".equals(delivery.getChannel())
+                || Boolean.TRUE.equals(lease.getClaimedFromReady())
+                    && NotifyOutbox.DEADLINE_UNSENT_READY.equals(outbox.getLastErrorCode())
+                    && Integer.valueOf(0).equals(outbox.getAttemptCount())
+                    && Integer.valueOf(0).equals(delivery.getAttemptCount())
+                    && delivery.getProviderMessageId() == null && delivery.getAcceptedAt() == null
+                    && delivery.getDeliveredAt() == null;
+            if (provenUnsent) {
+                delivery.setStatus("FAILED");
+                delivery.setErrorCode("NOTIFICATION_EXPIRED");
+                delivery.setErrorMessage("通知已过截止时间");
+                outbox.setStatus("DONE");
+                outbox.setLastErrorCode("NOTIFICATION_EXPIRED");
+                outbox.setLastErrorMessage("通知已过截止时间");
+                requireOne(dao.saveDeliveryResult(delivery));
+                finish(outbox);
+                refreshAggregate(outbox.getIntentId());
+            } else {
+                uncertain(outbox, delivery, "DEADLINE_OUTCOME_UNKNOWN");
+            }
+            return false;
+        }
+        if (intent.getScheduledAt() != null && intent.getScheduledAt().isAfter(now)) {
+            outbox.setStatus("READY");
+            outbox.setNextAttemptAt(intent.getScheduledAt());
+            finish(outbox);
+            return false;
+        }
+        return true;
+    }
+
+    /** 外部历史/重领缺少未外呼证明时仅等待核对，不能按过期未发送终结。 */
+    private void uncertain(NotifyOutbox outbox, NotifyDelivery delivery, String reason) {
+        delivery.setStatus("UNKNOWN");
+        delivery.setErrorCode(reason);
+        delivery.setErrorMessage("外部投递结果需核对");
+        outbox.setStatus("WAITING_RECEIPT");
+        outbox.setLastErrorCode(reason);
+        outbox.setLastErrorMessage("外部投递结果需核对");
+        requireOne(dao.saveDeliveryResult(delivery));
+        finish(outbox);
+        refreshAggregate(outbox.getIntentId());
+    }
+
+    /** 站内持久事实矛盾为确定本地终态，绝不进入外部回执等待。 */
+    private void localInconsistent(NotifyOutbox outbox, NotifyDelivery delivery, String reason) {
+        delivery.setStatus("FAILED");
+        delivery.setErrorCode(reason);
+        delivery.setErrorMessage("站内投递持久事实不一致");
+        outbox.setStatus("DONE");
+        outbox.setLastErrorCode(reason);
+        outbox.setLastErrorMessage("站内投递持久事实不一致");
+        requireOne(dao.saveDeliveryResult(delivery));
+        finish(outbox);
+        refreshAggregate(outbox.getIntentId());
+    }
+
+    /**
      * 站内信预算必须早于消息结果事务独立提交，故结果事务回滚也只会消耗一次有上限的预算。
      * 同一租约的重入先检查预留标志，再检查上限；新租约领取时只清此前的内部标志。
      * @param lease 当前领取的 owner/token
@@ -64,6 +181,7 @@ public class NotifyDispatchResultService {
         NotifyDelivery delivery = dao.lockDelivery(outbox.getDeliveryId());
         if (!unexpired(outbox) || delivery == null || !Objects.equals(delivery.getIntentId(), outbox.getIntentId())
             || !"IN_APP".equals(delivery.getChannel()) || !"PENDING".equals(delivery.getStatus())) return false;
+        if (!deadlineGateLocked(lease, dao.lockIntent(outbox.getIntentId()), outbox, delivery)) return false;
         if (IN_APP_ATTEMPT_RESERVED.equals(outbox.getLastErrorCode())) return false;
         Integer attempts = outbox.getAttemptCount();
         Integer maximum = outbox.getMaxAttempts();
@@ -100,6 +218,7 @@ public class NotifyDispatchResultService {
             || !"IN_APP".equals(delivery.getChannel()) || !"PENDING".equals(delivery.getStatus())
             || !IN_APP_ATTEMPT_RESERVED.equals(outbox.getLastErrorCode())
             || !Objects.equals(delivery.getUserId(), userId)) return;
+        if (!deadlineGateLocked(lease, dao.lockIntent(outbox.getIntentId()), outbox, delivery)) return;
         port.persist(String.valueOf(outbox.getIntentId()), snapshot, java.util.List.of(userId));
         if (!unexpired(outbox)) throw new IllegalStateException("站内投递写入期间租约已失效");
         writeResult(outbox, delivery, new Result("DELIVERED", "in-app", null, null, null, costTime));
@@ -179,6 +298,7 @@ public class NotifyDispatchResultService {
         if (outbox == null) return;
         NotifyDelivery delivery = dao.lockDelivery(outbox.getDeliveryId());
         if (!unexpired(outbox)) return;
+        if (!deadlineGateLocked(lease, dao.lockIntent(outbox.getIntentId()), outbox, delivery)) return;
         outbox.setStatus("DONE");
         if (delivery != null && "PENDING".equals(delivery.getStatus())) {
             if (disposition == Disposition.WAIT) {

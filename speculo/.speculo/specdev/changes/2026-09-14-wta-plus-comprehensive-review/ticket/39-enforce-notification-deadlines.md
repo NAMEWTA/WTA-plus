@@ -143,8 +143,14 @@ Captcha在提交前算一次整秒绝对截止；command与Redis缓存使用同�
 
 结果端口以现有DSTransactional短事务、Intent→Outbox→Delivery锁序、数据库时钟与有效owner/token/lease收敛：确证未发且过期PENDING变FAILED/NOTIFICATION_EXPIRED、Outbox DONE、聚合同时提交，无新Attempt伪称I/O，任一行数异常回滚。IN_APP在预留预算与persist前重检，无消息/关系/push，已预留预算不能重置。WAIT同样复查；取消/终态不得开始新I/O。已进入供应商的结果不能被截止反推为未发。
 
-claim保留领取前READY/PROCESSING的非持久证据，并在dispatch重读时保留本次provenance；它不能替代持久fence。外部READY还需初次零attempt或仅明确未发送历史码证明，不能把任意FAILED当未发；重领PROCESSING/缺失证据保守UNKNOWN/WAITING_RECEIPT且不再次外呼，防止旧worker已发送却崩溃未写结果。先前ACCEPTED/UNKNOWN保持真实事实。具体判定由安全review及真实crash/fence用例证明，不能只以PENDING推断。
+claim保留领取前READY/PROCESSING的非持久证据，并在dispatch重读时保留本次provenance；它不能替代持久fence。外部READY必须具备本节后文规定的新任务持久marker、零attempt及本次来源证明；零次数或最新未发送错误码本身不证明历史未外呼。重领PROCESSING/缺失证据保守UNKNOWN/WAITING_RECEIPT且不再次外呼，防止旧worker已发送却崩溃未写结果。先前ACCEPTED/UNKNOWN保持真实事实。具体判定由安全review及真实crash/fence用例证明，不能只以PENDING推断。
 
 先在现有CaptchaNotifyCallerUnitTest用旧API断言非空expiresAt，捕获可编译行为红灯，再进入完整实现。新增真实NotifyDeadlineIntegrationTest（notify.deadline.integration）、RedisUtilsDeadlineIntegrationTest（notify.deadline.redis.integration，类级稳定客户端/独立fork），连同EnterpriseQueuedNotificationIntegrationTest与NotifyWakeIntegrationTest精确启用零skip；T36/T37/T38受影响回归另验。只用任务owned MySQL/Redis合成库，驱动v2先冻结/合成自检。旧无截止验证码只给分类只读处置稿，真实数据不修复或重发。
 
 正式派单见evidence/dispatch-T-39-20260923-01.md；新增port/entity/common精确路径及规范已在动手前登记。Mapper/XML/policy/DDL未扩权；需要时先报Lead。变更不涉及HTTP结构/前端生成物，若实际触及则先修订写集与门禁。
+
+### revision167 实施前来源证明补充
+
+安全反例证明旧READY/0也可能由旧PROCESSING外呼崩溃后WAIT回流产生。最终最小方案：仅新建外部Outbox写现有last_error_code=DEADLINE_UNSENT_READY、attempt=0；本次领取前READY + token绑定非持久来源 + 持久标记仍在 + attempt0 + PENDING + 无相反投递事实，才可确定过期未发。PROCESSING重领或缺来源先收敛UNKNOWN/WAITING_RECEIPT，绝不进入route WAIT回READY，也不再外呼。旧无标记/已有尝试史到期同样保守UNKNOWN；未到期READY的既有T37/T38安全重试保持。正常结果替换标记，不给历史行补标记，不重置预算；IN_APP保持原子事实/本人关系规则。无需新DDL、Mapper或发送前新状态机。部署交接必须先停旧Worker，不能混跑忽略此规则的旧版本；不将本地代码验证声称已完成部署。
+
+Captcha同分钟不同新code不能共用旧分钟幂等key：每次生成code绑定独立安全随机nonce，保持限流；nonce不含code，通知仍走现有submit幂等API，不新增幂等平台。测试需证明新命令、缓存code及deadline对应一致。

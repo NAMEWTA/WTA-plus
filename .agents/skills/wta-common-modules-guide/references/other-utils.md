@@ -33,6 +33,8 @@
 | `org.namewta.common.redis.utils.QueueUtils` | 分布式队列工具。JavaDoc：轻量级队列；重量级数据量请使用 MQ；要求 redis 5.X 以上 | `.../redis/utils/QueueUtils.java` |
 | `org.namewta.common.redis.utils.SequenceUtils` | 发号器工具类。委托 Redisson `RIdGenerator` | `.../redis/utils/SequenceUtils.java` |
 
+有绝对业务截止的值使用 `RedisUtils.setCacheObjectUntil(key, value, Instant)`：单键脚本在 Redis 时钟尚未到期时以 `PXAT` 原子写入，已过期返回 `false` 且不改旧值/TTL。该入口沿原 Bucket codec 与 NameMapper，可由既有 `getCacheObject` 读取；不要改成提交后完整相对 TTL，也不要用分离的 SET/EXPIRE 留下无期限窗口。`RedisUtils` 客户端为静态绑定，隔离集成测试须在独立 JVM 内持有类级稳定客户端。
+
 配套注解（同模块，非 Utils）：
 
 | FQN | 职责 | 路径 |

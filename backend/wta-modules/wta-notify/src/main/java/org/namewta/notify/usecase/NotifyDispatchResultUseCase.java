@@ -20,6 +20,10 @@ public class NotifyDispatchResultUseCase implements NotifyDispatchResultPort {
 
     @Override
     @DSTransactional
+    public boolean deadlineGate(NotifyOutbox lease) { return service.deadlineGate(lease); }
+
+    @Override
+    @DSTransactional
     public void complete(NotifyOutbox lease, Result result) { service.complete(lease, result); }
 
     @Override

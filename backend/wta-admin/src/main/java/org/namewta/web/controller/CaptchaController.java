@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.List;
 
@@ -65,17 +67,19 @@ public class CaptchaController {
         }
         String key = GlobalConstants.CAPTCHA_CODE_KEY + phoneNumber;
         String code = RandomUtil.randomNumbers(4);
+        Instant deadline = captchaNow().plus(Duration.ofMinutes(Constants.CAPTCHA_EXPIRATION))
+            .truncatedTo(ChronoUnit.SECONDS);
         try {
             notificationService.submit(new NotificationCommand("admin-web", "auth-captcha", "auth_captcha", phoneNumber,
                 "PHONE", List.of(phoneNumber), "auth-captcha",
                 Map.of("code", code, "expireMinutes", String.valueOf(Constants.CAPTCHA_EXPIRATION)),
-                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, null,
+                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, deadline,
                 captchaIdempotencyKey(NotificationChannel.SMS, phoneNumber), Map.of("audit", "REDACT_SENSITIVE")));
+            if (!cacheCaptchaCode(key, code, deadline)) return R.fail("验证码短信发送失败");
         } catch (Exception ex) {
             log.error("验证码短信发送失败，异常类型={}", ex.getClass().getSimpleName());
             return R.fail("验证码短信发送失败");
         }
-        cacheCaptchaCode(key, code);
         return R.ok();
     }
 
@@ -103,13 +107,15 @@ public class CaptchaController {
     public void emailCodeImpl(String email) {
         String key = GlobalConstants.CAPTCHA_CODE_KEY + email;
         String code = RandomUtil.randomNumbers(4);
+        Instant deadline = captchaNow().plus(Duration.ofMinutes(Constants.CAPTCHA_EXPIRATION))
+            .truncatedTo(ChronoUnit.SECONDS);
         try {
             notificationService.submit(new NotificationCommand("admin-web", "auth-captcha", "auth_captcha", email,
                 "EMAIL", List.of(email), "auth-captcha",
                 Map.of("code", code, "expireMinutes", String.valueOf(Constants.CAPTCHA_EXPIRATION)),
-                List.of(NotificationChannel.MAIL), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, null,
+                List.of(NotificationChannel.MAIL), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, deadline,
                 captchaIdempotencyKey(NotificationChannel.MAIL, email), Map.of("audit", "REDACT_SENSITIVE")));
-            cacheCaptchaCode(key, code);
+            if (!cacheCaptchaCode(key, code, deadline)) throw new ServiceException("验证码邮件发送失败");
         } catch (Exception e) {
             log.error("验证码邮件发送失败，异常类型={}", e.getClass().getSimpleName());
             throw new ServiceException("验证码邮件发送失败");
@@ -117,12 +123,22 @@ public class CaptchaController {
     }
 
     private String captchaIdempotencyKey(NotificationChannel channel, String target) {
-        long minute = System.currentTimeMillis() / Duration.ofMinutes(1).toMillis();
-        return "captcha:" + channel.name().toLowerCase() + ":" + target + ":" + minute;
+        // 每个新验证码绑定独立意图，避免同一分钟新 code 命中旧意图和旧截止时间。
+        return "captcha:" + channel.name().toLowerCase() + ":" + target + ":" + java.util.UUID.randomUUID();
     }
 
-    protected void cacheCaptchaCode(String key, String code) {
-        RedisUtils.setCacheObject(key, code, Duration.ofMinutes(Constants.CAPTCHA_EXPIRATION));
+    /** 获取本次验证码的单一业务时刻，测试可固定该时刻以验证截止边界。 */
+    protected Instant captchaNow() { return Instant.now(); }
+
+    /**
+     * 只按命令携带的绝对截止缓存验证码，不在异步提交后重新计时。
+     * @param key 缓存键
+     * @param code 本次验证码
+     * @param deadline 与通知命令相同的绝对截止
+     * @return Redis 时钟判定仍有效且原子写入时为 true
+     */
+    protected boolean cacheCaptchaCode(String key, String code, Instant deadline) {
+        return RedisUtils.setCacheObjectUntil(key, code, deadline);
     }
 
     /**

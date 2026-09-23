@@ -20,6 +20,8 @@ notificationService.submit(new NotificationCommand(
 
 人工重试以 URL/命令中的通知主键定位 Intent；指定 `deliveryId` 只能重排该 Intent 所属的投递，取消始终作用整个通知。当前不保存独立的人工重试幂等结果，非空 retry `idempotencyKey` 明确拒绝；重复空键请求由当前状态和 Outbox 行 CAS 得到零排队结果。`RetryReceipt.queuedCount` 是本次实际重排数，零时返回持久聚合状态，不写伪 QUEUED。只有有剩余预算、无活租约且可证明尚未调用供应商的固定本地失败可以复用原 DONE Outbox；外部 UNKNOWN/WAITING_RECEIPT、旧泛 FAILED、已受理和预算耗尽均不可凭人工请求清零次数、删除 Redis 键或重新发送。IN_APP 历史 UNKNOWN 仅在同 Intent、原消息/本人关系可由原子幂等路径核对、单一无租约任务和剩余预算时复用原 WAITING_RECEIPT；再次完成仅对新关系登记提交后提示。
 
+通知 `scheduledAt` 按持久化秒精度向上归整，`expiresAt` 向下归整；提交与人工重试使用原 Intent 的绝对截止，数据库时间达到截止即拒绝新投递。过期 READY 仍由 Worker 领取以便短事务终结，不在领取 SQL 中过滤。新建外部 Outbox 的内部未外呼标记仅在首次 READY/零结果且本次由 READY 领取时可证明未发送；重领 PROCESSING、旧无标记、已进入 Provider 或结果不明都不得伪写 `NOTIFICATION_EXPIRED`，而应留待核对。IN_APP 依据同事务消息与本人关系事实收敛；外部请求一旦进入 Provider，截止时间不能抹掉真实受理或未知结果。验证码命令和缓存共用一次生成的绝对截止，缓存通过 `RedisUtils.setCacheObjectUntil` 原子写入，不在提交后重启相对 TTL；PersonRebind 安全告知不是验证码，不套用其两分钟期限。
+
 ## 目标与渠道
 
 - `recipientType=ALL`：发布时解析当前正常且未删除用户，不把全量用户加载到前端。

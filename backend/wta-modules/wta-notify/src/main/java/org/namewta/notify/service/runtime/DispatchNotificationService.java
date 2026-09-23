@@ -69,6 +69,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
     public void dispatch(NotifyOutbox outbox) {
         NotifyOutbox leased = dao.outbox(outbox.getOutboxId());
         if (!leaseActive(leased, outbox)) return;
+        leased.setClaimedFromReady(outbox.getClaimedFromReady());
         outbox = leased;
         NotifyIntent intent = dao.intent(outbox.getIntentId());
         NotifyDelivery delivery = dao.delivery(outbox.getDeliveryId());
@@ -77,6 +78,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             return;
         }
         if (!renewLease(outbox)) return;
+        if (!resultPort.deadlineGate(outbox)) return;
         RouteDecision route = routeDecision(intent, delivery);
         if (route == RouteDecision.SKIP) {
             resultPort.settle(outbox, Disposition.SKIP);
@@ -95,6 +97,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         String errorCode = null;
         String errorMessage = null;
         boolean smsClientEntered = false;
+        boolean deadlineGateInProgress = false;
         try {
             NotifySendPlanner.Plan plan = planChannel(intent, delivery);
             if (!plan.ok()) {
@@ -114,6 +117,9 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                         ? NotifyAuditPolicy.REDACT_SENSITIVE : NotifyAuditPolicy.FULL)
                     .idempotencyKey(String.valueOf(delivery.getDeliveryId()))
                     .build();
+                deadlineGateInProgress = true;
+                if (!resultPort.deadlineGate(outbox)) return;
+                deadlineGateInProgress = false;
                 smsClientEntered = NotificationChannel.SMS.name().equals(delivery.getChannel());
                 result = notifyClient.send(request);
                 ProviderOutcome outcome = providerOutcome(result, delivery);
@@ -121,11 +127,13 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorMessage = outcome.errorMessage();
             }
         } catch (NotifyDeliveryException exception) {
+            if (deadlineGateInProgress) throw exception;
             result = exception.result();
             ProviderOutcome outcome = providerOutcome(result, delivery);
             errorCode = outcome.errorCode();
             errorMessage = outcome.errorMessage();
         } catch (NotifyValidationException exception) {
+            if (deadlineGateInProgress) throw exception;
             if (NotificationChannel.SMS.name().equals(delivery.getChannel())) {
                 delivery.setStatus("FAILED");
                 errorCode = "SMS_LOCAL_VALIDATION_" + safeValidationCode(exception.code());
@@ -136,6 +144,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorMessage = "供应商调用结果未知";
             }
         } catch (NotifyIdempotencyUnavailableException exception) {
+            if (deadlineGateInProgress) throw exception;
             if (NotificationChannel.SMS.name().equals(delivery.getChannel())
                 && "ACQUIRE".equals(exception.phase())) {
                 // 幂等占位读取失败发生在供应商调用前，可走现有有界 Outbox 重试。
@@ -149,6 +158,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorMessage = "供应商调用结果未知";
             }
         } catch (RuntimeException exception) {
+            if (deadlineGateInProgress) throw exception;
             if (NotificationChannel.SMS.name().equals(delivery.getChannel()) && !smsClientEntered) {
                 // 尚未进入 NotifyClient，供应商必定未被调用；保留有界 Outbox 重试。
                 delivery.setStatus("FAILED");

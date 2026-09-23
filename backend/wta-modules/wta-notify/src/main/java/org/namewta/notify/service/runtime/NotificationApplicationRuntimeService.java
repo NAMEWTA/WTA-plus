@@ -21,6 +21,7 @@ import org.springframework.dao.DuplicateKeyException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ public class NotificationApplicationRuntimeService {
         validate(command);
         NotifyIntent duplicated = findDuplicate(command);
         if (duplicated != null) {
+            requireUnexpired(duplicated);
             return receipt(duplicated, dao.deliveries(duplicated.getIntentId()));
         }
 
@@ -71,8 +73,8 @@ public class NotificationApplicationRuntimeService {
         intent.setStrategy(command.strategy().name());
         intent.setMode(command.mode().name());
         intent.setPriority(command.priority());
-        intent.setScheduledAt(toLocal(command.scheduledAt()));
-        intent.setExpiresAt(toLocal(command.expiresAt()));
+        intent.setScheduledAt(toLocal(ceilSecond(command.scheduledAt())));
+        intent.setExpiresAt(toLocal(floorSecond(command.expiresAt())));
         intent.setIdempotencyKey(command.idempotencyKey());
         intent.setStatus(NotificationStatus.QUEUED.name());
         intent.setTitleSnapshot(stringValue(command.templateParams(), "title", command.templateCode()));
@@ -80,11 +82,14 @@ public class NotificationApplicationRuntimeService {
         intent.setPathSnapshot(stringValue(command.templateParams(), "path", null));
         intent.setMetadataJson(JsonUtils.toJsonString(command.metadata()));
         intent.setVersion(0);
+        // 解析收件人/配置可能耗时，提交前再用数据库时钟核对同一持久截止。
+        requireUnexpired(intent);
         try {
             dao.insert(intent);
         } catch (DuplicateKeyException duplicate) {
             NotifyIntent existing = findDuplicate(command);
             if (existing != null) {
+                requireUnexpired(existing);
                 return receipt(existing, dao.deliveries(existing.getIntentId()));
             }
             throw duplicate;
@@ -94,7 +99,7 @@ public class NotificationApplicationRuntimeService {
         List<NotifyOutbox> outboxes = new ArrayList<>();
         // 秒精度列可能向上舍入；立即任务取数据库当前整秒，保证提交后的首次 wake 已可 claim。
         LocalDateTime availableAt = command.scheduledAt() == null
-            ? dao.databaseNow().withNano(0) : toLocal(command.scheduledAt());
+            ? dao.databaseNow().withNano(0) : intent.getScheduledAt();
         for (ResolvedRecipient user : users) {
             NotifyRecipient recipient = new NotifyRecipient();
             recipient.setRecipientId(IdGeneratorUtil.nextLongId());
@@ -138,6 +143,9 @@ public class NotificationApplicationRuntimeService {
                 outbox.setAttemptCount(0);
                 outbox.setNextAttemptAt(outbox.getAvailableAt());
                 outbox.setMaxAttempts(5);
+                if (channel != NotificationChannel.IN_APP) {
+                    outbox.setLastErrorCode(NotifyOutbox.DEADLINE_UNSENT_READY);
+                }
                 dao.insert(outbox);
                 outboxes.add(outbox);
             }
@@ -179,6 +187,7 @@ public class NotificationApplicationRuntimeService {
         if (intent == null) {
             throw new ServiceException("通知不存在");
         }
+        requireUnexpired(intent);
         // 先按不可变归属读取 ID，再按 Intent→Outbox→Delivery 锁序取得当前行；不能先锁 Delivery。
         if (deliveryId != null) {
             NotifyDelivery selected = dao.delivery(deliveryId);
@@ -325,9 +334,15 @@ public class NotificationApplicationRuntimeService {
                 throw new ServiceException("用户编号必须为正整数");
             }
         }
-        if (command.expiresAt() != null && command.scheduledAt() != null
-            && command.expiresAt().isBefore(command.scheduledAt())) {
-            throw new ServiceException("通知截止时间不能早于计划时间");
+        Instant expiresAt = floorSecond(command.expiresAt());
+        Instant scheduledAt = ceilSecond(command.scheduledAt());
+        if (expiresAt != null) {
+            if (scheduledAt != null && !expiresAt.isAfter(scheduledAt)) {
+                throw new ServiceException("通知截止时间必须晚于计划时间");
+            }
+            if (!toLocal(expiresAt).isAfter(dao.databaseNow())) {
+                throw new ServiceException("通知已过截止时间");
+            }
         }
     }
 
@@ -405,6 +420,20 @@ public class NotificationApplicationRuntimeService {
         return value == null ? fallback : String.valueOf(value);
     }
     private LocalDateTime toLocal(Instant value) { return value == null ? null : LocalDateTime.ofInstant(value, ZoneOffset.UTC); }
+    /** 按数据库 datetime 秒精度向下取截止，避免截断后实际发晚于声明截止。 */
+    private Instant floorSecond(Instant value) { return value == null ? null : value.truncatedTo(ChronoUnit.SECONDS); }
+    /** 按数据库 datetime 秒精度向上取计划时间，避免任务比声明时间早领取。 */
+    private Instant ceilSecond(Instant value) {
+        if (value == null) return null;
+        Instant floor = floorSecond(value);
+        return value.equals(floor) ? floor : floor.plusSeconds(1);
+    }
+    /** 复用持久原截止并以数据库时钟判断，重复提交和人工重试均不得续期。 */
+    private void requireUnexpired(NotifyIntent intent) {
+        if (intent.getExpiresAt() != null && !intent.getExpiresAt().isAfter(dao.databaseNow())) {
+            throw new ServiceException("通知已过截止时间");
+        }
+    }
     private Instant parseTime(java.time.LocalDateTime value) {
         return value == null ? null : value.toInstant(ZoneOffset.UTC);
     }

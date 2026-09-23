@@ -34,6 +34,7 @@ public class NotifyOutboxClaimService {
             String token = UUID.randomUUID().toString();
             if (dao.claimOutbox(outbox.getOutboxId(), owner, token, leaseUntil, nowUtc,
                 outbox.getDeliveryId() != null && "IN_APP".equals(channels.get(outbox.getDeliveryId()))) != 1) return false;
+            outbox.setClaimedFromReady("READY".equals(outbox.getStatus()));
             outbox.setStatus("PROCESSING");
             outbox.setLeaseOwner(owner);
             outbox.setLeaseToken(token);

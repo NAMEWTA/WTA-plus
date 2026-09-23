@@ -1,7 +1,9 @@
 package org.namewta.notify.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.namewta.common.mybatis.core.domain.BaseEntity;
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @TableName("notify_outbox")
 public class NotifyOutbox extends BaseEntity {
+    /** 仅新建且确定未进外部 Provider 的任务持有；一旦写回结果不可恢复此标记。 */
+    public static final String DEADLINE_UNSENT_READY = "DEADLINE_UNSENT_READY";
     @TableId private Long outboxId;
     private Long intentId;
     private Long deliveryId;
@@ -27,7 +31,11 @@ public class NotifyOutbox extends BaseEntity {
     /** 每次领取生成的 fencing token，防止过期 Worker 覆盖新 Worker 的状态。 */
     private String leaseToken;
     private Integer maxAttempts;
-    /** IN_APP_ATTEMPT_RESERVED 仅是活租约的内部预留标记，新租约领取时清除。 */
+    /** IN_APP_ATTEMPT_RESERVED 是预算预留；DEADLINE_UNSENT_READY 是新外部任务的未外呼证据。 */
     private String lastErrorCode;
     private String lastErrorMessage;
+    /** 领取前状态仅在本次内存对象携带，绝不持久化或公开序列化。 */
+    @JsonIgnore
+    @TableField(exist = false)
+    private Boolean claimedFromReady;
 }

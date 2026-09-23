@@ -1,5 +1,7 @@
 package org.namewta.test.notify;
 
+import org.namewta.notify.domain.entity.NotifyOutbox;
+
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
@@ -577,7 +579,9 @@ class NotifySmsDispatchIntegrationTest {
         assertEquals(1, db.update("update notify_outbox set status='PROCESSING',lease_owner='owned-t35',"
             + "lease_token=?,lease_until=timestampadd(second,60,utc_timestamp()) where outbox_id=? and status='READY'",
             runId, outboxId));
-        dispatch.dispatch(dao.outbox(outboxId));
+        NotifyOutbox firstClaim = dao.outbox(outboxId);
+        firstClaim.setClaimedFromReady(true);
+        dispatch.dispatch(firstClaim);
     }
 
     private String idempotencyBucket(long intentId) {

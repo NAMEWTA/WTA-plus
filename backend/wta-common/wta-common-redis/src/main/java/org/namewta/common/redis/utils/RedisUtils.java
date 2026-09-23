@@ -7,6 +7,7 @@ import org.redisson.api.*;
 import org.redisson.api.options.KeysScanOptions;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -174,6 +175,33 @@ public class RedisUtils {
     public static <T> void setCacheObject(final String key, final T value, final Duration duration) {
         RBucket<T> bucket = CLIENT.getBucket(key);
         bucket.set(value, duration);
+    }
+
+    /**
+     * 以 Redis 时钟原子写入绝对截止的缓存；网络耗时不会重新延长有效期。
+     *
+     * @param key 缓存键
+     * @param value 缓存值
+     * @param deadline 绝对截止时刻
+     * @return 截止时刻尚未到达且已写入时为 true；已到期时为 false
+     * @throws IllegalArgumentException 截止时间超出 Redis Lua 可精确表示的毫秒范围
+     */
+    public static <T> boolean setCacheObjectUntil(final String key, final T value, final Instant deadline) {
+        Objects.requireNonNull(deadline, "deadline");
+        long epochMillis = deadline.toEpochMilli();
+        // Redis Lua 使用双精度数；拒绝超出精确整数范围的远期值，避免 PXAT 悄悄舍入。
+        if (epochMillis <= 0 || epochMillis > 9_007_199_254_740_991L) {
+            throw new IllegalArgumentException("缓存截止时间超出可精确表示范围");
+        }
+        RBucket<T> bucket = CLIENT.getBucket(key);
+        // VALUE 使用 bucket 的实际 codec；脚本只拼接已校验的十进制 long，不让 codec 编码 PXAT 参数。
+        String script = "local now = redis.call('TIME') "
+            + "local millis = now[1] * 1000 + math.floor(now[2] / 1000) "
+            + "if millis >= " + epochMillis + " then return 0 end "
+            + "redis.call('SET', KEYS[1], ARGV[1], 'PXAT', " + epochMillis + ") return 1";
+        Long written = CLIENT.getScript(bucket.getCodec()).eval(bucket.getName(), RScript.Mode.READ_WRITE,
+            script, RScript.ReturnType.LONG, List.of(bucket.getName()), value);
+        return Long.valueOf(1L).equals(written);
     }
 
     /**
