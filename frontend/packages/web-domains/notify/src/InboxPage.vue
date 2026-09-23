@@ -57,7 +57,7 @@
       <div v-if="detailLoading" role="status">正在加载详情…</div>
       <div v-else-if="detailError" role="alert">
         {{ detailError }}
-        <el-button link type="primary" @click="retryDetail">重试</el-button>
+        <el-button v-if="detailId" link type="primary" @click="retryDetail">重试</el-button>
       </div>
       <el-descriptions v-else-if="selected" :column="1" border>
         <el-descriptions-item label="标题">{{ selected.title || '通知' }}</el-descriptions-item>
@@ -69,7 +69,7 @@
         </el-descriptions-item>
       </el-descriptions>
       <template #footer>
-        <el-button v-if="selected?.path" type="primary" @click="openBusiness">查看业务</el-button>
+        <el-button v-if="businessTarget" type="primary" @click="openBusiness">查看业务</el-button>
         <el-button @click="detailVisible = false">关闭</el-button>
       </template>
     </el-dialog>
@@ -77,9 +77,9 @@
 </template>
 
 <script setup lang="ts">
-import type { NotifyInboxMessage } from '@namewta/domain-notify';
+import { inboxBusinessPath, inboxMessageId, type NotifyInboxMessage } from '@namewta/domain-notify';
 import { ElMessage } from 'element-plus';
-import { computed, onActivated, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, reactive, ref, watch } from 'vue';
 import type { NotifyWebRuntime } from './runtime';
 
 const { runtime } = defineProps<{ runtime: NotifyWebRuntime }>();
@@ -96,18 +96,25 @@ const detailVisible = ref(false);
 const detailLoading = ref(false);
 const detailError = ref('');
 const selected = ref<NotifyInboxMessage>();
+const detailId = ref<string>();
+const routeMessageId = ref<string>();
 const reading = reactive(new Set<string>());
 const sessionSnapshot = () => runtime.inboxSession?.snapshot() ?? { epoch: 0, active: false };
 const session = ref(sessionSnapshot());
 const canRead = computed(() => runtime.hasPermission('notify:inbox:read'));
+const businessTarget = computed(() => inboxBusinessPath(selected.value?.path, selected.value?.messageId,
+  routeMessageId.value));
 let mounted = false;
-let initialized = false;
+let pageActive = false;
 let generation = 0;
 let detailGeneration = 0;
+let routeGeneration = 0;
+let routeKey: string | undefined;
 let unsubscribe: (() => void) | undefined;
+let unsubscribeRoute: (() => void) | undefined;
 
 function owns(epoch: number) {
-  return mounted && session.value.epoch === epoch && sessionSnapshot().epoch === epoch;
+  return mounted && pageActive && session.value.epoch === epoch && sessionSnapshot().epoch === epoch;
 }
 
 function reset() {
@@ -123,6 +130,7 @@ function reset() {
   reading.clear();
   detailVisible.value = false;
   selected.value = undefined;
+  detailId.value = undefined;
   detailLoading.value = false;
   detailError.value = '';
 }
@@ -157,7 +165,6 @@ async function load() {
   } finally {
     if (owns(epoch) && request === generation) {
       loading.value = false;
-      initialized = true;
     }
   }
 }
@@ -166,6 +173,7 @@ function changePage(next: number) {
   ++detailGeneration;
   detailVisible.value = false;
   selected.value = undefined;
+  detailId.value = undefined;
   pageNum.value = next;
   rows.value = [];
   void load();
@@ -174,7 +182,7 @@ function changePage(next: number) {
 async function markRead(id: string | number) {
   const epoch = session.value.epoch;
   const key = epoch + ':' + id;
-  if (!session.value.active || !canRead.value || reading.has(key)) return;
+  if (!pageActive || !session.value.active || !canRead.value || reading.has(key)) return;
   reading.add(key);
   try {
     await runtime.service.inbox.read(id);
@@ -190,7 +198,7 @@ async function markRead(id: string | number) {
 
 async function readAll() {
   const epoch = session.value.epoch;
-  if (!session.value.active || !canRead.value || mutationLoading.value || !unreadTotal.value) return;
+  if (!pageActive || !session.value.active || !canRead.value || mutationLoading.value || !unreadTotal.value) return;
   mutationLoading.value = true;
   try {
     await runtime.service.inbox.readAll();
@@ -204,16 +212,19 @@ async function readAll() {
   }
 }
 
-async function openDetail(row: NotifyInboxMessage) {
+async function openDetail(row: NotifyInboxMessage | string) {
   const epoch = session.value.epoch;
-  if (!session.value.active) return;
+  if (!pageActive || !session.value.active) return;
   const request = ++detailGeneration;
-  selected.value = { ...row, content: undefined };
+  const id = typeof row === 'string' ? row : row.messageId;
+  detailId.value = id;
+  // 查询深链不在当前分页内，详情确认前不得展示未经本人关系校验的内容。
+  selected.value = typeof row === 'string' ? undefined : { ...row, content: undefined };
   detailVisible.value = true;
   detailLoading.value = true;
   detailError.value = '';
   try {
-    const response = await runtime.service.inbox.detail(row.messageId);
+    const response = await runtime.service.inbox.detail(id);
     if (!owns(epoch) || request !== detailGeneration || !detailVisible.value) return;
     selected.value = response.data;
   } catch (cause) {
@@ -224,46 +235,108 @@ async function openDetail(row: NotifyInboxMessage) {
   } finally {
     if (owns(epoch) && request === detailGeneration) detailLoading.value = false;
   }
-  if (canRead.value && !row.readTime) await markRead(row.messageId);
+  if (owns(epoch) && request === detailGeneration && detailVisible.value &&
+      canRead.value && !selected.value?.readTime) await markRead(id);
 }
 
 function retryDetail() {
-  const current = selected.value;
-  if (current) void openDetail(current);
+  const id = detailId.value;
+  if (id) void openDetail(id);
 }
 
 async function openBusiness() {
-  const path = selected.value?.path;
-  if (!path || !session.value.active) return;
+  const path = businessTarget.value;
+  if (!path || !pageActive || !session.value.active) return;
   detailVisible.value = false;
   await runtime.navigate(path);
+}
+
+function routeChanged(route: { active: boolean; messageId: unknown }) {
+  if (!mounted || !pageActive) return;
+  const id = route.active ? inboxMessageId(route.messageId) : undefined;
+  const malformed = route.active && route.messageId != null && id === undefined;
+  const nextKey = !route.active ? 'inactive' : malformed ? 'invalid' : `id:${id ?? ''}`;
+  if (routeKey === nextKey) return;
+  routeKey = nextKey;
+  ++detailGeneration;
+  detailVisible.value = false;
+  selected.value = undefined;
+  detailId.value = undefined;
+  routeMessageId.value = id;
+  detailLoading.value = false;
+  detailError.value = '';
+  if (!route.active || !session.value.active) return;
+  if (malformed) {
+    detailVisible.value = true;
+    detailError.value = '消息编号无效';
+  } else if (id) {
+    void openDetail(id);
+  }
+}
+
+async function readCurrentRoute() {
+  const request = ++routeGeneration;
+  if (!runtime.inboxRoute) return;
+  try {
+    const route = await runtime.inboxRoute.snapshot();
+    if (mounted && pageActive && request === routeGeneration) routeChanged(route);
+  } catch {
+    if (mounted && pageActive && request === routeGeneration) {
+      routeChanged({ active: false, messageId: undefined });
+    }
+  }
 }
 
 watch(sessionSnapshot, next => {
   if (next.epoch === session.value.epoch && next.active === session.value.active) return;
   session.value = next;
   reset();
-  if (mounted && next.active) void load();
+  routeKey = undefined;
+  if (mounted && pageActive && next.active) {
+    void load();
+    void readCurrentRoute();
+  }
 }, { flush: 'sync' });
 watch(detailVisible, visible => {
   if (!visible) {
     ++detailGeneration;
     selected.value = undefined;
+    detailId.value = undefined;
     detailLoading.value = false;
     detailError.value = '';
   }
 });
 onMounted(() => {
   mounted = true;
+  pageActive = true;
   void load();
   unsubscribe = runtime.subscribeInbox?.(() => void load());
+  unsubscribeRoute = runtime.inboxRoute?.subscribe(route => {
+    ++routeGeneration;
+    routeChanged(route);
+  });
+  void readCurrentRoute();
 });
 onActivated(() => {
-  if (initialized) void load();
+  if (!pageActive) {
+    pageActive = true;
+    routeKey = undefined;
+    void load();
+    void readCurrentRoute();
+  }
+});
+onDeactivated(() => {
+  pageActive = false;
+  ++routeGeneration;
+  routeKey = undefined;
+  reset();
 });
 onBeforeUnmount(() => {
   mounted = false;
+  pageActive = false;
+  ++routeGeneration;
   reset();
   unsubscribe?.();
+  unsubscribeRoute?.();
 });
 </script>

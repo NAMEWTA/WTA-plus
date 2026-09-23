@@ -14,17 +14,16 @@ import type {
   NotifyNoticeQuery,
   NotifySceneBinding
 } from './types';
+import { inboxMessageId } from './inbox/path';
 
 type ApiResponse<T> = { data: T; code?: number; msg?: string; error?: ApiErrorInfo };
 type InboxMessageWire = components['schemas']['NotifyInboxMessageVo'];
 type InboxPageWire = components['schemas']['NotifyInboxPageVo'];
 
 const inboxId = (value: string | number | undefined): string => {
-  if ((typeof value !== 'string' && (typeof value !== 'number' || !Number.isSafeInteger(value))) ||
-      !/^[1-9]\d*$/.test(String(value))) {
-    throw new Error('收件箱消息编号无效');
-  }
-  return String(value);
+  const id = inboxMessageId(value);
+  if (!id) throw new Error('收件箱消息编号无效');
+  return id;
 };
 
 const inboxMessage = (wire: InboxMessageWire): NotifyInboxMessage => ({

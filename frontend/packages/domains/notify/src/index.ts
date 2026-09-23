@@ -7,6 +7,7 @@ export const notifyDomainModule: DomainModule = Object.freeze({
 });
 
 export { createNotificationService } from './transport';
+export { inboxBusinessPath, inboxMessageId } from './inbox/path';
 export type {
   NotificationChannel,
   NotificationDelivery,

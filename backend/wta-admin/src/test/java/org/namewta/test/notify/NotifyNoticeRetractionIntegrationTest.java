@@ -419,6 +419,34 @@ class NotifyNoticeRetractionIntegrationTest {
     }
 
     @Test
+    void newlyCreatedExternalReadyTaskRetractedBeforeGateClosesWithoutProviderCall() {
+        bindOwnedMailAccount();
+        insertDraft(POSITIVE_NOTICE, "T40 external not yet sent", "[\"MAIL\"]");
+        notices.publish(POSITIVE_NOTICE);
+        NotifyIntent current = intent(POSITIVE_NOTICE);
+        assertThat(db.queryForObject("select last_error_code from notify_outbox where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo(NotifyOutbox.DEADLINE_UNSENT_READY);
+        AtomicInteger sends = new AtomicInteger();
+        NotifyClient provider = mock(NotifyClient.class);
+        when(provider.send(any(NotifyRequest.class))).thenAnswer(invocation -> {
+            sends.incrementAndGet();
+            throw new AssertionError("retracted READY external task must not enter Provider");
+        });
+        NotifyOutbox lease = claimOne(current.getIntentId(), "t40-unsent-mail");
+        assertThat(lease.getClaimedFromReady()).isTrue();
+        assertThat(notices.retract(POSITIVE_NOTICE)).isEqualTo(1);
+        mailDispatcher(provider).dispatch(lease);
+        assertThat(sends.get()).isZero();
+        assertRetractedMetadata(current.getIntentId());
+        assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("CANCELLED");
+        assertThat(db.queryForObject("select status from notify_outbox where intent_id=?", String.class,
+            current.getIntentId())).isEqualTo("DONE");
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
+            current.getIntentId())).isZero();
+    }
+
+    @Test
     void oldLeaseOwnerCannotSettleRetractedNoticeAfterRealReclaim() {
         insertDraft(POSITIVE_NOTICE, "T40 stale owner");
         notices.publish(POSITIVE_NOTICE);
@@ -533,6 +561,10 @@ class NotifyNoticeRetractionIntegrationTest {
             current.getIntentId())).isEqualTo(expected);
         assertThat(db.queryForObject("select status from notify_attempt where intent_id=?", String.class,
             current.getIntentId())).isEqualTo(expected);
+        if ("ACCEPTED".equals(outcome)) {
+            assertThat(db.queryForObject("select provider_message_id from notify_delivery where intent_id=?",
+                String.class, current.getIntentId())).isEqualTo("owned-result");
+        }
         assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class,
             current.getIntentId())).isEqualTo(1);
         assertRetractedMetadata(current.getIntentId());

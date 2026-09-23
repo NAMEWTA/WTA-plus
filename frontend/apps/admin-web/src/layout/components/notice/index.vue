@@ -52,7 +52,7 @@
         </el-descriptions-item>
       </el-descriptions>
       <template #footer>
-        <el-button v-if="selectedNews?.path" type="primary" @click="openNewsPath">查看业务</el-button>
+        <el-button v-if="businessTarget" type="primary" @click="openNewsPath">查看业务</el-button>
         <el-button @click="detailVisible = false">关闭</el-button>
       </template>
     </el-dialog>
@@ -61,6 +61,7 @@
 
 <script setup lang="ts" name="layoutBreadcrumbUserNews">
 import { ElMessage } from 'element-plus';
+import { inboxBusinessPath } from '@namewta/domain-notify';
 import { createAdminAccessEvaluator } from '@/application/access';
 import { notificationService } from '@/application/services';
 import { getToken } from '@/application/session';
@@ -81,6 +82,7 @@ const state = reactive({
 const activeTab = ref<string>('all');
 const detailVisible = ref(false);
 const selectedNews = ref<NoticeItem>();
+const businessTarget = computed(() => inboxBusinessPath(selectedNews.value?.path, selectedNews.value?.messageId));
 const detailLoading = ref(false);
 const detailError = ref('');
 const unreadCount = computed(() => noticeStore.unreadCount);
@@ -203,7 +205,7 @@ const readAll = async () => {
 };
 
 const openNewsPath = async () => {
-  const path = selectedNews.value?.path;
+  const path = businessTarget.value;
   if (!path) return;
   detailVisible.value = false;
   await router.push(path);

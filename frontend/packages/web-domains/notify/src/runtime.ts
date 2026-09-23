@@ -18,6 +18,11 @@ export interface NotifyUserDirectory {
 export interface NotifyWebRuntime {
   /** 宿主提供不含令牌的会话代次；页面用它同步清理旧身份视图。 */
   inboxSession?: { snapshot: () => { epoch: number; active: boolean } };
+  /** 宿主拥有 Router；页面只接收当前 Inbox 的查询快照与解绑能力。 */
+  inboxRoute?: {
+    snapshot: () => Promise<{ active: boolean; messageId: unknown }>;
+    subscribe: (handler: (route: { active: boolean; messageId: unknown }) => void) => () => void;
+  };
   /** 宿主推送重连/到达时通知收件箱刷新；返回解绑函数。 */
   subscribeInbox?: (handler: () => void) => () => void;
   /** 收件箱已读状态变更后，请宿主同步消息盒子。 */

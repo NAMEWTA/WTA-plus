@@ -21,7 +21,7 @@ import { createLiveSystemDictRefs, createSystemWebDomain, type SystemWebRuntime 
 import { createLiveWorkflowDictRefs, createWorkflowWebDomain } from '@namewta/web-domain-workflow';
 import { createThirdWebDomain, type ThirdWebRuntime } from '@namewta/web-domain-third';
 import { getActivePinia } from 'pinia';
-import { defineAsyncComponent, defineComponent, h, type Component } from 'vue';
+import { defineAsyncComponent, defineComponent, h, watch, type Component } from 'vue';
 import { createAdminAccessEvaluator } from '@/application/access';
 import {
   demoService,
@@ -297,6 +297,26 @@ const notifyManifest = createNotifyWebDomain({
         inboxIdentityLoaded = loaded;
       }
       return { epoch: inboxSessionEpoch, active: Boolean(token && loaded && userId && !inboxSessionSuspended) };
+    }
+  },
+  inboxRoute: {
+    snapshot: async () => {
+      const { default: router } = await import('@/router');
+      const route = router.currentRoute.value;
+      return { active: route.path === '/notify/inbox', messageId: route.query.messageId };
+    },
+    subscribe: handler => {
+      let live = true;
+      let stop: (() => void) | undefined;
+      void import('@/router').then(({ default: router }) => {
+        if (!live) return;
+        stop = watch(() => router.currentRoute.value.fullPath, () => {
+          if (!live) return;
+          const route = router.currentRoute.value;
+          handler({ active: route.path === '/notify/inbox', messageId: route.query.messageId });
+        }, { immediate: true, flush: 'sync' });
+      }).catch(() => { if (live) handler({ active: false, messageId: undefined }); });
+      return () => { live = false; stop?.(); };
     }
   },
   subscribeInbox: handler => {

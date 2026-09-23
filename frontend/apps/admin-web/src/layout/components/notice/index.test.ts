@@ -31,6 +31,7 @@ type HostNode = { parent?: HostNode; children: HostNode[] };
 type NoticeState = {
   onNewsClick(item: { messageId: string; title: string; message: string; read: boolean; time: string }): Promise<void>;
   readAll(): Promise<void>;
+  openNewsPath(): Promise<void>;
   state: { loading: boolean };
   canRead: boolean;
   detailVisible: boolean;
@@ -136,5 +137,17 @@ describe('顶部消息盒子详情隔离', () => {
     resolve();
     await oldRead;
     expect(refreshMessageInbox).not.toHaveBeenCalled();
+  });
+
+  it('旧公告管理链接只按已授权消息ID打开本人收件箱，新深链保持本人目标', async () => {
+    const f = fixture();
+    harness.detail.mockResolvedValueOnce({ data: { content: '本人正文', path: '/notify/notice?noticeId=88' } });
+    await f.state.onNewsClick({ messageId: '41', title: '本人公告', message: '摘要', read: true, time: '' });
+    await f.state.openNewsPath();
+    expect(harness.push).toHaveBeenLastCalledWith('/notify/inbox?messageId=41');
+    harness.detail.mockResolvedValueOnce({ data: { content: '新正文', path: '/notify/inbox?messageId=42' } });
+    await f.state.onNewsClick({ messageId: '42', title: '新公告', message: '摘要', read: true, time: '' });
+    await f.state.openNewsPath();
+    expect(harness.push).toHaveBeenLastCalledWith('/notify/inbox?messageId=42');
   });
 });

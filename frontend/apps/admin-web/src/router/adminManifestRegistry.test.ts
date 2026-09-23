@@ -1,11 +1,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { adminProfileWebRuntime, adminSystemWebRuntime, resolveAdminWebRegistration } from './adminManifestRegistry';
 
 const inboxHost = vi.hoisted(() => ({
   user: { token: '', sessionGeneration: 0, userId: '', identityLoaded: false },
-  session: undefined as undefined | { snapshot: () => { epoch: number; active: boolean } }
+  session: undefined as undefined | { snapshot: () => { epoch: number; active: boolean } },
+  routePort: undefined as undefined | {
+    snapshot: () => Promise<{ active: boolean; messageId: unknown }>;
+    subscribe: (handler: (value: { active: boolean; messageId: unknown }) => void) => () => void;
+  },
+  route: undefined as unknown
 }));
+vi.mock('@/router', () => ({ default: { get currentRoute() { return inboxHost.route; } } }));
 vi.mock('@/store/modules/user', () => ({
   useUserStore: () => inboxHost.user
 }));
@@ -15,6 +21,7 @@ vi.mock('@namewta/web-domain-notify', async importOriginal => {
     ...actual,
     createNotifyWebDomain: (runtime: Parameters<typeof actual.createNotifyWebDomain>[0]) => {
       inboxHost.session = runtime.inboxSession;
+      inboxHost.routePort = runtime.inboxRoute;
       return actual.createNotifyWebDomain(runtime);
     }
   };
@@ -70,6 +77,31 @@ vi.mock('@/application/access', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 describe('admin selected manifest registry', () => {
+  it('owns lazy inbox route snapshots, same-page updates and cancellation before import resolves', async () => {
+    const port = inboxHost.routePort;
+    expect(port).toBeDefined();
+    const route = ref({ path: '/notify/inbox', fullPath: '/notify/inbox?messageId=41',
+      query: { messageId: '41' as unknown } });
+    inboxHost.route = route;
+    const cancelled = vi.fn();
+    const stopBeforeImport = port!.subscribe(cancelled);
+    stopBeforeImport();
+    const snapshots: Array<{ active: boolean; messageId: unknown }> = [];
+    const stop = port!.subscribe(value => snapshots.push(value));
+    await vi.waitFor(() => expect(snapshots).toEqual([{ active: true, messageId: '41' }]));
+    expect(cancelled).not.toHaveBeenCalled();
+    expect(await port!.snapshot()).toEqual({ active: true, messageId: '41' });
+    route.value = { path: '/notify/inbox', fullPath: '/notify/inbox?messageId=42', query: { messageId: '42' } };
+    await vi.waitFor(() => expect(snapshots.at(-1)).toEqual({ active: true, messageId: '42' }));
+    route.value = { path: '/notify/notice', fullPath: '/notify/notice?noticeId=9',
+      query: { messageId: undefined } };
+    await vi.waitFor(() => expect(snapshots.at(-1)).toEqual({ active: false, messageId: undefined }));
+    const count = snapshots.length;
+    stop();
+    route.value = { path: '/notify/inbox', fullPath: '/notify/inbox?messageId=43', query: { messageId: '43' } };
+    expect(snapshots).toHaveLength(count);
+  });
+
   it('uses the real Admin inbox host session epoch across pending logout and the next identity', () => {
     const session = inboxHost.session;
     expect(session).toBeDefined();

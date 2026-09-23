@@ -377,6 +377,8 @@ async function runAction(row: NotifyNotice, action: 'publish' | 'retract' | 'rem
   const message =
     action === 'publish'
       ? `确认发布“${row.noticeTitle}”？渠道：${channelLabel(row.channels)}；发送对象：${targetLabel(row)}。实际发送时将过滤停用、删除或不存在的用户。`
+      : action === 'retract'
+        ? `确认撤回“${row.noticeTitle}”？仅停止此发布版本尚未开始发送的投递；已受理、结果未知或已送达的消息无法追回。`
       : `确认${label}“${row.noticeTitle}”？`;
   try {
     await ElMessageBox.confirm(message, `${label}确认`, {
