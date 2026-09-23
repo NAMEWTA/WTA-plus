@@ -1,5 +1,7 @@
 # 恢复入口
 
+当前revision172：12done/2cancelled/36ready；T50最终84ce0a9已验收。无产品writer，下一T41；/tmp/wta-t41-implementation-design.md及real-environment-outline.md为只读准备。以下历史保持原时点。
+
 当前revision168：11done/2cancelled/37ready；T39已在6e1d7f8验收。无产品writer，下一T50；/tmp/wta-t50-implementation-outline.md仅只读实施输入。以下旧记录保持原时点。
 
 当前revision166：10done/2cancelled/38ready，T38已验收a3b289e；无产品writer，下一T39。预研/tmp/wta-t39-implementation-outline.md与/tmp/wta-t50-current-audit.md仅实施输入；以下旧状态保留。
@@ -194,3 +196,7 @@ Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_pr
 ## revision171 — T50恢复
 
 Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but exact-clean gate failed during overlapping Vite build. Lead review and new Dispatch02 saved before reset0; serial-only recovery, no relaxed checks. API README provenance correction is within existing directory scope. 11done/2cancelled/T50in_progress/36ready; Goal active.
+
+## revision172 — T50完成
+
+Revision172: T50 accepted at84ce0a9/treec118348; prior batch3 retained and Lead-reviewed recovery batch1 real135 zeroSkip/source-clean/owned cleanup passed. A3 default870 executed/197skip/full/live and B frontend736/core reused only for identical inputs; C static+OpenAPI check passed.37 paths within17 scope entries;12done/2cancelled/36ready. NextT41; Goal active, no production queue action/deployment/archive.

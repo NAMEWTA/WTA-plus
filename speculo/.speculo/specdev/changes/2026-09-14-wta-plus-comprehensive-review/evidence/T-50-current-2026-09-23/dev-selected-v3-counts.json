@@ -1,0 +1,772 @@
+{
+  "command_record": "dev-selected-v3.json",
+  "head": "79c293edea254c83b38b941c225f56f528b830fd",
+  "fresh_classes": 14,
+  "counts": {
+    "tests": 96,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 16
+  },
+  "classes": [
+    {
+      "classname": "org.namewta.test.notify.NotificationModeOpenApiTest",
+      "path": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotificationModeOpenApiTest.xml",
+      "sha256": "64c4eebd9def2bf32f276a24dc0e26172763993ad67c94f0d14a3b6ae92d28ba",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "publicSchemaOnlyOffersTheImplementedQueuedMode",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.test.notify.NotifySupportedModeIntegrationTest",
+      "path": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+      "sha256": "e482be1ddf9e266a39b77a1a877f54e9abec00f2d4757ceba9753cf9f7d62ad2",
+      "counts": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 16
+      },
+      "methods": [
+        {
+          "name": "invalidDuplicateSubmissionRejectsBeforeReadingOriginalReceiptOrWritingRows",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "inAppOrphanIsLocalFailureAndEmptyTaskConsumesNoBudget",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedClosurePreservesOtherAcceptedAndUnknownDeliveryFacts",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "loopbackHttpEnforcesSubmitPermissionAndSupportedValuesBeforeAnyWrite",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "oldOrderedWaitClosesWithoutProviderOrRepeatedReady(String)",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "reclaimedProcessingRetainsT39UncertaintyBeforeUnsupportedClassification",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedHistoricalOwnerMustNotSettleAfterLosingItsFence(String)",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "supportedSubmissionStillPersistsPriorityZeroAndOriginalDeadline",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "oldModeOrPriorityWithNewProofTerminatesWithoutIOMigration(String)",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "failedFinalAggregateWriteRollsBackDeliveryAndOutboxSettlement",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "deadlineRemainsPriorToUnsupportedDisposition",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedRetryRejectsPreviouslySafeLocalFailureWithoutWake",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "markerlessReadyCannotProveNoHistoricalProviderCall",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "terminalDeliveryKeepsAcceptedFactWhenOldOutboxIsClosed",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "syncJsonStringIsRejectedByHttpBindingWithoutAWrite",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "existingInAppRecipientRecoversDeliveryWithoutDuplicateMessageOrPush",
+          "skipped": true,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.test.notify.caller.AuthNotifyCallerUnitTest",
+      "path": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.AuthNotifyCallerUnitTest.xml",
+      "sha256": "960df9abeeef3aa68a54df3a3e375494dcb93a9dd2edc24facc7696bae80996d",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "successfulLoginEnqueuesSupportedModeForTheLoggedInUser",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest",
+      "path": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest.xml",
+      "sha256": "180718f7b18ec7b4bf2beed71f08b96a120589db492a1c302f0f266750bac076",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "twoCodesInSameMinuteHaveDifferentIdempotencyKeys",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "emailCaptchaUsesNotifyClientAndCachesAfterQueuedSubmission",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "smsCaptchaReturnsFailureAndDoesNotCacheWhenSubmissionFails",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "redisFailureCannotProduceSuccessfulSmsCaptcha",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "delayedSubmitCannotCacheSmsBeyondOriginalDeadline",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "smsCaptchaUsesTemplateSnapshotAndCachesAfterQueuedSubmission",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "redisFailureCannotProduceSuccessfulEmailCaptcha",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "delayedSubmitCannotCacheEmailBeyondOriginalDeadline",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "emailCaptchaDoesNotCacheWhenNotificationFails",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "path": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+      "sha256": "b12d07f5bbd9da2cd0737181de5c0194d09066f4d74a85aa2e119886664efb15",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "websocketDemoKeepsRecipientSelectionWithSupportedPriority",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "mailDemoUsesOssIdsForAttachmentSnapshots",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "smsDemoUsesExplicitProviderAndCompleteTemplateSnapshot",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest",
+      "path": "backend/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest.xml",
+      "sha256": "33b3e94351a55157db3f23809bdb93ee5eef82e0153ce51aec2c2ca6b06f95c2",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "providerFailureDoesNotBreakWorkflowSideEffect",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "resolvesUserEmailAndPhoneTargetsWithoutClientScope",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest",
+      "path": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest.xml",
+      "sha256": "c2ea3dbd697e1a595d96ead5e053f231deab37191e39cabbd1f76aaea17225cc",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "redisPublishFailureDoesNotEscapeAfterCommit",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "interruptedPublishPreservesInterruptAndCancelsPendingOperation",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "submitDoesNotPublishWakeUntilTransactionCommits",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "doesNotPublishOnRedisUntilDynamicDatasourceTransactionCommits",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "retryDoesNotPublishWakeUntilTransactionCommits",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "listenerUsesExplicitAfterCommitPhase",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "stalledRedisPublishIsBoundedAndCancelled",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "cancelDoesNotRequestWake",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "committingThreadDoesNotWaitForLocalProvider",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "wakePayloadOmitsPiiBodyAndSecret",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.notify.service.NotifyNoticePublisherServiceTest",
+      "path": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyNoticePublisherServiceTest.xml",
+      "sha256": "a35ce281054b6f286dacdf00bd7ca0b17620d53e29603aef82878c4daa692101",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "userTypeWithoutResolvedUsersFailsBeforeSnapshotOrSubmit",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "userAudienceUsesAuthorizedUsersAndAllKeepsEmptyRecipientIds",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.notify.service.NotifyTestSendServiceTest",
+      "path": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyTestSendServiceTest.xml",
+      "sha256": "e0236e9715fe42f43dd5190557bef0953ca76abc82497992e91a76c8beba9d8b",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "disabledAccountTestSendFailsClosed",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unboundTemplateTestSendFailsClosed",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "templateTestSendSubmitsSceneVariablesWithoutProviderKey",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+      "path": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.DispatchNotificationServiceTest.xml",
+      "sha256": "2f28c1db3e32184fe585d358e38916b8906872d1645d7eab7eede21d703d30dc",
+      "counts": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "secondSendWithinAccountMinuteCapFailsClosed",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "captchaSmsTraversesRealDispatcherAndAdapterWithSafeSnapshot",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "inAppUsesReservedBudgetAndCommitsOneLocalResult",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "recipientMinuteCapIsIsolatedByScene",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "inAppPortFailureClosesLocallyWithoutWaitingForSupplierReceipt",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "boundMailUsesRenderedTemplateNotCallerSnapshots",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unboundSmsFailsClosedWithoutProviderSend",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "overlongLegacyPathClosesBeforeInAppBudgetAndPersist",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "failedResultCallDoesNotClearAnExistingAfterCommitCallback",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "arbitraryValidationCodeCannotPersistNumericCanary",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "exactDatabaseDeadlineBlocksProviderButEarlierTimeStillAllowsIt",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "realDispatcherIdempotencyCompleteFailureWaitsAfterSupplier",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "boundSmsUsesVendorTemplateOnBoundAccountOnly",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "exhaustedInAppBudgetClosesWithoutPersistOrAttempt",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "dispatcherLocalValidationClosesOutboxWithoutRetry",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "sameInAppLeaseCannotReserveTwiceOrExhaustItsOwnLastSlot",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "laterLayerFailureDoesNotLeakAccountQuota",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unboundMailFailsClosedWithoutProviderSend",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "disabledAccountFailsClosedWithoutProviderSend",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "smsQuotaFailureBeforeClientIsRetryableWithoutProviderCall",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "realDispatcherIdempotencyAcquireFailureRetriesBeforeSupplier",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "noticePublishedMailRendersWrapperNotCallerSnapshot",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "failedResultCallDoesNotClearAnActiveCallerTransaction",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest",
+      "path": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest.xml",
+      "sha256": "b902e28458155041ef6d18fe90fd73f2c640ed901df793fc3283cd2f64f0b31b",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "slowPreparationCannotInsertAlreadyExpiredIntent",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest",
+      "path": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest.xml",
+      "sha256": "3f64bb089f64caf90b7b0e53184e4aee09e25771f2a439f65dd5ed3c6733b381",
+      "counts": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "retryRejectsUnsupportedHistoricalIntentBeforeCandidateScan",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[1]",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[2]",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[3]",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[4]",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[5]",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "supportedDuplicateStillReturnsTheOriginalReceipt",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest",
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest.xml",
+      "sha256": "51b579fc881d827e53b302a229b84375fa8173cd53fd22db26d6be1114dde58f",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "matchingOtpCannotOverrideTheServerSideTransferAssociation",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "consumeRaceRollsBackInsteadOfReportingASecondTransfer",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "returnsTheSameMinimalResultWhenTheThreeTargetFactorsDoNotMatch",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "recordsRedactedNotificationAssociationWithoutActivatingBeforeCommit",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "currentResponsibleCanUnbindWithoutWorkflowOrDeletion",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "failedNotificationRevokesTheChallengeAndAllowsResend",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "expiredCommittedChallengeDoesNotQueryNotifyOrVerifyOtp",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "invalidOrReplayedCodeNeverTouchesBindings",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "queuedNotificationCannotActivateOrConsumeTheChallenge",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "queuedNotifyCreatesAnUnactivatedChallengeInsteadOfRejectingSubmission",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "confirmsOnlyAfterEligibilityRecheckAndConsumesExactlyOnce",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "failedSmsNeverLeavesAConfirmableChallenge",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.profile.person.service.impl.PersonRebindNotificationTest",
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindNotificationTest.xml",
+      "sha256": "ae92523b0cc47aa7cd1678e6d02903b3eecbb273fb568ec6a9dedcda8f664c0e",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "sendsBothSafeChannelsWithoutIdentityOrNewAccountData",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "stagesRetryableAuditRowsBeforeAnyDelivery",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "defersDeliveryUntilDynamicDataSourceTransactionCommits",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "failedAuditCanBeRetriedWithoutReplayingTheBindingTransaction",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "bothChannelsRecordQueuedInsteadOfClaimingAcceptanceOrFailure",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "deliveryFailuresAreCapturedAndNeverEscapeTheAfterCommitListener",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    }
+  ],
+  "all_environment_tests_enabled": false
+}

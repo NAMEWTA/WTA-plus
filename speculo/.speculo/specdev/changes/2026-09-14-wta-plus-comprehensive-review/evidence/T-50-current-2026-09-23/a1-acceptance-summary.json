@@ -1,0 +1,26 @@
+{
+  "candidate": "A1",
+  "head": "9bb2e2888b5d2b0563beb7164c8c0a2165547e2c",
+  "tree": "071f854346faa03d2b0b1ceab5ba13f218fe59c7",
+  "source_before": {
+    "head": "9bb2e2888b5d2b0563beb7164c8c0a2165547e2c",
+    "tree": "071f854346faa03d2b0b1ceab5ba13f218fe59c7",
+    "clean": true
+  },
+  "source_after": {
+    "head": "9bb2e2888b5d2b0563beb7164c8c0a2165547e2c",
+    "tree": "071f854346faa03d2b0b1ceab5ba13f218fe59c7",
+    "clean": true
+  },
+  "result_path": "runs/35e14468040352c5/result.json",
+  "xml_manifest": "runs/35e14468040352c5/xml-manifest.json",
+  "counts": {
+    "tests": 135,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "acceptance": false,
+  "failure": "loopbackHttpEnforcesSubmitPermissionAndSupportedValuesBeforeAnyWrite line309 expected code200 got400 for omitted strategy/mode/primitive priority; root cause under review",
+  "cleanup_errors": []
+}

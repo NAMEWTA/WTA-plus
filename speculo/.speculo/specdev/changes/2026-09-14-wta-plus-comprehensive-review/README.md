@@ -1,8 +1,8 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal。当前revision171：11done、2cancelled、T50 in_progress、36ready。T50三次尝试后已完成Lead复盘并转独占串行验收，尚未关闭。
+用户已激活Goal，执行全部50票。当前revision172：12done、2cancelled（AC保留）、36ready。T50完成，下一T41；Goal active。
 
-最近T39 result `6e1d7f8e9f3d67495a361634779b7f7f050e68ab`：C2真实118零skip、默认861执行/181环境skip、full/core与适用门禁通过。C1三项失败原记录保留，整个change仍未完成。
+最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
 本轮重规划基线为 `1264980c74e594bc594e88561bb292fbe5d968a1`：保留原31票编号与历史实现，新增19票覆盖新报告18项，T-30承担全部AC的最终集成。G共识和设计选择已确认，无需再次确认；2026-09-23早期“仅规划、目标未激活”是已被后续授权替代的历史状态。
 

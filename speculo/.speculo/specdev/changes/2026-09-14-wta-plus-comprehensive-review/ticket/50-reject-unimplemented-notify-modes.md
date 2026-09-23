@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-50"
 title: "收缩未兑现通知模式并迁移现有调用方"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -120,13 +120,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-050`：所有仓内合法业务提交仍成功；非支持策略/模式/优先级在持久化前拒绝。
-- [ ] `AC-050`：生产调用无非零优先级，时效字段与业务幂等不丢失。
-- [ ] `AC-050`：存量未支持任务有只读清单与受控处置，无永久WAIT/未知外部重发。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-050`：所有仓内合法业务提交仍成功；非支持策略/模式/优先级在持久化前拒绝。
+- [x] `AC-050`：生产调用无非零优先级，时效字段与业务幂等不丢失。
+- [x] `AC-050`：存量未支持任务有只读清单与受控处置，无永久WAIT/未知外部重发。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -154,3 +154,7 @@ T39 result6e1d7f8已完成，当前base d544f02只增治理；保留其绝对截
 
 Revision171: T50 prior batch3 attempts retained; B real135 assertions passed but exact-clean gate failed during overlapping Vite build. Lead review and new Dispatch02 saved before reset0; serial-only recovery, no relaxed checks. API README provenance correction is within existing directory scope. 11done/2cancelled/T50in_progress/36ready; Goal active.
 详见evidence/T-50-recovery-2026-09-23.md与dispatch-T-50-20260923-02.md。
+
+## revision172 当前验收完成
+
+result `84ce0a9162dfc507fb4e8339575247477e57684f`，tree`c118348385489be74b55233508ae0b5f40a93ee1`；前批3次＋经Lead复盘后的恢复批1次，全部保留。C真实135零skip与clean/cleanup、C静态通过，A3默认/full/live及B前端736/core按输入等价复用，双轴审查通过；37路径均在预登记17项写集。详见evidence/T-50.md。下一T41，Goal保持active。

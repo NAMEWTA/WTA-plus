@@ -1,0 +1,37 @@
+{
+  "source": {
+    "head": "0b33ff361820249f947a2767674356dabab59774",
+    "tree": "f13b1dce91dd61a46115dd6acc3ca246dc87cc3f",
+    "clean": true
+  },
+  "raw_sha256": "2c12f7d5eeea5afc906577250a928f6d2d0e5e7bbd45a6e345dd6320bf32230c",
+  "required": [
+    "priority"
+  ],
+  "properties": {
+    "strategy": {
+      "type": "string",
+      "description": "编排策略；新提交仅支持 ALL，旧枚举值只用于读取历史事实",
+      "enum": [
+        "ALL",
+        "ORDERED_FALLBACK",
+        "ESCALATION"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "description": "执行模式；新提交仅支持 ASYNC",
+      "enum": [
+        "ASYNC"
+      ]
+    },
+    "priority": {
+      "type": "integer",
+      "format": "int32",
+      "description": "当前只支持 0，Worker 不按此字段排序；HTTP JSON 必须显式传入 0"
+    }
+  },
+  "paths": 436,
+  "schemas": 445,
+  "contract_check": "passed"
+}

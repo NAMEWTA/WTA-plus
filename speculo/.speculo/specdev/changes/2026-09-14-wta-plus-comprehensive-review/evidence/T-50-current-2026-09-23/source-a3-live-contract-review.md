@@ -1,0 +1,18 @@
+# T-50 Source A3 live OpenAPI contract review
+
+Verdict: **PASS for the fixed A3 live-capture contract**, with generated Source B and its later gates outside this review. The examined source is `0b33ff361820249f947a2767674356dabab59774` (tree `f13b1dce91dd61a46115dd6acc3ca246dc87cc3f`). This is a read-only review of retained evidence and raw HTTP bytes; I did not launch a service or rebuild the artifact.
+
+## Raw contract and A2 comparison
+
+- A3 raw HTTP 200 `application/json`: `/tmp/wta-t50/openapi-live/00926d62b78a715a/source.json`, 508,752 bytes, SHA-256 `2c12f7d5eeea5afc906577250a928f6d2d0e5e7bbd45a6e345dd6320bf32230c`. The retained file's computed size and SHA match `result.json`. It is OpenAPI 3.1.0 with 436 paths and 445 schemas; the capture recorded zero missing paths, operations, and schemas against its baseline. `POST /notify/notification` refers to `NotificationCommand`.
+- In A3 `components.schemas.NotificationCommand.required` is exactly `["priority"]`. Its priority description states `当前只支持 0，Worker 不按此字段排序；HTTP JSON 必须显式传入 0`. `strategy` and `mode` descriptions still state new submissions support only `ALL` and `ASYNC`, respectively; the old strategy enum values remain documented as historical read facts.
+- The A2 raw file `/tmp/wta-t50/openapi-live/63c7980e7727c426/source.json` has 508,695 bytes, 436 paths and 445 schemas, and **no** `NotificationCommand.required`. A recursive JSON value comparison found exactly three changed locations: `/components/schemas/NotificationCommand/required` added, `/components/schemas/NotificationCommand/properties/priority/description` changed, and `/servers/0/url` changed from the A2 owned localhost port to the A3 owned localhost port. The complete `paths` trees are equal. The server URL delta is expected for independently allocated loopback ports, not a product operation change.
+- This directly closes the A2 live-schema required-field gap. It does not assert that generated files in Source B already match the raw A3 response.
+
+## Build, source, and owned-resource provenance
+
+- `/tmp/wta-t50/a3-backend-default.json` and `a3-full-package.json` report exit 0. The default count record has 257 fresh classes, 1,067 tests, zero failures/errors, and 197 environment skips; therefore 870 tests executed. The full-bundle record also reports exit 0. These records are not a substitute for the later B candidate gates.
+- `/tmp/wta-t50/a3-full-package-proof.json` and `/tmp/wta-t50/artifacts/a3-full/manifest.json` agree on clean source A3 and the full JAR SHA-256 `eec4cc471f96a57ed94b2d8da604d56b86bcb88ee3c88a2709f78107d2876ebe`, size 214,178,449 bytes. I independently hashed the retained private `/tmp/wta-t50/artifacts/a3-full/wta-admin.jar`; it matches. The proof file hash `23f5ebcb3a73fe9a0ccd3571b330405d6e0cb4ae2b6f801d893072323224a00c` matches the capture's proof reference; the build-log hash also matches its retained log. Capture records identical JAR hash before and after.
+- Capture `result.json` records source head/tree clean and unchanged before and after, `init_exit_code=0`, `acceptance=true`, and exit 0. Its isolated database had 103 business tables and zero outboxes, claimable outboxes, accepted SMS, external deliveries, and enabled external accounts, avoiding supplier work. Cleanup records no live backend process-group members, no remaining owned container full IDs, both captured anonymous volumes absent, all four allocated loopback ports closed, and no errors. These are recorded cleanup facts; I did not independently query Docker.
+
+The final generated API snapshot, Source B diff, and Source B revalidation are pending a separate fixed-candidate review.

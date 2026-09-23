@@ -1,0 +1,16 @@
+{
+  "all_staged_check_exit": 2,
+  "diagnostic_lines": 4485,
+  "all_diagnostics_within_byte_preserved_raw_evidence": true,
+  "authored_diff_check_command": [
+    "git",
+    "diff",
+    "--cached",
+    "--check",
+    "--",
+    ".",
+    ":(exclude)speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-50-current-2026-09-23/**"
+  ],
+  "authored_diff_check_exit": 0,
+  "reason": "Keep literal Maven/Surefire whitespace and original hashes; do not reformat raw execution evidence. Product diff-check already passed at fixed clean C."
+}

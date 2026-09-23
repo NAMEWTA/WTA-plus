@@ -1,0 +1,40 @@
+{
+  "source_a3": "0b33ff361820249f947a2767674356dabab59774",
+  "candidate_b": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
+  "candidate_tree": "01927241641aceef0fb13ffea2a3f28a748bdaf7",
+  "source_clean": true,
+  "backend_tree": "507250fd94c75aa15a89506e2a4771aa3497469b",
+  "backend_inputs_identical": true,
+  "delta_paths": [
+    "frontend/packages/api-contracts/generated/openapi.ts",
+    "frontend/packages/api-contracts/openapi/current.json",
+    "frontend/packages/api-contracts/openapi/revisions/6dcd90b63abedf4d897c710e0b73709c7d202b18bc993b2ccc24a353d70fa1ce/provenance.json",
+    "frontend/packages/api-contracts/openapi/revisions/6dcd90b63abedf4d897c710e0b73709c7d202b18bc993b2ccc24a353d70fa1ce/source.json"
+  ],
+  "reuse_scope": [
+    "a3 default backend tests and fresh XML",
+    "a3 full JAR and verify-admin-bundle",
+    "a3 full JAR live OpenAPI capture"
+  ],
+  "fresh_b_required": [
+    "eight-class integration",
+    "frontend architecture lint typecheck test production build",
+    "core package and static gates",
+    "OpenAPI generated check"
+  ],
+  "raw_sha256": "2c12f7d5eeea5afc906577250a928f6d2d0e5e7bbd45a6e345dd6320bf32230c",
+  "generated_revision": "6dcd90b63abedf4d897c710e0b73709c7d202b18bc993b2ccc24a353d70fa1ce",
+  "provenance": {
+    "backendCommit": "0b33ff361820249f947a2767674356dabab59774",
+    "backendRepository": "backend",
+    "generator": "openapi-typescript@7.13.0",
+    "openapiVersion": "3.1.0",
+    "rawSha256": "2c12f7d5eeea5afc906577250a928f6d2d0e5e7bbd45a6e345dd6320bf32230c",
+    "runtimeEndpoint": "/v3/api-docs",
+    "totals": {
+      "paths": 436,
+      "schemas": 445,
+      "tags": 77
+    }
+  }
+}

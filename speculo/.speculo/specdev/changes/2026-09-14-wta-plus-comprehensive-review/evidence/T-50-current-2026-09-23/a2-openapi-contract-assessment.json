@@ -1,0 +1,17 @@
+{
+  "source": {
+    "head": "1dfdcbca831ad7391d725d7f001acb2b9ba1c88f",
+    "tree": "6021ef927e0823f7059ec8a44ea71f71aa7faa25",
+    "clean": true
+  },
+  "capture_exit": 0,
+  "raw_sha256": "b4b46464fb5aa4cdb845e69bebaab52dff5b82fc6758e087f84b7ca1c596afb3",
+  "schema_required": [],
+  "priority": {
+    "type": "integer",
+    "format": "int32",
+    "description": "当前只支持 0，Worker 不按此字段排序"
+  },
+  "http_evidence": "runs/e29ae3ce94c6942c/xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+  "assessment": "Full HTTP capture is valid but NotificationCommand schema omits priority required despite current HTTP rejection of absent primitive int. Correct declaration using existing JsonProperty annotation; preserve behavior and regenerate from next real capture. A2 retained as passed focused tests, not final contract candidate."
+}

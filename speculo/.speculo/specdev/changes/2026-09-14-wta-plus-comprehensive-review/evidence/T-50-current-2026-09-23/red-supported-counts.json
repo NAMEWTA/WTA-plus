@@ -1,0 +1,29 @@
+{
+  "source": "d1c3548424f696022292cf1a2fb6ec9b432c011f",
+  "clean": true,
+  "counts": {
+    "tests": 4,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml_sha256": "181d00f4616998657444381a73615442317d288dd3f6923afb05dac29e5ed5be",
+  "failures": [
+    {
+      "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[1]",
+      "message": "Expected org.namewta.common.core.exception.ServiceException to be thrown, but nothing was thrown."
+    },
+    {
+      "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[2]",
+      "message": "Expected org.namewta.common.core.exception.ServiceException to be thrown, but nothing was thrown."
+    },
+    {
+      "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[3]",
+      "message": "Expected org.namewta.common.core.exception.ServiceException to be thrown, but nothing was thrown."
+    },
+    {
+      "name": "unsupportedSubmissionFailsBeforeDuplicateLookup(NotificationStrategy, int)[4]",
+      "message": "Expected org.namewta.common.core.exception.ServiceException to be thrown, but nothing was thrown."
+    }
+  ]
+}

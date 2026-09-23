@@ -1,0 +1,112 @@
+{
+  "run_id": "35e14468040352c5",
+  "source_head": "9bb2e2888b5d2b0563beb7164c8c0a2165547e2c",
+  "source_tree": "071f854346faa03d2b0b1ceab5ba13f218fe59c7",
+  "classes": 8,
+  "totals": {
+    "tests": 135,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "maven_exit_code": 1,
+  "acceptance": false,
+  "retained": [
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+      "sha256": "a2d43e5de1bdf37b5e8e052635cca3e30db11db9d78f0a71c0749c4ccbd664e2",
+      "counts": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174781243576766,
+      "bytes": 116836
+    },
+    {
+      "file": "xml/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+      "sha256": "60eb632bb5001fe79129f3aaf4bfeabd013c39233040dffd9840e39d47bd8f26",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174821048641340,
+      "bytes": 107686
+    },
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+      "sha256": "a0fc9c289ad0b5db34bccd98c83d3233ba148552a7901fba0f8b3cf84e3ac560",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174788411014578,
+      "bytes": 106841
+    },
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+      "sha256": "d7d302e9057101e05894210bc6b52affe518c531f9a7ab29267dc6628c5790c9",
+      "counts": {
+        "tests": 19,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174810511269337,
+      "bytes": 126727
+    },
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+      "sha256": "1c239fe7f7ccec8848750894ef725e75fa4ba7e6063ad30a8789a15663f3a8a0",
+      "counts": {
+        "tests": 66,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174858584803974,
+      "bytes": 408294
+    },
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+      "sha256": "7ea7e2a1fb85a0e507d88fb9da1c261d9e2696983aab62817d20615e5f15d6bc",
+      "counts": {
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174869861494044,
+      "bytes": 114319
+    },
+    {
+      "file": "xml/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+      "sha256": "f5679471a121115eb19192955fd7b8263c7a1015e3c109804d3dadb01fad0b7c",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174797038222629,
+      "bytes": 108103
+    },
+    {
+      "file": "xml/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+      "sha256": "f15ec500e28c3cc8be08cb40a7e1cb3507ca152f14a2fc3488810e3486bf85ee",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mtime_ns": 1790174823672792630,
+      "bytes": 95705
+    }
+  ]
+}

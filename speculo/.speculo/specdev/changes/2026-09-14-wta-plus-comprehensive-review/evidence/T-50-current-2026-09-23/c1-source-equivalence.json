@@ -1,0 +1,33 @@
+{
+  "source_b": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
+  "recovery_candidate": "84ce0a9162dfc507fb4e8339575247477e57684f",
+  "tree": "c118348385489be74b55233508ae0b5f40a93ee1",
+  "clean": true,
+  "backend_tree": "507250fd94c75aa15a89506e2a4771aa3497469b",
+  "executable_frontend_and_contract_inputs_identical": true,
+  "delta_paths": [
+    "frontend/packages/api-contracts/README.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/.status.json",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/README.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-50-attempt-limit-state.json",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-50-recovery-2026-09-23.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/dispatch-T-50-20260923-02.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/handoff.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/plan-data.json",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/50-reject-unimplemented-notify-modes.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/worklog.md"
+  ],
+  "product_delta": [
+    "frontend/packages/api-contracts/README.md"
+  ],
+  "reuse_scope": [
+    "A3 default/full/live capture with identical backend inputs",
+    "B frontend gates and production artifacts with identical frontend executable inputs",
+    "B core build with identical backend inputs"
+  ],
+  "fresh_recovery_required": "same frozen eight-class driver, serial after all builds; fresh static docs/OpenAPI checks; source before/after clean",
+  "prior_batch_attempts": 3,
+  "current_batch_attempts_started": 1
+}

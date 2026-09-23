@@ -1,0 +1,26 @@
+[
+  {
+    "path": "/tmp/wta-t50/prepare-source-backend.py",
+    "sha256": "c68f6e6d10655d76257cdc8e87ade0c2d04dd4c0d234901d6a1d12b129facb05"
+  },
+  {
+    "path": "/tmp/wta-t50/run-core-static-gates.py",
+    "sha256": "f7e41747f2e68403cfb35598617a398c1764f132de5a40f15bae7a37e1f8c20c"
+  },
+  {
+    "path": "/tmp/wta-t50/run-candidate-frontend.py",
+    "sha256": "8d4ff3a39659e59d5322db06821afb7b6a4e76cd86e75f064ed73d0dec3631d4"
+  },
+  {
+    "path": "/tmp/wta-t50/retain-and-verify-xml.py",
+    "sha256": "1d686b989187de5627546f6743b29b4603119d3a7b7769e4a920e05b08adb964"
+  },
+  {
+    "path": "/tmp/wta-check.py",
+    "sha256": "161bc7cec376155decd52ca8edb7a3c4de5fa6463d3182a7efcffc420a58cff0"
+  },
+  {
+    "path": "/tmp/wta-t02-c1/record-reactor-counts.py",
+    "sha256": "950b8d06d49ad1044587f78d13478625a73779b2c296332dd5639e65aadb0525"
+  }
+]

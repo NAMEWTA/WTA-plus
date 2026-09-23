@@ -1,0 +1,32 @@
+test_cli_requires_opt_in_and_exact_sha_without_touching_services (test_driver_safety.DriverSafetyTest.test_cli_requires_opt_in_and_exact_sha_without_touching_services) ... ok
+test_eight_exact_fresh_classes_positive_zero_skip (test_driver_safety.DriverSafetyTest.test_eight_exact_fresh_classes_positive_zero_skip) ... ok
+test_exited_leader_still_checks_process_group (test_driver_safety.DriverSafetyTest.test_exited_leader_still_checks_process_group) ... ok
+test_failed_run_captures_volume_names_before_cleanup (test_driver_safety.DriverSafetyTest.test_failed_run_captures_volume_names_before_cleanup) ... ok
+test_full_id_and_dual_label_discovery (test_driver_safety.DriverSafetyTest.test_full_id_and_dual_label_discovery) ... ok
+test_mode_preflight_rejects_missing_class_flag_credential_or_fixture (test_driver_safety.DriverSafetyTest.test_mode_preflight_rejects_missing_class_flag_credential_or_fixture) ... ok
+test_mode_report_is_required_from_admin_module (test_driver_safety.DriverSafetyTest.test_mode_report_is_required_from_admin_module) ... ok
+test_only_verified_full_id_is_removed (test_driver_safety.DriverSafetyTest.test_only_verified_full_id_is_removed) ... ok
+test_owned_mysql_labels_loopback_and_trigger_option (test_driver_safety.DriverSafetyTest.test_owned_mysql_labels_loopback_and_trigger_option) ... ok
+test_password_only_child_environment (test_driver_safety.DriverSafetyTest.test_password_only_child_environment) ... ok
+test_source_and_eight_class_selector (test_driver_safety.DriverSafetyTest.test_source_and_eight_class_selector) ... ok
+test_source_identity_checks_both_sha_and_clean_tree (test_driver_safety.DriverSafetyTest.test_source_identity_checks_both_sha_and_clean_tree) ... ok
+test_volume_capture_and_absence_verdict (test_driver_safety.DriverSafetyTest.test_volume_capture_and_absence_verdict) ... ok
+test_xml_owned_secret_redacted_and_gate_reported (test_driver_safety.DriverSafetyTest.test_xml_owned_secret_redacted_and_gate_reported) ... ok
+test_0600_private_bytes_and_runtime_port_scope (test_openapi_capture_safety.CaptureSafetyTest.test_0600_private_bytes_and_runtime_port_scope) ... ok
+test_cli_requires_explicit_exact_source_and_jar (test_openapi_capture_safety.CaptureSafetyTest.test_cli_requires_explicit_exact_source_and_jar) ... ok
+test_full_spec_preserves_every_path_method_schema_and_queued_count (test_openapi_capture_safety.CaptureSafetyTest.test_full_spec_preserves_every_path_method_schema_and_queued_count) ... ok
+test_http_capture_is_direct_local_bounded_and_requires_200 (test_openapi_capture_safety.CaptureSafetyTest.test_http_capture_is_direct_local_bounded_and_requires_200) ... ok
+test_http_status_and_size_failure_gate (test_openapi_capture_safety.CaptureSafetyTest.test_http_status_and_size_failure_gate) ... ok
+test_label_mismatch_cannot_remove_container (test_openapi_capture_safety.CaptureSafetyTest.test_label_mismatch_cannot_remove_container) ... ok
+test_no_vendor_work_fresh_db_preflight (test_openapi_capture_safety.CaptureSafetyTest.test_no_vendor_work_fresh_db_preflight) ... ok
+test_owned_config_overrides_external_urls_and_local_paths (test_openapi_capture_safety.CaptureSafetyTest.test_owned_config_overrides_external_urls_and_local_paths) ... ok
+test_owned_dual_labels_and_full_id_cleanup (test_openapi_capture_safety.CaptureSafetyTest.test_owned_dual_labels_and_full_id_cleanup) ... ok
+test_owned_redis_config_is_private_and_argv_has_no_secret (test_openapi_capture_safety.CaptureSafetyTest.test_owned_redis_config_is_private_and_argv_has_no_secret) ... ok
+test_package_proof_binds_clean_command_log_time_and_jar (test_openapi_capture_safety.CaptureSafetyTest.test_package_proof_binds_clean_command_log_time_and_jar) ... ok
+test_raw_http_bytes_survive_strict_loss_with_specific_names (test_openapi_capture_safety.CaptureSafetyTest.test_raw_http_bytes_survive_strict_loss_with_specific_names) ... ok
+test_redis_health_uses_config_loaded_auth_env_not_argv_password (test_openapi_capture_safety.CaptureSafetyTest.test_redis_health_uses_config_loaded_auth_env_not_argv_password) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.312s
+
+OK

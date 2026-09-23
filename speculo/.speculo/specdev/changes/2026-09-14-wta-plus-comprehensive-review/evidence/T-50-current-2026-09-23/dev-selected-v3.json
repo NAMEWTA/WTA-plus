@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotificationSupportedModeRuntimeTest,NotificationDeadlineRuntimeTest,DispatchNotificationServiceTest,NotifyOutboxWakePublisherTest,NotifyNoticePublisherServiceTest,NotifyTestSendServiceTest,AuthNotifyCallerUnitTest,CaptchaNotifyCallerUnitTest,DemoNotifyCallerUnitTest,WorkflowNotifyCallerUnitTest,EnterpriseTransferServiceTest,PersonRebindNotificationTest,NotificationModeOpenApiTest,NotifySupportedModeIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T14:40:49.968038+00:00",
+  "finished_at": "2026-09-23T14:41:19.882257+00:00",
+  "exit_code": 0,
+  "log": "dev-selected-v3.log"
+}

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "./mvnw",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T14:59:21.241481+00:00",
+  "finished_at": "2026-09-23T15:01:50.584567+00:00",
+  "exit_code": 0,
+  "log": "a3-backend-default.log"
+}

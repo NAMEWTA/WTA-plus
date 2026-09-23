@@ -1,0 +1,51 @@
+{
+  "purpose": "T50 private driver version provenance; no real service execution",
+  "source_references": {
+    "t39_v4_sha256": "3f4b5eb24cb4281f61853f783968fe9d1294010df8ff748fb7d4fff55486d2d0",
+    "t38_capture_v2_sha256": "9ae7cfcd28e8b5ba8ee0bff271a76f656ca7bb2eb421caa5dbdfdb1d0452909e"
+  },
+  "versions": {
+    "v1": {
+      "path": "/tmp/wta-t50/run-notify-supported-mode-integration-v1.py",
+      "sha256": "dd14e75e810e54f9e6a126db41d726598134d6e4abed7adf803ca983c01ccf80",
+      "offline_record": "/tmp/wta-t50/offline-synthetic-v1.json",
+      "offline_log": "/tmp/wta-t50/offline-synthetic-v1.log",
+      "tests": 27,
+      "exit_code": 0
+    },
+    "v2": {
+      "path": "/tmp/wta-t50/run-notify-supported-mode-integration-v2.py",
+      "sha256": "518a0c1946ba026d84f5e637e9ce00cc125306134f077f2d310a0614e09fe5a9",
+      "offline_record": "/tmp/wta-t50/offline-synthetic-v2.json",
+      "offline_log": "/tmp/wta-t50/offline-synthetic-v2.log",
+      "tests": 27,
+      "exit_code": 0
+    }
+  },
+  "unversioned_snapshot": {
+    "path": "/tmp/wta-t50/run-notify-supported-mode-integration.py",
+    "sha256": "518a0c1946ba026d84f5e637e9ce00cc125306134f077f2d310a0614e09fe5a9",
+    "identical_to": "v2",
+    "not_run_target": true
+  },
+  "capture": {
+    "path": "/tmp/wta-t50/capture-live-openapi.py",
+    "sha256": "267f825eb6cb57a93413622aff2d9d5b3c33b231f73fa39c14c93b1cccfa9176",
+    "version": "single prepared T50 adaptation"
+  },
+  "tests_after_named_import": {
+    "driver_safety_path": "/tmp/wta-t50/test_driver_safety.py",
+    "sha256": "193317e03fa27616280609336517a1364ce76285d0a44e032d16fd04be499644",
+    "import_target": "v2",
+    "only_change_since_offline_v2": "import path from byte-identical unversioned snapshot to v2",
+    "capture_safety_sha256": "7c7aaf84bbdece73d10673801a0b8143593a12a29c7b1e9cd22d007877d7180e"
+  },
+  "verification": {
+    "v1_matches_initial_recorded_sha": true,
+    "v2_matches_final_recorded_sha": true,
+    "v2_byte_equal_unversioned": true,
+    "v1_to_v2_delta": "only docker_touched False initialization; True before first Docker operation; skip Docker cleanup discovery if none attempted",
+    "py_compile_exit_code": 0,
+    "real_docker_maven_http_executions": 0
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "source_commit": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
+  "record": "/tmp/wta-t50/b1-frontend-test.json",
+  "log_sha256": "141b7b0ae53ecd3a7945011ff5e7f4dc0038ade6d1ef1a374a543f129235a8dd",
+  "vitest_packages": [
+    {
+      "package": "packages/platform/permission",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "package": "packages/platform/contracts",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "apps/sso-web",
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "package": "packages/platform/validation",
+      "passed": 3,
+      "total": 3
+    },
+    {
+      "package": "packages/web-kit/rich-text",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "package": "packages/adapters/storage-browser",
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "package": "packages/adapters/oss-upload-browser",
+      "passed": 8,
+      "total": 8
+    },
+    {
+      "package": "packages/platform/auth",
+      "passed": 18,
+      "total": 18
+    },
+    {
+      "package": "packages/platform/app-runtime",
+      "passed": 23,
+      "total": 23
+    },
+    {
+      "package": "packages/platform/http",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-kit/file-upload",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-kit/permission",
+      "passed": 16,
+      "total": 16
+    },
+    {
+      "package": "packages/domains/notify",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "package": "packages/domains/demo",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "package": "packages/domains/admin",
+      "passed": 63,
+      "total": 63
+    },
+    {
+      "package": "packages/adapters/axios-browser",
+      "passed": 46,
+      "total": 46
+    },
+    {
+      "package": "packages/domains/profile",
+      "passed": 22,
+      "total": 22
+    },
+    {
+      "package": "packages/domains/third",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "packages/domains/system",
+      "passed": 95,
+      "total": 95
+    },
+    {
+      "package": "packages/domains/workflow",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-domains/admin",
+      "passed": 6,
+      "total": 6
+    },
+    {
+      "package": "packages/web-domains/demo",
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "package": "packages/web-domains/notify",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "package": "packages/web-domains/profile",
+      "passed": 36,
+      "total": 36
+    },
+    {
+      "package": "packages/web-domains/third",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "packages/web-domains/system",
+      "passed": 73,
+      "total": 73
+    },
+    {
+      "package": "apps/home-web",
+      "passed": 15,
+      "total": 15
+    },
+    {
+      "package": "packages/web-domains/workflow",
+      "passed": 59,
+      "total": 59
+    },
+    {
+      "package": "apps/admin-web",
+      "passed": 71,
+      "total": 71
+    }
+  ],
+  "vitest_test_files": {
+    "packages/platform/permission": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/platform/contracts": {
+      "passed": 1,
+      "total": 1
+    },
+    "apps/sso-web": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/platform/validation": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-kit/rich-text": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/adapters/storage-browser": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/adapters/oss-upload-browser": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/platform/auth": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/platform/app-runtime": {
+      "passed": 4,
+      "total": 4
+    },
+    "packages/platform/http": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-kit/file-upload": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/web-kit/permission": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/domains/notify": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/domains/demo": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/domains/admin": {
+      "passed": 3,
+      "total": 3
+    },
+    "packages/adapters/axios-browser": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/domains/profile": {
+      "passed": 4,
+      "total": 4
+    },
+    "packages/domains/third": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/domains/system": {
+      "passed": 10,
+      "total": 10
+    },
+    "packages/domains/workflow": {
+      "passed": 2,
+      "total": 2
+    },
+    "packages/web-domains/admin": {
+      "passed": 3,
+      "total": 3
+    },
+    "packages/web-domains/demo": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-domains/notify": {
+      "passed": 4,
+      "total": 4
+    },
+    "packages/web-domains/profile": {
+      "passed": 8,
+      "total": 8
+    },
+    "packages/web-domains/third": {
+      "passed": 1,
+      "total": 1
+    },
+    "packages/web-domains/system": {
+      "passed": 11,
+      "total": 11
+    },
+    "apps/home-web": {
+      "passed": 7,
+      "total": 7
+    },
+    "packages/web-domains/workflow": {
+      "passed": 6,
+      "total": 6
+    },
+    "apps/admin-web": {
+      "passed": 15,
+      "total": 15
+    }
+  },
+  "node_test_packages": {
+    "tooling/openapi": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0
+    },
+    "tooling/architecture": {
+      "tests": 101,
+      "pass": 101,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "totals": {
+    "vitest_packages": 29,
+    "vitest_files": 99,
+    "vitest_executed": 628,
+    "node_packages": 2,
+    "node_executed": 108,
+    "total_executed": 736,
+    "failed": 0,
+    "skipped": 0
+  },
+  "not_test_counted": [
+    "@namewta/api-contracts test script is tsc --noEmit -p tsconfig.json; compile-only"
+  ]
+}

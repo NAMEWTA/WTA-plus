@@ -1,0 +1,11 @@
+{
+  "source_commit": "50757f9b872b0b9b0131e4b2a4538bff7473f74d",
+  "equivalent_recovery_commit": "84ce0a9162dfc507fb4e8339575247477e57684f",
+  "vitest_packages": 29,
+  "vitest_passed": 628,
+  "node_passed": 108,
+  "total_executed": 736,
+  "artifacts_verified": 330,
+  "app_modes": "all production",
+  "verification": "Lead independently parsed test log and hashed every current file against manifest"
+}

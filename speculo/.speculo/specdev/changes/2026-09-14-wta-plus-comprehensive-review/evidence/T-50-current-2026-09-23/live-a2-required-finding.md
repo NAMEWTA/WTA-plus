@@ -1,0 +1,11 @@
+# T-50 A2 live OpenAPI 必填性差异（已证实，待 A3 复核）
+
+输入：clean Source A2 `1dfdcbca831ad7391d725d7f001acb2b9ba1c88f`、tree `6021ef927e0823f7059ec8a44ea71f71aa7faa25`，完整 JAR SHA-256 `c6515d524d974fe3713446964aa11b3eb4085acd378e911299caa52648b0de21`。owned capture `/tmp/wta-t50/openapi-live/63c7980e7727c426/result.json` source 前后相同，HTTP 200，原文 508695 bytes / SHA-256 `b4b46464fb5aa4cdb845e69bebaab52dff5b82fc6758e087f84b7ca1c596afb3`，436 paths / 445 schemas，零 path/operation/schema loss，cleanup.errors 为空。只读解析该次 `source.json`，未修改/拼接 raw。
+
+`POST /notify/notification` 的 JSON request body 指向 `#/components/schemas/NotificationCommand`。新 live schema 的 strategy、mode、priority description **已进入**：分别说明仅新提交 ALL、仅 ASYNC、仅 0 且 Worker 不排序；mode enum 仅 ASYNC，strategy 历史枚举仍列出三个值。可是该 schema `required` 缺失，priority 没有 default。A2 owned 真 HTTP 正例已证：显式 `priority:0` + 省略 strategy/mode 成功，省略 priority 返回 400 且五张 owned 表零写。故目前生成 schema 会把实际不可省字段呈现为可省，不能将 A2 raw 直接作为已准确的公共 API 合同定稿。
+
+约定的最小 A3 写集是 `backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java` 的 primitive `priority` record component 加已有 `com.fasterxml.jackson.annotation.JsonProperty(required = true)` 并在 Javadoc 明说 HTTP 必须传 0；`backend/wta-admin/src/test/java/org/namewta/test/notify/NotificationModeOpenApiTest.java` 增加从实际 Java 模型导出的 schema `required` 包含 priority 断言。保持 A2 真实 HTTP 显式 0 成功/省略 400、新的 mode/策略负例。不要改变全局 ObjectMapper、构造器归一化或新增 wta-api Swagger 依赖。
+
+静态依据：`wta-api` 已依赖 `wta-common-json` → Spring Boot Jackson；本地 Jackson annotations 2.21 `JsonProperty` 可标 FIELD/METHOD/PARAMETER（record component 会传播），Jackson databind 3.1.4 `JacksonAnnotationIntrospector.hasRequiredMarker` 读取 `required()`；swagger-core-jakarta 2.2.47 `ModelResolver` 在 `propDef.isRequired()` 时调用 `addRequiredItem`。Jackson3 `FAIL_ON_NULL_FOR_PRIMITIVES(true)` 解释当前缺省 int 返回 400，新增注解预计只使模型描述与现行绑定一致。这些是本地依赖源码推断，**最终必须用 A3 clean full JAR 的实际 live source 验证**。A2 的真 HTTP、8 类和默认/full证据都保留原输入，不冒称覆盖 A3。
+
+A3 复核条件：固定 A2→A3 diff 确实限这两类及必要治理/生成物，`NotificationModeOpenApiTest` 断言有测试执行证据；owned 八类/受影响 API 与默认门禁按 Lead 风险选择重验；full package/JAR 来源锁定后重新 capture `/v3/api-docs`，确认真实 `NotificationCommand.required` 包含 `priority`，description/枚举仍准确，path/schema 无丢失，再让产品 writer从该原文字节 fetch/generate/check。未获取 A3 固定 SHA 前不声明修复完成。

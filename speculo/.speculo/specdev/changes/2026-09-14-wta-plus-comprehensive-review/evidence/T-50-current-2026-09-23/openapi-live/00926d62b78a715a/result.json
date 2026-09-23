@@ -1,0 +1,121 @@
+{
+  "gate": "T-50 full-JAR live OpenAPI capture",
+  "run_id": "00926d62b78a715a",
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-23T15:03:10.461916+00:00",
+  "source_before": {
+    "head": "0b33ff361820249f947a2767674356dabab59774",
+    "tree": "f13b1dce91dd61a46115dd6acc3ca246dc87cc3f",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "eec4cc471f96a57ed94b2d8da604d56b86bcb88ee3c88a2709f78107d2876ebe",
+    "size_bytes": 214178449
+  },
+  "owned": {
+    "mysql_container_id": "4856405f5691aac10ecf1127a909265e0985e25e82e497c3bd2d34a415dd2ee8",
+    "redis_container_id": "02b4f0376524a9483ce2e97a8245561817661e20466e0496a632030d9e7bc2ba",
+    "minio_container_id": "2609047a72d7a51400a75d82a69dd3aaf333cb3639cd3084cc2c6e9de9be7ca7",
+    "loopback_ports": {
+      "mysql": 32837,
+      "redis": 32838,
+      "minio": 32839,
+      "backend": 35233
+    },
+    "database_counts": {
+      "business_tables": 103,
+      "claimable_outboxes": 0,
+      "all_outboxes": 0,
+      "accepted_sms": 0,
+      "all_external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "backend_pgid": 545628,
+    "captured_anonymous_volume_names": [
+      "2e89c7549da2c4e2a405788cdbe2f90cc6ef3a5420dcd15a25d3d54d1d4500cf",
+      "03f23495c1c01d01b375bf3dbe67d87210d7fb139da50e791426b40a2550e09c"
+    ]
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 545628,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "2e89c7549da2c4e2a405788cdbe2f90cc6ef3a5420dcd15a25d3d54d1d4500cf": true,
+      "03f23495c1c01d01b375bf3dbe67d87210d7fb139da50e791426b40a2550e09c": true
+    },
+    "loopback_ports_closed": {
+      "32837": true,
+      "32838": true,
+      "32839": true,
+      "35233": true
+    },
+    "errors": []
+  },
+  "helper_sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e",
+  "package_proof_sha256": "23f5ebcb3a73fe9a0ccd3571b330405d6e0cb4ae2b6f801d893072323224a00c",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "baseline_revision": "5f2afc58f2a31e4c172fbf12076d43f1aba8fbfbba6e71079701bc335c976302",
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "java_command_redacted": [
+    "java",
+    "-Xms256m",
+    "-Xmx1024m",
+    "-Duser.home=/tmp/wta-t50/openapi-live/00926d62b78a715a",
+    "-Djava.io.tmpdir=/tmp/wta-t50/openapi-live/00926d62b78a715a/tmp",
+    "-jar",
+    "/srv/WTA-plus/backend/wta-admin/target/wta-admin.jar",
+    "--spring.profiles.active=prod",
+    "--spring.config.additional-location=file:/tmp/wta-t50/openapi-live/00926d62b78a715a/owned.yml"
+  ],
+  "openapi_raw": {
+    "http_status": 200,
+    "content_type": "application/json",
+    "bytes": 508752,
+    "raw_sha256": "2c12f7d5eeea5afc906577250a928f6d2d0e5e7bbd45a6e345dd6320bf32230c",
+    "source_path": "/tmp/wta-t50/openapi-live/00926d62b78a715a/source.json"
+  },
+  "openapi": {
+    "openapi": "3.1.0",
+    "paths": 436,
+    "schemas": 445,
+    "baseline_paths": 436,
+    "baseline_schemas": 445,
+    "missing_paths": 0,
+    "missing_operations": 0,
+    "missing_schemas": 0,
+    "queued_count_type": "integer"
+  },
+  "source_after": {
+    "head": "0b33ff361820249f947a2767674356dabab59774",
+    "tree": "f13b1dce91dd61a46115dd6acc3ca246dc87cc3f",
+    "clean": true
+  },
+  "artifact_after_sha256": "eec4cc471f96a57ed94b2d8da604d56b86bcb88ee3c88a2709f78107d2876ebe",
+  "helper_after_sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e",
+  "finished_utc": "2026-09-23T15:04:00.109529+00:00"
+}

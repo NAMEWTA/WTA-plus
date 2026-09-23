@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t50/retain-and-verify-xml.py",
+    "/tmp/wta-t50/runs/e5e3229eb2500be7",
+    "--expected-head",
+    "50757f9b872b0b9b0131e4b2a4538bff7473f74d"
+  ],
+  "exit_code": 1,
+  "stderr": {
+    "verified": false,
+    "error_type": "ValueError",
+    "reason": "source identity was not clean/equal before and after"
+  },
+  "assessment": "Expected fail-closed evidence retention verifier. Root subsequently retained eight sanitized XML manually before core clean; no source-after proof invented."
+}

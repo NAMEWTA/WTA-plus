@@ -1,0 +1,15 @@
+# T-50 Source A2 security/transaction delta review
+
+Fixed A1 `9bb2e2888b5d2b0563beb7164c8c0a2165547e2c` → A2 `1dfdcbca831ad7391d725d7f001acb2b9ba1c88f`, tree `6021ef927e0823f7059ec8a44ea71f71aa7faa25`. Read-only fixed-SHA `git diff` review; I did not run Maven, services or browser tests. The full A1 production review remains `/tmp/wta-t50/source-a-security-review.md`; this report covers only the A2 delta and fresh acceptance evidence.
+
+## Delta and conclusion
+
+**Security/transaction delta: PASS; eight-class Source A2 focused real acceptance: PASS.** A1→A2 changes exactly one test file, `backend/wta-admin/src/test/java/org/namewta/test/notify/NotifySupportedModeIntegrationTest.java`, +5/−1. No production, API, schema, worker, retry, or mode classification change exists in this delta. The formerly failing loopback HTTP assertion now sends omitted `strategy`/`mode` with explicit `priority:0`, expecting 200 (`:308`). A new assertion sends omitted primitive priority, expects 400 and checks the five owned notification tables are unchanged (`:330-333`). The existing unsupported strategy/mode/priority, authorization, and transaction assertions remain. This is a correction to a test assumption, not a weakening of the product contract.
+
+This matches the fixed library source: local Jackson Databind 3.1.4 has `DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES(true)` by default; its missing creator property path reaches primitive null validation before `NotificationCommand` compact-constructor normalization. The Ticket revision169 promises `ALL/ASYNC/priority 0` as the only supported submitted value and preserves enum null normalization; it does not promise that an HTTP request can omit primitive `int priority`. The explicit-zero request proves enum defaults; omitted-priority 400 is a binding failure before persistence. A1's 135/1/0/0 result remains an authentic failed attempt, not overwritten by A2.
+
+## Independent retained XML verification
+
+I parsed the eight fresh JUnit XML files under `/tmp/wta-t50/runs/e29ae3ce94c6942c/xml/`, recomputed each file SHA-256, compared each test/failure/error/skipped count and hash with `/tmp/wta-t50/a2-retained-verification.json`, and summed XML roots. **8 files, 135 tests, 0 failures, 0 errors, 0 skips; all eight hashes and counts match.** Class counts: Deadline 15, EnterpriseQueued 8, Wake 1, SupportedMode 19, AtomicResult 66, ManualRetry 13, SmsDispatch 10, RedisIdempotency 3. `result.json` reports Maven exit 0, source-before/source-after both clean at A2 SHA/tree, owned process/container/anonymous-volume/loopback-port cleanup without errors. This validates the focused real MySQL/Redis eight-class acceptance including the corrected HTTP test; it does not itself prove all future deployment conditions.
+
+Pending outside this A2 delta review: full/default backend reactor, all front-end gates, Source B OpenAPI generation/contract capture, and any target-environment historical-mode disposition. Their evidence must be attached by Lead at the appropriate fixed SHA; I have not treated the focused 135 as those gates.

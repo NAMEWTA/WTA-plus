@@ -1,0 +1,15 @@
+{
+  "drivers": [
+    {
+      "path": "run-notify-supported-mode-integration-v2.py",
+      "sha256": "518a0c1946ba026d84f5e637e9ce00cc125306134f077f2d310a0614e09fe5a9"
+    },
+    {
+      "path": "capture-live-openapi.py",
+      "sha256": "267f825eb6cb57a93413622aff2d9d5b3c33b231f73fa39c14c93b1cccfa9176"
+    }
+  ],
+  "review": "Lead checked template diffs, exact source and artifact proofs, per-class zeroSkip, private env aliases and owned cleanup. No service launched; source preflight and actual run still pending.",
+  "offline_record": "offline-synthetic-v2.json",
+  "offline_tests": 27
+}

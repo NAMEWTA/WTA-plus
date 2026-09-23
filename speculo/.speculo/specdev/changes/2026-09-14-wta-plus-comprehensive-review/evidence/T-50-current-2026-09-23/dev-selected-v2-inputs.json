@@ -1,0 +1,130 @@
+{
+  "head": "79c293edea254c83b38b941c225f56f528b830fd",
+  "mode": "development working tree, not clean candidate",
+  "files": [
+    {
+      "path": ".agents/skills/engineering-standards/references/notification.md",
+      "sha256": "d762bbcd6e6f2707ffaa93bc64024c8b75a1ffb6d206bf35bed9812d75c0cb0d"
+    },
+    {
+      "path": "backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java",
+      "sha256": "d2f304019321568edff82a4c94fb1ab32bac97a6f689d8475ac8c11b4d492c15"
+    },
+    {
+      "path": "backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java",
+      "sha256": "1885a81b49070c74132dc2f969d6178e9a3dfda5a1c600c8e079d4d7d58ffa1a"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyDeadlineIntegrationTest.java",
+      "sha256": "b70f08b5ddd17a86f55453c269dc8c860959ad1131d7bd0cc4e87bab67a1cd2c"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifySupportedModeIntegrationTest.java",
+      "sha256": "1e0c98e030139cff40a51bb4b1a3676e122c9516d7d362876a2e6d74ffe45af1"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/AuthNotifyCallerUnitTest.java",
+      "sha256": "1b16eebc183a2cae276045dd1e672500ff0918800349d990f4b4c522cac47fde"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/CaptchaNotifyCallerUnitTest.java",
+      "sha256": "7839a98e91ae9b1875e0d0f7aaffbfc8d0f089a73a704c8913e059393e407fd2"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/DemoNotifyCallerUnitTest.java",
+      "sha256": "280fecf60a2bfe2f49f3b763266979c03f8ad8745b23c33611b71825f21be92f"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/caller/WorkflowNotifyCallerUnitTest.java",
+      "sha256": "d759d76161155d91c6ca25931720c69f0ccfabd20305c592ea351083fc7fabd9"
+    },
+    {
+      "path": "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationApplicationService.java",
+      "sha256": "3744211a01fb8dcb611da910bbbb7e12251f5608b931ce4c1365d53db08e690b"
+    },
+    {
+      "path": "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java",
+      "sha256": "daf76fc2ca525ccebdf2b9e07941e96bcdca0c9e857385b3fb8a625ad2c74db7"
+    },
+    {
+      "path": "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationMode.java",
+      "sha256": "a3e4507828f5b8e0077402dc32f45f211fc2c60d7df06226ec659c230310d7da"
+    },
+    {
+      "path": "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationStrategy.java",
+      "sha256": "2e3036b9f02e5300161645933a2e258faf69a4c97d0d0f7441a3036cf1abeefe"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java",
+      "sha256": "151d326defab4561c1be9e342b66a14e294c06795ef5b6015668a14f9f289e0e"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/SmsController.java",
+      "sha256": "4b4830a6958f2decc6e25009462fdaf9885c060536884661b2078eef5d901902"
+    },
+    {
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/WebSocketController.java",
+      "sha256": "95e246e20b6683a1ca102de89ba91cafd72c0f6dbafda5c6192d5059e91e05b4"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticePublisherService.java",
+      "sha256": "e3934c7abdb1286002f082d32b3bbfa354e947e1685249932adbf0fff04fd1e2"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyTestSendService.java",
+      "sha256": "df5238af4709f47fc119bfc44f0017dc8d1e890002461f3475f907545828c22e"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java",
+      "sha256": "5a9ef6e9b6d18ec6f71d98fe4be06d5762e8e90aee6641a62339c2318f2b219a"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyDispatchResultService.java",
+      "sha256": "dcc65e57737ca06e9e638ccd202e56e829aa2e70df4cfdaa191fb4f717355faa"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java",
+      "sha256": "89dd2597b87f1656061a9a9ba8352dfdd51192e934f12896ac459021e23953a9"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyNoticePublisherTest.java",
+      "sha256": "f451f5edb9d5242a9e7c05fd28669c7053f923f408dff3d6f3dfab33eb741dba"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/NotifyTestSendServiceTest.java",
+      "sha256": "e2a4babb83d445e30d386a9c7f80584e23e55396ae1f14d7ff631289d428e593"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/DispatchNotificationServiceTest.java",
+      "sha256": "51074d6f4a0207ecb7a56c67f7d2508d0e5184004771abd57caa9eb817f9fa7d"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotificationDeadlineRuntimeTest.java",
+      "sha256": "654630b6d9a47a28104057c64cdf755a10f1c30c48f865d7bc5fb7f6d3365871"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotificationSupportedModeRuntimeTest.java",
+      "sha256": "43ad598ae9626d50506bbc663e55533d25a7c926ca70e69ed863212f28dac44c"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java",
+      "sha256": "8b647650f0183c0bbe03b997e987b54528286b0c1a005f44fca9a5a84dfcaee7"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseTransferServiceTest.java",
+      "sha256": "6c291bd5a9aeedf6631fa10fb51796b2c635bd7fe49c59a9e558a8f0bd6d6656"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindNotificationService.java",
+      "sha256": "45492125d3c23a6e7ee6a12f4df0ff7b7ea9a5b06d7ab4d6f1a82dee0ae51908"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonRebindNotificationTest.java",
+      "sha256": "c6eb3b77c877690c79761fc6709c1b7910742bb30636ccaf57b5658d34a640fc"
+    },
+    {
+      "path": "backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwCommonServiceImpl.java",
+      "sha256": "194a158a6ea0c8213fdc8124fe2b2179631d92962725cdaf9b20fd1d20ea7fd5"
+    }
+  ]
+}
