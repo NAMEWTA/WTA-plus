@@ -55,6 +55,7 @@ class NotifyNoticePublisherServiceTest {
 
         ArgumentCaptor<NotificationCommand> commands = ArgumentCaptor.forClass(NotificationCommand.class);
         verify(app, times(2)).submit(commands.capture());
+        assertEquals(List.of(0, 0), commands.getAllValues().stream().map(NotificationCommand::priority).toList());
         assertEquals(List.of("42"), commands.getAllValues().get(0).recipientIds());
         assertEquals(List.of(), commands.getAllValues().get(1).recipientIds());
         assertEquals(List.of(org.namewta.notify.api.NotificationChannel.SMS), commands.getAllValues().get(0).channels());

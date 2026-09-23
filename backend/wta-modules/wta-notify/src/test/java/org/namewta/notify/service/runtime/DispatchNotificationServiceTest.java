@@ -586,6 +586,8 @@ class DispatchNotificationServiceTest {
         intent.setTemplateCode("auth-captcha");
         intent.setBizType("auth_captcha");
         intent.setStrategy("ALL");
+        intent.setMode("ASYNC");
+        intent.setPriority(0);
         intent.setTemplateParamsJson(JsonUtils.toJsonString(Map.of("code", "1234", "expireMinutes", "5")));
         NotifyDelivery delivery = new NotifyDelivery();
         delivery.setDeliveryId(2L);

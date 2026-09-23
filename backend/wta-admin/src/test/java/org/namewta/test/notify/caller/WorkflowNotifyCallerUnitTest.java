@@ -34,6 +34,8 @@ class WorkflowNotifyCallerUnitTest {
 
         ArgumentCaptor<NotificationCommand> requests = ArgumentCaptor.forClass(NotificationCommand.class);
         verify(notifications, times(3)).submit(requests.capture());
+        assertEquals(List.of(0, 0, 0), requests.getAllValues().stream()
+            .map(NotificationCommand::priority).toList());
         assertEquals(List.of("7"), requests.getAllValues().stream()
             .filter(request -> "USER".equals(request.recipientType())).findFirst().orElseThrow().recipientIds());
         assertEquals(List.of("user@example.com"), requests.getAllValues().stream()

@@ -14,6 +14,7 @@ import org.namewta.notify.port.NotifyDispatchResultPort.Disposition;
 import org.namewta.notify.port.NotifyDispatchResultPort.Result;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /** 结果写回规则；调用方必须经过 NotifyDispatchResultUseCase 的动态事务代理。 */
@@ -92,33 +93,9 @@ public class NotifyDispatchResultService {
         }
         var now = dao.databaseNow();
         if (intent.getExpiresAt() != null && !intent.getExpiresAt().isAfter(now)) {
-            if ("IN_APP".equals(delivery.getChannel()) && delivery.getUserId() != null) {
-                var relation = dao.messageRecipient(outbox.getIntentId(), delivery.getUserId());
-                if (relation != null) {
-                    if (dao.message(outbox.getIntentId()) == null) {
-                        localInconsistent(outbox, delivery, "IN_APP_FACTS_INCONSISTENT");
-                    } else {
-                        delivery.setStatus("DELIVERED");
-                        if (delivery.getDeliveredAt() == null) delivery.setDeliveredAt(now);
-                        delivery.setErrorCode(null);
-                        delivery.setErrorMessage(null);
-                        outbox.setStatus("DONE");
-                        outbox.setLastErrorCode(null);
-                        outbox.setLastErrorMessage(null);
-                        requireOne(dao.saveDeliveryResult(delivery));
-                        finish(outbox);
-                        refreshAggregate(outbox.getIntentId());
-                    }
-                    return false;
-                }
-            }
+            if (recoverInAppFacts(outbox, delivery, now)) return false;
             boolean provenUnsent = "IN_APP".equals(delivery.getChannel())
-                || Boolean.TRUE.equals(lease.getClaimedFromReady())
-                    && NotifyOutbox.DEADLINE_UNSENT_READY.equals(outbox.getLastErrorCode())
-                    && Integer.valueOf(0).equals(outbox.getAttemptCount())
-                    && Integer.valueOf(0).equals(delivery.getAttemptCount())
-                    && delivery.getProviderMessageId() == null && delivery.getAcceptedAt() == null
-                    && delivery.getDeliveredAt() == null;
+                || provenExternalUnsent(lease, outbox, delivery);
             if (provenUnsent) {
                 delivery.setStatus("FAILED");
                 delivery.setErrorCode("NOTIFICATION_EXPIRED");
@@ -134,6 +111,10 @@ public class NotifyDispatchResultService {
             }
             return false;
         }
+        if (!supported(intent)) {
+            settleUnsupported(lease, outbox, delivery, now);
+            return false;
+        }
         if (intent.getScheduledAt() != null && intent.getScheduledAt().isAfter(now)) {
             outbox.setStatus("READY");
             outbox.setNextAttemptAt(intent.getScheduledAt());
@@ -141,6 +122,70 @@ public class NotifyDispatchResultService {
             return false;
         }
         return true;
+    }
+
+    /** 只接受新规则持久标记与本次 READY 领取的合取证明，旧 READY/零次数并不足以证明未外呼。 */
+    private boolean provenExternalUnsent(NotifyOutbox lease, NotifyOutbox outbox, NotifyDelivery delivery) {
+        return Boolean.TRUE.equals(lease.getClaimedFromReady())
+            && NotifyOutbox.DEADLINE_UNSENT_READY.equals(outbox.getLastErrorCode())
+            && Integer.valueOf(0).equals(outbox.getAttemptCount())
+            && Integer.valueOf(0).equals(delivery.getAttemptCount())
+            && delivery.getProviderMessageId() == null && delivery.getAcceptedAt() == null
+            && delivery.getDeliveredAt() == null;
+    }
+
+    /** 旧枚举值可读但不能让 Worker 继续执行未兑现的编排或优先级。 */
+    private boolean supported(NotifyIntent intent) {
+        return "ALL".equals(intent.getStrategy()) && "ASYNC".equals(intent.getMode())
+            && Integer.valueOf(0).equals(intent.getPriority());
+    }
+
+    /** 不支持的历史任务只在已证明未发时失败，否则保留外部未知事实供人工核对。 */
+    private void settleUnsupported(NotifyOutbox lease, NotifyOutbox outbox,
+                                   NotifyDelivery delivery, LocalDateTime now) {
+        if ("IN_APP".equals(delivery.getChannel())) {
+            if (!recoverInAppFacts(outbox, delivery, now)) {
+                unsupportedUnsent(outbox, delivery);
+            }
+        } else if (provenExternalUnsent(lease, outbox, delivery)) {
+            unsupportedUnsent(outbox, delivery);
+        } else {
+            uncertain(outbox, delivery, "UNSUPPORTED_MODE_OUTCOME_UNKNOWN");
+        }
+    }
+
+    /** 站内关系是已提交事实，优先于模式拒绝；孤儿关系仅作为本地不一致终结。 */
+    private boolean recoverInAppFacts(NotifyOutbox outbox, NotifyDelivery delivery, LocalDateTime now) {
+        if (!"IN_APP".equals(delivery.getChannel()) || delivery.getUserId() == null
+            || dao.messageRecipient(outbox.getIntentId(), delivery.getUserId()) == null) return false;
+        if (dao.message(outbox.getIntentId()) == null) {
+            localInconsistent(outbox, delivery, "IN_APP_FACTS_INCONSISTENT");
+            return true;
+        }
+        delivery.setStatus("DELIVERED");
+        if (delivery.getDeliveredAt() == null) delivery.setDeliveredAt(now);
+        delivery.setErrorCode(null);
+        delivery.setErrorMessage(null);
+        outbox.setStatus("DONE");
+        outbox.setLastErrorCode(null);
+        outbox.setLastErrorMessage(null);
+        requireOne(dao.saveDeliveryResult(delivery));
+        finish(outbox);
+        refreshAggregate(outbox.getIntentId());
+        return true;
+    }
+
+    /** 确定无物理调用时原子关闭旧任务；不伪造 Provider Attempt 或可重试本地错误。 */
+    private void unsupportedUnsent(NotifyOutbox outbox, NotifyDelivery delivery) {
+        delivery.setStatus("FAILED");
+        delivery.setErrorCode("UNSUPPORTED_MODE_UNSENT");
+        delivery.setErrorMessage("历史通知编排不受支持");
+        outbox.setStatus("DONE");
+        outbox.setLastErrorCode("UNSUPPORTED_MODE_UNSENT");
+        outbox.setLastErrorMessage("历史通知编排不受支持");
+        requireOne(dao.saveDeliveryResult(delivery));
+        finish(outbox);
+        refreshAggregate(outbox.getIntentId());
     }
 
     /** 外部历史/重领缺少未外呼证明时仅等待核对，不能按过期未发送终结。 */

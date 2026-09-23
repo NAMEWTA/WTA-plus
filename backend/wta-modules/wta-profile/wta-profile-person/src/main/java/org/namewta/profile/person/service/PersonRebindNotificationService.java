@@ -125,7 +125,7 @@ public class PersonRebindNotificationService implements PersonRebindNotification
                 NotificationReceipt result = notifications.submit(new NotificationCommand("profile", "person-rebind", INTERNAL_TYPE,
                     Long.toString(applicationId), "USER", List.of(Long.toString(userId)), "person-rebind",
                     java.util.Map.of("title", "实名认证绑定变更通知", "content", SAFE_TEXT), List.of(NotificationChannel.IN_APP),
-                    NotificationStrategy.ALL, NotificationMode.ASYNC, 60, null, null,
+                    NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
                     internalRequestId(applicationId), java.util.Map.of("audit", "SAFE_TEXT")));
                 return submissionResult(result, internalRequestId(applicationId));
             }
@@ -150,7 +150,7 @@ public class PersonRebindNotificationService implements PersonRebindNotification
         NotificationReceipt result = notifications.submit(new NotificationCommand("profile", "person-rebind", SMS_TYPE,
             Long.toString(applicationId), "PHONE", List.of(phone), "person-rebind",
             java.util.Map.of(), List.of(NotificationChannel.SMS),
-            NotificationStrategy.ALL, NotificationMode.ASYNC, 60, null, null,
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
             "profile:person:rebind:" + profileId + ":" + applicationId + ":sms", java.util.Map.of("audit", "REDACT_SENSITIVE")));
         return submissionResult(result, requestId);
     }

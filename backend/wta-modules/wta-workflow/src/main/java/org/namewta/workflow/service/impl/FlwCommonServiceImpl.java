@@ -171,7 +171,7 @@ public class FlwCommonServiceImpl implements IFlwCommonService {
         notificationService.submit(new NotificationCommand("workflow", "workflow-task", "WORKFLOW",
             subject + ":" + message.hashCode(), recipientType, recipients, "workflow-task",
             Map.of("title", subject, "content", message, "path", path == null ? "" : path),
-            List.of(channel), NotificationStrategy.ALL, NotificationMode.ASYNC, 40, null, null, null, Map.of()));
+            List.of(channel), NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null, null, Map.of()));
     }
 
     /**

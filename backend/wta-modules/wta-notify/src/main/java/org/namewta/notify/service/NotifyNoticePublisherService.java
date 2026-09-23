@@ -61,9 +61,8 @@ public class NotifyNoticePublisherService {
         notificationService.submit(new NotificationCommand("notify", "notice-published", "NOTICE_PUBLISHED",
             String.valueOf(notice.getNoticeId()), recipientType, recipientIds.stream().map(String::valueOf).toList(), "notice-published", params,
             channels,
-            NotificationStrategy.ALL, NotificationMode.ASYNC, 50, null, null,
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
             "notice-published:" + notice.getNoticeId() + ":" + version, Map.of("audit", "NOTICE_SNAPSHOT")));
     }
 
 }
-

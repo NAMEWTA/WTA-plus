@@ -73,7 +73,7 @@ public class CaptchaController {
             notificationService.submit(new NotificationCommand("admin-web", "auth-captcha", "auth_captcha", phoneNumber,
                 "PHONE", List.of(phoneNumber), "auth-captcha",
                 Map.of("code", code, "expireMinutes", String.valueOf(Constants.CAPTCHA_EXPIRATION)),
-                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, deadline,
+                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, deadline,
                 captchaIdempotencyKey(NotificationChannel.SMS, phoneNumber), Map.of("audit", "REDACT_SENSITIVE")));
             if (!cacheCaptchaCode(key, code, deadline)) return R.fail("验证码短信发送失败");
         } catch (Exception ex) {
@@ -113,7 +113,7 @@ public class CaptchaController {
             notificationService.submit(new NotificationCommand("admin-web", "auth-captcha", "auth_captcha", email,
                 "EMAIL", List.of(email), "auth-captcha",
                 Map.of("code", code, "expireMinutes", String.valueOf(Constants.CAPTCHA_EXPIRATION)),
-                List.of(NotificationChannel.MAIL), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, deadline,
+                List.of(NotificationChannel.MAIL), NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, deadline,
                 captchaIdempotencyKey(NotificationChannel.MAIL, email), Map.of("audit", "REDACT_SENSITIVE")));
             if (!cacheCaptchaCode(key, code, deadline)) throw new ServiceException("验证码邮件发送失败");
         } catch (Exception e) {

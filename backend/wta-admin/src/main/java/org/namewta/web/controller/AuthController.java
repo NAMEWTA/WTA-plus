@@ -94,7 +94,7 @@ public class AuthController {
             notificationService.submit(new NotificationCommand("admin-web", "auth-login", "LOGIN_SUCCESS",
                 String.valueOf(userId), "USER", List.of(String.valueOf(userId)), "login-welcome",
                 java.util.Map.of("title", "登录提醒", "content", "欢迎登录 WTA-Plus 后台管理系统"),
-                List.of(NotificationChannel.IN_APP), NotificationStrategy.ALL, NotificationMode.ASYNC, 20,
+                List.of(NotificationChannel.IN_APP), NotificationStrategy.ALL, NotificationMode.ASYNC, 0,
                 null, null, "login-welcome:" + userId + ":" + System.currentTimeMillis() / 60_000,
                 java.util.Map.of()));
         } catch (RuntimeException exception) {

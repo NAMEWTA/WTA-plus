@@ -77,6 +77,7 @@ class NotifyTestSendServiceTest {
         verify(notifications).submit(captor.capture());
         assertEquals("QUEUED", status);
         assertEquals("auth-captcha", captor.getValue().templateCode());
+        assertEquals(0, captor.getValue().priority());
         assertTrue(captor.getValue().templateParams().containsKey("code"));
         assertEquals(false, captor.getValue().templateParams().containsKey("providerKey"));
     }

@@ -328,6 +328,9 @@ class NotifyOutboxWakePublisherTest {
         NotifyIntent intent = new NotifyIntent();
         intent.setIntentId(9L);
         intent.setStatus("FAILED");
+        intent.setStrategy("ALL");
+        intent.setMode("ASYNC");
+        intent.setPriority(0);
         when(dao.lockIntent(9L)).thenReturn(intent);
         NotifyDelivery delivery = new NotifyDelivery();
         delivery.setDeliveryId(8L);

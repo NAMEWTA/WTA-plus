@@ -86,6 +86,10 @@ class PersonRebindNotificationTest {
         service.notifyOldAccount(new PersonReboundEvent(9201L, 9001L, 202L));
         ArgumentCaptor<NotificationCommand> request = ArgumentCaptor.forClass(NotificationCommand.class);
         verify(notifications, org.mockito.Mockito.times(2)).submit(request.capture());
+        assertThat(request.getAllValues()).allSatisfy(command -> {
+            assertThat(command.priority()).isZero();
+            assertThat(command.expiresAt()).isNull();
+        });
         assertThat(request.getAllValues()).allSatisfy(command ->
             assertThat(command.templateParams().toString()).doesNotContain("张三", "110101", "101"));
     }

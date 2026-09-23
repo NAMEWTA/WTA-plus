@@ -115,7 +115,7 @@ public class EnterpriseTransferService {
             result = notify.submit(new NotificationCommand("profile", "enterprise-transfer", "ENTERPRISE_TRANSFER",
                 challengeId, "PHONE", List.of(target.phone()), "enterprise-transfer",
                 Map.of("code", code),
-                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 80, null, expiresAt,
+                List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, expiresAt,
                 "profile:enterprise:transfer:" + challengeId, Map.of("audit", "REDACT_SENSITIVE")));
         } catch (RuntimeException exception) {
             challenges.revoke(challengeId);

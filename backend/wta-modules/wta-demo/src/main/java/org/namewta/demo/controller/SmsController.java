@@ -91,7 +91,7 @@ public class SmsController {
         return R.ok(notificationService.submit(new NotificationCommand("demo", "auth-captcha", "demo_sms",
             String.join(",", targets), "PHONE", targets, "auth-captcha",
             Map.of("code", "1234", "expireMinutes", "5"),
-            List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 20,
+            List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 0,
             null, null, null, Map.of())));
     }
 

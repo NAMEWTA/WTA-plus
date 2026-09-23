@@ -16,9 +16,9 @@ import java.util.Map;
  * @param templateCode 逻辑模板编码
  * @param templateParams 模板参数
  * @param channels 请求渠道
- * @param strategy 编排策略
- * @param mode 执行模式
- * @param priority 优先级
+ * @param strategy 编排策略；新提交仅支持 ALL，旧枚举值只用于读取历史事实
+ * @param mode 执行模式；新提交仅支持 ASYNC
+ * @param priority 当前只支持 0，Worker 不按此字段排序
  * @param scheduledAt 计划时间
  * @param expiresAt 截止时间
  * @param idempotencyKey 幂等键

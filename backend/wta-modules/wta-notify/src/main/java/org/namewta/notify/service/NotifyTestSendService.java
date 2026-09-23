@@ -83,7 +83,7 @@ public class NotifyTestSendService {
         NotificationReceipt receipt = notifications.submit(new NotificationCommand(
             "notify", sceneCode, "NOTIFY_CONFIG_TEST", target, recipientType, List.of(target),
             sceneCode, params, List.of(notifyChannel), NotificationStrategy.ALL, NotificationMode.ASYNC,
-            20, null, null,
+            0, null, null,
             "notify-config-test:" + sceneCode + ":" + channel + ":" + System.currentTimeMillis(),
             Map.of("audit", "TEST")));
         return receipt == null || receipt.status() == null ? "UNKNOWN" : receipt.status().name();

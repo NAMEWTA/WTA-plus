@@ -78,7 +78,7 @@ public class MailSendController {
         notificationService.submit(new NotificationCommand("demo", "notice-published", "demo_mail", to,
             "EMAIL", List.of(to), "notice-published", Map.of("title", subject, "content", text, "path", "",
             "attachmentOssIds", ossIds), List.of(NotificationChannel.MAIL), NotificationStrategy.ALL,
-            NotificationMode.ASYNC, 20, null, null, null, Map.of()));
+            NotificationMode.ASYNC, 0, null, null, null, Map.of()));
     }
 
 }

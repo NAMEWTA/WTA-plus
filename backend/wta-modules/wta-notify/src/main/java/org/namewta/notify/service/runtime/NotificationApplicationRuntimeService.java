@@ -195,6 +195,7 @@ public class NotificationApplicationRuntimeService {
                 throw new ServiceException("投递不属于当前通知");
             }
         }
+        requireSupportedMode(intent.getStrategy(), intent.getMode(), intent.getPriority());
         if ("CANCELLED".equals(intent.getStatus()) || "EXPIRED".equals(intent.getStatus())
             || "DELIVERED".equals(intent.getStatus())) {
             return new RetryReceipt(String.valueOf(intent.getIntentId()), status(intent.getStatus()), 0);
@@ -310,6 +311,8 @@ public class NotificationApplicationRuntimeService {
             || blank(command.templateCode()) || command.channels().isEmpty()) {
             throw new ServiceException("通知应用、场景、模板和渠道不能为空");
         }
+        // 先于幂等查询拒绝；旧枚举值只供历史事实读取，不授权新意图或重复回执。
+        requireSupportedMode(command.strategy().name(), command.mode().name(), command.priority());
         if (command.channels().stream().anyMatch(Objects::isNull)) {
             throw new ServiceException("通知渠道不能为空");
         }
@@ -343,6 +346,15 @@ public class NotificationApplicationRuntimeService {
             if (!toLocal(expiresAt).isAfter(dao.databaseNow())) {
                 throw new ServiceException("通知已过截止时间");
             }
+        }
+    }
+
+    /** 提交和人工重试只承诺全部渠道异步，不把历史枚举/优先级伪装成已实现能力。 */
+    private void requireSupportedMode(String strategy, String mode, Integer priority) {
+        if (!NotificationStrategy.ALL.name().equals(strategy)
+            || !NotificationMode.ASYNC.name().equals(mode)
+            || !Integer.valueOf(0).equals(priority)) {
+            throw new ServiceException("仅支持全部渠道异步通知，优先级必须为0");
         }
     }
 
