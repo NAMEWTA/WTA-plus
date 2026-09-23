@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    ".agents/skills/engineering-standards/scripts/validate-skill-facts.test.mjs",
+    ".agents/skills/namewta-fullstack-development/scripts/validate-module-mode.test.mjs",
+    "speculo/workflows/specdev/common/tools/validate-specdev.test.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T08:35:51.011350+00:00",
+  "finished_at": "2026-09-23T08:35:57.413619+00:00",
+  "exit_code": 0,
+  "log": "checker-fixtures.log"
+}

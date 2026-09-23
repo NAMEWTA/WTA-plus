@@ -14,7 +14,7 @@ planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
 ready: true
 risk: "high"
-blocked_by: ["T-01"]
+blocked_by: []
 contract_ids: ["AC-009"]
 owner: "single-agent"
 expected_changes: ["<Path>frontend/package.json</Path>", "<Path>frontend/apps/admin-web/package.json</Path>", "<Path>frontend/apps/home-web/package.json</Path>", "<Path>frontend/apps/sso-web/package.json</Path>", "<Path>backend/pom.xml</Path>", "<Path>backend/wta-admin/pom.xml</Path>", "<Path>scripts/ci/verify-admin-bundle.sh</Path>", "<Path>scripts/ci/run-external-services.sh</Path>", "<Path>release-artifacts/scripts/release-manage.sh</Path>", "<Path>release-artifacts/docker/docker-compose-infrastructure.yml</Path>", "<Path>release-artifacts/tests/</Path>"]
@@ -36,6 +36,8 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 - 可观察产出：build:dev最终三个App均development，build:prod均production
 
 ## 2. 决策状态
+
+revision149：T01当前合同已证实且无需新实现，移除该重复施工边；当前完整门禁证据替代重复施工前置，本票构建模式与bundle等合同仍需当前验收。 证据：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path>
 
 ### 已锁定决策
 
@@ -77,6 +79,8 @@ build:dev最终三个App均development，build:prod均production 正常、失败
 - 安全：仅隔离合成测试；secret不进日志/截图/证据。对象/Client授权在后端实施，页面隐藏不替代权限。
 
 ## 6. 执行路线
+
+前置替代证据：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path>；当前完整门禁证据替代重复施工前置，本票构建模式与bundle等合同仍需当前验收。
 
 1. 回读本票历史Evidence和实际实现提交，使用当前源码核对本票验收合同；旧施工步骤仅在before快照保存，不重复实施。
 2. 比较历史候选与当前写集；对后续提交或新票触及的行为逐一标记需要重跑的测试。

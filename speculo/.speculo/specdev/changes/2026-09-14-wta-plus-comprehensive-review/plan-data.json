@@ -50,15 +50,15 @@
     "contract": "AC-001",
     "review_date": "2026-09-23",
     "notes": "门禁实现保留；本次11条common Skill摘要漂移已核对入口后重绑，未修改历史Skill执行记录。",
-    "status": "in_progress",
-    "ready": true,
+    "status": "cancelled",
+    "ready": false,
     "e2e_disposition": "not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界",
-    "plan_revision": 148,
+    "plan_revision": 149,
     "implementation_commits": [
       "3aa047b85033afd7588923ffa7b37481dc2d1645"
     ],
     "implementation_commit": "3aa047b85033afd7588923ffa7b37481dc2d1645",
-    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+    "result_sha": null,
     "fact": "门禁实现保留；本次11条common Skill摘要漂移已核对入口后重绑，未修改历史Skill执行记录。",
     "behavior": "干净clone不创建temp/release也通过事实检查",
     "tests": [
@@ -78,7 +78,10 @@
     "contract_ids": [
       "AC-001"
     ],
-    "file": "ticket/01-restore-trustworthy-gates.md"
+    "file": "ticket/01-restore-trustworthy-gates.md",
+    "historical_result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+    "current_no_change_checkpoint": "9a8140ff5c8dce4fcf05a67972bd8ec0d750fc3f",
+    "cancellation_reason": "当前源码已满足AC-001且无需新增产品实现；历史非空3aa047b及其父链保留，T29已完成当前路径冲突修复。按Goal历史票无改动出口，取消的是本轮重复施工，不取消AC-001，不把缺失历史clean单独作为理由，不生成空commit或新result。AC-001最终组合复验继续由T30承担。"
   },
   {
     "id": "T-02",
@@ -654,9 +657,7 @@
       "CI与部署镜像版本相同或有明确差异测试"
     ],
     "decision": "既有合同保持；本轮重新评审与验收；full/core、三个App模式与唯一六SQL基座保持；新增schema和启动变化需T-30复验。",
-    "blocked_by": [
-      "T-01"
-    ],
+    "blocked_by": [],
     "depth": "deep",
     "risk": "high",
     "skills": [
@@ -677,7 +678,7 @@
     "status": "ready",
     "ready": true,
     "e2e_disposition": "not-required: 构建产物扫描与脚本负向夹具覆盖；线上组合由T-08/T-30验收",
-    "plan_revision": 136,
+    "plan_revision": 149,
     "implementation_commits": [
       "1b5872750ba8a074ddef150400322f8b287ae69f",
       "f4ea9c5a6b2e7dbb5dd859dc5e955b0a59252981"
@@ -2426,7 +2427,6 @@
     ],
     "decision": "既有合同保持；本轮重新评审与验收；扩展为AC-001—050同候选集成、历史票闭合、可发布候选及归档准备；旧全绿不再代表当前完成。",
     "blocked_by": [
-      "T-01",
       "T-02",
       "T-03",
       "T-04",
@@ -2506,7 +2506,7 @@
     "status": "ready",
     "ready": true,
     "e2e_disposition": "required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复",
-    "plan_revision": 136,
+    "plan_revision": 149,
     "implementation_commits": [
       "91d4c2ea6356c74d3174f63f2665485484f0a103"
     ],

@@ -8,11 +8,11 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-01"
 title: "恢复可信的仓库门禁与治理入口"
-status: "in_progress"
+status: "cancelled"
 kind: "review"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
-ready: true
+ready: false
 risk: "medium"
 blocked_by: ["T-29"]
 contract_ids: ["AC-001"]
@@ -120,14 +120,14 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-001`：干净clone不创建temp/release也通过事实检查。
-- [ ] `AC-001`：注释中DSTransactional不触发越层误报，真实非法import必须失败。
-- [ ] `AC-001`：不存在CI文件时文档不得宣称active；远程required状态有独立证据。
-- [ ] `AC-001`：每个声明命令可在对应cwd解析，Maven/前端测试与package分开记录。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-001`：干净clone不创建temp/release也通过事实检查。
+- [x] `AC-001`：注释中DSTransactional不触发越层误报，真实非法import必须失败。
+- [x] `AC-001`：不存在CI文件时文档不得宣称active；远程required状态有独立证据。
+- [x] `AC-001`：每个声明命令可在对应cwd解析，Maven/前端测试与package分开记录。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -152,3 +152,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ## 当前完整复验启动（revision148）
 
 T29已done，先对AC001全部合同作当前验证，包括facts正负夹具、layered夹具与五模块、CI/cwd入口、构建锁、发布合同及NotifyOutboxWakeScopeGateTest真实执行。无新产品缺口时才按已批准历史票程序取消重复施工并保留AC001由T30最终复验；不因旧clean证据缺失单独取消，也不做空commit。T29同源码证明可以复用但须记录精确输入hash和其真实结果。
+
+## 当前无新增改动裁决（revision149）
+
+当前源码已满足AC-001且无需新增产品实现；历史非空3aa047b及其父链保留，T29已完成当前路径冲突修复。按Goal历史票无改动出口，取消的是本轮重复施工，不取消AC-001，不把缺失历史clean单独作为理由，不生成空commit或新result。AC-001最终组合复验继续由T30承担。 当前完整验收见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path>。历史Evidence未改写；没有新增result。

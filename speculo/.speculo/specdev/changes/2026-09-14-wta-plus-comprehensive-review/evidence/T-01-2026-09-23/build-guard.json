@@ -1,0 +1,11 @@
+{
+  "command": [
+    "bash",
+    "scripts/ci/verify-dev-build-guard.sh"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T08:36:15.841546+00:00",
+  "finished_at": "2026-09-23T08:36:18.447041+00:00",
+  "exit_code": 0,
+  "log": "build-guard.log"
+}

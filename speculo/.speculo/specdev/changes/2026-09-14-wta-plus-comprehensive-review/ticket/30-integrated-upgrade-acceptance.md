@@ -14,7 +14,7 @@ planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
 ready: true
 risk: "high"
-blocked_by: ["T-01", "T-02", "T-03", "T-04", "T-05", "T-06", "T-07", "T-08", "T-09", "T-10", "T-11", "T-12", "T-13", "T-14", "T-15", "T-16", "T-17", "T-18", "T-19", "T-20", "T-21", "T-22", "T-23", "T-24", "T-25", "T-26", "T-27", "T-28", "T-29", "T-31", "T-32", "T-33", "T-34", "T-35", "T-36", "T-37", "T-38", "T-39", "T-40", "T-41", "T-42", "T-43", "T-44", "T-45", "T-46", "T-47", "T-48", "T-49", "T-50"]
+blocked_by: ["T-02", "T-03", "T-04", "T-05", "T-06", "T-07", "T-08", "T-09", "T-10", "T-11", "T-12", "T-13", "T-14", "T-15", "T-16", "T-17", "T-18", "T-19", "T-20", "T-21", "T-22", "T-23", "T-24", "T-25", "T-26", "T-27", "T-28", "T-29", "T-31", "T-32", "T-33", "T-34", "T-35", "T-36", "T-37", "T-38", "T-39", "T-40", "T-41", "T-42", "T-43", "T-44", "T-45", "T-46", "T-47", "T-48", "T-49", "T-50"]
 contract_ids: ["AC-001", "AC-002", "AC-003", "AC-004", "AC-005", "AC-006", "AC-007", "AC-008", "AC-009", "AC-010", "AC-011", "AC-012", "AC-013", "AC-014", "AC-015", "AC-016", "AC-017", "AC-018", "AC-019", "AC-020", "AC-021", "AC-022", "AC-023", "AC-024", "AC-025", "AC-026", "AC-027", "AC-028", "AC-029", "AC-030", "AC-031", "AC-032", "AC-033", "AC-034", "AC-035", "AC-036", "AC-037", "AC-038", "AC-039", "AC-040", "AC-041", "AC-042", "AC-043", "AC-044", "AC-045", "AC-046", "AC-047", "AC-048", "AC-049", "AC-050"]
 owner: "single-agent"
 expected_changes: ["<Path>frontend/e2e/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>scripts/ci/</Path>", "<Path>release-artifacts/tests/</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseApplicationMySqlE2ETest.java</Path>"]
@@ -36,6 +36,8 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 - 可观察产出：全部已接受AC均有实际命令/退出码/环境/源码checkpoint
 
 ## 2. 决策状态
+
+revision149：T01当前合同已证实且无需新实现，移除该重复施工边；AC001仍在本票contract_ids，最终源码必须完整重跑可信门禁，不把cancelled作为自动成功。 证据：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path>
 
 ### 已锁定决策
 
@@ -77,6 +79,8 @@ G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施�
 - 安全：仅隔离合成测试；secret不进日志/截图/证据。对象/Client授权在后端实施，页面隐藏不替代权限。
 
 ## 6. 执行路线
+
+前置替代证据：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path>；AC001仍在本票contract_ids，最终源码必须完整重跑可信门禁，不把cancelled作为自动成功。
 
 1. 冻结最终代码/依赖/配置与新的验证矩阵；逐票核对历史证据失效闭包及未决决策。
 2. 完成所有旧票的复验与合法关闭记录；新票完成真实实现commit/direct-parent，不使用共同旧result伪造逐票完成。

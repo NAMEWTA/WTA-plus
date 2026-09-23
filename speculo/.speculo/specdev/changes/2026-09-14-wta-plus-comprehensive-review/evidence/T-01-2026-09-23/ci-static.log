@@ -1,0 +1,14 @@
+{
+  "yaml": "parsed",
+  "shell_steps_checked": 21,
+  "verification_entries_checked": 11,
+  "full_before_core": true,
+  "serial_job_chain": [
+    "release-contracts",
+    "frontend",
+    "backend",
+    "external-services"
+  ],
+  "remote_actions": "not-run",
+  "business_tests": "not-run"
+}

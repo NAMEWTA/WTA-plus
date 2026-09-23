@@ -1,0 +1,18 @@
+{
+  "report_path": "backend/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.NotifyOutboxWakeScopeGateTest.xml",
+  "report_sha256": "4e8afc6799ccc826698547ed5f70e5b23193167e479619f0082beeb6272c9fa7",
+  "suite": "org.namewta.notify.NotifyOutboxWakeScopeGateTest",
+  "counts": {
+    "tests": 3,
+    "errors": 0,
+    "skipped": 0,
+    "failures": 0
+  },
+  "case_names": [
+    "outboxWakeComponentsStayOutsideConfigControlPlaneAndDirectChannelCalls",
+    "commonDispatcherFinishesProviderAndEventOnCallerThreadBeforeReturning",
+    "rejectsConfigInjectionAndDirectProviderCallsButAcceptsClaimPort"
+  ],
+  "fresh_for_current_run": true,
+  "command_record": "notify-wake-gate.json"
+}
