@@ -69,7 +69,7 @@ class LoginUserAgentUnitTest {
         }
         context = new GenericApplicationContext();
         context.registerBean(SpringUtils.class);
-        context.registerBean(Converter.class, Converter::new);
+        context.registerBean(Converter.class, () -> new Converter());
         context.registerBean(RedissonClient.class, () -> mock(RedissonClient.class));
         context.refresh();
     }
