@@ -1,0 +1,20 @@
+{
+  "command": [
+    "env",
+    "PATH=/tmp/wta-t02-c1/tool-bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/domain-notify",
+    "--filter",
+    "@namewta/web-domain-notify",
+    "--filter",
+    "@namewta/admin-web",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T18:55:46.168720+00:00",
+  "finished_at": "2026-09-23T18:55:46.174056+00:00",
+  "exit_code": 127,
+  "log": "frontend-f1-target-tests.log"
+}

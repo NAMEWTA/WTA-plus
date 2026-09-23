@@ -1,0 +1,18 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/domain-notify",
+    "--filter",
+    "@namewta/web-domain-notify",
+    "--filter",
+    "@namewta/admin-web",
+    "typecheck"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T18:56:25.369316+00:00",
+  "finished_at": "2026-09-23T18:56:42.630447+00:00",
+  "exit_code": 0,
+  "log": "frontend-f1-target-types.log"
+}

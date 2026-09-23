@@ -1,0 +1,77 @@
+[
+  {
+    "file": "frontend-f1-target-tests.json",
+    "bytes": 510,
+    "sha256": "79294391f2c1c0e8c49fbdc9e3d5d1b7953cfc1ec4ee2a08bae413f75b78c42d"
+  },
+  {
+    "file": "frontend-f1-target-tests.log",
+    "bytes": 91,
+    "sha256": "a8a8ddb74feb2ea73412b9e0c9a27f2a7ba30c30e9481e1986e1263a2597374c"
+  },
+  {
+    "file": "frontend-f1-target-tests-envfixed.json",
+    "bytes": 408,
+    "sha256": "b17befbc175f8a4ff5c8cbfc0b65a40369d9d0246522108c718eacbd4c3d754a"
+  },
+  {
+    "file": "frontend-f1-target-tests-envfixed.log",
+    "bytes": 3252,
+    "sha256": "a727e7919ab23cccf9ca256e4036f4dfe37980659ebf7db20a3516d42387b252"
+  },
+  {
+    "file": "frontend-f1-target-types.json",
+    "bytes": 404,
+    "sha256": "05a0a90cc5026134065809da5920d8418d22bc7139393af5567ca719e05a8348"
+  },
+  {
+    "file": "frontend-f1-target-types.log",
+    "bytes": 347,
+    "sha256": "526864705930e9a8e2ccd3c8e29cc1e57cb9c91f0745c5d52aff8bc27defe659"
+  },
+  {
+    "file": "frontend-f2-host-diagnostic.json",
+    "bytes": 379,
+    "sha256": "dabb8ec5ab040b6255cfe645380e77e9f24c57f40edaab960bec08c12f99f693"
+  },
+  {
+    "file": "frontend-f2-host-diagnostic.log",
+    "bytes": 1650,
+    "sha256": "f8d0033c187bc94dae15dfba98f59deb076c7084a6dd3ea1c271165206f56ce4"
+  },
+  {
+    "file": "frontend-f1-source.json",
+    "bytes": 128,
+    "sha256": "bdadcdea75add7c475a0c16400438e96c7444f28b534631b42eddd33bbef57c4"
+  },
+  {
+    "file": "real18/result.json",
+    "bytes": 6459,
+    "sha256": "350a3836d1f40c2b6040c66d4ca7eebea0745cb06fb5a00b364edb75ec6da8ed"
+  },
+  {
+    "file": "real18/maven.log",
+    "bytes": 87196,
+    "sha256": "77308a600e6b8ffe69883d84cea0c631db0b1624075f5432c3ae29c47cb19f01"
+  },
+  {
+    "file": "real18/selected-surefire.xml",
+    "bytes": 121390,
+    "sha256": "e8db38cc8e2f7c1e21cbe9395219796317924b0a823c866d4eecefab3dffe023"
+  },
+  {
+    "file": "frontend-f3-dirty-diagnostic-source.json",
+    "bytes": 214,
+    "sha256": "5b0fae3bbf0798c77ee4085f50db8a7a5ac22ce04dfcbcf240c2556cbc441458"
+  },
+  {
+    "file": "frontend-f3-dirty-host-diagnostic.json",
+    "bytes": 385,
+    "sha256": "d5f42721635da641c7ca72764996037534cac13369b41b6c0a7cbf5d33ef5eb6"
+  },
+  {
+    "file": "frontend-f3-dirty-host-diagnostic.log",
+    "bytes": 3493,
+    "sha256": "4f16bb2d554e51581d271b12f82d51f10b46eacb744cc11e44616cefb8d597b2"
+  }
+]

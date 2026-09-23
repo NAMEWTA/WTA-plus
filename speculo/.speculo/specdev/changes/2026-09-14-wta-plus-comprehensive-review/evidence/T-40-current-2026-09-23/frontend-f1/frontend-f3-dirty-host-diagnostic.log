@@ -1,0 +1,55 @@
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web
+
+stderr | src/router/adminManifestRegistry.test.ts > admin selected manifest registry > owns lazy inbox route snapshots, same-page updates and cancellation before import resolves
+T40 inboxRoute subscribe diagnostic Error: ClientContext.clientId is required
+    at requireClientContext (/srv/WTA-plus/frontend/packages/platform/contracts/src/index.ts:96:11)
+    at createAxiosBrowserAdapter (/srv/WTA-plus/frontend/packages/adapters/axios-browser/src/index.ts:126:18)
+    at /srv/WTA-plus/frontend/apps/admin-web/src/application/http.ts:42:17
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at VitestModuleEvaluator._runInlinedModule (file:///srv/WTA-plus/frontend/node_modules/.pnpm/vitest@4.1.10_@types+node@26.1.1_happy-dom@20.14.0_vite@8.1.5_@types+node@26.1.1_jiti@2.7.0_sass@1.102.0_yaml@2.9.0_/node_modules/vitest/dist/module-evaluator.js:206:4)
+    at VitestModuleRunner.directRequest (file:///srv/WTA-plus/frontend/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.1_jiti@2.7.0_sass@1.102.0_yaml@2.9.0/node_modules/vite/dist/node/module-runner.js:1258:59)
+    at VitestModuleRunner.cachedRequest (file:///srv/WTA-plus/frontend/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.1_jiti@2.7.0_sass@1.102.0_yaml@2.9.0/node_modules/vite/dist/node/module-runner.js:1165:73)
+    at /srv/WTA-plus/frontend/apps/admin-web/src/utils/push.ts:3:1
+    at VitestModuleEvaluator._runInlinedModule (file:///srv/WTA-plus/frontend/node_modules/.pnpm/vitest@4.1.10_@types+node@26.1.1_happy-dom@20.14.0_vite@8.1.5_@types+node@26.1.1_jiti@2.7.0_sass@1.102.0_yaml@2.9.0_/node_modules/vitest/dist/module-evaluator.js:206:4)
+    at VitestModuleRunner.directRequest (file:///srv/WTA-plus/frontend/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.1_jiti@2.7.0_sass@1.102.0_yaml@2.9.0/node_modules/vite/dist/node/module-runner.js:1258:59)
+
+ ❯ src/router/adminManifestRegistry.test.ts (6 tests | 1 failed) 1018ms
+     × owns lazy inbox route snapshots, same-page updates and cancellation before import resolves 1007ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/router/adminManifestRegistry.test.ts > admin selected manifest registry > owns lazy inbox route snapshots, same-page updates and cancellation before import resolves
+AssertionError: expected [ { active: false, …(1) } ] to deeply equal [ { active: true, messageId: '41' } ]
+
+- Expected
++ Received
+
+  [
+    {
+-     "active": true,
+-     "messageId": "41",
++     "active": false,
++     "messageId": undefined,
+    },
+  ]
+
+ ❯ src/router/adminManifestRegistry.test.ts:92:46
+     90|     const snapshots: Array<{ active: boolean; messageId: unknown }> = …
+     91|     const stop = port!.subscribe(value => snapshots.push(value));
+     92|     await vi.waitFor(() => expect(snapshots).toEqual([{ active: true, …
+       |                                              ^
+     93|     expect(cancelled).not.toHaveBeenCalled();
+     94|     route.value = { path: '/notify/inbox', fullPath: '/notify/inbox?me…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  15:00:21
+   Duration  3.12s (transform 1.51s, setup 0ms, import 1.99s, tests 1.02s, environment 0ms)
+
+undefined
+/srv/WTA-plus/frontend/apps/admin-web:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/router/adminManifestRegistry.test.ts

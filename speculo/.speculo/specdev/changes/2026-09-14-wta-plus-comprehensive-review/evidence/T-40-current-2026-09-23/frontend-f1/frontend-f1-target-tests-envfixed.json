@@ -1,0 +1,18 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/domain-notify",
+    "--filter",
+    "@namewta/web-domain-notify",
+    "--filter",
+    "@namewta/admin-web",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T18:55:54.392792+00:00",
+  "finished_at": "2026-09-23T18:56:03.451610+00:00",
+  "exit_code": 1,
+  "log": "frontend-f1-target-tests-envfixed.log"
+}

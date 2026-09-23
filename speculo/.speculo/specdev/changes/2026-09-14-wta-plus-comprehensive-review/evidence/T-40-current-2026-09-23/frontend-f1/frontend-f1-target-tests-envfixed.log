@@ -1,0 +1,48 @@
+Scope: 3 of 33 workspace projects
+packages/domains/notify test$ vitest run src
+packages/domains/notify test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/notify
+packages/domains/notify test:  Test Files  2 passed (2)
+packages/domains/notify test:       Tests  7 passed (7)
+packages/domains/notify test:    Start at  14:55:55
+packages/domains/notify test:    Duration  209ms (transform 91ms, setup 0ms, import 117ms, tests 12ms, environment 1ms)
+packages/domains/notify test: Done
+packages/web-domains/notify test$ vitest run src
+packages/web-domains/notify test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/notify
+packages/web-domains/notify test:  Test Files  5 passed (5)
+packages/web-domains/notify test:       Tests  25 passed (25)
+packages/web-domains/notify test:    Start at  14:55:55
+packages/web-domains/notify test:    Duration  1.69s (transform 728ms, setup 0ms, import 1.56s, tests 1.38s, environment 2ms)
+packages/web-domains/notify test: Done
+apps/admin-web test$ vitest run src
+apps/admin-web test:  RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web
+apps/admin-web test:  ❯ src/router/adminManifestRegistry.test.ts (6 tests | 1 failed) 1015ms
+apps/admin-web test:      × owns lazy inbox route snapshots, same-page updates and cancellation before import resolves 1009ms
+apps/admin-web test: ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+apps/admin-web test:  FAIL  src/router/adminManifestRegistry.test.ts > admin selected manifest registry > owns lazy inbox route snapshots, same-page updates and cancellation before import resolves
+apps/admin-web test: AssertionError: expected [ { active: false, …(1) } ] to deeply equal [ { active: true, messageId: '41' } ]
+apps/admin-web test: - Expected
+apps/admin-web test: + Received
+apps/admin-web test:   [
+apps/admin-web test:     {
+apps/admin-web test: -     "active": true,
+apps/admin-web test: -     "messageId": "41",
+apps/admin-web test: +     "active": false,
+apps/admin-web test: +     "messageId": undefined,
+apps/admin-web test:     },
+apps/admin-web test:   ]
+apps/admin-web test:  ❯ src/router/adminManifestRegistry.test.ts:91:46
+apps/admin-web test:      89|     const snapshots: Array<{ active: boolean; messageId: unknown }> = …
+apps/admin-web test:      90|     const stop = port!.subscribe(value => snapshots.push(value));
+apps/admin-web test:      91|     await vi.waitFor(() => expect(snapshots).toEqual([{ active: true, …
+apps/admin-web test:        |                                              ^
+apps/admin-web test:      92|     expect(cancelled).not.toHaveBeenCalled();
+apps/admin-web test:      93|     expect(await port!.snapshot()).toEqual({ active: true, messageId: …
+apps/admin-web test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+apps/admin-web test:  Test Files  1 failed | 16 passed (17)
+apps/admin-web test:       Tests  1 failed | 79 passed (80)
+apps/admin-web test:    Start at  14:55:59
+apps/admin-web test:    Duration  4.08s (transform 5.09s, setup 0ms, import 7.93s, tests 2.25s, environment 8ms)
+apps/admin-web test: Failed
+/srv/WTA-plus/frontend/apps/admin-web:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @namewta/admin-web@0.0.0 test: `vitest run src`
+Exit status 1
