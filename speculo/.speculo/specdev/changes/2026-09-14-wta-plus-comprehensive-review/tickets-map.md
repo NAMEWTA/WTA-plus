@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 168
+plan_revision: 169
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-用户已激活Goal。当前11done、2cancelled（仅重复施工，AC保留）、37ready；T39固定C2已完成。下一T50，逐票current单writer，Lead验收；允许gpt-6-sol/xhigh有界子代理。Ticket frontmatter为状态/依赖/写集权威。
+用户Goal执行中。当前11done/2cancelled/T50 in_progress/36ready，cors_audit唯一产品writer，Lead验收，允许native gpt-6-sol/xhigh有界协作；Ticket为依赖/写集权威。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -38,7 +38,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ## 2. 执行清单
 
-50票中11done、2cancelled、37ready；AC-001/003由T30最终复验，下一T50。Ready不代表完成。
+50票中11done、2cancelled、T50 in_progress、36ready；AC-001/003仍由T30复验。
 
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -91,7 +91,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 | T-47 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/47-latest-oss-query-wins.md</Path> | A慢B快最终行、total、preview、loading、error均属于B；卸载或旧失败不污染当前页面。 | — | standard | medium | yes | single-agent | AC-047 | W-visible | done |
 | T-48 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/48-simple-dev-start-and-explicit-repair.md</Path> | 一个脚本提供显式start/build/doctor/repair子命令（菜单仅薄包装），普通再次启动不深度修复且尊重Spring/Vite环境优先级。 | T-32 | standard | medium | yes | single-agent | AC-048 | W-close | ready |
 | T-49 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/49-single-source-storage-config.md</Path> | 默认存储来自DB，历史对象按service；静态上传策略有安全代码默认值，只有部署差异/必要额度可覆盖，SINGLE无需MULTIPART参数。 | T-44, T-48 | standard | medium | yes | single-agent | AC-049 | W-close | ready |
-| T-50 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/50-reject-unimplemented-notify-modes.md</Path> | 统一路径只承诺ALL/ASYNC/default priority=0；非支持值在写意图前明确拒绝，所有仓内生产调用同批迁移，不增加高级编排引擎。 | T-39 | deep | high | yes | single-agent | AC-050 | W-notify | ready |
+| T-50 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/50-reject-unimplemented-notify-modes.md</Path> | 统一路径只承诺ALL/ASYNC/default priority=0；非支持值在写意图前明确拒绝，所有仓内生产调用同批迁移，不增加高级编排引擎。 | T-39 | deep | high | yes | single-agent | AC-050 | W-notify | in_progress |
 
 ## 3. 依赖 DAG
 
@@ -355,3 +355,7 @@ Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1
 ## revision168 当前验收
 
 Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive.
+
+## revision169 T50启动
+
+Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations.

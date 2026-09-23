@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T14:07:22.572810+00:00",
+  "updated_at": "2026-09-23T14:11:47.734803+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -131,7 +131,8 @@
     "revision165：NotifyDelivery已有真实PENDING状态，但notify_delivery_status基座字典缺该值，重试后监控会显示未知。提前扩50-cde-base-dml.sql写集，只补唯一PENDING=待投递字典项，保留同六SQL基座与其他初始化；前端Delivery类型/字典渲染同步，不新增后端状态。不得执行生产DML或重放基座；当前新隔离库验收，存量Tag差异由T30持有。",
     "Revision166: T38 accepted at a3b289e, backend sourceA7a6f75 explicit; final real14 and frontend736 zeroSkip, defaultA854 executed/163 environment skips, fullA/coreB and complete frontend gates passed. Live Redis config failure preserved; correct raw HTTP provenance and clean owned cleanup.10done/2cancelled/38ready; nextT39; Goal active, no archive.",
     "Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1in_progress/37ready. cors_audit sole product writer; Lead integration/governance. Absolute Captcha/Redis deadline, safe expiry and reclaimed-provider uncertainty; no production data repair.",
-    "Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive."
+    "Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive.",
+    "Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations."
   ],
   "worktrees": [
     {
@@ -605,6 +606,49 @@
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-39.md</Path>",
         "attempts": 2,
         "promotion_status": "applied"
+      }
+    },
+    {
+      "ticket_id": "T-50",
+      "owner": "single-agent",
+      "implementation_owner": "cors_audit",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+      "status": "active",
+      "updated_at": "2026-09-23T14:11:47.734803+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+        "source_sha": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-50.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
       }
     }
   ]

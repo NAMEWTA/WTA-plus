@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision168，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision169，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision168；11done/2cancelled/37ready。T39最终C2 6e1d7f8真实118零skip、默认861执行/181skip、full/core和静态门禁通过。当前无产品writer，下一T50拒绝未实现通知模式；Goal active。
+revision169；11done/2cancelled/T50 in_progress/36ready。base d544f02，当前阶段1行为红灯，cors_audit唯一产品writer、Lead治理/验收。Goal active。
 
 ### Pending Decisions and Blockers
 
@@ -355,3 +355,7 @@ Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1
 ## revision168 — T39完成
 
 Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive.
+
+## revision169 — T50启动
+
+Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations.

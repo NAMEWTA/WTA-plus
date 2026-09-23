@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-50"
 title: "收缩未兑现通知模式并迁移现有调用方"
-status: "ready"
+status: "in_progress"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -21,13 +21,13 @@ expected_changes: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/<
 writable_paths: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticePublisherService.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyTestSendService.java</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/</Path>", "<Path>backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwCommonServiceImpl.java</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindNotificationService.java</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>.agents/skills/engineering-standards/references/notification.md</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
 shared_paths: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticePublisherService.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyTestSendService.java</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java</Path>", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/</Path>", "<Path>backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwCommonServiceImpl.java</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindNotificationService.java</Path>", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>.agents/skills/engineering-standards/references/notification.md</Path>", "<Path>frontend/packages/api-contracts/</Path>", "<Path>frontend/tooling/openapi/</Path>"]
-shared_path_owners: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticePublisherService.java</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyTestSendService.java</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwCommonServiceImpl.java</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindNotificationService.java</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>backend/wta-modules/wta-notify/src/test/</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>.agents/skills/engineering-standards/references/notification.md</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>frontend/packages/api-contracts/</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)", "<Path>frontend/tooling/openapi/</Path> => single-agent (Lead; exclusive current workspace; T-50 turn only)"]
+shared_path_owners: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticePublisherService.java</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyTestSendService.java</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-admin/src/main/java/org/namewta/web/controller/AuthController.java</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwCommonServiceImpl.java</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-profile/wta-profile-person/src/main/java/org/namewta/profile/person/service/PersonRebindNotificationService.java</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>backend/wta-modules/wta-notify/src/test/</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>.agents/skills/engineering-standards/references/notification.md</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>frontend/packages/api-contracts/</Path> => cors_audit (sole product writer; Lead governance/integration)", "<Path>frontend/tooling/openapi/</Path> => cors_audit (sole product writer; Lead governance/integration)"]
 ---
 
 # T-50：收缩未兑现通知模式并迁移现有调用方
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
+用户Goal已授权全部票的本地实施、commit/direct-parent及native gpt-6-sol/xhigh协作。base d544f02e1627d76883e9eeaf73a8f2b05002d079，cors_audit唯一产品writer，Lead治理/提交/服务/验收，其他代理只读或私有环境工具；无新worktree。
 
 ## 1. 战略与来源
 
@@ -39,7 +39,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 已锁定决策
 
-保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。本地实施已获Goal授权；不推定远程发布或真实数据副作用授权。
 
 ### 已确认方案
 
@@ -115,7 +115,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
 - 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
 - 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
-- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。本地commit/direct-parent已授权；远程push、部署、真实数据修复及归档另行核对。
 - 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
@@ -135,3 +135,13 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ## 12. 停止、检查点与交付
 
 交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。
+
+## revision169 当前实施合同
+
+T39 result6e1d7f8已完成，当前base d544f02只增治理；保留其绝对截止、随机nonce、租约来源证明、Redis生产codec和T36/T37/T38全部合同。仅ALL+ASYNC+priority0可提交；构造器既有null归一保留，未知HTTP字符串由binding拒绝。当前NotificationMode只有ASYNC，不为测试新增SYNC。保留已公开策略枚举但明确未支持值拒绝；校验必须在重复幂等查询和任何准备/持久化之前，retry也拒绝原持久unsupported值。
+
+当前生产10文件12处构造全部迁移priority0，保留expiresAt、参数、目标、权限和幂等；枚举当前全部消费者，逐类行为测试而不只grep。Worker复用现有结果事务与锁序/fence，旧未支持任务停止READY循环：明确未发送可关闭并记录原因；不确定外部事实保守UNKNOWN/WAITING_RECEIPT供人工核对，已ACCEPTED/DELIVERED不倒退/不盲重发。IN_APP以真实消息/本人关系收敛，失败/终结不重复push且不重置预算。T39 deadlineGateLocked可作为最小内部复用点；无新增表、Mapper或新队列平台。具体边界由当前设计安全审查和真实回滚/竞争测试校核，需新路径先登记。
+
+阶段1只写现有API可编译的负向测试：ORDERED_FALLBACK/ESCALATION/priority正负非零在duplicate之前拒绝，四项既有字段行为红灯，不用缺新API编译失败。Lead记录红灯后再授权完整产品实现。阶段2需公共service/真实HTTP拒绝无写入、生产消费者回归、历史WAIT有界处置及T39受影响真实集成；新类建议NotifySupportedModeIntegrationTest，实际选择器由实施交付后冻结。当前只登记原15条写集，port/usecase/DAO/DDL无额外授权。
+
+公共Javadoc/OpenAPI描述与规范同步，生成物只能由真实full服务捕获→正式fetch/generate/check，不手写snapshot。先稳定后端Source A并构建/导出，再形成完整生成合同候选B，所有测试按真实source记录，不能把A叫成B。旧存量只读清单/分类处置稿由Lead保存，无生产查询/变更授权。正式派单见evidence/dispatch-T-50-20260923-01.md。
