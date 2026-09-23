@@ -99,7 +99,8 @@
     "2026-09-23用户确认追加退役AI token/模型凭据、禁用qcloud密钥“已经撤销停用，没有其他进行系统进行使用”。记录为负责人处置确认，非供应商接口复核；与实际DB/Redis/MinIO轮换证据共同关闭G-security-external。其余票据验收和归档授权要求不变。",
     "T34 cycle1 stopped after 3 acceptance rounds at 24909df: fixture timing/selector fix, real open-freshness fix, then login page resource timeout. Lead mandatory retrospective preserved in evidence/T-34-recovery.md; no timeout/assertion weakening.",
     "T34 Lead retrospective complete; new Packet T-34-20260923-02 changes real E2E to exclusive resources and commits reusable isolated runner. Prior cycle3 retained; current attempts reset0 only after recorded decision.",
-    "T34 recovery cycle attempt1 at e78d886: real inbox 1/1 passed and clean; independent driver reviews request corrections to failure cleanup/test identity. Packet03 assigns only driver/docs/regressions to cors_audit; ticket remains in_progress, no acceptance claimed."
+    "T34 recovery cycle attempt1 at e78d886: real inbox 1/1 passed and clean; independent driver reviews request corrections to failure cleanup/test identity. Packet03 assigns only driver/docs/regressions to cors_audit; ticket remains in_progress, no acceptance claimed.",
+    "T34 recovery attempt2: real browser1/1 passed; processes/ports/containers fully removed, but cleanup verdict failed from short/full Docker ID mismatch. Lead adds --no-trunc and tests both captured/lost full IDs. No done claim; next final acceptance is attempt3. Verbatim captured logs retain tool whitespace; product diff-check passes."
   ],
   "worktrees": [
     {
@@ -191,14 +192,14 @@
     {
       "ticket_id": "T-34",
       "owner": "single-agent",
-      "implementation_owner": "cors_audit",
+      "implementation_owner": "single-agent",
       "integration_owner": "single-agent",
       "provider": "git",
       "base_sha": "6fcbfeb50747b67bcaf4bf9af1d964cc7d760c04",
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "e78d886119d773f47ac985762a5459d6a1832609",
+      "source_checkpoint": "7c983838c1de52aa086d8335b1d33684da1cb83e",
       "status": "active",
       "updated_at": "2026-09-23T07:43:03.717251+00:00",
       "integration": {
@@ -227,7 +228,7 @@
           "evidence": null
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-34.md</Path>",
-        "attempts": 1,
+        "attempts": 2,
         "promotion_status": "pending"
       }
     }

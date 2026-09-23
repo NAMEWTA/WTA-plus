@@ -103,7 +103,7 @@ class ContainerCleanupTest(unittest.TestCase):
         def fake_docker(*args, **kwargs):
             calls.append(args)
             if args[:2] == ('ps', '-aq'):
-                self.assertEqual(args[2:], ('--filter', 'label=' + runner.OWNER_LABEL,
+                self.assertEqual(args[2:], ('--no-trunc', '--filter', 'label=' + runner.OWNER_LABEL,
                                             '--filter', 'label=' + runner.RUN_LABEL + 'run123'))
                 return '\n'.join(present)
             if args[0] == 'inspect':
@@ -114,13 +114,17 @@ class ContainerCleanupTest(unittest.TestCase):
                 present.remove(cid)
                 return cid
             raise AssertionError(args)
-        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(runner, 'docker', fake_docker):
-            result = report()
-            errors = runner.cleanup_resources([], [], [], pathlib.Path(temporary), 'run123', (), result)
-        self.assertEqual(errors, [])
-        self.assertEqual(result['cleanup'][cid], 'removed')
-        self.assertEqual(result['cleanup']['owned_containers_remaining'], [])
-        self.assertEqual(sum(call[0] == 'ps' for call in calls), 2)
+        for captured in ([], [cid]):
+            with self.subTest(captured=bool(captured)):
+                present.add(cid)
+                calls.clear()
+                with tempfile.TemporaryDirectory() as temporary, mock.patch.object(runner, 'docker', fake_docker):
+                    result = report()
+                    errors = runner.cleanup_resources([], [], captured, pathlib.Path(temporary), 'run123', (), result)
+                self.assertEqual(errors, [])
+                self.assertEqual(result['cleanup'][cid], 'removed')
+                self.assertEqual(result['cleanup']['owned_containers_remaining'], [])
+                self.assertEqual(sum(call[0] == 'ps' for call in calls), 2)
 
     def test_mismatched_label_cannot_be_removed(self):
         cid = 'b' * 64

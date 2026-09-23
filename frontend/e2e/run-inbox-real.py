@@ -160,7 +160,7 @@ def playwright_identity(data, root):
 
 def owned_container_ids(run_id):
     """Discover only containers with both exact owner and random run labels."""
-    found = docker('ps', '-aq', '--filter', 'label=' + OWNER_LABEL,
+    found = docker('ps', '-aq', '--no-trunc', '--filter', 'label=' + OWNER_LABEL,
                    '--filter', 'label=' + RUN_LABEL + run_id)
     return list(dict.fromkeys(found.splitlines())) if found else []
 
