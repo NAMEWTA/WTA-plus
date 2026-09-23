@@ -1,0 +1,14 @@
+test_anonymous_volume_must_be_absent (__main__.DriverSafetyTest.test_anonymous_volume_must_be_absent) ... ok
+test_baseline_green_cannot_claim_ticket_canary (__main__.DriverSafetyTest.test_baseline_green_cannot_claim_ticket_canary) ... ok
+test_exited_maven_leader_does_not_skip_group_cleanup (__main__.DriverSafetyTest.test_exited_maven_leader_does_not_skip_group_cleanup) ... ok
+test_failure_cleanup_only_verifies_and_removes_owned_full_ids (__main__.DriverSafetyTest.test_failure_cleanup_only_verifies_and_removes_owned_full_ids) ... ok
+test_owned_loopback_mysql_flags_and_full_ids (__main__.DriverSafetyTest.test_owned_loopback_mysql_flags_and_full_ids) ... ok
+test_password_is_child_environment_only (__main__.DriverSafetyTest.test_password_is_child_environment_only) ... ok
+test_private_log_redacts_passwords_and_known_canary (__main__.DriverSafetyTest.test_private_log_redacts_passwords_and_known_canary) ... ok
+test_requires_explicit_launch_and_full_clean_head_before_services (__main__.DriverSafetyTest.test_requires_explicit_launch_and_full_clean_head_before_services) ... ok
+test_seven_exact_reports_must_be_fresh_positive_and_zero_skip (__main__.DriverSafetyTest.test_seven_exact_reports_must_be_fresh_positive_and_zero_skip) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.111s
+
+OK

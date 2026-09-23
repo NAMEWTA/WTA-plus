@@ -1,0 +1,174 @@
+{
+  "gate": "T-02 real Servlet HTTP and owned MySQL logging",
+  "run_id": "4e81e6d59c798f07",
+  "mode": "ticket-canary",
+  "required_canary_method": "onlineDeviceTokenFromRealIssuerNeverReachesHttpOrErrorAudit",
+  "acceptance": false,
+  "started_utc": "2026-09-23T11:40:10.038405+00:00",
+  "exit_code": 1,
+  "owned": {
+    "mysql_container_id": "1bbbad354b8514d90fec5335153caea17f06240959ce48b2b39f608390b9364e",
+    "loopback_mysql_port": 32814,
+    "captured_anonymous_volume_names": [
+      "f02b716a90d2eb614c746d85cdab9238924edf13c26a743c56752c11bd09e135"
+    ]
+  },
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 55380,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "f02b716a90d2eb614c746d85cdab9238924edf13c26a743c56752c11bd09e135": true
+    },
+    "loopback_ports_closed": {
+      "32814": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.common.json.utils.LogSanitizerTest": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.log.aspect.LogAspectRedactionTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.web.logging.SysLogFilterTest": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.web.logging.SysLogFailureRedactionTest": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.web.logging.SysLogEventWriterTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.logging.OperationLogRedactionTest": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest": {
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "8a88965363ca295122efadabf0bc97e99c6704c4",
+    "tree": "07d9c945f4ceeddb98f101641f2e8a016b1c269b",
+    "clean": true
+  },
+  "ddl_baseline": {
+    "path": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+    "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5"
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=LogSanitizerTest,LogAspectRedactionTest,SysLogFilterTest,SysLogFailureRedactionTest,SysLogEventWriterTest,OperationLogRedactionTest,LogRedactionHttpMySqlIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dlog.mysql.integration.url=jdbc:mysql://127.0.0.1:32814/namewta_log_test_4e81e6d59c798f07?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dlog.mysql.integration.username=t02_4e81e6d59c798f07",
+    "-Dnamewta.sql.root=/srv/WTA-plus/release-artifacts/docker/infrastructure/mysql/init"
+  ],
+  "maven_exit_code": 1,
+  "methods": {
+    "org.namewta.common.json.utils.LogSanitizerTest": [
+      "smsCaptchaAndNotificationSubmissionHidePhoneAndCodeOnlyOnTheirRoutes",
+      "protectsOAuthFieldsOnlyInOAuthContext",
+      "preservesTreeAndMapInputs",
+      "notificationCallbacksKeepOnlyMetadataWithoutChangingBusinessValues",
+      "errorTextCannotEchoCredentialsInOtherwiseValidJson",
+      "redactsNestedAliasesArraysAndCustomExclusions",
+      "failsClosedOnMalformedTrailingOrUnstructuredJson",
+      "failureSummaryContainsNoMessageOrCause",
+      "protectsNestedFormNamesAndCredentialHeaders"
+    ],
+    "org.namewta.common.log.aspect.LogAspectRedactionTest": [
+      "sanitizesNestedResponseBeforeCreatingEventWithoutMutatingBusinessResult"
+    ],
+    "org.namewta.common.web.logging.SysLogFilterTest": [
+      "omitsBinaryResponseBodyButKeepsMetadata",
+      "completesAsyncResponseExactlyOnce",
+      "recordsCompleteRequestAndResponseWithServerRequestId",
+      "loggingFailureDoesNotChangeBusinessResponse",
+      "preservesUnhandledExceptionAndMarksResponseIncomplete",
+      "recordsAsyncTimeoutOnceAndRestoresCallbackMdc",
+      "preservesPlainJsonThroughNestedWrappersAndRedactsAuditCopies",
+      "concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext",
+      "restoresPreexistingMdcValue",
+      "excludesMultipartRequestAndSseResponseBodies",
+      "neverCopiesRawOAuthQueryAndRedirectIntoLogEvents",
+      "hidesUnstructuredTextWithoutChangingUtf8BusinessBody",
+      "recursivelyRedactsOpenApiCredentialMaterial"
+    ],
+    "org.namewta.common.web.logging.SysLogFailureRedactionTest": [
+      "malformedJsonHasOnlySafeSummaryAndOriginalBytesReachApplication",
+      "formRepeatsRemainVisibleWhileNestedSecretsAndOAuthCodeDisappear",
+      "sinkAndHandlerFailuresNeverPrintExceptionPayloadOrCause",
+      "utf8PrefixNeverContainsPartialCodePoint"
+    ],
+    "org.namewta.common.web.logging.SysLogEventWriterTest": [
+      "emitsOneParseableChineseJsonMessageAndPreservesBodyValue",
+      "translatesResponseEventAndBodyOmissionReason"
+    ],
+    "org.namewta.test.logging.OperationLogRedactionTest": [
+      "tokenIssuancePreservesAuditMetadataWithoutResponseBody",
+      "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[1]",
+      "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[2]",
+      "preservesOperatorDurationAndFailureStatusWithoutExceptionPayload"
+    ],
+    "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest": [
+      "onlineDeviceTokenFromRealIssuerNeverReachesHttpOrErrorAudit",
+      "credentialsNeverReachHttpEventsOperationEventsOrMySql"
+    ]
+  },
+  "issues": {
+    "org.namewta.common.json.utils.LogSanitizerTest": [],
+    "org.namewta.common.log.aspect.LogAspectRedactionTest": [],
+    "org.namewta.common.web.logging.SysLogFilterTest": [],
+    "org.namewta.common.web.logging.SysLogFailureRedactionTest": [],
+    "org.namewta.common.web.logging.SysLogEventWriterTest": [],
+    "org.namewta.test.logging.OperationLogRedactionTest": [],
+    "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest": [
+      {
+        "method": "onlineDeviceTokenFromRealIssuerNeverReachesHttpOrErrorAudit",
+        "kind": "failure",
+        "error_type": "org.opentest4j.AssertionFailedError"
+      }
+    ]
+  },
+  "error": "RuntimeError: Selected Maven test command failed",
+  "source_after": {
+    "head": "8a88965363ca295122efadabf0bc97e99c6704c4",
+    "tree": "07d9c945f4ceeddb98f101641f2e8a016b1c269b",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T11:40:56.510150+00:00"
+}

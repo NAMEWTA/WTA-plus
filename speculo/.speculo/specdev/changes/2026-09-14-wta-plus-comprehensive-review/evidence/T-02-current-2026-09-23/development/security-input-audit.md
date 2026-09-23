@@ -1,0 +1,21 @@
+# T-02 在线会话凭据日志输入补查（只读）
+
+**输入与边界**：固定源码 `c16966167526f9b6ab6eb213265034b3bbe53e46`（实施中工作树不作固定结论）；Ticket T-02／AC-002，工程安全规则 SEC-003、SEC-007。仅读源码和既有测试，未运行 Maven、服务或接触真实凭据。目标是完整识别真实签发 token 在正常在线设备链路进入哪些日志副本；不把客户端把已知秘密任意塞进普通字段当作独立阻断。
+
+## 已证实的可达漏点
+
+1. **正常 GET 响应正文漏完整在线 token。** `backend/wta-admin/src/main/java/org/namewta/web/listener/UserLoginSuccessListener.java:45-61` 在真实登录成功事件将 `event.tokenValue()` 放入 `UserOnlineDTO.tokenId` 并按该值存 Redis。`backend/wta-modules/wta-system/src/main/java/org/namewta/system/controller/monitor/SysUserOnlineController.java:43-75,100-115` 的管理员 `/monitor/online/list` 和本人 `/monitor/online` 均从该 DTO 构造 `SysUserOnline`，其 `tokenId` 字段见 `backend/wta-modules/wta-system/src/main/java/org/namewta/system/domain/SysUserOnline.java:14`。Spring 正常 JSON 响应经 `backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java:354-370` 和 `SysLogBodySanitizer.java:11-18` 进入 HTTP 响应事件；`backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java:21-29,118-130` 的字段名集缺 `tokenid`，故目前完整 tokenId 会留在 HTTP 日志正文。`SysLogEventWriter.java:65-70` 将事件实际写 INFO logger。最小修正是把规范化 `tokenId` 作为敏感字段作用于**日志 JSON 副本**，保持业务 HTTP 响应 tokenId 原样以支持当前设备移除 API，不能通过修改 DTO/API 或前端来躲开 T-02。
+2. **两种在线强退 URL 漏完整 token。** `SysUserOnlineController.java:83-93,124-137` 声明 `POST /monitor/online/{tokenId}` 与 `POST /monitor/online/myself/{tokenId}`，最终传入 `StpUtil.kickoutByTokenValue`；前端 `frontend/packages/domains/system/src/monitor/index.ts:118-124` 从真实 tokenId 构造这两条 URL。`SysLogFilter.java:237-240,280-305,354-370` 以未处理的 servletPath 记录请求和响应 `path`，与 JSON 字段脱敏无关。该信息经 `SysLogEventWriter` 入日志，即使 `@Log(isSaveRequestData=false)` 也不影响 HTTP path。路径脱敏须只作用于两个事件的日志副本，原 HttpServletRequest、路由匹配、token 值和踢除语义不变。
+3. **异常日志另有 raw URI 出口。** `backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/handler/GlobalExceptionHandler.java:52-57,155-173` 对 405 和运行时／系统异常直接记录 `request.getRequestURI()`；两条在线强退路径在错误方法或处理失败时可进入这些 sink。该类另在 78-89、105-129、255-276 等分支记录原 URI；不必虚称每种分支都必经在线路由，但统一日志副本策略应覆盖所有实际 URI 输出。`GlobalExceptionHandler.java:137-145` 的 IOException 分支还用原 URI 做 SSE `contains(message.path)` 控制判断，必须保留该变量的原值，只净化传给 logger 的副本。不要用改写请求、签名输入、异常响应正文或 SSE 控制条件替代日志修复。
+
+## 既有保护和不应误报的路径
+
+- `backend/wta-common/wta-common-log/src/main/java/org/namewta/common/log/aspect/LogAspect.java:96-98` 已把 `OperLogEvent.operUrl` 设为 `HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE` 路由模板（缺失时 `[unmapped]`），在线强退存入数据库的是 `{tokenId}` 模板，不是原 URI；`SysOperLogServiceImpl.java:43-49,105-115` 再持久化事件并净化参数/结果。两条强退 `@Log` 均关闭请求／响应数据记录。因此目前没有这条正常调用链的数据库 `operUrl` 凭据漏证据，不应凭 HTTP path 事实误报 DB 已漏。
+- `AuthController.java:73-75,89-104` 的 `/auth/login` 实际返回 token，但 `LogSanitizer.java:35-36,68-70` 对认证路径省略 HTTP 正文；`LogAspect` 对登录关闭请求/响应数据。SSO `/sso/login` 把会话 ID 写 `Set-Cookie`，而 `SysLogFilter.java:159-206` 对 `Set-Cookie`／`Cookie`／Authorization 仅记 `[REDACTED]`；`/sso/oauth2/token` 的 accessToken 也在认证响应省略路径及敏感字段策略内。SSO 授权码作为 query 参数由 OAuth 名称表过滤；`getRequestURI()` 本身不含 query。正常在线响应里的 `clientKey` 是账号客户端标识，`userName`、IP、耗时和状态也不是在此链路签发的凭据，应继续可观测。
+- `RepeatSubmitAspect.java:58-67` 用原 URI／token 构造 Redis 去重键，未直接作为所核三类日志输出；它涉及业务防重，不宜为日志票改写。`RedisExceptionHandler` 虽记录原 URI，但在线两接口无 Lock4j 注解，未证明 LockFailureException 经此路可达；`RateLimiterAspect` 同样无在线接口注解。`SysLogFilter.requestEvent` 的 upstreamRequestId 是客户端可填字段，但没有本链路正常把服务端签发 token 复制进去的证据，不构成无界敏感字段清单。
+
+## 最小实现与验证建议
+
+`LogSanitizer` 可集中提供精确 path 副本策略；HTTP filter 将应用内 `servletPath` 副本传给它，异常 handler 对 `requestURI` 先按 **实际** `request.getContextPath()` 验证并剥离前缀，再匹配应用路由、遮蔽动态段。保留 `/monitor/online`、`/monitor/online/list` 正常静态路径，特别不能把 `list` 当 token；处理 `/monitor/online/<token>` 与 `/monitor/online/myself/<token>`、尾随斜线／matrix segment／可编码 token 的日志表现。`LogAspect` 现有 route template 可保持；`SysOperLogServiceImpl` 的现有清洗可保持。所有处理只写日志值，不能改签名、正文、Cookie、SSE 控制或业务 URI。
+
+最小红绿测试：用唯一合成 token 经登录成功事件→在线 DTO／Redis→两种 GET JSON 和两种 POST URL，断言原 HTTP 响应及实际踢除收到原 token，而 HTTP 请求/响应事件、错误 logger（405 与可控 runtime）、`OperLogEvent` 和 `sys_oper_log` 均不含 canary；检查保留路由模板、普通 `userName`／状态／耗时、静态 `/monitor/online/list`、有合法非根 context path 的路径。现有 `LogRedactionHttpMySqlIntegrationTest.java:122-175` 只覆盖 SSO 签发/通用 echo 与 DB，`SysLogFilterTest.java:284-310` 只覆盖字段 `token`，均未覆盖服务端实际 `tokenId` 或两条 URL。另核 SSE IOException 分支使用原路径判定而日志副本脱敏、既有 SSO 签名/加解密/SSE与正常 token 响应不退化。以上是建议的当前候选验证，并非已运行结果。

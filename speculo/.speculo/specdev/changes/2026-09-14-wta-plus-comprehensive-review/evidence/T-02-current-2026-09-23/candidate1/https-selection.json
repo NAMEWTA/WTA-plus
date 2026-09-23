@@ -1,0 +1,12 @@
+{
+  "status": "planned-not-run",
+  "classes": [
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "selector": "BrowserHttpsTransportIntegrationTest",
+      "class": "org.namewta.test.security.BrowserHttpsTransportIntegrationTest"
+    }
+  ],
+  "selector": "LogSanitizerTest,LogAspectRedactionTest,SysLogFilterTest,SysLogFailureRedactionTest,SysLogEventWriterTest,OperationLogRedactionTest,SysLogConfigTest,RequestBodyLimitTest,RequestBodyHttpIntegrationTest,OpenApiAssemblyContextTest,BrowserHttpsTransportIntegrationTest",
+  "purpose": "T02 affected logging + real HTTP signing/body/SSE and HTTPS consumer regression; XML must be fresh positive and zero skip"
+}

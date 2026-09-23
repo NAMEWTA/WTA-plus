@@ -1,0 +1,26 @@
+{
+  "command": [
+    "env",
+    "JAVA_TOOL_OPTIONS=-Xmx512m",
+    "MAVEN_OPTS=-Xmx1024m",
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=LogSanitizerTest,LogAspectRedactionTest,SysLogFilterTest,SysLogFailureRedactionTest,SysLogEventWriterTest,OperationLogRedactionTest,SysLogConfigTest,RequestBodyLimitTest,RequestBodyHttpIntegrationTest,OpenApiAssemblyContextTest,BrowserHttpsTransportIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnamewta.body-probe.bytes=2097152",
+    "-Dnamewta.body-probe.concurrency=4",
+    "-Dnamewta.body-probe.expected-heap=536870912",
+    "-Dnamewta.body-probe.report=/tmp/wta-t02-c1/body-probe.json",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T11:50:02.866608+00:00",
+  "finished_at": "2026-09-23T11:50:49.896196+00:00",
+  "exit_code": 0,
+  "log": "acceptance-consumers.log"
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=LogSanitizerTest,SysLogFilterTest,SysLogFailureRedactionTest,LogRedactionHttpMySqlIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T11:44:47.624327+00:00",
+  "finished_at": "2026-09-23T11:45:40.819267+00:00",
+  "exit_code": 0,
+  "log": "t02-selected-green-v1.log"
+}

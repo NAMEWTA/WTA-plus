@@ -1,0 +1,136 @@
+{
+  "run_id": "7c481ffc58536e6c",
+  "acceptance": true,
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 72280,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "086b99ee6dda9a6dc06e2a93dc77191b3e75029e1a2abd02b59a46c521506a5d": true
+    },
+    "loopback_ports_closed": {
+      "32815": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.common.json.utils.LogSanitizerTest": {
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.log.aspect.LogAspectRedactionTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.web.logging.SysLogFilterTest": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.web.logging.SysLogFailureRedactionTest": {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.common.web.logging.SysLogEventWriterTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.logging.OperationLogRedactionTest": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "617a3693ddb2897851ab46d4131690898df6a690",
+    "tree": "a8d1181dfc950d6edf6d94a9cc1c42e10e88da00",
+    "clean": true
+  },
+  "methods": {
+    "org.namewta.common.json.utils.LogSanitizerTest": [
+      "smsCaptchaAndNotificationSubmissionHidePhoneAndCodeOnlyOnTheirRoutes",
+      "protectsOAuthFieldsOnlyInOAuthContext",
+      "preservesTreeAndMapInputs",
+      "notificationCallbacksKeepOnlyMetadataWithoutChangingBusinessValues",
+      "errorTextCannotEchoCredentialsInOtherwiseValidJson",
+      "redactsNestedAliasesArraysAndCustomExclusions",
+      "failsClosedOnMalformedTrailingOrUnstructuredJson",
+      "onlineTokenIdIsRedactedOnlyInLogCopies",
+      "failureSummaryContainsNoMessageOrCause",
+      "protectsNestedFormNamesAndCredentialHeaders",
+      "onlineOperationPathsHideOnlyTheTokenSegment"
+    ],
+    "org.namewta.common.log.aspect.LogAspectRedactionTest": [
+      "sanitizesNestedResponseBeforeCreatingEventWithoutMutatingBusinessResult"
+    ],
+    "org.namewta.common.web.logging.SysLogFilterTest": [
+      "omitsBinaryResponseBodyButKeepsMetadata",
+      "completesAsyncResponseExactlyOnce",
+      "recordsCompleteRequestAndResponseWithServerRequestId",
+      "loggingFailureDoesNotChangeBusinessResponse",
+      "preservesUnhandledExceptionAndMarksResponseIncomplete",
+      "onlineOperationPathsAndListTokenIdAreSafeOnlyInHttpEvents",
+      "recordsAsyncTimeoutOnceAndRestoresCallbackMdc",
+      "preservesPlainJsonThroughNestedWrappersAndRedactsAuditCopies",
+      "concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext",
+      "restoresPreexistingMdcValue",
+      "excludesMultipartRequestAndSseResponseBodies",
+      "neverCopiesRawOAuthQueryAndRedirectIntoLogEvents",
+      "hidesUnstructuredTextWithoutChangingUtf8BusinessBody",
+      "recursivelyRedactsOpenApiCredentialMaterial"
+    ],
+    "org.namewta.common.web.logging.SysLogFailureRedactionTest": [
+      "malformedJsonHasOnlySafeSummaryAndOriginalBytesReachApplication",
+      "formRepeatsRemainVisibleWhileNestedSecretsAndOAuthCodeDisappear",
+      "exceptionLogsHideOnlineTokenWithServletContextButKeepOrdinaryPaths",
+      "sinkAndHandlerFailuresNeverPrintExceptionPayloadOrCause",
+      "utf8PrefixNeverContainsPartialCodePoint"
+    ],
+    "org.namewta.common.web.logging.SysLogEventWriterTest": [
+      "emitsOneParseableChineseJsonMessageAndPreservesBodyValue",
+      "translatesResponseEventAndBodyOmissionReason"
+    ],
+    "org.namewta.test.logging.OperationLogRedactionTest": [
+      "tokenIssuancePreservesAuditMetadataWithoutResponseBody",
+      "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[1]",
+      "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[2]",
+      "preservesOperatorDurationAndFailureStatusWithoutExceptionPayload"
+    ],
+    "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest": [
+      "onlineDeviceTokenFromRealIssuerNeverReachesHttpOrErrorAudit",
+      "credentialsNeverReachHttpEventsOperationEventsOrMySql"
+    ]
+  },
+  "issues": {
+    "org.namewta.common.json.utils.LogSanitizerTest": [],
+    "org.namewta.common.log.aspect.LogAspectRedactionTest": [],
+    "org.namewta.common.web.logging.SysLogFilterTest": [],
+    "org.namewta.common.web.logging.SysLogFailureRedactionTest": [],
+    "org.namewta.common.web.logging.SysLogEventWriterTest": [],
+    "org.namewta.test.logging.OperationLogRedactionTest": [],
+    "org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest": []
+  },
+  "source_after": {
+    "head": "617a3693ddb2897851ab46d4131690898df6a690",
+    "tree": "a8d1181dfc950d6edf6d94a9cc1c42e10e88da00",
+    "clean": true
+  }
+}

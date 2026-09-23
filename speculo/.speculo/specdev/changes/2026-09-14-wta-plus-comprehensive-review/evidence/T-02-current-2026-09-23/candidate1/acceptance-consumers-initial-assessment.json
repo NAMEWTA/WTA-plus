@@ -1,0 +1,411 @@
+{
+  "accepted": false,
+  "reason": "HTTPS switch omitted: one skipped case; retain original eleven selection",
+  "classes": [
+    {
+      "class": "org.namewta.common.json.utils.LogSanitizerTest",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "smsCaptchaAndNotificationSubmissionHidePhoneAndCodeOnlyOnTheirRoutes",
+          "skipped": false
+        },
+        {
+          "name": "protectsOAuthFieldsOnlyInOAuthContext",
+          "skipped": false
+        },
+        {
+          "name": "preservesTreeAndMapInputs",
+          "skipped": false
+        },
+        {
+          "name": "notificationCallbacksKeepOnlyMetadataWithoutChangingBusinessValues",
+          "skipped": false
+        },
+        {
+          "name": "errorTextCannotEchoCredentialsInOtherwiseValidJson",
+          "skipped": false
+        },
+        {
+          "name": "redactsNestedAliasesArraysAndCustomExclusions",
+          "skipped": false
+        },
+        {
+          "name": "failsClosedOnMalformedTrailingOrUnstructuredJson",
+          "skipped": false
+        },
+        {
+          "name": "onlineTokenIdIsRedactedOnlyInLogCopies",
+          "skipped": false
+        },
+        {
+          "name": "failureSummaryContainsNoMessageOrCause",
+          "skipped": false
+        },
+        {
+          "name": "protectsNestedFormNamesAndCredentialHeaders",
+          "skipped": false
+        },
+        {
+          "name": "onlineOperationPathsHideOnlyTheTokenSegment",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "sanitizesNestedResponseBeforeCreatingEventWithoutMutatingBusinessResult",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFilterTest",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "omitsBinaryResponseBodyButKeepsMetadata",
+          "skipped": false
+        },
+        {
+          "name": "completesAsyncResponseExactlyOnce",
+          "skipped": false
+        },
+        {
+          "name": "recordsCompleteRequestAndResponseWithServerRequestId",
+          "skipped": false
+        },
+        {
+          "name": "loggingFailureDoesNotChangeBusinessResponse",
+          "skipped": false
+        },
+        {
+          "name": "preservesUnhandledExceptionAndMarksResponseIncomplete",
+          "skipped": false
+        },
+        {
+          "name": "onlineOperationPathsAndListTokenIdAreSafeOnlyInHttpEvents",
+          "skipped": false
+        },
+        {
+          "name": "recordsAsyncTimeoutOnceAndRestoresCallbackMdc",
+          "skipped": false
+        },
+        {
+          "name": "preservesPlainJsonThroughNestedWrappersAndRedactsAuditCopies",
+          "skipped": false
+        },
+        {
+          "name": "concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext",
+          "skipped": false
+        },
+        {
+          "name": "restoresPreexistingMdcValue",
+          "skipped": false
+        },
+        {
+          "name": "excludesMultipartRequestAndSseResponseBodies",
+          "skipped": false
+        },
+        {
+          "name": "neverCopiesRawOAuthQueryAndRedirectIntoLogEvents",
+          "skipped": false
+        },
+        {
+          "name": "hidesUnstructuredTextWithoutChangingUtf8BusinessBody",
+          "skipped": false
+        },
+        {
+          "name": "recursivelyRedactsOpenApiCredentialMaterial",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "malformedJsonHasOnlySafeSummaryAndOriginalBytesReachApplication",
+          "skipped": false
+        },
+        {
+          "name": "formRepeatsRemainVisibleWhileNestedSecretsAndOAuthCodeDisappear",
+          "skipped": false
+        },
+        {
+          "name": "exceptionLogsHideOnlineTokenWithServletContextButKeepOrdinaryPaths",
+          "skipped": false
+        },
+        {
+          "name": "sinkAndHandlerFailuresNeverPrintExceptionPayloadOrCause",
+          "skipped": false
+        },
+        {
+          "name": "utf8PrefixNeverContainsPartialCodePoint",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogEventWriterTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "emitsOneParseableChineseJsonMessageAndPreservesBodyValue",
+          "skipped": false
+        },
+        {
+          "name": "translatesResponseEventAndBodyOmissionReason",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.test.logging.OperationLogRedactionTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "tokenIssuancePreservesAuditMetadataWithoutResponseBody",
+          "skipped": false
+        },
+        {
+          "name": "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[1]",
+          "skipped": false
+        },
+        {
+          "name": "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[2]",
+          "skipped": false
+        },
+        {
+          "name": "preservesOperatorDurationAndFailureStatusWithoutExceptionPayload",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.config.SysLogConfigTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "enablesFilterByDefaultAndAllowsExplicitDisable",
+          "skipped": false
+        },
+        {
+          "name": "filterOrderKeepsLoggingAfterRepeatableAndBeforeXss",
+          "skipped": false
+        },
+        {
+          "name": "ordinaryIngressLimitHasAnIndependentDefaultAndValidatedOverride",
+          "skipped": false
+        },
+        {
+          "name": "rejectsZeroAndNegativeBodyLimits",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.filter.RequestBodyLimitTest",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "knownAndUnknownLengthsAllowExactlyTheBudgetButNotOneMoreByte",
+          "skipped": false
+        },
+        {
+          "name": "truncatedOrCancelledReadDoesNotInstallAPartialCache",
+          "skipped": false
+        },
+        {
+          "name": "declaredOversizeIsRejectedBeforeReadingTheBody",
+          "skipped": false
+        },
+        {
+          "name": "structuredJsonSuffixUsesTheSameIngressLimit",
+          "skipped": false
+        },
+        {
+          "name": "unknownLengthCannotConsumeBeyondTheBudgetPlusOne",
+          "skipped": false
+        },
+        {
+          "name": "loggingFallbackMustNotSwallowTheIngressRejection",
+          "skipped": false
+        },
+        {
+          "name": "repeatedObserversShareOriginalStorageAndCannotMutateItThroughCopies",
+          "skipped": false
+        },
+        {
+          "name": "multipartAndSseDoNotEnterOrdinaryBodyCapture",
+          "skipped": false
+        },
+        {
+          "name": "xssCreatesOneSeparateViewAndLeavesRawSignatureBytesUnchanged",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.test.requestbody.RequestBodyHttpIntegrationTest",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "signedFixedAndChunkedRequestsRespectDefaultBoundary",
+          "skipped": false
+        },
+        {
+          "name": "ordinaryUploadRemainsStreamingBeyondTheJsonBudget",
+          "skipped": false
+        },
+        {
+          "name": "concurrentBodiesRemainIsolatedWhileRawAndXssViewsAreHeld",
+          "skipped": false
+        },
+        {
+          "name": "invalidSignatureWithLargeBodyIsRejectedBeforeBusinessForBothFramings",
+          "skipped": false
+        },
+        {
+          "name": "signatureUsesExactUtf8WhitespaceAndTagsBeforeTheIndependentXssView",
+          "skipped": false
+        },
+        {
+          "name": "cancelledUploadReleasesTheHandlerWithoutInstallingABodyCache",
+          "skipped": false
+        },
+        {
+          "name": "machineBudgetCanBeLargerOrSmallerThanOrdinaryBudget",
+          "skipped": false
+        },
+        {
+          "name": "sseFlushesBeforeCompletionAndStopsOnClientCancellation",
+          "skipped": false
+        },
+        {
+          "name": "loggingFallbackAndStructuredJsonSuffixCannotBypassLimit",
+          "skipped": false
+        },
+        {
+          "name": "ordinaryFixedAndChunkedRequestsRespectDefaultBoundary",
+          "skipped": false
+        },
+        {
+          "name": "cancelledJsonReadDoesNotRunBusinessOrPoisonTheNextRequest",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.test.openapi.assembly.OpenApiAssemblyContextTest",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "failsClosedWhenRedisOrCredentialSpiIsMissing",
+          "skipped": false
+        },
+        {
+          "name": "failsClosedWhenSecuritySettingsAreInvalid",
+          "skipped": false
+        },
+        {
+          "name": "remainsCompletelyUnassembledByDefault",
+          "skipped": false
+        },
+        {
+          "name": "failsClosedWhenKekIsMissingOrInvalidWithoutEchoingKeyMaterial",
+          "skipped": false
+        },
+        {
+          "name": "assemblesWhenActuatorContributesAnotherHandlerMapping",
+          "skipped": false
+        },
+        {
+          "name": "leavesOrdinaryMvcRequestsUntouchedWhenDisabled",
+          "skipped": false
+        },
+        {
+          "name": "machineBodyBudgetHasIndependentDefaultOverrideAndRejectsUnboundedValues",
+          "skipped": false
+        },
+        {
+          "name": "failsClosedWhenCredentialSpiIsAmbiguous",
+          "skipped": false
+        },
+        {
+          "name": "assemblesExactlyOneCompleteGatewayWhenEnabled",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "class": "org.namewta.test.security.BrowserHttpsTransportIntegrationTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "methods": [
+        {
+          "name": "productionAppsUseOrdinaryJsonOverHttpsWithRealMvcAndRedactedAudit",
+          "skipped": true
+        }
+      ]
+    }
+  ]
+}

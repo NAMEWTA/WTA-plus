@@ -1,0 +1,36 @@
+{
+  "ports_from_current_run_logs": [
+    33067,
+    34389,
+    35813,
+    36805,
+    37851,
+    38387,
+    38589,
+    38757,
+    41561,
+    42665,
+    43357,
+    43415,
+    45141,
+    45345
+  ],
+  "loopback_closed": {
+    "33067": true,
+    "34389": true,
+    "35813": true,
+    "36805": true,
+    "37851": true,
+    "38387": true,
+    "38589": true,
+    "38757": true,
+    "41561": true,
+    "42665": true,
+    "43357": true,
+    "43415": true,
+    "45141": true,
+    "45345": true
+  },
+  "checked_at": "2026-09-23T12:06:05.825590+00:00",
+  "limits": "Listener observation and tests finally server.stop; no shared processes killed"
+}

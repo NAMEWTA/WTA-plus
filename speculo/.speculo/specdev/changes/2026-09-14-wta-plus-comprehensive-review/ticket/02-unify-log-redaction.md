@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-02"
 title: "消除HTTP与操作日志中的凭据副本"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -119,14 +119,14 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-002`：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志。
-- [ ] `AC-002`：普通字段/操作者/耗时/失败状态仍可观测。
-- [ ] `AC-002`：签名、加解密、SSE与正常token响应保持正确。
-- [ ] `AC-002`：旧日志处置与凭据轮换另有批准记录，本票不自动删历史数据。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-002`：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志。
+- [x] `AC-002`：普通字段/操作者/耗时/失败状态仍可观测。
+- [x] `AC-002`：签名、加解密、SSE与正常token响应保持正确。
+- [x] `AC-002`：旧日志处置与凭据轮换另有批准记录，本票不自动删历史数据。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -159,3 +159,7 @@ base `c16966167526f9b6ab6eb213265034b3bbe53e46`。T37已在3a87bf7通过187+13+6
 ### revision161 同一在线会话响应字段闭环
 
 补充当前源码：SysUserOnline.tokenId未经JSON忽略直接随GET /monitor/online/list及GET /monitor/online返回，LogSanitizer敏感名当前不含tokenid，且两条GET不省略响应日志，因此同一个有效token还会经在线列表HTTP响应正文复制。既有LogSanitizer字段策略需补tokenId，仅改变日志副本，业务响应仍保留可用于正常设备操作的tokenId；canary验收覆盖列表响应→正常操作URL，而非仅路径静态替换。未扩大写集或改业务API。
+
+## revision162 当前验收完成
+
+非空修复/result `617a3693ddb2897851ab46d4131690898df6a690`，formal candidates=1，详见evidence/T-02.md。旧证据与首次消费者skip、工具版本失败原样保留；Goal仍active。

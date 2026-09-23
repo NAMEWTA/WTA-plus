@@ -1,0 +1,191 @@
+{
+  "source": "617a3693ddb2897851ab46d4131690898df6a690",
+  "classes": [
+    {
+      "class": "org.namewta.common.json.utils.LogSanitizerTest",
+      "path": "wta-common/wta-common-json/target/surefire-reports/TEST-org.namewta.common.json.utils.LogSanitizerTest.xml",
+      "sha256": "e3e5026c0820974597746040578387be067937f52a09145d9666438c2dc73b54",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "smsCaptchaAndNotificationSubmissionHidePhoneAndCodeOnlyOnTheirRoutes",
+        "protectsOAuthFieldsOnlyInOAuthContext",
+        "preservesTreeAndMapInputs",
+        "notificationCallbacksKeepOnlyMetadataWithoutChangingBusinessValues",
+        "errorTextCannotEchoCredentialsInOtherwiseValidJson",
+        "redactsNestedAliasesArraysAndCustomExclusions",
+        "failsClosedOnMalformedTrailingOrUnstructuredJson",
+        "onlineTokenIdIsRedactedOnlyInLogCopies",
+        "failureSummaryContainsNoMessageOrCause",
+        "protectsNestedFormNamesAndCredentialHeaders",
+        "onlineOperationPathsHideOnlyTheTokenSegment"
+      ]
+    },
+    {
+      "class": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+      "path": "wta-common/wta-common-log/target/surefire-reports/TEST-org.namewta.common.log.aspect.LogAspectRedactionTest.xml",
+      "sha256": "4ed1c50b9c8edac3fd13efb836cdfbd8fbb49d94f3a0e48a7a5bbe908bfcb8a2",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "sanitizesNestedResponseBeforeCreatingEventWithoutMutatingBusinessResult"
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFilterTest",
+      "path": "wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+      "sha256": "957b4bce7ef21e4180b03f1bd508cea8beb1468681b47ff99bf4c1d1a356a020",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "omitsBinaryResponseBodyButKeepsMetadata",
+        "completesAsyncResponseExactlyOnce",
+        "recordsCompleteRequestAndResponseWithServerRequestId",
+        "loggingFailureDoesNotChangeBusinessResponse",
+        "preservesUnhandledExceptionAndMarksResponseIncomplete",
+        "onlineOperationPathsAndListTokenIdAreSafeOnlyInHttpEvents",
+        "recordsAsyncTimeoutOnceAndRestoresCallbackMdc",
+        "preservesPlainJsonThroughNestedWrappersAndRedactsAuditCopies",
+        "concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext",
+        "restoresPreexistingMdcValue",
+        "excludesMultipartRequestAndSseResponseBodies",
+        "neverCopiesRawOAuthQueryAndRedirectIntoLogEvents",
+        "hidesUnstructuredTextWithoutChangingUtf8BusinessBody",
+        "recursivelyRedactsOpenApiCredentialMaterial"
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "path": "wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFailureRedactionTest.xml",
+      "sha256": "e2a8c8efd575035d6894c685b7b4d43939f8b67c525c66096fca4e8a89eaf96d",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "malformedJsonHasOnlySafeSummaryAndOriginalBytesReachApplication",
+        "formRepeatsRemainVisibleWhileNestedSecretsAndOAuthCodeDisappear",
+        "exceptionLogsHideOnlineTokenWithServletContextButKeepOrdinaryPaths",
+        "sinkAndHandlerFailuresNeverPrintExceptionPayloadOrCause",
+        "utf8PrefixNeverContainsPartialCodePoint"
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.logging.SysLogEventWriterTest",
+      "path": "wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogEventWriterTest.xml",
+      "sha256": "54bdac94f27a54855026fb1f08e86c8922cfc361f44d7f8ee75c7da080441bd3",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "emitsOneParseableChineseJsonMessageAndPreservesBodyValue",
+        "translatesResponseEventAndBodyOmissionReason"
+      ]
+    },
+    {
+      "class": "org.namewta.test.logging.OperationLogRedactionTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.logging.OperationLogRedactionTest.xml",
+      "sha256": "3bd146abc2cfb25886a9f12a3e9fc8d1de10b28e337ab8bff16c87b342b19026",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "tokenIssuancePreservesAuditMetadataWithoutResponseBody",
+        "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[1]",
+        "uploadAuditNeverCopiesPathTokenEvenWithoutMvcRouteMetadata(boolean)[2]",
+        "preservesOperatorDurationAndFailureStatusWithoutExceptionPayload"
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.config.SysLogConfigTest",
+      "path": "wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.SysLogConfigTest.xml",
+      "sha256": "3fe61c5464d350109cbd41522234d778d01f84ca87edfc02b119b7f154bf1dfd",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "enablesFilterByDefaultAndAllowsExplicitDisable",
+        "filterOrderKeepsLoggingAfterRepeatableAndBeforeXss",
+        "ordinaryIngressLimitHasAnIndependentDefaultAndValidatedOverride",
+        "rejectsZeroAndNegativeBodyLimits"
+      ]
+    },
+    {
+      "class": "org.namewta.common.web.filter.RequestBodyLimitTest",
+      "path": "wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.filter.RequestBodyLimitTest.xml",
+      "sha256": "0e032b55c76c6d5e5d13b980ad6743fa3913d1a54e47a06e951dab1cfc6f2861",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "knownAndUnknownLengthsAllowExactlyTheBudgetButNotOneMoreByte",
+        "truncatedOrCancelledReadDoesNotInstallAPartialCache",
+        "declaredOversizeIsRejectedBeforeReadingTheBody",
+        "structuredJsonSuffixUsesTheSameIngressLimit",
+        "unknownLengthCannotConsumeBeyondTheBudgetPlusOne",
+        "loggingFallbackMustNotSwallowTheIngressRejection",
+        "repeatedObserversShareOriginalStorageAndCannotMutateItThroughCopies",
+        "multipartAndSseDoNotEnterOrdinaryBodyCapture",
+        "xssCreatesOneSeparateViewAndLeavesRawSignatureBytesUnchanged"
+      ]
+    },
+    {
+      "class": "org.namewta.test.requestbody.RequestBodyHttpIntegrationTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.requestbody.RequestBodyHttpIntegrationTest.xml",
+      "sha256": "507a72a2bf5f07b79cfd7d97c8a249ba36ec45b62766706197ab02720b572cd3",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "signedFixedAndChunkedRequestsRespectDefaultBoundary",
+        "ordinaryUploadRemainsStreamingBeyondTheJsonBudget",
+        "concurrentBodiesRemainIsolatedWhileRawAndXssViewsAreHeld",
+        "invalidSignatureWithLargeBodyIsRejectedBeforeBusinessForBothFramings",
+        "signatureUsesExactUtf8WhitespaceAndTagsBeforeTheIndependentXssView",
+        "cancelledUploadReleasesTheHandlerWithoutInstallingABodyCache",
+        "machineBudgetCanBeLargerOrSmallerThanOrdinaryBudget",
+        "sseFlushesBeforeCompletionAndStopsOnClientCancellation",
+        "loggingFallbackAndStructuredJsonSuffixCannotBypassLimit",
+        "ordinaryFixedAndChunkedRequestsRespectDefaultBoundary",
+        "cancelledJsonReadDoesNotRunBusinessOrPoisonTheNextRequest"
+      ]
+    },
+    {
+      "class": "org.namewta.test.openapi.assembly.OpenApiAssemblyContextTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.assembly.OpenApiAssemblyContextTest.xml",
+      "sha256": "ae919ac81ff5f2e94f816d2759c6207840e04cdf6ec2cf882cc687dac9915f52",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "failsClosedWhenRedisOrCredentialSpiIsMissing",
+        "failsClosedWhenSecuritySettingsAreInvalid",
+        "remainsCompletelyUnassembledByDefault",
+        "failsClosedWhenKekIsMissingOrInvalidWithoutEchoingKeyMaterial",
+        "assemblesWhenActuatorContributesAnotherHandlerMapping",
+        "leavesOrdinaryMvcRequestsUntouchedWhenDisabled",
+        "machineBodyBudgetHasIndependentDefaultOverrideAndRejectsUnboundedValues",
+        "failsClosedWhenCredentialSpiIsAmbiguous",
+        "assemblesExactlyOneCompleteGatewayWhenEnabled"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 70,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

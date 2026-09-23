@@ -8,11 +8,11 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-03"
 title: "统一有界请求体采集与验签缓存"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
-ready: true
+ready: false
 risk: "high"
 blocked_by: ["T-02"]
 contract_ids: ["AC-003"]
@@ -143,3 +143,9 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/03-bound-request-capture.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
 旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。
+
+## revision163 无新增施工裁决
+
+当前617a369源码已满足AC-003，核心有界捕获/签名/HTTP边界实现与历史214de538相同且当前真实验收通过，无需新产品实现。仅取消本轮重复施工，保留历史非空提交与AC-003最终T30责任；不把缺失旧clean当取消唯一理由，不创建空提交/新result。
+
+当前证据：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03-replan-2026-09-23.md</Path>；原验收勾选不伪改为新实施Done，取消的只是重复施工。

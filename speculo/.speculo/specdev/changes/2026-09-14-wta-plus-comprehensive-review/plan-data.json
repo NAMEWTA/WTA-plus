@@ -126,15 +126,15 @@
     "contract": "AC-002",
     "review_date": "2026-09-23",
     "notes": "日志脱敏保持；公开local配置披露由T-32新增整改，不能用日志测试替代凭据轮换。",
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
     "e2e_disposition": "required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文",
-    "plan_revision": 161,
+    "plan_revision": 162,
     "implementation_commits": [
       "4cfb7eea819c142ccdbcc29004a86868b86e2551"
     ],
-    "implementation_commit": "4cfb7eea819c142ccdbcc29004a86868b86e2551",
-    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+    "implementation_commit": "617a3693ddb2897851ab46d4131690898df6a690",
+    "result_sha": "617a3693ddb2897851ab46d4131690898df6a690",
     "fact": "日志脱敏保持；公开local配置披露由T-32新增整改，不能用日志测试替代凭据轮换。",
     "behavior": "canary不出现在HTTP sink、OperLogEvent、数据库或错误日志",
     "tests": [
@@ -202,15 +202,15 @@
     "contract": "AC-003",
     "review_date": "2026-09-23",
     "notes": "2MiB用户决定仍有效；机器验签/验证码接口在新候选继续回归。",
-    "status": "ready",
-    "ready": true,
+    "status": "cancelled",
+    "ready": false,
     "e2e_disposition": "required: 通过真实HTTP发送定长/chunked边界请求、伪签名大正文及正常签名正文",
-    "plan_revision": 136,
+    "plan_revision": 163,
     "implementation_commits": [
       "214de538267a60fa527b1213f7dd9139622f4a2e"
     ],
     "implementation_commit": "214de538267a60fa527b1213f7dd9139622f4a2e",
-    "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+    "result_sha": null,
     "fact": "2MiB用户决定仍有效；机器验签/验证码接口在新候选继续回归。",
     "behavior": "大小边界前/等于/超限一字节结果可判定",
     "tests": [
@@ -230,7 +230,10 @@
     "contract_ids": [
       "AC-003"
     ],
-    "file": "ticket/03-bound-request-capture.md"
+    "file": "ticket/03-bound-request-capture.md",
+    "historical_result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
+    "current_no_change_checkpoint": "617a3693ddb2897851ab46d4131690898df6a690",
+    "cancellation_reason": "当前617a369源码已满足AC-003，核心有界捕获/签名/HTTP边界实现与历史214de538相同且当前真实验收通过，无需新产品实现。仅取消本轮重复施工，保留历史非空提交与AC-003最终T30责任；不把缺失旧clean当取消唯一理由，不创建空提交/新result。"
   },
   {
     "id": "T-04",
@@ -2428,7 +2431,6 @@
     "decision": "既有合同保持；本轮重新评审与验收；扩展为AC-001—050同候选集成、历史票闭合、可发布候选及归档准备；旧全绿不再代表当前完成。",
     "blocked_by": [
       "T-02",
-      "T-03",
       "T-04",
       "T-05",
       "T-06",
@@ -2506,7 +2508,7 @@
     "status": "ready",
     "ready": true,
     "e2e_disposition": "required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复",
-    "plan_revision": 149,
+    "plan_revision": 163,
     "implementation_commits": [
       "91d4c2ea6356c74d3174f63f2665485484f0a103"
     ],

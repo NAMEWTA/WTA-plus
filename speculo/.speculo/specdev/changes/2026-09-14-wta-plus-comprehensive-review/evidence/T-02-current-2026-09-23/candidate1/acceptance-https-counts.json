@@ -1,0 +1,23 @@
+{
+  "source": "617a3693ddb2897851ab46d4131690898df6a690",
+  "classes": [
+    {
+      "class": "org.namewta.test.security.BrowserHttpsTransportIntegrationTest",
+      "path": "wta-admin/target/surefire-reports/TEST-org.namewta.test.security.BrowserHttpsTransportIntegrationTest.xml",
+      "sha256": "0bf46ebf0009b5aa99cfc56a2442fce6b909845fddc9423c609814c44d1d4bfd",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "productionAppsUseOrdinaryJsonOverHttpsWithRealMvcAndRedactedAudit"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

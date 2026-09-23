@@ -1,0 +1,597 @@
+{
+  "head": "617a3693ddb2897851ab46d4131690898df6a690",
+  "source": "../T-02-current-2026-09-23/candidate1/backend-default-test-counts.json",
+  "classes": [
+    {
+      "classname": "org.namewta.common.openapi.gateway.OpenApiGatewayStateStoreTest",
+      "path": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.gateway.OpenApiGatewayStateStoreTest.xml",
+      "sha256": "dd676b3bcc3548d00381398e08eb9699c2cd934854f6ebde139f9c476f4c484a",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "nonceRegistrationIsAtomicAndHashesCredentialMaterialInTheRedisKey",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "rateLimitUsesRedisAtomicLimiterAndFailsClosedOnInfrastructureErrors",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.openapi.protocol.OpenApiProtocolTest",
+      "path": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.protocol.OpenApiProtocolTest.xml",
+      "sha256": "22442679e1c4d44c63164d39f7a6f9e2928230e26dc7cdfbc5919ccd7f19d2e1",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "preservesEmptyBodyAndRejectsMalformedEncoding",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "matchesPublishedUnicodeAndRepeatedQueryVector",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "annotationCanOnlyTargetMethods",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "verifiesInConstantShapeAndRejectsTampering",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.openapi.registry.OpenApiOperationRegistryTest",
+      "path": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.registry.OpenApiOperationRegistryTest.xml",
+      "sha256": "2f919f1b0e33061cc00be6c857586d78e15c1ea8ced0d57f3d2c9e7beb337e5b",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "publishesOnlyDirectlyAnnotatedRealMappingsWithSpringDocSchemas",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "mirrorsSaTokenAndOrOrRoleAndWildcardSemantics",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.openapi.session.OpenApiMachineSessionBridgeTest",
+      "path": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.session.OpenApiMachineSessionBridgeTest.xml",
+      "sha256": "915182b680ed925bb94991d7537cefd79094804d9833a0391d0b4fd581857f55",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "rejectsSnapshotThatDependsOnABrowserClient",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "invalidatorSerializesWithCreationAndPropagatesFailures",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "convergesConcurrentMissesAndReusesTheSessionHit",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest",
+      "path": "backend/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest.xml",
+      "sha256": "38c0eba2fd3b11dce9ea35615795d67ff7d786182059af1bbf10220ef1b165e0",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "invalidatesOnlyMachineChannelTokensForTheUser",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "restoresBrowserStorageAfterNestedAndExceptionalScopes",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "createsServerOnlySessionWithStandardLoginUserSidecar",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.config.ClientAddressConfigTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.ClientAddressConfigTest.xml",
+      "sha256": "81244d74637d5ee0ed29f0e06eff428b1ed357b1b126d715221e190126f59fb9",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "bindsExplicitCidrsAndRejectsMalformedTrustOrContainerRewriting",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "defaultAndEmptyEnvironmentTrustNoProxy",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.config.CorsPolicyTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.CorsPolicyTest.xml",
+      "sha256": "493dfcdf132c6991ad6c3e1d6118445428bec70f77bdb8504124a82797279298",
+      "counts": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "unknownCredentialedOriginCannotReachLogin",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "wildcardIsRejectedEvenWhenCredentialsAreDisabled",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "invalidOriginConfigurationIsRejected",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "exactOriginWithoutCredentialsDoesNotAdvertiseCredentialAccess",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "wildcardConfigurationFailsBeforeAnyRequestIsServed",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "approvedExactOriginPassesPreflightAndCredentialsButLookalikesDoNot",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "emptyConfigurationAllowsNoCrossOriginAndNoOriginRequestPasses",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.config.CorsServletHttpTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.CorsServletHttpTest.xml",
+      "sha256": "2de5603870f10fe674f08bd0175329bf4ef15cf0e5a2eca9e3f3e63e070ae1b8",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "explicitOriginWithoutCredentialsNeverAdvertisesCredentialAccess",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "defaultPolicyKeepsSameOriginWorkingButRejectsCrossOrigin",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "exactOriginsPassAndHostileOriginsNeverReceiveCorsPermission",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.config.SysLogConfigTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.SysLogConfigTest.xml",
+      "sha256": "f6e1422a82733a921a6e15fd5b4cccca1da6632a04a17067219b86ce1dece0fe",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "enablesFilterByDefaultAndAllowsExplicitDisable",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "filterOrderKeepsLoggingAfterRepeatableAndBeforeXss",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "ordinaryIngressLimitHasAnIndependentDefaultAndValidatedOverride",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "rejectsZeroAndNegativeBodyLimits",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.filter.ClientAddressFilterTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.filter.ClientAddressFilterTest.xml",
+      "sha256": "056ba9a1fd51ff9b3afeae55545996c4f3698292b0ca793a67590d6a3d8917d2",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "missingXffUsesPeerAndDoesNotFallBackToOtherHeaders",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "canonicalResultSurvivesHeaderChangesAndNoRequestFailsClosed",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "invalidConfigurationIsRejectedRatherThanBroadeningTrust",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "malformedTrustedChainsFailBeforeAnyBusinessHandler",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "ipv6AndMappedIpv4HaveStableNumericIdentity",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "defaultAndUntrustedPeersIgnoreAllForwardingHeaders",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "peelsOnlyTrustedHopsFromRightAndSupportsRepeatedHeaders",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "boundsHeaderWorkAndAcceptsExactHopBudget",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.filter.RequestBodyLimitTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.filter.RequestBodyLimitTest.xml",
+      "sha256": "22ef961dea8298558963e02b71ece810d1ad925be5a4f3440eb17bbf9a85548e",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "knownAndUnknownLengthsAllowExactlyTheBudgetButNotOneMoreByte",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "truncatedOrCancelledReadDoesNotInstallAPartialCache",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "declaredOversizeIsRejectedBeforeReadingTheBody",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "structuredJsonSuffixUsesTheSameIngressLimit",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "unknownLengthCannotConsumeBeyondTheBudgetPlusOne",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "loggingFallbackMustNotSwallowTheIngressRejection",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "repeatedObserversShareOriginalStorageAndCannotMutateItThroughCopies",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "multipartAndSseDoNotEnterOrdinaryBodyCapture",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "xssCreatesOneSeparateViewAndLeavesRawSignatureBytesUnchanged",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.logging.SysLogEventWriterTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogEventWriterTest.xml",
+      "sha256": "2d47917c5b167d791a2e742e288405b84d8bdeee4649679ecac5d0b6a063f818",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "emitsOneParseableChineseJsonMessageAndPreservesBodyValue",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "translatesResponseEventAndBodyOmissionReason",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFailureRedactionTest.xml",
+      "sha256": "37dae79c1d133ce9afc224cd3425e4904ef52713bda560e8aad578ffa2e15f11",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "malformedJsonHasOnlySafeSummaryAndOriginalBytesReachApplication",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "formRepeatsRemainVisibleWhileNestedSecretsAndOAuthCodeDisappear",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "exceptionLogsHideOnlineTokenWithServletContextButKeepOrdinaryPaths",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "sinkAndHandlerFailuresNeverPrintExceptionPayloadOrCause",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "utf8PrefixNeverContainsPartialCodePoint",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    },
+    {
+      "classname": "org.namewta.common.web.logging.SysLogFilterTest",
+      "path": "backend/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+      "sha256": "6d30d87338e8a4d7a70bdfd0b08b05e99b94ee812bbb39f0c97655e5f33cb1cb",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        {
+          "name": "omitsBinaryResponseBodyButKeepsMetadata",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "completesAsyncResponseExactlyOnce",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "recordsCompleteRequestAndResponseWithServerRequestId",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "loggingFailureDoesNotChangeBusinessResponse",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "preservesUnhandledExceptionAndMarksResponseIncomplete",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "onlineOperationPathsAndListTokenIdAreSafeOnlyInHttpEvents",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "recordsAsyncTimeoutOnceAndRestoresCallbackMdc",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "preservesPlainJsonThroughNestedWrappersAndRedactsAuditCopies",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "restoresPreexistingMdcValue",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "excludesMultipartRequestAndSseResponseBodies",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "neverCopiesRawOAuthQueryAndRedirectIntoLogEvents",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "hidesUnstructuredTextWithoutChangingUtf8BusinessBody",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        },
+        {
+          "name": "recursivelyRedactsOpenApiCredentialMaterial",
+          "skipped": false,
+          "failure": false,
+          "error": false
+        }
+      ]
+    }
+  ],
+  "common_encrypt": "no src/test; reactor compile and module SUCCESS, not a positive test count"
+}

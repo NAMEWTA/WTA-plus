@@ -1,0 +1,9 @@
+
+> wta-vue-plus@6.0.0 build:prod /srv/WTA-plus/frontend
+> pnpm architecture:check && pnpm build:dependencies && pnpm --filter @namewta/admin-web build:prod && pnpm --filter @namewta/home-web build:prod && pnpm --filter @namewta/sso-web build:prod
+
+[ERROR] This project is configured to use 10.34.5 of pnpm. Your current pnpm is v11.1.3
+Corepack invoked pnpm with this version, and pnpm does not switch versions when running under corepack.
+Align the "packageManager" field in package.json with "devEngines.packageManager", or invoke pnpm directly (without corepack) so it can switch versions automatically.
+If you want to bypass this version check, you can set the "pmOnFail" configuration to "warn" or "ignore" (e.g. via --pm-on-fail=ignore). If using "devEngines.packageManager", you can set its "onFail" to "warn" or "ignore"
+ ELIFECYCLE  Command failed with exit code 1.

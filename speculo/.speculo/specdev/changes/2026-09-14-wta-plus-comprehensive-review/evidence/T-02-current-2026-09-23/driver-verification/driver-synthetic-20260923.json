@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t02/test_driver_safety.py",
+    "-v"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T11:12:16.488032+00:00",
+  "finished_at": "2026-09-23T11:12:16.766932+00:00",
+  "exit_code": 0,
+  "log": "driver-synthetic-20260923.log"
+}

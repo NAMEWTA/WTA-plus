@@ -45,13 +45,13 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T11:42:11.578317+00:00",
+  "updated_at": "2026-09-23T12:06:23.146154+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
     "HISTORY: original31 require factual reconciliation and current acceptance; old shared result is not per-ticket proof.",
-    "INTEGRATION: remaining41 tickets and final combined candidate gates pending."
+    "INTEGRATION: remaining39 tickets and final combined candidate gates pending."
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",
@@ -123,7 +123,9 @@
     "T37 C1 e2907c4 failed real13: SMS fixture mapping1error, production CompositeCodec completion CAS1error; unit39classes187zeroSkip and static gates pass. Driver volume-absence verification error retained, owned containers/pgid/ports gone. Product corrections assigned sole writer cors_audit; no Done verdict.",
     "Revision160: T37 accepted at3a87bf7, attempts2; current187units+13real retry/Redis+67Atomic/Wake zeroSkip, both reviews pass, clean source and owned cleanup. C1 two errors and driver cleanup-evidence limitation retained.8done/1cancelled/41ready; next T02 real token-path log fix, thenT38; Goal active, no archive.",
     "Revision161: T02 implementation active atc16966167526f9b6ab6eb213265034b3bbe53e46;8done/1cancelled/1in_progress/40ready. Real login token in online device URL leaks to HTTP/error logs; minimal shared LogSanitizer path fix with current HTTP/MySQL canary acceptance. cors_audit sole product writer; Lead services/commits/governance. T37 closed, no active services.",
-    "T02 genuine behavior red at test-only8a88965: isolated run4e81e6d59c798f07 sevenclasses35tests onefailure zeroerrors/skips; real-issued token remains in HTTP audit after successful device actions. Later sink assertions await green. All owned cleanup/clean source pass. Formal attempts0; cors sole writer now implements minimal repair."
+    "T02 genuine behavior red at test-only8a88965: isolated run4e81e6d59c798f07 sevenclasses35tests onefailure zeroerrors/skips; real-issued token remains in HTTP audit after successful device actions. Later sink assertions await green. All owned cleanup/clean source pass. Formal attempts0; cors sole writer now implements minimal repair.",
+    "Revision162: T02 accepted at617a369; current real39 zeroSkip, consumers70+HTTPS1/Chrome6 zeroSkip, default1000 includes150 environment skips explicitly excluded; full/core packages verified. Initial consumer skip and pnpm environment failure retained.9done/1cancelled/40ready; T03 current no-new-work adjudication then T38. Goal active; no archive.",
+    "Revision163: T03 cancelled as no new product work after current617a369 real bounded HTTP/signature/heap and consumers/full-core proof. Historical214de538 remains; AC003 retained by T30 and only redundant implementation edge removed.9done/2cancelled/39ready; nextT38; Goal active."
   ],
   "worktrees": [
     {
@@ -480,37 +482,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "8a88965363ca295122efadabf0bc97e99c6704c4",
-      "status": "active",
-      "updated_at": "2026-09-23T11:42:11.578317+00:00",
+      "source_checkpoint": "617a3693ddb2897851ab46d4131690898df6a690",
+      "status": "integrated",
+      "updated_at": "2026-09-23T12:06:13.783258+00:00",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "c16966167526f9b6ab6eb213265034b3bbe53e46",
-        "source_sha": "8a88965363ca295122efadabf0bc97e99c6704c4",
+        "source_sha": "617a3693ddb2897851ab46d4131690898df6a690",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "617a3693ddb2897851ab46d4131690898df6a690",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": null
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>",
-        "attempts": 0,
-        "promotion_status": "pending"
+        "attempts": 1,
+        "promotion_status": "applied"
       }
     }
   ]

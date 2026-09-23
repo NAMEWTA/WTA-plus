@@ -1,0 +1,1 @@
+{"scope":"single JVM including Jetty, Spring, HTTP client, signature and XSS; not production capacity","java":"21.0.12.1","processors":8,"heapMaxBytes":536870912,"concurrency":4,"requestBytes":2097152,"logPrefixBytes":32,"requests":8,"baselineHeapBytes":63392856,"sampledPeakHeapBytes":154189528,"heldHeapBytes":150534048,"gcCollections":11,"gcMillis":47,"elapsedMillis":392}

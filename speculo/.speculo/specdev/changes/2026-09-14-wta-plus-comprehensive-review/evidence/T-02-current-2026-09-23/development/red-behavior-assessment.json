@@ -1,0 +1,36 @@
+{
+  "source": {
+    "head": "8a88965363ca295122efadabf0bc97e99c6704c4",
+    "tree": "07d9c945f4ceeddb98f101641f2e8a016b1c269b",
+    "clean": true
+  },
+  "run": "4e81e6d59c798f07",
+  "total_tests": 35,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "red_valid": true,
+  "target": "onlineDeviceTokenFromRealIssuerNeverReachesHttpOrErrorAudit",
+  "assertion": "line336 HTTP audit still contains a genuinely issued and exercised token; preceding valid session and kickout assertions passed",
+  "limits": "first leak assertion aborts later error/OperLog/DB assertions; those must pass after repair, not counted as red execution",
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 55380,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "f02b716a90d2eb614c746d85cdab9238924edf13c26a743c56752c11bd09e135": true
+    },
+    "loopback_ports_closed": {
+      "32814": true
+    },
+    "errors": []
+  },
+  "source_after": {
+    "head": "8a88965363ca295122efadabf0bc97e99c6704c4",
+    "tree": "07d9c945f4ceeddb98f101641f2e8a016b1c269b",
+    "clean": true
+  },
+  "formal_attempts": 0
+}

@@ -1,8 +1,8 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，执行全部50票。当前revision161：8票done（T-29/T-32/T-33/T-34/T-35/T-36/T-37/T-47），T-01取消重复施工，T02实施中，40票ready。current/main唯一产品writer cors_audit修复在线操作token路径日志泄漏；Lead治理/提交/隔离验收。
+用户已激活Goal，执行全部50票。当前revision163：9done，T-01/T-03取消重复施工并保留AC由T30最终复验，其余39ready；下一T38。Goal active，整个change未完成。
 
-最近验收产品T37 `3a87bf71876d92e4afdd227de156045226e52be2`：187单元+13真实重试/Redis+67站内信回归，全部零skip。首候选失败与驱动修正证据保留。整个change及T30完整同源候选尚未完成。
+最近产品T02 `617a3693ddb2897851ab46d4131690898df6a690` 已完成当前日志泄漏修复；真实39、消费者70+HTTPS1/Chrome6零skip，完整默认1000含150环境skip，full/core通过；整个change仍未完成。
 
 本轮重规划基线为 `1264980c74e594bc594e88561bb292fbe5d968a1`：保留原31票编号与历史实现，新增19票覆盖新报告18项，T-30承担全部AC的最终集成。G共识和设计选择已确认，无需再次确认；2026-09-23早期“仅规划、目标未激活”是已被后续授权替代的历史状态。
 

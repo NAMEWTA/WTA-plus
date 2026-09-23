@@ -1,0 +1,22 @@
+{
+  "base": "c16966167526f9b6ab6eb213265034b3bbe53e46",
+  "product_paths": [
+    "backend/wta-admin/src/test/java/org/namewta/test/logging/LogRedactionHttpMySqlIntegrationTest.java",
+    "backend/wta-common/wta-common-json/src/main/java/org/namewta/common/json/utils/LogSanitizer.java",
+    "backend/wta-common/wta-common-json/src/test/java/org/namewta/common/json/utils/LogSanitizerTest.java",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/handler/GlobalExceptionHandler.java",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/logging/SysLogFilter.java",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java",
+    "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java"
+  ],
+  "writable_paths": [
+    "backend/wta-common/wta-common-log/",
+    "backend/wta-common/wta-common-web/",
+    "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java",
+    "backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/",
+    "backend/wta-common/wta-common-json/src/"
+  ],
+  "violations": []
+}

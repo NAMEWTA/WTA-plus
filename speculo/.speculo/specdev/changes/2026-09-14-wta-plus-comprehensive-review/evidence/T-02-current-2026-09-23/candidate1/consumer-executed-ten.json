@@ -1,0 +1,57 @@
+{
+  "status": "planned-not-run",
+  "classes": [
+    {
+      "path": "backend/wta-common/wta-common-json/src/test/java/org/namewta/common/json/utils/LogSanitizerTest.java",
+      "selector": "LogSanitizerTest",
+      "class": "org.namewta.common.json.utils.LogSanitizerTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-log/src/test/java/org/namewta/common/log/aspect/LogAspectRedactionTest.java",
+      "selector": "LogAspectRedactionTest",
+      "class": "org.namewta.common.log.aspect.LogAspectRedactionTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFilterTest.java",
+      "selector": "SysLogFilterTest",
+      "class": "org.namewta.common.web.logging.SysLogFilterTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogFailureRedactionTest.java",
+      "selector": "SysLogFailureRedactionTest",
+      "class": "org.namewta.common.web.logging.SysLogFailureRedactionTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/logging/SysLogEventWriterTest.java",
+      "selector": "SysLogEventWriterTest",
+      "class": "org.namewta.common.web.logging.SysLogEventWriterTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/logging/OperationLogRedactionTest.java",
+      "selector": "OperationLogRedactionTest",
+      "class": "org.namewta.test.logging.OperationLogRedactionTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/config/SysLogConfigTest.java",
+      "selector": "SysLogConfigTest",
+      "class": "org.namewta.common.web.config.SysLogConfigTest"
+    },
+    {
+      "path": "backend/wta-common/wta-common-web/src/test/java/org/namewta/common/web/filter/RequestBodyLimitTest.java",
+      "selector": "RequestBodyLimitTest",
+      "class": "org.namewta.common.web.filter.RequestBodyLimitTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/requestbody/RequestBodyHttpIntegrationTest.java",
+      "selector": "RequestBodyHttpIntegrationTest",
+      "class": "org.namewta.test.requestbody.RequestBodyHttpIntegrationTest"
+    },
+    {
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/openapi/assembly/OpenApiAssemblyContextTest.java",
+      "selector": "OpenApiAssemblyContextTest",
+      "class": "org.namewta.test.openapi.assembly.OpenApiAssemblyContextTest"
+    }
+  ],
+  "selector": "LogSanitizerTest,LogAspectRedactionTest,SysLogFilterTest,SysLogFailureRedactionTest,SysLogEventWriterTest,OperationLogRedactionTest,SysLogConfigTest,RequestBodyLimitTest,RequestBodyHttpIntegrationTest,OpenApiAssemblyContextTest",
+  "purpose": "Executed ten-class subset from initial eleven; HTTPS separate enabled follow-up required"
+}

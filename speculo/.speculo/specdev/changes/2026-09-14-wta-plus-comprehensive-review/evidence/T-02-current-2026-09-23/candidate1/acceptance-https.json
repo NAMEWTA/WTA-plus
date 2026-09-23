@@ -1,0 +1,19 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=BrowserHttpsTransportIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-Dbrowser.transport.integration=true",
+    "-Dnamewta.repo.root=/srv/WTA-plus",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T11:58:37.231975+00:00",
+  "finished_at": "2026-09-23T11:59:22.816881+00:00",
+  "exit_code": 0,
+  "log": "acceptance-https.log"
+}

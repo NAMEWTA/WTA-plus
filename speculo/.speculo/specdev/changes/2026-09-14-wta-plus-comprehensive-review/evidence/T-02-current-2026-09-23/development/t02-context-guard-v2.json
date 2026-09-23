@@ -1,0 +1,17 @@
+{
+  "command": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-common/wta-common-web",
+    "-am",
+    "-Dtest=LogSanitizerTest,SysLogFailureRedactionTest,SysLogFilterTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T11:46:22.175704+00:00",
+  "finished_at": "2026-09-23T11:46:32.263566+00:00",
+  "exit_code": 0,
+  "log": "t02-context-guard-v2.log"
+}

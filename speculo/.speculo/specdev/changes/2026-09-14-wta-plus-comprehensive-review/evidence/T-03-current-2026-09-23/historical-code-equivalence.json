@@ -1,0 +1,14 @@
+{
+  "historical_implementation": "214de538267a60fa527b1213f7dd9139622f4a2e",
+  "current_source": "617a3693ddb2897851ab46d4131690898df6a690",
+  "ancestor": true,
+  "critical_paths": [
+    "backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/http/CapturedRequestBody.java",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatableFilter.java",
+    "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/filter/RepeatedlyRequestWrapper.java",
+    "backend/wta-common/wta-common-openapi/src/main/",
+    "backend/wta-admin/src/test/java/org/namewta/test/requestbody/RequestBodyHttpIntegrationTest.java"
+  ],
+  "changed_critical_paths": [],
+  "scope": "Critical body/HTTP/signature source unchanged; other config/T11/T02 consumer differences reviewed and current regression executed. Not historical clean proof."
+}

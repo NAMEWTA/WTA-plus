@@ -1,0 +1,17 @@
+{
+  "command": [
+    "mvn",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=LogRedactionHttpMySqlIntegrationTest#onlineDeviceTokenFromRealIssuerNeverReachesHttpOrErrorAudit",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T11:36:53.104041+00:00",
+  "finished_at": "2026-09-23T11:37:13.474568+00:00",
+  "exit_code": 0,
+  "log": "t02-test-source-compile-v2.log"
+}
