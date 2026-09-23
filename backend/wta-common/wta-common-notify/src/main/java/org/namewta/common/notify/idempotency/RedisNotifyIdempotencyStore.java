@@ -4,8 +4,6 @@ import org.namewta.common.notify.model.NotifyResult;
 import org.redisson.api.RBucket;
 import org.redisson.api.RScript;
 import org.redisson.api.RedissonClient;
-import org.redisson.api.bucket.CompareAndDeleteArgs;
-import org.redisson.api.bucket.CompareAndSetArgs;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Duration;
@@ -24,6 +22,17 @@ public final class RedisNotifyIdempotencyStore implements NotifyIdempotencyStore
         if redis.call('get', KEYS[1]) ~= ARGV[1] then return 0 end
         if redis.call('pttl', KEYS[1]) <= 0 then return 0 end
         redis.call('set', KEYS[1], ARGV[2], 'KEEPTTL')
+        return 1
+        """;
+    private static final String CAS_COMPLETE = """
+        if redis.call('get', KEYS[1]) ~= ARGV[1] then return 0 end
+        if redis.call('pttl', KEYS[1]) <= 0 then return 0 end
+        redis.call('psetex', KEYS[1], %d, ARGV[2])
+        return 1
+        """;
+    private static final String CAS_DELETE = """
+        if redis.call('get', KEYS[1]) ~= ARGV[1] then return 0 end
+        redis.call('del', KEYS[1])
         return 1
         """;
     private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
@@ -75,10 +84,11 @@ public final class RedisNotifyIdempotencyStore implements NotifyIdempotencyStore
         RBucket<String> bucket = redissonClient.getBucket(acquired.storageKey());
         String completedValue = JSON_MAPPER.writeValueAsString(
             new StoredState(COMPLETED, acquired.digest(), acquired.requestId(), result, null));
-        CompareAndSetArgs<String> args = CompareAndSetArgs.expected(acquired.expectedValue())
-            .set(completedValue)
-            .timeToLive(acquired.window());
-        if (!bucket.compareAndSet(args)) {
+        long ttlMillis = acquired.window().toMillis();
+        if (ttlMillis <= 0) throw new IllegalArgumentException("通知幂等完成窗口必须为正数");
+        // TTL 仅用已校验的 Java 正整数嵌入脚本；默认 Kryo/JSON codec 都不能可靠编码 Lua 数值参数。
+        // Redisson 4.6.1 Bucket CompareAndSetArgs 在 NameMapper 下使用未映射名，故沿用同 codec 脚本。
+        if (!ownerScript(bucket, CAS_COMPLETE.formatted(ttlMillis), acquired.expectedValue(), completedValue)) {
             throw new IllegalStateException("Redis 通知幂等占位已失效");
         }
     }
@@ -87,7 +97,8 @@ public final class RedisNotifyIdempotencyStore implements NotifyIdempotencyStore
     public void markRetryable(Acquired acquired) {
         RBucket<String> bucket = redissonClient.getBucket(acquired.storageKey());
         StoredState current = JSON_MAPPER.readValue(acquired.expectedValue(), StoredState.class);
-        if (!IN_PROGRESS.equals(current.state()) || current.ownerNonce() == null) {
+        if (!IN_PROGRESS.equals(current.state()) || current.ownerNonce() == null
+            || !acquired.digest().equals(current.digest()) || !acquired.requestId().equals(current.requestId())) {
             throw new IllegalStateException("Redis 通知幂等 owner 无效");
         }
         String retryableValue = JSON_MAPPER.writeValueAsString(
@@ -100,7 +111,7 @@ public final class RedisNotifyIdempotencyStore implements NotifyIdempotencyStore
     @Override
     public void release(Acquired acquired) {
         RBucket<String> bucket = redissonClient.getBucket(acquired.storageKey());
-        bucket.compareAndDelete(CompareAndDeleteArgs.expected(acquired.expectedValue()));
+        ownerScript(bucket, CAS_DELETE, acquired.expectedValue());
     }
 
     private String pending(String digest, String requestId) {
@@ -110,8 +121,12 @@ public final class RedisNotifyIdempotencyStore implements NotifyIdempotencyStore
 
     /** 脚本采用 bucket 的实际 codec，兼容生产 CompositeCodec 与测试 StringCodec；KEEPTTL 不延长期限。 */
     private boolean replaceKeepingTtl(RBucket<String> bucket, String expected, String replacement) {
+        return ownerScript(bucket, CAS_KEEP_TTL, expected, replacement);
+    }
+
+    private boolean ownerScript(RBucket<String> bucket, String script, Object... arguments) {
         Long changed = redissonClient.getScript(bucket.getCodec()).eval(bucket.getName(), RScript.Mode.READ_WRITE,
-            CAS_KEEP_TTL, RScript.ReturnType.LONG, List.of(bucket.getName()), expected, replacement);
+            script, RScript.ReturnType.LONG, List.of(bucket.getName()), arguments);
         return Long.valueOf(1L).equals(changed);
     }
 

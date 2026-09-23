@@ -156,6 +156,32 @@ class RedisNotifyIdempotencyStoreIntegrationTest {
             store.complete(second, accepted(second.requestId()));
             assertInstanceOf(NotifyIdempotencyStore.Completed.class,
                 store.acquire(key, "digest-a", "same-request", window));
+            assertTrue(bucket.remainTimeToLive() > Duration.ofMinutes(4).toMillis(),
+                "completion restores the established completed-state window");
+            store.release(second);
+            assertInstanceOf(NotifyIdempotencyStore.Completed.class,
+                store.acquire(key, "digest-a", "same-request", window));
+
+            // Redisson 4.6.1 的 Bucket Args CAS 使用未映射名；正例须在 NameMapper 下证明当前 owner 可操作。
+            String freshKey = key + ":fresh";
+            String releaseKey = key + ":release";
+            try {
+                NotifyIdempotencyStore.Acquired fresh = assertInstanceOf(NotifyIdempotencyStore.Acquired.class,
+                    store.acquire(freshKey, "digest-fresh", "fresh-request", window));
+                store.complete(fresh, accepted(fresh.requestId()));
+                assertInstanceOf(NotifyIdempotencyStore.Completed.class,
+                    store.acquire(freshKey, "digest-fresh", "fresh-request", window));
+
+                NotifyIdempotencyStore.Acquired releasable = assertInstanceOf(NotifyIdempotencyStore.Acquired.class,
+                    store.acquire(releaseKey, "digest-release", "release-request", window));
+                store.release(releasable);
+                assertFalse(client.getBucket(releaseKey).isExists(), "current owner release must delete its exact key");
+                assertInstanceOf(NotifyIdempotencyStore.Acquired.class,
+                    store.acquire(releaseKey, "digest-release", "release-request", window));
+            } finally {
+                client.getBucket(freshKey).delete();
+                client.getBucket(releaseKey).delete();
+            }
 
             if (productionCodec) {
                 // 四字段旧缓存无 owner；不能按旧 FAILED/errorCode 推断安全重发。

@@ -479,7 +479,7 @@ class NotifySmsDispatchIntegrationTest {
         try {
             db.update("update notify_channel_account set supplier='tencent' where account_id=?", accountId);
             db.update("update notify_scene_binding set sms_param_mapping_json=? where binding_id=?",
-                JsonUtils.toJsonString(Map.of("1", "code", "2", "expireMinutes")), bindingId);
+                JsonUtils.toJsonString(Map.of("code", "1", "expireMinutes", "2")), bindingId);
             var account = new org.namewta.notify.domain.entity.NotifyChannelAccount();
             account.setConfigKey(configKey);
             account.setSupplier("tencent");
