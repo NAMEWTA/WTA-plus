@@ -7,6 +7,7 @@ import org.springframework.boot.web.server.context.WebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,7 @@ import java.util.Locale;
  */
 
 @SpringBootApplication
+@EnableScheduling
 public class NamewtaApplication {
 
     private static final Logger log = LoggerFactory.getLogger(NamewtaApplication.class);

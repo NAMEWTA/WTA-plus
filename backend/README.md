@@ -25,6 +25,10 @@
 - MySQL 8.4 是 NAMEWTA 业务扩展当前唯一支持并自动化验收的数据库。
 - Redis、MinIO 等外部服务用于会话、缓存、OSS 与集成测试。
 
+## OSS 运行与诊断
+
+OSS 配置由数据库在启动时重建专用缓存；只有唯一合法的 PRIVATE 默认配置才可用于新上传。可选存储或诊断配置异常不会阻止核心启动。管理员可凭 `system:ossConfig:list` 使用 `POST /resource/oss/config/diagnose/{ossConfigId}` 诊断单个配置，公开结果只含固定状态、原因和检查时间。诊断不作为上传、下载或迁移的门禁，也不修改远端 Bucket/Policy。`/actuator/health/readiness` 检查核心 DB/Redis，`/actuator/health/liveness` 报告进程存活状态，`/actuator/health/ossdiagnostics` 仅显示已检查配置的观察快照；这些 Actuator 路径仍受现有 Basic Auth 保护，根 `/actuator/health` 不是核心专用组。诊断的每个网络步骤超时为 100ms–3s，最多五个顺序步骤，网络等待最多 15s，并非整个 HTTP 请求三秒上限。
+
 ## 模块结构
 
 ```text

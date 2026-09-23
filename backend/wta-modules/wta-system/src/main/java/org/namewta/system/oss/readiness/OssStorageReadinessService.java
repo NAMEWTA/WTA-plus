@@ -11,7 +11,7 @@ import org.namewta.system.domain.SysOss;
 import org.namewta.system.domain.SysOssConfig;
 import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.mapper.SysOssMapper;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.namewta.system.domain.vo.OssStorageDiagnosticVo;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 发现必检配置并刷新 Provider readiness 快照。
+ * 管理员显式触发的 OSS Provider 观察诊断；业务及启动均不以此为门禁。
  */
 @Slf4j
 @Service
@@ -36,8 +36,6 @@ public class OssStorageReadinessService {
     private final OssReadinessClientProvider clientProvider;
     private final List<OssRequiredConfigContributor> contributors;
 
-    @Scheduled(initialDelayString = "${oss.readiness.refresh-interval:PT1M}",
-        fixedDelayString = "${oss.readiness.refresh-interval:PT1M}")
     public synchronized void refresh() {
         try {
             List<SysOssConfig> configs = configMapper.selectList();
@@ -60,6 +58,29 @@ public class OssStorageReadinessService {
         }
     }
 
+    /**
+     * 诊断一个已选择的配置，不返回桶名、端点、凭据、对象 key 或原始 Provider 错误。
+     *
+     * @param ossConfigId 配置主键
+     * @return 可公开的观察状态
+     */
+    public OssStorageDiagnosticVo diagnoseOne(Long ossConfigId) {
+        long revision = registry.configRevision();
+        SysOssConfig config = ossConfigId == null ? null : configMapper.selectById(ossConfigId);
+        OssStorageReadinessEntry entry = config == null
+            ? notServing("missing", null, Set.of(), OssStorageReadinessEntry.Reason.CONFIG_MISSING)
+            : StringUtils.isBlank(config.getConfigKey())
+                ? notServing("invalid", null, Set.of(), OssStorageReadinessEntry.Reason.DIAGNOSTIC_CONFIG_INVALID)
+                : diagnose(config, Set.of());
+        if (config != null && StringUtils.isNotBlank(config.getConfigKey())) {
+            if (!registry.recordIfUnchanged(entry, revision)) {
+                return new OssStorageDiagnosticVo(OssStorageReadinessEntry.Status.NOT_SERVING.name(),
+                    OssStorageReadinessEntry.Reason.STALE.name(), Instant.now());
+            }
+        }
+        return new OssStorageDiagnosticVo(entry.status().name(), entry.reason().name(), entry.checkedAt());
+    }
+
     private Map<String, Set<String>> requiredConfigs(List<SysOssConfig> configs) {
         Map<String, Set<String>> required = new LinkedHashMap<>();
         configs.stream().filter(config -> SystemConstants.YES.equals(config.getStatus()))
@@ -74,6 +95,10 @@ public class OssStorageReadinessService {
     }
 
     private OssStorageReadinessEntry diagnose(SysOssConfig config, Set<String> requiredBy) {
+        if (!properties.diagnosticConfigurationValid()) {
+            return notServing(config.getConfigKey(), null, requiredBy,
+                OssStorageReadinessEntry.Reason.DIAGNOSTIC_CONFIG_INVALID);
+        }
         AccessPolicy accessPolicy;
         try {
             accessPolicy = AccessPolicy.formType(config.getAccessPolicy());
@@ -93,7 +118,7 @@ public class OssStorageReadinessService {
         }
         try {
             OssAccessDiagnostic diagnostic = clientProvider.client(config.getConfigKey())
-                .diagnoseAccess(diagnosticObject, accessPolicy, properties.getDiagnosticTimeout());
+                .diagnoseAccess(diagnosticObject, accessPolicy, properties.boundedDiagnosticTimeout());
             if (diagnostic.verified()) {
                 return new OssStorageReadinessEntry(config.getConfigKey(), accessPolicy, !requiredBy.isEmpty(),
                     requiredBy, OssStorageReadinessEntry.Status.SERVING,

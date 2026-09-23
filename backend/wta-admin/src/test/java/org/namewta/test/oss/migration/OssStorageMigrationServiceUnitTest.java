@@ -46,7 +46,7 @@ class OssStorageMigrationServiceUnitTest {
     @Test
     void missingOrExpiredDiagnosticMustNotBlockActualMigrationRoute() {
         OssStorageReadinessProperties diagnosticProperties = new OssStorageReadinessProperties();
-        diagnosticProperties.setMaxSnapshotAge(Duration.ofDays(1));
+        diagnosticProperties.setMaxSnapshotAge("P1D");
         Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
         OssStorageReadinessRegistry empty = new OssStorageReadinessRegistry(diagnosticProperties, clock);
         useReadiness(empty);
@@ -281,7 +281,7 @@ class OssStorageMigrationServiceUnitTest {
 
     private OssStorageReadinessRegistry readiness() {
         OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
-        properties.setMaxSnapshotAge(Duration.ofDays(1));
+        properties.setMaxSnapshotAge("P1D");
         OssStorageReadinessRegistry registry = new OssStorageReadinessRegistry(properties,
             Clock.fixed(NOW, ZoneOffset.UTC));
         registry.replace(Map.of(

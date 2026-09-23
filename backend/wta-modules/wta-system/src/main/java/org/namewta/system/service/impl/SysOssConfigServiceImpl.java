@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 对象存储配置Service业务层处理
@@ -43,6 +44,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
 
     private static final String PRIVATE_ACCESS_POLICY = "0";
     private static final String PUBLIC_READ_ACCESS_POLICY = "2";
+    private static final Pattern CONFIG_KEY = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._-]{1,19}");
 
     private final SysOssConfigMapper ossConfigMapper;
 
@@ -52,20 +54,38 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
     @Override
     public void init() {
         List<SysOssConfig> list = ossConfigMapper.selectList();
-        long defaultCount = list.stream().filter(config -> SystemConstants.YES.equals(config.getStatus())).count();
-        if (defaultCount != 1) {
-            throw new ServiceException("OSS配置必须且只能存在一个默认配置");
-        }
-        // 加载OSS初始化配置
+        // 查询成功后以 DB 为权威重建专用缓存；旧默认和已删除的 configKey 均不能复活。
+        CacheUtils.clear(CacheNames.SYS_OSS_CONFIG);
+        RedisUtils.deleteObject(OssConstant.DEFAULT_CONFIG_KEY);
+        List<SysOssConfig> valid = new java.util.ArrayList<>();
         for (SysOssConfig config : list) {
-            validateAccessPolicy(config);
-            String configKey = config.getConfigKey();
-            if (SystemConstants.YES.equals(config.getStatus())) {
-                validatePrivateDefault(config);
-                RedisUtils.setCacheObject(OssConstant.DEFAULT_CONFIG_KEY, configKey);
+            if (locallyUsable(config)) {
+                valid.add(config);
+                CacheUtils.put(CacheNames.SYS_OSS_CONFIG, config.getConfigKey(), JsonUtils.toJsonString(config));
+            } else {
+                log.warn("忽略本地结构无效的可选OSS配置，配置ID={}", config == null ? null : config.getOssConfigId());
             }
-            CacheUtils.put(CacheNames.SYS_OSS_CONFIG, config.getConfigKey(), JsonUtils.toJsonString(config));
         }
+        List<SysOssConfig> defaults = valid.stream()
+            .filter(config -> SystemConstants.YES.equals(config.getStatus())
+                && PRIVATE_ACCESS_POLICY.equals(config.getAccessPolicy())).toList();
+        if (defaults.size() == 1 && list.stream()
+            .filter(config -> config != null && SystemConstants.YES.equals(config.getStatus())).count() == 1) {
+            RedisUtils.setCacheObject(OssConstant.DEFAULT_CONFIG_KEY, defaults.getFirst().getConfigKey());
+        }
+    }
+
+    /** 启动阶段仅校验本地结构，不构造 OSS 客户端或连接远端。 */
+    private boolean locallyUsable(SysOssConfig config) {
+        return config != null && config.getConfigKey() != null
+            && CONFIG_KEY.matcher(config.getConfigKey()).matches()
+            && StringUtils.isNotBlank(config.getEndpoint())
+            && StringUtils.isNotBlank(config.getBucketName())
+            && StringUtils.isNotBlank(config.getAccessKey())
+            && StringUtils.isNotBlank(config.getSecretKey())
+            && (PRIVATE_ACCESS_POLICY.equals(config.getAccessPolicy())
+                || PUBLIC_READ_ACCESS_POLICY.equals(config.getAccessPolicy()))
+            && (SystemConstants.YES.equals(config.getStatus()) || SystemConstants.NO.equals(config.getStatus()));
     }
 
     /**

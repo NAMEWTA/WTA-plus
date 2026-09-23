@@ -1,8 +1,6 @@
 package org.namewta.system.oss.migration;
 
-import org.namewta.common.oss.enums.AccessPolicy;
 import org.namewta.system.domain.SysOss;
-import org.namewta.system.oss.readiness.OssStorageReadinessEntry;
 import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,7 +72,6 @@ public class OssStorageMigrationService {
 
     public DryRunReport dryRun(MigrationRequest request) {
         List<Long> ids = validateRequest(request);
-        requireRoute(request.targetConfigKey(), AccessPolicy.PUBLIC_READ);
         Map<Long, SysOss> objects = new LinkedHashMap<>();
         store.findObjects(ids).forEach(oss -> objects.put(oss.getOssId(), oss));
         List<PreflightItem> results = new ArrayList<>(ids.size());
@@ -91,7 +88,10 @@ public class OssStorageMigrationService {
                     throw new OssMigrationException(OssMigrationError.INVALID_STATE,
                         "仅允许迁移正常状态的 OSS 对象");
                 }
-                requireRoute(source, AccessPolicy.PRIVATE);
+                if (source == null || source.isBlank()) {
+                    throw new OssMigrationException(OssMigrationError.STORAGE_NOT_SERVING,
+                        "来源存储配置不存在");
+                }
                 if (source.equals(request.targetConfigKey())) {
                     throw new OssMigrationException(OssMigrationError.INVALID_REQUEST,
                         "来源与目标存储不能相同");
@@ -322,16 +322,6 @@ public class OssStorageMigrationService {
             throw new OssMigrationException(OssMigrationError.INVALID_REQUEST, "迁移对象清单无效");
         }
         return ids;
-    }
-
-    private void requireRoute(String configKey, AccessPolicy expected) {
-        OssStorageReadinessEntry entry = readinessRegistry.snapshot().get(configKey);
-        if (entry == null || entry.status() != OssStorageReadinessEntry.Status.SERVING) {
-            throw new OssMigrationException(OssMigrationError.STORAGE_NOT_SERVING, "迁移存储当前不可服务");
-        }
-        if (entry.accessPolicy() != expected) {
-            throw new OssMigrationException(OssMigrationError.ACCESS_POLICY_MISMATCH, "迁移存储访问类型不匹配");
-        }
     }
 
     private SysOssMigrationBatch requireBatch(Long batchId) {

@@ -103,7 +103,7 @@
 - 引用生命周期：业务表只保存 `ossId`，在保存业务数据的同一个 `@DSTransactional` 中调用 `reconcileReferences`；`snapshot` 用于查看临时状态和真实物理表引用。实现位于 `service/impl/SysOssServiceImpl.java` 与 `oss/service/OssLifecycleManager.java`。
 - 管理面：`service/ISysOssService.java` 提供管理查询与删除；HTTP `/resource/oss`。浏览器直传使用 `/resource/oss/uploads` 固定 JSON 协议，客户端只提交服务端策略名和文件元数据。
 - 配置面：`ISysOssConfigService.java` 与 HTTP `/resource/oss/config`。必须且只能有一个 PRIVATE 默认配置；PUBLIC_READ 配置必须非默认；`sys_oss.service` 是对象存储路由权威。
-- 启动与 readiness：`runner/SystemApplicationRunner.java` 调 `ossConfigService.init()`；readiness 只诊断 Bucket、Policy、域名和 Provider 能力，不创建 Bucket、不修改 Policy，未达到 serving 时拒绝签发访问 URL。
+- 启动与诊断：`runner/SystemApplicationRunner.java` 仅调 `ossConfigService.init()` 从 DB 重建专用缓存，清除旧默认指针，仅唯一合法 PRIVATE 默认可供新上传。管理员通过 `POST /resource/oss/config/diagnose/{ossConfigId}` 独立诊断单个配置；诊断不创建 Bucket、不修改 Policy，也不作为上传、下载、迁移或核心健康的前置门禁。业务仍验证对象 ACTIVE、service、owner/Client、当前配置访问类型，远端操作按真实结果反馈。`/actuator/health/readiness` 与 `/liveness` 不含 OSS 诊断，`/actuator/health/ossdiagnostics` 仅汇总已显式检查的快照（并非 DB 全部配置、也不保证未来操作成功）；每网络步骤诊断超时限 100ms–3s，最多五个顺序步骤，网络等待最多 15s。
 - 配置变更：`event/OssConfigChangeEvent.java` + `listener/OssConfigChangeListener.java`，发布于 `service/impl/SysOssConfigServiceImpl.java`。被对象引用的配置不能通过普通编辑修改 configKey、Bucket 或访问策略，需走受控迁移。
 - 翻译兼容：`wta-common/wta-common-translation/src/main/java/org/namewta/common/translation/core/impl/OssUrlTranslationImpl.java` 仍调用旧批量接口；私有 URL 会过期，不得将翻译结果持久化或缓存为资源身份。
 

@@ -49,6 +49,7 @@ services:
     volumes:
       - "${NAMEWTA_DATA_ROOT:-./runtime}/logs/server1:/wta/server/logs"
     healthcheck:
+      # 仅为 TCP 进程探针；核心依赖就绪需查 /actuator/health/readiness，OSS 诊断另查 ossdiagnostics。
       test: ["CMD-SHELL", "bash -c ': >/dev/tcp/127.0.0.1/8080'"]
       interval: 15s
       timeout: 5s
@@ -74,6 +75,7 @@ services:
     volumes:
       - "${NAMEWTA_DATA_ROOT:-./runtime}/logs/server2:/wta/server/logs"
     healthcheck:
+      # 仅为 TCP 进程探针；核心依赖就绪需查 /actuator/health/readiness，OSS 诊断另查 ossdiagnostics。
       test: ["CMD-SHELL", "bash -c ': >/dev/tcp/127.0.0.1/8080'"]
       interval: 15s
       timeout: 5s

@@ -5,7 +5,11 @@ import com.baomidou.dynamic.datasource.annotation.DsTxEventListener;
 import com.baomidou.dynamic.datasource.aop.DynamicLocalTransactionInterceptor;
 import com.baomidou.dynamic.datasource.tx.DsTxEventListenerFactory;
 import org.namewta.common.core.exception.ServiceException;
+import org.namewta.common.core.constant.CacheNames;
 import org.namewta.common.core.utils.SpringUtils;
+import org.namewta.common.oss.constant.OssConstant;
+import org.namewta.common.redis.utils.CacheUtils;
+import org.namewta.common.redis.utils.RedisUtils;
 import org.namewta.system.domain.SysOssConfig;
 import org.namewta.system.domain.bo.SysOssConfigBo;
 import org.namewta.system.event.OssConfigChangeEvent;
@@ -13,7 +17,12 @@ import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.service.impl.SysOssConfigServiceImpl;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.aop.framework.ProxyFactory;
@@ -21,17 +30,26 @@ import tools.jackson.databind.json.JsonMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Tag("dev")
-class OssConfigGovernanceUnitTest {
+public class OssConfigGovernanceUnitTest {
+
+    @TempDir
+    Path temporary;
 
     @Test
     void rejectsUnknownPolicyAndPublicDefaultBeforeWriting() {
@@ -138,16 +156,129 @@ class OssConfigGovernanceUnitTest {
     }
 
     @Test
-    void initializationFailsClosedWhenDefaultInvariantIsBroken() {
+    void initializationUsesAuthoritativeDbAndFailsClosedForMissingOrBrokenDefault() throws Exception {
+        // RedisUtils.CLIENT 与 CacheUtils.CacheManagerHolder 缓存静态 Bean；独立 JVM 防止污染 Surefire 其他测试。
+        Path result = temporary.resolve("oss-bootstrap.result");
+        Path log = temporary.resolve("oss-bootstrap.log");
+        String classpath = System.getProperty("surefire.test.class.path", System.getProperty("java.class.path"));
+        assertThat(classpath).isNotBlank();
+        Process child = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
+            "-Xms32m", "-Xmx384m", "-cp", classpath, OssConfigGovernanceUnitTest.class.getName(),
+            result.toString()).redirectErrorStream(true).redirectOutput(log.toFile()).start();
+        try {
+            assertThat(child.waitFor(45, TimeUnit.SECONDS)).as("OSS bootstrap isolated JVM completed").isTrue();
+            String outcome = Files.isRegularFile(result) ? Files.readString(result).trim() : "NO_RESULT";
+            assertThat(outcome).as("OSS bootstrap isolated scenario").isEqualTo("OK");
+            assertThat(child.exitValue()).as("OSS bootstrap isolated JVM exit").isZero();
+        } finally {
+            List<ProcessHandle> descendants = child.toHandle().descendants().toList();
+            if (child.isAlive()) {
+                child.destroyForcibly();
+            }
+            descendants.stream().filter(ProcessHandle::isAlive).forEach(ProcessHandle::destroyForcibly);
+            boolean parentStopped = child.waitFor(5, TimeUnit.SECONDS);
+            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+            while (descendants.stream().anyMatch(ProcessHandle::isAlive) && System.nanoTime() < deadline) {
+                Thread.sleep(25);
+            }
+            Files.deleteIfExists(result);
+            Files.deleteIfExists(log);
+            assertThat(parentStopped && descendants.stream().noneMatch(ProcessHandle::isAlive))
+                .as("OSS bootstrap isolated process tree stopped").isTrue();
+        }
+    }
+
+    /** 子进程只执行固定合成场景，不初始化父 Surefire JVM 的静态缓存客户端。 */
+    public static void main(String[] args) throws Exception {
+        if (args.length != 1) {
+            throw new IllegalArgumentException("unlisted OSS bootstrap case");
+        }
+        String outcome = "OK";
+        AtomicReference<String> scenario = new AtomicReference<>("SETUP");
+        try {
+            bootstrapScenarios(scenario);
+        } catch (Throwable failure) {
+            outcome = "FAIL:" + scenario.get() + ":" + failure.getClass().getSimpleName();
+        }
+        Files.writeString(Path.of(args[0]), outcome);
+        if (!"OK".equals(outcome)) {
+            System.exit(1);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void bootstrapScenarios(AtomicReference<String> scenario) {
+        RedissonClient redis = mock(RedissonClient.class);
+        RBucket<String> defaultBucket = mock(RBucket.class);
+        AtomicReference<String> defaultPointer = new AtomicReference<>();
+        doReturn(defaultBucket).when(redis).getBucket(OssConstant.DEFAULT_CONFIG_KEY);
+        doAnswer(call -> {
+            defaultPointer.set(call.getArgument(0));
+            return null;
+        }).when(defaultBucket).set(any());
+        when(defaultBucket.get()).thenAnswer(call -> defaultPointer.get());
+        when(defaultBucket.delete()).thenAnswer(call -> defaultPointer.getAndSet(null) != null);
+        CacheManager cacheManager = new ConcurrentMapCacheManager(CacheNames.SYS_OSS_CONFIG);
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            context.registerBean(SpringUtils.class);
+            context.registerBean(RedissonClient.class, () -> redis);
+            context.registerBean(CacheManager.class, () -> cacheManager);
+            context.registerBean(JsonMapper.class, () -> JsonMapper.builder().build());
+            context.refresh();
+
+            scenario.set("DB_READ_FAILURE");
+            SysOssConfigMapper failedRead = mock(SysOssConfigMapper.class);
+            IllegalStateException dbFailure = new IllegalStateException("synthetic DB failure");
+            when(failedRead.selectList()).thenThrow(dbFailure);
+            seedOldCacheAndDefault();
+            assertThatThrownBy(() -> new SysOssConfigServiceImpl(failedRead).init()).isSameAs(dbFailure);
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key"))
+                .isEqualTo("old-cache-value");
+            assertThat(defaultPointer.get()).isEqualTo("old-key");
+
+            scenario.set("EMPTY_CONFIGS");
+            seedOldCacheAndDefault();
+            bootstrap(List.of());
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key")).isNull();
+            assertThat(defaultPointer.get()).isNull();
+
+            scenario.set("DUPLICATE_DEFAULTS");
+            seedOldCacheAndDefault();
+            SysOssConfig optional = config(3L, "public-c", "bucket-c", "2", "N");
+            bootstrap(List.of(config(1L, "private-a", "bucket-a", "0", "Y"),
+                config(2L, "private-b", "bucket-b", "0", "Y"), optional));
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key")).isNull();
+            assertThat(defaultPointer.get()).isNull();
+            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
+
+            scenario.set("BROKEN_DEFAULT");
+            seedOldCacheAndDefault();
+            SysOssConfig broken = config(4L, "private-bad", "bucket-bad", "0", "Y");
+            broken.setEndpoint(null);
+            bootstrap(List.of(broken, optional));
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key")).isNull();
+            assertThat(defaultPointer.get()).isNull();
+            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "private-bad")).isNull();
+            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
+
+            scenario.set("VALID_PRIVATE_DEFAULT");
+            seedOldCacheAndDefault();
+            bootstrap(List.of(config(5L, "private-good", "bucket-good", "0", "Y"), optional));
+            assertThat(CacheUtils.<String>get(CacheNames.SYS_OSS_CONFIG, "old-key")).isNull();
+            assertThat(defaultPointer.get()).isEqualTo("private-good");
+            assertThat(CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "public-c")).isNotNull();
+        }
+    }
+
+    private static void seedOldCacheAndDefault() {
+        CacheUtils.put(CacheNames.SYS_OSS_CONFIG, "old-key", "old-cache-value");
+        RedisUtils.setCacheObject(OssConstant.DEFAULT_CONFIG_KEY, "old-key");
+    }
+
+    private static void bootstrap(List<SysOssConfig> configs) {
         SysOssConfigMapper mapper = mock(SysOssConfigMapper.class);
-        SysOssConfigServiceImpl service = new SysOssConfigServiceImpl(mapper);
-        when(mapper.selectList()).thenReturn(List.of(
-            config(1L, "a", "bucket-a", "0", "Y"),
-            config(2L, "b", "bucket-b", "0", "Y")
-        ));
-        assertThatThrownBy(service::init)
-            .isInstanceOf(ServiceException.class)
-            .hasMessage("OSS配置必须且只能存在一个默认配置");
+        when(mapper.selectList()).thenReturn(configs);
+        new SysOssConfigServiceImpl(mapper).init();
     }
 
     @Test

@@ -5,7 +5,6 @@ import org.namewta.common.oss.model.OssCompletedPart;
 import org.namewta.common.oss.model.OssMultipartPart;
 import org.namewta.common.oss.model.OssObjectStat;
 import org.namewta.common.oss.model.OssPresignedRequest;
-import org.namewta.system.oss.readiness.OssStorageReadinessEntry;
 import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +57,6 @@ public class OssUploadService {
             throw new OssUploadException(OssUploadError.INVALID_FILE, "文件大小或 Content-Type 不符合上传策略");
         }
         String storageConfigKey = currentDefaultStorageKey();
-        requireStorageRoute(policy, storageConfigKey);
         OssUploadMode mode = policy.resolveMode(request.fileSize());
         long partSize = mode == OssUploadMode.MULTIPART ? policy.getPartSize() : 0;
         int partCount = mode == OssUploadMode.MULTIPART
@@ -99,17 +97,6 @@ public class OssUploadService {
             throw new OssUploadException(OssUploadError.STORAGE_NOT_SERVING, "默认 OSS 配置不存在");
         }
         return storageConfigKey;
-    }
-
-    private void requireStorageRoute(OssUploadProperties.Policy policy, String storageConfigKey) {
-        OssStorageReadinessEntry entry = readinessRegistry.snapshot().get(storageConfigKey);
-        if (entry == null || entry.status() != OssStorageReadinessEntry.Status.SERVING) {
-            throw new OssUploadException(OssUploadError.STORAGE_NOT_SERVING, "OSS 上传目标当前不可服务");
-        }
-        if (entry.accessPolicy() != policy.getExpectedAccessPolicy()) {
-            throw new OssUploadException(OssUploadError.STORAGE_ACCESS_POLICY_MISMATCH,
-                "OSS 上传目标访问策略与服务端策略不一致");
-        }
     }
 
     public SignPartsResponse signParts(String token, SignPartsRequest request) {

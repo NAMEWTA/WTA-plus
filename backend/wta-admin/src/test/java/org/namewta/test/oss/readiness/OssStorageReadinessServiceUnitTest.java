@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -120,6 +121,63 @@ class OssStorageReadinessServiceUnitTest {
         assertThat(fixture.registry.overallServing()).isTrue();
         assertThat(fixture.registry.snapshot().get("migration-target").requiredBy())
             .containsExactly("MIGRATION_TARGET");
+    }
+
+    @Test
+    void oneConfigDiagnosisUsesOnlySelectedRowAndBoundsEachProviderStep() {
+        Fixture fixture = fixture();
+        SysOssConfig selected = config("private", "0", "N", null);
+        when(fixture.configMapper.selectById(42L)).thenReturn(selected);
+        fixture.properties.setDiagnosticObjects(Map.of("private", "diagnostic/private.txt"));
+        fixture.properties.setDiagnosticTimeout("3s");
+        OssClient client = mock(OssClient.class);
+        when(fixture.clientProvider.client("private")).thenReturn(client);
+        when(client.diagnoseAccess(any(), eq(AccessPolicy.PRIVATE), any()))
+            .thenReturn(new OssAccessDiagnostic(OssAccessDiagnostic.Verification.VERIFIED,
+                OssAccessDiagnostic.Reason.READY, AccessPolicy.PRIVATE, false, false, true, Instant.now()));
+
+        var result = fixture.service.diagnoseOne(42L);
+
+        assertThat(result.status()).isEqualTo("SERVING");
+        assertThat(result.reason()).isEqualTo("READY");
+        assertThat(result.checkedAt()).isNotNull();
+        verify(client).diagnoseAccess("diagnostic/private.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(3));
+        verify(fixture.configMapper, never()).selectList();
+        verify(fixture.ossMapper, never()).selectObjs(any());
+    }
+
+    @Test
+    void badOptionalDurationReturnsFixedReasonWithoutProviderOrGlobalDiscovery() {
+        Fixture fixture = fixture();
+        when(fixture.configMapper.selectById(43L)).thenReturn(config("private", "0", "N", null));
+        fixture.properties.setDiagnosticTimeout("invalid-secret-looking-value");
+
+        var result = fixture.service.diagnoseOne(43L);
+
+        assertThat(result.status()).isEqualTo("NOT_SERVING");
+        assertThat(result.reason()).isEqualTo("DIAGNOSTIC_CONFIG_INVALID");
+        verify(fixture.clientProvider, never()).client(any());
+        verify(fixture.configMapper, never()).selectList();
+    }
+
+    @Test
+    void configurationCommitDuringProviderProbeRejectsLateSuccess() {
+        Fixture fixture = fixture();
+        when(fixture.configMapper.selectById(44L)).thenReturn(config("private", "0", "N", null));
+        fixture.properties.setDiagnosticObjects(Map.of("private", "diagnostic/private.txt"));
+        OssClient client = mock(OssClient.class);
+        when(fixture.clientProvider.client("private")).thenReturn(client);
+        when(client.diagnoseAccess(any(), eq(AccessPolicy.PRIVATE), any())).thenAnswer(invocation -> {
+            fixture.registry.invalidate("private");
+            return new OssAccessDiagnostic(OssAccessDiagnostic.Verification.VERIFIED,
+                OssAccessDiagnostic.Reason.READY, AccessPolicy.PRIVATE, false, false, true, Instant.now());
+        });
+
+        var result = fixture.service.diagnoseOne(44L);
+
+        assertThat(result.status()).isEqualTo("NOT_SERVING");
+        assertThat(result.reason()).isEqualTo("STALE");
+        assertThat(fixture.registry.snapshot()).isEmpty();
     }
 
     private void serving(Fixture fixture, String key, AccessPolicy policy) {

@@ -197,7 +197,7 @@ class ProfileSelfMaterialsBrowserIntegrationTest {
             var sessions = sessions(dataSource);
             var ossMapper = sessions.getMapper(SysOssMapper.class);
             var lifecycleProperties = new OssLifecycleProperties();
-            var readinessProperties = new OssStorageReadinessProperties(); readinessProperties.setMaxSnapshotAge(Duration.ofHours(1));
+            var readinessProperties = new OssStorageReadinessProperties(); readinessProperties.setMaxSnapshotAge("PT1H");
             var readiness = new OssStorageReadinessRegistry(readinessProperties);
             readiness.replace(Map.of("minio", new OssStorageReadinessEntry("minio", AccessPolicy.PRIVATE, true,
                 Set.of("profile-materials"), OssStorageReadinessEntry.Status.SERVING, OssStorageReadinessEntry.Reason.READY, Instant.now())), Set.of("minio"), true);

@@ -3,6 +3,7 @@ package org.namewta.system.controller.system;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.PageResult;
 import org.namewta.common.core.domain.R;
@@ -16,6 +17,8 @@ import org.namewta.common.redis.annotation.RepeatSubmit;
 import org.namewta.common.web.core.BaseController;
 import org.namewta.system.domain.bo.SysOssConfigBo;
 import org.namewta.system.domain.vo.SysOssConfigVo;
+import org.namewta.system.domain.vo.OssStorageDiagnosticVo;
+import org.namewta.system.oss.readiness.OssStorageReadinessService;
 import org.namewta.system.service.ISysOssConfigService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +37,18 @@ import java.util.List;
 public class SysOssConfigController extends BaseController {
 
     private final ISysOssConfigService ossConfigService;
+    private final OssStorageReadinessService readinessService;
+
+    /** 管理员显式诊断单个配置；诊断事实不参与上传下载或核心就绪。 */
+    @SaCheckPermission("system:ossConfig:list")
+    @Log(title = "OSS存储诊断", businessType = BusinessType.OTHER,
+        isSaveRequestData = false, isSaveResponseData = false)
+    @PostMapping("/diagnose/{ossConfigId}")
+    public R<OssStorageDiagnosticVo> diagnose(@NotNull(message = "主键不能为空")
+                                               @Positive(message = "主键必须为正数")
+                                               @PathVariable Long ossConfigId) {
+        return R.ok(readinessService.diagnoseOne(ossConfigId));
+    }
 
     /**
      * 分页查询对象存储配置列表。

@@ -139,7 +139,7 @@ class OssUploadStorageRoutingMinioIntegrationTest {
 
     private OssStorageReadinessRegistry readiness() {
         OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
-        properties.setMaxSnapshotAge(Duration.ofMinutes(10));
+        properties.setMaxSnapshotAge("PT10M");
         OssStorageReadinessRegistry registry = new OssStorageReadinessRegistry(properties);
         Instant now = Instant.now();
         registry.replace(Map.of(

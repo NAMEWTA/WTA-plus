@@ -282,11 +282,10 @@ public class OssLifecycleManager {
             throw new OssLifecycleException(OssLifecycleError.OBJECT_DELETE_PENDING,
                 "OSS 对象正在删除: " + ossId);
         }
-        try {
-            readinessRegistry.requireServing(oss.getService());
-        } catch (RuntimeException ex) {
+        if (!"ACTIVE".equals(oss.getDeleteState()) || oss.getService() == null
+            || oss.getService().isBlank()) {
             throw new OssLifecycleException(OssLifecycleError.STORAGE_NOT_SERVING,
-                "OSS 存储配置当前不可服务: " + oss.getService(), ex);
+                "OSS 对象状态或存储配置不可用");
         }
         return oss;
     }

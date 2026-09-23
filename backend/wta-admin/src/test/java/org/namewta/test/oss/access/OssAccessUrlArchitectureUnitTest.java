@@ -24,7 +24,8 @@ class OssAccessUrlArchitectureUnitTest {
         assertThat(service)
             .contains("lifecycleManager.resolveAccessUrl")
             .doesNotContain("matchingUrl", "presignGetUrl", "AccessPolicy.PRIVATE");
-        assertThat(lifecycle).contains("readinessRegistry.requireServing", "objectStore.accessPolicy");
+        assertThat(lifecycle).contains("objectStore.accessPolicy", "ACTIVE")
+            .doesNotContain("readinessRegistry.requireServing");
         assertThat(controller)
             .contains("@SaCheckPermission(\"system:oss:download\")", "resolveAccessUrl")
             .doesNotContain("anonymous", "public/{ossId}");

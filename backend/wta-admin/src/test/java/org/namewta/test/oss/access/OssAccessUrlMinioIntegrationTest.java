@@ -128,7 +128,7 @@ class OssAccessUrlMinioIntegrationTest {
         lifecycleProperties.setDownloadTtl(Duration.ofSeconds(2));
         lifecycleProperties.validate();
         OssStorageReadinessProperties readinessProperties = new OssStorageReadinessProperties();
-        readinessProperties.setMaxSnapshotAge(Duration.ofMinutes(10));
+        readinessProperties.setMaxSnapshotAge("PT10M");
         OssStorageReadinessRegistry registry = new OssStorageReadinessRegistry(readinessProperties);
         Instant now = Instant.now();
         registry.replace(Map.of(

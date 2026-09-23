@@ -169,7 +169,7 @@ class OssStorageMigrationIntegrationTest {
 
     private OssStorageReadinessRegistry readiness(Clock clock) {
         OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
-        properties.setMaxSnapshotAge(Duration.ofMinutes(10));
+        properties.setMaxSnapshotAge("PT10M");
         OssStorageReadinessRegistry registry = new OssStorageReadinessRegistry(properties, clock);
         Instant now = clock.instant();
         registry.replace(Map.of(

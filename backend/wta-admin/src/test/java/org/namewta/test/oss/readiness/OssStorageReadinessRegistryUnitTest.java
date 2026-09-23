@@ -66,9 +66,36 @@ class OssStorageReadinessRegistryUnitTest {
         assertThat(failed.overallServing()).isFalse();
     }
 
+    @Test
+    void changingOneConfigInvalidatesOnlyItsObservation() {
+        Instant now = Instant.parse("2026-09-01T00:00:00Z");
+        OssStorageReadinessRegistry registry = registry(now, Duration.ofMinutes(5));
+        assertThat(registry.recordIfUnchanged(entry("private", true,
+            OssStorageReadinessEntry.Status.SERVING, now), registry.configRevision())).isTrue();
+        assertThat(registry.recordIfUnchanged(entry("public", true,
+            OssStorageReadinessEntry.Status.NOT_SERVING, now), registry.configRevision())).isTrue();
+
+        registry.invalidate("private");
+
+        assertThat(registry.snapshot()).containsOnlyKeys("public");
+        assertThat(registry.overallServing()).isFalse();
+    }
+
+    @Test
+    void oldDiagnosisCannotRestoreSnapshotAfterConfigurationCommit() {
+        Instant now = Instant.parse("2026-09-01T00:00:00Z");
+        OssStorageReadinessRegistry registry = registry(now, Duration.ofMinutes(5));
+        long beforeCommit = registry.configRevision();
+        registry.invalidate("private");
+
+        assertThat(registry.recordIfUnchanged(entry("private", true,
+            OssStorageReadinessEntry.Status.SERVING, now), beforeCommit)).isFalse();
+        assertThat(registry.snapshot()).isEmpty();
+    }
+
     private OssStorageReadinessRegistry registry(Instant now, Duration maxAge) {
         OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
-        properties.setMaxSnapshotAge(maxAge);
+        properties.setMaxSnapshotAge(maxAge.toString());
         return new OssStorageReadinessRegistry(properties, Clock.fixed(now, ZoneOffset.UTC));
     }
 

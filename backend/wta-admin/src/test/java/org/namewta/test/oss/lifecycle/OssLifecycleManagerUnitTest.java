@@ -388,7 +388,7 @@ class OssLifecycleManagerUnitTest {
     void missingOrExpiredDiagnosticMustNotBlockCurrentPrivateObject() {
         Instant now = Instant.parse("2026-09-23T10:00:00Z");
         OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
-        properties.setMaxSnapshotAge(Duration.ofMinutes(1));
+        properties.setMaxSnapshotAge("PT1M");
         Clock clock = Clock.fixed(now, ZoneOffset.UTC);
         OssStorageReadinessRegistry empty = new OssStorageReadinessRegistry(properties, clock);
         OssStorageReadinessRegistry expired = new OssStorageReadinessRegistry(properties, clock);

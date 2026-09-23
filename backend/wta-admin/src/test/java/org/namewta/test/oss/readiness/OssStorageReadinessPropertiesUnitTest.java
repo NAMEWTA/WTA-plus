@@ -3,12 +3,14 @@ package org.namewta.test.oss.readiness;
 import org.namewta.system.oss.readiness.OssStorageReadinessProperties;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.mock.env.MockEnvironment;
 
 import java.time.Duration;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Tag("dev")
 class OssStorageReadinessPropertiesUnitTest {
@@ -19,33 +21,50 @@ class OssStorageReadinessPropertiesUnitTest {
         properties.afterPropertiesSet();
 
         assertThat(properties.isAllowEndpointDomainFallback()).isFalse();
-        assertThat(properties.getDiagnosticTimeout()).isEqualTo(Duration.ofSeconds(3));
-        assertThat(properties.getRefreshInterval()).isEqualTo(Duration.ofMinutes(1));
-        assertThat(properties.getMaxSnapshotAge()).isEqualTo(Duration.ofMinutes(5));
+        assertThat(properties.boundedDiagnosticTimeout()).isEqualTo(Duration.ofSeconds(3));
+        assertThat(properties.getRefreshInterval()).isEqualTo("PT1M");
+        assertThat(properties.resolvedMaxSnapshotAge()).isEqualTo(Duration.ofMinutes(5));
     }
 
     @Test
-    void rejectsUnsafeDurationsAndDiagnosticObjectKeys() {
+    void invalidOptionalValuesAreReportedByDiagnosisWithoutAbortingStartup() {
         OssStorageReadinessProperties timeout = new OssStorageReadinessProperties();
-        timeout.setDiagnosticTimeout(Duration.ofMinutes(1));
-        assertThatThrownBy(timeout::afterPropertiesSet).isInstanceOf(IllegalStateException.class);
+        timeout.setDiagnosticTimeout("PT1M");
+        timeout.afterPropertiesSet();
+        assertThat(timeout.diagnosticConfigurationValid()).isFalse();
 
         OssStorageReadinessProperties object = new OssStorageReadinessProperties();
         object.setDiagnosticObjects(Map.of("public", "../secret"));
-        assertThatThrownBy(object::afterPropertiesSet)
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("诊断对象配置无效");
+        object.afterPropertiesSet();
+        assertThat(object.diagnosticConfigurationValid()).isFalse();
 
         OssStorageReadinessProperties staleBeforeRefresh = new OssStorageReadinessProperties();
-        staleBeforeRefresh.setRefreshInterval(Duration.ofMinutes(5));
-        assertThatThrownBy(staleBeforeRefresh::afterPropertiesSet)
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("refreshInterval");
+        staleBeforeRefresh.setRefreshInterval("PT5M");
+        staleBeforeRefresh.afterPropertiesSet();
+        assertThat(staleBeforeRefresh.diagnosticConfigurationValid()).isFalse();
 
         OssStorageReadinessProperties busyLoop = new OssStorageReadinessProperties();
-        busyLoop.setRefreshInterval(Duration.ofMillis(50));
-        assertThatThrownBy(busyLoop::afterPropertiesSet)
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("refreshInterval");
+        busyLoop.setRefreshInterval("PT0.05S");
+        busyLoop.afterPropertiesSet();
+        assertThat(busyLoop.diagnosticConfigurationValid()).isFalse();
+    }
+
+    @Test
+    void realBinderAcceptsBadOptionalDurationWithoutConvertingItOrProbingProvider() {
+        MockEnvironment environment = new MockEnvironment()
+            .withProperty("oss.readiness.diagnostic-timeout", "not-a-duration")
+            .withProperty("oss.readiness.refresh-interval", "also-invalid")
+            .withProperty("oss.readiness.max-snapshot-age", "bad");
+        OssStorageReadinessProperties properties = new OssStorageReadinessProperties();
+        Binder.get(environment).bind("oss.readiness", Bindable.ofInstance(properties));
+        properties.afterPropertiesSet();
+        assertThat(properties.getDiagnosticTimeout()).isEqualTo("not-a-duration");
+        assertThat(properties.diagnosticConfigurationValid()).isFalse();
+        assertThat(properties.resolvedMaxSnapshotAge()).isEqualTo(Duration.ofMinutes(5));
+
+        properties.setDiagnosticTimeout("3s");
+        properties.setRefreshInterval("1m");
+        properties.setMaxSnapshotAge("5m");
+        assertThat(properties.diagnosticConfigurationValid()).isTrue();
     }
 }

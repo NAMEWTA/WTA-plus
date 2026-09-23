@@ -2,11 +2,14 @@ package org.namewta.test.oss.config;
 
 import com.baomidou.dynamic.datasource.annotation.DsTxEventListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import jakarta.validation.constraints.Positive;
 import org.namewta.common.log.annotation.Log;
 import org.namewta.common.log.enums.BusinessType;
 import org.namewta.system.controller.system.SysOssConfigController;
 import org.namewta.system.domain.bo.SysOssConfigBo;
 import org.namewta.system.domain.vo.SysOssConfigVo;
+import org.namewta.system.domain.vo.OssStorageDiagnosticVo;
 import org.namewta.system.listener.OssConfigChangeListener;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -48,6 +51,22 @@ class OssConfigHttpContractUnitTest {
         assertThat(listener.getAnnotations()).noneMatch(annotation ->
             annotation.annotationType().getName().equals(
                 "org.springframework.transaction.event.TransactionalEventListener"));
+    }
+
+    @Test
+    void explicitDiagnosisHasListPermissionPositiveIdAndSafeThreeFieldProjection() throws Exception {
+        Method method = method("diagnose", Long.class);
+        assertThat(method.getAnnotation(PostMapping.class).value())
+            .containsExactly("/diagnose/{ossConfigId}");
+        assertThat(method.getAnnotation(SaCheckPermission.class).value())
+            .containsExactly("system:ossConfig:list");
+        Log log = method.getAnnotation(Log.class);
+        assertThat(log.isSaveRequestData()).isFalse();
+        assertThat(log.isSaveResponseData()).isFalse();
+        assertThat(method.getParameters()[0].getAnnotation(Positive.class)).isNotNull();
+        assertThat(OssStorageDiagnosticVo.class.getRecordComponents())
+            .extracting(java.lang.reflect.RecordComponent::getName)
+            .containsExactly("status", "reason", "checkedAt");
     }
 
     private static void assertWrite(String name, String path, BusinessType type,

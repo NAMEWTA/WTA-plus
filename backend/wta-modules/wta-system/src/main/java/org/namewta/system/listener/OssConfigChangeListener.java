@@ -9,7 +9,7 @@ import org.namewta.common.oss.factory.OssFactory;
 import org.namewta.common.redis.utils.CacheUtils;
 import org.namewta.common.redis.utils.RedisUtils;
 import org.namewta.system.event.OssConfigChangeEvent;
-import org.namewta.system.oss.readiness.OssStorageReadinessService;
+import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OssConfigChangeListener {
 
-    private final OssStorageReadinessService readinessService;
+    private final OssStorageReadinessRegistry readinessRegistry;
 
     /**
      * 数据提交后同步刷新 OSS 配置缓存与客户端实例。
@@ -48,7 +48,8 @@ public class OssConfigChangeListener {
             }
             OssFactory.remove(event.configKey());
         } finally {
-            readinessService.refresh();
+            readinessRegistry.invalidate(event.oldConfigKey());
+            readinessRegistry.invalidate(event.configKey());
         }
     }
 

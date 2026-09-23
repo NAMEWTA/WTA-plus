@@ -36,9 +36,9 @@
 
 ### 配置与运行状态
 
-- 系统必须且只能存在一个默认 OSS 配置，且默认配置必须为 `PRIVATE`；公共桶使用非默认 `PUBLIC_READ` 配置。`status` 只表示是否为默认配置，不表示启停状态。
+- 配置管理成功写入必须且只能保留一个默认 OSS 配置，且默认配置必须为 `PRIVATE`；公共桶使用非默认 `PUBLIC_READ` 配置。启动读取历史库时允许 0 个、多个或损坏默认行，但不设置默认指针，新文件操作明确失败，不能因可选 OSS 问题阻断核心。`status` 只表示是否为默认配置，不表示启停状态。
 - 已被对象引用的配置不得通过普通编辑修改 `configKey`、Bucket 或 `accessPolicy`；需要变化时使用受控迁移流程。
-- 应用只验证并报告 Bucket、Policy、域名和 Provider 能力的 readiness，不负责创建 Bucket 或修改云端 Policy。readiness 未达到可服务状态时不得签发访问 URL。
+- OSS 诊断是管理员显式调用的观察事实，不参与业务访问与核心健康门禁，也不负责创建 Bucket 或修改云端 Policy。签发访问 URL 前仍须校验对象 ACTIVE、对象自己的 service、请求者权限与当前配置访问类型；远端调用按实际结果反馈。启动从 DB 重建可用配置缓存，只在唯一合法 PRIVATE 默认存在时设置默认指针；坏的可选配置不阻断核心。
 - 下载有效期由 `oss.lifecycle.download-ttl` 及服务端命名策略控制，并受 `download-ttl-min`/`download-ttl-max` 约束；不得从请求参数直接决定有效期。
 
 ## 修改与验证
