@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest" time="0.01" tests="2" errors="0" skipped="2" failures="0" flakes="0">
+  <properties/>
+  <testcase name="absoluteExpirySurvivesProductionCodecAndNameMapping" classname="org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest" time="0.0">
+    <skipped message="System property [notify.deadline.redis.integration] does not exist"/>
+  </testcase>
+  <testcase name="expiredAbsoluteDeadlineNeverWritesOrExtendsKey" classname="org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest" time="0.0">
+    <skipped message="System property [notify.deadline.redis.integration] does not exist"/>
+  </testcase>
+</testsuite>
