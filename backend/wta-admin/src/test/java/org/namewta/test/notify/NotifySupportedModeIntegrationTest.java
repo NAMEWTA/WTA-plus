@@ -305,7 +305,7 @@ class NotifySupportedModeIntegrationTest {
             String denied = sa.token(95_002L);
             assertThat(JsonUtils.parseMap(http.post(allowed, commandJson("ALL", "ASYNC", "0")).body())
                 .get("code")).isEqualTo(200);
-            assertThat(JsonUtils.parseMap(http.post(allowed, commandJson(null, null, null)).body())
+            assertThat(JsonUtils.parseMap(http.post(allowed, commandJson(null, null, "0")).body())
                 .get("code")).isEqualTo(200);
             List<Long> positive = db.queryForList("select intent_id from notify_intent "
                 + "where app_id='owned-t50' and scene_code='owned-http'", Long.class);
@@ -325,6 +325,10 @@ class NotifySupportedModeIntegrationTest {
                 assertThat(ownedTableCounts()).containsExactlyElementsOf(before);
             }
             assertThat(JsonUtils.parseMap(http.post(allowed, commandJson("ALL", "SYNC", "0"))
+                .body()).get("code")).isEqualTo(400);
+            assertThat(ownedTableCounts()).containsExactlyElementsOf(before);
+            // Jackson 3 默认拒绝缺失的 primitive int；策略/模式的构造器默认不放宽该绑定规则。
+            assertThat(JsonUtils.parseMap(http.post(allowed, commandJson(null, null, null))
                 .body()).get("code")).isEqualTo(400);
             assertThat(ownedTableCounts()).containsExactlyElementsOf(before);
             assertThat(JsonUtils.parseMap(http.post(denied, commandJson("ALL", "ASYNC", "0"))
