@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 149
+plan_revision: 152
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -31,7 +31,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 |---|---|---|---|---|
 | ALL | <Path>.agents/skills/engineering-standards/SKILL.md</Path> | 架构/API/数据库/权限/质量门禁及交付 | Map后、Ticket前，verify再次按scope | 硬约束与真实验证 |
 | T-29 | <Path>.agents/skills/deploy-namewta-environment/SKILL.md</Path> | 私有发布目录备份、恢复校验与路径事实修正 | 实施与验证前 | 保留权限、秘密边界和可恢复备份 |
-| T-36, T-38, T-41, T-42, T-50 | <Path>.agents/skills/java-api-compatibility/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
+| T-35, T-36, T-38, T-41, T-42, T-50 | <Path>.agents/skills/java-api-compatibility/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
 | T-06, T-07, T-08, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-30, T-31, T-34, T-35, T-36, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-49, T-50 | <Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
 | T-02, T-03, T-04, T-05, T-11, T-14, T-23, T-24, T-26, T-28, T-31, T-33, T-35, T-36, T-37, T-42, T-45, T-46, T-49 | <Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
 | T-14, T-15, T-16, T-22, T-23, T-24, T-25, T-26, T-28, T-29, T-30, T-31, T-34, T-35, T-36, T-37, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-49, T-50 | <Path>.agents/skills/wta-module-guide/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
@@ -76,7 +76,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 | T-32 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/32-remove-tracked-local-secrets.md</Path> | 新 clone 的当前检出与发布产物不含真实凭据；历史对象仍可能保留披露值，必须另外轮换。部署者从未跟踪的本地文件或环境变量注入。公开模板可启动到明确的缺配置错误，日志不回显 secret。 | — | deep | high | yes | single-agent | AC-032 | W-security | done |
 | T-33 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/33-safe-cors-defaults.md</Path> | 默认同源访问正常；跨域仅接受显式受信 Origin。生产带凭证通配配置拒绝启动；本地开发复用 Vite 同源代理。 | — | deep | high | yes | single-agent | AC-033 | W-security | done |
 | T-34 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/34-inbox-without-realtime.md</Path> | 有效会话始终可经 REST 读取；开关只控制实时连接。盒子展示单份摘要与明确加载/失败/空状态，切身份不串数据。 | — | standard | medium | yes | single-agent | AC-034 | W-visible | done |
-| T-35 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/35-sms-cross-layer-snapshot.md</Path> | 合法短信由真实 runtime→dispatcher→适配器发送一次；逻辑快照可解释且不泄露验证码，本地可判定校验失败不等回执。 | — | deep | high | yes | single-agent | AC-035 | W-notify | ready |
+| T-35 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/35-sms-cross-layer-snapshot.md</Path> | 合法短信由真实 runtime→dispatcher→适配器发送一次；逻辑快照可解释且不泄露验证码，本地可判定校验失败不等回执。 | — | deep | high | yes | single-agent | AC-035 | W-notify | in_progress |
 | T-36 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/36-atomic-in-app-delivery.md</Path> | 同 intent 的不同收件人并发投递均可读取且关系唯一；本地消息、关系与投递结果原子提交，实时事件仅提交后发送。 | — | deep | high | yes | single-agent | AC-036 | W-notify | ready |
 | T-37 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/37-retryable-provider-idempotency.md</Path> | Outbox 独占重试次数与节奏；明确未发送的可重试失败允许新一次物理发送，ACCEPTED/DELIVERED/UNKNOWN 保留防重。 | — | deep | high | yes | single-agent | AC-037 | W-notify | ready |
 | T-38 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/38-precise-notification-retry.md</Path> | URL 唯一定位 intent；指定 delivery 只重试其所属一项，无可重试任务返回真实状态及零计数；外部 UNKNOWN 明确拒绝自动重发。 | T-36, T-37 | deep | high | yes | single-agent | AC-038 | W-notify | ready |
@@ -254,3 +254,15 @@ T01完整当前复验启动，无产品写者；5done/1in_progress/44ready。只
 ## revision149当前
 
 当前源码已满足AC-001且无需新增产品实现；历史非空3aa047b及其父链保留，T29已完成当前路径冲突修复。按Goal历史票无改动出口，取消的是本轮重复施工，不取消AC-001，不把缺失历史clean单独作为理由，不生成空commit或新result。AC-001最终组合复验继续由T30承担。 当前5done/1cancelled/44ready，无产品writer；下一T35。T09与T30重复施工边已逐项移除，替代当前Evidence <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01-replan-2026-09-23.md</Path>；T09自身合同及T30全部AC最终复验仍保留。
+
+## revision150当前
+
+T35短信真实跨层修复启动，base 8b758ea8074a63835659b9731e3a4c74c5c029c5，cors_audit单产品writer；新增3路径先登记于Ticket，Lead隔离环境与治理独占。5done/1cancelled/1in_progress/43ready。
+
+## revision151当前
+
+T35新增5个安全实现/测试/语义文档路径及java-api-compatibility绑定已在编辑前登记；修复REDACT事件原文与Captcha/通知普通日志泄露接缝，不改供应商原始参数、HTTP传输、FULL或幂等摘要。
+
+## revision152当前
+
+T35新增6个精确写集先于实施登记；REDACT_SENSITIVE 通知的供应商消息标识仅保留内部持久化用于回执关联；query、重复提交 receipt 和 monitor 公开投影隐藏该值，FULL 原行为保持。监控查询按本次有界结果批量读取 Intent 审计策略，不引入逐行查询；空ID集合不扫描全表。新增 NotifyAuditSupport 可统一策略与公开投影判断，NotificationReceipt 仅补公开字段的安全语义说明，不改签名。测试覆盖真实供应商返回手机号/验证码作为ID、内部值保留与公开值隐藏、FULL、重复提交及回执关联。

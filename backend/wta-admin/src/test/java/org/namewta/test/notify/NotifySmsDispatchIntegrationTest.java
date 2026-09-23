@@ -1,0 +1,338 @@
+package org.namewta.test.notify;
+
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
+import com.baomidou.dynamic.datasource.aop.DynamicLocalTransactionInterceptor;
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
+import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
+import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.builder.xml.XMLMapperBuilder;
+import org.apache.ibatis.mapping.Environment;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
+import org.namewta.common.core.exception.ServiceException;
+import org.namewta.common.core.utils.SpringUtils;
+import org.namewta.common.json.utils.JsonUtils;
+import org.namewta.common.mybatis.handler.InjectionMetaObjectHandler;
+import org.namewta.common.notify.core.NotifyDispatcher;
+import org.namewta.common.notify.event.NotifyDeliveryEvent;
+import org.namewta.common.notify.idempotency.NotifyIdempotencyCoordinator;
+import org.namewta.common.notify.idempotency.NotifyIdempotencyProperties;
+import org.namewta.common.notify.idempotency.RedisNotifyIdempotencyStore;
+import org.namewta.common.notify.model.*;
+import org.namewta.common.notify.registry.NotifyChannelRegistry;
+import org.namewta.common.sms.notify.*;
+import org.namewta.notify.api.*;
+import org.namewta.notify.dao.NotifyConfigDao;
+import org.namewta.notify.dao.NotifyNotificationDao;
+import org.namewta.notify.mapper.*;
+import org.namewta.notify.port.NotifyQuotaPort;
+import org.namewta.notify.service.runtime.DispatchNotificationService;
+import org.namewta.notify.service.runtime.NotificationApplicationRuntimeService;
+import org.namewta.notify.service.runtime.NotifyDispatchResultService;
+import org.namewta.notify.adapter.store.RedisNotifyQuotaAdapter;
+import org.namewta.notify.service.runtime.NotificationMonitorService;
+import org.namewta.notify.usecase.NotificationMonitorUseCase;
+import org.namewta.notify.usecase.NotificationApplicationUseCase;
+import org.namewta.notify.usecase.NotifyDispatchResultUseCase;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/** 隔离 MySQL/Redis 的提交、规划、Dispatcher、SMS Adapter 和结果事务真实链路。 */
+@Tag("dev")
+@EnabledIfSystemProperty(named = "notify.sms.integration", matches = "true")
+class NotifySmsDispatchIntegrationTest {
+    private static RedissonClient sharedRedis;
+    private static AnnotationConfigApplicationContext sharedContext;
+    private static Object previousSpringContext;
+    private static Object previousSpringFactory;
+    private HikariDataSource pool;
+    private DynamicRoutingDataSource routing;
+    private JdbcTemplate db;
+    private RedissonClient redis;
+    private NotifyNotificationDao dao;
+    private NotificationApplicationUseCase application;
+    private DispatchNotificationService dispatch;
+    private NotifyIdempotencyCoordinator idempotency;
+    private final List<NotifyDeliveryEvent> events = new ArrayList<>();
+    private final AtomicInteger supplierCalls = new AtomicInteger();
+    private final AtomicReference<NotifyContent> supplierContent = new AtomicReference<>();
+    private boolean supplierThrows;
+    private String supplierMessageId = "13812345678-1234";
+    private String runId;
+    private String appId;
+    private long accountId;
+    private long bindingId;
+
+    @BeforeAll
+    static void openRedis() {
+        String mysqlUrl = System.getProperty("notify.mysql.integration.url", "");
+        assertTrue(mysqlUrl.matches("jdbc:mysql://127\\.0\\.0\\.1:[0-9]+/namewta_notify_test_[a-zA-Z0-9_]+.*"),
+            "only an owned loopback notification database is allowed");
+        assertNotNull(System.getenv("T35_MYSQL_PASSWORD"), "private MySQL credential is required");
+        String redisPort = System.getProperty("notify.redis.integration.port", "");
+        assertTrue(redisPort.matches("[0-9]+"), "owned loopback Redis port is required");
+        previousSpringContext = ReflectionTestUtils.getField(cn.hutool.extra.spring.SpringUtil.class, "applicationContext");
+        previousSpringFactory = ReflectionTestUtils.getField(cn.hutool.extra.spring.SpringUtil.class, "beanFactory");
+        var redisConfig = new Config();
+        redisConfig.setThreads(2).setNettyThreads(2);
+        redisConfig.useSingleServer().setAddress("redis://127.0.0.1:" + redisPort)
+            .setConnectionMinimumIdleSize(1).setConnectionPoolSize(4);
+        sharedRedis = Redisson.create(redisConfig);
+        sharedContext = new AnnotationConfigApplicationContext();
+        sharedContext.registerBean(RedissonClient.class, () -> sharedRedis);
+        sharedContext.registerBean(SpringUtils.class);
+        sharedContext.refresh();
+        assertSame(sharedRedis, org.namewta.common.redis.utils.RedisUtils.getClient());
+    }
+
+    @AfterAll
+    static void closeRedis() {
+        if (sharedContext != null) sharedContext.close();
+        if (sharedRedis != null) sharedRedis.shutdown();
+        ReflectionTestUtils.setField(cn.hutool.extra.spring.SpringUtil.class, "applicationContext", previousSpringContext);
+        ReflectionTestUtils.setField(cn.hutool.extra.spring.SpringUtil.class, "beanFactory", previousSpringFactory);
+    }
+
+    @BeforeEach
+    void open() throws Exception {
+        String url = System.getProperty("notify.mysql.integration.url", "");
+        assertTrue(url.matches("jdbc:mysql://127\\.0\\.0\\.1:[0-9]+/namewta_notify_test_[a-zA-Z0-9_]+.*"),
+            "only an owned loopback notification database is allowed");
+        String password = System.getenv("T35_MYSQL_PASSWORD");
+        assertNotNull(password, "T35_MYSQL_PASSWORD is required in the private child environment");
+        runId = UUID.randomUUID().toString().replace("-", "");
+        appId = "owned-t35-" + runId;
+        accountId = Math.abs(UUID.randomUUID().getMostSignificantBits() >>> 1);
+        bindingId = Math.abs(UUID.randomUUID().getLeastSignificantBits() >>> 1);
+
+        pool = new HikariDataSource();
+        pool.setJdbcUrl(url);
+        pool.setUsername(System.getProperty("notify.mysql.integration.username", "root"));
+        pool.setPassword(password);
+        pool.setMaximumPoolSize(6);
+        routing = new DynamicRoutingDataSource(List.of());
+        routing.setPrimary("master");
+        routing.setStrict(true);
+        routing.addDataSource("master", pool);
+        db = new JdbcTemplate(routing);
+
+        var config = new MybatisConfiguration(new Environment("t35-owned", new SpringManagedTransactionFactory(), routing));
+        config.setMapUnderscoreToCamelCase(true);
+        var interceptors = new com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor();
+        interceptors.addInnerInterceptor(new com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor());
+        config.addInterceptor(interceptors);
+        GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults().setMetaObjectHandler(new InjectionMetaObjectHandler()));
+        for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
+            NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class,
+            NotifyMessageRecipientMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class)) {
+            config.addMapper(mapper);
+        }
+        for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml",
+            "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml")) {
+            try (var stream = getClass().getResourceAsStream(resource)) {
+                assertNotNull(stream, resource);
+                new XMLMapperBuilder(stream, config, resource, config.getSqlFragments()).parse();
+            }
+        }
+        var sessions = new SqlSessionTemplate(new MybatisSqlSessionFactoryBuilder().build(config));
+        dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class),
+            sessions.getMapper(NotifyRecipientMapper.class), sessions.getMapper(NotifyDeliveryMapper.class),
+            sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
+            sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
+        NotifyConfigDao configDao = new NotifyConfigDao(sessions.getMapper(NotifyChannelAccountMapper.class),
+            sessions.getMapper(NotifySceneBindingMapper.class));
+
+        redis = sharedRedis;
+        idempotency = new NotifyIdempotencyCoordinator(new RedisNotifyIdempotencyStore(redis),
+            new NotifyIdempotencyProperties());
+        NotifyQuotaPort quota = new RedisNotifyQuotaAdapter();
+        SmsNotifyChannelAdapter adapter = new SmsNotifyChannelAdapter(key -> new SmsNotificationProvider(key,
+            (phone, content) -> {
+                supplierCalls.incrementAndGet();
+                supplierContent.set(content);
+                if (supplierThrows) throw new IllegalStateException("synthetic supplier I/O ambiguity");
+                return SmsNotificationReceipt.accepted(supplierMessageId);
+            }));
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, events::add, idempotency);
+        var resultPort = transactional(new NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)),
+            NotifyDispatchResultUseCase.class);
+        dispatch = new DispatchNotificationService(dao, dispatcher, null, configDao, quota, resultPort);
+        application = transactional(new NotificationApplicationUseCase(new NotificationApplicationRuntimeService(
+            dao, null, dispatch, event -> {})), NotificationApplicationUseCase.class);
+
+        db.update("insert into notify_channel_account(account_id,channel,config_key,enabled,supplier,minute_max,create_time) "
+            + "values(?,'SMS',?,'Y','aliyun',10,utc_timestamp())", accountId, "owned-" + runId);
+        db.update("insert into notify_scene_binding(binding_id,scene_code,channel,account_id,sms_template_code,"
+            + "sms_param_mapping_json,template_minute_max,restricted,create_time) "
+            + "values(?,'auth-captcha','SMS',?,'SMS_OWNED',?,10,'N',utc_timestamp())",
+            bindingId, accountId, JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")));
+    }
+
+    @AfterEach
+    void close() {
+        try {
+            if (db != null && appId != null) {
+                for (Long intentId : db.queryForList("select intent_id from notify_intent where app_id=?", Long.class, appId)) {
+                    for (Long deliveryId : db.queryForList("select delivery_id from notify_delivery where intent_id=?",
+                        Long.class, intentId)) {
+                        redis.getBucket(idempotency.storageKey(NotifyRequest.builder().channel(NotifyChannel.SMS)
+                            .idempotencyKey(String.valueOf(deliveryId)).build())).delete();
+                    }
+                    db.update("delete from notify_attempt where intent_id=?", intentId);
+                    db.update("delete from notify_outbox where intent_id=?", intentId);
+                    db.update("delete from notify_delivery where intent_id=?", intentId);
+                    db.update("delete from notify_recipient where intent_id=?", intentId);
+                    db.update("delete from notify_intent where intent_id=?", intentId);
+                }
+                db.update("delete from notify_scene_binding where binding_id=?", bindingId);
+                db.update("delete from notify_channel_account where account_id=?", accountId);
+            }
+            if (redis != null) {
+                redis.getAtomicLong("acct:" + accountId).delete();
+                redis.getAtomicLong("tpl:auth-captcha:SMS").delete();
+            }
+        } finally {
+            if (routing != null) routing.destroy();
+            if (pool != null) pool.close();
+        }
+    }
+
+    @Test
+    void validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction() {
+        NotificationCommand command = command("1234");
+        NotificationReceipt receipt = application.submit(command);
+        long intentId = Long.parseLong(receipt.notificationId());
+        assertTrue(receipt.outboxQueued());
+        claimAndDispatch(intentId);
+
+        assertEquals(1, supplierCalls.get());
+        assertEquals("ACCEPTED", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("DONE", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+        assertEquals(supplierMessageId, db.queryForObject("select provider_message_id from notify_delivery where intent_id=?",
+            String.class, intentId), "raw supplier correlation remains internal");
+        assertEquals(1, redis.getAtomicLong("acct:" + accountId).get());
+        NotifyTemplateContent sent = assertInstanceOf(NotifyTemplateContent.class, supplierContent.get());
+        assertEquals(Map.of("code", "1234", "min", "5"), sent.params());
+        assertFalse(sent.contentSnapshot().contains("1234"));
+        assertEquals(NotifyAuditPolicy.REDACT_SENSITIVE, events.getFirst().request().auditPolicy());
+        assertFalse(JsonUtils.toJsonString(events.getFirst()).contains("1234"));
+        assertFalse(JsonUtils.toJsonString(events.getFirst()).contains("13812345678"));
+        assertNull(application.query(new NotificationQuery(receipt.notificationId(), false))
+            .deliveries().getFirst().providerMessageId());
+        var monitor = new NotificationMonitorUseCase(application, new NotificationMonitorService(dao));
+        var monitorItem = monitor.deliveries(null, "SMS", null).stream()
+            .filter(item -> item.intentId() == intentId).findFirst().orElseThrow();
+        assertNull(monitorItem.providerMessageId());
+        db.update("update notify_delivery set error_code=? where intent_id=?", "raw-error-1234", intentId);
+        assertNull(monitor.deliveries(null, "SMS", null).stream()
+            .filter(item -> item.intentId() == intentId).findFirst().orElseThrow().errorCode());
+
+        db.update("delete from notify_scene_binding where binding_id=?", bindingId);
+        NotificationReceipt duplicate = application.submit(command);
+        assertEquals(receipt.notificationId(), duplicate.notificationId(),
+            "an existing idempotent request keeps its receipt after binding changes");
+        assertNull(duplicate.deliveries().getFirst().providerMessageId());
+        assertEquals(1, supplierCalls.get());
+
+        db.update("update notify_intent set metadata_json='{}' where intent_id=?", intentId);
+        assertEquals(supplierMessageId, application.query(new NotificationQuery(receipt.notificationId(), false))
+            .deliveries().getFirst().providerMessageId(), "FULL keeps its existing public projection");
+        assertEquals(supplierMessageId, monitor.deliveries(null, "SMS", null).stream()
+            .filter(item -> item.intentId() == intentId).findFirst().orElseThrow().providerMessageId());
+        assertEquals("raw-error-1234", monitor.deliveries(null, "SMS", null).stream()
+            .filter(item -> item.intentId() == intentId).findFirst().orElseThrow().errorCode());
+    }
+
+    @Test
+    void missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall() {
+        assertThrows(ServiceException.class, () -> application.submit(command("")));
+        assertEquals(0, db.queryForObject("select count(*) from notify_intent where app_id=?", Integer.class, appId));
+        assertEquals(0, supplierCalls.get());
+        assertFalse(redis.getAtomicLong("acct:" + accountId).isExists());
+    }
+
+    @Test
+    void supplierIoAmbiguityStaysUnknownAndNeverRequeues() {
+        supplierThrows = true;
+        long intentId = Long.parseLong(application.submit(command("5678")).notificationId());
+        claimAndDispatch(intentId);
+
+        assertEquals(1, supplierCalls.get());
+        assertEquals("UNKNOWN", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("WAITING_RECEIPT", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals("PROVIDER_OUTCOME_UNKNOWN", db.queryForObject(
+            "select error_code from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+    }
+
+    @Test
+    void removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall() {
+        long intentId = Long.parseLong(application.submit(command("9012")).notificationId());
+        db.update("delete from notify_scene_binding where binding_id=?", bindingId);
+        claimAndDispatch(intentId);
+
+        assertEquals(0, supplierCalls.get());
+        assertEquals("FAILED", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("DONE", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals("UNBOUND_CHANNEL", db.queryForObject("select error_code from notify_delivery where intent_id=?", String.class, intentId));
+    }
+
+    @Test
+    void dispatcherInvalidTargetIsLocalFailureAndNeverRequeues() {
+        long intentId = Long.parseLong(application.submit(command("3456")).notificationId());
+        db.update("update notify_delivery set target_value='' where intent_id=?", intentId);
+        claimAndDispatch(intentId);
+
+        assertEquals(0, supplierCalls.get());
+        assertEquals("FAILED", db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals("DONE", db.queryForObject("select status from notify_outbox where intent_id=?", String.class, intentId));
+        assertEquals("SMS_LOCAL_VALIDATION_INVALID_TARGET", db.queryForObject(
+            "select error_code from notify_delivery where intent_id=?", String.class, intentId));
+        assertEquals(1, db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, intentId));
+    }
+
+    private NotificationCommand command(String code) {
+        return new NotificationCommand(appId, "auth-captcha", "auth_captcha", "13812345678",
+            "PHONE", List.of("13812345678"), "auth-captcha",
+            Map.of("code", code, "expireMinutes", "5"), List.of(NotificationChannel.SMS),
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
+            "idem-" + runId, Map.of("audit", "REDACT_SENSITIVE"));
+    }
+
+    private void claimAndDispatch(long intentId) {
+        long outboxId = db.queryForObject("select outbox_id from notify_outbox where intent_id=?", Long.class, intentId);
+        assertEquals(1, db.update("update notify_outbox set status='PROCESSING',lease_owner='owned-t35',"
+            + "lease_token=?,lease_until=timestampadd(second,60,utc_timestamp()) where outbox_id=? and status='READY'",
+            runId, outboxId));
+        dispatch.dispatch(dao.outbox(outboxId));
+    }
+
+    private static <T> T transactional(T target, Class<T> type) {
+        var proxy = new ProxyFactory(target);
+        proxy.setProxyTargetClass(true);
+        proxy.addAdvisor(new DynamicDataSourceAnnotationAdvisor(new DynamicLocalTransactionInterceptor(true),
+            DSTransactional.class));
+        return type.cast(proxy.getProxy());
+    }
+}

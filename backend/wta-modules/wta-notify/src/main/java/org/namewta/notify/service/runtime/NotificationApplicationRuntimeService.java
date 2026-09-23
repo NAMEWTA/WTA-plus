@@ -11,6 +11,7 @@ import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.entity.NotifyRecipient;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.support.outbox.NotifyOutboxWakeRequestedEvent;
+import org.namewta.notify.support.NotifyAuditSupport;
 import org.namewta.system.api.UserService;
 import org.namewta.system.api.domain.UserDTO;
 import org.springframework.context.ApplicationEventPublisher;
@@ -46,6 +47,8 @@ public class NotificationApplicationRuntimeService {
         if (duplicated != null) {
             return receipt(duplicated, dao.deliveries(duplicated.getIntentId()));
         }
+
+        dispatchService.validateSubmission(command);
 
         List<ResolvedRecipient> users = resolveUsers(command).stream().distinct().toList();
         if (users.isEmpty()) throw new ServiceException("所选范围没有可接收通知的正常用户");
@@ -154,7 +157,7 @@ public class NotificationApplicationRuntimeService {
             status(intent.getStatus()), parseTime(intent.getCreateTime()),
             deliveries.stream().map(item -> new NotificationReceipt.DeliveryReceipt(
                 item.getUserId() == null ? null : String.valueOf(item.getUserId()), NotificationChannel.valueOf(item.getChannel()),
-                status(item.getStatus()), item.getProviderMessageId())).toList());
+                status(item.getStatus()), NotifyAuditSupport.publicProviderMessageId(intent, item.getProviderMessageId()))).toList());
     }
 
     public RetryReceipt retry(NotificationRetryCommand command) {
@@ -309,7 +312,8 @@ public class NotificationApplicationRuntimeService {
         return new NotificationReceipt(String.valueOf(intent.getIntentId()), status(intent.getStatus()),
             queued, followUpRequired, deliveries.stream().map(item ->
             new NotificationReceipt.DeliveryReceipt(item.getUserId() == null ? null : String.valueOf(item.getUserId()),
-                NotificationChannel.valueOf(item.getChannel()), status(item.getStatus()), item.getProviderMessageId())).toList());
+                NotificationChannel.valueOf(item.getChannel()), status(item.getStatus()),
+                NotifyAuditSupport.publicProviderMessageId(intent, item.getProviderMessageId()))).toList());
     }
 
     /** 将持久化状态转换为稳定的应用层状态，避免内部状态泄漏到公共 API。 */

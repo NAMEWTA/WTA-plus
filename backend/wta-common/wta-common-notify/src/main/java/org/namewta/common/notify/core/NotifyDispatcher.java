@@ -32,6 +32,7 @@ import java.util.Set;
 public final class NotifyDispatcher implements NotifyClient {
 
     private static final Logger log = LoggerFactory.getLogger(NotifyDispatcher.class);
+    private static final String REDACTED = "[REDACTED]";
 
     private final NotifyChannelRegistry registry;
     private final NotifyContextResolver contextResolver;
@@ -104,7 +105,8 @@ public final class NotifyDispatcher implements NotifyClient {
             throw exception;
         } catch (RuntimeException exception) {
             adapterResult = providerFailure(request);
-            log.warn("通知渠道调用异常，channel={}, exception={}", request.channel(),
+            log.warn("通知渠道调用异常，channel={}, exception={}",
+                request.auditPolicy() == NotifyAuditPolicy.REDACT_SENSITIVE ? REDACTED : request.channel(),
                 exception.getClass().getSimpleName());
         }
 
@@ -283,10 +285,12 @@ public final class NotifyDispatcher implements NotifyClient {
     private void publish(NotifyRequest request, NotifyContext context, NotifyResult result,
                          SnapshotBatch snapshotBatch) {
         try {
-            eventPublisher.publish(new NotifyDeliveryEvent(request, context, result, null,
-                snapshotBatch.notifyLogId(), snapshotBatch.snapshotOssIds(), Instant.now()));
+            boolean redact = request.auditPolicy() == NotifyAuditPolicy.REDACT_SENSITIVE;
+            eventPublisher.publish(new NotifyDeliveryEvent(auditRequest(request), auditContext(context, redact),
+                auditResult(result, redact), null, redact ? null : snapshotBatch.notifyLogId(),
+                redact ? List.of() : snapshotBatch.snapshotOssIds(), Instant.now()));
         } catch (RuntimeException exception) {
-            log.warn("通知监控事件发布失败，requestId={}, exception={}", request.requestId(),
+            log.warn("通知监控事件发布失败，requestId={}, exception={}", auditIdentifier(request),
                 exception.getClass().getSimpleName());
         }
     }
@@ -296,12 +300,47 @@ public final class NotifyDispatcher implements NotifyClient {
         NotifyResult skipped = new NotifyResult(request.requestId(), request.channel(),
             completed.result().providerKey(), NotifyStatus.SKIPPED_DUPLICATE, List.of());
         try {
-            eventPublisher.publish(new NotifyDeliveryEvent(request, context, skipped,
-                completed.originalRequestId(), null, List.of(), Instant.now()));
+            boolean redact = request.auditPolicy() == NotifyAuditPolicy.REDACT_SENSITIVE;
+            eventPublisher.publish(new NotifyDeliveryEvent(auditRequest(request), auditContext(context, redact),
+                auditResult(skipped, redact), redact ? REDACTED : completed.originalRequestId(),
+                null, List.of(), Instant.now()));
         } catch (RuntimeException exception) {
-            log.warn("通知重复监控事件发布失败，requestId={}, exception={}", request.requestId(),
+            log.warn("通知重复监控事件发布失败，requestId={}, exception={}", auditIdentifier(request),
                 exception.getClass().getSimpleName());
         }
+    }
+
+    /** 仅事件得到脱敏副本；Provider 和幂等摘要始终使用原请求。 */
+    private NotifyRequest auditRequest(NotifyRequest request) {
+        if (request.auditPolicy() != NotifyAuditPolicy.REDACT_SENSITIVE) return request;
+        List<NotifyTarget> targets = request.targets().stream()
+            .map(target -> new NotifyTarget(REDACTED, REDACTED, REDACTED)).toList();
+        NotifyContent content = switch (request.content()) {
+            case NotifyTemplateContent ignored -> new NotifyTemplateContent(REDACTED, REDACTED, java.util.Map.of(), REDACTED);
+            case NotifyRichContent rich -> new NotifyRichContent(REDACTED, REDACTED, rich.html());
+            case NotifyTextContent ignored -> new NotifyTextContent(REDACTED, REDACTED);
+        };
+        return new NotifyRequest(REDACTED, REDACTED, REDACTED, request.channel(), REDACTED,
+            targets, content, List.of(), request.auditPolicy(), REDACTED,
+            request.idempotencyWindow(), java.util.Map.of());
+    }
+
+    private NotifyContext auditContext(NotifyContext context, boolean redact) {
+        return redact ? new NotifyContext(null, null, null) : context;
+    }
+
+    private NotifyResult auditResult(NotifyResult result, boolean redact) {
+        if (!redact) return result;
+        List<NotifyTargetResult> deliveries = result.deliveries().stream()
+            .map(item -> new NotifyTargetResult(
+                new NotifyTarget(REDACTED, REDACTED, REDACTED),
+                item.status(), null, item.errorCode() == null ? null : REDACTED,
+                item.errorMessage() == null ? null : REDACTED, item.costTime())).toList();
+        return new NotifyResult(REDACTED, result.channel(), REDACTED, result.status(), deliveries);
+    }
+
+    private String auditIdentifier(NotifyRequest request) {
+        return request.auditPolicy() == NotifyAuditPolicy.REDACT_SENSITIVE ? REDACTED : request.requestId();
     }
 
     private boolean isBlank(String value) {

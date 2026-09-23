@@ -38,12 +38,13 @@ public final class NotifySendPlanner {
      * @param html            是否 HTML
      * @param smsTemplateCode 短信模板码
      * @param smsParams       短信参数
+     * @param smsSnapshot     仅包含场景、模板与变量名的安全逻辑快照
      */
     public record Plan(boolean ok, String errorCode, String errorMessage, String providerKey, boolean mail,
                        String subject, String body, boolean html, String smsTemplateCode,
-                       Map<String, String> smsParams) {
+                       Map<String, String> smsParams, String smsSnapshot) {
         public static Plan fail(String code, String message) {
-            return new Plan(false, code, message, null, false, null, null, false, null, Map.of());
+            return new Plan(false, code, message, null, false, null, null, false, null, Map.of(), null);
         }
     }
 
@@ -61,6 +62,14 @@ public final class NotifySendPlanner {
      */
     public static Plan plan(String sceneCode, String channel, String target, Map<String, String> params,
                             NotifySceneBinding binding, NotifyChannelAccount account, NotifyQuotaPort quotaPort) {
+        Plan prepared = preflight(sceneCode, channel, params, binding, account);
+        if (!prepared.ok()) return prepared;
+        return finish(account, binding, sceneCode, channel, target, quotaPort, prepared);
+    }
+
+    /** 提交前和发送前共享纯校验；不预占配额，也不接触供应商。 */
+    public static Plan preflight(String sceneCode, String channel, Map<String, String> params,
+                                 NotifySceneBinding binding, NotifyChannelAccount account) {
         if (binding == null || binding.getAccountId() == null) {
             return Plan.fail("UNBOUND_CHANNEL", "场景未绑定渠道账号");
         }
@@ -79,27 +88,42 @@ public final class NotifySendPlanner {
         if ("MAIL".equals(channel)) {
             String subject = NotifyTemplateRenderer.render(binding.getMailSubject(), params);
             String body = NotifyTemplateRenderer.render(binding.getMailBody(), params);
-            return finish(account, binding, sceneCode, channel, target, quotaPort, true, subject, body,
-                body != null && body.contains("<"), null, Map.of());
+            return new Plan(true, null, null, account.getConfigKey(), true, subject, body,
+                body != null && body.contains("<"), null, Map.of(), null);
         }
         if (binding.getSmsTemplateCode() == null || binding.getSmsTemplateCode().isBlank()) {
             return Plan.fail("SMS_TEMPLATE_MISSING", "未配置短信供应商模板码");
         }
         Map<String, String> mapping = mapping(binding.getSmsParamMappingJson());
-        Map<String, String> providerParams = new LinkedHashMap<>();
-        mapping.forEach((logical, providerName) -> {
-            if (params != null) {
-                providerParams.put(providerName, params.getOrDefault(logical, ""));
+        for (String name : required) {
+            if (mapping.get(name) == null || mapping.get(name).isBlank()) {
+                return Plan.fail("INVALID_TEMPLATE_PARAMETERS", "短信模板缺少必填变量映射 " + name);
             }
-        });
-        return finish(account, binding, sceneCode, channel, target, quotaPort, false, null, null, false,
-            binding.getSmsTemplateCode(), providerParams);
+        }
+        if (mapping.values().stream().anyMatch(String::isBlank)) {
+            return Plan.fail("INVALID_TEMPLATE_PARAMETERS", "短信模板参数映射不能为空");
+        }
+        for (String logical : mapping.keySet()) {
+            if (params == null || params.get(logical) == null || params.get(logical).isBlank()) {
+                return Plan.fail("INVALID_TEMPLATE_PARAMETERS", "短信模板映射变量缺失或为空");
+            }
+        }
+        if ("tencent".equalsIgnoreCase(account.getSupplier())) {
+            for (int index = 1; index <= mapping.size(); index++) {
+                if (!mapping.containsValue(Integer.toString(index))) {
+                    return Plan.fail("INVALID_TEMPLATE_PARAMETERS", "腾讯短信参数须映射为连续的1..N位置");
+                }
+            }
+        }
+        Map<String, String> providerParams = new LinkedHashMap<>();
+        mapping.forEach((logical, providerName) -> providerParams.put(providerName, params.get(logical)));
+        return new Plan(true, null, null, account.getConfigKey(), false, null, null, false,
+            binding.getSmsTemplateCode(), providerParams,
+            NotifyTemplateRenderer.smsSnapshot(sceneCode, binding.getSmsTemplateCode(), mapping.keySet()));
     }
 
     private static Plan finish(NotifyChannelAccount account, NotifySceneBinding binding, String sceneCode,
-                               String channel, String target, NotifyQuotaPort quotaPort, boolean mail,
-                               String subject, String body, boolean html, String smsTemplateCode,
-                               Map<String, String> smsParams) {
+                               String channel, String target, NotifyQuotaPort quotaPort, Plan prepared) {
         List<String> held = new ArrayList<>();
         if (!acquireQuota(quotaPort, held, "acct:" + account.getAccountId(), account.getMinuteMax(), Duration.ofMinutes(1))) {
             return Plan.fail("ACCOUNT_QUOTA", "账号每分钟发送上限已用尽");
@@ -123,7 +147,7 @@ public final class NotifySendPlanner {
                 return Plan.fail("RECIPIENT_DAY_QUOTA", "收件人每天拦截上限已用尽");
             }
         }
-        return new Plan(true, null, null, account.getConfigKey(), mail, subject, body, html, smsTemplateCode, smsParams);
+        return prepared;
     }
 
     /**

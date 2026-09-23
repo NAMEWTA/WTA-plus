@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T08:40:15.802755+00:00",
+  "updated_at": "2026-09-23T09:02:36.730921+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -108,7 +108,9 @@
     "Revision146: 当前部署Skill要求旧私有目录但facts拒绝该目录，T01当前复验须等T29修复；历史T01实现早于T29且仍在父链，旧施工边已履行。本轮T29无需等重复验收，改为T29→T01，不取消合同或伪造Done。 T29 sole product writer cors_audit, base 7a1810288d3292ceeb4987f488b13353af1a1286; Lead alone owns private backup/restore/move, no new rotation/deployment.",
     "Revision147: T29 accepted at 9f055ba15d9d5a828fb08cdfb0b24efa32642889; 37 historical deletion rows/current owners and28rules verified; private33entry backup/restore/no-replace move verified, facts and128release tests pass; next T01 complete current-contract validation.",
     "Revision148: T01 current full-contract verification, no implementation writer or new product commit yet. Historical no-new-work disposition only after current proof; AC001 remains T30 final responsibility.",
-    "Revision149: T01 cancelled as no-new-work ONLY after complete current contract proof at 9a8140ff5c8dce4fcf05a67972bd8ec0d750fc3f;83checker+3Notify tests/5layered/CI/build guard pass; retained history and AC001 atT30; T09/T30施工edges explicitly replaced, no new implementation/result/integration invented."
+    "Revision149: T01 cancelled as no-new-work ONLY after complete current contract proof at 9a8140ff5c8dce4fcf05a67972bd8ec0d750fc3f;83checker+3Notify tests/5layered/CI/build guard pass; retained history and AC001 atT30; T09/T30施工edges explicitly replaced, no new implementation/result/integration invented.",
+    "Revision150: T35 active at 8b758ea8074a63835659b9731e3a4c74c5c029c5; sole product writer cors_audit; exact paths expanded before edits for result classification and real SMS adapter; Lead owns isolated services and current acceptance.",
+    "Revision152: T35 public sensitive projection six exact paths declared before edits; internal provider IDs retained, REDACT read projections hide values, FULL unchanged; batch intent reads avoid N+1."
   ],
   "worktrees": [
     {
@@ -324,6 +326,49 @@
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29.md</Path>",
         "attempts": 1,
         "promotion_status": "applied"
+      }
+    },
+    {
+      "ticket_id": "T-35",
+      "owner": "single-agent",
+      "implementation_owner": "cors_audit",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "8b758ea8074a63835659b9731e3a4c74c5c029c5",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "8b758ea8074a63835659b9731e3a4c74c5c029c5",
+      "status": "active",
+      "updated_at": "2026-09-23T08:42:14.742529+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "8b758ea8074a63835659b9731e3a4c74c5c029c5",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-35.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
       }
     }
   ]

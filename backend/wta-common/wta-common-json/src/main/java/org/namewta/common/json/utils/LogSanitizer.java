@@ -47,6 +47,9 @@ public final class LogSanitizer {
         if (isNotifyCallbackPath(requestPath)) return true;
         String normalized = normalize(name);
         if (SENSITIVE_NAMES.contains(normalized)
+            || (isSmsCaptchaPath(requestPath) && ("phonenumber".equals(normalized) || "phone".equals(normalized)))
+            || (isNotifySubmissionPath(requestPath) && Set.of("bizid", "recipientids", "templateparams",
+                "idempotencykey", "metadata").contains(normalized))
             || Arrays.stream(SystemConstants.EXCLUDE_PROPERTIES).anyMatch(value -> normalize(value).equals(normalized))
             || Arrays.stream(excludedNames).anyMatch(value -> value != null && normalize(value).equals(normalized))
             || (isOAuthPath(requestPath) && OAUTH_NAMES.contains(normalized))) {
@@ -137,6 +140,14 @@ public final class LogSanitizer {
     private static boolean isNotifyCallbackPath(String requestPath) {
         String path = normalizePath(requestPath);
         return path.equals("/notify/callback") || path.startsWith("/notify/callback/");
+    }
+
+    private static boolean isSmsCaptchaPath(String requestPath) {
+        return "/resource/sms/code".equals(normalizePath(requestPath));
+    }
+
+    private static boolean isNotifySubmissionPath(String requestPath) {
+        return "/notify/notification".equals(normalizePath(requestPath));
     }
 
     private static String normalizePath(String requestPath) {

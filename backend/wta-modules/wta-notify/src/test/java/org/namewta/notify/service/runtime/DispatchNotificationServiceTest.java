@@ -2,12 +2,24 @@ package org.namewta.notify.service.runtime;
 
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.common.notify.core.NotifyClient;
+import org.namewta.common.notify.core.NotifyDispatcher;
+import org.namewta.common.notify.event.NotifyDeliveryEvent;
+import org.namewta.common.notify.idempotency.NotifyIdempotencyCoordinator;
+import org.namewta.common.notify.idempotency.NotifyIdempotencyProperties;
+import org.namewta.common.notify.idempotency.NotifyIdempotencyStore;
+import org.namewta.common.notify.exception.NotifyValidationException;
 import org.namewta.common.notify.model.NotifyChannel;
+import org.namewta.common.notify.model.NotifyAuditPolicy;
+import org.namewta.common.notify.model.NotifyContext;
 import org.namewta.common.notify.model.NotifyRequest;
 import org.namewta.common.notify.model.NotifyResult;
 import org.namewta.common.notify.model.NotifyRichContent;
 import org.namewta.common.notify.model.NotifyStatus;
 import org.namewta.common.notify.model.NotifyTemplateContent;
+import org.namewta.common.notify.registry.NotifyChannelRegistry;
+import org.namewta.common.sms.notify.SmsNotificationProvider;
+import org.namewta.common.sms.notify.SmsNotificationReceipt;
+import org.namewta.common.sms.notify.SmsNotifyChannelAdapter;
 import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.dao.NotifyConfigDao;
 import org.namewta.notify.dao.NotifyNotificationDao;
@@ -26,11 +38,13 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -135,6 +149,95 @@ class DispatchNotificationServiceTest {
         assertEquals("1234", content.params().get("code"));
         assertEquals("5", content.params().get("min"));
         verify(fixture.configDao, never()).findAccount(21L);
+    }
+
+    @Test
+    void captchaSmsTraversesRealDispatcherAndAdapterWithSafeSnapshot() {
+        AtomicInteger calls = new AtomicInteger();
+        List<NotifyDeliveryEvent> events = new ArrayList<>();
+        SmsNotifyChannelAdapter adapter = new SmsNotifyChannelAdapter(key -> new SmsNotificationProvider(key,
+            (phone, content) -> {
+                calls.incrementAndGet();
+                assertEquals("13812345678", phone);
+                NotifyTemplateContent template = assertInstanceOf(NotifyTemplateContent.class, content);
+                assertEquals("SMS_BOUND", template.providerTemplateCode());
+                assertEquals("1234", template.params().get("code"));
+                assertEquals("5", template.params().get("min"));
+                assertFalse(template.contentSnapshot().isBlank());
+                assertFalse(template.contentSnapshot().contains("1234"));
+                assertFalse(template.contentSnapshot().contains(phone));
+                return SmsNotificationReceipt.accepted("owned-sms-message");
+            }));
+        NotifyIdempotencyStore store = mock(NotifyIdempotencyStore.class);
+        when(store.acquire(anyString(), anyString(), anyString(), any())).thenAnswer(call ->
+            new NotifyIdempotencyStore.Acquired(call.getArgument(0), call.getArgument(1),
+                call.getArgument(2), "owned", call.getArgument(3)));
+        NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
+            NotifyContext::empty, events::add,
+            new NotifyIdempotencyCoordinator(store, new NotifyIdempotencyProperties()));
+        Fixture fixture = fixture("SMS", (key, limit, window) -> true, dispatcher);
+        fixture.intent.setMetadataJson(JsonUtils.toJsonString(Map.of("audit", "REDACT_SENSITIVE")));
+        NotifySceneBinding binding = binding(22L, "SMS", null, null);
+        binding.setSmsTemplateCode("SMS_BOUND");
+        binding.setSmsParamMappingJson(JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")));
+        when(fixture.configDao.findBinding("auth-captcha", "SMS")).thenReturn(binding);
+        when(fixture.configDao.findAccount(22L)).thenReturn(smsAccount(22L, "ali-owned"));
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals(1, calls.get(), () -> "status=" + fixture.delivery.getStatus()
+            + ", code=" + fixture.delivery.getErrorCode() + ", message=" + fixture.delivery.getErrorMessage());
+        assertEquals("ACCEPTED", fixture.delivery.getStatus());
+        assertEquals("DONE", fixture.outbox.getStatus());
+        assertEquals(NotifyAuditPolicy.REDACT_SENSITIVE, events.getFirst().request().auditPolicy());
+    }
+
+    @Test
+    void dispatcherLocalValidationClosesOutboxWithoutRetry() {
+        Fixture fixture = fixture("SMS");
+        NotifySceneBinding binding = binding(22L, "SMS", null, null);
+        binding.setSmsTemplateCode("SMS_BOUND");
+        binding.setSmsParamMappingJson(JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")));
+        when(fixture.configDao.findBinding("auth-captcha", "SMS")).thenReturn(binding);
+        when(fixture.configDao.findAccount(22L)).thenReturn(smsAccount(22L, "ali-owned"));
+        when(fixture.notifyClient.send(any())).thenThrow(new NotifyValidationException(
+            "INVALID_TARGET", "local validation"));
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals("FAILED", fixture.delivery.getStatus());
+        assertEquals("SMS_LOCAL_VALIDATION_INVALID_TARGET", fixture.delivery.getErrorCode());
+        assertEquals("DONE", fixture.outbox.getStatus());
+    }
+
+    @Test
+    void arbitraryValidationCodeCannotPersistNumericCanary() {
+        for (String unsafeCode : new String[]{"123456", null}) {
+            Fixture fixture = fixture("SMS");
+            NotifySceneBinding binding = binding(22L, "SMS", null, null);
+            binding.setSmsTemplateCode("SMS_BOUND");
+            binding.setSmsParamMappingJson(JsonUtils.toJsonString(Map.of("code", "code", "expireMinutes", "min")));
+            when(fixture.configDao.findBinding("auth-captcha", "SMS")).thenReturn(binding);
+            when(fixture.configDao.findAccount(22L)).thenReturn(smsAccount(22L, "ali-owned"));
+            when(fixture.notifyClient.send(any())).thenThrow(new NotifyValidationException(unsafeCode, "unsafe"));
+
+            fixture.service.dispatch(fixture.outbox);
+
+            assertEquals("SMS_LOCAL_VALIDATION_VALIDATION_ERROR", fixture.delivery.getErrorCode());
+            assertEquals("FAILED", fixture.delivery.getStatus());
+            assertEquals("DONE", fixture.outbox.getStatus());
+        }
+    }
+
+    @Test
+    void inAppExceptionKeepsOriginalUnknownDisposition() {
+        Fixture fixture = fixture("IN_APP");
+        when(fixture.inApp.getIfAvailable()).thenThrow(new IllegalStateException("local in-app failure"));
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals("UNKNOWN", fixture.delivery.getStatus());
+        assertEquals("WAITING_RECEIPT", fixture.outbox.getStatus());
     }
 
     @Test
@@ -263,8 +366,12 @@ class DispatchNotificationServiceTest {
 
     @SuppressWarnings("unchecked")
     private Fixture fixture(String channel, NotifyQuotaPort quotaPort) {
+        return fixture(channel, quotaPort, mock(NotifyClient.class));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Fixture fixture(String channel, NotifyQuotaPort quotaPort, NotifyClient notifyClient) {
         NotifyNotificationDao dao = mock(NotifyNotificationDao.class);
-        NotifyClient notifyClient = mock(NotifyClient.class);
         ObjectProvider<InAppNotificationPort> inApp = mock(ObjectProvider.class);
         NotifyConfigDao configDao = mock(NotifyConfigDao.class);
         DispatchNotificationService service = new DispatchNotificationService(
@@ -310,7 +417,7 @@ class DispatchNotificationServiceTest {
         });
         when(dao.update(any(NotifyIntent.class))).thenReturn(1);
         when(dao.insert(any(org.namewta.notify.domain.entity.NotifyAttempt.class))).thenReturn(1);
-        return new Fixture(service, dao, notifyClient, configDao, intent, delivery, outbox);
+        return new Fixture(service, dao, notifyClient, inApp, configDao, intent, delivery, outbox);
     }
 
     private NotifyDelivery copyDelivery(NotifyDelivery delivery) {
@@ -357,6 +464,7 @@ class DispatchNotificationServiceTest {
     }
 
     private record Fixture(DispatchNotificationService service, NotifyNotificationDao dao, NotifyClient notifyClient,
+                           ObjectProvider<InAppNotificationPort> inApp,
                            NotifyConfigDao configDao, NotifyIntent intent, NotifyDelivery delivery, NotifyOutbox outbox) {
     }
 

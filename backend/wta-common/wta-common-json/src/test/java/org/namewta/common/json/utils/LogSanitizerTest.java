@@ -83,4 +83,22 @@ class LogSanitizerTest {
         assertEquals("owned-recipient@example.test", body.get("target"));
         assertTrue(LogSanitizer.object(body, "/notify/callback-settings").contains(CANARY));
     }
+
+    @Test
+    void smsCaptchaAndNotificationSubmissionHidePhoneAndCodeOnlyOnTheirRoutes() {
+        String phone = "13812345678";
+        String otp = "otp-canary-7731";
+        assertTrue(LogSanitizer.isSensitiveName("phoneNumber", "/resource/sms/code"));
+        assertFalse(LogSanitizer.isSensitiveName("phoneNumber", "/business"));
+        String captcha = LogSanitizer.json("{\"phoneNumber\":\"" + phone + "\"}", "/resource/sms/code");
+        assertFalse(captcha.contains(phone));
+
+        Map<String, Object> command = Map.of("bizId", phone, "recipientIds", java.util.List.of(phone),
+            "templateParams", Map.of("code", otp, "expireMinutes", "5"), "sceneCode", "auth-captcha");
+        String sanitized = LogSanitizer.object(command, "/notify/notification");
+        assertFalse(sanitized.contains(phone));
+        assertFalse(sanitized.contains(otp));
+        assertTrue(sanitized.contains("auth-captcha"));
+        assertTrue(LogSanitizer.json("{\"code\":1234}", "/business").contains("1234"));
+    }
 }

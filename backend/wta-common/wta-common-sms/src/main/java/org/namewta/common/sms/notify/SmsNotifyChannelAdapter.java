@@ -42,11 +42,9 @@ public final class SmsNotifyChannelAdapter implements NotifyChannelAdapter {
                 if (receipt != null && receipt.success()) {
                     results.add(NotifyTargetResult.accepted(target, receipt.providerMessageId(), costTime));
                 } else {
-                    String errorCode = receipt == null || receipt.errorCode() == null
-                        ? "PROVIDER_REJECTED" : receipt.errorCode();
-                    String errorMessage = receipt == null || receipt.errorMessage() == null
-                        ? "SMS Provider 未接受请求" : receipt.errorMessage();
-                    results.add(NotifyTargetResult.failed(target, errorCode, errorMessage, costTime));
+                    // 供应商错误正文不可信，可能原样回显手机号或验证码。
+                    results.add(NotifyTargetResult.failed(target, "PROVIDER_REJECTED",
+                        "SMS Provider 未接受请求", costTime));
                 }
             } catch (RuntimeException exception) {
                 results.add(NotifyTargetResult.failed(target, "PROVIDER_ERROR", "SMS Provider 调用失败",

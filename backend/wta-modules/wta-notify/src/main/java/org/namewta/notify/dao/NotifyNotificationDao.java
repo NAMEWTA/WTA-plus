@@ -24,6 +24,10 @@ public class NotifyNotificationDao {
     private final NotifyMessageRecipientMapper messageRecipientMapper;
 
     public NotifyIntent intent(Long id) { return intentMapper.selectById(id); }
+    /** 仅按本次有界投递结果的 ID 批量取策略；空集合绝不可退化为全表查询。 */
+    public List<NotifyIntent> intents(Collection<Long> ids) {
+        return ids == null || ids.isEmpty() ? List.of() : intentMapper.selectBatchIds(ids);
+    }
     /**
      * 在动态事务内锁定聚合根；所有结果、回调、取消和重试先取得此锁。
      * @param id 通知意图主键

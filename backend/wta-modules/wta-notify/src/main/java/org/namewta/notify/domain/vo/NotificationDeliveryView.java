@@ -1,6 +1,8 @@
 package org.namewta.notify.domain.vo;
 
 import org.namewta.notify.domain.entity.NotifyDelivery;
+import org.namewta.notify.domain.entity.NotifyIntent;
+import org.namewta.notify.support.NotifyAuditSupport;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +14,11 @@ public record NotificationDeliveryView(Long deliveryId, Long intentId, Long user
                                        String errorCode, LocalDateTime acceptedAt, LocalDateTime deliveredAt,
                                        LocalDateTime readAt, LocalDateTime createTime) {
     /** 将持久化实体映射为监控投影。 */
-    public static NotificationDeliveryView from(NotifyDelivery item) {
+    public static NotificationDeliveryView from(NotifyDelivery item, NotifyIntent intent) {
+        boolean redact = NotifyAuditSupport.redactSensitive(intent);
         return new NotificationDeliveryView(item.getDeliveryId(), item.getIntentId(), item.getUserId(),
-            item.getChannel(), item.getStatus(), item.getAttemptCount(), item.getProviderMessageId(),
-            item.getErrorCode(), item.getAcceptedAt(), item.getDeliveredAt(), item.getReadAt(), item.getCreateTime());
+            item.getChannel(), item.getStatus(), item.getAttemptCount(),
+            NotifyAuditSupport.publicProviderMessageId(intent, item.getProviderMessageId()),
+            redact ? null : item.getErrorCode(), item.getAcceptedAt(), item.getDeliveredAt(), item.getReadAt(), item.getCreateTime());
     }
 }

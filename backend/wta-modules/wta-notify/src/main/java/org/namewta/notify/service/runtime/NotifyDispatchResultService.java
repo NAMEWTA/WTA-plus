@@ -148,9 +148,11 @@ public class NotifyDispatchResultService {
     /** 接受与送达是成功调度结果，接受本身并非最终送达。 */
     private boolean success(String status) { return "ACCEPTED".equals(status) || "DELIVERED".equals(status); }
 
-    /** 配置或配额拒绝保持既有失败关闭语义，不自动换账号。 */
+    /** 调用前确定的配置/请求错误立即结束，不能伪装成待回执或自动重试。 */
     private boolean configFailure(String code) {
         return code != null && (code.startsWith("UNBOUND") || code.startsWith("ACCOUNT_") || code.startsWith("MISSING_")
-            || code.startsWith("SMS_") || code.endsWith("_QUOTA"));
+            || code.startsWith("SMS_") || code.endsWith("_QUOTA")
+            || "CONTENT_SNAPSHOT_REQUIRED".equals(code) || "UNKNOWN_PROVIDER".equals(code)
+            || "INVALID_TEMPLATE_PARAMETERS".equals(code) || "LOCAL_DISPATCH_ERROR".equals(code));
     }
 }

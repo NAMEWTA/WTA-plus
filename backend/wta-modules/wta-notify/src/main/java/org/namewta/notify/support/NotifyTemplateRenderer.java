@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,5 +95,11 @@ public final class NotifyTemplateRenderer {
         }
         raw.forEach((key, value) -> values.put(key, value == null ? "" : String.valueOf(value)));
         return values;
+    }
+
+    /** 逻辑模板快照只记录可解释的标识与变量名，绝不复制验证码或其他变量值。 */
+    public static String smsSnapshot(String sceneCode, String templateCode, Collection<String> variableNames) {
+        List<String> names = variableNames == null ? List.of() : variableNames.stream().sorted().toList();
+        return "sms:scene=" + sceneCode + ";template=" + templateCode + ";variables=" + String.join(",", names);
     }
 }

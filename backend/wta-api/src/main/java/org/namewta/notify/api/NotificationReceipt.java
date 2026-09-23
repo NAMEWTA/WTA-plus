@@ -22,7 +22,7 @@ public record NotificationReceipt(String notificationId, NotificationStatus stat
      * @param recipientId 接收者标识
      * @param channel 渠道
      * @param status 投递状态
-     * @param providerMessageId 供应商消息标识
+     * @param providerMessageId 供应商消息标识；REDACT_SENSITIVE 通知的公开投影为 null，内部回执关联保留原值
      */
     public record DeliveryReceipt(String recipientId, NotificationChannel channel,
                                   NotificationStatus status, String providerMessageId) { }

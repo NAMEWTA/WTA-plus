@@ -9,8 +9,12 @@ import org.namewta.common.notify.model.NotifyRichContent;
 import org.namewta.common.notify.model.NotifyTemplateContent;
 import org.namewta.common.notify.model.NotifyTarget;
 import org.namewta.common.notify.exception.NotifyDeliveryException;
+import org.namewta.common.notify.exception.NotifyValidationException;
+import org.namewta.common.notify.model.NotifyAuditPolicy;
+import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.notify.api.NotificationChannel;
+import org.namewta.notify.api.NotificationCommand;
 import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.dao.NotifyConfigDao;
 import org.namewta.notify.dao.NotifyNotificationDao;
@@ -24,12 +28,14 @@ import org.namewta.notify.port.NotifyDispatchResultPort;
 import org.namewta.notify.port.NotifyDispatchResultPort.Disposition;
 import org.namewta.notify.port.NotifyQuotaPort;
 import org.namewta.notify.support.NotifySendPlanner;
+import org.namewta.notify.support.NotifyAuditSupport;
 import org.namewta.notify.support.NotifyTemplateRenderer;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.ObjectProvider;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 单条通知投递服务。
@@ -39,6 +45,11 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class DispatchNotificationService implements NotifyDispatchPort {
+    private static final Set<String> LOCAL_VALIDATION_CODES = Set.of(
+        "ATTACHMENT_SNAPSHOT_NOT_CONFIGURED", "CHANNEL_REQUIRED", "CONTENT_REQUIRED",
+        "CONTENT_SNAPSHOT_REQUIRED", "IDEMPOTENCY_WINDOW_OUT_OF_RANGE", "INVALID_ATTACHMENT_OSS_ID",
+        "INVALID_TARGET", "INVALID_TEMPLATE_PARAMETERS", "LOGICAL_TARGET_NOT_SUPPORTED", "REQUEST_REQUIRED",
+        "TARGET_REQUIRED", "UNKNOWN_CHANNEL", "UNKNOWN_PROVIDER", "UNSUPPORTED_TARGET_TYPE");
     private final NotifyNotificationDao dao;
     private final NotifyClient notifyClient;
     private final ObjectProvider<InAppNotificationPort> inAppPort;
@@ -111,6 +122,8 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                         .providerKey(plan.providerKey())
                         .targets(List.of(target(delivery)))
                         .content(toContent(plan))
+                        .auditPolicy(NotifyAuditSupport.redactSensitive(intent)
+                            ? NotifyAuditPolicy.REDACT_SENSITIVE : NotifyAuditPolicy.FULL)
                         .idempotencyKey(String.valueOf(delivery.getDeliveryId()))
                         .build();
                     result = notifyClient.send(request);
@@ -120,6 +133,11 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                         delivery.setProviderMessageId(result.deliveries().getFirst().providerMessageId());
                         errorCode = result.deliveries().getFirst().errorCode();
                         errorMessage = result.deliveries().getFirst().errorMessage();
+                    }
+                    if (unknownSmsProviderOutcome(delivery, errorCode)) {
+                        delivery.setStatus("UNKNOWN");
+                        errorCode = "PROVIDER_OUTCOME_UNKNOWN";
+                        errorMessage = "短信供应商调用结果未知";
                     }
                 }
             }
@@ -132,10 +150,25 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorCode = result.deliveries().getFirst().errorCode();
                 errorMessage = result.deliveries().getFirst().errorMessage();
             }
+            if (unknownSmsProviderOutcome(delivery, errorCode)) {
+                delivery.setStatus("UNKNOWN");
+                errorCode = "PROVIDER_OUTCOME_UNKNOWN";
+                errorMessage = "短信供应商调用结果未知";
+            }
+        } catch (NotifyValidationException exception) {
+            if (NotificationChannel.SMS.name().equals(delivery.getChannel())) {
+                delivery.setStatus("FAILED");
+                errorCode = "SMS_LOCAL_VALIDATION_" + safeValidationCode(exception.code());
+                errorMessage = "短信请求本地校验失败";
+            } else {
+                delivery.setStatus("UNKNOWN");
+                errorCode = "DISPATCH_ERROR";
+                errorMessage = "供应商调用结果未知";
+            }
         } catch (RuntimeException exception) {
             delivery.setStatus("UNKNOWN");
             errorCode = "DISPATCH_ERROR";
-            errorMessage = exception.getClass().getSimpleName();
+            errorMessage = "供应商调用结果未知";
         }
         resultPort.complete(outbox, new NotifyDispatchResultPort.Result(delivery.getStatus(),
             result == null ? (NotificationChannel.IN_APP.name().equals(delivery.getChannel()) ? "in-app" : delivery.getProviderKey()) : result.providerKey(),
@@ -164,14 +197,34 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         if (plan.mail()) {
             return new NotifyRichContent(plan.subject(), plan.body(), plan.html());
         }
-        return new NotifyTemplateContent("sms", plan.smsTemplateCode(), plan.smsParams(), "");
+        return new NotifyTemplateContent("sms", plan.smsTemplateCode(), plan.smsParams(), plan.smsSnapshot());
+    }
+
+    /** 新意图提交前只检查短信绑定和参数，不占用额度或发起 Provider I/O。 */
+    public void validateSubmission(NotificationCommand command) {
+        if (!command.channels().contains(NotificationChannel.SMS)) return;
+        NotifySceneBinding binding = configDao.findBinding(command.sceneCode(), NotificationChannel.SMS.name());
+        NotifyChannelAccount account = binding == null || binding.getAccountId() == null
+            ? null : configDao.findAccount(binding.getAccountId());
+        NotifySendPlanner.Plan plan = NotifySendPlanner.preflight(command.sceneCode(), NotificationChannel.SMS.name(),
+            NotifyTemplateRenderer.stringify(command.templateParams()), binding, account);
+        if (!plan.ok()) throw new ServiceException(plan.errorMessage());
+    }
+
+    private boolean unknownSmsProviderOutcome(NotifyDelivery delivery, String errorCode) {
+        return NotificationChannel.SMS.name().equals(delivery.getChannel()) && "PROVIDER_ERROR".equals(errorCode);
+    }
+
+    private String safeValidationCode(String code) {
+        return code != null && LOCAL_VALIDATION_CODES.contains(code) ? code : "VALIDATION_ERROR";
     }
 
     private NotifySendPlanner.Plan planChannel(NotifyIntent intent, NotifyDelivery delivery) {
         String sceneCode = intent.getSceneCode() == null || intent.getSceneCode().isBlank()
             ? intent.getTemplateCode() : intent.getSceneCode();
         NotifySceneBinding binding = configDao.findBinding(sceneCode, delivery.getChannel());
-        NotifyChannelAccount account = binding == null ? null : configDao.findAccount(binding.getAccountId());
+        NotifyChannelAccount account = binding == null || binding.getAccountId() == null
+            ? null : configDao.findAccount(binding.getAccountId());
         @SuppressWarnings("unchecked")
         Map<String, Object> raw = JsonUtils.parseObject(intent.getTemplateParamsJson(), Map.class);
         return NotifySendPlanner.plan(sceneCode, delivery.getChannel(), delivery.getTargetValue(),

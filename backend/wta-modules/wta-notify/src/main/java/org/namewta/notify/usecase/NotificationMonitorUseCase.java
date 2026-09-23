@@ -19,7 +19,6 @@ public class NotificationMonitorUseCase {
 
     public NotificationSnapshot snapshot(String id) { return notificationService.query(new NotificationQuery(id, false)); }
     public List<NotificationDeliveryView> deliveries(Long userId, String channel, String status) {
-        return monitorService.listDeliveries(userId, channel, status).stream().map(NotificationDeliveryView::from).toList();
+        return monitorService.listDeliveries(userId, channel, status);
     }
 }
-

@@ -8,7 +8,8 @@ import java.time.Instant;
 import java.util.List;
 
 /**
- * Provider 同步调用后的不可变监控事件。
+ * Provider 同步调用后的不可变监控事件。REDACT_SENSITIVE 请求的事件包含脱敏副本，
+ * 不可用其字段重试、重新计算幂等摘要或重建供应商调用。
  */
 public record NotifyDeliveryEvent(
     NotifyRequest request,
