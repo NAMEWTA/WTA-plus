@@ -1,0 +1,181 @@
+{
+  "gate": "T-40 real notice retraction recipient Chrome",
+  "run_id": "dd86442542876baf",
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-23T22:44:47.954321+00:00",
+  "owned": {
+    "mysql_container_id": "a5f40f9938d0d1c47c6cd91ccf76e58692773ca70155f52fb3188d4d228b18bf",
+    "redis_container_id": "cfed7dd796b238a5e7928be1c87946349b4c4af35657bdef0881fe9cf643656d",
+    "minio_container_id": "cecd3a7473c1ee5ac4353601adc0869ad37f2792ba5b23d8762bf50932a42c80",
+    "loopback_ports": {
+      "mysql": 32913,
+      "redis": 32914,
+      "minio": 32915,
+      "backend": 51903,
+      "vite": 55083
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "login_passwords_rotated_in_fresh_schema": 3,
+    "recipient_role_ids": [
+      8200040952167252498,
+      8200038253603474873
+    ],
+    "backend_pgid": 1448989,
+    "backend_probe_http_status": 200,
+    "control_and_recipient_logins_validated": 3,
+    "headerless_online_matches": 3,
+    "headerless_success_audits": 3,
+    "chrome_control_online_match": true,
+    "chrome_control_success_audit": true,
+    "recipient_notice_get_denials": 2,
+    "vite_pgid": 1450325,
+    "playwright_pgid": 1450409,
+    "captured_anonymous_volume_names": [
+      "4ebfd3a4242aa4bd84e80c1e3ea644e6a89765ae73d1ec04afb4c3373d5814ee",
+      "804dc9a5cb6820f9d51c37570dff47a2196632861f7272daa9e31b6e01e3cd6e"
+    ]
+  },
+  "cleanup": {
+    "playwright_process_group": {
+      "pgid": 1450409,
+      "live_members": []
+    },
+    "vite_process_group": {
+      "pgid": 1450325,
+      "live_members": []
+    },
+    "backend_process_group": {
+      "pgid": 1448989,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "4ebfd3a4242aa4bd84e80c1e3ea644e6a89765ae73d1ec04afb4c3373d5814ee": true,
+      "804dc9a5cb6820f9d51c37570dff47a2196632861f7272daa9e31b6e01e3cd6e": true
+    },
+    "loopback_ports_closed": {
+      "32913": true,
+      "32914": true,
+      "32915": true,
+      "51903": true,
+      "55083": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "26f04b94db68701ade80038a763eca0ffde83918",
+    "tree": "ad6f9ed73ff4c437741372149670d824327ec98a",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "efafa17218f8b4ccdf964a21751179cbde0505e2162d1d52b0e6080cc58087e1",
+    "size_bytes": 214199003
+  },
+  "package_proof_sha256": "2c5b67e0042a25fc2e202e7f9a3d4724cb353dc7df424ac4d27ba48b6adeea4c",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/notice-retraction-real.e2e.ts": "54867b092560acd1efdd34f78293efb483651ded4bb9561311c56032f4489cfb",
+    "frontend/e2e/playwright.notice-retraction-real.config.ts": "0824670ffef0a993b000b1b9024825503460e9bb1bb1ff22bbb3d7d7c05afd4b"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "real_publication": {
+    "notice_id": "2102892105205559298",
+    "message_id": "2102892105662738434",
+    "worker_delivered_before_retract": true,
+    "retracted_after_delivery": true
+  },
+  "seed_before": {
+    "a_rows": 22,
+    "b_rows": 1,
+    "synthetic_rows": 22,
+    "v1_off_page_one": true,
+    "legacy_in_top_ten": true
+  },
+  "seed_manifest_sha256": "aa36291ad8794bab1f4ffa48fa62bf711f2444a89201cf83d42b4b4f1ff26f20",
+  "playwright_exit_code": 0,
+  "playwright_raw_sha256": "94c780a2262abce389796f246edf8ed1849dd1dbd9e998e5fe7ffc97ff9411c8",
+  "playwright_counts": {
+    "expected": 2,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "playwright_diagnostic": [
+    {
+      "file": "frontend/e2e/notice-retraction-real.e2e.ts",
+      "title": "T-40 real published V1 survives retract in A personal off-page inbox",
+      "project": "chromium",
+      "attempts": 1,
+      "status": "passed",
+      "case_declaration": {
+        "line": 90,
+        "column": 1
+      },
+      "assertion_location": null,
+      "last_started_phase": "verify_old_cancel"
+    },
+    {
+      "file": "frontend/e2e/notice-retraction-real.e2e.ts",
+      "title": "T-40 real B foreign and absent inbox details fail with the same owner response",
+      "project": "chromium",
+      "attempts": 1,
+      "status": "passed",
+      "case_declaration": {
+        "line": 284,
+        "column": 1
+      },
+      "assertion_location": null,
+      "last_started_phase": null
+    }
+  ],
+  "playwright_identity": {
+    "file": "frontend/e2e/notice-retraction-real.e2e.ts",
+    "titles": [
+      "T-40 real published V1 survives retract in A personal off-page inbox",
+      "T-40 real B foreign and absent inbox details fail with the same owner response"
+    ],
+    "project": "chromium",
+    "attempts": 2
+  },
+  "seed_after": {
+    "a_rows": 22,
+    "b_rows": 1,
+    "synthetic_rows": 22,
+    "v1_off_page_one": true,
+    "legacy_in_top_ten": true
+  },
+  "source_after": {
+    "head": "26f04b94db68701ade80038a763eca0ffde83918",
+    "tree": "ad6f9ed73ff4c437741372149670d824327ec98a",
+    "clean": true
+  },
+  "artifact_after_sha256": "efafa17218f8b4ccdf964a21751179cbde0505e2162d1d52b0e6080cc58087e1",
+  "finished_utc": "2026-09-23T22:45:44.595727+00:00"
+}

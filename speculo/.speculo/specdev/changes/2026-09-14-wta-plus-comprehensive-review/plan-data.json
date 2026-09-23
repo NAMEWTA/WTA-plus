@@ -3327,15 +3327,15 @@
       "notify:cancel",
       "ui:admin-inbox"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 197,
+    "plan_revision": 198,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 真实发布→撤回→Worker→inbox；普通用户浏览器详情与越权",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "retract 只改生命周期；发布 path 指向不消费 noticeId 的管理列表。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "26f04b94db68701ade80038a763eca0ffde83918",
+    "result_sha": "26f04b94db68701ade80038a763eca0ffde83918",
     "contract_ids": [
       "AC-040"
     ],

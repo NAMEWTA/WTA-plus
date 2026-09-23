@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-revision197：T40前三批各3次失败保留；模态关闭/有界动作/安全阶段定位四项复盘已完成，Dispatch04只修E2E与现有Python诊断，不改业务或验收目标。新批attempts0；13done/2cancelled/T40in_progress/34ready，Goal active。
+revision198：T40已在26f04b94当前候选验收完成；真实Chrome2零skip/retry、source/JAR同值cleanup[]；新Python26/strictE2Etypes/全前端760/3App329产物/fresh full通过，后端R2按精确输入等价复用。14done/2cancelled/34ready，无in_progress；下一T44，Goal active，尚未完成或归档change。
 
 最近T50 result `84ce0a9162dfc507fb4e8339575247477e57684f`：恢复批真实135零skip、clean/cleanup与静态通过；A3默认870执行/197skip/full/live及B前端736/core按输入等价复用。旧批三次原记录保留，整个change仍未完成。
 
@@ -170,3 +170,11 @@ A安全位置22是Aggregate清理现场，原始report已按安全合同删除�
 revision197：T40前三批各3次失败保留；模态关闭/有界动作/安全阶段定位四项复盘已完成，Dispatch04只修E2E与现有Python诊断，不改业务或验收目标。新批attempts0；13done/2cancelled/T40in_progress/34ready，Goal active。
 
 权威派单 `evidence/dispatch-T-40-modal-recovery.md`；两独立报告 `evidence/T-40-current-2026-09-23/recovery-modal/manifest.json`。新的静态原因是pending detail已打开modal，测试却直接点底层头像；先真实关闭并证明旧Request仍pending，再完成原注销取消/同context B旅程。安全annotation仅记录last_started阶段枚举，不把cleanup位置或阶段开始冒称原始根因/动作成功。Lead独占状态/提交/所有服务，writer不并行测试。
+
+## revision198 — T-40当前候选验收完成
+
+revision198：T40已在26f04b94当前候选验收完成；真实Chrome2零skip/retry、source/JAR同值cleanup[]；新Python26/strictE2Etypes/全前端760/3App329产物/fresh full通过，后端R2按精确输入等价复用。14done/2cancelled/34ready，无in_progress；下一T44，Goal active，尚未完成或归档change。
+
+完整证据 `evidence/T-40-current-2026-09-23/complete-candidate-u1/manifest.json`。结果SHA 26f04b94db68701ade80038a763eca0ffde83918，tree ad6f9ed73ff4c437741372149670d824327ec98a；真实run dd86442542876baf，两Chrome各1attempt、0skip/flaky，真实发布/Worker送达/撤回、A离页快照/同页迟到/旧链接/注销取消与B本人正控、B外人和不存在同形拒绝及畸形零请求全部通过。seed前后22/1/22及离页/top10保持；3进程组、3容器、2卷、5端口全部回收。先前三批各3次失败原样保留，新批第1次通过。
+
+U1全前端652Vitest+108Node、strict E2E tsc、architecture/OpenAPI/lint/typecheck及3App构建实际通过，329产物哈希保留；fresh full JAR SHA efafa17218f8b4ccdf964a21751179cbde0505e2162d1d52b0e6080cc58087e1。R2 backend default889pass216envskip、real18 run9a2dc8c991096685/shared135 run3e74344a4b3fd209（均零skip）、core/静态明确按字节相同输入复用，不冒称U1重跑。外部Provider结果是类型化测试替身，真实浏览器完整Spring链路仅IN_APP；没有推送/部署/生产修复/归档。

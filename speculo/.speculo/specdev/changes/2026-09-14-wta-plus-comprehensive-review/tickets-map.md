@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 197
+plan_revision: 198
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision182：T40开始，base601b9273；13done/2cancelled/1in_progress/34ready。T41已完成，新增为前置。cors_audit唯一产品writer；Lead治理/提交/隔离验收。先现API真实撤回红灯，再版本栅栏、三处链接一致、本人深链与竞争/回滚/浏览器验收。
+revision198：T40已在26f04b94当前候选验收完成；真实Chrome2零skip/retry、source/JAR同值cleanup[]；新Python26/strictE2Etypes/全前端760/3App329产物/fresh full通过，后端R2按精确输入等价复用。14done/2cancelled/34ready，无in_progress；下一T44，Goal active，尚未完成或归档change。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -38,7 +38,7 @@ revision182：T40开始，base601b9273；13done/2cancelled/1in_progress/34ready�
 
 ## 2. 执行清单
 
-50票中13done、2cancelled、T40 in_progress、34ready；AC-001/003仍由T30复验。
+50票中14done、2cancelled、34ready，无in_progress；AC-001/003仍由T30复验。
 
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -81,7 +81,7 @@ revision182：T40开始，base601b9273；13done/2cancelled/1in_progress/34ready�
 | T-37 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/37-retryable-provider-idempotency.md</Path> | Outbox 独占重试次数与节奏；明确未发送的可重试失败允许新一次物理发送，ACCEPTED/DELIVERED/UNKNOWN 保留防重。 | — | deep | high | yes | single-agent | AC-037 | W-notify | done |
 | T-38 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/38-precise-notification-retry.md</Path> | URL 唯一定位 intent；指定 delivery 只重试其所属一项，无可重试任务返回真实状态及零计数；外部 UNKNOWN 明确拒绝自动重发。 | T-36, T-37 | deep | high | yes | single-agent | AC-038 | W-notify | done |
 | T-39 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/39-enforce-notification-deadlines.md</Path> | 统一截止时刻驱动验证码 TTL 与 command；提交/重试拒绝到期，Worker 发请求前检查，过期任务结束且 Provider 调用为零。 | T-38 | deep | high | yes | single-agent | AC-039 | W-notify | done |
-| T-40 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/40-retract-notice-and-read-snapshot.md</Path> | 撤回只停止该发布版本未开始发送的任务，保留已送达内容与审计；本人从收件箱读快照，无需公告管理权限。 | T-38, T-39, T-41 | deep | high | yes | single-agent | AC-040 | W-journey | in_progress |
+| T-40 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/40-retract-notice-and-read-snapshot.md</Path> | 撤回只停止该发布版本未开始发送的任务，保留已送达内容与审计；本人从收件箱读快照，无需公告管理权限。 | T-38, T-39, T-41 | deep | high | yes | single-agent | AC-040 | W-journey | done |
 | T-41 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/41-paged-personal-inbox.md</Path> | 完整收件箱使用项目 PageQuery/PageResult 分页，稳定 create_time/message_id 排序；本人第501条可取，顶部只取最近摘要。全部已读仍作用本人全部消息。 | T-34 | deep | high | yes | single-agent | AC-041 | W-journey | done |
 | T-42 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path> | 正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。 | T-35, T-37, T-44 | deep | high | yes | single-agent | AC-042 | W-close | ready |
 | T-43 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/43-measure-notify-fanout.md</Path> | 代表性规模有可重复 SQL/时延/锁等待基线；保持现有总量上限与持久聚合语义，优先减少插入往返，测量不足不引入新计数状态机。 | T-36, T-38, T-39 | standard | medium | yes | single-agent | AC-043 | W-close | ready |
@@ -526,3 +526,11 @@ A安全位置22是Aggregate清理现场，原始report已按安全合同删除�
 revision197：T40前三批各3次失败保留；模态关闭/有界动作/安全阶段定位四项复盘已完成，Dispatch04只修E2E与现有Python诊断，不改业务或验收目标。新批attempts0；13done/2cancelled/T40in_progress/34ready，Goal active。
 
 权威派单 `evidence/dispatch-T-40-modal-recovery.md`；两独立报告 `evidence/T-40-current-2026-09-23/recovery-modal/manifest.json`。新的静态原因是pending detail已打开modal，测试却直接点底层头像；先真实关闭并证明旧Request仍pending，再完成原注销取消/同context B旅程。安全annotation仅记录last_started阶段枚举，不把cleanup位置或阶段开始冒称原始根因/动作成功。Lead独占状态/提交/所有服务，writer不并行测试。
+
+## revision198 — T-40当前候选验收完成
+
+revision198：T40已在26f04b94当前候选验收完成；真实Chrome2零skip/retry、source/JAR同值cleanup[]；新Python26/strictE2Etypes/全前端760/3App329产物/fresh full通过，后端R2按精确输入等价复用。14done/2cancelled/34ready，无in_progress；下一T44，Goal active，尚未完成或归档change。
+
+完整证据 `evidence/T-40-current-2026-09-23/complete-candidate-u1/manifest.json`。结果SHA 26f04b94db68701ade80038a763eca0ffde83918，tree ad6f9ed73ff4c437741372149670d824327ec98a；真实run dd86442542876baf，两Chrome各1attempt、0skip/flaky，真实发布/Worker送达/撤回、A离页快照/同页迟到/旧链接/注销取消与B本人正控、B外人和不存在同形拒绝及畸形零请求全部通过。seed前后22/1/22及离页/top10保持；3进程组、3容器、2卷、5端口全部回收。先前三批各3次失败原样保留，新批第1次通过。
+
+U1全前端652Vitest+108Node、strict E2E tsc、architecture/OpenAPI/lint/typecheck及3App构建实际通过，329产物哈希保留；fresh full JAR SHA efafa17218f8b4ccdf964a21751179cbde0505e2162d1d52b0e6080cc58087e1。R2 backend default889pass216envskip、real18 run9a2dc8c991096685/shared135 run3e74344a4b3fd209（均零skip）、core/静态明确按字节相同输入复用，不冒称U1重跑。外部Provider结果是类型化测试替身，真实浏览器完整Spring链路仅IN_APP；没有推送/部署/生产修复/归档。

@@ -1,0 +1,13 @@
+{
+  "base": "8a387192e5a7787d1c51731dfc982506207c5482",
+  "candidate": "26f04b94db68701ade80038a763eca0ffde83918",
+  "changed_product_paths": [
+    "frontend/e2e/README-notice-retraction-real.md",
+    "frontend/e2e/notice-retraction-real.e2e.ts",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "frontend/e2e/test_run_notice_retraction_real.py"
+  ],
+  "backend_reuse": "R2 default889pass216skip/real18/shared135/core/static, byte-identical backend/SQL/config/dependency/Skill inputs",
+  "fresh_required": "Python26/strictE2Etypes/allfrontend760 and3Appbuild/full exact-source JAR andbundle/actualChrome2 with source/JAR andcleanup",
+  "prior_batches": "C1-C3/R1-R3/S1-S3 all failed permanently retained"
+}

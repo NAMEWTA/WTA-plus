@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-40"
 title: "公告撤回停止待发且收件人读到正确快照"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -32,7 +32,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 ## 1. 战略与来源
 
 - 来源：R64-N-07；AC-040；本轮用户请求与<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>。
-- 当前事实：retract 只改生命周期；发布 path 指向不消费 noticeId 的管理列表。
+- 起点事实：retract 原只改生命周期；发布 path 原指向不消费 noticeId 的管理列表。
 - 可观察产出：撤回只停止该发布版本未开始发送的任务，保留已送达内容与审计；本人从收件箱读快照，无需公告管理权限。
 
 ## 2. 决策状态
@@ -98,7 +98,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 已进入外部 I/O 或已接受提示不可追回，已送达站内信仍可读 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 普通收件人只读本人消息，管理权限不扩大 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令；实际执行、复用输入与计数以当前Evidence为准：
 
 - `cd backend && ./mvnw -pl wta-modules/wta-notify,wta-admin -am test`
 - `pnpm --dir frontend --filter @namewta/web-domain-notify test`
@@ -120,13 +120,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-040`：撤回先于发送执行权时无新请求，旧快照不变；后续重发布不受前版本取消影响。
-- [ ] `AC-040`：已进入外部 I/O 或已接受提示不可追回，已送达站内信仍可读。
-- [ ] `AC-040`：普通收件人只读本人消息，管理权限不扩大。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-040`：撤回先于发送执行权时无新请求，旧快照不变；后续重发布不受前版本取消影响。
+- [x] `AC-040`：已进入外部 I/O 或已接受提示不可追回，已送达站内信仍可读。
+- [x] `AC-040`：普通收件人只读本人消息，管理权限不扩大。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -255,3 +255,11 @@ A安全位置22是Aggregate清理现场，原始report已按安全合同删除�
 revision197：T40前三批各3次失败保留；模态关闭/有界动作/安全阶段定位四项复盘已完成，Dispatch04只修E2E与现有Python诊断，不改业务或验收目标。新批attempts0；13done/2cancelled/T40in_progress/34ready，Goal active。
 
 权威派单 `evidence/dispatch-T-40-modal-recovery.md`；两独立报告 `evidence/T-40-current-2026-09-23/recovery-modal/manifest.json`。新的静态原因是pending detail已打开modal，测试却直接点底层头像；先真实关闭并证明旧Request仍pending，再完成原注销取消/同context B旅程。安全annotation仅记录last_started阶段枚举，不把cleanup位置或阶段开始冒称原始根因/动作成功。Lead独占状态/提交/所有服务，writer不并行测试。
+
+## revision198 — T-40当前候选验收完成
+
+revision198：T40已在26f04b94当前候选验收完成；真实Chrome2零skip/retry、source/JAR同值cleanup[]；新Python26/strictE2Etypes/全前端760/3App329产物/fresh full通过，后端R2按精确输入等价复用。14done/2cancelled/34ready，无in_progress；下一T44，Goal active，尚未完成或归档change。
+
+完整证据 `evidence/T-40-current-2026-09-23/complete-candidate-u1/manifest.json`。结果SHA 26f04b94db68701ade80038a763eca0ffde83918，tree ad6f9ed73ff4c437741372149670d824327ec98a；真实run dd86442542876baf，两Chrome各1attempt、0skip/flaky，真实发布/Worker送达/撤回、A离页快照/同页迟到/旧链接/注销取消与B本人正控、B外人和不存在同形拒绝及畸形零请求全部通过。seed前后22/1/22及离页/top10保持；3进程组、3容器、2卷、5端口全部回收。先前三批各3次失败原样保留，新批第1次通过。
+
+U1全前端652Vitest+108Node、strict E2E tsc、architecture/OpenAPI/lint/typecheck及3App构建实际通过，329产物哈希保留；fresh full JAR SHA efafa17218f8b4ccdf964a21751179cbde0505e2162d1d52b0e6080cc58087e1。R2 backend default889pass216envskip、real18 run9a2dc8c991096685/shared135 run3e74344a4b3fd209（均零skip）、core/静态明确按字节相同输入复用，不冒称U1重跑。外部Provider结果是类型化测试替身，真实浏览器完整Spring链路仅IN_APP；没有推送/部署/生产修复/归档。
