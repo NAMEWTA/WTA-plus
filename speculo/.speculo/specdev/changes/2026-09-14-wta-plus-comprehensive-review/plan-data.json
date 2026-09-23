@@ -50,10 +50,10 @@
     "contract": "AC-001",
     "review_date": "2026-09-23",
     "notes": "门禁实现保留；本次11条common Skill摘要漂移已核对入口后重绑，未修改历史Skill执行记录。",
-    "status": "ready",
+    "status": "in_progress",
     "ready": true,
     "e2e_disposition": "not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界",
-    "plan_revision": 146,
+    "plan_revision": 148,
     "implementation_commits": [
       "3aa047b85033afd7588923ffa7b37481dc2d1645"
     ],

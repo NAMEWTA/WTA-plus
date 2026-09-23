@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T08:33:24.310631+00:00",
+  "updated_at": "2026-09-23T08:34:43.864309+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -106,7 +106,8 @@
     "T47 first candidate2d60e1a full frontend728/lint/typecheck/prod build pass, clean before/after. Specification review identifies list blocked on optional image previews; keep in_progress, Packet02 repairs progressive preview without dropping ownership guards.",
     "Revision145: T47 accepted at 7cd6fb22b28b7d464b9648ba77f2a2308e5b2016;731 frontend tests, lint/typecheck/three-app production build/current OpenAPI pass; clean exact HEAD before/after, independent axes pass. Next replan T29→T01→T35 to remove factual gate contradiction.",
     "Revision146: 当前部署Skill要求旧私有目录但facts拒绝该目录，T01当前复验须等T29修复；历史T01实现早于T29且仍在父链，旧施工边已履行。本轮T29无需等重复验收，改为T29→T01，不取消合同或伪造Done。 T29 sole product writer cors_audit, base 7a1810288d3292ceeb4987f488b13353af1a1286; Lead alone owns private backup/restore/move, no new rotation/deployment.",
-    "Revision147: T29 accepted at 9f055ba15d9d5a828fb08cdfb0b24efa32642889; 37 historical deletion rows/current owners and28rules verified; private33entry backup/restore/no-replace move verified, facts and128release tests pass; next T01 complete current-contract validation."
+    "Revision147: T29 accepted at 9f055ba15d9d5a828fb08cdfb0b24efa32642889; 37 historical deletion rows/current owners and28rules verified; private33entry backup/restore/no-replace move verified, facts and128release tests pass; next T01 complete current-contract validation.",
+    "Revision148: T01 current full-contract verification, no implementation writer or new product commit yet. Historical no-new-work disposition only after current proof; AC001 remains T30 final responsibility."
   ],
   "worktrees": [
     {
@@ -322,6 +323,49 @@
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29.md</Path>",
         "attempts": 1,
         "promotion_status": "applied"
+      }
+    },
+    {
+      "ticket_id": "T-01",
+      "owner": "single-agent",
+      "implementation_owner": "single-agent",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "50334dee4760726ad987b835558b4751717b079d",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "50334dee4760726ad987b835558b4751717b079d",
+      "status": "active",
+      "updated_at": "2026-09-23T08:35:05.430837+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "50334dee4760726ad987b835558b4751717b079d",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Current static gate, checker fixture and build guard contracts have no online UI boundary. Final combined services remain T30.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
       }
     }
   ]
