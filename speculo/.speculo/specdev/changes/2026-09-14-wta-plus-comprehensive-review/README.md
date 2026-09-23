@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，执行全部50票。当前revision169：11done、2cancelled（AC保留）、T50 in_progress、36ready。cors_audit唯一产品writer，Lead治理/验收；Goal active。
+用户已激活Goal，执行全部50票。当前revision170：11done、2cancelled（AC保留）、T50 in_progress、36ready。cors_audit唯一产品writer，Lead治理/验收；Goal active。
 
 最近T39 result `6e1d7f8e9f3d67495a361634779b7f7f050e68ab`：C2真实118零skip、默认861执行/181环境skip、full/core与适用门禁通过。C1三项失败原记录保留，整个change仍未完成。
 

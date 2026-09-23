@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T14:11:47.734803+00:00",
+  "updated_at": "2026-09-23T14:22:06.273592+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -132,7 +132,8 @@
     "Revision166: T38 accepted at a3b289e, backend sourceA7a6f75 explicit; final real14 and frontend736 zeroSkip, defaultA854 executed/163 environment skips, fullA/coreB and complete frontend gates passed. Live Redis config failure preserved; correct raw HTTP provenance and clean owned cleanup.10done/2cancelled/38ready; nextT39; Goal active, no archive.",
     "Revision167: T39 in_progress from bec94ae after T38 closure; 10done/2cancelled/1in_progress/37ready. cors_audit sole product writer; Lead integration/governance. Absolute Captcha/Redis deadline, safe expiry and reclaimed-provider uncertainty; no production data repair.",
     "Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2 real118 zeroSkip; default861 executed/181 environment skips, full/core and applicable static gates passed; dual reviews and exact owned cleanup complete.11done/2cancelled/37ready; nextT50. Goal active, no production deployment/repair/archive.",
-    "Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations."
+    "Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations.",
+    "Revision170: T50 adds two exact existing Profile consumer tests before editing; 17 write entries, same sole writer and no production scope expansion."
   ],
   "worktrees": [
     {
@@ -618,9 +619,9 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "d544f02e1627d76883e9eeaf73a8f2b05002d079",
+      "source_checkpoint": "d1c3548424f696022292cf1a2fb6ec9b432c011f",
       "status": "active",
-      "updated_at": "2026-09-23T14:11:47.734803+00:00",
+      "updated_at": "2026-09-23T14:16:51.166748+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",

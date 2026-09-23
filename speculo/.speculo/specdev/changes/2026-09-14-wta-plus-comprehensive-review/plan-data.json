@@ -3993,7 +3993,9 @@
       "backend/wta-modules/wta-notify/src/test/",
       ".agents/skills/engineering-standards/references/notification.md",
       "frontend/packages/api-contracts/",
-      "frontend/tooling/openapi/"
+      "frontend/tooling/openapi/",
+      "backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonRebindNotificationTest.java",
+      "backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseTransferServiceTest.java"
     ],
     "tests": [
       "公共入口负向合同、每类生产调用方、历史WAIT样本终结"
@@ -4022,7 +4024,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 169,
+    "plan_revision": 170,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 公共入口负向合同、每类生产调用方、历史WAIT样本终结",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",

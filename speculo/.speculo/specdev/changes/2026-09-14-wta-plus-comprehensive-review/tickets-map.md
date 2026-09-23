@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 169
+plan_revision: 170
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -359,3 +359,8 @@ Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2
 ## revision169 T50启动
 
 Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations.
+
+## revision170 T50 Profile测试路径
+
+- <Path>backend/wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/PersonRebindNotificationTest.java</Path> => cors_audit，仅当前T50消费者断言。
+- <Path>backend/wta-modules/wta-profile/wta-profile-enterprise/src/test/java/org/namewta/profile/enterprise/service/impl/EnterpriseTransferServiceTest.java</Path> => cors_audit，仅当前T50消费者断言。

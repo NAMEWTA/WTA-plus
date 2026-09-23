@@ -250,3 +250,11 @@ Revision168: T39 accepted at6e1d7f8/tree602161; C1 real117/3failure retained, C2
 ## revision169 — T50启动
 
 Revision169: T50 active fromd544f02 after T39 closure;11done/2cancelled/T50in_progress/36ready. ALL+ASYNC+0 early rejection, all12 production callers, fenced historical unsupported disposition and real OpenAPI regeneration. cors_audit sole writer; Lead build/services/commit/governance. Goal active, no production operations.
+
+### T50阶段2实施检查点
+
+红灯d1c3548424f696022292cf1a2fb6ec9b432c011f为clean测试专用提交，NotificationSupportedModeRuntimeTest四项均因未抛业务拒绝失败，0error/skip；/tmp/wta-t50/red-supported-counts.json与fresh XML已保存。Lead已授权cors_audit阶段2在原15写集完整实现，未授权build/服务/提交；Lead负责固定候选验收和真实full OpenAPI捕获，ops仅准备/tmp owned驱动。Goal active，未归档。
+
+### revision170 T50 Profile消费者测试
+
+已预登记PersonRebindNotificationTest和EnterpriseTransferServiceTest两个精确测试路径，原15项变17项。cors_audit单writer，其他边界不变。
