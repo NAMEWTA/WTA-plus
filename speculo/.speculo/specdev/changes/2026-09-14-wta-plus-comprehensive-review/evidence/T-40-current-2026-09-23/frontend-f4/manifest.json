@@ -33,5 +33,10 @@
     "file": "frontend-f4-source.json",
     "bytes": 129,
     "sha256": "599f7124f3f241e05857792f9b023f777b748ec0ecef76fd472682320ece629d"
+  },
+  {
+    "file": "bounded-frontend-review.md",
+    "bytes": 4372,
+    "sha256": "e3f8d74c95eb39ea1807b14cda8da2dbdf21eeadbf93dccee92a2e85cdb10a5c"
   }
 ]
