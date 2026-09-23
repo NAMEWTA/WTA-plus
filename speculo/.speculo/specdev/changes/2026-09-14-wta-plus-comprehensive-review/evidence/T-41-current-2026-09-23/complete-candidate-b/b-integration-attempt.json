@@ -1,0 +1,19 @@
+{
+  "ticket": "T-41",
+  "attempt": 1,
+  "source": "05d0f3443dc3364917a8149ce9290f7dc6785670",
+  "tree": "f1672c953958ec94d3c20546d0b1a4e336e78825",
+  "started_at": "2026-09-23T16:30:38.776127+00:00",
+  "status": "failed",
+  "stages": [
+    "frontend architecture/lint/typecheck/test/build",
+    "backend default tests/full package",
+    "owned HTTP MySQL four tests",
+    "shared Notify fixture regression",
+    "real Chrome 501 inbox",
+    "core/static gates"
+  ],
+  "source_policy": "all product writers paused; service/build jobs serial; result remains null until complete evidence and dual review",
+  "finished_at": "2026-09-23T16:32:59.577350+00:00",
+  "failure": "frontend test: five new Notice SFC setup failures (missing SSR context) and existing registry suite import failure (unmocked user Store reaches browser router); architecture/lint/typecheck passed; later stages not run"
+}

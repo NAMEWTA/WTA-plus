@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision175，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision176，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision175；12done/2cancelled/T41 in_progress/35ready。后端A3四项真实测试/full live合同已通过；生成检查点42f07eb，cors_audit正在前端实施，完整票据/全套/浏览器尚待验收。Goal active。
+revision176；12done/2cancelled/T41 in_progress/35ready。完整候选B05d0f34首次前端集成测试失败，架构/lint/typecheck通过；新增路由测试写集后修复夹具，真实浏览器/后端全套尚待执行。Goal active。
 
 ### Pending Decisions and Blockers
 
@@ -383,3 +383,7 @@ Revision174: before production edits, correct T41 Mapper read projection to doma
 ## revision175 — T41分段检查点
 
 Revision175: T41 backend checkpoints A1 b08105f failed (fixture MPJ result mapping), A2 662b351 passed3, A3 9d748aa passed4 after atomic first-time preservation. Full JAR/live OpenAPI fetched and generated in42f07eb. Frontend sole writer cors_audit active;12done/2cancelled/T41in_progress/35ready. This is partial implementation feedback, not complete-ticket integration; default full suite/frontend/browser still pending.
+
+## revision176 — T41首次完整验证
+
+Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at frontend tests: missing Notice SFC SSR context and existing manifest registry test reaches browser Router through new user Store import. Architecture/lint/typecheck passed; later stages not run. Preserve raw failed evidence; add exact registry test path before fixture repair.24 declared entries;12done/2cancelled/T41in_progress/35ready. No product assertion weakened; Goal active.

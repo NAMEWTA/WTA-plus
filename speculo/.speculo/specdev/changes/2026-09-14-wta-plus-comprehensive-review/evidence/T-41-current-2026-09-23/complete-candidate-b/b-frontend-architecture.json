@@ -1,0 +1,12 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "architecture:check"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-23T16:30:00.839563+00:00",
+  "finished_at": "2026-09-23T16:30:03.337377+00:00",
+  "exit_code": 0,
+  "log": "b-frontend-architecture.log"
+}

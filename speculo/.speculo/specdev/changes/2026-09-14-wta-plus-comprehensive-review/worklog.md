@@ -1,6 +1,6 @@
 # 工作记录
 
-当前revision175：12done/2cancelled/T41 in_progress/35ready；后端A3=9d748aa四项真实通过，正式生成42f07eb，cors_audit正在前端实施；完整票据尚未验收。以下旧记录按原时点保留。
+当前revision176：12done/2cancelled/T41 in_progress/35ready。候选B首次前端测试失败，仅测试装配待修；原失败保留，未声称整票通过。
 
 ## Goal
 
@@ -280,3 +280,7 @@ Revision174: before production edits, correct T41 Mapper read projection to doma
 ## revision175 — T41分段检查点
 
 Revision175: T41 backend checkpoints A1 b08105f failed (fixture MPJ result mapping), A2 662b351 passed3, A3 9d748aa passed4 after atomic first-time preservation. Full JAR/live OpenAPI fetched and generated in42f07eb. Frontend sole writer cors_audit active;12done/2cancelled/T41in_progress/35ready. This is partial implementation feedback, not complete-ticket integration; default full suite/frontend/browser still pending.
+
+## revision176 — T41测试夹具修复
+
+Revision176: complete T41 candidate B 05d0f34 failed integration attempt1 at frontend tests: missing Notice SFC SSR context and existing manifest registry test reaches browser Router through new user Store import. Architecture/lint/typecheck passed; later stages not run. Preserve raw failed evidence; add exact registry test path before fixture repair.24 declared entries;12done/2cancelled/T41in_progress/35ready. No product assertion weakened; Goal active.

@@ -1,0 +1,159 @@
+{
+  "at": "2026-09-23T16:29:55.702498+00:00",
+  "parent": "98ba20ffc17a63ce6bd9325799f5185e298436a9",
+  "path_count": 37,
+  "outside_scope": [],
+  "paths": [
+    {
+      "file": "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "sha256": "43447d35c694c5c80a7fde6b3b5e0cb142b9cb1969c973c6f3d9e9889c19bf44"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/layout/components/notice/index.test.ts",
+      "sha256": "8edb99098f88d07da7c114064623757a0cbc7f27b3322ab9c7c36d0af34d70d3"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/layout/components/notice/index.vue",
+      "sha256": "a7018ad1fb5fb6dd8df66cba83c0049c44ed1930f0e995837f107bc980001635"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+      "sha256": "2339fa27cf7a91169ccbc144e3b91c6933258270fc4b984cf690506041d94e36"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/store/modules/notice.test.ts",
+      "sha256": "75bcccea210883ceb55e5a7967605bb3775614573f6270c4f041992b85863c29"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/store/modules/notice.ts",
+      "sha256": "dc33ef63f59fe59b0d11d08dd0eb04334ccab654f09564c2b883bf965aeea587"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/utils/push.test.ts",
+      "sha256": "d68adc912d13a08480b5ced05595a528c3e82362b83aee07181d2bb067934121"
+    },
+    {
+      "file": "frontend/apps/admin-web/src/utils/push.ts",
+      "sha256": "89a398a052e6af32c277fdd0adbe051720472b15a914b3d0bd766a3a6a357011"
+    },
+    {
+      "file": "frontend/e2e/app-runtime-baseline.spec.ts",
+      "sha256": "22635a170138ba23c9796c41907f71b9fd02fdbc0fda92f255be52dc2ce5b165"
+    },
+    {
+      "file": "frontend/e2e/client-auth-context.spec.ts",
+      "sha256": "ca919e9329f4c87d5afb5f1f29bfa1fabfcfd258db83edfcaa9798e70c667845"
+    },
+    {
+      "file": "frontend/e2e/demo-manifest.spec.ts",
+      "sha256": "dc4dd88d1a2d9c298282439a3ff1173ddae94d773b06420c9025d4e461ebfb43"
+    },
+    {
+      "file": "frontend/e2e/inbox-paged-real.e2e.ts",
+      "sha256": "bc2905b9a1e0ddb5db949d4eb3b2f94cdc4ecf512f768541a12d294412636603"
+    },
+    {
+      "file": "frontend/e2e/inbox-paged-real.md",
+      "sha256": "2c598914fda32003cf7f4eb237bca283fd781b615e2af9ae59815d0140178c8c"
+    },
+    {
+      "file": "frontend/e2e/inbox-real.e2e.ts",
+      "sha256": "35b41449122bf07a77bb63452a52f918eba0d71ca557dfa33631822d51637688"
+    },
+    {
+      "file": "frontend/e2e/inbox-without-realtime.spec.ts",
+      "sha256": "32e34f3268062628b41303903227732e609f9ad625de5f5f2ceaaeb2f5467ad2"
+    },
+    {
+      "file": "frontend/e2e/nacos-console.spec.ts",
+      "sha256": "a53fe3892ed9cf3166327f433d490403ed176fec59de27d8072480fb0dbf7d3b"
+    },
+    {
+      "file": "frontend/e2e/operations-domain.spec.ts",
+      "sha256": "52edfde3378a3ac79420ec3a3aa12478ac4d6575829d14d9b92c021a66882b51"
+    },
+    {
+      "file": "frontend/e2e/oss-config-access-policy.spec.ts",
+      "sha256": "d02b2b7275e74b7ac56525b4ff689b487dba0d49071506307ad12dc2cb4d1b94"
+    },
+    {
+      "file": "frontend/e2e/playwright.inbox-paged-real.config.ts",
+      "sha256": "860f0254ef131fa9c8a42eaf83850fe2352ac323de9d1031f7b8bab6a8186545"
+    },
+    {
+      "file": "frontend/e2e/profile-management.spec.ts",
+      "sha256": "0bebeba6bfe10145480036da0eca7c3dc0fb38f8b27d8774e457d6b45c8f8473"
+    },
+    {
+      "file": "frontend/e2e/run-inbox-paged-real.py",
+      "sha256": "bd1798bba7a3ea78640e054e11f04905faf56ca38b8594196e18fc379c4c1f88"
+    },
+    {
+      "file": "frontend/e2e/system-identity.spec.ts",
+      "sha256": "5ab2652c202dad8418f47ff604d4c8c47ac9e929d294746760eb30c8146057dc"
+    },
+    {
+      "file": "frontend/e2e/system-resources.spec.ts",
+      "sha256": "f140d72bb1592bc75658600b21ff6b67b528ab9704a705aae18599742ca498ec"
+    },
+    {
+      "file": "frontend/e2e/test_run_inbox_paged_real.py",
+      "sha256": "96295d752946205f604c1a7223f549650368f44d11d9fd9e388fe607dc2537c5"
+    },
+    {
+      "file": "frontend/e2e/third-party-management.spec.ts",
+      "sha256": "5e81dabfa2b51bfc79b026e2f4c34fc081dbedcf205739be91f4803924e1b6f5"
+    },
+    {
+      "file": "frontend/e2e/upload-import-lifecycle.spec.ts",
+      "sha256": "a76803c63a7d4a9ddd15dea7440e25f586fd3d1aee82028bf042293bd6affe87"
+    },
+    {
+      "file": "frontend/e2e/workflow-definition.spec.ts",
+      "sha256": "db289765a6433253d798ed540290cf218b3ec71d8b73f7509550070a91523182"
+    },
+    {
+      "file": "frontend/e2e/workflow-runtime.spec.ts",
+      "sha256": "81f3753b3095961cc69f6a715252db606b86a206bfd4c31533f427eaf08d1bca"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/inbox/index.ts",
+      "sha256": "d9afb62bcfe577d4a684632f8d4dbae90609f8d19b4a4b0b38175dbeef5a6731"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/inbox/types.ts",
+      "sha256": "cb2023141fd801bc417d09c17d5d013a7f6348673cb227e0374eedf202c3e59e"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/index.ts",
+      "sha256": "2e021f30639ea06dca2de1100d9032816a187002d54948c0e6f288be9d7b2456"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/transport.test.ts",
+      "sha256": "47053de1487caf48e331cb3079d1bdaba8e77d0ee85778c0d7a9c3f5842aa8f3"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/transport.ts",
+      "sha256": "e052a3f1ddcefaf20cb2c0930e22180ac7613e6d3134779175490ac2762864b1"
+    },
+    {
+      "file": "frontend/packages/domains/notify/src/types.ts",
+      "sha256": "201e5a49fd213b556be6e638be1ce38518ecd0b01500c3c4b932d7cbf9765679"
+    },
+    {
+      "file": "frontend/packages/web-domains/notify/src/InboxPage.test.ts",
+      "sha256": "1c0b37b4abfa787bdea130694d326dc4f172e3b0a4ef62784704021b6db81d3a"
+    },
+    {
+      "file": "frontend/packages/web-domains/notify/src/InboxPage.vue",
+      "sha256": "e824bf36fd8c68ad4bff44d53b17c637f8fcee522f857bb7d6e41e42f4c3615c"
+    },
+    {
+      "file": "frontend/packages/web-domains/notify/src/runtime.ts",
+      "sha256": "30e17d50d4ec5968fc44075f0adb4861a8c27e89df2dcec3d90da89bb62cd1d4"
+    }
+  ],
+  "handoff": "cors_audit returns sole product write lock; complete candidate B ready for Lead gates; no acceptance claimed",
+  "candidate": "05d0f3443dc3364917a8149ce9290f7dc6785670",
+  "tree": "f1672c953958ec94d3c20546d0b1a4e336e78825"
+}

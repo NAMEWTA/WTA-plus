@@ -1,0 +1,57 @@
+[
+  {
+    "file": "b-frontend-handoff.json",
+    "sha256": "5450184e824e8e6d9c9521b386ecb9605547932893659a0e7a16352e418783be",
+    "bytes": 6333
+  },
+  {
+    "file": "b-integration-attempt.json",
+    "sha256": "f6d42f3630b86ff71e71d4fe6ec5d6b0b5249446895f0e70ed98d667ca43e90c",
+    "bytes": 891
+  },
+  {
+    "file": "b-frontend-environment.json",
+    "sha256": "42a44469361dae3e596ecd0ab59c7a7394b0874d86c3ef7917545daeda77430b",
+    "bytes": 309
+  },
+  {
+    "file": "b-frontend-architecture.json",
+    "sha256": "44ab7c198a29ce59ca1af0fb91b77fa29de209b786ff3119fbbcdccfe7386390",
+    "bytes": 274
+  },
+  {
+    "file": "b-frontend-architecture.log",
+    "sha256": "bf2fe1522a51ccbb3ddccb87a394dfd2ed34ad42f259380ffd8ffe3fef9acc84",
+    "bytes": 189
+  },
+  {
+    "file": "b-frontend-lint.json",
+    "sha256": "392bf67f63ef11d7285b31817607f6b96fa8aa58d04471ee6dc21687ab8f170b",
+    "bytes": 252
+  },
+  {
+    "file": "b-frontend-lint.log",
+    "sha256": "1cf4fc88ac9ff6cbc1cdbd6a6d1da3cc2c09d89722c9c86cec9dc407fdb70274",
+    "bytes": 3081
+  },
+  {
+    "file": "b-frontend-typecheck.json",
+    "sha256": "73352affdc25fa0efac67a3b853166a1e222b0bf454998883bfac581134f2c95",
+    "bytes": 262
+  },
+  {
+    "file": "b-frontend-typecheck.log",
+    "sha256": "358d076285a66f8ffe048ac43b3ffc376ab5269c0fbed7e67fd8be34a677e5ab",
+    "bytes": 4072
+  },
+  {
+    "file": "b-frontend-test.json",
+    "sha256": "fb17b37ff93b63a8d54bfcf833226a247946ccdd5de16a04197a32429ce9a18e",
+    "bytes": 252
+  },
+  {
+    "file": "b-frontend-test.log",
+    "sha256": "5b5d7314d748db2abc89f8f552dfbdd2d5a583e7841f6d60e6a8262a46319c66",
+    "bytes": 34063
+  }
+]

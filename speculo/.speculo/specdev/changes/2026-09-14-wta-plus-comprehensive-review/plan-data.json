@@ -3369,7 +3369,8 @@
       "frontend/packages/web-domains/notify/src/InboxPage.test.ts",
       "frontend/packages/web-domains/notify/src/runtime.ts",
       "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
-      "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java"
+      "backend/wta-admin/src/test/java/org/namewta/test/security/BrowserHttpsTransportIntegrationTest.java",
+      "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts"
     ],
     "tests": [
       "真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器"
@@ -3400,7 +3401,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 175,
+    "plan_revision": 176,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: 真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
