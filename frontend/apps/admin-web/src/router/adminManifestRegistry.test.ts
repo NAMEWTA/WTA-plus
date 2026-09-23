@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { adminProfileWebRuntime, adminSystemWebRuntime, resolveAdminWebRegistration } from './adminManifestRegistry';
 
+vi.mock('@/store/modules/user', () => ({
+  useUserStore: () => ({ token: '', sessionGeneration: 0, userId: '', identityLoaded: false })
+}));
 vi.mock('@/application/services', () => {
   const createService = () => {
     const service = new Proxy(vi.fn(), {

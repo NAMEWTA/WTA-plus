@@ -1,4 +1,4 @@
-import { createRenderer, reactive, type ComponentOptions } from 'vue';
+import { createRenderer, reactive, ssrContextKey, type ComponentOptions } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ElMessage } from 'element-plus';
 import { refreshMessageInbox } from '@/utils/push';
@@ -58,6 +58,7 @@ function fixture() {
   });
   harness.detail.mockResolvedValue({ data: { messageId: '1', title: 'A 消息', content: 'A 正文' } });
   const app = renderer.createApp({ ...(Notice as unknown as ComponentOptions), render: () => null });
+  app.provide(ssrContextKey, { modules: new Set<string>() });
   const instance = app.mount(node());
   cleanups.push(() => app.unmount());
   return { app, state: Reflect.get(instance.$, 'setupState') as NoticeState };
