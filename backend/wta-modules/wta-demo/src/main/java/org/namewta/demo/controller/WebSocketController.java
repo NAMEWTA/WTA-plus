@@ -18,8 +18,6 @@ import java.util.List;
 
 /**
  * WebSocket 演示案例
- *
- * @author zendwang
  */
 @RequiredArgsConstructor
 @RestController

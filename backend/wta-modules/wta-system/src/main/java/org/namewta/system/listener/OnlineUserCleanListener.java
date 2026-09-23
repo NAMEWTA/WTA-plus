@@ -11,8 +11,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * 在线用户清理监听器。
- *
- * @author Lion Li
  */
 @Component
 @RequiredArgsConstructor

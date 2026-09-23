@@ -5,8 +5,6 @@ import org.namewta.common.core.utils.StringUtils;
 
 /**
  * 路由显示信息
- *
- * @author wta
  */
 
 @Data

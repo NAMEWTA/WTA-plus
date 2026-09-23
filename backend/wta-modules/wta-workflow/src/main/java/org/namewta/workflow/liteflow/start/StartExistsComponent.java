@@ -8,8 +8,6 @@ import org.namewta.workflow.domain.context.StartProcessContext;
 
 /**
  * 判断启动流程时是否走已有实例续提交分支。
- *
- * @author may
  */
 @ConditionalOnEnable
 @LiteflowComponent("startExists")

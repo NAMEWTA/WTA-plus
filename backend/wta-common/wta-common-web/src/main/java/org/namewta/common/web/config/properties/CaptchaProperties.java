@@ -11,8 +11,6 @@ import java.util.Set;
 
 /**
  * 验证码 配置属性
- *
- * @author Lion Li
  */
 @ConfigurationProperties(prefix = "captcha")
 public class CaptchaProperties implements NacosConfigParticipant<CaptchaProperties.Snapshot> {

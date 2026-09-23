@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 
 /**
  * OSS对象存储视图对象 sys_oss
- *
- * @author Lion Li
  */
 @Data
 @AutoMapper(target = SysOss.class)

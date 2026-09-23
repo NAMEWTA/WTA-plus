@@ -14,7 +14,6 @@ import java.util.List;
  *
  * <p>分层 Mapper 只向 DAO 暴露实体和读模型，不直接暴露 HTTP VO。</p>
  *
- * @author ${author}
  * @date ${datetime}
  */
 public interface ${ClassName}Mapper extends BaseMapperPlus<${ClassName}, ${ClassName}Row> {

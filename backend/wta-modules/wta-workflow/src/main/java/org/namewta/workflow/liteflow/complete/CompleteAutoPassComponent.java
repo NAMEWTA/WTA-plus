@@ -28,8 +28,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
  * 执行当前处理人的后续自动审批。
  * <p>
  * 仅当流程实例开启自动审批时生效，用于连续跳过同一登录人负责的后续待办任务。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

@@ -22,8 +22,6 @@ import java.util.List;
 
 /**
  * 通用配置
- *
- * @author Lion Li
  */
 @AutoConfiguration
 @EnableConfigurationProperties(CorsProperties.class)

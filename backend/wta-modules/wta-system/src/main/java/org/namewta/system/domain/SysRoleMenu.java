@@ -7,8 +7,6 @@ import lombok.Data;
 
 /**
  * 角色和菜单关联 sys_role_menu
- *
- * @author Lion Li
  */
 
 @Data

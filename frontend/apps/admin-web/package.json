@@ -5,7 +5,6 @@
   "private": true,
   "description": "NAMEWTA admin web application",
   "license": "MIT",
-  "author": "LionLi",
   "repository": {
     "type": "git",
     "url": "https://github.com/NAMEWTA/WTA-plus.git"

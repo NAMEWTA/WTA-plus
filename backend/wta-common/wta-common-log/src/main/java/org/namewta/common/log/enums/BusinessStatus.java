@@ -2,8 +2,6 @@ package org.namewta.common.log.enums;
 
 /**
  * 操作状态
- *
- * @author wta
  */
 public enum BusinessStatus {
     /**

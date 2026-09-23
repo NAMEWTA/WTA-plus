@@ -16,8 +16,6 @@ import java.util.List;
 
 /**
  * 部门视图对象 sys_dept
- *
- * @author Michelle.Chung
  */
 @Data
 @ExcelIgnoreUnannotated

@@ -2,8 +2,6 @@ package org.namewta.common.core.constant;
 
 /**
  * 返回状态码
- *
- * @author Lion Li
  */
 public interface HttpStatus {
     /**

@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * 消息推送传输方式条件判断。
- *
- * @author Lion Li
  */
 public class MessageTransportCondition implements Condition {
 

@@ -4,8 +4,6 @@ import lombok.Data;
 
 /**
  * OSS对象存储 配置属性
- *
- * @author Lion Li
  */
 @Data
 public class OssProperties {

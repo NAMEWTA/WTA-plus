@@ -6,8 +6,6 @@ import org.springframework.aop.support.AbstractPointcutAdvisor;
 
 /**
  * 数据权限注解切面定义
- *
- * @author 秋辞未寒
  */
 @SuppressWarnings("all")
 public class DataPermissionPointcutAdvisor extends AbstractPointcutAdvisor {

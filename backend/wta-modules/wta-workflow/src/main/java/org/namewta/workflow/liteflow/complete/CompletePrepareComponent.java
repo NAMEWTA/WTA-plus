@@ -28,8 +28,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
  * 准备任务办理上下文。
  * <p>
  * 负责加载任务实例、补齐流程变量，并解析弹窗选择的后续办理人。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

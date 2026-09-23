@@ -10,8 +10,6 @@ import java.io.Serial;
 
 /**
  * 通用业务异常，支持使用占位符拼接错误信息。
- *
- * @author wta
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -25,8 +25,6 @@ import static org.namewta.common.push.constant.MessageConstants.MESSAGE_TOPIC;
 
 /**
  * WebSocket 会话管理器。
- *
- * @author Lion Li
  */
 @Slf4j
 public class WebSocketSessionManager implements PushSessionManager {

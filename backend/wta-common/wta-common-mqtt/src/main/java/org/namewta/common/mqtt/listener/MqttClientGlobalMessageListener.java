@@ -9,8 +9,6 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * 全局消息监听，可以监听到所有订阅消息
- *
- * @author Lion Li
  */
 @Slf4j
 public class MqttClientGlobalMessageListener implements IMqttClientGlobalMessageListener {

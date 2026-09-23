@@ -11,8 +11,6 @@ package org.namewta.common.core.constant;
  * local 默认开启本地缓存为1 关闭本地缓存为0
  * <p>
  * 例子: test#60s、test#0#60s、test#0#1m#1000、test#1h#0#500、test#1h#0#500#0
- *
- * @author Lion Li
  */
 public interface CacheNames {
 

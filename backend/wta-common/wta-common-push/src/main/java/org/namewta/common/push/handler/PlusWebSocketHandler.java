@@ -22,8 +22,6 @@ import java.util.List;
 /**
  * WebSocket 请求处理器
  * 处理WebSocket连接建立、消息接收、异常、断开等全生命周期事件
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 @Slf4j

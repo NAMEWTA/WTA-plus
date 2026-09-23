@@ -13,8 +13,6 @@ import java.util.Set;
 
 /**
  * 部门翻译实现
- *
- * @author Lion Li
  */
 @AllArgsConstructor
 @TranslationType(type = TransConstant.DEPT_ID_TO_NAME)

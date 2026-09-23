@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 /**
  * 当前在线会话信息对象。
- *
- * @author wta
  */
 @Data
 @NoArgsConstructor

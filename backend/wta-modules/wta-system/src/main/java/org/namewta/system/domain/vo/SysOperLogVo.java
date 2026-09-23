@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 /**
  * 操作日志记录视图对象 sys_oper_log
  *
- * @author Michelle.Chung
  * @date 2023-02-07
  */
 @Data

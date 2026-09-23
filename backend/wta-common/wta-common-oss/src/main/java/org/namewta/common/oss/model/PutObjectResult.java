@@ -7,7 +7,6 @@ package org.namewta.common.oss.model;
  * @param key
  * @param eTag
  * @param size
- * @author 秋辞未寒
  */
 public record PutObjectResult(
     String url,

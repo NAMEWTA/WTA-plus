@@ -14,8 +14,6 @@ import java.util.List;
 
 /**
  * 搜索引擎 crud 演示案例
- *
- * @author Lion Li
  */
 @ConditionalOnProperty(value = "easy-es.enable", havingValue = "true")
 @RequiredArgsConstructor

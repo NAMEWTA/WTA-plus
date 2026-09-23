@@ -19,8 +19,6 @@ import java.util.List;
 
 /**
  * 办理人权限处理器
- *
- * @author AprilWind
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

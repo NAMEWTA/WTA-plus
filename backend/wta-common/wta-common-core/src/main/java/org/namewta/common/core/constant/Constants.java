@@ -2,8 +2,6 @@ package org.namewta.common.core.constant;
 
 /**
  * 通用基础常量定义。
- *
- * @author wta
  */
 public interface Constants {
 

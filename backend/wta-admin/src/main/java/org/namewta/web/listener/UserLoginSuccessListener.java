@@ -23,8 +23,6 @@ import java.time.Duration;
 
 /**
  * 用户登录成功监听器。
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 @Component

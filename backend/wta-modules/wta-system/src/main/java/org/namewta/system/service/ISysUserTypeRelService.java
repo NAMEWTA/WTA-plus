@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * 用户登录域关系Service接口
- *
- * @author NAMEWTA
  */
 public interface ISysUserTypeRelService {
 

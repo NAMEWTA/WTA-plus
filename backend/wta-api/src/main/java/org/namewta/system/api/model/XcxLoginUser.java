@@ -8,8 +8,6 @@ import java.io.Serial;
 
 /**
  * 小程序登录用户上下文对象。
- *
- * @author Lion Li
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

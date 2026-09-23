@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 /**
  * 通用登录请求对象，封装客户端、授权类型和验证码信息。
- *
- * @author Lion Li
  */
 @Data
 public class LoginBody implements Serializable {

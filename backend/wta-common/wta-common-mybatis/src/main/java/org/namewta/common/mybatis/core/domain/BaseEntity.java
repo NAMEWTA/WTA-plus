@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * Entity基类
- *
- * @author Lion Li
  */
 @Data
 public class BaseEntity implements Serializable {

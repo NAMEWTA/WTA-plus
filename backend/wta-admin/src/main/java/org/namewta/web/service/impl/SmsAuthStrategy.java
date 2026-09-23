@@ -32,8 +32,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * 短信认证策略
- *
- * @author Michelle.Chung
  */
 @Slf4j
 @Service("sms" + IAuthStrategy.BASE_NAME)

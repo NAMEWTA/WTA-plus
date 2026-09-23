@@ -10,8 +10,6 @@ import java.util.Objects;
 
 /**
  * 查询下一节点信息的请求对象。
- *
- * @author may
  */
 @Data
 public class FlowNextNodeBo implements Serializable {

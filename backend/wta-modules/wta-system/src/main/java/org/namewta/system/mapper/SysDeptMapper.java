@@ -23,8 +23,6 @@ import static org.namewta.common.core.constant.SystemConstants.NORMAL;
 
 /**
  * 部门管理 数据层
- *
- * @author Lion Li
  */
 public interface SysDeptMapper extends BaseMapperPlus<SysDept, SysDeptVo>, MPJBaseMapper<SysDept> {
 

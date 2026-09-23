@@ -6,8 +6,6 @@ import org.namewta.system.domain.vo.SysRoleVo;
 
 /**
  * 客户端默认角色解析服务。
- *
- * @author NAMEWTA
  */
 public interface ISysClientDefaultRoleResolverService {
 

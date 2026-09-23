@@ -18,8 +18,6 @@ import java.util.List;
 
 /**
  * 分页查询实体类
- *
- * @author Lion Li
  */
 @Data
 @NoArgsConstructor

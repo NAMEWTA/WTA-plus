@@ -7,8 +7,6 @@ import org.namewta.common.core.domain.model.LoginBody;
 
 /**
  * 短信验证码登录请求对象。
- *
- * @author Lion Li
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

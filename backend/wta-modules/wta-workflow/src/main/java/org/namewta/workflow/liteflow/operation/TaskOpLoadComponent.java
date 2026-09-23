@@ -17,8 +17,6 @@ import org.namewta.workflow.domain.context.TaskOperationContext;
 
 /**
  * 加载任务节点并校验操作约束。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

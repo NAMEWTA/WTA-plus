@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 
 /**
  * OSS翻译实现
- *
- * @author Lion Li
  */
 @AllArgsConstructor
 @TranslationType(type = TransConstant.OSS_ID_TO_URL)

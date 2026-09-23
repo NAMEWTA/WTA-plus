@@ -6,8 +6,6 @@ import java.io.Serial;
 
 /**
  * 文件信息异常类
- *
- * @author wta
  */
 public class FileException extends BaseException {
 

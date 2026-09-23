@@ -14,8 +14,6 @@ import java.util.function.Consumer;
 
 /**
  * 授权策略
- *
- * @author Michelle.Chung
  */
 public interface IAuthStrategy {
 

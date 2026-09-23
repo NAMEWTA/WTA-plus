@@ -11,8 +11,6 @@ import java.util.List;
 
 /**
  * 用户 业务层
- *
- * @author Lion Li
  */
 public interface ISysUserService {
 

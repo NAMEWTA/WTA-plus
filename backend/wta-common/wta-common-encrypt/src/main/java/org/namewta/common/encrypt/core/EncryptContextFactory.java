@@ -10,8 +10,6 @@ import java.lang.reflect.Field;
 
 /**
  * 加密上下文工厂。
- *
- * @author Lion Li
  */
 public class EncryptContextFactory {
 

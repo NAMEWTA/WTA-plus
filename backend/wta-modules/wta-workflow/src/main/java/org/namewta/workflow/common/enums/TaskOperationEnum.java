@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 
 /**
  * 任务操作类型枚举，定义流程任务支持的运行时操作。
- *
- * @author may
  */
 @Getter
 @AllArgsConstructor

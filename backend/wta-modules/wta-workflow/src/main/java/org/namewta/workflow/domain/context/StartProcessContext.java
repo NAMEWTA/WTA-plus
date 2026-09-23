@@ -16,8 +16,6 @@ import java.util.Map;
  * 启动流程 LiteFlow 上下文。
  * <p>
  * 链路内保存启动参数、流程定义、流程实例和首个任务等中间结果。
- *
- * @author may
  */
 @Data
 public class StartProcessContext {

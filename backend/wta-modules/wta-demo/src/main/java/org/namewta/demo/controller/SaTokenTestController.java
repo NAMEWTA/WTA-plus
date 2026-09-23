@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * SaToken 权限测试 接口文档输出测试
- *
- * @author AprilWind
  */
 @Slf4j
 @RestController

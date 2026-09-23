@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 
 /**
  * 岗位信息视图对象 sys_post
- *
- * @author Michelle.Chung
  */
 @Data
 @ExcelIgnoreUnannotated

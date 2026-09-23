@@ -6,8 +6,6 @@ import java.util.Map;
 
 /**
  * 流程节点扩展属性 服务层
- *
- * @author AprilWind
  */
 public interface IFlwNodeExtService {
 

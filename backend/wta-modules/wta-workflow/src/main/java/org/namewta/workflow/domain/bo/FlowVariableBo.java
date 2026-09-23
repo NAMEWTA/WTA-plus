@@ -9,7 +9,6 @@ import org.namewta.common.core.validate.AddGroup;
  * @param instanceId 流程实例 ID
  * @param key        变量键
  * @param value      变量值
- * @author may
  */
 public record FlowVariableBo(
     @NotNull(message = "流程实例id为空", groups = AddGroup.class)

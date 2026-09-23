@@ -10,8 +10,6 @@ import java.lang.annotation.Target;
 
 /**
  * 字典项校验注解
- *
- * @author AprilWind
  */
 @Constraint(validatedBy = DictPatternValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER})

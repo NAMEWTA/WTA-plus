@@ -20,8 +20,6 @@ import java.util.function.Function;
 
 /**
  * 校验实例删除权限并发布业务删除事件。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * swagger3 用法示例
- *
- * @author Lion Li
  */
 @RestController
 @RequestMapping("/swagger/demo")

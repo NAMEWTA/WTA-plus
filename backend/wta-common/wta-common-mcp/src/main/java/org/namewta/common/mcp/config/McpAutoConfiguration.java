@@ -11,8 +11,6 @@ import java.util.List;
 
 /**
  * MCP 公共模块自动配置。
- *
- * @author Lion Li
  */
 @AutoConfiguration
 public class McpAutoConfiguration {

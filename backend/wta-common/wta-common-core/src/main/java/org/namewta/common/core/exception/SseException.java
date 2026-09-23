@@ -9,8 +9,6 @@ import java.io.Serial;
 
 /**
  * SSE 场景专用异常。
- *
- * @author LionLi
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

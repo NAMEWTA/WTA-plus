@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 /**
  * ${functionName}视图对象 ${tableName}
  *
- * @author ${author}
  * @date ${datetime}
  */
 @Data

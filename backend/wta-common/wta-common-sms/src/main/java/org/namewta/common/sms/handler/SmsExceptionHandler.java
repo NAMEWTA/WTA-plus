@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * SMS异常处理器
- *
- * @author AprilWind
  */
 @Slf4j
 @RestControllerAdvice

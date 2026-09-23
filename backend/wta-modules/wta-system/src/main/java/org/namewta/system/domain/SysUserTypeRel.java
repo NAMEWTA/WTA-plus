@@ -10,8 +10,6 @@ import java.io.Serial;
 
 /**
  * 用户登录域关系对象 sys_user_type_rel
- *
- * @author NAMEWTA
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -19,8 +19,6 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * 加解密配置
- *
- * @author Lion Li
  */
 @AutoConfiguration(after = MybatisPlusAutoConfiguration.class)
 @EnableConfigurationProperties(EncryptorProperties.class)

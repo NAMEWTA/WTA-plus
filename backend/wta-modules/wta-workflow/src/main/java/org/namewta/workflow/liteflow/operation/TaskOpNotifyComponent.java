@@ -19,8 +19,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.PATH_TASK_WAITIN
 
 /**
  * 任务操作成功后发送待办消息。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

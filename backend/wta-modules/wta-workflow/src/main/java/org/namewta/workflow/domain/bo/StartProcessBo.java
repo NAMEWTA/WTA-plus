@@ -15,8 +15,6 @@ import java.util.Objects;
 
 /**
  * 启动流程对象
- *
- * @author may
  */
 @Data
 public class StartProcessBo implements Serializable {

@@ -17,8 +17,6 @@ import java.util.Map;
 
 /**
  * XSS 请求包装器，统一清洗参数与 JSON 请求体中的 HTML 标签内容。
- *
- * @author wta
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     private final CapturedRequestBody view;

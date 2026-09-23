@@ -19,7 +19,6 @@ import ${import};
 /**
  * ${functionName}业务对象 ${tableName}
  *
- * @author ${author}
  * @date ${datetime}
  */
 @Data

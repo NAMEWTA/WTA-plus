@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 /**
  * 流程spel表达式定义视图对象 flow_spel
  *
- * @author Michelle.Chung
  * @date 2025-07-04
  */
 @Data

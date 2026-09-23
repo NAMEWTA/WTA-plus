@@ -17,7 +17,6 @@ import java.util.List;
  * ${functionName} 数据访问对象。
  *
  * <p>DAO 统一封装查询条件、分页、锁语义和 Mapper 调用，只返回实体或读模型。</p>
- * @author ${author}
  *
  * @date ${datetime}
  */

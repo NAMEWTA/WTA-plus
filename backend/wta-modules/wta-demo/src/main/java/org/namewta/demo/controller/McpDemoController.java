@@ -29,8 +29,6 @@ import java.util.Map;
  *     <li>`GET /demo/mcp/resource?uri=demo://summary`：读取外部 MCP 资源</li>
  * </ul>
  * 当 `spring.ai.mcp.client.enabled=false` 时，接口会返回提示，不影响应用启动。
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 @RestController

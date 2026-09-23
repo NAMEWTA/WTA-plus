@@ -13,8 +13,6 @@ import java.util.Objects;
 
 /**
  * yml 配置源工厂
- *
- * @author Lion Li
  */
 public class YmlPropertySourceFactory extends DefaultPropertySourceFactory {
 

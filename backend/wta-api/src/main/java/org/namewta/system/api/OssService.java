@@ -10,8 +10,6 @@ import java.util.List;
 
 /**
  * 通用 OSS服务
- *
- * @author Lion Li
  */
 public interface OssService {
 

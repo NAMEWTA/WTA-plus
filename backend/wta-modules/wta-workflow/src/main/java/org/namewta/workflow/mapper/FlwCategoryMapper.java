@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 /**
  * 流程分类Mapper接口
  *
- * @author may
  * @date 2023-06-27
  */
 public interface FlwCategoryMapper extends BaseMapperPlus<FlowCategory, FlowCategoryVo> {

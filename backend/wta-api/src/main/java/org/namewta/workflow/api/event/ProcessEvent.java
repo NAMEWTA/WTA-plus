@@ -8,8 +8,6 @@ import java.util.Map;
 
 /**
  * 总体流程监听
- *
- * @author may
  */
 @Data
 public class ProcessEvent implements Serializable {

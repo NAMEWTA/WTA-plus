@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 
 /**
  * 任务分配人枚举
- *
- * @author AprilWind
  */
 @Getter
 @AllArgsConstructor

@@ -8,8 +8,6 @@ import org.namewta.common.encrypt.enums.AlgorithmType;
 
 /**
  * 测试加密字段实体。
- *
- * @author Lion Li
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -10,8 +10,6 @@ import java.util.*;
 
 /**
  * 加密字段处理器。
- *
- * @author Lion Li
  */
 @Slf4j
 public class EncryptedFieldProcessor {

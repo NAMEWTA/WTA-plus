@@ -30,7 +30,6 @@ import java.util.function.Supplier;
 /**
  * SQL 注入器
  *
- * @author yulichang
  * @see DefaultSqlInjector
  */
 @Getter

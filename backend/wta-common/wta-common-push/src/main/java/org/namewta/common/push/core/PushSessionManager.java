@@ -7,8 +7,6 @@ import java.util.function.Consumer;
 
 /**
  * 统一推送会话管理器。
- *
- * @author Lion Li
  */
 public interface PushSessionManager {
 

@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 
 /**
  * 存储权限框架注解解析后的权限和角色信息
- *
- * @author AprilWind
  */
 @Data
 @JsonInclude(Include.NON_EMPTY)

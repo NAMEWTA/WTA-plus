@@ -17,7 +17,6 @@ import static org.namewta.common.core.constant.HttpStatus.SUCCESS;
  * 响应信息主体
  *
  * @param <T> 响应数据的泛型类型
- * @author Lion Li
  */
 @Data
 @NoArgsConstructor

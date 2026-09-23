@@ -13,7 +13,6 @@ import java.util.Optional;
  *
  * @param enabled      是否启用ACL
  * @param accessPolicy 访问策略
- * @author 秋辞未寒
  */
 @Builder
 public record AccessControlPolicyConfig(

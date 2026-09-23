@@ -17,7 +17,6 @@ import java.util.function.Supplier;
  * <br>
  * 提供了一组与 ExcelWriter 一一对应的写出方法，避免直接提供 ExcelWriter 而导致的一些不可控问题（比如提前关闭了IO流等）
  *
- * @author 秋辞未寒
  * @see ExcelWriter
  */
 public record ExcelWriterWrapper<T>(ExcelWriter excelWriter) {

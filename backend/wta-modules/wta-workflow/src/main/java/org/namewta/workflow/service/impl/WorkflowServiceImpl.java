@@ -34,8 +34,6 @@ import java.util.Map;
 
 /**
  * 通用 工作流服务实现
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

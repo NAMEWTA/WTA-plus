@@ -17,7 +17,6 @@ import java.util.List;
  *
  * <p>Service 只承载业务规则和外部端口适配，持久化查询统一委托 DAO。</p>
  *
- * @author ${author}
  * @date ${datetime}
  */
 @RequiredArgsConstructor

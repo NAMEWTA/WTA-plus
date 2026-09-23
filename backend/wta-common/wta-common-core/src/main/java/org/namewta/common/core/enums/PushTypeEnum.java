@@ -5,8 +5,6 @@ import lombok.Getter;
 
 /**
  * 推送消息类型枚举
- *
- * @author Lion Li
  */
 @Getter
 @AllArgsConstructor

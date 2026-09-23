@@ -28,8 +28,6 @@ import java.util.List;
 
 /**
  * 任务管理 控制层
- *
- * @author may
  */
 @ConditionalOnEnable
 @Validated

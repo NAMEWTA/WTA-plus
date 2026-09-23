@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * 支持追加聚合查询字段的 Lambda 查询包装器。
  *
  * @param <T> 实体类型
- * @author Lion Li
  */
 class AggregateLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
 

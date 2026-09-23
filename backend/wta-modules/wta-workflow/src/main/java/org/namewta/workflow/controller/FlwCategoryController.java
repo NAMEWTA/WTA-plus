@@ -25,8 +25,6 @@ import java.util.List;
 
 /**
  * 流程分类
- *
- * @author may
  */
 @ConditionalOnEnable
 @Validated

@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * Filter配置
- *
- * @author Lion Li
  */
 @AutoConfiguration
 @EnableConfigurationProperties({XssProperties.class, RequestBodyProperties.class})

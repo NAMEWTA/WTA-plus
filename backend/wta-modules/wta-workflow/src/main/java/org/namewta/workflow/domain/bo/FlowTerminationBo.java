@@ -8,7 +8,6 @@ import org.namewta.common.core.validate.AddGroup;
  *
  * @param taskId  任务 ID
  * @param comment 终止意见
- * @author may
  */
 public record FlowTerminationBo(
     @NotNull(message = "任务id为空", groups = AddGroup.class)

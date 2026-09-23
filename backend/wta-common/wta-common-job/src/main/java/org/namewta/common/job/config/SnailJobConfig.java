@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * 启动定时任务
  *
- * @author opensnail
  * @date 2024-05-17
  */
 @AutoConfiguration

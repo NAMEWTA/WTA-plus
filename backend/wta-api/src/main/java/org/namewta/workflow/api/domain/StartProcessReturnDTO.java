@@ -5,7 +5,6 @@ package org.namewta.workflow.api.domain;
  *
  * @param processInstanceId 流程实例 ID
  * @param taskId            首个任务 ID
- * @author Lion Li
  */
 public record StartProcessReturnDTO(
     Long processInstanceId,

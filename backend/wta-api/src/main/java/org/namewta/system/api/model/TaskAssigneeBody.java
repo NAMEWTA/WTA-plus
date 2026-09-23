@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 /**
  * 任务受让人
- *
- * @author AprilWind
  */
 @Data
 @NoArgsConstructor

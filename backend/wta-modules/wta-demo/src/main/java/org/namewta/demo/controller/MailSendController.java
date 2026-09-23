@@ -21,8 +21,6 @@ import java.util.Map;
 
 /**
  * 邮件发送案例
- *
- * @author Michelle.Chung
  */
 @Validated
 @RequiredArgsConstructor

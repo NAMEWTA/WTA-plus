@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * ${functionName}Service接口
  *
- * @author ${author}
  * @date ${datetime}
  */
 public interface I${ClassName}Service {

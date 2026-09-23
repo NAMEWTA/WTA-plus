@@ -2,8 +2,6 @@ package org.namewta.common.translation.constant;
 
 /**
  * 翻译常量
- *
- * @author Lion Li
  */
 public interface TransConstant {
 

@@ -14,8 +14,6 @@ import java.util.Map;
 
 /**
  * 可选项
- *
- * @author 秋辞未寒
  */
 @Data
 @EqualsAndHashCode

@@ -15,8 +15,6 @@ import org.springframework.http.server.ServletServerHttpRequest;
 
 /**
  * WebSocket 握手拦截器。
- *
- * @author Lion Li
  */
 public class PlusWebSocketInterceptor implements HandshakeInterceptor {
     private final PushTicketService ticketService;

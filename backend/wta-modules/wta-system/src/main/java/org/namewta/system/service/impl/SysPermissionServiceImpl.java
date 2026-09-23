@@ -16,8 +16,6 @@ import java.util.*;
 
 /**
  * 用户权限处理
- *
- * @author wta
  */
 @RequiredArgsConstructor
 @Service

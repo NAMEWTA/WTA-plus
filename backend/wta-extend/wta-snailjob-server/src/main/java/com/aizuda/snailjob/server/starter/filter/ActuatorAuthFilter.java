@@ -10,8 +10,6 @@ import java.util.Base64;
 
 /**
  * Actuator Basic Auth 认证过滤器。
- *
- * @author Lion Li
  */
 public class ActuatorAuthFilter implements Filter {
 

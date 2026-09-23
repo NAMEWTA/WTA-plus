@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * 用户登录域关系视图对象 sys_user_type_rel
- *
- * @author NAMEWTA
  */
 @Data
 @AutoMapper(target = SysUserTypeRel.class)

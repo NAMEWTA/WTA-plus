@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 /**
  * 删除流程监听
- *
- * @author AprilWind
  */
 @Data
 public class ProcessDeleteEvent implements Serializable {

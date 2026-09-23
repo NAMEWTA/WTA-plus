@@ -24,7 +24,6 @@ import java.util.Map;
  * 短信演示案例
  * 请先阅读文档 否则无法使用
  *
- * @author Lion Li
  * @version 4.2.0
  */
 @Validated

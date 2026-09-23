@@ -37,8 +37,6 @@ import java.util.List;
 
 /**
  * 权限安全配置
- *
- * @author Lion Li
  */
 
 @Slf4j

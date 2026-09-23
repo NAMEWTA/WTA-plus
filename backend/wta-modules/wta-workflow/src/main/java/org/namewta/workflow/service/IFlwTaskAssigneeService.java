@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * 流程设计器-获取办理人
- *
- * @author AprilWind
  */
 public interface IFlwTaskAssigneeService {
 

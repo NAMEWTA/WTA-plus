@@ -6,8 +6,6 @@ import java.lang.annotation.*;
 
 /**
  * Excel动态下拉选项注解
- *
- * @author Angus
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

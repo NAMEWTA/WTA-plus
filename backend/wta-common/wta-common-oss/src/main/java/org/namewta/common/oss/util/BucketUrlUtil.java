@@ -6,8 +6,6 @@ import org.namewta.common.core.utils.StringUtils;
 
 /**
  * 桶链接工具类
- *
- * @author 秋辞未寒
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BucketUrlUtil {

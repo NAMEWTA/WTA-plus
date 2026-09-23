@@ -4,8 +4,6 @@ import java.io.Serial;
 
 /**
  * 文件名大小限制异常类
- *
- * @author wta
  */
 public class FileSizeLimitExceededException extends FileException {
 

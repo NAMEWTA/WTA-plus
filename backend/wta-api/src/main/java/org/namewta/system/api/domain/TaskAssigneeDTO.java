@@ -14,8 +14,6 @@ import java.util.function.Function;
 
 /**
  * 任务受让人
- *
- * @author AprilWind
  */
 @Data
 @NoArgsConstructor

@@ -8,8 +8,6 @@ import java.util.Map;
 
 /**
  * Social 配置属性
- *
- * @author thiszhc
  */
 @Data
 @Component

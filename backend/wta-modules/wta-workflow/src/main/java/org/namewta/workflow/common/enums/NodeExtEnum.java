@@ -2,8 +2,6 @@ package org.namewta.workflow.common.enums;
 
 /**
  * 节点扩展属性枚举通用接口，约束扩展选项的展示名、值和默认勾选状态。
- *
- * @author AprilWind
  */
 public interface NodeExtEnum {
 

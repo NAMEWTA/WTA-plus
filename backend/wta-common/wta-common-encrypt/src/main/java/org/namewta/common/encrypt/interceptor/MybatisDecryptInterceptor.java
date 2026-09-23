@@ -13,8 +13,6 @@ import java.util.Properties;
 
 /**
  * 出参解密拦截器
- *
- * @author Lion Li
  */
 @Intercepts({
     @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = {Statement.class}),

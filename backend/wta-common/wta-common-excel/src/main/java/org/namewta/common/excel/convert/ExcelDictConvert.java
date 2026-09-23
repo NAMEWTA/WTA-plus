@@ -22,8 +22,6 @@ import java.util.regex.Pattern;
 
 /**
  * 字典格式化转换处理
- *
- * @author Lion Li
  */
 @Slf4j
 public class ExcelDictConvert implements Converter<Object> {

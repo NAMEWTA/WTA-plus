@@ -14,9 +14,6 @@ import java.util.function.Supplier;
 
 /**
  * 基于JavaDoc的SaToken权限解析器
- *
- * @author echo
- * @author 秋辞未寒
  */
 @SuppressWarnings("unchecked")
 @Slf4j

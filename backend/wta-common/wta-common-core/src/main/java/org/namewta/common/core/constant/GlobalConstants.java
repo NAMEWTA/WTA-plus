@@ -2,8 +2,6 @@ package org.namewta.common.core.constant;
 
 /**
  * 全局通用键常量，主要用于业务无关的 Redis Key 前缀定义。
- *
- * @author Lion Li
  */
 public interface GlobalConstants {
 

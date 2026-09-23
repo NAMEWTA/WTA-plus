@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * 流程定义视图
- *
- * @author may
  */
 @Data
 public class FlowDefinitionVo implements Serializable {

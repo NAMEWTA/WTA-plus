@@ -31,8 +31,6 @@ import java.util.*;
 
 /**
  * 操作日志记录处理
- *
- * @author Lion Li
  */
 @Slf4j
 @Aspect

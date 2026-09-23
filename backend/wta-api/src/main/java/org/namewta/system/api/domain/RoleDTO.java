@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 /**
  * 角色简要信息对象。
- *
- * @author Lion Li
  */
 @Data
 @NoArgsConstructor

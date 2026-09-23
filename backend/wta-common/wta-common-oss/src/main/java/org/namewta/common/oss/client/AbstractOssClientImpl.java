@@ -92,8 +92,6 @@ import java.util.function.Function;
 
 /**
  * 抽象S3存储客户端实现类。
- *
- * @author 秋辞未寒
  */
 public abstract class AbstractOssClientImpl implements OssClient {
 

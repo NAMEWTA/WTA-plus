@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 
 /**
  * 流程实例视图对象。
- *
- * @author may
  */
 @Data
 public class FlowInstanceVo {

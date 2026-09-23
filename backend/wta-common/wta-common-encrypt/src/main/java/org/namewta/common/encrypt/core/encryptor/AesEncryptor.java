@@ -8,7 +8,6 @@ import org.namewta.common.encrypt.utils.EncryptUtils;
 /**
  * AES算法实现
  *
- * @author 老马
  * @version 4.6.0
  */
 public class AesEncryptor extends AbstractEncryptor {

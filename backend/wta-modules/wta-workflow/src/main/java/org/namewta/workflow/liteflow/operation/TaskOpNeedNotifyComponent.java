@@ -8,8 +8,6 @@ import org.namewta.workflow.domain.context.TaskOperationContext;
 
 /**
  * 判断任务操作后是否进入消息通知分支。
- *
- * @author may
  */
 @ConditionalOnEnable
 @LiteflowComponent("taskOpNeedNotify")

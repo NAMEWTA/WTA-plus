@@ -12,7 +12,6 @@ import java.io.Serializable;
  * @param corePoolSize         核心线程数
  *                             <p>
  *                             默认为当前CPU核心数，该配置项在配置了虚拟线程后会失效
- * @author 秋辞未寒
  */
 @Builder
 public record OssAsyncExecutorConfig(

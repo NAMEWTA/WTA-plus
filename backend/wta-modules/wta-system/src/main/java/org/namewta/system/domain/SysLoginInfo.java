@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * 系统访问记录表 sys_login_info
- *
- * @author Lion Li
  */
 
 @Data

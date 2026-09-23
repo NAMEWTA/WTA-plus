@@ -10,8 +10,6 @@ import java.util.List;
 
 /**
  * 用户登录域关系业务对象 sys_user_type_rel
- *
- * @author NAMEWTA
  */
 @Data
 @AutoMapper(target = SysUserTypeRel.class, reverseConvertGenerate = false)

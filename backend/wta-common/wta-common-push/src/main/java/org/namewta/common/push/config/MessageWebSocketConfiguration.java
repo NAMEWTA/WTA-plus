@@ -18,8 +18,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * WebSocket 消息推送自动装配。
- *
- * @author Lion Li
  */
 @EnableWebSocket
 @AutoConfiguration(after = MessageAutoConfiguration.class)

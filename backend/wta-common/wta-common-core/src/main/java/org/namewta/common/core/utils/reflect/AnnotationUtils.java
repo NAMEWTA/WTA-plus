@@ -13,8 +13,6 @@ import java.util.Map;
 
 /**
  * 注解工具类
- *
- * @author 秋辞未寒
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

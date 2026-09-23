@@ -10,8 +10,6 @@ import org.namewta.workflow.domain.context.TaskOperationContext;
 
 /**
  * 执行委派、转办、加签或减签。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

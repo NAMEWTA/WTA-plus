@@ -5,8 +5,6 @@ import lombok.Getter;
 
 /**
  * 抄送设置枚举
- *
- * @author AprilWind
  */
 @Getter
 @AllArgsConstructor

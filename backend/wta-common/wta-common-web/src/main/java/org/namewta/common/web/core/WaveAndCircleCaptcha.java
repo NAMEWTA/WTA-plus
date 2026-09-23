@@ -15,8 +15,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 带干扰线、波浪和圆形干扰元素的验证码实现，用于增强验证码识别难度。
- *
- * @author Lion Li
  */
 public class WaveAndCircleCaptcha extends AbstractCaptcha {
 

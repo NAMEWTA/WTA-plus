@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * OSS对象存储分页查询对象 sys_oss
- *
- * @author Lion Li
  */
 @Data
 @AutoMapper(target = SysOss.class, reverseConvertGenerate = false)

@@ -71,8 +71,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
 
 /**
  * 任务 服务层实现
- *
- * @author may
  */
 @ConditionalOnEnable
 @Slf4j

@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 
 /**
  * 参数配置视图对象 sys_config
- *
- * @author Michelle.Chung
  */
 @Data
 @ExcelIgnoreUnannotated

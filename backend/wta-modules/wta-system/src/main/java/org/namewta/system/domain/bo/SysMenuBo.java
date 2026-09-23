@@ -17,8 +17,6 @@ import java.io.Serializable;
 
 /**
  * 菜单权限业务对象 sys_menu
- *
- * @author Michelle.Chung
  */
 
 @Data

@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 /**
  * 流程抄送请求对象。
- *
- * @author may
  */
 @Data
 public class FlowCopyBo implements Serializable {

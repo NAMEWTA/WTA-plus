@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * 推送给前端的统一消息体
- *
- * @author Lion Li
  */
 @Data
 public class PushPayloadDTO implements Serializable {

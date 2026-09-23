@@ -14,7 +14,6 @@ import java.io.Serializable;
  * <p>该类型只在 Mapper、DAO、Service 查询边界使用，不作为 HTTP VO，避免持久化模型
  * 与传输合同耦合。</p>
  *
- * @author ${author}
  * @date ${datetime}
  */
 @Data

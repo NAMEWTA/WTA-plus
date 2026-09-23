@@ -22,8 +22,6 @@ import java.util.List;
 
 /**
  * 工作流副作用事件监听器。
- *
- * @author may
  */
 @ConditionalOnEnable
 @Component

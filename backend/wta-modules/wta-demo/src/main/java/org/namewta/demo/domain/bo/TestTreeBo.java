@@ -14,7 +14,6 @@ import java.io.Serializable;
 /**
  * 测试树表业务对象 test_tree
  *
- * @author Lion Li
  * @date 2021-07-26
  */
 

@@ -32,7 +32,6 @@ import org.namewta.common.core.domain.PageResult;
 /**
  * ${functionName}
  *
- * @author ${author}
  * @date ${datetime}
  */
 @Validated

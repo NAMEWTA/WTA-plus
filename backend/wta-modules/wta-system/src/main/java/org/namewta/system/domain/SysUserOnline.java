@@ -4,8 +4,6 @@ import lombok.Data;
 
 /**
  * 当前在线会话
- *
- * @author Lion Li
  */
 @Data
 public class SysUserOnline {

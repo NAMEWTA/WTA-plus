@@ -8,8 +8,6 @@ import org.namewta.common.core.utils.StringUtils;
 
 /**
  * 自定义xss校验注解实现
- *
- * @author Lion Li
  */
 public class XssValidator implements ConstraintValidator<Xss, String> {
 

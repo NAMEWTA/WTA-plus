@@ -10,8 +10,6 @@ import java.util.Arrays;
 
 /**
  * 访问策略
- *
- * @author 秋辞未寒
  */
 @Getter
 @AllArgsConstructor

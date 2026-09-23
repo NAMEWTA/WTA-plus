@@ -13,8 +13,6 @@ import java.util.Set;
 
 /**
  * 登录用户上下文对象，保存当前会话的身份、权限和终端信息。
- *
- * @author Lion Li
  */
 @Data
 @NoArgsConstructor

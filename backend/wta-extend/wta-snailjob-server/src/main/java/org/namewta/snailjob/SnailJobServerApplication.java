@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * SnailJob Server 启动程序
  *
- * @author opensnail
  * @date 2024-05-17
  */
 @SpringBootApplication

@@ -7,8 +7,6 @@ import java.util.Arrays;
 
 /**
  * 消息推送传输方式。
- *
- * @author Lion Li
  */
 @Getter
 @AllArgsConstructor

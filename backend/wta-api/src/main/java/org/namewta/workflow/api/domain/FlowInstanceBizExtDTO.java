@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * 流程实例业务扩展对象
  *
- * @author may
  * @date 2025-08-05
  */
 @Data

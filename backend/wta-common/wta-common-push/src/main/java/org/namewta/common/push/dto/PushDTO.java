@@ -9,8 +9,6 @@ import java.util.List;
 
 /**
  * 统一推送 DTO。
- *
- * @author Lion Li
  */
 @Data
 public class PushDTO implements Serializable {

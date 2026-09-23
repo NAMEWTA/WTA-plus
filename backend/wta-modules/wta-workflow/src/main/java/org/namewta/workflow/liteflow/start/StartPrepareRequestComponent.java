@@ -18,8 +18,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
 
 /**
  * 准备流程启动请求。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

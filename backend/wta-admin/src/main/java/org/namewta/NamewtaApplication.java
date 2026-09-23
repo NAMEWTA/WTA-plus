@@ -18,8 +18,6 @@ import java.util.Locale;
 
 /**
  * 启动程序
- *
- * @author Lion Li
  */
 
 @SpringBootApplication

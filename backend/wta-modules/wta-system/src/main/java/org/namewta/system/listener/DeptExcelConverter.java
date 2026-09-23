@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Excel 部门转换处理
- *
- * @author AprilWind
  */
 @RequiredArgsConstructor
 public class DeptExcelConverter implements Converter<Long> {

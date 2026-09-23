@@ -15,8 +15,6 @@ import java.util.List;
 
 /**
  * 防止 XSS 攻击的过滤器，对非排除请求执行参数与请求体清洗。
- *
- * @author wta
  */
 @RequiredArgsConstructor
 public class XssFilter implements Filter {

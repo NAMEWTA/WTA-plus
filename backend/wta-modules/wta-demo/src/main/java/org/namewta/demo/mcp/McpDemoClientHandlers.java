@@ -19,8 +19,6 @@ import java.util.Map;
  * <p>
  * Spring AI 2.0.0-M6 要求 `clients` 不能为空。这里使用 `wta-demo` 作为示例客户端名称，
  * 实际使用时应与 `spring.ai.mcp.client.*.connections` 中的连接名保持一致。
- *
- * @author Lion Li
  */
 @Component
 public class McpDemoClientHandlers {

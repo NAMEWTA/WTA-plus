@@ -10,8 +10,6 @@ import java.util.List;
 
 /**
  * 流程变量参数
- *
- * @author may
  */
 @Data
 public class FlowUrgeTaskBo implements Serializable {

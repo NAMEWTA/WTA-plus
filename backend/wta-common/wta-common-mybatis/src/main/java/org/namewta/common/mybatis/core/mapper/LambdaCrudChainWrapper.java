@@ -33,7 +33,6 @@ import java.util.function.Predicate;
  *
  * @param <T> table 泛型
  * @param <V> vo 泛型
- * @author Lion Li
  */
 public class LambdaCrudChainWrapper<T, V> extends AbstractLambdaWrapper<T, LambdaCrudChainWrapper<T, V>>
     implements Query<LambdaCrudChainWrapper<T, V>, T, SFunction<T, ?>>,

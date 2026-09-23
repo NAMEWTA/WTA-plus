@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * 社交登录配置
- *
- * @author thiszhc
  */
 @Data
 public class SocialLoginConfigProperties {

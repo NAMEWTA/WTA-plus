@@ -11,8 +11,6 @@ import java.io.Serial;
 
 /**
  * 登录域定义对象 sys_user_type
- *
- * @author NAMEWTA
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Role;
 
 /**
  * Lock4j 配置
- *
- * @author AprilWind
  */
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @AutoConfiguration(before = LockAutoConfiguration.class)

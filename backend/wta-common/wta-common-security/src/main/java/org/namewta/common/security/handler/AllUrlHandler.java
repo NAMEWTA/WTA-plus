@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
 
 /**
  * 获取所有Url配置
- *
- * @author Lion Li
  */
 @Data
 public class AllUrlHandler implements InitializingBean {

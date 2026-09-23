@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * XSS 过滤配置属性，用于控制过滤器开关及排除路径。
- *
- * @author Lion Li
  */
 @Data
 @ConfigurationProperties(prefix = "xss")

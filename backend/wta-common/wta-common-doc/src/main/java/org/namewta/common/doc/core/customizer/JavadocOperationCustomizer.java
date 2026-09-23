@@ -14,8 +14,6 @@ import java.util.Optional;
 
 /**
  * 方法 JavaDoc 与扩展描述增强。
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 public class JavadocOperationCustomizer implements GlobalOperationCustomizer {

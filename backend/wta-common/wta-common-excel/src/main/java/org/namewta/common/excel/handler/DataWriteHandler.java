@@ -24,8 +24,6 @@ import java.util.Map;
 
 /**
  * 批注、必填
- *
- * @author guzhouyanyu
  */
 public class DataWriteHandler implements SheetWriteHandler, CellWriteHandler {
 

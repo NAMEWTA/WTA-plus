@@ -2,8 +2,6 @@ package org.namewta.common.log.enums;
 
 /**
  * 业务操作类型
- *
- * @author wta
  */
 public enum BusinessType {
     /**

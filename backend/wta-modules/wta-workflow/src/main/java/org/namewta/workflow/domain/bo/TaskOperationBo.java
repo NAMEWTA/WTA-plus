@@ -13,8 +13,6 @@ import java.util.List;
 /**
  * 任务操作业务对象，用于描述任务委派、转办、加签等操作的必要参数
  * 包含了用户ID、任务ID、任务相关的消息、以及加签/减签的用户ID
- *
- * @author AprilWind
  */
 @Data
 public class TaskOperationBo implements Serializable {

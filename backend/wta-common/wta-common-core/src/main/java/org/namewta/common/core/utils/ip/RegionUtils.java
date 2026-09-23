@@ -17,8 +17,6 @@ import java.time.Duration;
  * IP地址行政区域工具类
  * 参考地址：<a href="https://gitee.com/lionsoul/ip2region/tree/master/binding/java">ip2region xdb java 查询客户端实现</a>
  * xdb数据库文件下载：<a href="https://gitee.com/lionsoul/ip2region/tree/master/data">ip2region data</a>
- *
- * @author 秋辞未寒
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

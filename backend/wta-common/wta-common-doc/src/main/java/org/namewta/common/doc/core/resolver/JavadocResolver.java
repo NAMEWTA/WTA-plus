@@ -7,9 +7,6 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * Javadoc解析器接口
- *
- * @author echo
- * @author 秋辞未寒
  */
 public interface JavadocResolver extends Comparable<JavadocResolver>, Ordered {
 

@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * 媒体类型工具类
- *
- * @author wta
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MimeTypeUtils {

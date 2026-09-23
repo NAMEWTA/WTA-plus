@@ -8,7 +8,6 @@ import org.namewta.common.core.validate.AddGroup;
  *
  * @param businessId 业务 ID
  * @param message    撤销说明
- * @author may
  */
 public record FlowCancelBo(
     @NotBlank(message = "业务ID不能为空", groups = AddGroup.class)

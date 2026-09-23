@@ -22,8 +22,6 @@ import java.util.Objects;
 
 /**
  * 执行流程实例删除。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

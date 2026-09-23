@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * OSS 配置变更监听器。
- *
- * @author Lion Li
  */
 @Component
 @RequiredArgsConstructor

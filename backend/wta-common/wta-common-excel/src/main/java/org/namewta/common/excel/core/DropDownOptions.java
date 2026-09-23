@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 /**
  * <h1>Excel下拉可选项</h1>
  * 注意：为确保下拉框解析正确，传值务必使用createOptionValue()做为值的拼接
- *
- * @author Emil.Zhang
  */
 @Data
 @AllArgsConstructor

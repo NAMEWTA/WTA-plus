@@ -18,8 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * SSE 控制器
- *
- * @author Lion Li
  */
 @RestController
 @ConditionalOnMessageTransport("sse")

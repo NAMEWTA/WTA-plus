@@ -16,8 +16,6 @@ import java.util.Set;
 
 /**
  * 流程分类名称翻译实现
- *
- * @author AprilWind
  */
 @ConditionalOnEnable
 @Slf4j

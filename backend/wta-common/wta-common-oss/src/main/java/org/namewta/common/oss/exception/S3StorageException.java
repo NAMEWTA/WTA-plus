@@ -4,8 +4,6 @@ import java.io.Serial;
 
 /**
  * S3对象存储异常
- *
- * @author 秋辞未寒
  */
 public class S3StorageException extends RuntimeException {
 

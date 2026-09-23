@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * Excel带下拉框的解析处理器
- *
- * @author Emil.Zhang
  */
 public class ExportDemoListener extends DefaultExcelListener<ExportDemoVo> {
 

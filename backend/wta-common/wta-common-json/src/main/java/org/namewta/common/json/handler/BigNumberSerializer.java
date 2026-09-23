@@ -7,8 +7,6 @@ import tools.jackson.databind.ser.jdk.NumberSerializer;
 
 /**
  * 超出 JS 最大最小值 处理
- *
- * @author Lion Li
  */
 @JacksonStdImpl
 public class BigNumberSerializer extends NumberSerializer {

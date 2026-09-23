@@ -15,8 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 带参数单元测试案例
- *
- * @author Lion Li
  */
 @DisplayName("带参数单元测试案例")
 public class ParamUnitTest {

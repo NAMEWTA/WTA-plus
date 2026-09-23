@@ -30,7 +30,6 @@ import java.util.List;
  *
  * <p>Controller 只负责 HTTP 参数校验和响应包装，业务处理统一交给 UseCase。</p>
  *
- * @author ${author}
  * @date ${datetime}
  */
 @Validated

@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * 附件扩展字段对象（存储在 SysOss.ext1 的 JSON 字符串中）
- *
- * @author AprilWind
  */
 @Data
 public class SysOssExt implements Serializable {

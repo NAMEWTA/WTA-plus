@@ -2,8 +2,6 @@ package org.namewta.common.liteflow.core;
 
 /**
  * LiteFlow 失败提示提供者。
- *
- * @author Lion Li
  */
 public interface FailMessageProvider {
 

@@ -2,8 +2,6 @@ package org.namewta.common.push.constant;
 
 /**
  * 模块通用消息常量定义。
- *
- * @author Lion Li
  */
 public interface MessageConstants {
 

@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
  * 测试server搭建:
  * 可执行下载其他mqtt服务端搭建
  * 也可使用 mica自带的server搭建 <a href="https://mica-mqtt.dreamlu.net/guide/spring/server.html">...</a>
- *
- * @author Lion Li
  */
 @AutoConfiguration
 @ConditionalOnProperty(value = "mqtt.client.enabled", havingValue = "true")

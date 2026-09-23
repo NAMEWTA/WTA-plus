@@ -14,8 +14,6 @@ import java.util.List;
 
 /**
  * 历史任务视图
- *
- * @author may
  */
 @Data
 public class FlowHisTaskVo implements Serializable {

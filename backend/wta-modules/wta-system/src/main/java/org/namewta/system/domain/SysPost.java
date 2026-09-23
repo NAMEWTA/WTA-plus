@@ -9,8 +9,6 @@ import org.namewta.common.mybatis.core.domain.BaseEntity;
 
 /**
  * 岗位表 sys_post
- *
- * @author Lion Li
  */
 
 @Data

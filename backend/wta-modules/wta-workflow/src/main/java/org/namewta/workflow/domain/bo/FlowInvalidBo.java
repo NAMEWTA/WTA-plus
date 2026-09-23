@@ -8,7 +8,6 @@ import org.namewta.common.core.validate.AddGroup;
  *
  * @param id      流程实例 ID
  * @param comment 作废意见
- * @author may
  */
 public record FlowInvalidBo(
     @NotNull(message = "流程实例id为空", groups = AddGroup.class)

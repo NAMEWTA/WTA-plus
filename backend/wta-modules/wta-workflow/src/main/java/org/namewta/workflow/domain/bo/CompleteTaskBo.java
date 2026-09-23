@@ -13,8 +13,6 @@ import java.util.Objects;
 
 /**
  * 办理任务请求对象
- *
- * @author may
  */
 @Data
 public class CompleteTaskBo implements Serializable {

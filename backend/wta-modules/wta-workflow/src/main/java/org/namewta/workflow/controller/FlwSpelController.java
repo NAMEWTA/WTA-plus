@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * 流程 SpEL 表达式定义控制器，负责表达式规则的增删改查。
  *
- * @author Michelle.Chung
  * @date 2025-07-04
  */
 @ConditionalOnEnable

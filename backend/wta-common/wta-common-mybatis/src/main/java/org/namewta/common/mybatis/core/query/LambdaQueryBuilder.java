@@ -13,7 +13,6 @@ import java.util.function.Consumer;
  * LambdaQueryWrapper 条件构造辅助类。
  *
  * @param <T> 实体类型
- * @author Lion Li
  */
 public final class LambdaQueryBuilder<T> implements LambdaQueryCondition<T, LambdaQueryBuilder<T>> {
 

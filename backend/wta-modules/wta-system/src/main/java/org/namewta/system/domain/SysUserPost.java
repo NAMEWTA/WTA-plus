@@ -7,8 +7,6 @@ import lombok.Data;
 
 /**
  * 用户和岗位关联 sys_user_post
- *
- * @author Lion Li
  */
 
 @Data

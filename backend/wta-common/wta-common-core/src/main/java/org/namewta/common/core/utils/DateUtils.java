@@ -14,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 时间工具类
- *
- * @author AprilWind
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateUtils extends DateUtil {

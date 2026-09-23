@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * 标签单元测试案例
- *
- * @author Lion Li
  */
 @DisplayName("标签单元测试案例")
 public class TagUnitTest {

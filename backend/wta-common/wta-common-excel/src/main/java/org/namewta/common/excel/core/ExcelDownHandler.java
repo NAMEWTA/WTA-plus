@@ -35,8 +35,6 @@ import java.util.*;
  * 考虑到下拉选过多可能导致Excel打开缓慢的问题，只校验前1000行
  * <p>
  * 即只有前1000行的数据可以用下拉框，超出的自行通过限制数据量的形式，第二次输出
- *
- * @author Emil.Zhang
  */
 @Slf4j
 public class ExcelDownHandler implements SheetWriteHandler {

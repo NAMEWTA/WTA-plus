@@ -19,8 +19,6 @@ import java.util.Optional;
 
 /**
  * S3存储客户端配置
- *
- * @author 秋辞未寒
  */
 @RequiredArgsConstructor
 @Builder

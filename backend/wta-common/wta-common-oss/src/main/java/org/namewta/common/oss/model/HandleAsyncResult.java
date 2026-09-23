@@ -8,7 +8,6 @@ import java.util.Optional;
  * @param result 结果
  * @param error  异常错误
  * @param <T>    结果类型
- * @author 秋辞未寒
  */
 public record HandleAsyncResult<T>(
     T result,

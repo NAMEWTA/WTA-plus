@@ -8,8 +8,6 @@ import java.util.Map;
 
 /**
  * 通用 用户服务
- *
- * @author Lion Li
  */
 public interface UserService {
 

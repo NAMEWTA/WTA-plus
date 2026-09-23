@@ -5,8 +5,6 @@ import lombok.Getter;
 
 /**
  * 节点扩展变量枚举，占位用于后续补充可配置变量定义。
- *
- * @author AprilWind
  */
 @Getter
 @AllArgsConstructor

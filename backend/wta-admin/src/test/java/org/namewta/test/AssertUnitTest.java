@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * 断言单元测试案例
- *
- * @author Lion Li
  */
 @DisplayName("断言单元测试案例")
 public class AssertUnitTest {

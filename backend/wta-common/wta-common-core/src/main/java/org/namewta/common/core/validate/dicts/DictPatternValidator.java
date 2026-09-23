@@ -8,8 +8,6 @@ import org.namewta.common.core.utils.StringUtils;
 
 /**
  * 自定义字典值校验器
- *
- * @author AprilWind
  */
 public class DictPatternValidator implements ConstraintValidator<DictPattern, String> {
 

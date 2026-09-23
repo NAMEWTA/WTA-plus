@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 
 /**
  * 加密管理类
- *
- * @author Lion Li
  */
 @Slf4j
 public class EncryptorManager {

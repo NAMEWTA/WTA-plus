@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * 请假示例服务接口，定义请假单查询、维护与流程发起能力。
  *
- * @author may
  * @date 2023-07-21
  */
 public interface ITestLeaveService {

@@ -13,8 +13,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * SSE 消息推送自动装配。
- *
- * @author Lion Li
  */
 @AutoConfiguration(after = MessageAutoConfiguration.class)
 @ConditionalOnMessageTransport("sse")

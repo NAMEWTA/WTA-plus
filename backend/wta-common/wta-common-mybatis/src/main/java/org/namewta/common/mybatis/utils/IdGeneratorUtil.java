@@ -8,8 +8,6 @@ import org.namewta.common.core.utils.SpringUtils;
 
 /**
  * ID 生成工具类
- *
- * @author AprilWind
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class IdGeneratorUtil {

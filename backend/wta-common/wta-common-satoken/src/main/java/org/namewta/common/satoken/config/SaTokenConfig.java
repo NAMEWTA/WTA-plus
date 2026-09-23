@@ -15,8 +15,6 @@ import org.springframework.context.annotation.PropertySource;
 
 /**
  * sa-token 配置
- *
- * @author Lion Li
  */
 @AutoConfiguration
 @PropertySource(value = "classpath:common-satoken.yml", factory = YmlPropertySourceFactory.class)

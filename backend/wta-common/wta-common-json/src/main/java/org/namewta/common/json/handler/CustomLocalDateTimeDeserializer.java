@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * 自定义 LocalDateTime 类型反序列化处理器
- *
- * @author AprilWind
  */
 public class CustomLocalDateTimeDeserializer extends ValueDeserializer<LocalDateTime> {
 

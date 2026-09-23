@@ -6,8 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * 统一消息推送配置。
- *
- * @author Lion Li
  */
 @Data
 @ConfigurationProperties("message")

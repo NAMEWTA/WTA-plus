@@ -33,8 +33,6 @@ import java.util.UUID;
 
 /**
  * 完整 SQL 日志拦截器。
- *
- * @author Lion Li
  */
 @Slf4j(topic = "SQL_FULL")
 @Intercepts({

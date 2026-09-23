@@ -15,8 +15,6 @@ import java.util.Set;
 
 /**
  * 字典翻译实现
- *
- * @author Lion Li
  */
 @AllArgsConstructor
 @TranslationType(type = TransConstant.DICT_TYPE_TO_LABEL)

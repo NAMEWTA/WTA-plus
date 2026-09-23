@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 单元测试基础案例。
- *
- * @author Lion Li
  */
 @DisplayName("单元测试案例")
 public class DemoUnitTest {

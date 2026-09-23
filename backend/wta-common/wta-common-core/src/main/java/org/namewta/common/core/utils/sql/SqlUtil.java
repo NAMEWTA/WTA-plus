@@ -7,8 +7,6 @@ import org.namewta.common.core.utils.StringUtils;
 
 /**
  * sql操作工具类
- *
- * @author Lion Li
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SqlUtil {

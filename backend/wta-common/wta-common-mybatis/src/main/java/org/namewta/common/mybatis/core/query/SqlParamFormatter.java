@@ -2,8 +2,6 @@ package org.namewta.common.mybatis.core.query;
 
 /**
  * SQL 参数格式化器。
- *
- * @author Lion Li
  */
 @FunctionalInterface
 public interface SqlParamFormatter {

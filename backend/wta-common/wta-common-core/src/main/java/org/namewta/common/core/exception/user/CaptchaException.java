@@ -4,8 +4,6 @@ import java.io.Serial;
 
 /**
  * 验证码错误异常类
- *
- * @author wta
  */
 public class CaptchaException extends UserException {
 

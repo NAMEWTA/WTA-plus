@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 /**
  * 正常任务
  * <a href="https://juejin.cn/post/7418074037392293914"></a>
- *
- * @author 老马
  */
 @Component
 @JobExecutor(name = "testJobExecutor")

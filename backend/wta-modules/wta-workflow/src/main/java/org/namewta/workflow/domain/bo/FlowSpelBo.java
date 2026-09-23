@@ -15,7 +15,6 @@ import java.util.Map;
 /**
  * 流程spel表达式定义业务对象 flow_spel
  *
- * @author Michelle.Chung
  * @date 2025-07-04
  */
 @Data

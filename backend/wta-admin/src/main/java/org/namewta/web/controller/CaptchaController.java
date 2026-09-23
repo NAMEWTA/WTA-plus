@@ -40,8 +40,6 @@ import java.util.List;
 
 /**
  * 验证码操作处理
- *
- * @author Lion Li
  */
 @SaIgnore
 @Slf4j

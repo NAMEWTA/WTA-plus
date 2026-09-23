@@ -22,8 +22,6 @@ import java.util.List;
  * </ul>
  * 真实业务中不要在 MCP 工具里直接访问 Mapper，应继续调用业务 Service，
  * 并保留权限、租户、脱敏、审计和幂等规则。
- *
- * @author Lion Li
  */
 @Component
 public class McpDemoServerTool {
@@ -70,8 +68,6 @@ public class McpDemoServerTool {
 
     /**
      * MCP 演示数据。
-     *
-     * @author Lion Li
      */
     public record McpDemoData(
         String id,

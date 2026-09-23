@@ -14,8 +14,6 @@ import java.util.function.Supplier;
 
 /**
  * 线程工具
- *
- * @author Lion Li
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ThreadUtils {

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * 脱敏工具类
- *
- * @author AprilWind
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DesensitizedUtils extends DesensitizedUtil {

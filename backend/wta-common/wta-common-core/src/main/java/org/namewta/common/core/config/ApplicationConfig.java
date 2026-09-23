@@ -6,8 +6,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 程序注解配置
- *
- * @author Lion Li
  */
 @AutoConfiguration
 @EnableAspectJAutoProxy

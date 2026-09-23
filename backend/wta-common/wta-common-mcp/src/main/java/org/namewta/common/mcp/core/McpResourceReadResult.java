@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * MCP 资源读取结果。
- *
- * @author Lion Li
  */
 public record McpResourceReadResult(
     String serverName,

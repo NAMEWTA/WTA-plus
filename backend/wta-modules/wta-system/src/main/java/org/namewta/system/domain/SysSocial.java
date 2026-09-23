@@ -10,8 +10,6 @@ import java.io.Serial;
 
 /**
  * 社会化关系对象 sys_social
- *
- * @author thiszhc
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * 流程分类对象 wf_category
  *
- * @author may
  * @date 2023-06-27
  */
 @Data

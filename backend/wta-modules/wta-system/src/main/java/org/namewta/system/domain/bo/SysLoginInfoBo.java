@@ -12,8 +12,6 @@ import java.util.Map;
 
 /**
  * 系统访问记录业务对象 sys_login_info
- *
- * @author Michelle.Chung
  */
 
 @Data

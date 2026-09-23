@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * 通用 参数配置服务
- *
- * @author Lion Li
  */
 public interface ConfigService {
 

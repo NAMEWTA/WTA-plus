@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
 
 /**
  * 聚合查询字段 SQL 构造工具。
- *
- * @author Lion Li
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class AggregateSelectUtils {

@@ -10,8 +10,6 @@ import java.util.Set;
 
 /**
  * 流程分类Service接口
- *
- * @author may
  */
 public interface IFlwCategoryService {
 

@@ -2,8 +2,6 @@ package org.namewta.common.log.enums;
 
 /**
  * 操作人类别
- *
- * @author wta
  */
 public enum OperatorType {
     /**

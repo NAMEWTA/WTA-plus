@@ -16,8 +16,6 @@ import java.util.Map;
 
 /**
  * 部门业务对象 sys_dept
- *
- * @author Michelle.Chung
  */
 
 @Data

@@ -2,8 +2,6 @@ package org.namewta.system.domain.constant;
 
 /**
  * 用户登录域授权来源。
- *
- * @author NAMEWTA
  */
 public interface UserTypeGrantSource {
 

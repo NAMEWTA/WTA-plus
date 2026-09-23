@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 /**
  * 广播任务
  * <a href="https://juejin.cn/post/7422948006150438950"></a>
- *
- * @author 老马
  */
 @Slf4j
 @Component

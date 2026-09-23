@@ -14,7 +14,6 @@ import java.util.function.Supplier;
  * 抽象元数据 Javadoc 解析器
  *
  * @param <M> 元数据类型
- * @author 秋辞未寒
  */
 public abstract class AbstractMetadataJavadocResolver<M> implements JavadocResolver {
 

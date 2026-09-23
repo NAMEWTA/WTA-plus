@@ -9,8 +9,6 @@ import java.io.Serializable;
 
 /**
  * 流程抄送视图对象。
- *
- * @author AprilWind
  */
 @Data
 public class FlowCopyVo implements Serializable {

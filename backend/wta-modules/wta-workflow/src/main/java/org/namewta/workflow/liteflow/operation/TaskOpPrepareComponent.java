@@ -18,8 +18,6 @@ import java.util.Collections;
 
 /**
  * 准备任务操作参数。
- *
- * @author may
  */
 @ConditionalOnEnable
 @Slf4j

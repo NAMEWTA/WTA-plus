@@ -5,8 +5,6 @@ import org.namewta.system.api.model.TaskAssigneeBody;
 
 /**
  * 工作流设计器获取任务执行人
- *
- * @author Lion Li
  */
 public interface TaskAssigneeService {
 

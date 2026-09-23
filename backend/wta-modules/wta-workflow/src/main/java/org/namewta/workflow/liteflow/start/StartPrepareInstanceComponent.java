@@ -19,8 +19,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
 
 /**
  * 加载流程定义并补齐启动变量。
- *
- * @author may
  */
 @ConditionalOnEnable
 @LiteflowComponent("startPrepareInstance")

@@ -13,8 +13,6 @@ import org.namewta.common.social.config.properties.SocialProperties;
 
 /**
  * 认证授权工具类
- *
- * @author thiszhc
  */
 public class SocialUtils {
 

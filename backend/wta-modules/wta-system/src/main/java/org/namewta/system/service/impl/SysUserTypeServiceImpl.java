@@ -37,8 +37,6 @@ import java.util.Set;
 
 /**
  * 登录域Service业务层处理
- *
- * @author NAMEWTA
  */
 @RequiredArgsConstructor
 @Service

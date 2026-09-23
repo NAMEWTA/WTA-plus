@@ -25,8 +25,6 @@ import java.util.stream.Stream;
 
 /**
  * Controller 类级标签增强。
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 public class ClassTagOperationCustomizer implements GlobalOperationCustomizer, GlobalOpenApiCustomizer {

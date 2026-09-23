@@ -17,7 +17,6 @@ import java.util.Map;
 /**
  * 任务信息Mapper接口
  *
- * @author may
  * @date 2024-03-02
  */
 public interface FlwTaskMapper extends BaseMapperPlus<FlowTask, FlowTaskVo>, MPJBaseMapper<FlowTask> {

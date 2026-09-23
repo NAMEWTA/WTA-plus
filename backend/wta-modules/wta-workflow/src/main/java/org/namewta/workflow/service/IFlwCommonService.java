@@ -7,8 +7,6 @@ import java.util.List;
 
 /**
  * 通用 工作流服务
- *
- * @author LionLi
  */
 public interface IFlwCommonService {
 

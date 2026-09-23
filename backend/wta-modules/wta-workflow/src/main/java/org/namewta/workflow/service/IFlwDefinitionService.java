@@ -12,8 +12,6 @@ import java.util.Collection;
 
 /**
  * 流程定义 服务层
- *
- * @author may
  */
 public interface IFlwDefinitionService {
 

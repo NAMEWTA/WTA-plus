@@ -5,8 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * SQL 日志配置。
- *
- * @author Lion Li
  */
 @Data
 @ConfigurationProperties(prefix = "mybatis-plus.sql-log")

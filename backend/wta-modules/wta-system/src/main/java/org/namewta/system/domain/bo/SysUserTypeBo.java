@@ -18,8 +18,6 @@ import java.util.Map;
 
 /**
  * 登录域业务对象 sys_user_type
- *
- * @author NAMEWTA
  */
 @Data
 @AutoMapper(target = SysUserType.class, reverseConvertGenerate = false)

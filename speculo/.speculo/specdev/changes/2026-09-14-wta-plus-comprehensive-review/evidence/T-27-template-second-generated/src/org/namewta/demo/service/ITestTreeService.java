@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * 模板集成验收Service接口
  *
- * @author NAMEWTA
  * @date 2026-09-19
  */
 public interface ITestTreeService {

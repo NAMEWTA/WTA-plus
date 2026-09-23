@@ -10,8 +10,6 @@ import org.namewta.common.core.utils.SpringUtils;
 
 /**
  * LiteFlow 执行工具。
- *
- * @author Lion Li
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

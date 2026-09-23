@@ -20,8 +20,6 @@ import java.util.stream.IntStream;
 /**
  * MapReduce任务 动态分配 分片后合并结果
  * <a href="https://juejin.cn/post/7448551286506913802"></a>
- *
- * @author 老马
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 @Component

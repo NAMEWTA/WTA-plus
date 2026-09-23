@@ -12,7 +12,6 @@ import java.util.Map;
  *
  * @param <T>        实体类型
  * @param <Children> 链式返回类型
- * @author Lion Li
  */
 public interface LambdaQueryCondition<T, Children> {
 

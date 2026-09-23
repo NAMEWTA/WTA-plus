@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * 流程实例查询条件对象。
- *
- * @author may
  */
 @Data
 public class FlowInstanceBo implements Serializable {

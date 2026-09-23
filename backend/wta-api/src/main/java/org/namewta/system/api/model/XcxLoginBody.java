@@ -7,8 +7,6 @@ import org.namewta.common.core.domain.model.LoginBody;
 
 /**
  * 小程序登录请求对象。
- *
- * @author Lion Li
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

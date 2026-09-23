@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * ${functionName}Mapper接口
  *
- * @author ${author}
  * @date ${datetime}
  */
 public interface ${ClassName}Mapper extends BaseMapperPlus<${ClassName}, ${ClassName}Vo> {

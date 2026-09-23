@@ -11,8 +11,6 @@ import java.io.Serial;
 
 /**
  * 基础国际化异常，支持按错误码解析最终提示信息。
- *
- * @author wta
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

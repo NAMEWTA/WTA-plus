@@ -21,8 +21,6 @@ import java.util.function.Function;
  * <p>
  * 如果要用当前项目自己连自己测试，建议启动两个 `wta-admin` 实例：
  * 一个作为 server，一个作为 client，client 指向 server 的地址。
- *
- * @author Lion Li
  */
 @Service
 @RequiredArgsConstructor

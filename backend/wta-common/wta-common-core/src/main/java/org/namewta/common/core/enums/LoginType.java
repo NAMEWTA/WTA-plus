@@ -5,8 +5,6 @@ import lombok.Getter;
 
 /**
  * 登录类型枚举，同时维护不同登录方式对应的重试提示配置。
- *
- * @author Lion Li
  */
 @Getter
 @AllArgsConstructor

@@ -21,8 +21,6 @@ import java.util.concurrent.TimeUnit;
  * 采用 caffeine + redis 多级缓存 优化并发查询效率
  * <p>
  * SaTokenDaoBySessionFollowObject 是 SaTokenDao 子集简化了session方法处理
- *
- * @author Lion Li
  */
 public class PlusSaTokenDao implements SaTokenDaoBySessionFollowObject {
 

@@ -19,8 +19,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * S3存储客户端工厂
- *
- * @author 秋辞未寒
  */
 @Slf4j
 public class OssFactory {

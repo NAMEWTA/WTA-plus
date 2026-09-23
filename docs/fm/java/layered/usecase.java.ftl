@@ -11,7 +11,6 @@ import java.util.List;
  *
  * <p>入口层只依赖该合同；实现类负责调用 Service，不直接访问 DAO 或 Mapper。</p>
  *
- * @author ${author}
  * @date ${datetime}
  */
 public interface ${ClassName}UseCase {

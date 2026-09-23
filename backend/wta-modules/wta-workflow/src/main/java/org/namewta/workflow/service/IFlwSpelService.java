@@ -14,7 +14,6 @@ import java.util.Map;
 /**
  * 流程 SpEL 表达式定义服务接口，负责表达式规则管理与动态指派解析。
  *
- * @author Michelle.Chung
  * @date 2025-07-04
  */
 public interface IFlwSpelService {

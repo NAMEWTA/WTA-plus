@@ -18,8 +18,6 @@ import java.util.stream.IntStream;
 /**
  * Map任务 动态分配 只分片不关注结果
  * <a href="https://juejin.cn/post/7446362500478894106"></a>
- *
- * @author 老马
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 @Component

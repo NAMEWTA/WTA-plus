@@ -14,8 +14,6 @@ import java.util.Objects;
 
 /**
  * 驳回参数请求
- *
- * @author may
  */
 @Data
 public class BackProcessBo implements Serializable {

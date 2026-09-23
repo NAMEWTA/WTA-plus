@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * 按客户端要求的登录域校验用户是否允许登录。
- *
- * @author NAMEWTA
  */
 @RequiredArgsConstructor
 @Service

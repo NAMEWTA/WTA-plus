@@ -27,7 +27,6 @@ import java.util.List;
 /**
  * 请假示例控制器，演示业务单据与流程引擎联动的典型用法。
  *
- * @author may
  * @date 2023-07-21
  */
 @ConditionalOnEnable

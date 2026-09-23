@@ -14,7 +14,6 @@ import java.io.Serializable;
 /**
  * 流程分类业务对象 wf_category
  *
- * @author may
  * @date 2023-06-27
  */
 @Data

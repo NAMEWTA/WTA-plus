@@ -8,8 +8,6 @@ import org.namewta.workflow.domain.context.InstanceDeleteContext;
 
 /**
  * 判断删除流程实例时是否存在可执行删除的数据。
- *
- * @author may
  */
 @ConditionalOnEnable
 @LiteflowComponent("instanceDeleteExists")

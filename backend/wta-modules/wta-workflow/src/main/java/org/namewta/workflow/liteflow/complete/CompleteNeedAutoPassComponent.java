@@ -7,8 +7,6 @@ import org.namewta.workflow.domain.context.CompleteTaskContext;
 
 /**
  * 判断办理任务后是否进入自动审批分支。
- *
- * @author may
  */
 @ConditionalOnEnable
 @LiteflowComponent("completeNeedAutoPass")

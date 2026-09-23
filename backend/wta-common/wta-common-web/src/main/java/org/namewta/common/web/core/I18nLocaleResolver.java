@@ -8,8 +8,6 @@ import java.util.Locale;
 
 /**
  * 基于请求头解析国际化区域信息的语言解析器。
- *
- * @author Lion Li
  */
 public class I18nLocaleResolver implements LocaleResolver {
 

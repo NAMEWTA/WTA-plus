@@ -21,7 +21,6 @@ import java.util.function.Consumer;
  * MPJ Lambda 联表查询构造辅助类。
  *
  * @param <T> 主表实体类型
- * @author Lion Li
  */
 public final class LambdaJoinQueryBuilder<T> {
 

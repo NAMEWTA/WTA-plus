@@ -20,8 +20,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
 
 /**
  * 构建办理参数并执行当前任务跳转。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

@@ -27,8 +27,6 @@ import java.util.List;
 
 /**
  * 登录域管理
- *
- * @author NAMEWTA
  */
 @Validated
 @RequiredArgsConstructor

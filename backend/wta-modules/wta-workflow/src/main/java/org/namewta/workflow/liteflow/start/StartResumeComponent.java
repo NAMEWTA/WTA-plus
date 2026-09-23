@@ -20,8 +20,6 @@ import java.util.List;
 
 /**
  * 已存在流程实例时执行续提交。
- *
- * @author may
  */
 @ConditionalOnEnable
 @RequiredArgsConstructor

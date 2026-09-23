@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 用户行为监听器，用于同步在线状态和登录日志。
- *
- * @author Lion Li
  */
 @Component
 @Slf4j

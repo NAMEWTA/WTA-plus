@@ -8,8 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Redisson 配置属性
- *
- * @author Lion Li
  */
 @Data
 @ConfigurationProperties(prefix = "redisson")

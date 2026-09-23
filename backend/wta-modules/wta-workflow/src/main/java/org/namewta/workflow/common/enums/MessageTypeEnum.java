@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 
 /**
  * 消息类型枚举，定义流程通知支持的消息通道。
- *
- * @author may
  */
 @Getter
 @AllArgsConstructor

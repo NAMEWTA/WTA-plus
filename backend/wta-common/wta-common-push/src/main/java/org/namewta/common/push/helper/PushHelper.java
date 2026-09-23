@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * 统一消息推送工具。
- *
- * @author Lion Li
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PushHelper {

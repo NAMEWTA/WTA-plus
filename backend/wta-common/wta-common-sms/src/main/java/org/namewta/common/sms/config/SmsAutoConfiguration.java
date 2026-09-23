@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Primary;
 
 /**
  * 短信配置类
- *
- * @author AprilWind
  */
 @AutoConfiguration(after = {DataRedisAutoConfiguration.class})
 public class SmsAutoConfiguration {

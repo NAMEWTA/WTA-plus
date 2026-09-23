@@ -11,8 +11,6 @@ import java.util.regex.Pattern;
 /**
  * 正则字段校验器
  * 主要验证字段非空、是否为满足指定格式等
- *
- * @author AprilWind
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegexValidator extends Validator {

@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * 按钮权限视图对象。
  *
- * @author may
  * @date 2025-02-28
  */
 @Data

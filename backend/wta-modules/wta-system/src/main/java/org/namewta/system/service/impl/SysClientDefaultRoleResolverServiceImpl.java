@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * 客户端默认角色解析服务实现。
- *
- * @author NAMEWTA
  */
 @RequiredArgsConstructor
 @Service

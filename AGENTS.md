@@ -1,7 +1,5 @@
 # AGENTS.md
 
-
-
 <PROJECT_SKILLS>
 ## 项目开发 Skill
 
@@ -34,13 +32,6 @@
 | NAMEWTA 环境审计、部署、升级和回滚 | [deploy-namewta-environment](.agents/skills/deploy-namewta-environment/SKILL.md) |
 
 </PROJECT_SKILLS>
-
-
-
-
-
-
-
 
 <!-- SPECULO-PERSISTENT-KNOWLEDGE:START -->
 ## Speculo 永久知识

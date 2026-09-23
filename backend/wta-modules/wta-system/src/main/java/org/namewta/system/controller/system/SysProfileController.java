@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 个人信息 业务处理
- *
- * @author Lion Li
  */
 @Validated
 @RequiredArgsConstructor

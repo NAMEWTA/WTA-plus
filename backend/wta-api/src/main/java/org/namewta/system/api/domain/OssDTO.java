@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 /**
  * OSS 文件简要信息对象。
- *
- * @author Lion Li
  */
 @Data
 @NoArgsConstructor

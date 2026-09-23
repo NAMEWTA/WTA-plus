@@ -20,8 +20,6 @@ import java.util.concurrent.Executors;
 
 /**
  * 默认S3存储客户端实现类。
- *
- * @author 秋辞未寒
  */
 public class DefaultOssClientImpl extends AbstractOssClientImpl {
 

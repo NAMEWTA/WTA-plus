@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 
 /**
  * 登录域视图对象 sys_user_type
- *
- * @author NAMEWTA
  */
 @Data
 @ExcelIgnoreUnannotated

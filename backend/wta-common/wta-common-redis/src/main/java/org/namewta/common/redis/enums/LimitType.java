@@ -2,8 +2,6 @@ package org.namewta.common.redis.enums;
 
 /**
  * 限流类型
- *
- * @author wta
  */
 
 public enum LimitType {

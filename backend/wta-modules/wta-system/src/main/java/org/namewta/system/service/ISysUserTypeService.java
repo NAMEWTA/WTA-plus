@@ -10,8 +10,6 @@ import java.util.List;
 
 /**
  * 登录域Service接口
- *
- * @author NAMEWTA
  */
 public interface ISysUserTypeService {
 

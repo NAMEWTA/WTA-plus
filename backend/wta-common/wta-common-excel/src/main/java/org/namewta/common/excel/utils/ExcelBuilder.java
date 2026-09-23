@@ -41,8 +41,6 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * Excel 导出构造器。
- *
- * @author Lion Li
  */
 public final class ExcelBuilder<T> {
 

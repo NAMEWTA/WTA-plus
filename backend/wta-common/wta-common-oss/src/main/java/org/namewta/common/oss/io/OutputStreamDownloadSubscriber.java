@@ -11,8 +11,6 @@ import java.util.function.Consumer;
 
 /**
  * 输出流下载订阅器
- *
- * @author 秋辞未寒
  */
 public class OutputStreamDownloadSubscriber implements Consumer<ByteBuffer>, AutoCloseable {
 

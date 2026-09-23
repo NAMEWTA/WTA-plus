@@ -9,8 +9,6 @@ import java.util.List;
 
 /**
  * 翻译模块配置类
- *
- * @author Lion Li
  */
 @AutoConfiguration
 public class TranslationConfig {

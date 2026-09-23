@@ -13,7 +13,6 @@ import java.io.Serial;
 /**
  * ${functionName}对象 ${tableName}
  *
- * @author ${author}
  * @date ${datetime}
  */
 @Data

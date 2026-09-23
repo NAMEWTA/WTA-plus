@@ -14,8 +14,6 @@ import java.io.Serializable;
 
 /**
  * 个人信息业务处理
- *
- * @author Michelle.Chung
  */
 
 @Data

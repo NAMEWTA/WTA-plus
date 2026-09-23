@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 
 /**
  * 用户对象导出VO
- *
- * @author Lion Li
  */
 @Data
 @NoArgsConstructor

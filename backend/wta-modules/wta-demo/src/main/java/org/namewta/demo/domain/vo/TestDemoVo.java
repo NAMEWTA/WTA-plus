@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 /**
  * 测试单表视图对象 test_demo
  *
- * @author Lion Li
  * @date 2021-07-26
  */
 @Data

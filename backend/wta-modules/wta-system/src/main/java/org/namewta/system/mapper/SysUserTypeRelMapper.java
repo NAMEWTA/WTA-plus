@@ -12,8 +12,6 @@ import java.util.List;
 
 /**
  * 用户登录域关系Mapper接口
- *
- * @author NAMEWTA
  */
 public interface SysUserTypeRelMapper extends BaseMapperPlus<SysUserTypeRel, SysUserTypeRelVo>, MPJBaseMapper<SysUserTypeRel> {
 

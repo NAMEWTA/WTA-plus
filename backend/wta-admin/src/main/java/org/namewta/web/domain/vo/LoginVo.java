@@ -5,8 +5,6 @@ import lombok.Data;
 
 /**
  * 登录成功后的令牌信息返回对象。
- *
- * @author Michelle.Chung
  */
 @Data
 public class LoginVo {

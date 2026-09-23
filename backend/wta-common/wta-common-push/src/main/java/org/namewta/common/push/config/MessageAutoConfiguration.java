@@ -7,8 +7,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 /**
  * 统一消息推送公共自动装配。
- *
- * @author Lion Li
  */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "message", name = "enabled", havingValue = "true", matchIfMissing = true)

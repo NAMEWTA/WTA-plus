@@ -14,8 +14,6 @@ import java.math.BigDecimal;
 /**
  * DAG工作流任务-模拟汇总账单任务
  * <a href="https://juejin.cn/post/7487860254114644019"></a>
- *
- * @author 老马
  */
 @Component
 @JobExecutor(name = "summaryBillTask")

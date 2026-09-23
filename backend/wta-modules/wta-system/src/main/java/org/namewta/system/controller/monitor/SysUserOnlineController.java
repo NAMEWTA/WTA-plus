@@ -27,8 +27,6 @@ import java.util.function.Supplier;
 
 /**
  * 在线用户监控
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 @RestController

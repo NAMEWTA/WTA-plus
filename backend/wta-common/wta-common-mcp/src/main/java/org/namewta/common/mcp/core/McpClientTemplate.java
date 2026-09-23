@@ -14,8 +14,6 @@ import java.util.Optional;
  * <p>
  * Spring AI 已经负责 MCP Client 的创建、初始化与连接管理，本模板只做项目内常用调用封装，
  * 避免业务模块直接遍历 `McpSyncClient` 或重复处理返回结构。
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 public class McpClientTemplate {

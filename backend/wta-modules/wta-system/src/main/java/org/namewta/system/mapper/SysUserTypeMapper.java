@@ -6,8 +6,6 @@ import org.namewta.system.domain.vo.SysUserTypeVo;
 
 /**
  * 登录域Mapper接口
- *
- * @author NAMEWTA
  */
 public interface SysUserTypeMapper extends BaseMapperPlus<SysUserType, SysUserTypeVo> {
 

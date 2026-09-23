@@ -12,8 +12,6 @@ import java.util.Set;
  * Node 扩展属性解析结果 VO
  * <p>
  * 用于封装从扩展属性 JSON 中解析出的各类信息，包括按钮权限、抄送对象和自定义参数。
- *
- * @author AprilWind
  */
 @Data
 public class NodeExtVo implements Serializable {

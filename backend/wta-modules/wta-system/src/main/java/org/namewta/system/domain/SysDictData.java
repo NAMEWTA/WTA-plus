@@ -8,8 +8,6 @@ import org.namewta.common.mybatis.core.domain.BaseEntity;
 
 /**
  * 字典数据表 sys_dict_data
- *
- * @author Lion Li
  */
 
 @Data

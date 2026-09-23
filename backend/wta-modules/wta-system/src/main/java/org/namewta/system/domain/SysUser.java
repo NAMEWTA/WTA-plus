@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 
 /**
  * 用户对象 sys_user
- *
- * @author Lion Li
  */
 
 @Data

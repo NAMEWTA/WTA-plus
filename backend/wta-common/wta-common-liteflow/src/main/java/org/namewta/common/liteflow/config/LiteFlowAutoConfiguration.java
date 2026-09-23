@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * LiteFlow 公共节点自动配置。
- *
- * @author Lion Li
  */
 @AutoConfiguration
 @ConditionalOnProperty(value = "liteflow.enable", havingValue = "true")

@@ -13,7 +13,6 @@ import java.io.Serial;
 /**
  * 测试树表对象 test_tree
  *
- * @author Lion Li
  * @date 2021-07-26
  */
 @Data

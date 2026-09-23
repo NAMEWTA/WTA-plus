@@ -9,7 +9,6 @@ import java.util.Collection;
 /**
  * 流程实例业务扩展Mapper接口
  *
- * @author may
  * @date 2025-08-05
  */
 public interface FlwInstanceBizExtMapper extends BaseMapperPlus<FlowInstanceBizExt, FlowInstanceBizExt> {

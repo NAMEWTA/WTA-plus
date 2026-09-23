@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 测试分布式限流样例
- *
- * @author Lion Li
  */
 @Slf4j
 @RestController

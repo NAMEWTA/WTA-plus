@@ -11,8 +11,6 @@ import org.namewta.workflow.domain.bo.TaskOperationBo;
  * 任务操作 LiteFlow 上下文。
  * <p>
  * 用于在委派、转办、加签、减签链路中传递操作类型、任务、节点和办理参数。
- *
- * @author may
  */
 @Data
 public class TaskOperationContext {

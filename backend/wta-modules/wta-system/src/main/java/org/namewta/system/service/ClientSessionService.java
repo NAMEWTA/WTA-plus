@@ -23,8 +23,6 @@ import java.util.function.Predicate;
 
 /**
  * 按登录域或客户端清理在线会话。
- *
- * @author NAMEWTA
  */
 @Slf4j
 @Service

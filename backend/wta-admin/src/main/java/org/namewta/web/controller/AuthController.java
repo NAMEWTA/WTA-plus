@@ -46,8 +46,6 @@ import java.util.List;
 
 /**
  * 认证控制器，提供登录、注册、社交绑定和退出能力。
- *
- * @author Lion Li
  */
 @Slf4j
 @SaIgnore

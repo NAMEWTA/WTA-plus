@@ -12,7 +12,6 @@ import java.io.Serial;
 /**
  * 流程实例业务扩展对象 flow_instance_biz_ext
  *
- * @author may
  * @date 2025-08-05
  */
 @Data

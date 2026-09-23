@@ -12,8 +12,6 @@ import java.util.Properties;
 
 /**
  * 入参加密拦截器
- *
- * @author Lion Li
  */
 @Intercepts({@Signature(
     type = ParameterHandler.class,

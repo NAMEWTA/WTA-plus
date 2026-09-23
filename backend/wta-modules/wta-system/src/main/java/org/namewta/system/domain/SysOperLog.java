@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * 操作日志记录表 oper_log
- *
- * @author Lion Li
  */
 
 @Data

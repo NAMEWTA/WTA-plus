@@ -2,8 +2,6 @@ package org.namewta.common.mybatis.core.query;
 
 /**
  * SQL 标准聚合函数。
- *
- * @author Lion Li
  */
 public enum SqlAggregateFunction {
 

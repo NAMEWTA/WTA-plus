@@ -10,8 +10,6 @@ import org.namewta.workflow.domain.bo.CompleteTaskBo;
  * 办理任务 LiteFlow 上下文。
  * <p>
  * 链路内各节点通过该对象传递任务、实例、办理参数等中间结果，避免组件之间重复查询。
- *
- * @author may
  */
 @Data
 public class CompleteTaskContext {

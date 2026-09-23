@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
  * }</pre>
  *
  * @param <T> 子查询实体类型
- * @author Lion Li
  */
 public final class SubQuery<T> {
 

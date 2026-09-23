@@ -7,8 +7,6 @@ import org.dromara.mica.mqtt.core.client.MqttClientCreator;
 
 /**
  * 客户端连接状态监听
- *
- * @author Lion Li
  */
 @Slf4j
 public class MqttClientConnectListener implements IMqttClientConnectListener {

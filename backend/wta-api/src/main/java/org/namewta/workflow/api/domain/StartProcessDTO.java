@@ -12,8 +12,6 @@ import java.util.Objects;
 
 /**
  * 启动流程请求对象。
- *
- * @author may
  */
 @Data
 public class StartProcessDTO implements Serializable {

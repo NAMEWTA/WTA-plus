@@ -10,8 +10,6 @@ import java.util.Collections;
 
 /**
  * 表格分页数据对象
- *
- * @author Lion Li
  */
 @Data
 @NoArgsConstructor

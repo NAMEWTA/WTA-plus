@@ -10,8 +10,6 @@ import java.lang.reflect.Proxy;
 
 /**
  * 数据权限注解Advice
- *
- * @author 秋辞未寒
  */
 public class DataPermissionAdvice implements MethodInterceptor {
 

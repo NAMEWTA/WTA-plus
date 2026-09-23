@@ -14,8 +14,6 @@ import java.util.Map;
 
 /**
  * 流程任务视图对象。
- *
- * @author may
  */
 @Data
 public class FlowTaskVo implements Serializable {

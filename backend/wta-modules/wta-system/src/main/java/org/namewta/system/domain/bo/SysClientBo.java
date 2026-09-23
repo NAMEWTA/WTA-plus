@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * 授权管理业务对象 sys_client
  *
- * @author Michelle.Chung
  * @date 2023-05-15
  */
 @Data

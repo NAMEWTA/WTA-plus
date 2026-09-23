@@ -12,7 +12,6 @@ import java.io.Serial;
 /**
  * 授权管理对象 sys_client
  *
- * @author Michelle.Chung
  * @date 2023-05-15
  */
 @Data

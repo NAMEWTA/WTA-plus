@@ -5,8 +5,6 @@ import com.yomahub.liteflow.core.NodeBooleanComponent;
 
 /**
  * LiteFlow 恒为 false 的条件节点。
- *
- * @author Lion Li
  */
 @LiteflowComponent("alwaysFalse")
 public class AlwaysFalseComponent extends NodeBooleanComponent {

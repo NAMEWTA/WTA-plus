@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 测试国际化
- *
- * @author Lion Li
  */
 @Validated
 @RestController

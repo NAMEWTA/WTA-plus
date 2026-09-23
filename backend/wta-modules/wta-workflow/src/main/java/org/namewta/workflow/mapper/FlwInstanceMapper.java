@@ -9,7 +9,6 @@ import org.namewta.workflow.domain.vo.FlowInstanceVo;
 /**
  * 实例信息Mapper接口
  *
- * @author may
  * @date 2024-03-02
  */
 public interface FlwInstanceMapper extends MPJBaseMapper<FlowInstance> {

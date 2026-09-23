@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 工作流失败异常
- *
- * @author Lion Li
  */
 @Slf4j
 @RestControllerAdvice

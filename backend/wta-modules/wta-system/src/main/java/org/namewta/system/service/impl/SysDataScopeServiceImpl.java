@@ -21,8 +21,6 @@ import java.util.List;
  * 注意: 此Service内不允许调用标注`数据权限`注解的方法
  * 例如: deptMapper.selectList 此 selectList 方法标注了`数据权限`注解 会出现循环解析的问题
  * 当前实现仅负责返回角色自定义部门范围以及部门树展开后的 id 串，供数据权限插件拼装 SQL 时使用。
- *
- * @author Lion Li
  */
 @RequiredArgsConstructor
 @Service("sdss")

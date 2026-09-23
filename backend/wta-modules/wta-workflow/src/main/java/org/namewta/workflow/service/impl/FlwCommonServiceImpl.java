@@ -35,8 +35,6 @@ import static org.namewta.workflow.common.constant.FlowConstant.PATH_TASK_WAITIN
 
 /**
  * 工作流工具
- *
- * @author LionLi
  */
 @ConditionalOnEnable
 @Slf4j

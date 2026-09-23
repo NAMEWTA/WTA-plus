@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * 删除流程实例 LiteFlow 上下文。
- *
- * @author may
  */
 @Data
 public class InstanceDeleteContext {

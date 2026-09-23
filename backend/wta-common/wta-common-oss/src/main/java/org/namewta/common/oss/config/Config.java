@@ -5,7 +5,6 @@ package org.namewta.common.oss.config;
  *
  * @param <T> 配置类型
  * @param <B> 配置构建器类型
- * @author 秋辞未寒
  */
 public interface Config<T, B> {
 

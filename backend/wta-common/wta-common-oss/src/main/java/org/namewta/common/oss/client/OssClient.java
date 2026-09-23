@@ -50,8 +50,6 @@ import java.util.function.Function;
  * 一套通过 {@code bucketXxx(...)} 显式指定存储桶，
  * 另一套通过无前缀方法使用默认存储桶。
  * </p>
- *
- * @author 秋辞未寒
  */
 public interface OssClient extends AutoCloseable {
 

@@ -41,8 +41,6 @@ import java.util.Set;
 
 /**
  * 工作流全局监听器，处理任务流转中的扩展变量、消息和事件发布。
- *
- * @author may
  */
 @ConditionalOnEnable
 @Component

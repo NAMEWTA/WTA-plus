@@ -4,8 +4,6 @@ import com.github.yulichang.toolkit.JoinWrappers;
 
 /**
  * MyBatis-Plus 查询构造器入口。
- *
- * @author Lion Li
  */
 public final class QueryBuilder {
 

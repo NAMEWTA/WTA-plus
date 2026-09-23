@@ -8,8 +8,6 @@ import org.namewta.common.mybatis.core.domain.BaseEntity;
 
 /**
  * 对象存储配置对象 sys_oss_config
- *
- * @author Lion Li
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -11,7 +11,6 @@ import java.util.Set;
  *
  * @param perms    当前请求接口权限标识集合
  * @param roleKeys 当前请求角色标识集合
- * @author Lion Li
  */
 public record DataPermissionAccess(Set<String> perms, Set<String> roleKeys) implements Serializable {
 

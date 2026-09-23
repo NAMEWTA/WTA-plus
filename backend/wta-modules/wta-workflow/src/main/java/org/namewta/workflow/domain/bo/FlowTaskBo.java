@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * 任务请求对象
- *
- * @author may
  */
 @Data
 public class FlowTaskBo implements Serializable {

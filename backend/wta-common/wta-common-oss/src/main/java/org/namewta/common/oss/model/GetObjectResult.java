@@ -16,7 +16,6 @@ import java.util.Map;
  * @param contentEncoding
  * @param contentLanguage
  * @param metadata
- * @author 秋辞未寒
  */
 public record GetObjectResult(
     String key,

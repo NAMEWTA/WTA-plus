@@ -7,8 +7,6 @@ import java.lang.annotation.*;
 
 /**
  * 字段加密注解
- *
- * @author 老马
  */
 @Documented
 @Inherited

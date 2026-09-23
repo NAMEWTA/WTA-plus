@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * MCP 工具调用结果。
- *
- * @author Lion Li
  */
 public record McpToolCallResult(
     String serverName,

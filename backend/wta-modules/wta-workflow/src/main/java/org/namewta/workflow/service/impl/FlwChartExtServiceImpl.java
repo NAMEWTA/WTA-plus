@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
 
 /**
  * 流程图提示信息
- *
- * @author AprilWind
  */
 @ConditionalOnEnable
 @Slf4j

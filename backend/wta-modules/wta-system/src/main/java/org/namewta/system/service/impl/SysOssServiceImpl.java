@@ -50,8 +50,6 @@ import java.util.function.Supplier;
 
 /**
  * 文件上传 服务层实现
- *
- * @author Lion Li
  */
 @Slf4j
 @RequiredArgsConstructor

@@ -5,8 +5,6 @@ import lombok.Getter;
 
 /**
  * 登录设备类型枚举。
- *
- * @author Lion Li
  */
 @Getter
 @AllArgsConstructor

@@ -12,8 +12,6 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * 首页
- *
- * @author Lion Li
  */
 @SaIgnore
 @RestController

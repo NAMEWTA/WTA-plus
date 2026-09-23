@@ -8,8 +8,6 @@ import org.namewta.common.liteflow.core.FailMessageProvider;
 
 /**
  * LiteFlow 失败节点，用于显式表达链路分支不可继续执行。
- *
- * @author Lion Li
  */
 @LiteflowComponent("fail")
 public class FailComponent extends NodeComponent {

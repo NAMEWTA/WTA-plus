@@ -10,8 +10,6 @@ import org.springframework.core.Ordered;
 
 /**
  * 统一消息主题订阅监听器。
- *
- * @author Lion Li
  */
 @Slf4j
 @RequiredArgsConstructor

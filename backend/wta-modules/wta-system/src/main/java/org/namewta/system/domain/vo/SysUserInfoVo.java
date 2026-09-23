@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * 用户信息
- *
- * @author Michelle.Chung
  */
 @Data
 public class SysUserInfoVo {

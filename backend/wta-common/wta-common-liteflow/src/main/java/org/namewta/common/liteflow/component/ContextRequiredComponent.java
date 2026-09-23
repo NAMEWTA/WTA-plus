@@ -6,8 +6,6 @@ import org.namewta.common.core.exception.ServiceException;
 
 /**
  * LiteFlow 上下文必填校验节点。
- *
- * @author Lion Li
  */
 @LiteflowComponent("contextRequired")
 public class ContextRequiredComponent extends NodeComponent {

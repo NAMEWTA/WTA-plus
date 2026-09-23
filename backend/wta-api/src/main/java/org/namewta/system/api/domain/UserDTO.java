@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * 用户
- *
- * @author Michelle.Chung
  */
 @Data
 @NoArgsConstructor

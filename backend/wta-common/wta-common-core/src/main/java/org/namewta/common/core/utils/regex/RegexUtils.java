@@ -8,8 +8,6 @@ import org.namewta.common.core.constant.RegexConstants;
 
 /**
  * 正则相关工具类
- *
- * @author AprilWind
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RegexUtils extends ReUtil {
