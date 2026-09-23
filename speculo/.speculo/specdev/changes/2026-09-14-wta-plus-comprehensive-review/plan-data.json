@@ -3755,9 +3755,9 @@
     "resources": [
       "ui:oss-list"
     ],
-    "status": "ready",
+    "status": "in_progress",
     "ready": true,
-    "plan_revision": 136,
+    "plan_revision": 144,
     "review_date": "2026-09-23",
     "e2e_disposition": "not-required: 受控Promise组件与类型检查能直接判定全部竞态；T-30执行页面组合回归",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",

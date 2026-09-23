@@ -1,0 +1,31 @@
+{
+  "owner": "cors_audit",
+  "base": "97e1ee9e1ad40de75deffd025379a6a5488c4882",
+  "commit": null,
+  "writer_lock": "returned",
+  "cwd": "/srv/WTA-plus",
+  "red": {
+    "command": "pnpm --dir frontend --filter @namewta/web-domain-system exec vitest run src/oss/page-query.test.ts",
+    "exit_code": 1,
+    "failed": 2,
+    "log": "red.log"
+  },
+  "package": {
+    "command": "pnpm --dir frontend --filter @namewta/web-domain-system test",
+    "exit_code": 0,
+    "passed": 70,
+    "skipped": 0,
+    "log": "package-test-final.log"
+  },
+  "typecheck": {
+    "command": "pnpm --dir frontend --filter @namewta/web-domain-system typecheck",
+    "exit_code": 0,
+    "log": "typecheck-final.log"
+  },
+  "lint": {
+    "command": "pnpm --dir frontend --filter @namewta/web-domain-system lint",
+    "exit_code": 0,
+    "log": "lint-final.log"
+  },
+  "lead_acceptance": "pending fixed SHA"
+}

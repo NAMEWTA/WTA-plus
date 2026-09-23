@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T07:50:30.276269+00:00",
+  "updated_at": "2026-09-23T07:50:52.638165+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -102,7 +102,8 @@
     "T34 Lead retrospective complete; new Packet T-34-20260923-02 changes real E2E to exclusive resources and commits reusable isolated runner. Prior cycle3 retained; current attempts reset0 only after recorded decision.",
     "T34 recovery cycle attempt1 at e78d886: real inbox 1/1 passed and clean; independent driver reviews request corrections to failure cleanup/test identity. Packet03 assigns only driver/docs/regressions to cors_audit; ticket remains in_progress, no acceptance claimed.",
     "T34 recovery attempt2: real browser1/1 passed; processes/ports/containers fully removed, but cleanup verdict failed from short/full Docker ID mismatch. Lead adds --no-trunc and tests both captured/lost full IDs. No done claim; next final acceptance is attempt3. Verbatim captured logs retain tool whitespace; product diff-check passes.",
-    "Revision143: T34 accepted at 177eb5b; 714 tests+5 synthetic+1 real pass, clean before/after. Cycle1 3 attempts preserved; mandatory Lead retrospective/new dispatch, recovery cycle attempt3 passed. T29 facts checker private path conflict remains explicit."
+    "Revision143: T34 accepted at 177eb5b; 714 tests+5 synthetic+1 real pass, clean before/after. Cycle1 3 attempts preserved; mandatory Lead retrospective/new dispatch, recovery cycle attempt3 passed. T29 facts checker private path conflict remains explicit.",
+    "Revision144: T47 starts at 97e1ee9e1ad40de75deffd025379a6a5488c4882; only OSS page/tests writable, cors_audit sole product writer; Lead owns commits and acceptance. T34 is closed before transfer."
   ],
   "worktrees": [
     {
@@ -232,6 +233,49 @@
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-34.md</Path>",
         "attempts": 3,
         "promotion_status": "applied"
+      }
+    },
+    {
+      "ticket_id": "T-47",
+      "owner": "single-agent",
+      "implementation_owner": "cors_audit",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "97e1ee9e1ad40de75deffd025379a6a5488c4882",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "97e1ee9e1ad40de75deffd025379a6a5488c4882",
+      "status": "active",
+      "updated_at": "2026-09-23T07:50:52.638165+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "97e1ee9e1ad40de75deffd025379a6a5488c4882",
+        "source_sha": null,
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": false,
+          "status": "not-required",
+          "reason": "Controlled real-SFC deferred response tests directly prove local query ownership; combined browser journey belongs to T-30.",
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-47.md</Path>"
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-47.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
       }
     }
   ]

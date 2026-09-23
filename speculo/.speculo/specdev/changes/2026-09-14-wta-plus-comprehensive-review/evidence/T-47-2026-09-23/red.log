@@ -1,0 +1,76 @@
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/system
+
+ ❯ src/oss/page-query.test.ts (2 tests | 2 failed) 270ms
+     × keeps B rows, total and preview mode when A list resolves last 164ms
+     × snapshots a nested query and date range before a delayed config resolves 104ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/oss/page-query.test.ts > OSS real SFC query ownership > keeps B rows, total and preview mode when A list resolves last
+AssertionError: expected [ 'A' ] to deeply equal [ 'B' ]
+
+- Expected
++ Received
+
+  [
+-   "B",
++   "A",
+  ]
+
+ ❯ src/oss/page-query.test.ts:107:53
+    105|     f.finishList(1, [row('B', '.pdf')], 7); await b;
+    106|     f.finishList(0, [row('A', '.pdf')], 99); await a;
+    107|     expect(f.state.ossList.map(item => item.ossId)).toEqual(['B']);
+       |                                                     ^
+    108|     expect(f.state.total).toBe(7);
+    109|     expect(f.state.previewListResource).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/oss/page-query.test.ts > OSS real SFC query ownership > snapshots a nested query and date range before a delayed config resolves
+AssertionError: expected { pageNum: 1, pageSize: 20, …(8) } to match object { Object (fileName, pageNum, ...) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "fileName": "before",
++   "fileName": "after",
+    "isAsc": "descending",
+    "orderByColumn": "createTime",
+-   "pageNum": 3,
++   "pageNum": 1,
+    "pageSize": 20,
+    "params": {
+-     "beginCreateTime": "2026-09-01",
+-     "endCreateTime": "2026-09-23",
++     "beginCreateTime": "2026-10-01",
++     "endCreateTime": "2026-10-23",
+      "nested": {
+-       "value": "before",
++       "value": "after",
+      },
+    },
+  }
+
+ ❯ src/oss/page-query.test.ts:125:30
+    123|     f.config(0, false);
+    124|     await vi.waitFor(() => expect(f.lists).toHaveLength(1));
+    125|     expect(f.lists[0].query).toMatchObject({ fileName: 'before', pageN…
+       |                              ^
+    126|       orderByColumn: 'createTime', isAsc: 'descending',
+    127|       params: { nested: { value: 'before' }, beginCreateTime: '2026-09…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  15:54:19
+   Duration  959ms (transform 518ms, setup 0ms, import 587ms, tests 270ms, environment 0ms)
+
+undefined
+/srv/WTA-plus/frontend/packages/web-domains/system:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/oss/page-query.test.ts

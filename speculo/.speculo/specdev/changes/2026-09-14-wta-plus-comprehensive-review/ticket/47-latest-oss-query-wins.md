@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-47"
 title: "OSS列表在回填前验证请求代次"
-status: "ready"
+status: "in_progress"
 kind: "bug"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -27,7 +27,7 @@ shared_path_owners: ["<Path>frontend/packages/web-domains/system/src/oss/</Path>
 # T-47：OSS列表在回填前验证请求代次
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。用户已激活Goal并授权gpt-6-sol/xhigh原生子代理；current workspace保持单产品writer、无新worktree。Lead负责状态、提交与验收。
 
 ## 1. 战略与来源
 
@@ -39,7 +39,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 已锁定决策
 
-保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户已授权本地实施、提交及direct-parent验收。
 
 ### 已确认方案
 
@@ -114,7 +114,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
 - 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
 - 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
-- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。本地产品commit/direct-parent已授权；远程push、部署、归档不在本票授权内。
 - 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准

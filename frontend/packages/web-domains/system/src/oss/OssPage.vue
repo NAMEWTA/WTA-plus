@@ -1,5 +1,6 @@
 <template>
   <div class="p-2 app-container system-oss-page">
+    <el-alert v-if="queryError" :title="queryError" type="error" show-icon :closable="false" />
     <div class="search-wrap">
       <el-card shadow="hover" class="search-panel" :class="{ 'is-collapsed': !showSearch }">
         <template #header>
@@ -263,7 +264,7 @@
 <script setup name="Oss" lang="ts">
 import type { OssConfigVO, OssForm, OssQuery, OssVO } from '@namewta/domain-system';
 import type { FormInstance as ElFormInstance } from 'element-plus';
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { computed, onMounted, onScopeDispose, reactive, ref, toRaw, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import type { SystemWebRuntime } from '../runtime';
 import {
@@ -301,7 +302,10 @@ const ossList = ref<OssVO[]>([]);
 const showTable = ref(true);
 const buttonLoading = ref(false);
 const uploadBusy = ref(false);
-const { loading, setLoading, withLoading } = useLoading(true);
+const queryLoading = ref(true);
+const queryError = ref('');
+const { loading: mutationLoading, setLoading: setMutationLoading } = useLoading();
+const loading = computed(() => queryLoading.value || mutationLoading.value);
 const { showSearch } = useSearchToggle();
 const total = ref(0);
 const type = ref(0);
@@ -350,6 +354,13 @@ const handleSelectionChange = (selection: OssVO[]) => {
 const previewUrls = ref<Record<string, string>>({});
 const deletedPreviewIds = ref<Record<string, true>>({});
 let listGeneration = 0;
+let disposed = false;
+onScopeDispose(() => {
+  disposed = true;
+  listGeneration++;
+  queryLoading.value = false;
+  queryError.value = '';
+});
 const {
   dialog,
   resetForm: reset,
@@ -372,27 +383,12 @@ const publishRow = ref<OssVO | null>(null);
 const publicConfigs = ref<OssConfigVO[]>([]);
 const previewUrl = (row: OssVO) => previewUrls.value[rowKey(row)] || '';
 
-/** 查询OSS对象存储列表 */
-const getList = async () => {
-  const generation = ++listGeneration;
-  previewUrls.value = {};
-  deletedPreviewIds.value = {};
-  await withLoading(async () => {
-    const res = await getConfigKey('sys.oss.previewListResource');
-    previewListResource.value = res?.data === undefined ? true : res.data === 'true';
-    const response = await listOss(applyCreateTimeDateRange(queryParams.value));
-    ossList.value = response.data?.rows ?? [];
-    total.value = response.data?.total ?? 0;
-    showTable.value = true;
-  });
-  if (generation !== listGeneration) return;
-  await fillPreviewUrls(generation);
-};
-
 // 管理列表不带可访问地址。待删除对象不能申请下载地址；活动图片只使用本次查询的短时授权。
-const fillPreviewUrls = async (generation: number) => {
-  if (!previewListResource.value) return;
-  const images = ossList.value.filter(row => ossFilePresentation(row, true) === 'image');
+const resolvePreviewUrls = async (rows: OssVO[], enabled: boolean) => {
+  const urls: Record<string, string> = {};
+  const deleted: Record<string, true> = {};
+  if (!enabled) return { urls, deleted };
+  const images = rows.filter(row => ossFilePresentation(row, true) === 'image');
   const resolved = await Promise.all(
     images.map(async row => {
       try {
@@ -404,15 +400,44 @@ const fillPreviewUrls = async (generation: number) => {
       }
     })
   );
-  if (generation !== listGeneration) return;
-  const urls: Record<string, string> = {};
-  const deleted: Record<string, true> = {};
   for (const item of resolved) {
     if (item.deleted) deleted[item.id] = true;
     else if (item.url) urls[item.id] = item.url;
   }
-  previewUrls.value = urls;
-  deletedPreviewIds.value = deleted;
+  return { urls, deleted };
+};
+
+/** 配置、列表与授权预览统一归属本轮查询，完成后才回填页面。 */
+const getList = async (): Promise<'applied' | 'failed' | 'stale'> => {
+  if (disposed) return 'stale';
+  const generation = ++listGeneration;
+  const current = () => !disposed && generation === listGeneration;
+  queryLoading.value = true;
+  queryError.value = '';
+  try {
+    const snapshot = applyCreateTimeDateRange(structuredClone(toRaw(queryParams.value)));
+    const config = await getConfigKey('sys.oss.previewListResource');
+    if (!current()) return 'stale';
+    const enabled = config?.data === undefined ? true : config.data === 'true';
+    const response = await listOss(snapshot);
+    if (!current()) return 'stale';
+    const rows = response.data?.rows ?? [];
+    const previews = await resolvePreviewUrls(rows, enabled);
+    if (!current()) return 'stale';
+    previewListResource.value = enabled;
+    ossList.value = rows;
+    total.value = response.data?.total ?? 0;
+    previewUrls.value = previews.urls;
+    deletedPreviewIds.value = previews.deleted;
+    showTable.value = true;
+    return 'applied';
+  } catch (error: unknown) {
+    if (!current()) return 'stale';
+    queryError.value = error instanceof Error && error.message ? error.message : '查询失败，请重试';
+    return 'failed';
+  } finally {
+    if (current()) queryLoading.value = false;
+  }
 };
 /** 取消按钮 */
 function cancel() {
@@ -515,8 +540,7 @@ const handleDownload = (row: Partial<OssVO>) => {
 const handlePreviewListResource = async (preview: boolean) => {
   try {
     await updateConfigByKey('sys.oss.previewListResource', preview);
-    await getList();
-    modal.msgSuccess((preview ? '启用' : '停用') + '成功');
+    if (await getList() === 'applied') modal.msgSuccess((preview ? '启用' : '停用') + '成功');
   } catch {
     return;
   }
@@ -531,10 +555,9 @@ const handleDelete = async (row?: Partial<OssVO>) => {
   }
   const ossIds = removable.map(item => item.ossId).filter(id => id !== undefined);
   await modal.confirm(ossDeleteConfirmMessage(ossIds, pending.length));
-  setLoading(true);
-  await delOss(ossIds).finally(() => setLoading(false));
-  await getList();
-  modal.msgSuccess('删除成功');
+  setMutationLoading(true);
+  await delOss(ossIds).finally(() => setMutationLoading(false));
+  if (await getList() === 'applied') modal.msgSuccess('删除成功');
 };
 
 const openPublish = async (row: OssVO) => {
@@ -552,8 +575,7 @@ const submitPublish = async () => {
   try {
     await publishOss(publishRow.value.ossId, publishTarget.value);
     publishVisible.value = false;
-    modal.msgSuccess('已复制到公开配置');
-    await getList();
+    if (await getList() === 'applied') modal.msgSuccess('已复制到公开配置');
   } catch (error) {
     modal.msgError(error instanceof Error ? error.message : '公开失败');
   } finally {
@@ -563,25 +585,23 @@ const submitPublish = async () => {
 
 const handleUnpublish = async (row: OssVO) => {
   await modal.confirm('恢复后这一条记录重新指向原来的私有配置。公开桶里已复制的文件不会删除。');
-  setLoading(true);
+  setMutationLoading(true);
   try {
     await unpublishOss(row.ossId);
-    modal.msgSuccess('已恢复为私有');
-    await getList();
+    if (await getList() === 'applied') modal.msgSuccess('已恢复为私有');
   } catch (error) {
     modal.msgError(error instanceof Error ? error.message : '恢复私有失败');
   } finally {
-    setLoading(false);
+    setMutationLoading(false);
   }
 };
 
 /** 恢复待删除对象，生命周期按当前引用重算。 */
 const handleRestore = async (row: OssVO) => {
   await modal.confirm('是否确认恢复OSS对象存储编号为"' + row.ossId + '"的数据项?');
-  setLoading(true);
-  await restoreOss(row.ossId).finally(() => setLoading(false));
-  await getList();
-  modal.msgSuccess('恢复成功');
+  setMutationLoading(true);
+  await restoreOss(row.ossId).finally(() => setMutationLoading(false));
+  if (await getList() === 'applied') modal.msgSuccess('恢复成功');
 };
 
 onMounted(() => {

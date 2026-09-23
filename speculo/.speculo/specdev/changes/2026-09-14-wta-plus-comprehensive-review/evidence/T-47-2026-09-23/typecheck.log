@@ -1,0 +1,4 @@
+
+> @namewta/web-domain-system@0.0.0 typecheck /srv/WTA-plus/frontend/packages/web-domains/system
+> vue-tsc --noEmit -p tsconfig.json
+

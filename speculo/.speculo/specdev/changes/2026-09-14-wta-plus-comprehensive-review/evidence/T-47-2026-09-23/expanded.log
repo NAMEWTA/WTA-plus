@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/system
+
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  15:56:43
+   Duration  2.71s (transform 571ms, setup 0ms, import 649ms, tests 1.95s, environment 0ms)
+

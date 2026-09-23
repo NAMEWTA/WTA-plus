@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision143，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision144，ready_for_execution=true。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -251,3 +251,7 @@ T34已按I流程在第3轮停止并完成Lead复盘；旧3次不删除，新Pack
 ## revision143当前验收
 
 T32/T33/T34 done，47ready；T34固定result 177eb5bd889afd2ab54f4a8e162dc8358d80f140，714/5/1与clean证据齐备，当前无产品writer。下一T47。G-security-external关闭；T29私有目录合同矛盾待处理，不宣称整个change已完成。
+
+## revision144当前执行
+
+T47取得唯一产品writer，base 97e1ee9e1ad40de75deffd025379a6a5488c4882，3done/1in_progress/46ready；下一Notify T35，T29事实检查路径矛盾仍待闭合。
