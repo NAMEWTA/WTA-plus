@@ -1,0 +1,68 @@
+name: Audit dependency bootstrap
+
+on:
+  push:
+    branches: [refactor/audit-foundation-20260923]
+    paths: [.github/workflows/audit-dependencies.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  backend-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Resolve build dependencies without deployment credentials
+        run: |
+          rm -f backend/wta-admin/src/main/resources/application-local.yml
+          cd backend
+          ./mvnw -pl wta-admin -am -Dmaven.test.skip=true install
+      - name: Package public dependency cache only
+        if: always()
+        run: |
+          tar -C "$HOME/.m2" --exclude='repository/org/namewta' -czf /tmp/audit-maven-dependencies.tar.gz repository wrapper
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-maven-dependencies
+          path: /tmp/audit-maven-dependencies.tar.gz
+          retention-days: 1
+  frontend-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install frozen public workspace dependencies
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+      - name: Package dependency trees and tool executables
+        run: |
+          find frontend -type d -name node_modules -prune -print0 | tar --null -T - -czf /tmp/audit-frontend-dependencies.tar.gz
+          mkdir -p /tmp/audit-tools
+          cp "$(command -v node)" /tmp/audit-tools/node
+          cp -a "$HOME/setup-pnpm" /tmp/audit-tools/pnpm
+          tar -C /tmp/audit-tools -czf /tmp/audit-frontend-tools.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-frontend-dependencies
+          path: |
+            /tmp/audit-frontend-dependencies.tar.gz
+            /tmp/audit-frontend-tools.tar.gz
+          retention-days: 1
