@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "JAVA_TOOL_OPTIONS=-Xms128m -Xmx1536m",
+    "./mvnw",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=LoginUserAgentUnitTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-23T21:25:05.902876+00:00",
+  "finished_at": "2026-09-23T21:25:53.196097+00:00",
+  "exit_code": 0,
+  "log": "r1-ua-green.log"
+}

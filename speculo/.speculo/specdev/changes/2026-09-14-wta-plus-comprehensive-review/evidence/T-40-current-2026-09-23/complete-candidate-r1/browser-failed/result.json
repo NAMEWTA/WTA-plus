@@ -1,0 +1,112 @@
+{
+  "gate": "T-40 real notice retraction recipient Chrome",
+  "run_id": "0c8f89704398d48a",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-23T21:29:07.066742+00:00",
+  "owned": {
+    "mysql_container_id": "7ce668c78d6c57cf147e0eb045619784b9015c9913906c5d69835f34a19887ad",
+    "redis_container_id": "4a40f415bcb6e3cd0e3f485e0b15a0e3cd6c29d108729df5a899db5ff75cac87",
+    "minio_container_id": "6d366bf18ea6b8a2cb41dc14fb726f8f98c825f51168fcd9e09c263afa6cd9e4",
+    "loopback_ports": {
+      "mysql": 32893,
+      "redis": 32894,
+      "minio": 32895
+    },
+    "baseline_counts": {
+      "business_tables": 103,
+      "outboxes": 0,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "login_passwords_rotated_in_fresh_schema": 3,
+    "recipient_role_ids": [
+      8200090046573434048,
+      8200030025794869956
+    ],
+    "backend_pgid": 1272464,
+    "backend_probe_http_status": 200,
+    "control_and_recipient_logins_validated": 3,
+    "headerless_online_matches": 3,
+    "headerless_success_audits": 3,
+    "chrome_control_online_match": true,
+    "chrome_control_success_audit": true,
+    "captured_anonymous_volume_names": [
+      "c08ec00a940c27c6b290b51a18fafa6e688817ca99beee470a8bfb24fa5e07ca",
+      "1861a22e189ef50d0c1e91c4b34c373d1f1c4e31bbffda7370b79c8335248f75"
+    ]
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 1272464,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "c08ec00a940c27c6b290b51a18fafa6e688817ca99beee470a8bfb24fa5e07ca": true,
+      "1861a22e189ef50d0c1e91c4b34c373d1f1c4e31bbffda7370b79c8335248f75": true
+    },
+    "loopback_ports_closed": {
+      "32893": true,
+      "32894": true,
+      "32895": true,
+      "47679": true,
+      "43899": true
+    },
+    "errors": []
+  },
+  "source_before": {
+    "head": "c860480914b5fc563dd119e760e37d5eb99064e3",
+    "tree": "dae5c3199921e07d1e2e27d2ecf259c3833dc037",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "59dda7ff6e9b8e94f903310bc71bbbab439b6ff50f087d825b2e23d4f2d56978",
+    "size_bytes": 214198787
+  },
+  "package_proof_sha256": "12834827568a336b2bc8c9f591b70f86185554e89ef79854dc30fdd921f7a97c",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "browser_inputs": {
+    "frontend/e2e/notice-retraction-real.e2e.ts": "41a0c019e18bf9c0071d048a62ce5c9f953f19d85c0d2bd1fc98907fd805d12b",
+    "frontend/e2e/playwright.notice-retraction-real.config.ts": "0824670ffef0a993b000b1b9024825503460e9bb1bb1ff22bbb3d7d7c05afd4b"
+  },
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "error_type": "OwnedControlFailure",
+  "error": "T40 owned browser gate failed",
+  "phase": "notice_control",
+  "runner_line": 839,
+  "control_failure": {
+    "stage": "notice_publish",
+    "kind": "action_rejected",
+    "http_status": 200,
+    "business_code": 500
+  },
+  "source_after": {
+    "head": "c860480914b5fc563dd119e760e37d5eb99064e3",
+    "tree": "dae5c3199921e07d1e2e27d2ecf259c3833dc037",
+    "clean": true
+  },
+  "artifact_after_sha256": "59dda7ff6e9b8e94f903310bc71bbbab439b6ff50f087d825b2e23d4f2d56978",
+  "finished_utc": "2026-09-23T21:29:41.724919+00:00"
+}

@@ -1,0 +1,26 @@
+{
+  "base": "2c8047a2bfca47389557e4261ff5a55036e1c72e",
+  "candidate": "c860480914b5fc563dd119e760e37d5eb99064e3",
+  "changed_frontend_paths": [
+    "frontend/e2e/README-notice-retraction-real.md",
+    "frontend/e2e/run-notice-retraction-real.py",
+    "frontend/e2e/test_run_notice_retraction_real.py"
+  ],
+  "unchanged_inputs": "All frontend product source, package/lock/config, actual Playwright TS spec and config byte-identical; only runner Python/offline tests/README changed.",
+  "reuse": {
+    "vitest": 652,
+    "node_tooling": 108,
+    "total": 760,
+    "production_artifact_files": 329,
+    "architecture": "passed",
+    "openapi_check": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "apps": [
+      "admin-web",
+      "home-web",
+      "sso-web"
+    ]
+  },
+  "newly_required": "Python21 offline passed; fresh exact-source full JAR and actual Chrome2 still required"
+}

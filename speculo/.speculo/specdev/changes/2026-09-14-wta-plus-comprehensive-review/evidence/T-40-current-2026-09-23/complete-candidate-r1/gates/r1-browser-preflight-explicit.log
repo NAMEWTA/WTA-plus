@@ -1,0 +1,32 @@
+{
+  "mode": "static-preflight-only",
+  "service_started": false,
+  "files_present": {
+    "backend/wta-admin/target/wta-admin.jar": true,
+    "release-artifacts/scripts/init-mysql-container.sh": true,
+    "frontend/e2e/notice-retraction-real.e2e.ts": true,
+    "frontend/e2e/playwright.notice-retraction-real.config.ts": true,
+    "frontend/apps/admin-web/node_modules/vite/bin/vite.js": true,
+    "frontend/node_modules/@playwright/test/cli.js": true
+  },
+  "sql_present": {
+    "10-cde-base-ddl.sql": true,
+    "20-cde-job.sql": true,
+    "30-cde-workflow.sql": true,
+    "40-cde-ai.sql": true,
+    "50-cde-base-dml.sql": true,
+    "60-cde-nacos.sql": true
+  },
+  "expected_images": [
+    "mysql:8.4.9",
+    "redis:8.6.3",
+    "pgsty/minio@sha256:83885c27b3b5b673049e33ddf4029afe2c134fd51ce4309e65e4f39d3b9ca282"
+  ],
+  "generated_child_env_names": [
+    "T40_A_USERNAME",
+    "T40_A_PASSWORD",
+    "T40_B_USERNAME",
+    "T40_B_PASSWORD"
+  ],
+  "bcrypt_available": true
+}

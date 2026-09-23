@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/tmp/wta-t50/run-notify-supported-mode-integration-v3.py",
+    "--execute",
+    "--expected-head",
+    "c860480914b5fc563dd119e760e37d5eb99064e3"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T21:31:20.425996+00:00",
+  "finished_at": "2026-09-23T21:32:57.276471+00:00",
+  "exit_code": 0,
+  "log": "r1-shared135-launch.log"
+}

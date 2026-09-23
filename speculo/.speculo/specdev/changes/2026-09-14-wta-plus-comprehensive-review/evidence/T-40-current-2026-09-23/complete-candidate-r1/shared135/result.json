@@ -1,0 +1,304 @@
+{
+  "gate": "T-50 supported-mode and T-36/T-37/T-38/T-39 eight-class regression",
+  "run_id": "46fb407df36ab094",
+  "mode": "acceptance",
+  "acceptance": true,
+  "started_utc": "2026-09-23T21:31:20.472126+00:00",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "d1eacf649ea593ba62f667fb91653353ec50de87f1a1a30972c10ce761e4ed96",
+    "application_table_count": 103,
+    "redis_container_id": "4787b2a190a194f03c82abd1b2694270ba89975986342a2d790ec59044d7f838",
+    "loopback_ports": {
+      "mysql": 32898,
+      "redis": 32899
+    },
+    "captured_anonymous_volume_names": [
+      "3e3722f14a16412b5e40d988a2a10591a15e82af19b51623b1bc5fb25758468b"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 1279685,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "3e3722f14a16412b5e40d988a2a10591a15e82af19b51623b1bc5fb25758468b": true
+    },
+    "loopback_ports_closed": {
+      "32898": true,
+      "32899": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifySupportedModeIntegrationTest": {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "tests": 66,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "c860480914b5fc563dd119e760e37d5eb99064e3",
+    "tree": "dae5c3199921e07d1e2e27d2ecf259c3833dc037",
+    "clean": true
+  },
+  "maven_command_redacted": [
+    "./mvnw",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifyDeadlineIntegrationTest,EnterpriseQueuedNotificationIntegrationTest,NotifyWakeIntegrationTest,NotifySupportedModeIntegrationTest,NotifyAtomicResultIntegrationTest,NotifyManualRetryIntegrationTest,NotifySmsDispatchIntegrationTest,RedisNotifyIdempotencyStoreIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.deadline.integration=true",
+    "-Dprofile.notify.integration=true",
+    "-Dnotify.wake.integration=true",
+    "-Dnotify.supported.mode.integration=true",
+    "-Dnotify.atomic.integration=true",
+    "-Dnotify.manual.retry.integration=true",
+    "-Dnotify.sms.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:32898/namewta_notify_test_46fb407df36ab094?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t50_46fb407df36ab094",
+    "-Dnotify.redis.integration.port=32899"
+  ],
+  "maven_exit_code": 0,
+  "methods": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": [
+      "submitRoundsScheduleUpAndExpiryDownWithoutEarlyClaim",
+      "expiredPersistedIntentRejectsManualRetryWithoutRequeue",
+      "reclaimedExternalProcessingBeforeDeadlineNeverReturnsReadyOrResends",
+      "providerAcceptedAfterDeadlineStillPersistsActualAcceptedResult",
+      "expiredInAppWithoutFactsStopsBeforeBudgetAndMessage",
+      "futureAvailableAtIsNotClaimedEarly",
+      "historicalReadyWithoutProofBecomesUnknownWithoutProvider",
+      "expiredNewReadyIsFailedDoneWithoutProviderOrAttempt",
+      "cancelledIntentCannotBeRevivedByAClaimedTask",
+      "expiredInAppOrphanRelationIsLocalFailureNotExternalWait",
+      "oldLeaseCannotTerminalizeAfterTokenChanges",
+      "waitSettlementRechecksCurrentDeadlineUnderLease",
+      "expiredInAppWithDurableRecipientRecoversDeliveredWithoutNewPush",
+      "duplicateSubmissionCannotExtendPersistedDeadline",
+      "expirationResultRollbackLeavesDeliveryAndLeaseIntact"
+    ],
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": [
+      "consumedOtpAndRolledBackBindingsRecoverBySendingANewChallenge",
+      "redisConsumeFailureRollsBackAllBindingAndEventWrites",
+      "outerRollbackLeavesOnlyAnUnconfirmableRedisChallengeWithItsOriginalTtl",
+      "queuedSubmissionWaitsForTheActualWorkerAndTransfersOnlyOnce",
+      "genericFailedWithoutSingleTargetRemainsUnknownAndCannotActivate",
+      "changedSourceVersionRejectsEvenAnAcceptedNotificationAndCorrectCode",
+      "expiredAssociationAndTypedUnsentTerminalCannotActivateButPermitResend",
+      "recordWriteFailureRollsBackTheNotificationAndRevokesTheStagedChallenge"
+    ],
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": [
+      "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake"
+    ],
+    "org.namewta.test.notify.NotifySupportedModeIntegrationTest": [
+      "invalidDuplicateSubmissionRejectsBeforeReadingOriginalReceiptOrWritingRows",
+      "inAppOrphanIsLocalFailureAndEmptyTaskConsumesNoBudget",
+      "unsupportedClosurePreservesOtherAcceptedAndUnknownDeliveryFacts",
+      "loopbackHttpEnforcesSubmitPermissionAndSupportedValuesBeforeAnyWrite",
+      "oldOrderedWaitClosesWithoutProviderOrRepeatedReady(String)[1]",
+      "oldOrderedWaitClosesWithoutProviderOrRepeatedReady(String)[2]",
+      "reclaimedProcessingRetainsT39UncertaintyBeforeUnsupportedClassification",
+      "unsupportedHistoricalOwnerMustNotSettleAfterLosingItsFence(String)[1]",
+      "unsupportedHistoricalOwnerMustNotSettleAfterLosingItsFence(String)[2]",
+      "supportedSubmissionStillPersistsPriorityZeroAndOriginalDeadline",
+      "oldModeOrPriorityWithNewProofTerminatesWithoutIOMigration(String)[1]",
+      "oldModeOrPriorityWithNewProofTerminatesWithoutIOMigration(String)[2]",
+      "failedFinalAggregateWriteRollsBackDeliveryAndOutboxSettlement",
+      "deadlineRemainsPriorToUnsupportedDisposition",
+      "unsupportedRetryRejectsPreviouslySafeLocalFailureWithoutWake",
+      "markerlessReadyCannotProveNoHistoricalProviderCall",
+      "terminalDeliveryKeepsAcceptedFactWhenOldOutboxIsClosed",
+      "syncJsonStringIsRejectedByHttpBindingWithoutAWrite",
+      "existingInAppRecipientRecoversDeliveryWithoutDuplicateMessageOrPush"
+    ],
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": [
+      "duplicateEventWithChangedFactsMustBeRejected",
+      "callbackRevalidatesCorrelationAfterWaitingForCurrentResult",
+      "concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations",
+      "callbackRollbackMustAllowSameEventRetry",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[1]",
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity(String, int, String)[2]",
+      "nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation",
+      "callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler",
+      "anyResultWriteFailureRollsBackAllOtherRows",
+      "restartedJvmsSeeCommittedReceiptAndRejectChangedFacts",
+      "oldWorkerCannotOverwriteAReclaimedAndCompletedResult",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[1]",
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String)[2]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[1]",
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent(String, int, String)[2]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[1]",
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String)[2]",
+      "finishZeroRollsBackDeliveryAttemptAndAggregate",
+      "nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending",
+      "twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim",
+      "genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact",
+      "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt",
+      "freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved",
+      "longUnicodeBodyKeepsFullContentAndBoundedSummary",
+      "receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry",
+      "concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate",
+      "sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[1]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[2]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[3]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[4]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[5]",
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult(String)[6]",
+      "sameAccountKeyAndEventAcrossChannelsRemainIndependent",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[1]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[2]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[3]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[4]",
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget(String, int, boolean)[5]",
+      "twoConcurrentClaimersOnlyDispatchOneCommittedResult",
+      "existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent",
+      "simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[1]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[2]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[3]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[4]",
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String, String, int, String, String, String)[5]",
+      "twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce",
+      "deliveredCallbackCannotBeOverwrittenByLateAcceptedResult",
+      "expiredOwnerCannotRenewOrFinishWithoutAReclaim",
+      "nativeQueryCredentialEditOrReadFailureDoesNotApplyResult",
+      "invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite",
+      "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable",
+      "reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist",
+      "leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete",
+      "cancelledBeforeInAppTransactionCannotWriteInboxFact",
+      "providerCompletingAfterExpiryDoesNotReviveTheLease",
+      "receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract",
+      "nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries",
+      "expiredLeaseCannotSkipCancelOrDefer",
+      "earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult",
+      "realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus",
+      "genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt",
+      "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate",
+      "sameEventFromDifferentAccountsMustNotCollide",
+      "externalChannelClaimPreservesSameLiteralErrorCode"
+    ],
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": [
+      "retryUsesRemainingBudgetAndRollsBackIfDeliveryUpdateFails",
+      "completedCancelledAndUnsupportedFailureNeverCreateWork",
+      "actualPlannerFailureCanBeRepairedAndThenCallsControlledSenderOnce",
+      "inAppUnknownReplaysExistingMessageWithoutAnotherRelationOrPush",
+      "exhaustedBudgetAndMultipleOutboxesDoNotCreateAnotherTask",
+      "foreignDeliveryAndExternalUnknownAreRejectedWithoutWrites",
+      "inAppUnknownWithoutMessageCreatesOneAtomicMessageAndRelation",
+      "inAppUnknownRejectsOrphanRelationWithoutChangingTask",
+      "concurrentRetrySerializesOnIntentAndKeepsOneOutbox",
+      "inAppUnknownAddsMissingRelationAndPushesOnlyOnce",
+      "claimDuringRetryCommitCannotTakeUncommittedTaskOrStealNewLease",
+      "targetedFailedLocalPreflightOnlyQueuesItsDelivery",
+      "batchRetryRejectsExternalUnknownBeforeChangingSafeSibling"
+    ],
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": [
+      "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery",
+      "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend",
+      "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall",
+      "supplierIoAmbiguityStaysUnknownAndNeverRequeues",
+      "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers",
+      "retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend",
+      "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues",
+      "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall",
+      "exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice",
+      "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction"
+    ],
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": [
+      "shouldAtomicallyAcquireCompleteReuseAndExpire",
+      "retryableOwnerCasRetainsTtlAndReadsLegacyStateWithProductionCompositeCodec",
+      "retryableOwnerCasRetainsTtlAndRejectsStaleOwnerWithStringCodec"
+    ]
+  },
+  "source_after": {
+    "head": "c860480914b5fc563dd119e760e37d5eb99064e3",
+    "tree": "dae5c3199921e07d1e2e27d2ecf259c3833dc037",
+    "clean": true
+  },
+  "finished_utc": "2026-09-23T21:32:57.267418+00:00"
+}

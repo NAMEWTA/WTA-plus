@@ -1,0 +1,2298 @@
+[
+  {
+    "file": "gates/r1-browser-launch.json",
+    "bytes": 546,
+    "sha256": "165ced9634897a53cd8da492b5ece882cfcb208ccd43500a04e599afbfbf8f2b",
+    "source_sha256": "165ced9634897a53cd8da492b5ece882cfcb208ccd43500a04e599afbfbf8f2b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-browser-launch.log",
+    "bytes": 85,
+    "sha256": "b25396b9b40a10445b04434a59b21c1cbe59daf9db9f00e9f56a1098d065cd21",
+    "source_sha256": "b25396b9b40a10445b04434a59b21c1cbe59daf9db9f00e9f56a1098d065cd21",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-browser-offline.json",
+    "bytes": 355,
+    "sha256": "1eb80a0b7cdd18d31d5c46ac2523aa8938924767775df2f6226da4813129b40c",
+    "source_sha256": "1eb80a0b7cdd18d31d5c46ac2523aa8938924767775df2f6226da4813129b40c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-browser-offline.log",
+    "bytes": 120,
+    "sha256": "ed5c3d9f7ac33017682ea3f2cb07c44eba7a82dbf08154c13db9dc47e18a077e",
+    "source_sha256": "ed5c3d9f7ac33017682ea3f2cb07c44eba7a82dbf08154c13db9dc47e18a077e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-browser-preflight-explicit.json",
+    "bytes": 311,
+    "sha256": "445e1183476a31c58c117f3a35ef280378eb945966ee7a27101d777755260a11",
+    "source_sha256": "445e1183476a31c58c117f3a35ef280378eb945966ee7a27101d777755260a11",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-browser-preflight-explicit.log",
+    "bytes": 974,
+    "sha256": "d8b086a1d78783907f9d060d467c12fda188fb5c9df5bf0337ef2f29805e5d98",
+    "source_sha256": "d8b086a1d78783907f9d060d467c12fda188fb5c9df5bf0337ef2f29805e5d98",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-browser-preflight.json",
+    "bytes": 283,
+    "sha256": "dbeb8c23220f16aee99effc56c4c4f2f4c533102b5b46b3f9aaccfa629f77db3",
+    "source_sha256": "dbeb8c23220f16aee99effc56c4c4f2f4c533102b5b46b3f9aaccfa629f77db3",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-browser-preflight.log",
+    "bytes": 401,
+    "sha256": "b3e9d92e3e35fd0b9cc70bfb3648843b35d2a63201cdff3fa97df1c028fde564",
+    "source_sha256": "b3e9d92e3e35fd0b9cc70bfb3648843b35d2a63201cdff3fa97df1c028fde564",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-frontend-source-equivalence.json",
+    "bytes": 896,
+    "sha256": "c2a8146e1e06d24cfa92c2d0d68bb46552a33cbea9ce801e08daf5b3b9e70068",
+    "source_sha256": "c2a8146e1e06d24cfa92c2d0d68bb46552a33cbea9ce801e08daf5b3b9e70068",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-launch-guard-dispositions.json",
+    "bytes": 386,
+    "sha256": "8ae06ee12679f83e8bac1e9f7b351f781c687e26b562dd4c30de91267cca08e6",
+    "source_sha256": "8ae06ee12679f83e8bac1e9f7b351f781c687e26b562dd4c30de91267cca08e6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-real18-launch.json",
+    "bytes": 384,
+    "sha256": "db5b97b2922fa07ccb5a57c2fe3dc86665d5d8da5f1b1a4bcee26c9c5e7fca05",
+    "source_sha256": "db5b97b2922fa07ccb5a57c2fe3dc86665d5d8da5f1b1a4bcee26c9c5e7fca05",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-real18-launch.log",
+    "bytes": 77,
+    "sha256": "8f5099d01ad2a78c7adace8679f5defed9f7633e5fb4798af27fe51abb4ca998",
+    "source_sha256": "8f5099d01ad2a78c7adace8679f5defed9f7633e5fb4798af27fe51abb4ca998",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-shared135-launch.json",
+    "bytes": 384,
+    "sha256": "578630694ec1da4d36edaa735dedb9bbf48da47a35a1b6c2030a85c9d21ce08c",
+    "source_sha256": "578630694ec1da4d36edaa735dedb9bbf48da47a35a1b6c2030a85c9d21ce08c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-shared135-launch.log",
+    "bytes": 77,
+    "sha256": "4da8beb3e691ef8628f45d65a460b722a30d6ad94fe241779fe405a11cb72f96",
+    "source_sha256": "4da8beb3e691ef8628f45d65a460b722a30d6ad94fe241779fe405a11cb72f96",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-shared135-xml-verification.json",
+    "bytes": 3215,
+    "sha256": "3b10b9e12aa551c10a810b17dc6c188f4b3e406b5d93516d231580837771cc5a",
+    "source_sha256": "3b10b9e12aa551c10a810b17dc6c188f4b3e406b5d93516d231580837771cc5a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-source-before.json",
+    "bytes": 252,
+    "sha256": "ecfe415398d763772dc3a6b4f22d2ee4c690213e668b663ec1266b0d0d88b85a",
+    "source_sha256": "ecfe415398d763772dc3a6b4f22d2ee4c690213e668b663ec1266b0d0d88b85a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-ua-green-counts.json",
+    "bytes": 176,
+    "sha256": "5b574e07cb6e7468ce3748f3f9b6e21e7ad5e700dd3c766233a9a617b160502c",
+    "source_sha256": "5b574e07cb6e7468ce3748f3f9b6e21e7ad5e700dd3c766233a9a617b160502c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-ua-green.json",
+    "bytes": 411,
+    "sha256": "a499b4469e5ffb4b57bf8027a38f7410307a22a557722ad09ed6f92cd69a2ee3",
+    "source_sha256": "a499b4469e5ffb4b57bf8027a38f7410307a22a557722ad09ed6f92cd69a2ee3",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1-ua-green.log",
+    "bytes": 68734,
+    "sha256": "b8e0f9b912631bb177f680c50f58bcfb7d1f16bc2f377f6b5803b16c4377d269",
+    "source_sha256": "b8e0f9b912631bb177f680c50f58bcfb7d1f16bc2f377f6b5803b16c4377d269",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-backend-default-counts.json",
+    "bytes": 316524,
+    "sha256": "c004a3ea114a419cd880c9076e71b785de55a49b9c6dad4847a72d14ff38eaae",
+    "source_sha256": "c004a3ea114a419cd880c9076e71b785de55a49b9c6dad4847a72d14ff38eaae",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-backend-default.json",
+    "bytes": 247,
+    "sha256": "d1e36dc7970557f7581a2ccc679a081500805d8fb5781fd3bd13565872f8b7d6",
+    "source_sha256": "d1e36dc7970557f7581a2ccc679a081500805d8fb5781fd3bd13565872f8b7d6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-backend-default.log",
+    "bytes": 253212,
+    "sha256": "9d4a11c68861971ce7a34f629b3cbf188eb955893fd2cbd7346427b1e463e5c3",
+    "source_sha256": "55e7e5fa7ce796b6bc2a8092348353dff368aca0c50877702dee1b5bac0c4171",
+    "test_jwt_redactions": 1
+  },
+  {
+    "file": "gates/r1backend-full-bundle.json",
+    "bytes": 274,
+    "sha256": "fb1f83f10483813735ef87fc7438cb6acc170b0deca3784c64e0be8e3484c925",
+    "source_sha256": "fb1f83f10483813735ef87fc7438cb6acc170b0deca3784c64e0be8e3484c925",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-full-bundle.log",
+    "bytes": 78,
+    "sha256": "00003c5b4292294cb4718d8c643d576ea582c1bf3af13f1c90506478bb71a558",
+    "source_sha256": "00003c5b4292294cb4718d8c643d576ea582c1bf3af13f1c90506478bb71a558",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-full-package-proof.json",
+    "bytes": 748,
+    "sha256": "12834827568a336b2bc8c9f591b70f86185554e89ef79854dc30fdd921f7a97c",
+    "source_sha256": "12834827568a336b2bc8c9f591b70f86185554e89ef79854dc30fdd921f7a97c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-full-package.json",
+    "bytes": 301,
+    "sha256": "461ad60600d345a9d030a0f0cba91f639f8d2984a7cf473d2052c42beb87c2ce",
+    "source_sha256": "461ad60600d345a9d030a0f0cba91f639f8d2984a7cf473d2052c42beb87c2ce",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-full-package.log",
+    "bytes": 101926,
+    "sha256": "1691ebb84232cecd7143c6f4b34fb0f7ebe1bdd1676169f37dfda31218b89450",
+    "source_sha256": "1691ebb84232cecd7143c6f4b34fb0f7ebe1bdd1676169f37dfda31218b89450",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-source-after.json",
+    "bytes": 128,
+    "sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "source_sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1backend-source-before.json",
+    "bytes": 128,
+    "sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "source_sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-core-artifact.json",
+    "bytes": 2024,
+    "sha256": "5f195f6ae5751b40f1182738e158dbae06aa65073df5edf204461b836954490e",
+    "source_sha256": "5f195f6ae5751b40f1182738e158dbae06aa65073df5edf204461b836954490e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-core-bundle.json",
+    "bytes": 271,
+    "sha256": "893030a61bc477474618266bfd9bd01ab829151a5deb729b0d9e8cfae499eecc",
+    "source_sha256": "893030a61bc477474618266bfd9bd01ab829151a5deb729b0d9e8cfae499eecc",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-core-bundle.log",
+    "bytes": 78,
+    "sha256": "8d0c283a367b5e6b676e1a2c1689c0afe4fecec5c8d2a99359a1eb01ce1cfb5c",
+    "source_sha256": "8d0c283a367b5e6b676e1a2c1689c0afe4fecec5c8d2a99359a1eb01ce1cfb5c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-core-package.json",
+    "bytes": 330,
+    "sha256": "a4fb0fdaac28dc34d9d20a5ff5adf11da5c7267d197df44edf7d74d2912468a1",
+    "source_sha256": "a4fb0fdaac28dc34d9d20a5ff5adf11da5c7267d197df44edf7d74d2912468a1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-core-package.log",
+    "bytes": 92309,
+    "sha256": "99d82b769c24b4ba66c0fda56bf61d1b07f88eec1b4f8b365f7c25ca62750110",
+    "source_sha256": "99d82b769c24b4ba66c0fda56bf61d1b07f88eec1b4f8b365f7c25ca62750110",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-fm.json",
+    "bytes": 245,
+    "sha256": "076705d52725dd3734c8ade78a95a2d1be5afdd198b7139502986329220c2e0c",
+    "source_sha256": "076705d52725dd3734c8ade78a95a2d1be5afdd198b7139502986329220c2e0c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-fm.log",
+    "bytes": 35,
+    "sha256": "4d0676dcee9f562db19be0c5825d88dac69417fb3f7cb3d74b8072c86af71254",
+    "source_sha256": "4d0676dcee9f562db19be0c5825d88dac69417fb3f7cb3d74b8072c86af71254",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-fullstack-facts.json",
+    "bytes": 301,
+    "sha256": "93f103509e7a18a2292536d39ac41c5f81a370239e50ba25e97f43fdfb3a2adb",
+    "source_sha256": "93f103509e7a18a2292536d39ac41c5f81a370239e50ba25e97f43fdfb3a2adb",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-fullstack-facts.log",
+    "bytes": 61,
+    "sha256": "b01ce0e919568c169e9654f1c8d3f3a04ec093b47cf36424fe3f22052f41e9b8",
+    "source_sha256": "b01ce0e919568c169e9654f1c8d3f3a04ec093b47cf36424fe3f22052f41e9b8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-handbooks.json",
+    "bytes": 261,
+    "sha256": "6f7dcd3bd048af5ebb712acd011f83b2fce5fc41e86b58c4545f83077c8278ca",
+    "source_sha256": "6f7dcd3bd048af5ebb712acd011f83b2fce5fc41e86b58c4545f83077c8278ca",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-handbooks.log",
+    "bytes": 145,
+    "sha256": "4cc89a4e858cf6806a09a1ae7b4c1bb4734f4df10d7428222ea51c02a9c00da4",
+    "source_sha256": "4cc89a4e858cf6806a09a1ae7b4c1bb4734f4df10d7428222ea51c02a9c00da4",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-notify-layered.json",
+    "bytes": 373,
+    "sha256": "f88bc097c0310774fbbc412e1d7c3efd7aa01900105c36632e4bd329ab6f3457",
+    "source_sha256": "f88bc097c0310774fbbc412e1d7c3efd7aa01900105c36632e4bd329ab6f3457",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-notify-layered.log",
+    "bytes": 74,
+    "sha256": "c42f472c9dbdce8bc4a99e799bf4d1c20fff267656f9ba7ba6297998b78a58af",
+    "source_sha256": "c42f472c9dbdce8bc4a99e799bf4d1c20fff267656f9ba7ba6297998b78a58af",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-skill-facts.json",
+    "bytes": 295,
+    "sha256": "b78659d84c4402d726c6316f0fe4d3372c7238bc0908d691f53418fcc79b7f97",
+    "source_sha256": "b78659d84c4402d726c6316f0fe4d3372c7238bc0908d691f53418fcc79b7f97",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-skill-facts.log",
+    "bytes": 57,
+    "sha256": "4c09608c87cbbb56afcf03a56f7b5d247a779e315917179066dc9900c3898a4f",
+    "source_sha256": "4c09608c87cbbb56afcf03a56f7b5d247a779e315917179066dc9900c3898a4f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-source-after.json",
+    "bytes": 128,
+    "sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "source_sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "gates/r1core-source-before.json",
+    "bytes": 128,
+    "sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "source_sha256": "465a113310b5d086eb143ff101dceefbab06384c6ba6bb79e8ac5b4c49a15fbd",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1-ua-green-reports/TEST-org.namewta.test.auth.LoginUserAgentUnitTest.xml",
+    "bytes": 94235,
+    "sha256": "0ab724b9a40b9b67b56c91667dd64af51edf4ff5456e28e47116bd144bd53b7f",
+    "source_sha256": "0ab724b9a40b9b67b56c91667dd64af51edf4ff5456e28e47116bd144bd53b7f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.NamewtaApplicationUnitTest.xml",
+    "bytes": 93119,
+    "sha256": "62adbbf5b5529c7944ed864ca15ab30afe99240894f3d73d4f5cb1cb47e2f4fb",
+    "source_sha256": "62adbbf5b5529c7944ed864ca15ab30afe99240894f3d73d4f5cb1cb47e2f4fb",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssAccessDiagnosticUnitTest.xml",
+    "bytes": 94380,
+    "sha256": "c4eb5f674f61ac72b7a5968757f68357b1ca604b38479cbfd2819ebf5c53cc6c",
+    "source_sha256": "c4eb5f674f61ac72b7a5968757f68357b1ca604b38479cbfd2819ebf5c53cc6c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssClientProviderUnitTest.xml",
+    "bytes": 93260,
+    "sha256": "9e973c71e0d59e41406f104bd37fe6001f1f6d0e1039c9121342bc856afbfd4c",
+    "source_sha256": "9e973c71e0d59e41406f104bd37fe6001f1f6d0e1039c9121342bc856afbfd4c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.common.redis.cache.ThirdRedisIntegrationTest.xml",
+    "bytes": 94084,
+    "sha256": "505120d2d0df8ea4e2f36a76768ab362b9b360c87107255080b80e988a50f690",
+    "source_sha256": "505120d2d0df8ea4e2f36a76768ab362b9b360c87107255080b80e988a50f690",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.TagUnitTest.xml",
+    "bytes": 92897,
+    "sha256": "3a8e6686dc14b430ba81ef696e8d73cfd61645aa6178c6f358946b1aaae65d04",
+    "source_sha256": "3a8e6686dc14b430ba81ef696e8d73cfd61645aa6178c6f358946b1aaae65d04",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.ai.SnailAiRetirementTest.xml",
+    "bytes": 94115,
+    "sha256": "bd82b417e648381c62a6073d96197cb881fe81d0113d79931885352b1effb277",
+    "source_sha256": "bd82b417e648381c62a6073d96197cb881fe81d0113d79931885352b1effb277",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.airetirement.AiRetirementMySqlIntegrationTest.xml",
+    "bytes": 93006,
+    "sha256": "f371684209096ad0c78f84a160c972ac6988eec66967462d179cf3eb3fd5c89f",
+    "source_sha256": "f371684209096ad0c78f84a160c972ac6988eec66967462d179cf3eb3fd5c89f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.auth.LoginUserAgentUnitTest.xml",
+    "bytes": 94263,
+    "sha256": "a5cf571fa388ad9bc5eaf2ccced931bb9a68c1ea0cb0139c53eaf27ed32281c3",
+    "source_sha256": "a5cf571fa388ad9bc5eaf2ccced931bb9a68c1ea0cb0139c53eaf27ed32281c3",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.authorization.session.AuthorizationInvalidationCallSiteUnitTest.xml",
+    "bytes": 93132,
+    "sha256": "d5202b22e870b2d0bef82806d0e55cf4b33dbb026fd3037d179f21a1d397321a",
+    "source_sha256": "d5202b22e870b2d0bef82806d0e55cf4b33dbb026fd3037d179f21a1d397321a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.authorization.session.AuthorizationSessionRedisIntegrationTest.xml",
+    "bytes": 93594,
+    "sha256": "a3e79c84c6f1da66e37b96e27ad551feda8a37e141d0074d9530f3ba41c8cdcf",
+    "source_sha256": "a3e79c84c6f1da66e37b96e27ad551feda8a37e141d0074d9530f3ba41c8cdcf",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.authorization.session.ClientSessionServiceUnitTest.xml",
+    "bytes": 94355,
+    "sha256": "408bea811b8b6ce9bdf1f75522392672658fe6414cf02936bf6eb91bff7e740a",
+    "source_sha256": "408bea811b8b6ce9bdf1f75522392672658fe6414cf02936bf6eb91bff7e740a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.cache.invalidation.ClusterCacheInvalidationCoordinatorUnitTest.xml",
+    "bytes": 93472,
+    "sha256": "cd2e6e6c720a5b3b384c2d446c001d8bd247e923f248d3e9c69caf22eb93c762",
+    "source_sha256": "cd2e6e6c720a5b3b384c2d446c001d8bd247e923f248d3e9c69caf22eb93c762",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.cache.invalidation.ClusterCacheInvalidationRedisIntegrationTest.xml",
+    "bytes": 94443,
+    "sha256": "1c73706af4246f38789b38d9c9946772bae90c94bf7407c6590ae3c08616789f",
+    "source_sha256": "1c73706af4246f38789b38d9c9946772bae90c94bf7407c6590ae3c08616789f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.config.LocalConfigurationUnitTest.xml",
+    "bytes": 94491,
+    "sha256": "5efcd703bdf2b47dde9ddb48e3a8bc38c68b4b8ae9a511e55218257c7e267c78",
+    "source_sha256": "5efcd703bdf2b47dde9ddb48e3a8bc38c68b4b8ae9a511e55218257c7e267c78",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.contracts.CrudHttpDispatchIntegrationTest.xml",
+    "bytes": 127950,
+    "sha256": "6a2619d03f8574694b76cc0c6dc61ef5f4ab3e862bdaefaa0d0b2ff1f1636859",
+    "source_sha256": "e111f732e289e683da2ed6efe3ee296fd066337395a2ce910abc477938dd4ab0",
+    "test_jwt_redactions": 1
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.contracts.CrudHttpMappingContractTest.xml",
+    "bytes": 93055,
+    "sha256": "505a4858860d60ffe48ad6905aeae79c270eb74bd0c8f9c79d73574c840a4b59",
+    "source_sha256": "505a4858860d60ffe48ad6905aeae79c270eb74bd0c8f9c79d73574c840a4b59",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.contracts.CrudMySqlHttpIntegrationTest.xml",
+    "bytes": 92988,
+    "sha256": "75538b2547135b2e7afee2f5655620214e6df8f9296cf6182156ff0763ca2c87",
+    "source_sha256": "75538b2547135b2e7afee2f5655620214e6df8f9296cf6182156ff0763ca2c87",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.contracts.DemoTreeMySqlIntegrationTest.xml",
+    "bytes": 96488,
+    "sha256": "3bfa5e7f88493f496c1f9fa3694b8e8ab14878d4905783da4d16051d08c9fe88",
+    "source_sha256": "3bfa5e7f88493f496c1f9fa3694b8e8ab14878d4905783da4d16051d08c9fe88",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.controller.IndexControllerUnitTest.xml",
+    "bytes": 92866,
+    "sha256": "e552f25f1256abe7872e787e7df7f1064ba583748ead2f067d0a5aa7bff7e97b",
+    "source_sha256": "e552f25f1256abe7872e787e7df7f1064ba583748ead2f067d0a5aa7bff7e97b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.department.DepartmentTreeMySqlIntegrationTest.xml",
+    "bytes": 96491,
+    "sha256": "962a1018d4de37eb1e5a921879f9e6d1d2c1395506f5c62ebdbc20e7583e8d71",
+    "source_sha256": "962a1018d4de37eb1e5a921879f9e6d1d2c1395506f5c62ebdbc20e7583e8d71",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.logging.LogRedactionHttpMySqlIntegrationTest.xml",
+    "bytes": 93990,
+    "sha256": "f25e681031dcb57f1cdebb3305c8d5ac58ba65faee7c83962366363526af8d10",
+    "source_sha256": "f25e681031dcb57f1cdebb3305c8d5ac58ba65faee7c83962366363526af8d10",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.logging.OperationLogRedactionTest.xml",
+    "bytes": 93285,
+    "sha256": "ad9cd757623ea46c48d94d3e6e4ba1a8e7f5cd2a2457ba2548d1010aa3eb3130",
+    "source_sha256": "ad9cd757623ea46c48d94d3e6e4ba1a8e7f5cd2a2457ba2548d1010aa3eb3130",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.logging.SysConsoleLoggingUnitTest.xml",
+    "bytes": 93282,
+    "sha256": "67d1ca44a21573f0cf092622e981157c0eb90bcbf5ccf9ed8003de577c2031da",
+    "source_sha256": "67d1ca44a21573f0cf092622e981157c0eb90bcbf5ccf9ed8003de577c2031da",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.BusinessMenuRetirementMySqlIntegrationTest.xml",
+    "bytes": 93363,
+    "sha256": "6a280ca4da1496655a39836fb11a06761f6076facddf5e53c564fa9520680675",
+    "source_sha256": "6a280ca4da1496655a39836fb11a06761f6076facddf5e53c564fa9520680675",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.adminruntime.AdminRuntimeCapabilityMySqlIntegrationTest.xml",
+    "bytes": 95947,
+    "sha256": "f8b85a9dee33df3c74e6d34ebf03bcaf8a0be89e102f25a71e1cb2ee6a6ea834",
+    "source_sha256": "f8b85a9dee33df3c74e6d34ebf03bcaf8a0be89e102f25a71e1cb2ee6a6ea834",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.adminruntime.AdminRuntimeCapabilitySqlContractTest.xml",
+    "bytes": 92990,
+    "sha256": "f433859e5a94dfcacd502b25d1d3def50afcc448b4944f294e465ef9ebf9f88a",
+    "source_sha256": "f433859e5a94dfcacd502b25d1d3def50afcc448b4944f294e465ef9ebf9f88a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossaccess.OssAccessMigrationContractUnitTest.xml",
+    "bytes": 93202,
+    "sha256": "8fabf4548fbaf57454c5aa5d214b51ef58712a670c48dffb78b96a9f714fcfc9",
+    "source_sha256": "8fabf4548fbaf57454c5aa5d214b51ef58712a670c48dffb78b96a9f714fcfc9",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossaccess.OssAccessMigrationMySqlIntegrationTest.xml",
+    "bytes": 93394,
+    "sha256": "c91774a76924baceb96667983e9ee6ba04bd1ea13b70adbe50eeca07551ba033",
+    "source_sha256": "c91774a76924baceb96667983e9ee6ba04bd1ea13b70adbe50eeca07551ba033",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest.xml",
+    "bytes": 92977,
+    "sha256": "3d14f609261bb97ecdf001dc80081a92f8cd4cd9b40accf86cb2c542a9db278b",
+    "source_sha256": "3d14f609261bb97ecdf001dc80081a92f8cd4cd9b40accf86cb2c542a9db278b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.password.PasswordMigrationMySqlIntegrationTest.xml",
+    "bytes": 93362,
+    "sha256": "458232522f8f133021ef7e936563cc2f7c4ff2609a942e6706945db49610ef35",
+    "source_sha256": "458232522f8f133021ef7e936563cc2f7c4ff2609a942e6706945db49610ef35",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.password.PasswordMigrationUnitTest.xml",
+    "bytes": 93297,
+    "sha256": "6e73259f16b75457f5f37a6b54695cf97ed351cb0d856fe68141a4b607ffe047",
+    "source_sha256": "6e73259f16b75457f5f37a6b54695cf97ed351cb0d856fe68141a4b607ffe047",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.nacos.menu.NacosMenuContractUnitTest.xml",
+    "bytes": 92879,
+    "sha256": "46e85ef7cf753f0aa230c46ec785120bc99a301d19f38c2f6837eae1d8c214e3",
+    "source_sha256": "46e85ef7cf753f0aa230c46ec785120bc99a301d19f38c2f6837eae1d8c214e3",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.nacos.refresh.NacosLiveRefreshContractUnitTest.xml",
+    "bytes": 93931,
+    "sha256": "608e71f26172c496707808e9aa6c9484c2338c320561eb1780d9337622300d68",
+    "source_sha256": "608e71f26172c496707808e9aa6c9484c2338c320561eb1780d9337622300d68",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+    "bytes": 94850,
+    "sha256": "1fabb3e9bcd5147c36db194ac31978768b812c5cfd0abcf7ed8e0433fa1d493a",
+    "source_sha256": "1fabb3e9bcd5147c36db194ac31978768b812c5cfd0abcf7ed8e0433fa1d493a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotificationModeOpenApiTest.xml",
+    "bytes": 92782,
+    "sha256": "1c0f5bdf3da9736da628b2b26ccc466cd200a271776bf6514a692f70da043817",
+    "source_sha256": "1c0f5bdf3da9736da628b2b26ccc466cd200a271776bf6514a692f70da043817",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotificationRetryControllerContractTest.xml",
+    "bytes": 96027,
+    "sha256": "3663e286a4821903e2852129fb5f4153384586a74f7f60197072fdff60a4323f",
+    "source_sha256": "3663e286a4821903e2852129fb5f4153384586a74f7f60197072fdff60a4323f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+    "bytes": 105353,
+    "sha256": "5967c208491798113029aefbb017192a21954336eec4f6a05f75fc2e573a1f85",
+    "source_sha256": "5967c208491798113029aefbb017192a21954336eec4f6a05f75fc2e573a1f85",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+    "bytes": 96387,
+    "sha256": "6075f5ec0660f7b805924e02fbd02f21720eef6025d31bf453dd0cf2dc58bdac",
+    "source_sha256": "6075f5ec0660f7b805924e02fbd02f21720eef6025d31bf453dd0cf2dc58bdac",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyInboxPagingIntegrationTest.xml",
+    "bytes": 93676,
+    "sha256": "0f26fa9de43d2fc1a902c9c67e1755fce717d7f50e9e86ba71ba285fb3b9cc4d",
+    "source_sha256": "0f26fa9de43d2fc1a902c9c67e1755fce717d7f50e9e86ba71ba285fb3b9cc4d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+    "bytes": 96036,
+    "sha256": "c78935e1a4c813de4698d8051833c5947b04357f2ace359ebe848e3010413e3d",
+    "source_sha256": "c78935e1a4c813de4698d8051833c5947b04357f2ace359ebe848e3010413e3d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyNoticeRetractionIntegrationTest.xml",
+    "bytes": 96859,
+    "sha256": "92e5b2ad358591ad63e70be5b4621f152c1b31012dbd979af9f812c72aec05c1",
+    "source_sha256": "92e5b2ad358591ad63e70be5b4621f152c1b31012dbd979af9f812c72aec05c1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+    "bytes": 95218,
+    "sha256": "62c3205a7a931810dc9f55357132c4078b7f523e0be5fc1dd087dcec8c5ab480",
+    "source_sha256": "62c3205a7a931810dc9f55357132c4078b7f523e0be5fc1dd087dcec8c5ab480",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifySmsLogEntryTest.xml",
+    "bytes": 92907,
+    "sha256": "15cbb5536f4acca88ba76dc17c5527f751d110abf158c5bbb982fb96bc488e81",
+    "source_sha256": "15cbb5536f4acca88ba76dc17c5527f751d110abf158c5bbb982fb96bc488e81",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+    "bytes": 96955,
+    "sha256": "13b854b14e8e139d483154b2b1bcaf107e633055e72f0968b40c6a688f15d75b",
+    "source_sha256": "13b854b14e8e139d483154b2b1bcaf107e633055e72f0968b40c6a688f15d75b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+    "bytes": 92889,
+    "sha256": "224d08fe220a2a1eed6c6d27b9869288e5599e581064be81b6523a925f9ff9d6",
+    "source_sha256": "224d08fe220a2a1eed6c6d27b9869288e5599e581064be81b6523a925f9ff9d6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest.xml",
+    "bytes": 93146,
+    "sha256": "818c449ae9a4230a8b278d58e80a4e1c343949ed18242919e71c72286d8549c9",
+    "source_sha256": "818c449ae9a4230a8b278d58e80a4e1c343949ed18242919e71c72286d8549c9",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest.xml",
+    "bytes": 93754,
+    "sha256": "7574fa1c32f3487f61743a8b3b0b783d4e9c07929002f83630c4a6e009946e9d",
+    "source_sha256": "7574fa1c32f3487f61743a8b3b0b783d4e9c07929002f83630c4a6e009946e9d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.AuthNotifyCallerUnitTest.xml",
+    "bytes": 92798,
+    "sha256": "291202d4df4b699bd2644b1547bbe81f41f91d33cd9972814eaf505669895756",
+    "source_sha256": "291202d4df4b699bd2644b1547bbe81f41f91d33cd9972814eaf505669895756",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.CaptchaNotifyCallerUnitTest.xml",
+    "bytes": 94825,
+    "sha256": "a8be2a4682ecc0917c0a67f8b4ae9b668caf24e391ebb5e1d84951b0b57340f2",
+    "source_sha256": "a8be2a4682ecc0917c0a67f8b4ae9b668caf24e391ebb5e1d84951b0b57340f2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+    "bytes": 93101,
+    "sha256": "5818464f216c18a8bca0fe7ca13dd3fabfe7dd0491f52908df797bf621e16773",
+    "source_sha256": "5818464f216c18a8bca0fe7ca13dd3fabfe7dd0491f52908df797bf621e16773",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest.xml",
+    "bytes": 92832,
+    "sha256": "3f32c50998abce1bb7fc50e0e7301d33e055d5b439aa7fe0daf3dbc6f3b98ecd",
+    "source_sha256": "3f32c50998abce1bb7fc50e0e7301d33e055d5b439aa7fe0daf3dbc6f3b98ecd",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.WorkflowNotifyCallerUnitTest.xml",
+    "bytes": 93175,
+    "sha256": "09733e18b8d263a7688c200a6ad0586e7eb7bfff95453c41f71fe26ee0f4cef5",
+    "source_sha256": "09733e18b8d263a7688c200a6ad0586e7eb7bfff95453c41f71fe26ee0f4cef5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.xml",
+    "bytes": 93171,
+    "sha256": "fab6caf7729b8a9a0b088ad709fc58376cb841971a2e27b79138d24c1157d13a",
+    "source_sha256": "fab6caf7729b8a9a0b088ad709fc58376cb841971a2e27b79138d24c1157d13a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest.xml",
+    "bytes": 92963,
+    "sha256": "eb454858488fa5c31760d8428e6f2ab456ff5efe29cc14904235e19f514e7d14",
+    "source_sha256": "eb454858488fa5c31760d8428e6f2ab456ff5efe29cc14904235e19f514e7d14",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyAutoConfigurationUnitTest.xml",
+    "bytes": 92793,
+    "sha256": "873464a9c1740aac26320c48236ada6ff6300958cd54d49ec1de07c677409de0",
+    "source_sha256": "873464a9c1740aac26320c48236ada6ff6300958cd54d49ec1de07c677409de0",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyChannelUnitTest.xml",
+    "bytes": 93028,
+    "sha256": "10f2c3b53ccdded96c7ae15434e786585c9aab673e746f354b4633102560cdce",
+    "source_sha256": "10f2c3b53ccdded96c7ae15434e786585c9aab673e746f354b4633102560cdce",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyDispatcherUnitTest.xml",
+    "bytes": 94667,
+    "sha256": "335f95e1530cd884dad184bfbd7cfe830c2f16aa62977cc24744aaf56e0e5020",
+    "source_sha256": "335f95e1530cd884dad184bfbd7cfe830c2f16aa62977cc24744aaf56e0e5020",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.SmsNotifyChannelAdapterUnitTest.xml",
+    "bytes": 92948,
+    "sha256": "ca56a0181feeca487654eed898755bd8ba3fc4623edce86839fb5ca49fd14af7",
+    "source_sha256": "ca56a0181feeca487654eed898755bd8ba3fc4623edce86839fb5ca49fd14af7",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest.xml",
+    "bytes": 93041,
+    "sha256": "99b084ebfa55677976b9c127263d73b08feba328c741774b93f04fced0f9949d",
+    "source_sha256": "99b084ebfa55677976b9c127263d73b08feba328c741774b93f04fced0f9949d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest.xml",
+    "bytes": 94585,
+    "sha256": "ae5455b0a5a97a33f1d649b475d67da820424c1cea5a891c87a71d595918eccf",
+    "source_sha256": "ae5455b0a5a97a33f1d649b475d67da820424c1cea5a891c87a71d595918eccf",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+    "bytes": 95115,
+    "sha256": "9edf894cf29e1130ef3a8e348685991177d805eb923f168e9c26804eee29ec58",
+    "source_sha256": "9edf894cf29e1130ef3a8e348685991177d805eb923f168e9c26804eee29ec58",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.monitor.NotifyMonitorMySqlIntegrationTest.xml",
+    "bytes": 93316,
+    "sha256": "ed01675d2f237b9c370957c86a73b1ad7f147f610b50aa4ceba9aa736f7dc505",
+    "source_sha256": "ed01675d2f237b9c370957c86a73b1ad7f147f610b50aa4ceba9aa736f7dc505",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.assembly.OpenApiAssemblyContextTest.xml",
+    "bytes": 100867,
+    "sha256": "fbfbdc4c1289c0851d3ba8f6f9d0c5ac94348bdd2b24156e255399f9a532beb5",
+    "source_sha256": "fbfbdc4c1289c0851d3ba8f6f9d0c5ac94348bdd2b24156e255399f9a532beb5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.authorization.SystemOpenApiAuthorizationResolverTest.xml",
+    "bytes": 93409,
+    "sha256": "4f4df2e78c69e781148950ac3491cc0ec4563d7c6e0d1b0e8661f21fdbe43931",
+    "source_sha256": "4f4df2e78c69e781148950ac3491cc0ec4563d7c6e0d1b0e8661f21fdbe43931",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.catalog.SystemOpenApiCatalogTest.xml",
+    "bytes": 93473,
+    "sha256": "1d2dae3b033a3c7fb216ee0759888bc8b218280d106b7aff42ac232005208ac8",
+    "source_sha256": "1d2dae3b033a3c7fb216ee0759888bc8b218280d106b7aff42ac232005208ac8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.OpenApiCredentialCryptoTest.xml",
+    "bytes": 93257,
+    "sha256": "e965be3112f77e8ea4ffceaabad8445464cb673eb600bcf525f2069dd1acdbd7",
+    "source_sha256": "e965be3112f77e8ea4ffceaabad8445464cb673eb600bcf525f2069dd1acdbd7",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.OpenApiCredentialSqlContractTest.xml",
+    "bytes": 92898,
+    "sha256": "00b0397f3079400ead3fc8a3018df36bead92a4d25b4af90296fe6be6d8fdae3",
+    "source_sha256": "00b0397f3079400ead3fc8a3018df36bead92a4d25b4af90296fe6be6d8fdae3",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.SysOpenApiCredentialControllerContractTest.xml",
+    "bytes": 93861,
+    "sha256": "c5feec48e7b0ef39b6811e48a054a1a51779801054251760e74b8ee5919f355d",
+    "source_sha256": "c5feec48e7b0ef39b6811e48a054a1a51779801054251760e74b8ee5919f355d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.credential.SystemOpenApiCredentialServiceTest.xml",
+    "bytes": 93792,
+    "sha256": "57ea30dc1a0004c7c76c7c63eab59f371f3f233d1ec14aabad5e2739fa85ac39",
+    "source_sha256": "57ea30dc1a0004c7c76c7c63eab59f371f3f233d1ec14aabad5e2739fa85ac39",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.gateway.OpenApiGatewayE2ETest.xml",
+    "bytes": 96785,
+    "sha256": "65c30f37e6a9dc0a4a82170b86bf370394ed53874be8003c6f0eb3c5060d7538",
+    "source_sha256": "65c30f37e6a9dc0a4a82170b86bf370394ed53874be8003c6f0eb3c5060d7538",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.invalidation.IdentityOpenApiSessionInvalidationTest.xml",
+    "bytes": 93880,
+    "sha256": "1e44dd995b18af2068fe918cc1b9ec565f05f580fcce9dc443cb1d12667499af",
+    "source_sha256": "1e44dd995b18af2068fe918cc1b9ec565f05f580fcce9dc443cb1d12667499af",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.openapi.invalidation.RbacOpenApiSessionInvalidationTest.xml",
+    "bytes": 93650,
+    "sha256": "7b9ade4efcdeb2d741c05c5b315357f81290053baa1fe1e8dcdfad67ae33cac1",
+    "source_sha256": "7b9ade4efcdeb2d741c05c5b315357f81290053baa1fe1e8dcdfad67ae33cac1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlArchitectureUnitTest.xml",
+    "bytes": 92906,
+    "sha256": "1677b9f43c2fa14af86a6731965f55c0d5b20558b6a5ddc65cf62c5ff2c2ac6d",
+    "source_sha256": "1677b9f43c2fa14af86a6731965f55c0d5b20558b6a5ddc65cf62c5ff2c2ac6d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlContractUnitTest.xml",
+    "bytes": 93214,
+    "sha256": "4b586852ad64de02fe1c362e11e9f4e071e386ca57494862e5093875f3000c56",
+    "source_sha256": "4b586852ad64de02fe1c362e11e9f4e071e386ca57494862e5093875f3000c56",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest.xml",
+    "bytes": 93395,
+    "sha256": "2383a27d82f7481fd1956a5a7004b4f46ff34ce28c20bdc400b10f91a5897aaa",
+    "source_sha256": "2383a27d82f7481fd1956a5a7004b4f46ff34ce28c20bdc400b10f91a5897aaa",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlProviderUnitTest.xml",
+    "bytes": 92894,
+    "sha256": "f8d447e113b152a0c7cf49e554b93825f068e6bca8fd17a6687c7000221f4bf8",
+    "source_sha256": "f8d447e113b152a0c7cf49e554b93825f068e6bca8fd17a6687c7000221f4bf8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlServiceUnitTest.xml",
+    "bytes": 93183,
+    "sha256": "522286a21545159e4b50bf306794f585f76566d53c1f2200042bb5dfebd5532e",
+    "source_sha256": "522286a21545159e4b50bf306794f585f76566d53c1f2200042bb5dfebd5532e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest.xml",
+    "bytes": 93240,
+    "sha256": "f63490ac97f2de9662bb2574fd851df62087635c417e6289e7c838b9cbd164fd",
+    "source_sha256": "f63490ac97f2de9662bb2574fd851df62087635c417e6289e7c838b9cbd164fd",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.MinioOssClientIntegrationTest.xml",
+    "bytes": 93367,
+    "sha256": "03671fd95769e24e728318746f34143138879a74c20cc1107384f6a846171a20",
+    "source_sha256": "03671fd95769e24e728318746f34143138879a74c20cc1107384f6a846171a20",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.OssClientContractUnitTest.xml",
+    "bytes": 93069,
+    "sha256": "f13700d3a9313acf99f3d33e9538f20dbd0ba8fe1408a6c2e9aea0ef67d8dca4",
+    "source_sha256": "f13700d3a9313acf99f3d33e9538f20dbd0ba8fe1408a6c2e9aea0ef67d8dca4",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.OssClientS3CompatibilityUnitTest.xml",
+    "bytes": 92894,
+    "sha256": "40a7ca2c678fb7cd0685576d2be9709f7ded0636ca93ef6f74c45042810f1a95",
+    "source_sha256": "40a7ca2c678fb7cd0685576d2be9709f7ded0636ca93ef6f74c45042810f1a95",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssAccessConfigurationUnitTest.xml",
+    "bytes": 93357,
+    "sha256": "1cd6d7c5d65370b53c2a070560dfa06ecab376e1f4e3fe05253f0ceecb5669c2",
+    "source_sha256": "1cd6d7c5d65370b53c2a070560dfa06ecab376e1f4e3fe05253f0ceecb5669c2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssConfigGovernanceUnitTest.xml",
+    "bytes": 94159,
+    "sha256": "25b411f833179ca769552d05f418981316f54a12aedf302d6a02da2369335f01",
+    "source_sha256": "25b411f833179ca769552d05f418981316f54a12aedf302d6a02da2369335f01",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssConfigHttpContractUnitTest.xml",
+    "bytes": 93062,
+    "sha256": "8b124bcf7fef38a6bcfe9cb4e22689c20d46d3b69d228f048f5b67c50f76342e",
+    "source_sha256": "8b124bcf7fef38a6bcfe9cb4e22689c20d46d3b69d228f048f5b67c50f76342e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssLifecycleConfigurationUnitTest.xml",
+    "bytes": 94066,
+    "sha256": "1ede47397e1d4e9719cef32fa57542de18ccdbf4b78299853b13579f9e809b24",
+    "source_sha256": "1ede47397e1d4e9719cef32fa57542de18ccdbf4b78299853b13579f9e809b24",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.cutover.OssProtocolCutoverUnitTest.xml",
+    "bytes": 93059,
+    "sha256": "44bc1dffe5e9dc60228aa22b0fe570141c00632ecb8fd52d58f67c12fe9abbe8",
+    "source_sha256": "44bc1dffe5e9dc60228aa22b0fe570141c00632ecb8fd52d58f67c12fe9abbe8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssControllerExceptionHandlerTest.xml",
+    "bytes": 93575,
+    "sha256": "92f6fadfcedc85bf1491a9f297d199df9f381721c43d1bdf47c07d00ab66545e",
+    "source_sha256": "92f6fadfcedc85bf1491a9f297d199df9f381721c43d1bdf47c07d00ab66545e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleContractUnitTest.xml",
+    "bytes": 93551,
+    "sha256": "cc8d4f39d960a3a57a38770ff183bc5bfcdb04455d2b52524d30e7ee105bcee8",
+    "source_sha256": "cc8d4f39d960a3a57a38770ff183bc5bfcdb04455d2b52524d30e7ee105bcee8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest.xml",
+    "bytes": 96393,
+    "sha256": "67b610dee24583fdbfc6d362d1cdbcf29126130bb8dee7f8ad7f8185dc54412e",
+    "source_sha256": "67b610dee24583fdbfc6d362d1cdbcf29126130bb8dee7f8ad7f8185dc54412e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssReferenceReconciliationUnitTest.xml",
+    "bytes": 93525,
+    "sha256": "d0e5e07260063cf717c5653b574032cfabba9d3a933f38d554d074af1903ab7f",
+    "source_sha256": "d0e5e07260063cf717c5653b574032cfabba9d3a933f38d554d074af1903ab7f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssMigrationHttpContractUnitTest.xml",
+    "bytes": 93048,
+    "sha256": "863bd9774ab8ffaaaee85780e550d9fe836a81a1b79bdcb9841e65413c05ce01",
+    "source_sha256": "863bd9774ab8ffaaaee85780e550d9fe836a81a1b79bdcb9841e65413c05ce01",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest.xml",
+    "bytes": 93430,
+    "sha256": "1a4df301a584e53387b788f0d48d59e5d4133331adf8b19bda78ea64d4439f2d",
+    "source_sha256": "1a4df301a584e53387b788f0d48d59e5d4133331adf8b19bda78ea64d4439f2d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest.xml",
+    "bytes": 94654,
+    "sha256": "73165b92f25ed2026637ae6e51219e6414ddc1ffd9efe60fb72468a8a29c1c3b",
+    "source_sha256": "73165b92f25ed2026637ae6e51219e6414ddc1ffd9efe60fb72468a8a29c1c3b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.BusinessOssFreshBaselineUnitTest.xml",
+    "bytes": 93523,
+    "sha256": "14b97fb653c488a39f618f46cdefc39e6a71f35af53e796d0fb388912eca6886",
+    "source_sha256": "14b97fb653c488a39f618f46cdefc39e6a71f35af53e796d0fb388912eca6886",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.BusinessOssOwnerArchitectureUnitTest.xml",
+    "bytes": 93381,
+    "sha256": "e56d17eac281ef679c52ac20a77b424e7fe0e1f5f4a3f54fea2d81d968ac4b2f",
+    "source_sha256": "e56d17eac281ef679c52ac20a77b424e7fe0e1f5f4a3f54fea2d81d968ac4b2f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.system.SystemUserAvatarOssOwnerUnitTest.xml",
+    "bytes": 92909,
+    "sha256": "c8e5fd9058034e1144cff023d4a2fbc9b8f27e1b45779ff5233ee6f3c35402ae",
+    "source_sha256": "c8e5fd9058034e1144cff023d4a2fbc9b8f27e1b45779ff5233ee6f3c35402ae",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.workflow.WorkflowHistoryOssOwnerUnitTest.xml",
+    "bytes": 93895,
+    "sha256": "f8344f91e695a9205061c67b30d0fb3d8a190710d57acfc8f9dcf97fde7569f9",
+    "source_sha256": "f8344f91e695a9205061c67b30d0fb3d8a190710d57acfc8f9dcf97fde7569f9",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest.xml",
+    "bytes": 92927,
+    "sha256": "c98e7fbdfbefab025be7eb1af95941b9336e004a00ecce12d427b88b1fe646cf",
+    "source_sha256": "c98e7fbdfbefab025be7eb1af95941b9336e004a00ecce12d427b88b1fe646cf",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessHealthUnitTest.xml",
+    "bytes": 92905,
+    "sha256": "ec1ffdb3c604db5d92d84994888d80cf2af908354a07a5f3835789591d9a04d2",
+    "source_sha256": "ec1ffdb3c604db5d92d84994888d80cf2af908354a07a5f3835789591d9a04d2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest.xml",
+    "bytes": 93426,
+    "sha256": "75790724cdfb79586d2ac3d6aafcb787c8a4adad50b77ffd8e10affcdb51ad05",
+    "source_sha256": "75790724cdfb79586d2ac3d6aafcb787c8a4adad50b77ffd8e10affcdb51ad05",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessPropertiesUnitTest.xml",
+    "bytes": 93058,
+    "sha256": "c53431c744f12fa9d652163d41bec93747de09aa7a42967bb5ccda5e7a35f286",
+    "source_sha256": "c53431c744f12fa9d652163d41bec93747de09aa7a42967bb5ccda5e7a35f286",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessRegistryUnitTest.xml",
+    "bytes": 93200,
+    "sha256": "126f4cccf7bc64803467cf1b1884445029079c5f30213d5a9d7701ec6ae9a1e9",
+    "source_sha256": "126f4cccf7bc64803467cf1b1884445029079c5f30213d5a9d7701ec6ae9a1e9",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessSchedulingUnitTest.xml",
+    "bytes": 92905,
+    "sha256": "46efd5fe0f34260301d932ab69c41780f1a36fe66553b5b296d2c002507c2056",
+    "source_sha256": "46efd5fe0f34260301d932ab69c41780f1a36fe66553b5b296d2c002507c2056",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessServiceUnitTest.xml",
+    "bytes": 93627,
+    "sha256": "544e87915568a2c6684550999d47d7572c33578228eb953c4e751c927e6f7106",
+    "source_sha256": "544e87915568a2c6684550999d47d7572c33578228eb953c4e751c927e6f7106",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.release.OssReleaseContractionUnitTest.xml",
+    "bytes": 93062,
+    "sha256": "d72478b916ae7ac5eef604ffb36d7ab36a1a21f393243fa3881c97b491687e2c",
+    "source_sha256": "d72478b916ae7ac5eef604ffb36d7ab36a1a21f393243fa3881c97b491687e2c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest.xml",
+    "bytes": 93008,
+    "sha256": "d13847cf7dff19c7f1902b3b16e0ccec322eecd1b233cc539b264a3674dbb308",
+    "source_sha256": "d13847cf7dff19c7f1902b3b16e0ccec322eecd1b233cc539b264a3674dbb308",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadConfigurationUnitTest.xml",
+    "bytes": 94325,
+    "sha256": "8e1ab666b8c12036b0a8078cd992daf4e26269478b6875a3561ba77d4fbda851",
+    "source_sha256": "8e1ab666b8c12036b0a8078cd992daf4e26269478b6875a3561ba77d4fbda851",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadHttpContractUnitTest.xml",
+    "bytes": 93323,
+    "sha256": "6245d01ee6c2045d22be67bd728c58f0964e8433ff4eddcc31fe8f94100313ea",
+    "source_sha256": "6245d01ee6c2045d22be67bd728c58f0964e8433ff4eddcc31fe8f94100313ea",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadMetadataStoreUnitTest.xml",
+    "bytes": 93028,
+    "sha256": "1be91134cb8daf68e432b3003ae2f97eb9d2304b695f014a4e7e598fda58938b",
+    "source_sha256": "1be91134cb8daf68e432b3003ae2f97eb9d2304b695f014a4e7e598fda58938b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadPropertiesUnitTest.xml",
+    "bytes": 93156,
+    "sha256": "213e4e27925ff141caa609887fda3a5d0896e3cc8475776d51e3cf4527eaf67b",
+    "source_sha256": "213e4e27925ff141caa609887fda3a5d0896e3cc8475776d51e3cf4527eaf67b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadServiceUnitTest.xml",
+    "bytes": 94847,
+    "sha256": "27286fcf7f224814cfcfb3b44d0e47527375bcb99091859722e7615041e60280",
+    "source_sha256": "27286fcf7f224814cfcfb3b44d0e47527375bcb99091859722e7615041e60280",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest.xml",
+    "bytes": 93423,
+    "sha256": "1f0f5148044a0ebc1a8037b5e346569d041b03047ec54ff590ca5eba4484f41b",
+    "source_sha256": "1f0f5148044a0ebc1a8037b5e346569d041b03047ec54ff590ca5eba4484f41b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest.xml",
+    "bytes": 93401,
+    "sha256": "954278273383a9f5a47f8b70004b22b282965c712d485d8ab6a8976bee131efb",
+    "source_sha256": "954278273383a9f5a47f8b70004b22b282965c712d485d8ab6a8976bee131efb",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.policy.PasswordPolicyBoundaryUnitTest.xml",
+    "bytes": 93710,
+    "sha256": "b2dde0f39fc382dfd80b4743a09d4c2a54052b0cb9287a254b15400651ea7a69",
+    "source_sha256": "b2dde0f39fc382dfd80b4743a09d4c2a54052b0cb9287a254b15400651ea7a69",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.policy.PasswordPolicyContractUnitTest.xml",
+    "bytes": 95398,
+    "sha256": "0914698cf19e33b53bef48f1b836264e9f66868168425b07d7c5173729b5a7e4",
+    "source_sha256": "0914698cf19e33b53bef48f1b836264e9f66868168425b07d7c5173729b5a7e4",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.policy.PasswordPolicyRedisIntegrationTest.xml",
+    "bytes": 93424,
+    "sha256": "cba90cc3a4607fe9acaf0b624f797e973875131478525f1450f03ee39cfb8d30",
+    "source_sha256": "cba90cc3a4607fe9acaf0b624f797e973875131478525f1450f03ee39cfb8d30",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordAuditUnitTest.xml",
+    "bytes": 92907,
+    "sha256": "df0cf2c53d9408ff6667fb1af3b5e3753a2027612d01f0d0a0a84fcfef961ca7",
+    "source_sha256": "df0cf2c53d9408ff6667fb1af3b5e3753a2027612d01f0d0a0a84fcfef961ca7",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordControllerContractUnitTest.xml",
+    "bytes": 93527,
+    "sha256": "9193bdf4500993a7527f5a57165bcd51277a3614b7b3a41cae23998adfb70289",
+    "source_sha256": "9193bdf4500993a7527f5a57165bcd51277a3614b7b3a41cae23998adfb70289",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordRedisIntegrationTest.xml",
+    "bytes": 93427,
+    "sha256": "bcfd5839d717e0f43811caf8fcdd14f4d77f101938786abaebfccc163663d5a6",
+    "source_sha256": "bcfd5839d717e0f43811caf8fcdd14f4d77f101938786abaebfccc163663d5a6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.temporary.TemporaryPasswordServiceUnitTest.xml",
+    "bytes": 93635,
+    "sha256": "e674552dca2f770a7e4a10fa8d9c9efe60eae59200391449635bbf45ffc89410",
+    "source_sha256": "e674552dca2f770a7e4a10fa8d9c9efe60eae59200391449635bbf45ffc89410",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.write.PasswordCandidateContractUnitTest.xml",
+    "bytes": 94053,
+    "sha256": "764a8de33b868145a33bfe04a0e2239b2bc3724a44f5110db42009fd37bdeae3",
+    "source_sha256": "764a8de33b868145a33bfe04a0e2239b2bc3724a44f5110db42009fd37bdeae3",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.write.PasswordImportUnitTest.xml",
+    "bytes": 93054,
+    "sha256": "cfd7d928ff8d320685b295ba68a459e6c06f8be70dc6ffe21d74fda186902ccc",
+    "source_sha256": "cfd7d928ff8d320685b295ba68a459e6c06f8be70dc6ffe21d74fda186902ccc",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.password.write.PasswordWritePathUnitTest.xml",
+    "bytes": 93208,
+    "sha256": "0e85c10eda26a078706d72e615defa0b0eafa8770fb4c91526601d8642f10ebd",
+    "source_sha256": "0e85c10eda26a078706d72e615defa0b0eafa8770fb4c91526601d8642f10ebd",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.phone.PhoneControllerUnitTest.xml",
+    "bytes": 93181,
+    "sha256": "c8cab0853689feac9fc3dfd27f25c89e4e13aa5436c990b4e98386d572ea3945",
+    "source_sha256": "c8cab0853689feac9fc3dfd27f25c89e4e13aa5436c990b4e98386d572ea3945",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.phone.PhoneRegistrationMySqlIntegrationTest.xml",
+    "bytes": 94076,
+    "sha256": "a1a3235ca0f1cd1f394b00724b432a842062e479f685ce02ca9ea55800e69905",
+    "source_sha256": "a1a3235ca0f1cd1f394b00724b432a842062e479f685ce02ca9ea55800e69905",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.phone.PhoneTestDatabaseGuardTest.xml",
+    "bytes": 94404,
+    "sha256": "ee5bcb488470bd9c67ad0add8b2f4bcaaa56d720d7d5e549829f9ffe9d6ead6f",
+    "source_sha256": "ee5bcb488470bd9c67ad0add8b2f4bcaaa56d720d7d5e549829f9ffe9d6ead6f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.phone.PhoneValidationUnitTest.xml",
+    "bytes": 93875,
+    "sha256": "90e45a8beabf739953763f9639b51b2382c7270b9d30e30e2def019d90b05a29",
+    "source_sha256": "90e45a8beabf739953763f9639b51b2382c7270b9d30e30e2def019d90b05a29",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileApiContractTest.xml",
+    "bytes": 93534,
+    "sha256": "72484a39dba6b29914bcc31a277f3cbd4ef434f3b2572c6c0ec01c53d09f2def",
+    "source_sha256": "72484a39dba6b29914bcc31a277f3cbd4ef434f3b2572c6c0ec01c53d09f2def",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileCrossModuleBoundaryContractTest.xml",
+    "bytes": 93775,
+    "sha256": "760f56d118e60042b6fe95ec78fda9e5092a7e391c4aac8689d38ac9866b4df5",
+    "source_sha256": "760f56d118e60042b6fe95ec78fda9e5092a7e391c4aac8689d38ac9866b4df5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileModuleGraphContractTest.xml",
+    "bytes": 93073,
+    "sha256": "f759699e2d926464c1b99c95dc17a26dd334b2afd0eb43c8e4cb458827698a45",
+    "source_sha256": "f759699e2d926464c1b99c95dc17a26dd334b2afd0eb43c8e4cb458827698a45",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.ProfileStructureContractTest.xml",
+    "bytes": 93399,
+    "sha256": "4c7c4b009f7dfe5fa154a4b92bbf08ea3ec75c4af07144be1eff63ccfa65527a",
+    "source_sha256": "4c7c4b009f7dfe5fa154a4b92bbf08ea3ec75c4af07144be1eff63ccfa65527a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.WorkflowGlobalListenerContractTest.xml",
+    "bytes": 92896,
+    "sha256": "30e2841423ca346048b8710c2c886ef2f03b978c884b91fa52b0a39bfc151ef5",
+    "source_sha256": "30e2841423ca346048b8710c2c886ef2f03b978c884b91fa52b0a39bfc151ef5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.contract.WorkflowTerminationContractTest.xml",
+    "bytes": 93415,
+    "sha256": "b6dec444461eb5f4fc453270ba899c20066c88916ffb9e91bb48637f0296d516",
+    "source_sha256": "b6dec444461eb5f4fc453270ba899c20066c88916ffb9e91bb48637f0296d516",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.material.ProfileSelfMaterialsBrowserIntegrationTest.xml",
+    "bytes": 93022,
+    "sha256": "3eebdebf7070cf358b4500358f05510a169dfed8ca7f33b5176eaa56a7983c3e",
+    "source_sha256": "3eebdebf7070cf358b4500358f05510a169dfed8ca7f33b5176eaa56a7983c3e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.schema.ProfileSchemaContractTest.xml",
+    "bytes": 93601,
+    "sha256": "e5fb22487bb4f23a8f0f062bba00e7b6bb31c2e026953952cbdf5ced903d3fae",
+    "source_sha256": "e5fb22487bb4f23a8f0f062bba00e7b6bb31c2e026953952cbdf5ced903d3fae",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.profile.schema.ProfileSchemaMySqlIntegrationTest.xml",
+    "bytes": 93406,
+    "sha256": "c79d0000b22716aa7363c0958373e7ddcbb474ba06a7114c04e29b12935b4607",
+    "source_sha256": "c79d0000b22716aa7363c0958373e7ddcbb474ba06a7114c04e29b12935b4607",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.requestbody.RequestBodyHttpIntegrationTest.xml",
+    "bytes": 118111,
+    "sha256": "e8b7428691aae63348ce29d1cce9be37090d32eac5ed8f7b0f66640093192676",
+    "source_sha256": "e8b7428691aae63348ce29d1cce9be37090d32eac5ed8f7b0f66640093192676",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.security.BrowserHttpsTransportIntegrationTest.xml",
+    "bytes": 93425,
+    "sha256": "24b9eb47a4a75d2857e4608f7b53cb09e50bba062f67204dc295f7388de21a37",
+    "source_sha256": "24b9eb47a4a75d2857e4608f7b53cb09e50bba062f67204dc295f7388de21a37",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.security.TrustedClientAddressIntegrationTest.xml",
+    "bytes": 93433,
+    "sha256": "635fb6c030625a2c1343000e402e5b72677ceb7bfd894fe66615bdde6e30cdec",
+    "source_sha256": "635fb6c030625a2c1343000e402e5b72677ceb7bfd894fe66615bdde6e30cdec",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.sso.SsoCorsProfileBindingTest.xml",
+    "bytes": 93857,
+    "sha256": "b0ac189e90d917112a0c12a33f84e06a0355225dbcb92226de594b523df36eff",
+    "source_sha256": "b0ac189e90d917112a0c12a33f84e06a0355225dbcb92226de594b523df36eff",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.sso.SsoHttpsSessionIntegrationTest.xml",
+    "bytes": 93373,
+    "sha256": "368472415cd0bb9d9f8e3c7ae9434dc73bc4966cffc80e7b7c181c4fb7393388",
+    "source_sha256": "368472415cd0bb9d9f8e3c7ae9434dc73bc4966cffc80e7b7c181c4fb7393388",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.system.service.SysClientDefaultRoleResolverServiceImplUnitTest.xml",
+    "bytes": 93771,
+    "sha256": "9363100b9e3421550690c192de3a4f2876babca6591fbc5118f9f569321f0770",
+    "source_sha256": "9363100b9e3421550690c192de3a4f2876babca6591fbc5118f9f569321f0770",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.third.ThirdLimitConfigurationIntegrationTest.xml",
+    "bytes": 93016,
+    "sha256": "4146faf5ee41e724430e3e39d5f78ef1cf74f64587a5ff9f832436ef3973eb80",
+    "source_sha256": "4146faf5ee41e724430e3e39d5f78ef1cf74f64587a5ff9f832436ef3973eb80",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.third.ThirdResilienceRecoveryIntegrationTest.xml",
+    "bytes": 99430,
+    "sha256": "4e7dfbd2011ea7b3205921074dde2bde6e368d3054217e2581de7bc290681b2d",
+    "source_sha256": "4e7dfbd2011ea7b3205921074dde2bde6e368d3054217e2581de7bc290681b2d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.third.schema.ThirdSchemaContractTest.xml",
+    "bytes": 92879,
+    "sha256": "839babef11d82fc2aace92ceb89af6f494d5e8fb13b2cf9caceec57ef4586b0e",
+    "source_sha256": "839babef11d82fc2aace92ceb89af6f494d5e8fb13b2cf9caceec57ef4586b0e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.third.schema.ThirdSchemaMySqlIntegrationTest.xml",
+    "bytes": 93393,
+    "sha256": "db612318296fe5f0fde89a3ba157b3228cde0fb9deb86f834f33b3577709a13b",
+    "source_sha256": "db612318296fe5f0fde89a3ba157b3228cde0fb9deb86f834f33b3577709a13b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.workflow.WorkflowTaskEngineIntegrationTest.xml",
+    "bytes": 92997,
+    "sha256": "d7ba1eafd3a83466bfbf980c5d16707ed0febf45368aaa028f6d572b17d3075c",
+    "source_sha256": "d7ba1eafd3a83466bfbf980c5d16707ed0febf45368aaa028f6d572b17d3075c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.web.controller.AuthClientContextSsoUnitTest.xml",
+    "bytes": 93066,
+    "sha256": "32b217af18110447aa07798ee28382ea141794d44ee082315e8e5bdb8475e58f",
+    "source_sha256": "32b217af18110447aa07798ee28382ea141794d44ee082315e8e5bdb8475e58f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.web.service.HomeClientLoginAccessPathTest.xml",
+    "bytes": 92780,
+    "sha256": "cb70ed0bd25b172de84313b2bc82febe36914d03ff54da7b243665b8fff85494",
+    "source_sha256": "cb70ed0bd25b172de84313b2bc82febe36914d03ff54da7b243665b8fff85494",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.web.service.SysRegisterServiceRegistrationUnitTest.xml",
+    "bytes": 93888,
+    "sha256": "f5edc0261654ac682f01a7a8d81d80ea2765478d1f5e4e3e5d88b977ba609db0",
+    "source_sha256": "f5edc0261654ac682f01a7a8d81d80ea2765478d1f5e4e3e5d88b977ba609db0",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-admin/target/surefire-reports/TEST-org.namewta.web.service.impl.PasswordAuthStrategyTemporaryUnitTest.xml",
+    "bytes": 93609,
+    "sha256": "773253b3264444fcab123cc3cc854999553a92fabd417203417bec208477d2b5",
+    "source_sha256": "773253b3264444fcab123cc3cc854999553a92fabd417203417bec208477d2b5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-core/target/surefire-reports/TEST-org.namewta.common.core.utils.ServletUtilsClientAddressTest.xml",
+    "bytes": 14475,
+    "sha256": "8053d4b01413a87375d60c6cd40b5ad1c9cf1f1612cfb6d0a44956e48462b51f",
+    "source_sha256": "8053d4b01413a87375d60c6cd40b5ad1c9cf1f1612cfb6d0a44956e48462b51f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-json/target/surefire-reports/TEST-org.namewta.common.json.utils.LogSanitizerTest.xml",
+    "bytes": 16961,
+    "sha256": "cce9af988c2bb18b748c07a9e7be986bb670bc9752afdc73c87cdd4155e7084c",
+    "source_sha256": "cce9af988c2bb18b748c07a9e7be986bb670bc9752afdc73c87cdd4155e7084c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-log/target/surefire-reports/TEST-org.namewta.common.log.aspect.LogAspectRedactionTest.xml",
+    "bytes": 27170,
+    "sha256": "de0e9220c858ba3d25b0a07d6eaf308e7aaa40a14ac8a86ec3243985948d181a",
+    "source_sha256": "de0e9220c858ba3d25b0a07d6eaf308e7aaa40a14ac8a86ec3243985948d181a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigAutoConfigurationTest.xml",
+    "bytes": 17195,
+    "sha256": "cccca5659184e1a80bcba67525ac9de8b7703d32abc18fab6c559a4e0edb35a2",
+    "source_sha256": "cccca5659184e1a80bcba67525ac9de8b7703d32abc18fab6c559a4e0edb35a2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigBootstrapTest.xml",
+    "bytes": 17447,
+    "sha256": "024d86d389c309b1ab22920527d49b893228a939f47970d96cbdb3f2a8c585da",
+    "source_sha256": "024d86d389c309b1ab22920527d49b893228a939f47970d96cbdb3f2a8c585da",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigManagerTest.xml",
+    "bytes": 18323,
+    "sha256": "a01fe91ea5d309303ff950795163cf273e86f1d41b3afddd8376d18563b2f0db",
+    "source_sha256": "a01fe91ea5d309303ff950795163cf273e86f1d41b3afddd8376d18563b2f0db",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosConfigSettingsTest.xml",
+    "bytes": 17309,
+    "sha256": "82dd7b5897a08ae0b194c6457f23688d771e39a3159dfd650319cf08a03b1850",
+    "source_sha256": "82dd7b5897a08ae0b194c6457f23688d771e39a3159dfd650319cf08a03b1850",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosPropertySourceRegistrarTest.xml",
+    "bytes": 17374,
+    "sha256": "e5b0c3c6a712eb24ab4000bb4e7fdb3dadf093ef4e9f2d82a55e9287f289bbce",
+    "source_sha256": "e5b0c3c6a712eb24ab4000bb4e7fdb3dadf093ef4e9f2d82a55e9287f289bbce",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-nacos/target/surefire-reports/TEST-org.namewta.common.nacos.NacosSnapshotPolicyUnitTest.xml",
+    "bytes": 18002,
+    "sha256": "62bcda1c1a8eed10bd10162ef4bfc5a3ff82f628e3e0d6a454960bcea7f45125",
+    "source_sha256": "62bcda1c1a8eed10bd10162ef4bfc5a3ff82f628e3e0d6a454960bcea7f45125",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.gateway.OpenApiGatewayStateStoreTest.xml",
+    "bytes": 34553,
+    "sha256": "443c33a333895cfebd2a9d53a78c44c97dbf90780efa137f9979eb50130e602c",
+    "source_sha256": "443c33a333895cfebd2a9d53a78c44c97dbf90780efa137f9979eb50130e602c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.protocol.OpenApiProtocolTest.xml",
+    "bytes": 34765,
+    "sha256": "cb3a05f7e4a947acde6cbc70b7e20c59e62f04348869840f259046471181e217",
+    "source_sha256": "cb3a05f7e4a947acde6cbc70b7e20c59e62f04348869840f259046471181e217",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.registry.OpenApiOperationRegistryTest.xml",
+    "bytes": 34702,
+    "sha256": "d22280c0758322b0f08f8f1b47d6f937532c4299c66df93be81aeb8051473fd4",
+    "source_sha256": "d22280c0758322b0f08f8f1b47d6f937532c4299c66df93be81aeb8051473fd4",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.session.OpenApiMachineSessionBridgeTest.xml",
+    "bytes": 34688,
+    "sha256": "08c622a4e5c4e6fcb5a20024fee5d1d69dbadfaeb0e171af868b9b8e4b4f9d13",
+    "source_sha256": "08c622a4e5c4e6fcb5a20024fee5d1d69dbadfaeb0e171af868b9b8e4b4f9d13",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-openapi/target/surefire-reports/TEST-org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest.xml",
+    "bytes": 35552,
+    "sha256": "704c406b6b84589a58e82c615ef03d630b007a08dc6e82ba84b8572f9605d428",
+    "source_sha256": "704c406b6b84589a58e82c615ef03d630b007a08dc6e82ba84b8572f9605d428",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-redis/target/surefire-reports/TEST-org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest.xml",
+    "bytes": 24872,
+    "sha256": "c0ea4c8f1877a11c301cd4954d58af54c523cc15c089ef68c728c52fe89c9d81",
+    "source_sha256": "c0ea4c8f1877a11c301cd4954d58af54c523cc15c089ef68c728c52fe89c9d81",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-redis/target/surefire-reports/TEST-org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest.xml",
+    "bytes": 935,
+    "sha256": "6053bc4fea0db8375fdd43d930ddc653d65a84bc524e4c83437dcc2df865302d",
+    "source_sha256": "6053bc4fea0db8375fdd43d930ddc653d65a84bc524e4c83437dcc2df865302d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-richtext/target/surefire-reports/TEST-org.namewta.common.richtext.RichTextProcessorTest.xml",
+    "bytes": 6587,
+    "sha256": "14a45cd6cfa0afb2e9b708bfa0c52d8d38257ee04834f5813782095d4af8d386",
+    "source_sha256": "14a45cd6cfa0afb2e9b708bfa0c52d8d38257ee04834f5813782095d4af8d386",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-sms/target/surefire-reports/TEST-org.namewta.common.sms.notify.SmsDeliveryQueryClientTest.xml",
+    "bytes": 32557,
+    "sha256": "65976dcec78ba2ea0ef1680693653aaa25c405ffa5a57caabd9202f00ec92f72",
+    "source_sha256": "65976dcec78ba2ea0ef1680693653aaa25c405ffa5a57caabd9202f00ec92f72",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.ClientAddressConfigTest.xml",
+    "bytes": 37644,
+    "sha256": "b1f7a4c4d5ff672575c2d9e3380038c46f1c863ae0563f3462eb539757c3b744",
+    "source_sha256": "b1f7a4c4d5ff672575c2d9e3380038c46f1c863ae0563f3462eb539757c3b744",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.CorsPolicyTest.xml",
+    "bytes": 36542,
+    "sha256": "d46de793b6b2b508bd268728d20cd82ebd214715586596057669827545718795",
+    "source_sha256": "d46de793b6b2b508bd268728d20cd82ebd214715586596057669827545718795",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.CorsServletHttpTest.xml",
+    "bytes": 40129,
+    "sha256": "157cc33ef9cec7c3a362707d2845683377202565f9dbd24074a41e73abe11281",
+    "source_sha256": "157cc33ef9cec7c3a362707d2845683377202565f9dbd24074a41e73abe11281",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.SysLogConfigTest.xml",
+    "bytes": 41116,
+    "sha256": "f8f4b21445e7305db6a52234f3ea7beef86f648ca3210e550fe4e8255248d896",
+    "source_sha256": "f8f4b21445e7305db6a52234f3ea7beef86f648ca3210e550fe4e8255248d896",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.filter.ClientAddressFilterTest.xml",
+    "bytes": 36753,
+    "sha256": "464f3a6b5faaa96a897012c79f19f7bae863b18809002e4f31a1600c55310170",
+    "source_sha256": "464f3a6b5faaa96a897012c79f19f7bae863b18809002e4f31a1600c55310170",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.filter.RequestBodyLimitTest.xml",
+    "bytes": 36888,
+    "sha256": "2583c6a875c6b3d865b55a70206438b6da122ffcd900bf782f78553a59fa7a95",
+    "source_sha256": "2583c6a875c6b3d865b55a70206438b6da122ffcd900bf782f78553a59fa7a95",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogEventWriterTest.xml",
+    "bytes": 36289,
+    "sha256": "4a10c0c8f1b1a91a52174c0ca2f487dfc399e50cd5cd44eea9d7eca4cb84b42f",
+    "source_sha256": "4a10c0c8f1b1a91a52174c0ca2f487dfc399e50cd5cd44eea9d7eca4cb84b42f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFailureRedactionTest.xml",
+    "bytes": 37757,
+    "sha256": "d2fea91b8d71fdb49d7836d97efd321eb182c54ac04872d0f4fb6616076cceab",
+    "source_sha256": "d2fea91b8d71fdb49d7836d97efd321eb182c54ac04872d0f4fb6616076cceab",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+    "bytes": 38041,
+    "sha256": "6bd3a81b6692b3521126c7acdb7971f1fd060a3b6a94fd412421a10cdb916961",
+    "source_sha256": "6bd3a81b6692b3521126c7acdb7971f1fd060a3b6a94fd412421a10cdb916961",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-demo/target/surefire-reports/TEST-org.namewta.demo.service.impl.TestRichTextListAutoMapperTest.xml",
+    "bytes": 69428,
+    "sha256": "8abe77f7c75eef596c89c594ef71521be8a4d3c3d38e945fceceb2b0bfee7a03",
+    "source_sha256": "8abe77f7c75eef596c89c594ef71521be8a4d3c3d38e945fceceb2b0bfee7a03",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.NotifyOutboxWakeScopeGateTest.xml",
+    "bytes": 56895,
+    "sha256": "63ec363d50c674979b131f48f130ceb085a2891a101d22425f1fa74f3463946b",
+    "source_sha256": "63ec363d50c674979b131f48f130ceb085a2891a101d22425f1fa74f3463946b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest.xml",
+    "bytes": 58685,
+    "sha256": "a59c10741accfdde686d58ff51c4bbaa3710cb4be82626710d10b5b8759b49ee",
+    "source_sha256": "a59c10741accfdde686d58ff51c4bbaa3710cb4be82626710d10b5b8759b49ee",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.provider.Sms4jBlendRegistryTest.xml",
+    "bytes": 57212,
+    "sha256": "c6bf2cc4b95053b86ab6c6755071179bed59cf1a05005989afd00aa7b6cd31a4",
+    "source_sha256": "c6bf2cc4b95053b86ab6c6755071179bed59cf1a05005989afd00aa7b6cd31a4",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.provider.Sms4jReceiptTest.xml",
+    "bytes": 57510,
+    "sha256": "b28302ab187eb1ace6d083018026241ffb63cef40fa29adfc53035c98cb0b971",
+    "source_sha256": "b28302ab187eb1ace6d083018026241ffb63cef40fa29adfc53035c98cb0b971",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.worker.NotifyOutboxWorkerWakePollTest.xml",
+    "bytes": 68970,
+    "sha256": "16a99140e9fe4017dcc4601bf47d5cf0afe9d45f4f0ea144dc44800c6e41f56e",
+    "source_sha256": "16a99140e9fe4017dcc4601bf47d5cf0afe9d45f4f0ea144dc44800c6e41f56e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.controller.admin.NotifyConfigControllerContractTest.xml",
+    "bytes": 56592,
+    "sha256": "a12c3640235ccd6abe3b275f50f06f2058981149d33628c093d0e175e856baca",
+    "source_sha256": "a12c3640235ccd6abe3b275f50f06f2058981149d33628c093d0e175e856baca",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.domain.policy.NoticeAudiencePolicyTest.xml",
+    "bytes": 57016,
+    "sha256": "bdb02d22e8fde8a3890f23ebb36d3e54c306f8da63ba0a6d4eedbcf339d74d37",
+    "source_sha256": "bdb02d22e8fde8a3890f23ebb36d3e54c306f8da63ba0a6d4eedbcf339d74d37",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.domain.policy.NotificationAggregatePolicyTest.xml",
+    "bytes": 56853,
+    "sha256": "cb2dfb43e6fc1c125a45b9372d000884acdafb9a25aa66f5117cadfd5f1424f8",
+    "source_sha256": "cb2dfb43e6fc1c125a45b9372d000884acdafb9a25aa66f5117cadfd5f1424f8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyConfigServiceTest.xml",
+    "bytes": 58689,
+    "sha256": "f29497716dbd3a43d6506f708a3f2a2923fec9f1a5ab7391ef62f73aca5fb001",
+    "source_sha256": "f29497716dbd3a43d6506f708a3f2a2923fec9f1a5ab7391ef62f73aca5fb001",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyNoticePublisherServiceTest.xml",
+    "bytes": 56923,
+    "sha256": "be06fe9bc536ec6a509476722debdf3065f1bcc0f6219133d036b4846c4667bf",
+    "source_sha256": "be06fe9bc536ec6a509476722debdf3065f1bcc0f6219133d036b4846c4667bf",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyNoticeServiceTest.xml",
+    "bytes": 56685,
+    "sha256": "2dc9641cbab26139926d13795d112212ed4cc8554bb09492afb79fd9370c0cf2",
+    "source_sha256": "2dc9641cbab26139926d13795d112212ed4cc8554bb09492afb79fd9370c0cf2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.NotifyTestSendServiceTest.xml",
+    "bytes": 56832,
+    "sha256": "556579fd8b6e3a67244af52472384f2eaad219c937708ba71e1228182a6960a7",
+    "source_sha256": "556579fd8b6e3a67244af52472384f2eaad219c937708ba71e1228182a6960a7",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.DispatchNotificationServiceTest.xml",
+    "bytes": 60364,
+    "sha256": "ca13dfbb4ca22d26a7a0c3be582954bec1afe2a5af601bb91b046c60081a773f",
+    "source_sha256": "ca13dfbb4ca22d26a7a0c3be582954bec1afe2a5af601bb91b046c60081a773f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.InAppNotificationServiceTest.xml",
+    "bytes": 57711,
+    "sha256": "1b74fa36572b4f5add1041247d2c822b82974518f25f3b992452ac3f442266d1",
+    "source_sha256": "1b74fa36572b4f5add1041247d2c822b82974518f25f3b992452ac3f442266d1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest.xml",
+    "bytes": 56582,
+    "sha256": "4eeb4d6dbb6464f9d7fc8dd67ae52c924cb21155f31a9afc7ebb1e3513acf22b",
+    "source_sha256": "4eeb4d6dbb6464f9d7fc8dd67ae52c924cb21155f31a9afc7ebb1e3513acf22b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationMonitorServiceTest.xml",
+    "bytes": 56745,
+    "sha256": "34941ed4340885d6a03d6f6ddeaf907436d5e9b44ba0314325f946565fb08217",
+    "source_sha256": "34941ed4340885d6a03d6f6ddeaf907436d5e9b44ba0314325f946565fb08217",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest.xml",
+    "bytes": 57752,
+    "sha256": "643ee71af2c41adf531474808cb02268e175937dcac1349d36e99274ea8ffa84",
+    "source_sha256": "643ee71af2c41adf531474808cb02268e175937dcac1349d36e99274ea8ffa84",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotifyOutboxClaimConcurrencyTest.xml",
+    "bytes": 56589,
+    "sha256": "186459715eb56dadf9d2bc7843b4280ba7fbbebb80dacba15e58575c448fc16a",
+    "source_sha256": "186459715eb56dadf9d2bc7843b4280ba7fbbebb80dacba15e58575c448fc16a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.support.NotifyAuditSupportTest.xml",
+    "bytes": 56563,
+    "sha256": "87b7335c78ddb25f46ab137034546cbb9c6bf202bfe5147f8a73eb019366fe29",
+    "source_sha256": "87b7335c78ddb25f46ab137034546cbb9c6bf202bfe5147f8a73eb019366fe29",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.support.NotifyNoticeVersionFenceTest.xml",
+    "bytes": 56891,
+    "sha256": "a1695ec5f2510b90ad7df4efb597f8811f5fffe5bcdda8182a5fbf99ac37e6a9",
+    "source_sha256": "a1695ec5f2510b90ad7df4efb597f8811f5fffe5bcdda8182a5fbf99ac37e6a9",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.support.NotifySendPlannerTest.xml",
+    "bytes": 57009,
+    "sha256": "4ff855cadaa452a37e27e0d077bb1626bfcea43b8c76297f32306e0e95e66e26",
+    "source_sha256": "4ff855cadaa452a37e27e0d077bb1626bfcea43b8c76297f32306e0e95e66e26",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.usecase.NotifyNoticeUseCaseTest.xml",
+    "bytes": 56961,
+    "sha256": "a4370cb7fd69a4b19020f336cc7de42a54f1ac48996ed133fb68fb8022a61508",
+    "source_sha256": "a4370cb7fd69a4b19020f336cc7de42a54f1ac48996ed133fb68fb8022a61508",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.architecture.EnterpriseModuleArchitectureTest.xml",
+    "bytes": 57658,
+    "sha256": "53a6ec6d09401c724adb4835bb35440062db4d7d900ed3bc7d8311f28cd8d2e6",
+    "source_sha256": "53a6ec6d09401c724adb4835bb35440062db4d7d900ed3bc7d8311f28cd8d2e6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.architecture.ExplicitProfileIdentityContractTest.xml",
+    "bytes": 58653,
+    "sha256": "ff6be2d37c5c3b3113b3fee42ec6b70176ee3a09b0f498439f06742c3fca970e",
+    "source_sha256": "ff6be2d37c5c3b3113b3fee42ec6b70176ee3a09b0f498439f06742c3fca970e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.EnterpriseBeanValidationContractTest.xml",
+    "bytes": 56990,
+    "sha256": "3b1c1be426980b8befb12c3006e6b7e2ba937b3819202eba6235d316b80b3a8c",
+    "source_sha256": "3b1c1be426980b8befb12c3006e6b7e2ba937b3819202eba6235d316b80b3a8c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.admin.EnterpriseAdminHttpContractTest.xml",
+    "bytes": 56599,
+    "sha256": "1600221f771065b0376778425046bdd9144c81f8c336eb8623147596f731ea97",
+    "source_sha256": "1600221f771065b0376778425046bdd9144c81f8c336eb8623147596f731ea97",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.admin.EnterpriseMaterialAdminControllerContractTest.xml",
+    "bytes": 56809,
+    "sha256": "e12c6a3c197954ca4930aabe24c1e19a4fe0cf5649b76dd69465deb100e084ff",
+    "source_sha256": "e12c6a3c197954ca4930aabe24c1e19a4fe0cf5649b76dd69465deb100e084ff",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.anonymous.EnterpriseVerificationAnonymousControllerTest.xml",
+    "bytes": 57177,
+    "sha256": "ffbee0f25fe5489dfb13c4edf7a5fa81906912861fc568a12879b40c1afc4726",
+    "source_sha256": "ffbee0f25fe5489dfb13c4edf7a5fa81906912861fc568a12879b40c1afc4726",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.self.EnterpriseApplicationHttpContractTest.xml",
+    "bytes": 56787,
+    "sha256": "37d89454c8549f4759b1faa5974523f41b54d5bf66f770fe294c6f5d0f25b1ee",
+    "source_sha256": "37d89454c8549f4759b1faa5974523f41b54d5bf66f770fe294c6f5d0f25b1ee",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.self.EnterpriseMaterialSelfControllerContractTest.xml",
+    "bytes": 56811,
+    "sha256": "4ba96e11ecba1521f9feee8efd72408abb39e4c6da1bb2bbeb85fdea32a5f5f3",
+    "source_sha256": "4ba96e11ecba1521f9feee8efd72408abb39e4c6da1bb2bbeb85fdea32a5f5f3",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.controller.self.EnterpriseTransferHttpContractTest.xml",
+    "bytes": 56626,
+    "sha256": "17d3f77be9b6c5e62aa08f715e5caaa42e9b9abcd03df230479089ed58a0944a",
+    "source_sha256": "17d3f77be9b6c5e62aa08f715e5caaa42e9b9abcd03df230479089ed58a0944a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseAdminServiceTest.xml",
+    "bytes": 57120,
+    "sha256": "6b1652c44763bf130ed6b5961e6fe2da379490b503699fc5b0a0577261f1df7d",
+    "source_sha256": "6b1652c44763bf130ed6b5961e6fe2da379490b503699fc5b0a0577261f1df7d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseApplicationPersistenceTest.xml",
+    "bytes": 57013,
+    "sha256": "dd8f7e3a0b2e94ec8fb6ca2a0146e97d20e18be964fb2f228745949f5c38bda1",
+    "source_sha256": "dd8f7e3a0b2e94ec8fb6ca2a0146e97d20e18be964fb2f228745949f5c38bda1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseApplicationServiceTest.xml",
+    "bytes": 59215,
+    "sha256": "1feaf6d73a18a6025fc91d70da100124a01e6504ba63ea0b69f45b9c8328471e",
+    "source_sha256": "1feaf6d73a18a6025fc91d70da100124a01e6504ba63ea0b69f45b9c8328471e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseMaterialOwnerContributorTest.xml",
+    "bytes": 57027,
+    "sha256": "89cb9d3212de0ae1e6267e4daf2797da2107c1dbc0e64384563193e290f99130",
+    "source_sha256": "89cb9d3212de0ae1e6267e4daf2797da2107c1dbc0e64384563193e290f99130",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseProfileProjectionContributorTest.xml",
+    "bytes": 56616,
+    "sha256": "b83ecdfdc7921173299abcbcf4ebb9f91956931c4971609c00c1e6c4acecf487",
+    "source_sha256": "b83ecdfdc7921173299abcbcf4ebb9f91956931c4971609c00c1e6c4acecf487",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferPersistenceTest.xml",
+    "bytes": 57146,
+    "sha256": "e98d69c4087008802058653258883b605b1276166a6c88f72e9a94a71e9be26f",
+    "source_sha256": "e98d69c4087008802058653258883b605b1276166a6c88f72e9a94a71e9be26f",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest.xml",
+    "bytes": 58535,
+    "sha256": "376a02d1d08fe5e2f1ce0f04ccebf04ce3655663c93d5cf633ecac2d5ab074b2",
+    "source_sha256": "376a02d1d08fe5e2f1ce0f04ccebf04ce3655663c93d5cf633ecac2d5ab074b2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationAttemptServiceTest.xml",
+    "bytes": 56817,
+    "sha256": "9bfa19bb6c2dbcf91814b9317c5c175d9c3d27326a7a39a209a764e4d801b5ef",
+    "source_sha256": "9bfa19bb6c2dbcf91814b9317c5c175d9c3d27326a7a39a209a764e4d801b5ef",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationCallbackContractTest.xml",
+    "bytes": 56999,
+    "sha256": "2341ed52868826000d846afa024b86308b2d7807324fb0fff098b81272b0b017",
+    "source_sha256": "2341ed52868826000d846afa024b86308b2d7807324fb0fff098b81272b0b017",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationEvidenceCodecTest.xml",
+    "bytes": 56625,
+    "sha256": "0eaf7e5f921755f687631f7b842f4d01e2fa4aeaf49c3b3ef3f21b30350c95e6",
+    "source_sha256": "0eaf7e5f921755f687631f7b842f4d01e2fa4aeaf49c3b3ef3f21b30350c95e6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseVerificationProviderRegistryTest.xml",
+    "bytes": 56781,
+    "sha256": "534c3be12b9ecaaa9f9bce11ea932b7a5eedacf8e2094c8b288b261dc92b9b86",
+    "source_sha256": "534c3be12b9ecaaa9f9bce11ea932b7a5eedacf8e2094c8b288b261dc92b9b86",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.SpringEnterpriseWorkflowGatewayTest.xml",
+    "bytes": 57131,
+    "sha256": "6bdb2a3cec13d3e70ffab8d3f17cc97df86065210a9a33eb2c245fbe936d5b48",
+    "source_sha256": "6bdb2a3cec13d3e70ffab8d3f17cc97df86065210a9a33eb2c245fbe936d5b48",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.architecture.ExplicitProfileIdentityContractTest.xml",
+    "bytes": 58746,
+    "sha256": "6ef2769fa25e3cb5b547e0053158dd46390283686149498d1044f312e5d52654",
+    "source_sha256": "6ef2769fa25e3cb5b547e0053158dd46390283686149498d1044f312e5d52654",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.architecture.PersonModuleArchitectureTest.xml",
+    "bytes": 57538,
+    "sha256": "d42cc3a5e53e5797ee38fa1cd91178a1589fdee17ed95c1e987e5f9cef2da314",
+    "source_sha256": "d42cc3a5e53e5797ee38fa1cd91178a1589fdee17ed95c1e987e5f9cef2da314",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.config.ProfileApiConfigurationTest.xml",
+    "bytes": 56837,
+    "sha256": "5c6b70be494af00f10079e692354f57cf6dc341e77b5c771e81b4c5fb7a6a0f8",
+    "source_sha256": "5c6b70be494af00f10079e692354f57cf6dc341e77b5c771e81b4c5fb7a6a0f8",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.admin.MaterialRequirementsHttpContractTest.xml",
+    "bytes": 62162,
+    "sha256": "1f9025bdf7e0177a0f3878395aed7f87dcab61b8550a2ffe2b8a8556e1a62638",
+    "source_sha256": "1f9025bdf7e0177a0f3878395aed7f87dcab61b8550a2ffe2b8a8556e1a62638",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.admin.PersonAdminHttpContractTest.xml",
+    "bytes": 56547,
+    "sha256": "b7d77ef6c174a269cf539c0f0bf57520d58cddbcde78d51b15f45797b57a3a4e",
+    "source_sha256": "b7d77ef6c174a269cf539c0f0bf57520d58cddbcde78d51b15f45797b57a3a4e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.admin.ProfileMaterialHttpContractTest.xml",
+    "bytes": 56928,
+    "sha256": "bdfb52f7db17a4fbd5984ef4e08c78f47ef9461dc3d84c649b20393b5b64c7d7",
+    "source_sha256": "bdfb52f7db17a4fbd5984ef4e08c78f47ef9461dc3d84c649b20393b5b64c7d7",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.anonymous.PersonVerificationAnonymousControllerTest.xml",
+    "bytes": 57125,
+    "sha256": "27104b4727b7e25fe89f389233db84b81faf98166997c037a3bbd3c91939c32b",
+    "source_sha256": "27104b4727b7e25fe89f389233db84b81faf98166997c037a3bbd3c91939c32b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.self.PersonApplicationHttpContractTest.xml",
+    "bytes": 56727,
+    "sha256": "6e9f2af5e5f7beb9b1d957bf1190a7a40250ebfbec380843b9f55d69ba508ddf",
+    "source_sha256": "6e9f2af5e5f7beb9b1d957bf1190a7a40250ebfbec380843b9f55d69ba508ddf",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.controller.self.PersonRebindHttpContractTest.xml",
+    "bytes": 56910,
+    "sha256": "f678e17c33dcb27504313454bbf334ad6dd78c03cb35f66fc760d9b1b5ad3d1d",
+    "source_sha256": "f678e17c33dcb27504313454bbf334ad6dd78c03cb35f66fc760d9b1b5ad3d1d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.listener.PersonRebindProcessListenerTest.xml",
+    "bytes": 56669,
+    "sha256": "c0f9e9d193957e5215017118fe8a8d5ac7519702f8a9664640d9d9823c4df7af",
+    "source_sha256": "c0f9e9d193957e5215017118fe8a8d5ac7519702f8a9664640d9d9823c4df7af",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonAdminServiceTest.xml",
+    "bytes": 57050,
+    "sha256": "70de021f4eaabdbf76c91ca47a8262eedcb92b420a57d905294d7e4d20971d3c",
+    "source_sha256": "70de021f4eaabdbf76c91ca47a8262eedcb92b420a57d905294d7e4d20971d3c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonApplicationServicePersistenceTest.xml",
+    "bytes": 57152,
+    "sha256": "0fb9f67f720b0ad3d56cb3d5d2b6193e59ddd5dbacbbf96c3a8374f1df42f4b4",
+    "source_sha256": "0fb9f67f720b0ad3d56cb3d5d2b6193e59ddd5dbacbbf96c3a8374f1df42f4b4",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonApplicationServiceTest.xml",
+    "bytes": 58805,
+    "sha256": "6570766a160bac44ff2f67a664d9d5da47195509c6d39e0258979277bca3f61a",
+    "source_sha256": "6570766a160bac44ff2f67a664d9d5da47195509c6d39e0258979277bca3f61a",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonIdentityLookupServiceImplTest.xml",
+    "bytes": 56721,
+    "sha256": "fef0fa920782b2d45485cea35d046ff399c70378eaddae95cee12bf387f3488c",
+    "source_sha256": "fef0fa920782b2d45485cea35d046ff399c70378eaddae95cee12bf387f3488c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonProfileMaterialOwnerContributorTest.xml",
+    "bytes": 56768,
+    "sha256": "2a14f49257959247c6711146e0f51e4fc19bde91059f0c564a22ea544cf02513",
+    "source_sha256": "2a14f49257959247c6711146e0f51e4fc19bde91059f0c564a22ea544cf02513",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonProfileProjectionContributorTest.xml",
+    "bytes": 56563,
+    "sha256": "333ac80047cde70e1f5f33c9fb5e255a04b9dddcc8db68c9cab7d3fd64a98e83",
+    "source_sha256": "333ac80047cde70e1f5f33c9fb5e255a04b9dddcc8db68c9cab7d3fd64a98e83",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindNotificationTest.xml",
+    "bytes": 57819,
+    "sha256": "f704ddebe13c7dc38780ccf0c407dbb89ffbee7e9cf12dcbb93224ab09c6ef66",
+    "source_sha256": "f704ddebe13c7dc38780ccf0c407dbb89ffbee7e9cf12dcbb93224ab09c6ef66",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindServicePersistenceTest.xml",
+    "bytes": 58099,
+    "sha256": "4e1a8f7d7f10dbe1357ad5a969222def88187a047da1076025296a6640445e9c",
+    "source_sha256": "4e1a8f7d7f10dbe1357ad5a969222def88187a047da1076025296a6640445e9c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindServiceTest.xml",
+    "bytes": 57173,
+    "sha256": "7ea2e0415238ddfab35602b811f57213ff817b35b833249a9fe00bc0e58310f6",
+    "source_sha256": "7ea2e0415238ddfab35602b811f57213ff817b35b833249a9fe00bc0e58310f6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationAttemptServiceTest.xml",
+    "bytes": 56756,
+    "sha256": "ed4745f27eff43394e3e2c2ddfe5a0a2d6dbbf7aa9614006ed90684dbf944157",
+    "source_sha256": "ed4745f27eff43394e3e2c2ddfe5a0a2d6dbbf7aa9614006ed90684dbf944157",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationCallbackContractTest.xml",
+    "bytes": 57100,
+    "sha256": "04fcb5bec22c1d06dfee83397a81233f2edb5673c1220805b8db062e3b443877",
+    "source_sha256": "04fcb5bec22c1d06dfee83397a81233f2edb5673c1220805b8db062e3b443877",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationEvidenceCodecTest.xml",
+    "bytes": 56573,
+    "sha256": "844331510bb7a7ac40539de7d65616dcc431dd881e9c8329d5a5b39576a1be9b",
+    "source_sha256": "844331510bb7a7ac40539de7d65616dcc431dd881e9c8329d5a5b39576a1be9b",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonVerificationProviderRegistryTest.xml",
+    "bytes": 56722,
+    "sha256": "8cc90bbab0498a5c191a045254b3498bcba80e0e48f33675e7028eec6d08eec1",
+    "source_sha256": "8cc90bbab0498a5c191a045254b3498bcba80e0e48f33675e7028eec6d08eec1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.ProfileMaterialServiceTest.xml",
+    "bytes": 57907,
+    "sha256": "17164d691c0a8a110978b2ff352ef1f57361222bc34c065991f0b52975f8393c",
+    "source_sha256": "17164d691c0a8a110978b2ff352ef1f57361222bc34c065991f0b52975f8393c",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.SpringPersonWorkflowGatewayTest.xml",
+    "bytes": 57055,
+    "sha256": "08733c749cc7cc64b3e3abccf8e27698f6de1508f6050d72bba3d3d5982bfc3d",
+    "source_sha256": "08733c749cc7cc64b3e3abccf8e27698f6de1508f6050d72bba3d3d5982bfc3d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.adapter.gateway.SsoTokenExtrasTest.xml",
+    "bytes": 53194,
+    "sha256": "40bd66aeb23e9a6aff203483cedb57a5b082211ea91a713c27816be324faeb4e",
+    "source_sha256": "40bd66aeb23e9a6aff203483cedb57a5b082211ea91a713c27816be324faeb4e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.adapter.http.SsoSessionCookieTest.xml",
+    "bytes": 53340,
+    "sha256": "3f3f5cb3237f290912cc9ddd39434d4b90c241e607ccc613b5acefb562a18f3d",
+    "source_sha256": "3f3f5cb3237f290912cc9ddd39434d4b90c241e607ccc613b5acefb562a18f3d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.config.SsoCookieConfigurationTest.xml",
+    "bytes": 55243,
+    "sha256": "41763f05436d2b9d065abd898bc335388bd57bf0666fda90db89e7105abf70c5",
+    "source_sha256": "41763f05436d2b9d065abd898bc335388bd57bf0666fda90db89e7105abf70c5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.service.SsoAuthorizationServiceTest.xml",
+    "bytes": 54271,
+    "sha256": "ccfefadb474293e7daa0add67a2cf955291d9e363a624833be32cb56668ba13d",
+    "source_sha256": "ccfefadb474293e7daa0add67a2cf955291d9e363a624833be32cb56668ba13d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.service.SsoSessionServiceTest.xml",
+    "bytes": 53130,
+    "sha256": "dfbe2441d71c8834259526f43812d05bdd78a9ca0f36e7ddd42a931f32b42734",
+    "source_sha256": "dfbe2441d71c8834259526f43812d05bdd78a9ca0f36e7ddd42a931f32b42734",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.support.PkceS256Test.xml",
+    "bytes": 53370,
+    "sha256": "14759edc047fa807de1f7e5acc1e622697ab5cc554fed588108ba1417876a78d",
+    "source_sha256": "14759edc047fa807de1f7e5acc1e622697ab5cc554fed588108ba1417876a78d",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-sso/target/surefire-reports/TEST-org.namewta.sso.support.SsoBearerTokensTest.xml",
+    "bytes": 53206,
+    "sha256": "6f24cf4f6badffef76671fed89a80bbb8f2c6f79b3a2769e3aa0c9a315b55fe5",
+    "source_sha256": "6f24cf4f6badffef76671fed89a80bbb8f2c6f79b3a2769e3aa0c9a315b55fe5",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.phone.UserPhoneWriteServiceTest.xml",
+    "bytes": 72018,
+    "sha256": "b6e1e52e4664614c742dc18ebb119ec4ea26631eb9c79572822f6106520b62b6",
+    "source_sha256": "b6e1e52e4664614c742dc18ebb119ec4ea26631eb9c79572822f6106520b62b6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.service.impl.SysClientServiceSsoUnitTest.xml",
+    "bytes": 71027,
+    "sha256": "c9672307bd807bb9b2bf08cc6b8c58711232651940591a0637695e90f8b5c4b6",
+    "source_sha256": "c9672307bd807bb9b2bf08cc6b8c58711232651940591a0637695e90f8b5c4b6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.ClientAccessPathsTest.xml",
+    "bytes": 70183,
+    "sha256": "773434fb8cc771f85fce5fbe84e6451d1e2f3f162ae6658e3879a8a12ff4b88e",
+    "source_sha256": "773434fb8cc771f85fce5fbe84e6451d1e2f3f162ae6658e3879a8a12ff4b88e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoAccessSupportTest.xml",
+    "bytes": 70111,
+    "sha256": "a8a8fea24ffee9258c8d65c493e8b5e021222ab5fb613c6709cf9b3b1c2896e6",
+    "source_sha256": "a8a8fea24ffee9258c8d65c493e8b5e021222ab5fb613c6709cf9b3b1c2896e6",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoAppRegistrationTest.xml",
+    "bytes": 70277,
+    "sha256": "b2da666313aecc949244f90de4d24eedaca2e7b2bc909484f6bf566c9b803809",
+    "source_sha256": "b2da666313aecc949244f90de4d24eedaca2e7b2bc909484f6bf566c9b803809",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoClientFieldsSupportTest.xml",
+    "bytes": 70334,
+    "sha256": "3569774019a5065487786fab614176744292957a64e6444870bde2925fbf68ec",
+    "source_sha256": "3569774019a5065487786fab614176744292957a64e6444870bde2925fbf68ec",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "r1backend-default-reports/wta-modules/wta-system/target/surefire-reports/TEST-org.namewta.system.sso.SsoRedirectUrisTest.xml",
+    "bytes": 69990,
+    "sha256": "3a9309117a75039b5fa3362178957b85679d0f9ddde85e8f1d90ee7b10b8ad10",
+    "source_sha256": "3a9309117a75039b5fa3362178957b85679d0f9ddde85e8f1d90ee7b10b8ad10",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "browser-failed/result.json",
+    "bytes": 3990,
+    "sha256": "ca34120b8887e76551e90de4b8fa5ee25ce17453dcc2981156ceacae26b26405",
+    "source_sha256": "ca34120b8887e76551e90de4b8fa5ee25ce17453dcc2981156ceacae26b26405",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "full-artifact-manifest.json",
+    "bytes": 2463,
+    "sha256": "67ad7fb0a2f19e77e4a46690a9d06b7826ed9255194c67c69188fc211fcc9825",
+    "source_sha256": "67ad7fb0a2f19e77e4a46690a9d06b7826ed9255194c67c69188fc211fcc9825",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "real18/maven.log",
+    "bytes": 87289,
+    "sha256": "6fbdccdf3df95ef8e99785615471473aba7bc9a61fa367f9978676de60db4ef2",
+    "source_sha256": "6fbdccdf3df95ef8e99785615471473aba7bc9a61fa367f9978676de60db4ef2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "real18/result.json",
+    "bytes": 6459,
+    "sha256": "1cd304a413c12bb2e3cdf8d5b06e9a2a3bfc0c46d7d2623cc0d376b6fb086e08",
+    "source_sha256": "1cd304a413c12bb2e3cdf8d5b06e9a2a3bfc0c46d7d2623cc0d376b6fb086e08",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "real18/selected-surefire.xml",
+    "bytes": 121383,
+    "sha256": "3e31a6743d3e1a4f2fb5cfdd17f0e4a9a6c3eb47c4aee68c24de7ec4cc0cf954",
+    "source_sha256": "3e31a6743d3e1a4f2fb5cfdd17f0e4a9a6c3eb47c4aee68c24de7ec4cc0cf954",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/maven.log",
+    "bytes": 469431,
+    "sha256": "489695d3f76ec2b3a0d09f7394a6d33ff03c6faa87efe84bd3b0f8b37c7fbf30",
+    "source_sha256": "489695d3f76ec2b3a0d09f7394a6d33ff03c6faa87efe84bd3b0f8b37c7fbf30",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/result.json",
+    "bytes": 15305,
+    "sha256": "ccc861bcd05a11cf4410614f121d45d8710c1cec4032731dd4efeda2723effe7",
+    "source_sha256": "ccc861bcd05a11cf4410614f121d45d8710c1cec4032731dd4efeda2723effe7",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+    "bytes": 107682,
+    "sha256": "852e326733b129bef2e8dc02bedc286619c1b9d6800a6cbee85680c5cb5fae04",
+    "source_sha256": "852e326733b129bef2e8dc02bedc286619c1b9d6800a6cbee85680c5cb5fae04",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+    "bytes": 408288,
+    "sha256": "b127e98fe8baa59198c3a284deec3407fa2c1f035d4789c41e51ea771f3c4618",
+    "source_sha256": "b127e98fe8baa59198c3a284deec3407fa2c1f035d4789c41e51ea771f3c4618",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+    "bytes": 116834,
+    "sha256": "1ab1e66804a16ce90e063c6ac86d80cb2bc2cef65433bb3561e3f5493a180623",
+    "source_sha256": "1ab1e66804a16ce90e063c6ac86d80cb2bc2cef65433bb3561e3f5493a180623",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+    "bytes": 114313,
+    "sha256": "6a0c61037b79aa73b9dc14d10f47c6fdc1b238090482d53879c87c11c6235a2e",
+    "source_sha256": "6a0c61037b79aa73b9dc14d10f47c6fdc1b238090482d53879c87c11c6235a2e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+    "bytes": 108092,
+    "sha256": "7efc4467abe4c7dcb39e5e59354ddd182d3979152ad0a76ce363ebffefa697a2",
+    "source_sha256": "7efc4467abe4c7dcb39e5e59354ddd182d3979152ad0a76ce363ebffefa697a2",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+    "bytes": 127692,
+    "sha256": "d8cbe7fd0fc20a090668ea74dcf5c80bac9ae6d4c2fee3e82f25774a8ab138c1",
+    "source_sha256": "d8cbe7fd0fc20a090668ea74dcf5c80bac9ae6d4c2fee3e82f25774a8ab138c1",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+    "bytes": 106979,
+    "sha256": "39b7878eb2d3b72fbd9bb260021291681f8073383daf278ac8503af469da7b25",
+    "source_sha256": "39b7878eb2d3b72fbd9bb260021291681f8073383daf278ac8503af469da7b25",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+    "bytes": 95700,
+    "sha256": "f4ab00228bbe6ce5b06fff6046673f04fd5dc17e81c5780e3810a541afea0e6e",
+    "source_sha256": "f4ab00228bbe6ce5b06fff6046673f04fd5dc17e81c5780e3810a541afea0e6e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "shared135/xml-manifest.json",
+    "bytes": 2530,
+    "sha256": "eea5663eb1426dcfa73fcf1d83bc58b505b1419a39abc4138ea789742f1a4d13",
+    "source_sha256": "eea5663eb1426dcfa73fcf1d83bc58b505b1419a39abc4138ea789742f1a4d13",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "reviews/wta-t40-r1-ua-review.md",
+    "bytes": 3819,
+    "sha256": "1913cf22aab513f2b9db34bab144f4234e3353f9f98d2ae99d7220a9cdf94db0",
+    "source_sha256": "1913cf22aab513f2b9db34bab144f4234e3353f9f98d2ae99d7220a9cdf94db0",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "reviews/wta-t40-r1-browser-review.md",
+    "bytes": 3690,
+    "sha256": "8ca58c41fddcf47c27cde71d557c7a9ad955b563a630c584960aeccbba543312",
+    "source_sha256": "8ca58c41fddcf47c27cde71d557c7a9ad955b563a630c584960aeccbba543312",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "reviews/wta-t40-r1-publish-diagnosis.md",
+    "bytes": 6091,
+    "sha256": "792185052ef70d8658aeb161d7190c6818108bfea972959b1e640bcad42eb82e",
+    "source_sha256": "792185052ef70d8658aeb161d7190c6818108bfea972959b1e640bcad42eb82e",
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "reviews/wta-t40-r1-publish-observability-plan.md",
+    "bytes": 4068,
+    "sha256": "58084761da40caf57c9cbd3e7f405b653ed9bbc6dfe547d129c1d78e34e53d28",
+    "source_sha256": "58084761da40caf57c9cbd3e7f405b653ed9bbc6dfe547d129c1d78e34e53d28",
+    "test_jwt_redactions": 0
+  }
+]

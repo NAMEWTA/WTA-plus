@@ -1,0 +1,9 @@
+{
+  "counts": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml_sha256": "0ab724b9a40b9b67b56c91667dd64af51edf4ff5456e28e47116bd144bd53b7f"
+}

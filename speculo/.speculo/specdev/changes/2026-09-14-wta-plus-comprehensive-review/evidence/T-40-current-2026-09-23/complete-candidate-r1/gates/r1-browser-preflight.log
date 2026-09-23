@@ -1,0 +1,5 @@
+usage: run-notice-retraction-real.py [-h] [--preflight] [--execute]
+                                     [--expected-head EXPECTED_HEAD]
+                                     [--expected-jar-sha256 EXPECTED_JAR_SHA256]
+                                     [--package-proof PACKAGE_PROOF]
+run-notice-retraction-real.py: error: no launch without --execute, exact clean SHA, JAR SHA-256 and package proof

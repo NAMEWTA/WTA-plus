@@ -1,0 +1,8 @@
+{
+  "browser_preflight_initial_exit": 2,
+  "reason": "omitted explicit --preflight; runner correctly refused service launch",
+  "corrected_command_record": "r1-browser-preflight-explicit.json",
+  "backend_prepare_initial": "immutable output guard refused existing r1-source-before.json before any Maven launch",
+  "actual_fresh_backend_label": "r1backend",
+  "source_unchanged": true
+}
