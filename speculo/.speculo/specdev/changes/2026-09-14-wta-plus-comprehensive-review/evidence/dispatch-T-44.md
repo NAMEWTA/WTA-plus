@@ -27,3 +27,7 @@ revision200：T44定向红灯已证实，固定11960110的53例为49pass/1failur
 01B在原19条写集内完成：业务诊断解耦而授权/ACTIVE/service/policy不放松；DB成功读取后清SYS_OSS_CONFIG专用缓存和默认指针，再填合法当前行，DB故障仍核心报错；单配置管理员诊断、配置变更只失效、无启动远端探测、常驻应用调度、core和ossdiagnostics健康组及规范同步。可选诊断timeout冻结为每网络步骤100ms–3s，最多5个顺序步骤，网络等待预算最多15s，不称整个请求3s；配置无效返回固定诊断配置错误，核心仍启动。不得起未回收后台任务制造表面超时。若需严格单个总deadline或common路径先回Lead登记，T45策略解释未提前改动。
 
 01B source=11960110ff4f5a8c99a885dbf2866578fc8493af；main/current。cors_audit唯一产品writer，允许原Ticket19条内生产/测试/对应文档，OpenAPI生成三处仍由Lead正式工具写；不跑构建/服务/提交、不写治理。返回精确diff与选择器后停写，Lead定向绿灯及独立审查。ops_audit/legacy_audit仅准备/tmp/wta-t44私有隔离驱动，未启动或改仓库。
+
+## revision201 — 原始诊断属性的测试消费者同步
+
+为避免Spring Binder在可选Duration词法错误时阻断核心，三项诊断配置改同型String JavaBean并在诊断时解析。仓内唯一超出现有admin OSS测试根的消费者为 `backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java`，已事前登记为第20条精确写集，仅同步setMaxSnapshotAge的配置字面值/必要编译消费，不改Profile业务。writer尚未改此文件；红灯与AC/候选attempts不变。

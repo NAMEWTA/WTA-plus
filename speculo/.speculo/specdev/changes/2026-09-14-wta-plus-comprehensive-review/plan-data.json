@@ -3629,7 +3629,8 @@
       "backend/wta-admin/src/main/java/org/namewta/NamewtaApplication.java",
       "frontend/packages/api-contracts/openapi/current.json",
       "frontend/packages/api-contracts/openapi/revisions/",
-      "frontend/packages/api-contracts/generated/openapi.ts"
+      "frontend/packages/api-contracts/generated/openapi.ts",
+      "backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java"
     ],
     "tests": [
       "OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组"
@@ -3655,7 +3656,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 200,
+    "plan_revision": 201,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
