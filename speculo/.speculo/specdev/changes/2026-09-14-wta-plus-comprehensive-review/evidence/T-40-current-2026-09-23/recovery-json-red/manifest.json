@@ -1,0 +1,32 @@
+[
+  {
+    "file": "reports/TEST-org.namewta.notify.support.NotifyNoticeVersionFenceTest.xml",
+    "bytes": 77937,
+    "sha256": "a2cfbe2f81a9b820a6fcb561dc5ad2e3cd4e5ecdcc3618de8b28c7ee5ffa25d9"
+  },
+  {
+    "file": "recovery02c-json-red-verification.json",
+    "bytes": 342,
+    "sha256": "30378f304de4fec59de93ba92adac6f2fd587d80c0b64b259d71b1af35076b84"
+  },
+  {
+    "file": "recovery02c-json-red.json",
+    "bytes": 474,
+    "sha256": "46b738ace7b14107bf51779638c92ee937200bc5076828d77ac92d8a02b2f27d"
+  },
+  {
+    "file": "recovery02c-json-red.log",
+    "bytes": 48049,
+    "sha256": "4147d05bd8a034144b7aae068bf3faa20ae026b7491697b60713329a632ff31e"
+  },
+  {
+    "file": "independent-review.md",
+    "bytes": 4640,
+    "sha256": "489e969c5492ad4f590f37cf2f1f072d4df9272e662c676c907b9e0113b73a4e"
+  },
+  {
+    "file": "r1-frontend-artifact-equivalence.json",
+    "bytes": 485,
+    "sha256": "fe181f2d79295924ae4b16c2640460056f4ffe1de0e478378c8bcd3708f59174"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "verified_at": "2026-09-23T21:37:31.096712+00:00",
+  "reference_manifest_sha256": "3843152688b89626f82ca1f9a2ccc9da9e91e4a4ac74b62c4211de67a168bc31",
+  "apps": [
+    {
+      "app": "admin-web",
+      "verified_files": 311
+    },
+    {
+      "app": "home-web",
+      "verified_files": 14
+    },
+    {
+      "app": "sso-web",
+      "verified_files": 4
+    }
+  ],
+  "interpretation": "C1 production artifact bytes remain unchanged; actual browser gate remains failed at R1 publish"
+}

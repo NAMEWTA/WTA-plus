@@ -1,0 +1,13 @@
+{
+  "source_head": "9faeab8740f211ecfbc3644a4ffcad51076df17e",
+  "source_tree": "af01403d92b16dac141fd93093468e16d59c54cc",
+  "clean": true,
+  "counts": {
+    "tests": 5,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "whole_candidate": false,
+  "xml_sha256": "a2cfbe2f81a9b820a6fcb561dc5ad2e3cd4e5ecdcc3618de8b28c7ee5ffa25d9"
+}
