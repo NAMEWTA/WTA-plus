@@ -41,6 +41,27 @@ DOCKER = ('docker', '--host', 'unix:///var/run/docker.sock')
 MINIO_IMAGE = 'pgsty/minio@sha256:83885c27b3b5b673049e33ddf4029afe2c134fd51ce4309e65e4f39d3b9ca282'
 REDIS_CONFIG_USER = 65534
 ADMIN_CLIENT_ID = 'e5cd7e4891bf95d1d19206ce24a7b32e'
+MYSQL_STAGES = frozenset(('rotate_login', 'baseline_tables', 'baseline_outboxes',
+    'baseline_external', 'baseline_accounts', 'baseline_oss', 'lookup_a', 'lookup_b',
+    'lookup_client', 'counts_before', 'counts_seed', 'counts_after', 'counts_failed',
+    'seed_insert', 'seed_titles', 'seed_ownership', 'snapshot_read', 'snapshot_seen',
+    'snapshot_b', 'role_existing', 'role_menus', 'role_collision', 'role_insert',
+    'role_effective'))
+
+
+class OwnedSqlError(RuntimeError):
+    """Retain only allowlisted stage and numeric MySQL diagnostics."""
+
+    def __init__(self, stage, exit_code, number=None, sqlstate=None):
+        self.stage = stage
+        self.exit_code = exit_code
+        self.number = number
+        self.sqlstate = sqlstate
+        super().__init__('Owned SQL operation failed at ' + stage)
+
+    def safe_details(self):
+        return {'stage': self.stage, 'exit_code': self.exit_code,
+                'mysql_error_number': self.number, 'sqlstate': self.sqlstate}
 
 
 def safe_env(**updates):
@@ -101,10 +122,16 @@ def random_password():
     return ''.join(secrets.choice(alphabet) for _ in range(40))
 
 
+def random_login_password():
+    """Use a separate credential within PasswordLoginBody's 5–30 character bound."""
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(24))
+
+
 def owned_bcrypt_hash(password):
     """Use the application's supported $2a$ variant, without external argv."""
-    if not re.fullmatch(r'[A-Za-z0-9]{40}', password):
-        raise RuntimeError('Owned login password is not generated alphanumeric')
+    if not re.fullmatch(r'[A-Za-z0-9]{24}', password):
+        raise RuntimeError('Owned login password is not generated 24-character alphanumeric')
     encoded = bcrypt.hashpw(password.encode('ascii'), bcrypt.gensalt(rounds=10, prefix=b'2a'))
     if not bcrypt.checkpw(password.encode('ascii'), encoded):
         raise RuntimeError('Owned BCrypt hash failed local verification')
@@ -114,7 +141,8 @@ def owned_bcrypt_hash(password):
 def rotate_owned_login(cid, user_id, password):
     password_hash = owned_bcrypt_hash(password)
     changed = mysql(cid, 'UPDATE sys_user SET password=' + hexsql(password_hash)
-                    + f" WHERE user_id={user_id} AND status='0' AND del_flag='0'; SELECT ROW_COUNT();")
+                    + f" WHERE user_id={user_id} AND status='0' AND del_flag='0'; SELECT ROW_COUNT();",
+                    stage='rotate_login')
     if changed != '1':
         raise RuntimeError('Owned fixture login password update did not affect exactly one user')
 
@@ -241,12 +269,24 @@ def stop_group(proc):
     return remaining
 
 
-def mysql(cid, sql):
+def mysql(cid, sql, *, stage):
+    if stage not in MYSQL_STAGES:
+        raise ValueError('Owned SQL stage is not allowlisted')
     if isinstance(sql, str):
         sql = sql.encode('utf-8')
-    return docker('exec', '-i', cid, 'sh', '-c',
-                  'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -uroot --default-character-set=utf8mb4 --batch --skip-column-names --database="$1"',
-                  'sh', 'wta-plus', data=sql, timeout=180)
+    command = (*DOCKER, 'exec', '-i', cid, 'sh', '-c',
+               'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -uroot --default-character-set=utf8mb4 --batch --skip-column-names --database="$1"',
+               'sh', 'wta-plus')
+    try:
+        result = run(command, data=sql, timeout=180)
+    except subprocess.TimeoutExpired:
+        raise OwnedSqlError(stage, None) from None
+    if result.returncode:
+        match = re.search(rb'\bERROR\s+([0-9]{1,5})\s+\(([A-Z0-9]{5})\)', result.stderr)
+        raise OwnedSqlError(stage, result.returncode,
+                            int(match.group(1)) if match else None,
+                            match.group(2).decode('ascii') if match else None)
+    return output(result)
 
 
 def wait_mysql(cid, seconds=120):
@@ -367,6 +407,29 @@ def hexsql(value):
     return 'CONVERT(0x' + value.encode('utf-8').hex() + ' USING utf8mb4)'
 
 
+def compared_hexsql(value):
+    """Match the owned schema's general_ci only for string comparisons."""
+    return hexsql(value) + ' COLLATE utf8mb4_general_ci'
+
+
+def owned_user_id(cid, username, stage):
+    rows = mysql(cid, 'SELECT user_id FROM sys_user WHERE user_name='
+                 + compared_hexsql(username) + " AND status='0' AND del_flag='0';",
+                 stage=stage).splitlines()
+    if len(rows) != 1 or not rows[0].isdigit():
+        raise RuntimeError('Owned enabled fixture user is absent or ambiguous')
+    return int(rows[0])
+
+
+def owned_admin_client_id(cid):
+    rows = mysql(cid, 'SELECT id FROM sys_client WHERE client_id='
+                 + compared_hexsql(ADMIN_CLIENT_ID) + " AND status='0' AND del_flag='0';",
+                 stage='lookup_client').splitlines()
+    if len(rows) != 1 or not rows[0].isdigit():
+        raise RuntimeError('Owned Admin Client fixture differs')
+    return int(rows[0])
+
+
 def seed_plan(run_id, a_user, b_user, base=None):
     """Build only synthetic rows; callers execute on a fresh owned database."""
     if (not re.fullmatch(r'[0-9a-f]{16}', run_id)
@@ -421,12 +484,12 @@ def seed_plan(run_id, a_user, b_user, base=None):
     return '\n'.join(sql).encode(), manifest
 
 
-def inbox_counts(cid, a_user, b_user):
+def inbox_counts(cid, a_user, b_user, *, stage):
     query = (f"SELECT user_id,COUNT(*),SUM(read_time IS NULL) "
              f"FROM notify_message_recipient WHERE user_id IN ({a_user},{b_user}) "
              'GROUP BY user_id ORDER BY user_id;')
     rows = {}
-    for line in mysql(cid, query).splitlines():
+    for line in mysql(cid, query, stage=stage).splitlines():
         user_id, total, unread = line.split('\t')
         rows[int(user_id)] = {'total': int(total), 'unread': int(unread)}
     return rows
@@ -435,20 +498,21 @@ def inbox_counts(cid, a_user, b_user):
 def verify_seed(cid, manifest):
     a_user = int(manifest['a']['userId'])
     b_user = int(manifest['b']['userId'])
-    counts = inbox_counts(cid, a_user, b_user)
+    counts = inbox_counts(cid, a_user, b_user, stage='counts_seed')
     if counts != {a_user: {'total': 501, 'unread': 481},
                    b_user: {'total': 2, 'unread': 2}}:
         raise RuntimeError('Owned seed count or unread distribution differs')
     prefix = manifest['run_id']
     query = ("SELECT COUNT(*),COUNT(DISTINCT message_id) FROM notify_message WHERE title LIKE "
-             + hexsql('T41 ' + prefix + '%') + ';')
-    values = mysql(cid, query).split('\t')
+             + compared_hexsql('T41 ' + prefix + '%') + ';')
+    values = mysql(cid, query, stage='seed_titles').split('\t')
     if values != ['502', '502']:
         raise RuntimeError('Owned seed message count differs')
     shared_id = int(manifest['shared']['messageId'])
     b_only = int(manifest['bOnly']['messageId'])
     ownership = mysql(cid, f'SELECT message_id,COUNT(*) FROM notify_message_recipient '
-                      f'WHERE message_id IN ({shared_id},{b_only}) GROUP BY message_id ORDER BY message_id;')
+                      f'WHERE message_id IN ({shared_id},{b_only}) GROUP BY message_id ORDER BY message_id;',
+                      stage='seed_ownership')
     expected = {str(shared_id): 2, str(b_only): 1}
     actual = {fields[0]: int(fields[1]) for fields in (line.split('\t') for line in ownership.splitlines())}
     if actual != expected:
@@ -460,7 +524,7 @@ def verify_seed(cid, manifest):
 def verify_after_browser(cid, manifest):
     a_user = int(manifest['a']['userId'])
     b_user = int(manifest['b']['userId'])
-    counts = inbox_counts(cid, a_user, b_user)
+    counts = inbox_counts(cid, a_user, b_user, stage='counts_after')
     if counts != {a_user: {'total': 501, 'unread': 0},
                    b_user: {'total': 2, 'unread': 2}}:
         raise RuntimeError('Browser did not mark all 501 A rows while preserving both B rows')
@@ -475,17 +539,17 @@ def preservation_snapshot(cid, manifest):
         raise RuntimeError('Pre-read synthetic ID set differs')
     rows = mysql(cid, 'SELECT message_id,read_time FROM notify_message_recipient '
                  f"WHERE user_id={a_user} AND message_id IN ({','.join(str(item) for item in ids)}) "
-                 'ORDER BY message_id;').splitlines()
+                 'ORDER BY message_id;', stage='snapshot_read').splitlines()
     if len(rows) != 20 or any(len(row.split('\t')) != 2 or row.split('\t')[1] == 'NULL' for row in rows):
         raise RuntimeError('Pre-read snapshot is missing a seeded timestamp')
     oldest = int(manifest['aOldest']['messageId'])
     seen = mysql(cid, f'SELECT seen_time FROM notify_message_recipient '
-                 f'WHERE user_id={a_user} AND message_id={oldest};')
+                 f'WHERE user_id={a_user} AND message_id={oldest};', stage='snapshot_seen')
     if not seen or seen == 'NULL':
         raise RuntimeError('Off-page seen timestamp is missing')
     b_user = int(manifest['b']['userId'])
     b_rows = mysql(cid, 'SELECT message_id,seen_time,read_time FROM notify_message_recipient '
-                   f'WHERE user_id={b_user} ORDER BY message_id;').splitlines()
+                   f'WHERE user_id={b_user} ORDER BY message_id;', stage='snapshot_b').splitlines()
     expected_b_ids = {manifest['shared']['messageId'], manifest['bOnly']['messageId']}
     if (len(b_rows) != 2 or {row.split('\t')[0] for row in b_rows} != expected_b_ids
         or any(row.split('\t')[1:] != ['NULL', 'NULL'] for row in b_rows)):
@@ -499,11 +563,13 @@ def create_owned_b_role(cid, run_id, a_user, b_user, client_pk):
                    2100600000000000041, 2100600000000000042)
     existing = int(mysql(cid, f'SELECT COUNT(*) FROM sys_user_role ur JOIN sys_role r '
                          f'ON r.role_id=ur.role_id WHERE ur.user_id={b_user} '
-                         f"AND r.client_id={client_pk} AND r.status='0' AND r.del_flag='0';"))
+                         f"AND r.client_id={client_pk} AND r.status='0' AND r.del_flag='0';",
+                         stage='role_existing'))
     eligible = int(mysql(cid, 'SELECT COUNT(*) FROM sys_menu WHERE menu_id IN ('
                          + ','.join(str(item) for item in permissions)
-                         + f") AND client_id={client_pk} AND status='0';"))
-    collision = int(mysql(cid, f'SELECT COUNT(*) FROM sys_role WHERE role_id={role_id};'))
+                         + f") AND client_id={client_pk} AND status='0';", stage='role_menus'))
+    collision = int(mysql(cid, f'SELECT COUNT(*) FROM sys_role WHERE role_id={role_id};',
+                          stage='role_collision'))
     if existing or eligible != 4 or collision:
         raise RuntimeError('B role or owned menu/client baseline differs')
     role_key = 't41_b_' + run_id
@@ -516,7 +582,7 @@ def create_owned_b_role(cid, run_id, a_user, b_user, client_pk):
         f'INSERT INTO sys_user_role(user_id,role_id) VALUES ({b_user},{role_id});'
         'INSERT INTO sys_role_menu(role_id,menu_id) VALUES '
         + ','.join(f'({role_id},{menu_id})' for menu_id in permissions) + ';COMMIT;')
-    mysql(cid, statement)
+    mysql(cid, statement, stage='role_insert')
     effective = int(mysql(cid, 'SELECT COUNT(DISTINCT rm.menu_id) FROM sys_user_role ur '
                           'JOIN sys_role r ON r.role_id=ur.role_id '
                           'JOIN sys_role_menu rm ON rm.role_id=r.role_id '
@@ -525,7 +591,8 @@ def create_owned_b_role(cid, run_id, a_user, b_user, client_pk):
                           f"AND r.client_id={client_pk} AND r.data_scope='5' "
                           "AND r.status='0' AND r.del_flag='0' "
                           f"AND m.client_id={client_pk} AND m.status='0' "
-                          'AND rm.menu_id IN (' + ','.join(str(item) for item in permissions) + ');'))
+                          'AND rm.menu_id IN (' + ','.join(str(item) for item in permissions) + ');',
+                          stage='role_effective'))
     if effective != 4:
         raise RuntimeError('Owned B role did not grant exactly the required active menus')
     return role_id
@@ -715,8 +782,8 @@ def main():
     app_user = 't41b_' + run_id
     minio_user = 't41minio' + run_id
     bucket = 't41-' + run_id
-    account_env = {'T41_A_USERNAME': 'WTA', 'T41_A_PASSWORD': random_password(),
-                   'T41_B_USERNAME': 'test1', 'T41_B_PASSWORD': random_password()}
+    account_env = {'T41_A_USERNAME': 'WTA', 'T41_A_PASSWORD': random_login_password(),
+                   'T41_B_USERNAME': 'test1', 'T41_B_PASSWORD': random_login_password()}
     redactions = [root_password, app_password, redis_password, minio_password,
                   account_env['T41_A_PASSWORD'], account_env['T41_B_PASSWORD']]
     report = {'gate': 'T-41 real Admin inbox page 26 and global read-all',
@@ -825,40 +892,35 @@ def main():
         report['init_exit_code'] = init_result.returncode
         if init_result.returncode:
             raise RuntimeError('Owned six-SQL initializer failed')
-        tables = int(mysql(mysql_id, 'SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE();'))
-        outboxes = int(mysql(mysql_id, 'SELECT COUNT(*) FROM notify_outbox;'))
-        external = int(mysql(mysql_id, "SELECT COUNT(*) FROM notify_delivery WHERE channel IN ('SMS','MAIL');"))
+        tables = int(mysql(mysql_id, 'SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE();',
+                           stage='baseline_tables'))
+        outboxes = int(mysql(mysql_id, 'SELECT COUNT(*) FROM notify_outbox;', stage='baseline_outboxes'))
+        external = int(mysql(mysql_id, "SELECT COUNT(*) FROM notify_delivery WHERE channel IN ('SMS','MAIL');",
+                             stage='baseline_external'))
         enabled_accounts = int(mysql(mysql_id,
-                                     "SELECT COUNT(*) FROM notify_channel_account WHERE channel IN ('SMS','MAIL') AND enabled='Y';"))
+                                     "SELECT COUNT(*) FROM notify_channel_account WHERE channel IN ('SMS','MAIL') AND enabled='Y';",
+                                     stage='baseline_accounts'))
         private_oss = int(mysql(mysql_id,
-                                "SELECT COUNT(*) FROM sys_oss_config WHERE config_key='minio' AND status='Y' AND access_policy='0';"))
+                                "SELECT COUNT(*) FROM sys_oss_config WHERE config_key='minio' AND status='Y' AND access_policy='0';",
+                                stage='baseline_oss'))
         if (tables, outboxes, external, enabled_accounts, private_oss) != (103, 0, 0, 0, 1):
             raise RuntimeError('Owned schema violates fresh no-supplier-call baseline')
         report['owned']['baseline_counts'] = {
             'business_tables': tables, 'outboxes': outboxes, 'external_deliveries': external,
             'enabled_external_accounts': enabled_accounts, 'private_default_oss': private_oss}
 
-        def one_user(username):
-            rows = mysql(mysql_id, 'SELECT user_id FROM sys_user WHERE user_name='
-                         + hexsql(username) + " AND status='0' AND del_flag='0';").splitlines()
-            if len(rows) != 1 or not rows[0].isdigit():
-                raise RuntimeError('Owned enabled fixture user is absent or ambiguous')
-            return int(rows[0])
-        a_user, b_user = one_user('WTA'), one_user('test1')
-        client_rows = mysql(mysql_id, 'SELECT id FROM sys_client WHERE client_id='
-                            + hexsql(ADMIN_CLIENT_ID) + " AND status='0' AND del_flag='0';").splitlines()
-        if len(client_rows) != 1 or not client_rows[0].isdigit():
-            raise RuntimeError('Owned Admin Client fixture differs')
-        client_pk = int(client_rows[0])
+        a_user = owned_user_id(mysql_id, 'WTA', 'lookup_a')
+        b_user = owned_user_id(mysql_id, 'test1', 'lookup_b')
+        client_pk = owned_admin_client_id(mysql_id)
         rotate_owned_login(mysql_id, a_user, account_env['T41_A_PASSWORD'])
         rotate_owned_login(mysql_id, b_user, account_env['T41_B_PASSWORD'])
         report['owned']['login_passwords_rotated_in_fresh_schema'] = 2
-        before_counts = inbox_counts(mysql_id, a_user, b_user)
+        before_counts = inbox_counts(mysql_id, a_user, b_user, stage='counts_before')
         if before_counts:
             raise RuntimeError('Fresh owned schema already has A/B inbox recipients')
         report['owned']['b_role_id'] = create_owned_b_role(mysql_id, run_id, a_user, b_user, client_pk)
         seed_sql, manifest = seed_plan(run_id, a_user, b_user)
-        mysql(mysql_id, seed_sql)
+        mysql(mysql_id, seed_sql, stage='seed_insert')
         report['seed_before'] = verify_seed(mysql_id, manifest)
         preserved_before = preservation_snapshot(mysql_id, manifest)
         seed_path = run_dir / 'seed.json'
@@ -950,12 +1012,17 @@ def main():
         report['preexisting_read_and_seen_timestamps_preserved'] = True
         report['exit_code'] = 0
     except BaseException as exc:
-        report['error'] = redact(type(exc).__name__ + ': ' + str(exc), redactions)
+        if isinstance(exc, OwnedSqlError):
+            report['sql_failure'] = exc.safe_details()
+            report['error'] = str(exc)
+        else:
+            report['error'] = redact(type(exc).__name__ + ': ' + str(exc), redactions)
     finally:
         if mysql_id is not None and browser_complete and 'seed_after' not in report:
             try:
                 report['seed_after_failed_check'] = inbox_counts(
-                    mysql_id, int(manifest['a']['userId']), int(manifest['b']['userId']))
+                    mysql_id, int(manifest['a']['userId']), int(manifest['b']['userId']),
+                    stage='counts_failed')
             except Exception:
                 report['seed_after_failed_check'] = 'unavailable'
         for name, proc in reversed(processes):

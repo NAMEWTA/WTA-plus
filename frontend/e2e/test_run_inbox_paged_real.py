@@ -183,7 +183,7 @@ class T41OfflineSafety(unittest.TestCase):
         self.assertFalse(config['captcha.enable'])
 
     def test_owned_bcrypt_matches_application_variant_without_plaintext_sql(self):
-        password = 'A' * 20 + '7' * 20
+        password = 'A' * 12 + '7' * 12
         password_hash = driver.owned_bcrypt_hash(password)
         self.assertTrue(password_hash.startswith('$2a$10$'))
         self.assertTrue(bcrypt.checkpw(password.encode(), password_hash.encode()))
@@ -194,10 +194,93 @@ class T41OfflineSafety(unittest.TestCase):
         self.assertIn('CONVERT(0x', sql)
         self.assertIn('SELECT ROW_COUNT()', sql)
 
+    def test_login_password_is_separate_from_infrastructure_secret(self):
+        self.assertRegex(driver.random_password(), r'^[A-Za-z0-9]{40}$')
+        self.assertRegex(driver.random_login_password(), r'^[A-Za-z0-9]{24}$')
+        for invalid in ('A' * 5, 'A' * 30, 'A' * 40, 'A' * 23 + '-'):
+            with self.subTest(length=len(invalid)):
+                with self.assertRaises(RuntimeError):
+                    driver.owned_bcrypt_hash(invalid)
+
+    def test_comparison_collation_only_on_owned_general_ci_predicates(self):
+        expression = driver.compared_hexsql('test1')
+        self.assertEqual(expression, driver.hexsql('test1') + ' COLLATE utf8mb4_general_ci')
+        self.assertNotIn('COLLATE', driver.hexsql('test1'))
+        source = SCRIPT.read_text()
+        self.assertEqual(source.count('compared_hexsql('), 4)  # helper plus three predicates
+        self.assertIn("compared_hexsql(username)", source)
+        self.assertIn("compared_hexsql(ADMIN_CLIENT_ID)", source)
+        self.assertIn("compared_hexsql('T41 ' + prefix + '%')", source)
+        self.assertIn('(random_password() for _ in range(4))', source)
+        self.assertIn("'T41_A_PASSWORD': random_login_password()", source)
+        self.assertIn("'T41_B_PASSWORD': random_login_password()", source)
+
+    def test_owned_lookup_rejects_absent_duplicate_and_wrong_identity(self):
+        with patch.object(driver, 'mysql', return_value='101') as query:
+            self.assertEqual(driver.owned_user_id('a' * 64, 'WTA', 'lookup_a'), 101)
+        self.assertIn("AND status='0' AND del_flag='0'", query.call_args.args[1])
+        self.assertEqual(query.call_args.kwargs['stage'], 'lookup_a')
+        for rows in ('', '101\n202', 'not-an-id'):
+            with patch.object(driver, 'mysql', return_value=rows):
+                with self.assertRaises(RuntimeError):
+                    driver.owned_user_id('a' * 64, 'WTA', 'lookup_a')
+        with patch.object(driver, 'mysql', return_value='303') as query:
+            self.assertEqual(driver.owned_admin_client_id('a' * 64), 303)
+        self.assertIn("AND status='0' AND del_flag='0'", query.call_args.args[1])
+        for rows in ('', '303\n404'):
+            with patch.object(driver, 'mysql', return_value=rows):
+                with self.assertRaises(RuntimeError):
+                    driver.owned_admin_client_id('a' * 64)
+
+    def test_seed_verification_rejects_wrong_shared_owner(self):
+        _, manifest = driver.seed_plan('0123456789abcdef', 101, 202,
+                                       base=8_000_000_000_000_000_000)
+        with patch.object(driver, 'inbox_counts', return_value={
+                101: {'total': 501, 'unread': 481}, 202: {'total': 2, 'unread': 2}}), \
+             patch.object(driver, 'mysql', side_effect=[
+                 '502\t502', manifest['shared']['messageId'] + '\t1\n'
+                 + manifest['bOnly']['messageId'] + '\t1']):
+            with self.assertRaisesRegex(RuntimeError, 'ownership differs'):
+                driver.verify_seed('a' * 64, manifest)
+
+    def test_sql_error_retains_only_stage_exit_and_mysql_diagnostics(self):
+        canary = 'credential-canary-private'
+        result = types.SimpleNamespace(returncode=1, stdout=b'', stderr=(
+            'ERROR 1267 (HY000): Illegal mix of collations near ' + canary).encode())
+        with patch.object(driver, 'run', return_value=result) as call:
+            with self.assertRaises(driver.OwnedSqlError) as raised:
+                driver.mysql('a' * 64, 'SELECT ' + canary, stage='lookup_a')
+        details = raised.exception.safe_details()
+        self.assertEqual(details, {'stage': 'lookup_a', 'exit_code': 1,
+                                   'mysql_error_number': 1267, 'sqlstate': 'HY000'})
+        self.assertNotIn(canary, str(raised.exception) + json.dumps(details))
+        self.assertEqual(call.call_args.kwargs['data'], ('SELECT ' + canary).encode())
+        self.assertNotIn(canary, repr(call.call_args.args[0]))
+        with patch.object(driver, 'run', return_value=types.SimpleNamespace(
+                returncode=7, stdout=b'', stderr=canary.encode())):
+            with self.assertRaises(driver.OwnedSqlError) as unknown:
+                driver.mysql('a' * 64, 'SELECT 1', stage='lookup_b')
+        self.assertEqual(unknown.exception.safe_details(), {
+            'stage': 'lookup_b', 'exit_code': 7, 'mysql_error_number': None, 'sqlstate': None})
+        with self.assertRaises(ValueError):
+            driver.mysql('a' * 64, 'SELECT 1', stage=canary)
+        with patch.object(driver, 'run', return_value=types.SimpleNamespace(
+                returncode=0, stdout=b'101\t502\n', stderr=b'')):
+            self.assertEqual(driver.mysql('a' * 64, 'SELECT 1', stage='lookup_a'), '101\t502')
+        timeout = subprocess.TimeoutExpired(('docker', 'exec'), 180,
+                                            output=canary.encode(), stderr=canary.encode())
+        with patch.object(driver, 'run', side_effect=timeout):
+            with self.assertRaises(driver.OwnedSqlError) as timed_out:
+                driver.mysql('a' * 64, 'SELECT 1', stage='lookup_a')
+        self.assertEqual(timed_out.exception.safe_details(), {
+            'stage': 'lookup_a', 'exit_code': None,
+            'mysql_error_number': None, 'sqlstate': None})
+        self.assertNotIn(canary, str(timed_out.exception))
+
     def test_owned_b_role_requires_empty_prior_role_and_exact_four_menus(self):
         calls = []
         replies = iter(('0', '4', '0', '', '4'))
-        with patch.object(driver, 'mysql', side_effect=lambda _cid, sql: (calls.append(sql), next(replies))[1]), \
+        with patch.object(driver, 'mysql', side_effect=lambda _cid, sql, **_kw: (calls.append(sql), next(replies))[1]), \
              patch.object(driver.secrets, 'randbelow', return_value=123):
             role_id = driver.create_owned_b_role('a' * 64, '0123456789abcdef', 101, 202, 303)
         self.assertEqual(role_id, 8_200_000_000_000_000_123)
