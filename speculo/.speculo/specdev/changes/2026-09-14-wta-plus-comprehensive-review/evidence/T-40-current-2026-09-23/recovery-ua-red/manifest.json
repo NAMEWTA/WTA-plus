@@ -1,0 +1,47 @@
+[
+  {
+    "file": "recovery02a-ua-red.json",
+    "bytes": 418,
+    "sha256": "259f99849a0e4f77f346a26204c7d7f76ea8c48aebd639089495c51c41818bb4"
+  },
+  {
+    "file": "recovery02a-ua-red.log",
+    "bytes": 65424,
+    "sha256": "801bb5ad686d5e66d55de2978b12e79628195ba21ad7c756d10a07886f98f016"
+  },
+  {
+    "file": "recovery02a2-ua-red.json",
+    "bytes": 419,
+    "sha256": "7253e4a2f63131a24c21a0f0bb76a9f808097c16f602043d77a2e5d011bde36b"
+  },
+  {
+    "file": "recovery02a2-ua-red.log",
+    "bytes": 77143,
+    "sha256": "62e5c93af87a96083862c71572ab3876eac77fb62e85c70ea25a131c4fb5356c"
+  },
+  {
+    "file": "recovery02a2-red-verification.json",
+    "bytes": 409,
+    "sha256": "a44a2ee5c18a7ea097ba2a800c0aec4a3026977dafb88f18a863da1547c911a1"
+  },
+  {
+    "file": "ua-parser-jar-equivalence.json",
+    "bytes": 492,
+    "sha256": "5f648662aea0755c8f33f3ecd18e74e5aaa551a02e03940d574910dc924a2d53"
+  },
+  {
+    "file": "artifact-storage-relocation.json",
+    "bytes": 2722,
+    "sha256": "bd49befa6bca0c9f177dafbf8298947d4491d760d27b03a8499599e72a4b89b2"
+  },
+  {
+    "file": "reports/TEST-org.namewta.test.auth.LoginUserAgentUnitTest.xml",
+    "bytes": 106319,
+    "sha256": "2929dfd08971b0851e370f3a2de0147a16600ced6d70ea68e17713abddb11a71"
+  },
+  {
+    "file": "unit-fixture-review.md",
+    "bytes": 5123,
+    "sha256": "16e3b5a4128d23922235dd51b9e441ad8aabd5c1197edd23d123cbe0cac0f603"
+  }
+]

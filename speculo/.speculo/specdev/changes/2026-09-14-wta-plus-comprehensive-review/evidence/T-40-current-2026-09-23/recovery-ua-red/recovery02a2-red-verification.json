@@ -1,0 +1,13 @@
+{
+  "source_head": "6eb5783cee5d29dc6f7ffa9d61d92774143dcc73",
+  "source_tree": "c23ef2d511bc93679b629f9f109c45b97923b275",
+  "clean": true,
+  "tests": 10,
+  "failures": 6,
+  "errors": 0,
+  "skipped": 0,
+  "positive_passed": 4,
+  "failure": "null and blank UA NPE in all three actual consumers",
+  "xml_sha256": "2929dfd08971b0851e370f3a2de0147a16600ced6d70ea68e17713abddb11a71",
+  "whole_candidate": false
+}

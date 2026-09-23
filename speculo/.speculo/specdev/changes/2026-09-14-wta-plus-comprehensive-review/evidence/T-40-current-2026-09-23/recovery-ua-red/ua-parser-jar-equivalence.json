@@ -1,0 +1,15 @@
+{
+  "full_jar_sha256": "18fcf6ce0fa664b3cc5c03a36d9ecd8f44cc48c0b22c0984b34db25732ee8845",
+  "dependencies": [
+    {
+      "library": "hutool-http-5.8.47.jar",
+      "sha256": "0f1ef06be5773b5e65f6ecbdf660506d08e9802c41a008380505195202c02ca1",
+      "probe_dependency_same_as_full_jar": true
+    },
+    {
+      "library": "hutool-core-5.8.47.jar",
+      "sha256": "7cc076ad4ed9846dc129edcd2a5e4e01b61a9d715bf0d3b9a7fa707d4f637266",
+      "probe_dependency_same_as_full_jar": true
+    }
+  ]
+}
