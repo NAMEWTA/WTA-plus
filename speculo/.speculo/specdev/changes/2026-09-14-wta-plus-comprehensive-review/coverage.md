@@ -1,11 +1,52 @@
-# 复核覆盖
+# 覆盖与新旧证据边界
 
-| 范围 | 核对内容 | 边界 |
+当前源码 `1264980c74e594bc594e88561bb292fbe5d968a1`，报告60引用逐文件hash比对，18项报告条目映射19新增票；原31票提交存在/祖先关系与写集漂移已核对。代码读取聚焦报告路径与关键调用链，不声称全仓逐行重审或本轮运行测试。
+
+| 范围 | 责任 | 本轮状态 | 最终证据要求 |
+|---|---|---|---|
+| 报告N-01—N-10 | T-34—43/50 | 静态路径确认；N-10仅风险 | runtime/common/Provider组合、真实事务、浏览器及规模测量 |
+| 报告O-01—O-04 | T-44—47 | 静态确认、规范替代/互斥待审 | 最小权限访问、三态诊断、双连接竞争、页面乱序 |
+| 报告S-01/S-02 | T-32/33 | 跟踪字面凭据/通配默认存在 | repo整改、CORS矩阵及独立轮换处置 |
+| 报告D-01/D-02 | T-48/49 | 建议，非已测缺陷 | 首次/二次启动、repair保护、配置消费者证据 |
+| 报告SSO边界 | 相邻OIDC change | 仅移交与引用 | 由其自身Spec/Tickets完成，当前不跨写 |
+| 旧AC-001—031 | 原票＋T-30 | 原始Evidence保持；当前待重验 | 按受影响闭包复跑，不重复无变化已证明检查 |
+| 所有当前活动文档 | 本轮G/S/T/P计划 | 已重构；G共识、S/T Ready、P plan定稿 | validator、路径/哈希、DAG、状态与数量一致 |
+| 历史reviews/evidence | 原始owner | 全部保留字节 | manifest/原Git比对，不能改原失败/成功记录 |
+
+详细报告来源→票/AC矩阵：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/current-review.md</Path>；50项合同覆盖：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>。AC covered只代表规划覆盖，实际passed必须由T-30当前候选证据证明。新旧报告编号已隔离，不合并同名D-01。
+
+## 原31票的当前处置
+
+| 票 | 本轮差异与责任 | 历史写集发生后续变动的路径数 |
 |---|---|---|
-| 31张票据及Spec/ADR/Map | 发现、方案、写集、依赖、验收和状态 | 全部重新核对；不是产品实现 |
-| backend | 日志/正文/IP/防重、SSO、Notify、Profile转移、Third、Workflow、部门、Demo调用链 | 源码/SQL/检查器证据；未运行Maven及真实服务 |
-| frontend | 三App认证、self材料、任务弹窗、iframe、上传、列表、strict、可访问性 | 静态确认；未运行浏览器或类型诊断 |
-| 交付/治理 | POM/package、release脚本、Compose、Nginx、SQL owner、AGENTS、清理清单 | 已跑发布合同/文档/分层检查；未部署 |
-| 保留项 | PKCE/HMAC、Client、OSS引用、供应商schema、历史证据与许可证 | 未作独立全协议/法律审计 |
-
-confirmed、likely和needs-runtime含义见reviews/re-review.md。目录清单不代表逐行审计；没有为补齐覆盖率虚构新问题。
+| T-01 | 门禁实现保留；本次11条common Skill摘要漂移已核对入口后重绑，未修改历史Skill执行记录。 | 5 |
+| T-02 | 日志脱敏保持；公开local配置披露由T-32新增整改，不能用日志测试替代凭据轮换。 | 59 |
+| T-03 | 2MiB用户决定仍有效；机器验签/验证码接口在新候选继续回归。 | 101 |
+| T-04 | 可信代理默认空集合仍有效；真实生产CIDR只在外部环境Gate核验。 | 41 |
+| T-05 | 随机owner与compare-delete保持；通知重试由T-37独立修复，不能用防重注解替代。 | 2 |
+| T-06 | 历史CSPRNG/PKCE/Cookie安全合同保留；CORS新增退化由T-33；OIDC协议迁移仅相邻change。 | 8 |
+| T-07 | 回调state/base/错误恢复合同保留；相邻OIDC若改协议按其权威更新回归，不恢复旧私有捷径。 | 1 |
+| T-08 | 同源产物、独立SSO hostname/TLS合同保留；本change不实施相邻OIDC开关架构。 | 45 |
+| T-09 | full/core、三个App模式与唯一六SQL基座保持；新增schema和启动变化需T-30复验。 | 19 |
+| T-10 | 不可变完整release candidate及manifest同源保持；本地隔离候选与真实部署必须分开。 | 23 |
+| T-11 | HTTPS及浏览器无共享私钥保持；新的配置明文风险归T-32。 | 38 |
+| T-12 | 会话清理合同保留，T-34/T-41消息查询必须复用token/generation隔离。 | 18 |
+| T-13 | 注册开关/验证码恢复保留；T-39/T-50改变通知时效/参数需回归真实调用。 | 14 |
+| T-14 | 材料owner及必填规则保持；OSS诊断解耦后仍须真实上传与提交验证。 | 5 |
+| T-15 | 历史直接切换已交付；本轮不再次按旧删除清单移除仍有用API，公共新变更按真实调用清单。 | 34 |
+| T-16 | WarmFlow授权与任务一致性保持；T-50迁移通知priority不改变流程权限。 | 142 |
+| T-17 | 设计器精确origin/source/shape保持，现有测试在T-30复核。 | 9 |
+| T-18 | 上传成功与预览失败语义保持；T-44不得删除owner/生命周期保护。 | 13 |
+| T-19 | 原System页面修复不覆盖新增OSS列表竞态；R64-O-04由T-47定点修复。 | 9 |
+| T-20 | 只收紧触及合同；分页/附件生成transport同步，不发动全仓strict改造。 | 2 |
+| T-21 | 公开页面可访问性保持；新消息错误/详情仍满足键盘与读屏语义。 | 10 |
+| T-22 | 历史结果事务/fence已存在；旧“站内信已有幂等”表述不足，T-36补真实IN_APP同事务并发。 | 0 |
+| T-23 | 自定义HMAC持久receipt及原生签名查询保持；N-02发送前失败不能用回执功能掩盖。 | 7 |
+| T-24 | Third permit及限额热更新保持，不纳入本轮通知/OSS重构。 | 28 |
+| T-25 | 部门共同锁域与无环保持；不能因为OSS也加锁就扩展为通用分布式锁框架。 | 33 |
+| T-26 | CRUD GET/POST/@Log继续适用；当前NotifyInboxController变更接口缺Log由T-41触及补齐。 | 393 |
+| T-27 | Demo树功能保持；Demo Mail修复归T-42，不废弃演示。 | 88 |
+| T-28 | Redis提交后wake＋poll保持；新增IN_APP实时事件需正确AFTER_COMMIT而不复活同步wake。 | 30 |
+| T-29 | 旧删除37份重复手册的证据保持；本轮重新审查所有当前文档，旧清单不再作为待删除任务。 | 9 |
+| T-30 | 扩展为AC-001—050同候选集成、历史票闭合、可发布候选及归档准备；旧全绿不再代表当前完成。 | 55 |
+| T-31 | 企业转移QUEUED/query/Redis挑战合同保持；T-39时效/T-50参数迁移必须覆盖它。 | 51 |

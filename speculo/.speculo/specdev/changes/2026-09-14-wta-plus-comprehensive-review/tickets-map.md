@@ -1,331 +1,207 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 135
-requested_deliverables: [{"name":"完整Tickets Map","count":1},{"name":"Goal Plan","count":1}]
-deliverable_policy: "用户请求完整完善既有change；保留31票追溯编号，未将31误写为用户指定数量；T/P各交付一份完整主工件。"
-artifact: tickets-map
-change: 2026-09-14-wta-plus-comprehensive-review
-status: draft
+plan_revision: 138
+requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
+deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
+artifact: "tickets-map"
+change: "2026-09-14-wta-plus-comprehensive-review"
+status: "ready"
 ---
 
-# Tickets Map
+# Tickets Map：既有基座复验与review闭环
+
+Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Ticket目录：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence目录：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
 ## 1. 目标与拆分策略
 
+原31票保留稳定ID及历史实现证据；新增T-32—T-50覆盖18项新报告事项。N-06按时效与未支持模式拆两票；N-08轻量消息盒子状态纳入T-34，完整分页由T-41。T-30重新承担全部AC的最终闭合。不是重做已提交旧实现，也不遗漏旧验收。
+
 ### 总体实施背景
 
-Revision135 最新授权：用户已明确要求全部 commit push；此前提交暂缓已撤销。按票据主题串行提交，后端合同先于前端消费者，最终提交链保持已验证源码不变；推送 origin/main。历史暂缓记录仅描述对应时间的状态。正式发布候选和生产部署不由本次提交推送自动完成。
+本轮只规划。G已获用户逐项答复和整体共识；Spec及50票Ready。Goal仅计划定稿，未获run授权，不形成执行frontier。Report与历史finding采用独立命名空间。状态/依赖/写集由Ticket frontmatter拥有；本表及plan-data只做投影。原31票在历史快照保留review；本轮全部50票计划Ready，等待执行授权、历史交付裁决和当前候选复验；没有产品worker在途。历史原文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/</Path>，旧Evidence原字节保留。
 
-以2026-09-18当前源码复核为依据，修复安全、状态、通知、树与交付真实问题。保留31票可观察行为及现有编号；不因无兼容要求削弱供应商协议、权限或数据不变量。T-01是可信门禁准备，T-09是发布构建准备，其余按行为跨最小层次闭环，不拆成纯前端/后端/SQL水平票。
-
-Revision134：完成逐票出口复核与本地产物重新验hash，3577源码/654owned路径无漂移，两JAR及三App保留副本一致、HEAD不变且index为空。T-01/T-02/T-04/T-05早期验收勾选尚未承接最终实际证据，已按各项源码/测试报告补齐并注明旧失败由后续票关闭；T-02历史日志处置/凭据轮换属于OUT且无批准，继续明确未执行。31review/0Done；非空implementation/result、direct-parent和干净正式发布候选仍受用户全change不提交约束。没有新产品改动，不重跑已证明输入未变的业务测试。
-
-唯一执行者按Map→适用Skill入口及命中引用→Ticket读取；禁止所有子代理，任何命令/实现/验证严格串行。Revision135已按用户授权形成43个非空实现提交，并核对最终Git归档与既有验收源码一致；31票具备实际commit/result证据，正式发布候选仍未完成，暂不标Done。
+分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
 ### 项目 Skill 读取矩阵
 
+先完整读本Map，再读匹配Skill入口与必要references，再读当前Ticket。最低集合不是allowlist；新增触发项由Lead先改绑定/Map后执行。真实入口及sha256在每票frontmatter，不以“读过”替代Skill实际步骤。
+
 | Applies To | Project Skill | Trigger / Scope | Read Timing | Purpose |
 |---|---|---|---|---|
-| ALL | <Path>.agents/skills/engineering-standards/SKILL.md</Path> | 架构、分层、API、事务、SQL和质量门禁 | Map后、本票实现前；验证时复用适用规范 | 架构、分层、API、事务、SQL和质量门禁 |
-| T-02, T-03, T-04, T-05, T-11, T-14, T-23, T-24, T-26, T-28, T-31 | <Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path> | 日志/正文/IP/防重/加密/有界Redis发布的现有common入口 | Map后、本票实现前；验证时复用适用规范 | 日志/正文/IP/防重/加密/有界Redis发布的现有common入口 |
-| T-06, T-07, T-08, T-09, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-30, T-31 | <Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path> | 业务切片、权限、App组合与数据边界 | Map后、本票实现前；验证时复用适用规范 | 业务切片、权限、App组合与数据边界 |
-| T-09, T-14, T-15, T-16, T-22, T-23, T-24, T-25, T-26, T-28, T-29, T-30, T-31 | <Path>.agents/skills/wta-module-guide/SKILL.md</Path> | Profile/System/Workflow/Notify/Third公开API事实 | Map后、本票实现前；验证时复用适用规范 | Profile/System/Workflow/Notify/Third公开API事实 |
-
-矩阵是最低集合；真实调用、入口摘要、阶段、输入输出与失败动作由单票frontmatter拥有。无兼容演进，不绑定java-api-compatibility；本轮无部署，不激活环境接管技能。Skill更新先由唯一Lead核对影响再更新受影响票绑定。
+| ALL | <Path>.agents/skills/engineering-standards/SKILL.md</Path> | 架构/API/数据库/权限/质量门禁及交付 | Map后、Ticket前，verify再次按scope | 硬约束与真实验证 |
+| T-36, T-38, T-41, T-42, T-50 | <Path>.agents/skills/java-api-compatibility/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
+| T-06, T-07, T-08, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-30, T-31, T-34, T-35, T-36, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-49, T-50 | <Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
+| T-02, T-03, T-04, T-05, T-11, T-14, T-23, T-24, T-26, T-28, T-31, T-33, T-35, T-36, T-37, T-42, T-45, T-46, T-49 | <Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
+| T-14, T-15, T-16, T-22, T-23, T-24, T-25, T-26, T-28, T-29, T-30, T-31, T-34, T-35, T-36, T-37, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-49, T-50 | <Path>.agents/skills/wta-module-guide/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
 
 ## 2. 执行清单
 
-| ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | AC | 顺序 | Status |
+全部50票Ready（31历史票重开＋19新票），0 done；Ready不代表完成，也不自动获得实施权限。
+
+| ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| T-01 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/01-restore-trustworthy-gates.md</Path> | 干净clone不创建temp/release也通过事实检查 | — | standard | medium | true | single-agent | AC-001 | 01 | review |
-| T-02 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path> | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | — | deep | high | true | single-agent | AC-002 | 02 | review |
-| T-03 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/03-bound-request-capture.md</Path> | 大小边界前/等于/超限一字节结果可判定 | T-02 | deep | high | true | single-agent | AC-003 | 03 | review |
-| T-04 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/04-trusted-client-address.md</Path> | 任意外来XFF不改变直连或正常入口的授权结果 | — | deep | high | true | single-agent | AC-004 | 04 | review |
-| T-05 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/05-repeat-submit-lease.md</Path> | A失败不得删除B的键 | — | deep | high | true | single-agent | AC-005 | 05 | review |
-| T-06 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/06-secure-sso-session.md</Path> | 生产实现不含ThreadLocalRandom/雪花ID作为bearer | — | deep | high | true | single-agent | AC-006 | 06 | review |
-| T-07 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/07-sso-callback-journey.md</Path> | 复杂state往返相等且无重复code/state参数 | T-06 | deep | high | true | single-agent | AC-007 | 07 | review |
-| T-08 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/08-complete-sso-release.md</Path> | 每个shipped App均有且仅有完整配套，缺项在promotion前失败 | T-07, T-09, T-10 | deep | high | true | single-agent | AC-008 | 10 | review |
-| T-09 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/09-coherent-build-matrix.md</Path> | build:dev最终三个App均development，build:prod均production | T-01 | deep | high | true | single-agent | AC-009 | 08 | review |
-| T-10 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/10-atomic-release-provenance.md</Path> | manifest每个artifact的digest和source可追溯 | T-09 | deep | high | true | single-agent | AC-010 | 09 | review |
-| T-11 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/11-remove-browser-shared-private-key.md</Path> | 生产bundle不再携带该共享响应私钥或ECB路径 | — | deep | high | true | single-agent | AC-011 | 11 | review |
-| T-12 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/12-session-navigation-lifecycle.md</Path> | logout超时/401/离线时本地token和动态路由仍清空 | T-07 | standard | high | true | single-agent | AC-012 | 12 | review |
-| T-13 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/13-recoverable-registration.md</Path> | 服务端关闭注册时入口与页面均准确，后端仍拒绝直接调用 | T-12 | standard | medium | true | single-agent | AC-013 | 13 | review |
-| T-14 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path> | 新个人CN_RESIDENT_ID上传正反面后完成提交 | T-18 | deep | high | true | single-agent | AC-014 | 15 | review |
-| T-15 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/15-contract-profile-legacy-bridges.md</Path> | 旧入口引用为零且替代能力覆盖完整 | — | deep | high | true | single-agent | AC-015 | 16 | review |
-| T-16 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/16-workflow-task-integrity.md</Path> | B失败绝不发出A的审批请求 | — | deep | high | true | single-agent | AC-016 | 17 | review |
-| T-17 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/17-trusted-designer-messages.md</Path> | 错误origin、错误source、未知payload不能关闭标签 | — | standard | medium | true | single-agent | AC-017 | 18 | review |
-| T-18 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/18-upload-ownership-lifecycle.md</Path> | 下载URL失败不生成无人回收的Blob URL，也不把已完成上传误报失败 | — | deep | high | true | single-agent | AC-018 | 14 | review |
-| T-19 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/19-system-page-state-locality.md</Path> | 快速筛选时旧响应不能覆盖新列表，失败/loading可恢复 | T-18 | standard | medium | true | single-agent | AC-019 | 19 | review |
-| T-20 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/20-strict-contract-target.md</Path> | 受影响边界类型检查通过，nullable与非法transport样本有明确处理 | T-12, T-14, T-19 | deep | medium | true | single-agent | AC-020 | 20 | review |
-| T-21 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/21-accessible-public-apps.md</Path> | 只用键盘可完成公开流程，焦点可见且错误能被读屏发现 | T-13 | standard | medium | true | single-agent | AC-021 | 21 | review |
-| T-22 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path> | 任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致 | — | deep | high | true | single-agent | AC-022 | 22 | review |
-| T-23 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/23-durable-provider-callback.md</Path> | 回滚后相同事件可重试成功 | T-22 | deep | high | true | single-agent | AC-023 | 23 | review |
-| T-24 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/24-recoverable-third-resilience.md</Path> | 崩溃后permit在规定上限内恢复，不依赖人工删key | — | deep | high | true | single-agent | AC-024 | 26 | review |
-| T-25 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/25-acyclic-department-moves.md</Path> | 自父/后代父/并发互移均不能形成环 | — | deep | high | true | single-agent | AC-025 | 27 | review |
-| T-26 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path> | 每个候选有迁移或保留理由，不遗漏调用者 | T-02, T-16, T-25 | deep | high | true | single-agent | AC-026 | 28 | review |
-| T-27 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path> | 保存/删除路径不再有虚假校验TODO | T-26 | standard | medium | true | single-agent | AC-027 | 29 | review |
-| T-28 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/28-bounded-notify-wake.md</Path> | 慢provider不阻塞业务提交线程 | T-22 | deep | high | true | single-agent | AC-028 | 24 | review |
-| T-29 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/29-converge-current-documentation.md</Path> | 每个删除文件有owner、内容迁移落点和无丢失硬约束证据 | T-01 | deep | medium | true | single-agent | AC-029 | 30 | review |
-| T-30 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path> | 全部已接受AC均有实际命令/退出码/环境/源码checkpoint | T-01, T-02, T-03, T-04, T-05, T-06, T-07, T-08, T-09, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-31 | deep | high | true | single-agent | AC-030 | 31 | review |
-| T-31 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md</Path> | 真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交 | T-22 | deep | critical | true | single-agent | AC-031 | 25 | review |
+| T-01 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/01-restore-trustworthy-gates.md</Path> | 干净clone不创建temp/release也通过事实检查 | — | standard | medium | yes | single-agent | AC-001 | W-legacy / G-legacy | ready |
+| T-02 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path> | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | — | deep | high | yes | single-agent | AC-002 | W-legacy / G-legacy | ready |
+| T-03 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/03-bound-request-capture.md</Path> | 大小边界前/等于/超限一字节结果可判定 | T-02 | deep | high | yes | single-agent | AC-003 | W-legacy / G-legacy | ready |
+| T-04 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/04-trusted-client-address.md</Path> | 任意外来XFF不改变直连或正常入口的授权结果 | — | deep | high | yes | single-agent | AC-004 | W-legacy / G-legacy | ready |
+| T-05 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/05-repeat-submit-lease.md</Path> | A失败不得删除B的键 | — | deep | high | yes | single-agent | AC-005 | W-legacy / G-legacy | ready |
+| T-06 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/06-secure-sso-session.md</Path> | 生产实现不含ThreadLocalRandom/雪花ID作为bearer | — | deep | high | yes | single-agent | AC-006 | W-legacy / G-legacy | ready |
+| T-07 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/07-sso-callback-journey.md</Path> | 复杂state往返相等且无重复code/state参数 | T-06 | deep | high | yes | single-agent | AC-007 | W-legacy / G-legacy | ready |
+| T-08 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/08-complete-sso-release.md</Path> | 每个shipped App均有且仅有完整配套，缺项在promotion前失败 | T-07, T-09, T-10 | deep | high | yes | single-agent | AC-008 | W-legacy / G-legacy | ready |
+| T-09 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/09-coherent-build-matrix.md</Path> | build:dev最终三个App均development，build:prod均production | T-01 | deep | high | yes | single-agent | AC-009 | W-legacy / G-legacy | ready |
+| T-10 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/10-atomic-release-provenance.md</Path> | manifest每个artifact的digest和source可追溯 | T-09 | deep | high | yes | single-agent | AC-010 | W-legacy / G-legacy | ready |
+| T-11 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/11-remove-browser-shared-private-key.md</Path> | 生产bundle不再携带该共享响应私钥或ECB路径 | — | deep | high | yes | single-agent | AC-011 | W-legacy / G-legacy | ready |
+| T-12 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/12-session-navigation-lifecycle.md</Path> | logout超时/401/离线时本地token和动态路由仍清空 | T-07 | standard | high | yes | single-agent | AC-012 | W-legacy / G-legacy | ready |
+| T-13 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/13-recoverable-registration.md</Path> | 服务端关闭注册时入口与页面均准确，后端仍拒绝直接调用 | T-12 | standard | medium | yes | single-agent | AC-013 | W-legacy / G-legacy | ready |
+| T-14 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path> | 新个人CN_RESIDENT_ID上传正反面后完成提交 | T-18 | deep | high | yes | single-agent | AC-014 | W-legacy / G-legacy | ready |
+| T-15 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/15-contract-profile-legacy-bridges.md</Path> | 旧入口引用为零且替代能力覆盖完整 | — | deep | high | yes | single-agent | AC-015 | W-legacy / G-legacy | ready |
+| T-16 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/16-workflow-task-integrity.md</Path> | B失败绝不发出A的审批请求 | — | deep | high | yes | single-agent | AC-016 | W-legacy / G-legacy | ready |
+| T-17 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/17-trusted-designer-messages.md</Path> | 错误origin、错误source、未知payload不能关闭标签 | — | standard | medium | yes | single-agent | AC-017 | W-legacy / G-legacy | ready |
+| T-18 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/18-upload-ownership-lifecycle.md</Path> | 下载URL失败不生成无人回收的Blob URL，也不把已完成上传误报失败 | — | deep | high | yes | single-agent | AC-018 | W-legacy / G-legacy | ready |
+| T-19 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/19-system-page-state-locality.md</Path> | 快速筛选时旧响应不能覆盖新列表，失败/loading可恢复 | T-18 | standard | medium | yes | single-agent | AC-019 | W-legacy / G-legacy | ready |
+| T-20 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/20-strict-contract-target.md</Path> | 受影响边界类型检查通过，nullable与非法transport样本有明确处理 | T-12, T-14, T-19 | deep | medium | yes | single-agent | AC-020 | W-legacy / G-legacy | ready |
+| T-21 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/21-accessible-public-apps.md</Path> | 只用键盘可完成公开流程，焦点可见且错误能被读屏发现 | T-13 | standard | medium | yes | single-agent | AC-021 | W-legacy / G-legacy | ready |
+| T-22 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/22-atomic-notify-result.md</Path> | 任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致 | — | deep | high | yes | single-agent | AC-022 | W-legacy / G-legacy | ready |
+| T-23 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/23-durable-provider-callback.md</Path> | 回滚后相同事件可重试成功 | T-22 | deep | high | yes | single-agent | AC-023 | W-legacy / G-legacy | ready |
+| T-24 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/24-recoverable-third-resilience.md</Path> | 崩溃后permit在规定上限内恢复，不依赖人工删key | — | deep | high | yes | single-agent | AC-024 | W-legacy / G-legacy | ready |
+| T-25 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/25-acyclic-department-moves.md</Path> | 自父/后代父/并发互移均不能形成环 | — | deep | high | yes | single-agent | AC-025 | W-legacy / G-legacy | ready |
+| T-26 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/26-cut-over-crud-contracts.md</Path> | 每个候选有迁移或保留理由，不遗漏调用者 | T-02, T-16, T-25 | deep | high | yes | single-agent | AC-026 | W-legacy / G-legacy | ready |
+| T-27 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path> | 保存/删除路径不再有虚假校验TODO | T-26 | standard | medium | yes | single-agent | AC-027 | W-legacy / G-legacy | ready |
+| T-28 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/28-bounded-notify-wake.md</Path> | 慢provider不阻塞业务提交线程 | T-22 | deep | high | yes | single-agent | AC-028 | W-legacy / G-legacy | ready |
+| T-29 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/29-converge-current-documentation.md</Path> | 每个删除文件有owner、内容迁移落点和无丢失硬约束证据 | T-01 | deep | medium | yes | single-agent | AC-029 | W-legacy / G-legacy | ready |
+| T-30 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md</Path> | 全部已接受AC均有实际命令/退出码/环境/源码checkpoint | T-01, T-02, T-03, T-04, T-05, T-06, T-07, T-08, T-09, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-31, T-32, T-33, T-34, T-35, T-36, T-37, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-48, T-49, T-50 | deep | high | yes | single-agent | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-019, AC-020, AC-021, AC-022, AC-023, AC-024, AC-025, AC-026, AC-027, AC-028, AC-029, AC-030, AC-031, AC-032, AC-033, AC-034, AC-035, AC-036, AC-037, AC-038, AC-039, AC-040, AC-041, AC-042, AC-043, AC-044, AC-045, AC-046, AC-047, AC-048, AC-049, AC-050 | W-final | ready |
+| T-31 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/31-enterprise-transfer-queued-contract.md</Path> | 真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交 | T-22 | deep | critical | yes | single-agent | AC-031 | W-legacy / G-legacy | ready |
+| T-32 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/32-remove-tracked-local-secrets.md</Path> | 新 clone 的当前检出与发布产物不含真实凭据；历史对象仍可能保留披露值，必须另外轮换。部署者从未跟踪的本地文件或环境变量注入。公开模板可启动到明确的缺配置错误，日志不回显 secret。 | — | deep | high | yes | single-agent | AC-032 | W-security | ready |
+| T-33 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/33-safe-cors-defaults.md</Path> | 默认同源访问正常；跨域仅接受显式受信 Origin。生产带凭证通配配置拒绝启动；本地开发复用 Vite 同源代理。 | — | deep | high | yes | single-agent | AC-033 | W-security | ready |
+| T-34 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/34-inbox-without-realtime.md</Path> | 有效会话始终可经 REST 读取；开关只控制实时连接。盒子展示单份摘要与明确加载/失败/空状态，切身份不串数据。 | — | standard | medium | yes | single-agent | AC-034 | W-visible | ready |
+| T-35 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/35-sms-cross-layer-snapshot.md</Path> | 合法短信由真实 runtime→dispatcher→适配器发送一次；逻辑快照可解释且不泄露验证码，本地可判定校验失败不等回执。 | — | deep | high | yes | single-agent | AC-035 | W-notify | ready |
+| T-36 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/36-atomic-in-app-delivery.md</Path> | 同 intent 的不同收件人并发投递均可读取且关系唯一；本地消息、关系与投递结果原子提交，实时事件仅提交后发送。 | — | deep | high | yes | single-agent | AC-036 | W-notify | ready |
+| T-37 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/37-retryable-provider-idempotency.md</Path> | Outbox 独占重试次数与节奏；明确未发送的可重试失败允许新一次物理发送，ACCEPTED/DELIVERED/UNKNOWN 保留防重。 | — | deep | high | yes | single-agent | AC-037 | W-notify | ready |
+| T-38 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/38-precise-notification-retry.md</Path> | URL 唯一定位 intent；指定 delivery 只重试其所属一项，无可重试任务返回真实状态及零计数；外部 UNKNOWN 明确拒绝自动重发。 | T-36, T-37 | deep | high | yes | single-agent | AC-038 | W-notify | ready |
+| T-39 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/39-enforce-notification-deadlines.md</Path> | 统一截止时刻驱动验证码 TTL 与 command；提交/重试拒绝到期，Worker 发请求前检查，过期任务结束且 Provider 调用为零。 | T-38 | deep | high | yes | single-agent | AC-039 | W-notify | ready |
+| T-40 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/40-retract-notice-and-read-snapshot.md</Path> | 撤回只停止该发布版本未开始发送的任务，保留已送达内容与审计；本人从收件箱读快照，无需公告管理权限。 | T-38, T-39 | deep | high | yes | single-agent | AC-040 | W-journey | ready |
+| T-41 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/41-paged-personal-inbox.md</Path> | 完整收件箱使用项目 PageQuery/PageResult 分页，稳定 create_time/message_id 排序；本人第501条可取，顶部只取最近摘要。全部已读仍作用本人全部消息。 | T-34 | deep | high | yes | single-agent | AC-041 | W-journey | ready |
+| T-42 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path> | 正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。 | T-35, T-37, T-44 | deep | high | yes | single-agent | AC-042 | W-close | ready |
+| T-43 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/43-measure-notify-fanout.md</Path> | 代表性规模有可重复 SQL/时延/锁等待基线；保持现有总量上限与持久聚合语义，优先减少插入往返，测量不足不引入新计数状态机。 | T-36, T-38, T-39 | standard | medium | yes | single-agent | AC-043 | W-close | ready |
+| T-44 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/44-optional-oss-diagnostics.md</Path> | 业务仅校验当前对象/配置/权限/预期访问类型，远端操作按实际结果反馈；管理员诊断独立，坏的可选存储不阻断核心就绪。 | — | deep | high | yes | single-agent | AC-044 | W-oss | ready |
+| T-45 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/45-bounded-oss-diagnostic-facts.md</Path> | 诊断仅报告观察事实与范围：读403为未知，单对象匿名读取只证明该对象，PRIVATE未知不能宣称全桶安全。 | T-44 | deep | high | yes | single-agent | AC-045 | W-oss | ready |
+| T-46 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/46-serialize-oss-restore-cleanup.md</Path> | 所有切指针/删来源入口共用对象→工单锁序。恢复先成功则清理不得删来源；清理已获得合法执行权则恢复明确拒绝。 | — | deep | high | yes | single-agent | AC-046 | W-oss | ready |
+| T-47 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/47-latest-oss-query-wins.md</Path> | A慢B快最终行、total、preview、loading、error均属于B；卸载或旧失败不污染当前页面。 | — | standard | medium | yes | single-agent | AC-047 | W-visible | ready |
+| T-48 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/48-simple-dev-start-and-explicit-repair.md</Path> | 一个脚本提供显式start/build/doctor/repair子命令（菜单仅薄包装），普通再次启动不深度修复且尊重Spring/Vite环境优先级。 | T-32 | standard | medium | yes | single-agent | AC-048 | W-close | ready |
+| T-49 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/49-single-source-storage-config.md</Path> | 默认存储来自DB，历史对象按service；静态上传策略有安全代码默认值，只有部署差异/必要额度可覆盖，SINGLE无需MULTIPART参数。 | T-44, T-48 | standard | medium | yes | single-agent | AC-049 | W-close | ready |
+| T-50 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/50-reject-unimplemented-notify-modes.md</Path> | 统一路径只承诺ALL/ASYNC/default priority=0；非支持值在写意图前明确拒绝，所有仓内生产调用同批迁移，不增加高级编排引擎。 | T-39 | deep | high | yes | single-agent | AC-050 | W-notify | ready |
 
 ## 3. 依赖 DAG
 
-blocked_by权威见各Ticket，上表为完整边表。以下为串行调度顺序，不额外制造代码依赖：
+blocked_by只表达行为前提，不用人为链冒充串行理由。旧票原依赖保持，T-30依赖其他49票；其关闭程序在G-legacy中避免“为复核旧票重复实现”。新票不依赖T-30，故无循环。
 
-T-01 → T-02 → T-03 → T-04 → T-05 → T-06 → T-07 → T-09 → T-10 → T-08 → T-11 → T-12 → T-13 → T-18 → T-14 → T-15 → T-16 → T-17 → T-19 → T-20 → T-21 → T-22 → T-23 → T-28 → T-31 → T-24 → T-25 → T-26 → T-27 → T-29 → T-30
+```text
+T-32 → T-48 ──────────────┐
+T-44 → T-45              ├→ T-49
+T-44 ─────────────┐       │
+T-35 ─────────────┼→ T-42 │
+T-37 ─────────────┘       │
+T-36 + T-37 → T-38 → T-39 → T-50
+T-38 + T-39 → T-40
+T-34 → T-41
+T-36 + T-38 + T-39 → T-43
+T-33 / T-46 / T-47 为独立行为根
+全部旧合同关闭＋T-32—50 → T-30 → G-complete → 单独授权A归档
+```
 
-T-15不依赖T-14；T-31只依赖T-22，不要求callback receipt先完成。T-30汇合其余30票。T-03阻塞闭包为T-03/T-30；T-23为T-23/T-30，其他票局部可规划，但全局执行Gate仍关闭。按边数最长链为T-06→T-07→T-12→T-13→T-21→T-30（不是工时估计）；current策略使全部执行串行。
+T-49同时依赖T-44与T-48。完整真实依赖从frontmatter重建，图是摘要。
 
 ## 4. 合同覆盖矩阵
 
-| Contract ID | Ticket | 验证接缝 | 状态 | Evidence（未来） |
+| Contract ID | 覆盖 Ticket | 验证接缝 | 状态 | 说明 |
 |---|---|---|---|---|
-| AC-001 | T-01 | 本票第8节正常/失败/回归矩阵 | implemented；本地检查通过，commit/result按用户指令暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-01.md</Path> |
-| AC-002 | T-02 | 本票第8节正常/失败/回归矩阵 | implemented；33项定向/真实MySQL通过，完整选集有既有门禁失败 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path> |
-| AC-003 | T-03 | 本票第8节正常/失败/回归矩阵 | implemented；83 common/11真实HTTP/默认814与双bundle验证，commit暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-03.md</Path> |
-| AC-004 | T-04 | 本票第8节正常/失败/回归矩阵 | implemented；56项Maven及真实Nginx矩阵通过，提交暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-04.md</Path> |
-| AC-005 | T-05 | 本票第8节正常/失败/回归矩阵 | implemented；真实Redis租约竞态与15项定向通过，提交暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-05.md</Path> |
-| AC-006 | T-06 | 本票第8节正常/失败/回归矩阵 | implemented；81项模块、31项定向及2个真实Chrome场景通过，提交暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-06.md</Path> |
-| AC-007 | T-07 | 本票第8节正常/失败/回归矩阵 | implemented；83项模块、12个浏览器旅程通过，Admin8条旧类型诊断归T-20 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-07.md</Path> |
-| AC-008 | T-08 | 本票第8节正常/失败/回归矩阵 | 真实授权URL出口已验证；未提交review | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-08.md</Path> |
-| AC-009 | T-09 | 本票第8节正常/失败/回归矩阵 | implemented；三App双模式、默认Maven、full/core及真实服务通过；提交暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-09.md</Path> |
-| AC-010 | T-10 | 本票第8节正常/失败/回归矩阵 | 本地验证通过；未提交/未Done | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-10.md</Path> |
-| AC-011 | T-11 | 本票第8节正常/失败/回归矩阵 | local-review；见T-11实际验证，commit/result暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-11.md</Path> |
-| AC-012 | T-12 | 本票第8节正常/失败/回归矩阵 | local-review；20生命周期/51默认通过，1独立Nacos skip；commit暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12.md</Path> |
-| AC-013 | T-13 | 本票第8节正常/失败/回归矩阵 | implemented；547前端/10注册/20会话/6HTTPS/12SSO与2后端通过；未提交review | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-13.md</Path> |
-| AC-014 | T-14 | 本票第8节正常/失败/回归矩阵 | covered；本地验证通过，未提交 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path> |
-| AC-015 | T-15 | 本票第8节正常/失败/回归矩阵 | implemented；239 Profile/679消费者通过，31环境skip；提交暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-15.md</Path> |
-| AC-016 | T-16 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16.md</Path> |
-| AC-017 | T-17 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-17.md</Path> |
-| AC-018 | T-18 | 本票第8节正常/失败/回归矩阵 | 本地验证通过；未提交，见Evidence边界 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-18.md</Path> |
-| AC-019 | T-19 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-19.md</Path> |
-| AC-020 | T-20 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path> |
-| AC-021 | T-21 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21.md</Path> |
-| AC-022 | T-22 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-22.md</Path> |
-| AC-023 | T-23 | 本票第8节正常/失败/回归矩阵 | 本地验证通过；提交暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-23.md</Path> |
-| AC-024 | T-24 | 本票第8节正常/失败/回归矩阵 | 本地验证通过；未提交 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-24.md</Path> |
-| AC-025 | T-25 | 本票第8节正常/失败/回归矩阵 | local-review；14真实MySQL/690默认通过、只读审计及门禁通过；提交暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-25.md</Path> |
-| AC-026 | T-26 | 本票第8节正常/失败/回归矩阵 | 本地实现与验证通过；未提交 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-26.md</Path> |
-| AC-027 | T-27 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path> |
-| AC-028 | T-28 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-28.md</Path> |
-| AC-029 | T-29 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-29.md</Path> |
-| AC-030 | T-30 | 本票第8节正常/失败/回归矩阵 | 本地review；T-30实际覆盖，正式Done出口暂缓 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30.md</Path> |
-| AC-031 | T-31 | 本票第8节正常/失败/回归矩阵 | 本地验证通过；未提交 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-31.md</Path> |
+| AC-001 | T-01, T-30 | not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-002 | T-02, T-30 | required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-003 | T-03, T-30 | required: 通过真实HTTP发送定长/chunked边界请求、伪签名大正文及正常签名正文 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-004 | T-04, T-30 | required: 隔离单/双Nginx链发IPv4/IPv6和伪造XFF请求，比较白名单、限流、审计来源 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-005 | T-05, T-30 | required: 真实Redis以屏障复现A过期/B接管/A失败/C被拒及正常失败重试 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-006 | T-06, T-30 | required: HTTPS隔离SSO验证Cookie、CORS、PKCE、过期与单次兑换；显式dev HTTP例外 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-007 | T-07, T-30 | required: 专用SSO Playwright跑/admin与/home base、复杂state、过期与重新登录 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-008 | T-08, T-30 | required: 本地三Origin HTTPS部署候选，登录、刷新、过期恢复与health可用 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-009 | T-09, T-30 | not-required: 构建产物扫描与脚本负向夹具覆盖；线上组合由T-08/T-30验收 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-010 | T-10, T-30 | required: 隔离文件系统完整stage、缺件/中断/混源注入、固定版本消费者与容器重建恢复 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-011 | T-11, T-30 | required: 两App登录注册/下载/错误回归及生产bundle密钥/ECB扫描 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-012 | T-12, T-30 | required: 离线/超时logout、并发401、空角色恢复和切Client重登 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-013 | T-13, T-30 | required: 禁用注册直接访问、验证码错误后刷新重试、慢旧响应及键盘提交 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-014 | T-14, T-30 | required: 新个人身份证双面、企业条件材料经真实MySQL/OSS提交，刷新/失败/越权覆盖 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-015 | T-15, T-30 | not-required: 方法级迁移表、全Profile/消费者编译和原行为测试覆盖，无独立新交互 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-016 | T-16, T-30 | required: 真引擎授权矩阵及快速A/B切换、B失败、确认期间切任务、重复办理 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-017 | T-17, T-30 | required: 真实iframe发合法close及外部window伪造消息，刷新卸载不残留 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-018 | T-18, T-30 | required: 真实上传后URL失败、导入网络/业务/401/取消、重试与资源回收 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-019 | T-19, T-30 | not-required: 受控Promise组件测试覆盖乱序和取消，既有App回归由T-30执行 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-020 | T-20, T-30 | not-required: 受影响包诊断、typecheck和边界单测直接覆盖；相关业务E2E属于原票 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-021 | T-21, T-30 | required: 320/768/1440、200%缩放、键盘/读屏语义和渲染对比检查 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-022 | T-22, T-30 | required: 真实MySQL/Redis双worker、过期/reclaim、Attempt失败与finish冲突注入 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-023 | T-23, T-30 | required: 两实例重启/并发重复/跨provider同eventId/提交失败/早到回调；真实签名适配 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-024 | T-24, T-30 | required: 隔离Redis kill进程、嵌套申请失败、降低并发在途收束、rate窗口更新 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-025 | T-25, T-30 | required: 真MySQL并发同树/跨根移动及注入后代更新失败，树不变量成立 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-026 | T-26, T-30 | required: 各受影响资源代表读/写/批量删除与越权请求，旧CRUD方法拒绝、生成合同一致 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-027 | T-27, T-30 | required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-028 | T-28, T-30 | required: 慢provider下提交耗时、Redis失败/丢wake后poll及双worker fence | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-029 | T-29, T-30 | not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-030 | T-30, T-30 | required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-031 | T-31, T-30 | required: 真Profile→Notify QUEUED、worker受理→确认及DB/Redis部分失败、重复确认/错用户/绑定变更 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-032 | T-32, T-30 | Git 跟踪清单、合成配置加载、日志脱敏；实际轮换是 G-security-external 的外部动作 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-033 | T-33, T-30 | 真实 Servlet/CorsFilter 测试与 Spring profile 绑定 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-034 | T-34, T-30 | 现有 push.test.ts、notice 组件、真实 Admin 登录→打开盒子 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-035 | T-35, T-30 | DispatchNotificationServiceTest、NotifyDispatcherUnitTest、CaptchaNotifyCallerUnitTest 的真实跨层组合 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-036 | T-36, T-30 | 扩展 NotifyAtomicResultIntegrationTest；真实 DSTransactional 代理、MySQL 双连接、提交故障与 AFTER_COMMIT | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-037 | T-37, T-30 | NotifyIdempotencyDispatcherUnitTest、RedisNotifyIdempotencyStoreIntegrationTest、真实 runtime/Dispatcher 组合 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-038 | T-38, T-30 | HTTP ID 冲突、真实 DB requeue 并发、API/领域合同测试 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-039 | T-39, T-30 | 可控时钟 runtime/worker、CaptchaNotifyCallerUnitTest、真实 DB 过期任务终结 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-040 | T-40, T-30 | 真实发布→撤回→Worker→inbox；普通用户浏览器详情与越权 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-041 | T-41, T-30 | 真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-042 | T-42, T-30 | DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-043 | T-43, T-30 | 真实 MySQL代表规模、SQL计数、现有原子结果/fence回归 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-044 | T-44, T-30 | OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-045 | T-45, T-30 | OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-046 | T-46, T-30 | OssStorageMigrationIntegrationTest：真实MySQL两连接＋阻塞替身＋MinIO对象存在验收 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-047 | T-47, T-30 | OssPage受控Promise组件测试，已有presentation.test.ts回归 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-048 | T-48, T-30 | shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-049 | T-49, T-30 | OssUploadPropertiesUnitTest、配置绑定测试、默认存储切换真实MinIO | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-050 | T-50, T-30 | 公共入口负向合同、每类生产调用方、历史WAIT样本终结 | covered | 规划覆盖；当前not-run，不代表通过 |
 
 ## 5. 并行与路径所有权
 
-当前只有single-agent，最大实际并发1、子代理0。各票声明所有与其他票相交的shared_paths及唯一owner；由同一Lead在当前票轮次内写入，下一票回读前一结果。没有并行消费者，不为顺序互斥新增虚假blocked_by。目录级写集仅覆盖本票必需修改；不能借宽路径重写模块。
+沿用已有单人串行、禁止子代理与新worktree决定。current/direct-parent，Lead是唯一项目writer及SpecDev/Evidence/父分支owner。所有票共享workspace:current-exclusive；虽然图有独立根，Wave不授权并行。
 
-共享热点包括common-web/json、SSO、Profile、Notify、全局DDL、App路由、前端manifest/lock/OpenAPI、release与测试。精确交集由各票frontmatter和规划检查证据保存。所有票声明workspace:current-exclusive语义资源；跨票改公共合同须同步消费者与验证，不能以不同文件名声称无冲突。
+| 共享资源 | 涉及票 | 串行处理 |
+|---|---|---|
+| runtime/result/DAO/Outbox、Notify API | T-35—40/42/43/50及旧22/23/28/31 | 按Goal队列独占；每次先回读上一commit与新合同 |
+| inbox/notice UI与transport/OpenAPI | T-34/38/40/41/50 | 先轻量可见性，分页后再详情组合；生成物由当前合同票正式工具更新 |
+| OSS生命周期/路由/迁移/配置 | T-44/45/46/42/49，旧14/18 | T-44先解耦；T-46共锁；附件与配置消费已集成接口 |
+| 公共YAML/local示例/脚本 | T-32/33/44/48/49 | 同一Lead逐票写，保留前票安全默认；不得互相覆盖 |
+| 六SQL基座及发布合同 | T-42/旧9/14/23/30 | T-42本次结构owner；其他修改先变更owner；T-30只验收及已登记测试修复 |
+| SSO/认证/跨change共用配置 | 本change与OIDC change | 本轮相邻只读；执行时检查owner/未闭合动作，重叠暂停，不抢占 |
 
 ## 6. Gate、Wave 与集成点
 
-<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>拥有G-plan/G-authorize/G-ticket/G-integration/G-release；Map不复制Gate状态。每票一个串行slot，阶段分组只服务阅读，不允许并发。
+正式编排归<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；推荐串行队列：T-32 → T-33 → T-34 → T-47 → T-35 → T-36 → T-37 → T-38 → T-39 → T-50 → T-41 → T-40 → T-44 → T-45 → T-46 → T-42 → T-43 → T-48 → T-49 → T-30。历史票根据受影响闭包在相关新票前后复验，先关闭可证明的独立项，最终T-30汇合。
 
 ## 7. 横切契约与风险
 
-基座直接切换，无双路由、旧桥、存量兼容等待；所有仓内调用与生成物同批更新。日志副本不得改变签名原文。Provider I/O不进入数据库长事务。SQL编辑源仅六文件基座，新增DDL归10、DML归50。产物指针原子性不等于多容器运行时原子性。
+凭据轮换/真实数据修复/部署与归档是独立动作Gate；未授权不执行。旧共同result不是当前通过；不因本轮只改文档而更改旧Evidence。当前附件生产实现缺失，OSS硬规则替代待审；两个条件须关闭才可Ready。
 
 ## 8. 同步规则
 
-状态/依赖/路径/绑定由Ticket拥有；Map和plan-data.json仅投影。变化递增plan_revision，复核依赖闭包和共享路径。Goal拥有调度/授权，不覆盖行为合同。永久ADR/context本轮只读。
+Ticket frontmatter状态/依赖/路径有变即更新Map/plan-data投影，plan_revision递增。摘要漂移先读真实入口diff，不覆盖历史Skill执行记录。范围变化回到ADR/Spec；不在Goal暗改行为。所有source/evidence记录精确HEAD/命令/退出码/测试数/skip及未验证。
 
 ## 9. 总控与恢复
 
-先回读Goal、Map、当前Ticket、change状态和最新Evidence。运行ticket-control的--map只读检查；没有ready frontier是当前Gate的正确输出，不应绕过。恢复所需源基线见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/planning-baseline.json</Path>。T/P本轮只完成计划文档，产品票不得Done。下一步先补两项决策证据及核对授权/干净工作区，再进入I-implement；本轮不自动开始。
+从<Path>{roots.workflows}/specdev/P-goal-plan/P-goal-plan.md</Path>进入plan/run/resume/replan/verify。只读控制：
 
-## 2026-09-18 执行授权与门禁准备
+```bash
+node <Path>{roots.workflows}/specdev/common/tools/ticket-control.mjs</Path> --map <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path> --repo .
+```
 
-用户最新 Goal 要求完成全部 31 票，产品可逆修改及本地验证已授权。先恢复 T-01 可信门禁以支持后续决策；这不等于关闭全局 G-plan 或批准提交。T-01 写集增加工程事实三份 references 和发布串行测试入口。其余依赖和验收范围不变，T-03/T-23 待证据关闭；无票标 Done。当前基线与原始命令见 evidence/execution-baseline.json、evidence/T-01-baseline.json。
+当前控制器应返回空frontier，因为Spec未Ready且Goal未授权；这不是计划结构失败。先恢复<Path>{roots.workflows}/specdev/G-grill-with-docs/G-grill-with-docs.md</Path>回答D节点，再按S→T→P发布正式Ready。缺执行授权时P仍保持ready_for_execution=false。
 
-T-01补充写集：ARCH-001事实同步、SpecDev模式路由与专用正负夹具；父级工件/单change Goal各自必需，schema与授权不变。
+取消票不满足依赖：必须按Goal“历史票关闭后的依赖重算”记录合同事实、更新下游边与责任票后重算；当前50票均Ready，无在途writer。
 
-Revision 25：T-09接管两页已知编译阻塞的最小修复；登记精确写集，T-20主体与DAG不变，T-09/T-10/T-08/T-30验证闭包增加相关页面类型检查。
-
-Revision 26：T-09接管T-22已登记的两张无owner旧通知表基座收缩前置，最小写集增加10-cde-base-ddl.sql并绑定fullstack/module技能；运行时事务/租约工作仍归T-22，无在线库变化。
-
-Revision27：T-09补齐真实服务缺失的Notify监控验证、当前菜单DSL-004测试和XML执行完整性门禁；精确写集扩展，DAG/owner不变。
-
-Revision28：T-09同步纠正父级fullstack reference的旧Notify XML事实；主Skill摘要与DAG不变，T-29后续回读该修订。
-
-Revision 31：T-10补充release-state.py精确写集与单源码归档/不可变目录/显式stage设计；T-08/T-30验证闭包包含新manifest和消费入口，不创建worktree或产品提交。
-
-Revision 32：T-10登记生成器日志挂载与三份调用方/工程说明精确写集，保持T-08部署闭包及T-30集成责任。
-
-Revision 33：T-10补充verify-admin-bundle显式artifact调用不依赖Git cwd的最小修复；T-09双bundle断言不变，增加非Git目录回归。
-
-Revision 34：T-10本地review，100项发布/16项普通用户/真实容器与JAR证据完成；全部commit/result为空。同步plan-data历史status投影到Ticket权威状态（不改变其他票状态），下一票T-08。
-
-Revision 35：T-08接管已验证共享checkpoint，开始SSO独立Origin配套；登记apps.json及T-10真实状态/校验入口写集，干净源码与不提交约束不变。
-
-Revision 36：T-08补充两处既有集成夹具和工程画像写集/fullstack绑定，保留T-04来源地址与T-07会话回归责任，不改其生产合同。
-
-Revision 37：T-08根据真实Chrome Cookie选择证据落实生产SSO hostname隔离，测试矩阵增加端口不同但hostname相同的拒绝场景。
-
-Revision 38：T-08增加backend Compose和Docker消费入口配置闭环；复用T-06精确Origin/T-04显式CIDR合同，不改公共Java API。
-
-Revision 39：实际validator拒绝doing；修正T-08为schema已有in_progress并同步投影，不改变验证/提交出口。
-
-Revision 40：T-08本地review，116发布合同与三Origin5场景、默认2/回调12场景等通过；9review/20ready/2blocked，0Done；全部commit/result为空，下一票T-11。
-
-Revision 41：T-11开始，实际四份env及两个prod bundle命中共享响应私钥；补登记domain/System消费者、catalog、回归测试和父级事实写集，完整保留机器HMAC/OSS/数据库加密边界。9review/1in_progress/19ready/2blocked/0Done。
-
-Revision 42：真实AuthController的固定/authorize遗漏SSO base，T-08重新in_progress并补四处后端写集/真实clientContext E2E；T-11回ready。8review/1in_progress/20ready/2blocked/0Done。
-
-Revision43：T-08真实context闭环与默认Maven/发布合同通过，恢复review；T-11重读最新hash后in_progress。9review/1in_progress/19ready/2blocked/0Done。
-
-Revision 44：T-11退役API包装器后，补登记common-web审计日志配置/测试及已无消费者的test依赖；保留脱敏与过滤顺序验证，状态不变。
-
-Revision 45：T-11构建发现架构检查器仍强制要求已退役CryptoJS/jsencrypt catalog；登记检查器及测试路径，仅更新依赖事实，终端纯度规则不变。
-
-Revision 46：T-11专用HTTPS用例与默认Playwright入口隔离；同时修正默认入口遗漏排除T-07/T-08专用SSO用例的事实，并更新原注册测试名称（行为断言保留）。登记两处测试入口路径。
-
-Revision 47：T-11本地review，10review/19ready/2blocked/0Done；56路径检查点及完整传输/构建/产物验证见Evidence。下一票T-12，全部commit/result仍为空。
-
-Revision48：T-12开始，最新上游hash核对通过；10review/1in_progress/18ready/2blocked/0Done，未提交。
-
-Revision49：T-12七条红灯确定退出/迟到响应/空角色问题；补登记Home HTTP/UI、Admin退出UI、domain退出语义、Axios请求取消、共享恢复接缝及专用浏览器配置写集。状态不变。
-
-Revision50：T-12最小写集补个人中心SFC名称与permission-routing事实，同步AccountProfile路由名称；保持未提交in_progress。
-
-Revision51：T-12本地review；11review/18ready/2blocked/0Done，提交继续暂停。下一票T-13。
-
-Revision52：T-13开始，Home注册开关/验证码和Admin早启用消费者纳入最小写集；11review/1in_progress/17ready/2blocked/0Done。
-
-Revision53：按原始报告更正T-12最终两App计数为79（71+8），不是84；结果仍全通过，T-13继续in_progress。
-
-Revision54：T-13本地review，13路径checkpoint与验证边界见T-13.md；12review/17ready/2blocked/0Done。后端验证码错误仍是通用失败，恢复合同按实际源码区分本地/远端；下一票T-18，全部提交继续暂缓。
-
-Revision55：T-18接管236个最新上游路径（以input-checkpoint精确计数为准），开始读取真实上传/导入调用链；T-13治理0错误/170串行共享提示。全部提交保持暂停。
-
-Revision56：T-18按真实导入链补Workflow定义页/现有domain的可选signal、User局部导入状态、Web Kit请求测试与旧导入类型写集；DAG/权限不变。
-
-Revision57：T-18实际请求取消需要Axios合成调用者/会话signal，补两条精确共享写集，保留T-12退出取消合同。
-
-Revision58：T-18补OSS对话框真实消费者和MinIO/Chrome专用测试写集；普通默认套件不连接隐式服务，专用测试由owned fixture启动。
-
-Revision59：T-18本地review，24路径checkpoint和全部验证边界见T-18.md；13review/16ready/2blocked/0Done，下一票T-14。新增私有对象地址解析、加强href/图片解码与关闭取消断言；保留失败历史，全部提交继续暂缓。
-
-Revision60：T-14读取255条上游最新hash全部通过，开始实际self材料接口/权限/归属核对；13review/1in_progress/15ready/2blocked/0Done。全部提交暂缓。
-
-Revision61：T-14补材料必填只读合同、Home Client最小功能权限/上传组合、锁文件及真实MySQL/OSS/Chrome验证写集；依据与边界见票据。
-
-Revision62：真实六份基座初始化后的OSS登记触发SQLSyntaxError，源码对照确认SysOss/Mapper所需delete_state列缺失。追加10-cde-base-ddl.sql最小写集，在唯一建表基座增加ACTIVE/PENDING字段，不修改在线库、不创建替代测试schema；T-14/T-30及共享DDL后续票必须复核。六轮失败共同模式与下一次具体改变见evidence/T-14.md。
-
-2026-09-19 revision 63：第九次真实浏览器运行确认缺权限被拒绝，但 GlobalExceptionHandler 的 RuntimeException 兜底抢先返回 500，违反既有 401/403 合同。先登记 SaTokenExceptionHandler 精确写集与 common Skill，再通过显式 advice 优先级修复；不调整权限校验或测试预期。所有提交继续暂缓。
-
-Revision64：T-14本地review，33路径检查点与真实验收边界见T-14.md；14review/15ready/2blocked/0Done。下一票T-15，全部提交继续暂缓；T-03/T-23未知与T-30整体门禁保持原责任。
-
-Revision65：T-15进入，282条上游最新哈希保持一致；14review/1in_progress/14ready/2blocked/0Done。先做逐方法映射再迁移消费者，所有提交继续暂缓。
-
-Revision66：T-15本地review，63路径检查点；15review/14ready/2blocked/0Done。下一票T-16，全部提交继续暂缓，T-03/T-23未知与T-30整体门禁不变。
-
-Revision67：T-16进入，343条上游哈希全部核对；15review/1in_progress/13ready/2blocked/0Done。先按真实代码复现弹窗竞态和引擎授权，不新增taskVersion。全部提交暂缓。
-
-Revision68：为真实流程弹窗并发时序验收登记独立浏览器 harness；新增 frontend/playwright.config.ts 精确写集，将仅由专用 runner 提供环境的新 suite 从默认 suite 排除，不跳过或弱化原 workflow-runtime/definition 测试。后端真实 Warm-Flow/六文件 MySQL/Redis 锁/实际 LiteFlow XML 与读取角色矩阵已通过，尚待浏览器与整体门禁。
-
-Revision69：T-16本地review，10路径checkpoint；597前端、三App生产构建、24浏览器、679后端消费者/32环境skip、1真实Warm-Flow/锁/权限链均验证完成。16review/13ready/2blocked/0Done，下一票T-17；提交仍全部暂缓。
-
-Revision70：T-17开始，352条上游最新哈希全部通过，增加既有 index.test.ts 与新 designer.test.ts 精确测试写集。16review/1in_progress/12ready/2blocked/0Done，全部提交继续暂缓。
-
-Revision71：T-17本地review，5路径检查点；59定向/620前端/三App构建/5真实Chrome和最终类型、边界检查通过。17review/12ready/2blocked/0Done，下一票T-19；全部提交继续暂缓。
-
-Revision72：T-19开始，356条上游最新哈希核对通过。当前User/Role/Menu列表无generation，User编辑与列表共用loading；先做实际组件乱序红灯与局部owner。17review/1in_progress/11ready/2blocked/0Done，全部提交暂缓。
-
-Revision73：T-19本地review，8路径检查点（3死封装删除）；26真实SFC定向/646全前端/三App生产构建/架构与引用检查通过。18review/11ready/2blocked/0Done，下一票T-20；全部提交暂缓。
-
-Revision74：T-20开始，363条上游最新哈希全部核对；先按受影响包记录三个strict覆盖开关的实际诊断，不先全仓硬切。18review/1in_progress/10ready/2blocked/0Done，全部提交暂缓。
-
-Revision75：T-20真实strict诊断支持12个有限包/App目标，登记实际依赖诊断源/对应tsconfig/边界测试与EX-001事实写集。Admin全App236条、System web-domain47条保留本次未全开范围，不扩成全仓重写。纠正T-16/T-19旧计划：platform HttpRequest已有T-12 signal，受影响domain列表/节点方法未暴露取消参数，既有generation修复结论不变。
-
-Revision76：T-20的12个目标strict诊断全部为0；真实边界红灯已复现并修复，补登记项目画像的严格检查范围事实。Axios官方类型探针与实现均可编译，EX-001撤销；仍待完整前端/构建/治理，不提前review。
-
-Revision77：全工作区typecheck定位Admin旧手写axios.d.ts覆盖官方模块，非依赖声明缺失；该自造AxiosResponse无消费者。先登记精确删除写集，再删除覆盖声明以恢复官方类型，不移出检查、不重新添加兼容断言。全部提交仍暂缓。
-
-Revision78：完整lint/typecheck已通过，test定位Admin两处Axios内部mock仍返回旧unwrap对象。登记http.test.ts精确写集后同步为真实AxiosResponse.data包装，保留全部下载消息/Client登录/401/敏感信息断言。真实Axios链与其他App测试已经通过，待最终全前端重验。
-
-Revision79：T-20本地review，38路径checkpoint/351上游非重叠不变；12目标strict、710全前端、三App构建与架构/事实检查全部通过。19review/10ready/2blocked/0Done，下一票T-21；全部提交继续暂缓。
-
-Revision80：T-21开始，389条上游最新哈希全部核对；按当前品牌/共享Login token/SSO动态语义做实际浏览器诊断，保留正确label/nav，不换皮。19review/1in_progress/9ready/2blocked/0Done，全部提交暂缓。
-
-Revision81：T-21有效浏览器基线确认Home主题变量空、320px/200%等效CSS视口下四页溢出；登记HomeShell精确布局写集及独立accessibility config/default suite隔离。SSO已有status/live、Home已有alert/focus保持；不重复实现已完成语义。
-
-Revision82：T-21本地review，9路径checkpoint/384非重叠上游不变；29公开页面专项、710单元、53默认浏览器/1既有Nacos环境skip、12真实SSO/1JUnit、三App构建及最终静态门禁通过。20review/9ready/2blocked/0Done，下一票T-22；全部提交继续暂缓。
-
-Revision83：T-22开始，393条上游最新哈希全部核对。先回读实际dispatch/callback/DAO/worker锁序、事务与lease SQL，真实MySQL/Redis故障复现后最小修复；20review/1in_progress/8ready/2blocked/0Done，全部提交暂缓。
-
-Revision84：T-22本地review检查点，15路径/393上游不变；19真实MySQL/Redis、679默认Maven/47环境skip、6基座合同、前端类型/事实/文档通过。整模块分层仅T-28既有错误待修复，不冒充全绿；21review/8ready/2blocked/0Done，跳过未知未闭合的T-23，下一票T-28；全部提交暂缓。
-
-Revision85：T-28开始，408条上游最新哈希全部核对。既有本地AFTER_COMMIT重复wake同步进入worker、Redis发布无独立等待上限；按既定方案删除本地链、迁移发布器至adapter/event、有界Redis等待与重叠wake合并，不新增executor。追加common Skill绑定；21review/1in_progress/7ready/2blocked/0Done，全部提交暂缓。
-
-Revision86：T-28真实测试发现立即投递时间舍入导致即时wake空领，先登记Runtime精确写集再修复数据库时间精度；新测试清理app_id所有记录，解除对T-22回归的污染。全部提交暂缓。
-
-Revision87：T-28本地review，8路径，683默认通过/48环境skip、21真实MySQL/Redis零skip、7静态命令全绿；T-22分层补验关闭，全部required Skill passed。22review/7ready/2blocked/0Done，下一票T-31；全部提交暂缓。
-
-Revision88：治理校验发现T-28 common Skill绑定未投影至Map最低路由矩阵；补齐投影，保留rev87失败日志，产品与检查点未变。22review/7ready/2blocked/0Done，全部提交暂缓。
-
-Revision89：T-31开始，414条上游最新哈希全部核对；已确认企业send把真实QUEUED误判失败，先记录服务端notificationId关联与确认状态核验设计；22review/1in_progress/6ready/2blocked/0Done，全部提交暂缓。
-
-Revision90：补T-31复用Redis challenge CAS/TTL的common Skill绑定及Map投影；不新建客户端或基础设施。首轮完整Maven736项中688通过/48环境skip/0失败，required跨模块真实矩阵仍待执行。全部提交暂缓。
-
-Revision91：T-31真实MySQL/Redis矩阵13项零skip通过、资源恢复；补档案中心最小转移面板及精确浏览器配置写集，前端验收进行中。全部提交暂缓。
-
-Revision92：T-31新增前端5场景已通过；发现OpenAPI模式及父Skill暂态描述漂移，登记精确事实修复与正式类型重建。全部提交暂缓。
-
-Revision93：T-31 NotificationCommand模式已用实际Java schema与正式生成器更新；transfer资源补generated transport映射及api-contracts工作区依赖，版本不变。全部提交暂缓。
-
-Revision99：T-25本地review。实际父边查根、稳定根锁与锁后重验，insert/update/delete共用DSTransactional；后代原子更新与提交后缓存失效。14真实MySQL零skip、690默认消费者通过/81环境skip、5静态门禁通过；初始化10部门只读审计0异常、异常夹具dry-run通过。4路径checkpoint、462上游不变；25review/4ready/2blocked/0Done，下一票T-26，全部提交暂缓。
-
-Revision100：T-26开始，466条最新上游哈希全部一致。先重新枚举所有旧CRUD方法、只读POST和GET副作用，按资源逐项固定无冲突路由/参数/权限/Log/调用者；Auth解绑已在原70候选内但漏于写集，登记AuthController精确写集及wta-admin集成测试目录。25review/1in_progress/3ready/2blocked/0Done，全部提交暂缓。
-
-Revision101：T-26确认70旧方法/27文件全部为第一方变更入口。无子路径PUT仅在与新增POST冲突时迁移为/update，其余保持原路径只换POST；2个账户解锁GET改POST，下一节点查询改GET并以JSON query保持嵌套变量类型。额外GET副作用与只读POST单列owner和理由，不宣称仅70替换即全仓合规。补LogAspect精确写集：新增上传审计会经operUrl泄漏path中的令牌，使用服务端路由模板而非原始URI，未匹配时固定占位；添加common/module Skill绑定。
-
-Revision102：T-26已迁移70旧方法和20 GET副作用，下一节点改GET JSON query。6项编译后真实Spring MVC/操作日志测试零skip；4个domain定向测试通过。314实际MVC映射用于核对89项已收录OpenAPI变更，2项Easy-ES因原快照关闭条件未收录、单独编译映射验证；SnailAI 1.1.1三项供应商PUT/DELETE经锁定jar javap核实保留，不伪造仓内协议。正式fetch/generate/check通过，415路径442schemas；provenance明确baseline+未提交工作树编译映射，不冒充完整live捕获。登记Workflow两份父Skill引用精确写集修正方法事实；required HTTP/全量验证仍待执行。
-
-Revision103：T-26本地review。70旧方法、20 GET副作用和下一节点GET迁移完成；91实际HTTP方法与67权限拒绝、五资源真实HTTP/MySQL、Warm-Flow及MinIO10浏览器通过。默认Maven695通过/82环境skip，前端720、三App、full/core打包、7静态与正式OpenAPI通过；默认浏览器53通过/1个独立Nacos条件skip。OpenAPI明确基线+编译MVC映射来源和供应商边界。70路径checkpoint、445上游非重叠不变/21重叠登记，累计515；26review/3ready/2blocked/0Done，全部提交暂缓，下一票T-27。
-
-Revision104：T-27开始，515条上游最新哈希均一致。TestTree保存/删除校验确为TODO；父0为根，无名称唯一约束。按实际父边定位根并排序加锁，锁后current read重验父链/权限，结构不变量不能被isValid=false跳过；批删有子节点整批拒绝。同步classic树模板的无ancestors分支与事务/删除校验，并实际渲染编译/负向测试；保留Demo bundle，不扩展普通表领域规则。26review/1in_progress/2ready/2blocked/0Done，全部提交暂缓。
-
-Revision105：T-27真实MySQL红灯3/3失败、零skip，已复现孤儿插入、后代成环和有子节点删除。源码test_tree仅PRIMARY，无parent_id索引；为直接子节点current-read/行锁避免全表扫描，登记六文件基座10-cde-base-ddl.sql精确写集，仅新增test_tree(parent_id)索引，不建表、不新增迁移脚本、不操作现有环境。
-
-Revision106：T-27本地review。15真实MySQL、6真实HTTP、21实际模板渲染/编译/MySQL场景全部零skip；695默认后端通过/97环境skip、4 Demo前端、full/core打包及清单、6静态命令通过。15路径checkpoint、513上游非重叠不变/2重叠登记，累计528。27review/2ready/2blocked/0Done；全部提交继续暂缓，下一票T-29。
-
-Revision107：T-29开始，528条最新上游哈希全部核对。逐份复核41 generic与8 special手册的当前全文/SHA；仅在硬约束与导航承接、引用迁移后清理，保留许可证/历史/永久知识。27review/1in_progress/1ready/2blocked/0Done；全部提交暂缓。
-
-Revision108：T-29本地review。4父导航先承接规则，37重复手册逐文件复核后删除，8特殊手册/28硬约束保留；15当前文档事实/cwd收敛。134链接、49模块/测试根、855保护哈希、八条本地检查和116发布合同零skip通过；62路径checkpoint（37删除）、523非重叠上游不变/5重叠，累计585。28review/1ready/2blocked/0Done；全部提交暂缓，下一步T-30可逆准备，未知责任票仍阻塞。
-
-Revision109：T-29补修先登记两条写集：wta-module-guide入口同步最近有效AGENTS继承与模块地图；review-and-delivery修正已不存在plan/update的来源，DELIVERY-001 MUST正文不变。已回读父Skill与真实清理结果，随后显式更新受影响票Skill摘要绑定；不重写历史证据。27review/1in_progress/1ready/2blocked/0Done；全部提交暂缓。
-
-Revision110：T-29父级文档补修review。module-guide改用适用父AGENTS/模块地图导航；交付来源去掉缺失plan/update，全部既有硬约束不变。13票Skill绑定经回读更新；144链接、28特殊规则、855保护哈希和facts/fullstack检查通过。最新T-29-checkpoint-v2含64路径、523非重叠不变/5重叠，累计587。28review/1ready/2blocked/0Done；全部提交暂缓。
-
-Revision111：T-30准备回读发现另三处父规范事实漂移，T-29追加精确写集后补修：testing与architecture缺失plan/update来源/验收入口；frontend naming宣称每包都有AGENTS但validation与rich-text实际没有。只修来源和导航事实，全部测试/鉴权/架构MUST保留。T-29 in_progress，其他状态不变；提交暂缓。
-
-Revision112：T-29全部父级补修review，146链接、49模块、28特殊规则、855保护哈希与facts/fullstack/fm检查通过。最新T-29-checkpoint-v3登记67路径（30修改/37删除），522上游非重叠不变/6重叠，累计589。28review/1ready/2blocked/0Done；T-30仅准备可逆验证清单，全部提交暂缓。
-
-Revision113：T-30可逆准备完成，正式整体验收not-run/AC未勾选。589上游路径一致，3549源码路径指纹保存；10份Playwright配置最终枚举163用例（仅list，产品执行0），workflow专用临时配置另列；16核心门禁及真实服务追加矩阵已保存。17源文件刷新T-03/T-23事实，缺业务/供应商依据仍阻塞。28review/1ready/2blocked/0Done；无暂存/提交/推送/部署。
-
-Revision114：T-29实际运行旧手册检查器exit 1，确认其一manifest一手册/七标题模板与已批准收敛合同冲突。先登记检查器、对应回归测试及CI候选写集；按最近有效父导航、中文标题、本地链接和禁止嵌套CLAUDE校验，不恢复重复手册。27review/1in_progress/1ready/2blocked/0Done。用户另已明确T-03无需样本或目标预算，授权选通用初值；拟用JSON/机器各2MiB可配置，收尾本票后修订责任合同实施。全部提交暂缓。
-
-Revision115：手册检查器8回归通过，实际仓库扫描发现Third两份既有英文手册不满足原有中文索引要求。先追加两条精确写集，仅补中文标题，原有依赖/权限/HTTP硬边界正文不变；其余目录已由50/35 manifest正确继承12/33手册。
-
-Revision116：T-29检查器补修完成review。85 manifest全部找到最近有效导读，8新增+42既有检查器回归零skip、116发布合同零skip、146链接/49模块/28独有硬规则/855保护哈希通过。最新T-29-checkpoint-v4登记72路径，521上游非重叠不变/7重叠，累计593；T-30旧589路径准备快照已过时须后续更新。用户已授权T-03通用初值与T-23常见供应商预置，接下来串行更新责任票合同并实现；全部提交暂缓。
-
-Revision117：T-03开始。用户授权无需样本/目标容量，JSON/机器默认各2MiB且独立可配置，日志前缀独立；原预算等待关闭。追加admin真实HTTP/现有OpenAPI测试与backend配置说明精确写集，593上游哈希已核对。机器原始验签先于XSS改写，公共缓存保持只读、不得暴露可变数组；413不可吞、普通上传/SSE不缓存。T-23用户已授权常见供应商预置，下一票由官方协议与实际SDK自主取证，不再等待用户原问题。28review/1in_progress/1ready/1blocked（T-23协议决策待研究）/0Done；全部提交暂缓。
-
-Revision118：T-03构造器调用扫描确认两份admin真实HTTP夹具直接构造Repeatable/SysLog过滤器；先登记精确写集，以便同步显式请求预算参数，不保留旧构造器兼容桥。原有canary/HTTPS测试语义不变。
-
-Revision129：T-30真实依赖门禁发现T-23新增receipt表未同步受保护初始化器：实际126表/预期125，测试尚未开始即exit1，owned资源已恢复。回到T-23补修，先登记初始化脚本及两份发布合同测试精确写集；T-30暂停为ready，29review/1in_progress/1ready/0Done。保留旧源码88a5a9a的通过与失败证据；修正后重新冻结输入并运行受影响发布/真实服务门禁。全部提交继续暂缓。
-
-Revision130：T-23初始化补修完成review：受保护六文件初始化实际126表，发布117项及真实MySQL/Redis/MinIO八项均零skip通过，资源恢复；仅初始化脚本和两处旧计数断言变化。T-23-checkpoint-v2共50路径，累计649路径；源码1dff1a345e1979d809bb547f3060645d86b4508f3df3aad5fd227de53ab2c504。T-30继续整体验收，30review/1in_progress/0Done；未受影响的前端/后端源树逐文件相同，旧验证证据按明确输入等价关系关联，受影响release/external已重跑。全部提交暂缓。
-
-Revision131：T-30补跑默认环境skip发现5个夹具错误：Admin菜单使用失效裸图标，两个OSS测试从旧标记截取至EOF导致重复建表，Profile以分号直接切SQL破坏坐标字面量且截取后续无关域。在本票既有admin测试写集内登记4测试及1共用SQL执行工具：复用真实基座DDL、限定片段、使用Spring SQL脚本解析，Profile在owned空数据库完整初始化五份业务基座并清理全部所建表；保留所有权限/数据/失败关闭断言，生产SQL不放宽。保留T-30-extra-services-v1的15项/5错误，修复后重跑受影响闭包；30review/1in_progress/0Done，全部提交暂缓。
-
-Revision132：T-30补查全部环境门控/Tag发现9个Profile e2e类未被默认Maven选择；真实MySQL补跑15项，13通过/2失败/零skip。企业申请夹具credit(suffix)拼接任意末位，不满足当前统一社会信用代码校验码合同，save在业务入口即被拒绝。先追加该EnterpriseApplicationMySqlE2ETest.java精确写集，仅修正合成合法身份数据并增加响应code断言，保留发布/重新认证/唯一约束/工作流回滚断言及生产校验。浏览器163项及额外10工作流弹窗已实际通过；30review/1in_progress/0Done，全部提交暂缓。
-
-Revision133：T-30本地整体验收完成review。最终源码bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba，3577源码/654累计owned路径；6测试修复、1上游重叠/648非重叠不变。18核心门禁通过，前端722、浏览器163+工作流10=173；默认后端740通过/117环境skip均有专项零skip闭合，46环境类/264测试源逐类对应，额外非默认选集53通过/1既有教学Disabled占位。最终full/core构建/清单、117发布合同、真实依赖与发布恢复、五分层/facts检查器通过。全部31票review、0Done；仅本地产物可审查，干净提交/正式发布candidate/direct-parent出口因用户全change提交暂缓保持未完成。最终治理结果见T-30-final-governance.json。
-
-Revision134：完成逐票出口复核与本地产物重新验hash，3577源码/654owned路径无漂移，两JAR及三App保留副本一致、HEAD不变且index为空。T-01/T-02/T-04/T-05早期验收勾选尚未承接最终实际证据，已按各项源码/测试报告补齐并注明旧失败由后续票关闭；T-02历史日志处置/凭据轮换属于OUT且无批准，继续明确未执行。31review/0Done；非空implementation/result、direct-parent和干净正式发布候选仍受用户全change不提交约束。没有新产品改动，不重跑已证明输入未变的业务测试。
-
-Revision135 提交结果：43个非空实现提交已形成，覆盖31票。完整实现 result SHA=`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`；3577源码路径经Git归档逐文件核对，与T-30最终输入完全一致，提交父链与包含关系真实通过。票据保留review，正式发布候选/生产配置出口未冒充Done。详细证据为 evidence/commit-delivery.json；推送目标 origin/main。
+Revision138执行：T-32先行；额外写集为backend/pom.xml资源排除、scripts/start-dev.sh显式本地导入和配置绑定测试。后续T-48继续拥有启动职责重构，本票只完成安全消费。用户已激活Goal，run可用。

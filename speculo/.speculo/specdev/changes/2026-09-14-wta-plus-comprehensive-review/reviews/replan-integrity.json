@@ -1,0 +1,375 @@
+{
+  "snapshot_count": 47,
+  "snapshot_checks": [
+    {
+      "path": "cleanup-plan.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "verification.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "goal-plan.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "architecture-review.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "refactoring-plan.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "spec.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "README.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "coverage.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "tickets-map.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "handoff.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "CONTEXT.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "worklog.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ADR.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "LOG.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": ".status.json",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "plan-data.json",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/04-trusted-client-address.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/31-enterprise-transfer-queued-contract.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/18-upload-ownership-lifecycle.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/23-durable-provider-callback.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/30-integrated-upgrade-acceptance.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/22-atomic-notify-result.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/24-recoverable-third-resilience.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/17-trusted-designer-messages.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/13-recoverable-registration.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/21-accessible-public-apps.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/12-session-navigation-lifecycle.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/08-complete-sso-release.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/11-remove-browser-shared-private-key.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/01-restore-trustworthy-gates.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/02-unify-log-redaction.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/14-profile-self-materials.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/20-strict-contract-target.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/15-contract-profile-legacy-bridges.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/28-bounded-notify-wake.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/07-sso-callback-journey.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/06-secure-sso-session.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/26-cut-over-crud-contracts.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/10-atomic-release-provenance.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/16-workflow-task-integrity.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/27-honest-demo-tree-baseline.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/29-converge-current-documentation.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/19-system-page-state-locality.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/03-bound-request-capture.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/09-coherent-build-matrix.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/25-acyclic-department-moves.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    },
+    {
+      "path": "ticket/05-repeat-submit-lease.md",
+      "sha256_match": true,
+      "head_bytes_match": true
+    }
+  ],
+  "old_acceptance_check_retention": [
+    {
+      "id": "T-01",
+      "missing_checks": []
+    },
+    {
+      "id": "T-02",
+      "missing_checks": []
+    },
+    {
+      "id": "T-03",
+      "missing_checks": []
+    },
+    {
+      "id": "T-04",
+      "missing_checks": []
+    },
+    {
+      "id": "T-05",
+      "missing_checks": []
+    },
+    {
+      "id": "T-06",
+      "missing_checks": []
+    },
+    {
+      "id": "T-07",
+      "missing_checks": []
+    },
+    {
+      "id": "T-08",
+      "missing_checks": []
+    },
+    {
+      "id": "T-09",
+      "missing_checks": []
+    },
+    {
+      "id": "T-10",
+      "missing_checks": []
+    },
+    {
+      "id": "T-11",
+      "missing_checks": []
+    },
+    {
+      "id": "T-12",
+      "missing_checks": []
+    },
+    {
+      "id": "T-13",
+      "missing_checks": []
+    },
+    {
+      "id": "T-14",
+      "missing_checks": []
+    },
+    {
+      "id": "T-15",
+      "missing_checks": []
+    },
+    {
+      "id": "T-16",
+      "missing_checks": []
+    },
+    {
+      "id": "T-17",
+      "missing_checks": []
+    },
+    {
+      "id": "T-18",
+      "missing_checks": []
+    },
+    {
+      "id": "T-19",
+      "missing_checks": []
+    },
+    {
+      "id": "T-20",
+      "missing_checks": []
+    },
+    {
+      "id": "T-21",
+      "missing_checks": []
+    },
+    {
+      "id": "T-22",
+      "missing_checks": []
+    },
+    {
+      "id": "T-23",
+      "missing_checks": []
+    },
+    {
+      "id": "T-24",
+      "missing_checks": []
+    },
+    {
+      "id": "T-25",
+      "missing_checks": []
+    },
+    {
+      "id": "T-26",
+      "missing_checks": []
+    },
+    {
+      "id": "T-27",
+      "missing_checks": []
+    },
+    {
+      "id": "T-28",
+      "missing_checks": []
+    },
+    {
+      "id": "T-29",
+      "missing_checks": []
+    },
+    {
+      "id": "T-30",
+      "missing_checks": []
+    },
+    {
+      "id": "T-31",
+      "missing_checks": []
+    }
+  ],
+  "planned_missing_paths": [
+    "backend/wta-admin/src/main/resources/application-local.example.yml"
+  ],
+  "outside_change_mutations": [],
+  "historical_evidence_mutations": [],
+  "original_report_bytes_preserved": true,
+  "ticket_count": 50,
+  "ready_count": 50,
+  "new_ticket_count": 19
+}

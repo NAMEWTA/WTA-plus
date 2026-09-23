@@ -1,0 +1,550 @@
+{
+  "date": "2026-09-23",
+  "head": "1264980c74e594bc594e88561bb292fbe5d968a1",
+  "report_base": "64b4ea70b9be34ff8d3c63027a922cea884a84de",
+  "report_sha256": "a9b28dec89dbcd6c19491b87dedf638f78d1f161d27d0783430ffacdb9f2903a",
+  "sources": [
+    {
+      "id": "S01",
+      "path": "frontend/apps/admin-web/.env.development",
+      "report_sha256": "d022c0decfdb34d8a4ed7e76420f180cdbb3d981bc5f2d9fa8ce8f75192542bb",
+      "current_sha256": "d022c0decfdb34d8a4ed7e76420f180cdbb3d981bc5f2d9fa8ce8f75192542bb",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S02",
+      "path": "frontend/apps/admin-web/.env.production",
+      "report_sha256": "c6e8556e0b518e938feb8c28d4670ded2bf215bbbf202b930d8dec024f8a22b3",
+      "current_sha256": "c6e8556e0b518e938feb8c28d4670ded2bf215bbbf202b930d8dec024f8a22b3",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S03",
+      "path": "frontend/apps/admin-web/src/utils/push.ts",
+      "report_sha256": "6fadd71810c94c6891cd565351956b09ebd1825d4294a228a6b1df619a63fffe",
+      "current_sha256": "6fadd71810c94c6891cd565351956b09ebd1825d4294a228a6b1df619a63fffe",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S04",
+      "path": "frontend/apps/admin-web/src/layout/components/notice/index.vue",
+      "report_sha256": "2173be5e0c4198a8f0c03a723d2677d29e85618c77ee6474e93c6559a8362495",
+      "current_sha256": "2173be5e0c4198a8f0c03a723d2677d29e85618c77ee6474e93c6559a8362495",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S05",
+      "path": "frontend/packages/web-domains/notify/src/InboxPage.vue",
+      "report_sha256": "1d2840666baed0bae431698f2f6db93907596bc3deb8927b9f8ef5f3c893d357",
+      "current_sha256": "1d2840666baed0bae431698f2f6db93907596bc3deb8927b9f8ef5f3c893d357",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S06",
+      "path": "frontend/packages/web-domains/notify/src/NoticePage.vue",
+      "report_sha256": "db2695caf12e2f0a015083ceeb2a23d46127c8265e8b7b210efb6ac400d707e1",
+      "current_sha256": "db2695caf12e2f0a015083ceeb2a23d46127c8265e8b7b210efb6ac400d707e1",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S07",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/admin/NotifyInboxController.java",
+      "report_sha256": "012443fa5ad23df8310ecf9a71873489f16c0beafb095187c18ec719ded4e5b5",
+      "current_sha256": "012443fa5ad23df8310ecf9a71873489f16c0beafb095187c18ec719ded4e5b5",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S08",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyInboxService.java",
+      "report_sha256": "8942824610b0be6adc5d24588b1a3365fb4903b45b94e7d3bfa411233cc74c6e",
+      "current_sha256": "8942824610b0be6adc5d24588b1a3365fb4903b45b94e7d3bfa411233cc74c6e",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S09",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java",
+      "report_sha256": "347389f11018bbc44f80a5746d0d3fff129fc2fc187f954d1c8dc9428b51a46f",
+      "current_sha256": "347389f11018bbc44f80a5746d0d3fff129fc2fc187f954d1c8dc9428b51a46f",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S10",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticeService.java",
+      "report_sha256": "1c7535a6f23b4118e770cefe0e7562bf255e21fe70569f684c5f48cecc6b859a",
+      "current_sha256": "1c7535a6f23b4118e770cefe0e7562bf255e21fe70569f684c5f48cecc6b859a",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S11",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyNoticePublisherService.java",
+      "report_sha256": "31d3514f434bc334e8600fc2bd9b7831638a5f6f3b5eb8c241b3aa3503387418",
+      "current_sha256": "31d3514f434bc334e8600fc2bd9b7831638a5f6f3b5eb8c241b3aa3503387418",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S12",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotifyNoticeUseCase.java",
+      "report_sha256": "1be8a5f877caa5a04f43c46d60c3a3ad3e4d8ecc2d7ade0bede814824fdc29b2",
+      "current_sha256": "1be8a5f877caa5a04f43c46d60c3a3ad3e4d8ecc2d7ade0bede814824fdc29b2",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S13",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotificationApplicationUseCase.java",
+      "report_sha256": "31c8a9bce8a73485fd4f6b0d3e955ea7477a5fc7ffd21e137ce6a53331dad5dc",
+      "current_sha256": "31c8a9bce8a73485fd4f6b0d3e955ea7477a5fc7ffd21e137ce6a53331dad5dc",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S14",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java",
+      "report_sha256": "b7169a0c4125ecd52cfa5d443f5bdff95cdfa99e8080de715f1a813f16168713",
+      "current_sha256": "b7169a0c4125ecd52cfa5d443f5bdff95cdfa99e8080de715f1a813f16168713",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S15",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/DispatchNotificationService.java",
+      "report_sha256": "e6ffdbd42e07ca3806bc854ca55d1a0edaf7b45b944b8a7f041069d895217f95",
+      "current_sha256": "e6ffdbd42e07ca3806bc854ca55d1a0edaf7b45b944b8a7f041069d895217f95",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S16",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/InAppNotificationService.java",
+      "report_sha256": "df70d4919fab5656809d44a5154fd610b261d2b50cf5043e0412676274144aa4",
+      "current_sha256": "df70d4919fab5656809d44a5154fd610b261d2b50cf5043e0412676274144aa4",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S17",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyDispatchResultService.java",
+      "report_sha256": "36d87c1d5ef35dbc13278fbeccbc12cf0a85a04e242f2456dccaa95f677f64ac",
+      "current_sha256": "36d87c1d5ef35dbc13278fbeccbc12cf0a85a04e242f2456dccaa95f677f64ac",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S18",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java",
+      "report_sha256": "108f17bb9061becbe55b9c5f5ac98533c5ba49468b1cb3d972fbf85ba2f6ac0d",
+      "current_sha256": "108f17bb9061becbe55b9c5f5ac98533c5ba49468b1cb3d972fbf85ba2f6ac0d",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S19",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyOutboxClaimService.java",
+      "report_sha256": "a84df3cbc9deae159219b274dddb922b25c05963c1134975a9636e1443b5a45f",
+      "current_sha256": "a84df3cbc9deae159219b274dddb922b25c05963c1134975a9636e1443b5a45f",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S20",
+      "path": "backend/wta-modules/wta-notify/src/main/resources/mapper/notify/NotifyOutboxMapper.xml",
+      "report_sha256": "0991e53f432dd542dbfdc9c164ab1ce484094cde75849dc04bd02e1933e22f42",
+      "current_sha256": "0991e53f432dd542dbfdc9c164ab1ce484094cde75849dc04bd02e1933e22f42",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S21",
+      "path": "backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/core/NotifyDispatcher.java",
+      "report_sha256": "38d885048a6755115415773c1b6639c33feb75365d762c021eecec711148c3f9",
+      "current_sha256": "38d885048a6755115415773c1b6639c33feb75365d762c021eecec711148c3f9",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S22",
+      "path": "backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyTemplateContent.java",
+      "report_sha256": "a8e7895dfdf72844994c6ab7ffae2e38c95d90650d440b11b61d0b3cd7095bfc",
+      "current_sha256": "a8e7895dfdf72844994c6ab7ffae2e38c95d90650d440b11b61d0b3cd7095bfc",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S23",
+      "path": "backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/idempotency/NotifyIdempotencyCoordinator.java",
+      "report_sha256": "2e8d35676cde3973c36930711ebe39dbe703de0357122fc1de07e576f13e3c1c",
+      "current_sha256": "2e8d35676cde3973c36930711ebe39dbe703de0357122fc1de07e576f13e3c1c",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S24",
+      "path": "backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/idempotency/RedisNotifyIdempotencyStore.java",
+      "report_sha256": "11c04822ec8625835d44a395ad606faf7c98a5cfd552fbdbe5831dc6e92d29a9",
+      "current_sha256": "11c04822ec8625835d44a395ad606faf7c98a5cfd552fbdbe5831dc6e92d29a9",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S25",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySendPlanner.java",
+      "report_sha256": "fdc78b043ddbd63538a7ee3d5083be5b7326c9cb66faee5b015d97992e9467e0",
+      "current_sha256": "fdc78b043ddbd63538a7ee3d5083be5b7326c9cb66faee5b015d97992e9467e0",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S26",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java",
+      "report_sha256": "21df8ac445964e770f5909099b79b9a8f8da8c533eb9a51761ed5307eb776f34",
+      "current_sha256": "21df8ac445964e770f5909099b79b9a8f8da8c533eb9a51761ed5307eb776f34",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S27",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/admin/NotificationController.java",
+      "report_sha256": "f2b9f0fff787dc38a2f58db8ed541cc5c41abb7752d8b6133cbe6577be88ea14",
+      "current_sha256": "f2b9f0fff787dc38a2f58db8ed541cc5c41abb7752d8b6133cbe6577be88ea14",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S28",
+      "path": "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationRetryCommand.java",
+      "report_sha256": "fbadfea0d043489e5a8230e0fbc700469e6f6dead7167686bd6829842e09457d",
+      "current_sha256": "fbadfea0d043489e5a8230e0fbc700469e6f6dead7167686bd6829842e09457d",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S29",
+      "path": "backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java",
+      "report_sha256": "c38b492782e6f1c8bd8ef94fe979c876620be5e70986c178768778afe0f101e0",
+      "current_sha256": "c38b492782e6f1c8bd8ef94fe979c876620be5e70986c178768778afe0f101e0",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S30",
+      "path": "backend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java",
+      "report_sha256": "41650145a0bc5692499485f0daca19626408e69e34f35cd750cd799ae18c345b",
+      "current_sha256": "a05baebadb9d518a9a726571eaede1bf60360d2e16fb97137b3a4a5f2965bfa5",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-admin/src/main/java/org/namewta/web/controller/CaptchaController.java"
+    },
+    {
+      "id": "S31",
+      "path": "backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java",
+      "report_sha256": "aa09de652e2f550f6f3207b06d29b33184376e352d60b673e3b456b883c79ebc",
+      "current_sha256": "5e30a2390089230247f9aab20f7c1a83efb9d4a717708a38ec650274c1383739",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java"
+    },
+    {
+      "id": "S32",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/policy/NotificationAggregatePolicy.java",
+      "report_sha256": "52d202fadc845572bd5ef19280124795b20539a499e18609362a35125b7815af",
+      "current_sha256": "52d202fadc845572bd5ef19280124795b20539a499e18609362a35125b7815af",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S33",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysUserServiceImpl.java",
+      "report_sha256": "63f184839c42c0625921463f05a0981c0c84fd0dd9505fe8dfe4b049d9a918cf",
+      "current_sha256": "f94f8305d3ff48283c40698c646b5018da7cb9faaf4e3c1ff11d78ee547d16b2",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysUserServiceImpl.java"
+    },
+    {
+      "id": "S34",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/NotifyConfigService.java",
+      "report_sha256": "83a44f82a37238df0767ae0f460dd2ae26670ab1ee4fda9c4b60ac7e1ded30ac",
+      "current_sha256": "83a44f82a37238df0767ae0f460dd2ae26670ab1ee4fda9c4b60ac7e1ded30ac",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S36",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/controller/anonymous/ProviderCallbackController.java",
+      "report_sha256": "cc71b14a9cc46c35e7ae1766c9d996289c8d841c8060c38f678b1ab806fe0f9a",
+      "current_sha256": "cc71b14a9cc46c35e7ae1766c9d996289c8d841c8060c38f678b1ab806fe0f9a",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S37",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/ProviderCallbackUseCase.java",
+      "report_sha256": "f85b7b4e36090c37afcaf07ade9c556b5eb313feda194ddc05684444adbd170c",
+      "current_sha256": "f85b7b4e36090c37afcaf07ade9c556b5eb313feda194ddc05684444adbd170c",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S38",
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/ProviderCallbackService.java",
+      "report_sha256": "ec27cf5c80dda6d48803db9dafedf49a1da5d25e23df2c6343d15b7475b49be0",
+      "current_sha256": "ec27cf5c80dda6d48803db9dafedf49a1da5d25e23df2c6343d15b7475b49be0",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S40",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssServiceImpl.java",
+      "report_sha256": "e574072c578556952dda7aef2fca4c752788053adcb278d79195d98c77cab69f",
+      "current_sha256": "efdbd1a894852999139d6b7a8d3629696f964ece0f74801656761862d5ed5ad0",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssServiceImpl.java"
+    },
+    {
+      "id": "S41",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/service/OssLifecycleManager.java",
+      "report_sha256": "a8ff12c9aec1a1b0f206eb48d10f1953c07591b0ae2b0cfc2123947ace376fd1",
+      "current_sha256": "a8ff12c9aec1a1b0f206eb48d10f1953c07591b0ae2b0cfc2123947ace376fd1",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S42",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/OssStorageReadinessService.java",
+      "report_sha256": "69b9fe8b69a441c0cb86805f4a23cd0f03b643d6d6510c91067012fe2158be16",
+      "current_sha256": "69b9fe8b69a441c0cb86805f4a23cd0f03b643d6d6510c91067012fe2158be16",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S43",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/OssStorageReadinessRegistry.java",
+      "report_sha256": "7b8f30781d1fcf701ae2b9d23b7e9078864f5823ea1a6839eb403066c7cf0bbf",
+      "current_sha256": "7b8f30781d1fcf701ae2b9d23b7e9078864f5823ea1a6839eb403066c7cf0bbf",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S44",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/OssStorageReadinessHealthIndicator.java",
+      "report_sha256": "564fc16ddb1d061fcec7e62caa70e436fb60bcefb6b917a3d551556bb90b7ed7",
+      "current_sha256": "564fc16ddb1d061fcec7e62caa70e436fb60bcefb6b917a3d551556bb90b7ed7",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S45",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/OssStorageReadinessProperties.java",
+      "report_sha256": "be3c379350661987e1c92d317bd615a173ae505c77921de6b733a9395e7f3cc2",
+      "current_sha256": "be3c379350661987e1c92d317bd615a173ae505c77921de6b733a9395e7f3cc2",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S46",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/runner/SystemApplicationRunner.java",
+      "report_sha256": "74defdab929da14f14ca0ab658c0cbf659d6d9f0fe152c0811936f778b13c8bb",
+      "current_sha256": "3a49203bccb3ec463e263a6dcc48ea08d451acc1fd39ce8ac59761d33a5359a2",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-modules/wta-system/src/main/java/org/namewta/system/runner/SystemApplicationRunner.java"
+    },
+    {
+      "id": "S47",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/upload/OssUploadDiagnostics.java",
+      "report_sha256": "6b97388702696f63edaa932cc9afc700e9e66e2bdd7967121177804244962119",
+      "current_sha256": "6b97388702696f63edaa932cc9afc700e9e66e2bdd7967121177804244962119",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S48",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/upload/OssUploadService.java",
+      "report_sha256": "7ed13587543fdf49f46a2e2a75a4008b6440d045b7e0b77bce74cbe5efa068d4",
+      "current_sha256": "7ed13587543fdf49f46a2e2a75a4008b6440d045b7e0b77bce74cbe5efa068d4",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S49",
+      "path": "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java",
+      "report_sha256": "eb1034c0314d6ca79235917ef3ac51c65a5880a90141e11748bf34b80366e722",
+      "current_sha256": "62017b7a410eeb0d2c9936fafe547c60f575f1e1d4b0f585e08f657e1c556623",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java"
+    },
+    {
+      "id": "S50",
+      "path": "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/DefaultOssClientImpl.java",
+      "report_sha256": "90f40aa4dfde18054c0a9b7d321b0cef3bdea2b58413550e578814dbd14793e6",
+      "current_sha256": "69e8536f9bcaf392fef118d55e8f61a704218d42237fd9f3891a8b766571f3ac",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/DefaultOssClientImpl.java"
+    },
+    {
+      "id": "S51",
+      "path": "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/factory/OssFactory.java",
+      "report_sha256": "5fb058fcdf2299ae29a3194d553f52b68775dbf1aca22f454c1a6f841a0d6768",
+      "current_sha256": "4029a09660005533361165c09861678c6084dd8ad2e8bcdcb039a0afedca0e4a",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/factory/OssFactory.java"
+    },
+    {
+      "id": "S52",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/OssStorageMigrationService.java",
+      "report_sha256": "a38ed1175a4b33e1d256f378dd8af9c36a08856de902708fa2a7cf77dfb5188e",
+      "current_sha256": "a38ed1175a4b33e1d256f378dd8af9c36a08856de902708fa2a7cf77dfb5188e",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S53",
+      "path": "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/MybatisOssMigrationStore.java",
+      "report_sha256": "65cc9bf28bc7d159e80bb3b0913fa9304619b0c12fa622dd182551e6a5cdb666",
+      "current_sha256": "65cc9bf28bc7d159e80bb3b0913fa9304619b0c12fa622dd182551e6a5cdb666",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S54",
+      "path": "frontend/packages/web-domains/system/src/oss/OssPage.vue",
+      "report_sha256": "2db5a978ad288d45fc22611fa6c9520b83dc7c2d1cbd6d5abc3cd5fdd6d9f188",
+      "current_sha256": "2db5a978ad288d45fc22611fa6c9520b83dc7c2d1cbd6d5abc3cd5fdd6d9f188",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S55",
+      "path": "backend/wta-admin/src/main/resources/application.yml",
+      "report_sha256": "41b5e2811cbd4233479814fe3c4348adf4b20d5bffc181c2f2e4fb16ee1f0838",
+      "current_sha256": "2e6b15bd40765057f6ef4de5c14062d39056a8d45c0c34ecc21aed6af0fa42cf",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t5\tbackend/wta-admin/src/main/resources/application.yml"
+    },
+    {
+      "id": "S56",
+      "path": "backend/wta-admin/src/main/resources/application-local.yml",
+      "report_sha256": "720301a4ba3826affaabef95d9c122121c32a1e273bda204062a7d3ad18bde85",
+      "current_sha256": "720301a4ba3826affaabef95d9c122121c32a1e273bda204062a7d3ad18bde85",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S57",
+      "path": "backend/wta-admin/src/main/resources/application-prod.yml",
+      "report_sha256": "c35792b92f79a72c29eaaaae2f1bc4067f1bad99ae94ef0ce3adaa896742476e",
+      "current_sha256": "c35792b92f79a72c29eaaaae2f1bc4067f1bad99ae94ef0ce3adaa896742476e",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S58",
+      "path": "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java",
+      "report_sha256": "785bcd0367a3a504f69e776a404023bf8ce84c0730dad45a2ed1b8a321c390a1",
+      "current_sha256": "23bbef8698948d37d5a651867679d5b424c05ea728f740e7b0bdaebd4345d567",
+      "same_bytes": false,
+      "delta": "author/contact metadata removed; no reviewed behavior change",
+      "diff_stat": "0\t2\tbackend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/ResourcesConfig.java"
+    },
+    {
+      "id": "S59",
+      "path": "backend/wta-common/wta-common-web/src/main/java/org/namewta/common/web/config/properties/CorsProperties.java",
+      "report_sha256": "d6a3056a8ec5b0c6b7c9e94d1cb325d28781e5b7089069e5d741f612cf62d158",
+      "current_sha256": "d6a3056a8ec5b0c6b7c9e94d1cb325d28781e5b7089069e5d741f612cf62d158",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S60",
+      "path": "scripts/start-dev.sh",
+      "report_sha256": "2b2fc981d1092e3f3f7529d853ea7952a7fb2efefc3d5b1dd2634f7824cc090a",
+      "current_sha256": "2b2fc981d1092e3f3f7529d853ea7952a7fb2efefc3d5b1dd2634f7824cc090a",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S61",
+      "path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+      "report_sha256": "70b40554165dbbd371ada85ca5e1320674334a27f2a1d92ada786fb392d45354",
+      "current_sha256": "70b40554165dbbd371ada85ca5e1320674334a27f2a1d92ada786fb392d45354",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    },
+    {
+      "id": "S62",
+      "path": "speculo/.speculo/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/ADR.md",
+      "report_sha256": "97e3d9d9664fc35d3153c2aa0022b7b1677d52d7ff2722a0ef9b780a3b6d6667",
+      "current_sha256": "97e3d9d9664fc35d3153c2aa0022b7b1677d52d7ff2722a0ef9b780a3b6d6667",
+      "same_bytes": true,
+      "delta": "identical",
+      "diff_stat": ""
+    }
+  ],
+  "method": "git fixed-commit comparison plus targeted working-tree source review; no runtime tests",
+  "product_tests_run": false
+}

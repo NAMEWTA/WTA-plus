@@ -1,0 +1,140 @@
+---
+schema_version: 3
+plan_contract_version: 1
+skill_scan: "2026-09-23已枚举.agents/skills全部入口；命中scope读取入口，common入口变化已复核，历史Skill Evidence不改写"
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>"], "outputs": ["T-42的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>"], "outputs": ["T-42的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>"], "outputs": ["T-42的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-common-modules-guide", "path": "<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>", "sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>"], "outputs": ["T-42的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "java-api-compatibility", "path": "<Path>.agents/skills/java-api-compatibility/SKILL.md</Path>", "sha256": "b90f5592e75b3f757f52649a16f78e92850fee0ccac9f12619d3d7aa94bd7aca", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>"], "outputs": ["T-42的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path>", "当前diff与验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42-replan-2026-09-23.md</Path>"], "required": true, "on_failure": "block-ticket"}]
+resource_claims: ["workspace:current-exclusive", "notify:attachments", "oss:reference-owner", "sql:base", "notify:dispatch", "contract:AC-042"]
+artifact: "ticket"
+change: "2026-09-14-wta-plus-comprehensive-review"
+id: "T-42"
+title: "无链接邮件与授权附件完整送入适配器"
+status: "ready"
+kind: "bug"
+planning_depth: "deep"
+planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
+ready: true
+risk: "high"
+blocked_by: ["T-35", "T-37", "T-44"]
+contract_ids: ["AC-042"]
+owner: "single-agent"
+expected_changes: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySendPlanner.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyIntent.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/attachment/</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/core/</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>.agents/skills/engineering-standards/references/notification.md</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/notify/index.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/system/api/OssService.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyRequest.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyContext.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/config/NotifyAutoConfiguration.java</Path>"]
+writable_paths: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySendPlanner.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyIntent.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/attachment/</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/core/</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>.agents/skills/engineering-standards/references/notification.md</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/notify/index.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/system/api/OssService.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyRequest.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyContext.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/config/NotifyAutoConfiguration.java</Path>"]
+read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
+shared_paths: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySendPlanner.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyIntent.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/</Path>", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/attachment/</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/core/</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>.agents/skills/engineering-standards/references/notification.md</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/notify/index.md</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/system/api/OssService.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyRequest.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyContext.java</Path>", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/config/NotifyAutoConfiguration.java</Path>"]
+shared_path_owners: ["<Path>backend/wta-api/src/main/java/org/namewta/notify/api/NotificationCommand.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySceneCatalog.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/support/NotifySendPlanner.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyIntent.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/controller/MailSendController.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/attachment/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/core/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/oss/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-modules/wta-notify/src/test/</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>.agents/skills/engineering-standards/references/notification.md</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>.agents/skills/wta-module-guide/references/modules/notify/index.md</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-api/src/main/java/org/namewta/system/api/OssService.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyRequest.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/model/NotifyContext.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)", "<Path>backend/wta-common/wta-common-notify/src/main/java/org/namewta/common/notify/config/NotifyAutoConfiguration.java</Path> => single-agent (Lead; exclusive current workspace; T-42 turn only)"]
+---
+
+# T-42：无链接邮件与授权附件完整送入适配器
+
+Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
+
+## 1. 战略与来源
+
+- 来源：R64-N-09；AC-042；本轮用户请求与<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>。
+- 当前事实：Demo Mail 使用 notice-published＋空 path；attachmentOssIds 只在参数 Map，dispatch 未映射。旧 ADR-0009 的 sys_notify_log owner 已退役。 当前生产仅有快照SPI与测试替身，未发现生产SnapshotService；不能把测试替身当作已实现能力。
+- 可观察产出：正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。
+
+## 2. 决策状态
+
+### 已锁定决策
+
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+
+### 已确认方案
+
+2026-09-23用户已逐项接受D-002—009并确认整体共识（LOG-010—018）；本票按已接受ADR定稿。 完整决定及来源以<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>为准。
+
+### 已采用的低影响假设
+
+沿用当前模块与测试基座；测试样本为隔离合成数据，不作为生产容量或SLO。
+
+### 执行前置
+
+G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施与commit授权及必要测试环境。Ready不代替Goal激活。
+
+### 未决问题
+
+无。
+
+## 3. 范围边界
+
+| IN | REUSE | OUT |
+|---|---|---|
+| 本票可观察产出及所列消费者、验证、文档 | 既有wta-api/common、模块模式、事务/权限/生命周期与测试 | 无关模块重写、新队列/锁平台、真实数据修复、远程发布及相邻OIDC实现 |
+
+## 4. 要构建什么
+
+正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。 正常、失败、越权和竞争路径按本票验收断言共同交付，不把前后端或测试分成无价值空票。
+
+## 5. 实现契约
+
+- 入口与输入输出：DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器。
+- 外部行为：正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。
+- 不变量：current workspace单writer；UseCase→Service→DAO→Mapper；classic保留；公开数据只经wta-api；GET查询/POST变更且安全@Log。Notify外部I/O不在结果事务内，IN_APP按确认后的短事务合同处理。
+- 失败边界：不吞SQL/HTTP/Provider错误，不将UNKNOWN当成功或盲目可重试；页面旧响应不覆盖新会话。具体负向断言见第8/10节。
+- 兼容：沿用用户此前明确的基座仓内直接切换决定，同步真实消费者/生成物；不放宽第三方协议。公共API技能用于调用方与影响核对，不重新增加已被用户排除的兼容桥。
+- 安全：仅隔离合成测试；secret不进日志/截图/证据。对象/Client授权在后端实施，页面隐藏不替代权限。
+
+## 6. 执行路线
+
+1. 真实命令→planner→dispatcher→假邮件适配器复现空 path 拦截及附件丢失。
+2. 新增最小 demo-mail 场景及可配置包装模板（title/content），同步 Demo 调用；notice/workflow path 必填保持。
+3. NotificationCommand 显式 attachmentOssIds，提交前做授权/正整数/存在/生命周期检查；固化进意图并在 dispatch 构造 NotifyRequest。
+4. 补齐生产 NotifyAttachmentSnapshotService 适配与 NotifyLogIdGenerator 所需真实持久 owner：复用现有 snapshot 端口，System 负责授权后的对象操作，Notify 通过公开端口持久管理意图/附件关系。必要的 OssService 新方法同步所有仓内消费者；以应用上下文装配和真实引用校验证明可用，不恢复退役 sys_notify_log 表。
+5. 为授权上下文异步保存与重验、部分复制清理、重试快照复用/回收补集成测试；无附件提前返回空集合。
+6. 同步六文件基座、调用方/生成物、OSS载体清单和附件保留/删除责任文档。
+
+## 7. 路径访问契约
+
+frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权本票行为所需文件；新增测试在声明根内，新增生产类须符合已有层次。不存在的新文件为计划创建，不声称已实现。共享物理/语义资源由single-agent在本票轮次独占；不同票不并行，跨change冲突仅暂停相关分支。
+
+本票状态和Evidence仅由Lead写当前change；永久ADR/context及相邻SSO change只读。越界先修订Ticket/Map，禁止先改后报。
+
+## 8. 验证矩阵
+
+| 场景 | 接缝/步骤 | 预期 | Evidence |
+|---|---|---|---|
+| 正常 | DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器 | 无链接正文邮件发送；notice/workflow 必填 path 校验仍有效 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42-replan-2026-09-23.md</Path> |
+| 失败/竞争 | 一个/多个授权附件实际交给适配器；无附件 OSS 调用零次 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
+| 回归 | 现有同域测试＋消费者＋适用静态门禁 | 越权/丢失/待删除附件拒绝；部分快照失败不发送且无孤儿资源；异步 worker 不能绕过原提交者身份，重试与去重不复制无限快照；全应用装配证明生产快照SPI存在；不能只用mock通过 | 同上，记录测试数/skip/源码 |
+
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+
+- `cd backend && ./mvnw -pl wta-modules/wta-notify,wta-admin -am test`
+- `node --test release-artifacts/tests/notify-baseline-contract.test.mjs`
+
+- Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
+- E2E disposition：required: DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器。
+- E2E owner/environment：single-agent（Lead）/current-workspace；真实MySQL/Redis/MinIO必须为本任务隔离资源，必要服务缺失则阻塞对应验收。
+- 真实服务启用方法与零skip要求：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>；新增用例必须保存精确选择器与实际计数，不能只运行mock或test list。
+- Integration evidence：非空implementation commit、parent before、clean exact HEAD/tree时点的direct-parent和适用E2E、不可变result及父链；required模式不适用，不创建candidate worktree。
+
+## 9. 发布、迁移与恢复
+
+- 迁移顺序：新环境直接更新六文件基座。已有环境 Tag 差异评审与备份演练；附件 owner 替换须证明真实实体与解除引用入口存在。
+- 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
+- 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
+- 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
+
+## 10. 验收标准
+
+- [ ] `AC-042`：无链接正文邮件发送；notice/workflow 必填 path 校验仍有效。
+- [ ] `AC-042`：一个/多个授权附件实际交给适配器；无附件 OSS 调用零次。
+- [ ] `AC-042`：越权/丢失/待删除附件拒绝；部分快照失败不发送且无孤儿资源。
+- [ ] `AC-042`：异步 worker 不能绕过原提交者身份，重试与去重不复制无限快照。
+- [ ] `AC-042`：全应用装配证明生产快照SPI存在；不能只用mock通过。
+- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+## 11. SKILL 调用计划
+
+frontmatter每个必需绑定在implement阶段输入本票、真实调用方和diff，按scope执行约束检查与实现；verify阶段由engineering-standards执行适用门禁。实际Skill Execution Records写<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42-replan-2026-09-23.md</Path>，包含id/phase/operation/sha256/status/evidence。入口摘要变化先读diff并重新绑定，不改旧历史记录。当前规划仅完成元数据/入口及相关规范路由，未伪造实施passed。
+
+## 12. 停止、检查点与交付
+
+交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。

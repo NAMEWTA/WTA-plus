@@ -5,25 +5,28 @@
   "change_status": "active",
   "current_work": "specdev/goal-plan",
   "works_run": [
-    "specdev/tickets"
+    "specdev/grill-with-docs",
+    "specdev/spec",
+    "specdev/tickets",
+    "specdev/goal-plan"
   ],
   "claimed_investigations": [],
   "execution_authorization": {
     "implementation_commit": {
       "status": "authorized",
-      "source": "USER: 现在请你全部 commit push",
-      "granted_at": "2026-09-19T07:31:04.600552+00:00",
+      "source": "USER 2026-09-23 active Goal: execute this goal-plan and complete every Ticket; local implementation/commit/direct-parent are required delivery steps; prior same-change all-commit authorization persists. No remote or environment actions inferred.",
+      "granted_at": "2026-09-23T06:02:10.486269+00:00",
       "scope": "All completed change implementation commits"
     },
     "local_candidate_integration": {
       "status": "authorized",
-      "source": "USER: 现在请你全部 commit push",
-      "granted_at": "2026-09-19T07:31:04.600552+00:00",
+      "source": "USER 2026-09-23 active Goal: execute this goal-plan and complete every Ticket; local implementation/commit/direct-parent are required delivery steps; prior same-change all-commit authorization persists. No remote or environment actions inferred.",
+      "granted_at": "2026-09-23T06:02:10.486269+00:00",
       "scope": "Serial direct-parent commits and verification on current main; no worktree"
     },
     "source_cleanup": {
       "status": "not-authorized",
-      "source": null,
+      "source": "USER 2026-09-23: plan now, user reviews then activates goal; previous grant preserved in before snapshot",
       "granted_at": null,
       "scope": "Source worktree and branch cleanup"
     }
@@ -42,12 +45,12 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-19T07:35:26.511946+00:00",
+  "updated_at": "2026-09-23T06:02:10.486269+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
-    "RELEASE: formal release candidate/manifest and target production configuration acceptance remain pending; commit and push authorization is granted"
+    "CLOSEOUT: historical shared result/empty worktrees require factual reconciliation; external credential disposition and new integrated acceptance pending."
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",
@@ -84,7 +87,12 @@
     "Revision133：T-30本地整体验收完成review。最终源码bc561a9c45850bdb0a8783a7d9700ef299a2d0bd774fecbebb55fb3dc108b3ba，3577源码/654累计owned路径；6测试修复、1上游重叠/648非重叠不变。18核心门禁通过，前端722、浏览器163+工作流10=173；默认后端740通过/117环境skip均有专项零skip闭合，46环境类/264测试源逐类对应，额外非默认选集53通过/1既有教学Disabled占位。最终full/core构建/清单、117发布合同、真实依赖与发布恢复、五分层/facts检查器通过。全部31票review、0Done；仅本地产物可审查，干净提交/正式发布candidate/direct-parent出口因用户全change提交暂缓保持未完成。最终治理结果见T-30-final-governance.json。",
     "Revision134：完成逐票出口复核与本地产物重新验hash，3577源码/654owned路径无漂移，两JAR及三App保留副本一致、HEAD不变且index为空。T-01/T-02/T-04/T-05早期验收勾选尚未承接最终实际证据，已按各项源码/测试报告补齐并注明旧失败由后续票关闭；T-02历史日志处置/凭据轮换属于OUT且无批准，继续明确未执行。31review/0Done；非空implementation/result、direct-parent和干净正式发布候选仍受用户全change不提交约束。没有新产品改动，不重跑已证明输入未变的业务测试。",
     "Revision135：用户明确授权全部commit和push，撤销此前全change提交暂缓。按实际最终检查点归属拆分票据主题提交，后端合同先于前端消费者；以完整提交链核对同一已验证源码，不把中间拆分树冒充独立通过全部测试的候选。推送origin/main；运行中的人工检查环境及凭据仍由ignore排除；真实部署/正式发布候选仍未执行。",
-    "Revision135提交完成：43非空实现提交/31票，result=6c8764cca97bb6057fcb90ccdfe635c7efbf502a；Git归档3577源码与最终验收输入一致，父链及包含关系通过。仍保留review，未建立正式release候选或部署。"
+    "Revision135提交完成：43非空实现提交/31票，result=6c8764cca97bb6057fcb90ccdfe635c7efbf502a；Git归档3577源码与最终验收输入一致，父链及包含关系通过。仍保留review，未建立正式release候选或部署。",
+    "2026-09-23 USER: activate G → S → T → P(plan), comprehensively replan against review 64b4ea7 and current code. Historical implementation/commit/push grants are historical completed-batch evidence, not authorization for this new plan; no product execution. Before-state snapshots preserved under reviews/replan-2026-09-23-before.",
+    "Revision136: all active documents replanned against HEAD 1264980c74e594bc594e88561bb292fbe5d968a1; 31 historical IDs retained, 19 new slices, 50 total; G unanswered frontier remains explicit. Spec/Tickets/Goal review drafts only, no fabricated consensus or Ready. Old evidence unchanged; digest bindings refreshed after source read; global index unchanged because membership unchanged.",
+    "Revision136状态校正：31历史review记录已保留；当前50票全部重开draft、ready=false，避免历史review被控制器误当在途writer。合法无改动取消须按证据改写下游施工依赖，不能当成功或删AC。",
+    "Revision137：用户已逐项接受D-002—009并明确确认整体G共识；顺序定稿G/S/T/P(plan)，Spec与50票Ready，0done、0在途writer。Goal计划完成但用户保留自行激活目标，ready_for_execution=false；无新产品实施、commit、push或部署。",
+    "Revision138：用户已激活Goal，要求完成全部Ticket并以代码为证。恢复本地实施、逐票commit/direct-parent验收；旧all-commit授权未被用户撤销，本次激活解除plan-only限制。不推断远程push、部署、轮换或归档批准。优先T-32，发现ignore不足以排除JAR泄漏，补登记root POM/开发启动/配置绑定测试写集。"
   ],
   "worktrees": []
 }

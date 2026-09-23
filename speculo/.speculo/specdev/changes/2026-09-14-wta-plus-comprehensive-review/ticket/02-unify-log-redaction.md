@@ -1,49 +1,57 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
-skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path>", "<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>"], "outputs": ["T-02的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-common-modules-guide", "path": "<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>", "sha256": "e92775ce47af41bd33c1b3293d7f8a3185fdd739b9b588519e043c654f678d98", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path>", "<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>"], "outputs": ["T-02的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
-resource_claims: ["workspace:current-exclusive", "finding:R-01", "contract:AC-002"]
-artifact: ticket
-change: 2026-09-14-wta-plus-comprehensive-review
-id: T-02
-title: 消除HTTP与操作日志中的凭据副本
-status: "review"
+skill_scan: "2026-09-23已枚举.agents/skills全部入口；命中scope读取入口，common入口变化已复核，历史Skill Evidence不改写"
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path>", "<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>"], "outputs": ["T-02的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-common-modules-guide", "path": "<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>", "sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path>", "<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>"], "outputs": ["T-02的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/02-unify-log-redaction.md</Path>", "当前diff与验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02-replan-2026-09-23.md</Path>"], "required": true, "on_failure": "block-ticket"}]
+resource_claims: ["workspace:current-exclusive", "contract:AC-002"]
+artifact: "ticket"
+change: "2026-09-14-wta-plus-comprehensive-review"
+id: "T-02"
+title: "消除HTTP与操作日志中的凭据副本"
+status: "ready"
+kind: "review"
 planning_depth: "deep"
-planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：消除HTTP与操作日志中的凭据副本"
+planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
 ready: true
-risk: high
+risk: "high"
 blocked_by: []
-contract_ids: [AC-002]
-owner: single-agent
+contract_ids: ["AC-002"]
+owner: "single-agent"
 expected_changes: ["<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path>", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>backend/wta-common/wta-common-json/src/</Path>"]
 writable_paths: ["<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path>", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>backend/wta-common/wta-common-json/src/</Path>"]
-read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
-shared_paths: ["<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path>", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>"]
-shared_path_owners: ["<Path>backend/wta-common/wta-common-log/</Path> => single-agent (Lead; serial T-02 turn)", "<Path>backend/wta-common/wta-common-web/</Path> => single-agent (Lead; serial T-02 turn)", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path> => single-agent (Lead; serial T-02 turn)", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path> => single-agent (Lead; serial T-02 turn)", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path> => single-agent (Lead; serial T-02 turn)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path> => single-agent (Lead; serial T-02 turn)"]
+read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
+shared_paths: ["<Path>backend/wta-common/wta-common-log/</Path>", "<Path>backend/wta-common/wta-common-web/</Path>", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path>", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path>", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>backend/wta-common/wta-common-json/src/</Path>"]
+shared_path_owners: ["<Path>backend/wta-common/wta-common-log/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-common/wta-common-web/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-common/wta-common-core/src/main/java/org/namewta/common/core/constant/SystemConstants.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-modules/wta-sso/src/main/java/org/namewta/sso/controller/anonymous/SsoOAuthController.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOperLogServiceImpl.java</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)", "<Path>backend/wta-common/wta-common-json/src/</Path> => single-agent (Lead; exclusive current workspace; T-02 turn only)"]
 ---
 
 # T-02：消除HTTP与操作日志中的凭据副本
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先读Map，再按Skill矩阵读取适用入口/引用，再读本票。禁止任何implementation/review/research子代理。Ready仅表示计划合同就绪，不表示已经授权实施或已验证通过。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
 
 ## 1. 战略与来源
 
-- 目标与可观察产出：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志。
-- 来源：R-01；AC-002；USER-DECISION: 全面完善计划、无兼容、单人串行。
-- 当前事实与调用链：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/re-review.md</Path>中T-02行及对应专项报告；源码导航为frontmatter预计修改点。
-- 规划深度：deep；安全/鉴权、公共合同、数据一致性或共享核心路径变更：消除HTTP与操作日志中的凭据副本。
+- 来源：R-01；AC-002；本轮用户请求与<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>。
+- 当前事实：日志脱敏保持；公开local配置披露由T-32新增整改，不能用日志测试替代凭据轮换。
+- 可观察产出：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志
 
 ## 2. 决策状态
 
 ### 已锁定决策
 
-ADR-0025已禁止泄漏；新的默认日志保留策略见ADR-CR-002当前计划合同。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+
+### 已确认方案
+
+既有合同保持；本轮重新评审与验收；日志脱敏保持；公开local配置披露由T-32新增整改，不能用日志测试替代凭据轮换。 完整决定及来源以<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>为准。
 
 ### 已采用的低影响假设
 
-沿用当前仓库版本与既有模块命名；实施前回读实际源码，路径变化由本票修订，不猜测不存在的实现。
+沿用当前模块与测试基座；测试样本为隔离合成数据，不作为生产容量或SLO。
+
+### 执行前置
+
+G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施与commit授权及必要测试环境。Ready不代替Goal激活。
 
 ### 未决问题
 
@@ -53,86 +61,85 @@ ADR-0025已禁止泄漏；新的默认日志保留策略见ADR-CR-002当前计�
 
 | IN | REUSE | OUT |
 |---|---|---|
-| HTTP/操作日志入口→脱敏副本→事件→日志/数据库 | common-json及现有日志adapter；不建新模块、不清理历史数据 | 本票之外的模块重写、兼容桥、远程发布与重要数据操作 |
+| 本票可观察产出及所列消费者、验证、文档 | 既有wta-api/common、模块模式、事务/权限/生命周期与测试 | 无关模块重写、新队列/锁平台、真实数据修复、远程发布及相邻OIDC实现 |
 
 ## 4. 要构建什么
 
-HTTP/操作日志入口→脱敏副本→事件→日志/数据库。调用者可观察到：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志。失败时：畸形JSON输出安全摘要；敏感签发响应不记录正文；业务原始字节不变。
+canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 正常、失败、越权和竞争路径按本票验收断言共同交付，不把前后端或测试分成无价值空票。
 
 ## 5. 实现契约
 
-- 入口、输入输出与数据流：HTTP/操作日志入口→脱敏副本→事件→日志/数据库。
-- 不变量及失败语义：畸形JSON输出安全摘要；敏感签发响应不记录正文；业务原始字节不变。
-- 公共合同：本票只按以上行为及执行路线变更；同步全部仓内调用/生成物，沿用已有权限/Client/owner校验。未列出的接口保持原语义。
-- 兼容：用户明确无需旧版兼容；仓内一次切换，不加双路由/版本等待。实际供应商协议仍须遵守。
-- 安全与隐私：凭据不进入日志/UI证据；越权/过期/无owner拒绝；数据库与资源约束不能为前端成功而放宽。
-
-两个日志模块目前都依赖 common-json；日志副本策略优先放入已有 <Path>backend/wta-common/wta-common-json/src/</Path>，由 common-log/web 调用，不令 common-log 反向依赖 common-web。对嵌套 JSON、数组、form、重复 query、非法 JSON 和异常日志分别验收；在截断前脱敏，失败输出安全摘要。OAuth code 按路由处理，不全局删除业务 code；签名原始字节与业务响应不受日志转换影响。
+- 入口与输入输出：required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文。
+- 外部行为：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志
+- 不变量：current workspace单writer；UseCase→Service→DAO→Mapper；classic保留；公开数据只经wta-api；GET查询/POST变更且安全@Log。Notify外部I/O不在结果事务内，IN_APP按确认后的短事务合同处理。
+- 失败边界：不吞SQL/HTTP/Provider错误，不将UNKNOWN当成功或盲目可重试；页面旧响应不覆盖新会话。具体负向断言见第8/10节。
+- 兼容：沿用用户此前明确的基座仓内直接切换决定，同步真实消费者/生成物；不放宽第三方协议。公共API技能用于调用方与影响核对，不重新增加已被用户排除的兼容桥。
+- 安全：仅隔离合成测试；secret不进日志/截图/证据。对象/Client授权在后端实施，页面隐藏不替代权限。
 
 ## 6. 执行路线
 
-1. 先固定换票响应access_token进入OperLogEvent的红灯，以及原queryString泄漏canary的红灯。
-2. 立即令凭据签发接口不记录响应正文；保留审计元数据。
-3. 由现有common拥有一个日志副本策略，HTTP/操作日志adapter复用；删除原始query输出和未经策略处理的response序列化。
-4. 按OAuth路由上下文处理code/verifier/redirectUri，不全局删除业务code字段；处理form/header/非法JSON。
-5. 跨事件到数据库落点验证，确保安全修复未改变Servlet原始字节或业务响应。
+1. 回读本票历史Evidence和实际实现提交，使用当前源码核对本票验收合同；旧施工步骤仅在before快照保存，不重复实施。
+2. 比较历史候选与当前写集；对后续提交或新票触及的行为逐一标记需要重跑的测试。
+3. 执行本票正常/失败/回归及E2E要求；零用例或required skip不算通过，结果写新的带日期证据，不覆盖原始记录。
+4. 若发现退化，先在本票写集内固定红灯；超出范围或与新票重叠时由Lead修订owner，禁止重复改动。
+5. 核验历史非空提交和父链；缺少真实clean exact-HEAD证明不得事后补造。按Goal历史票关闭程序处置。
 
 ## 7. 路径访问契约
 
-预计点、可写范围、只读上下文及共享项以frontmatter为唯一权威。共享owner固定single-agent；只有当前票轮次可写，下一票须回读前一结果。跨模块目录只允许本票行为必需的文件，目录授权不意味着重写全部模块。新增测试位于同模块测试目录；未覆盖的新路径先修订本票/Map再写。
-保留当前用户未提交改动、永久ADR/context、供应商源码与运行数据；生成物通过正式工具更新。
+frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权本票行为所需文件；新增测试在声明根内，新增生产类须符合已有层次。不存在的新文件为计划创建，不声称已实现。共享物理/语义资源由single-agent在本票轮次独占；不同票不并行，跨change冲突仅暂停相关分支。
+
+本票状态和Evidence仅由Lead写当前change；永久ADR/context及相邻SSO change只读。越界先修订Ticket/Map，禁止先改后报。
 
 ## 8. 验证矩阵
 
-| 行为或风险 | 验证接缝/步骤 | 预期结果 | Evidence |
+| 场景 | 接缝/步骤 | 预期 | Evidence |
 |---|---|---|---|
-| 正常路径 | HTTP/操作日志入口→脱敏副本→事件→日志/数据库；执行下列定向命令及对应场景 | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path> |
-| 失败路径 | 畸形JSON输出安全摘要；敏感签发响应不记录正文；业务原始字节不变；固定时序/故障注入，记录输入与最终可观察状态 | 无越权、错误状态或部分提交；可按定义恢复 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path> |
-| 回归 | 运行所属包原有测试及受影响调用者；逐项核对下列AC | 普通字段/操作者/耗时/失败状态仍可观测；签名、加解密、SSE与正常token响应保持正确；旧日志处置与凭据轮换另有批准记录，本票不自动删历史数据 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path> |
+| 正常 | required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文 | canary不出现在HTTP sink、OperLogEvent、数据库或错误日志 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02-replan-2026-09-23.md</Path> |
+| 失败/竞争 | 普通字段/操作者/耗时/失败状态仍可观测 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
+| 回归 | 现有同域测试＋消费者＋适用静态门禁 | 签名、加解密、SSE与正常token响应保持正确；旧日志处置与凭据轮换另有批准记录，本票不自动删历史数据 | 同上，记录测试数/skip/源码 |
 
-Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该目录，其他命令cwd为仓根，逐条串行执行。新增用例实施时登记精确选择器、实际测试数与跳过项，零测试/required跳过不算通过。
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
 
-- `backend: ./mvnw -pl wta-common/wta-common-json,wta-common/wta-common-web,wta-common/wta-common-log,wta-modules/wta-sso,wta-modules/wta-system,wta-admin -am test`
+- `cd backend && ./mvnw -pl wta-common/wta-common-json,wta-common/wta-common-web,wta-common/wta-common-log,wta-modules/wta-sso,wta-modules/wta-system,wta-admin -am test`
 
+- Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
 - E2E disposition：required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文。
-- E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。HTTP/操作日志两项红灯已修复；33项定向测试与真实HTTP/MySQL验收通过，零跳过。完整选集仍受Notify旧Git范围门禁阻塞，见T-02 Evidence。
+- E2E owner/environment：single-agent（Lead）/current-workspace；真实MySQL/Redis/MinIO必须为本任务隔离资源，必要服务缺失则阻塞对应验收。
+- 真实服务启用方法与零skip要求：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>；新增用例必须保存精确选择器与实际计数，不能只运行mock或test list。
+- Integration evidence：非空implementation commit、parent before、clean exact HEAD/tree时点的direct-parent和适用E2E、不可变result及父链；required模式不适用，不创建candidate worktree。
 
 ## 9. 发布、迁移与恢复
 
-- 顺序：前置票产生已验证合同后实施本票；源码、仓内消费者、测试和生成物同批交付。涉及DDL只编辑10-cde-base-ddl.sql，新环境按六文件基座初始化；不增加存量迁移工程。
-- 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
-- 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
-- 恢复：恢复须保留签发接口禁记正文的安全收口，不能重新开启明文日志。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本地实现/验证已授权；最新用户指令明确本 change 所有提交暂缓。
-- 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
+- 迁移顺序：保持历史已交付行为；仅对当前复验发现的真实退化实施最小修复。已有数据不得重放基座。
+- 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
+- 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
+- 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
 
-- [x] `AC-002`：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志。
-- [x] `AC-002`：普通字段/操作者/耗时/失败状态仍可观测。
-- [x] `AC-002`：签名、加解密、SSE与正常token响应保持正确。
+- [ ] `AC-002`：canary不出现在HTTP sink、OperLogEvent、数据库或错误日志。
+- [ ] `AC-002`：普通字段/操作者/耗时/失败状态仍可观测。
+- [ ] `AC-002`：签名、加解密、SSE与正常token响应保持正确。
 - [ ] `AC-002`：旧日志处置与凭据轮换另有批准记录，本票不自动删历史数据。
-- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>，未执行不得标通过。
-- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
-frontmatter绑定的项目Skill在implementation阶段接收本票路径和上游合同，产出适用分层、权限、数据/资源边界及实现diff；engineering-standards在verify阶段根据本节命令选择受影响门禁并输出AC/退出码/E2E记录。按入口scope展开引用，不以“已读”代替实际操作。
-必需入口缺失或sha256漂移时阻塞本票；Lead回读差异后更新绑定及Map，不能自动接受新摘要。实际记录归<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>的`## Skill Execution Records`，本次规划不伪造实现调用记录。
+frontmatter每个必需绑定在implement阶段输入本票、真实调用方和diff，按scope执行约束检查与实现；verify阶段由engineering-standards执行适用门禁。实际Skill Execution Records写<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02-replan-2026-09-23.md</Path>，包含id/phase/operation/sha256/status/evidence。入口摘要变化先读diff并重新绑定，不改旧历史记录。当前规划仅完成元数据/入口及相关规范路由，未伪造实施passed。
 
 ## 12. 停止、检查点与交付
 
-交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
-依赖：无。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。
 
-## Revision134 最终本地验收补记
+## 历史实现保留及本轮处置
 
-HTTP sink、OperLogEvent和真实MySQL canary及普通字段/失败元数据已复验；全量旧Notify错误已关闭。历史日志处置/凭据轮换在本票OUT且未获授权，未执行，也不存在可伪造的批准记录；该外部批准项继续未勾选，不是待执行的本地实现。 实际证据：T-30-extra-services-v3.json, T-30-http-v1.json, T-30-v3-backend-tests.json；源码路径及hash见T-30-completion-audit-revision134.json。实施提交/direct-parent/result继续未勾选。
+历史implementation commit：`4cfb7eea819c142ccdbcc29004a86868b86e2551`；历史result：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。提交存在及祖先关系见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/legacy-ticket-audit.json</Path>。
 
-## Revision135 实际提交与父分支验收
+<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-02.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/02-unify-log-redaction.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
-用户已明确授权全部commit/push。implementation commits：`4cfb7eea819c142ccdbcc29004a86868b86e2551`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。
+旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。

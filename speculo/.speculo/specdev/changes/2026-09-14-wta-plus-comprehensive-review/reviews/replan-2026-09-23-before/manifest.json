@@ -1,0 +1,190 @@
+[
+  {
+    "path": "cleanup-plan.md",
+    "sha256": "917dcbd311b98198670e41875a9213f67b0bf28e588a3d133f0d67affa9a8572"
+  },
+  {
+    "path": "verification.md",
+    "sha256": "10a7bdd575dfe22181de1069e3dc534000564d3c44bffb837eeb741378e40956"
+  },
+  {
+    "path": "goal-plan.md",
+    "sha256": "ed3098de21f2e6e99bda8f22ff1fc3952a4152d66834ca5ccafd46660c10bf7e"
+  },
+  {
+    "path": "architecture-review.md",
+    "sha256": "510e04e285d7e87e4c1b1322111b7ec3acbd839fd2449e0c0943a51e0af47b55"
+  },
+  {
+    "path": "refactoring-plan.md",
+    "sha256": "7a340761bc4b0861879e9fa07cf2f3e5f6682b2c614bc3544e963728debe7db6"
+  },
+  {
+    "path": "spec.md",
+    "sha256": "b2534dbd88734959742848b9b42881a89083ea523110e2b2ddf14d140e95f687"
+  },
+  {
+    "path": "README.md",
+    "sha256": "9831b3fe5166465f346e22f27eb3c957e9a604adc1a5f8ca6b844d56e3ab092b"
+  },
+  {
+    "path": "coverage.md",
+    "sha256": "ecb7cae41b1485aa03c954c31dd5378211bfa218d0891450bd43e1677f02803a"
+  },
+  {
+    "path": "tickets-map.md",
+    "sha256": "ab5bf4f461dc45868b6afc2d034592d31f19ac5aaa1013249ee08fb8a51939e5"
+  },
+  {
+    "path": "handoff.md",
+    "sha256": "b8ad94e4eb27e673b2d95bcfbccafc9b0ad22b2b8eb1095f290bff534b35da75"
+  },
+  {
+    "path": "CONTEXT.md",
+    "sha256": "0a47c6155cea342710a748ee0e0a86c0df620ae799192be2c980f66973a81f13"
+  },
+  {
+    "path": "worklog.md",
+    "sha256": "540c907293dd58f9e5ce48d3532e0485b50018c5068c91f09f02fcec5897785b"
+  },
+  {
+    "path": "ADR.md",
+    "sha256": "a0ec8ed9bd4d4097eba98694174e73bba3efe07f5127f9d0ed2597d13c37e0a8"
+  },
+  {
+    "path": "LOG.md",
+    "sha256": "94cb0a4a5dda67fdd3aa0910dd5585e40c90ef6c787b721cbe5e7d98a139694f"
+  },
+  {
+    "path": ".status.json",
+    "sha256": "66854e4a8773072fa5be05dedfd68dd16a9db54a69249490dd68935698b6ce31"
+  },
+  {
+    "path": "plan-data.json",
+    "sha256": "18f21b1318d88a5b881a1be1331e0d385aad4c5b2071fb337bf7f803ce91db6e"
+  },
+  {
+    "path": "ticket/04-trusted-client-address.md",
+    "sha256": "c85c06b7bef60a64f202628e7f9b9a318dcf9edb5d4ff369e1ece010555ff9f8"
+  },
+  {
+    "path": "ticket/31-enterprise-transfer-queued-contract.md",
+    "sha256": "872dba68c12748144c88bb31134f54ce0a3c1465762baa8b3cadda4587cfab32"
+  },
+  {
+    "path": "ticket/18-upload-ownership-lifecycle.md",
+    "sha256": "7172b3b735170d533a5743fd4b7c788695c496790bb04bf75c62b571c58d1ea9"
+  },
+  {
+    "path": "ticket/23-durable-provider-callback.md",
+    "sha256": "6faf77e2b8ee4b554993e4345d2bdb675d9a8f98db1bcf6cca4294b31d6562e4"
+  },
+  {
+    "path": "ticket/30-integrated-upgrade-acceptance.md",
+    "sha256": "91e4428445665d0b3ca159ae6cdaa113781578f319896dbf6a5fffde674a593f"
+  },
+  {
+    "path": "ticket/22-atomic-notify-result.md",
+    "sha256": "c15d66d0f4bcc05417e98e52dd480a4fca7f9686f54498921f7d4cdb9f670689"
+  },
+  {
+    "path": "ticket/24-recoverable-third-resilience.md",
+    "sha256": "67f86f12d0327e8e7e84c2563a90ef5c89c55fde50f68f5ff0d68fe79d79f9d3"
+  },
+  {
+    "path": "ticket/17-trusted-designer-messages.md",
+    "sha256": "60fc5657a205c3d6d16d089bde601cff57ae5ca7cce6be747433d14d231b4466"
+  },
+  {
+    "path": "ticket/13-recoverable-registration.md",
+    "sha256": "5b68b911c069827cbb4f8ff45e6f2e9ab3f9406d81ac5c2417b2eac36ddaadcf"
+  },
+  {
+    "path": "ticket/21-accessible-public-apps.md",
+    "sha256": "1048797eb2ceb443e5f8c81bb8029316a2c26c4e781f5869b50dc6b4cbfd90ca"
+  },
+  {
+    "path": "ticket/12-session-navigation-lifecycle.md",
+    "sha256": "e3329908ab812890ead39fd3cc643d03d42a9517dad9134ffd76b5535461cc89"
+  },
+  {
+    "path": "ticket/08-complete-sso-release.md",
+    "sha256": "62dccdccb6f7200e27d5d959f0425c8785e7a8d4d52eebb49b06f864fc2fca72"
+  },
+  {
+    "path": "ticket/11-remove-browser-shared-private-key.md",
+    "sha256": "374ed4be13dde0da7f407a921e0098f00b6614390a7c907190ab578c49789e27"
+  },
+  {
+    "path": "ticket/01-restore-trustworthy-gates.md",
+    "sha256": "d8a33ec5336a1dae1a1e2228f5566fde3761775d3ce78c50abe6683c30a8e246"
+  },
+  {
+    "path": "ticket/02-unify-log-redaction.md",
+    "sha256": "8d17ab3dd1a3dbc42b370ab20fae35715ff7dc78e557826fc98ffe4b7382a99d"
+  },
+  {
+    "path": "ticket/14-profile-self-materials.md",
+    "sha256": "a752a60021acffef87f2d1f4b81779199b3f7cf2cedaa398d5e1529fce591f96"
+  },
+  {
+    "path": "ticket/20-strict-contract-target.md",
+    "sha256": "fa48b89495143cd33bf8914c486304cd9795f721c53b06f80f86c0dfd0018c23"
+  },
+  {
+    "path": "ticket/15-contract-profile-legacy-bridges.md",
+    "sha256": "335b831dd9aa66b29d284b7abf0004f7243803a53c6b72dfc8a29362a2605053"
+  },
+  {
+    "path": "ticket/28-bounded-notify-wake.md",
+    "sha256": "91f0c533295b619496c06b7616e31cb566bd0bbb1e7cda3d0b8375a744cee069"
+  },
+  {
+    "path": "ticket/07-sso-callback-journey.md",
+    "sha256": "b6a9d0a55f1445179f7bb719d85a4419798d9c276a0c1f452567f00ac3f40420"
+  },
+  {
+    "path": "ticket/06-secure-sso-session.md",
+    "sha256": "33380577b304a7043d20fe2826d2b7c646c1d4ea81924f36dfd3d4effa0e3959"
+  },
+  {
+    "path": "ticket/26-cut-over-crud-contracts.md",
+    "sha256": "b60359fb9fec52d2c53aa29ab5d966203df90da96d6f4aee02281c7d4e5ee476"
+  },
+  {
+    "path": "ticket/10-atomic-release-provenance.md",
+    "sha256": "e8b9d27fa8d57da854ae1fa7c519b4b61606020417ad3113aea93dbd3e0ce1cf"
+  },
+  {
+    "path": "ticket/16-workflow-task-integrity.md",
+    "sha256": "c67a3d6ef86cae2e8d03f5d57f38835c1c9af3a7d958746066e13961aa402356"
+  },
+  {
+    "path": "ticket/27-honest-demo-tree-baseline.md",
+    "sha256": "d8d2ca2c3cd0726bbe36ddf54ab758c662042bc2c21215cbd232a43e8c1dd7e3"
+  },
+  {
+    "path": "ticket/29-converge-current-documentation.md",
+    "sha256": "1d7a0d3e3a0a9a964201aab4e2f8b739a6c140ad31e4022091d43ab0df76cca4"
+  },
+  {
+    "path": "ticket/19-system-page-state-locality.md",
+    "sha256": "2a1426cd7974b8778e5dcf03d39b500594b4136098ae518cc6e4dc04263e65b6"
+  },
+  {
+    "path": "ticket/03-bound-request-capture.md",
+    "sha256": "f0cc6f927c567ab655c670c3b390367d19c106f48492430ba4079f230504ac26"
+  },
+  {
+    "path": "ticket/09-coherent-build-matrix.md",
+    "sha256": "f6d436a4677e6bb2d9885ba516a558f0499ebb5465550d90a46c2663f5f0be26"
+  },
+  {
+    "path": "ticket/25-acyclic-department-moves.md",
+    "sha256": "5a04f21faa9887cc9b76812107eb9c6f71d451da080e0a4dcece831b78e5367e"
+  },
+  {
+    "path": "ticket/05-repeat-submit-lease.md",
+    "sha256": "cefa6027adfde2866a1389428acf9e8d0bf54d5393fa9fbc2afd38e12de6ac52"
+  }
+]

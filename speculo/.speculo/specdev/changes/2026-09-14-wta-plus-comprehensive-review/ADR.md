@@ -1,3 +1,39 @@
+# ADR：当前review重规划
+
+2026-09-23。用户只授权规划。D-002—009已获本轮用户明确答复，以下决定成为当前计划合同；用户已在LOG-018确认整体G共识；既有ADR-CR-001—009继续按已实现范围保留。当前代码与历史实施记录以<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/current-source-audit.json</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/legacy-ticket-audit.json</Path>和旧Evidence为准。
+
+## 当前决定与替代关系
+
+| ID | 状态 | 来源 | 决定/替代 |
+|---|---|---|---|
+| ADR-CR-010 | accepted | LOG-001/本轮用户 | 全面重规划，保留历史，禁止本轮执行；新finding独立编号 |
+| ADR-CR-011 | accepted | LOG-010 | 撤回只停未发送，保留已送达与审计；取消对象为发布版本 |
+| ADR-CR-012 | accepted | LOG-011 | 单对象、共同锁序、有界I/O短事务；不锁整批 |
+| ADR-CR-013 | accepted | LOG-012 | SSO升级归相邻change；旧31票当前候选复核，禁止复活旧协议来满足过时测试 |
+| ADR-CR-014 | accepted | LOG-013 | 完整分页＋本人全部已读；列表权限不等于管理公告权限 |
+| ADR-CR-015 | accepted | LOG-014 | ALL/ASYNC/0，所有现有调用同批迁移；未实现模式拒绝 |
+| ADR-CR-016 | accepted | LOG-015 | 凭据本地整改与外部轮换分离；无处置/明确豁免不归档 |
+| ADR-CR-017 | accepted | LOG-016 | 替代System AGENTS readiness门禁；保留本地安全校验；永久知识只读 |
+| ADR-CR-018 | accepted | LOG-017 | 附件由真实Notify意图/关系拥有，补生产SPI适配，不恢复退役sys_notify_log |
+
+### ADR-CR-019：渠道语义与重试权威（accepted）
+
+**Source:** 报告R64-N-02/N-03/N-04；CODE真实runtime与Dispatcher；LOG-012用户确认本change覆盖全部N/O/S/D。此处是已接受报告方向在现有代码边界上的实施约束。
+**Supersedes:** ADR-CR-009仅关于IN_APP也被视为事务外Provider的解释；永久ADR-0007“所有完成态复用”在本change统一Outbox路径的失败分类。永久文件本轮不改。
+
+**Context:** 本地DB写入和外部发送结果未知风险不同，两层完成态竞争使可重试失败不真正重发。
+**Decision:** IN_APP落库与结果短事务原子提交；外部I/O仍在事务外。Outbox拥有重试节奏，common只阻止已接受/未知的盲目重复；明确未发送且可重试失败释放当前claim。
+**Trade-off:** 保留现有Redis能力供同步合法调用，先修状态组合而非删除所有防重；不承诺外部exactly-once。
+**Verification / Migration:** 真实MySQL/Redis跨层与提交故障；旧UNKNOWN按渠道分流，禁止全量清缓存重发。
+
+### ADR-CR-018的已确认实现约束
+
+当前仅找到NotifyAttachmentSnapshotService SPI和测试替身，无生产实现；NotifyLogIdGenerator也需核对装配。按LOG-017确认增加最小System存储适配，Notify通过公开端口持久管理关系；common不能反向依赖业务。附件授权在提交时捕获真实user/client，worker不依赖空线程会话。快照与持久引用可核实后才调用邮件供应商，失败不得假成功；无附件仍零OSS调用。永久ADR-0009引用已退役sys_notify_log需由此局部替代并在A毕业时处理；ADR-0068现有notice/workflow必填path保留，Demo新增最小无链接场景。
+
+## 历史已接受决定原文（不代表本轮授权/现状）
+
+以下历史过程原文保留以解释原实现，包含过时“尚未实施/暂缓提交”字样；当前状态只看Ticket frontmatter与本轮Goal，授权只看本轮用户指令。
+
 # ADR：基座修复方案
 
 2026-09-18复核。用户已确定不考虑旧版兼容；按本次T/P自主完善请求锁定局部计划设计，产品实施与发布尚未发生。初始规划时ADR-CR-002正文预算与ADR-CR-009回调策略保持Pending；下文2026-09-19用户补充已解除参数资料等待，当前以新决定为准；其余为本change的计划合同，不代表永久ADR已更新。

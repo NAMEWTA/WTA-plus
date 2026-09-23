@@ -1,14 +1,19 @@
-# Change Context
+# 通知交付上下文
 
-- 工作区：/srv/WTA-plus；2026-09-18 HEAD e285d0800c530fcb6b90790a8aab5dcc3162d3bd。
-- 授权：全面复核并直接重构本change文档；禁止子代理，一个并发。产品实现、提交、部署和运行数据操作不在范围内。
-- 基座无需旧版兼容；仓内调用、测试与生成物应同步切换。保留Client隔离、权限、事务、资源与真实供应商协议。
-- 当前清单：50个backend POM、247个backend src/test/java Java源文件、3个App package、49个后端AGENTS。它们不是运行通过数。
-- SQL owner：release-artifacts/docker/infrastructure/mysql/init；10-cde-base-ddl.sql结构，50-cde-base-dml.sql数据，共六份完整基座。
-- Notify已有submit/query和Outbox，Redis负责wake/lease及挑战缓存；不能把Redis写入与MySQL写入称为同事务。
-- 单票frontmatter为状态/依赖/写集权威，plan-data与Map同步投影；当前29票计划Ready、T-03/T-23 blocked；Spec总体draft、Goal执行关闭，规划完成不等于实现完成。
-- 详细复核、真实命令及未验证项分别见reviews/re-review.md、reviews/re-review-command-results.json、verification.md。
+**通知意图（Intent）**：一次经业务授权提交的通知请求，固化场景、接收人范围和业务有效期。QUEUED表示受理排队，不表示送达。
+_Avoid_: 发送成功（指代排队）。
 
-2026-09-19用户新指示：T-03无需样本或目标容量，先用JSON/机器各2MiB独立可配置默认；T-23自主预置腾讯云/阿里云短信与QQ/163/腾讯企业邮箱SMTP，填写所需凭据后启用。默认禁用且不放真实凭据，按官方协议区分受理与送达；原等待资料已结束，后续串行实施，全部提交仍暂缓。
+**投递（Delivery）**：一个接收人和一个渠道的发送事实。外部ACCEPTED仅表示厂商受理，DELIVERED须有可验证送达依据。
+_Avoid_: 把所有成功状态称为用户已收到。
 
-Revision120：T-23开始，610上游hash已核对。用户要求的五种禁用账号预设、必要凭据/签名校验和SMS4J消息ID保留先行；已登记common-sms、DML、通知配置页面、精确父规范与供应商说明写集。官方原生回执均不同于现有HMAC；阿里重试文档互相矛盾、腾讯仅说明再试2次，保留期不猜测。回执安全接入/身份仍在内部研究，不等待用户、不标review。29review/1in_progress/1ready/0Done，全部提交暂缓。
+**Outbox**：与通知意图同事务创建的可恢复任务，持有有限尝试次数、owner/token及lease。实时唤醒只是加速提示。
+_Avoid_: 把Redis唤醒当持久队列。
+
+**收件箱事实**：消息快照与当前用户关系已持久化，用户通过本人REST接口读取；实时连接不是持久化来源。
+_Avoid_: 用公告已发布代替本人消息已落库。
+
+**本地失败与外部UNKNOWN**：本地事务失败可由提交/回滚事实判断；外部UNKNOWN表示请求可能已被接受但无法确认，不能统一盲目重发。
+_Avoid_: 站内信等待供应商回执。
+
+**发布版本快照**：公告发布时的不可变内容和接收人范围，草稿、公告生命周期与投递结果各自有独立语义。
+_Avoid_: 撤回等于删除历史或追回外部邮件。

@@ -1,17 +1,20 @@
-# WTA-plus 全面审查 Change
+# WTA-plus comprehensive review：2026-09-23重规划
 
-当前执行以 goal-plan.md、tickets-map.md 和 worklog.md 最新 revision 为准。用户已授权全部本地可逆工作并明确暂缓所有提交；截至 revision59，13票本地review、16票ready、2票规划blocked、0Done。下文“尚未实施/plan-only”等是历史规划快照，不再代表当前授权。
+本轮依据最新报告和HEAD `1264980c74e594bc594e88561bb292fbe5d968a1`全面重写活动文档；原31票保留编号及实现证据，新增19票，共T-01—T-50。T-30扩展为最终集成与归档准备。报告18项全部有责任票；60个引用完成源码比对。没有实施产品代码、提交/推送、运行真实服务或启动目标。
 
-2026-09-18已串行完成源码复核及T-tickets/P-goal-plan文档完善，未调用任何子代理。31票均有完整执行合同；29票计划Ready，T-03/T-23因具体参数缺证据保持blocked。产品实现未开始，Goal执行Gate关闭。
+**revision138：G共识已由用户明确确认，Spec和50票Ready，Goal Plan已定稿。** 按用户要求，Goal执行仍关闭（ready_for_execution=false），之后由用户自行激活；本轮仅文档规划。
 
 阅读顺序：
 
-1. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>：目标、串行编排、门禁、授权、恢复。
-2. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>：31票状态、依赖、Skill、AC覆盖及写集owner。
-3. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/re-review.md</Path>：当前合同、决策与源码证据。
-4. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/plan-quality-review.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/planning-validation.json</Path>：本次规划审查与校验结果。
-5. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/cleanup-plan.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/handoff.md</Path>：清理、历史检查及接续边界。
+1. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/current-review.md</Path>：当前源码逐项结论、补充缺口与证据。
+2. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/design-tree.json</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>：已接受决定、真实用户答复及旧合同替代关系。
+3. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>：用户行为、50项AC与范围。
+4. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>：完整50票、依赖、Skill与写集；具体施工见各票。
+5. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>：串行顺序、Gate、历史票处置、验收/归档路线。
+6. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-validation.json</Path>：未来业务矩阵和本轮真实校验。
 
-原始证据按日期保留；re-review为源码复核，planning为本次T/P规划。基座无兼容工程，不添加冗余框架或兜底。
+旧Evidence与原报告按字节保留；原47份活动工件快照位于<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/</Path>。快照中的“尚未实现/暂缓提交/31票全绿”等仅描述其原时点，不能覆盖当前权威。
 
-P文档已形成；P Work保留阻塞检查点，阶段命令的2项父级工件误报详见验证记录，未报告P成功。
+计划质量审查：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/plan-quality-review-2026-09-23.md</Path>。结构校验通过；共享写路径告警由已锁定的single-agent/current串行策略处理，不授权并行。
+
+2026-09-23执行更新：用户已激活Goal；恢复本地实施/逐票提交验收，覆盖前述计划时点的未激活说明。当前先T-32，全部50票目标保持。

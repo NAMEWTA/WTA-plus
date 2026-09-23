@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "artifact": "design-tree",
+  "change": "2026-09-14-wta-plus-comprehensive-review",
+  "status": "consensus",
+  "round": 2,
+  "nodes": [
+    {
+      "id": "D-001",
+      "title": "本轮范围与执行边界",
+      "question": "是否只规划并保留现有change？",
+      "depends_on": [],
+      "recommendation": "全面修订原change，G→S→T→P计划；用户审查后自行激活目标。",
+      "status": "answered",
+      "round": 1,
+      "answer": "用户2026-09-23明确请求；本轮禁止产品实现、commit/push、部署、真实数据操作。",
+      "log_ref": "LOG-001"
+    },
+    {
+      "id": "D-002",
+      "title": "撤回语义",
+      "question": "撤回是否保留已送达内容？",
+      "depends_on": [],
+      "recommendation": "只停止本发布版本未发送任务；保留已送达站内信/快照/审计，外部已发送不可追回。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：采用以上三项（推荐）。确认：只停止本发布版本未发送任务；保留已送达站内信/快照/审计，外部已发送不可追回。",
+      "log_ref": "LOG-010"
+    },
+    {
+      "id": "D-003",
+      "title": "OSS互斥取舍",
+      "question": "是否采用单对象有界I/O事务锁？",
+      "depends_on": [],
+      "recommendation": "统一sys_oss→工单锁序，单对象短事务内幂等删除，有界超时；不锁整批。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：采用以上三项（推荐）。确认：统一sys_oss→工单锁序，单对象短事务内幂等删除，有界超时；不锁整批。",
+      "log_ref": "LOG-011"
+    },
+    {
+      "id": "D-004",
+      "title": "SSO与历史票边界",
+      "question": "是否保持SSO迁移由相邻change承接？",
+      "depends_on": [],
+      "recommendation": "报告N/O/S/D全纳入；原31票保留复核，OIDC迁移引用相邻change且不跨写。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：采用以上三项（推荐）。确认：报告N/O/S/D全纳入；原31票保留复核，OIDC迁移引用相邻change且不跨写。",
+      "log_ref": "LOG-012"
+    },
+    {
+      "id": "D-005",
+      "title": "收件箱分页与全部已读",
+      "question": "是否保留完整历史及本人全部已读？",
+      "depends_on": [],
+      "recommendation": "项目分页合同、稳定排序、本人总未读；顶部最近摘要；全部已读保持全量本人语义。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：采用这些边界（推荐）。确认：项目分页合同、稳定排序、本人总未读；顶部最近摘要；全部已读保持全量本人语义。",
+      "log_ref": "LOG-013"
+    },
+    {
+      "id": "D-006",
+      "title": "未支持通知合同",
+      "question": "是否收缩为ALL/ASYNC/priority=0？",
+      "depends_on": [],
+      "recommendation": "拒绝其他取值，同批迁移所有现有非零priority调用，保留截止时间与幂等。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：采用这些边界（推荐）。确认：拒绝其他取值，同批迁移所有现有非零priority调用，保留截止时间与幂等。",
+      "log_ref": "LOG-014"
+    },
+    {
+      "id": "D-007",
+      "title": "凭据轮换与归档边界",
+      "question": "真实凭据处置如何关闭？",
+      "depends_on": [],
+      "recommendation": "本地整改及轮换操作清单先做；真实轮换需环境owner批准及证据，未处置/未明确豁免阻止归档。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：采用这些边界（推荐）。确认：本地整改及轮换操作清单先做；真实轮换需环境owner批准及证据，未处置/未明确豁免阻止归档。",
+      "log_ref": "LOG-015"
+    },
+    {
+      "id": "D-008",
+      "title": "替代OSS硬门禁",
+      "question": "是否替代System AGENTS的readiness访问硬前置？",
+      "depends_on": [],
+      "recommendation": "按报告取消诊断门禁但保留用户授权/状态/PRIVATE类型；规范和测试同票修改。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：按新报告替代（推荐）。确认：按报告取消诊断门禁但保留用户授权/状态/PRIVATE类型；规范和测试同票修改。",
+      "log_ref": "LOG-016"
+    },
+    {
+      "id": "D-009",
+      "title": "附件持久归属",
+      "question": "报告假设的快照能力仅有SPI及测试替身，是否补齐生产适配和真实owner？",
+      "depends_on": [],
+      "recommendation": "附件归Notify意图的持久关系；系统OSS实现快照/物化端口，绑定真实表PK；不恢复sys_notify_log。",
+      "status": "answered",
+      "round": 1,
+      "answer": "2026-09-23用户明确回复：采用完整附件闭环（推荐）。确认：附件归Notify意图的持久关系；系统OSS实现快照/物化端口，绑定真实表PK；不恢复sys_notify_log。",
+      "log_ref": "LOG-017"
+    }
+  ]
+}

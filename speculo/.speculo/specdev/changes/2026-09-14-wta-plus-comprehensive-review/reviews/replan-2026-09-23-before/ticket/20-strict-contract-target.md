@@ -1,0 +1,145 @@
+---
+schema_version: 3
+plan_contract_version: 1
+skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/20-strict-contract-target.md</Path>", "<Path>frontend/tsconfig.json</Path>", "<Path>frontend/packages/platform/http/</Path>"], "outputs": ["T-20的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/20-strict-contract-target.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
+resource_claims: ["workspace:current-exclusive", "finding:F-12", "contract:AC-020"]
+artifact: ticket
+change: 2026-09-14-wta-plus-comprehensive-review
+id: T-20
+title: 收紧已触及的TypeScript合同边界
+status: "review"
+planning_depth: "deep"
+planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：收紧已触及的TypeScript合同边界"
+ready: true
+risk: medium
+blocked_by: ["T-12", "T-14", "T-19"]
+contract_ids: [AC-020]
+owner: single-agent
+expected_changes: ["<Path>frontend/tsconfig.json</Path>", "<Path>frontend/packages/platform/http/</Path>", "<Path>frontend/packages/adapters/axios-browser/</Path>", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path>", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/packages/domains/admin/src/transport.ts</Path>", "<Path>frontend/packages/domains/system/src/transport.ts</Path>", "<Path>frontend/packages/domains/third/src/index.ts</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/transport.ts</Path>", "<Path>frontend/packages/platform/http/tsconfig.json</Path>", "<Path>frontend/packages/adapters/axios-browser/tsconfig.json</Path>", "<Path>frontend/packages/domains/admin/tsconfig.json</Path>", "<Path>frontend/packages/domains/system/tsconfig.json</Path>", "<Path>frontend/packages/domains/profile/tsconfig.json</Path>", "<Path>frontend/packages/domains/third/tsconfig.json</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/tsconfig.json</Path>", "<Path>frontend/packages/platform/auth/tsconfig.json</Path>", "<Path>frontend/packages/platform/app-runtime/tsconfig.json</Path>", "<Path>frontend/packages/platform/permission/tsconfig.json</Path>", "<Path>frontend/packages/web-domains/profile/tsconfig.json</Path>", "<Path>frontend/apps/home-web/tsconfig.json</Path>", "<Path>frontend/packages/domains/admin/src/index.ts</Path>", "<Path>frontend/packages/domains/admin/src/transport.test.ts</Path>", "<Path>frontend/packages/domains/system/src/user/public.ts</Path>", "<Path>frontend/packages/domains/system/src/user/public.test.ts</Path>", "<Path>frontend/packages/domains/system/src/menu/public.ts</Path>", "<Path>frontend/packages/domains/system/src/menu/public.test.ts</Path>", "<Path>frontend/packages/domains/system/src/dict-type/public.ts</Path>", "<Path>frontend/packages/domains/system/src/transport.test.ts</Path>", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/index.ts</Path>", "<Path>frontend/packages/platform/permission/src/index.ts</Path>", "<Path>frontend/packages/web-domains/profile/src/person/logic.ts</Path>", "<Path>frontend/packages/web-domains/profile/src/material-tag/MaterialTagPage.vue</Path>", "<Path>.agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>frontend/apps/admin-web/src/types/axios.d.ts</Path>", "<Path>frontend/apps/admin-web/src/application/http.test.ts</Path>"]
+writable_paths: ["<Path>frontend/tsconfig.json</Path>", "<Path>frontend/packages/platform/http/</Path>", "<Path>frontend/packages/adapters/axios-browser/</Path>", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path>", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/packages/domains/admin/src/transport.ts</Path>", "<Path>frontend/packages/domains/system/src/transport.ts</Path>", "<Path>frontend/packages/domains/third/src/index.ts</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/src/transport.ts</Path>", "<Path>frontend/packages/platform/http/tsconfig.json</Path>", "<Path>frontend/packages/adapters/axios-browser/tsconfig.json</Path>", "<Path>frontend/packages/domains/admin/tsconfig.json</Path>", "<Path>frontend/packages/domains/system/tsconfig.json</Path>", "<Path>frontend/packages/domains/profile/tsconfig.json</Path>", "<Path>frontend/packages/domains/third/tsconfig.json</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/tsconfig.json</Path>", "<Path>frontend/packages/platform/auth/tsconfig.json</Path>", "<Path>frontend/packages/platform/app-runtime/tsconfig.json</Path>", "<Path>frontend/packages/platform/permission/tsconfig.json</Path>", "<Path>frontend/packages/web-domains/profile/tsconfig.json</Path>", "<Path>frontend/apps/home-web/tsconfig.json</Path>", "<Path>frontend/packages/domains/admin/src/index.ts</Path>", "<Path>frontend/packages/domains/admin/src/transport.test.ts</Path>", "<Path>frontend/packages/domains/system/src/user/public.ts</Path>", "<Path>frontend/packages/domains/system/src/user/public.test.ts</Path>", "<Path>frontend/packages/domains/system/src/menu/public.ts</Path>", "<Path>frontend/packages/domains/system/src/menu/public.test.ts</Path>", "<Path>frontend/packages/domains/system/src/dict-type/public.ts</Path>", "<Path>frontend/packages/domains/system/src/transport.test.ts</Path>", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/index.ts</Path>", "<Path>frontend/packages/platform/permission/src/index.ts</Path>", "<Path>frontend/packages/web-domains/profile/src/person/logic.ts</Path>", "<Path>frontend/packages/web-domains/profile/src/material-tag/MaterialTagPage.vue</Path>", "<Path>.agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>frontend/apps/admin-web/src/types/axios.d.ts</Path>", "<Path>frontend/apps/admin-web/src/application/http.test.ts</Path>"]
+read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
+shared_paths: ["<Path>frontend/packages/platform/http/</Path>", "<Path>frontend/packages/adapters/axios-browser/</Path>", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path>", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path>", "<Path>frontend/apps/home-web/src/store/</Path>", "<Path>frontend/packages/domains/admin/src/transport.ts</Path>", "<Path>frontend/packages/domains/system/src/transport.ts</Path>", "<Path>frontend/packages/domains/third/src/index.ts</Path>", "<Path>frontend/packages/platform/http/tsconfig.json</Path>", "<Path>frontend/packages/adapters/axios-browser/tsconfig.json</Path>", "<Path>frontend/packages/domains/admin/tsconfig.json</Path>", "<Path>frontend/packages/domains/system/tsconfig.json</Path>", "<Path>frontend/packages/domains/profile/tsconfig.json</Path>", "<Path>frontend/packages/domains/third/tsconfig.json</Path>", "<Path>frontend/packages/adapters/oss-upload-browser/tsconfig.json</Path>", "<Path>frontend/packages/platform/auth/tsconfig.json</Path>", "<Path>frontend/packages/platform/app-runtime/tsconfig.json</Path>", "<Path>frontend/packages/platform/permission/tsconfig.json</Path>", "<Path>frontend/packages/web-domains/profile/tsconfig.json</Path>", "<Path>frontend/apps/home-web/tsconfig.json</Path>", "<Path>frontend/packages/domains/admin/src/index.ts</Path>", "<Path>frontend/packages/domains/admin/src/transport.test.ts</Path>", "<Path>frontend/packages/domains/system/src/user/public.ts</Path>", "<Path>frontend/packages/domains/system/src/user/public.test.ts</Path>", "<Path>frontend/packages/domains/system/src/menu/public.ts</Path>", "<Path>frontend/packages/domains/system/src/menu/public.test.ts</Path>", "<Path>frontend/packages/domains/system/src/dict-type/public.ts</Path>", "<Path>frontend/packages/domains/system/src/transport.test.ts</Path>", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path>", "<Path>frontend/packages/platform/app-runtime/src/index.ts</Path>", "<Path>frontend/packages/platform/permission/src/index.ts</Path>", "<Path>frontend/packages/web-domains/profile/src/person/logic.ts</Path>", "<Path>frontend/packages/web-domains/profile/src/material-tag/MaterialTagPage.vue</Path>", "<Path>.agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md</Path>", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path>", "<Path>frontend/apps/admin-web/src/types/axios.d.ts</Path>", "<Path>frontend/apps/admin-web/src/application/http.test.ts</Path>"]
+shared_path_owners: ["<Path>frontend/packages/platform/http/</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/adapters/axios-browser/</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/apps/home-web/src/store/</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/admin/src/transport.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/src/transport.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/third/src/index.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/platform/http/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/adapters/axios-browser/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/admin/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/profile/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/third/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/adapters/oss-upload-browser/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/platform/auth/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/platform/app-runtime/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/platform/permission/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/web-domains/profile/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/apps/home-web/tsconfig.json</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/admin/src/index.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/admin/src/transport.test.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/src/user/public.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/src/user/public.test.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/src/menu/public.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/src/menu/public.test.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/src/dict-type/public.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/domains/system/src/transport.test.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/platform/auth/src/index.test.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/platform/app-runtime/src/index.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/platform/permission/src/index.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/web-domains/profile/src/person/logic.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/packages/web-domains/profile/src/material-tag/MaterialTagPage.vue</Path> => single-agent (Lead; serial T-20 turn)", "<Path>.agents/skills/engineering-standards/references/project/02-decisions-and-exceptions.md</Path> => single-agent (Lead; serial T-20 turn)", "<Path>.agents/skills/engineering-standards/references/project/00-project-profile.md</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/apps/admin-web/src/types/axios.d.ts</Path> => single-agent (Lead; serial T-20 turn)", "<Path>frontend/apps/admin-web/src/application/http.test.ts</Path> => single-agent (Lead; serial T-20 turn)"]
+---
+
+# T-20：收紧已触及的TypeScript合同边界
+
+Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
+唯一执行者先读Map，再按Skill矩阵读取适用入口/引用，再读本票。禁止任何implementation/review/research子代理。Ready仅表示计划合同就绪，不表示已经授权实施或已验证通过。
+
+## 1. 战略与来源
+
+- 目标与可观察产出：受影响边界类型检查通过，nullable与非法transport样本有明确处理。
+- 来源：F-12；AC-020；USER-DECISION: 全面完善计划、无兼容、单人串行。
+- 当前事实与调用链：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/re-review.md</Path>中T-20行及对应专项报告；源码导航为frontmatter预计修改点。
+- 规划深度：deep；安全/鉴权、公共合同、数据一致性或共享核心路径变更：收紧已触及的TypeScript合同边界。
+
+## 2. 决策状态
+
+### 已锁定决策
+
+全局三项strict关闭是工程债，尚无诊断规模证明全仓硬切必要；本change优先收紧实际修改的合同边界，全仓严格化仅在诊断证明范围可控时另行纳入。
+
+### 已采用的低影响假设
+
+沿用当前仓库版本与既有模块命名；实施前回读实际源码，路径变化由本票修订，不猜测不存在的实现。
+
+### 未决问题
+
+无。
+
+## 3. 范围边界
+
+| IN | REUSE | OUT |
+|---|---|---|
+| 本change触及的SSO/用户菜单/OSS边界→精确类型与空值处理 | 已有mapper/校验；不强制全仓三个strict开关或重复parse | 本票之外的模块重写、兼容桥、远程发布与重要数据操作 |
+
+## 4. 要构建什么
+
+本change触及的SSO/用户菜单/OSS边界→精确类型与空值处理。调用者可观察到：受影响边界类型检查通过，nullable与非法transport样本有明确处理。失败时：不新增ignore/双cast/any规避；保留合法可空值和错误路径。
+
+## 5. 实现契约
+
+- 入口、输入输出与数据流：本change触及的SSO/用户菜单/OSS边界→精确类型与空值处理。
+- 不变量及失败语义：不新增ignore/双cast/any规避；保留合法可空值和错误路径。
+- 公共合同：本票只按以上行为及执行路线变更；同步全部仓内调用/生成物，沿用已有权限/Client/owner校验。未列出的接口保持原语义。
+- 兼容：用户明确无需旧版兼容；仓内一次切换，不加双路由/版本等待。实际供应商协议仍须遵守。
+- 安全与隐私：凭据不进入日志/UI证据；越权/过期/无owner拒绝；数据库与资源约束不能为前端成功而放宽。
+
+这是类型质量改进票，不是新增运行时验证框架。生成transport通过生成流程更新，不手工编辑；不顺带升级TypeScript/Vite或第三方声明。
+
+## 6. 执行路线
+
+1. 记录三个关闭开关与受影响包真实诊断，不把tsconfig开关本身报告为已发生运行时故障。
+2. 优先修本change触及的用户、菜单、SSO、OSS边界类型；复用现有mapper/校验，不在每层重复parse。
+3. 使用实际类型、空值处理和必要边界验证替代双cast/无理由any，不能加ignore或移出检查。
+4. 只对已完成诊断清理的包/边界启用对应严格检查；记录剩余未改范围，不把所有既有代码重写作为安全票的前置。
+
+## 7. 路径访问契约
+
+预计点、可写范围、只读上下文及共享项以frontmatter为唯一权威。共享owner固定single-agent；只有当前票轮次可写，下一票须回读前一结果。跨模块目录只允许本票行为必需的文件，目录授权不意味着重写全部模块。新增测试位于同模块测试目录；未覆盖的新路径先修订本票/Map再写。
+保留当前用户未提交改动、永久ADR/context、供应商源码与运行数据；生成物通过正式工具更新。
+
+## 8. 验证矩阵
+
+| 行为或风险 | 验证接缝/步骤 | 预期结果 | Evidence |
+|---|---|---|---|
+| 正常路径 | 本change触及的SSO/用户菜单/OSS边界→精确类型与空值处理；执行下列定向命令及对应场景 | 受影响边界类型检查通过，nullable与非法transport样本有明确处理 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path> |
+| 失败路径 | 不新增ignore/双cast/any规避；保留合法可空值和错误路径；固定时序/故障注入，记录输入与最终可观察状态 | 无越权、错误状态或部分提交；可按定义恢复 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path> |
+| 回归 | 运行所属包原有测试及受影响调用者；逐项核对下列AC | 不增加双cast、ignore或检查排除来消除诊断；全量现有typecheck仍通过；严格化范围与诊断记录一致；未触及存量严格债明确列出，不冒充全仓strict完成 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path> |
+
+Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该目录，其他命令cwd为仓根，逐条串行执行。新增用例实施时登记精确选择器、实际测试数与跳过项，零测试/required跳过不算通过。
+
+- `frontend: pnpm typecheck`
+- `frontend: pnpm architecture:check`
+- `frontend: pnpm lint`
+- `frontend: pnpm test`
+- `frontend: pnpm build:prod`
+
+- E2E disposition：not-required: 受影响包诊断、typecheck和边界单测直接覆盖；相关业务E2E属于原票。
+- E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
+- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本地验证通过，见T-20.md；全部提交暂缓，SHA为空。
+
+## 9. 发布、迁移与恢复
+
+- 顺序：前置票产生已验证合同后实施本票；源码、仓内消费者、测试和生成物同批交付。涉及DDL只编辑10-cde-base-ddl.sql，新环境按六文件基座初始化；不增加存量迁移工程。
+- 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
+- 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
+- 恢复：撤回本票类型收紧仍保留已修正业务判断，不放宽全局检查。
+- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；用户已授权全部本地可逆实现和验证，所有提交继续暂缓。
+- 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
+
+## 10. 验收标准
+
+- [x] `AC-020`：受影响边界类型检查通过，nullable与非法transport样本有明确处理。
+- [x] `AC-020`：不增加双cast、ignore或检查排除来消除诊断。
+- [x] `AC-020`：全量现有typecheck仍通过；严格化范围与诊断记录一致。
+- [x] `AC-020`：未触及存量严格债明确列出，不冒充全仓strict完成。
+- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
+- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path>，未执行不得标通过。
+- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
+- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
+- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+
+## 11. SKILL 调用计划
+
+frontmatter绑定的项目Skill在implementation阶段接收本票路径和上游合同，产出适用分层、权限、数据/资源边界及实现diff；engineering-standards在verify阶段根据本节命令选择受影响门禁并输出AC/退出码/E2E记录。按入口scope展开引用，不以“已读”代替实际操作。
+必需入口缺失或sha256漂移时阻塞本票；Lead回读差异后更新绑定及Map，不能自动接受新摘要。实际记录归<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-20.md</Path>的`## Skill Execution Records`，本次规划不伪造实现调用记录。
+
+## 12. 停止、检查点与交付
+
+交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
+依赖：T-12, T-14, T-19。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+
+### T-07首次完整App类型诊断
+
+Admin完整typecheck剩8条诊断：web-domain-notify ConfigPage.vue的DefaultRow→NotifyChannelAccount/SceneBinding及web-domain-system SsoAppPage.vue的DefaultRow→ClientVO、string|number→string。两文件字节与HEAD一致；证据T-07-admin-type-diagnostics.json和T-07-frontend-2.json。此票实施时先追踪BaseTable槽位泛型与ID合同并登记必要写集，不增加any/ignore；当前未声称全仓类型通过。T-07自身两个App SSO SHA BufferSource诊断已直接修复。
+
+2026-09-18 T-09真实构建复现同一clientId错误；两页8条已知诊断的局部编译修复转交T-09写集，以完成构建矩阵。T-20继续原合同边界范围，后续回读T-09检查点，不重复认领修复。
+
+T-09最终三App类型/lint与实际dev/prod构建全部通过，上述八条旧页面诊断已关闭；本票其他合同边界工作仍未开始。
+
+## Revision135 实际提交与父分支验收
+
+用户已明确授权全部commit/push。implementation commits：`1393ea3af6be8fd4995fad19f6f0c4ea31ad7419`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。

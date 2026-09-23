@@ -1,49 +1,57 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
-skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>"], "outputs": ["T-27的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>"], "outputs": ["T-27的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}]
-resource_claims: ["workspace:current-exclusive", "finding:B-14", "contract:AC-027"]
-artifact: ticket
-change: 2026-09-14-wta-plus-comprehensive-review
-id: T-27
-title: 修复Demo树样例并删除误导占位实现
-status: "review"
+skill_scan: "2026-09-23已枚举.agents/skills全部入口；命中scope读取入口，common入口变化已复核，历史Skill Evidence不改写"
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>"], "outputs": ["T-27的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path>", "<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>"], "outputs": ["T-27的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/27-honest-demo-tree-baseline.md</Path>", "当前diff与验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27-replan-2026-09-23.md</Path>"], "required": true, "on_failure": "block-ticket"}]
+resource_claims: ["workspace:current-exclusive", "contract:AC-027"]
+artifact: "ticket"
+change: "2026-09-14-wta-plus-comprehensive-review"
+id: "T-27"
+title: "修复Demo树样例并删除误导占位实现"
+status: "ready"
+kind: "review"
 planning_depth: "standard"
-planning_depth_reason: "沿用现有模块的多文件行为修复：修复Demo树样例并删除误导占位实现"
+planning_depth_reason: "局部多文件可观察行为或既有实现验收"
 ready: true
-risk: medium
+risk: "medium"
 blocked_by: ["T-26"]
-contract_ids: [AC-027]
-owner: single-agent
+contract_ids: ["AC-027"]
+owner: "single-agent"
 expected_changes: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
 writable_paths: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
-read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
+read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
 shared_paths: ["<Path>backend/wta-modules/wta-demo/</Path>", "<Path>frontend/packages/domains/demo/</Path>", "<Path>frontend/packages/web-domains/demo/</Path>", "<Path>docs/fm/</Path>", "<Path>backend/wta-admin/src/test/</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
-shared_path_owners: ["<Path>backend/wta-modules/wta-demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>frontend/packages/domains/demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>frontend/packages/web-domains/demo/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>docs/fm/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; serial T-27 turn)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; serial T-27 turn)"]
+shared_path_owners: ["<Path>backend/wta-modules/wta-demo/</Path> => single-agent (Lead; exclusive current workspace; T-27 turn only)", "<Path>frontend/packages/domains/demo/</Path> => single-agent (Lead; exclusive current workspace; T-27 turn only)", "<Path>frontend/packages/web-domains/demo/</Path> => single-agent (Lead; exclusive current workspace; T-27 turn only)", "<Path>docs/fm/</Path> => single-agent (Lead; exclusive current workspace; T-27 turn only)", "<Path>backend/wta-admin/src/test/</Path> => single-agent (Lead; exclusive current workspace; T-27 turn only)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; exclusive current workspace; T-27 turn only)"]
 ---
 
 # T-27：修复Demo树样例并删除误导占位实现
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先读Map，再按Skill矩阵读取适用入口/引用，再读本票。禁止任何implementation/review/research子代理。Ready仅表示计划合同就绪，不表示已经授权实施或已验证通过。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
 
 ## 1. 战略与来源
 
-- 目标与可观察产出：保存/删除路径不再有虚假校验TODO。
-- 来源：B-14；AC-027；USER-DECISION: 全面完善计划、无兼容、单人串行。
-- 当前事实与调用链：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/re-review.md</Path>中T-27行及对应专项报告；源码导航为frontmatter预计修改点。
-- 规划深度：standard；沿用现有模块的多文件行为修复：修复Demo树样例并删除误导占位实现。
+- 来源：B-14；AC-027；本轮用户请求与<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>。
+- 当前事实：Demo树功能保持；Demo Mail修复归T-42，不废弃演示。
+- 可观察产出：保存/删除路径不再有虚假校验TODO
 
 ## 2. 决策状态
 
 ### 已锁定决策
 
-保留Demo/default bundle，实现合法parent/无环/有子节点拒删；不增加名称唯一性。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+
+### 已确认方案
+
+既有合同保持；本轮重新评审与验收；Demo树功能保持；Demo Mail修复归T-42，不废弃演示。 完整决定及来源以<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>为准。
 
 ### 已采用的低影响假设
 
-沿用当前仓库版本与既有模块命名；实施前回读实际源码，路径变化由本票修订，不猜测不存在的实现。
+沿用当前模块与测试基座；测试样本为隔离合成数据，不作为生产容量或SLO。
+
+### 执行前置
+
+G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施与commit授权及必要测试环境。Ready不代替Goal激活。
 
 ### 未决问题
 
@@ -53,89 +61,87 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 | IN | REUSE | OUT |
 |---|---|---|
-| Demo树新增/修改/删除→有效parent与无环/子节点校验 | 现有Demo bundle/菜单/DAO及模板；保留主动示例 | 本票之外的模块重写、兼容桥、远程发布与重要数据操作 |
+| 本票可观察产出及所列消费者、验证、文档 | 既有wta-api/common、模块模式、事务/权限/生命周期与测试 | 无关模块重写、新队列/锁平台、真实数据修复、远程发布及相邻OIDC实现 |
 
 ## 4. 要构建什么
 
-Demo树新增/修改/删除→有效parent与无环/子节点校验。调用者可观察到：保存/删除路径不再有虚假校验TODO。失败时：有子节点拒删；根按既有sentinel；名称不增加未声明唯一约束。
+保存/删除路径不再有虚假校验TODO 正常、失败、越权和竞争路径按本票验收断言共同交付，不把前后端或测试分成无价值空票。
 
 ## 5. 实现契约
 
-- 入口、输入输出与数据流：Demo树新增/修改/删除→有效parent与无环/子节点校验。
-- 不变量及失败语义：有子节点拒删；根按既有sentinel；名称不增加未声明唯一约束。
-- 公共合同：本票只按以上行为及执行路线变更；同步全部仓内调用/生成物，沿用已有权限/Client/owner校验。未列出的接口保持原语义。
-- 兼容：用户明确无需旧版兼容；仓内一次切换，不加双路由/版本等待。实际供应商协议仍须遵守。
-- 安全与隐私：凭据不进入日志/UI证据；越权/过期/无owner拒绝；数据库与资源约束不能为前端成功而放宽。
-
-具体 TODO 位于 <Path>backend/wta-modules/wta-demo/src/main/java/org/namewta/demo/service/impl/TestTreeServiceImpl.java</Path>。规则至少包含有效 parent、拒绝环、有子节点删除策略及并发重验；不能仅删除 TODO 或加前端判断。名称唯一性不是现有事实，未声明不强加。<Path>docs/fm/</Path> 代表输出需要编译与负向场景，静态模板 validate 不能代替输出验证。Demo 仍在 bundle-full；B-16 过宽依赖候选已 rejected，不借本票再次拆包。
+- 入口与输入输出：required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除。
+- 外部行为：保存/删除路径不再有虚假校验TODO
+- 不变量：current workspace单writer；UseCase→Service→DAO→Mapper；classic保留；公开数据只经wta-api；GET查询/POST变更且安全@Log。Notify外部I/O不在结果事务内，IN_APP按确认后的短事务合同处理。
+- 失败边界：不吞SQL/HTTP/Provider错误，不将UNKNOWN当成功或盲目可重试；页面旧响应不覆盖新会话。具体负向断言见第8/10节。
+- 兼容：沿用用户此前明确的基座仓内直接切换决定，同步真实消费者/生成物；不放宽第三方协议。公共API技能用于调用方与影响核对，不重新增加已被用户排除的兼容桥。
+- 安全：仅隔离合成测试；secret不进日志/截图/证据。对象/Client授权在后端实施，页面隐藏不替代权限。
 
 ## 6. 执行路线
 
-1. 确认Demo仍是现有bundle-full中的主动示例，不因名称demo直接删产品能力。
-2. 实现最小树合同：合法parent、无环；有子节点拒绝删除，合法叶节点可删。
-3. 沿用现有名称校验，不新增唯一性约束。
-4. 使静态模板与示例的树合同一致，新增负向样例供其他AI参考。
+1. 回读本票历史Evidence和实际实现提交，使用当前源码核对本票验收合同；旧施工步骤仅在before快照保存，不重复实施。
+2. 比较历史候选与当前写集；对后续提交或新票触及的行为逐一标记需要重跑的测试。
+3. 执行本票正常/失败/回归及E2E要求；零用例或required skip不算通过，结果写新的带日期证据，不覆盖原始记录。
+4. 若发现退化，先在本票写集内固定红灯；超出范围或与新票重叠时由Lead修订owner，禁止重复改动。
+5. 核验历史非空提交和父链；缺少真实clean exact-HEAD证明不得事后补造。按Goal历史票关闭程序处置。
 
 ## 7. 路径访问契约
 
-预计点、可写范围、只读上下文及共享项以frontmatter为唯一权威。共享owner固定single-agent；只有当前票轮次可写，下一票须回读前一结果。跨模块目录只允许本票行为必需的文件，目录授权不意味着重写全部模块。新增测试位于同模块测试目录；未覆盖的新路径先修订本票/Map再写。
-保留当前用户未提交改动、永久ADR/context、供应商源码与运行数据；生成物通过正式工具更新。
+frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权本票行为所需文件；新增测试在声明根内，新增生产类须符合已有层次。不存在的新文件为计划创建，不声称已实现。共享物理/语义资源由single-agent在本票轮次独占；不同票不并行，跨change冲突仅暂停相关分支。
+
+本票状态和Evidence仅由Lead写当前change；永久ADR/context及相邻SSO change只读。越界先修订Ticket/Map，禁止先改后报。
 
 ## 8. 验证矩阵
 
-| 行为或风险 | 验证接缝/步骤 | 预期结果 | Evidence |
+| 场景 | 接缝/步骤 | 预期 | Evidence |
 |---|---|---|---|
-| 正常路径 | Demo树新增/修改/删除→有效parent与无环/子节点校验；执行下列定向命令及对应场景 | 保存/删除路径不再有虚假校验TODO | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path> |
-| 失败路径 | 有子节点拒删；根按既有sentinel；名称不增加未声明唯一约束；固定时序/故障注入，记录输入与最终可观察状态 | 无越权、错误状态或部分提交；可按定义恢复 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path> |
-| 回归 | 运行所属包原有测试及受影响调用者；逐项核对下列AC | 非法parent、环、带子节点删除按明确合同处理；模板代表输出可编译且与前后端树语义一致；保留演示所需权限/日志，不把示例缺陷推广到System | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path> |
+| 正常 | required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除 | 保存/删除路径不再有虚假校验TODO | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27-replan-2026-09-23.md</Path> |
+| 失败/竞争 | 非法parent、环、带子节点删除按明确合同处理 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
+| 回归 | 现有同域测试＋消费者＋适用静态门禁 | 模板代表输出可编译且与前后端树语义一致；保留演示所需权限/日志，不把示例缺陷推广到System | 同上，记录测试数/skip/源码 |
 
-Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该目录，其他命令cwd为仓根，逐条串行执行。新增用例实施时登记精确选择器、实际测试数与跳过项，零测试/required跳过不算通过。
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
 
-- `backend: ./mvnw -pl wta-modules/wta-demo,wta-admin -am test`
+- `cd backend && ./mvnw -pl wta-modules/wta-demo,wta-admin -am test`
 - `node docs/fm/scripts/validate.mjs`
-- `frontend: pnpm --filter @namewta/domain-demo test`
+- `cd frontend && pnpm --filter @namewta/domain-demo test`
 
+- Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
 - E2E disposition：required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除。
-- E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。本地工作树验证完成，见evidence；implementation_commit/result_sha/candidate为空，提交暂缓。
+- E2E owner/environment：single-agent（Lead）/current-workspace；真实MySQL/Redis/MinIO必须为本任务隔离资源，必要服务缺失则阻塞对应验收。
+- 真实服务启用方法与零skip要求：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>；新增用例必须保存精确选择器与实际计数，不能只运行mock或test list。
+- Integration evidence：非空implementation commit、parent before、clean exact HEAD/tree时点的direct-parent和适用E2E、不可变result及父链；required模式不适用，不创建candidate worktree。
 
 ## 9. 发布、迁移与恢复
 
-- 顺序：前置票产生已验证合同后实施本票；源码、仓内消费者、测试和生成物同批交付。涉及DDL只编辑10-cde-base-ddl.sql，新环境按六文件基座初始化；不增加存量迁移工程。
-- 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
-- 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
-- 恢复：事务失败保留原树；仅清本次测试数据，不移除Demo产品能力。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；本轮实现与本地验证已授权，用户要求全部提交暂缓。
-- 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
+- 迁移顺序：保持历史已交付行为；仅对当前复验发现的真实退化实施最小修复。已有数据不得重放基座。
+- 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
+- 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
+- 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
 
-- [x] `AC-027`：保存/删除路径不再有虚假校验TODO。
-- [x] `AC-027`：非法parent、环、带子节点删除按明确合同处理。
-- [x] `AC-027`：模板代表输出可编译且与前后端树语义一致。
-- [x] `AC-027`：保留演示所需权限/日志，不把示例缺陷推广到System。
-- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path>，未执行不得标通过。
-- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [ ] `AC-027`：保存/删除路径不再有虚假校验TODO。
+- [ ] `AC-027`：非法parent、环、带子节点删除按明确合同处理。
+- [ ] `AC-027`：模板代表输出可编译且与前后端树语义一致。
+- [ ] `AC-027`：保留演示所需权限/日志，不把示例缺陷推广到System。
+- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
-frontmatter绑定的项目Skill在implementation阶段接收本票路径和上游合同，产出适用分层、权限、数据/资源边界及实现diff；engineering-standards在verify阶段根据本节命令选择受影响门禁并输出AC/退出码/E2E记录。按入口scope展开引用，不以“已读”代替实际操作。
-必需入口缺失或sha256漂移时阻塞本票；Lead回读差异后更新绑定及Map，不能自动接受新摘要。实际记录归<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path>的`## Skill Execution Records`，本次规划不伪造实现调用记录。
+frontmatter每个必需绑定在implement阶段输入本票、真实调用方和diff，按scope执行约束检查与实现；verify阶段由engineering-standards执行适用门禁。实际Skill Execution Records写<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27-replan-2026-09-23.md</Path>，包含id/phase/operation/sha256/status/evidence。入口摘要变化先读diff并重新绑定，不改旧历史记录。当前规划仅完成元数据/入口及相关规范路由，未伪造实施passed。
 
 ## 12. 停止、检查点与交付
 
-交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
-依赖：T-26。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。
 
-Revision104：T-27开始，515条上游最新哈希均一致。TestTree保存/删除校验确为TODO；父0为根，无名称唯一约束。按实际父边定位根并排序加锁，锁后current read重验父链/权限，结构不变量不能被isValid=false跳过；批删有子节点整批拒绝。同步classic树模板的无ancestors分支与事务/删除校验，并实际渲染编译/负向测试；保留Demo bundle，不扩展普通表领域规则。26review/1in_progress/2ready/2blocked/0Done，全部提交暂缓。
+## 历史实现保留及本轮处置
 
-Revision105：T-27真实MySQL红灯3/3失败、零skip，已复现孤儿插入、后代成环和有子节点删除。源码test_tree仅PRIMARY，无parent_id索引；为直接子节点current-read/行锁避免全表扫描，登记六文件基座10-cde-base-ddl.sql精确写集，仅新增test_tree(parent_id)索引，不建表、不新增迁移脚本、不操作现有环境。
+历史implementation commit：`9c3bba7242e9fb165d96395ffc101f564fb2283d`；历史result：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。提交存在及祖先关系见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/legacy-ticket-audit.json</Path>。
 
-Revision106：T-27本地review。15真实MySQL、6真实HTTP、21实际模板渲染/编译/MySQL场景全部零skip；695默认后端通过/97环境skip、4 Demo前端、full/core打包及清单、6静态命令通过。15路径checkpoint、513上游非重叠不变/2重叠登记，累计528。27review/2ready/2blocked/0Done；全部提交继续暂缓，下一票T-29。
+<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-27.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/27-honest-demo-tree-baseline.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
-## Revision135 实际提交与父分支验收
-
-用户已明确授权全部commit/push。implementation commits：`9c3bba7242e9fb165d96395ffc101f564fb2283d`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。
+旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。

@@ -1,49 +1,57 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-skill_scan: "2026-09-18枚举.agents/skills入口并按本票真实路径/领域绑定；Map为最低集合"
-skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>"], "outputs": ["T-14的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>"], "outputs": ["T-14的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>"], "outputs": ["T-14的架构/权限/数据边界检查与定向实现diff"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "current-workspace实际diff及本票验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path>：命令、退出码、测试数、AC与Skill Execution Records"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-common-modules-guide", "path": "<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>", "sha256": "e92775ce47af41bd33c1b3293d7f8a3185fdd739b9b588519e043c654f678d98", "phase": "implement", "operation": "verify-authentication-advice-order", "inputs": ["<Path>backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/handler/SaTokenExceptionHandler.java</Path>"], "outputs": ["T-14 鉴权失败优先于通用异常处理的真实 HTTP 证据"], "required": true, "on_failure": "block-ticket"}]
-resource_claims: ["workspace:current-exclusive", "finding:F-02", "contract:AC-014"]
-artifact: ticket
-change: 2026-09-14-wta-plus-comprehensive-review
-id: T-14
-title: 补齐个人与企业自助认证材料闭环
-status: "review"
+skill_scan: "2026-09-23已枚举.agents/skills全部入口；命中scope读取入口，common入口变化已复核，历史Skill Evidence不改写"
+skill_bindings: [{"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>"], "outputs": ["T-14的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "namewta-fullstack-development", "path": "<Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path>", "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>"], "outputs": ["T-14的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-module-guide", "path": "<Path>.agents/skills/wta-module-guide/SKILL.md</Path>", "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>"], "outputs": ["T-14的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "wta-common-modules-guide", "path": "<Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path>", "sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c", "phase": "implement", "operation": "apply-scope-contract", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>"], "outputs": ["T-14的边界/调用方/持久化与实现检查记录"], "required": true, "on_failure": "block-ticket"}, {"id": "engineering-standards", "path": "<Path>.agents/skills/engineering-standards/SKILL.md</Path>", "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9", "phase": "verify", "operation": "verify-affected-contract-and-quality-gates", "inputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/14-profile-self-materials.md</Path>", "当前diff与验证矩阵"], "outputs": ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-replan-2026-09-23.md</Path>"], "required": true, "on_failure": "block-ticket"}]
+resource_claims: ["workspace:current-exclusive", "contract:AC-014"]
+artifact: "ticket"
+change: "2026-09-14-wta-plus-comprehensive-review"
+id: "T-14"
+title: "补齐个人与企业自助认证材料闭环"
+status: "ready"
+kind: "review"
 planning_depth: "deep"
-planning_depth_reason: "安全/鉴权、公共合同、数据一致性或共享核心路径变更：补齐个人与企业自助认证材料闭环"
+planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
 ready: true
-risk: high
+risk: "high"
 blocked_by: ["T-18"]
-contract_ids: [AC-014]
-owner: single-agent
+contract_ids: ["AC-014"]
+owner: "single-agent"
 expected_changes: ["<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path>", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path>", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path>", "<Path>backend/wta-modules/wta-profile/</Path>", "<Path>frontend/e2e/profile-management.spec.ts</Path>", "<Path>frontend/apps/home-web/src/application/services.ts</Path>", "<Path>frontend/apps/home-web/package.json</Path>", "<Path>frontend/e2e/profile-self-materials.spec.ts</Path>", "<Path>frontend/packages/domains/profile/src/material-tags/</Path>", "<Path>frontend/packages/web-domains/profile/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/playwright.profile.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/profile/index.md</Path>", "<Path>frontend/apps/home-web/AGENTS.md</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/handler/SaTokenExceptionHandler.java</Path>"]
 writable_paths: ["<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path>", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path>", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path>", "<Path>backend/wta-modules/wta-profile/</Path>", "<Path>frontend/e2e/profile-management.spec.ts</Path>", "<Path>frontend/apps/home-web/src/application/services.ts</Path>", "<Path>frontend/apps/home-web/package.json</Path>", "<Path>frontend/e2e/profile-self-materials.spec.ts</Path>", "<Path>frontend/packages/domains/profile/src/material-tags/</Path>", "<Path>frontend/packages/web-domains/profile/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/playwright.profile.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/profile/index.md</Path>", "<Path>frontend/apps/home-web/AGENTS.md</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/handler/SaTokenExceptionHandler.java</Path>"]
-read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/</Path>", "<Path>{roots.state}/specdev/adr/</Path>"]
+read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
 shared_paths: ["<Path>frontend/packages/web-domains/profile/src/self/</Path>", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path>", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path>", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path>", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path>", "<Path>backend/wta-modules/wta-profile/</Path>", "<Path>frontend/e2e/profile-management.spec.ts</Path>", "<Path>frontend/apps/home-web/src/application/services.ts</Path>", "<Path>frontend/apps/home-web/package.json</Path>", "<Path>frontend/e2e/profile-self-materials.spec.ts</Path>", "<Path>frontend/packages/domains/profile/src/material-tags/</Path>", "<Path>frontend/packages/web-domains/profile/package.json</Path>", "<Path>frontend/pnpm-lock.yaml</Path>", "<Path>frontend/playwright.profile.config.ts</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path>", "<Path>.agents/skills/wta-module-guide/references/modules/profile/index.md</Path>", "<Path>frontend/apps/home-web/AGENTS.md</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>", "<Path>backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/handler/SaTokenExceptionHandler.java</Path>"]
-shared_path_owners: ["<Path>frontend/packages/web-domains/profile/src/self/</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>backend/wta-modules/wta-profile/</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/e2e/profile-management.spec.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/apps/home-web/src/application/services.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/apps/home-web/package.json</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/e2e/profile-self-materials.spec.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/packages/domains/profile/src/material-tags/</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/packages/web-domains/profile/package.json</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/pnpm-lock.yaml</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/playwright.profile.config.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/playwright.config.ts</Path> => single-agent (Lead; serial T-14 turn)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java</Path> => single-agent (Lead; serial T-14 turn)", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path> => single-agent (Lead; serial T-14 turn)", "<Path>.agents/skills/wta-module-guide/references/modules/profile/index.md</Path> => single-agent (Lead; serial T-14 turn)", "<Path>frontend/apps/home-web/AGENTS.md</Path> => single-agent (Lead; serial T-14 turn)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; serial T-14 turn)", "<Path>backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/handler/SaTokenExceptionHandler.java</Path> => single-agent (Lead; serial T-14 turn)"]
+shared_path_owners: ["<Path>frontend/packages/web-domains/profile/src/self/</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/packages/web-domains/profile/src/self/runtime.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/packages/domains/profile/src/person/application/service.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/packages/domains/profile/src/enterprise/application/service.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/apps/home-web/src/router/homeManifestRegistry.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>backend/wta-modules/wta-profile/</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/e2e/profile-management.spec.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/apps/home-web/src/application/services.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/apps/home-web/package.json</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/e2e/profile-self-materials.spec.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/packages/domains/profile/src/material-tags/</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/packages/web-domains/profile/package.json</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/pnpm-lock.yaml</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/playwright.profile.config.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/playwright.config.ts</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/profile/material/ProfileSelfMaterialsBrowserIntegrationTest.java</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>.agents/skills/wta-module-guide/references/modules/profile/index.md</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>frontend/apps/home-web/AGENTS.md</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)", "<Path>backend/wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/handler/SaTokenExceptionHandler.java</Path> => single-agent (Lead; exclusive current workspace; T-14 turn only)"]
 ---
 
 # T-14：补齐个人与企业自助认证材料闭环
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先读Map，再按Skill矩阵读取适用入口/引用，再读本票。禁止任何implementation/review/research子代理。Ready仅表示计划合同就绪，不表示已经授权实施或已验证通过。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
 
 ## 1. 战略与来源
 
-- 目标与可观察产出：新个人CN_RESIDENT_ID上传正反面后完成提交。
-- 来源：F-02；AC-014；USER-DECISION: 全面完善计划、无兼容、单人串行。
-- 当前事实与调用链：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/re-review.md</Path>中T-14行及对应专项报告；源码导航为frontmatter预计修改点。
-- 规划深度：deep；安全/鉴权、公共合同、数据一致性或共享核心路径变更：补齐个人与企业自助认证材料闭环。
+- 来源：F-02；AC-014；本轮用户请求与<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>。
+- 当前事实：材料owner及必填规则保持；OSS诊断解耦后仍须真实上传与提交验证。
+- 可观察产出：新个人CN_RESIDENT_ID上传正反面后完成提交
 
 ## 2. 决策状态
 
 ### 已锁定决策
 
-沿用现有Profile材料归属与数据库规则，不删除后端门禁换取页面成功。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+
+### 已确认方案
+
+既有合同保持；本轮重新评审与验收；材料owner及必填规则保持；OSS诊断解耦后仍须真实上传与提交验证。 完整决定及来源以<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>为准。
 
 ### 已采用的低影响假设
 
-沿用当前仓库版本与既有模块命名；实施前回读实际源码，路径变化由本票修订，不猜测不存在的实现。
+沿用当前模块与测试基座；测试样本为隔离合成数据，不作为生产容量或SLO。
+
+### 执行前置
+
+G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施与commit授权及必要测试环境。Ready不代替Goal激活。
 
 ### 未决问题
 
@@ -53,97 +61,88 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 | IN | REUSE | OUT |
 |---|---|---|
-| self草稿owner→材料目录→上传登记→校验→submit | Profile现有材料/OSS端口与Home注入；不复制管理页、不弱化必填 | 本票之外的模块重写、兼容桥、远程发布与重要数据操作 |
+| 本票可观察产出及所列消费者、验证、文档 | 既有wta-api/common、模块模式、事务/权限/生命周期与测试 | 无关模块重写、新队列/锁平台、真实数据修复、远程发布及相邻OIDC实现 |
 
 ## 4. 要构建什么
 
-self草稿owner→材料目录→上传登记→校验→submit。调用者可观察到：新个人CN_RESIDENT_ID上传正反面后完成提交。失败时：缺tag准确定位；不跨owner；上传失败保留草稿，未登记不可提交。
+新个人CN_RESIDENT_ID上传正反面后完成提交 正常、失败、越权和竞争路径按本票验收断言共同交付，不把前后端或测试分成无价值空票。
 
 ## 5. 实现契约
 
-- 入口、输入输出与数据流：self草稿owner→材料目录→上传登记→校验→submit。
-- 不变量及失败语义：缺tag准确定位；不跨owner；上传失败保留草稿，未登记不可提交。
-- 公共合同：本票只按以上行为及执行路线变更；同步全部仓内调用/生成物，沿用已有权限/Client/owner校验。未列出的接口保持原语义。
-- 兼容：用户明确无需旧版兼容；仓内一次切换，不加双路由/版本等待。实际供应商协议仍须遵守。
-- 安全与隐私：凭据不进入日志/UI证据；越权/过期/无owner拒绝；数据库与资源约束不能为前端成功而放宽。
-
-沿用现有Profile材料归属与数据库规则，不删除后端门禁换取页面成功。
-
+- 入口与输入输出：required: 新个人身份证双面、企业条件材料经真实MySQL/OSS提交，刷新/失败/越权覆盖。
+- 外部行为：新个人CN_RESIDENT_ID上传正反面后完成提交
+- 不变量：current workspace单writer；UseCase→Service→DAO→Mapper；classic保留；公开数据只经wta-api；GET查询/POST变更且安全@Log。Notify外部I/O不在结果事务内，IN_APP按确认后的短事务合同处理。
+- 失败边界：不吞SQL/HTTP/Provider错误，不将UNKNOWN当成功或盲目可重试；页面旧响应不覆盖新会话。具体负向断言见第8/10节。
+- 兼容：沿用用户此前明确的基座仓内直接切换决定，同步真实消费者/生成物；不放宽第三方协议。公共API技能用于调用方与影响核对，不重新增加已被用户排除的兼容桥。
+- 安全：仅隔离合成测试；secret不进日志/截图/证据。对象/Client授权在后端实施，页面隐藏不替代权限。
 
 ## 6. 执行路线
 
-1. 从材料目录与基座规则读取必填tag，确认person/enterprise状态及owner。
-2. 在self/runtime.ts与Home homeManifestRegistry.ts显式注入fileUpload、material tree及业务owner能力；web-domain-profile通过runtime消费上传端口，不新增假OSS依赖或复制管理端页面。
-3. 实现材料列表、上传进度/完成、预览、替换、删除引用及tag级错误。
-4. 上传完成并经业务owner登记后才可submit；草稿保存/刷新可恢复。
-5. 按后端材料目录保留完整必填门禁：个人CN_RESIDENT_ID人像/国徽两面；企业营业执照、法人身份证明；非法人经办人条件触发授权委托书。后端MISSING_REQUIRED_MATERIAL映射到具体tag，不关闭校验。
-6. 提交期间只锁必要动作，失败保留草稿；审核通过后的只读/修订语义沿用后端。
+1. 回读本票历史Evidence和实际实现提交，使用当前源码核对本票验收合同；旧施工步骤仅在before快照保存，不重复实施。
+2. 比较历史候选与当前写集；对后续提交或新票触及的行为逐一标记需要重跑的测试。
+3. 执行本票正常/失败/回归及E2E要求；零用例或required skip不算通过，结果写新的带日期证据，不覆盖原始记录。
+4. 若发现退化，先在本票写集内固定红灯；超出范围或与新票重叠时由Lead修订owner，禁止重复改动。
+5. 核验历史非空提交和父链；缺少真实clean exact-HEAD证明不得事后补造。按Goal历史票关闭程序处置。
 
 ## 7. 路径访问契约
 
-预计点、可写范围、只读上下文及共享项以frontmatter为唯一权威。共享owner固定single-agent；只有当前票轮次可写，下一票须回读前一结果。跨模块目录只允许本票行为必需的文件，目录授权不意味着重写全部模块。新增测试位于同模块测试目录；未覆盖的新路径先修订本票/Map再写。
-保留当前用户未提交改动、永久ADR/context、供应商源码与运行数据；生成物通过正式工具更新。
+frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权本票行为所需文件；新增测试在声明根内，新增生产类须符合已有层次。不存在的新文件为计划创建，不声称已实现。共享物理/语义资源由single-agent在本票轮次独占；不同票不并行，跨change冲突仅暂停相关分支。
+
+本票状态和Evidence仅由Lead写当前change；永久ADR/context及相邻SSO change只读。越界先修订Ticket/Map，禁止先改后报。
 
 ## 8. 验证矩阵
 
-| 行为或风险 | 验证接缝/步骤 | 预期结果 | Evidence |
+| 场景 | 接缝/步骤 | 预期 | Evidence |
 |---|---|---|---|
-| 正常路径 | self草稿owner→材料目录→上传登记→校验→submit；执行下列定向命令及对应场景 | 新个人CN_RESIDENT_ID上传正反面后完成提交 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path> |
-| 失败路径 | 缺tag准确定位；不跨owner；上传失败保留草稿，未登记不可提交；固定时序/故障注入，记录输入与最终可观察状态 | 无越权、错误状态或部分提交；可按定义恢复 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path> |
-| 回归 | 运行所属包原有测试及受影响调用者；逐项核对下列AC | 企业必填及条件材料齐备时完成提交，缺项定位准确；取消/失败/过期OSS/刷新不会伪造完成或越owner访问；后端必填校验不被关闭，真实浏览器+MySQL+OSS验收通过 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path> |
+| 正常 | required: 新个人身份证双面、企业条件材料经真实MySQL/OSS提交，刷新/失败/越权覆盖 | 新个人CN_RESIDENT_ID上传正反面后完成提交 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-replan-2026-09-23.md</Path> |
+| 失败/竞争 | 企业必填及条件材料齐备时完成提交，缺项定位准确 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
+| 回归 | 现有同域测试＋消费者＋适用静态门禁 | 取消/失败/过期OSS/刷新不会伪造完成或越owner访问；后端必填校验不被关闭，真实浏览器+MySQL+OSS验收通过 | 同上，记录测试数/skip/源码 |
 
-Workspace checks：current-workspace；`frontend:`/`backend:`表示先进入该目录，其他命令cwd为仓根，逐条串行执行。新增用例实施时登记精确选择器、实际测试数与跳过项，零测试/required跳过不算通过。
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
 
-- `frontend: pnpm --filter @namewta/web-domain-profile test`
-- `frontend: pnpm typecheck`
-- `frontend: pnpm test:e2e`
-- `backend: ./mvnw -pl wta-modules/wta-profile -am test`
+- `cd frontend && pnpm --filter @namewta/web-domain-profile test`
+- `cd frontend && pnpm typecheck`
+- `cd frontend && pnpm test:e2e`
+- `cd backend && ./mvnw -pl wta-modules/wta-profile -am test`
 
+- Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
 - E2E disposition：required: 新个人身份证双面、企业条件材料经真实MySQL/OSS提交，刷新/失败/越权覆盖。
-- E2E owner/environment：single-agent（Lead）/current-workspace；使用隔离MySQL/Redis/OSS及必要真实HTTP/浏览器，禁止连生产。场景步骤以上表、本票AC为准；需新用例时在写集内创建后记录精确命令。
-- Integration evidence：记录parent before、implementation commit及direct-parent检查；result SHA等于通过验证的implementation commit，candidate不适用。当前本地产品验收见 T-14.md；提交按用户要求暂缓。
+- E2E owner/environment：single-agent（Lead）/current-workspace；真实MySQL/Redis/MinIO必须为本任务隔离资源，必要服务缺失则阻塞对应验收。
+- 真实服务启用方法与零skip要求：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>；新增用例必须保存精确选择器与实际计数，不能只运行mock或test list。
+- Integration evidence：非空implementation commit、parent before、clean exact HEAD/tree时点的direct-parent和适用E2E、不可变result及父链；required模式不适用，不创建candidate worktree。
 
 ## 9. 发布、迁移与恢复
 
-- 顺序：前置票产生已验证合同后实施本票；源码、仓内消费者、测试和生成物同批交付。涉及DDL只编辑10-cde-base-ddl.sql，新环境按六文件基座初始化；不增加存量迁移工程。
-- 兼容窗口：无；不保留旧接口或数据格式桥。生产部署不是本票自动步骤。
-- 监控/诊断：观察本票AC的成功/错误状态、耗时及资源/持久化结果，日志只含安全元数据；复用现有观测入口，不新建监控平台。
-- 恢复：保留草稿和已登记引用；回退UI不自动删除OSS对象或认证记录。
-- 不可逆批准点：提交、推送、部署、运行数据删除/修复分别需授权；用户已授权全部本地可逆实现与验证；当前所有提交继续暂缓。
-- 收缩条件：本票替代的旧调用/配置引用归零且仓内回归通过；无被替代入口时不适用，不为凑清单扩大删除范围。
+- 迁移顺序：保持历史已交付行为；仅对当前复验发现的真实退化实施最小修复。已有数据不得重放基座。
+- 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
+- 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
+- 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
 
-- [x] `AC-014`：新个人CN_RESIDENT_ID上传正反面后完成提交。
-- [x] `AC-014`：企业必填及条件材料齐备时完成提交，缺项定位准确。
-- [x] `AC-014`：取消/失败/过期OSS/刷新不会伪造完成或越owner访问。
-- [x] `AC-014`：后端必填校验不被关闭，真实浏览器+MySQL+OSS验收通过。
-- [x] 按Map→适用Skill→本票完成读取及实际调用；所有required Skill记录passed并可回读。
-- [x] 正常/失败/回归及required E2E均完成，证据写入<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path>，未执行不得标通过。
-- [x] 修改不超出写集，共享项只有single-agent当前票轮次写入。
-- [x] 获得授权后形成非空implementation commit，Lead完成direct-parent验收并记录parent result SHA；未获授权不提交、不标Done。
-- [x] Ticket、Map、Goal与Evidence一致；不存在未批准偏差。
+- [ ] `AC-014`：新个人CN_RESIDENT_ID上传正反面后完成提交。
+- [ ] `AC-014`：企业必填及条件材料齐备时完成提交，缺项定位准确。
+- [ ] `AC-014`：取消/失败/过期OSS/刷新不会伪造完成或越owner访问。
+- [ ] `AC-014`：后端必填校验不被关闭，真实浏览器+MySQL+OSS验收通过。
+- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
-frontmatter绑定的项目Skill在implementation阶段接收本票路径和上游合同，产出适用分层、权限、数据/资源边界及实现diff；engineering-standards在verify阶段根据本节命令选择受影响门禁并输出AC/退出码/E2E记录。按入口scope展开引用，不以“已读”代替实际操作。
-必需入口缺失或sha256漂移时阻塞本票；Lead回读差异后更新绑定及Map，不能自动接受新摘要。实际记录归<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path>的`## Skill Execution Records`，本次规划不伪造实现调用记录。
+frontmatter每个必需绑定在implement阶段输入本票、真实调用方和diff，按scope执行约束检查与实现；verify阶段由engineering-standards执行适用门禁。实际Skill Execution Records写<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14-replan-2026-09-23.md</Path>，包含id/phase/operation/sha256/status/evidence。入口摘要变化先读diff并重新绑定，不改旧历史记录。当前规划仅完成元数据/入口及相关规范路由，未伪造实施passed。
 
 ## 12. 停止、检查点与交付
 
-交付本票完整可观察行为及验收证据；数量以Map为准。缺依赖/测试环境/Skill、越界或高影响事实变化时停止受影响票，保留checkpoint和失败证据，其他独立票仍可串行推进。恢复先读Goal、Map、本票、状态及最新Evidence；记录实际HEAD/dirty差异，禁止覆盖用户修改。
-依赖：T-18。单票完成条件为全部AC、实际Skill证据和获授权的direct-parent出口；仅补文档不能标Done。
+交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。
 
-Revision60：核对上游255路径进入；按实际self材料和Home上传组合确认接口、owner与服务端必填规则。尚未改产品，不把T-18控制面fixture当作本票真实MySQL/OSS提交证明。
+## 历史实现保留及本轮处置
 
-Revision61：源码确认材料必填数据库规则没有HTTP只读查询，增加MaterialTagController→现有UseCase/Service→DAO的requirements查询，不改wta-api或复制条件表；GET参数profileType/documentTypeCode/handlerIsLegalRepresentative，仅用于页面提示，submit仍根据已保存申请独立校验。Home默认角色只有apply，缺material和system:oss:upload，登记50-cde-base-dml.sql精确补Home Client功能权限，不授予OSS管理查询/删除。Home注入限定上传端口，self局部材料组件负责attach/detach/业务预览；避免将管理端remove移植为self物理删除。补正式锁文件、测试配置/集成fixture、domain材料目录及父级事实写集；新self浏览器必须用真实MySQL/OSS，不能只模拟控制面响应。
+历史implementation commit：`65bd6d38d67ddaef02d83a45db528347e5487109`；历史result：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。提交存在及祖先关系见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/legacy-ticket-audit.json</Path>。
 
-Revision62：真实六份基座初始化后的OSS登记触发SQLSyntaxError，源码对照确认SysOss/Mapper所需delete_state列缺失。追加10-cde-base-ddl.sql最小写集，在唯一建表基座增加ACTIVE/PENDING字段，不修改在线库、不创建替代测试schema；T-14/T-30及共享DDL后续票必须复核。六轮失败共同模式与下一次具体改变见evidence/T-14.md。
+<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-14.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/14-profile-self-materials.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
-2026-09-19 revision 63：第九次真实浏览器运行确认缺权限被拒绝，但 GlobalExceptionHandler 的 RuntimeException 兜底抢先返回 500，违反既有 401/403 合同。先登记 SaTokenExceptionHandler 精确写集与 common Skill，再通过显式 advice 优先级修复；不调整权限校验或测试预期。所有提交继续暂缓。
-
-Revision64：T-14本地review，33路径检查点，249非重叠上游未变、6共享更新；214后端、574全前端、58最终定向、8真实Chrome、51默认/1独立环境skip、20会话通过，全部提交继续暂缓。
-
-## Revision135 实际提交与父分支验收
-
-用户已明确授权全部commit/push。implementation commits：`56783a4959f6c06d2080871b80499bb922524599`, `65bd6d38d67ddaef02d83a45db528347e5487109`；完整实现链 result SHA：`6c8764cca97bb6057fcb90ccdfe635c7efbf502a`。每个提交均非空、实际父SHA已核对且被result包含；Git归档逐文件等于T-30已验证输入，未声称拆分过程中的中间树独立通过全部测试。精确路径/共享owner/验证见 `../evidence/commit-delivery.json`。本票保持review；正式发布候选与change最终Done独立验收。
+旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。
