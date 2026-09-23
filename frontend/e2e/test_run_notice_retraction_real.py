@@ -216,6 +216,45 @@ class T40OfflineSafety(unittest.TestCase):
                 case['tests'][0]['results'][0]['errorLocation']['file'] = str(root / 'other.ts')
                 self.assertIsNone(driver.playwright_diagnostic(report)[0]['assertion_location'])
 
+    def test_phase_diagnostic_accepts_only_one_fixed_annotation(self):
+        with tempfile.TemporaryDirectory() as place:
+            root = Path(place)
+            path = root / driver.TEST_PATH
+            path.parent.mkdir(parents=True)
+            path.write_text('a\nb\n')
+            canary = 'credential-canary-private'
+            valid = {'type': 't40-phase', 'description': 'close_loading_dialog'}
+            case = {'title': driver.TEST_TITLES[0], 'line': 1, 'column': 1,
+                    'tests': [{'projectName': 'chromium', 'annotations': [valid],
+                               'results': [{'status': 'failed', 'annotations': [valid]}]}]}
+            report = {'suites': [{'file': str(path), 'specs': [case]}]}
+            result = case['tests'][0]['results'][0]
+            with patch.object(driver, 'ROOT', root):
+                self.assertEqual(driver.playwright_diagnostic(report)[0]['last_started_phase'],
+                                 'close_loading_dialog')
+                del result['annotations']
+                self.assertEqual(driver.playwright_diagnostic(report)[0]['last_started_phase'],
+                                 'close_loading_dialog')
+                for invalid in (None, [], {}, canary,
+                                [{'type': 'other', 'description': 'logout'}],
+                                [{'type': 't40-phase', 'description': canary}],
+                                [{'type': 't40-phase', 'description': [canary]}],
+                                [{'type': 't40-phase', 'description': {'secret': canary}}],
+                                [{'type': 't40-phase', 'description': 'logout', 'secret': canary}],
+                                [{'type': 't40-phase', 'description': 'logout' * 1000}],
+                                [valid, valid]):
+                    with self.subTest(invalid=type(invalid).__name__):
+                        result['annotations'] = invalid
+                        diagnostic = driver.playwright_diagnostic(report)
+                        self.assertIsNone(diagnostic[0]['last_started_phase'])
+                        self.assertNotIn(canary, json.dumps(diagnostic))
+                del result['annotations']
+                del case['tests'][0]['annotations']
+                self.assertIsNone(driver.playwright_diagnostic(report)[0]['last_started_phase'])
+                result['annotations'] = [valid]
+                case['tests'][0]['projectName'] = 'foreign-project'
+                self.assertEqual(driver.playwright_diagnostic(report), [])
+
     def test_owned_resource_labels_and_cleanup_do_not_touch_other_containers(self):
         ids = ['a' * 64, 'b' * 64]
         with patch.object(driver, 'docker', return_value='a' * 64) as query:

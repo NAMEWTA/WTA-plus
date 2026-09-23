@@ -37,6 +37,8 @@ TEST_PATH = 'frontend/e2e/notice-retraction-real.e2e.ts'
 CONFIG_PATH = 'frontend/e2e/playwright.notice-retraction-real.config.ts'
 TEST_TITLES = ('T-40 real published V1 survives retract in A personal off-page inbox',
                'T-40 real B foreign and absent inbox details fail with the same owner response')
+LAST_STARTED_PHASES = frozenset(('fetch_old_detail', 'close_loading_dialog', 'logout',
+                                 'login_b', 'release_old_detail', 'verify_old_cancel'))
 OWNER = 'T-40-BROWSER'
 DOCKER = ('docker', '--host', 'unix:///var/run/docker.sock')
 MINIO_IMAGE = 'pgsty/minio@sha256:83885c27b3b5b673049e33ddf4029afe2c134fd51ce4309e65e4f39d3b9ca282'
@@ -1013,18 +1015,28 @@ def playwright_diagnostic(data):
             continue
         results = case.get('results', [])
         assertion = None
+        phase = None
         if len(results) == 1:
             result = results[0]
             candidates = [result.get('errorLocation')]
             candidates += [error.get('location') for error in result.get('errors', []) if isinstance(error, dict)]
             assertion = next((safe for item in candidates if (safe := location(item, source_required=True))), None)
+            annotations = result.get('annotations') if 'annotations' in result else case.get('annotations')
+            if type(annotations) is list and len(annotations) == 1:
+                annotation = annotations[0]
+                if (type(annotation) is dict and set(annotation) == {'type', 'description'} and
+                        annotation.get('type') == 't40-phase'):
+                    value = annotation.get('description')
+                    if type(value) is str and value in LAST_STARTED_PHASES:
+                        phase = value
         status = results[0].get('status') if len(results) == 1 else None
         if status not in ('passed', 'failed', 'timedOut', 'interrupted', 'skipped'):
             status = None
         diagnostics.append({'file': TEST_PATH, 'title': title, 'project': 'chromium',
                             'attempts': len(results), 'status': status,
                             'case_declaration': location(spec, source_required=False),
-                            'assertion_location': assertion})
+                            'assertion_location': assertion,
+                            'last_started_phase': phase})
     return diagnostics
 
 

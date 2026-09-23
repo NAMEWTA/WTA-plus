@@ -95,6 +95,15 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
   let testFailure: unknown;
   try {
     const page = await context.newPage();
+    page.setDefaultTimeout(stepTimeout);
+    type Phase = 'fetch_old_detail' | 'close_loading_dialog' | 'logout' | 'login_b' |
+      'release_old_detail' | 'verify_old_cancel';
+    const markPhase = (value: Phase) => {
+      const annotations = test.info().annotations;
+      const previous = annotations.findIndex(annotation => annotation.type === 't40-phase');
+      if (previous >= 0) annotations.splice(previous, 1);
+      annotations.push({ type: 't40-phase', description: value });
+    };
     const managementGets: string[] = [];
     page.on('request', request => {
       const path = new URL(request.url()).pathname;
@@ -125,6 +134,8 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
       try {
         const response = await route.fetch();
         expect(response.status()).toBe(200);
+        const body: unknown = await response.json();
+        expect(body).toMatchObject({ code: 200, data: { messageId: owned.v1.messageId, content: owned.v1.content } });
         ++fetched;
         await held;
         await route.fulfill({ response });
@@ -186,6 +197,7 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
     type SessionRouteOutcome = 'fulfilled' | 'failed';
     let sessionForwarded = (_outcome: SessionRouteOutcome) => {};
     const sessionFinished = new Promise<SessionRouteOutcome>(resolve => { sessionForwarded = resolve; });
+    let sessionSettled = false;
     let oldFetched = 0;
     let oldRequest: Request | undefined;
     let oldFailure: string | undefined;
@@ -203,32 +215,50 @@ test('T-40 real published V1 survives retract in A personal off-page inbox', asy
       try {
         const response = await route.fetch();
         expect(response.status()).toBe(200);
+        const body: unknown = await response.json();
+        expect(body).toMatchObject({ code: 200, data: { messageId: owned.v1.messageId, content: owned.v1.content } });
         ++oldFetched;
         await pending;
         await route.fulfill({ response });
         outcome = 'fulfilled';
       } finally {
+        sessionSettled = true;
         sessionForwarded(outcome);
       }
     }, { times: 1 });
     let sessionFailure: unknown;
     try {
+      markPhase('fetch_old_detail');
       await samePageQuery(page, owned.v1.messageId);
       await expect.poll(() => oldFetched, { timeout: stepTimeout }).toBe(1);
       expect(oldRequest).toBeDefined();
+      markPhase('close_loading_dialog');
+      await expect(detail(page)).toBeVisible();
+      await expect(detail(page).getByRole('status')).toContainText('正在加载详情…');
+      await detail(page).getByRole('button', { name: '关闭', exact: true }).click();
+      await expect(detail(page)).toBeHidden();
+      expect(oldFetched).toBe(1);
+      expect(oldResponses).toBe(0);
+      expect(oldFailure).toBeUndefined();
+      expect(oldRequest?.failure()).toBeNull();
+      expect(sessionSettled).toBe(false);
+      markPhase('logout');
       await page.locator('.avatar-wrapper').click();
       await page.getByText('退出登录', { exact: true }).click();
       await page.getByRole('button', { name: '确定', exact: true }).click();
       await expect(page).toHaveURL(/\/login(?:\?|$)/);
+      markPhase('login_b');
       await login(page, origin, required('T40_B_USERNAME'), required('T40_B_PASSWORD'));
       // B 的 redirect 可能请求同 URL，必须以 Request 身份区分，不能把 B 的 403 当成 A 响应。
       await expect(page).toHaveURL(/\/notify\/inbox(?:\?|$)/);
       await samePageQuery(page, owned.bControl.messageId);
       await expect(detail(page).locator('.el-descriptions__content').last()).toHaveText(owned.bControl.content);
       expect(oldResponses).toBe(0);
+      markPhase('release_old_detail');
       unblock();
       const outcome = await bounded(sessionFinished, 'old A route completion');
       expect(outcome).toBe('fulfilled');
+      markPhase('verify_old_cancel');
       await expect.poll(() => oldFailure, { timeout: stepTimeout }).toBe('net::ERR_ABORTED');
       await painted(page);
       expect(oldResponses).toBe(0);
@@ -258,6 +288,7 @@ test('T-40 real B foreign and absent inbox details fail with the same owner resp
   const context = await browser.newContext();
   try {
     const page = await context.newPage();
+    page.setDefaultTimeout(stepTimeout);
     const managementGets: string[] = [];
     const detailGets: string[] = [];
     page.on('request', request => {
