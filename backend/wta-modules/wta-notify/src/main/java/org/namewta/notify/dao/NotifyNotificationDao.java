@@ -3,7 +3,11 @@ package org.namewta.notify.dao;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.RequiredArgsConstructor;
+import org.namewta.common.mybatis.core.page.PageQuery;
+import org.namewta.common.mybatis.core.query.LambdaJoinQueryBuilder;
+import org.namewta.common.mybatis.core.query.QueryBuilder;
 import org.namewta.notify.domain.entity.*;
+import org.namewta.notify.domain.model.read.NotifyInboxRow;
 import org.namewta.notify.mapper.*;
 import org.springframework.stereotype.Repository;
 
@@ -199,6 +203,55 @@ public class NotifyNotificationDao {
             outbox.getStatus(), outbox.getLastErrorCode(), now);
     }
     public int insert(NotifyAttempt value) { return attemptMapper.insert(value); }
+
+    /** 同一有效本人收件集合的总数；孤儿关系不计入公开页。 */
+    public long inboxTotal(Long userId) {
+        return messageRecipientMapper.selectJoinCount(inboxJoin(userId).build());
+    }
+
+    /** 全量未读计数使用与列表相同的本人消息联表条件。 */
+    public long inboxUnreadTotal(Long userId) {
+        var query = inboxJoin(userId).build();
+        query.isNull("r", NotifyMessageRecipient::getReadTime);
+        return messageRecipientMapper.selectJoinCount(query);
+    }
+
+    /** 页码先按 long 偏移与总数比较，避免极大页码溢出或回卷第一页。 */
+    public List<NotifyInboxRow> inboxRows(Long userId, int pageNum, int pageSize, long total) {
+        long offset = ((long) pageNum - 1) * pageSize;
+        if (offset >= total) return List.of();
+        var page = new PageQuery(pageSize, pageNum).<NotifyInboxRow>build();
+        page.setSearchCount(false);
+        return messageRecipientMapper.selectJoinPage(page, NotifyInboxRow.class, inboxProjection(userId, false)
+            .orderByDesc("r", NotifyMessageRecipient::getCreateTime)
+            .orderByDesc("r", NotifyMessageRecipient::getMessageId).build()).getRecords();
+    }
+
+    /** 详情通过同一条本人 JOIN 获取正文，不先读取他人的消息再判断归属。 */
+    public NotifyInboxRow inboxDetail(Long userId, Long messageId) {
+        return messageRecipientMapper.selectJoinOne(NotifyInboxRow.class, inboxProjection(userId, true)
+            .eq("r", NotifyMessageRecipient::getMessageId, messageId).build());
+    }
+
+    private LambdaJoinQueryBuilder<NotifyMessageRecipient> inboxJoin(Long userId) {
+        return QueryBuilder.lambdaJoin("r", NotifyMessageRecipient.class)
+            .leftJoin(NotifyMessage.class, "m", NotifyMessage::getMessageId, NotifyMessageRecipient::getMessageId)
+            .isNotNull("m", NotifyMessage::getMessageId)
+            .eq("r", NotifyMessageRecipient::getUserId, userId);
+    }
+
+    private LambdaJoinQueryBuilder<NotifyMessageRecipient> inboxProjection(Long userId, boolean detail) {
+        var query = inboxJoin(userId)
+            .select("m", NotifyMessage::getMessageId, NotifyMessage::getCategory,
+                NotifyMessage::getNoticeType, NotifyMessage::getChannelsJson, NotifyMessage::getType,
+                NotifyMessage::getSource, NotifyMessage::getTitle, NotifyMessage::getMessage,
+                NotifyMessage::getPath)
+            .select("r", NotifyMessageRecipient::getSeenTime, NotifyMessageRecipient::getReadTime)
+            .selectAs("r", NotifyMessageRecipient::getCreateTime, NotifyInboxRow::getCreateTime);
+        if (detail) query.select("m", NotifyMessage::getContent);
+        return query;
+    }
+
     public List<NotifyMessageRecipient> messageRecipients(Long userId, int limit) {
         return messageRecipientMapper.selectList(new LambdaQueryWrapper<NotifyMessageRecipient>()
             .eq(NotifyMessageRecipient::getUserId, userId)

@@ -8,6 +8,8 @@ import com.baomidou.dynamic.datasource.tx.TransactionContext;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.github.yulichang.injector.MPJSqlInjector;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.mapping.Environment;
@@ -124,9 +126,13 @@ class NotifyAtomicResultIntegrationTest {
         var config = new MybatisConfiguration(new Environment("notify-owned", new SpringManagedTransactionFactory(), routing));
         config.setMapUnderscoreToCamelCase(true);
         var interceptors = new com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor();
+        var pagination = new PaginationInnerInterceptor();
+        pagination.setOverflow(true);
+        interceptors.addInnerInterceptor(pagination);
         interceptors.addInnerInterceptor(new com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor());
         config.addInterceptor(interceptors);
-        GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults().setMetaObjectHandler(new InjectionMetaObjectHandler()));
+        GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults()
+            .setMetaObjectHandler(new InjectionMetaObjectHandler()).setSqlInjector(new MPJSqlInjector()));
         for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
             NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, NotifyProviderReceiptMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class)) config.addMapper(mapper);
         for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml", "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml")) {

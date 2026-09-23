@@ -8,6 +8,7 @@ import cn.dev33.satoken.jwt.StpLogicJwtForSimple;
 import cn.dev33.satoken.spring.SaTokenContextForSpringInJakartaServlet;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import org.eclipse.jetty.ee11.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee11.servlet.ServletHolder;
@@ -53,6 +54,7 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,6 +67,7 @@ class NotifyInboxPagingIntegrationTest {
     private static final long FIRST_MESSAGE = 9_610_001L;
     private static final long LAST_A_MESSAGE = FIRST_MESSAGE + 500;
     private static final long B_ONLY_MESSAGE = FIRST_MESSAGE + 501;
+    private static final long ORPHAN_MESSAGE = B_ONLY_MESSAGE + 1;
     private static final long FIRST_RELATION = 9_620_001L;
     private static final LocalDateTime SHARED_TIME = LocalDateTime.of(2026, 9, 23, 10, 0);
 
@@ -91,9 +94,9 @@ class NotifyInboxPagingIntegrationTest {
         try {
             if (db != null) {
                 db.update("delete from notify_message_recipient where message_id between ? and ?",
-                    FIRST_MESSAGE, B_ONLY_MESSAGE);
+                    FIRST_MESSAGE, ORPHAN_MESSAGE);
                 db.update("delete from notify_message where message_id between ? and ?",
-                    FIRST_MESSAGE, B_ONLY_MESSAGE);
+                    FIRST_MESSAGE, ORPHAN_MESSAGE);
             }
         } finally {
             if (fixture != null) fixture.close();
@@ -137,6 +140,96 @@ class NotifyInboxPagingIntegrationTest {
             assertThat(((Number) ((Map<?, ?>) rows.getFirst()).get("messageId")).longValue())
                 .isEqualTo(FIRST_MESSAGE);
         }
+    }
+
+    @Test
+    void ownerDetailAndReadAllUseAllRelationsWithoutChangingOtherUser() throws Exception {
+        seedMessages();
+        var controller = new NotifyInboxController(new NotifyInboxUseCase(new NotifyInboxService(dao)));
+        try (OwnedSaSession sessions = new OwnedSaSession(); OwnedHttp http = new OwnedHttp(controller)) {
+            String tokenA = sessions.login(USER_A);
+            String tokenB = sessions.login(USER_B);
+            assertThat(JsonUtils.parseMap(http.get(null, "/notify/inbox").body()).get("code")).isEqualTo(401);
+            assertThat(JsonUtils.parseMap(http.get(null, "/notify/inbox/" + FIRST_MESSAGE).body()).get("code"))
+                .isEqualTo(401);
+
+            var owned = http.get(tokenA, "/notify/inbox/" + FIRST_MESSAGE);
+            assertThat(JsonUtils.parseMap(owned.body()).get("code")).isEqualTo(200);
+            assertThat(owned.body()).contains("Full body " + FIRST_MESSAGE);
+            assertThat(http.get(tokenA, 26, 20).body()).doesNotContain("Full body " + FIRST_MESSAGE);
+            assertThat(JsonUtils.parseMap(http.get(tokenB, "/notify/inbox/" + (FIRST_MESSAGE + 250)).body())
+                .get("code")).isEqualTo(200);
+            Map<String, Object> other = JsonUtils.parseMap(http.get(tokenA, "/notify/inbox/" + B_ONLY_MESSAGE).body());
+            Map<String, Object> missing = JsonUtils.parseMap(http.get(tokenA, "/notify/inbox/" + ORPHAN_MESSAGE).body());
+            assertThat(other.get("code")).isEqualTo(missing.get("code"));
+            assertThat(other.get("msg")).isEqualTo(missing.get("msg"));
+            assertThat(other.get("code")).isNotEqualTo(200);
+            assertThat(other.toString()).doesNotContain("Full body " + B_ONLY_MESSAGE);
+
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/" + B_ONLY_MESSAGE + "/read").body())
+                .get("code")).isEqualTo(200);
+            assertThat(unread(USER_B)).isEqualTo(2);
+            sessions.denyWrites(true);
+            assertThat(JsonUtils.parseMap(http.post(tokenB, "/notify/inbox/" + B_ONLY_MESSAGE + "/read").body())
+                .get("code")).isEqualTo(403);
+            assertThat(unread(USER_B)).isEqualTo(2);
+            sessions.denyWrites(false);
+
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/" + FIRST_MESSAGE + "/read").body())
+                .get("code")).isEqualTo(200);
+            assertThat(((Number) page(http.get(tokenA, 26, 20)).get("unreadTotal")).longValue()).isEqualTo(499);
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/read-all").body()).get("code"))
+                .isEqualTo(200);
+            assertThat(unread(USER_A)).isZero();
+            assertThat(unread(USER_B)).isEqualTo(2);
+            assertThat(((Number) page(http.get(tokenA, 1, 20)).get("unreadTotal")).longValue()).isZero();
+            assertThat(JsonUtils.parseMap(http.post(tokenA, "/notify/inbox/read-all").body()).get("code"))
+                .isEqualTo(200);
+            assertThat(unread(USER_A)).isZero();
+            assertThat(unread(USER_B)).isEqualTo(2);
+        }
+    }
+
+    @Test
+    void orphanAndExtremePageCannotDistortCountsOrFixedOrder() throws Exception {
+        seedMessages();
+        db.update("insert into notify_message_recipient(message_recipient_id,message_id,user_id,create_time) "
+            + "values(?,?,?,?)", FIRST_RELATION + 503, ORPHAN_MESSAGE, USER_A, Timestamp.valueOf(SHARED_TIME));
+        var controller = new NotifyInboxController(new NotifyInboxUseCase(new NotifyInboxService(dao)));
+        try (OwnedSaSession sessions = new OwnedSaSession(); OwnedHttp http = new OwnedHttp(controller)) {
+            String tokenA = sessions.login(USER_A);
+            Map<?, ?> first = page(http.get(tokenA,
+                "/notify/inbox?pageNum=1&pageSize=20&orderByColumn=messageId&isAsc=asc"));
+            assertThat(((Number) first.get("total")).longValue()).isEqualTo(501);
+            assertThat(((Number) first.get("unreadTotal")).longValue()).isEqualTo(500);
+            assertThat(first.get("rows")).isInstanceOf(List.class);
+            assertThat(((Number) ((Map<?, ?>) ((List<?>) first.get("rows")).getFirst()).get("messageId")).longValue())
+                .isEqualTo(LAST_A_MESSAGE);
+            Map<?, ?> far = page(http.get(tokenA, "/notify/inbox?pageNum=2147483647&pageSize=100"));
+            assertThat(far.get("rows")).isEqualTo(List.of());
+            assertThat(((Number) far.get("total")).longValue()).isEqualTo(501);
+            for (String query : List.of("pageNum=0&pageSize=20", "pageNum=-1&pageSize=20",
+                "pageNum=1&pageSize=0", "pageNum=1&pageSize=101", "pageNum=abc&pageSize=20")) {
+                HttpResponse<String> invalid = http.get(tokenA, "/notify/inbox?" + query);
+                assertThat(invalid.statusCode() != 200 || !Integer.valueOf(200).equals(
+                    JsonUtils.parseMap(invalid.body()).get("code"))).as(query).isTrue();
+            }
+        }
+    }
+
+    private long unread(long userId) {
+        return db.queryForObject("select count(*) from notify_message_recipient where user_id=? "
+            + "and read_time is null and message_id between ? and ?", Long.class,
+            userId, FIRST_MESSAGE, B_ONLY_MESSAGE);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> page(HttpResponse<String> response) {
+        assertThat(response.statusCode()).isEqualTo(200);
+        Map<String, Object> envelope = JsonUtils.parseMap(response.body());
+        assertThat(envelope.get("code")).isEqualTo(200);
+        assertThat(envelope.get("data")).isInstanceOf(Map.class);
+        return (Map<String, Object>) envelope.get("data");
     }
 
     private void seedMessages() {
@@ -214,9 +307,20 @@ class NotifyInboxPagingIntegrationTest {
         }
 
         private HttpResponse<String> get(String token, int pageNum, int pageSize) throws Exception {
-            var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port
-                    + "/notify/inbox?pageNum=" + pageNum + "&pageSize=" + pageSize))
-                .timeout(Duration.ofSeconds(10)).header("Authorization", "Bearer " + token).GET().build();
+            return get(token, "/notify/inbox?pageNum=" + pageNum + "&pageSize=" + pageSize);
+        }
+
+        private HttpResponse<String> get(String token, String path) throws Exception {
+            var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + path))
+                .timeout(Duration.ofSeconds(10));
+            if (token != null) request.header("Authorization", "Bearer " + token);
+            return client.send(request.GET().build(), HttpResponse.BodyHandlers.ofString());
+        }
+
+        private HttpResponse<String> post(String token, String path) throws Exception {
+            var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + path))
+                .timeout(Duration.ofSeconds(10)).header("Authorization", "Bearer " + token).POST(
+                    HttpRequest.BodyPublishers.noBody()).build();
             return client.send(request, HttpResponse.BodyHandlers.ofString());
         }
 
@@ -232,7 +336,9 @@ class NotifyInboxPagingIntegrationTest {
         private final SaTokenConfig previousConfig = SaManager.getConfig();
         private final cn.dev33.satoken.context.SaTokenContext previousContext = SaManager.getSaTokenContext();
         private final cn.dev33.satoken.dao.SaTokenDao previousDao = SaManager.getSaTokenDao();
+        private final StpInterface previousPermissions = SaManager.getStpInterface();
         private final StpLogic previousLogic = StpUtil.getStpLogic();
+        private final AtomicBoolean deniedWrites = new AtomicBoolean();
 
         private OwnedSaSession() {
             byte[] secret = new byte[32];
@@ -241,8 +347,16 @@ class NotifyInboxPagingIntegrationTest {
                 .setJwtSecretKey(Base64.getUrlEncoder().withoutPadding().encodeToString(secret)));
             SaManager.setSaTokenContext(new SaTokenContextForSpringInJakartaServlet());
             SaManager.setSaTokenDao(new SaTokenDaoDefaultImpl());
+            SaManager.setStpInterface(new StpInterface() {
+                @Override public List<String> getPermissionList(Object loginId, String loginType) {
+                    return deniedWrites.get() ? List.of() : List.of("notify:inbox:seen", "notify:inbox:read");
+                }
+                @Override public List<String> getRoleList(Object loginId, String loginType) { return List.of(); }
+            });
             StpUtil.setStpLogic(new StpLogicJwtForSimple());
         }
+
+        private void denyWrites(boolean denied) { deniedWrites.set(denied); }
 
         private String login(long userId) {
             var request = new MockHttpServletRequest();
@@ -265,6 +379,7 @@ class NotifyInboxPagingIntegrationTest {
             SaManager.setConfig(previousConfig);
             SaManager.setSaTokenContext(previousContext);
             SaManager.setSaTokenDao(previousDao);
+            SaManager.setStpInterface(previousPermissions);
             StpUtil.setStpLogic(previousLogic);
         }
     }
