@@ -2485,7 +2485,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/resource/oss/{ossIds}": {
+    "/resource/oss/{ossId}/unpublish": {
         parameters: {
             query?: never;
             header?: never;
@@ -2495,10 +2495,67 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * 删除OSS对象存储
-         * @description 删除OSS对象存储<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:remove`<br><br>
+         * 用尚未清理来源的工单把 service 拨回私有配置。不删除公开桶里的副本。
+         * @description 用尚未清理来源的工单把 service 拨回私有配置。不删除公开桶里的副本。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:publish`<br><br>
          */
+        post: operations["unpublish"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/oss/{ossId}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 把一个仍在私有配置上的对象复制到所选公开配置，并改写这一行的 service。ossId 不变。
+         * @description 把一个仍在私有配置上的对象复制到所选公开配置，并改写这一行的 service。ossId 不变。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:publish`<br><br>
+         */
+        post: operations["publish_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/oss/{ossIds}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:remove`<br><br> */
         post: operations["remove_18"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/oss/{ossIds}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 恢复待删除的 OSS 对象。
+         * @description 恢复待删除的 OSS 对象。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:oss:remove`<br><br>
+         */
+        post: operations["restore"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3547,7 +3604,7 @@ export interface paths {
          * 发布公告并提交统一通知。
          * @description 发布公告并提交统一通知。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `notify:notice:publish`<br><br>
          */
-        post: operations["publish_1"];
+        post: operations["publish_2"];
         delete?: never;
         options?: never;
         head?: never;
@@ -8936,9 +8993,6 @@ export interface components {
             /** Format: int64 */
             id?: number;
             version?: string;
-            coordinate?: string;
-            anyNodeSkip?: string;
-            skipList?: components["schemas"]["Skip"][];
             updateBy?: string;
             /** Format: date-time */
             createTime?: string;
@@ -8955,24 +9009,21 @@ export interface components {
             formCustom?: string;
             formPath?: string;
             permissionFlag?: string;
+            anyNodeSkip?: string;
             tenantId?: string;
             listenerPath?: string;
+            coordinate?: string;
+            skipList?: components["schemas"]["Skip"][];
         };
         Skip: {
             /** Format: int32 */
-            nowNodeType?: number;
-            /** Format: int32 */
             nextNodeType?: number;
+            /** Format: int32 */
+            nowNodeType?: number;
             /** Format: int64 */
             id?: number;
             /** Format: int64 */
             nodeId?: number;
-            coordinate?: string;
-            skipType?: string;
-            skipName?: string;
-            skipCondition?: string;
-            nowNodeCode?: string;
-            nextNodeCode?: string;
             updateBy?: string;
             /** Format: date-time */
             createTime?: string;
@@ -8982,7 +9033,13 @@ export interface components {
             delFlag?: string;
             /** Format: int64 */
             definitionId?: number;
+            nextNodeCode?: string;
+            nowNodeCode?: string;
             tenantId?: string;
+            coordinate?: string;
+            skipType?: string;
+            skipName?: string;
+            skipCondition?: string;
         };
         User: {
             /** Format: int64 */
@@ -9174,11 +9231,11 @@ export interface components {
             /** Format: int32 */
             isPublish?: number;
             formPath?: string;
+            tenantId?: string;
             formCode?: string;
             formName?: string;
             /** Format: int32 */
             formType?: number;
-            tenantId?: string;
         };
         ApiResultInstance: {
             /** Format: int32 */
@@ -10123,6 +10180,26 @@ export interface components {
             /** @description 本仓密码 */
             password: string;
         };
+        PublishRequest: {
+            targetConfigKey: string;
+        };
+        /** @description 响应信息主体 */
+        RLong: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /**
+             * Format: int64
+             * @description 响应业务数据
+             */
+            data?: number;
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
         InitRequest: {
             policy: string;
             fileName: string;
@@ -10218,23 +10295,6 @@ export interface components {
         MigrationRequest: {
             ossIds: number[];
             targetConfigKey: string;
-        };
-        /** @description 响应信息主体 */
-        RLong: {
-            /**
-             * Format: int32
-             * @description 响应状态码
-             */
-            code?: number;
-            /** @description 响应提示信息 */
-            msg?: string;
-            /**
-             * Format: int64
-             * @description 响应业务数据
-             */
-            data?: number;
-            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
-            error?: components["schemas"]["ErrorInfo"];
         };
         DryRunReport: {
             targetConfigKey?: string;
@@ -11027,7 +11087,7 @@ export interface components {
              * @enum {string}
              */
             status?: "QUEUED" | "PROCESSING" | "ACCEPTED" | "PARTIAL_FAILURE" | "DELIVERED" | "UNDELIVERABLE" | "UNKNOWN" | "FAILED" | "CANCELLED" | "EXPIRED";
-            /** @description 供应商消息标识 */
+            /** @description 供应商消息标识；REDACT_SENSITIVE 通知的公开投影为 null，内部回执关联保留原值 */
             providerMessageId?: string;
         };
         /** @description 通知提交结果。 */
@@ -11068,7 +11128,7 @@ export interface components {
             deliveryId?: string;
             /** @description 重试原因 */
             reason?: string;
-            /** @description 重试幂等键 */
+            /** @description 尚无独立幂等结果存储，当前仅接受空值 */
             idempotencyKey?: string;
         };
         /** @description 响应信息主体 */
@@ -11094,6 +11154,11 @@ export interface components {
              * @enum {string}
              */
             status?: "QUEUED" | "PROCESSING" | "ACCEPTED" | "PARTIAL_FAILURE" | "DELIVERED" | "UNDELIVERABLE" | "UNKNOWN" | "FAILED" | "CANCELLED" | "EXPIRED";
+            /**
+             * Format: int32
+             * @description 本次实际重新排队的投递数；零表示持久状态未改变
+             */
+            queuedCount?: number;
         };
         /** @description 取消尚未完成通知命令。 */
         NotificationCancelCommand: {
@@ -14082,6 +14147,10 @@ export interface components {
             createByName?: string;
             /** @description 服务商 */
             service?: string;
+            /** @description 当前 service 对应配置的访问类型。不入库，由列表查询填入。 */
+            accessPolicy?: string;
+            /** @description 是否存在尚未清理来源的公开工单，可以恢复为私有。 */
+            restorable?: boolean;
             /** @description 是否为临时对象。 */
             isTemp?: string;
             /**
@@ -20035,7 +20104,104 @@ export interface operations {
             };
         };
     };
+    unpublish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ossId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    publish_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ossId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublishRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RLong"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
     remove_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ossIds: number[];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    restore: {
         parameters: {
             query?: never;
             header?: never;
@@ -21937,7 +22103,7 @@ export interface operations {
             };
         };
     };
-    publish_1: {
+    publish_2: {
         parameters: {
             query?: never;
             header?: never;

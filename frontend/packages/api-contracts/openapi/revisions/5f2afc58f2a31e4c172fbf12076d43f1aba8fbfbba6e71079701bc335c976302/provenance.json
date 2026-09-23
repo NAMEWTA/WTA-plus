@@ -1,0 +1,13 @@
+{
+  "backendCommit": "7a6f75ac9238399daf7936797d07da141f0f5a03",
+  "backendRepository": "NAMEWTA/WTA-plus",
+  "generator": "openapi-typescript@7.13.0",
+  "openapiVersion": "3.1.0",
+  "rawSha256": "8f57fc94ab0936c48d57b5947879ea0e7280a6b559dc4895852a9670ae97b3c7",
+  "runtimeEndpoint": "/v3/api-docs",
+  "totals": {
+    "paths": 436,
+    "schemas": 445,
+    "tags": 77
+  }
+}
