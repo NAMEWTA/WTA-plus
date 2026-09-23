@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.domain.R;
+import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.log.annotation.Log;
 import org.namewta.common.log.enums.BusinessType;
 import org.namewta.common.web.core.BaseController;
@@ -43,8 +44,14 @@ public class NotificationController extends BaseController {
     @PostMapping("/{notificationId}/retry")
     public R<RetryReceipt> retry(@PathVariable String notificationId,
                                  @RequestBody(required = false) NotificationRetryCommand command) {
-        NotificationRetryCommand actual = command == null
-            ? new NotificationRetryCommand(notificationId, null, "manual", null) : command;
+        if (command != null && command.notificationId() != null
+            && !notificationId.equals(command.notificationId())) {
+            throw new ServiceException("通知编号与请求路径不一致");
+        }
+        NotificationRetryCommand actual = new NotificationRetryCommand(notificationId,
+            command == null ? null : command.deliveryId(),
+            command == null ? "manual" : command.reason(),
+            command == null ? null : command.idempotencyKey());
         return R.ok(notificationService.retry(actual));
     }
 
@@ -54,8 +61,12 @@ public class NotificationController extends BaseController {
     @PostMapping("/{notificationId}/cancel")
     public R<CancelReceipt> cancel(@PathVariable String notificationId,
                                    @RequestBody(required = false) NotificationCancelCommand command) {
-        NotificationCancelCommand actual = command == null
-            ? new NotificationCancelCommand(notificationId, "manual") : command;
+        if (command != null && command.notificationId() != null
+            && !notificationId.equals(command.notificationId())) {
+            throw new ServiceException("通知编号与请求路径不一致");
+        }
+        NotificationCancelCommand actual = new NotificationCancelCommand(notificationId,
+            command == null ? "manual" : command.reason());
         return R.ok(notificationService.cancel(actual));
     }
 }

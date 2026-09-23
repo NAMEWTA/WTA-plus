@@ -33,6 +33,8 @@ public interface NotifyOutboxMapper extends BaseMapper<NotifyOutbox> {
                @Param("attemptCount") Integer attemptCount, @Param("nextAttemptAt") LocalDateTime nextAttemptAt,
                @Param("errorCode") String errorCode, @Param("errorMessage") String errorMessage);
 
-    /** Reuse the terminal outbox row for a manual retry instead of creating a duplicate delivery row. */
-    int requeue(@Param("deliveryId") Long deliveryId, @Param("now") LocalDateTime now);
+    /** 只复用已锁定且具剩余预算的确切任务，不清零尝试次数或碰活租约。 */
+    int requeue(@Param("outboxId") Long outboxId, @Param("intentId") Long intentId,
+                @Param("deliveryId") Long deliveryId, @Param("expectedStatus") String expectedStatus,
+                @Param("expectedErrorCode") String expectedErrorCode, @Param("now") LocalDateTime now);
 }

@@ -11,13 +11,14 @@ export type NotificationStatus =
   | 'FAILED'
   | 'CANCELLED'
   | 'EXPIRED';
+export type NotificationDeliveryStatus = NotificationStatus | 'PENDING';
 
 export interface NotificationDelivery {
   deliveryId?: string;
   intentId?: string;
   userId: string | null;
   channel: NotificationChannel;
-  status: NotificationStatus;
+  status: NotificationDeliveryStatus;
   providerMessageId: string | null;
   errorCode?: string | null;
   errorMessage?: string | null;
@@ -30,6 +31,17 @@ export interface NotificationSnapshot {
   status: NotificationStatus;
   createdAt: string | null;
   deliveries: NotificationDelivery[];
+}
+
+export interface RetryReceipt {
+  notificationId: string;
+  status: NotificationStatus;
+  queuedCount: number;
+}
+
+export interface CancelReceipt {
+  notificationId: string;
+  status: NotificationStatus;
 }
 
 export interface NotificationDeliveryQuery {

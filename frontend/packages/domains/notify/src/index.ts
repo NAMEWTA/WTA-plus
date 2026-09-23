@@ -10,9 +10,12 @@ export { createNotificationService } from './transport';
 export type {
   NotificationChannel,
   NotificationDelivery,
+  NotificationDeliveryStatus,
   NotificationDeliveryQuery,
   NotificationSnapshot,
   NotificationStatus,
+  RetryReceipt,
+  CancelReceipt,
   NotifyInboxMessage,
   NotifyChannelAccount,
   NotifyConfigChannel,

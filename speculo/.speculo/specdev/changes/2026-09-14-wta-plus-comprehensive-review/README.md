@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-用户已激活Goal，执行全部50票。当前revision164：9done、T-01/T-03取消重复施工但AC归T30，T38 in_progress、其余38ready。cors_audit唯一产品writer，Lead负责治理/提交/服务验收；Goal active。
+用户已激活Goal，执行全部50票。当前revision165：9done、T-01/T-03取消重复施工但AC归T30，T38 in_progress、其余38ready。cors_audit唯一产品writer，Lead负责治理/提交/服务验收；Goal active。
 
 最近产品T02 `617a3693ddb2897851ab46d4131690898df6a690` 已完成当前日志泄漏修复；真实39、消费者70+HTTPS1/Chrome6零skip，完整默认1000含150环境skip，full/core通过；整个change仍未完成。
 

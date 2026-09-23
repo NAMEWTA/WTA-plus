@@ -25,6 +25,8 @@ describe('通知 Web Domain', () => {
       'notify/config/index'
     ]);
     expect(manifest.permissions[0]?.permissions).toContain('notify:monitor:list');
+    expect(manifest.permissions[0]?.permissions).toContain('notify:notification:retry');
+    expect(manifest.permissions[0]?.permissions).toContain('notify:notification:cancel');
     expect(manifest.permissions.map(item => item.id)).toContain('notify-config');
     expect(manifest.permissions.find(item => item.id === 'notify-config')?.permissions).toEqual([
       'notify:config:list',

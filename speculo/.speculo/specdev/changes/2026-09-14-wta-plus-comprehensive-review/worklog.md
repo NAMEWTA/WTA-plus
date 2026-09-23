@@ -218,3 +218,19 @@ Revision163: T03 cancelled as no new product work after current617a369 real boun
 Revision164: T38 started fromb47ff8b after acceptedT02 and no-new-workT03 closure.9done/2cancelled/1in_progress/38ready. cors_audit sole product writer, Lead governance/commit/isolated acceptance; exact ID and safe actual requeue contracts; no new schema or Client/owner model.
 
 T38 revision164方案复核：保留原Ticket的IN_APP安全重做条款，澄清仅外部UNKNOWN/WAITING不可重发；定向只作用其所属一项，批量含外部未知写前拒绝。尚无产品实现/真实运行，HTTP红灯测试由writer编写。
+
+### T38已取得行为红灯
+
+测试专用checkpoint `9f8fa2b1e36c851be8cee6763a84ebf6e2072928`；`red-http-identity`实际exit1，1test/1failure/0error/0skip。Controller.retry:48把URL101/body202传给Service，测试29行verifyNoInteractions失败；后续异常断言未执行。代码测试在standalone MockMvc，不冒充完整ACL/DB。formal attempts仍0；当前单writer进入完整实现。原记录/tmp/wta-t38/red-http-identity.json/log与red-behavior-assessment.json。准备的ownedMySQL/Redis驱动SHA d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e，12项合成保护通过，尚未启动真实服务。
+
+## revision165 T38字典合同补齐
+
+revision165：NotifyDelivery已有真实PENDING状态，但notify_delivery_status基座字典缺该值，重试后监控会显示未知。提前扩50-cde-base-dml.sql写集，只补唯一PENDING=待投递字典项，保留同六SQL基座与其他初始化；前端Delivery类型/字典渲染同步，不新增后端状态。不得执行生产DML或重放基座；当前新隔离库验收，存量Tag差异由T30持有。
+
+### T38 开发检查与冻结副本预审（非正式验收）
+
+writer 的 selected-dev-v2 退出0，13项通过、8项真实数据库用例因opt-in关闭而skip；前端domain4项和web-domain13项通过，两个包typecheck/lint退出0。原首次编译检查、web-domain-test-v1夹具SSR context失败保留于/tmp/wta-t38，不将后续绿色覆盖原日志。当前代码尚未冻结、未提交实施候选，formal attempts仍0。
+
+legacy对/tmp/wta-t38/preliminary-source的21文件哈希冻结副本预审未发现已证新增生产安全阻断，提出混合外部UNKNOWN整批零写、IN_APP缺关系幂等和确定性锁竞争验证缺口。writer已补部分场景，继续在原测试白名单补真实Planner失败后修配置重试、剩余预算、orphan与claim交错，并补真实SaInterceptor权限负例；standalone无拦截器HTTP红灯不冒充权限实证。唯一产品writer/开发构建窗仍属cors_audit；Lead不并行Maven/前端构建/服务。
+
+ops在/tmp/wta-t38准备完整JAR的owned MySQL/Redis/MinIO live OpenAPI捕获驱动，仅静态和合成自检；旧target JAR不属于T38。待后端固定clean SHA并独立检查、clean full package后，才运行该JAR并直接捕获/v3/api-docs；生成合同回写后另固定最终候选，不混淆backend source SHA与最终前端生成物SHA。当前尚未启动上述真实服务。

@@ -29,6 +29,18 @@ describe('通知传输映射', () => {
       params: { channel: 'SMS', status: 'FAILED' }
     });
   });
+  it('按路径通知主键和单个投递编号发送重试，取消作用整个通知', async () => {
+    const request = vi.fn().mockResolvedValue({ data: { notificationId: '101', status: 'QUEUED', queuedCount: 1 } });
+    const service = createNotificationService({ request } as never);
+    await service.notification.retry('101', '303');
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/notify/notification/101/retry', method: 'post', data: { deliveryId: '303', reason: 'manual' }
+    });
+    await service.notification.cancel('101');
+    expect(request).toHaveBeenLastCalledWith({ url: '/notify/notification/101/cancel', method: 'post' });
+    expect(() => service.notification.retry('../202', '303')).toThrow('通知或投递编号无效');
+    expect(request).toHaveBeenCalledTimes(2);
+  });
   it('映射通知配置账号、场景绑定和试发', async () => {
     const request = vi.fn().mockResolvedValue({ data: { rows: [], total: 0 } });
     const service = createNotificationService({ request } as never);

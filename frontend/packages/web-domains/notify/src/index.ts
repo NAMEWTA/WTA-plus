@@ -11,7 +11,10 @@ export function createNotifyWebDomain(runtime: NotifyWebRuntime): WebDomainManif
     permissions: Object.freeze([
       Object.freeze({
         id: 'notify-monitor',
-        permissions: Object.freeze(['notify:monitor:list', 'notify:monitor:query'])
+        permissions: Object.freeze([
+          'notify:monitor:list', 'notify:monitor:query',
+          'notify:notification:retry', 'notify:notification:cancel'
+        ])
       }),
       Object.freeze({
         id: 'notify-notice',

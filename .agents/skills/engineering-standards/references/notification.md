@@ -18,6 +18,8 @@ notificationService.submit(new NotificationCommand(
 
 `NotificationApplicationService` 还提供查询、失败重试和未完成通知取消。Controller、Workflow 页面和其他业务实现不得直接依赖通知 Mapper、ServiceImpl、Outbox 或渠道客户端。
 
+人工重试以 URL/命令中的通知主键定位 Intent；指定 `deliveryId` 只能重排该 Intent 所属的投递，取消始终作用整个通知。当前不保存独立的人工重试幂等结果，非空 retry `idempotencyKey` 明确拒绝；重复空键请求由当前状态和 Outbox 行 CAS 得到零排队结果。`RetryReceipt.queuedCount` 是本次实际重排数，零时返回持久聚合状态，不写伪 QUEUED。只有有剩余预算、无活租约且可证明尚未调用供应商的固定本地失败可以复用原 DONE Outbox；外部 UNKNOWN/WAITING_RECEIPT、旧泛 FAILED、已受理和预算耗尽均不可凭人工请求清零次数、删除 Redis 键或重新发送。IN_APP 历史 UNKNOWN 仅在同 Intent、原消息/本人关系可由原子幂等路径核对、单一无租约任务和剩余预算时复用原 WAITING_RECEIPT；再次完成仅对新关系登记提交后提示。
+
 ## 目标与渠道
 
 - `recipientType=ALL`：发布时解析当前正常且未删除用户，不把全量用户加载到前端。

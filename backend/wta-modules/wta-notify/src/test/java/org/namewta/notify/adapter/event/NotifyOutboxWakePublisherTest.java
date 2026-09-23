@@ -248,8 +248,9 @@ class NotifyOutboxWakePublisherTest {
                 dao, users, dispatch, context);
             TransactionContext.bind("notify-outbox-wake-retry");
             try {
-                runtime.retry(new NotificationRetryCommand("9", null, "manual", "retry-1"));
-                verify(dao).requeueOutbox(8L, java.time.LocalDateTime.of(2026, 9, 19, 0, 0));
+                runtime.retry(new NotificationRetryCommand("9", null, "manual", null));
+                verify(dao).requeueOutbox(argThat((NotifyOutbox outbox) -> outbox.getOutboxId() == 18L),
+                    eq(java.time.LocalDateTime.of(2026, 9, 19, 0, 0)));
                 assertTrue(transport.published.isEmpty());
                 TransactionContext.getSynchronizations().getFirst().afterCommit();
                 assertEquals(1, transport.published.size());
@@ -330,10 +331,23 @@ class NotifyOutboxWakePublisherTest {
         when(dao.lockIntent(9L)).thenReturn(intent);
         NotifyDelivery delivery = new NotifyDelivery();
         delivery.setDeliveryId(8L);
+        delivery.setIntentId(9L);
+        delivery.setChannel("SMS");
         delivery.setStatus("FAILED");
+        delivery.setErrorCode("UNBOUND_CHANNEL");
+        when(dao.deliveries(9L)).thenReturn(List.of(delivery));
         when(dao.lockDeliveries(9L)).thenReturn(List.of(delivery));
-        when(dao.markDeliveryForRetry(8L)).thenReturn(1);
-        when(dao.requeueOutbox(eq(8L), any())).thenReturn(1);
+        NotifyOutbox outbox = new NotifyOutbox();
+        outbox.setOutboxId(18L);
+        outbox.setIntentId(9L);
+        outbox.setDeliveryId(8L);
+        outbox.setStatus("DONE");
+        outbox.setLastErrorCode("UNBOUND_CHANNEL");
+        outbox.setAttemptCount(1);
+        outbox.setMaxAttempts(5);
+        when(dao.lockOutboxes(9L, List.of(8L))).thenReturn(List.of(outbox));
+        when(dao.markDeliveryForRetry(9L, 8L, "FAILED", "UNBOUND_CHANNEL")).thenReturn(1);
+        when(dao.requeueOutbox(eq(outbox), any())).thenReturn(1);
         when(dao.update(any(NotifyIntent.class))).thenReturn(1);
     }
 

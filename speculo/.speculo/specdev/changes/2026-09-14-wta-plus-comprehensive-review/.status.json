@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T12:13:33.587338+00:00",
+  "updated_at": "2026-09-23T12:29:19.312550+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -126,7 +126,9 @@
     "T02 genuine behavior red at test-only8a88965: isolated run4e81e6d59c798f07 sevenclasses35tests onefailure zeroerrors/skips; real-issued token remains in HTTP audit after successful device actions. Later sink assertions await green. All owned cleanup/clean source pass. Formal attempts0; cors sole writer now implements minimal repair.",
     "Revision162: T02 accepted at617a369; current real39 zeroSkip, consumers70+HTTPS1/Chrome6 zeroSkip, default1000 includes150 environment skips explicitly excluded; full/core packages verified. Initial consumer skip and pnpm environment failure retained.9done/1cancelled/40ready; T03 current no-new-work adjudication then T38. Goal active; no archive.",
     "Revision163: T03 cancelled as no new product work after current617a369 real bounded HTTP/signature/heap and consumers/full-core proof. Historical214de538 remains; AC003 retained by T30 and only redundant implementation edge removed.9done/2cancelled/39ready; nextT38; Goal active.",
-    "Revision164: T38 started fromb47ff8b after acceptedT02 and no-new-workT03 closure.9done/2cancelled/1in_progress/38ready. cors_audit sole product writer, Lead governance/commit/isolated acceptance; exact ID and safe actual requeue contracts; no new schema or Client/owner model."
+    "Revision164: T38 started fromb47ff8b after acceptedT02 and no-new-workT03 closure.9done/2cancelled/1in_progress/38ready. cors_audit sole product writer, Lead governance/commit/isolated acceptance; exact ID and safe actual requeue contracts; no new schema or Client/owner model.",
+    "T38 test-only9f8fa2b clean behavioral red: Controller path101/body202 reached service,1test1failure0error0skip. No formal candidate yet. Product writer released to complete T38 within declared paths; owned driver prepared only, no live services.",
+    "revision165：NotifyDelivery已有真实PENDING状态，但notify_delivery_status基座字典缺该值，重试后监控会显示未知。提前扩50-cde-base-dml.sql写集，只补唯一PENDING=待投递字典项，保留同六SQL基座与其他初始化；前端Delivery类型/字典渲染同步，不新增后端状态。不得执行生产DML或重放基座；当前新隔离库验收，存量Tag差异由T30持有。"
   ],
   "worktrees": [
     {
@@ -526,14 +528,14 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "b47ff8b91cfef02a9f28de0e201edcd1575a950f",
+      "source_checkpoint": "9f8fa2b1e36c851be8cee6763a84ebf6e2072928",
       "status": "active",
-      "updated_at": "2026-09-23T12:13:33.587338+00:00",
+      "updated_at": "2026-09-23T12:19:05.719411+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
         "parent_before_sha": "b47ff8b91cfef02a9f28de0e201edcd1575a950f",
-        "source_sha": "b47ff8b91cfef02a9f28de0e201edcd1575a950f",
+        "source_sha": "9f8fa2b1e36c851be8cee6763a84ebf6e2072928",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,

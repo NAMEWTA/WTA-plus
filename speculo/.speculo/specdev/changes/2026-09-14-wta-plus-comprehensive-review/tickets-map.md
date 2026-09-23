@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 164
+plan_revision: 165
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -331,3 +331,7 @@ Revision164: T38 started fromb47ff8b after acceptedT02 and no-new-workT03 closur
 - <Path>frontend/packages/web-domains/notify/src/NotificationPage.test.ts</Path>
 - <Path>backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java</Path>
 - <Path>.agents/skills/engineering-standards/references/notification.md</Path>
+
+## revision165 T38字典写集
+
+revision165：NotifyDelivery已有真实PENDING状态，但notify_delivery_status基座字典缺该值，重试后监控会显示未知。提前扩50-cde-base-dml.sql写集，只补唯一PENDING=待投递字典项，保留同六SQL基座与其他初始化；前端Delivery类型/字典渲染同步，不新增后端状态。不得执行生产DML或重放基座；当前新隔离库验收，存量Tag差异由T30持有。

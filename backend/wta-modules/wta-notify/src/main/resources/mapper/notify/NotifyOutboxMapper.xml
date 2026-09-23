@@ -55,12 +55,12 @@
 
     <update id="requeue">
         update notify_outbox
-        set status = 'READY', available_at = #{now}, attempt_count = 0, next_attempt_at = #{now},
-            lease_owner = null, lease_token = null, lease_until = null,
+        set status = 'READY', available_at = #{now}, next_attempt_at = #{now},
             last_error_code = null, last_error_message = null
-        where delivery_id = #{deliveryId}
-          and status in ('WAITING_RECEIPT', 'DEAD_LETTER')
-        order by outbox_id desc
-        limit 1
+        where outbox_id = #{outboxId} and intent_id = #{intentId} and delivery_id = #{deliveryId}
+          and status = #{expectedStatus} and last_error_code = #{expectedErrorCode}
+          and status in ('DONE', 'WAITING_RECEIPT')
+          and lease_owner is null and lease_token is null and lease_until is null
+          and attempt_count &gt;= 0 and max_attempts &gt; 0 and attempt_count &lt; max_attempts
     </update>
 </mapper>

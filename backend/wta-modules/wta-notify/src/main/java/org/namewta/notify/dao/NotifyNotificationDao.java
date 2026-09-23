@@ -44,6 +44,14 @@ public class NotifyNotificationDao {
     public NotifyOutbox lockOutbox(Long id) {
         return outboxMapper.selectOne(new LambdaQueryWrapper<NotifyOutbox>().eq(NotifyOutbox::getOutboxId, id).last("for update"));
     }
+    /** 人工重试也遵守 Intent→Outbox→Delivery 锁序；同一投递的所有旧任务均在锁内核对。 */
+    public List<NotifyOutbox> lockOutboxes(Long intentId, Collection<Long> deliveryIds) {
+        if (deliveryIds == null || deliveryIds.isEmpty()) return List.of();
+        return outboxMapper.selectList(new LambdaQueryWrapper<NotifyOutbox>()
+            .eq(NotifyOutbox::getIntentId, intentId)
+            .in(NotifyOutbox::getDeliveryId, deliveryIds)
+            .orderByAsc(NotifyOutbox::getOutboxId).last("for update"));
+    }
     /**
      * 当前读投递行，不能在等待 Intent 锁后继续使用旧快照。
      * @param id 投递主键
@@ -141,10 +149,13 @@ public class NotifyNotificationDao {
             .set(NotifyDelivery::getAcceptedAt, value.getAcceptedAt())
             .set(NotifyDelivery::getDeliveredAt, value.getDeliveredAt()));
     }
-    public int markDeliveryForRetry(Long deliveryId) {
+    public int markDeliveryForRetry(Long intentId, Long deliveryId, String status, String errorCode) {
         return deliveryMapper.update(null, new LambdaUpdateWrapper<NotifyDelivery>()
             .eq(NotifyDelivery::getDeliveryId, deliveryId)
-            .in(NotifyDelivery::getStatus, List.of("FAILED", "UNKNOWN"))
+            .eq(NotifyDelivery::getIntentId, intentId)
+            .eq(NotifyDelivery::getStatus, status)
+            .eq(NotifyDelivery::getErrorCode, errorCode)
+            .isNull(NotifyDelivery::getProviderMessageId)
             .set(NotifyDelivery::getStatus, "PENDING")
             .set(NotifyDelivery::getErrorCode, null)
             .set(NotifyDelivery::getErrorMessage, null));
@@ -183,7 +194,10 @@ public class NotifyNotificationDao {
         return outboxMapper.finish(value.getOutboxId(), value.getLeaseOwner(), value.getLeaseToken(), value.getStatus(),
             value.getAttemptCount(), value.getNextAttemptAt(), value.getLastErrorCode(), value.getLastErrorMessage());
     }
-    public int requeueOutbox(Long deliveryId, LocalDateTime now) { return outboxMapper.requeue(deliveryId, now); }
+    public int requeueOutbox(NotifyOutbox outbox, LocalDateTime now) {
+        return outboxMapper.requeue(outbox.getOutboxId(), outbox.getIntentId(), outbox.getDeliveryId(),
+            outbox.getStatus(), outbox.getLastErrorCode(), now);
+    }
     public int insert(NotifyAttempt value) { return attemptMapper.insert(value); }
     public List<NotifyMessageRecipient> messageRecipients(Long userId, int limit) {
         return messageRecipientMapper.selectList(new LambdaQueryWrapper<NotifyMessageRecipient>()

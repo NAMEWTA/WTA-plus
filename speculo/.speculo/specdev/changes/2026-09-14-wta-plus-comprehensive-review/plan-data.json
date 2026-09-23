@@ -3132,7 +3132,8 @@
       "frontend/packages/web-domains/notify/src/index.test.ts",
       "frontend/packages/web-domains/notify/src/NotificationPage.test.ts",
       "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java",
-      ".agents/skills/engineering-standards/references/notification.md"
+      ".agents/skills/engineering-standards/references/notification.md",
+      "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql"
     ],
     "tests": [
       "HTTP ID 冲突、真实 DB requeue 并发、API/领域合同测试"
@@ -3163,7 +3164,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 164,
+    "plan_revision": 165,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: HTTP ID 冲突、真实 DB requeue 并发、API/领域合同测试",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",

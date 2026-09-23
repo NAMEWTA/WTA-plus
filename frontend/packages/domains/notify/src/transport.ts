@@ -4,6 +4,8 @@ import type {
   NotificationDelivery,
   NotificationDeliveryQuery,
   NotificationSnapshot,
+  RetryReceipt,
+  CancelReceipt,
   NotifyChannelAccount,
   NotifyConfigChannel,
   NotifyInboxMessage,
@@ -19,11 +21,25 @@ export function createNotificationService(http: HttpClient) {
     http.request<T>(config) as Promise<ApiResponse<T>>;
   const snapshotPath: keyof paths = '/notify/monitor/snapshot';
   const deliveriesPath: keyof paths = '/notify/monitor/deliveries';
+  const positiveId = (id: string) => {
+    if (!/^[1-9]\d*$/.test(id)) throw new Error('通知或投递编号无效');
+    return id;
+  };
   return Object.freeze({
     snapshot: (notificationId: string) =>
       request<NotificationSnapshot>({ url: snapshotPath, method: 'get', params: { notificationId } }),
     deliveries: (params: NotificationDeliveryQuery = {}) =>
       request<NotificationDelivery[]>({ url: deliveriesPath, method: 'get', params }),
+    notification: {
+      retry: (notificationId: string, deliveryId: string) =>
+        request<RetryReceipt>({
+          url: `/notify/notification/${positiveId(notificationId)}/retry`,
+          method: 'post',
+          data: { deliveryId: positiveId(deliveryId), reason: 'manual' }
+        }),
+      cancel: (notificationId: string) =>
+        request<CancelReceipt>({ url: `/notify/notification/${positiveId(notificationId)}/cancel`, method: 'post' })
+    },
     notices: {
       list: (params: NotifyNoticeQuery = {}) =>
         request<{ rows: NotifyNotice[]; total: number }>({ url: '/notify/notice/list', method: 'get', params }),

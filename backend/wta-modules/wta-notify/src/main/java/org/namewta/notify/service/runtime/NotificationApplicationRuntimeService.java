@@ -22,6 +22,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +37,11 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class NotificationApplicationRuntimeService {
+    private static final Set<String> PRE_SEND_FAILURES = Set.of(
+        "UNBOUND_CHANNEL", "ACCOUNT_DISABLED", "ACCOUNT_CHANNEL_MISMATCH", "MISSING_VARIABLE",
+        "ACCOUNT_QUOTA", "TEMPLATE_QUOTA", "RECIPIENT_MINUTE_QUOTA", "RECIPIENT_DAY_QUOTA");
+    private static final Set<String> SMS_PRE_SEND_FAILURES = Set.of(
+        "SMS_TEMPLATE_MISSING", "INVALID_TEMPLATE_PARAMETERS");
 
     private final NotifyNotificationDao dao;
     private final UserService userService;
@@ -164,39 +171,104 @@ public class NotificationApplicationRuntimeService {
         if (command == null || command.notificationId() == null) {
             throw new ServiceException("通知编号不能为空");
         }
+        if (!blank(command.idempotencyKey())) {
+            throw new ServiceException("人工重试暂不支持幂等键");
+        }
+        Long deliveryId = command.deliveryId() == null ? null : parsePositiveId(command.deliveryId());
         NotifyIntent intent = dao.lockIntent(parsePositiveId(command.notificationId()));
         if (intent == null) {
             throw new ServiceException("通知不存在");
         }
-        List<NotifyDelivery> deliveries = dao.lockDeliveries(intent.getIntentId()).stream()
-            .filter(item -> List.of("FAILED", "UNKNOWN").contains(item.getStatus())).toList();
-        boolean queued = false;
-        Long wakeHint = null;
-        for (NotifyDelivery delivery : deliveries) {
-            if (dao.markDeliveryForRetry(delivery.getDeliveryId()) != 1) continue;
-            LocalDateTime now = dao.databaseNow().withNano(0);
-            if (dao.requeueOutbox(delivery.getDeliveryId(), now) == 0) {
-                NotifyOutbox outbox = new NotifyOutbox();
-                outbox.setOutboxId(IdGeneratorUtil.nextLongId());
-                outbox.setIntentId(intent.getIntentId());
-                outbox.setDeliveryId(delivery.getDeliveryId());
-                outbox.setStatus("READY");
-                outbox.setAvailableAt(now);
-                outbox.setNextAttemptAt(now);
-                outbox.setAttemptCount(0);
-                outbox.setMaxAttempts(5);
-                dao.insert(outbox);
-                wakeHint = outbox.getOutboxId();
+        // 先按不可变归属读取 ID，再按 Intent→Outbox→Delivery 锁序取得当前行；不能先锁 Delivery。
+        if (deliveryId != null) {
+            NotifyDelivery selected = dao.delivery(deliveryId);
+            if (selected == null || !Objects.equals(selected.getIntentId(), intent.getIntentId())) {
+                throw new ServiceException("投递不属于当前通知");
             }
-            queued = true;
         }
-        intent.setStatus(NotificationStatus.QUEUED.name());
-        dao.update(intent);
-        if (queued) {
+        if ("CANCELLED".equals(intent.getStatus()) || "EXPIRED".equals(intent.getStatus())
+            || "DELIVERED".equals(intent.getStatus())) {
+            return new RetryReceipt(String.valueOf(intent.getIntentId()), status(intent.getStatus()), 0);
+        }
+        List<Long> deliveryIds = (deliveryId == null ? dao.deliveries(intent.getIntentId()).stream()
+            .map(NotifyDelivery::getDeliveryId).sorted().toList() : List.of(deliveryId));
+        List<NotifyOutbox> outboxes = new ArrayList<>();
+        for (int offset = 0; offset < deliveryIds.size(); offset += 500) {
+            outboxes.addAll(dao.lockOutboxes(intent.getIntentId(),
+                deliveryIds.subList(offset, Math.min(offset + 500, deliveryIds.size()))));
+        }
+        NotifyDelivery lockedTarget = deliveryId == null ? null : dao.lockDelivery(deliveryId);
+        if (deliveryId != null && lockedTarget == null) throw new ServiceException("投递不属于当前通知");
+        List<NotifyDelivery> deliveries = deliveryId == null ? dao.lockDeliveries(intent.getIntentId())
+            : List.of(lockedTarget);
+        if (deliveryId != null && !Objects.equals(deliveries.getFirst().getIntentId(), intent.getIntentId())) {
+            throw new ServiceException("投递不属于当前通知");
+        }
+        Map<Long, List<NotifyOutbox>> byDelivery = new HashMap<>();
+        for (NotifyOutbox outbox : outboxes) {
+            byDelivery.computeIfAbsent(outbox.getDeliveryId(), ignored -> new ArrayList<>()).add(outbox);
+        }
+        List<RetryCandidate> eligible = new ArrayList<>();
+        for (NotifyDelivery delivery : deliveries.stream().sorted(Comparator.comparing(NotifyDelivery::getDeliveryId)).toList()) {
+            if ("UNKNOWN".equals(delivery.getStatus()) && !"IN_APP".equals(delivery.getChannel())) {
+                throw new ServiceException("外部投递结果未知，不能重新发送");
+            }
+            List<NotifyOutbox> tasks = byDelivery.getOrDefault(delivery.getDeliveryId(), List.of());
+            if (tasks.size() != 1 || delivery.getProviderMessageId() != null || delivery.getErrorCode() == null) continue;
+            NotifyOutbox task = tasks.getFirst();
+            if (!Objects.equals(task.getIntentId(), intent.getIntentId())
+                || !Objects.equals(task.getDeliveryId(), delivery.getDeliveryId())
+                || !Objects.equals(task.getLastErrorCode(), delivery.getErrorCode())
+                || task.getLeaseOwner() != null || task.getLeaseToken() != null || task.getLeaseUntil() != null
+                || task.getAttemptCount() == null || task.getMaxAttempts() == null
+                || task.getAttemptCount() < 0 || task.getMaxAttempts() <= 0
+                || task.getAttemptCount() >= task.getMaxAttempts()) continue;
+            if ("FAILED".equals(delivery.getStatus()) && "DONE".equals(task.getStatus())
+                && safeLocalFailure(delivery)) {
+                eligible.add(new RetryCandidate(delivery, task));
+            } else if ("IN_APP".equals(delivery.getChannel()) && "UNKNOWN".equals(delivery.getStatus())
+                && "DISPATCH_ERROR".equals(delivery.getErrorCode())
+                && "WAITING_RECEIPT".equals(task.getStatus()) && safeInAppRetry(intent, delivery)) {
+                eligible.add(new RetryCandidate(delivery, task));
+            }
+        }
+        int queuedCount = 0;
+        Long wakeHint = null;
+        if (!eligible.isEmpty()) {
+            LocalDateTime now = dao.databaseNow().withNano(0);
+            for (RetryCandidate candidate : eligible) {
+                if (dao.requeueOutbox(candidate.outbox(), now) != 1
+                    || dao.markDeliveryForRetry(intent.getIntentId(), candidate.delivery().getDeliveryId(),
+                    candidate.delivery().getStatus(), candidate.delivery().getErrorCode()) != 1) {
+                    throw new IllegalStateException("通知重试并发状态冲突");
+                }
+                if (wakeHint == null) wakeHint = candidate.outbox().getOutboxId();
+                queuedCount++;
+            }
+            intent.setStatus(NotificationStatus.QUEUED.name());
+            if (dao.update(intent) != 1) throw new IllegalStateException("通知重试聚合写入冲突");
             requestOutboxWake(wakeHint);
         }
-        return new RetryReceipt(command.notificationId(), NotificationStatus.QUEUED);
+        return new RetryReceipt(String.valueOf(intent.getIntentId()), status(intent.getStatus()), queuedCount);
     }
+
+    /** 只认当前发送编排明确在 Provider 前生成的固定分类，不从 FAILED 或宽泛前缀推断。 */
+    private boolean safeLocalFailure(NotifyDelivery delivery) {
+        String code = delivery.getErrorCode();
+        if ("IN_APP".equals(delivery.getChannel())) return "LOCAL_DISPATCH_ERROR".equals(code);
+        if (!"SMS".equals(delivery.getChannel()) && !"MAIL".equals(delivery.getChannel())) return false;
+        return PRE_SEND_FAILURES.contains(code)
+            || ("SMS".equals(delivery.getChannel()) && SMS_PRE_SEND_FAILURES.contains(code));
+    }
+
+    /** T-36 按 Intent 主键复用消息、按本人关系去重并仅对新关系发提交后提示。 */
+    private boolean safeInAppRetry(NotifyIntent intent, NotifyDelivery delivery) {
+        if (delivery.getUserId() == null || delivery.getUserId() <= 0) return false;
+        var recipient = dao.messageRecipient(intent.getIntentId(), delivery.getUserId());
+        return recipient == null || dao.message(intent.getIntentId()) != null;
+    }
+
+    private record RetryCandidate(NotifyDelivery delivery, NotifyOutbox outbox) { }
 
     public CancelReceipt cancel(NotificationCancelCommand command) {
         if (command == null || command.notificationId() == null) {
