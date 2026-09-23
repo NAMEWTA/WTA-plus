@@ -37,7 +37,8 @@ class NotifyOutboxClaimConcurrencyTest {
         LeaseStore store = new LeaseStore();
         NotifyNotificationDao dao = mock(NotifyNotificationDao.class);
         when(dao.claimCandidates(any(), anyInt())).thenAnswer(invocation -> List.of(readyRow()));
-        when(dao.claimOutbox(anyLong(), anyString(), anyString(), any(), any())).thenAnswer(invocation ->
+        when(dao.deliveryChannels(any())).thenReturn(java.util.Map.of());
+        when(dao.claimOutbox(anyLong(), anyString(), anyString(), any(), any(), any(boolean.class))).thenAnswer(invocation ->
             store.claim(invocation.getArgument(1), invocation.getArgument(2)));
         when(dao.finishOutbox(any())).thenAnswer(invocation ->
             store.finish(invocation.getArgument(0)));

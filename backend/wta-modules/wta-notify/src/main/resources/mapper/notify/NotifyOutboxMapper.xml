@@ -13,12 +13,24 @@
 
     <update id="claim">
         update notify_outbox
-        set status = 'PROCESSING', lease_owner = #{owner}, lease_token = #{token}, lease_until = #{leaseUntil}
+        set status = 'PROCESSING', lease_owner = #{owner}, lease_token = #{token}, lease_until = #{leaseUntil},
+            last_error_code = case when last_error_code = 'IN_APP_ATTEMPT_RESERVED' and #{inApp}
+                then null else last_error_code end
         where outbox_id = #{outboxId}
           and status in ('READY', 'PROCESSING')
           and available_at &lt;= #{now}
           and (next_attempt_at is null or next_attempt_at &lt;= #{now})
           and (lease_until is null or lease_until &lt;= #{now})
+    </update>
+
+    <!-- 已锁定 Intent→Outbox→Delivery 后再执行；预算事务先于消息结果事务提交。 -->
+    <update id="reserveInApp">
+        update notify_outbox
+        set attempt_count = attempt_count + 1, last_error_code = 'IN_APP_ATTEMPT_RESERVED', last_error_message = null
+        where outbox_id = #{outboxId} and status = 'PROCESSING'
+          and lease_owner = #{owner} and lease_token = #{token}
+          and lease_until &gt; utc_timestamp(6) and attempt_count &lt; max_attempts
+          and (last_error_code is null or last_error_code &lt;&gt; 'IN_APP_ATTEMPT_RESERVED')
     </update>
 
     <select id="databaseNow" resultType="java.time.LocalDateTime">select utc_timestamp(6)</select>

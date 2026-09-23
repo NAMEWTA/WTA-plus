@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -27,9 +28,12 @@ public class NotifyOutboxClaimService {
         LocalDateTime nowUtc = dao.databaseNow();
         LocalDateTime leaseUntil = nowUtc.plusSeconds(60);
         List<NotifyOutbox> candidates = dao.claimCandidates(nowUtc, 50);
+        var channels = dao.deliveryChannels(candidates.stream().map(NotifyOutbox::getDeliveryId)
+            .filter(Objects::nonNull).distinct().toList());
         return candidates.stream().filter(outbox -> {
             String token = UUID.randomUUID().toString();
-            if (dao.claimOutbox(outbox.getOutboxId(), owner, token, leaseUntil, nowUtc) != 1) return false;
+            if (dao.claimOutbox(outbox.getOutboxId(), owner, token, leaseUntil, nowUtc,
+                outbox.getDeliveryId() != null && "IN_APP".equals(channels.get(outbox.getDeliveryId()))) != 1) return false;
             outbox.setStatus("PROCESSING");
             outbox.setLeaseOwner(owner);
             outbox.setLeaseToken(token);
@@ -38,4 +42,3 @@ public class NotifyOutboxClaimService {
         }).toList();
     }
 }
-

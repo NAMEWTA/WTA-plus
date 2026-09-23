@@ -154,8 +154,20 @@ public class NotifyNotificationDao {
     public List<NotifyOutbox> claimCandidates(LocalDateTime now, int limit) {
         return outboxMapper.selectClaimable(now, limit);
     }
-    public int claimOutbox(Long id, String owner, String token, LocalDateTime until, LocalDateTime now) {
-        return outboxMapper.claim(id, owner, token, until, now);
+    /** 同一批候选仅一次普通读获取不可变渠道，claim UPDATE 无需在锁住 Outbox 后再读 Delivery。 */
+    public java.util.Map<Long, String> deliveryChannels(Collection<Long> ids) {
+        if (ids == null || ids.isEmpty()) return java.util.Map.of();
+        return deliveryMapper.selectBatchIds(ids).stream().collect(java.util.stream.Collectors.toMap(
+            NotifyDelivery::getDeliveryId, NotifyDelivery::getChannel));
+    }
+    public int claimOutbox(Long id, String owner, String token, LocalDateTime until, LocalDateTime now,
+                           boolean inApp) {
+        return outboxMapper.claim(id, owner, token, until, now, inApp);
+    }
+
+    /** 已持有统一锁序时，按当前 owner/token 预留站内投递预算。 */
+    public int reserveInAppOutbox(Long id, String owner, String token) {
+        return outboxMapper.reserveInApp(id, owner, token);
     }
     /**
      * 活租约才可续期；调用方先持有行锁并核对数据库时间，防止等锁期间过期。

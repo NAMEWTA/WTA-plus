@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T09:45:48.006090+00:00",
+  "updated_at": "2026-09-23T09:48:11.719925+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -113,7 +113,10 @@
     "Revision152: T35 public sensitive projection six exact paths declared before edits; internal provider IDs retained, REDACT read projections hide values, FULL unchanged; batch intent reads avoid N+1.",
     "T35 candidate1 41882b5 failed: isolated integration5 setup errors due existing seeded binding; security review pre-send Redis error wrongly waits for receipt. Unit37classes163passed but one declared class selector missing. Owned cleanup and clean after verified; writer rework within revision152, attempt1 retained.",
     "T35 candidate2 0b14311:38classes168tests and6real MySQL/Redis cases zero skips passed, source clean unchanged and owned cleanup verified. Functional review blocks typed idempotency ACQUIRE->UNKNOWN. Third candidate rework within same scope separates ACQUIRE retry from COMPLETE/unknown-phase ambiguity; no auto cache deletion or blind repeat.",
-    "Revision153: T35 accepted at fd8c346;38classes170unit+8real MySQL/Redis zero skips, both reviews pass, clean exact HEAD/tree before/after and owned cleanup verified. All three candidates and failed governance missing-link evidence retained; concrete evidence link repaired after source verification, no product change or attempt reset. 6done/1cancelled/43ready; next T36."
+    "Revision153: T35 accepted at fd8c346;38classes170unit+8real MySQL/Redis zero skips, both reviews pass, clean exact HEAD/tree before/after and owned cleanup verified. All three candidates and failed governance missing-link evidence retained; concrete evidence link repaired after source verification, no product change or attempt reset. 6done/1cancelled/43ready; next T36.",
+    "Revision154: T36 active at 5118051403de0648540646d98536d8c4f3f9f26d; cors_audit sole product writer, Lead owns governance/commit/isolated real acceptance. 6done/1cancelled/1in_progress/42ready; IN_APP atomic persistence plus result, fence and AFTER_COMMIT; no external channel I/O in transaction or production repair.",
+    "Revision155: T36 durable IN_APP attempt budget reserved in independent short fenced transaction before atomic persistence; existing outbox field counts started attempts, result Attempt only committed outcomes. No schema/worker change, no deferral to T38; SQL rollback retains only separately committed orchestration budget.",
+    "Revision156: predeclare NotifyOutbox entity Javadoc and six-SQL outbox field comments only; no schema/column/index/type change. T36 same source/owner; real red d94e38e7bb34a5b9 is1assertionfailure (message expected0 actual1), zero errors/skips, all owned resources cleaned."
   ],
   "worktrees": [
     {
@@ -372,6 +375,49 @@
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-35.md</Path>",
         "attempts": 3,
         "promotion_status": "applied"
+      }
+    },
+    {
+      "ticket_id": "T-36",
+      "owner": "single-agent",
+      "implementation_owner": "cors_audit",
+      "integration_owner": "single-agent",
+      "provider": "git",
+      "base_sha": "5118051403de0648540646d98536d8c4f3f9f26d",
+      "parent_branch": "main",
+      "branch": "main",
+      "workspace_ref": "current",
+      "source_checkpoint": "5118051403de0648540646d98536d8c4f3f9f26d",
+      "status": "active",
+      "updated_at": "2026-09-23T09:48:11.719925+00:00",
+      "integration": {
+        "status": "pending",
+        "parent_ref": "main",
+        "parent_before_sha": "5118051403de0648540646d98536d8c4f3f9f26d",
+        "source_sha": "5118051403de0648540646d98536d8c4f3f9f26d",
+        "candidate_sha": null,
+        "candidate_tree_sha": null,
+        "candidate_branch": null,
+        "candidate_workspace_ref": null,
+        "result_sha": null,
+        "method": "direct-parent",
+        "conflict_paths": [],
+        "verification": "pending",
+        "full_suite": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "e2e": {
+          "required": true,
+          "status": "pending",
+          "reason": null,
+          "evidence": null
+        },
+        "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-36.md</Path>",
+        "attempts": 0,
+        "promotion_status": "pending"
       }
     }
   ]

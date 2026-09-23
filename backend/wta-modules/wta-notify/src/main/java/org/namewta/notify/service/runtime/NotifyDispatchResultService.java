@@ -2,6 +2,7 @@ package org.namewta.notify.service.runtime;
 
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.mybatis.utils.IdGeneratorUtil;
+import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.domain.entity.NotifyAttempt;
 import org.namewta.notify.domain.entity.NotifyDelivery;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class NotifyDispatchResultService {
+    private static final String IN_APP_ATTEMPT_RESERVED = "IN_APP_ATTEMPT_RESERVED";
     private final NotifyNotificationDao dao;
 
     /** 锁序为 Intent → Outbox → Delivery，随后取数据库时间验证租约，阻止等锁期间过期的 owner。 */
@@ -51,6 +53,59 @@ public class NotifyDispatchResultService {
     }
 
     /**
+     * 站内信预算必须早于消息结果事务独立提交，故结果事务回滚也只会消耗一次有上限的预算。
+     * 同一租约的重入先检查预留标志，再检查上限；新租约领取时只清此前的内部标志。
+     * @param lease 当前领取的 owner/token
+     * @return 获得本租约一次持久化执行权时为 true
+     */
+    public boolean beginInAppAttempt(NotifyOutbox lease) {
+        NotifyOutbox outbox = lockActive(lease);
+        if (outbox == null) return false;
+        NotifyDelivery delivery = dao.lockDelivery(outbox.getDeliveryId());
+        if (!unexpired(outbox) || delivery == null || !Objects.equals(delivery.getIntentId(), outbox.getIntentId())
+            || !"IN_APP".equals(delivery.getChannel()) || !"PENDING".equals(delivery.getStatus())) return false;
+        if (IN_APP_ATTEMPT_RESERVED.equals(outbox.getLastErrorCode())) return false;
+        Integer attempts = outbox.getAttemptCount();
+        Integer maximum = outbox.getMaxAttempts();
+        if (attempts == null || maximum == null || attempts < 0 || maximum <= 0 || attempts >= maximum) {
+            delivery.setStatus("FAILED");
+            delivery.setErrorCode("IN_APP_RETRY_EXHAUSTED");
+            delivery.setErrorMessage("站内投递重试次数已用尽");
+            outbox.setStatus("DEAD_LETTER");
+            outbox.setLastErrorCode("IN_APP_RETRY_EXHAUSTED");
+            outbox.setLastErrorMessage("站内投递重试次数已用尽");
+            requireOne(dao.saveDeliveryResult(delivery));
+            finish(outbox);
+            refreshAggregate(outbox.getIntentId());
+            return false;
+        }
+        requireOne(dao.reserveInAppOutbox(outbox.getOutboxId(), outbox.getLeaseOwner(), outbox.getLeaseToken()));
+        return true;
+    }
+
+    /**
+     * 仅已预留的活租约可在本事务写站内事实和结果；DB异常直接回滚，不转作外部 UNKNOWN。
+     * @param lease 已预留的 owner/token
+     * @param port 本地收件箱持久化端口
+     * @param snapshot 站内内容快照
+     * @param userId 当前收件人
+     * @param costTime 毫秒耗时
+     */
+    public void completeInApp(NotifyOutbox lease, InAppNotificationPort port,
+                              InAppNotificationPort.InAppSnapshot snapshot, Long userId, long costTime) {
+        NotifyOutbox outbox = lockActive(lease);
+        if (outbox == null) return;
+        NotifyDelivery delivery = dao.lockDelivery(outbox.getDeliveryId());
+        if (!unexpired(outbox) || delivery == null || !Objects.equals(delivery.getIntentId(), outbox.getIntentId())
+            || !"IN_APP".equals(delivery.getChannel()) || !"PENDING".equals(delivery.getStatus())
+            || !IN_APP_ATTEMPT_RESERVED.equals(outbox.getLastErrorCode())
+            || !Objects.equals(delivery.getUserId(), userId)) return;
+        port.persist(String.valueOf(outbox.getIntentId()), snapshot, java.util.List.of(userId));
+        if (!unexpired(outbox)) throw new IllegalStateException("站内投递写入期间租约已失效");
+        writeResult(outbox, delivery, new Result("DELIVERED", "in-app", null, null, null, costTime));
+    }
+
+    /**
      * 原子保存尝试与当前结果；finish=0和任意写入冲突必须抛出以回滚整个短事务。
      * @param lease 原领取的任务与 owner/token
      * @param result 事务外 Provider 结果快照
@@ -64,6 +119,16 @@ public class NotifyDispatchResultService {
         if (delivery == null || !Objects.equals(delivery.getIntentId(), outbox.getIntentId())) {
             outbox.setStatus("DONE"); finish(outbox); return;
         }
+        if ("IN_APP".equals(delivery.getChannel())
+            && (IN_APP_ATTEMPT_RESERVED.equals(outbox.getLastErrorCode())
+                || !("FAILED".equals(result.status()) && "LOCAL_DISPATCH_ERROR".equals(result.errorCode())))) {
+            throw new IllegalArgumentException("站内预留后结果必须经原子持久化入口");
+        }
+        writeResult(outbox, delivery, result);
+    }
+
+    /** 持有统一锁与有效租约后，共用原有 Delivery/Attempt/Outbox/Intent 写入次序。 */
+    private void writeResult(NotifyOutbox outbox, NotifyDelivery delivery, Result result) {
         boolean advanced = !"PENDING".equals(delivery.getStatus());
         if (!advanced || NotificationDeliveryPolicy.canAdvance(delivery.getStatus(), result.status())) {
             delivery.setStatus(result.status());
@@ -85,7 +150,10 @@ public class NotifyDispatchResultService {
 
         boolean failClosed = "FAILED".equals(delivery.getStatus()) && configFailure(result.errorCode());
         boolean waiting = "UNKNOWN".equals(delivery.getStatus());
-        outbox.setAttemptCount((outbox.getAttemptCount() == null ? 0 : outbox.getAttemptCount()) + 1);
+        // IN_APP 的预算已在独立短事务预留；外部渠道仍按结果提交次数计数。
+        if (!"IN_APP".equals(delivery.getChannel()) || !IN_APP_ATTEMPT_RESERVED.equals(outbox.getLastErrorCode())) {
+            outbox.setAttemptCount((outbox.getAttemptCount() == null ? 0 : outbox.getAttemptCount()) + 1);
+        }
         outbox.setLastErrorCode(result.errorCode()); outbox.setLastErrorMessage(result.errorMessage());
         outbox.setStatus(advanced || success(delivery.getStatus()) || failClosed ? "DONE" : waiting ? "WAITING_RECEIPT" : "READY");
         if ("READY".equals(outbox.getStatus())) {

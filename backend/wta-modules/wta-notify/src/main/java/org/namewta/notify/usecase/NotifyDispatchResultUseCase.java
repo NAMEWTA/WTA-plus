@@ -2,6 +2,7 @@ package org.namewta.notify.usecase;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import lombok.RequiredArgsConstructor;
+import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.port.NotifyDispatchResultPort;
 import org.namewta.notify.service.runtime.NotifyDispatchResultService;
@@ -20,6 +21,17 @@ public class NotifyDispatchResultUseCase implements NotifyDispatchResultPort {
     @Override
     @DSTransactional
     public void complete(NotifyOutbox lease, Result result) { service.complete(lease, result); }
+
+    @Override
+    @DSTransactional
+    public boolean beginInAppAttempt(NotifyOutbox lease) { return service.beginInAppAttempt(lease); }
+
+    @Override
+    @DSTransactional
+    public void completeInApp(NotifyOutbox lease, InAppNotificationPort port,
+                              InAppNotificationPort.InAppSnapshot snapshot, Long userId, long costTime) {
+        service.completeInApp(lease, port, snapshot, userId, costTime);
+    }
 
     @Override
     @DSTransactional

@@ -37,12 +37,16 @@ public final class NotifyCallbackProcessProbe {
     private NotifyCallbackProcessProbe() { }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 2 || !args[0].startsWith("jdbc:mysql://127.0.0.1:") || !args[0].contains("/namewta_notify_test_")) {
+        if (args.length != 2 || !args[0].matches("jdbc:mysql://127\\.0\\.0\\.1:[0-9]+/namewta_notify_test_[a-zA-Z0-9_]+.*")) {
             throw new IllegalArgumentException("Only the owned loopback test database is allowed");
         }
+        String password = System.getenv("T36_MYSQL_PASSWORD");
+        if (password == null) throw new IllegalArgumentException("Private owned MySQL credential is required");
         int code = 0;
         try (var pool = new HikariDataSource()) {
-            pool.setJdbcUrl(args[0]); pool.setUsername("root"); pool.setPassword("owned-notify-test-only"); pool.setMaximumPoolSize(2);
+            pool.setJdbcUrl(args[0]);
+            pool.setUsername(System.getProperty("notify.mysql.integration.username", "root"));
+            pool.setPassword(password); pool.setMaximumPoolSize(2);
             var routing = new DynamicRoutingDataSource(List.of()); routing.setPrimary("master"); routing.setStrict(true);
             routing.addDataSource("master", pool);
             try {

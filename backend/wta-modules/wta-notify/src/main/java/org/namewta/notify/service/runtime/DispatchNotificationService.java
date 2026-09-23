@@ -83,65 +83,47 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             resultPort.settle(outbox, Disposition.WAIT);
             return;
         }
+        if (NotificationChannel.IN_APP.name().equals(delivery.getChannel())) {
+            dispatchInApp(outbox, intent, delivery);
+            return;
+        }
         long started = System.nanoTime();
         NotifyResult result = null;
         String errorCode = null;
         String errorMessage = null;
         boolean smsClientEntered = false;
         try {
-            if (NotificationChannel.IN_APP.name().equals(delivery.getChannel())) {
-                InAppNotificationPort port = inAppPort.getIfAvailable();
-                if (port == null) {
-                    throw new IllegalStateException("站内通知端口未装配");
-                }
-                Map<String, Object> templateParams = JsonUtils.parseObject(intent.getTemplateParamsJson(), Map.class);
-                String noticeType = templateParams == null ? null : String.valueOf(templateParams.getOrDefault("noticeType", ""));
-                List<String> channels = templateParams == null ? List.of(delivery.getChannel())
-                    : JsonUtils.parseArray(JsonUtils.toJsonString(templateParams.get("channels")), String.class);
-                if (channels.isEmpty()) channels = List.of(delivery.getChannel());
-                InAppNotificationPort.InAppSnapshot snapshot = new InAppNotificationPort.InAppSnapshot(
-                    intent.getTitleSnapshot(), intent.getContentSnapshot(), intent.getPathSnapshot(),
-                    noticeType, channels);
-                port.persist(String.valueOf(intent.getIntentId()), snapshot, List.of(delivery.getUserId()));
-                delivery.setStatus("DELIVERED");
-                try {
-                    port.pushRealtime(String.valueOf(intent.getIntentId()), snapshot, List.of(delivery.getUserId()));
-                } catch (RuntimeException exception) {
-                    // 站内信已经落库，实时提示失败只影响在线体验，不应触发重复写入。
-                }
+            NotifySendPlanner.Plan plan = planChannel(intent, delivery);
+            if (!plan.ok()) {
+                delivery.setStatus("FAILED");
+                errorCode = plan.errorCode();
+                errorMessage = plan.errorMessage();
             } else {
-                NotifySendPlanner.Plan plan = planChannel(intent, delivery);
-                if (!plan.ok()) {
-                    delivery.setStatus("FAILED");
-                    errorCode = plan.errorCode();
-                    errorMessage = plan.errorMessage();
-                } else {
-                    NotifyRequest request = NotifyRequest.builder()
-                        .requestId(String.valueOf(delivery.getDeliveryId()))
-                        .bizType(intent.getBizType())
-                        .bizId(intent.getBizId())
-                        .channel(org.namewta.common.notify.model.NotifyChannel.of(delivery.getChannel().toLowerCase()))
-                        .providerKey(plan.providerKey())
-                        .targets(List.of(target(delivery)))
-                        .content(toContent(plan))
-                        .auditPolicy(NotifyAuditSupport.redactSensitive(intent)
-                            ? NotifyAuditPolicy.REDACT_SENSITIVE : NotifyAuditPolicy.FULL)
-                        .idempotencyKey(String.valueOf(delivery.getDeliveryId()))
-                        .build();
-                    smsClientEntered = NotificationChannel.SMS.name().equals(delivery.getChannel());
-                    result = notifyClient.send(request);
-                    delivery.setStatus(result.status().name());
-                    if (!result.deliveries().isEmpty()) {
-                        delivery.setProviderKey(result.providerKey());
-                        delivery.setProviderMessageId(result.deliveries().getFirst().providerMessageId());
-                        errorCode = result.deliveries().getFirst().errorCode();
-                        errorMessage = result.deliveries().getFirst().errorMessage();
-                    }
-                    if (unknownSmsProviderOutcome(delivery, errorCode)) {
-                        delivery.setStatus("UNKNOWN");
-                        errorCode = "PROVIDER_OUTCOME_UNKNOWN";
-                        errorMessage = "短信供应商调用结果未知";
-                    }
+                NotifyRequest request = NotifyRequest.builder()
+                    .requestId(String.valueOf(delivery.getDeliveryId()))
+                    .bizType(intent.getBizType())
+                    .bizId(intent.getBizId())
+                    .channel(org.namewta.common.notify.model.NotifyChannel.of(delivery.getChannel().toLowerCase()))
+                    .providerKey(plan.providerKey())
+                    .targets(List.of(target(delivery)))
+                    .content(toContent(plan))
+                    .auditPolicy(NotifyAuditSupport.redactSensitive(intent)
+                        ? NotifyAuditPolicy.REDACT_SENSITIVE : NotifyAuditPolicy.FULL)
+                    .idempotencyKey(String.valueOf(delivery.getDeliveryId()))
+                    .build();
+                smsClientEntered = NotificationChannel.SMS.name().equals(delivery.getChannel());
+                result = notifyClient.send(request);
+                delivery.setStatus(result.status().name());
+                if (!result.deliveries().isEmpty()) {
+                    delivery.setProviderKey(result.providerKey());
+                    delivery.setProviderMessageId(result.deliveries().getFirst().providerMessageId());
+                    errorCode = result.deliveries().getFirst().errorCode();
+                    errorMessage = result.deliveries().getFirst().errorMessage();
+                }
+                if (unknownSmsProviderOutcome(delivery, errorCode)) {
+                    delivery.setStatus("UNKNOWN");
+                    errorCode = "PROVIDER_OUTCOME_UNKNOWN";
+                    errorMessage = "短信供应商调用结果未知";
                 }
             }
         } catch (NotifyDeliveryException exception) {
@@ -194,9 +176,37 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             }
         }
         resultPort.complete(outbox, new NotifyDispatchResultPort.Result(delivery.getStatus(),
-            result == null ? (NotificationChannel.IN_APP.name().equals(delivery.getChannel()) ? "in-app" : delivery.getProviderKey()) : result.providerKey(),
+            result == null ? delivery.getProviderKey() : result.providerKey(),
             delivery.getProviderMessageId(), errorCode, errorMessage,
             java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started)));
+    }
+
+    /** 本地站内信经已代理结果端口提交；事务/commit异常原样外溢，不能伪装成待供应商回执。 */
+    private void dispatchInApp(NotifyOutbox outbox, NotifyIntent intent, NotifyDelivery delivery) {
+        long started = System.nanoTime();
+        InAppNotificationPort port;
+        InAppNotificationPort.InAppSnapshot snapshot;
+        try {
+            port = inAppPort.getIfAvailable();
+            if (port == null || delivery.getUserId() == null || delivery.getUserId() <= 0) {
+                throw new IllegalArgumentException("站内通知端口或收件人无效");
+            }
+            Map<String, Object> params = JsonUtils.parseObject(intent.getTemplateParamsJson(), Map.class);
+            Object channelValues = params == null ? null : params.get("channels");
+            List<String> channels = channelValues == null ? List.of(delivery.getChannel())
+                : JsonUtils.parseArray(JsonUtils.toJsonString(channelValues), String.class);
+            if (channels == null || channels.isEmpty()) channels = List.of(delivery.getChannel());
+            String noticeType = params == null ? null : String.valueOf(params.getOrDefault("noticeType", ""));
+            snapshot = new InAppNotificationPort.InAppSnapshot(intent.getTitleSnapshot(), intent.getContentSnapshot(),
+                intent.getPathSnapshot(), noticeType, channels);
+        } catch (RuntimeException invalidLocalInput) {
+            resultPort.complete(outbox, new NotifyDispatchResultPort.Result("FAILED", "in-app", null,
+                "LOCAL_DISPATCH_ERROR", "站内通知参数或端口无效", 0));
+            return;
+        }
+        if (!resultPort.beginInAppAttempt(outbox)) return;
+        resultPort.completeInApp(outbox, port, snapshot, delivery.getUserId(),
+            java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started));
     }
 
     /** 调用前续租也由数据库判断有效期，不能复活已经过期的 owner。 */

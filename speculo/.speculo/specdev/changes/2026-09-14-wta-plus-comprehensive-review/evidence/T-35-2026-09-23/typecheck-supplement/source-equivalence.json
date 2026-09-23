@@ -1,0 +1,8 @@
+{
+  "ticket_result": "fd8c34644d2cb36f96deccce81fe35f586701f94",
+  "ticket_frontend_tree": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+  "actual_run_head": "5118051403de0648540646d98536d8c4f3f9f26d",
+  "actual_run_frontend_tree": "5a4d246baa671f3538bdb47ee790055dcf83e88b",
+  "exit_code": 0,
+  "note": "Later-run supplemental notification mandatory frontend typecheck at exactly same frontend inputs. Java-only T36 dirty is unrelated; no backdating or claim it ran at T35 clean acceptance window."
+}

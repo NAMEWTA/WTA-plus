@@ -283,14 +283,67 @@ class DispatchNotificationServiceTest {
     }
 
     @Test
-    void inAppExceptionKeepsOriginalUnknownDisposition() {
+    void inAppPortFailureClosesLocallyWithoutWaitingForSupplierReceipt() {
         Fixture fixture = fixture("IN_APP");
         when(fixture.inApp.getIfAvailable()).thenThrow(new IllegalStateException("local in-app failure"));
 
         fixture.service.dispatch(fixture.outbox);
 
-        assertEquals("UNKNOWN", fixture.delivery.getStatus());
-        assertEquals("WAITING_RECEIPT", fixture.outbox.getStatus());
+        assertEquals("FAILED", fixture.delivery.getStatus());
+        assertEquals("DONE", fixture.outbox.getStatus());
+        assertEquals("LOCAL_DISPATCH_ERROR", fixture.delivery.getErrorCode());
+    }
+
+    @Test
+    void inAppUsesReservedBudgetAndCommitsOneLocalResult() {
+        Fixture fixture = fixture("IN_APP");
+        InAppNotificationPort port = mock(InAppNotificationPort.class);
+        when(fixture.inApp.getIfAvailable()).thenReturn(port);
+        when(fixture.dao.reserveInAppOutbox(3L, "worker-1", "token-1")).thenAnswer(invocation -> {
+            fixture.outbox.setAttemptCount(1);
+            fixture.outbox.setLastErrorCode("IN_APP_ATTEMPT_RESERVED");
+            return 1;
+        });
+
+        fixture.service.dispatch(fixture.outbox);
+
+        verify(port).persist(org.mockito.ArgumentMatchers.eq("1"), any(), org.mockito.ArgumentMatchers.eq(List.of(7L)));
+        verify(port, never()).pushRealtime(anyString(), any(), any());
+        assertEquals("DELIVERED", fixture.delivery.getStatus());
+        assertEquals("DONE", fixture.outbox.getStatus());
+        assertEquals(1, fixture.outbox.getAttemptCount());
+    }
+
+    @Test
+    void sameInAppLeaseCannotReserveTwiceOrExhaustItsOwnLastSlot() {
+        Fixture fixture = fixture("IN_APP");
+        fixture.outbox.setAttemptCount(4);
+        when(fixture.dao.reserveInAppOutbox(3L, "worker-1", "token-1")).thenAnswer(invocation -> {
+            fixture.outbox.setAttemptCount(5);
+            fixture.outbox.setLastErrorCode("IN_APP_ATTEMPT_RESERVED");
+            return 1;
+        });
+        NotifyDispatchResultService service = new NotifyDispatchResultService(fixture.dao);
+
+        assertTrue(service.beginInAppAttempt(fixture.outbox));
+        assertFalse(service.beginInAppAttempt(fixture.outbox));
+        assertEquals(5, fixture.outbox.getAttemptCount());
+        assertEquals("PROCESSING", fixture.outbox.getStatus());
+        verify(fixture.dao, org.mockito.Mockito.times(1)).reserveInAppOutbox(3L, "worker-1", "token-1");
+    }
+
+    @Test
+    void exhaustedInAppBudgetClosesWithoutPersistOrAttempt() {
+        Fixture fixture = fixture("IN_APP");
+        fixture.outbox.setAttemptCount(5);
+        NotifyDispatchResultService service = new NotifyDispatchResultService(fixture.dao);
+
+        assertFalse(service.beginInAppAttempt(fixture.outbox));
+        assertEquals("FAILED", fixture.delivery.getStatus());
+        assertEquals("IN_APP_RETRY_EXHAUSTED", fixture.delivery.getErrorCode());
+        assertEquals("DEAD_LETTER", fixture.outbox.getStatus());
+        verify(fixture.dao, never()).reserveInAppOutbox(anyLong(), anyString(), anyString());
+        verify(fixture.dao, never()).insert(any(org.namewta.notify.domain.entity.NotifyAttempt.class));
     }
 
     @Test
@@ -459,6 +512,7 @@ class DispatchNotificationServiceTest {
         delivery.setIntentId(1L);
         delivery.setChannel(channel);
         delivery.setStatus("PENDING");
+        delivery.setUserId(7L);
         delivery.setTargetValue("MAIL".equals(channel) ? "user@example.com" : "13812345678");
         delivery.setAttemptCount(0);
         NotifyOutbox outbox = new NotifyOutbox();

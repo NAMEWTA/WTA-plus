@@ -10,13 +10,16 @@ import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.domain.entity.NotifyMessage;
 import org.namewta.notify.domain.entity.NotifyMessageRecipient;
 import org.namewta.notify.dao.NotifyNotificationDao;
+import org.namewta.notify.port.InAppDeliveryCommittedEvent;
 import org.namewta.system.api.domain.PushPayloadDTO;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 通知中心站内信适配器。
@@ -27,12 +30,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class InAppNotificationService implements InAppNotificationPort {
     private final NotifyNotificationDao dao;
+    private final ApplicationEventPublisher events;
 
-    /** 持久化站内信快照和收件关系。 */
+    /** 调用方须在结果事务中持久化；只为本次新增的关系登记提交后提示事件。 */
     @Override
     public void persist(String notificationId, InAppSnapshot snapshot, List<Long> userIds) {
         Long messageId = Long.valueOf(notificationId);
-        if (dao.message(messageId) == null) {
+        NotifyMessage existing = dao.message(messageId);
+        if (existing == null) {
             NotifyMessage message = new NotifyMessage();
             message.setMessageId(messageId);
             message.setCategory(resolveCategory(snapshot.path()));
@@ -41,11 +46,17 @@ public class InAppNotificationService implements InAppNotificationPort {
             message.setNoticeType(snapshot.noticeType());
             message.setChannelsJson(org.namewta.common.json.utils.JsonUtils.toJsonString(snapshot.channels()));
             message.setTitle(snapshot.title());
-            message.setMessage(snapshot.content());
+            message.setMessage(summary(snapshot.content()));
             message.setContent(snapshot.content());
             message.setPath(snapshot.path());
             message.setSendUserIds(userIds == null ? "0" : StringUtils.joinComma(userIds));
-            dao.insert(message);
+            if (dao.insert(message) != 1) throw new IllegalStateException("站内消息写入未影响一行");
+        } else if (!Objects.equals(existing.getTitle(), snapshot.title())
+            || !Objects.equals(existing.getContent(), snapshot.content())
+            || !Objects.equals(existing.getPath(), snapshot.path())
+            || !Objects.equals(existing.getNoticeType(), snapshot.noticeType())
+            || !Objects.equals(existing.getChannelsJson(), org.namewta.common.json.utils.JsonUtils.toJsonString(snapshot.channels()))) {
+            throw new IllegalStateException("同一站内消息主键的内容快照不一致");
         }
         if (userIds == null) return;
         for (Long userId : userIds) {
@@ -56,8 +67,24 @@ public class InAppNotificationService implements InAppNotificationPort {
             recipient.setMessageId(messageId);
             recipient.setUserId(userId);
             recipient.setCreateTime(LocalDateTime.now());
-            dao.insert(recipient);
+            if (dao.insert(recipient) != 1) throw new IllegalStateException("站内收件关系写入未影响一行");
+            events.publishEvent(new InAppDeliveryCommittedEvent(messageId, userId));
         }
+    }
+
+    /**
+     * 只在提交后的事件入口调用，从已提交的本人关系和消息重新取得提示内容。
+     * @param messageId 已提交消息主键
+     * @param userId 本人收件关系主键
+     */
+    public void pushCommitted(Long messageId, Long userId) {
+        if (dao.messageRecipient(messageId, userId) == null) return;
+        NotifyMessage message = dao.message(messageId);
+        if (message == null) return;
+        List<String> channels = org.namewta.common.json.utils.JsonUtils.parseArray(message.getChannelsJson(), String.class);
+        if (channels == null || channels.isEmpty()) channels = List.of("IN_APP");
+        pushRealtime(String.valueOf(messageId), new InAppSnapshot(message.getTitle(), message.getContent(),
+            message.getPath(), message.getNoticeType(), channels), List.of(userId));
     }
 
     /** 在收件箱事实落库后发送实时提示。 */
@@ -91,5 +118,11 @@ public class InAppNotificationService implements InAppNotificationPort {
         if (path != null && path.startsWith("/notify/notice")) return "notice";
         return "system";
     }
-}
 
+    /** 摘要列是 varchar(1000)，按 Unicode 码点截取，完整正文仍保存在 content。 */
+    private String summary(String content) {
+        if (content == null) return null;
+        int codePoints = content.codePointCount(0, content.length());
+        return codePoints <= 1000 ? content : content.substring(0, content.offsetByCodePoints(0, 1000));
+    }
+}

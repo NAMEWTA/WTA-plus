@@ -1,0 +1,13 @@
+{
+  "command": [
+    "pnpm",
+    "--dir",
+    "frontend",
+    "typecheck"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-23T10:00:39.887057+00:00",
+  "finished_at": "2026-09-23T10:01:29.249269+00:00",
+  "exit_code": 0,
+  "log": "frontend-typecheck.log"
+}

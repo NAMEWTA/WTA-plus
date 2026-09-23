@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-36"
 title: "站内信落库与结果同事务且可安全重试"
-status: "ready"
+status: "in_progress"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -17,17 +17,17 @@ risk: "high"
 blocked_by: []
 contract_ids: ["AC-036"]
 owner: "single-agent"
-expected_changes: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path>"]
-writable_paths: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path>"]
+expected_changes: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
+writable_paths: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
-shared_paths: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path>"]
-shared_path_owners: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/test/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)"]
+shared_paths: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path>", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path>", "<Path>backend/wta-modules/wta-notify/src/test/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path>", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path>", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java</Path>", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path>"]
+shared_path_owners: ["<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/dao/NotifyNotificationDao.java</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/mapper/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/resources/mapper/notify/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/test/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/notify/</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-api/src/main/java/org/namewta/notify/api/InAppNotificationPort.java</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)", "<Path>release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql</Path> => single-agent (Lead; exclusive current workspace; T-36 turn only)"]
 ---
 
 # T-36：站内信落库与结果同事务且可安全重试
 
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
-唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。保留单人串行、无子代理/无新worktree。本票计划已Ready；本轮没有实施或重验，等待用户自行激活Goal。
+唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。用户已激活Goal并允许gpt-6-sol/xhigh原生子代理；current单产品writer，无新worktree。本票由cors_audit实施，Lead独占治理、commit和真实验收。
 
 ## 1. 战略与来源
 
@@ -39,7 +39,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 已锁定决策
 
-保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。最新用户仅授权计划。
+保留工程分层、Client/权限、资源owner、安全日志、真实供应商协议和唯一六SQL基座。当前已授权本地实施、逐票commit/direct-parent验收。
 
 ### 已确认方案
 
@@ -80,7 +80,7 @@ G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施�
 
 1. 以两真实 DB 连接和屏障复现同 intent 两 delivery 并发；注入关系/Attempt/finish/commit 失败。
 2. 复用已有 PK/唯一键，DAO 原子插入或仅捕获明确重复键并核验快照相同，不吞其他 SQL 错误。
-3. 在被代理 UseCase 的短 DSTransactional 内完成 IN_APP message/recipient/result/attempt/outbox/aggregate；沿用 intent→delivery/outbox 的一致锁序和 fence。
+3. 在被代理 UseCase 的短 DSTransactional 内完成 IN_APP message/recipient/result/attempt/outbox/aggregate；沿用 Intent→Outbox→Delivery 的一致锁序和 fence。
 4. 本地明确回滚可有限重试；确定参数失败终结；禁止 IN_APP 进入供应商 WAITING_RECEIPT。实时通过 DsTxEventListener AFTER_COMMIT 隔离。
 5. 形成存量 IN_APP UNKNOWN/缺关系只读清单及按指定 ID 幂等重做操作稿；不执行真实数据修复。
 
@@ -114,7 +114,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - 兼容窗口：基座仓内同步切换，无未声明双写/双协议；外部现有协议保持。
 - 监控：记录本票可观察失败/状态/耗时及资源数量，不记录敏感正文；不新增监控平台。
 - 恢复：保存上个不可变候选及失败证据；停止受影响任务再核对外部副作用。不得通过恢复已披露secret、放宽权限或重发UNKNOWN恢复。
-- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。当前均未授权。
+- 不可逆批准：产品commit/父分支更新及远程push、部署、轮换/真实数据操作、归档分别核对本轮授权。用户已激活Goal并授权本地实施、逐票commit/direct-parent；推送、全应用部署、真实数据修复及归档不由此推断。
 - 收缩条件：旧消费者/废弃字段/不必要配置引用清零且新合同验证通过；不适用的删除不人为增加。
 
 ## 10. 验收标准
@@ -134,3 +134,31 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ## 12. 停止、检查点与交付
 
 交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。
+
+## revision154 当前实施
+
+base `5118051403de0648540646d98536d8c4f3f9f26d`；cors_audit唯一产品writer，Lead治理、commit、真实隔离环境及E2E。复用Intent→Outbox→Delivery锁序和fence，将IN_APP消息/关系/结果/Attempt/Outbox/聚合放入真实代理短DSTransactional，AFTER_COMMIT才推送；SMS/MAIL外部I/O仍在事务外。
+
+测试使用隔离合成库，修正原夹具固定测试账号为环境注入；六SQL真实装载，双连接、六处SQL失败、提交前断连/提交后ACK丢失、失效租约、重复任务和推送失败需可观察断言。测试快照保留T35的170+8基线；不将条件skip当验收。公共端口语义/调用者须同步；生产worker不在当前写集，确需修改先登记。历史IN_APP异常修复仅提供只读盘点与按ID恢复操作稿，不执行生产修复，不包含MAIL/SMS UNKNOWN。
+
+## revision155 IN_APP有界尝试预算
+
+代码事实确认：原claim不计次数，结果事务回滚也回滚attempt_count，不能宣称现有重领机制有限。采用原有Outbox字段、既有代理端口和统一锁序：确定参数预检后，beginInAppAttempt独立短DSTransactional按Intent→Outbox→Delivery锁及数据库fence消耗一次预算；成功返回才进入消息/关系/结果的原子事务。IN_APP outbox.attempt_count表示已开始尝试（含随后回滚/崩溃），Delivery与Attempt只记录原子提交的结果；其他渠道保持原含义。消息事务不再次消耗预算。
+
+预算耗尽则在锁内将IN_APP Delivery FAILED、Outbox DEAD_LETTER并刷新聚合，零persist；预算事务失败或提交结果不确定时停止，不能猜测已获得预算。消息事务提交ACK丢失时依已持久DONE/DELIVERED抑制重投，DB暂不可读则等待安全恢复。完全不可写期间不能保证提交终态，但不得在未取得持久预算时调用persist；恢复后仍在预算上限内收束。允许SQL失败后保留独立预算，不允许消息/关系/投递结果部分提交。
+
+验证补充：预算先提交后消息回滚、max边界/耗尽零persist、预算提交ACK丢失及失效lease、同lease重入不能越过最大物理次数。既有写集覆盖port/usecase/runtime/DAO/Mapper/XML；不改worker/claim，不新增表/状态机，不转移给T38，外部渠道未知合同不变。
+
+### revision155 预留去重与开发红灯环境补充
+
+同有效lease重复begin仅第一项获准：采用固定内部码IN_APP_ATTEMPT_RESERVED，不把lease token放入错误码/监控。claim SQL成功领取新token时仅清此固定预留码，其他历史错误保留；预算仍在begin事务消耗，worker不改。此处细化前段“不改claim”为不改变领取策略，仅清理上次预留标志。旧owner/newowner及同lease重入必须验证。
+
+首个开发红灯run c8ae375d4258fb06在创建故障trigger时报MySQL1419，未到业务断言；Maven1、1error/0failure/0skip，非行为红灯。隔离MySQL仅调整trust_function_creators启动参数供故障注入，不给应用全局SUPER、不改部署。旧驱动把error归开发red的记录保留并由Lead assessment明确否决；新版要求精确目标方法的1failure/0error。两个owned容器/进程组已清理，32794/32795已关；该开发运行不计正式候选attempt。
+
+## revision156 预算字段语义文档写集
+
+编辑前增加两条精确路径：NotifyOutbox.java字段Javadoc，以及唯一六SQL中的10-cde-base-ddl.sql，仅notify_outbox.attempt_count/last_error_code中文注释。已有DDL“领取次数”不符合旧结果计数也不符合新预算语义，须同步为IN_APP已开始尝试预算、外部渠道已提交结果次数，固定IN_APP_ATTEMPT_RESERVED内部标记。无列/类型/索引/结构变化、不重放存量基座；全新隔离六SQL装载复核仍必需。预算上限指一次自动调度周期；合法人工重试新周期由T38精确API合同负责。
+
+### revision156 持久化摘要长度核查
+
+当前InAppNotificationService把完整content同时写入varchar(1000)的message摘要和longtext正文；公告内容只NotBlank，合法长文会因摘要列溢出失败。现有写集内修正字段映射：message至多1000个Unicode code point、不截断代理对，content保持完整，幂等快照比较仍比较完整content。真实MySQL覆盖长文/emoji边界，不通过扩列、放宽SQL模式或截断正文规避。

@@ -14,6 +14,7 @@ import org.apache.ibatis.mapping.Environment;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
@@ -29,6 +30,8 @@ import org.namewta.notify.service.runtime.DispatchNotificationService;
 import org.namewta.notify.service.runtime.NotifyDispatchResultService;
 import org.namewta.notify.usecase.NotifyDispatchResultUseCase;
 import org.namewta.notify.service.runtime.InAppNotificationService;
+import org.namewta.notify.usecase.InAppCommittedPushUseCase;
+import org.namewta.notify.adapter.event.InAppCommittedPushListener;
 import org.namewta.notify.service.runtime.NotifyOutboxClaimService;
 import org.namewta.notify.service.runtime.ProviderCallbackService;
 import org.namewta.notify.usecase.NotifyOutboxClaimUseCase;
@@ -40,6 +43,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -74,15 +78,21 @@ class NotifyAtomicResultIntegrationTest {
     private NotifyProviderReceiptMapper receiptMapper;
     private NotifyConfigDao configDao;
     private Runnable duringProvider = () -> {};
+    private AnnotationConfigApplicationContext eventContext;
+    private final AtomicInteger realtimeCalls = new AtomicInteger();
+    private boolean realtimeFails = true;
     private final java.util.concurrent.atomic.AtomicReference<String> commitFault = new java.util.concurrent.atomic.AtomicReference<>();
 
     @BeforeEach
     @SuppressWarnings("unchecked")
     void open() throws Exception {
         String url = System.getProperty("notify.mysql.integration.url");
-        assertThat(url).startsWith("jdbc:mysql://127.0.0.1:").contains("namewta_notify_test_");
-        pool = new HikariDataSource(); pool.setJdbcUrl(url); pool.setUsername("root");
-        pool.setPassword("owned-notify-test-only"); pool.setMaximumPoolSize(8);
+        assertThat(url).matches("jdbc:mysql://127\\.0\\.0\\.1:[0-9]+/namewta_notify_test_[a-zA-Z0-9_]+.*");
+        String password = System.getenv("T36_MYSQL_PASSWORD");
+        assertThat(password).as("private owned MySQL credential").isNotNull();
+        pool = new HikariDataSource(); pool.setJdbcUrl(url);
+        pool.setUsername(System.getProperty("notify.mysql.integration.username", "root"));
+        pool.setPassword(password); pool.setMaximumPoolSize(8);
         routing = new DynamicRoutingDataSource(List.of()); routing.setPrimary("master"); routing.setStrict(true);
         routing.addDataSource("master", new org.springframework.jdbc.datasource.DelegatingDataSource(pool) {
             @Override public java.sql.Connection getConnection() throws java.sql.SQLException {
@@ -136,15 +146,26 @@ class NotifyAtomicResultIntegrationTest {
         redisConfig.useSingleServer().setAddress("redis://127.0.0.1:" + System.getProperty("notify.redis.integration.port"))
             .setConnectionMinimumIdleSize(1).setConnectionPoolSize(4);
         redis = Redisson.create(redisConfig); redis.getAtomicLong("owned-t22-provider-calls").delete();
-        InAppNotificationService inbox = new InAppNotificationService(dao);
+        eventContext = new AnnotationConfigApplicationContext();
+        InAppNotificationService inbox = new InAppNotificationService(dao, eventContext) {
+            @Override
+            public void pushRealtime(String id, InAppSnapshot snapshot, List<Long> users) {
+                realtimeCalls.incrementAndGet();
+                if (realtimeFails) throw new IllegalStateException("owned push failure");
+            }
+        };
+        eventContext.registerBean(com.baomidou.dynamic.datasource.tx.DsTxEventListenerFactory.class);
+        eventContext.registerBean(InAppCommittedPushUseCase.class, () -> new InAppCommittedPushUseCase(inbox));
+        eventContext.registerBean(InAppCommittedPushListener.class);
+        eventContext.refresh();
         InAppNotificationPort provider = new InAppNotificationPort() {
             public void persist(String id, InAppSnapshot snapshot, List<Long> users) {
-                assertThat(TransactionContext.getXID()).as("Provider I/O is outside the result transaction").isNull();
+                assertThat(TransactionContext.getXID()).as("local inbox writes share the result transaction").isNotNull();
                 redis.getAtomicLong("owned-t22-provider-calls").incrementAndGet();
                 inbox.persist(id, snapshot, users);
                 duringProvider.run();
             }
-            public void pushRealtime(String id, InAppSnapshot snapshot, List<Long> users) { throw new IllegalStateException("owned push failure"); }
+            public void pushRealtime(String id, InAppSnapshot snapshot, List<Long> users) { inbox.pushRealtime(id, snapshot, users); }
             public void markEngagement(String id, Long user, boolean read) { inbox.markEngagement(id, user, read); }
         };
         ObjectProvider<InAppNotificationPort> providers = mock(ObjectProvider.class); when(providers.getIfAvailable()).thenReturn(provider);
@@ -166,6 +187,7 @@ class NotifyAtomicResultIntegrationTest {
                 db.execute("drop trigger if exists owned_t22_finish_conflict");
                 db.execute("drop trigger if exists owned_t22_write_failure");
                 db.execute("drop trigger if exists owned_t23_receipt_failure");
+                db.execute("drop trigger if exists owned_t36_write_failure");
                 db.update("delete from notify_channel_account where account_id=9238881 and config_key='owned-config'");
                 db.update("delete from notify_provider_receipt where delivery_id in (select delivery_id from notify_delivery where intent_id=?)", INTENT);
                 for (String table : List.of("notify_attempt", "notify_outbox", "notify_delivery", "notify_intent")) db.update("delete from " + table + " where intent_id=?", INTENT);
@@ -173,6 +195,7 @@ class NotifyAtomicResultIntegrationTest {
                 db.update("delete from notify_message where message_id=?", INTENT);
             }
         } finally {
+            if (eventContext != null) eventContext.close();
             if (redis != null) redis.shutdown();
             if (routing != null) routing.destroy();
             if (pool != null) pool.close();
@@ -183,16 +206,150 @@ class NotifyAtomicResultIntegrationTest {
     void attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable() {
         db.execute("create trigger owned_t22_attempt_failure before insert on notify_attempt for each row signal sqlstate '45000' set message_text='owned attempt failure'");
         assertThatThrownBy(() -> dispatch.dispatch(dao.outbox(OUTBOX))).isInstanceOf(RuntimeException.class);
-        unchanged();
+        unchanged(1);
+        assertThat(realtimeCalls.get()).isZero();
         assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isZero();
+    }
+
+    @Test
+    void genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact() {
+        assertThatThrownBy(() -> results.complete(dao.outbox(OUTBOX), delivered()))
+            .isInstanceOf(IllegalArgumentException.class);
+        unchanged();
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isZero();
+    }
+
+    @Test
+    void genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt() {
+        NotifyOutbox lease = dao.outbox(OUTBOX);
+        assertThat(results.beginInAppAttempt(lease)).isTrue();
+
+        assertThatThrownBy(() -> results.complete(lease,
+            new NotifyDispatchResultPort.Result("FAILED", "in-app", null,
+                "LOCAL_DISPATCH_ERROR", "owned local error", 1)))
+            .isInstanceOf(IllegalArgumentException.class);
+        unchanged(1);
+        assertThat(dao.outbox(OUTBOX).getLastErrorCode()).isEqualTo("IN_APP_ATTEMPT_RESERVED");
+    }
+
+    @Test
+    void invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite() {
+        db.update("update notify_delivery set user_id=null where delivery_id=?", DELIVERY);
+
+        dispatch.dispatch(dao.outbox(OUTBOX));
+
+        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("FAILED");
+        assertThat(dao.delivery(DELIVERY).getErrorCode()).isEqualTo("LOCAL_DISPATCH_ERROR");
+        assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("DONE");
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
+        assertThat(realtimeCalls.get()).isZero();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"notify_message:insert", "notify_message_recipient:insert",
+        "notify_delivery:update", "notify_attempt:insert", "notify_outbox:update", "notify_intent:update"})
+    void everyInAppWriteStageRollsBackMessageRecipientAndResult(String stage) {
+        String[] parts = stage.split(":");
+        String table = parts[0];
+        String operation = parts[1];
+        if ("notify_outbox".equals(table)) {
+            db.execute("create trigger owned_t36_write_failure before update on notify_outbox for each row "
+                + "begin if new.status='DONE' then signal sqlstate '45000' set message_text='owned result failure'; end if; end");
+        } else {
+            db.execute("create trigger owned_t36_write_failure before " + operation + " on " + table
+                + " for each row signal sqlstate '45000' set message_text='owned result failure'");
+        }
+        assertThatThrownBy(() -> dispatch.dispatch(dao.outbox(OUTBOX))).isInstanceOf(RuntimeException.class);
+        unchanged(1);
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isZero();
+        assertThat(realtimeCalls.get()).isZero();
+    }
+
+    @Test
+    void longUnicodeBodyKeepsFullContentAndBoundedSummary() {
+        String body = "A".repeat(999) + "😀" + "B".repeat(1200);
+        db.update("update notify_intent set title_snapshot='owned title',content_snapshot=? where intent_id=?", body, INTENT);
+        dispatch.dispatch(dao.outbox(OUTBOX));
+        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
+        String summary = db.queryForObject("select message from notify_message where message_id=?", String.class, INTENT);
+        assertThat(summary).isEqualTo("A".repeat(999) + "😀");
+        assertThat(summary.codePointCount(0, summary.length())).isEqualTo(1000);
+        assertThat(db.queryForObject("select content from notify_message where message_id=?", String.class, INTENT)).isEqualTo(body);
+    }
+
+    @Test
+    void afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate() {
+        NotifyOutbox first = dao.outbox(OUTBOX);
+        dispatch.dispatch(first);
+        assertThat(realtimeCalls.get()).as("real DsTx AFTER_COMMIT listener was invoked").isEqualTo(1);
+        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
+        assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("DONE");
+        dispatch.dispatch(first);
+        assertThat(realtimeCalls.get()).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(1);
+    }
+
+    @Test
+    void concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations() throws Exception {
+        long secondDelivery = DELIVERY + 10;
+        long secondOutbox = OUTBOX + 10;
+        db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,create_time) "
+            + "values(?,?,2,8,'IN_APP','PENDING',utc_timestamp())", secondDelivery, INTENT);
+        db.update("insert into notify_outbox(outbox_id,intent_id,delivery_id,status,available_at,lease_owner,lease_token,"
+            + "lease_until,create_time) values(?,?,?,'PROCESSING',utc_timestamp(),'worker-b','token-b',"
+            + "timestampadd(second,60,utc_timestamp()),utc_timestamp())", secondOutbox, INTENT, secondDelivery);
+        var barrier = new CyclicBarrier(2);
+        var connectionIds = new java.util.concurrent.ConcurrentSkipListSet<Long>();
+        try (var workers = Executors.newFixedThreadPool(2)) {
+            var first = workers.submit(() -> { dispatchWithPhysicalConnection(OUTBOX, barrier, connectionIds); return true; });
+            var second = workers.submit(() -> { dispatchWithPhysicalConnection(secondOutbox, barrier, connectionIds); return true; });
+            first.get(15, TimeUnit.SECONDS);
+            second.get(15, TimeUnit.SECONDS);
+        }
+        assertThat(connectionIds).hasSize(2);
         assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(2);
+        assertThat(db.queryForList("select user_id from notify_message_recipient where message_id=? order by user_id", Long.class, INTENT))
+            .containsExactly(7L, 8L);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(2);
+        assertThat(dao.intent(INTENT).getStatus()).isEqualTo("DELIVERED");
+        assertThat(realtimeCalls.get()).isEqualTo(2);
+        dispatch.dispatch(dao.outbox(OUTBOX));
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(2);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(2);
+    }
+
+    @Test
+    void existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent() {
+        db.update("insert into notify_message(message_id,category,notice_type,channels_json,type,source,"
+            + "title,message,content,path,create_time) values(?,'system','', '[\"IN_APP\"]',"
+            + "'MESSAGE','BACKEND',null,null,null,null,utc_timestamp())", INTENT);
+        db.update("insert into notify_message_recipient(message_recipient_id,message_id,user_id,create_time) "
+            + "values(?,?,7,utc_timestamp())", INTENT + 100, INTENT);
+        db.update("update notify_delivery set user_id=8 where delivery_id=?", DELIVERY);
+
+        dispatch.dispatch(dao.outbox(OUTBOX));
+
+        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isEqualTo(1);
+        assertThat(db.queryForList("select user_id from notify_message_recipient where message_id=? order by user_id", Long.class, INTENT))
+            .containsExactly(7L, 8L);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(1);
     }
 
     @Test
     void finishZeroRollsBackDeliveryAttemptAndAggregate() {
         db.execute("create trigger owned_t22_finish_conflict after insert on notify_attempt for each row update notify_outbox set lease_token='conflict' where outbox_id=" + OUTBOX);
         assertThatThrownBy(() -> dispatch.dispatch(dao.outbox(OUTBOX))).isInstanceOf(RuntimeException.class);
-        unchanged();
+        unchanged(1);
         assertThat(dao.outbox(OUTBOX).getLeaseToken()).isEqualTo("token-a");
     }
 
@@ -208,8 +365,8 @@ class NotifyAtomicResultIntegrationTest {
     @Test
     void providerCompletingAfterExpiryDoesNotReviveTheLease() {
         duringProvider = () -> db.update("update notify_outbox set lease_until=timestampadd(second,-1,utc_timestamp()) where outbox_id=?", OUTBOX);
-        dispatch.dispatch(dao.outbox(OUTBOX));
-        unchanged();
+        assertThatThrownBy(() -> dispatch.dispatch(dao.outbox(OUTBOX))).isInstanceOf(RuntimeException.class);
+        unchanged(1);
     }
 
     @Test
@@ -228,6 +385,112 @@ class NotifyAtomicResultIntegrationTest {
         assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isEqualTo(1);
         assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(1);
         assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).as("I/O can repeat after a DB rollback; no external exactly-once claim").isEqualTo(2);
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(2);
+        assertThat(realtimeCalls.get()).isEqualTo(1);
+    }
+
+    @Test
+    void reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist() {
+        db.update("update notify_outbox set max_attempts=1 where outbox_id=?", OUTBOX);
+        NotifyOutbox first = dao.outbox(OUTBOX);
+        assertThat(results.beginInAppAttempt(first)).isTrue();
+        assertThat(results.beginInAppAttempt(first)).isFalse();
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
+
+        expire();
+        var next = claims.claim("worker-b");
+        assertThat(next).hasSize(1);
+        assertThat(next.getFirst().getLastErrorCode()).as("claim returns an old candidate snapshot").isEqualTo("IN_APP_ATTEMPT_RESERVED");
+        assertThat(dao.outbox(OUTBOX).getLastErrorCode()).isNull();
+        dispatch.dispatch(next.getFirst());
+        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("FAILED");
+        assertThat(dao.delivery(DELIVERY).getErrorCode()).isEqualTo("IN_APP_RETRY_EXHAUSTED");
+        assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("DEAD_LETTER");
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
+    }
+
+    @Test
+    void externalChannelClaimPreservesSameLiteralErrorCode() {
+        db.update("update notify_delivery set channel='MAIL' where delivery_id=?", DELIVERY);
+        db.update("update notify_outbox set status='READY',lease_owner=null,lease_token=null,lease_until=null,"
+            + "last_error_code='IN_APP_ATTEMPT_RESERVED' where outbox_id=?", OUTBOX);
+
+        var next = claims.claim("worker-b");
+
+        assertThat(next).hasSize(1);
+        assertThat(dao.outbox(OUTBOX).getLastErrorCode()).isEqualTo("IN_APP_ATTEMPT_RESERVED");
+    }
+
+    @Test
+    void simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt() throws Exception {
+        db.update("update notify_outbox set max_attempts=1 where outbox_id=?", OUTBOX);
+        NotifyOutbox lease = dao.outbox(OUTBOX);
+        var barrier = new CyclicBarrier(2);
+        try (var workers = Executors.newFixedThreadPool(2)) {
+            var first = workers.submit(() -> { barrier.await(5, TimeUnit.SECONDS); return results.beginInAppAttempt(lease); });
+            var second = workers.submit(() -> { barrier.await(5, TimeUnit.SECONDS); return results.beginInAppAttempt(lease); });
+            assertThat(List.of(first.get(10, TimeUnit.SECONDS), second.get(10, TimeUnit.SECONDS)))
+                .containsExactlyInAnyOrder(true, false);
+        }
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
+        assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("PROCESSING");
+        dispatch.dispatch(lease);
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"BEFORE", "AFTER"})
+    void uncertainBudgetCommitNeverEntersPersistBeforeReclaim(String phase) {
+        db.update("update notify_outbox set max_attempts=2 where outbox_id=?", OUTBOX);
+        commitFault.set(phase);
+        assertThatThrownBy(() -> results.beginInAppAttempt(dao.outbox(OUTBOX))).isInstanceOf(RuntimeException.class);
+        int durableBudget = "AFTER".equals(phase) ? 1 : 0;
+        unchanged(durableBudget);
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isZero();
+        assertThat(realtimeCalls.get()).isZero();
+        expire();
+        var next = claims.claim("worker-b");
+        assertThat(next).hasSize(1);
+        dispatch.dispatch(next.getFirst());
+        assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(durableBudget + 1);
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(1);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"BEFORE", "AFTER"})
+    void uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox(String phase) {
+        db.update("update notify_outbox set max_attempts=2 where outbox_id=?", OUTBOX);
+        duringProvider = () -> commitFault.set(phase);
+        NotifyOutbox first = dao.outbox(OUTBOX);
+        assertThatThrownBy(() -> dispatch.dispatch(first)).isInstanceOf(RuntimeException.class);
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(1);
+        if ("AFTER".equals(phase)) {
+            assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
+            assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("DONE");
+            dispatch.dispatch(first);
+            assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(1);
+        } else {
+            unchanged(1);
+            assertThat(realtimeCalls.get()).isZero();
+            expire();
+            var next = claims.claim("worker-b");
+            assertThat(next).hasSize(1);
+            duringProvider = () -> {};
+            dispatch.dispatch(next.getFirst());
+            assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(2);
+            assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(2);
+        }
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_message_recipient where message_id=?", Integer.class, INTENT)).isEqualTo(1);
+        assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isEqualTo(1);
     }
 
     @Test
@@ -248,8 +511,8 @@ class NotifyAtomicResultIntegrationTest {
 
     @Test
     void oldWorkerCannotOverwriteAReclaimedAndCompletedResult() throws Exception {
-        var entered = new CountDownLatch(1); var release = new CountDownLatch(1); var calls = new AtomicInteger();
-        duringProvider = () -> { if (calls.incrementAndGet() == 1) { entered.countDown(); await(release); } };
+        var entered = new CountDownLatch(1); var release = new CountDownLatch(1);
+        pauseFirstBeforeInAppPort(entered, release);
         NotifyOutbox firstLease = dao.outbox(OUTBOX);
         try (var workers = Executors.newSingleThreadExecutor()) {
             var first = workers.submit(() -> dispatch.dispatch(firstLease));
@@ -264,7 +527,7 @@ class NotifyAtomicResultIntegrationTest {
         assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("DELIVERED");
         assertThat(dao.delivery(DELIVERY).getAttemptCount()).isEqualTo(1);
         assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(1);
-        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(2);
+        assertThat(redis.getAtomicLong("owned-t22-provider-calls").get()).isEqualTo(1);
     }
 
     @Test
@@ -285,7 +548,8 @@ class NotifyAtomicResultIntegrationTest {
     @Test
     void concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate() throws Exception {
         long otherDelivery = DELIVERY + 10, otherOutbox = OUTBOX + 10;
-        db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,create_time) values(?,?,2,8,'IN_APP','PENDING',utc_timestamp())", otherDelivery, INTENT);
+        db.update("update notify_delivery set channel='MAIL' where delivery_id=?", DELIVERY);
+        db.update("insert into notify_delivery(delivery_id,intent_id,recipient_id,user_id,channel,status,create_time) values(?,?,2,8,'MAIL','PENDING',utc_timestamp())", otherDelivery, INTENT);
         db.update("insert into notify_outbox(outbox_id,intent_id,delivery_id,status,available_at,lease_owner,lease_token,lease_until,create_time) values(?,?,?,'PROCESSING',utc_timestamp(),'worker-b','token-b',timestampadd(second,60,utc_timestamp()),utc_timestamp())", otherOutbox, INTENT, otherDelivery);
         var firstLease = dao.outbox(OUTBOX); var secondLease = dao.outbox(otherOutbox); var barrier = new CyclicBarrier(2);
         try (var workers = Executors.newFixedThreadPool(2)) {
@@ -299,6 +563,7 @@ class NotifyAtomicResultIntegrationTest {
 
     @Test
     void anyResultWriteFailureRollsBackAllOtherRows() {
+        db.update("update notify_delivery set channel='MAIL' where delivery_id=?", DELIVERY);
         for (String table : List.of("notify_delivery", "notify_outbox", "notify_intent")) {
             db.execute("create trigger owned_t22_write_failure before update on " + table + " for each row signal sqlstate '45000' set message_text='owned write failure'");
             try {
@@ -310,6 +575,7 @@ class NotifyAtomicResultIntegrationTest {
 
     @Test
     void leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete() throws Exception {
+        db.update("update notify_delivery set channel='MAIL' where delivery_id=?", DELIVERY);
         for (boolean renewal : List.of(true, false)) {
             db.update("update notify_outbox set lease_until=timestampadd(second,2,utc_timestamp()) where outbox_id=?", OUTBOX);
             NotifyOutbox lease = dao.outbox(OUTBOX);
@@ -349,6 +615,7 @@ class NotifyAtomicResultIntegrationTest {
     })
     void retryReceiptAndFailClosedOutcomesKeepExistingSemantics(String status, String error, int maxAttempts,
             String expectedDelivery, String expectedOutbox, String expectedIntent) {
+        db.update("update notify_delivery set channel='MAIL' where delivery_id=?", DELIVERY);
         db.update("update notify_outbox set max_attempts=? where outbox_id=?", maxAttempts, OUTBOX);
         results.complete(dao.outbox(OUTBOX), new NotifyDispatchResultPort.Result(status, "owned-provider", null, error, null, 1));
         assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo(expectedDelivery);
@@ -361,17 +628,26 @@ class NotifyAtomicResultIntegrationTest {
     }
 
     @Test
-    void cancelledDuringProviderCallStaysCancelledAfterItsResult() {
+    void cancelledBeforeInAppTransactionCannotWriteInboxFact() throws Exception {
         var runtime = new org.namewta.notify.service.runtime.NotificationApplicationRuntimeService(
             dao, mock(org.namewta.system.api.UserService.class), dispatch, event -> {});
         var application = transactional(new org.namewta.notify.usecase.NotificationApplicationUseCase(runtime),
             org.namewta.notify.usecase.NotificationApplicationUseCase.class);
-        duringProvider = () -> application.cancel(new org.namewta.notify.api.NotificationCancelCommand(String.valueOf(INTENT), "owned cancel"));
-        dispatch.dispatch(dao.outbox(OUTBOX));
+        var entered = new CountDownLatch(1); var release = new CountDownLatch(1);
+        pauseFirstBeforeInAppPort(entered, release);
+        try (var worker = Executors.newSingleThreadExecutor()) {
+            var pending = worker.submit(() -> dispatch.dispatch(dao.outbox(OUTBOX)));
+            try {
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue();
+                application.cancel(new org.namewta.notify.api.NotificationCancelCommand(String.valueOf(INTENT), "owned cancel"));
+            } finally { release.countDown(); }
+            pending.get(10, TimeUnit.SECONDS);
+        }
         assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("CANCELLED");
         assertThat(dao.intent(INTENT).getStatus()).isEqualTo("CANCELLED");
         assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("DONE");
-        assertThat(db.queryForObject("select status from notify_attempt where delivery_id=?", String.class, DELIVERY)).isEqualTo("DELIVERED");
+        assertThat(db.queryForObject("select count(*) from notify_attempt where delivery_id=?", Integer.class, DELIVERY)).isZero();
+        assertThat(db.queryForObject("select count(*) from notify_message where message_id=?", Integer.class, INTENT)).isZero();
     }
 
     @Test
@@ -691,7 +967,9 @@ class NotifyAtomicResultIntegrationTest {
         Process process = null;
         try {
             process = new ProcessBuilder(java.nio.file.Path.of(System.getProperty("java.home"), "bin/java").toString(),
-                "-Xmx128m", "-XX:ActiveProcessorCount=2", "-cp", System.getProperty("java.class.path"),
+                "-Xmx128m", "-XX:ActiveProcessorCount=2",
+                "-Dnotify.mysql.integration.username=" + System.getProperty("notify.mysql.integration.username", "root"),
+                "-cp", System.getProperty("java.class.path"),
                 "org.namewta.test.notify.NotifyCallbackProcessProbe", System.getProperty("notify.mysql.integration.url"), status)
                 .redirectErrorStream(true).redirectOutput(output.toFile()).start();
             assertThat(process.waitFor(30, TimeUnit.SECONDS)).as("owned callback JVM exits").isTrue();
@@ -868,11 +1146,38 @@ class NotifyAtomicResultIntegrationTest {
         catch (InterruptedException failure) { Thread.currentThread().interrupt(); throw new IllegalStateException(failure); }
     }
 
-    private void unchanged() {
+    private void dispatchWithPhysicalConnection(long outboxId, CyclicBarrier barrier,
+                                                java.util.Set<Long> connectionIds) throws Exception {
+        try (var held = pool.getConnection(); var statement = held.createStatement();
+             var row = statement.executeQuery("select connection_id()")) {
+            assertThat(row.next()).isTrue();
+            connectionIds.add(row.getLong(1));
+            barrier.await(5, TimeUnit.SECONDS);
+            dispatch.dispatch(dao.outbox(outboxId));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void pauseFirstBeforeInAppPort(CountDownLatch entered, CountDownLatch release) {
+        ObjectProvider<InAppNotificationPort> original = (ObjectProvider<InAppNotificationPort>)
+            org.springframework.test.util.ReflectionTestUtils.getField(dispatch, "inAppPort");
+        InAppNotificationPort port = original.getIfAvailable();
+        ObjectProvider<InAppNotificationPort> blocked = mock(ObjectProvider.class);
+        AtomicInteger visits = new AtomicInteger();
+        when(blocked.getIfAvailable()).thenAnswer(invocation -> {
+            if (visits.incrementAndGet() == 1) { entered.countDown(); await(release); }
+            return port;
+        });
+        org.springframework.test.util.ReflectionTestUtils.setField(dispatch, "inAppPort", blocked);
+    }
+
+    private void unchanged() { unchanged(0); }
+
+    private void unchanged(int expectedBudget) {
         assertThat(dao.delivery(DELIVERY).getStatus()).isEqualTo("PENDING");
         assertThat(dao.delivery(DELIVERY).getAttemptCount()).isZero();
         assertThat(dao.outbox(OUTBOX).getStatus()).isEqualTo("PROCESSING");
-        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isZero();
+        assertThat(dao.outbox(OUTBOX).getAttemptCount()).isEqualTo(expectedBudget);
         assertThat(dao.intent(INTENT).getStatus()).isEqualTo("QUEUED");
         assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?", Integer.class, INTENT)).isZero();
     }

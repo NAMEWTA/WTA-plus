@@ -1,8 +1,10 @@
-# WTA-plus comprehensive review：2026-09-23重规划
+# WTA-plus comprehensive review：当前执行入口
 
-本轮依据最新报告和HEAD `1264980c74e594bc594e88561bb292fbe5d968a1`全面重写活动文档；原31票保留编号及实现证据，新增19票，共T-01—T-50。T-30扩展为最终集成与归档准备。报告18项全部有责任票；60个引用完成源码比对。没有实施产品代码、提交/推送、运行真实服务或启动目标。
+用户已激活Goal，正在执行全部50票的实现、逐票提交和当前候选验收。当前revision156：6票done（T-29/T-32/T-33/T-34/T-35/T-47），T-01取消本轮重复施工但AC-001仍由T-30最终复验，T-36 in_progress，其余42票ready。Goal保持active、ready_for_execution=true；current/main单产品writer，允许已授权的gpt-6-sol/xhigh原生子代理，Lead独占治理、提交与真实环境验收。
 
-**revision138：G共识已由用户明确确认，Spec和50票Ready，Goal Plan已定稿。** 按用户要求，Goal执行仍关闭（ready_for_execution=false），之后由用户自行激活；本轮仅文档规划。
+最近已验收产品是T-35的 `fd8c34644d2cb36f96deccce81fe35f586701f94`，38类170单元和8项真实MySQL/Redis均零skip；T-36从治理提交 `5118051403de0648540646d98536d8c4f3f9f26d` 开始。实时最新状态以Ticket frontmatter、tickets-map、goal-plan Current Status及.status.json为准。change尚未完成，T-30同源完整候选及归档前置仍待执行。
+
+本轮重规划基线为 `1264980c74e594bc594e88561bb292fbe5d968a1`：保留原31票编号与历史实现，新增19票覆盖新报告18项，T-30承担全部AC的最终集成。G共识和设计选择已确认，无需再次确认；2026-09-23早期“仅规划、目标未激活”是已被后续授权替代的历史状态。
 
 阅读顺序：
 
@@ -11,10 +13,10 @@
 3. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>：用户行为、50项AC与范围。
 4. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>：完整50票、依赖、Skill与写集；具体施工见各票。
 5. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>：串行顺序、Gate、历史票处置、验收/归档路线。
-6. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-validation.json</Path>：未来业务矩阵和本轮真实校验。
+6. <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-validation.json</Path>：完整业务验证矩阵和历史重规划校验；实施证据位于evidence目录。
 
 旧Evidence与原报告按字节保留；原47份活动工件快照位于<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/</Path>。快照中的“尚未实现/暂缓提交/31票全绿”等仅描述其原时点，不能覆盖当前权威。
 
 计划质量审查：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/plan-quality-review-2026-09-23.md</Path>。结构校验通过；共享写路径告警由已锁定的single-agent/current串行策略处理，不授权并行。
 
-2026-09-23执行更新：用户已激活Goal；恢复本地实施/逐票提交验收，覆盖前述计划时点的未激活说明。当前先T-32，全部50票目标保持。
+G-security-external已由实际MySQL/Redis/WTA MinIO轮换验证及用户对退役AI/qcloud密钥的撤销确认关闭。不得重复轮换。全应用部署、远程推送、真实存量数据修复及归档没有由当前本地实施授权自动涵盖。

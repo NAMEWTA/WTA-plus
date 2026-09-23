@@ -1,6 +1,6 @@
 # 恢复入口
 
-当前revision153：Goal仍active；6done/1cancelled/43ready，无产品writer，下一T-36。T-35已在fd8c346以170+8项零skip验收。使用gpt-6-sol/xhigh原生子代理、current单writer、Lead治理/E2E；不新建worktree。以下revision138起段落属于历史计划，不能覆盖本段执行状态。
+当前revision156：Goal仍active；6done/1cancelled/1in_progress/42ready，T-36唯一产品writer cors_audit。T-35已在fd8c346以170+8项零skip验收。使用gpt-6-sol/xhigh原生子代理、current单writer、Lead治理/E2E；不新建worktree。以下revision138起段落属于历史计划，不能覆盖本段执行状态。
 
 先读<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/README.md</Path>→<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>→<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>→适用Skill→当前票。当前revision138，50票Ready、0done、0在途writer；G共识已确认，S/T/P(plan)顺序完成，current_work=specdev/goal-plan。Goal schema状态draft、ready_for_execution=false仅因为用户保留自行激活与新的执行授权，不能误读成待设计答复。
 
@@ -79,3 +79,28 @@ T35第1候选41882b54a2b644f7ae661b84205cfcc9d1b72886未通过：真实隔离5�
 ## revision153 — T35完成
 
 Revision153: T35 accepted at fd8c346;38classes170unit+8real MySQL/Redis zero skips, both reviews pass, clean exact HEAD/tree before/after and owned cleanup verified. All three candidates and failed governance missing-link evidence retained; concrete evidence link repaired after source verification, no product change or attempt reset. 6done/1cancelled/43ready; next T36.
+
+## revision154 — T36启动
+
+Revision154: T36 active at 5118051403de0648540646d98536d8c4f3f9f26d; cors_audit sole product writer, Lead owns governance/commit/isolated real acceptance. 6done/1cancelled/1in_progress/42ready; IN_APP atomic persistence plus result, fence and AFTER_COMMIT; no external channel I/O in transaction or production repair.
+
+## revision155 IN_APP有界尝试预算
+
+代码事实确认：原claim不计次数，结果事务回滚也回滚attempt_count，不能宣称现有重领机制有限。采用原有Outbox字段、既有代理端口和统一锁序：确定参数预检后，beginInAppAttempt独立短DSTransactional按Intent→Outbox→Delivery锁及数据库fence消耗一次预算；成功返回才进入消息/关系/结果的原子事务。IN_APP outbox.attempt_count表示已开始尝试（含随后回滚/崩溃），Delivery与Attempt只记录原子提交的结果；其他渠道保持原含义。消息事务不再次消耗预算。
+
+预算耗尽则在锁内将IN_APP Delivery FAILED、Outbox DEAD_LETTER并刷新聚合，零persist；预算事务失败或提交结果不确定时停止，不能猜测已获得预算。消息事务提交ACK丢失时依已持久DONE/DELIVERED抑制重投，DB暂不可读则等待安全恢复。完全不可写期间不能保证提交终态，但不得在未取得持久预算时调用persist；恢复后仍在预算上限内收束。允许SQL失败后保留独立预算，不允许消息/关系/投递结果部分提交。
+
+验证补充：预算先提交后消息回滚、max边界/耗尽零persist、预算提交ACK丢失及失效lease、同lease重入不能越过最大物理次数。既有写集覆盖port/usecase/runtime/DAO/Mapper/XML；不改worker/claim，不新增表/状态机，不转移给T38，外部渠道未知合同不变。
+
+### revision155 预留去重与开发红灯环境补充
+
+同有效lease重复begin仅第一项获准：采用固定内部码IN_APP_ATTEMPT_RESERVED，不把lease token放入错误码/监控。claim SQL成功领取新token时仅清此固定预留码，其他历史错误保留；预算仍在begin事务消耗，worker不改。此处细化前段“不改claim”为不改变领取策略，仅清理上次预留标志。旧owner/newowner及同lease重入必须验证。
+
+首个开发红灯run c8ae375d4258fb06在创建故障trigger时报MySQL1419，未到业务断言；Maven1、1error/0failure/0skip，非行为红灯。隔离MySQL仅调整trust_function_creators启动参数供故障注入，不给应用全局SUPER、不改部署。旧驱动把error归开发red的记录保留并由Lead assessment明确否决；新版要求精确目标方法的1failure/0error。两个owned容器/进程组已清理，32794/32795已关；该开发运行不计正式候选attempt。
+
+## revision156 预算字段语义文档写集
+
+编辑前增加两条精确路径：NotifyOutbox.java字段Javadoc，以及唯一六SQL中的10-cde-base-ddl.sql，仅notify_outbox.attempt_count/last_error_code中文注释。已有DDL“领取次数”不符合旧结果计数也不符合新预算语义，须同步为IN_APP已开始尝试预算、外部渠道已提交结果次数，固定IN_APP_ATTEMPT_RESERVED内部标记。无列/类型/索引/结构变化、不重放存量基座；全新隔离六SQL装载复核仍必需。预算上限指一次自动调度周期；合法人工重试新周期由T38精确API合同负责。
+
+- backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyOutbox.java
+- release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql
