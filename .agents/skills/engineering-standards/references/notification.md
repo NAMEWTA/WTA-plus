@@ -34,6 +34,8 @@ notificationService.submit(new NotificationCommand(
 - SMTP 发件账号和短信厂商凭据保存在 `notify_channel_account`；YAML 不再作为发件人、`sms.blends` 或全局 `restricted`/`minute-max`/`account-max` 的运行时来源。
 - 业务通知默认异步。站内信、通知收件箱和消息盒子读取同一 `/notify/inbox` 数据源；SSE/WebSocket 只发送刷新事件，不承担持久化。
 
+公告发布的 `noticeVersion` 元数据绑定 Notice、Snapshot、Intent 的同一版本；撤回事务写持久版本栅栏和公告生命周期，Worker 在活租约与统一锁序内关闭该版本尚未获发送权的 Outbox。外部 Provider 已受理或结果未知的回执仍须保留并完成原结果，不能改写为“已撤回”。旧任务缺失可信版本事实时以 `NOTICE_VERSION_UNVERIFIED` 失败关闭，不自动重发；六 SQL 两条固定静态公告仅在快照身份匹配且无精确键或同业务 Intent 等窄条件下允许更新生命周期。含站内信的公告把 Snapshot、Intent 和模板参数路径同事务设为本人 `/notify/inbox?messageId=<messageId>`；仅外部渠道使用通用 `/notify/inbox`，本人深链在投递失败时仍由本人详情接口安全拒绝。收件人页面只用当前获授权的消息 ID 转换旧管理路径，路由 query 与会话变化的迟到响应不得显示旧身份正文。
+
 ## 后端分层与状态
 
 `controller -> usecase -> service -> dao -> mapper/XML` 是 `wta-notify` 的固定链路。UseCase 负责事务、目标解析、幂等和状态迁移；Service 负责规则；DAO 封装 MyBatis-Plus Wrapper、分页、锁和批量更新；Provider/Outbox Worker/Callback 只能通过端口或事件接入。

@@ -33,6 +33,8 @@
 
 公告渠道为 `IN_APP`（站内信）、`SMS`（短信）、`MAIL`（邮件），可组合选择，未选择时默认 `IN_APP`。渠道选择只决定投递请求，短信与邮件是否成功仍取决于接收者联系方式和对应供应商配置，不能把提交或 Provider `ACCEPTED` 视为已送达。
 
+每次公告发布用当前公告 ID、快照 ID、版本和 `noticeVersion` 意图元数据精确关联。撤回事务只写该版本持久栅栏与公告生命周期，后续 Worker 在活租约内关闭尚未获得发送权的任务；外部已进入 Provider 的受理或未知结果仍按原回执落库，已送达站内消息及本人关系保留。缺失或损坏版本元数据的历史公告任务按 `NOTICE_VERSION_UNVERIFIED` 失败关闭，不盲发也不冒充已撤回。六 SQL 初始化中仅两个固定、快照身份匹配且无精确键或同业务 Intent 的静态公告允许窄条件生命周期撤回；其他缺失 Intent 的发布记录必须拒绝。含 `IN_APP` 的新公告将快照、Intent 和模板参数路径同事务更新为 `/notify/inbox?messageId=<本人消息ID>`；仅外部渠道保留 `/notify/inbox` 通用入口。旧 `/notify/notice?noticeId=...` 只可凭当前本人消息 ID 转入收件箱，不能让收件人访问公告管理页。
+
 `notify_notice` 保存 `recipient_type`、`recipient_ids_json`、`user_type_ids_json`、`channels_json`；`notify_message.notice_type/channels_json` 保留站内消息的类型与渠道快照。完整初始化基座中的公告显式使用 `ALL`、空目标列表和 `["IN_APP"]`，只初始化公告及快照，不生成外部投递任务。
 
 事实入口：`wta-api/src/main/java/org/namewta/system/api/UserService.java`，Notify 的 `service/NotifyNoticeService.java`、`service/NotifyNoticePublisherService.java`、`usecase/NotificationApplicationUseCase.java`、`service/runtime/NotificationApplicationRuntimeService.java`、`dao/NotifyPersistenceDao.java`，以及父仓库的 `10-cde-base-ddl.sql`、`50-cde-base-dml.sql`。
