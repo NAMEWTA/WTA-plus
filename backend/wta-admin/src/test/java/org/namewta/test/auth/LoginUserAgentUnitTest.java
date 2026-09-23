@@ -4,12 +4,10 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import io.github.linpeilie.Converter;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.namewta.common.core.constant.CacheNames;
@@ -37,10 +35,13 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -50,17 +51,134 @@ import static org.mockito.Mockito.when;
 
 /** 无 User-Agent 仍完成登录上下文、在线会话和异步审计的真实消费方法回归。 */
 @Tag("dev")
-class LoginUserAgentUnitTest {
+public class LoginUserAgentUnitTest {
     private static final String CHROME_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
         + "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
     private static final String TOKEN = "synthetic-unit-token";
+    private static final long CHILD_TIMEOUT_SECONDS = 45;
+
+    @TempDir
+    Path temporary;
 
     private static GenericApplicationContext context;
     private static ApplicationContext previousContext;
     private static ConfigurableListableBeanFactory previousFactory;
 
-    @BeforeAll
-    static void prepareStaticUtilities() {
+    static Stream<String> userAgents() {
+        return Stream.of("missing", "blank", "chrome");
+    }
+
+    @ParameterizedTest
+    @MethodSource("userAgents")
+    void publicLoginPreservesExistingContextAndFillsBrowserAndOs(String userAgentCase) throws Exception {
+        runIsolated("login", userAgentCase);
+    }
+
+    @Test
+    void publicLoginKeepsPreviouslyKnownBrowserAndOsWithoutHeader() throws Exception {
+        runIsolated("existing", "missing");
+    }
+
+    @ParameterizedTest
+    @MethodSource("userAgents")
+    void successListenerStillWritesOnlineStateAndLoginAudit(String userAgentCase) throws Exception {
+        runIsolated("listener", userAgentCase);
+    }
+
+    @ParameterizedTest
+    @MethodSource("userAgents")
+    void loginInfoConsumerStillPersistsSuccessAndClientFields(String userAgentCase) throws Exception {
+        runIsolated("audit", userAgentCase);
+    }
+
+    /** RedisUtils/MapstructUtils 缓存 Spring Bean，故父 Surefire JVM 只管理隔离进程。 */
+    private void runIsolated(String consumer, String userAgentCase) throws Exception {
+        Path result = temporary.resolve(consumer + '-' + userAgentCase + '.result');
+        Path log = temporary.resolve(consumer + '-' + userAgentCase + '.log');
+        String classpath = System.getProperty("surefire.test.class.path", System.getProperty("java.class.path"));
+        assertThat(classpath).as("Surefire test classpath").isNotBlank();
+        Process child = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
+            "-Xms32m", "-Xmx384m", "-cp", classpath, LoginUserAgentUnitTest.class.getName(),
+            consumer, userAgentCase, result.toString())
+            .redirectErrorStream(true).redirectOutput(log.toFile()).start();
+        try {
+            boolean finished = child.waitFor(CHILD_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            assertThat(finished).as("isolated %s/%s completed within %s seconds",
+                consumer, userAgentCase, CHILD_TIMEOUT_SECONDS).isTrue();
+            String outcome = Files.isRegularFile(result) ? Files.readString(result).trim() : "NO_RESULT";
+            assertThat(child.exitValue()).as("isolated %s/%s outcome=%s", consumer, userAgentCase, outcome).isZero();
+            assertThat(outcome).as("isolated %s/%s", consumer, userAgentCase).isEqualTo("OK");
+        } finally {
+            boolean stopped;
+            try {
+                stopped = stopChildTree(child);
+            } finally {
+                Files.deleteIfExists(result);
+                Files.deleteIfExists(log);
+            }
+            assertThat(stopped).as("isolated child and descendants stopped").isTrue();
+        }
+    }
+
+    private static boolean stopChildTree(Process child) throws InterruptedException {
+        List<ProcessHandle> descendants = child.toHandle().descendants().toList();
+        if (child.isAlive()) {
+            child.destroyForcibly();
+        }
+        descendants.stream().filter(ProcessHandle::isAlive).forEach(ProcessHandle::destroyForcibly);
+        boolean parentStopped = child.waitFor(5, TimeUnit.SECONDS);
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        while (descendants.stream().anyMatch(ProcessHandle::isAlive) && System.nanoTime() < deadline) {
+            Thread.sleep(25);
+        }
+        return parentStopped && descendants.stream().noneMatch(ProcessHandle::isAlive);
+    }
+
+    /** Child entrypoint: only fixed test cases and fixed failure categories cross the JVM boundary. */
+    public static void main(String[] args) throws Exception {
+        if (args.length != 3 || !Stream.of("login", "existing", "listener", "audit").anyMatch(args[0]::equals)
+            || !Stream.of("missing", "blank", "chrome").anyMatch(args[1]::equals)
+            || ("existing".equals(args[0]) && !"missing".equals(args[1]))) {
+            throw new IllegalArgumentException("Unlisted login UA child case");
+        }
+        Path result = Path.of(args[2]);
+        String outcome = "OK";
+        try {
+            prepareStaticUtilities();
+            UserAgentCase sample = sample(args[1]);
+            switch (args[0]) {
+                case "login" -> checkPublicLogin(sample);
+                case "existing" -> checkExistingFields();
+                case "listener" -> checkSuccessListener(sample);
+                case "audit" -> checkLoginInfo(sample);
+                default -> throw new IllegalArgumentException("Unlisted login UA child consumer");
+            }
+        } catch (RuntimeException | AssertionError failure) {
+            outcome = failure instanceof NullPointerException ? "NPE"
+                : failure instanceof AssertionError ? "ASSERTION" : "HARNESS";
+        } finally {
+            try {
+                restoreStaticUtilities();
+            } catch (RuntimeException cleanupFailure) {
+                outcome = "CLEANUP";
+            }
+            Files.writeString(result, outcome);
+        }
+        if (!"OK".equals(outcome)) {
+            System.exit(1);
+        }
+    }
+
+    private static UserAgentCase sample(String name) {
+        return switch (name) {
+            case "missing" -> new UserAgentCase(null, "Unknown", "Unknown");
+            case "blank" -> new UserAgentCase("   ", "Unknown", "Unknown");
+            case "chrome" -> new UserAgentCase(CHROME_UA, "Chrome", "Linux");
+            default -> throw new IllegalArgumentException("Unlisted login UA case");
+        };
+    }
+
+    private static void prepareStaticUtilities() {
         previousContext = SpringUtils.getApplicationContext();
         try {
             previousFactory = SpringUtils.getConfigurableBeanFactory();
@@ -74,8 +192,7 @@ class LoginUserAgentUnitTest {
         context.refresh();
     }
 
-    @AfterAll
-    static void restoreStaticUtilities() {
+    private static void restoreStaticUtilities() {
         if (context != null) {
             context.close();
         }
@@ -84,18 +201,8 @@ class LoginUserAgentUnitTest {
         spring.setApplicationContext(previousContext);
     }
 
-    static Stream<Arguments> userAgents() {
-        return Stream.of(
-            Arguments.of(null, "Unknown", "Unknown"),
-            Arguments.of("   ", "Unknown", "Unknown"),
-            Arguments.of(CHROME_UA, "Chrome", "Linux")
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("userAgents")
-    void publicLoginPreservesExistingContextAndFillsBrowserAndOs(String userAgent, String browser, String os) {
-        withRequest(userAgent, () -> {
+    private static void checkPublicLogin(UserAgentCase sample) {
+        withRequest(sample.header(), () -> {
             LoginUser loginUser = new LoginUser();
             loginUser.setUserId(42L);
             loginUser.setUserType("system");
@@ -106,20 +213,19 @@ class LoginUserAgentUnitTest {
             SaSession session = mock(SaSession.class);
             try (var stp = mockStatic(StpUtil.class)) {
                 stp.when(StpUtil::getTokenSession).thenReturn(session);
-                assertDoesNotThrow(() -> LoginHelper.login(loginUser, new SaLoginParameter()));
+                LoginHelper.login(loginUser, new SaLoginParameter());
                 stp.verify(() -> StpUtil.login(eq("system:42"), any(SaLoginParameter.class)));
                 verify(session).set(LoginHelper.LOGIN_USER_KEY, loginUser);
             }
-            assertThat(loginUser.getBrowser()).isEqualTo(browser);
-            assertThat(loginUser.getOs()).isEqualTo(os);
+            assertThat(loginUser.getBrowser()).isEqualTo(sample.browser());
+            assertThat(loginUser.getOs()).isEqualTo(sample.os());
             assertThat(loginUser.getIpaddr()).isEqualTo("existing-ip");
             assertThat(loginUser.getLoginLocation()).isEqualTo("existing-location");
             assertThat(loginUser.getDeviceType()).isEqualTo("existing-device");
         });
     }
 
-    @Test
-    void publicLoginKeepsPreviouslyKnownBrowserAndOsWithoutHeader() {
+    private static void checkExistingFields() {
         withRequest(null, () -> {
             LoginUser loginUser = new LoginUser();
             loginUser.setUserId(42L);
@@ -130,17 +236,15 @@ class LoginUserAgentUnitTest {
             loginUser.setLoginLocation("existing-location");
             try (var stp = mockStatic(StpUtil.class)) {
                 stp.when(StpUtil::getTokenSession).thenReturn(mock(SaSession.class));
-                assertDoesNotThrow(() -> LoginHelper.login(loginUser, new SaLoginParameter()));
+                LoginHelper.login(loginUser, new SaLoginParameter());
             }
             assertThat(loginUser.getBrowser()).isEqualTo("existing-browser");
             assertThat(loginUser.getOs()).isEqualTo("existing-os");
         });
     }
 
-    @ParameterizedTest
-    @MethodSource("userAgents")
-    void successListenerStillWritesOnlineStateAndLoginAudit(String userAgent, String browser, String os) {
-        withRequest(userAgent, () -> {
+    private static void checkSuccessListener(UserAgentCase sample) {
+        withRequest(sample.header(), () -> {
             SysLoginService loginService = mock(SysLoginService.class);
             SaLoginParameter parameter = new SaLoginParameter().setTimeout(-1).setDeviceType("existing-device")
                 .setExtra(LoginHelper.USER_NAME_KEY, "owned-user")
@@ -150,12 +254,12 @@ class LoginUserAgentUnitTest {
             UserLoginSuccessEvent event = new UserLoginSuccessEvent("system:42", TOKEN, parameter);
             ArgumentCaptor<UserOnlineDTO> online = ArgumentCaptor.forClass(UserOnlineDTO.class);
             try (var redis = mockStatic(RedisUtils.class)) {
-                assertDoesNotThrow(() -> new UserLoginSuccessListener(loginService).handleLoginSuccess(event));
+                new UserLoginSuccessListener(loginService).handleLoginSuccess(event);
                 redis.verify(() -> RedisUtils.setCacheObject(eq(CacheNames.ONLINE_TOKEN_KEY + TOKEN),
                     online.capture()));
             }
-            assertThat(online.getValue().getBrowser()).isEqualTo(browser);
-            assertThat(online.getValue().getOs()).isEqualTo(os);
+            assertThat(online.getValue().getBrowser()).isEqualTo(sample.browser());
+            assertThat(online.getValue().getOs()).isEqualTo(sample.os());
             assertThat(online.getValue().getTokenId()).isEqualTo(TOKEN);
             assertThat(online.getValue().getUserName()).isEqualTo("owned-user");
             assertThat(online.getValue().getDeptName()).isEqualTo("existing-dept");
@@ -166,9 +270,7 @@ class LoginUserAgentUnitTest {
         });
     }
 
-    @ParameterizedTest
-    @MethodSource("userAgents")
-    void loginInfoConsumerStillPersistsSuccessAndClientFields(String userAgent, String browser, String os) {
+    private static void checkLoginInfo(UserAgentCase sample) {
         SysLoginInfoMapper mapper = mock(SysLoginInfoMapper.class);
         ISysClientService clients = mock(ISysClientService.class);
         SysClientVo client = new SysClientVo();
@@ -181,13 +283,13 @@ class LoginUserAgentUnitTest {
         event.setMessage("existing-success-message");
         event.setIp("127.0.0.1");
         event.setClientId("owned-client");
-        event.setUserAgent(userAgent);
+        event.setUserAgent(sample.header());
 
-        assertDoesNotThrow(() -> new SysLoginInfoServiceImpl(mapper, clients).recordLoginInfo(event));
+        new SysLoginInfoServiceImpl(mapper, clients).recordLoginInfo(event);
         ArgumentCaptor<SysLoginInfo> saved = ArgumentCaptor.forClass(SysLoginInfo.class);
         verify(mapper).insert(saved.capture());
-        assertThat(saved.getValue().getBrowser()).isEqualTo(browser);
-        assertThat(saved.getValue().getOs()).isEqualTo(os);
+        assertThat(saved.getValue().getBrowser()).isEqualTo(sample.browser());
+        assertThat(saved.getValue().getOs()).isEqualTo(sample.os());
         assertThat(saved.getValue().getUserName()).isEqualTo("owned-user");
         assertThat(saved.getValue().getStatus()).isEqualTo(Constants.SUCCESS);
         assertThat(saved.getValue().getClientKey()).isEqualTo("existing-client-key");
@@ -212,5 +314,8 @@ class LoginUserAgentUnitTest {
                 RequestContextHolder.setRequestAttributes(previous);
             }
         }
+    }
+
+    private record UserAgentCase(String header, String browser, String os) {
     }
 }
