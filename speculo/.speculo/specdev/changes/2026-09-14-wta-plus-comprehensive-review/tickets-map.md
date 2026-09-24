@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 223
+plan_revision: 224
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision223：T42实施中新附件HTTP字段明确为十进制字符串ID数组，内部严格转Long，避免生成number[]损失雪花ID精度；52写集不变。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision224：T42事前扩展3条common OSS有界传输精确写集，共55根；复制按整体deadline、读取字节上限与目标digest验证，测试2MiB限制不进入产品。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -744,3 +744,9 @@ red01附件例因测试账号minuteMax缺失未进入send，原失败保留；Le
 revision223：T42实施中新附件HTTP字段明确为十进制字符串ID数组，内部严格转Long，避免生成number[]损失雪花ID精度；52写集不变。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 NotificationCommand.attachmentOssIds使用List<String>，HTTP可选、缺省空；Demo输入Long映射十进制字符串，服务端在任何持久化前验证正整数及Long范围，再规范化去重保序为内部Long。旧recipientIds等公共ID已采用字符串；此裁决仅约束本票新增字段，不做全仓ID迁移或添加Swagger依赖。BigNumberSerializer仅按数值范围切换序列化，不能单凭它保证OpenAPI/TS客户端精度。真实HTTP/序列化覆盖quoted 9007199254740993及零/负/小数/溢出拒绝，live schema必须items.type=string且非required；标准工具生成，不手写快照。原只读List<Long>设计稿作为历史保留，以本修订为准。
+
+## revision224 — 附件有界传输写集
+
+revision224：T42事前扩展3条common OSS有界传输精确写集，共55根；复制按整体deadline、读取字节上限与目标digest验证，测试2MiB限制不进入产品。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+现有OssClient仅HEAD/DELETE有Duration重载，新增受控下载/上传入口及OssBoundedTransferTest，保持其他调用语义。System源GET、目标PUT和目标GET共用绝对deadline，读流阶段硬限制字节、核对目标长度与SHA256；超时/中断取消不能证明远端PUT已停止，仍保留COPY_UNKNOWN预约和引用。邮件附件产品默认限制为去重后20件、单件10MiB、总量25MiB，提交前预检并同步可配置合同与文档；隔离测试代理2MiB仅为小型fixture限制。READY复用须核验原actor仍有效、目标仍PRIVATE且摘要一致；重复ID保序去重，唯一键冲突后的附件关系与返回投递使用当前读。新增Mapper遵循BaseMapperPlus硬约束。以上为实施约束，尚未验收通过。
