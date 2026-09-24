@@ -251,7 +251,7 @@ class NotifyMailAttachmentIntegrationTest {
         int sentBefore = sender.sent.size();
         worker.poll();
         assertThat(s3Count()).as("无附件Worker阶段零OSS").isEqualTo(workerBefore);
-        assertThat(sender.sent).hasSize(sentBefore + 1);
+        assertThat(sender.sent).as("无附件投递状态：%s", deliveryStates(intentId)).hasSize(sentBefore + 1);
         assertThat(sender.sent.getLast().body()).contains("no-attachment");
         assertThat(sender.sent.getLast().attachments()).isEmpty();
     }
@@ -271,7 +271,7 @@ class NotifyMailAttachmentIntegrationTest {
             .isEqualTo(1);
         makeDue(intentId);
         worker.poll();
-        assertThat(sender.sent).hasSize(sentBefore + 1);
+        assertThat(sender.sent).as("首个附件投递状态：%s", deliveryStates(intentId)).hasSize(sentBefore + 1);
         assertThat(sender.sent.getLast().attachments()).hasSize(1);
         assertThat(sender.sent.getLast().attachments().getFirst()).containsExactly(original);
         NotifyIntentAttachment ready = dao.attachments(intentId).getFirst();
@@ -636,7 +636,9 @@ class NotifyMailAttachmentIntegrationTest {
         assertThat(snapshotTransactions.releaseIfSafe(intentId)).isTrue();
         assertThat(dao.attachments(intentId).getFirst().getStatus()).isEqualTo("RELEASED");
         assertThat(db.queryForObject("select count(*) from sys_oss_ref where oss_id=? and ref_type='notify_intent_attachment' "
-            + "and ref_id=?", Integer.class, source, String.valueOf(pending.getIntentAttachmentId()))).isZero();
+            + "and ref_id=? and del_flag='0'", Integer.class, source, String.valueOf(pending.getIntentAttachmentId()))).isZero();
+        assertThat(db.queryForObject("select count(*) from sys_oss_ref where oss_id=? and ref_type='notify_intent_attachment' "
+            + "and ref_id=? and del_flag='1'", Integer.class, source, String.valueOf(pending.getIntentAttachmentId()))).isEqualTo(1);
         assertThat(db.queryForObject("select count(*) from sys_oss where oss_id=? and delete_state='ACTIVE'",
             Integer.class, source)).isEqualTo(1);
         assertThat(notifications.retry(new NotificationRetryCommand(String.valueOf(intentId), null,
@@ -678,8 +680,11 @@ class NotifyMailAttachmentIntegrationTest {
         assertThat(snapshotTransactions.releaseIfSafe(intentId)).isTrue();
         assertThat(dao.attachments(intentId).getFirst().getStatus()).isEqualTo("RELEASED");
         assertThat(db.queryForObject("select count(*) from sys_oss_ref where oss_id=? "
-            + "and ref_type='notify_intent_attachment' and ref_id=?", Integer.class, source,
+            + "and ref_type='notify_intent_attachment' and ref_id=? and del_flag='0'", Integer.class, source,
             String.valueOf(relation.getIntentAttachmentId()))).isZero();
+        assertThat(db.queryForObject("select count(*) from sys_oss_ref where oss_id=? "
+            + "and ref_type='notify_intent_attachment' and ref_id=? and del_flag='1'", Integer.class, source,
+            String.valueOf(relation.getIntentAttachmentId()))).isEqualTo(1);
         assertThat(sender.sent).hasSize(sentBefore);
     }
 
@@ -884,6 +889,12 @@ class NotifyMailAttachmentIntegrationTest {
             intentId);
         db.update("update notify_outbox set available_at=timestampadd(second,-1,utc_timestamp()),"
             + "next_attempt_at=timestampadd(second,-1,utc_timestamp()) where intent_id=?", intentId);
+    }
+
+    private List<Map<String, Object>> deliveryStates(long intentId) {
+        // 仅输出固定状态/错误码，不把收件地址、正文或凭据带入失败报告。
+        return db.queryForList("select d.status as delivery_status,d.error_code,o.status as outbox_status "
+            + "from notify_delivery d left join notify_outbox o on o.delivery_id=d.delivery_id where d.intent_id=?", intentId);
     }
 
     private int s3Count() throws Exception {

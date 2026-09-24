@@ -1,5 +1,6 @@
 package org.namewta.web.config;
 
+import cn.dev33.satoken.SaManager;
 import org.namewta.common.notify.spi.NotifyContextResolver;
 import org.namewta.common.satoken.utils.LoginHelper;
 import org.slf4j.MDC;
@@ -16,7 +17,10 @@ public class NotifyContextConfiguration {
     @Bean
     @ConditionalOnMissingBean(NotifyContextResolver.class)
     public NotifyContextResolver requestNotifyContextResolver() {
-        return new RequestNotifyContextResolver(LoginHelper::getLoginUser, NotifyContextConfiguration::traceId);
+        // Outbox Worker 没有请求上下文；审计身份可为空，附件授权仍取 Intent 的原提交者。
+        return new RequestNotifyContextResolver(
+            () -> SaManager.getSaTokenContext().isValid() ? LoginHelper.getLoginUser() : null,
+            NotifyContextConfiguration::traceId);
     }
 
     private static String traceId() {
