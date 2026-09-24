@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 220
+plan_revision: 221
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision220：T42附件生产闭环启动，基线5417c257；先固定无链接邮件与附件传递红灯，再按真实Notify关系和原user/Client授权实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -187,7 +187,7 @@ T-49同时依赖T-44与T-48。完整真实依赖从frontmatter重建，图是摘
 
 ## 7. 横切契约与风险
 
-凭据轮换/真实数据修复/部署与归档是独立动作Gate；未授权不执行。旧共同result不是当前通过；不因本轮只改文档而更改旧Evidence。当前附件生产实现缺失，OSS硬规则替代待审；两个条件须关闭才可Ready。
+凭据轮换/真实数据修复/部署与归档是独立动作Gate；未授权不执行。旧共同result不是当前通过；不因本轮只改文档而更改旧Evidence。当前附件生产实现由T42补齐；OSS诊断门禁替代已获用户确认并由T44/T45完成当前验收。
 
 ## 8. 同步规则
 
@@ -201,9 +201,9 @@ Ticket frontmatter状态/依赖/路径有变即更新Map/plan-data投影，plan_
 node <Path>{roots.workflows}/specdev/common/tools/ticket-control.mjs</Path> --map <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path> --repo .
 ```
 
-当前控制器应返回空frontier，因为Spec未Ready且Goal未授权；这不是计划结构失败。先恢复<Path>{roots.workflows}/specdev/G-grill-with-docs/G-grill-with-docs.md</Path>回答D节点，再按S→T→P发布正式Ready。缺执行授权时P仍保持ready_for_execution=false。
+当前Goal已获执行授权，控制器frontier仅表达DAG可执行性；本轮资源由T42独占，其他Ready票等待串行交接。
 
-取消票不满足依赖：必须按Goal“历史票关闭后的依赖重算”记录合同事实、更新下游边与责任票后重算；当前50票均Ready，无在途writer。
+取消票不满足依赖：必须按Goal“历史票关闭后的依赖重算”记录合同事实、更新下游边与责任票后重算；当前状态以第2节与.status.json为准，取消票的最终AC继续由T30复验。
 
 Revision138执行：T-32先行；额外写集为backend/pom.xml资源排除、scripts/start-dev.sh显式本地导入和配置绑定测试。后续T-48继续拥有启动职责重构，本票只完成安全消费。用户已激活Goal，run可用。
 
@@ -726,3 +726,9 @@ revision220：T42附件生产闭环启动，基线5417c257；先固定无链接�
 基线 `5417c257130216e2b283ca933d9496d76c10f46a`，main/current-workspace/direct-parent。T35/T37/T44已完成；用户已授权全部票实施、本地提交和子代理，取代旧票中的仅计划/禁止子代理措辞。保持一个产品writer，Lead独占治理、构建、隔离服务与提交。T32外部撤销确认已记录，无新增环境轮换。
 
 Dispatch01A限既有Notify测试写集：复现Demo无链接正文被notice-published的path校验拒绝及附件仅埋Map、未映射进入真实NotifyRequest。红灯不能以mock接受submit替代行为证明；产品暂不修改。完整实施派单将在写集和事务/恢复设计核定后单独登记。验收要求真实fresh六SQL MySQL/Redis/MinIO、完整应用生产Bean装配、只替换物理MailNotificationSender，禁止真实SMTP。附件原提交者与Client从受信登录态捕获并持久化，不信任HTTP actor字段；无附件零OSS，UNKNOWN不盲重发，部分副本须可追踪恢复。此处为计划，未勾AC或宣称测试通过。
+
+## revision221 — T42红灯与完整实施派单
+
+revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+红灯源码 `add76d4f36a60b5a2d26182ea361ce64287b0267`，实际计数 `{"tests": 2, "failures": 2, "errors": 0, "skipped": 0}`；这是缺陷复现，不是验收通过。权威实施合同见 `evidence/dispatch-T-42-implementation.md`，全部写集在Ticket frontmatter。Java record仓内直接迁移；HTTP attachmentOssIds可选、缺省空，不接受客户端actor。全应用/真实对象/故障矩阵仍未运行。

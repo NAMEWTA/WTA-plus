@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision220，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision221，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision220：T42附件生产闭环启动，基线5417c257；先固定无链接邮件与附件传递红灯，再按真实Notify关系和原user/Client授权实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 ### Pending Decisions and Blockers
 
@@ -725,3 +725,9 @@ revision220：T42附件生产闭环启动，基线5417c257；先固定无链接�
 基线 `5417c257130216e2b283ca933d9496d76c10f46a`，main/current-workspace/direct-parent。T35/T37/T44已完成；用户已授权全部票实施、本地提交和子代理，取代旧票中的仅计划/禁止子代理措辞。保持一个产品writer，Lead独占治理、构建、隔离服务与提交。T32外部撤销确认已记录，无新增环境轮换。
 
 Dispatch01A限既有Notify测试写集：复现Demo无链接正文被notice-published的path校验拒绝及附件仅埋Map、未映射进入真实NotifyRequest。红灯不能以mock接受submit替代行为证明；产品暂不修改。完整实施派单将在写集和事务/恢复设计核定后单独登记。验收要求真实fresh六SQL MySQL/Redis/MinIO、完整应用生产Bean装配、只替换物理MailNotificationSender，禁止真实SMTP。附件原提交者与Client从受信登录态捕获并持久化，不信任HTTP actor字段；无附件零OSS，UNKNOWN不盲重发，部分副本须可追踪恢复。此处为计划，未勾AC或宣称测试通过。
+
+## revision221 — T42红灯与完整实施派单
+
+revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+红灯源码 `add76d4f36a60b5a2d26182ea361ce64287b0267`，实际计数 `{"tests": 2, "failures": 2, "errors": 0, "skipped": 0}`；这是缺陷复现，不是验收通过。权威实施合同见 `evidence/dispatch-T-42-implementation.md`，全部写集在Ticket frontmatter。Java record仓内直接迁移；HTTP attachmentOssIds可选、缺省空，不接受客户端actor。全应用/真实对象/故障矩阵仍未运行。

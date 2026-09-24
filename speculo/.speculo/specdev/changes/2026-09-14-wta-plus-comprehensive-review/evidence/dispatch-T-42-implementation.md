@@ -1,0 +1,37 @@
+# T-42 Dispatch01B — 生产邮件附件完整闭环
+
+前置：revision220已激活；红灯固定源码和计数见red01/manifest，旧失败保留。此派单只授权Ticket当前登记写集的本地实现，不是AC通过结论。cors_audit唯一产品writer；Lead独占治理、提交、构建/服务、OpenAPI正式生成和最终验收。其他agent仅只读或/tmp驱动。不得为通过测试放宽既有权限、失败分类、事务/租约或六SQL门禁。
+
+## 公开命令与正文邮件
+
+NotificationCommand仅加typed List<Long> attachmentOssIds，HTTP可选缺省空；按正整数、有界数量、去重保序校验。Java canonical构造所有仓内消费者同批直切，无兼容重载或从templateParams偷读旧字段。12个生产构造点及测试按真实rg清单迁移；无需附件的系统调用传空列表。服务器从受信LoginUser捕获userId+Client PK，非空附件缺任一失败关闭；不接收HTTP actor或信任metadata/create_by/worker线程。Intent保存不可变actor。
+
+Demo新增独立demo-mail场景，title/content由中心可配置包装模板渲染、不要求path；notice-published/workflow-task仍要求path。此Demo正文包装是明确例外，通知规范同步说明，不能取消业务模板权威。六SQL新增停用/未绑定实际账号的安全种子，禁止写SMTP秘密。现有红灯的旧Map夹具在绿色实现中迁移为typed字段和真实持久关系断言，不能为了使旧夹具绿而保留不安全Map后门；原失败已冻结。
+
+## 所有权、授权、事务
+
+Notify拥有notify_intent_attachment真实关系，System拥有sys_oss/sys_oss_ref及对象操作；common只定义SPI，System不依赖Notify Mapper/Entity。Notify实现生产Snapshot SPI，通过OssService受限API协调System；Notify Service→DAO→Mapper，System classic。新表唯一关系PK intent_attachment_id、position/source/target/reservation状态、不可变物理身份和必要版本/owner，七审计字段/中文注释/索引全齐，不恢复sys_notify_log。旧NotifyLogIdGenerator及事件虚构owner直切真实Intent/关系并清零全消费者。
+
+提交事务先写Intent与真实关系行，再System在源对象锁内比较可信actor user+Client、ACTIVE/非PENDING、元数据/预期访问类型/原service配置，然后绑定真实关系PK来源引用；所有来源按OSS ID稳定锁序。检查和绑定不能拆成objectMetadata+reconcileReferences的TOCTOU，也不能复活PENDING。任一失败Intent/关系/引用/Outbox同事务回滚；无附件在提交/worker两处直接短路，零System OSS操作。两处幂等返回（前置查询、唯一键冲突回读）都比对持久actor与规范化有序IDs，冲突拒绝，后者用当前读取避免RR旧快照。不能借无附件请求拿到已有有附件Intent回执。
+
+## 私有快照与不确定副作用
+
+同一Intent多delivery复用同一组快照，不能每次生成日志ID复制。短事务预约真实关系/固定key/复制权，提交已确认后才I/O；copy前持久记录确保外部结果始终有owner。来源引用在排队及COPYING/UNKNOWN时保护来源。PRIVATE源优先其DB核实的同PRIVATE配置独立key；PUBLIC_READ源使用当前合法PRIVATE默认，缺目标明确失败，不能将PUBLIC默认当私有。固化source和target实际service/key/必要身份，target reservation也必须在现有sys_oss/引用保护下，避免预约到副本注册间配置改向。不能绕过T46配置身份互斥。
+
+跨配置不假设同bucket copy API可用；使用既有受控下载/上传入口、明确数量/大小/等待和临时文件界限，校验实际字节、长度、文件名与摘要。复制与SMTP都在数据库短事务外；新外部I/O能力若需越界修改先报Lead登记。只在当前owner/版本下提交关系READY、快照sys_oss元数据及实际ref，全部齐备才物化交给真实Mail adapter。未完成快照不可被当成普通可用对象。不要声称MySQL事务能回滚MinIO。
+
+COPY成功而关系/ref写入失败或commit ACK未知：保留稳定reservation/key与源引用，后续核真实目标身份/bytes收敛，不盲重拷/删/换key。迟到copy不能覆盖新owner；无法证明旧I/O结束就保守保留COPY_UNKNOWN，不起另一写入。多附件第二项失败、物化失败：SMTP=0，原源不删除，已创建目标都有持久可查恢复事实或已确认安全补偿；单纯warn/数据库回滚不是无孤儿证据。安全补偿失败也必须持久可核对。
+
+common单delivery cleanup不得删除共享资源。生产owner协调安全释放，全部相关delivery可证明未发送、无活租约才解除真实来源/快照ref并交既有生命周期回收；明确取消/到期路径需有实际可调用/可运行的受控收敛入口。ACCEPTED、Provider UNKNOWN、在途或不确定提交持续保留，不改T37/T39/T40幂等/截止/撤回fence，不盲重发或自动释放。安全重试复用已确认快照，数量不增长。权限授权事实与common审计NotifyContext分开。
+
+## 真实验收与交付
+
+新增opt-in org.namewta.test.notify.NotifyMailAttachmentIntegrationTest（notify.mail.attachment.integration=true），完整NamewtaApplication Spring上下文，生产Snapshot SPI/System/Notify DAO/NotifyClient/Mail adapter/worker全部实际装配，只有最底层MailNotificationSender替换为捕获真实物化bytes的假发送器。窄故障hook必须delegate实际实现，其余路径不能mock。使用owned全新MySQL8.4六SQL+Redis+MinIO，不读/srv/ops、不发SMTP。与ops确认精确property名、方法清单和计数后回交；Lead实际运行。
+
+真实断言至少包括：无链接正文到sender且零OSS；notice/workflow缺path仍拒绝；1/多授权附件bytes/name/size/order和独立私有对象/真实owner refs；User/Client/缺Client/缺失/PENDING/失效service及排队后源状态改变拒绝；队列中临时源受引用保护；两条提交重复出口及换User/Client/IDs/顺序；多delivery竞争与共享快照；第N项复制/关系/ref写入/提交确认/物化故障SMTP0和有主副本；UNKNOWN不重发不删除；安全取消/到期/release只影响自有引用，来源不丢失。数据库锁/竞争用真实双连接和屏障，fresh XML正数且零skip，资源清理成功。
+
+仅新增一表时初始化器103→104，同时更新ai-retirement/release-config/release-integration及Notify基座断言；六文件精确集合保持。同步backendREADME/SystemAGENTS与Notify规范/模块事实，明确私有目标、保留/安全回收和未知处置，不能宣称已部署或已迁移旧库。frontend/api-contracts生成路径只由Lead在同源full JAR捕获后正式fetch→generate→check；子代理不得手写生成JSON/TS。
+
+回交所有生产/测试/文档修改及精确路径、源消费者清单、未解决问题；不运行构建、服务、commit或治理脚本。Lead固定后执行受影响单元/合同、required realE2E、默认后端/full/core、正式OpenAPI/前端typecheck和适用静态门禁，双轴审查通过才勾AC。三个完整候选失败先四项复盘，不覆盖旧失败或重置attempts。无需再次询问已授权的本地实施/提交；超出写集先修订登记。
+
+当前交接门槛：red01的附件例未到send，先修复缺少账号额度的夹具并固定red02；Lead明确发出Dispatch01B后才取得产品写锁。

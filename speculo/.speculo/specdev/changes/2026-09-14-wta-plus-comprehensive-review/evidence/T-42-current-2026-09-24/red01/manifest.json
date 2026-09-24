@@ -1,0 +1,37 @@
+[
+  {
+    "file": "red01-source-and-counts.json",
+    "bytes": 1692,
+    "sha256": "bd35c4b6f333f9b4a2e17ae8c64b07ce976a62877d192203b77afcaa02f80a7f"
+  },
+  {
+    "file": "red01.json",
+    "bytes": 599,
+    "sha256": "35f015424648c847e7e635eeaa2459c9daab5be8f2c5c73a5470fabc8a123f91"
+  },
+  {
+    "file": "red01.log",
+    "bytes": 70391,
+    "sha256": "9751dbefa1567cdfe927ba6f059da5bf5c1c3e99635a996e3a2fec4ad81be7fd"
+  },
+  {
+    "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+    "bytes": 94793,
+    "sha256": "0fc333ad25337032e2374744453218bb1baca92376295b940602ff3dabc1d712"
+  },
+  {
+    "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAttachmentRuntimeRedTest.xml",
+    "bytes": 93975,
+    "sha256": "1b30af3629204497845ab04922c776da328d2947a72f3f76a233901f2fd6b11f"
+  },
+  {
+    "file": "wta-t42-writer-plan.md",
+    "bytes": 15674,
+    "sha256": "6eedaaff370e2351bc107afefb877b729d24f47502e232e3385a95679b127488"
+  },
+  {
+    "file": "wta-t42-contract-writepaths.md",
+    "bytes": 5932,
+    "sha256": "f95c4c322c9b38d4d258921f4a9a4e4dc26de62ae6ae89da64b30536aaceca2e"
+  }
+]

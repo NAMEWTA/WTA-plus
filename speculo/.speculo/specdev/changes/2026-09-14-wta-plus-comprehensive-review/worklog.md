@@ -1,6 +1,6 @@
 # 工作记录
 
-revision220：T42附件生产闭环启动，基线5417c257；先固定无链接邮件与附件传递红灯，再按真实Notify关系和原user/Client授权实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision220：T42附件生产闭环启动，基线5417c257；先固定无链接�
 
 ## Current status
 
-revision220：T42附件生产闭环启动，基线5417c257；先固定无链接邮件与附件传递红灯，再按真实Notify关系和原user/Client授权实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。 当前三个子代理只读设计/私有runner准备，无产品writer或运行服务。
+revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。 cors_audit唯一产品writer；Lead独占治理/提交/构建/服务，其他代理只读或私有驱动。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -648,3 +648,11 @@ revision220：T42附件生产闭环启动，基线5417c257；先固定无链接�
 Dispatch01A限既有Notify测试写集：复现Demo无链接正文被notice-published的path校验拒绝及附件仅埋Map、未映射进入真实NotifyRequest。红灯不能以mock接受submit替代行为证明；产品暂不修改。完整实施派单将在写集和事务/恢复设计核定后单独登记。验收要求真实fresh六SQL MySQL/Redis/MinIO、完整应用生产Bean装配、只替换物理MailNotificationSender，禁止真实SMTP。附件原提交者与Client从受信登录态捕获并持久化，不信任HTTP actor字段；无附件零OSS，UNKNOWN不盲重发，部分副本须可追踪恢复。此处为计划，未勾AC或宣称测试通过。
 
 T42激活文档校验前两次因integration Evidence需精确T-42.md命名失败；改正后0errors/180共享路径warnings，继续单writer串行，不放宽校验。三次日志均保留activation/manifest。
+
+## revision221 — T42红灯与完整实施派单
+
+revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+红灯源码 `add76d4f36a60b5a2d26182ea361ce64287b0267`，实际计数 `{"tests": 2, "failures": 2, "errors": 0, "skipped": 0}`；这是缺陷复现，不是验收通过。权威实施合同见 `evidence/dispatch-T-42-implementation.md`，全部写集在Ticket frontmatter。Java record仓内直接迁移；HTTP attachmentOssIds可选、缺省空，不接受客户端actor。全应用/真实对象/故障矩阵仍未运行。
+
+T42 red01精度记录：2例均失败且零error/skip；正文例确证MISSING_VARIABLE，附件例停在Mockito“send未调用”，尚未到达附件列表比较，不能宣称已复现[]丢失。Lead检查发现测试账号minuteMax为空导致planner额度unboxing可能抛错，下一步只修夹具并重测，产品未改。Dispatch01B暂不交写锁。
