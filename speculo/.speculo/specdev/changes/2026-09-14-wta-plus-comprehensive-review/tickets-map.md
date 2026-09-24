@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 212
+plan_revision: 213
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision212：T45在09be6db完成当前候选验收；170定向、默认1139（923执行/216环境skip）、两真实MinIO JUnit和Chrome2零skip、受限HTTP/18类canary、full/core通过；前端771门禁按树等价复用并同SHA重建329产物。16done/2cancelled/32ready，无in_progress；下一T46，Goal active，change未完成或归档。
+revision213：T45已验收完成（产品09be6db、治理4a8fea8c）；T46激活，以恢复/清理竞争红灯起步。16done/2cancelled/1in_progress/31ready，Goal active，未完成或归档。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -31,7 +31,7 @@ revision212：T45在09be6db完成当前候选验收；170定向、默认1139（9
 |---|---|---|---|---|
 | ALL | <Path>.agents/skills/engineering-standards/SKILL.md</Path> | 架构/API/数据库/权限/质量门禁及交付 | Map后、Ticket前，verify再次按scope | 硬约束与真实验证 |
 | T-29 | <Path>.agents/skills/deploy-namewta-environment/SKILL.md</Path> | 私有发布目录备份、恢复校验与路径事实修正 | 实施与验证前 | 保留权限、秘密边界和可恢复备份 |
-| T-35, T-36, T-37, T-38, T-41, T-42, T-45, T-50 , T-39 | <Path>.agents/skills/java-api-compatibility/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
+| T-35, T-36, T-37, T-38, T-41, T-42, T-45, T-46, T-50 , T-39 | <Path>.agents/skills/java-api-compatibility/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
 | T-06, T-07, T-08, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18, T-19, T-22, T-23, T-24, T-25, T-26, T-27, T-28, T-29, T-30, T-31, T-34, T-35, T-36, T-37, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-49, T-50 | <Path>.agents/skills/namewta-fullstack-development/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
 | T-02, T-03, T-04, T-05, T-11, T-14, T-23, T-24, T-26, T-28, T-31, T-33, T-35, T-36, T-37, T-42, T-45, T-46, T-49 , T-39, T-40, T-44 | <Path>.agents/skills/wta-common-modules-guide/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
 | T-14, T-15, T-16, T-22, T-23, T-24, T-25, T-26, T-28, T-29, T-30, T-31, T-34, T-35, T-36, T-37, T-38, T-39, T-40, T-41, T-42, T-43, T-44, T-45, T-46, T-47, T-49, T-50 | <Path>.agents/skills/wta-module-guide/SKILL.md</Path> | 按票路径和API/模块/公共能力实际触发 | Map后Ticket前；implement/verify按绑定 | 真实入口路由及消费者/验证边界 |
@@ -87,7 +87,7 @@ revision212：T45在09be6db完成当前候选验收；170定向、默认1139（9
 | T-43 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/43-measure-notify-fanout.md</Path> | 代表性规模有可重复 SQL/时延/锁等待基线；保持现有总量上限与持久聚合语义，优先减少插入往返，测量不足不引入新计数状态机。 | T-36, T-38, T-39 | standard | medium | yes | single-agent | AC-043 | W-close | ready |
 | T-44 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/44-optional-oss-diagnostics.md</Path> | 业务仅校验当前对象/配置/权限/预期访问类型，远端操作按实际结果反馈；管理员诊断独立，坏的可选存储不阻断核心就绪。 | — | deep | high | yes | single-agent | AC-044 | W-oss | done |
 | T-45 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/45-bounded-oss-diagnostic-facts.md</Path> | 诊断仅报告观察事实与范围：读403为未知，单对象匿名读取只证明该对象，PRIVATE未知不能宣称全桶安全。 | T-44 | deep | high | yes | single-agent | AC-045 | W-oss | done |
-| T-46 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/46-serialize-oss-restore-cleanup.md</Path> | 所有切指针/删来源入口共用对象→工单锁序。恢复先成功则清理不得删来源；清理已获得合法执行权则恢复明确拒绝。 | — | deep | high | yes | single-agent | AC-046 | W-oss | ready |
+| T-46 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/46-serialize-oss-restore-cleanup.md</Path> | 所有切指针/删来源入口共用对象→工单锁序。恢复先成功则清理不得删来源；清理已获得合法执行权则恢复明确拒绝。 | — | deep | high | yes | single-agent | AC-046 | W-oss | in_progress |
 | T-47 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/47-latest-oss-query-wins.md</Path> | A慢B快最终行、total、preview、loading、error均属于B；卸载或旧失败不污染当前页面。 | — | standard | medium | yes | single-agent | AC-047 | W-visible | done |
 | T-48 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/48-simple-dev-start-and-explicit-repair.md</Path> | 一个脚本提供显式start/build/doctor/repair子命令（菜单仅薄包装），普通再次启动不深度修复且尊重Spring/Vite环境优先级。 | T-32 | standard | medium | yes | single-agent | AC-048 | W-close | ready |
 | T-49 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/49-single-source-storage-config.md</Path> | 默认存储来自DB，历史对象按service；静态上传策略有安全代码默认值，只有部署差异/必要额度可覆盖，SINGLE无需MULTIPART参数。 | T-44, T-48 | standard | medium | yes | single-agent | AC-049 | W-close | ready |
@@ -118,7 +118,7 @@ T-49同时依赖T-44与T-48。完整真实依赖从frontmatter重建，图是摘
 | Contract ID | 覆盖 Ticket | 验证接缝 | 状态 | 说明 |
 |---|---|---|---|---|
 | AC-001 | T-01, T-30 | not-required: 仓库静态/脚本合同由正负夹具及本地workflow检查覆盖，无在线业务边界 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-002 | T-02, T-30 | required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-002 | T-02, T-30 | required: 用唯一凭据canary调用签发/失败接口，检查HTTP sink、OperLogEvent与数据库均不含明文 | covered | T-02 当前候选已验收，见 evidence/T-02.md；整体集成仍待 T-30 |
 | AC-003 | T-03, T-30 | required: 通过真实HTTP发送定长/chunked边界请求、伪签名大正文及正常签名正文 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-004 | T-04, T-30 | required: 隔离单/双Nginx链发IPv4/IPv6和伪造XFF请求，比较白名单、限流、审计来源 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-005 | T-05, T-30 | required: 真实Redis以屏障复现A过期/B接管/A失败/C被拒及正常失败重试 | covered | 规划覆盖；当前not-run，不代表通过 |
@@ -145,28 +145,28 @@ T-49同时依赖T-44与T-48。完整真实依赖从frontmatter重建，图是摘
 | AC-026 | T-26, T-30 | required: 各受影响资源代表读/写/批量删除与越权请求，旧CRUD方法拒绝、生成合同一致 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-027 | T-27, T-30 | required: 真实树新建、移动、越权/非法父/后代父、带子节点删除和合法叶删除 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-028 | T-28, T-30 | required: 慢provider下提交耗时、Redis失败/丢wake后poll及双worker fence | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-029 | T-29, T-30 | not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-029 | T-29, T-30 | not-required: 逐文件hash/规则去向/路径引用和事实检查直接覆盖文档交付 | covered | T-29 当前候选已验收，见 evidence/T-29.md；整体集成仍待 T-30 |
 | AC-030 | T-30, T-30 | required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-031 | T-31, T-30 | required: 真Profile→Notify QUEUED、worker受理→确认及DB/Redis部分失败、重复确认/错用户/绑定变更 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-032 | T-32, T-30 | Git 跟踪清单、合成配置加载、日志脱敏；实际轮换是 G-security-external 的外部动作 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-033 | T-33, T-30 | 真实 Servlet/CorsFilter 测试与 Spring profile 绑定 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-034 | T-34, T-30 | 现有 push.test.ts、notice 组件、真实 Admin 登录→打开盒子 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-035 | T-35, T-30 | DispatchNotificationServiceTest、NotifyDispatcherUnitTest、CaptchaNotifyCallerUnitTest 的真实跨层组合 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-036 | T-36, T-30 | 扩展 NotifyAtomicResultIntegrationTest；真实 DSTransactional 代理、MySQL 双连接、提交故障与 AFTER_COMMIT | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-037 | T-37, T-30 | NotifyIdempotencyDispatcherUnitTest、RedisNotifyIdempotencyStoreIntegrationTest、真实 runtime/Dispatcher 组合 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-038 | T-38, T-30 | HTTP ID 冲突、真实 DB requeue 并发、API/领域合同测试 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-039 | T-39, T-30 | 可控时钟 runtime/worker、CaptchaNotifyCallerUnitTest、真实 DB 过期任务终结 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-040 | T-40, T-30 | 真实发布→撤回→Worker→inbox；普通用户浏览器详情与越权 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-041 | T-41, T-30 | 真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-032 | T-32, T-30 | Git 跟踪清单、合成配置加载、日志脱敏；实际轮换是 G-security-external 的外部动作 | covered | T-32 当前候选已验收，见 evidence/T-32.md；整体集成仍待 T-30 |
+| AC-033 | T-33, T-30 | 真实 Servlet/CorsFilter 测试与 Spring profile 绑定 | covered | T-33 当前候选已验收，见 evidence/T-33.md；整体集成仍待 T-30 |
+| AC-034 | T-34, T-30 | 现有 push.test.ts、notice 组件、真实 Admin 登录→打开盒子 | covered | T-34 当前候选已验收，见 evidence/T-34.md；整体集成仍待 T-30 |
+| AC-035 | T-35, T-30 | DispatchNotificationServiceTest、NotifyDispatcherUnitTest、CaptchaNotifyCallerUnitTest 的真实跨层组合 | covered | T-35 当前候选已验收，见 evidence/T-35.md；整体集成仍待 T-30 |
+| AC-036 | T-36, T-30 | 扩展 NotifyAtomicResultIntegrationTest；真实 DSTransactional 代理、MySQL 双连接、提交故障与 AFTER_COMMIT | covered | T-36 当前候选已验收，见 evidence/T-36.md；整体集成仍待 T-30 |
+| AC-037 | T-37, T-30 | NotifyIdempotencyDispatcherUnitTest、RedisNotifyIdempotencyStoreIntegrationTest、真实 runtime/Dispatcher 组合 | covered | T-37 当前候选已验收，见 evidence/T-37.md；整体集成仍待 T-30 |
+| AC-038 | T-38, T-30 | HTTP ID 冲突、真实 DB requeue 并发、API/领域合同测试 | covered | T-38 当前候选已验收，见 evidence/T-38.md；整体集成仍待 T-30 |
+| AC-039 | T-39, T-30 | 可控时钟 runtime/worker、CaptchaNotifyCallerUnitTest、真实 DB 过期任务终结 | covered | T-39 当前候选已验收，见 evidence/T-39.md；整体集成仍待 T-30 |
+| AC-040 | T-40, T-30 | 真实发布→撤回→Worker→inbox；普通用户浏览器详情与越权 | covered | T-40 当前候选已验收，见 evidence/T-40.md；整体集成仍待 T-30 |
+| AC-041 | T-41, T-30 | 真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器 | covered | T-41 当前候选已验收，见 evidence/T-41.md；整体集成仍待 T-30 |
 | AC-042 | T-42, T-30 | DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-043 | T-43, T-30 | 真实 MySQL代表规模、SQL计数、现有原子结果/fence回归 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-044 | T-44, T-30 | OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-045 | T-45, T-30 | OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-044 | T-44, T-30 | OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组 | covered | T-44 当前候选已验收，见 evidence/T-44.md；整体集成仍待 T-30 |
+| AC-045 | T-45, T-30 | OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示 | covered | T-45 当前候选已验收，见 evidence/T-45.md；整体集成仍待 T-30 |
 | AC-046 | T-46, T-30 | OssStorageMigrationIntegrationTest：真实MySQL两连接＋阻塞替身＋MinIO对象存在验收 | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-047 | T-47, T-30 | OssPage受控Promise组件测试，已有presentation.test.ts回归 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-047 | T-47, T-30 | OssPage受控Promise组件测试，已有presentation.test.ts回归 | covered | T-47 当前候选已验收，见 evidence/T-47.md；整体集成仍待 T-30 |
 | AC-048 | T-48, T-30 | shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-049 | T-49, T-30 | OssUploadPropertiesUnitTest、配置绑定测试、默认存储切换真实MinIO | covered | 规划覆盖；当前not-run，不代表通过 |
-| AC-050 | T-50, T-30 | 公共入口负向合同、每类生产调用方、历史WAIT样本终结 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-050 | T-50, T-30 | 公共入口负向合同、每类生产调用方、历史WAIT样本终结 | covered | T-50 当前候选已验收，见 evidence/T-50.md；整体集成仍待 T-30 |
 
 ## 5. 并行与路径所有权
 
@@ -662,3 +662,17 @@ revision211：T45恢复R1 Chrome行数失败、R2 owned清理SQL排序规则失�
 revision212：T45在09be6db完成当前候选验收；170定向、默认1139（923执行/216环境skip）、两真实MinIO JUnit和Chrome2零skip、受限HTTP/18类canary、full/core通过；前端771门禁按树等价复用并同SHA重建329产物。16done/2cancelled/32ready，无in_progress；下一T46，Goal active，change未完成或归档。
 
 结果 `09be6db6c3bace8594f7db0fe49a221e3cc5f140`，tree `2d5459e7dc77ec4120516d97a63de17eee390be4`，base `4c93a2fb9c7d2c1d68a0c8194197e2af1908b4d2`。完整Evidence为 `evidence/T-45.md` 与 `evidence/T-45-current-2026-09-23/complete-recovery-r3/manifest.json`。前批3次、恢复R1/R2及旧两JUnit失败永久保留；恢复R3是真实通过候选，无push/deploy/生产操作/归档。
+
+## revision213 — T-46启动与共同互斥合同
+
+revision213：T45已验收完成（产品09be6db、治理4a8fea8c）；T46激活，以恢复/清理竞争红灯起步。16done/2cancelled/1in_progress/31ready，Goal active，未完成或归档。
+
+基线`4a8fea8c19392972ee5cfef4263962ff6b0e3bfb`，main/current/direct-parent。实现仍复用sys_oss对象锁及现有工单，不新增schema、队列/分布式状态机。所有unpublish/rollback/process切指针及cleanup统一Object→Item锁序，在被Spring代理的public DSTransactional边界重读对象/工单，核对ACTIVE、当前service、source/target/key、最新工单、版本/状态和安全窗口；指针与工单条件更新均须恰1行且同事务，不能吞CAS失败。批次逐对象处理，不持整批锁。
+
+严格超时不能证明供应商DELETE立即取消。为满足“清理获得合法执行权后恢复拒绝”和“删除已成功但DB提交失败可安全重试”，先在对象锁事务中用既有FAILED + lastErrorStage=COMPLETED + 固定CLEANUP_OUTCOME_UNKNOWN持久化执行/未知栅栏，提交已知后才发有界DELETE；不确定提交不发DELETE。完成再按Object→Item与同版本收敛COMPLETED。超时、响应/提交确认丢失保留栅栏，所有恢复/切指针路径拒绝绕过；后续显式cleanup可用有界HEAD确认来源缺失、目标有效后仅finalize，来源仍在或读取未知不盲重发DELETE或恢复来源。这是已有工单字段的保守执行权，不引入新的分布式状态平台；SDK cancel不等于撤销远端副作用。
+
+来源存在与核对HEAD、DELETE均采用明确Duration预算，复用OssClient/Abstract最小重载及迁移ObjectStore端口；普通OSS调用语义保持。读写I/O不跨整批持锁，副作用前后只锁单对象；copy/verify不借此扩张重写。写集从5扩到10：两common API/实现、client测试目录、backend运行文档和system事实。java-api-compatibility用于新增有界操作及仓内消费者核对，不新建旧API兼容桥。HTTP形状/权限/公开副本提示原则上保持；实际合同变化须先报Lead。
+
+Dispatch01A仅修改既有OssStorageMigrationServiceUnitTest.java，使用可阻塞对象删除和两个调用者固定旧时序，证明旧cleanup已进入删除时unpublish仍能恢复来源而后被删；锁获胜顺序和条件更新失败后续用真实MySQL双连接/真实DSTransactional代理及MinIO补验。当前生产代码不动，不宣称内存替身能证明DB锁。Lead固定红灯后派01B完整实现。cors_audit唯一writer；legacy_audit只读合同审查；ops_audit仅私有隔离驱动准备。Lead独占治理、提交、构建、真实服务。
+
+必需门禁：受影响OSS单元/合同、默认后端、full/core；真实MySQL两物理连接证明共同锁、两竞争顺序、指针/工单CAS0与回滚、旧工单/未知栅栏、超时及晚到DELETE、提交确认丢失和安全finalize；第二对象仍能推进，MinIO目标字节可读。只有fresh XML零skip/ownedcleanup及双轴审查完成才勾AC；最多3次完整候选失败先四项复盘。当前attempts0。

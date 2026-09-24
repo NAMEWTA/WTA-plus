@@ -1,0 +1,52 @@
+[
+  {
+    "file": "activation213-validator-final.json",
+    "bytes": 432,
+    "sha256": "bf986085de289911a158b28abc33732abc2d4e711c8b95dac0f630db03afdcb9"
+  },
+  {
+    "file": "activation213-validator-final.log",
+    "bytes": 21046,
+    "sha256": "ce8ff2ad8916e14444061d284f271f62b67068ab9d52a8153a90b776896d636b"
+  },
+  {
+    "file": "activation213-validator-fixed.json",
+    "bytes": 432,
+    "sha256": "274868b1ccc41cd105436e7591e51e321bb381830ec2495cd05db3b6d5f7b42f"
+  },
+  {
+    "file": "activation213-validator-fixed.log",
+    "bytes": 21046,
+    "sha256": "ce8ff2ad8916e14444061d284f271f62b67068ab9d52a8153a90b776896d636b"
+  },
+  {
+    "file": "activation213-validator.json",
+    "bytes": 426,
+    "sha256": "a2d17746022fce1e3e585759eafe9129734e5acdbfc6aa4ed8f7a27e28b71613"
+  },
+  {
+    "file": "activation213-validator.log",
+    "bytes": 21243,
+    "sha256": "58eba3e13604953d2330ea664c96d77abd2a0769548977b95022f06083bc383d"
+  },
+  {
+    "file": "wta-t46-current-audit.md",
+    "bytes": 10227,
+    "sha256": "61855b71541886531d7b26eb7f58b6a2a748cc3ad220c4e247516e46eb022a55"
+  },
+  {
+    "file": "wta-t46-durable-fence-contract-review.md",
+    "bytes": 8781,
+    "sha256": "45543778dd909c87329f8272355aebd609a43abc3697dd1ee84f1fb8177640b7"
+  },
+  {
+    "file": "wta-t46-implementation-seams.md",
+    "bytes": 8559,
+    "sha256": "a72b647f0bdaf6f47d7f5200384f2f3d336e052baa1021271bb4f6fb45d93043"
+  },
+  {
+    "file": "wta-t46-raw-runner-plan.md",
+    "bytes": 7003,
+    "sha256": "e19f2b4747591304108433c83b755038c4e3998894dab30f27e517714e1a4437"
+  }
+]
