@@ -119,6 +119,38 @@ class OssAccessDiagnosticUnitTest {
     }
 
     @Test
+    void acceptsOnlyTypedPublicAwsPrincipalShapesWithTheRealJsonMapper() throws Exception {
+        startServer(200, 206);
+        for (String aws : List.of("\"*\"", "[\"*\"]")) {
+            String policy = publicReadPolicy().replace("\"Principal\":\"*\"",
+                "\"Principal\":{\"AWS\":" + aws + "}");
+            OssAccessDiagnostic result = client(provider(policy, completedAcl())).diagnoseAccess(
+                "diagnostic/canary.txt", AccessPolicy.PUBLIC_READ, Duration.ofSeconds(2));
+            assertThat(observation(result, OssAccessDiagnostic.Subject.POLICY_READ))
+                .as("AWS representation %s", aws).isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
+            assertThat(result.facts()).filteredOn(fact -> fact.subject() == OssAccessDiagnostic.Subject.POLICY_READ)
+                .extracting(OssAccessDiagnostic.Fact::basis)
+                .containsExactly(OssAccessDiagnostic.Basis.POLICY_ALLOW);
+        }
+    }
+
+    @Test
+    void malformedAwsPrincipalsStayComplexInsteadOfBeingCoercedToPublic() throws Exception {
+        startServer(200, 206);
+        for (String aws : List.of("{\"nested\":\"*\"}", "123", "[\"*\",\"other\"]")) {
+            String policy = publicReadPolicy().replace("\"Principal\":\"*\"",
+                "\"Principal\":{\"AWS\":" + aws + "}");
+            OssAccessDiagnostic result = client(provider(policy, completedAcl())).diagnoseAccess(
+                "diagnostic/canary.txt", AccessPolicy.PUBLIC_READ, Duration.ofSeconds(2));
+            assertThat(observation(result, OssAccessDiagnostic.Subject.POLICY_READ))
+                .as("unsupported AWS representation %s", aws).isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
+            assertThat(result.facts()).filteredOn(fact -> fact.subject() == OssAccessDiagnostic.Subject.POLICY_READ)
+                .extracting(OssAccessDiagnostic.Fact::basis)
+                .containsExactly(OssAccessDiagnostic.Basis.COMPLEX_POLICY);
+        }
+    }
+
+    @Test
     void observesPrivateObject403WithoutClaimingWholeBucketSafety() throws Exception {
         startServer(403, 403);
         S3AsyncClient s3 = provider(null, completedAcl());

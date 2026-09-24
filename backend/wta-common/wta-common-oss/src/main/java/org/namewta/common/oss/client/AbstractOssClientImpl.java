@@ -1249,17 +1249,20 @@ public abstract class AbstractOssClientImpl implements OssClient {
         if (principal == null) {
             return false;
         }
-        if ("*".equals(principal.asText())) {
-            return true;
+        if (principal.isTextual()) {
+            return "*".equals(principal.asText());
         }
         if (!principal.isObject() || principal.size() != 1) {
             return false;
         }
         tools.jackson.databind.JsonNode aws = principal.get("AWS");
-        if (aws != null && aws.isArray() && aws.size() == 1) {
+        if (aws != null && aws.isArray()) {
+            if (aws.size() != 1) {
+                return false;
+            }
             aws = aws.get(0);
         }
-        return aws != null && "*".equals(aws.asText());
+        return aws != null && aws.isTextual() && "*".equals(aws.asText());
     }
 
     private OssAccessDiagnostic.Fact policyFact(OssAccessDiagnostic.Subject subject, boolean allow,
