@@ -2,6 +2,8 @@
 
 revision215：T46补充配置物理身份保护，写集10扩14；未结束迁移保护source/target配置，关闭编辑/删除与新工单创建竞态。实现仍由cors_audit独占，尚未完整候选验证；16done/2cancelled/1in_progress/31ready，attempts0，Goal active。
 
+## 历史恢复记录（以下状态仅属于各自revision）
+
 当前revision172：12done/2cancelled/36ready；T50最终84ce0a9已验收。无产品writer，下一T41；/tmp/wta-t41-implementation-design.md及real-environment-outline.md为只读准备。以下历史保持原时点。
 
 当前revision168：11done/2cancelled/37ready；T39已在6e1d7f8验收。无产品writer，下一T50；/tmp/wta-t50-implementation-outline.md仅只读实施输入。以下旧记录保持原时点。

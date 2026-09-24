@@ -13,5 +13,10 @@
     "file": "checkpoint215-validator.log",
     "bytes": 21046,
     "sha256": "ce8ff2ad8916e14444061d284f271f62b67068ab9d52a8153a90b776896d636b"
+  },
+  {
+    "file": "wta-t46-config-identity-review.md",
+    "bytes": 9602,
+    "sha256": "723fb5ea8ca4c735974ed9c08fdf75f20249e057a48f30d5b0376d7c36c29696"
   }
 ]
