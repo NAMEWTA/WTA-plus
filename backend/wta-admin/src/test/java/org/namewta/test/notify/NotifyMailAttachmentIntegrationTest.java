@@ -1,5 +1,6 @@
 package org.namewta.test.notify;
 
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff;
 import cn.dev33.satoken.context.model.SaTokenContextModelBox;
@@ -20,6 +21,7 @@ import org.namewta.NamewtaApplication;
 import org.namewta.common.mail.notify.MailNotificationMessage;
 import org.namewta.common.mail.notify.MailNotificationSender;
 import org.namewta.common.mail.notify.MailNotifyChannelAdapter;
+import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import org.namewta.common.notify.attachment.NotifyAttachmentSnapshotService;
@@ -80,9 +82,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.sql.SQLException;
+import java.sql.SQLRecoverableException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 /**
  * 独占 MySQL/Redis/MinIO 的完整应用验收。只有最终 SMTP 物理发送器是捕获替身，
@@ -98,6 +103,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class NotifyMailAttachmentIntegrationTest {
     private static final long USER = 1761100000000000001L;
     private static final long CLIENT = 1762000000000000001L;
+    private static final long OTHER_USER = 1761100000000000003L;
+    private static final long OTHER_CLIENT = 1762000000000000002L;
+    private static final long SYSTEM_USER_TYPE = 1762100000000000001L;
+    private static final long APP_USER_TYPE = 1762100000000000002L;
     private static final long ACCOUNT = 9_642_000_001L;
     private static final long BINDING = 2100630000000000011L;
     private final List<Long> ownedIntents = new CopyOnWriteArrayList<>();
@@ -114,6 +123,7 @@ class NotifyMailAttachmentIntegrationTest {
     @Autowired private NotifyIntentAttachmentMapper attachmentMapper;
     @Autowired private NotifyOutboxClaimPort claimPort;
     @Autowired private NotifyDispatchPort dispatchPort;
+    @Autowired private DynamicRoutingDataSource routingDataSource;
     @Autowired private NotifyClient notifyClient;
     @Autowired private NotifyContextResolver contextResolver;
     @Autowired private ObjectProvider<NotifyIdempotencyStore> idempotencyStore;
@@ -823,6 +833,202 @@ class NotifyMailAttachmentIntegrationTest {
         }
     }
 
+    @Test @Order(21)
+    void submitCommitBeforeAcknowledgementRollsBackAllOwnedFactsAndCanRetry() throws Exception {
+        long source = source("before-submit-ack".getBytes(StandardCharsets.UTF_8), "before-ack.txt");
+        int s3Before = s3Count();
+        String key = "owned-before-submit-" + UUID.randomUUID();
+        try (OwnedAttachmentJdbcFaults faults = OwnedAttachmentJdbcFaults.install(routingDataSource)) {
+            var plan = faults.armAck(OwnedAttachmentJdbcFaults.AckTarget.SUBMIT_RELATION,
+                OwnedAttachmentJdbcFaults.AckPhase.BEFORE);
+            Throwable failure = catchThrowable(() -> faults.as(OwnedAttachmentJdbcFaults.Role.ACK,
+                () -> submit(List.of(String.valueOf(source)), "before-submit-ack", key)));
+            assertThat(failure).isNotNull();
+            assertThat(hasCause(failure, SQLException.class)).isTrue();
+            assertThat(plan.hitExactlyOnce()).isTrue();
+            assertSubmitFacts(key, source, 0);
+            faults.disarm();
+            NotificationReceipt retried = submit(List.of(String.valueOf(source)), "before-submit-ack", key);
+            assertThat(retried.notificationId()).isNotBlank();
+            assertSubmitFacts(key, source, 1);
+            assertThat(s3Count()).as("提交回滚及重试不得复制附件").isEqualTo(s3Before);
+        }
+    }
+
+    @Test @Order(22)
+    void submitCommitAfterAcknowledgementKeepsOneOwnedReceiptOnRetry() throws Exception {
+        long source = source("after-submit-ack".getBytes(StandardCharsets.UTF_8), "after-ack.txt");
+        int s3Before = s3Count();
+        String key = "owned-after-submit-" + UUID.randomUUID();
+        try (OwnedAttachmentJdbcFaults faults = OwnedAttachmentJdbcFaults.install(routingDataSource)) {
+            var plan = faults.armAck(OwnedAttachmentJdbcFaults.AckTarget.SUBMIT_RELATION,
+                OwnedAttachmentJdbcFaults.AckPhase.AFTER);
+            Throwable failure = catchThrowable(() -> faults.as(OwnedAttachmentJdbcFaults.Role.ACK,
+                () -> submit(List.of(String.valueOf(source)), "after-submit-ack", key)));
+            assertThat(failure).isNotNull();
+            assertThat(hasCause(failure, SQLRecoverableException.class)).isTrue();
+            assertThat(plan.hitExactlyOnce()).isTrue();
+            long committedId = db.queryForObject("select intent_id from notify_intent "
+                + "where app_id='owned-t42' and idempotency_key=?", Long.class, key);
+            ownedIntents.add(committedId);
+            assertSubmitFacts(key, source, 1);
+            faults.disarm();
+            NotificationReceipt retried = submit(List.of(String.valueOf(source)), "after-submit-ack", key);
+            assertThat(retried.notificationId()).isEqualTo(String.valueOf(committedId));
+            assertSubmitFacts(key, source, 1);
+            assertThat(s3Count()).as("未知提交回读不得创建第二份远端对象").isEqualTo(s3Before);
+        }
+    }
+
+    @Test @Order(23)
+    void mailSendReservationCommitBeforeAcknowledgementCannotSendOrPartiallyReserve() throws Exception {
+        long source = source("before-mail-ack".getBytes(StandardCharsets.UTF_8), "before-mail-ack.txt");
+        long intentId = Long.parseLong(submit(List.of(String.valueOf(source)), "before-mail-ack")
+            .notificationId());
+        assertThat(dao.attachments(intentId).getFirst().getStatus()).isEqualTo("QUEUED");
+        makeDue(intentId);
+        NotifyOutbox lease = claimPort.claim("owned-t42-before-mail-ack-" + UUID.randomUUID()).stream()
+            .filter(row -> row.getIntentId().equals(intentId)).findFirst().orElseThrow();
+        int sentBefore = sender.sent.size();
+        try (OwnedAttachmentJdbcFaults faults = OwnedAttachmentJdbcFaults.install(routingDataSource)) {
+            var plan = faults.armAck(OwnedAttachmentJdbcFaults.AckTarget.MAIL_SEND_RESERVATION,
+                OwnedAttachmentJdbcFaults.AckPhase.BEFORE);
+            Throwable failure = catchThrowable(() -> faults.as(OwnedAttachmentJdbcFaults.Role.ACK,
+                () -> { dispatchPort.dispatch(lease); return null; }));
+            assertThat(failure).isNotNull();
+            assertThat(hasCause(failure, SQLException.class)).isTrue();
+            assertThat(plan.hitExactlyOnce()).isTrue();
+            // 复制阶段的 false 更新和 READY 确认已提交；只拦最终 true 预约的提交。
+            List<NotifyIntentAttachment> relations = dao.attachments(intentId);
+            assertThat(relations).hasSize(1)
+                .allSatisfy(row -> {
+                    assertThat(row.getStatus()).isEqualTo("READY");
+                    assertThat(row.getSendReserved()).isFalse();
+                });
+            assertOwnedReferences(relations.getFirst(), 2);
+            assertThat(sender.sent).hasSize(sentBefore);
+            assertThat(db.queryForObject("select count(*) from notify_attempt where intent_id=?",
+                Integer.class, intentId)).isZero();
+        }
+    }
+
+    @Test @Order(24)
+    void mailSendReservationCommitAfterAcknowledgementFencesReleaseWithoutSending() throws Exception {
+        PreparedMail prepared = prepareReadyMail("after-mail-ack");
+        int sentBefore = sender.sent.size();
+        try (OwnedAttachmentJdbcFaults faults = OwnedAttachmentJdbcFaults.install(routingDataSource)) {
+            var plan = faults.armAck(OwnedAttachmentJdbcFaults.AckTarget.MAIL_SEND_RESERVATION,
+                OwnedAttachmentJdbcFaults.AckPhase.AFTER);
+            Throwable failure = catchThrowable(() -> faults.as(OwnedAttachmentJdbcFaults.Role.ACK,
+                () -> { dispatchPort.dispatch(prepared.lease()); return null; }));
+            assertThat(failure).isNotNull();
+            assertThat(hasCause(failure, SQLRecoverableException.class)).isTrue();
+            assertThat(plan.hitExactlyOnce()).isTrue();
+            faults.disarm();
+            assertThat(dao.attachments(prepared.intentId())).hasSize(1)
+                .allSatisfy(row -> assertThat(row.getSendReserved()).isTrue());
+            assertThat(sender.sent).hasSize(sentBefore);
+            notifications.cancel(new NotificationCancelCommand(String.valueOf(prepared.intentId()), "owned-ack-cancel"));
+            assertThat(db.update("update notify_outbox set lease_until=timestampadd(second,-1,utc_timestamp()) "
+                + "where outbox_id=? and status='PROCESSING'", prepared.lease().getOutboxId())).isEqualTo(1);
+            List<NotifyOutbox> reclaimed = claimPort.claim("owned-t42-ack-reclaim-" + UUID.randomUUID());
+            NotifyOutbox next = reclaimed.stream()
+                .filter(row -> row.getOutboxId().equals(prepared.lease().getOutboxId()))
+                .findFirst().orElseThrow();
+            assertThat(next.getLeaseToken()).isNotEqualTo(prepared.lease().getLeaseToken());
+            dispatchPort.dispatch(next);
+            assertThat(snapshotTransactions.releaseIfSafe(prepared.intentId())).isFalse();
+            assertOwnedReferences(prepared.relation(), 2);
+            assertThat(sender.sent).hasSize(sentBefore);
+        }
+    }
+
+    @Test @Order(25)
+    void forcedUniqueKeyCollisionUsesCurrentReadForOneOwnedRelation() throws Exception {
+        long source = source("forced-unique".getBytes(StandardCharsets.UTF_8), "forced-unique.txt");
+        String key = "owned-forced-unique-" + UUID.randomUUID();
+        OwnedAttachmentJdbcFaults faults = OwnedAttachmentJdbcFaults.install(routingDataSource);
+        var plan = faults.armRace();
+        ExecutorService pool = Executors.newFixedThreadPool(2, task -> {
+            Thread thread = new Thread(task, "owned-t42-unique-race");
+            thread.setDaemon(true);
+            return thread;
+        });
+        boolean stopped = false;
+        try {
+            Future<NotificationReceipt> first = pool.submit(() -> faults.as(OwnedAttachmentJdbcFaults.Role.RACE_A,
+                () -> submit(List.of(String.valueOf(source)), "forced-unique", key)));
+            assertThat(plan.awaitA(Duration.ofSeconds(10))).as("A 已写入但尚未提交").isTrue();
+            Future<NotificationReceipt> second = pool.submit(() -> faults.as(OwnedAttachmentJdbcFaults.Role.RACE_B,
+                () -> submit(List.of(String.valueOf(source)), "forced-unique", key)));
+            assertThat(plan.awaitB(Duration.ofSeconds(10))).as("B 已过前置普通查询并进入真实 INSERT").isTrue();
+            plan.releaseA();
+            String firstId = first.get(20, TimeUnit.SECONDS).notificationId();
+            String secondId = second.get(20, TimeUnit.SECONDS).notificationId();
+            assertThat(secondId).isEqualTo(firstId);
+            assertThat(plan.currentReadCount.get()).as("唯一冲突后执行当前读").isPositive();
+            assertSubmitFacts(key, source, 1);
+            assertThat(dao.attachments(Long.parseLong(firstId)).getFirst().getSourceOssId()).isEqualTo(source);
+        } finally {
+            plan.releaseA();
+            pool.shutdownNow();
+            try {
+                stopped = pool.awaitTermination(5, TimeUnit.SECONDS);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+            }
+            if (stopped) faults.close();
+            else workerFixturePoisoned = true;
+        }
+        assertThat(stopped).as("强制唯一冲突的两个调用者必须退出").isTrue();
+    }
+
+    @Test @Order(26)
+    void sameKeyAndAttachmentWithDifferentAuthenticatedUserRejectsOldReceipt() {
+        long originalSource = source("same-key-user".getBytes(StandardCharsets.UTF_8), "same-key-user.txt");
+        String key = "owned-changed-user-" + UUID.randomUUID();
+        NotificationReceipt original = submit(List.of(String.valueOf(originalSource)), "same-key-user", key);
+        long otherSource = sourceForActor("other-valid-user".getBytes(StandardCharsets.UTF_8),
+            "other-user.txt", "minio", OTHER_USER, CLIENT);
+        NotificationReceipt control = submitAs(List.of(String.valueOf(otherSource)), "other-valid-user",
+            "owned-other-user-control-" + UUID.randomUUID(), OTHER_USER, CLIENT, SYSTEM_USER_TYPE, "sys_user", "pc");
+        assertThat(dao.intent(Long.parseLong(control.notificationId())).getAttachmentActorUserId())
+            .isEqualTo(OTHER_USER);
+        assertThat(dao.attachments(Long.parseLong(control.notificationId())).getFirst().getSourceOssId())
+            .isEqualTo(otherSource);
+        assertThatThrownBy(() -> submitAs(List.of(String.valueOf(originalSource)), "same-key-user", key,
+            OTHER_USER, CLIENT, SYSTEM_USER_TYPE, "sys_user", "pc"))
+            .isInstanceOf(ServiceException.class)
+            .hasMessage("同一幂等键的附件或提交者不一致");
+        assertThat(dao.intent(Long.parseLong(original.notificationId())).getAttachmentActorUserId()).isEqualTo(USER);
+        assertThat(dao.attachments(Long.parseLong(original.notificationId())).getFirst().getSourceOssId())
+            .isEqualTo(originalSource);
+        assertSubmitFacts(key, originalSource, 1);
+    }
+
+    @Test @Order(27)
+    void sameKeyAndAttachmentWithDifferentAuthenticatedClientRejectsOldReceipt() {
+        long originalSource = source("same-key-client".getBytes(StandardCharsets.UTF_8), "same-key-client.txt");
+        String key = "owned-changed-client-" + UUID.randomUUID();
+        NotificationReceipt original = submit(List.of(String.valueOf(originalSource)), "same-key-client", key);
+        long otherSource = sourceForActor("other-valid-client".getBytes(StandardCharsets.UTF_8),
+            "other-client.txt", "minio", USER, OTHER_CLIENT);
+        NotificationReceipt control = submitAs(List.of(String.valueOf(otherSource)), "other-valid-client",
+            "owned-other-client-control-" + UUID.randomUUID(), USER, OTHER_CLIENT, APP_USER_TYPE, "app_user", "pc");
+        assertThat(dao.intent(Long.parseLong(control.notificationId())).getAttachmentActorClientPk())
+            .isEqualTo(OTHER_CLIENT);
+        assertThat(dao.attachments(Long.parseLong(control.notificationId())).getFirst().getSourceOssId())
+            .isEqualTo(otherSource);
+        assertThatThrownBy(() -> submitAs(List.of(String.valueOf(originalSource)), "same-key-client", key,
+            USER, OTHER_CLIENT, APP_USER_TYPE, "app_user", "pc"))
+            .isInstanceOf(ServiceException.class)
+            .hasMessage("同一幂等键的附件或提交者不一致");
+        assertThat(dao.intent(Long.parseLong(original.notificationId())).getAttachmentActorClientPk()).isEqualTo(CLIENT);
+        assertThat(dao.attachments(Long.parseLong(original.notificationId())).getFirst().getSourceOssId())
+            .isEqualTo(originalSource);
+        assertSubmitFacts(key, originalSource, 1);
+    }
+
     private NotificationReceipt submit(List<String> ids, String body) {
         return submit(ids, body, "owned-t42-" + UUID.randomUUID());
     }
@@ -832,12 +1038,7 @@ class NotifyMailAttachmentIntegrationTest {
         SaTokenContextModelBox previousSa = SaTokenContextForThreadLocalStaff.getModelBoxOrNull();
         try {
             login();
-            NotificationCommand command = new NotificationCommand("owned-t42", "demo-mail", "demo", body,
-                "EMAIL", List.of("recipient@example.test"), "demo-mail",
-                Map.of("title", "T42 owned mail", "content", body), List.of(NotificationChannel.MAIL),
-                NotificationStrategy.ALL, NotificationMode.ASYNC, 0, Instant.now().plusSeconds(3600), null,
-                idempotencyKey, Map.of(), ids);
-            NotificationReceipt receipt = notifications.submit(command);
+            NotificationReceipt receipt = notifications.submit(mailCommand(ids, body, idempotencyKey));
             ownedIntents.add(Long.parseLong(receipt.notificationId()));
             return receipt;
         } finally {
@@ -845,7 +1046,33 @@ class NotifyMailAttachmentIntegrationTest {
         }
     }
 
+    private NotificationReceipt submitAs(List<String> ids, String body, String key, long userId, long clientPk,
+                                         long userTypeId, String userType, String deviceType) {
+        RequestAttributes previous = RequestContextHolder.getRequestAttributes();
+        SaTokenContextModelBox previousSa = SaTokenContextForThreadLocalStaff.getModelBoxOrNull();
+        try {
+            loginAs(userId, clientPk, userTypeId, userType, deviceType);
+            NotificationReceipt receipt = notifications.submit(mailCommand(ids, body, key));
+            ownedIntents.add(Long.parseLong(receipt.notificationId()));
+            return receipt;
+        } finally {
+            restoreRequestContext(previous, previousSa);
+        }
+    }
+
+    private NotificationCommand mailCommand(List<String> ids, String body, String key) {
+        return new NotificationCommand("owned-t42", "demo-mail", "demo", body,
+            "EMAIL", List.of("recipient@example.test"), "demo-mail",
+            Map.of("title", "T42 owned mail", "content", body), List.of(NotificationChannel.MAIL),
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, Instant.now().plusSeconds(3600), null,
+            key, Map.of(), ids);
+    }
+
     private void login() {
+        loginAs(USER, CLIENT, SYSTEM_USER_TYPE, "sys_user", "pc");
+    }
+
+    private void loginAs(long userId, long clientPk, long userTypeId, String userType, String deviceType) {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request, response));
@@ -853,19 +1080,19 @@ class NotifyMailAttachmentIntegrationTest {
         SaTokenContextForThreadLocalStaff.setModelBox(new SaRequestForServlet(request),
             new SaResponseForServlet(response), new SaStorageForServlet(request));
         LoginUser user = new LoginUser();
-        user.setUserId(USER);
-        user.setUsername("WTA");
-        user.setUserType("sys_user");
-        user.setUserTypeId(1762100000000000001L);
-        user.setClientPk(CLIENT);
-        LoginHelper.login(user, new SaLoginParameter().setDeviceType("pc"));
+        user.setUserId(userId);
+        user.setUsername(userId == USER ? "WTA" : "test");
+        user.setUserType(userType);
+        user.setUserTypeId(userTypeId);
+        user.setClientPk(clientPk);
+        LoginHelper.login(user, new SaLoginParameter().setDeviceType(deviceType));
         LoginUser authenticated = LoginHelper.getLoginUser();
         assertThat(authenticated).isNotNull();
-        assertThat(authenticated.getUserId()).isEqualTo(USER);
-        assertThat(authenticated.getClientPk()).isEqualTo(CLIENT);
+        assertThat(authenticated.getUserId()).isEqualTo(userId);
+        assertThat(authenticated.getClientPk()).isEqualTo(clientPk);
         NotifyContext auditContext = contextResolver.resolve();
-        assertThat(auditContext.userId()).as("真实请求审计保留已认证用户").isEqualTo(USER);
-        assertThat(auditContext.clientPk()).as("真实请求审计保留已认证Client").isEqualTo(CLIENT);
+        assertThat(auditContext.userId()).as("真实请求审计保留已认证用户").isEqualTo(userId);
+        assertThat(auditContext.clientPk()).as("真实请求审计保留已认证Client").isEqualTo(clientPk);
     }
 
     private void restoreRequestContext(RequestAttributes previous, SaTokenContextModelBox previousSa) {
@@ -881,6 +1108,10 @@ class NotifyMailAttachmentIntegrationTest {
     }
 
     private long source(byte[] bytes, String originalName, String service) {
+        return sourceForActor(bytes, originalName, service, USER, CLIENT);
+    }
+
+    private long sourceForActor(byte[] bytes, String originalName, String service, long userId, long clientPk) {
         long id = IdGeneratorUtil.nextLongId();
         String key = "t42-source/" + UUID.randomUUID() + "/" + originalName;
         OssFactory.instance(service).uploadBounded(key, bytes, "text/plain", Duration.ofSeconds(10));
@@ -889,9 +1120,55 @@ class NotifyMailAttachmentIntegrationTest {
         db.update("insert into sys_oss(oss_id,file_name,original_name,file_suffix,url,ext1,create_time,create_by,"
                 + "service,is_temp,delete_state) values(?,?,?,'txt','',?,utc_timestamp(),?,?,'N','ACTIVE')",
             id, key, originalName,
-            "{\"fileSize\":" + bytes.length + ",\"contentType\":\"text/plain\",\"uploaderClientPk\":" + CLIENT + "}", USER, service);
+            "{\"fileSize\":" + bytes.length + ",\"contentType\":\"text/plain\",\"uploaderClientPk\":" + clientPk + "}", userId, service);
         return id;
     }
+
+    private PreparedMail prepareReadyMail(String label) {
+        long sourceId = source(label.getBytes(StandardCharsets.UTF_8), label + ".txt");
+        long intentId = Long.parseLong(submit(List.of(String.valueOf(sourceId)), label).notificationId());
+        assertThat(snapshotService.createSnapshots(intentId, List.of(sourceId), NotifyContext.empty())).hasSize(1);
+        NotifyIntentAttachment relation = dao.attachments(intentId).getFirst();
+        assertThat(relation.getStatus()).isEqualTo("READY");
+        assertThat(relation.getSendReserved()).isFalse();
+        assertOwnedReferences(relation, 2);
+        makeDue(intentId);
+        List<NotifyOutbox> claims = claimPort.claim("owned-t42-mail-ack-" + UUID.randomUUID());
+        NotifyOutbox lease = claims.stream().filter(row -> row.getIntentId().equals(intentId))
+            .findFirst().orElseThrow();
+        assertThat(lease.getLeaseToken()).isNotBlank();
+        return new PreparedMail(intentId, relation, lease);
+    }
+
+    private void assertSubmitFacts(String key, long sourceId, int expected) {
+        assertThat(db.queryForObject("select count(*) from notify_intent "
+            + "where app_id='owned-t42' and idempotency_key=?", Integer.class, key)).isEqualTo(expected);
+        assertThat(db.queryForObject("select count(*) from notify_intent_attachment a "
+            + "join notify_intent i on i.intent_id=a.intent_id where i.app_id='owned-t42' "
+            + "and i.idempotency_key=? and a.del_flag='0'", Integer.class, key)).isEqualTo(expected);
+        assertThat(db.queryForObject("select count(*) from notify_outbox o "
+            + "join notify_intent i on i.intent_id=o.intent_id where i.app_id='owned-t42' "
+            + "and i.idempotency_key=?", Integer.class, key)).isEqualTo(expected);
+        assertThat(db.queryForObject("select count(*) from sys_oss_ref where oss_id=? "
+            + "and ref_type='notify_intent_attachment' and del_flag='0'", Integer.class, sourceId))
+            .isEqualTo(expected);
+    }
+
+    private void assertOwnedReferences(NotifyIntentAttachment relation, int expected) {
+        assertThat(db.queryForObject("select count(*) from sys_oss_ref where oss_id in (?,?) "
+            + "and ref_type='notify_intent_attachment' and ref_id=? and del_flag='0'",
+            Integer.class, relation.getSourceOssId(), relation.getSnapshotOssId(),
+            String.valueOf(relation.getIntentAttachmentId()))).isEqualTo(expected);
+    }
+
+    private boolean hasCause(Throwable failure, Class<? extends Throwable> expected) {
+        for (Throwable current = failure; current != null; current = current.getCause()) {
+            if (expected.isInstance(current)) return true;
+        }
+        return false;
+    }
+
+    private record PreparedMail(long intentId, NotifyIntentAttachment relation, NotifyOutbox lease) { }
 
     private void makeDue(long intentId) {
         db.update("update notify_intent set scheduled_at=timestampadd(second,-1,utc_timestamp()) where intent_id=?",

@@ -138,4 +138,4 @@ NAMEWTA 只支持 MySQL：
 - DML 的权限字符串、菜单路径、组件、`client_id` 与 Controller/前端一致；`clientPk` 是 Long 数据库主键，不是 OAuth clientId。
 - 菜单 DML 的 `icon` 保持字符串合同：新 NAMEWTA 展示菜单优先使用 `tabler:name`，功能节点使用 `#`，本地 SVG 使用 `local-name`；不得把 Element Plus 组件名写入 `sys_menu.icon`，也不得新增图标表或字段。已有无前缀值由前端兼容解析，未知值必须由前端 fallback 并可诊断。
 
-AI 退役后仍保留六份基座：40-cde-ai.sql 仅 `SET NAMES utf8mb4;`；新库不创建 sai_*，50 不初始化旧 AI 菜单且示例用户手机号有效。新业务库103张表；已有库不重放，旧AI表和数据保留，不迁移。
+AI 退役后仍保留六份基座：40-cde-ai.sql 仅 `SET NAMES utf8mb4;`；新库不创建 sai_*，50 不初始化旧 AI 菜单且示例用户手机号有效。新业务库104张表；已有库不重放，旧AI表和数据保留，不迁移。

@@ -82,6 +82,6 @@ SSO 发布验证入口：`bash scripts/sso-hard-e2e.sh --release-origin --eviden
 
 Admin/Home 浏览器传输统一为 HTTPS 上的普通 JSON/二进制合同；不再包含共享响应私钥、ECB 包装、crypto-browser 适配器或后端 API 加解密过滤器。机器 HMAC、OSS 签名与数据库字段加密保持各自合同。前后端须使用同一发布版本，切换与恢复需先隔离流量，不承诺跨容器原子热更新。
 
-当前 AI 退出边界：wta-ai / wta-common-ai 仅保留 Maven 占位；三个可部署 Java 应用为 Admin、Monitor、SnailJob。六份 SQL 中 40-cde-ai.sql 仅 SET NAMES utf8mb4;；新业务库 103 张表，旧 AI 数据保留，不重放基座或迁移。
+当前 AI 退出边界：wta-ai / wta-common-ai 仅保留 Maven 占位；三个可部署 Java 应用为 Admin、Monitor、SnailJob。六份 SQL 中 40-cde-ai.sql 仅 SET NAMES utf8mb4;；新业务库 104 张表，旧 AI 数据保留，不重放基座或迁移。
 
 AI 平台项目归属（2026-09-20 用户决定）：完整 AI Agent 平台已转由独立公开仓库 [NAMEWTA/wta-ai](https://github.com/NAMEWTA/wta-ai) 承接，拥有自己的前后端、release-artifacts 与 scripts；不再规划于本仓 backend/wta-extend。本仓现有 Java AI Maven 占位保持原状，WTA-plus 可作为外部 API 消费者；独立平台的数据库、工程规范与发布门禁由新项目维护。

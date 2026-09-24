@@ -223,4 +223,4 @@ TTL 会即时生效；其他允许键只记录为需重启，`nacos.config.*` �
 
 ## 外部依赖
 
-Snail AI 服务及其 Docling/PaddleOCR 接入已退出；两份 Java Maven 占位保留。40-cde-ai.sql 仅声明字符集，六份 SQL 初始化新业务库103张表，已有 AI 数据保留且不迁移，禁止重放基座。SMTP、短信、第三方 OSS 等集成同样由目标环境配置提供。
+Snail AI 服务及其 Docling/PaddleOCR 接入已退出；两份 Java Maven 占位保留。40-cde-ai.sql 仅声明字符集，六份 SQL 初始化新业务库104张表，已有 AI 数据保留且不迁移，禁止重放基座。SMTP、短信、第三方 OSS 等集成同样由目标环境配置提供。
