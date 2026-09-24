@@ -1,0 +1,32 @@
+[
+  {
+    "file": "activation205-validator-fixed.json",
+    "bytes": 432,
+    "sha256": "6f51ccb3a1847b3b75730cf4ff1e1d2783cf51f2e3b83317d52cb8a658af9f7e"
+  },
+  {
+    "file": "activation205-validator-fixed.log",
+    "bytes": 21926,
+    "sha256": "617a5479700af9e28f1d06eb241905d3c917d10759c9fb6b1024cb655b6b6567"
+  },
+  {
+    "file": "activation205-validator.json",
+    "bytes": 426,
+    "sha256": "b8f500ab870b8443e417f92263cacf5f79e407cf8bdc7a3ba7b7bf542a390ec5"
+  },
+  {
+    "file": "activation205-validator.log",
+    "bytes": 22123,
+    "sha256": "229b5d66e890b2d43b90275566409f69a46fa7e82046fc731de08de0cc95a9e6"
+  },
+  {
+    "file": "runbook.md",
+    "bytes": 6494,
+    "sha256": "20a4c9e08a8fddc2dec74f657712a618ff7de988633a5b6353a62f59bbd253f2"
+  },
+  {
+    "file": "wta-t45-current-contract-audit.md",
+    "bytes": 9344,
+    "sha256": "e5e7d4e29205c14d92d1d7e1e68ba8ec9b96e62692caeef250b8ebdc2c148825"
+  }
+]
