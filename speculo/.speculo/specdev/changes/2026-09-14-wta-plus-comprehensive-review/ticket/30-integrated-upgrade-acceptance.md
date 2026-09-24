@@ -171,3 +171,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/30-integrated-upgrade-acceptance.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
 旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。
+
+## 2026-09-24 用户验收豁免：仅 T-48 Windows 实机
+
+用户对真实 Windows 环境问题答复：“这一块不用验证了，就当是验证通过”。据此接受该项验收豁免，记录为 `user-waived/not-run`，不计为已执行通过或零skip测试。决定与范围见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-48-windows-user-waiver-2026-09-24.md</Path>。Shell/fake夹具、真实Linux首次/二次启动、端口/路径空格、doctor/repair及安全负向仍需实测；Windows既有代码合同不删除。T48状态及T30依赖不因豁免提前关闭，T30矩阵仅以本决定替代该单项运行证据，其他全部required验收照常。

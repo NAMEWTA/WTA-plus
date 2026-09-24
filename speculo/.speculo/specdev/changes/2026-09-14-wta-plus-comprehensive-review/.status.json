@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-24T06:59:58.798674+00:00",
+  "updated_at": "2026-09-24T07:22:08.612662+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -197,7 +197,8 @@
     "revision231：T42恢复R3真实20方法4通过/16failure/0error/0skip，owned资源清理完成；前三恢复失败保留，Lead四项复盘后Dispatch03A新批attempts0，累计失败6。17done/2cancelled/1in_progress/30ready，Goal active。",
     "revision232：T42已以真实配置Bean红绿证明后台审计修复，当前110单元零skip通过；Mail A1为20项6pass/14fail，A2确证生产Redis幂等Store未装配，20方法体0。当前批attempts2/前批失败6，17done/2cancelled/1in_progress/30ready。",
     "revision233：T42固定764820dd的113项单元与20项真实MAIL均零skip通过，104表fresh与owned清理通过；整票仍缺ACK/强制碰撞/身份/HTTP等验收。Lead复盘后Dispatch02B补验批attempts0，历史8失败保留；17done/2cancelled/1in_progress/30ready。",
-    "revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。"
+    "revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。",
+    "revision235：T42补强后的真实Mail27与八类135回归全部零skip通过；原BEFORE证据缺口及预置绑定10→11断言失败均保留。当前17done/2cancelled/1in_progress/30ready，补验批attempts3；用户已豁免T48真实Windows运行，其余验收不变。"
   ],
   "worktrees": [
     {
@@ -943,7 +944,7 @@
       "workspace_ref": "current",
       "source_checkpoint": null,
       "status": "active",
-      "updated_at": "2026-09-24T06:54:39.325608+00:00",
+      "updated_at": "2026-09-24T07:22:08.612662+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
@@ -970,7 +971,7 @@
           "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42-replan-2026-09-23.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42.md</Path>",
-        "attempts": 0,
+        "attempts": 3,
         "promotion_status": "pending"
       }
     }

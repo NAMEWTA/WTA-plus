@@ -69,7 +69,7 @@ G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施�
 
 ## 5. 实现契约
 
-- 入口与输入输出：shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收。
+- 入口与输入输出：shell fake命令夹具＋真实Linux初次/二次启动；Windows实机运行用户明确豁免（user-waived/not-run，不计测试通过）。
 - 外部行为：一个脚本提供显式start/build/doctor/repair子命令（菜单仅薄包装），普通再次启动不深度修复且尊重Spring/Vite环境优先级。
 - 不变量：current workspace单writer；UseCase→Service→DAO→Mapper；classic保留；公开数据只经wta-api；GET查询/POST变更且安全@Log。Notify外部I/O不在结果事务内，IN_APP按确认后的短事务合同处理。
 - 失败边界：不吞SQL/HTTP/Provider错误，不将UNKNOWN当成功或盲目可重试；页面旧响应不覆盖新会话。具体负向断言见第8/10节。
@@ -82,7 +82,7 @@ G整体共识已确认；执行前仍需复核当前HEAD/归属、实际实施�
 2. 保留显式build/安装与wta-admin单模块run分工，不用聚合根spring-boot:run -am。
 3. 日常路径只做工具/必要配置/产物缺失提示，端口交框架；新增非交互参数并保留菜单薄包装。
 4. 深度JAR/classpath/clean放doctor/repair，保留构建互斥、路径白名单、越界拒绝及占端口不乱杀。
-5. 新环境首次构建→启动→正常二次启动、环境端口/路径空格、Linux/现有Windows承诺分别验收。
+5. 真实Linux新环境首次构建→启动→正常二次启动及环境端口/路径空格实测；现有Windows代码合同由夹具/静态检查覆盖，Windows实机运行按用户明确决定豁免。
 6. 更新唯一开发说明与CI脚本测试，未验证平台明确阻塞对应支持声明。
 
 ## 7. 路径访问契约
@@ -95,7 +95,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 | 场景 | 接缝/步骤 | 预期 | Evidence |
 |---|---|---|---|
-| 正常 | shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收 | 普通二次启动无深度哨兵/依赖重装/清缓存，显式repair仍可调用 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-48-replan-2026-09-23.md</Path> |
+| 正常 | shell fake命令夹具＋真实Linux初次/二次启动；Windows实机运行用户明确豁免（user-waived/not-run，不计测试通过） | 普通二次启动无深度哨兵/依赖重装/清缓存，显式repair仍可调用 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-48-replan-2026-09-23.md</Path> |
 | 失败/竞争 | SERVER_PORT不被脚本覆盖；缺工具/secret单一错误不泄密 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 安全删除拒绝越界、端口不乱杀、reactor/单模块启动正确 | 同上，记录测试数/skip/源码 |
 
@@ -106,7 +106,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - `bash release-artifacts/scripts/verify-release.sh`
 
 - Workspace checks：current-workspace，所列命令加命中工程Skill质量门禁。
-- E2E disposition：required: shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收。
+- E2E disposition：required: shell fake命令夹具＋真实Linux初次/二次启动；Windows实机运行用户明确豁免（user-waived/not-run，不计测试通过）。
 - E2E owner/environment：single-agent（Lead）/current-workspace；真实MySQL/Redis/MinIO必须为本任务隔离资源，必要服务缺失则阻塞对应验收。
 - 真实服务启用方法与零skip要求：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/verification.md</Path>；新增用例必须保存精确选择器与实际计数，不能只运行mock或test list。
 - Integration evidence：非空implementation commit、parent before、clean exact HEAD/tree时点的direct-parent和适用E2E、不可变result及父链；required模式不适用，不创建candidate worktree。
@@ -137,3 +137,7 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ## 12. 停止、检查点与交付
 
 交付本票完整可观察行为，数量以Map为准，不能以样例替代。缺高影响决定、必需Skill/引用/测试，或owner冲突，停止该票和依赖闭包；无依赖票仅在已获执行授权后继续。保留HEAD、diff、已跑命令、失败类别、待完成动作；相同失败无新证据或达到3次集成尝试先复盘。验收后回交Goal，全部票done仍不等于change可归档。
+
+## 2026-09-24 用户验收豁免：仅 T-48 Windows 实机
+
+用户对真实 Windows 环境问题答复：“这一块不用验证了，就当是验证通过”。据此接受该项验收豁免，记录为 `user-waived/not-run`，不计为已执行通过或零skip测试。决定与范围见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-48-windows-user-waiver-2026-09-24.md</Path>。Shell/fake夹具、真实Linux首次/二次启动、端口/路径空格、doctor/repair及安全负向仍需实测；Windows既有代码合同不删除。T48状态及T30依赖不因豁免提前关闭，T30矩阵仅以本决定替代该单项运行证据，其他全部required验收照常。

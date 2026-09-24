@@ -1,0 +1,200 @@
+{
+  "status": "PARTIAL_GATES_PASSED_TICKET_PENDING",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2256,
+      "sha256": "a64389f2b32d928bdfab3ebc39762b535ed8319d40deae3b45cf31bb60de296d"
+    },
+    {
+      "path": "analysis/a1-regression-methods.json",
+      "bytes": 10154,
+      "sha256": "c70eda05b46b1b0f4f0d101f45e51e5b995069b34c2e7bdfb0baddb840965890"
+    },
+    {
+      "path": "analysis/dispatch02b-a1-mail-methods.json",
+      "bytes": 3946,
+      "sha256": "7d74558e7e59f9f10f3b275ec8aa234bf6116aff3ffbef4e6d5ee25e6570e9c8"
+    },
+    {
+      "path": "analysis/dispatch02b-a2-mail-methods.json",
+      "bytes": 3946,
+      "sha256": "52c35d09dcbc292cd59edc52e438999af544cc0d872fdde0d4717251a752578e"
+    },
+    {
+      "path": "analysis/regression-baseline-method-inventory.json",
+      "bytes": 12182,
+      "sha256": "67a7dfc90c7aa625b42eb12801d1d1ef3344098632faf48c6e2f6283c7a448d8"
+    },
+    {
+      "path": "analysis/review-02b-jdbc.md",
+      "bytes": 7181,
+      "sha256": "91ecabdd6df76878e873617bd607557cce643581fb9febdbd807c6fefd07cd22"
+    },
+    {
+      "path": "analysis/review-02b-race-identity.md",
+      "bytes": 3383,
+      "sha256": "6abb25cc14ffc6e94409d427b2080d7507e995a84e612585052859d80e689682"
+    },
+    {
+      "path": "dispatch02b-a3-regression-manifest.json",
+      "bytes": 10154,
+      "sha256": "659390e5cfdf4b797493a34d809c2f096a099bcf79d20283f39e9d77bc5c21a4"
+    },
+    {
+      "path": "lead-checkpoint.md",
+      "bytes": 1876,
+      "sha256": "d75b75dcef4233cf1b747ed810cf8d342fdfe3c88bc942c750a764a8336bd8ef"
+    },
+    {
+      "path": "mail-6590bf05a59d56f8/init.log",
+      "bytes": 64013,
+      "sha256": "b8bf1bb1a2550f14115391219cd280221211d65c333d3f6b1b58c6a3ee5701c6"
+    },
+    {
+      "path": "mail-6590bf05a59d56f8/maven.log",
+      "bytes": 503291,
+      "sha256": "8aec4c4a5bdfbf8bded440350f6e60a5393bc69d8e7ec028d366e89eb49a38e9"
+    },
+    {
+      "path": "mail-6590bf05a59d56f8/result.json",
+      "bytes": 9187,
+      "sha256": "09008a7bffa6806d5e78eb411f5c80f07f2c43c0f40ca44f4ed70da33a8abc55"
+    },
+    {
+      "path": "mail-6590bf05a59d56f8/xml/TEST-org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.xml",
+      "bytes": 560286,
+      "sha256": "eaf847139a1e37fdae911ffe354e3a360c477c395e7fdc1a6e3fc5e0ffd7e2e8"
+    },
+    {
+      "path": "mail-a36d6d66aa5e06bd/init.log",
+      "bytes": 64013,
+      "sha256": "4fc3cb1fce643268a60a07042ba4acb304c61e0d9ed7ef3dc6e851a1b391ae1a"
+    },
+    {
+      "path": "mail-a36d6d66aa5e06bd/maven.log",
+      "bytes": 503294,
+      "sha256": "2a757295eda8ff68bb49a8ce56700c90c10e3e967bafbe0bd9777e5cc9438ee1"
+    },
+    {
+      "path": "mail-a36d6d66aa5e06bd/result.json",
+      "bytes": 9187,
+      "sha256": "d3e8b7e7eb0eb7328001d6193ec54195faeafa656adcb90360a7d34582a11afe"
+    },
+    {
+      "path": "mail-a36d6d66aa5e06bd/xml/TEST-org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.xml",
+      "bytes": 560289,
+      "sha256": "f652df9aa552ba3e14fee702240021bf3032023386bcac641e398e3b920ff88c"
+    },
+    {
+      "path": "misconfigured-head-63404705414ab19c/result.json",
+      "bytes": 1826,
+      "sha256": "4ff7c774cd7a0caa2116bd79430544368940b87e3091ca67adeb989c27a3cb1d"
+    },
+    {
+      "path": "regression-a3-pass/maven.log",
+      "bytes": 466999,
+      "sha256": "bfb04b831008e42bb53febb01c610b56037f36dc7170bb9450bc0c4e4c99887a"
+    },
+    {
+      "path": "regression-a3-pass/result.json",
+      "bytes": 17565,
+      "sha256": "775b19257db6932fd18b91d7a5bf5811dc8ad44dede0400eb43d8ca36313cf35"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+      "bytes": 107687,
+      "sha256": "52b8dee9eb2e3423272a94ab5bbc0b1316fbebb1a2c8402ab33e81477dfb005e"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+      "bytes": 408281,
+      "sha256": "18040802973b9657e2601f0c02fd254bc7bcd9ca04b7009edd957ab4bc655bb4"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+      "bytes": 116836,
+      "sha256": "d4d133601660194aaa4fcb4a8a3be720298bf1f519f0082c09e202c7d34a14c0"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+      "bytes": 114321,
+      "sha256": "1bb94a99fcc67715c23ef9ea35f1c179495d32e1fb7c6c456ad9425179e64352"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+      "bytes": 108099,
+      "sha256": "8170e3892638e875283782de9429d789ee9f6f49b8f0af7510bcd447fad655a8"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+      "bytes": 127691,
+      "sha256": "0f98db4666efc1c6f5273c14698816ce6e71282f8ba8a6b8fb47c420653de83e"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+      "bytes": 104996,
+      "sha256": "f442e946ecab7c3ce7d49d3fac0389a88ca1d3e8b33c4ad75a39376c445ac9df"
+    },
+    {
+      "path": "regression-a3-pass/xml/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+      "bytes": 95706,
+      "sha256": "de7fa76a53c006277bd8201ade666a00cc398613ff173d92c3c6d4c486179203"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/maven.log",
+      "bytes": 475857,
+      "sha256": "4c6eef78399a0010ed0a12b4b08031d8ef57d65686ff47944a56446ab1307a4b"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/result.json",
+      "bytes": 17598,
+      "sha256": "afa31a0f402e0cc668cfb97b1eb13bf261d616a264f3967e1309171900e007af"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml",
+      "bytes": 107689,
+      "sha256": "7d9b5bc6db6b9f7b47baa9691bfe3af5fbdc29687454d2cac10e8a205b71f810"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml",
+      "bytes": 415416,
+      "sha256": "4fbab5a628d2cc616626cd4251436c45cbac84adfb4fb8ec91bf2c02a2f06f8c"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml",
+      "bytes": 116835,
+      "sha256": "970af95499f75597b761e6cdae40793e31bbeb95b0ea3fcccef85b5ccf15939a"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml",
+      "bytes": 114319,
+      "sha256": "738d49ad740f34c9c07ed84075fd7fdc241d0be2999d7e51f60f08f91a42ef98"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml",
+      "bytes": 108102,
+      "sha256": "ac009013d0c0e03aca5c837e77780c2e9e9cc14d532270c89701544b31ecdbe6"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml",
+      "bytes": 127697,
+      "sha256": "0f3d791bb9bb9a70643c41e5a1a121e0b010aeba4967e0693da8a74240b664c1"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml",
+      "bytes": 105848,
+      "sha256": "31baf799ce672bcfa571aa6a69aab20618c609b25b41b3f5a46ff564c7c2b495"
+    },
+    {
+      "path": "regression-fe74fb5e20ee9b0f/xml/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml",
+      "bytes": 95706,
+      "sha256": "002833cb4b05f3bbb3adf12a7c10a3be66e880ec9b3030d6ecffe12474c8e095"
+    },
+    {
+      "path": "secret-scan.json",
+      "bytes": 297,
+      "sha256": "2c234565bf81cf2d909b70ef4014bc4330e7132d6954d90b5c383d6ec6c89294"
+    }
+  ]
+}

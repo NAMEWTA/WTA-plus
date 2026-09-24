@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 234
+plan_revision: 235
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。
+revision235：T42补强后的真实Mail27与八类135回归全部零skip通过；原BEFORE证据缺口及预置绑定10→11断言失败均保留。当前17done/2cancelled/1in_progress/30ready，补验批attempts3；用户已豁免T48真实Windows运行，其余验收不变。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -164,7 +164,7 @@ T-49同时依赖T-44与T-48。完整真实依赖从frontmatter重建，图是摘
 | AC-045 | T-45, T-30 | OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示 | covered | T-45 当前候选已验收，见 evidence/T-45.md；整体集成仍待 T-30 |
 | AC-046 | T-46, T-30 | OssStorageMigrationIntegrationTest：真实MySQL两连接＋阻塞替身＋MinIO对象存在验收 | covered | 当前候选验收见evidence/T-46.md；T30最终复验仍待完成 |
 | AC-047 | T-47, T-30 | OssPage受控Promise组件测试，已有presentation.test.ts回归 | covered | T-47 当前候选已验收，见 evidence/T-47.md；整体集成仍待 T-30 |
-| AC-048 | T-48, T-30 | shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-048 | T-48, T-30 | shell fake命令夹具＋真实Linux初次/二次启动；Windows实机运行用户明确豁免（user-waived/not-run，不计测试通过） | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-049 | T-49, T-30 | OssUploadPropertiesUnitTest、配置绑定测试、默认存储切换真实MinIO | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-050 | T-50, T-30 | 公共入口负向合同、每类生产调用方、历史WAIT样本终结 | covered | T-50 当前候选已验收，见 evidence/T-50.md；整体集成仍待 T-30 |
 
@@ -822,3 +822,15 @@ revision233：T42固定764820dd的113项单元与20项真实MAIL均零skip通过
 revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。
 
 只读来源见evidence/T-42-current-2026-09-24/scope234/stale-103-scope-audit.md。当前六SQL已由实际fresh安装确认104表；事前登记00-project-profile、fullstack backend/mapper-and-sql、release-artifacts/README三精确路径，Lead仅在cors交还产品写锁后改103→104，保留AI退役、旧数据留存、已有库不重放硬约束，不改旧Evidence历史数值。frontmatter实际原为61条唯一路径；revision232/233口述62把原已登记的NotifyAutoConfiguration重复计入，owner条目也重复，本轮按Path去重后新增三项，四数组均64项。原历史描述保留，以当前解析清单为准。02B writer范围仍只有3个测试文件，不由本文扩其写锁；无构建/服务在跑。后续T48真实Windows验收环境已通过异步问题向用户询问，答复未到，不影响本票和其他独立工作。
+
+## revision235 — 附件故障矩阵与通知回归通过
+
+revision235：T42补强后的真实Mail27与八类135回归全部零skip通过；原BEFORE证据缺口及预置绑定10→11断言失败均保留。当前17done/2cancelled/1in_progress/30ready，补验批attempts3；用户已豁免T48真实Windows运行，其余验收不变。
+
+Mail27固定43e5c2be2c0bea045a902271ff32a71a4c8166bb，run a36d6d66aa5e06bd，27/0/0/0且104表和全部owned清理通过。独立JDBC审查确认提交前断连必须同时证明KILL成功及真实commit已尝试，原6f5的XML虽27绿但有BEFORE注入证据缺口，不能追认为通过；AFTER、强制唯一竞争和有效User/Client换身份反例均经真实应用执行。43e5八类回归run fe74fb5e20ee9b0f为134pass/1fail/0error/0skip，唯一失败为fresh预置绑定数量仍断言10而新增demo-mail后11。cd78c39588e16ca4165c2c604f9986a131ef2144只改这一行测试，保持默认禁用账号/无密钥/未绑定账号及删除namespace不可复用断言；run 0c1f52d8c3de3c81真实135/0/0/0及owned清理通过。Mail27测试及全部生产/SQL与43e5逐字节不变，明确复用其源坐标，不宣称在cd78重跑。
+
+私有驱动有一次Lead误抄expected-head，run 63404705414ab19c在source_preflight拒绝，0服务/0构建/0测试；拒绝记录保留，不作为第四个产品候选或业务测试失败。补验批A1有审查缺口，A2真实回归有一项fixture失败，A3修复后真实回归通过；当前计数3，前批8次历史失败不改。下一阶段继续此已通过候选的默认/full/core、真实HTTP/OpenAPI生成及前端/静态门禁；如出现新的候选失败，先按既有四项复盘决定新派单，不自动清零。全部整票AC仍不勾，T42保持in_progress。证据见evidence/T-42-current-2026-09-24/dispatch02b/manifest.json。
+
+## 2026-09-24 用户验收豁免：仅 T-48 Windows 实机
+
+用户对真实 Windows 环境问题答复：“这一块不用验证了，就当是验证通过”。据此接受该项验收豁免，记录为 `user-waived/not-run`，不计为已执行通过或零skip测试。决定与范围见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-48-windows-user-waiver-2026-09-24.md</Path>。Shell/fake夹具、真实Linux首次/二次启动、端口/路径空格、doctor/repair及安全负向仍需实测；Windows既有代码合同不删除。T48状态及T30依赖不因豁免提前关闭，T30矩阵仅以本决定替代该单项运行证据，其他全部required验收照常。

@@ -1,0 +1,168 @@
+{
+  "candidate_head": "cd78c39588e16ca4165c2c604f9986a131ef2144",
+  "suites": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "source_sha256": "52f835d7d68ba0298cb4fe3b4e0d4b9850fd3e3b4216b3675f7176d4c9f30505",
+      "tests": 15,
+      "method_counts": {
+        "expiredNewReadyIsFailedDoneWithoutProviderOrAttempt": 1,
+        "historicalReadyWithoutProofBecomesUnknownWithoutProvider": 1,
+        "reclaimedExternalProcessingBeforeDeadlineNeverReturnsReadyOrResends": 1,
+        "futureAvailableAtIsNotClaimedEarly": 1,
+        "expiredInAppWithDurableRecipientRecoversDeliveredWithoutNewPush": 1,
+        "expiredInAppWithoutFactsStopsBeforeBudgetAndMessage": 1,
+        "expiredInAppOrphanRelationIsLocalFailureNotExternalWait": 1,
+        "waitSettlementRechecksCurrentDeadlineUnderLease": 1,
+        "oldLeaseCannotTerminalizeAfterTokenChanges": 1,
+        "cancelledIntentCannotBeRevivedByAClaimedTask": 1,
+        "submitRoundsScheduleUpAndExpiryDownWithoutEarlyClaim": 1,
+        "duplicateSubmissionCannotExtendPersistedDeadline": 1,
+        "providerAcceptedAfterDeadlineStillPersistsActualAcceptedResult": 1,
+        "expirationResultRollbackLeavesDeliveryAndLeaseIntact": 1,
+        "expiredPersistedIntentRejectsManualRetryWithoutRequeue": 1
+      }
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "source_sha256": "151e54c4540094a8b42a3e3da4b0910e824a478a7b32e9bbaacd997fddfc68cf",
+      "tests": 8,
+      "method_counts": {
+        "queuedSubmissionWaitsForTheActualWorkerAndTransfersOnlyOnce": 1,
+        "recordWriteFailureRollsBackTheNotificationAndRevokesTheStagedChallenge": 1,
+        "outerRollbackLeavesOnlyAnUnconfirmableRedisChallengeWithItsOriginalTtl": 1,
+        "consumedOtpAndRolledBackBindingsRecoverBySendingANewChallenge": 1,
+        "redisConsumeFailureRollsBackAllBindingAndEventWrites": 1,
+        "changedSourceVersionRejectsEvenAnAcceptedNotificationAndCorrectCode": 1,
+        "expiredAssociationAndTypedUnsentTerminalCannotActivateButPermitResend": 1,
+        "genericFailedWithoutSingleTargetRemainsUnknownAndCannotActivate": 1
+      }
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "source_sha256": "e6a71fec660187ab477e0eb4f1eede7514d641561d444c7422c32bd305c588c0",
+      "tests": 1,
+      "method_counts": {
+        "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake": 1
+      }
+    },
+    "org.namewta.test.notify.NotifySupportedModeIntegrationTest": {
+      "source_sha256": "8d76fa9655a6a30eb11c37f8b1530f93819375cc21fab230e94df4821907594d",
+      "tests": 19,
+      "method_counts": {
+        "oldOrderedWaitClosesWithoutProviderOrRepeatedReady": 2,
+        "oldModeOrPriorityWithNewProofTerminatesWithoutIOMigration": 2,
+        "markerlessReadyCannotProveNoHistoricalProviderCall": 1,
+        "reclaimedProcessingRetainsT39UncertaintyBeforeUnsupportedClassification": 1,
+        "existingInAppRecipientRecoversDeliveryWithoutDuplicateMessageOrPush": 1,
+        "inAppOrphanIsLocalFailureAndEmptyTaskConsumesNoBudget": 1,
+        "unsupportedRetryRejectsPreviouslySafeLocalFailureWithoutWake": 1,
+        "invalidDuplicateSubmissionRejectsBeforeReadingOriginalReceiptOrWritingRows": 1,
+        "supportedSubmissionStillPersistsPriorityZeroAndOriginalDeadline": 1,
+        "syncJsonStringIsRejectedByHttpBindingWithoutAWrite": 1,
+        "loopbackHttpEnforcesSubmitPermissionAndSupportedValuesBeforeAnyWrite": 1,
+        "unsupportedHistoricalOwnerMustNotSettleAfterLosingItsFence": 2,
+        "unsupportedClosurePreservesOtherAcceptedAndUnknownDeliveryFacts": 1,
+        "deadlineRemainsPriorToUnsupportedDisposition": 1,
+        "terminalDeliveryKeepsAcceptedFactWhenOldOutboxIsClosed": 1,
+        "failedFinalAggregateWriteRollsBackDeliveryAndOutboxSettlement": 1
+      }
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "source_sha256": "0e819d4f91f94f4aa0cd72935dc72942ca6c2864c04c8d83fe5374a16bd888ff",
+      "tests": 66,
+      "method_counts": {
+        "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable": 1,
+        "genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact": 1,
+        "genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt": 1,
+        "invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite": 1,
+        "inAppSnapshotColumnLimitsAreCheckedBeforeBudget": 5,
+        "everyInAppWriteStageRollsBackMessageRecipientAndResult": 6,
+        "longUnicodeBodyKeepsFullContentAndBoundedSummary": 1,
+        "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate": 1,
+        "concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations": 1,
+        "existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent": 1,
+        "finishZeroRollsBackDeliveryAttemptAndAggregate": 1,
+        "expiredOwnerCannotRenewOrFinishWithoutAReclaim": 1,
+        "providerCompletingAfterExpiryDoesNotReviveTheLease": 1,
+        "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt": 1,
+        "reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist": 1,
+        "externalChannelClaimPreservesSameLiteralErrorCode": 1,
+        "simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt": 1,
+        "uncertainBudgetCommitNeverEntersPersistBeforeReclaim": 2,
+        "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox": 2,
+        "twoConcurrentClaimersOnlyDispatchOneCommittedResult": 1,
+        "oldWorkerCannotOverwriteAReclaimedAndCompletedResult": 1,
+        "deliveredCallbackCannotBeOverwrittenByLateAcceptedResult": 1,
+        "concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate": 1,
+        "anyResultWriteFailureRollsBackAllOtherRows": 1,
+        "leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete": 1,
+        "expiredLeaseCannotSkipCancelOrDefer": 1,
+        "retryReceiptAndFailClosedOutcomesKeepExistingSemantics": 5,
+        "cancelledBeforeInAppTransactionCannotWriteInboxFact": 1,
+        "callbackRevalidatesCorrelationAfterWaitingForCurrentResult": 1,
+        "callbackRollbackMustAllowSameEventRetry": 1,
+        "sameEventFromDifferentAccountsMustNotCollide": 1,
+        "duplicateEventWithChangedFactsMustBeRejected": 1,
+        "twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce": 1,
+        "earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult": 1,
+        "receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry": 1,
+        "sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients": 1,
+        "sameAccountKeyAndEventAcrossChannelsRemainIndependent": 1,
+        "restartedJvmsSeeCommittedReceiptAndRejectChangedFacts": 1,
+        "receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract": 1,
+        "freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved": 1,
+        "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent": 2,
+        "realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus": 1,
+        "callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler": 1,
+        "nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending": 1,
+        "twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim": 1,
+        "nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation": 1,
+        "nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries": 1,
+        "nativeQueryCredentialEditOrReadFailureDoesNotApplyResult": 1,
+        "nativeReceiptCommitFailureCanRetrySameInternalIdentity": 2
+      }
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "source_sha256": "b4d9afaa563b6894531afdea166795f027d9eb928de1fcbe06580c6c16e4d532",
+      "tests": 13,
+      "method_counts": {
+        "targetedFailedLocalPreflightOnlyQueuesItsDelivery": 1,
+        "foreignDeliveryAndExternalUnknownAreRejectedWithoutWrites": 1,
+        "batchRetryRejectsExternalUnknownBeforeChangingSafeSibling": 1,
+        "exhaustedBudgetAndMultipleOutboxesDoNotCreateAnotherTask": 1,
+        "completedCancelledAndUnsupportedFailureNeverCreateWork": 1,
+        "retryUsesRemainingBudgetAndRollsBackIfDeliveryUpdateFails": 1,
+        "concurrentRetrySerializesOnIntentAndKeepsOneOutbox": 1,
+        "claimDuringRetryCommitCannotTakeUncommittedTaskOrStealNewLease": 1,
+        "inAppUnknownReplaysExistingMessageWithoutAnotherRelationOrPush": 1,
+        "inAppUnknownAddsMissingRelationAndPushesOnlyOnce": 1,
+        "inAppUnknownRejectsOrphanRelationWithoutChangingTask": 1,
+        "inAppUnknownWithoutMessageCreatesOneAtomicMessageAndRelation": 1,
+        "actualPlannerFailureCanBeRepairedAndThenCallsControlledSenderOnce": 1
+      }
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "source_sha256": "8428e01c284049438b63077ab36e470b4602deaf66c3cba1a2a4362b48c53ff4",
+      "tests": 10,
+      "method_counts": {
+        "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction": 1,
+        "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall": 1,
+        "supplierIoAmbiguityStaysUnknownAndNeverRequeues": 1,
+        "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall": 1,
+        "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues": 1,
+        "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery": 1,
+        "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers": 1,
+        "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend": 1,
+        "retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend": 1,
+        "exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice": 1
+      }
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "source_sha256": "94f109a947f2230de883a5dbb2314ae8853082ce75dab6eab442afd06a9a102c",
+      "tests": 3,
+      "method_counts": {
+        "shouldAtomicallyAcquireCompleteReuseAndExpire": 1,
+        "retryableOwnerCasRetainsTtlAndRejectsStaleOwnerWithStringCodec": 1,
+        "retryableOwnerCasRetainsTtlAndReadsLegacyStateWithProductionCompositeCodec": 1
+      }
+    }
+  }
+}

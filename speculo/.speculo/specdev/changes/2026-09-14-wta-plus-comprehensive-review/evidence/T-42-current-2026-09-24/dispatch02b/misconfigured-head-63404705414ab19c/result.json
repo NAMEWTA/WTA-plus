@@ -1,0 +1,60 @@
+{
+  "gate": "T-42 current eight-class Notify regression",
+  "run_id": "63404705414ab19c",
+  "owner": "T-42-NOTIFY-REGRESSION",
+  "mode": "acceptance",
+  "acceptance": false,
+  "phase": "cleanup",
+  "started_utc": "2026-09-24T07:17:36.900433+00:00",
+  "exit_code": 1,
+  "owned": {
+    "captured_anonymous_volume_names": []
+  },
+  "sql_baselines": [],
+  "cleanup": {
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {},
+    "loopback_ports_closed": {},
+    "errors": [
+      "exact_fresh_surefire_xml_missing",
+      "exact_fresh_surefire_xml_missing",
+      "exact_fresh_surefire_xml_missing",
+      "exact_fresh_surefire_xml_missing",
+      "exact_fresh_surefire_xml_missing",
+      "exact_fresh_surefire_xml_missing",
+      "exact_fresh_surefire_xml_missing",
+      "exact_fresh_surefire_xml_missing",
+      "source_after_not_clean_exact_head"
+    ]
+  },
+  "counts": null,
+  "error_type": "RuntimeError",
+  "last_started_phase": "source_preflight",
+  "retained_xml": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "fresh": false
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "fresh": false
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "fresh": false
+    },
+    "org.namewta.test.notify.NotifySupportedModeIntegrationTest": {
+      "fresh": false
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "fresh": false
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "fresh": false
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "fresh": false
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "fresh": false
+    }
+  },
+  "finished_utc": "2026-09-24T07:17:36.997767+00:00"
+}

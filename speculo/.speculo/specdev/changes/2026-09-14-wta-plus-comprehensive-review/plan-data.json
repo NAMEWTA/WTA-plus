@@ -2508,16 +2508,16 @@
     "status": "ready",
     "ready": true,
     "e2e_disposition": "required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复",
-    "plan_revision": 163,
+    "plan_revision": 235,
     "implementation_commits": [
       "91d4c2ea6356c74d3174f63f2665485484f0a103"
     ],
     "implementation_commit": "91d4c2ea6356c74d3174f63f2665485484f0a103",
     "result_sha": "6c8764cca97bb6057fcb90ccdfe635c7efbf502a",
     "fact": "扩展为AC-001—050同候选集成、历史票闭合、可发布候选及归档准备；旧全绿不再代表当前完成。",
-    "behavior": "全部已接受AC均有实际命令/退出码/环境/源码checkpoint",
+    "behavior": "全部已接受AC均有实际命令/退出码/环境/源码checkpoint；仅T48 Windows实机项以用户豁免决定与not-run记录处置，其他照实运行",
     "tests": [
-      "required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复"
+      "required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复；T48 Windows实机项按2026-09-24用户豁免记录not-run，其余实测"
     ],
     "migration": "保持历史已交付行为；仅对当前复验发现的真实退化实施最小修复。已有数据不得重放基座。",
     "historical_decision": "全部31票本地实现与可逆验收完成，按T-30最终coverage与产物摘要审查；用户暂缓提交，正式Done/发布候选出口未关闭。",
@@ -3550,7 +3550,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 234,
+    "plan_revision": 235,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
@@ -3943,7 +3943,7 @@
       "保留显式build/安装与wta-admin单模块run分工，不用聚合根spring-boot:run -am。",
       "日常路径只做工具/必要配置/产物缺失提示，端口交框架；新增非交互参数并保留菜单薄包装。",
       "深度JAR/classpath/clean放doctor/repair，保留构建互斥、路径白名单、越界拒绝及占端口不乱杀。",
-      "新环境首次构建→启动→正常二次启动、环境端口/路径空格、Linux/现有Windows承诺分别验收。",
+      "真实Linux新环境首次构建→启动→正常二次启动及环境端口/路径空格实测；现有Windows代码合同由夹具/静态检查覆盖，Windows实机运行按用户明确决定豁免。",
       "更新唯一开发说明与CI脚本测试，未验证平台明确阻塞对应支持声明。"
     ],
     "checks": [
@@ -3960,7 +3960,7 @@
       "release-artifacts/tests/"
     ],
     "tests": [
-      "shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收"
+      "shell fake命令夹具＋真实Linux初次/二次启动；Windows实机运行用户明确豁免（user-waived/not-run，不计测试通过）"
     ],
     "commands": [
       "bash -n scripts/start-dev.sh",
@@ -3983,9 +3983,9 @@
     ],
     "status": "ready",
     "ready": true,
-    "plan_revision": 136,
+    "plan_revision": 235,
     "review_date": "2026-09-23",
-    "e2e_disposition": "required: shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收",
+    "e2e_disposition": "required: shell fake命令夹具＋真实Linux初次/二次启动；Windows实机运行用户明确豁免（user-waived/not-run，不计测试通过）",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "start-dev强求非空local.yml、自解析server.port并覆盖Spring、每次检查classpath及哨兵；已有build guard与安全删除值得保留。",
     "implementation_commit": null,

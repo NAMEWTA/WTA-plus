@@ -1,0 +1,349 @@
+{
+  "gate": "T-42 current eight-class Notify regression",
+  "run_id": "0c1f52d8c3de3c81",
+  "owner": "T-42-NOTIFY-REGRESSION",
+  "mode": "acceptance",
+  "acceptance": true,
+  "phase": "cleanup",
+  "started_utc": "2026-09-24T07:17:44.994931+00:00",
+  "exit_code": 0,
+  "owned": {
+    "mysql_container_id": "26e581b01b5b0785a6775e12063e4afa2d72eb9893cd89b3b9685043588fd33f",
+    "application_table_count": 104,
+    "redis_container_id": "34760dc22fe60a99cb5f30bc7b002c057515c4f3e51cbfe1a8873c97334f81b8",
+    "loopback_ports": {
+      "mysql": 33027,
+      "redis": 33028
+    },
+    "captured_anonymous_volume_names": [
+      "5214a76d9f23209928eced3e588cfdf0362567a3c48263721a1f238e7ab1d17a"
+    ]
+  },
+  "sql_baselines": [
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/10-cde-base-ddl.sql",
+      "sha256": "98570ed734d38f4b29ccdc6ba4b4c5db58c4c48942c98251c9823758ee506db7",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/20-cde-job.sql",
+      "sha256": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/30-cde-workflow.sql",
+      "sha256": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/40-cde-ai.sql",
+      "sha256": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/50-cde-base-dml.sql",
+      "sha256": "b87610b0ca02319e5aa02daee585b6c4309b74f9c588af1c49564df6d4ed76c6",
+      "import_exit_code": 0
+    },
+    {
+      "file": "release-artifacts/docker/infrastructure/mysql/init/60-cde-nacos.sql",
+      "sha256": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987",
+      "import_exit_code": 0
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 2543640,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "5214a76d9f23209928eced3e588cfdf0362567a3c48263721a1f238e7ab1d17a": true
+    },
+    "loopback_ports_closed": {
+      "33027": true,
+      "33028": true
+    },
+    "errors": []
+  },
+  "counts": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifySupportedModeIntegrationTest": {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "tests": 66,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_before": {
+    "head": "cd78c39588e16ca4165c2c604f9986a131ef2144",
+    "tree": "c4240763cb4c757ee336bb5554be13303715628d",
+    "clean": true
+  },
+  "expected_manifest_sha256": "659390e5cfdf4b797493a34d809c2f096a099bcf79d20283f39e9d77bc5c21a4",
+  "maven_command_redacted": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-o",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=NotifyDeadlineIntegrationTest,EnterpriseQueuedNotificationIntegrationTest,NotifyWakeIntegrationTest,NotifySupportedModeIntegrationTest,NotifyAtomicResultIntegrationTest,NotifyManualRetryIntegrationTest,NotifySmsDispatchIntegrationTest,RedisNotifyIdempotencyStoreIntegrationTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dnotify.deadline.integration=true",
+    "-Dprofile.notify.integration=true",
+    "-Dnotify.wake.integration=true",
+    "-Dnotify.supported.mode.integration=true",
+    "-Dnotify.atomic.integration=true",
+    "-Dnotify.manual.retry.integration=true",
+    "-Dnotify.sms.integration=true",
+    "-Dnotify.mysql.integration.url=jdbc:mysql://127.0.0.1:33027/namewta_notify_test_0c1f52d8c3de3c81?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai",
+    "-Dnotify.mysql.integration.username=t42r_0c1f52d8c3de3c81",
+    "-Dnotify.redis.integration.port=33028"
+  ],
+  "maven_exit_code": 0,
+  "method_counts": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "cancelledIntentCannotBeRevivedByAClaimedTask": 1,
+      "duplicateSubmissionCannotExtendPersistedDeadline": 1,
+      "expirationResultRollbackLeavesDeliveryAndLeaseIntact": 1,
+      "expiredInAppOrphanRelationIsLocalFailureNotExternalWait": 1,
+      "expiredInAppWithDurableRecipientRecoversDeliveredWithoutNewPush": 1,
+      "expiredInAppWithoutFactsStopsBeforeBudgetAndMessage": 1,
+      "expiredNewReadyIsFailedDoneWithoutProviderOrAttempt": 1,
+      "expiredPersistedIntentRejectsManualRetryWithoutRequeue": 1,
+      "futureAvailableAtIsNotClaimedEarly": 1,
+      "historicalReadyWithoutProofBecomesUnknownWithoutProvider": 1,
+      "oldLeaseCannotTerminalizeAfterTokenChanges": 1,
+      "providerAcceptedAfterDeadlineStillPersistsActualAcceptedResult": 1,
+      "reclaimedExternalProcessingBeforeDeadlineNeverReturnsReadyOrResends": 1,
+      "submitRoundsScheduleUpAndExpiryDownWithoutEarlyClaim": 1,
+      "waitSettlementRechecksCurrentDeadlineUnderLease": 1
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "changedSourceVersionRejectsEvenAnAcceptedNotificationAndCorrectCode": 1,
+      "consumedOtpAndRolledBackBindingsRecoverBySendingANewChallenge": 1,
+      "expiredAssociationAndTypedUnsentTerminalCannotActivateButPermitResend": 1,
+      "genericFailedWithoutSingleTargetRemainsUnknownAndCannotActivate": 1,
+      "outerRollbackLeavesOnlyAnUnconfirmableRedisChallengeWithItsOriginalTtl": 1,
+      "queuedSubmissionWaitsForTheActualWorkerAndTransfersOnlyOnce": 1,
+      "recordWriteFailureRollsBackTheNotificationAndRevokesTheStagedChallenge": 1,
+      "redisConsumeFailureRollsBackAllBindingAndEventWrites": 1
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "commitIsIndependentOfSlowProviderAndPollRecoversLostOrTimedOutWake": 1
+    },
+    "org.namewta.test.notify.NotifySupportedModeIntegrationTest": {
+      "deadlineRemainsPriorToUnsupportedDisposition": 1,
+      "existingInAppRecipientRecoversDeliveryWithoutDuplicateMessageOrPush": 1,
+      "failedFinalAggregateWriteRollsBackDeliveryAndOutboxSettlement": 1,
+      "inAppOrphanIsLocalFailureAndEmptyTaskConsumesNoBudget": 1,
+      "invalidDuplicateSubmissionRejectsBeforeReadingOriginalReceiptOrWritingRows": 1,
+      "loopbackHttpEnforcesSubmitPermissionAndSupportedValuesBeforeAnyWrite": 1,
+      "markerlessReadyCannotProveNoHistoricalProviderCall": 1,
+      "oldModeOrPriorityWithNewProofTerminatesWithoutIOMigration": 2,
+      "oldOrderedWaitClosesWithoutProviderOrRepeatedReady": 2,
+      "reclaimedProcessingRetainsT39UncertaintyBeforeUnsupportedClassification": 1,
+      "supportedSubmissionStillPersistsPriorityZeroAndOriginalDeadline": 1,
+      "syncJsonStringIsRejectedByHttpBindingWithoutAWrite": 1,
+      "terminalDeliveryKeepsAcceptedFactWhenOldOutboxIsClosed": 1,
+      "unsupportedClosurePreservesOtherAcceptedAndUnknownDeliveryFacts": 1,
+      "unsupportedHistoricalOwnerMustNotSettleAfterLosingItsFence": 2,
+      "unsupportedRetryRejectsPreviouslySafeLocalFailureWithoutWake": 1
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "afterCommitPushFailureKeepsCommittedFactAndDoesNotRetriggerOnDuplicate": 1,
+      "anyResultWriteFailureRollsBackAllOtherRows": 1,
+      "attemptInsertFailureRollsBackDeliveryAndLeavesClaimRecoverable": 1,
+      "callbackDatabaseFailureRemainsRetryableWithTheProductionGlobalExceptionHandler": 1,
+      "callbackRevalidatesCorrelationAfterWaitingForCurrentResult": 1,
+      "callbackRollbackMustAllowSameEventRetry": 1,
+      "cancelledBeforeInAppTransactionCannotWriteInboxFact": 1,
+      "commitDisconnectOrLostAcknowledgementCanRetryWithoutLosingTheEvent": 2,
+      "concurrentDifferentRecipientsShareOneMessageAndHaveDistinctInboxRelations": 1,
+      "concurrentResultsForDifferentDeliveriesLeaveCurrentAggregate": 1,
+      "deliveredCallbackCannotBeOverwrittenByLateAcceptedResult": 1,
+      "duplicateEventWithChangedFactsMustBeRejected": 1,
+      "earlyCallbackDoesNotConsumeReceiptAndCanRetryAfterDispatchResult": 1,
+      "everyInAppWriteStageRollsBackMessageRecipientAndResult": 6,
+      "existingEmptyNoticeTypeSnapshotAcceptsSecondRecipientOfSameIntent": 1,
+      "expiredLeaseCannotSkipCancelOrDefer": 1,
+      "expiredOwnerCannotRenewOrFinishWithoutAReclaim": 1,
+      "externalChannelClaimPreservesSameLiteralErrorCode": 1,
+      "finishZeroRollsBackDeliveryAttemptAndAggregate": 1,
+      "freshPresetsAreDisabledAndDeletedAccountNamespaceRemainsReserved": 1,
+      "genericLocalFailureCannotCloseAnAlreadyReservedInAppAttempt": 1,
+      "genericResultCannotCommitInAppDeliveryWithoutReservedInboxFact": 1,
+      "inAppSnapshotColumnLimitsAreCheckedBeforeBudget": 5,
+      "invalidLocalRecipientFailsTerminallyBeforeBudgetOrInboxWrite": 1,
+      "leaseExpiringWhileWaitingForIntentLockCannotRenewOrComplete": 1,
+      "longUnicodeBodyKeepsFullContentAndBoundedSummary": 1,
+      "nativeQueryCredentialEditOrReadFailureDoesNotApplyResult": 1,
+      "nativeQueryExcludesDisabledMissingIdentityMailAndExpiredDeliveries": 1,
+      "nativeReceiptCommitFailureCanRetrySameInternalIdentity": 2,
+      "nativeReceiptWriteFailureRollsBackAndSameResultRetriesAfterReservation": 1,
+      "nativeSmsQueryUsesShortClaimAndResultTransactionsWithoutSending": 1,
+      "oldWorkerCannotOverwriteAReclaimedAndCompletedResult": 1,
+      "providerCompletingAfterExpiryDoesNotReviveTheLease": 1,
+      "realHttpCallbackVerifiesRawBodyAndReturnsRetryableStatus": 1,
+      "receiptAuditFieldsVersionAndLogicalDeleteFollowTheBaseContract": 1,
+      "receiptInsertFailureAndStatusCasMissBothRollbackAndAllowRetry": 1,
+      "reservedLastSlotCannotBeReenteredAndNextLeaseExhaustsWithoutPersist": 1,
+      "restartedJvmsSeeCommittedReceiptAndRejectChangedFacts": 1,
+      "retryReceiptAndFailClosedOutcomesKeepExistingSemantics": 5,
+      "sameAccountKeyAndEventAcrossChannelsRemainIndependent": 1,
+      "sameEventFromDifferentAccountsMustNotCollide": 1,
+      "sharedMessageRequiresTargetAndNeverUpdatesOtherRecipients": 1,
+      "simultaneousSameLeaseReservationGetsOnlyOnePhysicalAttempt": 1,
+      "successAndReclaimAfterRollbackKeepOneInboxFactAndOneCommittedAttempt": 1,
+      "twoConcurrentClaimersOnlyDispatchOneCommittedResult": 1,
+      "twoInstancesRaceOnTheSameEventAndOnlyRefreshOnce": 1,
+      "twoNativeWorkersReserveOnlyOneDueSnapshotAndRecoverAbandonedClaim": 1,
+      "uncertainBudgetCommitNeverEntersPersistBeforeReclaim": 2,
+      "uncertainResultCommitUsesDurableFactsToPreventDuplicateInbox": 2
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "actualPlannerFailureCanBeRepairedAndThenCallsControlledSenderOnce": 1,
+      "batchRetryRejectsExternalUnknownBeforeChangingSafeSibling": 1,
+      "claimDuringRetryCommitCannotTakeUncommittedTaskOrStealNewLease": 1,
+      "completedCancelledAndUnsupportedFailureNeverCreateWork": 1,
+      "concurrentRetrySerializesOnIntentAndKeepsOneOutbox": 1,
+      "exhaustedBudgetAndMultipleOutboxesDoNotCreateAnotherTask": 1,
+      "foreignDeliveryAndExternalUnknownAreRejectedWithoutWrites": 1,
+      "inAppUnknownAddsMissingRelationAndPushesOnlyOnce": 1,
+      "inAppUnknownRejectsOrphanRelationWithoutChangingTask": 1,
+      "inAppUnknownReplaysExistingMessageWithoutAnotherRelationOrPush": 1,
+      "inAppUnknownWithoutMessageCreatesOneAtomicMessageAndRelation": 1,
+      "retryUsesRemainingBudgetAndRollsBackIfDeliveryUpdateFails": 1,
+      "targetedFailedLocalPreflightOnlyQueuesItsDelivery": 1
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "brokenTemplateQuotaReleasesAccountThenRetriesAfterRecovery": 1,
+      "corruptRedisIdempotencyStateFailsAcquireBeforeSupplierAndRecovers": 1,
+      "dispatcherInvalidTargetIsLocalFailureAndNeverRequeues": 1,
+      "exactSingleAttemptTencentRateLimitReclaimsAndCallsTheSelectedBlendTwice": 1,
+      "missingVariableIsRejectedBeforeAnyIntentQuotaOrProviderCall": 1,
+      "redisCompletionCasFailureAfterSupplierRemainsUnknownWithoutResend": 1,
+      "removedBindingBeforeDispatchFailsAndClosesOutboxWithoutProviderCall": 1,
+      "retryableTransitionLostAckAfterRealRedisCasStillWaitsWithoutResend": 1,
+      "supplierIoAmbiguityStaysUnknownAndNeverRequeues": 1,
+      "validSmsUsesRealStorePlannerDispatcherAdapterAndResultTransaction": 1
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "retryableOwnerCasRetainsTtlAndReadsLegacyStateWithProductionCompositeCodec": 1,
+      "retryableOwnerCasRetainsTtlAndRejectsStaleOwnerWithStringCodec": 1,
+      "shouldAtomicallyAcquireCompleteReuseAndExpire": 1
+    }
+  },
+  "last_started_phase": "xml",
+  "retained_xml": {
+    "org.namewta.test.notify.NotifyDeadlineIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "d4d133601660194aaa4fcb4a8a3be720298bf1f519f0082c09e202c7d34a14c0",
+      "sanitized_sha256": "d4d133601660194aaa4fcb4a8a3be720298bf1f519f0082c09e202c7d34a14c0",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.NotifyDeadlineIntegrationTest.xml"
+    },
+    "org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "52b8dee9eb2e3423272a94ab5bbc0b1316fbebb1a2c8402ab33e81477dfb005e",
+      "sanitized_sha256": "52b8dee9eb2e3423272a94ab5bbc0b1316fbebb1a2c8402ab33e81477dfb005e",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.EnterpriseQueuedNotificationIntegrationTest.xml"
+    },
+    "org.namewta.test.notify.NotifyWakeIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "f442e946ecab7c3ce7d49d3fac0389a88ca1d3e8b33c4ad75a39376c445ac9df",
+      "sanitized_sha256": "f442e946ecab7c3ce7d49d3fac0389a88ca1d3e8b33c4ad75a39376c445ac9df",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.NotifyWakeIntegrationTest.xml"
+    },
+    "org.namewta.test.notify.NotifySupportedModeIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "0f98db4666efc1c6f5273c14698816ce6e71282f8ba8a6b8fb47c420653de83e",
+      "sanitized_sha256": "0f98db4666efc1c6f5273c14698816ce6e71282f8ba8a6b8fb47c420653de83e",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.NotifySupportedModeIntegrationTest.xml"
+    },
+    "org.namewta.test.notify.NotifyAtomicResultIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "18040802973b9657e2601f0c02fd254bc7bcd9ca04b7009edd957ab4bc655bb4",
+      "sanitized_sha256": "18040802973b9657e2601f0c02fd254bc7bcd9ca04b7009edd957ab4bc655bb4",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.NotifyAtomicResultIntegrationTest.xml"
+    },
+    "org.namewta.test.notify.NotifyManualRetryIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "1bb94a99fcc67715c23ef9ea35f1c179495d32e1fb7c6c456ad9425179e64352",
+      "sanitized_sha256": "1bb94a99fcc67715c23ef9ea35f1c179495d32e1fb7c6c456ad9425179e64352",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.NotifyManualRetryIntegrationTest.xml"
+    },
+    "org.namewta.test.notify.NotifySmsDispatchIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "8170e3892638e875283782de9429d789ee9f6f49b8f0af7510bcd447fad655a8",
+      "sanitized_sha256": "8170e3892638e875283782de9429d789ee9f6f49b8f0af7510bcd447fad655a8",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.NotifySmsDispatchIntegrationTest.xml"
+    },
+    "org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest": {
+      "fresh": true,
+      "source_sha256": "de7fa76a53c006277bd8201ade666a00cc398613ff173d92c3c6d4c486179203",
+      "sanitized_sha256": "de7fa76a53c006277bd8201ade666a00cc398613ff173d92c3c6d4c486179203",
+      "redactions": 0,
+      "retained_path": "/tmp/wta-t42/regression-runs/0c1f52d8c3de3c81/xml/TEST-org.namewta.test.notify.idempotency.RedisNotifyIdempotencyStoreIntegrationTest.xml"
+    }
+  },
+  "source_after": {
+    "head": "cd78c39588e16ca4165c2c604f9986a131ef2144",
+    "tree": "c4240763cb4c757ee336bb5554be13303715628d",
+    "clean": true
+  },
+  "finished_utc": "2026-09-24T07:19:57.454217+00:00"
+}
