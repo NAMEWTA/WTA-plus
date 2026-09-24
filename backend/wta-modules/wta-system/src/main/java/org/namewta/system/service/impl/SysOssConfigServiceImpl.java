@@ -367,7 +367,9 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
             || !StringUtils.equals(oldConfig.getAccessPolicy(), config.getAccessPolicy())
             || !StringUtils.equals(oldConfig.getEndpoint(), config.getEndpoint())
             || !StringUtils.equals(oldConfig.getIsHttps(), config.getIsHttps())
-            || !StringUtils.equals(oldConfig.getRegion(), config.getRegion())) {
+            // 客户端将空白 Region 解释为 us-east-1；普通字段归一化不能阻断凭据轮换。
+            || !StringUtils.equals(StringUtils.defaultIfBlank(oldConfig.getRegion(), "us-east-1"),
+                StringUtils.defaultIfBlank(config.getRegion(), "us-east-1"))) {
             throw new ServiceException("OSS配置已被对象或迁移工单引用，不能修改物理存储身份");
         }
     }
