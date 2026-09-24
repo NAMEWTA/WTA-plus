@@ -1,0 +1,13 @@
+{
+  "backendCommit": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+  "backendRepository": "backend",
+  "generator": "openapi-typescript@7.13.0",
+  "openapiVersion": "3.1.0",
+  "rawSha256": "3b7f8a6a5fc47072eadcb719d044c949f6312fbf1240ac11a5e0ebdfe5a1dda0",
+  "runtimeEndpoint": "/v3/api-docs",
+  "totals": {
+    "paths": 438,
+    "schemas": 450,
+    "tags": 77
+  }
+}

@@ -9186,8 +9186,8 @@ export interface components {
             formPath?: string;
             /** Format: int32 */
             activityStatus?: number;
-            tenantId?: string;
             defJson?: string;
+            tenantId?: string;
         };
         NodeJson: {
             /** Format: int32 */
@@ -11144,6 +11144,8 @@ export interface components {
             metadata?: {
                 [key: string]: string;
             };
+            /** @description 按提交顺序排列的附件源 OSS 主键十进制字符串；缺省为空 */
+            attachmentOssIds?: string[];
         };
         /** @description 单渠道投递结果。 */
         DeliveryReceipt: {
@@ -12474,10 +12476,10 @@ export interface components {
             formPath?: string;
             /** Format: int32 */
             activityStatus?: number;
+            userList?: components["schemas"]["User"][];
             tenantId?: string;
             modelValue?: string;
             listenerPath?: string;
-            userList?: components["schemas"]["User"][];
         };
         /** @description 响应信息主体 */
         RDefinition: {
@@ -14230,7 +14232,7 @@ export interface components {
              * @description 临时对象到期时间。
              */
             expireTime?: string;
-            /** @description 对象删除状态（ACTIVE 正常，PENDING 等待供应商删除）。 */
+            /** @description 对象状态（ACTIVE 可用，NOT_READY 通知私有快照预约中，PENDING 等待供应商删除）。 */
             deleteState?: string;
             /**
              * Format: int64
