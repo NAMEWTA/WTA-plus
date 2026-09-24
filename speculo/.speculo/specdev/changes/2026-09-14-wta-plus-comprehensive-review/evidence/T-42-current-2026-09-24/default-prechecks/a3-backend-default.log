@@ -1,0 +1,792 @@
+Picked up JAVA_TOOL_OPTIONS: -Xms128m -Xmx1536m
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] WTA-Plus                                                           [pom]
+[INFO] wta-common                                                         [pom]
+[INFO] wta-common-core                                                    [jar]
+[INFO] wta-common-doc                                                     [jar]
+[INFO] wta-common-json                                                    [jar]
+[INFO] wta-common-redis                                                   [jar]
+[INFO] wta-common-social                                                  [jar]
+[INFO] wta-common-nacos                                                   [jar]
+[INFO] wta-common-notify                                                  [jar]
+[INFO] wta-common-mail                                                    [jar]
+[INFO] wta-common-mcp                                                     [jar]
+[INFO] wta-api                                                            [jar]
+[INFO] wta-common-satoken                                                 [jar]
+[INFO] wta-common-openapi                                                 [jar]
+[INFO] wta-common-mybatis                                                 [jar]
+[INFO] wta-common-translation                                             [jar]
+[INFO] wta-common-oss                                                     [jar]
+[INFO] wta-common-log                                                     [jar]
+[INFO] wta-common-excel                                                   [jar]
+[INFO] wta-common-sms                                                     [jar]
+[INFO] wta-common-security                                                [jar]
+[INFO] wta-common-web                                                     [jar]
+[INFO] wta-common-sensitive                                               [jar]
+[INFO] wta-common-encrypt                                                 [jar]
+[INFO] wta-common-push                                                    [jar]
+[INFO] wta-modules                                                        [pom]
+[INFO] wta-system                                                         [jar]
+[INFO] wta-third                                                          [jar]
+[INFO] wta-notify                                                         [jar]
+[INFO] wta-sso                                                            [jar]
+[INFO] wta-common-job                                                     [jar]
+[INFO] wta-job                                                            [jar]
+[INFO] wta-common-ai                                                      [jar]
+[INFO] wta-ai                                                             [jar]
+[INFO] wta-common-richtext                                                [jar]
+[INFO] wta-common-elasticsearch                                           [jar]
+[INFO] wta-common-mqtt                                                    [jar]
+[INFO] wta-demo                                                           [jar]
+[INFO] wta-common-liteflow                                                [jar]
+[INFO] wta-workflow                                                       [jar]
+[INFO] wta-profile                                                        [pom]
+[INFO] wta-profile-person                                                 [jar]
+[INFO] wta-profile-enterprise                                             [jar]
+[INFO] wta-admin                                                          [jar]
+[INFO] wta-common-bom                                                     [pom]
+[INFO] wta-extend                                                         [pom]
+[INFO] wta-monitor-admin                                                  [jar]
+[INFO] wta-snailjob-server                                                [jar]
+[INFO] wta-profile-bom                                                    [pom]
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-vue-plus >----------------------
+[INFO] Building WTA-Plus 6.0.0                                           [1/49]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-vue-plus ---
+[INFO] Generating flattened POM of project org.namewta:wta-vue-plus:pom:6.0.0...
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-common >-----------------------
+[INFO] Building wta-common 6.0.0                                         [2/49]
+[INFO]   from wta-common/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common ---
+[INFO] Generating flattened POM of project org.namewta:wta-common:pom:6.0.0...
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-core >---------------------
+[INFO] Building wta-common-core 6.0.0                                    [3/49]
+[INFO]   from wta-common/wta-common-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-core ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-core ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-core:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-core ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-core ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-core ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+Picked up JAVA_TOOL_OPTIONS: -Xms128m -Xmx1536m
+[INFO] Running org.namewta.common.core.utils.ServletUtilsClientAddressTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.160 s -- in org.namewta.common.core.utils.ServletUtilsClientAddressTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-doc >---------------------
+[INFO] Building wta-common-doc 6.0.0                                     [4/49]
+[INFO]   from wta-common/wta-common-doc/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-doc ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-doc ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-doc:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-doc ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-doc ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-doc/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-doc ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-doc ---
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-json >---------------------
+[INFO] Building wta-common-json 6.0.0                                    [5/49]
+[INFO]   from wta-common/wta-common-json/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-json ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-json ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-json:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-json ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-json ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-json/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-json ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-json ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+Picked up JAVA_TOOL_OPTIONS: -Xms128m -Xmx1536m
+[INFO] Running org.namewta.common.json.utils.LogSanitizerTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.340 s -- in org.namewta.common.json.utils.LogSanitizerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-redis >--------------------
+[INFO] Building wta-common-redis 6.0.0                                   [6/49]
+[INFO]   from wta-common/wta-common-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-redis ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-redis ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-redis:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-redis ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-redis ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-redis/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-redis ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-redis ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+Picked up JAVA_TOOL_OPTIONS: -Xms128m -Xmx1536m
+[INFO] Running org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest
+[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.007 s -- in org.namewta.common.redis.utils.RedisUtilsDeadlineIntegrationTest
+[INFO] Running org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.067 s -- in org.namewta.common.redis.aspectj.RepeatSubmitRedisIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 2
+[INFO] 
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-social >--------------------
+[INFO] Building wta-common-social 6.0.0                                  [7/49]
+[INFO]   from wta-common/wta-common-social/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-social ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-social ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-social:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-social ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-social ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-social/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-social ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-social ---
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-nacos >--------------------
+[INFO] Building wta-common-nacos 6.0.0                                   [8/49]
+[INFO]   from wta-common/wta-common-nacos/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-nacos ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-nacos ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-nacos:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-nacos ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-nacos ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-nacos/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-nacos ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-nacos ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+Picked up JAVA_TOOL_OPTIONS: -Xms128m -Xmx1536m
+[INFO] Running org.namewta.common.nacos.NacosConfigBootstrapTest
+03:23:16.309 [main] WARN org.namewta.common.nacos.NacosConfigBootstrap -- Nacos 配置启动读取失败，已使用本地配置并等待服务恢复，profile=local dataId=wta-namewta.yml
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.287 s -- in org.namewta.common.nacos.NacosConfigBootstrapTest
+[INFO] Running org.namewta.common.nacos.NacosConfigManagerTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.151 s -- in org.namewta.common.nacos.NacosConfigManagerTest
+[INFO] Running org.namewta.common.nacos.NacosConfigAutoConfigurationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.204 s -- in org.namewta.common.nacos.NacosConfigAutoConfigurationTest
+[INFO] Running org.namewta.common.nacos.NacosSnapshotPolicyUnitTest
+03:23:16.784 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.logback12.LogbackNacosLoggingAdapterBuilder
+03:23:16.802 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.logback14.LogbackNacosLoggingAdapterBuilder
+03:23:16.803 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter: com.alibaba.nacos.logger.adapter.logback14.LogbackNacosLoggingAdapter match ch.qos.logback.classic.Logger success.
+03:23:16.810 [main] INFO com.alibaba.nacos.client.logging.NacosLogging -- Nacos Logging Adapter Builder: com.alibaba.nacos.logger.adapter.log4j2.Log4j2NacosLoggingAdapterBuilder
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.256 s -- in org.namewta.common.nacos.NacosSnapshotPolicyUnitTest
+[INFO] Running org.namewta.common.nacos.NacosConfigSettingsTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in org.namewta.common.nacos.NacosConfigSettingsTest
+[INFO] Running org.namewta.common.nacos.NacosPropertySourceRegistrarTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in org.namewta.common.nacos.NacosPropertySourceRegistrarTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-notify >--------------------
+[INFO] Building wta-common-notify 6.0.0                                  [9/49]
+[INFO]   from wta-common/wta-common-notify/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-notify ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-notify ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-notify:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-notify ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-notify ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-notify/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-notify ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-notify ---
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-mail >---------------------
+[INFO] Building wta-common-mail 6.0.0                                   [10/49]
+[INFO]   from wta-common/wta-common-mail/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mail ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mail ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mail:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mail ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mail ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-mail/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mail ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mail ---
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-mcp >---------------------
+[INFO] Building wta-common-mcp 6.0.0                                    [11/49]
+[INFO]   from wta-common/wta-common-mcp/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-mcp ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-mcp ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-mcp:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-mcp ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-mcp ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-mcp/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-mcp ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-mcp ---
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-api >-------------------------
+[INFO] Building wta-api 6.0.0                                           [12/49]
+[INFO]   from wta-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-api ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/main/resources
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/main/resources
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-api ---
+[INFO] Generating flattened POM of project org.namewta:wta-api:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-api ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-api ---
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-satoken >-------------------
+[INFO] Building wta-common-satoken 6.0.0                                [13/49]
+[INFO]   from wta-common/wta-common-satoken/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-satoken ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-satoken ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-satoken:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-satoken ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-satoken ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-satoken/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-satoken ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-satoken ---
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-openapi >-------------------
+[INFO] Building wta-common-openapi 6.0.0                                [14/49]
+[INFO]   from wta-common/wta-common-openapi/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-common-openapi ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-common-openapi ---
+[INFO] Generating flattened POM of project org.namewta:wta-common-openapi:jar:6.0.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-common-openapi ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-common-openapi ---
+[INFO] skip non existing resourceDirectory /srv/WTA-plus/backend/wta-common/wta-common-openapi/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-common-openapi ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ wta-common-openapi ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+Picked up JAVA_TOOL_OPTIONS: -Xms128m -Xmx1536m
+Sep 24, 2026 3:23:17 AM org.junit.platform.launcher.core.DiscoveryIssueNotifier logIssues
+SEVERE: TestEngine with ID 'junit-jupiter' encountered a critical issue during test discovery:
+
+(1) [ERROR] ClassSelector [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', classLoader = null] resolution failed
+    Source: ClassSource [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', filePosition = null]
+            at org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest.<no-method>(SourceFile:0)
+    Cause: java.lang.ClassFormatError: Duplicate method name "create" with signature "(Lorg.namewta.common.openapi.session.VerifiedOpenApiIdentity;LLoginUser;Ljava.time.Duration;)V" in class file org/namewta/common/openapi/session/SaTokenOpenApiMachineSessionOperations
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1027)
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:862)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:760)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:681)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:639)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3580)
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2678)
+	at org.junit.platform.commons.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:1664)
+	at org.junit.platform.commons.util.ReflectionUtils.findMethod(ReflectionUtils.java:1511)
+	at org.junit.platform.commons.util.ReflectionUtils.isMethodPresent(ReflectionUtils.java:1379)
+	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.hasTestOrTestFactoryOrTestTemplateMethods(TestClassPredicates.java:107)
+	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:82)
+	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:76)
+	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.isAcceptedStandaloneTestClass(ClassSelectorResolver.java:114)
+	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolveStandaloneTestClass(ClassSelectorResolver.java:105)
+	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolve(ClassSelectorResolver.java:101)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.lambda$resolve$0(EngineDiscoveryRequestResolution.java:137)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1685)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findFirst(ReferencePipeline.java:647)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:191)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:128)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolveCompletely(EngineDiscoveryRequestResolution.java:94)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.run(EngineDiscoveryRequestResolution.java:85)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolver.resolve(EngineDiscoveryRequestResolver.java:150)
+	at org.junit.jupiter.engine.discovery.DiscoverySelectorResolver.resolveSelectors(DiscoverySelectorResolver.java:62)
+	at org.junit.jupiter.engine.JupiterTestEngine.discover(JupiterTestEngine.java:74)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverEngineRoot(EngineDiscoveryOrchestrator.java:195)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverSafely(EngineDiscoveryOrchestrator.java:174)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:119)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:84)
+	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:119)
+	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$discover$0(InterceptingLauncher.java:35)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.discover(InterceptingLauncher.java:35)
+	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.discover(LauncherAdapter.java:47)
+	at org.apache.maven.surefire.junitplatform.TestPlanScannerFilter.accept(TestPlanScannerFilter.java:51)
+	at org.apache.maven.surefire.api.util.DefaultScanResult.applyFilter(DefaultScanResult.java:87)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.scanClasspath(JUnitPlatformProvider.java:156)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] TestEngine with ID 'junit-jupiter' encountered a critical issue during test discovery:
+
+(1) [ERROR] ClassSelector [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', classLoader = null] resolution failed
+    Source: ClassSource [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', filePosition = null]
+            at org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest.<no-method>(SourceFile:0)
+    Cause: java.lang.ClassFormatError: Duplicate method name "create" with signature "(Lorg.namewta.common.openapi.session.VerifiedOpenApiIdentity;LLoginUser;Ljava.time.Duration;)V" in class file org/namewta/common/openapi/session/SaTokenOpenApiMachineSessionOperations
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1027)
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:862)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:760)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:681)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:639)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3580)
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2678)
+	at org.junit.platform.commons.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:1664)
+	at org.junit.platform.commons.util.ReflectionUtils.findMethod(ReflectionUtils.java:1511)
+	at org.junit.platform.commons.util.ReflectionUtils.isMethodPresent(ReflectionUtils.java:1379)
+	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.hasTestOrTestFactoryOrTestTemplateMethods(TestClassPredicates.java:107)
+	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:82)
+	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:76)
+	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.isAcceptedStandaloneTestClass(ClassSelectorResolver.java:114)
+	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolveStandaloneTestClass(ClassSelectorResolver.java:105)
+	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolve(ClassSelectorResolver.java:101)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.lambda$resolve$0(EngineDiscoveryRequestResolution.java:137)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1685)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findFirst(ReferencePipeline.java:647)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:191)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:128)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolveCompletely(EngineDiscoveryRequestResolution.java:94)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.run(EngineDiscoveryRequestResolution.java:85)
+	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolver.resolve(EngineDiscoveryRequestResolver.java:150)
+	at org.junit.jupiter.engine.discovery.DiscoverySelectorResolver.resolveSelectors(DiscoverySelectorResolver.java:62)
+	at org.junit.jupiter.engine.JupiterTestEngine.discover(JupiterTestEngine.java:74)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverEngineRoot(EngineDiscoveryOrchestrator.java:195)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverSafely(EngineDiscoveryOrchestrator.java:174)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:119)
+	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:84)
+	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:119)
+	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$discover$0(InterceptingLauncher.java:35)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.discover(InterceptingLauncher.java:35)
+	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.discover(LauncherAdapter.java:47)
+	at org.apache.maven.surefire.junitplatform.TestPlanScannerFilter.accept(TestPlanScannerFilter.java:51)
+	at org.apache.maven.surefire.api.util.DefaultScanResult.applyFilter(DefaultScanResult.java:87)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.scanClasspath(JUnitPlatformProvider.java:156)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for WTA-Plus 6.0.0:
+[INFO] 
+[INFO] WTA-Plus ........................................... SUCCESS [  0.333 s]
+[INFO] wta-common ......................................... SUCCESS [  0.057 s]
+[INFO] wta-common-core .................................... SUCCESS [  1.898 s]
+[INFO] wta-common-doc ..................................... SUCCESS [  0.125 s]
+[INFO] wta-common-json .................................... SUCCESS [  0.902 s]
+[INFO] wta-common-redis ................................... SUCCESS [  0.807 s]
+[INFO] wta-common-social .................................. SUCCESS [  0.065 s]
+[INFO] wta-common-nacos ................................... SUCCESS [  1.565 s]
+[INFO] wta-common-notify .................................. SUCCESS [  0.052 s]
+[INFO] wta-common-mail .................................... SUCCESS [  0.064 s]
+[INFO] wta-common-mcp ..................................... SUCCESS [  0.064 s]
+[INFO] wta-api ............................................ SUCCESS [  0.042 s]
+[INFO] wta-common-satoken ................................. SUCCESS [  0.066 s]
+[INFO] wta-common-openapi ................................. FAILURE [  0.630 s]
+[INFO] wta-common-mybatis ................................. SKIPPED
+[INFO] wta-common-translation ............................. SKIPPED
+[INFO] wta-common-oss ..................................... SKIPPED
+[INFO] wta-common-log ..................................... SKIPPED
+[INFO] wta-common-excel ................................... SKIPPED
+[INFO] wta-common-sms ..................................... SKIPPED
+[INFO] wta-common-security ................................ SKIPPED
+[INFO] wta-common-web ..................................... SKIPPED
+[INFO] wta-common-sensitive ............................... SKIPPED
+[INFO] wta-common-encrypt ................................. SKIPPED
+[INFO] wta-common-push .................................... SKIPPED
+[INFO] wta-modules ........................................ SKIPPED
+[INFO] wta-system ......................................... SKIPPED
+[INFO] wta-third .......................................... SKIPPED
+[INFO] wta-notify ......................................... SKIPPED
+[INFO] wta-sso ............................................ SKIPPED
+[INFO] wta-common-job ..................................... SKIPPED
+[INFO] wta-job ............................................ SKIPPED
+[INFO] wta-common-ai ...................................... SKIPPED
+[INFO] wta-ai ............................................. SKIPPED
+[INFO] wta-common-richtext ................................ SKIPPED
+[INFO] wta-common-elasticsearch ........................... SKIPPED
+[INFO] wta-common-mqtt .................................... SKIPPED
+[INFO] wta-demo ........................................... SKIPPED
+[INFO] wta-common-liteflow ................................ SKIPPED
+[INFO] wta-workflow ....................................... SKIPPED
+[INFO] wta-profile ........................................ SKIPPED
+[INFO] wta-profile-person ................................. SKIPPED
+[INFO] wta-profile-enterprise ............................. SKIPPED
+[INFO] wta-admin .......................................... SKIPPED
+[INFO] wta-common-bom ..................................... SKIPPED
+[INFO] wta-extend ......................................... SKIPPED
+[INFO] wta-monitor-admin .................................. SKIPPED
+[INFO] wta-snailjob-server ................................ SKIPPED
+[INFO] wta-profile-bom .................................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.121 s
+[INFO] Finished at: 2026-09-24T03:23:17-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.5:test (default-test) on project wta-common-openapi: 
+[ERROR] 
+[ERROR] See /srv/WTA-plus/backend/wta-common/wta-common-openapi/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] There was an error in the forked process
+[ERROR] TestEngine with ID 'junit-jupiter' encountered a critical issue during test discovery:
+[ERROR] 
+[ERROR] (1) [ERROR] ClassSelector [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', classLoader = null] resolution failed
+[ERROR]     Source: ClassSource [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', filePosition = null]
+[ERROR]             at org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest.<no-method>(SourceFile:0)
+[ERROR]     Cause: java.lang.ClassFormatError: Duplicate method name "create" with signature "(Lorg.namewta.common.openapi.session.VerifiedOpenApiIdentity;LLoginUser;Ljava.time.Duration;)V" in class file org/namewta/common/openapi/session/SaTokenOpenApiMachineSessionOperations
+[ERROR] 	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+[ERROR] 	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1027)
+[ERROR] 	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:862)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:760)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:681)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:639)
+[ERROR] 	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+[ERROR] 	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+[ERROR] 	at java.base/java.lang.Class.getDeclaredMethods0(Native Method)
+[ERROR] 	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3580)
+[ERROR] 	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2678)
+[ERROR] 	at org.junit.platform.commons.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:1664)
+[ERROR] 	at org.junit.platform.commons.util.ReflectionUtils.findMethod(ReflectionUtils.java:1511)
+[ERROR] 	at org.junit.platform.commons.util.ReflectionUtils.isMethodPresent(ReflectionUtils.java:1379)
+[ERROR] 	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.hasTestOrTestFactoryOrTestTemplateMethods(TestClassPredicates.java:107)
+[ERROR] 	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:82)
+[ERROR] 	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:76)
+[ERROR] 	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.isAcceptedStandaloneTestClass(ClassSelectorResolver.java:114)
+[ERROR] 	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolveStandaloneTestClass(ClassSelectorResolver.java:105)
+[ERROR] 	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolve(ClassSelectorResolver.java:101)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.lambda$resolve$0(EngineDiscoveryRequestResolution.java:137)
+[ERROR] 	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+[ERROR] 	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1685)
+[ERROR] 	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+[ERROR] 	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+[ERROR] 	at java.base/java.util.stream.ReferencePipeline.findFirst(ReferencePipeline.java:647)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:191)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:128)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolveCompletely(EngineDiscoveryRequestResolution.java:94)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.run(EngineDiscoveryRequestResolution.java:85)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolver.resolve(EngineDiscoveryRequestResolver.java:150)
+[ERROR] 	at org.junit.jupiter.engine.discovery.DiscoverySelectorResolver.resolveSelectors(DiscoverySelectorResolver.java:62)
+[ERROR] 	at org.junit.jupiter.engine.JupiterTestEngine.discover(JupiterTestEngine.java:74)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverEngineRoot(EngineDiscoveryOrchestrator.java:195)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverSafely(EngineDiscoveryOrchestrator.java:174)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:119)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:84)
+[ERROR] 	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:119)
+[ERROR] 	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:85)
+[ERROR] 	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+[ERROR] 	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$discover$0(InterceptingLauncher.java:35)
+[ERROR] 	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+[ERROR] 	at org.junit.platform.launcher.core.InterceptingLauncher.discover(InterceptingLauncher.java:35)
+[ERROR] 	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.LauncherAdapter.discover(LauncherAdapter.java:47)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.TestPlanScannerFilter.accept(TestPlanScannerFilter.java:51)
+[ERROR] 	at org.apache.maven.surefire.api.util.DefaultScanResult.applyFilter(DefaultScanResult.java:87)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.scanClasspath(JUnitPlatformProvider.java:156)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+[ERROR] 
+[ERROR] org.apache.maven.surefire.booter.SurefireBooterForkException: There was an error in the forked process
+[ERROR] TestEngine with ID 'junit-jupiter' encountered a critical issue during test discovery:
+[ERROR] 
+[ERROR] (1) [ERROR] ClassSelector [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', classLoader = null] resolution failed
+[ERROR]     Source: ClassSource [className = 'org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest', filePosition = null]
+[ERROR]             at org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperationsTest.<no-method>(SourceFile:0)
+[ERROR]     Cause: java.lang.ClassFormatError: Duplicate method name "create" with signature "(Lorg.namewta.common.openapi.session.VerifiedOpenApiIdentity;LLoginUser;Ljava.time.Duration;)V" in class file org/namewta/common/openapi/session/SaTokenOpenApiMachineSessionOperations
+[ERROR] 	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+[ERROR] 	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1027)
+[ERROR] 	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:862)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:760)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:681)
+[ERROR] 	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:639)
+[ERROR] 	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+[ERROR] 	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+[ERROR] 	at java.base/java.lang.Class.getDeclaredMethods0(Native Method)
+[ERROR] 	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3580)
+[ERROR] 	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2678)
+[ERROR] 	at org.junit.platform.commons.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:1664)
+[ERROR] 	at org.junit.platform.commons.util.ReflectionUtils.findMethod(ReflectionUtils.java:1511)
+[ERROR] 	at org.junit.platform.commons.util.ReflectionUtils.isMethodPresent(ReflectionUtils.java:1379)
+[ERROR] 	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.hasTestOrTestFactoryOrTestTemplateMethods(TestClassPredicates.java:107)
+[ERROR] 	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:82)
+[ERROR] 	at org.junit.jupiter.engine.discovery.predicates.TestClassPredicates.looksLikeIntendedTestClass(TestClassPredicates.java:76)
+[ERROR] 	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.isAcceptedStandaloneTestClass(ClassSelectorResolver.java:114)
+[ERROR] 	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolveStandaloneTestClass(ClassSelectorResolver.java:105)
+[ERROR] 	at org.junit.jupiter.engine.discovery.ClassSelectorResolver.resolve(ClassSelectorResolver.java:101)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.lambda$resolve$0(EngineDiscoveryRequestResolution.java:137)
+[ERROR] 	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+[ERROR] 	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1685)
+[ERROR] 	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+[ERROR] 	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+[ERROR] 	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+[ERROR] 	at java.base/java.util.stream.ReferencePipeline.findFirst(ReferencePipeline.java:647)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:191)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolve(EngineDiscoveryRequestResolution.java:128)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.resolveCompletely(EngineDiscoveryRequestResolution.java:94)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolution.run(EngineDiscoveryRequestResolution.java:85)
+[ERROR] 	at org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolver.resolve(EngineDiscoveryRequestResolver.java:150)
+[ERROR] 	at org.junit.jupiter.engine.discovery.DiscoverySelectorResolver.resolveSelectors(DiscoverySelectorResolver.java:62)
+[ERROR] 	at org.junit.jupiter.engine.JupiterTestEngine.discover(JupiterTestEngine.java:74)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverEngineRoot(EngineDiscoveryOrchestrator.java:195)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discoverSafely(EngineDiscoveryOrchestrator.java:174)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:119)
+[ERROR] 	at org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.discover(EngineDiscoveryOrchestrator.java:84)
+[ERROR] 	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:119)
+[ERROR] 	at org.junit.platform.launcher.core.DefaultLauncher.discover(DefaultLauncher.java:85)
+[ERROR] 	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+[ERROR] 	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$discover$0(InterceptingLauncher.java:35)
+[ERROR] 	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+[ERROR] 	at org.junit.platform.launcher.core.InterceptingLauncher.discover(InterceptingLauncher.java:35)
+[ERROR] 	at org.junit.platform.launcher.core.DelegatingLauncher.discover(DelegatingLauncher.java:43)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.LauncherAdapter.discover(LauncherAdapter.java:47)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.TestPlanScannerFilter.accept(TestPlanScannerFilter.java:51)
+[ERROR] 	at org.apache.maven.surefire.api.util.DefaultScanResult.applyFilter(DefaultScanResult.java:87)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.scanClasspath(JUnitPlatformProvider.java:156)
+[ERROR] 	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+[ERROR] 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+[ERROR] 
+[ERROR] 	at org.apache.maven.plugin.surefire.booterclient.ForkStarter.fork(ForkStarter.java:631)
+[ERROR] 	at org.apache.maven.plugin.surefire.booterclient.ForkStarter.run(ForkStarter.java:285)
+[ERROR] 	at org.apache.maven.plugin.surefire.booterclient.ForkStarter.run(ForkStarter.java:250)
+[ERROR] 	at org.apache.maven.plugin.surefire.AbstractSurefireMojo.executeProvider(AbstractSurefireMojo.java:1347)
+[ERROR] 	at org.apache.maven.plugin.surefire.AbstractSurefireMojo.executeAfterPreconditionsChecked(AbstractSurefireMojo.java:1145)
+[ERROR] 	at org.apache.maven.plugin.surefire.AbstractSurefireMojo.execute(AbstractSurefireMojo.java:979)
+[ERROR] 	at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo(DefaultBuildPluginManager.java:126)
+[ERROR] 	at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2(MojoExecutor.java:328)
+[ERROR] 	at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute(MojoExecutor.java:316)
+[ERROR] 	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:212)
+[ERROR] 	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:174)
+[ERROR] 	at org.apache.maven.lifecycle.internal.MojoExecutor.access$000(MojoExecutor.java:75)
+[ERROR] 	at org.apache.maven.lifecycle.internal.MojoExecutor$1.run(MojoExecutor.java:162)
+[ERROR] 	at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute(DefaultMojosExecutionStrategy.java:39)
+[ERROR] 	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:159)
+[ERROR] 	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:105)
+[ERROR] 	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:73)
+[ERROR] 	at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build(SingleThreadedBuilder.java:53)
+[ERROR] 	at org.apache.maven.lifecycle.internal.LifecycleStarter.execute(LifecycleStarter.java:118)
+[ERROR] 	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:261)
+[ERROR] 	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:173)
+[ERROR] 	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:101)
+[ERROR] 	at org.apache.maven.cli.MavenCli.execute(MavenCli.java:919)
+[ERROR] 	at org.apache.maven.cli.MavenCli.doMain(MavenCli.java:285)
+[ERROR] 	at org.apache.maven.cli.MavenCli.main(MavenCli.java:207)
+[ERROR] 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+[ERROR] 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+[ERROR] 	at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:255)
+[ERROR] 	at org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:201)
+[ERROR] 	at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:361)
+[ERROR] 	at org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:314)
+[ERROR] 
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :wta-common-openapi

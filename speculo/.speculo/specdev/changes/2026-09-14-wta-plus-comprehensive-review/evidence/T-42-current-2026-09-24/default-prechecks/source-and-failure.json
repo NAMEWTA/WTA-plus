@@ -1,0 +1,30 @@
+{
+  "source": {
+    "head": "3efc5862e1bfb86ee23e566d1eb05aa1dda24e94",
+    "tree": "55b6932cd611e4f6b7e541114be0fa51edac4044",
+    "clean": true
+  },
+  "default_record": {
+    "command": [
+      "./mvnw",
+      "test"
+    ],
+    "cwd": "/srv/WTA-plus/backend",
+    "started_at": "2026-09-24T07:23:08.923261+00:00",
+    "finished_at": "2026-09-24T07:23:17.968592+00:00",
+    "exit_code": 1,
+    "log": "a3-backend-default.log"
+  },
+  "artifact_sha256": "1b90744e21680177a78874a93dd9f41aa81425ba8d95346d1de86f41a389167b",
+  "artifact_mtime": 1790234478.3963,
+  "source_diff_since_t42_base": "",
+  "phase": "test discovery, not whole default pass",
+  "counts": {
+    "fresh_suites": 10,
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "full_package": "not-run"
+}

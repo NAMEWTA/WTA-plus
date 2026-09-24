@@ -1,0 +1,27 @@
+Compiled from "SaTokenOpenApiMachineSessionOperations.java"
+public class org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperations implements org.namewta.common.openapi.session.OpenApiMachineSessionOperations {
+  static final java.lang.String MACHINE_DEVICE_PREFIX;
+  static final java.lang.String SESSION_CREDENTIAL_ID;
+  static final java.lang.String SESSION_OWNER_USER_ID;
+  private static final java.lang.String USER_LOCK_PREFIX;
+  private final cn.dev33.satoken.stp.StpLogic stpLogic;
+  private final org.redisson.api.RedissonClient redissonClient;
+  private final java.util.function.Supplier<cn.dev33.satoken.context.model.SaStorage> storageSupplier;
+  public org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperations(cn.dev33.satoken.stp.StpLogic, org.redisson.api.RedissonClient);
+  org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperations(cn.dev33.satoken.stp.StpLogic, org.redisson.api.RedissonClient, java.util.function.Supplier<cn.dev33.satoken.context.model.SaStorage>);
+  public LoginUser find(org.namewta.common.openapi.session.VerifiedOpenApiIdentity);
+  public void create(org.namewta.common.openapi.session.VerifiedOpenApiIdentity, LoginUser, java.time.Duration);
+  public <T> T inRequestScope(org.namewta.common.openapi.session.VerifiedOpenApiIdentity, java.util.function.Supplier<T>);
+  public <T> T withUserLock(java.lang.Long, java.util.function.Supplier<T>);
+  public int invalidateByUserId(java.lang.Long);
+  private java.lang.String findToken(org.namewta.common.openapi.session.VerifiedOpenApiIdentity);
+  private LoginUser loginUser(java.lang.String, org.namewta.common.openapi.session.VerifiedOpenApiIdentity);
+  private void writeToken(cn.dev33.satoken.context.model.SaStorage, java.lang.String, java.lang.String);
+  private static org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperations$StoredValue capture(cn.dev33.satoken.context.model.SaStorage, java.lang.String);
+  private static void restore(cn.dev33.satoken.context.model.SaStorage, java.lang.String, org.namewta.common.openapi.session.SaTokenOpenApiMachineSessionOperations$StoredValue);
+  private static java.lang.String loginId(java.lang.Long);
+  private static java.lang.String deviceType(java.lang.Long);
+  public void create(org.namewta.common.openapi.session.VerifiedOpenApiIdentity, LoginUser, java.time.Duration);
+  public LoginUser find(org.namewta.common.openapi.session.VerifiedOpenApiIdentity);
+  private static boolean lambda$1(cn.dev33.satoken.session.SaTerminalInfo);
+}

@@ -1,0 +1,13 @@
+# T42 Dispatch04
+
+## revision236 — 默认测试合同同步与 Dispatch04
+
+revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除旧问题字节码后1183项检出2fail/1error（244环境skip），三项测试/载体合同待同步，未完成。事前新增2写路径共66根；17done/2cancelled/1in_progress/30ready。
+
+原默认在common-openapi发现ClassFormatError；保留javap与摘要证明旧class含未解析LoginUser及重复create/find问题桩，源码没有重复且本票未改该模块。独立审查支持保留原失败后清理target再按同clean3efc5862完整重跑，不把JDT进程观察当确定归因。恢复1默认265套1183项，936通过/2failure/1error/244环境skip，full尚未运行。两次失败及报告见evidence/T-42-current-2026-09-24/default-prechecks/manifest.json。
+
+三项具体缺口：BusinessOssOwnerArchitectureUnitTest发现新notify_intent_attachment的source_oss_id、snapshot_oss_id未登记；OssNotifyMigrationUnitTest把attachment_actor_client_pk误判成不允许的通用client_pk；OssStorageReadinessArchitectureUnitTest在整个common类禁止putObject，命中诊断方法之外的新有界上传。前者必须补真实owner清单与生命周期、调用者和测试证据，不能塞allowlist；后两必须保留原硬约束，精确禁止独立client_pk列，诊断实际调用闭包仍不得写桶/对象，不得仅删putObject反例或绕过扫描。
+
+Dispatch04先登记migration测试与test/resources/oss/business-oss-owners.json两精确路径，原oss测试根已授权，共66根。cors_audit只获上述清单及三相关架构测试的产品写锁；只修测试/清单，无生产/DDL/依赖变更，禁止构建/服务/提交/生成物/治理。Lead回读后固定源码先定向验证这三类，再完整默认/full及后续HTTP/OpenAPI/core/frontend/static；真实Mail27和135仅在生产/各自测试输入相同证据下沿用原坐标。若发现生产缺陷或需要新增路径，先回报，不越界修改。
+
+四项复盘：共同模式为局部用例通过但全仓合同未同步；根因分别是旧构建输出与新表/字段/方法未进入原架构验收范围；下一实质变化为精确维护硬约束而非修改业务语义；owner为唯一测试writer cors_audit，Lead独占命令/服务，Dispatch04新合同同步批attempts0。此前02B三候选及默认构建恢复失败均永久保留，不追认为成功。Windows用户豁免已正式记录，其他T48检查不减。

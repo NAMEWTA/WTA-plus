@@ -1,0 +1,11 @@
+{
+  "suites": 265,
+  "counts": {
+    "tests": 1183,
+    "failures": 2,
+    "errors": 1,
+    "skipped": 244
+  },
+  "exit_code": 1,
+  "full_package": "not-run"
+}

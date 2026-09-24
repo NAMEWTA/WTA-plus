@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "clean"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-24T07:25:11.389480+00:00",
+  "finished_at": "2026-09-24T07:25:13.390282+00:00",
+  "exit_code": 0,
+  "log": "cleanr1-clean-before-default.log"
+}

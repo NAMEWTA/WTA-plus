@@ -1,0 +1,638 @@
+Picked up JAVA_TOOL_OPTIONS: -Xms128m -Xmx1536m
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] WTA-Plus                                                           [pom]
+[INFO] wta-common                                                         [pom]
+[INFO] wta-common-core                                                    [jar]
+[INFO] wta-common-doc                                                     [jar]
+[INFO] wta-common-json                                                    [jar]
+[INFO] wta-common-redis                                                   [jar]
+[INFO] wta-common-social                                                  [jar]
+[INFO] wta-common-nacos                                                   [jar]
+[INFO] wta-common-notify                                                  [jar]
+[INFO] wta-common-mail                                                    [jar]
+[INFO] wta-common-mcp                                                     [jar]
+[INFO] wta-api                                                            [jar]
+[INFO] wta-common-satoken                                                 [jar]
+[INFO] wta-common-openapi                                                 [jar]
+[INFO] wta-common-mybatis                                                 [jar]
+[INFO] wta-common-translation                                             [jar]
+[INFO] wta-common-oss                                                     [jar]
+[INFO] wta-common-log                                                     [jar]
+[INFO] wta-common-excel                                                   [jar]
+[INFO] wta-common-sms                                                     [jar]
+[INFO] wta-common-security                                                [jar]
+[INFO] wta-common-web                                                     [jar]
+[INFO] wta-common-sensitive                                               [jar]
+[INFO] wta-common-encrypt                                                 [jar]
+[INFO] wta-common-push                                                    [jar]
+[INFO] wta-modules                                                        [pom]
+[INFO] wta-system                                                         [jar]
+[INFO] wta-third                                                          [jar]
+[INFO] wta-notify                                                         [jar]
+[INFO] wta-sso                                                            [jar]
+[INFO] wta-common-job                                                     [jar]
+[INFO] wta-job                                                            [jar]
+[INFO] wta-common-ai                                                      [jar]
+[INFO] wta-ai                                                             [jar]
+[INFO] wta-common-richtext                                                [jar]
+[INFO] wta-common-elasticsearch                                           [jar]
+[INFO] wta-common-mqtt                                                    [jar]
+[INFO] wta-demo                                                           [jar]
+[INFO] wta-common-liteflow                                                [jar]
+[INFO] wta-workflow                                                       [jar]
+[INFO] wta-profile                                                        [pom]
+[INFO] wta-profile-person                                                 [jar]
+[INFO] wta-profile-enterprise                                             [jar]
+[INFO] wta-admin                                                          [jar]
+[INFO] wta-common-bom                                                     [pom]
+[INFO] wta-extend                                                         [pom]
+[INFO] wta-monitor-admin                                                  [jar]
+[INFO] wta-snailjob-server                                                [jar]
+[INFO] wta-profile-bom                                                    [pom]
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-vue-plus >----------------------
+[INFO] Building WTA-Plus 6.0.0                                           [1/49]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-vue-plus ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-vue-plus ---
+[INFO] Deleting /srv/WTA-plus/backend/.flattened-pom.xml
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-common >-----------------------
+[INFO] Building wta-common 6.0.0                                         [2/49]
+[INFO]   from wta-common/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-core >---------------------
+[INFO] Building wta-common-core 6.0.0                                    [3/49]
+[INFO]   from wta-common/wta-common-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-core ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-core/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-core ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-core/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-doc >---------------------
+[INFO] Building wta-common-doc 6.0.0                                     [4/49]
+[INFO]   from wta-common/wta-common-doc/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-doc ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-doc/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-doc ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-doc/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-json >---------------------
+[INFO] Building wta-common-json 6.0.0                                    [5/49]
+[INFO]   from wta-common/wta-common-json/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-json ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-json/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-json ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-json/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-redis >--------------------
+[INFO] Building wta-common-redis 6.0.0                                   [6/49]
+[INFO]   from wta-common/wta-common-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-redis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-redis/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-redis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-redis/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-social >--------------------
+[INFO] Building wta-common-social 6.0.0                                  [7/49]
+[INFO]   from wta-common/wta-common-social/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-social ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-social/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-social ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-social/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-nacos >--------------------
+[INFO] Building wta-common-nacos 6.0.0                                   [8/49]
+[INFO]   from wta-common/wta-common-nacos/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-nacos ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-nacos/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-nacos ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-nacos/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-notify >--------------------
+[INFO] Building wta-common-notify 6.0.0                                  [9/49]
+[INFO]   from wta-common/wta-common-notify/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-notify/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-notify/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-mail >---------------------
+[INFO] Building wta-common-mail 6.0.0                                   [10/49]
+[INFO]   from wta-common/wta-common-mail/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mail ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mail/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mail ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mail/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-mcp >---------------------
+[INFO] Building wta-common-mcp 6.0.0                                    [11/49]
+[INFO]   from wta-common/wta-common-mcp/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mcp ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mcp/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mcp ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mcp/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-api >-------------------------
+[INFO] Building wta-api 6.0.0                                           [12/49]
+[INFO]   from wta-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-api ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-api/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-api ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-api/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-satoken >-------------------
+[INFO] Building wta-common-satoken 6.0.0                                [13/49]
+[INFO]   from wta-common/wta-common-satoken/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-satoken ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-satoken/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-satoken ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-satoken/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-openapi >-------------------
+[INFO] Building wta-common-openapi 6.0.0                                [14/49]
+[INFO]   from wta-common/wta-common-openapi/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-openapi ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-openapi/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-openapi ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-openapi/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-mybatis >-------------------
+[INFO] Building wta-common-mybatis 6.0.0                                [15/49]
+[INFO]   from wta-common/wta-common-mybatis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mybatis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mybatis/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mybatis ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mybatis/.flattened-pom.xml
+[INFO] 
+[INFO] -----------------< org.namewta:wta-common-translation >-----------------
+[INFO] Building wta-common-translation 6.0.0                            [16/49]
+[INFO]   from wta-common/wta-common-translation/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-translation ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-translation/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-translation ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-translation/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-oss >---------------------
+[INFO] Building wta-common-oss 6.0.0                                    [17/49]
+[INFO]   from wta-common/wta-common-oss/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-oss ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-oss/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-oss ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-oss/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-log >---------------------
+[INFO] Building wta-common-log 6.0.0                                    [18/49]
+[INFO]   from wta-common/wta-common-log/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-log ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-log/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-log ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-log/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-excel >--------------------
+[INFO] Building wta-common-excel 6.0.0                                  [19/49]
+[INFO]   from wta-common/wta-common-excel/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-excel ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-excel/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-excel ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-excel/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-sms >---------------------
+[INFO] Building wta-common-sms 6.0.0                                    [20/49]
+[INFO]   from wta-common/wta-common-sms/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-sms ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sms/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-sms ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sms/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-security >-------------------
+[INFO] Building wta-common-security 6.0.0                               [21/49]
+[INFO]   from wta-common/wta-common-security/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-security ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-security/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-security ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-security/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-web >---------------------
+[INFO] Building wta-common-web 6.0.0                                    [22/49]
+[INFO]   from wta-common/wta-common-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-web ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-web/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-web ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-web/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-sensitive >------------------
+[INFO] Building wta-common-sensitive 6.0.0                              [23/49]
+[INFO]   from wta-common/wta-common-sensitive/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-sensitive ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sensitive/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-sensitive ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-sensitive/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-common-encrypt >-------------------
+[INFO] Building wta-common-encrypt 6.0.0                                [24/49]
+[INFO]   from wta-common/wta-common-encrypt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-encrypt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-encrypt/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-encrypt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-encrypt/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-push >---------------------
+[INFO] Building wta-common-push 6.0.0                                   [25/49]
+[INFO]   from wta-common/wta-common-push/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-push ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-push/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-push ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-push/.flattened-pom.xml
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-modules >-----------------------
+[INFO] Building wta-modules 6.0.0                                       [26/49]
+[INFO]   from wta-modules/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-modules ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-modules ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/.flattened-pom.xml
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-system >-----------------------
+[INFO] Building wta-system 6.0.0                                        [27/49]
+[INFO]   from wta-modules/wta-system/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-system ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-system/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-system ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-system/.flattened-pom.xml
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-third >------------------------
+[INFO] Building wta-third 6.0.0                                         [28/49]
+[INFO]   from wta-modules/wta-third/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-third ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-third/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-third ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-third/.flattened-pom.xml
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-notify >-----------------------
+[INFO] Building wta-notify 6.0.0                                        [29/49]
+[INFO]   from wta-modules/wta-notify/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-notify/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-notify ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-notify/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-sso >-------------------------
+[INFO] Building wta-sso 6.0.0                                           [30/49]
+[INFO]   from wta-modules/wta-sso/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-sso ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-sso/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-sso ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-sso/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-job >---------------------
+[INFO] Building wta-common-job 6.0.0                                    [31/49]
+[INFO]   from wta-common/wta-common-job/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-job/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-job/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-job >-------------------------
+[INFO] Building wta-job 6.0.0                                           [32/49]
+[INFO]   from wta-modules/wta-job/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-job/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-job ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-job/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-ai >----------------------
+[INFO] Building wta-common-ai 6.0.0                                     [33/49]
+[INFO]   from wta-common/wta-common-ai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-ai/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-ai/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------------< org.namewta:wta-ai >-------------------------
+[INFO] Building wta-ai 6.0.0                                            [34/49]
+[INFO]   from wta-modules/wta-ai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-ai/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-ai ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-ai/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-richtext >-------------------
+[INFO] Building wta-common-richtext 6.0.0                               [35/49]
+[INFO]   from wta-common/wta-common-richtext/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-richtext ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-richtext/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-richtext ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-richtext/.flattened-pom.xml
+[INFO] 
+[INFO] ----------------< org.namewta:wta-common-elasticsearch >----------------
+[INFO] Building wta-common-elasticsearch 6.0.0                          [36/49]
+[INFO]   from wta-common/wta-common-elasticsearch/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-elasticsearch ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-elasticsearch/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-elasticsearch ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-elasticsearch/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-common-mqtt >---------------------
+[INFO] Building wta-common-mqtt 6.0.0                                   [37/49]
+[INFO]   from wta-common/wta-common-mqtt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-mqtt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mqtt/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-mqtt ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-mqtt/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------------< org.namewta:wta-demo >------------------------
+[INFO] Building wta-demo 6.0.0                                          [38/49]
+[INFO]   from wta-modules/wta-demo/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-demo ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-demo/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-demo ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-demo/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------< org.namewta:wta-common-liteflow >-------------------
+[INFO] Building wta-common-liteflow 6.0.0                               [39/49]
+[INFO]   from wta-common/wta-common-liteflow/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-liteflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-liteflow/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-common-liteflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-common/wta-common-liteflow/.flattened-pom.xml
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-workflow >----------------------
+[INFO] Building wta-workflow 6.0.0                                      [40/49]
+[INFO]   from wta-modules/wta-workflow/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-workflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-workflow/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-workflow ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-workflow/.flattened-pom.xml
+[INFO] 
+[INFO] ----------------------< org.namewta:wta-profile >-----------------------
+[INFO] Building wta-profile 6.0.0                                       [41/49]
+[INFO]   from wta-modules/wta-profile/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-profile ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-profile-person >-------------------
+[INFO] Building wta-profile-person 6.0.0                                [42/49]
+[INFO]   from wta-modules/wta-profile/wta-profile-person/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile-person ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-person/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-profile-person ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-person/.flattened-pom.xml
+[INFO] 
+[INFO] -----------------< org.namewta:wta-profile-enterprise >-----------------
+[INFO] Building wta-profile-enterprise 6.0.0                            [43/49]
+[INFO]   from wta-modules/wta-profile/wta-profile-enterprise/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile-enterprise ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-enterprise/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-profile-enterprise ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-modules/wta-profile/wta-profile-enterprise/.flattened-pom.xml
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-admin >------------------------
+[INFO] Building wta-admin 6.0.0                                         [44/49]
+[INFO]   from wta-admin/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-admin/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-admin/.flattened-pom.xml
+[INFO] 
+[INFO] ---------------------< org.namewta:wta-common-bom >---------------------
+[INFO] Building wta-common-bom 6.0.0                                    [45/49]
+[INFO]   from wta-common/wta-common-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-common-bom ---
+[INFO] 
+[INFO] -----------------------< org.namewta:wta-extend >-----------------------
+[INFO] Building wta-extend 6.0.0                                        [46/49]
+[INFO]   from wta-extend/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-extend ---
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-extend ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/.flattened-pom.xml
+[INFO] 
+[INFO] -------------------< org.namewta:wta-monitor-admin >--------------------
+[INFO] Building wta-monitor-admin 6.0.0                                 [47/49]
+[INFO]   from wta-extend/wta-monitor-admin/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-monitor-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-monitor-admin/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-monitor-admin ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-monitor-admin/.flattened-pom.xml
+[INFO] 
+[INFO] ------------------< org.namewta:wta-snailjob-server >-------------------
+[INFO] Building wta-snailjob-server 6.0.0                               [48/49]
+[INFO]   from wta-extend/wta-snailjob-server/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-snailjob-server ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-snailjob-server/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (flatten.clean) @ wta-snailjob-server ---
+[INFO] Deleting /srv/WTA-plus/backend/wta-extend/wta-snailjob-server/.flattened-pom.xml
+[INFO] 
+[INFO] --------------------< org.namewta:wta-profile-bom >---------------------
+[INFO] Building wta-profile-bom 6.0.0                                   [49/49]
+[INFO]   from wta-modules/wta-profile/wta-profile-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ wta-profile-bom ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for WTA-Plus 6.0.0:
+[INFO] 
+[INFO] WTA-Plus ........................................... SUCCESS [  0.227 s]
+[INFO] wta-common ......................................... SUCCESS [  0.003 s]
+[INFO] wta-common-core .................................... SUCCESS [  0.019 s]
+[INFO] wta-common-doc ..................................... SUCCESS [  0.007 s]
+[INFO] wta-common-json .................................... SUCCESS [  0.005 s]
+[INFO] wta-common-redis ................................... SUCCESS [  0.006 s]
+[INFO] wta-common-social .................................. SUCCESS [  0.006 s]
+[INFO] wta-common-nacos ................................... SUCCESS [  0.006 s]
+[INFO] wta-common-notify .................................. SUCCESS [  0.007 s]
+[INFO] wta-common-mail .................................... SUCCESS [  0.003 s]
+[INFO] wta-common-mcp ..................................... SUCCESS [  0.005 s]
+[INFO] wta-api ............................................ SUCCESS [  0.007 s]
+[INFO] wta-common-satoken ................................. SUCCESS [  0.007 s]
+[INFO] wta-common-openapi ................................. SUCCESS [  0.006 s]
+[INFO] wta-common-mybatis ................................. SUCCESS [  0.007 s]
+[INFO] wta-common-translation ............................. SUCCESS [  0.005 s]
+[INFO] wta-common-oss ..................................... SUCCESS [  0.006 s]
+[INFO] wta-common-log ..................................... SUCCESS [  0.004 s]
+[INFO] wta-common-excel ................................... SUCCESS [  0.004 s]
+[INFO] wta-common-sms ..................................... SUCCESS [  0.003 s]
+[INFO] wta-common-security ................................ SUCCESS [  0.003 s]
+[INFO] wta-common-web ..................................... SUCCESS [  0.005 s]
+[INFO] wta-common-sensitive ............................... SUCCESS [  0.005 s]
+[INFO] wta-common-encrypt ................................. SUCCESS [  0.006 s]
+[INFO] wta-common-push .................................... SUCCESS [  0.004 s]
+[INFO] wta-modules ........................................ SUCCESS [  0.003 s]
+[INFO] wta-system ......................................... SUCCESS [  0.015 s]
+[INFO] wta-third .......................................... SUCCESS [  0.007 s]
+[INFO] wta-notify ......................................... SUCCESS [  0.011 s]
+[INFO] wta-sso ............................................ SUCCESS [  0.007 s]
+[INFO] wta-common-job ..................................... SUCCESS [  0.003 s]
+[INFO] wta-job ............................................ SUCCESS [  0.004 s]
+[INFO] wta-common-ai ...................................... SUCCESS [  0.003 s]
+[INFO] wta-ai ............................................. SUCCESS [  0.002 s]
+[INFO] wta-common-richtext ................................ SUCCESS [  0.003 s]
+[INFO] wta-common-elasticsearch ........................... SUCCESS [  0.002 s]
+[INFO] wta-common-mqtt .................................... SUCCESS [  0.003 s]
+[INFO] wta-demo ........................................... SUCCESS [  0.011 s]
+[INFO] wta-common-liteflow ................................ SUCCESS [  0.004 s]
+[INFO] wta-workflow ....................................... SUCCESS [  0.009 s]
+[INFO] wta-profile ........................................ SUCCESS [  0.002 s]
+[INFO] wta-profile-person ................................. SUCCESS [  0.012 s]
+[INFO] wta-profile-enterprise ............................. SUCCESS [  0.011 s]
+[INFO] wta-admin .......................................... SUCCESS [  0.027 s]
+[INFO] wta-common-bom ..................................... SUCCESS [  0.002 s]
+[INFO] wta-extend ......................................... SUCCESS [  0.002 s]
+[INFO] wta-monitor-admin .................................. SUCCESS [  0.004 s]
+[INFO] wta-snailjob-server ................................ SUCCESS [  0.005 s]
+[INFO] wta-profile-bom .................................... SUCCESS [  0.001 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.926 s
+[INFO] Finished at: 2026-09-24T03:25:13-04:00
+[INFO] ------------------------------------------------------------------------

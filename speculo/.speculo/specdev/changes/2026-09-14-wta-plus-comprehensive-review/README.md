@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-revision235：T42补强后的真实Mail27与八类135回归全部零skip通过；原BEFORE证据缺口及预置绑定10→11断言失败均保留。当前17done/2cancelled/1in_progress/30ready，补验批attempts3；用户已豁免T48真实Windows运行，其余验收不变。
+revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除旧问题字节码后1183项检出2fail/1error（244环境skip），三项测试/载体合同待同步，未完成。事前新增2写路径共66根；17done/2cancelled/1in_progress/30ready。
 
 最近验收为T46，result `4ecd45d7207429e78d767b281851eafb1ba0f955`，详见 `evidence/T-46.md`；当前T42附件闭环执行中。
 
@@ -474,3 +474,15 @@ Mail27固定43e5c2be2c0bea045a902271ff32a71a4c8166bb，run a36d6d66aa5e06bd，27
 ## 2026-09-24 用户验收豁免：仅 T-48 Windows 实机
 
 用户对真实 Windows 环境问题答复：“这一块不用验证了，就当是验证通过”。据此接受该项验收豁免，记录为 `user-waived/not-run`，不计为已执行通过或零skip测试。决定与范围见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-48-windows-user-waiver-2026-09-24.md</Path>。Shell/fake夹具、真实Linux首次/二次启动、端口/路径空格、doctor/repair及安全负向仍需实测；Windows既有代码合同不删除。T48状态及T30依赖不因豁免提前关闭，T30矩阵仅以本决定替代该单项运行证据，其他全部required验收照常。
+
+## revision236 — 默认测试合同同步与 Dispatch04
+
+revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除旧问题字节码后1183项检出2fail/1error（244环境skip），三项测试/载体合同待同步，未完成。事前新增2写路径共66根；17done/2cancelled/1in_progress/30ready。
+
+原默认在common-openapi发现ClassFormatError；保留javap与摘要证明旧class含未解析LoginUser及重复create/find问题桩，源码没有重复且本票未改该模块。独立审查支持保留原失败后清理target再按同clean3efc5862完整重跑，不把JDT进程观察当确定归因。恢复1默认265套1183项，936通过/2failure/1error/244环境skip，full尚未运行。两次失败及报告见evidence/T-42-current-2026-09-24/default-prechecks/manifest.json。
+
+三项具体缺口：BusinessOssOwnerArchitectureUnitTest发现新notify_intent_attachment的source_oss_id、snapshot_oss_id未登记；OssNotifyMigrationUnitTest把attachment_actor_client_pk误判成不允许的通用client_pk；OssStorageReadinessArchitectureUnitTest在整个common类禁止putObject，命中诊断方法之外的新有界上传。前者必须补真实owner清单与生命周期、调用者和测试证据，不能塞allowlist；后两必须保留原硬约束，精确禁止独立client_pk列，诊断实际调用闭包仍不得写桶/对象，不得仅删putObject反例或绕过扫描。
+
+Dispatch04先登记migration测试与test/resources/oss/business-oss-owners.json两精确路径，原oss测试根已授权，共66根。cors_audit只获上述清单及三相关架构测试的产品写锁；只修测试/清单，无生产/DDL/依赖变更，禁止构建/服务/提交/生成物/治理。Lead回读后固定源码先定向验证这三类，再完整默认/full及后续HTTP/OpenAPI/core/frontend/static；真实Mail27和135仅在生产/各自测试输入相同证据下沿用原坐标。若发现生产缺陷或需要新增路径，先回报，不越界修改。
+
+四项复盘：共同模式为局部用例通过但全仓合同未同步；根因分别是旧构建输出与新表/字段/方法未进入原架构验收范围；下一实质变化为精确维护硬约束而非修改业务语义；owner为唯一测试writer cors_audit，Lead独占命令/服务，Dispatch04新合同同步批attempts0。此前02B三候选及默认构建恢复失败均永久保留，不追认为成功。Windows用户豁免已正式记录，其他T48检查不减。
