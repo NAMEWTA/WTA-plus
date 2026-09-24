@@ -1383,6 +1383,19 @@ public abstract class AbstractOssClientImpl implements OssClient {
         if (cause instanceof InterruptedException) {
             return OssAccessDiagnostic.Basis.INTERRUPTED;
         }
+        if (cause instanceof AwsServiceException response) {
+            int status = response.statusCode();
+            if (status == 401 || status == 403) {
+                return OssAccessDiagnostic.Basis.HTTP_DENIED;
+            }
+            if (status == 404) {
+                return OssAccessDiagnostic.Basis.HTTP_NOT_FOUND;
+            }
+            if (status >= 300 && status < 400) {
+                return OssAccessDiagnostic.Basis.REDIRECT;
+            }
+            return OssAccessDiagnostic.Basis.HTTP_ERROR;
+        }
         return OssAccessDiagnostic.Basis.NETWORK_ERROR;
     }
 

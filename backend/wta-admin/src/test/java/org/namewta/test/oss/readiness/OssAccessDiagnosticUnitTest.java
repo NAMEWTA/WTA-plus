@@ -178,7 +178,14 @@ class OssAccessDiagnosticUnitTest {
             "diagnostic/canary.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(2));
 
         assertThat(brokenResult.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
-        assertThat(brokenResult.reason()).isEqualTo(OssAccessDiagnostic.Reason.POLICY_UNREADABLE);
+        assertThat(brokenResult.reason()).isEqualTo(OssAccessDiagnostic.Reason.INSUFFICIENT_EVIDENCE);
+        assertThat(brokenResult.facts()).filteredOn(fact ->
+            fact.source() == OssAccessDiagnostic.Source.BUCKET_POLICY).allSatisfy(fact -> {
+                assertThat(fact.observation()).isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
+                assertThat(fact.basis()).isEqualTo(OssAccessDiagnostic.Basis.HTTP_ERROR);
+            });
+        assertThat(observation(brokenResult, OssAccessDiagnostic.Subject.OBJECT_GET))
+            .isEqualTo(OssAccessDiagnostic.Observation.DENIED);
         assertThat(brokenResult.toString()).doesNotContain("sensitive provider detail");
     }
 
