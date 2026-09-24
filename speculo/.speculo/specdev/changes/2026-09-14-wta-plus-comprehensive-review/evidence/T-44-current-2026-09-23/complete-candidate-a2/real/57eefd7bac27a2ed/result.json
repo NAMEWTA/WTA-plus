@@ -1,0 +1,134 @@
+{
+  "gate": "T44 owned full-app core and scheduled Notify fallback",
+  "scenario": "redis-publish-denied",
+  "run_id": "57eefd7bac27a2ed",
+  "acceptance": true,
+  "exit_code": 0,
+  "source_before": {
+    "head": "958aad6174c880fbf8c7afbfb8f657d37c968979",
+    "tree": "928a31165f72d4cd83684cda97fb8fdb26fa621f",
+    "clean": true
+  },
+  "source_after": {
+    "head": "958aad6174c880fbf8c7afbfb8f657d37c968979",
+    "tree": "928a31165f72d4cd83684cda97fb8fdb26fa621f",
+    "clean": true
+  },
+  "started_utc": "2026-09-24T00:28:21.149378+00:00",
+  "owned": {
+    "oss_endpoint_mode": "counted_loopback_503",
+    "mysql_full_id": "6e0a383d838f854a340e0c433e265547865cf0c22afdb12b85b8af00a50546b4",
+    "redis_full_id": "a9ac0c10390e12a0ab4dd949d9c07d78af8d43cb2764eb7cc90dcc9c9bf5bb48",
+    "baseline": {
+      "tables": 103,
+      "outboxes": 0,
+      "oss_config_rows": 5,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0
+    },
+    "backend_pgid": 1719931
+  },
+  "observed": {
+    "core_http": {
+      "core": {
+        "path": "/actuator/health/readiness",
+        "http_status": 200,
+        "status": "UP",
+        "reason_codes": []
+      },
+      "liveness": {
+        "path": "/actuator/health/liveness",
+        "http_status": 200,
+        "status": "UP",
+        "reason_codes": []
+      },
+      "oss": {
+        "path": "/actuator/health/ossdiagnostics",
+        "http_status": 503,
+        "status": "DOWN",
+        "reason_codes": []
+      },
+      "login_http": 200,
+      "menu_http": 200,
+      "menu_count": 8
+    },
+    "startup_oss_endpoint_connections": 0,
+    "redis_fallback": {
+      "notice_published_http": 200,
+      "ready_before_poll": true,
+      "wake_publisher_failed_for_owned_outbox": true,
+      "acl_publish_denials": 1,
+      "acl_classification": {
+        "entry_count": 1,
+        "accepted_command_entries": 0,
+        "accepted_wake_channel_entries": 1,
+        "unmatched_entries": 0
+      },
+      "subscribers_before_submit": 1,
+      "subscribers_after_fault": 1,
+      "cache_publish_allowed_after_fault": true,
+      "login_menu_after_acl": true,
+      "poll_claimed_one": true,
+      "wake_claimed_positive": false,
+      "final_outbox_done": 1,
+      "final_delivery_in_app_delivered": 1,
+      "final_attempt": 1,
+      "final_message": 1,
+      "final_recipient_relation": 1,
+      "post_delivery_polls": 2
+    },
+    "oss_endpoint_connections_after_fallback": 0,
+    "diagnostic": {
+      "requested": false
+    },
+    "openapi": {
+      "requested": false
+    }
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 1719931,
+      "live": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "4372690cf3d9c32ff863c26eb4130264a7e27c563a5cdf6b0265862690da3bee": true
+    },
+    "ports_closed": {
+      "34415": true,
+      "32964": true,
+      "32965": true,
+      "49965": true
+    },
+    "errors": []
+  },
+  "package_proof_sha256": "80bcb9aef617f9a4020280f5b7697b20e04b5bede196dacb5dd467ac103c7662",
+  "jar_sha256_before": "5055eaf2e8e8358057918188050cde497eef0a3767d8d2e372d3f64e2ab633e2",
+  "helper_sha256": "7afb43db7d0086aeda0778389ad2fba95252dddf221eec406024101662c3bf46",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "jar_sha256_after": "5055eaf2e8e8358057918188050cde497eef0a3767d8d2e372d3f64e2ab633e2",
+  "finished_utc": "2026-09-24T00:30:05.504654+00:00",
+  "private_raw_logs": [
+    "backend.raw.log",
+    "init.raw.log"
+  ]
+}

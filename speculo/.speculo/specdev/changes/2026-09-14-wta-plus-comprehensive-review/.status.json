@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-24T00:13:49.060672+00:00",
+  "updated_at": "2026-09-24T01:01:57.084908+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -166,7 +166,8 @@
     "revision200：T44定向红灯已证实，固定11960110的53例为49pass/1failure/3error/0skip；三条诊断前置阻断及空service仍进入Provider的缺陷均可重现。Dispatch01B开始产品实现，完整候选attempts0；14done/2cancelled/T44 in_progress/33ready，Goal active。",
     "revision201：T44事前扩精确ProfileSelfMaterialsBrowserIntegrationTest配置消费者；20写集，其余合同/计数不变。",
     "revision202：T44 A1源码e11c1b6f定向148全过，默认1115中899pass/216环境skip，full包通过；七组核心启动/Notify轮询真实场景通过。MinIO功能链已通过但日志检测发现access key与secret key，A1安全验收失败，整票仍in_progress。26条精确写集登记后补日志红灯与修复；14done/2cancelled/1in_progress/33ready，Goal active。",
-    "revision203：T44日志回归红灯固定于d4a15669，6例/6失败/零error与skip；A1安全失败仍保留。02B按签名URL、uploadToken和SQL固定元数据合同补修。14done/2cancelled/T44 in_progress/33ready，完整候选attempts仍1，Goal active。"
+    "revision203：T44日志回归红灯固定于d4a15669，6例/6失败/零error与skip；A1安全失败仍保留。02B按签名URL、uploadToken和SQL固定元数据合同补修。14done/2cancelled/T44 in_progress/33ready，完整候选attempts仍1，Goal active。",
+    "revision204：T44在fc50c1e完成当前候选验收；日志191全过、backend905pass/216环境skip、8真实应用场景及默认SSE补充捕获通过，18类canary零命中；既有OSS真实JUnit7及其内部Chrome10零skip；前端760/3App329、full/core/静态通过。15done/2cancelled/33ready，无in_progress；下一T45，Goal active，change尚未完成或归档。"
   ],
   "worktrees": [
     {
@@ -781,37 +782,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "d4a156695d8072aa86bfb4b54574db0acadc85db",
-      "status": "active",
-      "updated_at": "2026-09-24T00:13:49.060672+00:00",
+      "source_checkpoint": "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
+      "status": "integrated",
+      "updated_at": "2026-09-24T01:01:57.084908+00:00",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "8db922e1971b4781b2b53f8db837c06f7b60c4e7",
-        "source_sha": null,
+        "source_sha": "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
-          "reason": "T44刚激活，真实候选与验证待执行",
-          "evidence": null
+          "status": "passed",
+          "reason": null,
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-44.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
-          "reason": "T44刚激活，真实候选与验证待执行",
-          "evidence": null
+          "status": "passed",
+          "reason": null,
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-44.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-44.md</Path>",
-        "attempts": 1,
-        "promotion_status": "pending"
+        "attempts": 2,
+        "promotion_status": "applied"
       }
     }
   ]

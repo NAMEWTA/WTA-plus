@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t44/test-v7-dynamic-capture.py"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-24T00:17:01.535233+00:00",
+  "finished_at": "2026-09-24T00:17:01.593092+00:00",
+  "exit_code": 0,
+  "log": "v7-dynamic-capture-offline.log"
+}

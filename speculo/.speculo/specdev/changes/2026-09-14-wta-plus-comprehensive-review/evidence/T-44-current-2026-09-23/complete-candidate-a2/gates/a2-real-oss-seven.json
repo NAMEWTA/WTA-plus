@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t44/run-oss-seven-integration.py",
+    "--execute",
+    "--expected-head",
+    "fc50c1e1227d42a46f8e25b3e19949baeccb89e0"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-24T00:52:01.926198+00:00",
+  "finished_at": "2026-09-24T00:53:31.971662+00:00",
+  "exit_code": 0,
+  "log": "a2-real-oss-seven.log"
+}

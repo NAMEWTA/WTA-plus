@@ -1,0 +1,66 @@
+[
+  {
+    "gate": "minio",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/570b67d1325ff08b/result.json",
+    "sha256": "4c75262252311aab352d32a996f36949a9df036563771536dfad3ec1377d0e73",
+    "accepted": true,
+    "cleanup_errors": []
+  },
+  {
+    "gate": "empty-config",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/e5c6c25f1da61b44/result.json",
+    "sha256": "e39cc34389b5180e9580516b421f8483d1e85371b05fb013c04cb50e3ca2415e",
+    "accepted": true,
+    "cleanup_errors": []
+  },
+  {
+    "gate": "bad-nondefault",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/54df17c5552b77c3/result.json",
+    "sha256": "378c2101a3d15603ae0cee52086c081335e53ca238d482930f2b2b8ada69f96a",
+    "accepted": true,
+    "cleanup_errors": []
+  },
+  {
+    "gate": "duplicate-default",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/652ac084537e0e8b/result.json",
+    "sha256": "5e11dd1158db4b109f45141b60a8e2229ffb6d5ddd52d31232da8f2eef2ae5b2",
+    "accepted": true,
+    "cleanup_errors": []
+  },
+  {
+    "gate": "bad-default",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/afa1a4678e68b931/result.json",
+    "sha256": "b77ac6fe1c7badac921d9eff37f3507beae090da7e72a0e2acea41ae89c2de15",
+    "accepted": true,
+    "cleanup_errors": []
+  },
+  {
+    "gate": "invalid-diagnostic",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/4edbf50326cbe71a/result.json",
+    "sha256": "da763aa00e7116d73c1c5ef0cc2e979e1103816f801b8ed12e066ab53af93d6a",
+    "accepted": true,
+    "cleanup_errors": []
+  },
+  {
+    "gate": "minio-offline",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/8f1de3e7f281c7ca/result.json",
+    "sha256": "ba779171c48d8adfec72162c5b219be712123cacc84fb5a4bfa3657a9a8c4133",
+    "accepted": true,
+    "cleanup_errors": []
+  },
+  {
+    "gate": "redis-publish-denied",
+    "command_exit": 0,
+    "result": "/tmp/wta-t44/runs/57eefd7bac27a2ed/result.json",
+    "sha256": "85c8170329f3ad0f9c80938d8b3661ef10b419076e435a43a80c902dd1c94365",
+    "accepted": true,
+    "cleanup_errors": []
+  }
+]

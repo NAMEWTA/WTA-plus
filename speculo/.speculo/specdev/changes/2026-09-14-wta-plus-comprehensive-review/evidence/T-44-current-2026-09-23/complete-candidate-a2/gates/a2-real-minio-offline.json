@@ -1,0 +1,30 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t44/run-full-app-core-fallback-v4.py",
+    "--execute",
+    "--expected-head",
+    "958aad6174c880fbf8c7afbfb8f657d37c968979",
+    "--expected-jar-sha256",
+    "5055eaf2e8e8358057918188050cde497eef0a3767d8d2e372d3f64e2ab633e2",
+    "--package-proof",
+    "/tmp/wta-t44/a2-full-package-proof.json",
+    "--scenario",
+    "minio-offline",
+    "--core-health-path",
+    "/actuator/health/readiness",
+    "--liveness-health-path",
+    "/actuator/health/liveness",
+    "--oss-health-path",
+    "/actuator/health/ossdiagnostics",
+    "--oss-health-http",
+    "503",
+    "--oss-health-state",
+    "DOWN"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-24T00:27:49.806457+00:00",
+  "finished_at": "2026-09-24T00:28:21.061618+00:00",
+  "exit_code": 0,
+  "log": "a2-real-minio-offline.log"
+}

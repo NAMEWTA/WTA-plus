@@ -1,0 +1,278 @@
+{
+  "gate": "T44 seven existing OSS integration classes",
+  "run_id": "023e9db8eab34cec",
+  "owner": "T-44-OSS-SEVEN",
+  "source_before": {
+    "head": "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
+    "tree": "c39bb13afcbf07459b2fb07c1c2179f3198fc807",
+    "clean": true
+  },
+  "source_after": {
+    "head": "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
+    "tree": "c39bb13afcbf07459b2fb07c1c2179f3198fc807",
+    "clean": true
+  },
+  "dist_before": {
+    "admin-web": {
+      "files": 311,
+      "manifest_sha256": "c4d13dbb6352cdb619a2c8098d79dd9896644ef701611ef2d8d0b8e679471c06"
+    },
+    "home-web": {
+      "files": 14,
+      "manifest_sha256": "84993728f1c030a4624f575015b34d44b92442d9cc046d5ad8b969247b0382f3"
+    },
+    "sso-web": {
+      "files": 4,
+      "manifest_sha256": "6ba44ee894cb9508d7e4533399e81f5b311bc81b7618fcd500a1264e3a70e92b"
+    }
+  },
+  "dist_after": {
+    "admin-web": {
+      "files": 311,
+      "manifest_sha256": "c4d13dbb6352cdb619a2c8098d79dd9896644ef701611ef2d8d0b8e679471c06"
+    },
+    "home-web": {
+      "files": 14,
+      "manifest_sha256": "84993728f1c030a4624f575015b34d44b92442d9cc046d5ad8b969247b0382f3"
+    },
+    "sso-web": {
+      "files": 4,
+      "manifest_sha256": "6ba44ee894cb9508d7e4533399e81f5b311bc81b7618fcd500a1264e3a70e92b"
+    }
+  },
+  "maven_exit_code": 0,
+  "suites": [
+    {
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "fresh": true,
+      "source_sha256": "b86f33c0cc290865d9795df97725cb3d45664e9fe53c2779a6cec7a34774a0e4",
+      "sanitized_sha256": "d1b9394daa9226acd95803c165368db0e85a6109531d93331206cb2ffae8aca6",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t44/oss-seven-runs/023e9db8eab34cec/xml/TEST-org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "verifiesPublicAndPrivateBoundariesWithoutMutatingPolicy"
+      ],
+      "private_properties_marker": true
+    },
+    {
+      "suite": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "fresh": true,
+      "source_sha256": "ed849cafe027e6c86ce9288d7f5afed2fd39dc92532e0874bf8899a8b24f38be",
+      "sanitized_sha256": "f770875431b61c57a825229894dbb32cb7d85142031519d983a5b2d685c38c70",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t44/oss-seven-runs/023e9db8eab34cec/xml/TEST-org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "resolvesStablePublicAndExpiringPrivateUrlsAgainstRealMinio"
+      ],
+      "private_properties_marker": true
+    },
+    {
+      "suite": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+      "fresh": true,
+      "source_sha256": "1513c47028288928421ec38554c4d57a4802c2ba758134767d56559905fa3cf0",
+      "sanitized_sha256": "b28e1b5b9eddc673a1b26133b13e807610e403369d5a6b8aa0758b66dafc6119",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t44/oss-seven-runs/023e9db8eab34cec/xml/TEST-org.namewta.test.oss.client.MinioOssClientIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "roundTripsTransfersAndEnforcesDualBucketBoundaries"
+      ],
+      "private_properties_marker": true
+    },
+    {
+      "suite": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "fresh": true,
+      "source_sha256": "dfe1aeead75a081bb8774b00deb5b16014749da5270a57f957e2e4874aa504d5",
+      "sanitized_sha256": "7c02c504f974d908e4f8ca4134d587f25d8cf59e91fe0dcc262ee9e0d2e09d3b",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t44/oss-seven-runs/023e9db8eab34cec/xml/TEST-org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "migratesWithProductionStoreAndDualBucketsThenCleansUpOrRollsBack"
+      ],
+      "private_properties_marker": true
+    },
+    {
+      "suite": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+      "fresh": true,
+      "source_sha256": "02eb435860f8b93584236b9b7d71603b1a8ed50ad7731b9cd40edafd59bdf0c4",
+      "sanitized_sha256": "044b24af4aa0346e92a27f8490368d39a9e47da7d62ca9b86eff1e6d435a8ec2",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t44/oss-seven-runs/023e9db8eab34cec/xml/TEST-org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "routesSingleAndMultipartUploadsToPolicyBoundBuckets"
+      ],
+      "private_properties_marker": true
+    },
+    {
+      "suite": "org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest",
+      "fresh": true,
+      "source_sha256": "77a870679cc5f7764954e9facce8d37f020db42debfa5b49fe109a91c97fe35d",
+      "sanitized_sha256": "a59057e527c99f027bab524e140da7ead375d6451dddf24de36122deec095c2a",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t44/oss-seven-runs/023e9db8eab34cec/xml/TEST-org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "uploadedObjectsSurvivePreviewFailureAndImportLifetimesTerminate"
+      ],
+      "private_properties_marker": true,
+      "browser": {
+        "passed": 10,
+        "indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "skipped": 0
+      }
+    },
+    {
+      "suite": "org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest",
+      "fresh": true,
+      "source_sha256": "6478490c33e07e3e30975a3ad3157e3b2b9f117c2b0ad9d130996cf0eb1d8147",
+      "sanitized_sha256": "ef6dd465306712beb8a2220b4e27af962c9a8909432a390647b51f3f771bdae0",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t44/oss-seven-runs/023e9db8eab34cec/xml/TEST-org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "shouldRoundTripIndexAndSerializeConcurrentLock"
+      ],
+      "private_properties_marker": true
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 1773944,
+      "live_members": []
+    },
+    "owned_node_chrome_java_pids_remaining": [],
+    "browser_output_restored": true,
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "54bb1d5206bdedc343ad9893697028e6f3cca4e78303fd778d0e51e3db554ea9": true,
+      "6f9904eddacae1105c1788316e8b61154ab96d342470f9651e4fa406d2cd211f": true
+    },
+    "loopback_ports_closed": {
+      "32969": true,
+      "32970": true,
+      "32971": true
+    },
+    "errors": []
+  },
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-24T00:52:01.975669+00:00",
+  "owned": {
+    "container_full_ids": [
+      "d90ceecadad6869f4fe9a48e27d2ea70aac15fe53a0161f67065381d59cfcff2",
+      "73c1bed92368046c33fdb11ef1f3a1d5ee893d95d0d64524f0b78b1ff6ec510e",
+      "8f73644b073ea4e5a8964a3f3ab4fbfa871eb2368325d94d43c81fbc64befed8"
+    ],
+    "loopback_ports": {
+      "mysql": 32969,
+      "redis": 32970,
+      "minio": 32971
+    },
+    "migration_database_empty_before": true,
+    "migration_database_name": "t44_oss_migration_023e9db8eab34cec",
+    "minio_identity_scope": "owned bootstrap root",
+    "maven_pgid": 1773944
+  },
+  "surefire_text_reports": [
+    {
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "source_sha256": "6d221341c44f1ebe950a3c1a816c559c6c8dbb39b33e4003fd6ea7d0320bd8b6",
+      "sanitized_sha256": "6d221341c44f1ebe950a3c1a816c559c6c8dbb39b33e4003fd6ea7d0320bd8b6",
+      "redactions": 0
+    },
+    {
+      "suite": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "source_sha256": "f1dccdb2d10e75c215d18753e26bd76e37ee940f214836471f83c7735417faea",
+      "sanitized_sha256": "f1dccdb2d10e75c215d18753e26bd76e37ee940f214836471f83c7735417faea",
+      "redactions": 0
+    },
+    {
+      "suite": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+      "source_sha256": "15e3d0b813c507e84c8e92c8b1bf41ce84a3fedad5270388d62b08eb15e49e77",
+      "sanitized_sha256": "15e3d0b813c507e84c8e92c8b1bf41ce84a3fedad5270388d62b08eb15e49e77",
+      "redactions": 0
+    },
+    {
+      "suite": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "source_sha256": "b0915851c2a704ef3977a033850fd902dc608aa2b7e6bf28ac990893914d575d",
+      "sanitized_sha256": "b0915851c2a704ef3977a033850fd902dc608aa2b7e6bf28ac990893914d575d",
+      "redactions": 0
+    },
+    {
+      "suite": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+      "source_sha256": "287afc97f5be48a65dcda52a8ac1f5c890eabb9082e905eef0ae7561bab6435b",
+      "sanitized_sha256": "287afc97f5be48a65dcda52a8ac1f5c890eabb9082e905eef0ae7561bab6435b",
+      "redactions": 0
+    },
+    {
+      "suite": "org.namewta.test.oss.upload.BrowserUploadLifecycleIntegrationTest",
+      "source_sha256": "b43458c92ea8ab9164ebce8769491c4fa5299d9d766a494b9b868bcfdde563c7",
+      "sanitized_sha256": "b43458c92ea8ab9164ebce8769491c4fa5299d9d766a494b9b868bcfdde563c7",
+      "redactions": 0
+    },
+    {
+      "suite": "org.namewta.test.oss.upload.RedisOssUploadTicketStoreIntegrationTest",
+      "source_sha256": "1509ad9690c817519db817ca6619f1dd186bae279ad747ce2d56b045ebcd1b4b",
+      "sanitized_sha256": "1509ad9690c817519db817ca6619f1dd186bae279ad747ce2d56b045ebcd1b4b",
+      "redactions": 0
+    }
+  ],
+  "surefire_temp_files": [],
+  "owned_chrome_logs": [],
+  "maven_log": {
+    "source_sha256": "b747afc318777a5b235a5081fc07aac017d464e3d05c7b6b53491752c4ee96f7",
+    "sanitized_sha256": "b747afc318777a5b235a5081fc07aac017d464e3d05c7b6b53491752c4ee96f7",
+    "redactions": 0
+  },
+  "finished_utc": "2026-09-24T00:53:31.959022+00:00"
+}

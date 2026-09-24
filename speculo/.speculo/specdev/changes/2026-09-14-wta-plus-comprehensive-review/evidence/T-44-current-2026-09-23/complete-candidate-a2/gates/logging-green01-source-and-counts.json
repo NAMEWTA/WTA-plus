@@ -1,0 +1,501 @@
+{
+  "source_before": {
+    "head": "958aad6174c880fbf8c7afbfb8f657d37c968979",
+    "tree": "928a31165f72d4cd83684cda97fb8fdb26fa621f",
+    "clean": true
+  },
+  "source_after": {
+    "head": "958aad6174c880fbf8c7afbfb8f657d37c968979",
+    "tree": "928a31165f72d4cd83684cda97fb8fdb26fa621f",
+    "clean": true
+  },
+  "exit_code": 0,
+  "reports": [
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssAccessDiagnosticUnitTest.xml",
+      "sha256": "f716eca4ff85de753a5404787963d773be5205d3096de062cd75704f69019582",
+      "suite": "org.namewta.common.oss.client.OssAccessDiagnosticUnitTest",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssClientProviderUnitTest.xml",
+      "sha256": "b51345244f85e4df1a8e3e359c6942911a41950267ee90ab764c52c799c38896",
+      "suite": "org.namewta.common.oss.client.OssClientProviderUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossaccess.OssAccessMigrationContractUnitTest.xml",
+      "sha256": "aaad8aba687aa11f687232feedb6924d1affe14517ef6f88dd986e257efe1604",
+      "suite": "org.namewta.test.migration.ossaccess.OssAccessMigrationContractUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest.xml",
+      "sha256": "df655ef42b3470929c81a8429bc76795dabb98bc7f753eb17641d4d00a916361",
+      "suite": "org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlArchitectureUnitTest.xml",
+      "sha256": "ff5a5bd1b9fdc4f8887bebb84edb8a5747f2bfcfba8e13201ce5079a0e695965",
+      "suite": "org.namewta.test.oss.access.OssAccessUrlArchitectureUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlContractUnitTest.xml",
+      "sha256": "17403d197ee720c2f16c1e9f12059b9dbe2fbea234099d3fdd37dce55fbbfd35",
+      "suite": "org.namewta.test.oss.access.OssAccessUrlContractUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlProviderUnitTest.xml",
+      "sha256": "7a6eed7ba7e7d054763430b42b52bd07b1acc2a2a29e99132ac2e634e48688c2",
+      "suite": "org.namewta.test.oss.access.OssAccessUrlProviderUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssAccessUrlServiceUnitTest.xml",
+      "sha256": "32e4bfef0c070c2c82ac4899709cdb06aab5014d8d9eaf179437740d73c2bb7d",
+      "suite": "org.namewta.test.oss.access.OssAccessUrlServiceUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest.xml",
+      "sha256": "1b36cd73c2faef54b8d2029de8707f8c9336c9fb118b3f55302ff4461abc9437",
+      "suite": "org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.OssClientContractUnitTest.xml",
+      "sha256": "a38f4d145911f3f875bf09fe287c0571466d30d2125c193f036e78ba962aaa5e",
+      "suite": "org.namewta.test.oss.client.OssClientContractUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.client.OssClientS3CompatibilityUnitTest.xml",
+      "sha256": "90b1e6b1f2f5f809e830dbed70ce1ad09de764c68a74c8521fa4ca6695d18adc",
+      "suite": "org.namewta.test.oss.client.OssClientS3CompatibilityUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssAccessConfigurationUnitTest.xml",
+      "sha256": "51703cea07131ff3bfa4081a37c23f459521754670ce1e3d56c0d5d94aa603b9",
+      "suite": "org.namewta.test.oss.config.OssAccessConfigurationUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssConfigGovernanceUnitTest.xml",
+      "sha256": "fb931e65886bde45a5a135eed9d18106665a51a52cce2a31697ed3d396dccb04",
+      "suite": "org.namewta.test.oss.config.OssConfigGovernanceUnitTest",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssConfigHttpContractUnitTest.xml",
+      "sha256": "b7a2162f954c6db22e497360e61c9ac740110807303718a8f415985b6504c88b",
+      "suite": "org.namewta.test.oss.config.OssConfigHttpContractUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssLifecycleConfigurationUnitTest.xml",
+      "sha256": "de5b3af8365d5a87a206b88bd9d8b77a3cc58f4c0f8407d8a6edcbf4e212415a",
+      "suite": "org.namewta.test.oss.config.OssLifecycleConfigurationUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssSqlLogRedactionUnitTest.xml",
+      "sha256": "9075c4208f204639c17b1badf03c06cc24b9653d53c8db335bb3871902b0c02a",
+      "suite": "org.namewta.test.oss.config.OssSqlLogRedactionUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.cutover.OssProtocolCutoverUnitTest.xml",
+      "sha256": "8b695b7852f47c1a7496e6a526c4bad7d91385bc2487cc591b9c8434b20d7e8b",
+      "suite": "org.namewta.test.oss.cutover.OssProtocolCutoverUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleContractUnitTest.xml",
+      "sha256": "73058db542bb0629dd57a7b7ce57a690b15d48ee06a41326f0cc1ef24d07b44c",
+      "suite": "org.namewta.test.oss.lifecycle.OssLifecycleContractUnitTest",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest.xml",
+      "sha256": "4651fe464cb887e3cffd475d959a2a89209b1a98b2a74163a3f29d47b2b65a57",
+      "suite": "org.namewta.test.oss.lifecycle.OssLifecycleManagerUnitTest",
+      "counts": {
+        "tests": 25,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.lifecycle.OssReferenceReconciliationUnitTest.xml",
+      "sha256": "d18ed08730e407ff78b5681dfddf6de66d94a01404f0e96170eb06d606063406",
+      "suite": "org.namewta.test.oss.lifecycle.OssReferenceReconciliationUnitTest",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssMigrationHttpContractUnitTest.xml",
+      "sha256": "2b8ba44df9b3673445fa2b3808cf6dc80c51d32333d9696294200c4b0374f0ff",
+      "suite": "org.namewta.test.oss.migration.OssMigrationHttpContractUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest.xml",
+      "sha256": "6445c5c673278c6ee2de93b8f8a8753f3b878d0b88c29e9bb90dfd9744c2b0b9",
+      "suite": "org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest.xml",
+      "sha256": "8c844fd8ce411a0f416e4af28be735687ae5ac5f51e22c983756188250beffb3",
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessHealthUnitTest.xml",
+      "sha256": "2b580912bc3ba4117d90b6321249462fa7a24d5fd0f4d8500f13011173118596",
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessHealthUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessPropertiesUnitTest.xml",
+      "sha256": "d9f46ead4ec88df7c88a9801ef198eab0e94ea3e11805c189a3e0fce1c499f90",
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessPropertiesUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessRegistryUnitTest.xml",
+      "sha256": "adbf959fb0d092171d195715abaf7535967a317cda102c4380ba8b549786845e",
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessRegistryUnitTest",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessSchedulingUnitTest.xml",
+      "sha256": "4a4ad368b59634ba0f30a250b0a905d7c7da0f06bd9d486a98b6f56476015717",
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessSchedulingUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessServiceUnitTest.xml",
+      "sha256": "667b36bb1ab02a053c412f1acf8021dd0e12f81b5c16b6b467fecb44bd1b776c",
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessServiceUnitTest",
+      "counts": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.release.OssReleaseContractionUnitTest.xml",
+      "sha256": "77b2c45f9e16acd15a46e246e158ad2ade5f26b30e6978896aba830e5e3d4707",
+      "suite": "org.namewta.test.oss.release.OssReleaseContractionUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadConfigurationUnitTest.xml",
+      "sha256": "7bcafabbd75fe0a93255acd3b83c66837ceabc8224abd52ceca5d4f2c2137daf",
+      "suite": "org.namewta.test.oss.upload.OssUploadConfigurationUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadHttpContractUnitTest.xml",
+      "sha256": "d391dc74be34b9ac4f2bbde7fe7940589b261da622d6d9887891148dd9c75079",
+      "suite": "org.namewta.test.oss.upload.OssUploadHttpContractUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadMetadataStoreUnitTest.xml",
+      "sha256": "b8bdc34ee3876c01e04016d619d146174c017e1c3e8d1c3383df4584a61c7bab",
+      "suite": "org.namewta.test.oss.upload.OssUploadMetadataStoreUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadPropertiesUnitTest.xml",
+      "sha256": "c5a52849232d71de851d8b0165f53ecbdf2439a6a1ccf290b65a7e5da6c62e4d",
+      "suite": "org.namewta.test.oss.upload.OssUploadPropertiesUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.upload.OssUploadServiceUnitTest.xml",
+      "sha256": "2531d2da2e64630e65d28f4d27b8a99ab9fb274ecc88cb3d4178bf104ec33b33",
+      "suite": "org.namewta.test.oss.upload.OssUploadServiceUnitTest",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-common/wta-common-json/target/surefire-reports/TEST-org.namewta.common.json.utils.LogSanitizerTest.xml",
+      "sha256": "d29dcff13669d83acd36c13a0d5db279027c42d9585754caf58fd16a6fe36a95",
+      "suite": "org.namewta.common.json.utils.LogSanitizerTest",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-common/wta-common-log/target/surefire-reports/TEST-org.namewta.common.log.aspect.LogAspectRedactionTest.xml",
+      "sha256": "f2478e00c6211fdf4f8786fa1a2b35a478d92867d8c46c54ed0ceaa84682c7d8",
+      "suite": "org.namewta.common.log.aspect.LogAspectRedactionTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.config.SysLogConfigTest.xml",
+      "sha256": "71917b52ccec875ccabbe4963c19f7cb70b791fa22d746ad1076dd6563b9c6b7",
+      "suite": "org.namewta.common.web.config.SysLogConfigTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogEventWriterTest.xml",
+      "sha256": "d34bb406fbb7dc26fa6c4d7ddb72317171ed655652d44388453ac0e6ddfdab9f",
+      "suite": "org.namewta.common.web.logging.SysLogEventWriterTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFailureRedactionTest.xml",
+      "sha256": "cff90918dac6bf95d2176dc13ca7cdf32af812ef7b8c5d2387a04052b71d970f",
+      "suite": "org.namewta.common.web.logging.SysLogFailureRedactionTest",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "logging-green01-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+      "sha256": "586da149431621a4b1bdb564535c3418656b1c7d5844b56feb0418fff64ad10a",
+      "suite": "org.namewta.common.web.logging.SysLogFilterTest",
+      "counts": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    }
+  ],
+  "counts": {
+    "tests": 191,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

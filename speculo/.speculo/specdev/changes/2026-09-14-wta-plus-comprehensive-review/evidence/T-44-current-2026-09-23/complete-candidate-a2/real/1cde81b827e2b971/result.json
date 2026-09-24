@@ -1,0 +1,146 @@
+{
+  "accepted": true,
+  "backend_log_diagnostic": {
+    "known_canary_hits": 0,
+    "private_summary": "/tmp/wta-t44/runs/1cde81b827e2b971/diagnostics/backend-log-summary.json",
+    "redaction_counts": {
+      "authorization": 0,
+      "full_url": 4,
+      "jwt": 29,
+      "known_canary": 0,
+      "session_token": 0
+    },
+    "sanitized_sha256": "aa745a38b111d12fa46f3218ad1545fb6c9dab24f1c9c63e963bea66b6b08c73",
+    "source_raw_sha256": "e855f36fcfb2ed061e45271d69a649826408df8b69bc7d88390b54ff422441e8"
+  },
+  "cleanup_errors": [],
+  "counts": {
+    "minio_calls_by_bucket": {
+      "private_a": 10,
+      "private_b": 3,
+      "public": 1
+    },
+    "minio_calls_by_method": {
+      "GET": 8,
+      "HEAD": 4,
+      "PUT": 2
+    },
+    "minio_statuses": {
+      "200": 10,
+      "403": 4
+    },
+    "private_uploads": 2,
+    "public_reads": 1,
+    "raw_backend_secret_canaries": 0,
+    "startup_minio_calls": 0,
+    "tables": 103,
+    "unauthorized_denials": 2
+  },
+  "diagnostic": {
+    "audit_secret_canaries": 0,
+    "elapsed_ms": 113,
+    "expired_health_reason": "STALE",
+    "expired_snapshot_did_not_block_private_download": true,
+    "invalid_id_rejections": [
+      {
+        "business_code": 500,
+        "case": "zero",
+        "http_status": 200
+      },
+      {
+        "business_code": 500,
+        "case": "negative",
+        "http_status": 200
+      },
+      {
+        "business_code": 500,
+        "case": "non_numeric",
+        "http_status": 200
+      }
+    ],
+    "invalid_policy_fail_closed": true,
+    "missing_public_canary_did_not_block_get": true,
+    "ordinary_denied": true,
+    "private_a_call_delta": 5,
+    "reason": "READY",
+    "safe_audit_count": 5,
+    "safe_three_fields": true,
+    "status": "SERVING"
+  },
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "jar_sha256": "5055eaf2e8e8358057918188050cde497eef0a3767d8d2e372d3f64e2ab633e2",
+  "minimal_privilege": {
+    "bucket_policy_write_denied": true,
+    "object_acl_write_denied": true,
+    "object_head_allowed": true
+  },
+  "openapi": {
+    "bytes": 511862,
+    "path_count": 438,
+    "private_capture": "/tmp/wta-t44/runs/1cde81b827e2b971/openapi.raw.json",
+    "sha256": "8c21f523b8f46fc283c70dc7b8d0c1232e16f36ae59c054e674cc02f1af6eade"
+  },
+  "owned": {
+    "containers": [
+      "a02f7fc4bf0eb7efe9528da82cb89326f98efbcfbb366153f81d91246e418f30",
+      "40b8cbcf00e45c44c1e325902586d2db6b46fa2be0d63fb90529b0c34d6f8932",
+      "603c703240a522e86f18d5da009ef1a84fcbdb8cddd72a3fd467b3f2f1545fff"
+    ],
+    "owner_label": "T-44-MINIO",
+    "ports": [
+      32966,
+      32967,
+      32968,
+      44787,
+      46559
+    ],
+    "private_ephemeral_files_removed": true,
+    "process_groups": [
+      1731187
+    ],
+    "run_id": "1cde81b827e2b971",
+    "volumes": [
+      "a53c4c9101240e94216eeee3511df008a9f6dfea3083507b31dd7da4531c2866",
+      "ded7e980b818a0b97d4f6129a8a181c5555cf1f894b6d8f201f9c21669065512"
+    ]
+  },
+  "phase": "postcheck",
+  "schema_capture": {
+    "message_enabled": true,
+    "message_transport_default": "sse",
+    "required_paths_expected": [
+      "/resource/oss/config/diagnose/{ossConfigId}",
+      "/resource/message",
+      "/resource/message/close"
+    ],
+    "required_paths_present": [
+      "/resource/oss/config/diagnose/{ossConfigId}",
+      "/resource/message",
+      "/resource/message/close"
+    ]
+  },
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "source": {
+    "clean": true,
+    "head": "958aad6174c880fbf8c7afbfb8f657d37c968979",
+    "tree": "928a31165f72d4cd83684cda97fb8fdb26fa621f"
+  }
+}

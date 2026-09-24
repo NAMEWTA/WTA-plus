@@ -1,0 +1,31 @@
+{
+  "source_head": "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
+  "offline_unittest": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "probe": {
+    "properties_file_positive": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "cli_argline_negative": {
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "sha256": {
+    "run-oss-seven-integration.py": "d4289ed24d44492684edb51fa96641598ae0bbfa015dd681172831ea99a69090",
+    "test_oss_seven_runner.py": "a11f52728112e813cf2c2662b2ba418363c3067bfcb234c92126023b76ac3412",
+    "oss-seven-runbook.md": "460e15a16a655470bcb22a7806a7dc159ffb486dd06b987d53784fb49ba8467d",
+    "properties-positive.xml": "311e3c199daff8cd9bd604ab5871bfcd82e534ae8fff28188bffb0d561099e06",
+    "argline-negative.xml": "21b380873883cab90e10ad7b05ce6614a4dad56b6ea1a89c29de8120453c39d9"
+  },
+  "services_or_product_maven_run": false
+}

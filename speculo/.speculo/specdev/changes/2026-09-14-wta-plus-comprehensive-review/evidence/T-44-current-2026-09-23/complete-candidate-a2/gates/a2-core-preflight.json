@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "/tmp/wta-t44/run-core-static-gates.py",
+    "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
+    "a2"
+  ],
+  "exit_code": 1,
+  "phase": "before any Maven command",
+  "reason": "immutable source-before filename already owned by default/full gate; no prior evidence overwritten",
+  "recovery": "use unique a2core label"
+}

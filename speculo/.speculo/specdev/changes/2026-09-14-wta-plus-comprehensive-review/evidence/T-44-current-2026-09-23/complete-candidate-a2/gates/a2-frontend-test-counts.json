@@ -1,0 +1,8 @@
+{
+  "source": "fc50c1e1227d42a46f8e25b3e19949baeccb89e0",
+  "command_record": "a2-frontend-test.json",
+  "log_sha256": "04cb1353d2bfbba1eeddb1f82ecd9c455ac2afb043218baabccb86e109f4839d",
+  "vitest_passed": 652,
+  "node_passed": 108,
+  "total_passed": 760
+}

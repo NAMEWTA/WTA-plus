@@ -1,0 +1,132 @@
+{
+  "accepted": true,
+  "backend_log_diagnostic": {
+    "known_canary_hits": 0,
+    "private_summary": "/tmp/wta-t44/runs/570b67d1325ff08b/diagnostics/backend-log-summary.json",
+    "redaction_counts": {
+      "authorization": 0,
+      "full_url": 4,
+      "jwt": 29,
+      "known_canary": 0,
+      "session_token": 0
+    },
+    "sanitized_sha256": "6bb23cee73c900c0c4b707d59cd242e85c1a3e66283651315b4d1fe5e82ca6cf",
+    "source_raw_sha256": "5b9ae2e150c69dea0107a82ece350a0edd3c2ebaaafe57bf48c8a4caa8087823"
+  },
+  "cleanup_errors": [],
+  "counts": {
+    "minio_calls_by_bucket": {
+      "private_a": 10,
+      "private_b": 3,
+      "public": 1
+    },
+    "minio_calls_by_method": {
+      "GET": 8,
+      "HEAD": 4,
+      "PUT": 2
+    },
+    "minio_statuses": {
+      "200": 10,
+      "403": 4
+    },
+    "private_uploads": 2,
+    "public_reads": 1,
+    "raw_backend_secret_canaries": 0,
+    "startup_minio_calls": 0,
+    "tables": 103,
+    "unauthorized_denials": 2
+  },
+  "diagnostic": {
+    "audit_secret_canaries": 0,
+    "elapsed_ms": 171,
+    "expired_health_reason": "STALE",
+    "expired_snapshot_did_not_block_private_download": true,
+    "invalid_id_rejections": [
+      {
+        "business_code": 500,
+        "case": "zero",
+        "http_status": 200
+      },
+      {
+        "business_code": 500,
+        "case": "negative",
+        "http_status": 200
+      },
+      {
+        "business_code": 500,
+        "case": "non_numeric",
+        "http_status": 200
+      }
+    ],
+    "invalid_policy_fail_closed": true,
+    "missing_public_canary_did_not_block_get": true,
+    "ordinary_denied": true,
+    "private_a_call_delta": 5,
+    "reason": "READY",
+    "safe_audit_count": 5,
+    "safe_three_fields": true,
+    "status": "SERVING"
+  },
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "jar_sha256": "5055eaf2e8e8358057918188050cde497eef0a3767d8d2e372d3f64e2ab633e2",
+  "minimal_privilege": {
+    "bucket_policy_write_denied": true,
+    "object_acl_write_denied": true,
+    "object_head_allowed": true
+  },
+  "openapi": {
+    "bytes": 510672,
+    "path_count": 436,
+    "private_capture": "/tmp/wta-t44/runs/570b67d1325ff08b/openapi.raw.json",
+    "sha256": "0c401f637a260b62629f481ebfb5250b523160684fb6a765f15e290b11938811"
+  },
+  "owned": {
+    "containers": [
+      "ba3319a4be43054dd68b5c091b7ce85a7cf2209d810742447f339c1036c28140",
+      "c2fbfb33e82774f985a602e8e580479b055569669becf1800c9ce48473beaa28",
+      "faa7322862ed4971fa6b3f8baffcd7d55aa99d5212434924ea30798f7c0853f9"
+    ],
+    "owner_label": "T-44-MINIO",
+    "ports": [
+      32949,
+      32950,
+      32951,
+      37819,
+      56395
+    ],
+    "private_ephemeral_files_removed": true,
+    "process_groups": [
+      1698892
+    ],
+    "run_id": "570b67d1325ff08b",
+    "volumes": [
+      "16f337c7243976e6ee5fca3763474360bdcb9994e5222656430f56da18e816ab",
+      "b78781154001a89643441435da5a383a523d8ee749004875938f98e9a1068351"
+    ]
+  },
+  "phase": "postcheck",
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "source": {
+    "clean": true,
+    "head": "958aad6174c880fbf8c7afbfb8f657d37c968979",
+    "tree": "928a31165f72d4cd83684cda97fb8fdb26fa621f"
+  }
+}

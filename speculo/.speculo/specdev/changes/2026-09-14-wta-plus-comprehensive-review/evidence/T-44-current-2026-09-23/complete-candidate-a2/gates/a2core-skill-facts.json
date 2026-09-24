@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    ".agents/skills/engineering-standards/scripts/validate-skill-facts.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-24T00:38:28.139150+00:00",
+  "finished_at": "2026-09-24T00:38:28.196152+00:00",
+  "exit_code": 0,
+  "log": "a2core-skill-facts.log"
+}
