@@ -125,6 +125,50 @@ class SysLogFilterTest {
     }
 
     @Test
+    void ossSignedResponseAndUploadPathAreRedactedWithoutChangingBusinessResponse() throws Exception {
+        String accessKey = "AK-CANARY-FILTER-7741";
+        String signature = "SIGNATURE-CANARY-FILTER-7741";
+        String uploadToken = "UPLOAD-TOKEN-CANARY-FILTER-7741";
+        String signedUrl = "https://storage.example.test/private/object?X-Amz-Credential="
+            + accessKey + "%2F20260923%2Ftest%2Fs3%2Faws4_request&X-Amz-Signature=" + signature;
+        String publicUrl = "https://cdn.example.test/public/object?page=2";
+        String body = "{\"code\":200,\"data\":{\"uploadToken\":\"" + uploadToken
+            + "\",\"presignedRequest\":{\"url\":\"" + signedUrl
+            + "\"},\"parts\":[{\"url\":\"" + signedUrl
+            + "\"}],\"publicUrl\":\"" + publicUrl + "\"}}";
+        List<Map<String, Object>> events = new ArrayList<>();
+        SysLogFilter filter = new SysLogFilter(8192, 2 * 1024 * 1024, events::add);
+        MockHttpServletRequest init = new MockHttpServletRequest("POST", "/resource/oss/uploads");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        filter.doFilter(init, response, (servletRequest, servletResponse) -> {
+            var httpResponse = (jakarta.servlet.http.HttpServletResponse) servletResponse;
+            httpResponse.setContentType("application/json");
+            httpResponse.getWriter().write(body);
+        });
+
+        assertThat(events).hasSize(2);
+        assertThat(events.getLast()).containsEntry("bodyLogged", true);
+        assertThat(events.getLast().get("body").toString())
+            .doesNotContain(accessKey, signature, uploadToken)
+            .contains(publicUrl, "200");
+        assertThat(response.getContentAsString()).isEqualTo(body);
+
+        MockHttpServletRequest resume = new MockHttpServletRequest("GET",
+            "/resource/oss/uploads/" + uploadToken + "/parts");
+        resume.addParameter("X-Amz-Credential", accessKey);
+        filter.doFilter(resume, new MockHttpServletResponse(), (servletRequest, servletResponse) ->
+            assertThat(((jakarta.servlet.http.HttpServletRequest) servletRequest).getRequestURI())
+                .contains(uploadToken));
+        assertThat(events).hasSize(4);
+        assertThat(events.get(2)).containsEntry("path", "/resource/oss/uploads/[REDACTED]/parts");
+        assertThat(events.get(3)).containsEntry("path", "/resource/oss/uploads/[REDACTED]/parts");
+        assertThat(((Map<?, ?>) events.get(2).get("parameters")).get("X-Amz-Credential"))
+            .isEqualTo(List.of("[REDACTED]"));
+        assertThat(events.toString()).doesNotContain(accessKey, signature, uploadToken);
+    }
+
+    @Test
     void concealsTruncatedJsonInsteadOfFallingBackToSensitivePlaintext() throws Exception {
         List<Map<String, Object>> events = new ArrayList<>();
         SysLogFilter filter = new SysLogFilter(20, 2 * 1024 * 1024, events::add);

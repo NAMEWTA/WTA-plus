@@ -128,4 +128,44 @@ class LogSanitizerTest {
             assertEquals(ordinary, LogSanitizer.path(ordinary));
         }
     }
+
+    @Test
+    void signedOssUrlsAndUploadTokensAreHiddenOnlyInLogCopies() {
+        String accessKey = "AK-CANARY-OSS-7741";
+        String signature = "SIGNATURE-CANARY-OSS-7741";
+        String uploadToken = "UPLOAD-TOKEN-CANARY-7741";
+        String signed = "https://storage.example.test/private/object?X-Amz-Algorithm=AWS4-HMAC-SHA256"
+            + "&X-Amz-Credential=" + accessKey + "%2F20260923%2Ftest%2Fs3%2Faws4_request"
+            + "&X-Amz-Signature=" + signature;
+        String malformed = "https://storage.example.test/object path?x-amz-credential=" + accessKey;
+        String publicUrl = "https://cdn.example.test/public/object?page=2";
+        Map<String, Object> business = Map.of("code", 200, "data", Map.of(
+            "uploadToken", uploadToken,
+            "url", signed,
+            "urls", java.util.List.of(signed, malformed),
+            "presignedRequest", Map.of("url", signed, "method", "PUT"),
+            "parts", java.util.List.of(Map.of("url", signed, "partNumber", 1)),
+            "publicUrl", publicUrl));
+
+        String safe = LogSanitizer.object(business, "/resource/oss/uploads");
+        assertFalse(safe.contains(accessKey));
+        assertFalse(safe.contains(signature));
+        assertFalse(safe.contains(uploadToken));
+        assertTrue(safe.contains(publicUrl));
+        assertTrue(safe.contains("PUT"));
+        assertTrue(safe.contains("partNumber"));
+        assertEquals(signed, ((Map<?, ?>) ((Map<?, ?>) business.get("data")).get("presignedRequest")).get("url"));
+        assertEquals(uploadToken, ((Map<?, ?>) business.get("data")).get("uploadToken"));
+
+        assertEquals("/resource/oss/uploads/" + LogSanitizer.REDACTED + "/parts/sign",
+            LogSanitizer.path("/resource/oss/uploads/" + uploadToken + "/parts/sign"));
+        assertEquals("/resource/oss/uploads", LogSanitizer.path("/resource/oss/uploads"));
+        assertEquals("/resource/oss/config/diagnose/7", LogSanitizer.path("/resource/oss/config/diagnose/7"));
+        assertTrue(LogSanitizer.isSensitiveName("uploadToken", "/resource/oss/uploads"));
+        assertTrue(LogSanitizer.isSensitiveName("X-Amz-Credential", "/resource/oss/uploads"));
+        assertTrue(LogSanitizer.isSensitiveName("X-Amz-Signature", "/resource/oss/uploads"));
+        String ordinary = LogSanitizer.json("{\"url\":\"" + publicUrl + "\",\"code\":1234}", "/ordinary");
+        assertTrue(ordinary.contains(publicUrl));
+        assertTrue(ordinary.contains("1234"));
+    }
 }
