@@ -1,0 +1,21 @@
+{
+  "command": [
+    "env",
+    "JAVA_TOOL_OPTIONS=-Xms128m -Xmx1536m",
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=OssBoundedTransferTest,NotifyAttachmentRuntimeRedTest,NotifyAttachmentDispatcherUnitTest,MailNotifyChannelAdapterUnitTest,MailAttachmentSnapshotUnitTest,DemoNotifyCallerUnitTest,OssObjectMetadataServiceUnitTest,NotificationDeadlineRuntimeTest,NotificationSupportedModeRuntimeTest,NotifyOutboxWakePublisherTest,PersonRebindNotificationTest,EnterpriseTransferServiceTest,NotifyDispatcherUnitTest,NotifyIdempotencyDispatcherUnitTest,NotifyCallerMigrationContractUnitTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-24T05:40:59.663457+00:00",
+  "finished_at": "2026-09-24T05:41:12.248427+00:00",
+  "exit_code": 1,
+  "log": "a1-targeted.log"
+}

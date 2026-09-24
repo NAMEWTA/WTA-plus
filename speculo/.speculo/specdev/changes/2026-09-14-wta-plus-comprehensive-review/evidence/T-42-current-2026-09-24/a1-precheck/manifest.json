@@ -1,0 +1,57 @@
+{
+  "created_at": "2026-09-24T05:54:14.567213+00:00",
+  "source": "0595e2ccbd03474bced92809b2ac9056c9a15751",
+  "status": "NOT_PASSED",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c30a09fa269abfb4a35f19d440f0ca3a130abe58dc6253a4f2db97d6dac40198",
+      "bytes": 885
+    },
+    {
+      "path": "a1-targeted-source-and-counts.json",
+      "sha256": "84daad92c94845a2622330026af9de44d31704277372c2fb403aca0a948eb340",
+      "bytes": 437
+    },
+    {
+      "path": "a1-targeted.json",
+      "sha256": "e281f3baffb39d47b175e06187d16fc9240a8bc3238affa3c1c6fb3c936ec7f6",
+      "bytes": 891
+    },
+    {
+      "path": "a1-targeted.log",
+      "sha256": "1b5ed5af85127ec427b469b20368c13c8141e13f9f57cf96e7b27e7b267cd356",
+      "bytes": 32098
+    },
+    {
+      "path": "implementation-files.json",
+      "sha256": "4baaf40338c1fa03f483f1b4f136adbb85d5aa986a439dddc1322bbe2fc3af6b",
+      "bytes": 6459
+    },
+    {
+      "path": "phase-fault-v5-freeze.json",
+      "sha256": "bf401b3cc1af29d1c1c80aa7b96f6e3796561ab4258cf9d850599a9e93513e05",
+      "bytes": 674
+    },
+    {
+      "path": "review-fixture-followup.md",
+      "sha256": "86e0a10d51debb497eb31a0320bc6e4ddb35b94d6d33e1ce6f29ac48fd153323",
+      "bytes": 3308
+    },
+    {
+      "path": "review-product-a1-contract.md",
+      "sha256": "11b8ebbbe5ecdb68ede79788d60838a79b7cb018b6096a74ba9232f84dd6a575",
+      "bytes": 7668
+    },
+    {
+      "path": "review-product-a1-runtime.md",
+      "sha256": "04f6db14e8488df0fb25165ddeb8685aa25292be055e4c08967ed52c3cce3a00",
+      "bytes": 5717
+    },
+    {
+      "path": "run-targeted.py",
+      "sha256": "9f61afa2cb9ec6f339af205ca558bbc48b6065545347924ad743c3fdab74982c",
+      "bytes": 2314
+    }
+  ]
+}

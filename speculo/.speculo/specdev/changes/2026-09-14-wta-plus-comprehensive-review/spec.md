@@ -358,3 +358,15 @@ revision225：T42事前增加Mail适配器发信前期限/租约核验写集，�
 revision226：T42事前补充SysOss实体/VO状态说明写集，共58根；NOT_READY不可作为普通可用附件，元数据与URL均仅接受ACTIVE。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 新增2条精确路径仅用于补全SysOss与SysOssVo的NOT_READY语义说明；六SQL同列注释同步。NOT_READY表示通知私有快照预约未确认，不是可下载对象；普通objectMetadata与访问URL入口仅接受ACTIVE。复制结果不确定时保留NOT_READY、真实关系引用与稳定目标键，不能将其包装为可用附件。配套真实故障用例核对metadata及URL拒绝。尚未验收通过，产品writer仍为cors_audit，Lead不并发构建。
+
+## revision227 — 首候选失败与附件发送预约
+
+revision227：T42首候选0595e2cc定向编译失败（实际0测试），attempts1且未验收；保留双轴审查并事前登记邮件发送预约事务端口2路径，共60根。17done/2cancelled/1in_progress/30ready，Goal active。
+
+A1不可判定完成：三个OSS测试close受检异常声明已由a20c977f修复，尚未重跑；原始日志、clean source与两轴审查冻结在evidence/T-42-current-2026-09-24/a1-precheck。候选尝试计数保守记1（编译前置失败，full-suite/E2E仍pending），不因后续修复重置。静态审查发现取消＋旧SMTP仍在途＋租约到期重领后，CANCELLED/无回执/无租约不能证明未发；无邮箱USER的UNDELIVERABLE无Outbox却未释放来源引用。
+
+事前增加NotifyDispatchResultPort与NotifyDispatchResultUseCase精确写集：最终Mail适配器的PreSendGate改调用专用beginMailProviderSend短事务，复用Intent→Outbox→Delivery锁及deadline/lease规则，再锁附件关系、确认READY未RELEASED，单向持久置send_reserved=true；事务提交确认后才允许物理sender。普通早期deadlineGate不置预约，无附件不访问OSS。任一关系send_reserved不是明确false时，自动回收持续保留所有共享引用；标记表示可能已发送，不能以取消/重领/失败/无receipt清零。新增字段进入唯一DDL和真实实体，初始false；不另建状态机或修改通用取消合同。
+
+新增关系补齐@Version/@TableLogic，去掉四处手工version+1，由真实Mapper更新验证乐观冲突和逻辑删除；不能沿用旧实体偏差。UNDELIVERABLE仅在其他全部安全条件成立时解除引用。真实反例须让底层sender阻塞，另连接取消与过期重领，确认CLOSE后仍不释放源/目标refs；保留真正未发送取消与无邮箱正例。补齐多附件第N项失败仍有主、DB提交不确定与幂等唯一键竞争/授权负例、实际HTTP字符串ID与正式OpenAPI等尚缺验收，不将静态检查或单元JSON替代真实证据。
+
+当前fixture受控线程/UNDELIVERABLE两文件尚未提交；cors_audit将继续唯一产品writer，Lead不并发构建或启动服务。所有新代码、default/full/core、真实E2E及生成合同待固定新源码后执行。
