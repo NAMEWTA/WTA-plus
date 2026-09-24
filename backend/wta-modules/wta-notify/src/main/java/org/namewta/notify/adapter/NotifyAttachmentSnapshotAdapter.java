@@ -6,9 +6,8 @@ import org.namewta.common.notify.attachment.NotifyAttachmentSnapshot;
 import org.namewta.common.notify.attachment.NotifyAttachmentSnapshotService;
 import org.namewta.common.notify.exception.NotifyAttachmentSnapshotException;
 import org.namewta.common.notify.model.NotifyContext;
-import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.domain.entity.NotifyIntentAttachment;
-import org.namewta.notify.service.runtime.NotifyAttachmentSnapshotTransactions;
+import org.namewta.notify.port.NotifyAttachmentSnapshotPort;
 import org.namewta.system.api.OssService;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +18,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class NotifyAttachmentSnapshotAdapter implements NotifyAttachmentSnapshotService {
-    private final NotifyNotificationDao dao;
-    private final NotifyAttachmentSnapshotTransactions transactions;
+    private final NotifyAttachmentSnapshotPort snapshots;
     private final OssService ossService;
 
     @Override
@@ -28,15 +26,15 @@ public class NotifyAttachmentSnapshotAdapter implements NotifyAttachmentSnapshot
         if (intentId <= 0 || sourceOssIds == null || sourceOssIds.isEmpty()) {
             throw new NotifyAttachmentSnapshotException("ATTACHMENT_OWNER_REQUIRED", "附件归属通知不存在");
         }
-        List<NotifyIntentAttachment> relations = dao.attachments(intentId);
+        List<NotifyIntentAttachment> relations = snapshots.attachments(intentId);
         if (!relations.stream().map(NotifyIntentAttachment::getSourceOssId).toList().equals(sourceOssIds)) {
             throw new NotifyAttachmentSnapshotException("ATTACHMENT_SOURCE_MISMATCH", "附件序列与持久归属不一致");
         }
         List<NotifyAttachmentSnapshot> result = new ArrayList<>(relations.size());
         for (NotifyIntentAttachment relation : relations) {
-            NotifyAttachmentSnapshotTransactions.Prepared prepared;
+            NotifyAttachmentSnapshotPort.Prepared prepared;
             try {
-                prepared = transactions.reserve(intentId, relation.getIntentAttachmentId());
+                prepared = snapshots.reserve(intentId, relation.getIntentAttachmentId());
             } catch (RuntimeException exception) {
                 throw new NotifyAttachmentSnapshotException("ATTACHMENT_RESERVATION_FAILED", "附件私有快照预约失败", exception);
             }
@@ -44,10 +42,10 @@ public class NotifyAttachmentSnapshotAdapter implements NotifyAttachmentSnapshot
             if (prepared.reservation() != null) {
                 try {
                     OssService.NotificationCopyResult copied = ossService.copyNotificationSnapshot(prepared.reservation());
-                    current = transactions.confirm(intentId, relation.getIntentAttachmentId(), current.getCopyToken(),
-                        prepared.reservation(), copied);
+                    current = snapshots.confirm(intentId, relation.getIntentAttachmentId(), current.getCopyToken(),
+                        prepared, copied.fileSize(), copied.sha256());
                 } catch (RuntimeException exception) {
-                    try { transactions.uncertain(intentId, relation.getIntentAttachmentId(), current.getCopyToken()); }
+                    try { snapshots.uncertain(intentId, relation.getIntentAttachmentId(), current.getCopyToken()); }
                     catch (RuntimeException cannotRecord) {
                         if (cannotRecord != exception) exception.addSuppressed(cannotRecord);
                     }

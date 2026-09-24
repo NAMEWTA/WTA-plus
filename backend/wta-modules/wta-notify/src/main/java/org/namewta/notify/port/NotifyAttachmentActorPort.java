@@ -1,4 +1,4 @@
-package org.namewta.notify.service.runtime;
+package org.namewta.notify.port;
 
 /** 从服务端已验证会话取得附件提交者；HTTP 命令不能携带该事实。 */
 public interface NotifyAttachmentActorPort {

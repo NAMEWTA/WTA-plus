@@ -1,29 +1,38 @@
 package org.namewta.notify.service.runtime;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import lombok.RequiredArgsConstructor;
 import org.namewta.common.core.exception.ServiceException;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.domain.entity.NotifyIntent;
 import org.namewta.notify.domain.entity.NotifyIntentAttachment;
+import org.namewta.notify.domain.entity.NotifyDelivery;
+import org.namewta.notify.domain.entity.NotifyOutbox;
+import org.namewta.notify.port.NotifyAttachmentSnapshotPort.Prepared;
 import org.namewta.system.api.OssService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.List;
-import org.namewta.notify.domain.entity.NotifyDelivery;
-import org.namewta.notify.domain.entity.NotifyOutbox;
 
-/** 附件预约和结果均是独立短事务；调用方负责在事务外执行远端复制。 */
+/** 附件归属与状态规则；UseCase 分别开启短事务，适配器在事务外执行远端复制。 */
 @Service
 @RequiredArgsConstructor
-public class NotifyAttachmentSnapshotTransactions {
+public class NotifyAttachmentSnapshotService {
     private final NotifyNotificationDao dao;
     private final OssService ossService;
 
+    /** 按 Intent 读取原提交附件序列；预约时仍须在锁内重验每条关系。 */
+    public List<NotifyIntentAttachment> attachments(Long intentId) {
+        return dao.attachments(intentId);
+    }
+
+    /** 仅提供有界回收候选，真正解除引用必须另进锁内事务。 */
+    public List<NotifyIntentAttachment> attachmentReleaseCandidates(long afterId, int limit) {
+        return dao.attachmentReleaseCandidates(afterId, limit);
+    }
+
     /** Intent→关系锁下取得一次复制权；READY 可复用，COPYING/UNKNOWN 不盲重写。 */
-    @DSTransactional
     public Prepared reserve(Long intentId, Long relationId) {
         NotifyIntent intent = dao.lockIntent(intentId);
         if (intent == null || intent.getAttachmentActorUserId() == null
@@ -45,10 +54,10 @@ public class NotifyAttachmentSnapshotTransactions {
     }
 
     /** 复制已经返回，System 目标可下载与 Notify 关系 READY 必须同笔提交。 */
-    @DSTransactional
     public NotifyIntentAttachment confirm(Long intentId, Long relationId, String token,
-                                          OssService.NotificationCopyReservation reservation,
-                                          OssService.NotificationCopyResult result) {
+                                          Prepared prepared, long copiedSize, String copiedSha256) {
+        OssService.NotificationCopyReservation reservation = prepared.reservation();
+        OssService.NotificationCopyResult result = new OssService.NotificationCopyResult(copiedSize, copiedSha256);
         if (dao.lockIntent(intentId) == null) throw new ServiceException("附件所属通知不存在");
         NotifyIntentAttachment relation = locked(intentId, relationId);
         if (!"COPYING".equals(relation.getStatus()) || !Objects.equals(relation.getCopyToken(), token)
@@ -64,7 +73,6 @@ public class NotifyAttachmentSnapshotTransactions {
     }
 
     /** 远端或提交结果不确定时仅持久标记，不释放 owner/ref，不再自动重拷。 */
-    @DSTransactional
     public void uncertain(Long intentId, Long relationId, String token) {
         if (dao.lockIntent(intentId) == null) return;
         NotifyIntentAttachment relation = locked(intentId, relationId);
@@ -78,7 +86,6 @@ public class NotifyAttachmentSnapshotTransactions {
      * 只有本聚合全部 MAIL 任务无活租约、都已结束且明确未发送，才解除共享快照/源引用。
      * COPY_UNKNOWN 和 COPYING 始终保留稳定目标，防迟到 PUT 在回收后制造无主对象。
      */
-    @DSTransactional
     public boolean releaseIfSafe(Long intentId) {
         NotifyIntent intent = dao.lockIntent(intentId);
         if (intent == null) return false;
@@ -117,6 +124,4 @@ public class NotifyAttachmentSnapshotTransactions {
             .filter(item -> Objects.equals(item.getIntentAttachmentId(), relationId)).findFirst()
             .orElseThrow(() -> new ServiceException("附件关系不存在"));
     }
-
-    public record Prepared(NotifyIntentAttachment relation, OssService.NotificationCopyReservation reservation) { }
 }

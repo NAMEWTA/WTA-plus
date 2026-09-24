@@ -11,6 +11,7 @@ import org.namewta.notify.domain.entity.NotifyIntentAttachment;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.entity.NotifyRecipient;
 import org.namewta.notify.dao.NotifyNotificationDao;
+import org.namewta.notify.port.NotifyAttachmentActorPort;
 import org.namewta.notify.support.outbox.NotifyOutboxWakeRequestedEvent;
 import org.namewta.notify.support.NotifyAuditSupport;
 import org.namewta.notify.support.NotifyNoticeVersionFence;

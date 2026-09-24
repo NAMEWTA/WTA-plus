@@ -22,7 +22,7 @@ import org.namewta.notify.domain.entity.NotifySceneBinding;
 import org.namewta.notify.port.NotifyDispatchResultPort;
 import org.namewta.notify.service.runtime.DispatchNotificationService;
 import org.namewta.notify.service.runtime.NotificationApplicationRuntimeService;
-import org.namewta.notify.service.runtime.NotifyAttachmentActorPort;
+import org.namewta.notify.port.NotifyAttachmentActorPort;
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.UserService;
 import org.namewta.common.core.exception.ServiceException;

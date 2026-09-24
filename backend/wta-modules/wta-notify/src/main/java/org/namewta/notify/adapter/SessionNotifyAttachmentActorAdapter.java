@@ -1,7 +1,7 @@
 package org.namewta.notify.adapter;
 
 import org.namewta.common.satoken.utils.LoginHelper;
-import org.namewta.notify.service.runtime.NotifyAttachmentActorPort;
+import org.namewta.notify.port.NotifyAttachmentActorPort;
 import org.namewta.system.api.model.LoginUser;
 import org.springframework.stereotype.Component;
 

@@ -47,11 +47,12 @@ import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.mapper.NotifyIntentAttachmentMapper;
 import org.namewta.notify.port.NotifyDispatchPort;
 import org.namewta.notify.port.NotifyOutboxClaimPort;
-import org.namewta.notify.service.runtime.NotifyAttachmentSnapshotTransactions;
+import org.namewta.notify.port.NotifyAttachmentSnapshotPort;
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -129,7 +130,7 @@ class NotifyMailAttachmentIntegrationTest {
     @Autowired private ObjectProvider<NotifyIdempotencyStore> idempotencyStore;
     @Autowired private NotifyAttachmentSnapshotService snapshotService;
     @Autowired private OssService ossService;
-    @Autowired private NotifyAttachmentSnapshotTransactions snapshotTransactions;
+    @Autowired private NotifyAttachmentSnapshotPort snapshotTransactions;
     @Autowired private MailNotifyChannelAdapter mailAdapter;
     @Autowired private CaptureSender sender;
 
@@ -207,6 +208,7 @@ class NotifyMailAttachmentIntegrationTest {
         assertThat(snapshotService).isNotNull();
         assertThat(ossService).isNotNull();
         assertThat(snapshotTransactions).isNotNull();
+        assertThat(AopUtils.isAopProxy(snapshotTransactions)).isTrue();
         assertThat(mailAdapter).isNotNull();
         assertThat(sender).isNotNull();
         assertThat(db.queryForObject("select count(*) from information_schema.tables "
