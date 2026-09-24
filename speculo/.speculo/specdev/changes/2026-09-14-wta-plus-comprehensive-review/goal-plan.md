@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision222，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision223，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision223：T42实施中新附件HTTP字段明确为十进制字符串ID数组，内部严格转Long，避免生成number[]损失雪花ID精度；52写集不变。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 ### Pending Decisions and Blockers
 
@@ -737,3 +737,9 @@ revision221：T42已固定可执行行为红灯并登记附件闭环完整写集
 revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 red01附件例因测试账号minuteMax缺失未进入send，原失败保留；Lead仅补测试额度后red02真正到达NotifyRequest附件列表比较。无生产修复混入红灯。源码前后clean `59b30b3c1b4b920c7c82643d0350c83f391218ba`。唯一产品writer为cors_audit，完整合同与52登记写集见Ticket及dispatch-T-42-implementation；禁止子代理构建/服务/提交，Lead继续独占。
+
+## revision223 — 新附件ID传输精度
+
+revision223：T42实施中新附件HTTP字段明确为十进制字符串ID数组，内部严格转Long，避免生成number[]损失雪花ID精度；52写集不变。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+NotificationCommand.attachmentOssIds使用List<String>，HTTP可选、缺省空；Demo输入Long映射十进制字符串，服务端在任何持久化前验证正整数及Long范围，再规范化去重保序为内部Long。旧recipientIds等公共ID已采用字符串；此裁决仅约束本票新增字段，不做全仓ID迁移或添加Swagger依赖。BigNumberSerializer仅按数值范围切换序列化，不能单凭它保证OpenAPI/TS客户端精度。真实HTTP/序列化覆盖quoted 9007199254740993及零/负/小数/溢出拒绝，live schema必须items.type=string且非required；标准工具生成，不手写快照。原只读List<Long>设计稿作为历史保留，以本修订为准。

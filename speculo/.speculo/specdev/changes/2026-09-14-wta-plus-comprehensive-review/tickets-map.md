@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 222
+plan_revision: 223
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision223：T42实施中新附件HTTP字段明确为十进制字符串ID数组，内部严格转Long，避免生成number[]损失雪花ID精度；52写集不变。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -738,3 +738,9 @@ revision221：T42已固定可执行行为红灯并登记附件闭环完整写集
 revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 red01附件例因测试账号minuteMax缺失未进入send，原失败保留；Lead仅补测试额度后red02真正到达NotifyRequest附件列表比较。无生产修复混入红灯。源码前后clean `59b30b3c1b4b920c7c82643d0350c83f391218ba`。唯一产品writer为cors_audit，完整合同与52登记写集见Ticket及dispatch-T-42-implementation；禁止子代理构建/服务/提交，Lead继续独占。
+
+## revision223 — 新附件ID传输精度
+
+revision223：T42实施中新附件HTTP字段明确为十进制字符串ID数组，内部严格转Long，避免生成number[]损失雪花ID精度；52写集不变。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+NotificationCommand.attachmentOssIds使用List<String>，HTTP可选、缺省空；Demo输入Long映射十进制字符串，服务端在任何持久化前验证正整数及Long范围，再规范化去重保序为内部Long。旧recipientIds等公共ID已采用字符串；此裁决仅约束本票新增字段，不做全仓ID迁移或添加Swagger依赖。BigNumberSerializer仅按数值范围切换序列化，不能单凭它保证OpenAPI/TS客户端精度。真实HTTP/序列化覆盖quoted 9007199254740993及零/负/小数/溢出拒绝，live schema必须items.type=string且非required；标准工具生成，不手写快照。原只读List<Long>设计稿作为历史保留，以本修订为准。

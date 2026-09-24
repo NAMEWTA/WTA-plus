@@ -4,7 +4,7 @@
 
 ## 公开命令与正文邮件
 
-NotificationCommand仅加typed List<Long> attachmentOssIds，HTTP可选缺省空；按正整数、有界数量、去重保序校验。Java canonical构造所有仓内消费者同批直切，无兼容重载或从templateParams偷读旧字段。12个生产构造点及测试按真实rg清单迁移；无需附件的系统调用传空列表。服务器从受信LoginUser捕获userId+Client PK，非空附件缺任一失败关闭；不接收HTTP actor或信任metadata/create_by/worker线程。Intent保存不可变actor。
+NotificationCommand仅加typed List<String> attachmentOssIds（十进制正ID，内部严格转Long），HTTP可选缺省空；按正整数、有界数量、去重保序校验。Java canonical构造所有仓内消费者同批直切，无兼容重载或从templateParams偷读旧字段。12个生产构造点及测试按真实rg清单迁移；无需附件的系统调用传空列表。服务器从受信LoginUser捕获userId+Client PK，非空附件缺任一失败关闭；不接收HTTP actor或信任metadata/create_by/worker线程。Intent保存不可变actor。
 
 Demo新增独立demo-mail场景，title/content由中心可配置包装模板渲染、不要求path；notice-published/workflow-task仍要求path。此Demo正文包装是明确例外，通知规范同步说明，不能取消业务模板权威。六SQL新增停用/未绑定实际账号的安全种子，禁止写SMTP秘密。现有红灯的旧Map夹具在绿色实现中迁移为typed字段和真实持久关系断言，不能为了使旧夹具绿而保留不安全Map后门；原失败已冻结。
 
@@ -41,3 +41,9 @@ common单delivery cleanup不得删除共享资源。生产owner协调安全释�
 revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 red01附件例因测试账号minuteMax缺失未进入send，原失败保留；Lead仅补测试额度后red02真正到达NotifyRequest附件列表比较。无生产修复混入红灯。源码前后clean `59b30b3c1b4b920c7c82643d0350c83f391218ba`。唯一产品writer为cors_audit，完整合同与52登记写集见Ticket及dispatch-T-42-implementation；禁止子代理构建/服务/提交，Lead继续独占。
+
+## revision223 — 新附件ID传输精度
+
+revision223：T42实施中新附件HTTP字段明确为十进制字符串ID数组，内部严格转Long，避免生成number[]损失雪花ID精度；52写集不变。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+NotificationCommand.attachmentOssIds使用List<String>，HTTP可选、缺省空；Demo输入Long映射十进制字符串，服务端在任何持久化前验证正整数及Long范围，再规范化去重保序为内部Long。旧recipientIds等公共ID已采用字符串；此裁决仅约束本票新增字段，不做全仓ID迁移或添加Swagger依赖。BigNumberSerializer仅按数值范围切换序列化，不能单凭它保证OpenAPI/TS客户端精度。真实HTTP/序列化覆盖quoted 9007199254740993及零/负/小数/溢出拒绝，live schema必须items.type=string且非required；标准工具生成，不手写快照。原只读List<Long>设计稿作为历史保留，以本修订为准。
