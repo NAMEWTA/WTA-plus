@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-46"
 title: "恢复与清理共享对象锁以保护当前来源"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -99,7 +99,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 指针/工单更新冲突回滚；删除确认丢失能安全幂等重试 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 单对象超时/失败不锁住整个批次，真实MinIO目标对象仍可读取 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。下列为计划命令；实际执行命令与证据见当前Evidence：
 
 - `cd backend && ./mvnw -pl wta-modules/wta-system,wta-admin -am test`
 
@@ -120,13 +120,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-046`：两种竞争顺序均不删当前来源，恢复/清理结果明确。
-- [ ] `AC-046`：指针/工单更新冲突回滚；删除确认丢失能安全幂等重试。
-- [ ] `AC-046`：单对象超时/失败不锁住整个批次，真实MinIO目标对象仍可读取。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-046`：两种竞争顺序均不删当前来源，恢复/清理结果明确。
+- [x] `AC-046`：指针/工单更新冲突回滚；删除确认丢失能安全幂等重试。
+- [x] `AC-046`：单对象超时/失败不锁住整个批次，真实MinIO目标对象仍可读取。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -185,3 +185,9 @@ revision217：T46 c30391d0定向175全过零skip；真实real01两例1pass/1fail
 revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关被预约前预读提交消耗的高置信解释，但旧异常阶段未捕获。Dispatch03仅按UNKNOWN成功更新后的XID精确注入提交回执丢失；attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
 
 权威窄修派单见 `evidence/dispatch-T-46-03.md`，诊断见 `evidence/T-46-current-2026-09-23/real01/real01-ack-injection-diagnosis.md`。无产品业务修复裁决，不能将机制推论写成旧运行已捕获的调用栈。
+
+## revision219 — T46当前候选验收完成
+
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
+
+结果 `4ecd45d7207429e78d767b281851eafb1ba0f955`，tree `38f4411a53af1096388dbe4afae610f72eda8365`，base `4a8fea8c19392972ee5cfef4263962ff6b0e3bfb`。完整证据为 `evidence/T-46.md` 与 `evidence/T-46-current-2026-09-23/complete-a2/manifest.json`。red01、green01与real01的原失败保留；完整候选attempts2。前端无变更，未声称新跑浏览器；没有部署、推送或归档。

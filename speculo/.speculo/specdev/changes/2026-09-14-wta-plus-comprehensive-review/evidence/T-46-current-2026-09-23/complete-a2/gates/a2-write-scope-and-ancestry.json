@@ -1,0 +1,51 @@
+{
+  "base": "4a8fea8c19392972ee5cfef4263962ff6b0e3bfb",
+  "result": "4ecd45d7207429e78d767b281851eafb1ba0f955",
+  "result_tree": "38f4411a53af1096388dbe4afae610f72eda8365",
+  "current_clean": true,
+  "method": "direct-parent",
+  "product_paths": [
+    ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+    "backend/README.md",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/client/OssClientProviderUnitTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/config/OssConfigGovernanceUnitTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationServiceUnitTest.java",
+    "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java",
+    "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/OssClient.java",
+    "backend/wta-modules/wta-system/AGENTS.md",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/mapper/SysOssConfigMapper.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/DefaultOssMigrationObjectStore.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/MybatisOssMigrationStore.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/OssMigrationAtomicService.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/OssMigrationObjectStore.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/OssMigrationStore.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/OssStorageMigrationProperties.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/OssStorageMigrationService.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/mapper/SysOssMigrationItemMapper.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssConfigServiceImpl.java"
+  ],
+  "actual_product_path_count": 19,
+  "registered_roots": [
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/mapper/SysOssMapper.java",
+    "backend/wta-modules/wta-system/src/main/resources/mapper/system/SysOssMapper.xml",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/",
+    "frontend/packages/web-domains/system/src/oss/OssPage.vue",
+    "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/OssClient.java",
+    "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/client/",
+    "backend/README.md",
+    ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/mapper/SysOssConfigMapper.java",
+    "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssConfigServiceImpl.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/config/",
+    "backend/wta-modules/wta-system/AGENTS.md"
+  ],
+  "outside_scope": [],
+  "frontend_unchanged": true,
+  "backend_and_skill_changes_since_green03": [
+    "backend/wta-admin/src/test/java/org/namewta/test/oss/migration/OssStorageMigrationIntegrationTest.java"
+  ],
+  "production_code_unchanged_since_green03": true
+}

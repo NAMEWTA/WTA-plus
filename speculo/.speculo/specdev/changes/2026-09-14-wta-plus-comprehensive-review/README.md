@@ -1,8 +1,8 @@
 # WTA-plus comprehensive review：当前执行入口
 
-revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关被预约前预读提交消耗的高置信解释，但旧异常阶段未捕获。Dispatch03仅按UNKNOWN成功更新后的XID精确注入提交回执丢失；attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
 
-最近验收为T45，result `09be6db6c3bace8594f7db0fe49a221e3cc5f140`，详见 `evidence/T-45.md`；当前T46尚在实现，未通过完整候选验收。
+最近验收为T46，result `4ecd45d7207429e78d767b281851eafb1ba0f955`，详见 `evidence/T-46.md`；下一T42附件闭环。
 
 本轮重规划基线为 `1264980c74e594bc594e88561bb292fbe5d968a1`：保留原31票编号与历史实现，新增19票覆盖新报告18项，T-30承担全部AC的最终集成。G共识和设计选择已确认，无需再次确认；2026-09-23早期“仅规划、目标未激活”是已被后续授权替代的历史状态。
 
@@ -352,3 +352,9 @@ revision217：T46 c30391d0定向175全过零skip；真实real01两例1pass/1fail
 revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关被预约前预读提交消耗的高置信解释，但旧异常阶段未捕获。Dispatch03仅按UNKNOWN成功更新后的XID精确注入提交回执丢失；attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
 
 权威窄修派单见 `evidence/dispatch-T-46-03.md`，诊断见 `evidence/T-46-current-2026-09-23/real01/real01-ack-injection-diagnosis.md`。无产品业务修复裁决，不能将机制推论写成旧运行已捕获的调用栈。
+
+## revision219 — T46当前候选验收完成
+
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
+
+结果 `4ecd45d7207429e78d767b281851eafb1ba0f955`，tree `38f4411a53af1096388dbe4afae610f72eda8365`，base `4a8fea8c19392972ee5cfef4263962ff6b0e3bfb`。完整证据为 `evidence/T-46.md` 与 `evidence/T-46-current-2026-09-23/complete-a2/manifest.json`。red01、green01与real01的原失败保留；完整候选attempts2。前端无变更，未声称新跑浏览器；没有部署、推送或归档。

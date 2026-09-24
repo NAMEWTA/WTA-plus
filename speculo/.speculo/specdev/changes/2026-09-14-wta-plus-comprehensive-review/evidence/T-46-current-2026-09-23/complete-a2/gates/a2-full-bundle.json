@@ -1,0 +1,12 @@
+{
+  "command": [
+    "bash",
+    "scripts/ci/verify-admin-bundle.sh",
+    "full"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-24T04:11:03.770277+00:00",
+  "finished_at": "2026-09-24T04:11:04.167624+00:00",
+  "exit_code": 0,
+  "log": "a2-full-bundle.log"
+}

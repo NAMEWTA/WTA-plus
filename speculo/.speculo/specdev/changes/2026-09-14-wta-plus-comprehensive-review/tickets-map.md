@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 218
+plan_revision: 219
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关被预约前预读提交消耗的高置信解释，但旧异常阶段未捕获。Dispatch03仅按UNKNOWN成功更新后的XID精确注入提交回执丢失；attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -38,7 +38,7 @@ revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关�
 
 ## 2. 执行清单
 
-50票中16done、2cancelled、T46 in_progress、31ready；AC-001/003仍由T30复验。
+50票中17done、2cancelled、31ready，无in_progress；AC-001/003仍由T30复验。
 
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -87,7 +87,7 @@ revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关�
 | T-43 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/43-measure-notify-fanout.md</Path> | 代表性规模有可重复 SQL/时延/锁等待基线；保持现有总量上限与持久聚合语义，优先减少插入往返，测量不足不引入新计数状态机。 | T-36, T-38, T-39 | standard | medium | yes | single-agent | AC-043 | W-close | ready |
 | T-44 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/44-optional-oss-diagnostics.md</Path> | 业务仅校验当前对象/配置/权限/预期访问类型，远端操作按实际结果反馈；管理员诊断独立，坏的可选存储不阻断核心就绪。 | — | deep | high | yes | single-agent | AC-044 | W-oss | done |
 | T-45 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/45-bounded-oss-diagnostic-facts.md</Path> | 诊断仅报告观察事实与范围：读403为未知，单对象匿名读取只证明该对象，PRIVATE未知不能宣称全桶安全。 | T-44 | deep | high | yes | single-agent | AC-045 | W-oss | done |
-| T-46 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/46-serialize-oss-restore-cleanup.md</Path> | 所有切指针/删来源入口共用对象→工单锁序。恢复先成功则清理不得删来源；清理已获得合法执行权则恢复明确拒绝。 | — | deep | high | yes | single-agent | AC-046 | W-oss | in_progress |
+| T-46 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/46-serialize-oss-restore-cleanup.md</Path> | 所有切指针/删来源入口共用对象→工单锁序。恢复先成功则清理不得删来源；清理已获得合法执行权则恢复明确拒绝。 | — | deep | high | yes | single-agent | AC-046 | W-oss | done |
 | T-47 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/47-latest-oss-query-wins.md</Path> | A慢B快最终行、total、preview、loading、error均属于B；卸载或旧失败不污染当前页面。 | — | standard | medium | yes | single-agent | AC-047 | W-visible | done |
 | T-48 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/48-simple-dev-start-and-explicit-repair.md</Path> | 一个脚本提供显式start/build/doctor/repair子命令（菜单仅薄包装），普通再次启动不深度修复且尊重Spring/Vite环境优先级。 | T-32 | standard | medium | yes | single-agent | AC-048 | W-close | ready |
 | T-49 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/49-single-source-storage-config.md</Path> | 默认存储来自DB，历史对象按service；静态上传策略有安全代码默认值，只有部署差异/必要额度可覆盖，SINGLE无需MULTIPART参数。 | T-44, T-48 | standard | medium | yes | single-agent | AC-049 | W-close | ready |
@@ -162,7 +162,7 @@ T-49同时依赖T-44与T-48。完整真实依赖从frontmatter重建，图是摘
 | AC-043 | T-43, T-30 | 真实 MySQL代表规模、SQL计数、现有原子结果/fence回归 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-044 | T-44, T-30 | OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组 | covered | T-44 当前候选已验收，见 evidence/T-44.md；整体集成仍待 T-30 |
 | AC-045 | T-45, T-30 | OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示 | covered | T-45 当前候选已验收，见 evidence/T-45.md；整体集成仍待 T-30 |
-| AC-046 | T-46, T-30 | OssStorageMigrationIntegrationTest：真实MySQL两连接＋阻塞替身＋MinIO对象存在验收 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-046 | T-46, T-30 | OssStorageMigrationIntegrationTest：真实MySQL两连接＋阻塞替身＋MinIO对象存在验收 | covered | 当前候选验收见evidence/T-46.md；T30最终复验仍待完成 |
 | AC-047 | T-47, T-30 | OssPage受控Promise组件测试，已有presentation.test.ts回归 | covered | T-47 当前候选已验收，见 evidence/T-47.md；整体集成仍待 T-30 |
 | AC-048 | T-48, T-30 | shell fake命令夹具＋真实Linux初次/二次启动；Windows由支持环境实际验收 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-049 | T-49, T-30 | OssUploadPropertiesUnitTest、配置绑定测试、默认存储切换真实MinIO | covered | 规划覆盖；当前not-run，不代表通过 |
@@ -712,3 +712,9 @@ revision217：T46 c30391d0定向175全过零skip；真实real01两例1pass/1fail
 revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关被预约前预读提交消耗的高置信解释，但旧异常阶段未捕获。Dispatch03仅按UNKNOWN成功更新后的XID精确注入提交回执丢失；attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
 
 权威窄修派单见 `evidence/dispatch-T-46-03.md`，诊断见 `evidence/T-46-current-2026-09-23/real01/real01-ack-injection-diagnosis.md`。无产品业务修复裁决，不能将机制推论写成旧运行已捕获的调用栈。
+
+## revision219 — T46当前候选验收完成
+
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
+
+结果 `4ecd45d7207429e78d767b281851eafb1ba0f955`，tree `38f4411a53af1096388dbe4afae610f72eda8365`，base `4a8fea8c19392972ee5cfef4263962ff6b0e3bfb`。完整证据为 `evidence/T-46.md` 与 `evidence/T-46-current-2026-09-23/complete-a2/manifest.json`。red01、green01与real01的原失败保留；完整候选attempts2。前端无变更，未声称新跑浏览器；没有部署、推送或归档。

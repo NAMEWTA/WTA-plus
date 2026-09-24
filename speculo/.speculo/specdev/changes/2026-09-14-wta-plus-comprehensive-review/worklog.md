@@ -1,6 +1,6 @@
 # 工作记录
 
-revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关被预约前预读提交消耗的高置信解释，但旧异常阶段未捕获。Dispatch03仅按UNKNOWN成功更新后的XID精确注入提交回执丢失；attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关�
 
 ## Current status
 
-T46实现中，cors_audit是唯一产品writer；Lead负责治理、固定候选、构建与隔离服务验证。16done/2cancelled/1in_progress/31ready；无运行中的测试服务。下一步完整回交后检查14根写集、执行OSS定向/默认/full/core及真实MySQL/MinIO验收。
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。 当前无产品writer、运行服务或测试进程。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -630,3 +630,11 @@ revision217：T46 c30391d0定向175全过零skip；真实real01两例1pass/1fail
 revision218：real01原失败保留；installed MyBatis/DS机制支持ACK开关被预约前预读提交消耗的高置信解释，但旧异常阶段未捕获。Dispatch03仅按UNKNOWN成功更新后的XID精确注入提交回执丢失；attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
 
 权威窄修派单见 `evidence/dispatch-T-46-03.md`，诊断见 `evidence/T-46-current-2026-09-23/real01/real01-ack-injection-diagnosis.md`。无产品业务修复裁决，不能将机制推论写成旧运行已捕获的调用栈。
+
+## revision219 — T46当前候选验收完成
+
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
+
+结果 `4ecd45d7207429e78d767b281851eafb1ba0f955`，tree `38f4411a53af1096388dbe4afae610f72eda8365`，base `4a8fea8c19392972ee5cfef4263962ff6b0e3bfb`。完整证据为 `evidence/T-46.md` 与 `evidence/T-46-current-2026-09-23/complete-a2/manifest.json`。red01、green01与real01的原失败保留；完整候选attempts2。前端无变更，未声称新跑浏览器；没有部署、推送或归档。
+
+T46 close219初次文档validator缺Workspace Verification节的current-workspace字面标记而失败；补齐后0errors/180共享路径warnings，串行owner策略继续适用，两次结果均保留。complete-a2共311记录，默认XML中2处测试JWT启发式替换保留source/sanitized摘要，不代表新增凭据泄漏。

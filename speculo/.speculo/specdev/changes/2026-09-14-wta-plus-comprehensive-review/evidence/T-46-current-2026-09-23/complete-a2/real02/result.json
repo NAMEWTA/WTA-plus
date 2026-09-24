@@ -1,0 +1,91 @@
+{
+  "gate": "T46 exact OSS migration integration class",
+  "run_id": "e9768dda90c986f5",
+  "owner": "T-46-OSS-MIGRATION",
+  "source_before": {
+    "head": "4ecd45d7207429e78d767b281851eafb1ba0f955",
+    "tree": "38f4411a53af1096388dbe4afae610f72eda8365",
+    "clean": true
+  },
+  "source_after": {
+    "head": "4ecd45d7207429e78d767b281851eafb1ba0f955",
+    "tree": "38f4411a53af1096388dbe4afae610f72eda8365",
+    "clean": true
+  },
+  "expected_methods": [
+    "migratesWithProductionStoreAndDualBucketsThenCleansUpOrRollsBack",
+    "restoreAndCleanupSerializeOnRealObjectRowAndPreserveCurrentSource"
+  ],
+  "maven_exit_code": 0,
+  "suites": [
+    {
+      "suite": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "fresh": true,
+      "source_sha256": "6662c6bf46f19803b6f09a993b5cd04e676a1e9df493fcabeb733ca7fcf3f15b",
+      "sanitized_sha256": "dc0df50de2d66c49ccbd18d94210d0bee9675414febcbd0a11d654dbda29a1fc",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t46/oss-migration-runs/e9768dda90c986f5/xml/TEST-org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest.xml",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "restoreAndCleanupSerializeOnRealObjectRowAndPreserveCurrentSource",
+        "migratesWithProductionStoreAndDualBucketsThenCleansUpOrRollsBack"
+      ],
+      "private_properties_marker": true
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 2165838,
+      "live_members": []
+    },
+    "owned_node_chrome_java_pids_remaining": [],
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "6715df42ef5047954b65adaf76d1c5d1f1df0c198d0906918b403525f5b1246d": true,
+      "d0395d66db9265e0aa4c1cd1e111ac41f3ad56dbc46c9ea41dfcc8bf3dfab956": true
+    },
+    "loopback_ports_closed": {
+      "32999": true,
+      "33000": true
+    },
+    "errors": []
+  },
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-24T04:07:37.091854+00:00",
+  "owned": {
+    "container_full_ids": [
+      "e829961028389426c46ec4d33d056b58f4364fd07b1379395435c84a4214d939",
+      "d2a176feaabbaaa3dbd0839c263dd475f317c94debaad14928a5ae8cd0059dd5"
+    ],
+    "loopback_ports": {
+      "mysql": 32999,
+      "minio": 33000
+    },
+    "migration_database_empty_before": true,
+    "migration_database_name": "t46_oss_migration_e9768dda90c986f5",
+    "minio_identity_scope": "owned bootstrap root",
+    "maven_pgid": 2165838
+  },
+  "surefire_text_reports": [
+    {
+      "suite": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "source_sha256": "0c7c186a2792b56365db0090ef8c1519d98efd1bbbfa6812df668f59fdd1f2bf",
+      "sanitized_sha256": "0c7c186a2792b56365db0090ef8c1519d98efd1bbbfa6812df668f59fdd1f2bf",
+      "redactions": 0
+    }
+  ],
+  "surefire_temp_files": [],
+  "owned_java_logs": [],
+  "maven_log": {
+    "source_sha256": "a9974e17ae49027bc46ac7621105e6ddddc13f787cc9c0a9e7245ce3e1c65940",
+    "sanitized_sha256": "a9974e17ae49027bc46ac7621105e6ddddc13f787cc9c0a9e7245ce3e1c65940",
+    "redactions": 0
+  },
+  "finished_utc": "2026-09-24T04:08:08.427753+00:00"
+}

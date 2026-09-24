@@ -308,3 +308,9 @@ revision216：T46候选4f8c4b4a定向174例1error（Region空值误拒轮换）�
 revision217：T46 c30391d0定向175全过零skip；真实real01两例1pass/1failure/0skip，ACK失联场景未读到UNKNOWN，精确失败保留且cleanup[]。正在定位故障注入时点，尚不定性生产或夹具问题；完整候选attempts1，16done/2cancelled/1in_progress/31ready，Goal active。
 
 真实run `60ecc38cb9c20055`，源码前后clean c30391d0；`restoreAndCleanupSerializeOnRealObjectRowAndPreserveCurrentSource`通过，`migratesWithProductionStoreAndDualBucketsThenCleansUpOrRollsBack`在第191行期望CLEANUP_OUTCOME_UNKNOWN但实际null。不能将未到达的后续CAS/配置断言写成通过。两个owned容器、两卷、两端口及Maven进程均清理成功，无真实环境副作用。默认/full/core尚未执行。全局ACK开关是否被预约前普通SqlSession提交提前消耗仅为待证假设；先查installed DS/MyBatis和调用顺序，再给最小修复派单，不放宽状态断言。
+
+## revision219 — T46当前候选验收完成
+
+revision219：T46在4ecd45d7完成当前候选验收；175定向、默认1145（928执行/217环境skip）、真实MySQL/MinIO两例零skip、full/core与五静态门禁通过，real02 cleanup[]。17done/2cancelled/31ready，无in_progress；下一T42，Goal active，change未完成或归档。
+
+结果 `4ecd45d7207429e78d767b281851eafb1ba0f955`，tree `38f4411a53af1096388dbe4afae610f72eda8365`，base `4a8fea8c19392972ee5cfef4263962ff6b0e3bfb`。完整证据为 `evidence/T-46.md` 与 `evidence/T-46-current-2026-09-23/complete-a2/manifest.json`。red01、green01与real01的原失败保留；完整候选attempts2。前端无变更，未声称新跑浏览器；没有部署、推送或归档。

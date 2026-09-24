@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.821 s -- in org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest
