@@ -178,7 +178,9 @@ final class OwnedAttachmentJdbcFaults implements AutoCloseable {
                 throw new SQLRecoverableException("owned lost commit acknowledgement");
             }
             terminateOwnedSession(actual);
+            ack.beforeDisconnectAcknowledged.set(true);
             // Must call the real driver so this case proves server-side disconnect before commit.
+            ack.beforeDriverCommitCalled.set(true);
             actual.commit();
             ack.beforeUnexpectedlyCommitted.set(true);
             throw new SQLException("owned pre-commit disconnect did not stop commit");
@@ -254,6 +256,8 @@ final class OwnedAttachmentJdbcFaults implements AutoCloseable {
         final AtomicBoolean fired = new AtomicBoolean();
         final AtomicBoolean disarmed = new AtomicBoolean();
         final AtomicBoolean actualCommitted = new AtomicBoolean();
+        final AtomicBoolean beforeDisconnectAcknowledged = new AtomicBoolean();
+        final AtomicBoolean beforeDriverCommitCalled = new AtomicBoolean();
         final AtomicBoolean beforeUnexpectedlyCommitted = new AtomicBoolean();
         AckPlan(AckTarget target, AckPhase phase) {
             this.target = Objects.requireNonNull(target);
@@ -261,7 +265,9 @@ final class OwnedAttachmentJdbcFaults implements AutoCloseable {
         }
         boolean hitExactlyOnce() {
             return fired.get() && !beforeUnexpectedlyCommitted.get()
-                && (phase == AckPhase.BEFORE || actualCommitted.get());
+                && (phase == AckPhase.BEFORE
+                    ? beforeDisconnectAcknowledged.get() && beforeDriverCommitCalled.get()
+                    : actualCommitted.get());
         }
     }
 
