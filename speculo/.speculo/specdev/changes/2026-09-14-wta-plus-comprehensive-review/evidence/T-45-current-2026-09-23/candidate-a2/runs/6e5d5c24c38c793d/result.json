@@ -1,0 +1,630 @@
+{
+  "accepted": true,
+  "backend_log_diagnostic": {
+    "known_canary_hits": 0,
+    "private_summary": "/tmp/wta-t45/runs/6e5d5c24c38c793d/diagnostics/backend-log-summary.json",
+    "redaction_counts": {
+      "authorization": 0,
+      "full_url": 4,
+      "jwt": 29,
+      "known_canary": 0,
+      "session_token": 0
+    },
+    "sanitized_sha256": "daabab6ed27bb537d65e1da9096819bdefbc76a97ba32745610044ea86a90b6b",
+    "source_raw_sha256": "92af6cb53c676441543897ca5bae3817e4f81c087b41cbd0d34916e3ef8c4502"
+  },
+  "cleanup_errors": [],
+  "counts": {
+    "private_uploads": 2,
+    "public_reads": 1,
+    "raw_backend_secret_canaries": 0,
+    "safe_provider_requests": [
+      {
+        "bucket_alias": "private_a",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 3,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 200
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 200
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": false,
+        "status": 200
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 206
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 2,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 2,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 200
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "PUT",
+        "range": false,
+        "signed": true,
+        "status": 200
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "PUT",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ],
+    "startup_minio_calls": 0,
+    "tables": 103,
+    "unauthorized_denials": 2
+  },
+  "diagnostic": {
+    "audit_secret_canaries": 0,
+    "expired_health_reason": "STALE",
+    "expired_snapshot_did_not_block_private_download": true,
+    "invalid_id_rejections": [
+      {
+        "business_code": 500,
+        "case": "zero",
+        "http_status": 200
+      },
+      {
+        "business_code": 500,
+        "case": "negative",
+        "http_status": 200
+      },
+      {
+        "business_code": 500,
+        "case": "non_numeric",
+        "http_status": 200
+      }
+    ],
+    "invalid_policy_fail_closed": true,
+    "ordinary_denied": true,
+    "private_a": {
+      "fact_count": 6,
+      "object_observation": "DENIED",
+      "reason": "DIAGNOSTIC_UNVERIFIED",
+      "status": "NOT_SERVING",
+      "unknown_bucket_facts": 4
+    },
+    "private_a_arrivals": 5,
+    "private_a_elapsed_ms": 76,
+    "private_a_observed_provider_rows": [
+      {
+        "bucket_alias": "private_a",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ],
+    "private_a_provider_rows": [
+      {
+        "bucket_alias": "private_a",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_a",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ],
+    "private_b": {
+      "fact_count": 6,
+      "object_observation": "DENIED",
+      "reason": "DIAGNOSTIC_UNVERIFIED",
+      "status": "NOT_SERVING",
+      "unknown_bucket_facts": 4
+    },
+    "private_b_arrivals": 5,
+    "private_b_observed_provider_rows": [
+      {
+        "bucket_alias": "private_b",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ],
+    "private_b_provider_rows": [
+      {
+        "bucket_alias": "private_b",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 403
+      },
+      {
+        "bucket_alias": "private_b",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ],
+    "public": {
+      "fact_count": 6,
+      "object_observation": "ALLOWED",
+      "reason": "DIAGNOSTIC_UNVERIFIED",
+      "status": "NOT_SERVING",
+      "unknown_bucket_facts": 4
+    },
+    "public_arrivals": 5,
+    "public_get_did_not_require_diagnostic_success": true,
+    "public_observed_provider_rows": [
+      {
+        "bucket_alias": "public",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 206
+      },
+      {
+        "bucket_alias": "public",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 200
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ],
+    "public_provider_rows": [
+      {
+        "bucket_alias": "public",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 206
+      },
+      {
+        "bucket_alias": "public",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 200
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ],
+    "safe_audit_count": 5
+  },
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "jar_sha256": "105a8e565e8d548292b49590bfdd179ebe98895f971b1b6930ef74dee7cdc660",
+  "minimal_privilege": {
+    "bucket_policy_write_denied": true,
+    "object_acl_write_denied": true,
+    "object_head_allowed": true
+  },
+  "openapi": {
+    "bytes": 512288,
+    "path_count": 438,
+    "private_capture": "/tmp/wta-t45/runs/6e5d5c24c38c793d/openapi.raw.json",
+    "sha256": "6f62122a5dcd959ee32adc2293c4b48785b1664fba748dcda59ef9ab99152a4c"
+  },
+  "owned": {
+    "containers": [
+      "4d4e8db7be27a7714ae504e6c43e4654048fc2b7555be1ccd341dd6e6a63ebd2",
+      "ce8b10f064be5207690c8e867f6885caeb0c25ddf889a1b23d2081e3af26be77",
+      "9dc1f9ba427609129a68cf89671af7214397ea287a417cfc9cdc699572142d35"
+    ],
+    "owner_label": "T-45-DIAGNOSTIC",
+    "ports": [
+      32975,
+      32976,
+      32977,
+      42459,
+      44883
+    ],
+    "private_ephemeral_files_removed": true,
+    "process_groups": [
+      1923017
+    ],
+    "run_id": "6e5d5c24c38c793d",
+    "volumes": [
+      "f33d2f4e8e4a51b5ce311eef7d4f881fca21e3366f69cdbc9d74c8ffa14944c0",
+      "8d669ced7cc75182d63bd61932afcc1e1cf5ffa605b7932424c4281b2b9d7284"
+    ]
+  },
+  "phase": "postcheck",
+  "schema_capture": {
+    "diagnostic_vo_fields": [
+      "checkedAt",
+      "facts",
+      "reason",
+      "status"
+    ],
+    "fact_fields": [
+      "basis",
+      "observation",
+      "observedAt",
+      "scope",
+      "source",
+      "subject"
+    ],
+    "message_enabled": true,
+    "message_transport_default": "sse",
+    "required_paths_expected": [
+      "/resource/oss/config/diagnose/{ossConfigId}",
+      "/resource/message",
+      "/resource/message/close"
+    ],
+    "required_paths_present": [
+      "/resource/oss/config/diagnose/{ossConfigId}",
+      "/resource/message",
+      "/resource/message/close"
+    ]
+  },
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "source": {
+    "clean": true,
+    "head": "d1fd57fb6a2a7c1806399e2728f066c842f3cdb4",
+    "tree": "ff84aee9f845a863515a7784975d69cb678cbb7b"
+  }
+}

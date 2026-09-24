@@ -1,0 +1,14 @@
+{
+  "source": {
+    "head": "9c567ba0da6604e7d4c06ece4d53683fc1193103",
+    "tree": "b9b49bf7e4567951f864221da7109475dd240c5a",
+    "clean": true
+  },
+  "pnpm": "10.34.5",
+  "path_prefix": "/tmp/wta-t02-c1/tool-bin",
+  "shim_sha256": "e8a43b6185d59350a8d6c4f1c8e0c23b3d70d48290907d2f78098234413dbe4c",
+  "build_environment": {
+    "VITE_APP_CONTEXT_PATH": "/",
+    "VITE_APP_BASE_API": "/prod-api"
+  }
+}

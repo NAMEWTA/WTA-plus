@@ -1,0 +1,17 @@
+{
+  "source": {
+    "clean": true,
+    "head": "d1fd57fb6a2a7c1806399e2728f066c842f3cdb4",
+    "tree": "ff84aee9f845a863515a7784975d69cb678cbb7b"
+  },
+  "accepted_run": "6e5d5c24c38c793d",
+  "raw_sha256": "6f62122a5dcd959ee32adc2293c4b48785b1664fba748dcda59ef9ab99152a4c",
+  "revision": "0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477",
+  "generated_sha256": "b1f463ff08842116c34a0c26088bee18af1a861052340037c3141e2b8deb96de",
+  "status": [
+    " M frontend/packages/api-contracts/generated/openapi.ts",
+    " M frontend/packages/api-contracts/openapi/current.json",
+    "?? frontend/packages/api-contracts/openapi/revisions/0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477/provenance.json",
+    "?? frontend/packages/api-contracts/openapi/revisions/0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477/source.json"
+  ]
+}

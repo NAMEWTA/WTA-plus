@@ -1,0 +1,16 @@
+{
+  "paths": {
+    "added": [],
+    "removed": [],
+    "changed": []
+  },
+  "schemas": {
+    "added": [
+      "Fact"
+    ],
+    "removed": [],
+    "changed": [
+      "OssStorageDiagnosticVo"
+    ]
+  }
+}

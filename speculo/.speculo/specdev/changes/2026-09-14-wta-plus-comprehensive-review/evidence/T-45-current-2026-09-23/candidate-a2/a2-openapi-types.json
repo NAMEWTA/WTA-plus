@@ -1,0 +1,14 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/api-contracts",
+    "typecheck"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-24T02:10:11.111882+00:00",
+  "finished_at": "2026-09-24T02:10:12.267618+00:00",
+  "exit_code": 0,
+  "log": "a2-openapi-types.log"
+}

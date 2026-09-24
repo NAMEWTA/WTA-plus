@@ -1,0 +1,37 @@
+{
+  "category_counts": {
+    "a_get_signature_after_switch": 0,
+    "a_get_signature_first": 0,
+    "a_get_signature_stale": 0,
+    "a_put_signature": 0,
+    "a_upload_token": 0,
+    "admin_control_password": 0,
+    "b_get_signature": 0,
+    "b_put_signature": 0,
+    "b_upload_token": 0,
+    "minio_app_access_key": 0,
+    "minio_app_secret_key": 0,
+    "minio_root_password": 0,
+    "minio_root_user": 0,
+    "monitor_password": 0,
+    "mysql_app_password": 0,
+    "mysql_root_password": 0,
+    "ordinary_user_password": 0,
+    "redis_password": 0
+  },
+  "context_retained": false,
+  "locations": [],
+  "locations_truncated": 0,
+  "matching_lines": 0,
+  "redaction_counts": {
+    "authorization": 0,
+    "full_url": 4,
+    "jwt": 29,
+    "known_canary": 0,
+    "session_token": 0
+  },
+  "sanitized_sha256": "daabab6ed27bb537d65e1da9096819bdefbc76a97ba32745610044ea86a90b6b",
+  "source_bytes": 120492,
+  "source_lines": 768,
+  "source_raw_sha256": "92af6cb53c676441543897ca5bae3817e4f81c087b41cbd0d34916e3ef8c4502"
+}

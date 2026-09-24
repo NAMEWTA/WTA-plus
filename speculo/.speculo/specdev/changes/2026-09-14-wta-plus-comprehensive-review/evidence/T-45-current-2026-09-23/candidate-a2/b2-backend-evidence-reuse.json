@@ -1,0 +1,29 @@
+{
+  "backend_source": "d1fd57fb6a2a7c1806399e2728f066c842f3cdb4",
+  "generated_result": "9c567ba0da6604e7d4c06ece4d53683fc1193103",
+  "identical_input_trees": {
+    "backend": {
+      "a": "5a0d2efe2f497e51feaf9cfa5d71e0f35f629cde",
+      "b": "5a0d2efe2f497e51feaf9cfa5d71e0f35f629cde"
+    },
+    "release-artifacts": {
+      "a": "8e0f4cc2dd74fd1c60363a1d97a98ae85230954d",
+      "b": "8e0f4cc2dd74fd1c60363a1d97a98ae85230954d"
+    },
+    ".agents": {
+      "a": "629b58fe969c02e6917ea44a2420824252e2d406",
+      "b": "629b58fe969c02e6917ea44a2420824252e2d406"
+    },
+    "scripts": {
+      "a": "58f0666836e2b3849f2f9a45bb0207e44e0a910b",
+      "b": "58f0666836e2b3849f2f9a45bb0207e44e0a910b"
+    }
+  },
+  "only_generated_paths": [
+    "frontend/packages/api-contracts/generated/openapi.ts",
+    "frontend/packages/api-contracts/openapi/current.json",
+    "frontend/packages/api-contracts/openapi/revisions/0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477/provenance.json",
+    "frontend/packages/api-contracts/openapi/revisions/0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477/source.json"
+  ],
+  "reuse": "A2 default and targeted backend evidence valid for unchanged backend inputs; full JAR will be rebuilt at B before real UI; no claim default tests reran at B"
+}
