@@ -898,7 +898,7 @@ class NotifyAtomicResultIntegrationTest {
             assertThat(account.getDelFlag()).isEqualTo("0");
             assertThat(configDao.existsNamespace(account.getChannel(), account.getConfigKey())).isTrue();
         }
-        assertThat(configDao.listBindings()).hasSize(10).allSatisfy(binding -> assertThat(binding.getAccountId()).isNull());
+        assertThat(configDao.listBindings()).hasSize(11).allSatisfy(binding -> assertThat(binding.getAccountId()).isNull());
         var account = configDao.findAccount("MAIL", "mail-qq");
         account.setAccountId(9238881L); account.setConfigKey("owned-config");
         account.setMailUser("owned@example.test"); account.setMailFrom("owned@example.test"); account.setMailPass("owned-test-only");
