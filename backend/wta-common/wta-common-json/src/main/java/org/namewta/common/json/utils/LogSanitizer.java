@@ -3,8 +3,11 @@ package org.namewta.common.json.utils;
 import org.namewta.common.core.constant.SystemConstants;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
@@ -19,7 +22,7 @@ public final class LogSanitizer {
     public static final String REDACTED = "[REDACTED]";
 
     private static final Set<String> SENSITIVE_NAMES = Set.of(
-        "passwordhash", "temporarypassword", "token", "tokenid", "accesstoken", "refreshtoken", "idtoken",
+        "passwordhash", "temporarypassword", "token", "tokenid", "uploadtoken", "accesstoken", "refreshtoken", "idtoken",
         "secret", "appsecret", "signature", "canonicalrequest", "machinetoken", "internaltoken",
         "clientsecret", "secretkey", "accesskey", "apikey", "privatekey", "signingkey",
         "authorization", "cookie", "sessionid", "credential", "credentials", "captcha", "captchacode",
@@ -47,6 +50,7 @@ public final class LogSanitizer {
         if (isNotifyCallbackPath(requestPath)) return true;
         String normalized = normalize(name);
         if (SENSITIVE_NAMES.contains(normalized)
+            || isCredentialQueryName(normalized)
             || (isSmsCaptchaPath(requestPath) && ("phonenumber".equals(normalized) || "phone".equals(normalized)))
             || (isNotifySubmissionPath(requestPath) && Set.of("bizid", "recipientids", "templateparams",
                 "idempotencykey", "metadata").contains(normalized))
@@ -120,6 +124,16 @@ public final class LogSanitizer {
         if (applicationPath == null) {
             return null;
         }
+        String uploadPrefix = "/resource/oss/uploads/";
+        if (applicationPath.startsWith(uploadPrefix)) {
+            String remaining = applicationPath.substring(uploadPrefix.length());
+            int slash = remaining.indexOf('/');
+            String token = slash < 0 ? remaining : remaining.substring(0, slash);
+            String suffix = slash < 0 ? "" : remaining.substring(slash);
+            if (!token.isEmpty()) {
+                return uploadPrefix + REDACTED + suffix;
+            }
+        }
         String prefix = "/monitor/online/";
         if (!applicationPath.startsWith(prefix)) {
             return applicationPath;
@@ -155,15 +169,56 @@ public final class LogSanitizer {
             for (Map.Entry<String, JsonNode> property : object.properties()) {
                 if (isSensitiveName(property.getKey(), requestPath, excludedNames)) {
                     object.put(property.getKey(), REDACTED);
+                } else if (property.getValue().isTextual() && hasCredentialUrl(property.getValue().asText())) {
+                    object.put(property.getKey(), REDACTED);
                 } else {
                     redact(property.getValue(), requestPath, excludedNames);
                 }
             }
-        } else {
-            for (JsonNode child : node) {
-                redact(child, requestPath, excludedNames);
+        } else if (node instanceof ArrayNode array) {
+            for (int index = 0; index < array.size(); index++) {
+                JsonNode child = array.get(index);
+                if (child.isTextual() && hasCredentialUrl(child.asText())) {
+                    array.set(index, REDACTED);
+                } else {
+                    redact(child, requestPath, excludedNames);
+                }
             }
         }
+    }
+
+    /** 只识别 URL 查询键，不把普通业务 code/state 当作凭据。非法 URI 仍按原文本检查。 */
+    private static boolean hasCredentialUrl(String value) {
+        if (!(value.regionMatches(true, 0, "https://", 0, 8)
+            || value.regionMatches(true, 0, "http://", 0, 7))) {
+            return false;
+        }
+        int question = value.indexOf('?');
+        if (question < 0) {
+            return false;
+        }
+        int fragment = value.indexOf('#', question + 1);
+        String query = value.substring(question + 1, fragment < 0 ? value.length() : fragment);
+        for (String parameter : query.split("[&;]")) {
+            String rawName = parameter.split("=", 2)[0];
+            String decodedName;
+            try {
+                decodedName = URLDecoder.decode(rawName, StandardCharsets.UTF_8);
+            } catch (IllegalArgumentException malformed) {
+                // 非法百分号编码不能绕过明显的明文凭据键。
+                decodedName = rawName;
+            }
+            if (isCredentialQueryName(normalize(decodedName))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isCredentialQueryName(String normalized) {
+        return normalized.contains("credential") || normalized.contains("signature")
+            || normalized.contains("accesskey") || normalized.contains("secret")
+            || normalized.endsWith("token") || "apikey".equals(normalized);
     }
 
     private static boolean isOAuthPath(String requestPath) {

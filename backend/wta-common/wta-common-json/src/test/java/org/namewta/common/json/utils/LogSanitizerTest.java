@@ -159,6 +159,8 @@ class LogSanitizerTest {
 
         assertEquals("/resource/oss/uploads/" + LogSanitizer.REDACTED + "/parts/sign",
             LogSanitizer.path("/resource/oss/uploads/" + uploadToken + "/parts/sign"));
+        assertEquals("/resource/oss/uploads/" + LogSanitizer.REDACTED + "/parts/",
+            LogSanitizer.path("/resource/oss/uploads/" + uploadToken + "/parts/"));
         assertEquals("/resource/oss/uploads", LogSanitizer.path("/resource/oss/uploads"));
         assertEquals("/resource/oss/config/diagnose/7", LogSanitizer.path("/resource/oss/config/diagnose/7"));
         assertTrue(LogSanitizer.isSensitiveName("uploadToken", "/resource/oss/uploads"));

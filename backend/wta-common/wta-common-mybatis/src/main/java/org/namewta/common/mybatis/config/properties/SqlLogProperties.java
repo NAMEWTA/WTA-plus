@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class SqlLogProperties {
 
     /**
-     * 是否开启完整 SQL 输出。
+     * 是否开启 SQL 执行元数据日志；不输出 SQL 文本、参数或异常消息。
      */
     private Boolean enabled = false;
 
