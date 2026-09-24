@@ -1,0 +1,32 @@
+[
+  {
+    "file": "red02-source-and-counts.json",
+    "bytes": 1705,
+    "sha256": "7cbff7deffb31f4a5a0cd7020cd6ddf0f9ff601e27384989d306b1700003161e"
+  },
+  {
+    "file": "red02.json",
+    "bytes": 599,
+    "sha256": "55163665129440b66b1023faa99dc98a373a500db0f29bf436b88ddbc0732e29"
+  },
+  {
+    "file": "red02.log",
+    "bytes": 67403,
+    "sha256": "6a821070b7218af7dc5bae617a438a28650746a3e47a76b4cf2cd87ee21a6d90"
+  },
+  {
+    "file": "red02-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+    "bytes": 94793,
+    "sha256": "1cec060b985d2385f3a4c0d4802563c451981a21ddca78fd904d0818609a95f9"
+  },
+  {
+    "file": "red02-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAttachmentRuntimeRedTest.xml",
+    "bytes": 93947,
+    "sha256": "6fff30443a818f1cbaf429c20db9fe9f62e1364f0ba82918dd882f064e05831e"
+  },
+  {
+    "file": "dispatch221-validator.log",
+    "bytes": 20386,
+    "sha256": "8e17ec2fa0dc0001aa6a7502bfd8625f15f46b7954f15cf8dab6f1872c227b50"
+  }
+]

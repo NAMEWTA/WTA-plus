@@ -35,3 +35,9 @@ common单delivery cleanup不得删除共享资源。生产owner协调安全释�
 回交所有生产/测试/文档修改及精确路径、源消费者清单、未解决问题；不运行构建、服务、commit或治理脚本。Lead固定后执行受影响单元/合同、required realE2E、默认后端/full/core、正式OpenAPI/前端typecheck和适用静态门禁，双轴审查通过才勾AC。三个完整候选失败先四项复盘，不覆盖旧失败或重置attempts。无需再次询问已授权的本地实施/提交；超出写集先修订登记。
 
 当前交接门槛：red01的附件例未到send，先修复缺少账号额度的夹具并固定red02；Lead明确发出Dispatch01B后才取得产品写锁。
+
+## revision222 — T42红灯校准与写锁交接
+
+revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+red01附件例因测试账号minuteMax缺失未进入send，原失败保留；Lead仅补测试额度后red02真正到达NotifyRequest附件列表比较。无生产修复混入红灯。源码前后clean `59b30b3c1b4b920c7c82643d0350c83f391218ba`。唯一产品writer为cors_audit，完整合同与52登记写集见Ticket及dispatch-T-42-implementation；禁止子代理构建/服务/提交，Lead继续独占。

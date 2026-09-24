@@ -1,6 +1,6 @@
 # 工作记录
 
-revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision221：T42已固定可执行行为红灯并登记附件闭环完整写集
 
 ## Current status
 
-revision221：T42已固定可执行行为红灯并登记附件闭环完整写集，Dispatch01B实现真实Notify关系、服务端actor授权与可恢复私有快照。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。 cors_audit唯一产品writer；Lead独占治理/提交/构建/服务，其他代理只读或私有驱动。
+revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。 无运行服务/测试；cors_audit唯一产品writer。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -656,3 +656,9 @@ revision221：T42已固定可执行行为红灯并登记附件闭环完整写集
 红灯源码 `add76d4f36a60b5a2d26182ea361ce64287b0267`，实际计数 `{"tests": 2, "failures": 2, "errors": 0, "skipped": 0}`；这是缺陷复现，不是验收通过。权威实施合同见 `evidence/dispatch-T-42-implementation.md`，全部写集在Ticket frontmatter。Java record仓内直接迁移；HTTP attachmentOssIds可选、缺省空，不接受客户端actor。全应用/真实对象/故障矩阵仍未运行。
 
 T42 red01精度记录：2例均失败且零error/skip；正文例确证MISSING_VARIABLE，附件例停在Mockito“send未调用”，尚未到达附件列表比较，不能宣称已复现[]丢失。Lead检查发现测试账号minuteMax为空导致planner额度unboxing可能抛错，下一步只修夹具并重测，产品未改。Dispatch01B暂不交写锁。
+
+## revision222 — T42红灯校准与写锁交接
+
+revision222：T42在59b30b3c稳定复现两项行为红灯（MISSING_VARIABLE与附件[77,88]变空，2fail/0error/0skip），Dispatch01B开始生产闭环实现。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+red01附件例因测试账号minuteMax缺失未进入send，原失败保留；Lead仅补测试额度后red02真正到达NotifyRequest附件列表比较。无生产修复混入红灯。源码前后clean `59b30b3c1b4b920c7c82643d0350c83f391218ba`。唯一产品writer为cors_audit，完整合同与52登记写集见Ticket及dispatch-T-42-implementation；禁止子代理构建/服务/提交，Lead继续独占。

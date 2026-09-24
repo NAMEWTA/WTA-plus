@@ -1,0 +1,57 @@
+{
+  "source_before": {
+    "head": "59b30b3c1b4b920c7c82643d0350c83f391218ba",
+    "tree": "38da236640d93477cfafc0b970acdbaf15d47df4",
+    "clean": true
+  },
+  "source_after": {
+    "head": "59b30b3c1b4b920c7c82643d0350c83f391218ba",
+    "tree": "38da236640d93477cfafc0b970acdbaf15d47df4",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "red02-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAttachmentRuntimeRedTest.xml",
+      "sha256": "6fff30443a818f1cbaf429c20db9fe9f62e1364f0ba82918dd882f064e05831e",
+      "suite": "org.namewta.test.notify.NotifyAttachmentRuntimeRedTest",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "persistedMailAttachmentIdsReachNotifyRequestInOriginalOrder",
+          "kind": "failure",
+          "type": "org.opentest4j.AssertionFailedError"
+        }
+      ]
+    },
+    {
+      "file": "red02-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+      "sha256": "1cec060b985d2385f3a4c0d4802563c451981a21ddca78fd904d0818609a95f9",
+      "suite": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "mailDemoBodyWithoutLinkPassesRealPlannerWhileNoticeStillNeedsPath",
+          "kind": "failure",
+          "type": "org.opentest4j.AssertionFailedError"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  }
+}
