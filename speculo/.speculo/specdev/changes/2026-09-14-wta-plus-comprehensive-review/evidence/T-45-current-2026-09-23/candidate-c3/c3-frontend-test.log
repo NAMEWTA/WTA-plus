@@ -1,0 +1,347 @@
+
+> wta-vue-plus@6.0.0 test /srv/WTA-plus/frontend
+> pnpm test:workspace
+
+
+> wta-vue-plus@6.0.0 test:workspace /srv/WTA-plus/frontend
+> pnpm architecture:check && pnpm -r --if-present test
+
+
+> wta-vue-plus@6.0.0 architecture:check /srv/WTA-plus/frontend
+> namewta-architecture check --root .
+
+Architecture check passed: 33 workspace package(s), 0 reviewed baseline violation(s).
+Scope: 32 of 33 workspace projects
+apps/sso-web test$ vitest run src
+packages/api-contracts test$ tsc --noEmit -p tsconfig.json
+packages/platform/contracts test$ vitest run src
+packages/platform/permission test$ vitest run src
+apps/sso-web test:  RUN  v4.1.10 /srv/WTA-plus/frontend/apps/sso-web
+packages/platform/contracts test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/contracts
+packages/platform/permission test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/permission
+apps/sso-web test:  Test Files  1 passed (1)
+apps/sso-web test:       Tests  5 passed (5)
+apps/sso-web test:    Start at  22:15:54
+apps/sso-web test:    Duration  324ms (transform 65ms, setup 0ms, import 85ms, tests 40ms, environment 1ms)
+packages/platform/contracts test:  Test Files  1 passed (1)
+packages/platform/contracts test:       Tests  1 passed (1)
+packages/platform/contracts test:    Start at  22:15:54
+packages/platform/contracts test:    Duration  358ms (transform 90ms, setup 0ms, import 115ms, tests 5ms, environment 1ms)
+apps/sso-web test: Done
+packages/platform/permission test:  Test Files  1 passed (1)
+packages/platform/permission test:       Tests  13 passed (13)
+packages/platform/permission test:    Start at  22:15:54
+packages/platform/permission test:    Duration  284ms (transform 93ms, setup 0ms, import 112ms, tests 10ms, environment 1ms)
+packages/platform/validation test$ vitest run src
+packages/platform/permission test: Done
+packages/web-kit/rich-text test$ vitest run src
+packages/platform/contracts test: Done
+tooling/architecture test$ node --test ./test/*.test.mjs
+packages/api-contracts test: Done
+tooling/openapi test$ node --test test/*.test.mjs
+packages/platform/validation test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/validation
+packages/web-kit/rich-text test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-kit/rich-text
+tooling/architecture test: ✔ accepts a valid public dependency graph without reading environment files (83.069487ms)
+tooling/architecture test: ✔ ignores Speculo worktree copies outside the active workspace (26.380432ms)
+packages/platform/validation test:  Test Files  1 passed (1)
+packages/platform/validation test:       Tests  3 passed (3)
+packages/platform/validation test:    Start at  22:15:54
+packages/platform/validation test:    Duration  250ms (transform 58ms, setup 0ms, import 83ms, tests 7ms, environment 0ms)
+packages/platform/validation test: Done
+tooling/architecture test: ✔ rejects retired Admin navigation owners and fallback algorithms (154.594219ms)
+tooling/architecture test: ✔ rejects an internal deep import with a localized public-entry diagnostic (19.284168ms)
+tooling/architecture test: ✔ rejects a self deep import that bypasses the package public entry (18.826659ms)
+tooling/openapi test: ✔ invalid and missing sources preserve the last-known-good active revision (24.340233ms)
+tooling/openapi test: ✔ valid fetch persists an immutable revision before atomically activating its pointer (8.716044ms)
+tooling/architecture test: ✔ rejects a platform to domain reverse edge (23.613102ms)
+tooling/openapi test: ✔ identical snapshots with different provenance activate distinct immutable revisions (12.799864ms)
+tooling/architecture test: ✔ rejects an undeclared public internal import (24.70222ms)
+tooling/openapi test: ✔ an unactivated revision cannot change the last-known-good contract (32.010726ms)
+tooling/architecture test: ✔ rejects a concrete adapter to domain reverse edge (25.521133ms)
+tooling/openapi test: ✔ generation rejects stale or invalid provenance in the active immutable revision (21.266616ms)
+tooling/architecture test: ✔ rejects an internal dependency cycle (19.288114ms)
+tooling/architecture test: ✔ rejects growth of the reviewed baseline (13.174716ms)
+tooling/openapi test: ✔ check detects source drift and manual generated-file edits without writing (35.162111ms)
+tooling/openapi test: ✔ HTTP source errors redact credentials and query parameters for normalized schemes (1.586526ms)
+tooling/architecture test: ✔ rejects activation of an explicitly inactive placeholder (14.930023ms)
+tooling/openapi test: ℹ tests 7
+tooling/openapi test: ℹ suites 0
+tooling/openapi test: ℹ pass 7
+tooling/openapi test: ℹ fail 0
+tooling/openapi test: ℹ cancelled 0
+tooling/openapi test: ℹ skipped 0
+tooling/openapi test: ℹ todo 0
+tooling/openapi test: ℹ duration_ms 657.846172
+tooling/architecture test: ✔ rejects duplicated API facades inside activated Apps (15.924173ms)
+tooling/openapi test: Done
+tooling/architecture test: ✔ rejects an activated manifest outside the supported package layout (12.612901ms)
+tooling/architecture test: ✔ does not hide a second deep import behind one reviewed baseline detail (25.763539ms)
+tooling/architecture test: ✔ consumes reviewed baseline identities as a multiset (35.914596ms)
+tooling/architecture test: ✔ rejects platform to api-contracts outside the explicit dependency allowlist (15.611053ms)
+tooling/architecture test: ✔ rejects domain to tooling outside the explicit dependency allowlist (15.048091ms)
+tooling/architecture test: ✔ rejects adapter to api-contracts outside the explicit dependency allowlist (13.791277ms)
+tooling/architecture test: ✔ rejects adapter to tooling outside the explicit dependency allowlist (19.394544ms)
+tooling/architecture test: ✔ rejects vue terminal imports from domain (11.310828ms)
+tooling/architecture test: ✔ rejects axios terminal imports from platform (15.476599ms)
+tooling/architecture test: ✔ rejects crypto-js terminal imports from platform (13.309882ms)
+tooling/architecture test: ✔ rejects jsencrypt terminal imports from domain (17.156459ms)
+tooling/architecture test: ✔ rejects terminal runtime dependencies from platform manifests (11.554177ms)
+tooling/architecture test: ✔ rejects source assets under an inactive README-only placeholder (9.028478ms)
+packages/web-kit/rich-text test:  Test Files  1 passed (1)
+packages/web-kit/rich-text test:       Tests  4 passed (4)
+packages/web-kit/rich-text test:    Start at  22:15:54
+packages/web-kit/rich-text test:    Duration  694ms (transform 39ms, setup 0ms, import 52ms, tests 17ms, environment 471ms)
+tooling/architecture test: ✔ ignores import examples inside comments and strings (17.905207ms)
+tooling/architecture test: ✔ parses Vue SFC scripts and rejects their deep imports (18.612623ms)
+packages/web-kit/rich-text test: Done
+tooling/architecture test: ✔ rejects a relative import that crosses into another workspace (14.161685ms)
+tooling/architecture test: ✔ accepts a relative import owned by the same workspace (12.086031ms)
+tooling/architecture test: ✔ rejects pnpm workspace configuration drift (8.05588ms)
+tooling/architecture test: ✔ rejects a shared framework version outside the catalog (9.458312ms)
+tooling/architecture test: ✔ allows only the reviewed OpenAPI generator TypeScript peer outside the catalog (9.060345ms)
+tooling/architecture test: ✔ rejects the OpenAPI TypeScript peer exception in another package or dependency field (19.247966ms)
+tooling/architecture test: ✔ rejects a non-workspace internal reference (12.690019ms)
+tooling/architecture test: ✔ rejects lockfile importer drift (8.979964ms)
+tooling/architecture test: ✔ rejects lockfile dependency specifier drift (16.635649ms)
+tooling/architecture test: ✔ rejects stale inactive placeholder importers (8.482217ms)
+tooling/architecture test: ✔ rejects unshadowed window browser access from domain (14.120813ms)
+tooling/architecture test: ✔ rejects unshadowed document browser access from domain (12.043839ms)
+tooling/architecture test: ✔ rejects unshadowed localStorage browser access from domain (10.923512ms)
+tooling/architecture test: ✔ rejects unshadowed sessionStorage browser access from platform (11.594325ms)
+tooling/architecture test: ✔ rejects unshadowed navigator browser access from platform (10.595044ms)
+tooling/architecture test: ✔ rejects unshadowed location browser access from platform (11.403562ms)
+tooling/architecture test: ✔ rejects reviewed browser global self (13.116209ms)
+tooling/architecture test: ✔ rejects reviewed browser global history (15.142843ms)
+tooling/architecture test: ✔ rejects reviewed browser global visualViewport (11.901496ms)
+tooling/architecture test: ✔ rejects reviewed browser global indexedDB (13.154354ms)
+tooling/architecture test: ✔ rejects reviewed browser global caches (12.630097ms)
+tooling/architecture test: ✔ rejects reviewed browser global cookieStore (14.111252ms)
+tooling/architecture test: ✔ rejects reviewed browser global IDBFactory (9.690048ms)
+tooling/architecture test: ✔ rejects reviewed browser global CacheStorage (9.467394ms)
+tooling/architecture test: ✔ rejects reviewed browser global DOMParser (10.926849ms)
+tooling/architecture test: ✔ rejects reviewed browser global XMLSerializer (11.42138ms)
+tooling/architecture test: ✔ rejects reviewed browser global Node (8.667932ms)
+tooling/architecture test: ✔ rejects reviewed browser global HTMLElement (9.922762ms)
+tooling/architecture test: ✔ rejects reviewed browser global Element (7.506438ms)
+tooling/architecture test: ✔ rejects reviewed browser global Document (12.180302ms)
+tooling/architecture test: ✔ rejects reviewed browser global DocumentFragment (8.63741ms)
+tooling/architecture test: ✔ rejects reviewed browser global customElements (9.507207ms)
+tooling/architecture test: ✔ rejects reviewed browser global CustomElementRegistry (8.917668ms)
+tooling/architecture test: ✔ rejects reviewed browser global Storage (7.826437ms)
+tooling/architecture test: ✔ rejects reviewed browser global MutationObserver (14.064385ms)
+tooling/architecture test: ✔ rejects reviewed browser global ResizeObserver (10.197344ms)
+tooling/architecture test: ✔ rejects reviewed browser global IntersectionObserver (7.234035ms)
+tooling/architecture test: ✔ rejects reviewed browser global PerformanceObserver (7.208458ms)
+tooling/architecture test: ✔ rejects reviewed browser global ReportingObserver (9.316228ms)
+tooling/architecture test: ✔ rejects reviewed browser global XMLHttpRequest (9.13973ms)
+tooling/architecture test: ✔ rejects reviewed browser global WebSocket (8.569745ms)
+tooling/architecture test: ✔ rejects reviewed browser global EventSource (7.126738ms)
+tooling/architecture test: ✔ rejects reviewed browser global BroadcastChannel (6.827898ms)
+tooling/architecture test: ✔ rejects reviewed browser global fetch (9.008854ms)
+tooling/architecture test: ✔ rejects reviewed browser global Worker (7.174343ms)
+tooling/architecture test: ✔ rejects reviewed browser global SharedWorker (6.242634ms)
+tooling/architecture test: ✔ rejects reviewed browser global ServiceWorker (9.215131ms)
+tooling/architecture test: ✔ rejects reviewed browser global requestAnimationFrame (9.546759ms)
+tooling/architecture test: ✔ rejects reviewed browser global cancelAnimationFrame (8.847839ms)
+tooling/architecture test: ✔ rejects reviewed browser global matchMedia (6.968559ms)
+tooling/architecture test: ✔ rejects reviewed browser global getComputedStyle (7.889335ms)
+tooling/architecture test: ✔ rejects reviewed browser global screen (6.988381ms)
+tooling/architecture test: ✔ rejects browser host aliases and destructuring through unshadowed globals (13.774916ms)
+tooling/architecture test: ✔ accepts browser-global names shadowed by lexical declarations (8.847901ms)
+tooling/architecture test: ✔ keeps named class-expression bindings local to the class (8.029905ms)
+tooling/architecture test: ✔ accepts class-local and locally shadowed browser host names (9.222249ms)
+tooling/architecture test: ✔ does not treat TypeScript value and type declaration names as browser references (12.072357ms)
+tooling/architecture test: ✔ does not let a type-only declaration shadow a runtime browser global (9.598337ms)
+tooling/architecture test: ✔ rejects an unshadowed DOM global used only as a type (8.974088ms)
+tooling/architecture test: ✔ keeps module and class-static var declarations inside their runtime scopes (9.123338ms)
+tooling/architecture test: ✔ keeps switch-case lexical declarations inside the case block (11.842248ms)
+tooling/architecture test: ✔ accepts browser-named mapped and inferred type parameters (10.866914ms)
+tooling/architecture test: ✔ does not leak an inferred type parameter into a conditional false branch (9.756495ms)
+tooling/architecture test: ✔ does not let ambient declarations shadow runtime browser globals (11.026097ms)
+tooling/architecture test: ✔ allows an ambient class declaration to satisfy a local type reference (8.00222ms)
+tooling/architecture test: ✔ keeps ambient enum and namespace declarations type-only (11.661043ms)
+tooling/architecture test: ✔ rejects browser access through unshadowed globalThis properties (8.045691ms)
+tooling/architecture test: ✔ does not treat JSX attribute names as browser-global references (9.612374ms)
+tooling/architecture test: ✔ applies browser-global purity to Vue script blocks (13.239546ms)
+tooling/architecture test: ✔ rejects an activated workspace without every aggregate gate script (13.077072ms)
+tooling/architecture test: ✔ keeps domain package names aligned one-to-one with backend modules (33.162103ms)
+tooling/architecture test: ✔ keeps consumed Controller resources traceable through typed domain entries (27.377381ms)
+tooling/architecture test: ✔ keeps the profile root as an explicit compatibility facade (3.008941ms)
+tooling/architecture test: ✔ keeps web pages reachable through explicit page-owner entries (17.077571ms)
+tooling/architecture test: ℹ tests 101
+tooling/architecture test: ℹ suites 0
+tooling/architecture test: ℹ pass 101
+tooling/architecture test: ℹ fail 0
+tooling/architecture test: ℹ cancelled 0
+tooling/architecture test: ℹ skipped 0
+tooling/architecture test: ℹ todo 0
+tooling/architecture test: ℹ duration_ms 1878.262144
+tooling/architecture test: Done
+packages/adapters/oss-upload-browser test$ vitest run src
+packages/adapters/storage-browser test$ vitest run src
+packages/platform/app-runtime test$ vitest run src
+packages/platform/auth test$ vitest run src
+packages/adapters/storage-browser test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/adapters/storage-browser
+packages/platform/app-runtime test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/app-runtime
+packages/adapters/oss-upload-browser test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/adapters/oss-upload-browser
+packages/platform/auth test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/auth
+packages/adapters/storage-browser test:  Test Files  1 passed (1)
+packages/adapters/storage-browser test:       Tests  5 passed (5)
+packages/adapters/storage-browser test:    Start at  22:15:56
+packages/adapters/storage-browser test:    Duration  306ms (transform 62ms, setup 0ms, import 100ms, tests 7ms, environment 4ms)
+packages/adapters/storage-browser test: Done
+packages/platform/http test$ vitest run src
+packages/adapters/oss-upload-browser test:  Test Files  2 passed (2)
+packages/adapters/oss-upload-browser test:       Tests  8 passed (8)
+packages/adapters/oss-upload-browser test:    Start at  22:15:56
+packages/adapters/oss-upload-browser test:    Duration  384ms (transform 133ms, setup 0ms, import 198ms, tests 34ms, environment 1ms)
+packages/adapters/oss-upload-browser test: Done
+packages/web-kit/file-upload test$ vitest run src
+packages/platform/auth test:  Test Files  2 passed (2)
+packages/platform/auth test:       Tests  18 passed (18)
+packages/platform/auth test:    Start at  22:15:56
+packages/platform/auth test:    Duration  521ms (transform 182ms, setup 0ms, import 243ms, tests 249ms, environment 1ms)
+packages/platform/auth test: Done
+packages/web-kit/permission test$ vitest run src
+packages/platform/http test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/platform/http
+packages/platform/app-runtime test:  Test Files  4 passed (4)
+packages/platform/app-runtime test:       Tests  23 passed (23)
+packages/platform/app-runtime test:    Start at  22:15:56
+packages/platform/app-runtime test:    Duration  838ms (transform 285ms, setup 0ms, import 751ms, tests 81ms, environment 7ms)
+packages/platform/app-runtime test: Done
+packages/web-kit/file-upload test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-kit/file-upload
+packages/web-kit/permission test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-kit/permission
+packages/platform/http test:  Test Files  1 passed (1)
+packages/platform/http test:       Tests  7 passed (7)
+packages/platform/http test:    Start at  22:15:57
+packages/platform/http test:    Duration  227ms (transform 35ms, setup 0ms, import 59ms, tests 5ms, environment 1ms)
+packages/platform/http test: Done
+packages/web-kit/file-upload test:  Test Files  2 passed (2)
+packages/web-kit/file-upload test:       Tests  7 passed (7)
+packages/web-kit/file-upload test:    Start at  22:15:57
+packages/web-kit/file-upload test:    Duration  271ms (transform 89ms, setup 0ms, import 121ms, tests 66ms, environment 1ms)
+packages/web-kit/file-upload test: Done
+packages/web-kit/permission test:  Test Files  1 passed (1)
+packages/web-kit/permission test:       Tests  16 passed (16)
+packages/web-kit/permission test:    Start at  22:15:57
+packages/web-kit/permission test:    Duration  303ms (transform 42ms, setup 0ms, import 109ms, tests 19ms, environment 0ms)
+packages/web-kit/permission test: Done
+packages/adapters/axios-browser test$ vitest run src
+packages/domains/demo test$ vitest run src
+packages/domains/admin test$ vitest run src
+packages/domains/notify test$ vitest run src
+packages/domains/notify test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/notify
+packages/domains/demo test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/demo
+packages/adapters/axios-browser test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/adapters/axios-browser
+packages/domains/admin test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/admin
+packages/domains/demo test:  Test Files  2 passed (2)
+packages/domains/demo test:       Tests  4 passed (4)
+packages/domains/demo test:    Start at  22:15:58
+packages/domains/demo test:    Duration  313ms (transform 89ms, setup 0ms, import 150ms, tests 13ms, environment 1ms)
+packages/domains/notify test:  Test Files  2 passed (2)
+packages/domains/notify test:       Tests  7 passed (7)
+packages/domains/notify test:    Start at  22:15:58
+packages/domains/notify test:    Duration  344ms (transform 129ms, setup 0ms, import 212ms, tests 29ms, environment 1ms)
+packages/domains/demo test: Done
+packages/domains/profile test$ vitest run src
+packages/domains/notify test: Done
+packages/domains/system test$ vitest run src
+packages/domains/admin test:  Test Files  3 passed (3)
+packages/domains/admin test:       Tests  63 passed (63)
+packages/domains/admin test:    Start at  22:15:58
+packages/domains/admin test:    Duration  379ms (transform 158ms, setup 0ms, import 261ms, tests 62ms, environment 1ms)
+packages/domains/admin test: Done
+packages/domains/third test$ vitest run src --passWithNoTests
+packages/adapters/axios-browser test:  Test Files  2 passed (2)
+packages/adapters/axios-browser test:       Tests  46 passed (46)
+packages/adapters/axios-browser test:    Start at  22:15:58
+packages/adapters/axios-browser test:    Duration  449ms (transform 155ms, setup 0ms, import 366ms, tests 83ms, environment 1ms)
+packages/adapters/axios-browser test: Done
+packages/domains/profile test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/profile
+packages/domains/system test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/system
+packages/domains/third test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/third
+packages/domains/third test:  Test Files  1 passed (1)
+packages/domains/third test:       Tests  1 passed (1)
+packages/domains/third test:    Start at  22:15:59
+packages/domains/third test:    Duration  420ms (transform 59ms, setup 0ms, import 88ms, tests 7ms, environment 4ms)
+packages/domains/profile test:  Test Files  4 passed (4)
+packages/domains/profile test:       Tests  22 passed (22)
+packages/domains/profile test:    Start at  22:15:59
+packages/domains/profile test:    Duration  518ms (transform 412ms, setup 0ms, import 562ms, tests 35ms, environment 3ms)
+packages/domains/third test: Done
+packages/domains/profile test: Done
+packages/domains/system test:  Test Files  10 passed (10)
+packages/domains/system test:       Tests  97 passed (97)
+packages/domains/system test:    Start at  22:15:59
+packages/domains/system test:    Duration  659ms (transform 660ms, setup 0ms, import 961ms, tests 154ms, environment 7ms)
+packages/domains/system test: Done
+packages/domains/workflow test$ vitest run src
+packages/web-domains/notify test$ vitest run src
+packages/web-domains/demo test$ vitest run src
+packages/web-domains/admin test$ vitest run src
+packages/domains/workflow test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/domains/workflow
+packages/web-domains/notify test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/notify
+packages/web-domains/demo test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/demo
+packages/web-domains/admin test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/admin
+packages/domains/workflow test:  Test Files  2 passed (2)
+packages/domains/workflow test:       Tests  7 passed (7)
+packages/domains/workflow test:    Start at  22:16:00
+packages/domains/workflow test:    Duration  400ms (transform 271ms, setup 0ms, import 356ms, tests 44ms, environment 1ms)
+packages/domains/workflow test: Done
+packages/web-domains/profile test$ vitest run src
+packages/web-domains/demo test:  Test Files  1 passed (1)
+packages/web-domains/demo test:       Tests  2 passed (2)
+packages/web-domains/demo test:    Start at  22:16:00
+packages/web-domains/demo test:    Duration  447ms (transform 94ms, setup 0ms, import 186ms, tests 7ms, environment 1ms)
+packages/web-domains/admin test:  Test Files  3 passed (3)
+packages/web-domains/admin test:       Tests  6 passed (6)
+packages/web-domains/admin test:    Start at  22:16:00
+packages/web-domains/admin test:    Duration  446ms (transform 129ms, setup 0ms, import 371ms, tests 26ms, environment 1ms)
+packages/web-domains/demo test: Done
+packages/web-domains/system test$ vitest run src
+packages/web-domains/admin test: Done
+packages/web-domains/third test$ vitest run src --passWithNoTests
+packages/web-domains/profile test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/profile
+packages/web-domains/system test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/system
+packages/web-domains/third test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/third
+packages/web-domains/profile test:  Test Files  8 passed (8)
+packages/web-domains/profile test:       Tests  36 passed (36)
+packages/web-domains/profile test:    Start at  22:16:01
+packages/web-domains/profile test:    Duration  970ms (transform 1.58s, setup 0ms, import 2.53s, tests 103ms, environment 18ms)
+packages/web-domains/notify test:  Test Files  5 passed (5)
+packages/web-domains/notify test:       Tests  25 passed (25)
+packages/web-domains/notify test:    Start at  22:16:00
+packages/web-domains/notify test:    Duration  1.93s (transform 1.08s, setup 0ms, import 2.17s, tests 1.50s, environment 5ms)
+packages/web-domains/profile test: Done
+packages/web-domains/notify test: Done
+packages/web-domains/third test:  Test Files  1 passed (1)
+packages/web-domains/third test:       Tests  1 passed (1)
+packages/web-domains/third test:    Start at  22:16:01
+packages/web-domains/third test:    Duration  1.16s (transform 583ms, setup 0ms, import 738ms, tests 11ms, environment 0ms)
+packages/web-domains/third test: Done
+packages/web-domains/system test:  Test Files  11 passed (11)
+packages/web-domains/system test:       Tests  81 passed (81)
+packages/web-domains/system test:    Start at  22:16:01
+packages/web-domains/system test:    Duration  4.79s (transform 4.16s, setup 0ms, import 7.79s, tests 5.04s, environment 8ms)
+packages/web-domains/system test: Done
+apps/home-web test$ vitest run src
+packages/web-domains/workflow test$ vitest run src
+packages/web-domains/workflow test:  RUN  v4.1.10 /srv/WTA-plus/frontend/packages/web-domains/workflow
+apps/home-web test:  RUN  v4.1.10 /srv/WTA-plus/frontend/apps/home-web
+apps/home-web test:  Test Files  7 passed (7)
+apps/home-web test:       Tests  15 passed (15)
+apps/home-web test:    Start at  22:16:07
+apps/home-web test:    Duration  643ms (transform 689ms, setup 0ms, import 1.39s, tests 62ms, environment 8ms)
+apps/home-web test: Done
+packages/web-domains/workflow test:  Test Files  6 passed (6)
+packages/web-domains/workflow test:       Tests  59 passed (59)
+packages/web-domains/workflow test:    Start at  22:16:06
+packages/web-domains/workflow test:    Duration  1.23s (transform 2.57s, setup 0ms, import 4.74s, tests 125ms, environment 3ms)
+packages/web-domains/workflow test: Done
+apps/admin-web test$ vitest run src
+apps/admin-web test:  RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web
+apps/admin-web test:  Test Files  17 passed (17)
+apps/admin-web test:       Tests  81 passed (81)
+apps/admin-web test:    Start at  22:16:09
+apps/admin-web test:    Duration  3.73s (transform 6.39s, setup 0ms, import 9.84s, tests 1.41s, environment 9ms)
+apps/admin-web test: Done

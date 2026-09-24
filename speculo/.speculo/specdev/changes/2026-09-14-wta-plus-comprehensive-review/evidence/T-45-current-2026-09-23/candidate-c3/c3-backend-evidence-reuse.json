@@ -1,0 +1,31 @@
+{
+  "backend_source": "d1fd57fb6a2a7c1806399e2728f066c842f3cdb4",
+  "final_candidate": "d98936b6881ad7c8093476a65fe9736203c60af7",
+  "identical_input_trees": {
+    "backend": {
+      "a": "5a0d2efe2f497e51feaf9cfa5d71e0f35f629cde",
+      "c": "5a0d2efe2f497e51feaf9cfa5d71e0f35f629cde"
+    },
+    "release-artifacts": {
+      "a": "8e0f4cc2dd74fd1c60363a1d97a98ae85230954d",
+      "c": "8e0f4cc2dd74fd1c60363a1d97a98ae85230954d"
+    },
+    ".agents": {
+      "a": "629b58fe969c02e6917ea44a2420824252e2d406",
+      "c": "629b58fe969c02e6917ea44a2420824252e2d406"
+    },
+    "scripts": {
+      "a": "58f0666836e2b3849f2f9a45bb0207e44e0a910b",
+      "c": "58f0666836e2b3849f2f9a45bb0207e44e0a910b"
+    }
+  },
+  "changed_product_paths": [
+    "frontend/packages/api-contracts/generated/openapi.ts",
+    "frontend/packages/api-contracts/openapi/current.json",
+    "frontend/packages/api-contracts/openapi/revisions/0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477/provenance.json",
+    "frontend/packages/api-contracts/openapi/revisions/0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477/source.json",
+    "frontend/packages/web-domains/system/src/oss-config/OssConfigPage.test.ts",
+    "frontend/packages/web-domains/system/src/oss-config/OssConfigPage.vue"
+  ],
+  "reuse": "A2 default/targeted/full HTTP evidence retained for identical backend inputs; full JAR rebuilt at final C before UI; frontend all gates rerun C; no claim backend default reran C"
+}

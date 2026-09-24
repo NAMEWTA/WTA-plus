@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "full_http_v1": "9444ef145019e6b9bfa37f035a9c98c2e52c2da66cccc7ed504cd53c46aab0ee",
+    "safe_proxy_v3": "d369ab13c078bac3863c18276e7acdeefc5405e52b15746972067e68492acee9"
+  },
+  "execute_command_template": "python3 /tmp/wta-t45/run-minio-diagnostic-ui-v2.py --execute --expected-head <B-clean-SHA> --expected-jar-sha256 <B-full-JAR-SHA> --package-proof <B-private-package-proof.json> --dist-manifest <B-private-admin-dist-manifest.json>",
+  "execution": "not_run",
+  "files": {
+    "run-minio-diagnostic-ui-v2.py": "f81527dd19042cd6844f95427f2879f1072480a0566bfb3d46bd7e32f437ae10",
+    "ui-runbook.md": "0b552cba5f983be44534aaf4adc8ecc2ed1c52fa904298809747ced5385a6a70",
+    "ui/oss-diagnostic-real.spec.ts": "2abe0d9cd65c47fb1bd2d6b069910334283564e44aca7331cdd0b86ce262f0af",
+    "ui/owned_admin_dist_server.py": "6821f6724fc7571c48802bbc2288b79c1f47da1983530318f0d0d6dceff3e26e",
+    "ui/playwright.config.ts": "ca8fb0010c2827663c0f14c866bff78311fcda250904b4860539546d05662a54",
+    "ui/test_owned_admin_dist_server.py": "01d3a22c993b8e802c9a93d858754576fe8673065b8e58d0986d3b05c2ce0642",
+    "ui/test_run_minio_diagnostic_ui_v2.py": "87a1bf692bbdef364ba94c06300d399f37191613e9c6c0dceb86272d1c444ce1"
+  },
+  "offline": {
+    "py_compile_exit": 0,
+    "runner_tests": 5,
+    "server_tests": 4,
+    "static_preflight_exit": 0
+  },
+  "schema_version": 1,
+  "status": "private_ui_v2_offline_frozen"
+}

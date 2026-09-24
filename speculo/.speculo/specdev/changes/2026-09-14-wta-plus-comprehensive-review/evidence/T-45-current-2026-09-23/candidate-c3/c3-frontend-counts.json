@@ -1,0 +1,13 @@
+{
+  "vitest": 663,
+  "vitest_groups": 29,
+  "node": 108,
+  "node_groups": [
+    7,
+    101
+  ],
+  "total": 771,
+  "source": "d98936b6881ad7c8093476a65fe9736203c60af7",
+  "extra_architecture_tests": 101,
+  "note": "101 separate architecture:test repeats Node architecture checks and is not added to total"
+}
