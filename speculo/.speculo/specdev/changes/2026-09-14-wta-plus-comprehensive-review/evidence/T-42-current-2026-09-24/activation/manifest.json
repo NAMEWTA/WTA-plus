@@ -1,0 +1,27 @@
+[
+  {
+    "file": "activation-validator.log",
+    "bytes": 19930,
+    "sha256": "3dc234a27d648292e5e1e1ef363b43b81ef1d799cba18110fa09f1e56f24a545"
+  },
+  {
+    "file": "activation-validator2.log",
+    "bytes": 19930,
+    "sha256": "3dc234a27d648292e5e1e1ef363b43b81ef1d799cba18110fa09f1e56f24a545"
+  },
+  {
+    "file": "activation-validator3.log",
+    "bytes": 19836,
+    "sha256": "6994670001223eebf1ed02a59566c1e5a533c986ca72dd0009b760ff7c9bd931"
+  },
+  {
+    "file": "wta-t42-security-plan.md",
+    "bytes": 8516,
+    "sha256": "824497dfda546ab8b8b169abf0a112c9dd61de3e2a49e688acc7fa713e8d5e4e"
+  },
+  {
+    "file": "wta-t42-runtime-plan.md",
+    "bytes": 10718,
+    "sha256": "a7e162154a705c3f0af392507a31702eb2b858e26d539051b02db77e4c42fea9"
+  }
+]
