@@ -1,0 +1,41 @@
+# T-46 pointer and item writer checklist — read-only, fixed `3ba164f7de53a545e97abd7c883a7100f3b052b6`
+
+Inputs: T-46 revision213 ticket and `evidence/dispatch-T-46.md`, `/tmp/wta-t46-durable-fence-contract-review.md`, fixed current Java/Mapper source. I scanned production Java/XML writes to `sys_oss.service` and `sys_oss_migration_item`; no repository edit, build, test or service was run. The writer may be editing a later red test; this inventory concerns the fixed source and dispatch, not its changing working tree.
+
+## Dispatch feasibility / one necessary test change
+
+Dispatch01 matches the accepted contract: single-object Object→Item locks, precommitted `FAILED/COMPLETED/CLEANUP_OUTCOME_UNKNOWN`, one bounded DELETE, bounded HEAD-only reconciliation, exact-one CAS, no schema or new state platform. The added common `OssClient`/`AbstractOssClientImpl` HEAD and DELETE `Duration` overloads, client tests, README and module fact are registered; ordinary OSS methods stay unchanged. A latch-based in-memory red test can deterministically prove the old ordering bug by pausing after DELETE begins, allowing unpublish to change the pointer to source, then releasing DELETE and asserting source absent while pointer still names it. Ensure the fake's source absence is observable and completion/join is bounded. It cannot prove actual MySQL locking, and the dispatch correctly reserves that for a separate real two-connection run.
+
+One existing test must change with the **new** behavior, without erasing the old failure: `OssStorageMigrationServiceUnitTest:249–266` currently expects a failed DELETE followed by an approved cleanup to issue a second DELETE (`deleteCalls=2`). A timeout/exception after provider entry is UNKNOWN, so the replacement should retain the failed first-attempt result, assert no second DELETE while source exists/HEAD is uncertain, then simulate conclusive source absence plus valid target and assert `COMPLETED` through HEAD-only reconciliation with `deleteCalls=1`. A typed pre-provider failure, if modeled at all, is a separate proof and does not justify retrying an arbitrary provider exception.
+
+The current `OssStorageMigrationIntegrationTest:95–121` opens one auto-commit `SqlSession` and constructs `OssStorageMigrationService` with `new`; it cannot execute or prove a Spring-proxied `@DSTransactional` method. Required real proof needs two distinct physical JDBC connections (record `connection_id()` and observed row-lock blocking), a genuine Spring proxy or its actual transaction boundary, and a separate blocked provider seam. The old sequential MinIO test may still prove bytes, but must not be counted as lock/commit-ACK evidence. Final-commit rollback is straightforward; a genuine ACK-loss branch needs a test-controlled commit wrapper that commits then throws or equivalent verified committed/unacknowledged readback. A mock exception alone cannot prove persisted state. These are implementable in the registered Admin migration test directory and owned MySQL/MinIO harness, but **not** by merely extending the current one-session test without changing its fixture.
+
+## Existing `sys_oss.service` writers
+
+| Entry | Actual fixed-source write | T-46 action |
+|---|---|---|
+| `OssStorageMigrationService.unpublish` `:51–70` | target→source via `OssMigrationStore.compareAndSetService` | Object→Item locked, latest/fence re-read, bounded source HEAD, pointer and item exact-one CAS in same short transaction. |
+| `rollback` `:159–181` | target→source via same CAS; currently accepts nonterminal `FAILED` | Per-item same boundary; UNKNOWN veto before any restore, source HEAD outside lock with locked DB revalidation. |
+| `process` `:222–276` | source→target `:245–254`, and access-failure target→source `:259–266` | Both directions require same boundary and unresolved-fence veto; copy/verification remains outside transaction. Item state and service CAS commit/rollback together. |
+| `MybatisOssMigrationStore.compareAndSetService` `:90–92` / `SysOssMapper.xml:41–48` | **Only discovered production UPDATE of an existing `sys_oss.service`** | Existing SQL requires `service=expected` and ACTIVE; call from the locked boundaries, check exactly one row, do not treat service-only CAS as item atomicity. |
+| `SysOssServiceImpl.buildResultEntity` `:275–286` | `setService(configKey)` then `insert` a **new** `sys_oss` | Not an existing-pointer writer; no T-46 lock adoption. |
+| `DefaultOssUploadMetadataStore.registerTemporary` `:37–59` | `setService(ticket.service())` then `insert` a **new** `sys_oss` | Not an existing-pointer writer; no T-46 lock adoption. |
+
+Search covered production Java/XML `setService`, `compareAndSetService`, `update sys_oss`, and `set service=` in `backend/wta-modules/wta-system`. No second production writer of an existing `service` was found. A future generic `SysOssMapper.updateById` caller could change this, so exact final diff/caller search remains a verification step rather than a perpetual claim.
+
+## Migration-item writers and bypasses that matter
+
+| Entry | Current behavior / required guard |
+|---|---|
+| `MybatisOssMigrationStore.createItem` `:49–60`, `OssStorageMigrationService.start` `:120–135` | Creates a new PENDING item from a preflight snapshot. `process` must re-read latest same-object item under Object→Item lock and reject an older unresolved cleanup marker; otherwise a new batch can bypass UNKNOWN even if `retry` refuses it. No new global uniqueness table is needed. |
+| `SysOssMigrationItemMapper.claim` `:13–21` and `process` `:222–227` | SQL permits **any** status except RUNNING, including FAILED/COMPLETED/UNKNOWN if called. Restrict admissible status/version or enforce exact locked preconditions before claim; never rely solely on the current `retry` filter. |
+| `saveItem` / `saveBatch` `MybatisOssMigrationStore:80–88` | Ignore update row count; for pointer/fence/finalization changes use exact version/status CAS and exact-one result. A batch refresh must not mask failed item write as success. |
+| `unpublish` latest item lookup | `findLatestRestorable` `:101–109` filters CLEANUP_ELIGIBLE before sorting; a newer UNKNOWN may be skipped. Check newest item and any unresolved fence under object lock before choosing a restorable candidate. |
+| `retry` `:147–157`, `cleanup` `:184–219`, `rollback` `:159–181` | `retry` skips FAILED at stage COMPLETED, but `cleanup` currently accepts/redeletes it and `rollback` can restore it. The fixed UNKNOWN marker must route only to HEAD-based reconciliation; normal cleanup and rollback must not consume it. |
+| `fail`/access-failure restore `:258–293` | The old generic `fail` unconditionally overwrites item status/error. If a stale worker encounters a newer cleanup reservation, exact CAS/fence must prevent overwriting the marker or restoring source. |
+
+`OssLifecycleManager` mutates delete/lifecycle fields and may delete the current object, but does **not** write `sys_oss.service` or migration-item state. Its existing public `@DSTransactional` operations use `selectByIdForUpdate` (`:173–255`), so they participate in the object-row lock. It is an adjacent consumer to verify, not a reason to widen T-46 into a lifecycle rewrite. `SysOssServiceImpl.attachStorageFacts:133–146` is a read-side UI affordance: it treats any CLEANUP_ELIGIBLE item as restorable even if a newer UNKNOWN exists. Backend locked rejection remains the safety authority; align UI data if the final ticket promises accurate action availability, but this read path is not an unprotected pointer writer.
+
+## Minimal final verification check
+
+The fixed candidate should demonstrate the four migration pointer branches above use one proxied Object→Item boundary, reservation before DELETE, and exact-one item/service CAS. The test result should separately show: old red unit scenario; two physical MySQL connections and actual proxy/lock waits for both race orders; commit-ACK loss with independent DB readback; provider timeout/late DELETE; source-present UNKNOWN retains zero repeated DELETE/restore; source-absent+target-valid retry finalizes with zero repeated DELETE; unrelated object progresses; owned MinIO target bytes remain readable. Fresh zero-skip reports and source/cleanup evidence are required before claiming AC-046. No current verification has been run by this reviewer.

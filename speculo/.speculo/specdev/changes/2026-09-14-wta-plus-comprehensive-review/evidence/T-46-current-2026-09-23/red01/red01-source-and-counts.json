@@ -1,0 +1,39 @@
+{
+  "source_before": {
+    "head": "0f8729d14bbec7825f189e94088964c9ec5bf54a",
+    "tree": "7be5049230d2540506d0384436d332ae72c665f7",
+    "clean": true
+  },
+  "source_after": {
+    "head": "0f8729d14bbec7825f189e94088964c9ec5bf54a",
+    "tree": "7be5049230d2540506d0384436d332ae72c665f7",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest.xml",
+      "sha256": "1d8d704cf6e42b0e4ff79338864d5b85cb971a9a8e97007b7025574d3a5a8c6a",
+      "suite": "org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest",
+      "counts": {
+        "tests": 15,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "unpublishCannotRestoreSourceAfterCleanupHasEnteredProviderDelete",
+          "kind": "failure",
+          "type": "java.lang.AssertionError"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tests": 15,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  }
+}

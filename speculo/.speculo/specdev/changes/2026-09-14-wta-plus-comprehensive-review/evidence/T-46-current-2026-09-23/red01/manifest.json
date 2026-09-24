@@ -1,0 +1,37 @@
+[
+  {
+    "file": "red01.json",
+    "bytes": 452,
+    "sha256": "88517104211b67342512910d6073203fa2a9b8a8a9256ddd5791560b47ec87be"
+  },
+  {
+    "file": "red01.log",
+    "bytes": 67770,
+    "sha256": "a18fb75492c447668082a4e658224f70619ad9dda7f1c8cb24c22f07c2ba167c"
+  },
+  {
+    "file": "red01-source-and-counts.json",
+    "bytes": 1086,
+    "sha256": "cdac299152a0403b695e8da993f92ca2757aa5884f4ab2ca4fa171153b17dca0"
+  },
+  {
+    "file": "wta-t46-pointer-writer-checklist.md",
+    "bytes": 8380,
+    "sha256": "4ccaea5f24a640df789a8f40efaaf65725950b1091bdfe6d4d66d0afd0ae05d2"
+  },
+  {
+    "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.migration.OssStorageMigrationServiceUnitTest.xml",
+    "bytes": 95534,
+    "sha256": "1d8d704cf6e42b0e4ff79338864d5b85cb971a9a8e97007b7025574d3a5a8c6a"
+  },
+  {
+    "file": "checkpoint214-validator.json",
+    "bytes": 426,
+    "sha256": "f55063282b341e7c857ddf5a09f9f083bcadb8120873bf6a172d7cc0d1b5a202"
+  },
+  {
+    "file": "checkpoint214-validator.log",
+    "bytes": 21046,
+    "sha256": "ce8ff2ad8916e14444061d284f271f62b67068ab9d52a8153a90b776896d636b"
+  }
+]

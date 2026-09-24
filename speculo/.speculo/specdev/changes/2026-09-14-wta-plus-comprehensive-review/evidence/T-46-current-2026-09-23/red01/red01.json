@@ -1,0 +1,21 @@
+{
+  "command": [
+    "env",
+    "JAVA_TOOL_OPTIONS=-Xms128m -Xmx1536m",
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=OssStorageMigrationServiceUnitTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-24T03:17:36.352617+00:00",
+  "finished_at": "2026-09-24T03:17:57.933395+00:00",
+  "exit_code": 1,
+  "log": "red01.log"
+}
