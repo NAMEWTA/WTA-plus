@@ -1,6 +1,7 @@
 import type { OpenApiSchema } from '@namewta/api-contracts';
 import type { HttpClient, HttpRequest } from '@namewta/platform-contracts';
 import type { ApiResponse, PageResult } from './types';
+import type { OssDiagnosticFact, OssStorageDiagnostic } from './oss-config/types';
 import type {
   ConfigForm,
   ConfigQuery,
@@ -99,6 +100,61 @@ function projectOssConfig(value: OssConfigTransport): OssConfigVO {
 
 function encodeOssConfig(value: OssConfigForm) {
   return { ...value, accessPolicy: encodeAccessPolicy(value.accessPolicy) };
+}
+
+const diagnosticStatus = ['SERVING', 'NOT_SERVING'] as const;
+const diagnosticReason = [
+  'READY', 'CONFIG_MISSING', 'INVALID_ACCESS_POLICY', 'DOMAIN_REQUIRED', 'DIAGNOSTIC_OBJECT_MISSING',
+  'DIAGNOSTIC_CONFIG_INVALID', 'DIAGNOSTIC_UNVERIFIED', 'PROVIDER_MISMATCH', 'DISCOVERY_FAILED', 'STALE'
+] as const;
+const diagnosticSubject = [
+  'POLICY_READ', 'POLICY_WRITE', 'ACL_LIST', 'ACL_WRITE_RISK', 'OBJECT_HEAD', 'OBJECT_GET'
+] as const;
+const diagnosticObservation = ['ALLOWED', 'DENIED', 'UNKNOWN'] as const;
+const diagnosticSource = ['BUCKET_POLICY', 'BUCKET_ACL', 'ANONYMOUS_HEAD', 'ANONYMOUS_GET'] as const;
+const diagnosticScope = ['BUCKET', 'OBJECT'] as const;
+const diagnosticBasis = [
+  'POLICY_ALLOW', 'POLICY_DENY', 'NO_SUCH_POLICY', 'POLICY_UNREADABLE', 'COMPLEX_POLICY',
+  'INVALID_POLICY', 'ACL_GRANT', 'ACL_NO_GRANT', 'ACL_UNREADABLE', 'HTTP_SUCCESS', 'HTTP_DENIED',
+  'HTTP_NOT_FOUND', 'REDIRECT', 'HTTP_ERROR', 'TIMEOUT', 'NETWORK_ERROR', 'INTERRUPTED',
+  'NOT_EVALUATED', 'UNSUPPORTED'
+] as const;
+
+function diagnosticEnum<T extends string>(value: unknown, allowed: readonly T[]): T {
+  if (typeof value !== 'string' || !allowed.includes(value as T)) throw new ResourceContractError();
+  return value as T;
+}
+
+function diagnosticTime(value: unknown): string {
+  if (typeof value !== 'string' || !Number.isFinite(Date.parse(value))) throw new ResourceContractError();
+  return value;
+}
+
+function diagnosticRecord(value: unknown): Record<string, unknown> {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) throw new ResourceContractError();
+  return value as Record<string, unknown>;
+}
+
+function projectDiagnostic(value: unknown): OssStorageDiagnostic {
+  const row = diagnosticRecord(value);
+  if (!Array.isArray(row.facts)) throw new ResourceContractError();
+  const facts: OssDiagnosticFact[] = row.facts.map((item: unknown) => {
+    const fact = diagnosticRecord(item);
+    return Object.freeze({
+      subject: diagnosticEnum(fact.subject, diagnosticSubject),
+      observation: diagnosticEnum(fact.observation, diagnosticObservation),
+      source: diagnosticEnum(fact.source, diagnosticSource),
+      scope: diagnosticEnum(fact.scope, diagnosticScope),
+      basis: diagnosticEnum(fact.basis, diagnosticBasis),
+      observedAt: diagnosticTime(fact.observedAt)
+    });
+  });
+  return Object.freeze({
+    status: diagnosticEnum(row.status, diagnosticStatus),
+    reason: diagnosticEnum(row.reason, diagnosticReason),
+    checkedAt: diagnosticTime(row.checkedAt),
+    facts: Object.freeze(facts)
+  });
 }
 
 export interface SystemResourceService {
@@ -215,6 +271,14 @@ function createOssService(request: Request) {
 
 function createOssConfigService(request: Request) {
   return Object.freeze({
+    diagnose: async (id: ResourceIdentifier, signal?: AbortSignal) => {
+      const response = await request<unknown>({
+        url: '/resource/oss/config/diagnose/' + segment(id),
+        method: 'post',
+        ...(signal ? { signal } : {})
+      });
+      return { ...response, data: projectDiagnostic(response.data) };
+    },
     list: async (params: OssConfigQuery) => {
       const response = await request<PageResult<OssConfigTransport>>({
         url: '/resource/oss/config/list',

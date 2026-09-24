@@ -92,8 +92,7 @@ class OssStorageReadinessServiceUnitTest {
         when(fixture.clientProvider.client("private")).thenReturn(client);
         when(client.diagnoseAccess(eq("diagnostic/private.txt"), eq(AccessPolicy.PRIVATE), any()))
             .thenReturn(new OssAccessDiagnostic(OssAccessDiagnostic.Verification.MISMATCH,
-                OssAccessDiagnostic.Reason.ANONYMOUS_READ_MISMATCH, AccessPolicy.PRIVATE,
-                true, true, true, Instant.now()));
+                OssAccessDiagnostic.Reason.ANONYMOUS_READ_MISMATCH, AccessPolicy.PRIVATE, List.of(), Instant.now()));
 
         fixture.service.refresh();
         assertThat(fixture.registry.overallServing()).isFalse();
@@ -132,15 +131,27 @@ class OssStorageReadinessServiceUnitTest {
         fixture.properties.setDiagnosticTimeout("3s");
         OssClient client = mock(OssClient.class);
         when(fixture.clientProvider.client("private")).thenReturn(client);
+        Instant observedAt = Instant.parse("2026-09-23T00:00:00Z");
+        var observedGet = new OssAccessDiagnostic.Fact(OssAccessDiagnostic.Subject.OBJECT_GET,
+            OssAccessDiagnostic.Observation.DENIED, OssAccessDiagnostic.Source.ANONYMOUS_GET,
+            OssAccessDiagnostic.Scope.OBJECT, OssAccessDiagnostic.Basis.HTTP_DENIED, observedAt);
         when(client.diagnoseAccess(any(), eq(AccessPolicy.PRIVATE), any()))
             .thenReturn(new OssAccessDiagnostic(OssAccessDiagnostic.Verification.VERIFIED,
-                OssAccessDiagnostic.Reason.READY, AccessPolicy.PRIVATE, false, false, true, Instant.now()));
+                OssAccessDiagnostic.Reason.READY, AccessPolicy.PRIVATE, List.of(observedGet), Instant.now()));
 
         var result = fixture.service.diagnoseOne(42L);
 
         assertThat(result.status()).isEqualTo("SERVING");
         assertThat(result.reason()).isEqualTo("READY");
         assertThat(result.checkedAt()).isNotNull();
+        assertThat(result.facts()).singleElement().satisfies(fact -> {
+            assertThat(fact.subject()).isEqualTo("OBJECT_GET");
+            assertThat(fact.observation()).isEqualTo("DENIED");
+            assertThat(fact.source()).isEqualTo("ANONYMOUS_GET");
+            assertThat(fact.scope()).isEqualTo("OBJECT");
+            assertThat(fact.basis()).isEqualTo("HTTP_DENIED");
+            assertThat(fact.observedAt()).isEqualTo(observedAt);
+        });
         verify(client).diagnoseAccess("diagnostic/private.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(3));
         verify(fixture.configMapper, never()).selectList();
         verify(fixture.ossMapper, never()).selectObjs(any());
@@ -170,7 +181,7 @@ class OssStorageReadinessServiceUnitTest {
         when(client.diagnoseAccess(any(), eq(AccessPolicy.PRIVATE), any())).thenAnswer(invocation -> {
             fixture.registry.invalidate("private");
             return new OssAccessDiagnostic(OssAccessDiagnostic.Verification.VERIFIED,
-                OssAccessDiagnostic.Reason.READY, AccessPolicy.PRIVATE, false, false, true, Instant.now());
+                OssAccessDiagnostic.Reason.READY, AccessPolicy.PRIVATE, List.of(), Instant.now());
         });
 
         var result = fixture.service.diagnoseOne(44L);
@@ -185,7 +196,7 @@ class OssStorageReadinessServiceUnitTest {
         when(fixture.clientProvider.client(key)).thenReturn(client);
         when(client.diagnoseAccess(any(), eq(policy), any())).thenReturn(new OssAccessDiagnostic(
             OssAccessDiagnostic.Verification.VERIFIED, OssAccessDiagnostic.Reason.READY, policy,
-            policy == AccessPolicy.PUBLIC_READ, policy == AccessPolicy.PUBLIC_READ, true, Instant.now()));
+            List.of(), Instant.now()));
     }
 
     private Fixture fixture() {

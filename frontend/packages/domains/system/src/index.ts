@@ -54,6 +54,10 @@ export {
 } from './resource-service';
 export type { SystemResourceService } from './resource-service';
 export type {
+  OssDiagnosticBasis, OssDiagnosticFact, OssDiagnosticObservation, OssDiagnosticScope,
+  OssDiagnosticSource, OssDiagnosticSubject, OssStorageDiagnostic
+} from './oss-config/types';
+export type {
   ConfigForm,
   ConfigQuery,
   ConfigVO,

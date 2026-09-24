@@ -15,6 +15,7 @@ import org.namewta.system.domain.vo.OssStorageDiagnosticVo;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -67,18 +68,26 @@ public class OssStorageReadinessService {
     public OssStorageDiagnosticVo diagnoseOne(Long ossConfigId) {
         long revision = registry.configRevision();
         SysOssConfig config = ossConfigId == null ? null : configMapper.selectById(ossConfigId);
-        OssStorageReadinessEntry entry = config == null
-            ? notServing("missing", null, Set.of(), OssStorageReadinessEntry.Reason.CONFIG_MISSING)
+        Evaluation evaluation = config == null
+            ? new Evaluation(notServing("missing", null, Set.of(),
+                OssStorageReadinessEntry.Reason.CONFIG_MISSING), List.of())
             : StringUtils.isBlank(config.getConfigKey())
-                ? notServing("invalid", null, Set.of(), OssStorageReadinessEntry.Reason.DIAGNOSTIC_CONFIG_INVALID)
-                : diagnose(config, Set.of());
+                ? new Evaluation(notServing("invalid", null, Set.of(),
+                    OssStorageReadinessEntry.Reason.DIAGNOSTIC_CONFIG_INVALID), List.of())
+                : evaluate(config, Set.of());
+        OssStorageReadinessEntry entry = evaluation.entry();
         if (config != null && StringUtils.isNotBlank(config.getConfigKey())) {
             if (!registry.recordIfUnchanged(entry, revision)) {
                 return new OssStorageDiagnosticVo(OssStorageReadinessEntry.Status.NOT_SERVING.name(),
-                    OssStorageReadinessEntry.Reason.STALE.name(), Instant.now());
+                    OssStorageReadinessEntry.Reason.STALE.name(), Instant.now(), List.of());
             }
         }
-        return new OssStorageDiagnosticVo(entry.status().name(), entry.reason().name(), entry.checkedAt());
+        List<OssStorageDiagnosticVo.Fact> publicFacts = evaluation.facts().stream()
+            .map(fact -> new OssStorageDiagnosticVo.Fact(fact.subject().name(), fact.observation().name(),
+                fact.source().name(), fact.scope().name(), fact.basis().name(), fact.observedAt()))
+            .toList();
+        return new OssStorageDiagnosticVo(entry.status().name(), entry.reason().name(), entry.checkedAt(),
+            publicFacts);
     }
 
     private Map<String, Set<String>> requiredConfigs(List<SysOssConfig> configs) {
@@ -95,44 +104,52 @@ public class OssStorageReadinessService {
     }
 
     private OssStorageReadinessEntry diagnose(SysOssConfig config, Set<String> requiredBy) {
+        return evaluate(config, requiredBy).entry();
+    }
+
+    private Evaluation evaluate(SysOssConfig config, Set<String> requiredBy) {
         if (!properties.diagnosticConfigurationValid()) {
-            return notServing(config.getConfigKey(), null, requiredBy,
-                OssStorageReadinessEntry.Reason.DIAGNOSTIC_CONFIG_INVALID);
+            return new Evaluation(notServing(config.getConfigKey(), null, requiredBy,
+                OssStorageReadinessEntry.Reason.DIAGNOSTIC_CONFIG_INVALID), List.of());
         }
         AccessPolicy accessPolicy;
         try {
             accessPolicy = AccessPolicy.formType(config.getAccessPolicy());
         } catch (RuntimeException ex) {
-            return notServing(config.getConfigKey(), null, requiredBy,
-                OssStorageReadinessEntry.Reason.INVALID_ACCESS_POLICY);
+            return new Evaluation(notServing(config.getConfigKey(), null, requiredBy,
+                OssStorageReadinessEntry.Reason.INVALID_ACCESS_POLICY), List.of());
         }
         if (accessPolicy == AccessPolicy.PUBLIC_READ && StringUtils.isBlank(config.getDomainUrl())
             && !properties.isAllowEndpointDomainFallback()) {
-            return notServing(config.getConfigKey(), accessPolicy, requiredBy,
-                OssStorageReadinessEntry.Reason.DOMAIN_REQUIRED);
+            return new Evaluation(notServing(config.getConfigKey(), accessPolicy, requiredBy,
+                OssStorageReadinessEntry.Reason.DOMAIN_REQUIRED), List.of());
         }
         String diagnosticObject = properties.getDiagnosticObjects().get(config.getConfigKey());
         if (StringUtils.isBlank(diagnosticObject)) {
-            return notServing(config.getConfigKey(), accessPolicy, requiredBy,
-                OssStorageReadinessEntry.Reason.DIAGNOSTIC_OBJECT_MISSING);
+            return new Evaluation(notServing(config.getConfigKey(), accessPolicy, requiredBy,
+                OssStorageReadinessEntry.Reason.DIAGNOSTIC_OBJECT_MISSING), List.of());
         }
         try {
             OssAccessDiagnostic diagnostic = clientProvider.client(config.getConfigKey())
                 .diagnoseAccess(diagnosticObject, accessPolicy, properties.boundedDiagnosticTimeout());
             if (diagnostic.verified()) {
-                return new OssStorageReadinessEntry(config.getConfigKey(), accessPolicy, !requiredBy.isEmpty(),
+                return new Evaluation(new OssStorageReadinessEntry(config.getConfigKey(), accessPolicy, !requiredBy.isEmpty(),
                     requiredBy, OssStorageReadinessEntry.Status.SERVING,
-                    OssStorageReadinessEntry.Reason.READY, diagnostic.checkedAt());
+                    OssStorageReadinessEntry.Reason.READY, diagnostic.checkedAt()), diagnostic.facts());
             }
             OssStorageReadinessEntry.Reason reason = diagnostic.verification()
                 == OssAccessDiagnostic.Verification.MISMATCH
                 ? OssStorageReadinessEntry.Reason.PROVIDER_MISMATCH
                 : OssStorageReadinessEntry.Reason.DIAGNOSTIC_UNVERIFIED;
-            return notServing(config.getConfigKey(), accessPolicy, requiredBy, reason);
+            return new Evaluation(notServing(config.getConfigKey(), accessPolicy, requiredBy, reason),
+                diagnostic.facts());
         } catch (RuntimeException ex) {
-            return notServing(config.getConfigKey(), accessPolicy, requiredBy,
-                OssStorageReadinessEntry.Reason.DIAGNOSTIC_UNVERIFIED);
+            return new Evaluation(notServing(config.getConfigKey(), accessPolicy, requiredBy,
+                OssStorageReadinessEntry.Reason.DIAGNOSTIC_UNVERIFIED), List.of());
         }
+    }
+
+    private record Evaluation(OssStorageReadinessEntry entry, List<OssAccessDiagnostic.Fact> facts) {
     }
 
     private OssStorageReadinessEntry notServing(String configKey, AccessPolicy accessPolicy,

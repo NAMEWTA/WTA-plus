@@ -33,6 +33,16 @@ describe('system resource transports', () => {
         if (request.url === '/resource/oss/config/config%2F1') {
           return { code: 200, data: { accessPolicy: '0' } } as never;
         }
+        if (request.url === '/resource/oss/config/diagnose/config%2F1') {
+          return {
+            code: 200,
+            data: {
+              status: 'NOT_SERVING', reason: 'DIAGNOSTIC_UNVERIFIED', checkedAt: '2026-09-23T00:00:00Z',
+              facts: [{ subject: 'OBJECT_GET', observation: 'ALLOWED', source: 'ANONYMOUS_GET',
+                scope: 'OBJECT', basis: 'HTTP_SUCCESS', observedAt: '2026-09-23T00:00:00Z' }]
+            }
+          } as never;
+        }
         if (request.url.includes('/listByIds/')) return { code: 200, data: [] } as never;
         if (request.url.endsWith('/parts/sign')) return { code: 200, data: { parts: [] } } as never;
         if (request.url.endsWith('/parts')) {
@@ -99,6 +109,7 @@ describe('system resource transports', () => {
     await service.oss.unpublish('oss/1');
     await service.ossConfigs.list(query as never);
     await service.ossConfigs.get('config/1');
+    await service.ossConfigs.diagnose('config/1');
     await service.ossConfigs.add(ossConfigForm);
     await service.ossConfigs.update(ossConfigForm);
     await service.ossConfigs.delete(['config/1', 2]);
@@ -145,6 +156,7 @@ describe('system resource transports', () => {
       { url: '/resource/oss/oss%2F1/unpublish', method: 'post' },
       { url: '/resource/oss/config/list', method: 'get', params: query },
       { url: '/resource/oss/config/config%2F1', method: 'get' },
+      { url: '/resource/oss/config/diagnose/config%2F1', method: 'post' },
       { url: '/resource/oss/config', method: 'post', data: { marker: 'resource', accessPolicy: '0' } },
       { url: '/resource/oss/config/edit', method: 'post', data: { marker: 'resource', accessPolicy: '0' } },
       { url: '/resource/oss/config/remove/config%2F1,2', method: 'post' },
@@ -224,6 +236,35 @@ describe('system resource transports', () => {
       request: async () => ({ data: { rows: [{ accessPolicy: '1' }], total: 1 } }) as never
     });
     await expect(retired.ossConfigs.list({} as never)).rejects.toBeInstanceOf(ResourceContractError);
+  });
+
+  it('projects bounded OSS diagnostic facts and rejects provider text masquerading as an enum', async () => {
+    const diagnostic = {
+      status: 'NOT_SERVING', reason: 'DIAGNOSTIC_UNVERIFIED', checkedAt: '2026-09-23T00:00:00Z',
+      facts: [{ subject: 'OBJECT_GET', observation: 'ALLOWED', source: 'ANONYMOUS_GET',
+        scope: 'OBJECT', basis: 'HTTP_SUCCESS', observedAt: '2026-09-23T00:00:00Z' }]
+    };
+    const service = createSystemResourceService({ request: async () => ({ data: diagnostic }) as never });
+    await expect(service.ossConfigs.diagnose('42')).resolves.toMatchObject({ data: diagnostic });
+
+    const unsafe = createSystemResourceService({ request: async () => ({
+      data: { ...diagnostic, facts: [{ ...diagnostic.facts[0], basis: 'provider-secret-detail' }] }
+    }) as never });
+    await expect(unsafe.ossConfigs.diagnose('42')).rejects.toBeInstanceOf(ResourceContractError);
+  });
+
+  it('passes the caller cancellation signal to only the on-demand diagnostic request', async () => {
+    const controller = new AbortController();
+    const request = vi.fn(async () => ({ data: {
+      status: 'NOT_SERVING', reason: 'DIAGNOSTIC_UNVERIFIED', checkedAt: '2026-09-23T00:00:00Z', facts: []
+    } }) as never);
+    const service = createSystemResourceService({ request });
+    await service.ossConfigs.diagnose('42', controller.signal);
+    expect(request).toHaveBeenCalledWith({
+      url: '/resource/oss/config/diagnose/42', method: 'post', signal: controller.signal
+    });
+    controller.abort();
+    expect(controller.signal.aborted).toBe(true);
   });
 
   it('rejects unsafe upload URLs before they reach browser upload code', async () => {

@@ -390,11 +390,12 @@ public interface OssClient extends AutoCloseable {
     OssClientCapabilities capabilities();
 
     /**
-     * 使用部署方预置的诊断对象，只读验证默认 Bucket 的匿名访问边界。
+     * 使用部署方预置的诊断对象只读观察默认 Bucket 的有限匿名访问事实。
+     * 策略与 ACL 是声明事实；HEAD/GET 仅针对该对象，不证明整个 Bucket 或写操作安全。
      *
      * @param diagnosticObjectKey 诊断对象键
      * @param expectedPolicy      声明访问类型
-     * @param timeout             单次诊断超时
+     * @param timeout             每步网络等待上限
      * @return 不包含 Policy、凭据或完整 URL 的诊断结果
      */
     OssAccessDiagnostic diagnoseAccess(String diagnosticObjectKey, AccessPolicy expectedPolicy, Duration timeout);

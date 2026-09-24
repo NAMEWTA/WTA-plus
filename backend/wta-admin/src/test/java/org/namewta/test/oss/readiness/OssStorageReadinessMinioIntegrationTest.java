@@ -62,14 +62,22 @@ class OssStorageReadinessMinioIntegrationTest {
                     OssAccessDiagnostic privateResult = privateClient.diagnoseAccess(
                         canary, AccessPolicy.PRIVATE, Duration.ofSeconds(3));
 
-                    assertThat(publicResult.verified()).isTrue();
-                    assertThat(publicResult.anonymousHeadAllowed()).isTrue();
-                    assertThat(publicResult.anonymousGetAllowed()).isTrue();
-                    assertThat(publicResult.anonymousWriteDenied()).isTrue();
-                    assertThat(privateResult.verified()).isTrue();
-                    assertThat(privateResult.anonymousHeadAllowed()).isFalse();
-                    assertThat(privateResult.anonymousGetAllowed()).isFalse();
-                    assertThat(privateResult.anonymousWriteDenied()).isTrue();
+                    assertThat(publicResult.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
+                    assertThat(observation(publicResult, OssAccessDiagnostic.Subject.OBJECT_HEAD))
+                        .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
+                    assertThat(observation(publicResult, OssAccessDiagnostic.Subject.OBJECT_GET))
+                        .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
+                    assertThat(observation(publicResult, OssAccessDiagnostic.Subject.POLICY_READ))
+                        .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
+                    assertThat(observation(publicResult, OssAccessDiagnostic.Subject.POLICY_WRITE))
+                        .isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
+                    assertThat(privateResult.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
+                    assertThat(observation(privateResult, OssAccessDiagnostic.Subject.OBJECT_HEAD))
+                        .isEqualTo(OssAccessDiagnostic.Observation.DENIED);
+                    assertThat(observation(privateResult, OssAccessDiagnostic.Subject.OBJECT_GET))
+                        .isEqualTo(OssAccessDiagnostic.Observation.DENIED);
+                    assertThat(observation(privateResult, OssAccessDiagnostic.Subject.POLICY_WRITE))
+                        .isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
                 }
 
                 HttpClient http = HttpClient.newHttpClient();
@@ -89,6 +97,12 @@ class OssStorageReadinessMinioIntegrationTest {
                 bootstrap.deleteBucket(builder -> builder.bucket(privateBucket));
             }
         }
+    }
+
+    private OssAccessDiagnostic.Observation observation(OssAccessDiagnostic result,
+                                                        OssAccessDiagnostic.Subject subject) {
+        return result.facts().stream().filter(fact -> fact.subject() == subject)
+            .findFirst().orElseThrow().observation();
     }
 
     private int status(HttpClient http, URI endpoint, String bucket, String key, String method) throws Exception {

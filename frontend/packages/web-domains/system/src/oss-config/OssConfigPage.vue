@@ -117,6 +117,16 @@
                 @click="handleUpdate(scope.row)"
               ></el-button>
             </el-tooltip>
+            <el-tooltip content="只读诊断" placement="top">
+              <el-button
+                v-hasPermi="['system:ossConfig:list']"
+                link
+                type="primary"
+                icon="View"
+                aria-label="只读诊断"
+                @click="handleDiagnose(scope.row)"
+              ></el-button>
+            </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <el-button
                 v-hasPermi="['system:ossConfig:remove']"
@@ -213,13 +223,40 @@
         </div>
       </template>
     </el-dialog>
+    <el-dialog v-model="diagnosticVisible" title="OSS 访问诊断" width="820px" append-to-body @close="closeDiagnostic">
+      <p class="diagnostic-caveat">仅观察指定诊断对象与可读的策略、ACL 声明；单对象读取不证明全桶安全，也不验证匿名写入。</p>
+      <div v-if="diagnosticLoading" role="status">正在读取诊断事实…</div>
+      <el-alert v-else-if="diagnosticError" :title="diagnosticError" type="warning" :closable="false" />
+      <template v-else-if="diagnosticResult">
+        <p role="status">{{ diagnosticSummary }} · {{ diagnosticResult.checkedAt }}</p>
+        <el-table :data="[...diagnosticResult.facts]" border>
+          <el-table-column label="检查项" width="170">
+            <template #default="scope">{{ subjectLabel(scope.row.subject) }}</template>
+          </el-table-column>
+          <el-table-column label="观察" width="120">
+            <template #default="scope">{{ observationLabel(scope.row.observation) }}</template>
+          </el-table-column>
+          <el-table-column label="来源 / 范围" width="180">
+            <template #default="scope">{{ sourceLabel(scope.row.source) }} / {{ scopeLabel(scope.row.scope) }}</template>
+          </el-table-column>
+          <el-table-column label="依据">
+            <template #default="scope">{{ basisLabel(scope.row.basis) }}</template>
+          </el-table-column>
+          <el-table-column label="时间" prop="observedAt" width="180" />
+        </el-table>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="OssConfig" lang="ts">
-import type { OssConfigForm, OssConfigQuery, OssConfigVO } from '@namewta/domain-system';
+import type {
+  OssConfigForm, OssConfigQuery, OssConfigVO, OssDiagnosticBasis, OssDiagnosticObservation,
+  OssDiagnosticScope, OssDiagnosticSource, OssDiagnosticSubject,
+  OssStorageDiagnostic
+} from '@namewta/domain-system';
 import type { FormInstance as ElFormInstance } from 'element-plus';
-import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue';
+import { computed, onMounted, onUnmounted, reactive, ref, toRefs, watch } from 'vue';
 import type { SystemWebRuntime } from '../runtime';
 import { useFormDialog, useLoading, useSearchReset, useSearchToggle, useTableSelection } from '../composables';
 
@@ -230,7 +267,8 @@ const {
   delete: delOssConfig,
   add: addOssConfig,
   update: updateOssConfig,
-  changeStatus: changeOssConfigStatus
+  changeStatus: changeOssConfigStatus,
+  diagnose: diagnoseOssConfig
 } = runtime.service.resources.ossConfigs;
 const modal = { confirm: runtime.confirm, msgSuccess: runtime.success };
 const { sys_yes_no } = runtime.dicts('sys_yes_no');
@@ -239,6 +277,87 @@ const buttonLoading = ref(false);
 const { loading, setLoading, withLoading } = useLoading(true);
 const { showSearch } = useSearchToggle();
 const total = ref(0);
+const diagnosticVisible = ref(false);
+const diagnosticLoading = ref(false);
+const diagnosticError = ref('');
+const diagnosticResult = ref<OssStorageDiagnostic>();
+const diagnosticOwner = ref<string | number>();
+let diagnosticVersion = 0;
+let pageMounted = true;
+let diagnosticAbort: AbortController | undefined;
+const hasDiagnosticAccess = () => runtime.hasPermission('system:ossConfig:list');
+const diagnosticSummary = computed(() => {
+  if (diagnosticResult.value?.reason === 'PROVIDER_MISMATCH') return '发现访问风险';
+  if (diagnosticResult.value?.status === 'SERVING') return '本次观察完成';
+  return '存在未验证项';
+});
+const subjectLabel = (subject: OssDiagnosticSubject) => ({
+  POLICY_READ: '策略对象读取声明', POLICY_WRITE: '策略危险写声明',
+  ACL_LIST: '桶 ACL 列举声明', ACL_WRITE_RISK: '桶 ACL 写入或修改声明',
+  OBJECT_HEAD: '诊断对象匿名 HEAD', OBJECT_GET: '诊断对象匿名 GET'
+})[subject];
+const observationLabel = (observation: OssDiagnosticObservation) => ({
+  ALLOWED: '观察到允许', DENIED: '观察到拒绝', UNKNOWN: '未知'
+})[observation];
+const sourceLabel = (source: OssDiagnosticSource) => ({
+  BUCKET_POLICY: '存储策略', BUCKET_ACL: '桶 ACL', ANONYMOUS_HEAD: '匿名 HEAD', ANONYMOUS_GET: '匿名 GET'
+})[source];
+const scopeLabel = (scope: OssDiagnosticScope) => ({ BUCKET: '策略或桶声明', OBJECT: '单个诊断对象' })[scope];
+const basisLabel = (basis: OssDiagnosticBasis) => ({
+  POLICY_ALLOW: '已理解的允许声明', POLICY_DENY: '已理解的拒绝声明',
+  NO_SUCH_POLICY: '服务明确返回无策略文档', POLICY_UNREADABLE: '策略不可读取',
+  COMPLEX_POLICY: '策略超出有限解释范围', INVALID_POLICY: '策略文档无效',
+  ACL_GRANT: '存在匿名 ACL 授权', ACL_NO_GRANT: '未观察到可解释的匿名 ACL 授权',
+  ACL_UNREADABLE: 'ACL 不可读取', HTTP_SUCCESS: '该对象请求成功',
+  HTTP_DENIED: '该对象请求被拒绝', HTTP_NOT_FOUND: '该对象返回 404',
+  REDIRECT: '该对象请求被重定向', HTTP_ERROR: '该对象请求返回异常状态',
+  TIMEOUT: '请求超时', NETWORK_ERROR: '网络请求失败', INTERRUPTED: '请求中断',
+  NOT_EVALUATED: '未能评估', UNSUPPORTED: 'Provider 不支持该诊断'
+})[basis];
+const closeDiagnostic = () => {
+  diagnosticVersion += 1;
+  diagnosticAbort?.abort();
+  diagnosticAbort = undefined;
+  diagnosticVisible.value = false;
+  diagnosticLoading.value = false;
+  diagnosticResult.value = undefined;
+  diagnosticError.value = '';
+  diagnosticOwner.value = undefined;
+};
+const handleDiagnose = async (row: OssConfigVO) => {
+  const owner = runtime.currentUserId();
+  if (owner == null || !hasDiagnosticAccess()) {
+    closeDiagnostic();
+    return;
+  }
+  diagnosticAbort?.abort();
+  const abort = new AbortController();
+  diagnosticAbort = abort;
+  const version = ++diagnosticVersion;
+  diagnosticOwner.value = owner;
+  diagnosticVisible.value = true;
+  diagnosticLoading.value = true;
+  diagnosticError.value = '';
+  diagnosticResult.value = undefined;
+  const current = () => pageMounted && diagnosticVersion === version
+    && runtime.currentUserId() === owner && hasDiagnosticAccess();
+  try {
+    const response = await diagnoseOssConfig(row.ossConfigId, abort.signal);
+    if (current()) diagnosticResult.value = response.data;
+  } catch {
+    if (current()) diagnosticError.value = '诊断暂不可用，请稍后重试';
+  } finally {
+    if (current()) {
+      diagnosticLoading.value = false;
+      diagnosticAbort = undefined;
+    } else if (pageMounted && diagnosticVersion === version) {
+      closeDiagnostic();
+    }
+  }
+};
+watch(() => [runtime.currentUserId(), hasDiagnosticAccess()] as const, ([owner, allowed]) => {
+  if (!allowed || diagnosticOwner.value !== undefined && diagnosticOwner.value !== owner) closeDiagnostic();
+});
 
 const queryFormRef = ref<ElFormInstance>();
 const ossConfigFormRef = ref<ElFormInstance>();
@@ -404,6 +523,7 @@ const submitForm = () => {
       } else {
         await addOssConfig(form.value).finally(() => (buttonLoading.value = false));
       }
+      closeDiagnostic();
       modal.msgSuccess(updating ? '修改成功' : '新增成功');
       closeDialog();
       await getList();
@@ -420,6 +540,7 @@ const handleStatusChange = async (row: Partial<OssConfigVO>) => {
   try {
     await modal.confirm('确认要将"' + row.configKey + '"' + text + '吗?');
     await changeOssConfigStatus(row.ossConfigId, row.status, row.configKey);
+    closeDiagnostic();
     await getList();
     modal.msgSuccess(text + '成功');
   } catch {
@@ -432,12 +553,17 @@ const handleDelete = async (row?: Partial<OssConfigVO>) => {
   await modal.confirm('是否确认删除OSS配置编号为"' + ossConfigIds + '"的数据项?');
   setLoading(true);
   await delOssConfig(ossConfigIds).finally(() => setLoading(false));
+  closeDiagnostic();
   await getList();
   modal.msgSuccess('删除成功');
 };
 
 onMounted(() => {
   getList();
+});
+onUnmounted(() => {
+  pageMounted = false;
+  closeDiagnostic();
 });
 </script>
 
@@ -449,6 +575,11 @@ onMounted(() => {
 .public-policy-alert {
   margin: 0 0 18px 120px;
   width: calc(100% - 120px);
+}
+
+.diagnostic-caveat {
+  margin-bottom: 16px;
+  color: var(--el-text-color-secondary);
 }
 
 .data-table :deep(.el-button.is-link) {

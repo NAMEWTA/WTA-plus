@@ -54,7 +54,7 @@ class OssConfigHttpContractUnitTest {
     }
 
     @Test
-    void explicitDiagnosisHasListPermissionPositiveIdAndSafeThreeFieldProjection() throws Exception {
+    void explicitDiagnosisHasListPermissionPositiveIdAndSafeFactProjection() throws Exception {
         Method method = method("diagnose", Long.class);
         assertThat(method.getAnnotation(PostMapping.class).value())
             .containsExactly("/diagnose/{ossConfigId}");
@@ -66,7 +66,7 @@ class OssConfigHttpContractUnitTest {
         assertThat(method.getParameters()[0].getAnnotation(Positive.class)).isNotNull();
         assertThat(OssStorageDiagnosticVo.class.getRecordComponents())
             .extracting(java.lang.reflect.RecordComponent::getName)
-            .containsExactly("status", "reason", "checkedAt");
+            .containsExactly("status", "reason", "checkedAt", "facts");
     }
 
     private static void assertWrite(String name, String path, BusinessType type,
