@@ -2009,6 +2009,47 @@ public abstract class AbstractOssClientImpl implements OssClient {
     }
 
     @Override
+    public OssObjectStat headObject(String key, Duration timeout) {
+        validateObjectIdentity(defaultBucket(), key);
+        Duration budget = requireMigrationTimeout(timeout);
+        try {
+            var request = HeadObjectRequest.builder().bucket(defaultBucket()).key(key)
+                .overrideConfiguration(builder -> builder.apiCallTimeout(budget).apiCallAttemptTimeout(budget))
+                .build();
+            var response = await(s3AsyncClient.headObject(request), budget);
+            return new OssObjectStat(defaultBucket(), key,
+                Optional.ofNullable(response.contentLength()).orElse(0L), response.contentType(),
+                response.eTag(), response.lastModified(), response.metadata(),
+                checksumMap(response.checksumCRC32(), response.checksumCRC32C(), response.checksumSHA1(), response.checksumSHA256()));
+        } catch (RuntimeException ex) {
+            throw toStorageException(ex);
+        }
+    }
+
+    @Override
+    public boolean delete(String key, Duration timeout) {
+        validateObjectIdentity(defaultBucket(), key);
+        Duration budget = requireMigrationTimeout(timeout);
+        try {
+            var request = software.amazon.awssdk.services.s3.model.DeleteObjectRequest.builder()
+                .bucket(defaultBucket()).key(key)
+                .overrideConfiguration(builder -> builder.apiCallTimeout(budget).apiCallAttemptTimeout(budget))
+                .build();
+            await(s3AsyncClient.deleteObject(request), budget);
+            return true;
+        } catch (RuntimeException ex) {
+            throw toStorageException(ex);
+        }
+    }
+
+    private Duration requireMigrationTimeout(Duration timeout) {
+        if (timeout == null || timeout.isNegative() || timeout.isZero() || timeout.toMillis() < 1) {
+            throw new IllegalArgumentException("OSS migration timeout must be positive");
+        }
+        return timeout;
+    }
+
+    @Override
     public OssMultipartUpload createMultipartUpload(String key, OssObjectOptions options) {
         return bucketCreateMultipartUpload(defaultBucket(), key, options);
     }

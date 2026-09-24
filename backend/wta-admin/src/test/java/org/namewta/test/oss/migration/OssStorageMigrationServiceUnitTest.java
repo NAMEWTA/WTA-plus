@@ -147,6 +147,18 @@ class OssStorageMigrationServiceUnitTest {
     }
 
     @Test
+    void configIdentityChangedAfterRemotePreflightCannotCreateAnItem() {
+        objects.beforeInspect = () -> store.configs.put("public",
+            new OssMigrationStore.ConfigIdentity("public", "different-bucket", "owned.test", "N", "", "2"));
+
+        assertThatThrownBy(() -> service.start(new MigrationRequest(List.of(10L), "public")))
+            .isInstanceOf(OssMigrationException.class)
+            .hasMessageContaining("迁移配置已变化");
+        assertThat(store.items).isEmpty();
+        assertThat(objects.copyCalls).hasValue(0);
+    }
+
+    @Test
     void migratesWithCopyVerifyCasAndFrozenAuditRoute() {
         long batchId = service.start(new MigrationRequest(List.of(10L), "public"));
 
@@ -294,10 +306,14 @@ class OssStorageMigrationServiceUnitTest {
         assertThat(item.getLastErrorStage()).isEqualTo(OssMigrationStage.CONTENT_VERIFIED);
         assertThat(item.getErrorMessage()).isEqualTo(OssMigrationError.CONTENT_MISMATCH.name());
         assertThat(store.objects.get(10L).getService()).isEqualTo("private");
+        objects.transferError = null;
+        assertThatThrownBy(() -> service.start(new MigrationRequest(List.of(10L), "public")))
+            .isInstanceOf(OssMigrationException.class);
+        assertThat(store.items).hasSize(1);
     }
 
     @Test
-    void cleanupFailureRequiresAnotherApprovedCleanupWithoutRecopying() {
+    void cleanupFailureNeverResendsDeleteAndOnlyFinalizesAfterSourceIsAbsent() {
         long batchId = service.start(new MigrationRequest(List.of(10L), "public"));
         SysOssMigrationItem item = store.items.values().iterator().next();
         item.setCleanupEligibleTime(NOW);
@@ -307,12 +323,39 @@ class OssStorageMigrationServiceUnitTest {
             .isInstanceOfSatisfying(OssMigrationException.class,
                 ex -> assertThat(ex.error()).isEqualTo(OssMigrationError.CLEANUP_FAILED));
         assertThat(item.getLastErrorStage()).isEqualTo(OssMigrationStage.COMPLETED);
+        assertThat(item.getErrorMessage()).isEqualTo(OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN);
         service.retry(batchId);
         assertThat(objects.copyCalls).hasValue(1);
 
+        assertThatThrownBy(() -> service.cleanup(batchId, true))
+            .isInstanceOfSatisfying(OssMigrationException.class,
+                ex -> assertThat(ex.error()).isEqualTo(OssMigrationError.CLEANUP_FAILED));
+        assertThat(objects.deleteCalls).hasValue(1);
+        objects.absentServices.add("private");
         service.cleanup(batchId, true);
         assertThat(item.getStatus()).isEqualTo(OssMigrationStatus.COMPLETED);
-        assertThat(objects.deleteCalls).hasValue(2);
+        assertThat(objects.deleteCalls).hasValue(1);
+    }
+
+    @Test
+    void unknownCleanupFencesRestoreRollbackRetryAndASecondMigration() {
+        long batchId = service.publish(10L, "public");
+        SysOssMigrationItem item = store.items.values().iterator().next();
+        item.setCleanupEligibleTime(NOW);
+        objects.deleteFailures = 1;
+        assertThatThrownBy(() -> service.cleanup(batchId, true)).isInstanceOf(OssMigrationException.class);
+
+        assertThatThrownBy(() -> service.unpublish(10L)).isInstanceOf(OssMigrationException.class);
+        assertThatThrownBy(() -> service.rollback(batchId)).isInstanceOf(OssMigrationException.class);
+        assertThatThrownBy(() -> service.start(new MigrationRequest(List.of(10L), "another-public")))
+            .isInstanceOf(OssMigrationException.class);
+        service.retry(batchId);
+
+        assertThat(store.items).hasSize(1);
+        assertThat(store.objects.get(10L).getService()).isEqualTo("public");
+        assertThat(item.getErrorMessage()).isEqualTo(OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN);
+        assertThat(objects.deleteCalls).hasValue(1);
+        assertThat(objects.copyCalls).hasValue(1);
     }
 
     @Test
@@ -327,6 +370,10 @@ class OssStorageMigrationServiceUnitTest {
         OssStorageMigrationProperties unsafeCleanup = new OssStorageMigrationProperties();
         unsafeCleanup.setCleanupDelay(Duration.ZERO);
         assertThatThrownBy(unsafeCleanup::afterPropertiesSet).isInstanceOf(IllegalStateException.class);
+
+        OssStorageMigrationProperties unsafeIo = new OssStorageMigrationProperties();
+        unsafeIo.setIoTimeout(Duration.ZERO);
+        assertThatThrownBy(unsafeIo::afterPropertiesSet).isInstanceOf(IllegalStateException.class);
     }
 
     private OssStorageReadinessRegistry readiness() {
@@ -342,8 +389,10 @@ class OssStorageMigrationServiceUnitTest {
     }
 
     private void useReadiness(OssStorageReadinessRegistry readiness) {
+        // 此内存替身没有数据库事务；生产和真实 MySQL 用例均使用 DSTransactional 代理注入。
         service = new OssStorageMigrationService(store, objects, accessVerifier, readiness, properties,
-            Clock.fixed(NOW, ZoneOffset.UTC));
+            Clock.fixed(NOW, ZoneOffset.UTC),
+            new OssMigrationAtomicService(store, Clock.fixed(NOW, ZoneOffset.UTC)));
     }
 
     private OssStorageReadinessEntry serving(String key, AccessPolicy policy) {
@@ -365,12 +414,35 @@ class OssStorageMigrationServiceUnitTest {
         private final Map<Long, SysOss> objects = new HashMap<>();
         private final Map<Long, SysOssMigrationBatch> batches = new LinkedHashMap<>();
         private final Map<Long, SysOssMigrationItem> items = new LinkedHashMap<>();
+        private final Map<Long, Integer> persistedVersions = new HashMap<>();
+        private final Map<Long, OssMigrationStatus> persistedStatuses = new HashMap<>();
         private long sequence = 100;
+
+        private final Map<String, ConfigIdentity> configs = new HashMap<>();
+
+        @Override public ConfigIdentity configIdentity(String key) {
+            return configs.computeIfAbsent(key, value -> new ConfigIdentity(value, "bucket-" + value,
+                "owned.test", "N", "", "private".equals(value) ? "0" : "2"));
+        }
+        @Override public void lockMigrationConfigs(ConfigIdentity source, ConfigIdentity target) {
+            if (source == null || target == null
+                || !source.equals(configIdentity(source.key()))
+                || !target.equals(configIdentity(target.key()))) {
+                throw new OssMigrationException(OssMigrationError.STORAGE_NOT_SERVING, "迁移配置已变化");
+            }
+        }
 
         @Override public List<SysOss> findObjects(Collection<Long> ids) {
             return ids.stream().map(objects::get).filter(Objects::nonNull).toList();
         }
         @Override public SysOss findObject(Long ossId) { return objects.get(ossId); }
+        @Override public SysOss lockObject(Long ossId) { return findObject(ossId); }
+        @Override public SysOssMigrationItem findItem(Long itemId) { return items.get(itemId); }
+        @Override public SysOssMigrationItem lockItem(Long itemId) { return findItem(itemId); }
+        @Override public SysOssMigrationItem findLatest(Long ossId) {
+            return items.values().stream().filter(item -> Objects.equals(item.getOssId(), ossId))
+                .max(Comparator.comparing(SysOssMigrationItem::getOssMigrationItemId)).orElse(null);
+        }
         @Override public SysOssMigrationBatch createBatch(String target, int total) {
             SysOssMigrationBatch batch = new SysOssMigrationBatch();
             batch.setOssMigrationBatchId(++sequence); batch.setTargetConfigKey(target);
@@ -382,7 +454,10 @@ class OssStorageMigrationServiceUnitTest {
             item.setOssMigrationItemId(++sequence); item.setOssMigrationBatchId(batchId); item.setOssId(oss.getOssId());
             item.setSourceConfigKey(oss.getService()); item.setTargetConfigKey(target); item.setObjectKey(oss.getFileName());
             item.setStatus(OssMigrationStatus.PENDING); item.setStage(OssMigrationStage.PREFLIGHT); item.setVersion(0);
-            items.put(item.getOssMigrationItemId(), item); return item;
+            items.put(item.getOssMigrationItemId(), item);
+            persistedVersions.put(item.getOssMigrationItemId(), 0);
+            persistedStatuses.put(item.getOssMigrationItemId(), OssMigrationStatus.PENDING);
+            return item;
         }
         @Override public SysOssMigrationBatch getBatch(Long id) { return batches.get(id); }
         @Override public List<SysOssMigrationItem> listItems(Long batchId) {
@@ -390,10 +465,23 @@ class OssStorageMigrationServiceUnitTest {
         }
         @Override public boolean claim(Long itemId, int version) {
             SysOssMigrationItem item = items.get(itemId);
-            if (item == null || item.getVersion() != version || item.getStatus() == OssMigrationStatus.RUNNING) return false;
-            item.setVersion(version + 1); item.setStatus(OssMigrationStatus.RUNNING); return true;
+            if (item == null || persistedVersions.get(itemId) != version
+                || !(persistedStatuses.get(itemId) == OssMigrationStatus.PENDING
+                || persistedStatuses.get(itemId) == OssMigrationStatus.FAILED)
+                || item.getLastErrorStage() == OssMigrationStage.COMPLETED) return false;
+            item.setVersion(version + 1); item.setStatus(OssMigrationStatus.RUNNING);
+            persistedVersions.put(itemId, version + 1);
+            persistedStatuses.put(itemId, OssMigrationStatus.RUNNING);
+            return true;
         }
-        @Override public void saveItem(SysOssMigrationItem item) { items.put(item.getOssMigrationItemId(), item); }
+        @Override public boolean updateItem(SysOssMigrationItem item, int version, OssMigrationStatus status) {
+            Long id = item.getOssMigrationItemId();
+            if (!Objects.equals(persistedVersions.get(id), version) || persistedStatuses.get(id) != status) return false;
+            persistedVersions.put(id, version + 1);
+            persistedStatuses.put(id, item.getStatus());
+            items.put(id, item);
+            return true;
+        }
         @Override public void saveBatch(SysOssMigrationBatch batch) { batches.put(batch.getOssMigrationBatchId(), batch); }
         @Override public boolean compareAndSetService(Long ossId, String expected, String target) {
             SysOss oss = objects.get(ossId);
@@ -408,11 +496,8 @@ class OssStorageMigrationServiceUnitTest {
             return keys;
         }
         @Override public SysOssMigrationItem findLatestRestorable(Long ossId) {
-            return items.values().stream()
-                .filter(item -> Objects.equals(item.getOssId(), ossId)
-                    && item.getStatus() == OssMigrationStatus.CLEANUP_ELIGIBLE)
-                .max(Comparator.comparing(SysOssMigrationItem::getOssMigrationItemId))
-                .orElse(null);
+            SysOssMigrationItem latest = findLatest(ossId);
+            return latest != null && latest.getStatus() == OssMigrationStatus.CLEANUP_ELIGIBLE ? latest : null;
         }
     }
 
@@ -426,9 +511,11 @@ class OssStorageMigrationServiceUnitTest {
         private int deleteFailures;
         private RuntimeException transferError;
         private Runnable beforeTransfer = () -> { };
+        private Runnable beforeInspect = () -> { };
         private Runnable beforeDelete = () -> { };
 
         @Override public Inspection inspect(String source, String target, String key, long maxVerifyBytes) {
+            beforeInspect.run();
             if (accessPolicyMismatch) {
                 throw new OssMigrationException(OssMigrationError.ACCESS_POLICY_MISMATCH,
                     "当前存储访问类型与迁移策略不一致");
@@ -442,11 +529,14 @@ class OssStorageMigrationServiceUnitTest {
             return new Transfer(10, 10, "etag", "etag");
         }
         @Override public boolean exists(String service, String key) { return !absentServices.contains(service); }
+        @Override public boolean exists(String service, String key, Duration timeout) { return exists(service, key); }
         @Override public void delete(String service, String key) {
             deleteCalls.incrementAndGet();
             beforeDelete.run();
             if (deleteFailures-- > 0) throw new IllegalStateException("provider delete failed");
+            absentServices.add(service);
         }
+        @Override public void delete(String service, String key, Duration timeout) { delete(service, key); }
     }
 
     private static final class MutableAccessVerifier implements OssMigrationAccessVerifier {

@@ -18,6 +18,7 @@ public class OssStorageMigrationProperties implements InitializingBean {
     private int maxBatchSize = 100;
     private long maxVerifyBytes = 64L * 1024 * 1024;
     private Duration cleanupDelay = Duration.ofHours(24);
+    private Duration ioTimeout = Duration.ofSeconds(5);
 
     @Override
     public void afterPropertiesSet() {
@@ -30,6 +31,10 @@ public class OssStorageMigrationProperties implements InitializingBean {
         if (cleanupDelay == null || cleanupDelay.compareTo(Duration.ofMinutes(1)) < 0
             || cleanupDelay.compareTo(Duration.ofDays(30)) > 0) {
             throw new IllegalStateException("OSS migration cleanupDelay 超出安全范围");
+        }
+        if (ioTimeout == null || ioTimeout.compareTo(Duration.ofMillis(100)) < 0
+            || ioTimeout.compareTo(Duration.ofSeconds(30)) > 0) {
+            throw new IllegalStateException("OSS migration ioTimeout 超出安全范围");
         }
     }
 }

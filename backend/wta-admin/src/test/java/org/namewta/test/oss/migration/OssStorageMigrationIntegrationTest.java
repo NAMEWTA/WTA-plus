@@ -1,5 +1,10 @@
 package org.namewta.test.oss.migration;
 
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
+import com.baomidou.dynamic.datasource.aop.DynamicLocalTransactionInterceptor;
+import com.baomidou.dynamic.datasource.tx.TransactionContext;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
@@ -8,17 +13,22 @@ import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.namewta.common.oss.client.DefaultOssClientImpl;
 import org.namewta.common.oss.client.OssClient;
 import org.namewta.common.oss.config.AccessControlPolicyConfig;
 import org.namewta.common.oss.config.OssAsyncExecutorConfig;
 import org.namewta.common.oss.config.OssClientConfig;
 import org.namewta.common.oss.enums.AccessPolicy;
+import org.namewta.common.oss.exception.OssErrorCode;
+import org.namewta.common.oss.exception.S3StorageException;
 import org.namewta.common.oss.factory.OssFactory;
 import org.namewta.system.mapper.SysOssMapper;
+import org.namewta.system.mapper.SysOssConfigMapper;
+import org.namewta.system.domain.bo.SysOssConfigBo;
+import org.namewta.system.service.impl.SysOssConfigServiceImpl;
 import org.namewta.system.oss.migration.*;
 import org.namewta.system.oss.migration.mapper.SysOssMigrationBatchMapper;
 import org.namewta.system.oss.migration.mapper.SysOssMigrationItemMapper;
@@ -30,6 +40,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
+import org.springframework.aop.framework.ProxyFactory;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -45,12 +56,17 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import javax.sql.DataSource;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -86,24 +102,57 @@ class OssStorageMigrationIntegrationTest {
         String rollbackKey = "migration/rollback-" + suffix + ".txt";
 
         try (S3Client bootstrap = bootstrap(endpointUri, accessKey, secretKey)) {
-            prepareDatabase(dataSource, cleanupKey, rollbackKey);
+            prepareDatabase(dataSource, cleanupKey, rollbackKey, privateBucket, publicBucket);
             prepareBuckets(bootstrap, privateBucket, publicBucket, cleanupKey, rollbackKey);
             try (OssClient privateClient = client(PRIVATE_ROUTE, endpointUri, accessKey, secretKey,
                 privateBucket, AccessPolicy.PRIVATE);
                  OssClient publicClient = client(PUBLIC_ROUTE, endpointUri, accessKey, secretKey,
                      publicBucket, AccessPolicy.PUBLIC_READ);
-                 SqlSession session = sqlSessionFactory(dataSource).openSession(true);
                  MockedStatic<OssFactory> factory = mockStatic(OssFactory.class)) {
                 factory.when(() -> OssFactory.instance(PRIVATE_ROUTE)).thenReturn(privateClient);
                 factory.when(() -> OssFactory.instance(PUBLIC_ROUTE)).thenReturn(publicClient);
 
-                SysOssMapper ossMapper = session.getMapper(SysOssMapper.class);
+                DynamicRoutingDataSource routing = new DynamicRoutingDataSource(List.of());
+                routing.setPrimary("master");
+                routing.setStrict(true);
+                AtomicBoolean loseCommitAcknowledgement = new AtomicBoolean();
+                routing.addDataSource("master", new org.springframework.jdbc.datasource.DelegatingDataSource(dataSource) {
+                    @Override public Connection getConnection() throws SQLException {
+                        Connection connection = dataSource.getConnection();
+                        return (Connection) java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(),
+                            new Class<?>[] {Connection.class}, (proxy, method, args) -> {
+                                if ("commit".equals(method.getName())
+                                    && loseCommitAcknowledgement.compareAndSet(true, false)) {
+                                    connection.commit();
+                                    throw new java.sql.SQLRecoverableException("owned commit acknowledgement lost");
+                                }
+                                try { return method.invoke(connection, args); }
+                                catch (java.lang.reflect.InvocationTargetException error) { throw error.getCause(); }
+                            });
+                    }
+                });
+                SqlSessionTemplate sessions = new SqlSessionTemplate(sqlSessionFactory(routing));
+                SysOssMapper ossMapper = sessions.getMapper(SysOssMapper.class);
+                AtomicBoolean rejectItemSwitch = new AtomicBoolean();
+                AtomicBoolean rejectPointer = new AtomicBoolean();
                 MybatisOssMigrationStore store = new MybatisOssMigrationStore(ossMapper,
-                    session.getMapper(SysOssMigrationBatchMapper.class),
-                    session.getMapper(SysOssMigrationItemMapper.class));
+                    sessions.getMapper(SysOssMigrationBatchMapper.class),
+                    sessions.getMapper(SysOssMigrationItemMapper.class),
+                    sessions.getMapper(SysOssConfigMapper.class)) {
+                    @Override public boolean updateItem(SysOssMigrationItem item, int version,
+                                                        OssMigrationStatus status) {
+                        if (item.getStage() == OssMigrationStage.SERVICE_SWITCHED
+                            && rejectItemSwitch.compareAndSet(true, false)) return false;
+                        return super.updateItem(item, version, status);
+                    }
+                    @Override public boolean compareAndSetService(Long id, String expected, String target) {
+                        if (rejectPointer.compareAndSet(true, false)) return false;
+                        return super.compareAndSetService(id, expected, target);
+                    }
+                };
                 MutableClock clock = new MutableClock(Instant.parse("2026-09-01T00:00:00Z"));
                 OssStorageMigrationProperties properties = new OssStorageMigrationProperties();
-                properties.setCleanupDelay(Duration.ofSeconds(1));
+                properties.setCleanupDelay(Duration.ofMinutes(1));
                 properties.setMaxVerifyBytes(1024 * 1024);
                 HttpClient http = HttpClient.newHttpClient();
                 OssMigrationAccessVerifier verifier = ossId -> {
@@ -117,8 +166,16 @@ class OssStorageMigrationIntegrationTest {
                         throw new IllegalStateException("anonymous public access failed", ex);
                     }
                 };
+                OssMigrationAtomicService atomic = transactional(new OssMigrationAtomicService(store, clock));
+                java.util.concurrent.atomic.AtomicInteger providerDeletes = new java.util.concurrent.atomic.AtomicInteger();
+                DefaultOssMigrationObjectStore objects = new DefaultOssMigrationObjectStore() {
+                    @Override public void delete(String service, String key, Duration timeout) {
+                        providerDeletes.incrementAndGet();
+                        super.delete(service, key, timeout);
+                    }
+                };
                 OssStorageMigrationService service = new OssStorageMigrationService(store,
-                    new DefaultOssMigrationObjectStore(), verifier, readiness(clock), properties, clock);
+                    objects, verifier, readiness(clock), properties, clock, atomic);
 
                 long cleanupBatch = service.start(new MigrationRequest(List.of(101L), PUBLIC_ROUTE));
                 assertMigrated(dataSource, privateClient, publicClient, http, endpointUri, privateBucket,
@@ -126,8 +183,28 @@ class OssStorageMigrationIntegrationTest {
                 assertThatThrownBy(() -> service.cleanup(cleanupBatch, true))
                     .isInstanceOfSatisfying(OssMigrationException.class,
                         ex -> assertThat(ex.error()).isEqualTo(OssMigrationError.CLEANUP_WINDOW_OPEN));
-                clock.advance(Duration.ofSeconds(2));
+                clock.advance(Duration.ofMinutes(2));
+                loseCommitAcknowledgement.set(true);
+                assertThatThrownBy(() -> service.cleanup(cleanupBatch, true))
+                    .isInstanceOf(RuntimeException.class);
+                assertThat(scalar(dataSource, "select error_message from sys_oss_migration_item where oss_id=101"))
+                    .isEqualTo(OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN);
+                SysOssConfigMapper configMapper = sessions.getMapper(SysOssConfigMapper.class);
+                assertThat(configMapper.countOssReferences(PRIVATE_ROUTE)).isPositive();
+                assertThat(configMapper.countOssReferences(PUBLIC_ROUTE)).isPositive();
+                SysOssConfigBo changedTarget = configEdit(302L, PUBLIC_ROUTE, publicBucket, "2");
+                changedTarget.setEndpoint("different-storage.invalid");
+                assertThatThrownBy(() -> new SysOssConfigServiceImpl(configMapper).updateByBo(changedTarget))
+                    .isInstanceOf(org.namewta.common.core.exception.ServiceException.class)
+                    .hasMessageContaining("物理存储身份");
+                assertThat(providerDeletes).hasValue(0);
+                assertThatThrownBy(() -> service.cleanup(cleanupBatch, true))
+                    .isInstanceOf(OssMigrationException.class);
+                assertThat(providerDeletes).hasValue(0);
+                assertThat(privateClient.headObject(cleanupKey).size()).isPositive();
+                privateClient.delete(cleanupKey);
                 service.cleanup(cleanupBatch, true);
+                assertThat(providerDeletes).hasValue(0);
                 assertThat(service.batch(cleanupBatch).status()).isEqualTo(OssMigrationStatus.COMPLETED);
                 assertThatThrownBy(() -> privateClient.headObject(cleanupKey));
                 assertThat(publicClient.headObject(cleanupKey).size()).isPositive();
@@ -141,12 +218,272 @@ class OssStorageMigrationIntegrationTest {
                 assertThat(publicClient.headObject(rollbackKey).size()).isPositive();
                 assertThat(rawGet(http, endpointUri, privateBucket, rollbackKey)).isEqualTo(403);
                 assertThat(store.activeConfigKeys()).isEmpty();
+
+                // Item CAS 失败时，同事务内已经执行的 Object 指针 CAS 必须回滚。
+                rejectItemSwitch.set(true);
+                assertThatThrownBy(() -> service.publish(102L, PUBLIC_ROUTE))
+                    .isInstanceOf(OssMigrationException.class);
+                assertThat(scalar(dataSource, "select service from sys_oss where oss_id=102"))
+                    .isEqualTo(PRIVATE_ROUTE);
+                SysOssMigrationItem failedSwitch = store.findLatest(102L);
+                assertThat(failedSwitch.getStage()).isEqualTo(OssMigrationStage.CONTENT_VERIFIED);
+                assertThat(failedSwitch.getStatus()).isEqualTo(OssMigrationStatus.RUNNING);
+                int durableVersion = failedSwitch.getVersion();
+                rejectPointer.set(true);
+                assertThatThrownBy(() -> atomic.switchToTarget(failedSwitch.getOssMigrationItemId(), durableVersion))
+                    .isInstanceOf(OssMigrationException.class);
+                assertThat(scalar(dataSource, "select service from sys_oss where oss_id=102"))
+                    .isEqualTo(PRIVATE_ROUTE);
+                assertThat(store.findLatest(102L).getVersion()).isEqualTo(durableVersion);
             } finally {
                 deleteBuckets(bootstrap, privateBucket, publicBucket, cleanupKey, rollbackKey);
                 dropTables(dataSource);
             }
         } finally {
             dataSource.forceCloseAll();
+        }
+    }
+
+    @Test
+    void restoreAndCleanupSerializeOnRealObjectRowAndPreserveCurrentSource() throws Exception {
+        String mysqlUrl = System.getProperty("oss.migration.mysql.integration.url");
+        String endpoint = System.getProperty("oss.minio.integration.endpoint");
+        Assumptions.assumeTrue(mysqlUrl != null && endpoint != null, "需要隔离 MySQL 与 MinIO");
+        PooledDataSource dataSource = new PooledDataSource("com.mysql.cj.jdbc.Driver", mysqlUrl,
+            System.getProperty("oss.migration.mysql.integration.username", "root"),
+            System.getProperty("oss.migration.mysql.integration.password", ""));
+        URI endpointUri = URI.create(endpoint);
+        String accessKey = System.getProperty("oss.minio.integration.access-key", "namewta");
+        String secretKey = System.getProperty("oss.minio.integration.secret-key", "namewta123");
+        String suffix = UUID.randomUUID().toString().replace("-", "");
+        String privateBucket = "namewta-migration-private-" + suffix;
+        String publicBucket = "namewta-migration-public-" + suffix;
+        String cleanupKey = "migration/cleanup-" + suffix + ".txt";
+        String rollbackKey = "migration/rollback-" + suffix + ".txt";
+        try (S3Client bootstrap = bootstrap(endpointUri, accessKey, secretKey)) {
+            prepareDatabase(dataSource, cleanupKey, rollbackKey, privateBucket, publicBucket);
+            prepareBuckets(bootstrap, privateBucket, publicBucket, cleanupKey, rollbackKey);
+            try (OssClient privateClient = client(PRIVATE_ROUTE, endpointUri, accessKey, secretKey,
+                     privateBucket, AccessPolicy.PRIVATE);
+                 OssClient publicClient = client(PUBLIC_ROUTE, endpointUri, accessKey, secretKey,
+                     publicBucket, AccessPolicy.PUBLIC_READ)) {
+                DynamicRoutingDataSource routing = new DynamicRoutingDataSource(List.of());
+                routing.setPrimary("master"); routing.setStrict(true); routing.addDataSource("master", dataSource);
+                SqlSessionTemplate sessions = new SqlSessionTemplate(sqlSessionFactory(routing));
+                CountDownLatch objectLocked = new CountDownLatch(1);
+                CountDownLatch releaseLock = new CountDownLatch(1);
+                CountDownLatch configLocked = new CountDownLatch(1);
+                CountDownLatch releaseConfig = new CountDownLatch(1);
+                AtomicBoolean pauseConfig = new AtomicBoolean();
+                AtomicBoolean pauseRestore = new AtomicBoolean();
+                AtomicReference<Long> lockedConnectionId = new AtomicReference<>();
+                MybatisOssMigrationStore store = new MybatisOssMigrationStore(sessions.getMapper(SysOssMapper.class),
+                    sessions.getMapper(SysOssMigrationBatchMapper.class),
+                    sessions.getMapper(SysOssMigrationItemMapper.class),
+                    sessions.getMapper(SysOssConfigMapper.class)) {
+                    @Override public void lockMigrationConfigs(ConfigIdentity source, ConfigIdentity target) {
+                        super.lockMigrationConfigs(source, target);
+                        if (pauseConfig.compareAndSet(true, false)) {
+                            configLocked.countDown();
+                            try {
+                                assertThat(releaseConfig.await(10, TimeUnit.SECONDS)).isTrue();
+                            } catch (InterruptedException interrupted) {
+                                Thread.currentThread().interrupt();
+                                throw new IllegalStateException("test config lock wait interrupted", interrupted);
+                            }
+                        }
+                    }
+                    @Override public org.namewta.system.domain.SysOss lockObject(Long id) {
+                        var object = super.lockObject(id);
+                        if (pauseRestore.compareAndSet(true, false)) {
+                            assertThat(TransactionContext.getXID()).isNotNull();
+                            lockedConnectionId.set(new org.springframework.jdbc.core.JdbcTemplate(routing)
+                                .queryForObject("select connection_id()", Long.class));
+                            objectLocked.countDown();
+                            try {
+                                assertThat(releaseLock.await(10, TimeUnit.SECONDS)).isTrue();
+                            } catch (InterruptedException interrupted) {
+                                Thread.currentThread().interrupt();
+                                throw new IllegalStateException("test lock wait interrupted", interrupted);
+                            }
+                        }
+                        return object;
+                    }
+                };
+                MutableClock clock = new MutableClock(Instant.parse("2026-09-01T00:00:00Z"));
+                OssStorageMigrationProperties properties = new OssStorageMigrationProperties();
+                properties.setCleanupDelay(Duration.ofMinutes(1));
+                properties.setIoTimeout(Duration.ofSeconds(5));
+                properties.setMaxVerifyBytes(1024 * 1024);
+                OssMigrationAccessVerifier verifier = id -> {
+                    try {
+                        String key = scalar(dataSource, "select file_name from sys_oss where oss_id=" + id);
+                        assertThat(rawGet(HttpClient.newHttpClient(), endpointUri, publicBucket, key)).isEqualTo(200);
+                    } catch (Exception failure) {
+                        throw new IllegalStateException("owned public verification failed", failure);
+                    }
+                };
+                CountDownLatch deleteEntered = new CountDownLatch(1);
+                CountDownLatch releaseDelete = new CountDownLatch(1);
+                CountDownLatch sourceHeadEntered = new CountDownLatch(1);
+                CountDownLatch releaseSourceHead = new CountDownLatch(1);
+                AtomicBoolean pauseSourceHead = new AtomicBoolean();
+                java.util.concurrent.atomic.AtomicInteger physicalDeletes = new java.util.concurrent.atomic.AtomicInteger();
+                AtomicReference<Future<?>> lateProvider = new AtomicReference<>();
+                ExecutorService provider = Executors.newSingleThreadExecutor();
+                DefaultOssMigrationObjectStore objects = new DefaultOssMigrationObjectStore() {
+                    @Override public boolean exists(String service, String key, Duration timeout) {
+                        boolean present = super.exists(service, key, timeout);
+                        if (PRIVATE_ROUTE.equals(service) && cleanupKey.equals(key)
+                            && pauseSourceHead.compareAndSet(true, false)) {
+                            sourceHeadEntered.countDown();
+                            try {
+                                assertThat(releaseSourceHead.await(10, TimeUnit.SECONDS)).isTrue();
+                            } catch (InterruptedException interrupted) {
+                                Thread.currentThread().interrupt();
+                                throw new IllegalStateException("test HEAD wait interrupted", interrupted);
+                            }
+                        }
+                        return present;
+                    }
+                    @Override public void delete(String service, String key, Duration timeout) {
+                        physicalDeletes.incrementAndGet();
+                        Future<?> pending = provider.submit(() -> withClients(privateClient, publicClient, () -> {
+                            deleteEntered.countDown();
+                            try {
+                                assertThat(releaseDelete.await(10, TimeUnit.SECONDS)).isTrue();
+                            } catch (InterruptedException interrupted) {
+                                Thread.currentThread().interrupt();
+                                throw new IllegalStateException("test delete wait interrupted", interrupted);
+                            }
+                            physicalDelete(service, key, timeout);
+                            return null;
+                        }));
+                        lateProvider.set(pending);
+                        try {
+                            pending.get(150, TimeUnit.MILLISECONDS);
+                        } catch (TimeoutException expected) {
+                            throw new IllegalStateException("owned provider acknowledgement timeout", expected);
+                        } catch (InterruptedException interrupted) {
+                            Thread.currentThread().interrupt();
+                            throw new IllegalStateException("test delete wait interrupted", interrupted);
+                        } catch (ExecutionException failure) {
+                            throw new IllegalStateException("owned provider failed", failure);
+                        }
+                    }
+                    private void physicalDelete(String service, String key, Duration timeout) {
+                        super.delete(service, key, timeout);
+                    }
+                };
+                OssStorageMigrationService service = new OssStorageMigrationService(store, objects, verifier,
+                    readiness(clock), properties, clock, transactional(new OssMigrationAtomicService(store, clock)));
+                ExecutorService callers = Executors.newFixedThreadPool(2);
+                try {
+                    long rollbackBatch = withClients(privateClient, publicClient,
+                        () -> service.publish(102L, PUBLIC_ROUTE));
+                    clock.advance(Duration.ofMinutes(2));
+                    pauseRestore.set(true);
+                    Future<?> restore = callers.submit(() -> withClients(privateClient, publicClient, () -> {
+                        service.unpublish(102L); return null;
+                    }));
+                    assertThat(objectLocked.await(5, TimeUnit.SECONDS)).isTrue();
+                    try (Connection second = dataSource.getConnection(); Statement statement = second.createStatement()) {
+                        long secondId;
+                        try (ResultSet id = statement.executeQuery("select connection_id()")) {
+                            assertThat(id.next()).isTrue(); secondId = id.getLong(1);
+                        }
+                        assertThat(secondId).isNotEqualTo(lockedConnectionId.get());
+                        assertThatThrownBy(() -> statement.executeQuery(
+                            "select oss_id from sys_oss where oss_id=102 for update nowait"))
+                            .isInstanceOfSatisfying(SQLException.class,
+                                failure -> assertThat(failure.getErrorCode()).isEqualTo(3572));
+                    }
+                    releaseLock.countDown();
+                    restore.get(5, TimeUnit.SECONDS);
+                    assertThat(scalar(dataSource, "select service from sys_oss where oss_id=102"))
+                        .isEqualTo(PRIVATE_ROUTE);
+                    assertThatThrownBy(() -> withClients(privateClient, publicClient, () -> {
+                        service.cleanup(rollbackBatch, true); return null;
+                    })).isInstanceOf(OssMigrationException.class);
+                    assertThat(privateClient.headObject(rollbackKey).size()).isPositive();
+
+                    long cleanupBatch = withClients(privateClient, publicClient,
+                        () -> service.publish(101L, PUBLIC_ROUTE));
+                    clock.advance(Duration.ofMinutes(2));
+                    pauseSourceHead.set(true);
+                    Future<RuntimeException> staleRestore = callers.submit(() -> withClients(privateClient,
+                        publicClient, () -> {
+                            try { service.unpublish(101L); return null; }
+                            catch (RuntimeException rejected) { return rejected; }
+                        }));
+                    assertThat(sourceHeadEntered.await(5, TimeUnit.SECONDS)).isTrue();
+                    assertThatThrownBy(() -> withClients(privateClient, publicClient, () -> {
+                        service.cleanup(cleanupBatch, true); return null;
+                    })).isInstanceOf(OssMigrationException.class);
+                    assertThat(deleteEntered.await(5, TimeUnit.SECONDS)).isTrue();
+                    assertThat(scalar(dataSource,
+                        "select error_message from sys_oss_migration_item where oss_id=101"))
+                        .isEqualTo(OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN);
+                    releaseSourceHead.countDown();
+                    assertThat(staleRestore.get(5, TimeUnit.SECONDS)).isInstanceOf(OssMigrationException.class);
+                    assertThatThrownBy(() -> withClients(privateClient, publicClient, () -> {
+                        service.unpublish(101L); return null;
+                    })).isInstanceOf(OssMigrationException.class);
+                    // 101 的供应商删除尚未完成；不同对象 102 仍可独立建工单并前进。
+                    pauseConfig.set(true);
+                    Future<Long> unrelated = callers.submit(() -> withClients(privateClient, publicClient,
+                        () -> service.publish(102L, PUBLIC_ROUTE)));
+                    assertThat(configLocked.await(5, TimeUnit.SECONDS)).isTrue();
+                    try (Connection second = dataSource.getConnection(); Statement statement = second.createStatement()) {
+                        assertThatThrownBy(() -> statement.executeQuery(
+                            "select oss_config_id from sys_oss_config where oss_config_id=302 for update nowait"))
+                            .isInstanceOfSatisfying(SQLException.class,
+                                failure -> assertThat(failure.getErrorCode()).isEqualTo(3572));
+                    }
+                    releaseConfig.countDown();
+                    assertThat(unrelated.get(5, TimeUnit.SECONDS)).isPositive();
+                    assertThat(scalar(dataSource, "select service from sys_oss where oss_id=102"))
+                        .isEqualTo(PUBLIC_ROUTE);
+                    releaseDelete.countDown();
+                    lateProvider.get().get(5, TimeUnit.SECONDS);
+                    withClients(privateClient, publicClient, () -> {
+                        service.cleanup(cleanupBatch, true); return null;
+                    });
+                    assertThat(physicalDeletes).hasValue(1);
+                    assertThat(scalar(dataSource, "select service from sys_oss where oss_id=101"))
+                        .isEqualTo(PUBLIC_ROUTE);
+                    assertThatThrownBy(() -> privateClient.headObject(cleanupKey))
+                        .isInstanceOfSatisfying(S3StorageException.class,
+                            failure -> assertThat(failure.code()).isEqualTo(OssErrorCode.OBJECT_NOT_FOUND));
+                    assertThat(publicClient.headObject(cleanupKey).size()).isPositive();
+                } finally {
+                    releaseLock.countDown(); releaseConfig.countDown();
+                    releaseSourceHead.countDown(); releaseDelete.countDown();
+                    provider.shutdownNow();
+                    callers.shutdownNow();
+                    assertThat(provider.awaitTermination(10, TimeUnit.SECONDS)).isTrue();
+                    assertThat(callers.awaitTermination(10, TimeUnit.SECONDS)).isTrue();
+                }
+            } finally {
+                deleteBuckets(bootstrap, privateBucket, publicBucket, cleanupKey, rollbackKey);
+                dropTables(dataSource);
+            }
+        } finally {
+            dataSource.forceCloseAll();
+        }
+    }
+
+    private <T> T withClients(OssClient source, OssClient target, java.util.concurrent.Callable<T> action) {
+        try (MockedStatic<OssFactory> factory = mockStatic(OssFactory.class)) {
+            factory.when(() -> OssFactory.instance(PRIVATE_ROUTE)).thenReturn(source);
+            factory.when(() -> OssFactory.instance(PUBLIC_ROUTE)).thenReturn(target);
+            try {
+                return action.call();
+            } catch (RuntimeException runtime) {
+                throw runtime;
+            } catch (Exception checked) {
+                throw new IllegalStateException("owned migration action failed", checked);
+            }
         }
     }
 
@@ -158,8 +495,8 @@ class OssStorageMigrationIntegrationTest {
         assertThat(scalar(dataSource, "select count(*) from sys_oss_ref where oss_id=101")).isEqualTo("1");
         assertThat(scalar(dataSource, "select status from sys_oss_migration_item where oss_id=101"))
             .isEqualTo(OssMigrationStatus.CLEANUP_ELIGIBLE.name());
-        assertThat(scalar(dataSource, "select version from sys_oss_migration_item where oss_id=101"))
-            .isEqualTo("1");
+        assertThat(Integer.parseInt(scalar(dataSource,
+            "select version from sys_oss_migration_item where oss_id=101"))).isPositive();
         assertThat(privateClient.headObject(key).size()).isEqualTo(publicClient.headObject(key).size());
         assertThat(rawGet(http, endpoint, privateBucket, key)).isEqualTo(403);
         assertThat(rawGet(http, endpoint, publicBucket, key)).isEqualTo(200);
@@ -184,8 +521,8 @@ class OssStorageMigrationIntegrationTest {
             OssStorageReadinessEntry.Status.SERVING, OssStorageReadinessEntry.Reason.READY, now);
     }
 
-    private SqlSessionFactory sqlSessionFactory(PooledDataSource dataSource) throws Exception {
-        Environment environment = new Environment("oss-migration-test", new JdbcTransactionFactory(), dataSource);
+    private SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+        Environment environment = new Environment("oss-migration-test", new SpringManagedTransactionFactory(), dataSource);
         MybatisConfiguration configuration = new MybatisConfiguration(environment);
         configuration.setMapUnderscoreToCamelCase(true);
         GlobalConfig globalConfig = GlobalConfigUtils.defaults();
@@ -197,20 +534,49 @@ class OssStorageMigrationIntegrationTest {
         }
         configuration.addMapper(SysOssMigrationBatchMapper.class);
         configuration.addMapper(SysOssMigrationItemMapper.class);
+        configuration.addMapper(SysOssConfigMapper.class);
         return new MybatisSqlSessionFactoryBuilder().build(configuration);
     }
 
-    private void prepareDatabase(PooledDataSource dataSource, String cleanupKey, String rollbackKey) throws Exception {
+    private OssMigrationAtomicService transactional(OssMigrationAtomicService target) {
+        ProxyFactory proxy = new ProxyFactory(target);
+        proxy.setProxyTargetClass(true);
+        proxy.addAdvisor(new DynamicDataSourceAnnotationAdvisor(
+            new DynamicLocalTransactionInterceptor(true), DSTransactional.class));
+        return (OssMigrationAtomicService) proxy.getProxy();
+    }
+
+    private void prepareDatabase(PooledDataSource dataSource, String cleanupKey, String rollbackKey,
+                                 String privateBucket, String publicBucket) throws Exception {
         dropTables(dataSource);
         for (String table : List.of("sys_oss_config", "sys_oss", "sys_oss_ref")) {
             executeBlock(dataSource, SqlBaselineScripts.createTable(table));
         }
         executeBlock(dataSource, migrationDdlBlock());
+        execute(dataSource, "insert into sys_oss_config(oss_config_id,config_key,bucket_name,endpoint,"
+            + "access_policy,status) values "
+            + "(301,'" + PRIVATE_ROUTE + "','" + privateBucket + "','owned-minio','0','Y'),"
+            + "(302,'" + PUBLIC_ROUTE + "','" + publicBucket + "','owned-minio','2','N')");
         execute(dataSource, "insert into sys_oss(oss_id,file_name,original_name,file_suffix,url,service) values"
             + "(101,'" + cleanupKey + "','cleanup.txt','txt','private://cleanup','" + PRIVATE_ROUTE + "'),"
             + "(102,'" + rollbackKey + "','rollback.txt','txt','private://rollback','" + PRIVATE_ROUTE + "')");
         execute(dataSource, "insert into sys_oss_ref(oss_ref_id,oss_id,ref_type,ref_id) values"
             + "(201,101,'portal_asset','A-101'),(202,102,'portal_asset','A-102')");
+    }
+
+    private static SysOssConfigBo configEdit(Long id, String key, String bucket, String policy) {
+        SysOssConfigBo bo = new SysOssConfigBo();
+        bo.setOssConfigId(id);
+        bo.setConfigKey(key);
+        bo.setBucketName(bucket);
+        bo.setEndpoint("owned-minio");
+        bo.setIsHttps("N");
+        bo.setRegion("");
+        bo.setAccessPolicy(policy);
+        bo.setStatus("N");
+        bo.setAccessKey("owned-access");
+        bo.setSecretKey("owned-secret");
+        return bo;
     }
 
     private void prepareBuckets(S3Client client, String privateBucket, String publicBucket,

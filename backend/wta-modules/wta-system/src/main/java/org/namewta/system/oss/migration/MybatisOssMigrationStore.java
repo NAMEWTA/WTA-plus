@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.RequiredArgsConstructor;
 import org.namewta.system.domain.SysOss;
+import org.namewta.system.domain.SysOssConfig;
+import org.namewta.system.mapper.SysOssConfigMapper;
 import org.namewta.system.mapper.SysOssMapper;
 import org.namewta.system.oss.migration.mapper.SysOssMigrationBatchMapper;
 import org.namewta.system.oss.migration.mapper.SysOssMigrationItemMapper;
@@ -22,6 +24,38 @@ public class MybatisOssMigrationStore implements OssMigrationStore {
     private final SysOssMapper ossMapper;
     private final SysOssMigrationBatchMapper batchMapper;
     private final SysOssMigrationItemMapper itemMapper;
+    private final SysOssConfigMapper configMapper;
+
+    @Override
+    public ConfigIdentity configIdentity(String key) {
+        SysOssConfig config = configMapper.selectOne(new LambdaQueryWrapper<SysOssConfig>()
+            .eq(SysOssConfig::getConfigKey, key));
+        return identity(config);
+    }
+
+    @Override
+    public void lockMigrationConfigs(ConfigIdentity source, ConfigIdentity target) {
+        List<SysOssConfig> locked = configMapper.lockAllConfigs();
+        boolean sourceFound = false;
+        boolean targetFound = false;
+        for (SysOssConfig config : locked) {
+            if (source != null && source.equals(identity(config)) && "0".equals(config.getAccessPolicy())) {
+                sourceFound = true;
+            }
+            if (target != null && target.equals(identity(config)) && "2".equals(config.getAccessPolicy())) {
+                targetFound = true;
+            }
+        }
+        if (!sourceFound || !targetFound) {
+            throw new OssMigrationException(OssMigrationError.STORAGE_NOT_SERVING,
+                "迁移配置已变化");
+        }
+    }
+
+    private static ConfigIdentity identity(SysOssConfig config) {
+        return config == null ? null : new ConfigIdentity(config.getConfigKey(), config.getBucketName(),
+            config.getEndpoint(), config.getIsHttps(), config.getRegion(), config.getAccessPolicy());
+    }
 
     @Override
     public List<SysOss> findObjects(Collection<Long> ids) {
@@ -34,6 +68,26 @@ public class MybatisOssMigrationStore implements OssMigrationStore {
     }
 
     @Override
+    public SysOss lockObject(Long ossId) {
+        return ossMapper.selectByIdForUpdate(ossId);
+    }
+
+    @Override
+    public SysOssMigrationItem findItem(Long itemId) {
+        return itemMapper.selectById(itemId);
+    }
+
+    @Override
+    public SysOssMigrationItem lockItem(Long itemId) {
+        return itemMapper.lockItem(itemId);
+    }
+
+    @Override
+    public SysOssMigrationItem findLatest(Long ossId) {
+        return itemMapper.lockLatest(ossId);
+    }
+
+    @Override
     public SysOssMigrationBatch createBatch(String targetConfigKey, int totalCount) {
         SysOssMigrationBatch batch = new SysOssMigrationBatch();
         batch.setOssMigrationBatchId(IdWorker.getId());
@@ -41,7 +95,9 @@ public class MybatisOssMigrationStore implements OssMigrationStore {
         batch.setStatus(OssMigrationStatus.RUNNING);
         batch.setTotalCount(totalCount);
         batch.setStartedTime(Instant.now());
-        batchMapper.insert(batch);
+        if (batchMapper.insert(batch) != 1) {
+            throw new IllegalStateException("OSS migration batch insert failed");
+        }
         return batch;
     }
 
@@ -56,7 +112,9 @@ public class MybatisOssMigrationStore implements OssMigrationStore {
         item.setObjectKey(oss.getFileName());
         item.setStatus(OssMigrationStatus.PENDING);
         item.setStage(OssMigrationStage.PREFLIGHT);
-        itemMapper.insert(item);
+        if (itemMapper.insert(item) != 1) {
+            throw new IllegalStateException("OSS migration item insert failed");
+        }
         return item;
     }
 
@@ -78,13 +136,15 @@ public class MybatisOssMigrationStore implements OssMigrationStore {
     }
 
     @Override
-    public void saveItem(SysOssMigrationItem item) {
-        itemMapper.updateById(item);
+    public boolean updateItem(SysOssMigrationItem item, int expectedVersion, OssMigrationStatus expectedStatus) {
+        return itemMapper.updateState(item, expectedVersion, expectedStatus) == 1;
     }
 
     @Override
     public void saveBatch(SysOssMigrationBatch batch) {
-        batchMapper.updateById(batch);
+        if (batchMapper.updateById(batch) != 1) {
+            throw new IllegalStateException("OSS migration batch update failed");
+        }
     }
 
     @Override
@@ -99,13 +159,7 @@ public class MybatisOssMigrationStore implements OssMigrationStore {
 
     @Override
     public SysOssMigrationItem findLatestRestorable(Long ossId) {
-        if (ossId == null) {
-            return null;
-        }
-        return itemMapper.selectOne(new LambdaQueryWrapper<SysOssMigrationItem>()
-            .eq(SysOssMigrationItem::getOssId, ossId)
-            .eq(SysOssMigrationItem::getStatus, OssMigrationStatus.CLEANUP_ELIGIBLE)
-            .orderByDesc(SysOssMigrationItem::getOssMigrationItemId)
-            .last("limit 1"));
+        SysOssMigrationItem latest = ossId == null ? null : findLatest(ossId);
+        return latest != null && latest.getStatus() == OssMigrationStatus.CLEANUP_ELIGIBLE ? latest : null;
     }
 }

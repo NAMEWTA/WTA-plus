@@ -689,6 +689,15 @@ public interface OssClient extends AutoCloseable {
     boolean delete(String key);
 
     /**
+     * 有界删除默认存储桶对象。超时或中断只取消本地等待，不能证明远端未删除。
+     *
+     * @param key 对象键
+     * @param timeout 单次请求的总等待预算
+     * @return 供应商确认删除
+     */
+    boolean delete(String key, Duration timeout);
+
+    /**
      * 生成默认存储桶中文件下载的预签名 URL。
      *
      * @param key         对象键
@@ -744,6 +753,15 @@ public interface OssClient extends AutoCloseable {
      * @return 对象元数据
      */
     OssObjectStat headObject(String key);
+
+    /**
+     * 有界查询默认存储桶对象；超时只表示结果未知。
+     *
+     * @param key 对象键
+     * @param timeout 单次请求的总等待预算
+     * @return 对象元数据
+     */
+    OssObjectStat headObject(String key, Duration timeout);
 
     /**
      * 创建默认存储桶对象的 Multipart Upload。

@@ -20,25 +20,28 @@ public class OssStorageMigrationService {
     private final OssStorageReadinessRegistry readinessRegistry;
     private final OssStorageMigrationProperties properties;
     private final Clock clock;
+    private final OssMigrationAtomicService atomic;
 
     @Autowired
     public OssStorageMigrationService(OssMigrationStore store, OssMigrationObjectStore objectStore,
                                       OssMigrationAccessVerifier accessVerifier,
                                       OssStorageReadinessRegistry readinessRegistry,
-                                      OssStorageMigrationProperties properties) {
-        this(store, objectStore, accessVerifier, readinessRegistry, properties, Clock.systemUTC());
+                                      OssStorageMigrationProperties properties, OssMigrationAtomicService atomic) {
+        this(store, objectStore, accessVerifier, readinessRegistry, properties, Clock.systemUTC(), atomic);
     }
 
     public OssStorageMigrationService(OssMigrationStore store, OssMigrationObjectStore objectStore,
                                       OssMigrationAccessVerifier accessVerifier,
                                       OssStorageReadinessRegistry readinessRegistry,
-                                      OssStorageMigrationProperties properties, Clock clock) {
+                                      OssStorageMigrationProperties properties, Clock clock,
+                                      OssMigrationAtomicService atomic) {
         this.store = store;
         this.objectStore = objectStore;
         this.accessVerifier = accessVerifier;
         this.readinessRegistry = readinessRegistry;
         this.properties = properties;
         this.clock = clock;
+        this.atomic = atomic;
     }
 
     public long publish(Long ossId, String targetConfigKey) {
@@ -53,20 +56,10 @@ public class OssStorageMigrationService {
         if (item == null) {
             throw new OssMigrationException(OssMigrationError.INVALID_STATE, "没有可恢复的公开工单");
         }
-        if (!objectStore.exists(item.getSourceConfigKey(), item.getObjectKey())) {
+        if (!objectStore.exists(item.getSourceConfigKey(), item.getObjectKey(), properties.getIoTimeout())) {
             throw new OssMigrationException(OssMigrationError.OBJECT_NOT_FOUND, "来源对象已不存在，不能恢复");
         }
-        SysOss oss = store.findObject(ossId);
-        if (oss == null || !Objects.equals(oss.getService(), item.getTargetConfigKey())) {
-            throw new OssMigrationException(OssMigrationError.SERVICE_DRIFT, "对象已不在公开配置上");
-        }
-        if (!store.compareAndSetService(ossId, item.getTargetConfigKey(), item.getSourceConfigKey())) {
-            throw new OssMigrationException(OssMigrationError.SERVICE_DRIFT, "对象存储指针已变化");
-        }
-        item.setStage(OssMigrationStage.ROLLED_BACK);
-        item.setStatus(OssMigrationStatus.ROLLED_BACK);
-        item.setErrorMessage(null);
-        store.saveItem(item);
+        atomic.restore(item.getOssMigrationItemId(), item.getVersion());
         refreshBatch(requireBatch(item.getOssMigrationBatchId()));
     }
 
@@ -118,6 +111,12 @@ public class OssStorageMigrationService {
     }
 
     public long start(MigrationRequest request) {
+        List<Long> ids = validateRequest(request);
+        Map<Long, OssMigrationStore.ConfigIdentity> sources = new HashMap<>();
+        for (SysOss object : store.findObjects(ids)) {
+            sources.put(object.getOssId(), store.configIdentity(object.getService()));
+        }
+        OssMigrationStore.ConfigIdentity target = store.configIdentity(request.targetConfigKey());
         DryRunReport report = dryRun(request);
         if (!report.ready()) {
             throw new OssMigrationException(OssMigrationError.INVALID_REQUEST, "迁移预检未通过");
@@ -127,8 +126,8 @@ public class OssStorageMigrationService {
             .forEach(oss -> objects.put(oss.getOssId(), oss));
         SysOssMigrationBatch batch = store.createBatch(request.targetConfigKey(), report.items().size());
         for (PreflightItem result : report.items()) {
-            SysOssMigrationItem item = store.createItem(batch.getOssMigrationBatchId(),
-                objects.get(result.ossId()), request.targetConfigKey());
+            SysOssMigrationItem item = atomic.createItem(batch.getOssMigrationBatchId(), result.ossId(),
+                sources.get(result.ossId()), target);
             process(item);
         }
         refreshBatch(batch);
@@ -149,7 +148,6 @@ public class OssStorageMigrationService {
         for (SysOssMigrationItem item : store.listItems(batchId)) {
             if (item.getStatus() == OssMigrationStatus.FAILED
                 && item.getLastErrorStage() != OssMigrationStage.COMPLETED) {
-                item.setRetryCount(item.getRetryCount() + 1);
                 process(item);
             }
         }
@@ -162,21 +160,13 @@ public class OssStorageMigrationService {
             if (item.getStatus().terminal()) {
                 continue;
             }
-            if (!objectStore.exists(item.getSourceConfigKey(), item.getObjectKey())) {
-                fail(item, OssMigrationStage.ROLLED_BACK, OssMigrationError.OBJECT_NOT_FOUND);
-                continue;
+            if (OssMigrationAtomicService.unresolved(item)) {
+                throw new OssMigrationException(OssMigrationError.INVALID_STATE, "来源删除结果未确认，不能恢复");
             }
-            SysOss oss = store.findObject(item.getOssId());
-            if (oss != null && Objects.equals(oss.getService(), item.getTargetConfigKey())
-                && !store.compareAndSetService(item.getOssId(), item.getTargetConfigKey(),
-                item.getSourceConfigKey())) {
-                fail(item, OssMigrationStage.ROLLED_BACK, OssMigrationError.SERVICE_DRIFT);
-                continue;
+            if (!objectStore.exists(item.getSourceConfigKey(), item.getObjectKey(), properties.getIoTimeout())) {
+                throw new OssMigrationException(OssMigrationError.OBJECT_NOT_FOUND, "来源对象已不存在，不能恢复");
             }
-            item.setStage(OssMigrationStage.ROLLED_BACK);
-            item.setStatus(OssMigrationStatus.ROLLED_BACK);
-            item.setErrorMessage(null);
-            store.saveItem(item);
+            atomic.restore(item.getOssMigrationItemId(), item.getVersion());
         }
         refreshBatch(batch);
     }
@@ -187,110 +177,98 @@ public class OssStorageMigrationService {
         }
         SysOssMigrationBatch batch = requireBatch(batchId);
         List<SysOssMigrationItem> items = store.listItems(batchId);
-        Instant now = clock.instant();
         if (items.stream().anyMatch(item -> item.getStatus() != OssMigrationStatus.CLEANUP_ELIGIBLE
             && item.getStatus() != OssMigrationStatus.COMPLETED
-            && !(item.getStatus() == OssMigrationStatus.FAILED
-            && item.getLastErrorStage() == OssMigrationStage.COMPLETED))) {
+            && !OssMigrationAtomicService.unresolved(item))) {
             throw new OssMigrationException(OssMigrationError.INVALID_STATE, "批次尚不可清理");
         }
-        if (items.stream().filter(item -> item.getStatus() != OssMigrationStatus.COMPLETED)
-            .anyMatch(item -> item.getCleanupEligibleTime() == null
-            || now.isBefore(item.getCleanupEligibleTime()))) {
-            throw new OssMigrationException(OssMigrationError.CLEANUP_WINDOW_OPEN, "源对象清理安全窗口尚未结束");
-        }
-        for (SysOssMigrationItem item : items) {
-            if (item.getStatus() == OssMigrationStatus.COMPLETED) {
-                continue;
+        try {
+            for (SysOssMigrationItem item : items) {
+                if (item.getStatus() == OssMigrationStatus.COMPLETED) {
+                    continue;
+                }
+                OssMigrationAtomicService.Reservation reservation;
+                if (OssMigrationAtomicService.unresolved(item)) {
+                    reservation = OssMigrationAtomicService.reservation(item);
+                    reconcile(reservation);
+                } else {
+                    // 只有数据库已确认持久化执行权之后，才允许进入不可撤销的远端 DELETE。
+                    reservation = atomic.reserveCleanup(item.getOssMigrationItemId(), clock.instant());
+                    try {
+                        objectStore.delete(reservation.source(), reservation.key(), properties.getIoTimeout());
+                    } catch (RuntimeException ex) {
+                        throw new OssMigrationException(OssMigrationError.CLEANUP_FAILED,
+                            "来源清理结果未知，请核对来源后重试", ex);
+                    }
+                    reconcile(reservation);
+                }
             }
+        } catch (RuntimeException failure) {
             try {
-                objectStore.delete(item.getSourceConfigKey(), item.getObjectKey());
-                item.setCleanedTime(now);
-                item.setStage(OssMigrationStage.COMPLETED);
-                item.setStatus(OssMigrationStatus.COMPLETED);
-                item.setLastErrorStage(null);
-                item.setErrorMessage(null);
-                store.saveItem(item);
-            } catch (RuntimeException ex) {
-                fail(item, OssMigrationStage.COMPLETED, OssMigrationError.CLEANUP_FAILED);
-                throw new OssMigrationException(OssMigrationError.CLEANUP_FAILED, "源对象清理失败", ex);
+                refreshBatch(batch);
+            } catch (RuntimeException refreshFailure) {
+                if (refreshFailure != failure) failure.addSuppressed(refreshFailure);
             }
+            throw failure;
         }
         refreshBatch(batch);
     }
 
-    private void process(SysOssMigrationItem item) {
-        int version = item.getVersion() == null ? 0 : item.getVersion();
-        if (!store.claim(item.getOssMigrationItemId(), version)) {
-            return;
-        }
-        item.setVersion(version + 1);
+    private void reconcile(OssMigrationAtomicService.Reservation reservation) {
         try {
-            item.setStage(OssMigrationStage.COPIED);
-            store.saveItem(item);
-            OssMigrationObjectStore.Transfer transfer = objectStore.transferAndVerify(item.getSourceConfigKey(),
-                item.getTargetConfigKey(), item.getObjectKey(), properties.getMaxVerifyBytes());
-            item.setSourceSize(transfer.sourceSize());
-            item.setTargetSize(transfer.targetSize());
-            item.setSourceEtag(transfer.sourceEtag());
-            item.setTargetEtag(transfer.targetEtag());
-            item.setStage(OssMigrationStage.CONTENT_VERIFIED);
-            store.saveItem(item);
-
-            SysOss current = store.findObject(item.getOssId());
-            if (current == null) {
-                throw new StageFailure(OssMigrationStage.SERVICE_SWITCHED, OssMigrationError.OBJECT_NOT_FOUND);
+            if (objectStore.exists(reservation.source(), reservation.key(), properties.getIoTimeout())) {
+                throw new OssMigrationException(OssMigrationError.CLEANUP_FAILED,
+                    "来源对象仍存在，不能重发删除");
             }
-            if (Objects.equals(current.getService(), item.getSourceConfigKey())) {
-                if (!store.compareAndSetService(item.getOssId(), item.getSourceConfigKey(),
-                    item.getTargetConfigKey())) {
-                    throw new StageFailure(OssMigrationStage.SERVICE_SWITCHED, OssMigrationError.SERVICE_DRIFT);
-                }
-                item.setServiceSwitchedTime(clock.instant());
-            } else if (!Objects.equals(current.getService(), item.getTargetConfigKey())) {
-                throw new StageFailure(OssMigrationStage.SERVICE_SWITCHED, OssMigrationError.SERVICE_DRIFT);
+            if (!objectStore.exists(reservation.target(), reservation.key(), properties.getIoTimeout())) {
+                throw new OssMigrationException(OssMigrationError.CLEANUP_FAILED,
+                    "目标对象不可确认，不能完成清理");
             }
-            item.setStage(OssMigrationStage.SERVICE_SWITCHED);
-            store.saveItem(item);
-
-            try {
-                accessVerifier.verifyPublic(item.getOssId());
-            } catch (RuntimeException ex) {
-                boolean restored = store.compareAndSetService(item.getOssId(), item.getTargetConfigKey(),
-                    item.getSourceConfigKey());
-                SysOss restoredObject = store.findObject(item.getOssId());
-                if (!restored && (restoredObject == null
-                    || !Objects.equals(restoredObject.getService(), item.getSourceConfigKey()))) {
-                    throw new StageFailure(OssMigrationStage.ACCESS_VERIFIED, OssMigrationError.SERVICE_DRIFT);
-                }
-                throw new StageFailure(OssMigrationStage.ACCESS_VERIFIED,
-                    OssMigrationError.ACCESS_VERIFICATION_FAILED);
-            }
-            item.setStage(OssMigrationStage.ACCESS_VERIFIED);
-            store.saveItem(item);
-            item.setStage(OssMigrationStage.CLEANUP_ELIGIBLE);
-            item.setStatus(OssMigrationStatus.CLEANUP_ELIGIBLE);
-            item.setCleanupEligibleTime(clock.instant().plus(properties.getCleanupDelay()));
-            item.setLastErrorStage(null);
-            item.setErrorMessage(null);
-            store.saveItem(item);
-        } catch (StageFailure failure) {
-            fail(item, failure.stage, failure.error);
         } catch (OssMigrationException ex) {
-            OssMigrationStage failedStage = ex.error() == OssMigrationError.CONTENT_MISMATCH
-                ? OssMigrationStage.CONTENT_VERIFIED : item.getStage();
-            fail(item, failedStage, ex.error());
+            throw ex;
         } catch (RuntimeException ex) {
-            fail(item, item.getStage() == null ? OssMigrationStage.COPIED : item.getStage(),
-                OssMigrationError.COPY_FAILED);
+            throw new OssMigrationException(OssMigrationError.CLEANUP_FAILED,
+                "来源或目标状态未知，请人工核对", ex);
         }
+        atomic.finalizeCleanup(reservation);
     }
 
-    private void fail(SysOssMigrationItem item, OssMigrationStage stage, OssMigrationError error) {
-        item.setStatus(OssMigrationStatus.FAILED);
-        item.setLastErrorStage(stage);
-        item.setErrorMessage(error.name());
-        store.saveItem(item);
+    private void process(SysOssMigrationItem item) {
+        item = atomic.claim(item.getOssMigrationItemId(), item.getVersion());
+        item = atomic.copied(item.getOssMigrationItemId(), item.getVersion());
+        OssMigrationObjectStore.Transfer transfer;
+        try {
+            transfer = objectStore.transferAndVerify(item.getSourceConfigKey(),
+                item.getTargetConfigKey(), item.getObjectKey(), properties.getMaxVerifyBytes());
+        } catch (OssMigrationException ex) {
+            OssMigrationStage stage = ex.error() == OssMigrationError.CONTENT_MISMATCH
+                ? OssMigrationStage.CONTENT_VERIFIED : OssMigrationStage.COPIED;
+            atomic.fail(item.getOssMigrationItemId(), item.getVersion(), stage, ex.error(), false);
+            return;
+        } catch (RuntimeException ex) {
+            atomic.fail(item.getOssMigrationItemId(), item.getVersion(), OssMigrationStage.COPIED,
+                OssMigrationError.COPY_FAILED, false);
+            return;
+        }
+        item = atomic.verified(item.getOssMigrationItemId(), item.getVersion(), transfer);
+        try {
+            item = atomic.switchToTarget(item.getOssMigrationItemId(), item.getVersion());
+        } catch (OssMigrationException ex) {
+            if (ex.error() != OssMigrationError.SERVICE_DRIFT
+                && ex.error() != OssMigrationError.OBJECT_NOT_FOUND) throw ex;
+            atomic.fail(item.getOssMigrationItemId(), item.getVersion(), OssMigrationStage.SERVICE_SWITCHED,
+                ex.error(), false);
+            return;
+        }
+        try {
+            accessVerifier.verifyPublic(item.getOssId());
+        } catch (RuntimeException ex) {
+            atomic.fail(item.getOssMigrationItemId(), item.getVersion(), OssMigrationStage.ACCESS_VERIFIED,
+                OssMigrationError.ACCESS_VERIFICATION_FAILED, true);
+            return;
+        }
+        atomic.accessVerified(item.getOssMigrationItemId(), item.getVersion(),
+            clock.instant().plus(properties.getCleanupDelay()));
     }
 
     private void refreshBatch(SysOssMigrationBatch batch) {
@@ -344,13 +322,4 @@ public class OssStorageMigrationService {
             item.getLastErrorStage(), item.getErrorMessage(), item.getCleanupEligibleTime());
     }
 
-    private static final class StageFailure extends RuntimeException {
-        private final OssMigrationStage stage;
-        private final OssMigrationError error;
-
-        private StageFailure(OssMigrationStage stage, OssMigrationError error) {
-            this.stage = stage;
-            this.error = error;
-        }
-    }
 }

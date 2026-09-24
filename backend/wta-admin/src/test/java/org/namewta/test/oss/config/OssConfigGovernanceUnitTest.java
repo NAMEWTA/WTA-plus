@@ -82,13 +82,13 @@ public class OssConfigGovernanceUnitTest {
         SysOssConfigBo edit = bo(11L, "private-main", "bucket-public", "0", "N");
         assertThatThrownBy(() -> service.updateByBo(edit))
             .isInstanceOf(ServiceException.class)
-            .hasMessageContaining("不能通过普通编辑修改");
+            .hasMessageContaining("不能修改物理存储身份");
 
         verify(mapper, never()).updateById(any(SysOssConfig.class));
     }
 
     @Test
-    void referencedConfigCanRotateEndpointAndPreservesOmittedSecret() {
+    void referencedConfigFreezesEndpointButAllowsCredentialRotation() {
         SysOssConfigMapper mapper = mock(SysOssConfigMapper.class);
         SysOssConfigServiceImpl service = new SysOssConfigServiceImpl(mapper);
         SysOssConfig old = config(11L, "private-main", "bucket-private", "0", "N");
@@ -96,7 +96,7 @@ public class OssConfigGovernanceUnitTest {
         old.setEndpoint("old.example.test");
         SysOssConfig persisted = config(11L, "private-main", "bucket-private", "0", "N");
         persisted.setSecretKey("existing-secret");
-        persisted.setEndpoint("new.example.test");
+        persisted.setEndpoint("old.example.test");
         when(mapper.selectByIdForUpdate(11L)).thenReturn(old);
         when(mapper.countConfigKeyConflicts("private-main", 11L)).thenReturn(0L);
         when(mapper.countDefaultConfigs()).thenReturn(1L);
@@ -106,6 +106,13 @@ public class OssConfigGovernanceUnitTest {
         SysOssConfigBo edit = bo(11L, "private-main", "bucket-private", "0", "N");
         edit.setSecretKey(null);
         edit.setEndpoint("new.example.test");
+        assertThatThrownBy(() -> service.updateByBo(edit))
+            .isInstanceOf(ServiceException.class)
+            .hasMessageContaining("不能修改物理存储身份");
+        verify(mapper, never()).updateById(any(SysOssConfig.class));
+
+        edit.setEndpoint("old.example.test");
+        edit.setAccessKey("rotated-access-key");
         List<Object> events = new ArrayList<>();
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.registerBean(JsonMapper.class, () -> JsonMapper.builder().build());
@@ -118,7 +125,8 @@ public class OssConfigGovernanceUnitTest {
         ArgumentCaptor<SysOssConfig> saved = ArgumentCaptor.forClass(SysOssConfig.class);
         verify(mapper).updateById(saved.capture());
         assertThat(saved.getValue().getSecretKey()).isEqualTo("existing-secret");
-        assertThat(saved.getValue().getEndpoint()).isEqualTo("new.example.test");
+        assertThat(saved.getValue().getEndpoint()).isEqualTo("old.example.test");
+        assertThat(saved.getValue().getAccessKey()).isEqualTo("rotated-access-key");
         assertThat(saved.getValue().getBucketName()).isEqualTo("bucket-private");
         assertThat(events).anySatisfy(event -> {
             assertThat(event).isInstanceOf(PayloadApplicationEvent.class);

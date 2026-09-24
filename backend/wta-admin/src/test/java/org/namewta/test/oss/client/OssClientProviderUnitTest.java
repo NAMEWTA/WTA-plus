@@ -25,6 +25,8 @@ import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
 import software.amazon.awssdk.services.s3.model.CopyObjectResponse;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.ListPartsRequest;
@@ -32,6 +34,7 @@ import software.amazon.awssdk.services.s3.model.ListPartsResponse;
 import software.amazon.awssdk.services.s3.model.Part;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -190,6 +193,25 @@ class OssClientProviderUnitTest {
                 () -> client.headObject("missing.txt")
             );
             assertEquals(OssErrorCode.OBJECT_NOT_FOUND, notFound.code());
+        }
+    }
+
+    @Test
+    void boundedMigrationHeadAndDeleteCancelTheirOwnUnfinishedRequests() throws Exception {
+        try (TestOssClient client = new TestOssClient(clientConfig())) {
+            CompletableFuture<HeadObjectResponse> hangingHead = new CompletableFuture<>();
+            CompletableFuture<DeleteObjectResponse> hangingDelete = new CompletableFuture<>();
+            when(client.provider().headObject(any(HeadObjectRequest.class))).thenReturn(hangingHead);
+            when(client.provider().deleteObject(any(DeleteObjectRequest.class))).thenReturn(hangingDelete);
+
+            assertThrows(S3StorageException.class,
+                () -> client.headObject("source.txt", Duration.ofMillis(30)));
+            assertTrue(hangingHead.isCancelled());
+            assertThrows(S3StorageException.class,
+                () -> client.delete("source.txt", Duration.ofMillis(30)));
+            assertTrue(hangingDelete.isCancelled());
+            verify(client.provider()).headObject(any(HeadObjectRequest.class));
+            verify(client.provider()).deleteObject(any(DeleteObjectRequest.class));
         }
     }
 

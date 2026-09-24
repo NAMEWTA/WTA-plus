@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.HexFormat;
 import java.util.Map;
 import java.util.Optional;
@@ -66,8 +67,24 @@ public class DefaultOssMigrationObjectStore implements OssMigrationObjectStore {
     }
 
     @Override
+    public boolean exists(String service, String objectKey, Duration timeout) {
+        try {
+            OssFactory.instance(service).headObject(objectKey, timeout);
+            return true;
+        } catch (S3StorageException ex) {
+            if (ex.code() == OssErrorCode.OBJECT_NOT_FOUND) return false;
+            throw ex;
+        }
+    }
+
+    @Override
     public void delete(String service, String objectKey) {
         OssFactory.instance(service).delete(objectKey);
+    }
+
+    @Override
+    public void delete(String service, String objectKey, Duration timeout) {
+        OssFactory.instance(service).delete(objectKey, timeout);
     }
 
     private OssClient client(String service, AccessPolicy expected) {

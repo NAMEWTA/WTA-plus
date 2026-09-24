@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -138,6 +139,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
     @Override
     @DSTransactional
     public Boolean insertByBo(SysOssConfigBo bo) {
+        ossConfigMapper.lockAllConfigs();
         SysOssConfig config = BeanUtil.toBean(bo, SysOssConfig.class);
         normalizeNewConfig(config);
         validEntityBeforeSave(config);
@@ -164,6 +166,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
     @Override
     @DSTransactional
     public Boolean updateByBo(SysOssConfigBo bo) {
+        ossConfigMapper.lockAllConfigs();
         SysOssConfig config = BeanUtil.toBean(bo, SysOssConfig.class);
         if (ObjectUtil.isNull(config.getOssConfigId())) {
             throw new ServiceException("OSS配置主键不能为空");
@@ -221,13 +224,17 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
         if (CollUtil.isEmpty(ids)) {
             throw new ServiceException("OSS配置主键不能为空");
         }
+        if (ids.stream().anyMatch(Objects::isNull)) {
+            throw new ServiceException("OSS配置主键不能为空");
+        }
         if (isValid) {
             if (CollUtil.containsAny(ids, OssConstant.SYSTEM_DATA_IDS)) {
                 throw new ServiceException("系统内置, 不可删除!");
             }
         }
+        ossConfigMapper.lockAllConfigs();
         List<SysOssConfig> list = CollUtil.newArrayList();
-        for (Long configId : ids) {
+        for (Long configId : ids.stream().sorted().toList()) {
             SysOssConfig config = ossConfigMapper.selectByIdForUpdate(configId);
             if (ObjectUtil.isNull(config)) {
                 throw new ServiceException("OSS配置不存在");
@@ -274,6 +281,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
         if (ObjectUtil.isNull(bo.getOssConfigId())) {
             throw new ServiceException("OSS配置主键不能为空");
         }
+        ossConfigMapper.lockAllConfigs();
         SysOssConfig config = ossConfigMapper.selectByIdForUpdate(bo.getOssConfigId());
         if (ObjectUtil.isNull(config)) {
             throw new ServiceException("OSS配置不存在");
@@ -356,8 +364,11 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
         }
         if (!StringUtils.equals(oldConfig.getConfigKey(), config.getConfigKey())
             || !StringUtils.equals(oldConfig.getBucketName(), config.getBucketName())
-            || !StringUtils.equals(oldConfig.getAccessPolicy(), config.getAccessPolicy())) {
-            throw new ServiceException("OSS配置已被对象引用，不能通过普通编辑修改configKey、Bucket或桶权限");
+            || !StringUtils.equals(oldConfig.getAccessPolicy(), config.getAccessPolicy())
+            || !StringUtils.equals(oldConfig.getEndpoint(), config.getEndpoint())
+            || !StringUtils.equals(oldConfig.getIsHttps(), config.getIsHttps())
+            || !StringUtils.equals(oldConfig.getRegion(), config.getRegion())) {
+            throw new ServiceException("OSS配置已被对象或迁移工单引用，不能修改物理存储身份");
         }
     }
 
