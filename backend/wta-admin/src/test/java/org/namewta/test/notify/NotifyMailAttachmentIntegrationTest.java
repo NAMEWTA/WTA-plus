@@ -25,6 +25,8 @@ import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import org.namewta.common.notify.attachment.NotifyAttachmentSnapshotService;
 import org.namewta.common.notify.core.NotifyClient;
 import org.namewta.common.notify.model.NotifyContext;
+import org.namewta.common.notify.spi.NotifyContextResolver;
+import org.namewta.common.notify.idempotency.NotifyIdempotencyStore;
 import org.namewta.common.oss.factory.OssFactory;
 import org.namewta.common.satoken.utils.LoginHelper;
 import org.namewta.notify.adapter.worker.NotifyOutboxWorker;
@@ -47,6 +49,7 @@ import org.namewta.notify.service.runtime.NotifyAttachmentSnapshotTransactions;
 import org.namewta.system.api.OssService;
 import org.namewta.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -112,6 +115,8 @@ class NotifyMailAttachmentIntegrationTest {
     @Autowired private NotifyOutboxClaimPort claimPort;
     @Autowired private NotifyDispatchPort dispatchPort;
     @Autowired private NotifyClient notifyClient;
+    @Autowired private NotifyContextResolver contextResolver;
+    @Autowired private ObjectProvider<NotifyIdempotencyStore> idempotencyStore;
     @Autowired private NotifyAttachmentSnapshotService snapshotService;
     @Autowired private OssService ossService;
     @Autowired private NotifyAttachmentSnapshotTransactions snapshotTransactions;
@@ -188,6 +193,7 @@ class NotifyMailAttachmentIntegrationTest {
         wakeSubscriber.destroy();
         assertThat(notifications).isNotNull();
         assertThat(notifyClient).isNotNull();
+        assertThat(idempotencyStore.getIfAvailable()).as("完整应用必须装配生产 Redis 幂等存储").isNotNull();
         assertThat(snapshotService).isNotNull();
         assertThat(ossService).isNotNull();
         assertThat(snapshotTransactions).isNotNull();
@@ -857,6 +863,9 @@ class NotifyMailAttachmentIntegrationTest {
         assertThat(authenticated).isNotNull();
         assertThat(authenticated.getUserId()).isEqualTo(USER);
         assertThat(authenticated.getClientPk()).isEqualTo(CLIENT);
+        NotifyContext auditContext = contextResolver.resolve();
+        assertThat(auditContext.userId()).as("真实请求审计保留已认证用户").isEqualTo(USER);
+        assertThat(auditContext.clientPk()).as("真实请求审计保留已认证Client").isEqualTo(CLIENT);
     }
 
     private void restoreRequestContext(RequestAttributes previous, SaTokenContextModelBox previousSa) {
