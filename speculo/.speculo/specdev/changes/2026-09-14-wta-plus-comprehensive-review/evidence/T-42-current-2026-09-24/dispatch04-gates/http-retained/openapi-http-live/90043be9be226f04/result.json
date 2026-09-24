@@ -1,0 +1,141 @@
+{
+  "gate": "T-42 full-JAR OpenAPI and HTTP attachment contract",
+  "run_id": "90043be9be226f04",
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-24T07:44:50.694645+00:00",
+  "source_before": {
+    "head": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+    "tree": "b518062e41cdd42b9be37b53cb6ea110d61d1a40",
+    "clean": true
+  },
+  "artifact_before": {
+    "path": "backend/wta-admin/target/wta-admin.jar",
+    "sha256": "d67d1a5dfbfa95655ed3450fb51302ba3f9462853a9474c2c13aead78357b54a",
+    "size_bytes": 214271787
+  },
+  "owned": {
+    "mysql_container_id": "6ffccc25d72a1d8a0b7212842db7091a6a3a4a7690ad4c7c745752f76d1af007",
+    "redis_container_id": "707af67fe797f98563e54d13ae8641b25382a7d9ba104a70a699d66d17027048",
+    "minio_container_id": "af80623889adab5b671abc593720dc3208d0c9e6f9f3a72dc64a6de54781f8d3",
+    "loopback_ports": {
+      "mysql": 33029,
+      "redis": 33030,
+      "minio": 33031,
+      "s3_proxy": 37261,
+      "backend": 43611
+    },
+    "database_counts": {
+      "business_tables": 104,
+      "claimable_outboxes": 0,
+      "all_outboxes": 0,
+      "accepted_sms": 0,
+      "all_external_deliveries": 0,
+      "enabled_external_accounts": 0,
+      "private_default_oss": 1
+    },
+    "s3_request_baseline": 0,
+    "backend_pgid": 2615009,
+    "startup_s3_calls": 0,
+    "s3_total": {
+      "arrivals": 0,
+      "safe_facts": []
+    },
+    "captured_anonymous_volume_names": [
+      "01a71883ba40bf6f88a170cf003295e94a83ba5e7aeb4f127dce8574b23a7fc3",
+      "c90887218f3d31ebd0c67cf8ca9419028a941bc58a0d30f4d9542a1d70d840d0"
+    ]
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 2615009,
+      "live_members": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "01a71883ba40bf6f88a170cf003295e94a83ba5e7aeb4f127dce8574b23a7fc3": true,
+      "c90887218f3d31ebd0c67cf8ca9419028a941bc58a0d30f4d9542a1d70d840d0": true
+    },
+    "loopback_ports_closed": {
+      "33029": true,
+      "33030": true,
+      "33031": true,
+      "37261": true,
+      "43611": true
+    },
+    "errors": []
+  },
+  "helper_sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e",
+  "package_proof_sha256": "2158c6feac3fcc27798c4640a295764c7100687a4c68781955da02b16f6f87d2",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "baseline_revision": "0c1c94bf47083a6b7a3620c9494ee23bd629321ac7d8c3d7963f8c840343a477",
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "98570ed734d38f4b29ccdc6ba4b4c5db58c4c48942c98251c9823758ee506db7",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "b87610b0ca02319e5aa02daee585b6c4309b74f9c588af1c49564df6d4ed76c6",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init_exit_code": 0,
+  "java_command_redacted": [
+    "java",
+    "-Xms256m",
+    "-Xmx1024m",
+    "-Duser.home=/tmp/wta-t42/openapi-http-live/90043be9be226f04",
+    "-Djava.io.tmpdir=/tmp/wta-t42/openapi-http-live/90043be9be226f04/tmp",
+    "-jar",
+    "/srv/WTA-plus/backend/wta-admin/target/wta-admin.jar",
+    "--spring.profiles.active=prod",
+    "--spring.config.additional-location=file:/tmp/wta-t42/openapi-http-live/90043be9be226f04/owned.yml"
+  ],
+  "openapi_raw": {
+    "http_status": 200,
+    "content_type": "application/json",
+    "bytes": 512478,
+    "raw_sha256": "076dc279ef076a7ee03361c40dff466976b3a4be6fb6bf24f4abfa57cc33b249",
+    "source_path": "/tmp/wta-t42/openapi-http-live/90043be9be226f04/source.json"
+  },
+  "openapi": {
+    "openapi": "3.1.0",
+    "paths": 438,
+    "schemas": 450,
+    "baseline_paths": 438,
+    "baseline_schemas": 450,
+    "missing_paths": 0,
+    "missing_operations": 0,
+    "missing_schemas": 0,
+    "queued_count_type": "integer",
+    "attachment_item_type": "string",
+    "attachment_item_format": null,
+    "attachment_required": false,
+    "priority_required": true,
+    "sse_operations": {
+      "/resource/message": "get",
+      "/resource/message/close": "get"
+    }
+  },
+  "error": {
+    "type": "RuntimeError",
+    "phase": "http_contract"
+  },
+  "source_after": {
+    "head": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+    "tree": "b518062e41cdd42b9be37b53cb6ea110d61d1a40",
+    "clean": true
+  },
+  "artifact_after_sha256": "d67d1a5dfbfa95655ed3450fb51302ba3f9462853a9474c2c13aead78357b54a",
+  "helper_after_sha256": "d068610f75a9c65cabf77d69d230884b33edd9c9f3d64c73c73296655066c31e",
+  "finished_utc": "2026-09-24T07:45:37.633775+00:00"
+}

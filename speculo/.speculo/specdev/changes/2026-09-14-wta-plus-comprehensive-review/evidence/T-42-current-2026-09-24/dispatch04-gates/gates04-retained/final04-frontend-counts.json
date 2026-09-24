@@ -1,0 +1,166 @@
+{
+  "source_head": "73c28e751f6276e45b0488ab5d8eacbf9f0c77fb",
+  "command_exit_code": 0,
+  "vitest_passed": 663,
+  "node_tests": 108,
+  "vitest": [
+    {
+      "package": "packages/platform/contracts",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "packages/platform/validation",
+      "passed": 3,
+      "total": 3
+    },
+    {
+      "package": "packages/platform/permission",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "package": "apps/sso-web",
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "package": "packages/web-kit/rich-text",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "package": "packages/adapters/storage-browser",
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "package": "packages/adapters/oss-upload-browser",
+      "passed": 8,
+      "total": 8
+    },
+    {
+      "package": "packages/platform/auth",
+      "passed": 18,
+      "total": 18
+    },
+    {
+      "package": "packages/platform/app-runtime",
+      "passed": 23,
+      "total": 23
+    },
+    {
+      "package": "packages/platform/http",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-kit/file-upload",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-kit/permission",
+      "passed": 16,
+      "total": 16
+    },
+    {
+      "package": "packages/domains/demo",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "package": "packages/domains/admin",
+      "passed": 63,
+      "total": 63
+    },
+    {
+      "package": "packages/domains/notify",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/adapters/axios-browser",
+      "passed": 46,
+      "total": 46
+    },
+    {
+      "package": "packages/domains/profile",
+      "passed": 22,
+      "total": 22
+    },
+    {
+      "package": "packages/domains/third",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "packages/domains/system",
+      "passed": 97,
+      "total": 97
+    },
+    {
+      "package": "packages/domains/workflow",
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "package": "packages/web-domains/demo",
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "package": "packages/web-domains/admin",
+      "passed": 6,
+      "total": 6
+    },
+    {
+      "package": "packages/web-domains/notify",
+      "passed": 25,
+      "total": 25
+    },
+    {
+      "package": "packages/web-domains/profile",
+      "passed": 36,
+      "total": 36
+    },
+    {
+      "package": "packages/web-domains/third",
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "package": "packages/web-domains/system",
+      "passed": 81,
+      "total": 81
+    },
+    {
+      "package": "apps/home-web",
+      "passed": 15,
+      "total": 15
+    },
+    {
+      "package": "packages/web-domains/workflow",
+      "passed": 59,
+      "total": 59
+    },
+    {
+      "package": "apps/admin-web",
+      "passed": 81,
+      "total": 81
+    }
+  ],
+  "node": [
+    {
+      "package": "tooling/openapi",
+      "tests": 7
+    },
+    {
+      "package": "tooling/architecture",
+      "tests": 101
+    }
+  ],
+  "log_sha256": "cde2126523a6d27e66f127c43747a76f177fa6d8a5ef03d49ee72dd3ea6395a5",
+  "extra_architecture_command_tests": 101,
+  "note": "Architecture101 included in Node count; separate architecture command not added again."
+}

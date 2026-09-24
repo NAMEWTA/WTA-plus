@@ -1,0 +1,17 @@
+{
+  "source": {
+    "head": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+    "tree": "b518062e41cdd42b9be37b53cb6ea110d61d1a40",
+    "clean": true
+  },
+  "accepted_run": "2a1672a910adffea",
+  "raw_sha256": "3b7f8a6a5fc47072eadcb719d044c949f6312fbf1240ac11a5e0ebdfe5a1dda0",
+  "revision": "95e5ae4b17d69b749f17faad172a4b865d5527a9a6174e0469839205a111804e",
+  "generated_sha256": "5252f88227027d028658b378fab60ba3f26483fe8ac8d59c67c00a0654f4987a",
+  "status": [
+    " M frontend/packages/api-contracts/generated/openapi.ts",
+    " M frontend/packages/api-contracts/openapi/current.json",
+    "?? frontend/packages/api-contracts/openapi/revisions/95e5ae4b17d69b749f17faad172a4b865d5527a9a6174e0469839205a111804e/provenance.json",
+    "?? frontend/packages/api-contracts/openapi/revisions/95e5ae4b17d69b749f17faad172a4b865d5527a9a6174e0469839205a111804e/source.json"
+  ]
+}

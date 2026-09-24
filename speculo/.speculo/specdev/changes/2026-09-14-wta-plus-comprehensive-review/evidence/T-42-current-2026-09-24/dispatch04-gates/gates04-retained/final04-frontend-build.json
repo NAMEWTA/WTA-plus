@@ -1,0 +1,15 @@
+{
+  "command": [
+    "env",
+    "VITE_APP_CONTEXT_PATH=/",
+    "VITE_APP_BASE_API=/prod-api",
+    "corepack",
+    "pnpm",
+    "build:prod"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-24T07:58:07.985974+00:00",
+  "finished_at": "2026-09-24T07:59:22.654767+00:00",
+  "exit_code": 0,
+  "log": "final04-frontend-build.log"
+}

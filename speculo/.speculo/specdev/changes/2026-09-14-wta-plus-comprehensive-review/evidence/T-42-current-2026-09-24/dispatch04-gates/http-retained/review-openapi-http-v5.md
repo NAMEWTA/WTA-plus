@@ -1,0 +1,13 @@
+# T42 owned HTTP/OpenAPI runner v5 narrow review
+
+Verdict: **static review accepts v5 for Lead's single owned real rerun** against the same clean `c980698b794fba9b02d0041207f57c7b5aa77bb7` source and immutable JAR proof. This is a fixture correction, not a product authentication change or a claim that the HTTP gate has passed. No service/build was run for this review.
+
+Inputs: v4 SHA-256 `a467d3d9cb124308914d4e67a28819be407eaed4b6a4ef81d55bb6b5c80fbbee`; v5 SHA-256 `5b4da905037f4ff82bf2d0a24f5da8269561fafbd93ef5300aaab857e40a7be7`; `/tmp/wta-t42/openapi-http-v5-offline.log` reports 10/10 offline safety checks. The prior v4 result `/tmp/wta-t42/openapi-http-live/90043be9be226f04/result.json` records HTTP 200 OpenAPI capture (438 paths, 450 schemas), clean identical source before/after, identical JAR SHA before/after, and no cleanup errors, but overall exit 1 before the intended HTTP attachment contract. Its sanitized result records a runner RuntimeError; the more specific captcha diagnosis is supported by the Java login/config path and Lead's failure review, not by this result's error type alone.
+
+The complete v4→v5 diff has three bounded changes:
+
+1. `isolated_config` sets `captcha.enable=false` in the private loopback overlay. `CaptchaController.getCode()` returns `captchaEnabled=false` in this mode; `PasswordAuthStrategy.login()` bypasses only captcha validation when this explicit property is false. BCrypt password validation, user/Client checks, role permissions, and real token issuing remain exercised. The new GET `/auth/code` asserts the effective setting before either login; the test fails if the overlay did not take effect.
+2. `owned_login` records only `safe_response`'s HTTP status and integer application code. It never stores the login response or access token. The admin token is added to the sanitizer immediately after the first successful login, before the ordinary-user login can fail; both still use real password grants. The new `http_progress` strings are fixed phases or bounded fixed case names, not response bodies or credentials.
+3. Existing authorization negatives, real upload, decimal ID/DB relation/ref checks, omitted versus empty attachments, OpenAPI schema checks, exact source/JAR proof and owned cleanup are unchanged by the diff. No added remote endpoint, provider operation, or broad retry/timeout exception appears.
+
+Remaining condition: Lead must run v5 with exact clean c980 source and the same verified JAR and inspect the actual `/auth/code`, both login statuses, HTTP/DB/OSS assertions, source/JAR after-check, and cleanup. The ten offline tests validate the runner's static guards; they do not substitute for that real run.

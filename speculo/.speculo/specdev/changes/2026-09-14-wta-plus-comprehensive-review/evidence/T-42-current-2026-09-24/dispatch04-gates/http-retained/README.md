@@ -1,0 +1,3 @@
+# T42 HTTP private retained evidence
+
+v4 run `90043be9be226f04` is a failed checkpoint; v5 run `2a1672a910adffea` passed its owned HTTP/OpenAPI gate. Logs here are the runners’ already sanitized logs. This stage copied only listed safe result/log/OpenAPI/tool/proof files and records both source and retained SHA-256. No JAR, raw log, owned.yml, environment file, properties file, credential, or provider key is included. The two live OpenAPI source files have separate hashes because their owned loopback server URLs differ; each matches its own result raw SHA. Indicator scans are count-only screening, not a guarantee about arbitrary secrets. The full resource and contract assessment is in `runtime-review-final.md`.

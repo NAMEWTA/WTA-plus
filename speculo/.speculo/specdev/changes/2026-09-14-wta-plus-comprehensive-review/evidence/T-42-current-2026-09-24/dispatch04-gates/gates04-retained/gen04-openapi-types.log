@@ -1,0 +1,4 @@
+
+> @namewta/api-contracts@0.0.0 typecheck /srv/WTA-plus/frontend/packages/api-contracts
+> tsc --noEmit -p tsconfig.json
+

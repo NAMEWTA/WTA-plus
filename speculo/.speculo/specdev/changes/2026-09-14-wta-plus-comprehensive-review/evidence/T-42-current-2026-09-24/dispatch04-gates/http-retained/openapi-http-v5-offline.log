@@ -1,0 +1,15 @@
+test_cleanup_and_proof_guards_not_removed (__main__.OfflineSafety.test_cleanup_and_proof_guards_not_removed) ... ok
+test_exact_relation_query_keeps_large_decimal_and_actor_client (__main__.OfflineSafety.test_exact_relation_query_keeps_large_decimal_and_actor_client) ... ok
+test_http_rejects_nonlocal_and_unbounded_paths_without_socket (__main__.OfflineSafety.test_http_rejects_nonlocal_and_unbounded_paths_without_socket) ... ok
+test_identity_and_frozen_dependencies (__main__.OfflineSafety.test_identity_and_frozen_dependencies) ... ok
+test_large_id_is_quoted_and_omission_distinct_from_empty (__main__.OfflineSafety.test_large_id_is_quoted_and_omission_distinct_from_empty) ... ok
+test_no_exact_proof_refuses_launch_before_services (__main__.OfflineSafety.test_no_exact_proof_refuses_launch_before_services) ... ok
+test_numeric_json_acceptance_requires_exact_single_relation_and_ref (__main__.OfflineSafety.test_numeric_json_acceptance_requires_exact_single_relation_and_ref) ... ok
+test_numeric_json_rejection_stays_zero_write (__main__.OfflineSafety.test_numeric_json_rejection_stays_zero_write) ... ok
+test_owned_login_config_keeps_password_auth_and_explicit_captcha_fixture (__main__.OfflineSafety.test_owned_login_config_keeps_password_auth_and_explicit_captcha_fixture) ... ok
+test_sql_text_uses_hex_and_only_fixed_tables (__main__.OfflineSafety.test_sql_text_uses_hex_and_only_fixed_tables) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.106s
+
+OK

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "clean",
+    "package",
+    "-DskipTests"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-24T07:43:44.420069+00:00",
+  "finished_at": "2026-09-24T07:44:33.525912+00:00",
+  "exit_code": 0,
+  "log": "dispatch04r2-full-package.log"
+}

@@ -1,0 +1,11 @@
+{
+  "source_head": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+  "pid": 2596864,
+  "start_ticks": "32929380",
+  "scope": "editor Java language server with current repository projects; shared editor functions temporarily paused",
+  "started_utc": "2026-09-24T07:41:27.020142+00:00",
+  "paused": true,
+  "resumed": true,
+  "build_exit_code": 0,
+  "finished_utc": "2026-09-24T07:44:34.451572+00:00"
+}

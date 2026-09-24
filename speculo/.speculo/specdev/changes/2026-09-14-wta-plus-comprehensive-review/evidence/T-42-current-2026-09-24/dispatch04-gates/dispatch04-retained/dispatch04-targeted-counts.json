@@ -1,0 +1,18 @@
+{
+  "source": {
+    "head": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+    "tree": "b518062e41cdd42b9be37b53cb6ea110d61d1a40",
+    "clean": true
+  },
+  "suites": [
+    "org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest",
+    "org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest",
+    "org.namewta.test.oss.owner.BusinessOssOwnerArchitectureUnitTest"
+  ],
+  "counts": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

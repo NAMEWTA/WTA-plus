@@ -1,0 +1,14 @@
+{
+  "backend_gate_source": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+  "final_source": "73c28e751f6276e45b0488ab5d8eacbf9f0c77fb",
+  "final_tree": "748f1b22d4d8617582cbca01fc9eb70e289b35eb",
+  "changed_paths": [
+    "frontend/packages/api-contracts/generated/openapi.ts",
+    "frontend/packages/api-contracts/openapi/current.json",
+    "frontend/packages/api-contracts/openapi/revisions/95e5ae4b17d69b749f17faad172a4b865d5527a9a6174e0469839205a111804e/provenance.json",
+    "frontend/packages/api-contracts/openapi/revisions/95e5ae4b17d69b749f17faad172a4b865d5527a9a6174e0469839205a111804e/source.json"
+  ],
+  "backend_and_build_inputs_equal": true,
+  "accepted_http_run": "2a1672a910adffea",
+  "reuse_claim": "Backend/default/full/core ran at c980; subsequent commit changes only four formally generated frontend contract files. Frontend/static run at73c28. Real27 and135 retain their earlier exact source coordinates documented in dispatch04-real-input-equivalence.json."
+}

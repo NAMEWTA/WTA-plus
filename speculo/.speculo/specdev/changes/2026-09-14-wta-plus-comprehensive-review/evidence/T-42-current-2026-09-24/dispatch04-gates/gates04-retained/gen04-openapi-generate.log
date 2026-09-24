@@ -1,0 +1,5 @@
+
+> @namewta/tooling-openapi@0.0.0 openapi:generate /srv/WTA-plus/frontend/tooling/openapi
+> node src/cli.mjs generate
+
+OpenAPI contract generated: 906222 bytes, sha256=5252f88227027d028658b378fab60ba3f26483fe8ac8d59c67c00a0654f4987a

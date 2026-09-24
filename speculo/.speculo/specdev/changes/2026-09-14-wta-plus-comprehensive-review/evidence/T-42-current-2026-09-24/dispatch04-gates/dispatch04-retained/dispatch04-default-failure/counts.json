@@ -1,0 +1,10 @@
+{
+  "suites": 265,
+  "counts": {
+    "tests": 1184,
+    "failures": 9,
+    "errors": 0,
+    "skipped": 244
+  },
+  "exit_code": 1
+}

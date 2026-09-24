@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-24T07:30:08.301331+00:00",
+  "updated_at": "2026-09-24T08:05:06.085842+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -199,7 +199,8 @@
     "revision233：T42固定764820dd的113项单元与20项真实MAIL均零skip通过，104表fresh与owned清理通过；整票仍缺ACK/强制碰撞/身份/HTTP等验收。Lead复盘后Dispatch02B补验批attempts0，历史8失败保留；17done/2cancelled/1in_progress/30ready。",
     "revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。",
     "revision235：T42补强后的真实Mail27与八类135回归全部零skip通过；原BEFORE证据缺口及预置绑定10→11断言失败均保留。当前17done/2cancelled/1in_progress/30ready，补验批attempts3；用户已豁免T48真实Windows运行，其余验收不变。",
-    "revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除旧问题字节码后1183项检出2fail/1error（244环境skip），三项测试/载体合同待同步，未完成。事前新增2写路径共66根；17done/2cancelled/1in_progress/30ready。"
+    "revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除旧问题字节码后1183项检出2fail/1error（244环境skip），三项测试/载体合同待同步，未完成。事前新增2写路径共66根；17done/2cancelled/1in_progress/30ready。",
+    "revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/core、前端771和三App构建通过；Notify layered静态门禁8错误阻止关闭。事前新增3路径共69根，Dispatch05修正分层事务入口；17done/2cancelled/1in_progress/30ready。"
   ],
   "worktrees": [
     {
@@ -945,7 +946,7 @@
       "workspace_ref": "current",
       "source_checkpoint": null,
       "status": "active",
-      "updated_at": "2026-09-24T07:30:08.301331+00:00",
+      "updated_at": "2026-09-24T08:05:06.085842+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",

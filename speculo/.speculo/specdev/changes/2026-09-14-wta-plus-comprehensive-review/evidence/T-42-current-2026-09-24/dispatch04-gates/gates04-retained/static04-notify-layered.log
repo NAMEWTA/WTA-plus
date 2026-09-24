@@ -1,0 +1,8 @@
+ERROR: org/namewta/notify/adapter/NotifyAttachmentReleaseJob.java: adapter 层禁止依赖 org.namewta.notify.dao.NotifyNotificationDao
+ERROR: org/namewta/notify/adapter/NotifyAttachmentReleaseJob.java: adapter 层禁止依赖 org.namewta.notify.service.runtime.NotifyAttachmentSnapshotTransactions
+ERROR: org/namewta/notify/adapter/NotifyAttachmentSnapshotAdapter.java: adapter 层禁止依赖 org.namewta.notify.dao.NotifyNotificationDao
+ERROR: org/namewta/notify/adapter/NotifyAttachmentSnapshotAdapter.java: adapter 层禁止依赖 org.namewta.notify.service.runtime.NotifyAttachmentSnapshotTransactions
+ERROR: org/namewta/notify/adapter/SessionNotifyAttachmentActorAdapter.java: adapter 层禁止依赖 org.namewta.notify.service.runtime.NotifyAttachmentActorPort
+ERROR: org/namewta/notify/service/runtime/NotifyAttachmentActorPort.java: layered service 目录只能放语义明确的 *Service，不得放 ServiceImpl/Provider/Gateway/Store 等适配实现
+ERROR: org/namewta/notify/service/runtime/NotifyAttachmentSnapshotTransactions.java: layered service 目录只能放语义明确的 *Service，不得放 ServiceImpl/Provider/Gateway/Store 等适配实现
+ERROR: org/namewta/notify/service/runtime/NotifyAttachmentSnapshotTransactions.java: @DSTransactional 事务边界必须位于 UseCase

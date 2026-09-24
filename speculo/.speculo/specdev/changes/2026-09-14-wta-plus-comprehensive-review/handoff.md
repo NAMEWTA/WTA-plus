@@ -1,6 +1,6 @@
 # 恢复入口
 
-revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除旧问题字节码后1183项检出2fail/1error（244环境skip），三项测试/载体合同待同步，未完成。事前新增2写路径共66根；17done/2cancelled/1in_progress/30ready。
+revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/core、前端771和三App构建通过；Notify layered静态门禁8错误阻止关闭。事前新增3路径共69根，Dispatch05修正分层事务入口；17done/2cancelled/1in_progress/30ready。
 
 ## 历史恢复记录（以下状态仅属于各自revision）
 
@@ -678,3 +678,15 @@ revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除
 Dispatch04先登记migration测试与test/resources/oss/business-oss-owners.json两精确路径，原oss测试根已授权，共66根。cors_audit只获上述清单及三相关架构测试的产品写锁；只修测试/清单，无生产/DDL/依赖变更，禁止构建/服务/提交/生成物/治理。Lead回读后固定源码先定向验证这三类，再完整默认/full及后续HTTP/OpenAPI/core/frontend/static；真实Mail27和135仅在生产/各自测试输入相同证据下沿用原坐标。若发现生产缺陷或需要新增路径，先回报，不越界修改。
 
 四项复盘：共同模式为局部用例通过但全仓合同未同步；根因分别是旧构建输出与新表/字段/方法未进入原架构验收范围；下一实质变化为精确维护硬约束而非修改业务语义；owner为唯一测试writer cors_audit，Lead独占命令/服务，Dispatch04新合同同步批attempts0。此前02B三候选及默认构建恢复失败均永久保留，不追认为成功。Windows用户豁免已正式记录，其他T48检查不减。
+
+## revision237 — 分层门禁阻断与 Dispatch05
+
+revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/core、前端771和三App构建通过；Notify layered静态门禁8错误阻止关闭。事前新增3路径共69根，Dispatch05修正分层事务入口；17done/2cancelled/1in_progress/30ready。
+
+所有本批证据见evidence/T-42-current-2026-09-24/dispatch04-gates/manifest.json。c980默认265套1184总项、940执行通过/244环境skip，full与core打包清单通过；初次默认9项LoginUserAgent失败及构建产物异常证据保留。临时暂停拥有当前项目target的编辑器JDT后clean默认成功，结束恢复原进程；现有证据不足以证明此前每次异常的精确写入者，不把关联说成确定归因。HTTPv4 run90043be9be226f04在登录验证码前置失败；v5仅改隔离captcha配置并GET核其关闭，同c980同full JAR的run2a1672a910adffea真实通过并cleanup[]。无token/普通用户的401/403及非法值500为项目R.code，HTTP状态实际200，不伪称HTTP4xx。数字JSON本次accepted_exact；公开附件schema仍可选string[]。
+
+正式工具从已接受438路径/450schema原文生成73c28e75，只改4个生成物；该clean来源frontend663Vitest+108Node零失败（101架构例已含在108中），lint/typecheck/三App329产物通过。工程facts、fullstackfacts、FM、handbooks、release128及Compose检查通过。Notify分层真实失败8项，旧功能绿不替代分层门禁。全部T42 AC保持未勾，full_suite及E2E整票出口仍pending。
+
+四项Lead复盘已保留：缺陷是新增generic adapters越过Port直接访问DAO/Service、ActorPort错放runtime、Transactions类命名及事务位置违反既有规则；Lead发现分层门禁顺序过晚。下一实质变化仅校正依赖和事务层次，不改业务状态、安全、SQL或HTTP合同，不放宽校验规则。ActorPort移port；新增SnapshotPort与SnapshotUseCase；旧Transactions改为runtime的SnapshotService并移除事务注解；UseCase实现Port且四个public方法逐个经Spring代理进入原短事务；复制I/O仍在事务外。adapter只持Port及现有OssService；候选读取也经Port→UseCase→Service→DAO。确认参数通过端口自有合同传递，不以全限定类名隐藏违规。owner清单同步真实Service，测试改为注入端口，原断言不削弱。
+
+三个新精确路径事前登记在frontmatter，合计69根；其余改名删除、adapter、runtime与两测试及owner清单已在原66根。Lead负责固定源码、构建、服务及提交；治理提交后cors_audit才取得本派单唯一产品写锁。先跑Notify分层，再定向/真实Mail27与Notify135/default/full/core/HTTP；后端事务图变化后不得自动复用旧真实验收。前端/schema如确实无变更，可通过明确输入等价证据保留本轮原坐标。Dispatch05新批attempts0，此前所有候选失败、JDT恢复及v4失败永久保留，无盲重跑、不归档。

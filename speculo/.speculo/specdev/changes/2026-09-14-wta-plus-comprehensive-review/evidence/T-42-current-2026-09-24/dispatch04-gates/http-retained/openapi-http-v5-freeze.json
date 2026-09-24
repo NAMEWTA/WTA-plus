@@ -1,0 +1,18 @@
+{
+  "purpose": "owned captcha disabled explicitly and verified via actual auth/code; password/Client/permission remain real",
+  "offline_tests": 10,
+  "files": [
+    {
+      "path": "capture-live-openapi-v5.py",
+      "sha256": "5b4da905037f4ff82bf2d0a24f5da8269561fafbd93ef5300aaab857e40a7be7"
+    },
+    {
+      "path": "test_openapi_http_capture_safety_v5.py",
+      "sha256": "6acdea8f4a17883c817d7407f74fda49296824eaa58dc5e97e5293fc1bddaf0e"
+    },
+    {
+      "path": "openapi-http-v5-offline.log",
+      "sha256": "c2d0ce4336b1a18c189bf3d040095313c83123954d90b8d0c79f130cedee148b"
+    }
+  ]
+}

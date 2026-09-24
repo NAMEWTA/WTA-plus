@@ -1,0 +1,19 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=OssStorageReadinessArchitectureUnitTest,OssNotifyMigrationUnitTest,BusinessOssOwnerArchitectureUnitTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-24T07:34:39.744031+00:00",
+  "finished_at": "2026-09-24T07:34:59.452845+00:00",
+  "exit_code": 0,
+  "log": "dispatch04-targeted.log"
+}

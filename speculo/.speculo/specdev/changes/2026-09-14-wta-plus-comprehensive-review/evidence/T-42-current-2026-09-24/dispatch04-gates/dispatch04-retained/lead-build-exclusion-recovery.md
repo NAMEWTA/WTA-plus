@@ -1,0 +1,9 @@
+# T42 构建输出独占恢复
+
+观察：c980三类8项定向通过，全默认1184项9fail/0error/244skip均位于既有LoginUserAgentUnitTest隔离子进程；outcome OK而进程exit1及Mockito retransformation/TypeNotPresent/ClassNotFound。SysLoginInfoMapper.class的mtime在Maven结束后一秒，证实Maven之外仍写构建输出。此前已保留问题字节码；本次检查时class已是正常完整类型，不能倒填失败时字节码。
+
+原因/边界：观察到编辑器JDT服务，其项目缓存含当前仓库49模块及其他项目；不能把所有失败都归因该进程，但清理后仍有并发写导致验收输入不稳定。当前仓内java.autobuild.enabled已false，工作区级行为仍可能不同。
+
+改变：临时SIGSTOP核实PID/start_ticks及当前仓库项目位置的编辑器语言服务，完整Maven clean→默认→full后finally SIGCONT恢复；此暂停短暂影响该编辑器工作区的Java语言功能，不改配置、业务进程、源码或测试门禁。清理动作只限Maven构建输出。所有失败证据保留，未通过则继续诊断，不拿outcome OK冒充通过。
+
+Owner与恢复：Lead独占，Dispatch04第2次构建，之前候选和输出恢复失败不清零。必须记录暂停/恢复原进程身份及source/hash，后续HTTP使用immutable full JAR。无用户服务或数据库更改。

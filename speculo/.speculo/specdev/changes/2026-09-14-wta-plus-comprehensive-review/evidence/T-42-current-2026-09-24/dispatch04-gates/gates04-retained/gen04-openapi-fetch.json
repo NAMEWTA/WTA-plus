@@ -1,0 +1,19 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/tooling-openapi",
+    "openapi:fetch",
+    "--",
+    "--source",
+    "/tmp/wta-t42/openapi-http-live/2a1672a910adffea/source.json",
+    "--backend-commit",
+    "c980698b794fba9b02d0041207f57c7b5aa77bb7"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-24T07:55:40.156315+00:00",
+  "finished_at": "2026-09-24T07:55:42.241502+00:00",
+  "exit_code": 0,
+  "log": "gen04-openapi-fetch.log"
+}

@@ -1,0 +1,27 @@
+{
+  "mail27": {
+    "executed_source": "43e5c2be2c0bea045a902271ff32a71a4c8166bb",
+    "current_source": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+    "changed_inputs": [
+      "backend/wta-admin/src/test/java/org/namewta/test/migration/ossnotify/OssNotifyMigrationUnitTest.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/owner/BusinessOssOwnerArchitectureUnitTest.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/readiness/OssStorageReadinessArchitectureUnitTest.java",
+      "backend/wta-admin/src/test/resources/oss/business-oss-owners.json"
+    ],
+    "reason": "only unrelated architecture/migration tests and owner inventory, plus one-line atomic fixture for mail reuse; product/SQL and respective selected real suite sources identical",
+    "not_rerun": true
+  },
+  "regression135": {
+    "executed_source": "cd78c39588e16ca4165c2c604f9986a131ef2144",
+    "current_source": "c980698b794fba9b02d0041207f57c7b5aa77bb7",
+    "changed_inputs": [
+      "backend/wta-admin/src/test/java/org/namewta/test/migration/ossnotify/OssNotifyMigrationUnitTest.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/owner/BusinessOssOwnerArchitectureUnitTest.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/readiness/OssStorageReadinessArchitectureUnitTest.java",
+      "backend/wta-admin/src/test/resources/oss/business-oss-owners.json"
+    ],
+    "reason": "only unrelated architecture/migration tests and owner inventory, plus one-line atomic fixture for mail reuse; product/SQL and respective selected real suite sources identical",
+    "not_rerun": true
+  }
+}
