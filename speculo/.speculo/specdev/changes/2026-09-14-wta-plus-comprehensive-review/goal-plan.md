@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision233，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision234，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision233：T42固定764820dd的113项单元与20项真实MAIL均零skip通过，104表fresh与owned清理通过；整票仍缺ACK/强制碰撞/身份/HTTP等验收。Lead复盘后Dispatch02B补验批attempts0，历史8失败保留；17done/2cancelled/1in_progress/30ready。
+revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。
 
 ### Pending Decisions and Blockers
 
@@ -815,3 +815,9 @@ revision233：T42固定764820dd的113项单元与20项真实MAIL均零skip通过
 证据evidence/T-42-current-2026-09-24/dispatch03-a3-pass/manifest.json。store-order-red固定2534405f为3项2pass/1fail；afterName修复764820dd固定18套件113/0/0/0，真实MAIL run dbc2abb3de3a852b为20/0/0/0，源码前后clean同HEAD/tree。真实生产Redis Store已装配，实际请求审计userId/Client正确；仅底层物理邮件sender替换，完整Notify/System/OSS/Redis/事务链均为生产Bean。20项覆盖零附件零OSS、真实私有字节、多收件人共享与顺序、owner/client撤权、COPY_UNKNOWN/迟到PUT、deadline/lease、send_reserved在取消及二次领取后保护引用、N项失败保留引用、乐观锁/逻辑删除。三个容器、两匿名卷、五端口、Maven/proxy进程全部清理。此为局部完整门禁通过，不是T42 Done；全默认、full/core、八类回归和真实HTTP/生成合同仍待完成。
 
 本批达到3次candidate尝试，前两失败与第三通过均保留；按Lead四项复盘进入有不同交付物的Dispatch02B，而非继续盲重跑。新owner cors_audit唯一产品writer，只可修改现有admin notify测试根下NotifyMailAttachmentIntegrationTest及两份OwnedAttachment JDBC helper，负责7项真实用例（提交BEFORE/AFTER、最终发送预约BEFORE/AFTER、强制唯一竞争、更换User、更换Client）；不得改生产、构建、服务、提交或治理。完整Packet和四项复盘见同目录lead-retrospective-dispatch02b.md。Lead负责回读、固定source、runner准确27方法清单、实际执行与Evidence。新补验批attempts0，前两批6加本批2共8失败保留，62写集不变，所有整票AC不勾，Goal active。
+
+## revision234 — 104表事实同步写集
+
+revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。
+
+只读来源见evidence/T-42-current-2026-09-24/scope234/stale-103-scope-audit.md。当前六SQL已由实际fresh安装确认104表；事前登记00-project-profile、fullstack backend/mapper-and-sql、release-artifacts/README三精确路径，Lead仅在cors交还产品写锁后改103→104，保留AI退役、旧数据留存、已有库不重放硬约束，不改旧Evidence历史数值。frontmatter实际原为61条唯一路径；revision232/233口述62把原已登记的NotifyAutoConfiguration重复计入，owner条目也重复，本轮按Path去重后新增三项，四数组均64项。原历史描述保留，以当前解析清单为准。02B writer范围仍只有3个测试文件，不由本文扩其写锁；无构建/服务在跑。后续T48真实Windows验收环境已通过异步问题向用户询问，答复未到，不影响本票和其他独立工作。

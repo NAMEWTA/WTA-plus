@@ -3514,7 +3514,10 @@
       "backend/wta-modules/wta-system/src/main/java/org/namewta/system/domain/vo/SysOssVo.java",
       "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/port/NotifyDispatchResultPort.java",
       "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/usecase/NotifyDispatchResultUseCase.java",
-      "backend/wta-admin/src/main/java/org/namewta/web/config/NotifyContextConfiguration.java"
+      "backend/wta-admin/src/main/java/org/namewta/web/config/NotifyContextConfiguration.java",
+      ".agents/skills/engineering-standards/references/project/00-project-profile.md",
+      ".agents/skills/namewta-fullstack-development/references/backend/mapper-and-sql.md",
+      "release-artifacts/README.md"
     ],
     "tests": [
       "DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器"
@@ -3547,7 +3550,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 233,
+    "plan_revision": 234,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",

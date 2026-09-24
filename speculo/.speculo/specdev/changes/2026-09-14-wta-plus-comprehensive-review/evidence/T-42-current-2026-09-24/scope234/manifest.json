@@ -1,0 +1,12 @@
+{
+  "status": "PREREGISTERED_NOT_EDITED",
+  "files": [
+    {
+      "path": "stale-103-scope-audit.md",
+      "bytes": 2708,
+      "sha256": "9c2a3dfbb5d0debe5bb87baa38954c65f064c7e51f06fadfc92ded43856d31b5"
+    }
+  ],
+  "source_sha256": "cf7b7477508cdc3d5cdf0bdedafdba7584660320d9c267f2260080eb22375aa5",
+  "presentation_transform": "Escape illustrative unpaired Path tag for SpecDev validator; source retained privately unchanged"
+}
