@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision229，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision230，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision229：T42恢复R1定向106/16套件零skip通过；真实MAIL完成104表初始化但非Web上下文缺MVC Bean启动失败，20方法体执行0，owned资源已清理。恢复attempts1/前批失败3保留；17done/2cancelled/1in_progress/30ready。
+revision230：T42恢复R2已启动完整MVC应用并执行20方法，因测试Sa-Token线程context缺失统一20error/0skip，资源全部清理。恢复attempts2/前批失败3保留，Lead只修测试上下文；17done/2cancelled/1in_progress/30ready。
 
 ### Pending Decisions and Blockers
 
@@ -785,3 +785,9 @@ revision228：T42前三候选失败全部保留；A3编译通过、105测试中1
 revision229：T42恢复R1定向106/16套件零skip通过；真实MAIL完成104表初始化但非Web上下文缺MVC Bean启动失败，20方法体执行0，owned资源已清理。恢复attempts1/前批失败3保留；17done/2cancelled/1in_progress/30ready。
 
 证据evidence/T-42-current-2026-09-24/recovery-r1/manifest.json，clean源码7070e1d7。JUnit类初始化1error不等同20方法验收；S3到达0不是无附件正例。Lead下一仅将NotifyMailAttachmentIntegrationTest从NONE改MOCK，以完整MVC/安全生产Bean启动而不监听HTTP端口；不mock AllUrlHandler或替换生产SPI，不修改产品安全配置。源码固定后重跑20方法。独立真实HTTP/OpenAPI由full-JAR v3待验证；JDBC ACK、强制唯一碰撞、身份负例需后续02B整合。60写集不变、owner Lead，所有AC未勾、Goal active，不归档。
+
+## revision230 — 测试认证上下文修正
+
+revision230：T42恢复R2已启动完整MVC应用并执行20方法，因测试Sa-Token线程context缺失统一20error/0skip，资源全部清理。恢复attempts2/前批失败3保留，Lead只修测试上下文；17done/2cancelled/1in_progress/30ready。
+
+证据evidence/T-42-current-2026-09-24/recovery-r2/manifest.json，clean4f30529b。本机Sa-Token1.45源码证明手工服务测试需同时设置Servlet wrappers的modelBox与Spring RequestContextHolder；原夹具只设置后者。Lead在当前60根内修测试login与3个finally范围，恢复原上下文，不替换全局SaManager或生产认证。106定向通过沿用原始7070e1d7坐标，不宣称本轮重跑；下轮固定新SHA运行真实Mail20。私人HTTP工具的numeric JSON是观察项：公开合同仍可选string[]，未另增必须拒绝所有数字token的产品需求；字符串精度/合法性及权限负例和正式schema门槛不变，接受数字时仍须核实际ID精确和持久归属。其他ACK/唯一碰撞/身份负例待02B，AC不勾，Goal active。

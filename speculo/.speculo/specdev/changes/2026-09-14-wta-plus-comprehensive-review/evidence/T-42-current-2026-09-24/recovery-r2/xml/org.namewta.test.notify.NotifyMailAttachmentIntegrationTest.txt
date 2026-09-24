@@ -1,0 +1,322 @@
+-------------------------------------------------------------------------------
+Test set: org.namewta.test.notify.NotifyMailAttachmentIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 20, Failures: 0, Errors: 20, Skipped: 0, Time elapsed: 19.97 s <<< FAILURE! -- in org.namewta.test.notify.NotifyMailAttachmentIntegrationTest
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.noAttachmentSubmitAndWorkerEachMakeZeroOssRequests -- Time elapsed: 1.402 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.noAttachmentSubmitAndWorkerEachMakeZeroOssRequests(NotifyMailAttachmentIntegrationTest.java:240)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner -- Time elapsed: 0.964 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner(NotifyMailAttachmentIntegrationTest.java:259)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.duplicateKeepsOneIntentAndRejectsChangedAttachmentSet -- Time elapsed: 0.119 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.duplicateKeepsOneIntentAndRejectsChangedAttachmentSet(NotifyMailAttachmentIntegrationTest.java:288)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.invalidOwnerAndQueuedSourceRevocationNeverReachSmtp -- Time elapsed: 0.258 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.invalidOwnerAndQueuedSourceRevocationNeverReachSmtp(NotifyMailAttachmentIntegrationTest.java:327)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.twoRecipientsShareOneOrderedPrivateSnapshot -- Time elapsed: 0.094 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.twoRecipientsShareOneOrderedPrivateSnapshot(NotifyMailAttachmentIntegrationTest.java:358)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp -- Time elapsed: 0.084 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp(NotifyMailAttachmentIntegrationTest.java:388)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot -- Time elapsed: 0.076 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot(NotifyMailAttachmentIntegrationTest.java:416)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingLeaseFenceCannotInvokePhysicalMailSender -- Time elapsed: 0.080 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingLeaseFenceCannotInvokePhysicalMailSender(NotifyMailAttachmentIntegrationTest.java:442)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend -- Time elapsed: 0.094 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend(NotifyMailAttachmentIntegrationTest.java:462)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed -- Time elapsed: 0.113 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed(NotifyMailAttachmentIntegrationTest.java:494)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.multipleAttachmentsReachMailSenderInSubmissionOrder -- Time elapsed: 0.182 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.multipleAttachmentsReachMailSenderInSubmissionOrder(NotifyMailAttachmentIntegrationTest.java:526)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation -- Time elapsed: 0.190 s <<< ERROR!
+java.util.concurrent.ExecutionException: cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at java.base/java.util.concurrent.FutureTask.report(FutureTask.java:122)
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:205)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation(NotifyMailAttachmentIntegrationTest.java:555)
+Caused by: cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.lambda$sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation$6(NotifyMailAttachmentIntegrationTest.java:551)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingPersistedExpiryCannotInvokePhysicalMailSender -- Time elapsed: 0.126 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingPersistedExpiryCannotInvokePhysicalMailSender(NotifyMailAttachmentIntegrationTest.java:571)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.readySnapshotRechecksCurrentClientGrantAndPrivateTarget -- Time elapsed: 0.135 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.readySnapshotRechecksCurrentClientGrantAndPrivateTarget(NotifyMailAttachmentIntegrationTest.java:594)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot -- Time elapsed: 0.140 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot(NotifyMailAttachmentIntegrationTest.java:623)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.undeliverableMailWithoutOutboxReleasesItsSourceReference -- Time elapsed: 0.159 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.undeliverableMailWithoutOutboxReleasesItsSourceReference(NotifyMailAttachmentIntegrationTest.java:652)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim -- Time elapsed: 0.145 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim(NotifyMailAttachmentIntegrationTest.java:684)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.attachmentMapperRejectsStaleVersionAndHidesLogicalDelete -- Time elapsed: 0.135 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.attachmentMapperRejectsStaleVersionAndHidesLogicalDelete(NotifyMailAttachmentIntegrationTest.java:730)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences -- Time elapsed: 0.141 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences(NotifyMailAttachmentIntegrationTest.java:754)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender -- Time elapsed: 0.158 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValueToStorage(StpLogic.java:225)
+	at cn.dev33.satoken.stp.StpLogic.setTokenValue(StpLogic.java:205)
+	at cn.dev33.satoken.stp.StpLogic.login(StpLogic.java:465)
+	at cn.dev33.satoken.stp.StpUtil.login(StpUtil.java:216)
+	at org.namewta.common.satoken.utils.LoginHelper.login(LoginHelper.java:56)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.login(NotifyMailAttachmentIntegrationTest.java:841)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:817)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.submit(NotifyMailAttachmentIntegrationTest.java:811)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender(NotifyMailAttachmentIntegrationTest.java:787)
+

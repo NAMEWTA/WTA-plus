@@ -1,0 +1,7 @@
+# T42 恢复R2：真实应用已启动，登录夹具上下文错误
+
+固定4f30529bdb31c77eb6aa4d3c3c9c03ca3443fe29/tree89c08758fc7fa75aa6d08c289d0744d9d307c4bc，前后clean。owned六SQL104表/完整MVC应用启动成功；20方法实际执行、0failure/20error/0skip，统一根因SaTokenContextException，发生在测试login调用LoginHelper.login的setTokenValueToStorage阶段。并发测试包装为ExecutionException，根因相同。源对象MinIO PUT成功不等于通知附件行为通过。
+
+本机Sa-Token1.45官方sources.jar实证：SaTokenContextForThreadLocalStaff.getModelBox在没有thread modelBox时抛异常；生产Servlet wrapper使用SaRequestForServlet/SaResponseForServlet/SaStorageForServlet。当前夹具只设置Spring RequestContextHolder，未初始化另一个holder。下一仅在测试login设置官方Servlet wrappers，并在三个所有者scope的finally恢复/清除两套上下文；不替换SaManager全局context、LoginHelper、业务SPI或Redis存储，不把worker线程伪装为原提交者。
+
+run0beb4808a7e8add1 exit1/acceptance=false；3容器、2卷、5端口及Maven进程回收，cleanup.errors=[]。恢复attempts2/前批3失败全部保留；若下一候选再失败，先按既有三次阈值做新复盘再重新派单。106定向通过仍绑定7070e1d7原始坐标，不能冒充本轮新跑。正式full/core/HTTP/OpenAPI/frontend和所有剩余ACK/幂等身份验证尚未完成。
