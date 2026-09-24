@@ -1,0 +1,134 @@
+{
+  "gate": "T42 full-Spring mail attachment integration",
+  "run_id": "8f6c6e89433059e7",
+  "owner": "T-42-MAIL-ATTACHMENT",
+  "expected_methods": [
+    "noAttachmentSubmitAndWorkerEachMakeZeroOssRequests",
+    "authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner",
+    "duplicateKeepsOneIntentAndRejectsChangedAttachmentSet",
+    "invalidOwnerAndQueuedSourceRevocationNeverReachSmtp",
+    "twoRecipientsShareOneOrderedPrivateSnapshot",
+    "relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp",
+    "lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot",
+    "copyCrossingLeaseFenceCannotInvokePhysicalMailSender",
+    "latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend",
+    "publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed",
+    "multipleAttachmentsReachMailSenderInSubmissionOrder",
+    "sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation",
+    "copyCrossingPersistedExpiryCannotInvokePhysicalMailSender",
+    "readySnapshotRechecksCurrentClientGrantAndPrivateTarget",
+    "cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot",
+    "undeliverableMailWithoutOutboxReleasesItsSourceReference",
+    "reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim",
+    "attachmentMapperRejectsStaleVersionAndHidesLogicalDelete",
+    "secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences",
+    "failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender"
+  ],
+  "source_before": {
+    "head": "7070e1d79b7a0934492d0f07ddb969edbb629983",
+    "tree": "ec9b759b5d74c0ba21d5678812b3415817fbd074",
+    "clean": true
+  },
+  "source_after": {
+    "head": "7070e1d79b7a0934492d0f07ddb969edbb629983",
+    "tree": "ec9b759b5d74c0ba21d5678812b3415817fbd074",
+    "clean": true
+  },
+  "maven_exit_code": 1,
+  "suites": [
+    {
+      "suite": "org.namewta.test.notify.NotifyMailAttachmentIntegrationTest",
+      "fresh": true,
+      "source_sha256": "791a47826a8a9cf3f9425a08e9886dc31fc0b366304ce667f04911d90b4d8083",
+      "sanitized_sha256": "81e1cfdaf27c802ccf14388c8966999343fbe2a3f1e480262b9719dde0b17ac7",
+      "redactions": 7,
+      "retained_path": "/tmp/wta-t42/runs/8f6c6e89433059e7/xml/TEST-org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.xml",
+      "parse_failure_type": "RuntimeError"
+    }
+  ],
+  "owned": {
+    "container_full_ids": [
+      "a9f06f746f6c30f99243cb53d79f282a5b7b0f9895d50893fd1aa45cb1ca18e3",
+      "fe3c26ab266089d7c3333d331a16a00e88ea37be0f82a813b5f0ce2ae1eddde5",
+      "e6f15f39a321e4c7f3595ab98a59f16843279715c9d0902560d935b6123e37a3"
+    ],
+    "anonymous_volumes": [
+      "0bc65f31fd37e1926340252b793533202d1442208f3ca118a3b3ceb29df10efd",
+      "dcf7bc393d7427ed3c93f7b46c593c7590c81fff68f90e0fa0cb97336b573370"
+    ],
+    "loopback_ports": {
+      "mysql": 33001,
+      "redis": 33002,
+      "minio": 33003,
+      "s3_count_proxy": 37987,
+      "s3_count_reader": 34393
+    },
+    "maven_pgid": 2401220
+  },
+  "cleanup": {
+    "maven_group_live_members": [],
+    "owned_processes_remaining": [],
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "0bc65f31fd37e1926340252b793533202d1442208f3ca118a3b3ceb29df10efd": true,
+      "dcf7bc393d7427ed3c93f7b46c593c7590c81fff68f90e0fa0cb97336b573370": true
+    },
+    "loopback_ports_closed": {
+      "33001": true,
+      "33002": true,
+      "33003": true,
+      "37987": true,
+      "34393": true
+    },
+    "errors": []
+  },
+  "acceptance": false,
+  "exit_code": 1,
+  "started_utc": "2026-09-24T06:15:09.788761+00:00",
+  "test_source_sha256": "4290201722c2dd450b7a1907905b281ccfc4ac2f1e346fd62d77031f7745f8af",
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "98570ed734d38f4b29ccdc6ba4b4c5db58c4c48942c98251c9823758ee506db7",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "b87610b0ca02319e5aa02daee585b6c4309b74f9c588af1c49564df6d4ed76c6",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init": {
+    "exit_code": 0,
+    "raw_sha256": "922ecbc4dc1f2351a40979952b3e22195c7ec00d3f602bfdd5c60872828574f7",
+    "sanitized_sha256": "922ecbc4dc1f2351a40979952b3e22195c7ec00d3f602bfdd5c60872828574f7",
+    "redactions": 0
+  },
+  "schema_tables": 104,
+  "oss_config_rows": 5,
+  "s3_baseline": {
+    "request_count": 0
+  },
+  "surefire_text_reports": [
+    {
+      "suite": "org.namewta.test.notify.NotifyMailAttachmentIntegrationTest",
+      "source_sha256": "3b68b1a837958b2d41d3febbdd45b6dac3c10fee6883db910fdbeed8e67f23ec",
+      "sanitized_sha256": "3b68b1a837958b2d41d3febbdd45b6dac3c10fee6883db910fdbeed8e67f23ec",
+      "redactions": 0
+    }
+  ],
+  "surefire_temp_files": [],
+  "owned_java_logs": [],
+  "maven_log": {
+    "source_sha256": "d35b700fdd7f9f008b50ced501ddf94d766c3fadc31db140c96687648827d060",
+    "sanitized_sha256": "d35b700fdd7f9f008b50ced501ddf94d766c3fadc31db140c96687648827d060",
+    "redactions": 0
+  },
+  "s3_total": {
+    "arrivals": 0,
+    "facts": []
+  },
+  "s3_fault_status": {
+    "mode": "NORMAL",
+    "dropped": 0,
+    "held": 0,
+    "released": 0
+  },
+  "finished_utc": "2026-09-24T06:15:55.776189+00:00"
+}
