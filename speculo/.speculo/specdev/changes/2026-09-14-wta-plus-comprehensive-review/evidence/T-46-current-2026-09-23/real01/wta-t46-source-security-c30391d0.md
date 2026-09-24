@@ -1,0 +1,12 @@
+# T-46 Dispatch02 404 分类增量安全复核
+
+固定输入 `c30391d0a559bed30a81b04058fbe4c13d563544`，前一产品候选 `f6f8dd8ab0bb102395d7deeeb4c1cd3d4de73733`。使用二者固定提交的 `git diff`/`git show`，工作树 clean；仅审 6 个 backend 增量路径（3 个生产/文档、2 个测试及 module 说明），不把同时提交的治理历史当产品变化。主要源码 SHA256：`AbstractOssClientImpl.java` `b03a53556d9a4ba8ef75ccb81e56e4cd14a0bcadbdd500889d4e9fe3b8eb12cb`，`OssClientProviderUnitTest.java` `0596aae86cf50cd5aeeabd3821ed9712a63408876a3e3914bf3ee1c57f1dac96`，`OssStorageMigrationIntegrationTest.java` `7ae2a14502828d2eb9d522528696cd38d98076d8cba10e2dc128c316006df13f`。
+
+静态结论：**原 404→错误 COMPLETED 阻断已关闭；本增量无新阻断。** 这不是 T-46 全部真实验收通过声明，Lead 的 green03/真实 owned MySQL+MinIO 仍待实际结果。
+
+- `AbstractOssClientImpl.headObject(String,Duration):2013-2044` 只在对象 HEAD 的真实 `S3Exception` 404 路径做第二步：用同一个 `deadlineNanos` 的剩余预算构造并等待 `HeadBucket`。只有 Bucket HEAD 成功才把原 404 交给既有转换器为 `OBJECT_NOT_FOUND`；Bucket 404/403、超时、其他异常或预算不足均转为 `PROVIDER_ERROR`。`DefaultOssMigrationObjectStore.exists(...,Duration)` 因此只有来源桶可达且对象 HEAD 404 才返回 false；`cleanup.reconcile` 对缺桶保持原 UNKNOWN 工单，不会进入 `finalizeCleanup`。非 404 对象异常沿用原转换，旧无 Duration 的 `headObject` 未变。
+- `migrationRemaining:2046-2053` 用 `System.nanoTime()` 单调计时，在不足 1ms 时拒绝新请求；`requireMigrationTimeout:2071-2076` 限定 1ms–30s。SDK 对每一步设置本步 `apiCallTimeout/apiCallAttemptTimeout`，`await` 在超时/中断时 cancel future 且中断仍标记在线程上。第二步的构造与异步调用发生在剩余预算测量之后，严格墙钟总时长可能比初始预算多极短本地开销；网络等待仍共用剩余预算。若验收要求毫秒级墙钟硬上限，可以在取得 Future 后再次计算 `migrationRemaining(deadlineNanos)` 再 `await`，但这不是本票数据安全阻断。
+- 单测新增同一对象 404 后 Bucket 200→`OBJECT_NOT_FOUND`、Bucket 404/403→`PROVIDER_ERROR`，以及挂起 Bucket Future 后 40ms 超时且 Future canceled；真实集成测试在持久 UNKNOWN 和晚到 DELETE 场景插入“真实缺 Bucket 的来源 client”，断言 cleanup 被拒绝、工单仍 UNKNOWN、DELETE 计数不增加，随后回到真实来源 client 继续结算。它同时保留原有真缺 key 的可恢复路径。没有显式单测「Bucket HEAD 等待中断」或逐毫秒端到端预算，但共用 `await` 的中断/cancel 代码可见；这两项可作为补充，不构成当前安全阻断。真实测试须核 fresh XML 正数零 skip、clean exact SHA、资源清理，不能把源码断言代替运行证据。
+- `OssClient` 公共接口仅修改新增 Duration overload 的 Javadoc，没加新的 public Bucket API；普通 HEAD 与上传/下载语义不变。`backend/README.md` 与 system `AGENTS.md` 也明示无 Bucket HEAD 权限时保守 UNKNOWN，符合最小权限边界。AWS [HeadObject](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html) 将失败返回描述为 generic code，[HeadBucket](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html) 要求 `s3:ListBucket`；因此权限不足时不能自动 finalize 是已记录的安全限制。
+
+未执行 Maven、Docker、服务或任何测试；本报告仅固定源码审查。此前 4f8c4b4/f6f8dd8 的失败及 `/tmp/wta-t46-source-security-f6f8dd8.md` 保持原时点，不被本报告追认为通过。

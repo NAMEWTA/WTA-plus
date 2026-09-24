@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-24T03:54:50.724918+00:00",
+  "updated_at": "2026-09-24T04:03:14.749537+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -179,7 +179,8 @@
     "revision213：T45已验收完成（产品09be6db、治理4a8fea8c）；T46激活，以恢复/清理竞争红灯起步。16done/2cancelled/1in_progress/31ready，Goal active，未完成或归档。",
     "revision214：T46红灯在0f8729d复现，15例/1预期failure/0error/0skip，源码前后clean；DELETE已进入后旧unpublish返回成功。Dispatch01B开始共同锁、持久UNKNOWN和有界I/O实现。16done/2cancelled/1in_progress/31ready，完整候选attempts0，Goal active。",
     "revision215：T46补充配置物理身份保护，写集10扩14；未结束迁移保护source/target配置，关闭编辑/删除与新工单创建竞态。实现仍由cors_audit独占，尚未完整候选验证；16done/2cancelled/1in_progress/31ready，attempts0，Goal active。",
-    "revision216：T46候选4f8c4b4a定向174例1error（Region空值误拒轮换）；窄修f6f8dd8后174例全通过零skip。独立审查发现源桶404可误归对象缺失，Dispatch02补有界桶存在核对。完整候选attempts0，16done/2cancelled/1in_progress/31ready，Goal active。"
+    "revision216：T46候选4f8c4b4a定向174例1error（Region空值误拒轮换）；窄修f6f8dd8后174例全通过零skip。独立审查发现源桶404可误归对象缺失，Dispatch02补有界桶存在核对。完整候选attempts0，16done/2cancelled/1in_progress/31ready，Goal active。",
+    "revision217：T46 c30391d0定向175全过零skip；真实real01两例1pass/1failure/0skip，ACK失联场景未读到UNKNOWN，精确失败保留且cleanup[]。正在定位故障注入时点，尚不定性生产或夹具问题；完整候选attempts1，16done/2cancelled/1in_progress/31ready，Goal active。"
   ],
   "worktrees": [
     {
@@ -880,14 +881,14 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "0f8729d14bbec7825f189e94088964c9ec5bf54a",
+      "source_checkpoint": "c30391d0a559bed30a81b04058fbe4c13d563544",
       "status": "active",
-      "updated_at": "2026-09-24T03:19:34.632590+00:00",
+      "updated_at": "2026-09-24T04:03:14.749537+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
         "parent_before_sha": "4a8fea8c19392972ee5cfef4263962ff6b0e3bfb",
-        "source_sha": null,
+        "source_sha": "c30391d0a559bed30a81b04058fbe4c13d563544",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
@@ -895,7 +896,7 @@
         "result_sha": null,
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "failed",
         "full_suite": {
           "required": true,
           "status": "pending",
@@ -904,12 +905,12 @@
         },
         "e2e": {
           "required": true,
-          "status": "pending",
-          "reason": null,
+          "status": "failed",
+          "reason": "real01 ACK-loss marker assertion failed; investigation pending",
           "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-46.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-46.md</Path>",
-        "attempts": 0,
+        "attempts": 1,
         "promotion_status": "pending"
       }
     }
