@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: org.namewta.test.notify.NotifyMailAttachmentIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 13.63 s <<< FAILURE! -- in org.namewta.test.notify.NotifyMailAttachmentIntegrationTest
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest -- Time elapsed: 13.63 s <<< FAILURE!
+java.lang.AssertionError: 
+[完整应用必须装配生产 Redis 幂等存储] 
+Expecting actual not to be null
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.prepareOwnedApplication(NotifyMailAttachmentIntegrationTest.java:196)
+

@@ -1,0 +1,94 @@
+-------------------------------------------------------------------------------
+Test set: org.namewta.test.notify.NotifyMailAttachmentIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 20, Failures: 14, Errors: 0, Skipped: 0, Time elapsed: 92.75 s <<< FAILURE! -- in org.namewta.test.notify.NotifyMailAttachmentIntegrationTest
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.noAttachmentSubmitAndWorkerEachMakeZeroOssRequests -- Time elapsed: 16.33 s <<< FAILURE!
+java.lang.AssertionError: 
+[无附件投递状态：[{delivery_status=UNKNOWN, error_code=DISPATCH_ERROR, outbox_status=WAITING_RECEIPT}]] 
+Expected size: 1 but was: 0 in:
+[]
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.noAttachmentSubmitAndWorkerEachMakeZeroOssRequests(NotifyMailAttachmentIntegrationTest.java:254)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner -- Time elapsed: 11.36 s <<< FAILURE!
+java.lang.AssertionError: 
+[首个附件投递状态：[{delivery_status=UNKNOWN, error_code=DISPATCH_ERROR, outbox_status=WAITING_RECEIPT}]] 
+Expected size: 1 but was: 0 in:
+[]
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner(NotifyMailAttachmentIntegrationTest.java:274)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.twoRecipientsShareOneOrderedPrivateSnapshot -- Time elapsed: 0.387 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expected size: 2 but was: 0 in:
+[]
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.twoRecipientsShareOneOrderedPrivateSnapshot(NotifyMailAttachmentIntegrationTest.java:380)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp -- Time elapsed: 0.277 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+expected: "COPY_UNKNOWN"
+ but was: "QUEUED"
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp(NotifyMailAttachmentIntegrationTest.java:403)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot -- Time elapsed: 0.262 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+expected: "COPY_UNKNOWN"
+ but was: "QUEUED"
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot(NotifyMailAttachmentIntegrationTest.java:429)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingLeaseFenceCannotInvokePhysicalMailSender -- Time elapsed: 10.24 s <<< FAILURE!
+java.lang.AssertionError: 受控S3状态未在期限内到达：held
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.awaitStatusAtLeast(NotifyMailAttachmentIntegrationTest.java:1068)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingLeaseFenceCannotInvokePhysicalMailSender(NotifyMailAttachmentIntegrationTest.java:454)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend -- Time elapsed: 10.29 s <<< FAILURE!
+java.lang.AssertionError: 受控S3状态未在期限内到达：held
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.awaitStatusAtLeast(NotifyMailAttachmentIntegrationTest.java:1068)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend(NotifyMailAttachmentIntegrationTest.java:475)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed -- Time elapsed: 0.367 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expected size: 1 but was: 0 in:
+[]
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed(NotifyMailAttachmentIntegrationTest.java:503)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.multipleAttachmentsReachMailSenderInSubmissionOrder -- Time elapsed: 0.413 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expected size: 1 but was: 0 in:
+[]
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.multipleAttachmentsReachMailSenderInSubmissionOrder(NotifyMailAttachmentIntegrationTest.java:536)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingPersistedExpiryCannotInvokePhysicalMailSender -- Time elapsed: 10.29 s <<< FAILURE!
+java.lang.AssertionError: 受控S3状态未在期限内到达：held
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.awaitStatusAtLeast(NotifyMailAttachmentIntegrationTest.java:1068)
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.copyCrossingPersistedExpiryCannotInvokePhysicalMailSender(NotifyMailAttachmentIntegrationTest.java:583)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.readySnapshotRechecksCurrentClientGrantAndPrivateTarget -- Time elapsed: 0.315 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+expected: "READY"
+ but was: "QUEUED"
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.readySnapshotRechecksCurrentClientGrantAndPrivateTarget(NotifyMailAttachmentIntegrationTest.java:602)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim -- Time elapsed: 10.20 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+Expecting value to be true but was false
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim(NotifyMailAttachmentIntegrationTest.java:701)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences -- Time elapsed: 0.294 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+expected: "READY"
+ but was: "QUEUED"
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences(NotifyMailAttachmentIntegrationTest.java:775)
+
+org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender -- Time elapsed: 0.299 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender(NotifyMailAttachmentIntegrationTest.java:805)
+

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "test",
+    "-Dtest=RequestNotifyContextResolverUnitTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-24T06:37:34.313060+00:00",
+  "finished_at": "2026-09-24T06:37:51.734452+00:00",
+  "exit_code": 1,
+  "log": "context-red.log"
+}

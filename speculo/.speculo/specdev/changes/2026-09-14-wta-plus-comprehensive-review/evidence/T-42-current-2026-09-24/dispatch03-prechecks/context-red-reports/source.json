@@ -1,0 +1,13 @@
+{
+  "head": "7d50c43b9763d036a2b11dd1eca853f114e70102",
+  "tree": "f6529c6597e651ae6de17e41414250437b2cca3c",
+  "clean_after": true,
+  "exit_code": 1,
+  "counts": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 1,
+    "skipped": 0
+  },
+  "xml_sha256": "0b9c5c56b318c94b3ecd4f6a6d36776a94318a3044f108b64b6b5bbedb8950d5"
+}

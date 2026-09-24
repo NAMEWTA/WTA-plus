@@ -1,0 +1,30 @@
+-------------------------------------------------------------------------------
+Test set: org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.609 s <<< FAILURE! -- in org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest
+org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.actualApplicationBeanResolvesBackgroundThreadWithoutWebContext -- Time elapsed: 0.020 s <<< ERROR!
+cn.dev33.satoken.exception.SaTokenContextException: SaTokenContext 上下文尚未初始化
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff.getModelBox(SaTokenContextForThreadLocalStaff.java:73)
+	at cn.dev33.satoken.context.SaTokenContextForThreadLocal.getModelBox(SaTokenContextForThreadLocal.java:55)
+	at cn.dev33.satoken.context.SaTokenContext.getStorage(SaTokenContext.java:86)
+	at cn.dev33.satoken.context.SaHolder.getStorage(SaHolder.java:69)
+	at cn.dev33.satoken.stp.StpLogic.getTokenValueNotCut(StpLogic.java:347)
+	at cn.dev33.satoken.stp.StpLogic.getTokenValue(StpLogic.java:309)
+	at cn.dev33.satoken.stp.StpLogic.getTokenValue(StpLogic.java:297)
+	at cn.dev33.satoken.stp.StpLogic.getTokenSession(StpLogic.java:1538)
+	at cn.dev33.satoken.stp.StpLogic.getTokenSession(StpLogic.java:1549)
+	at cn.dev33.satoken.stp.StpUtil.getTokenSession(StpUtil.java:648)
+	at org.namewta.common.satoken.utils.LoginHelper.getLoginUser(LoginHelper.java:104)
+	at org.namewta.web.config.RequestNotifyContextResolver.resolve(RequestNotifyContextResolver.java:25)
+	at org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.lambda$actualApplicationBeanResolvesBackgroundThreadWithoutWebContext$0(RequestNotifyContextResolverUnitTest.java:34)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.accept(AbstractApplicationContextRunner.java:457)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.consumeAssertableContext(AbstractApplicationContextRunner.java:371)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.lambda$run$1(AbstractApplicationContextRunner.java:349)
+	at org.springframework.boot.test.util.TestPropertyValues.lambda$applyToSystemProperties$0(TestPropertyValues.java:176)
+	at org.springframework.boot.test.util.TestPropertyValues.applyToSystemProperties(TestPropertyValues.java:190)
+	at org.springframework.boot.test.util.TestPropertyValues.applyToSystemProperties(TestPropertyValues.java:175)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.lambda$run$0(AbstractApplicationContextRunner.java:349)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.withContextClassLoader(AbstractApplicationContextRunner.java:377)
+	at org.springframework.boot.test.context.runner.AbstractApplicationContextRunner.run(AbstractApplicationContextRunner.java:348)
+	at org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.actualApplicationBeanResolvesBackgroundThreadWithoutWebContext(RequestNotifyContextResolverUnitTest.java:34)
+

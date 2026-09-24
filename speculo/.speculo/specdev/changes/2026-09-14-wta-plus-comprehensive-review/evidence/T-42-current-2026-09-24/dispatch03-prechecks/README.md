@@ -1,0 +1,12 @@
+# T42 Dispatch03 prechecks — NOT PASSED
+
+revision232：T42已以真实配置Bean红绿证明后台审计修复，当前110单元零skip通过；Mail A1为20项6pass/14fail，A2确证生产Redis幂等Store未装配，20方法体0。当前批attempts2/前批失败6，17done/2cancelled/1in_progress/30ready。
+## revision232 — 生产幂等存储装配诊断
+
+revision232：T42已以真实配置Bean红绿证明后台审计修复，当前110单元零skip通过；Mail A1为20项6pass/14fail，A2确证生产Redis幂等Store未装配，20方法体0。当前批attempts2/前批失败6，17done/2cancelled/1in_progress/30ready。
+
+证据evidence/T-42-current-2026-09-24/dispatch03-prechecks/manifest.json。context-red固定7d50c43b，4项3pass/1error，实际SaTokenContextException；修复797de347固定17套件110/0fail/0error/0skip。独立静态审核确认无权限绕过，后台审计为空不替代持久actor授权；91232702进一步添加实际登录后resolve的userId/clientPk断言，尚未执行到该分支。797de347完整Mail20仍14fail，但取消/UNDELIVERABLE逻辑解除及历史保留两项已通过；91232702的BeforeAll明确NotifyIdempotencyStore为null，fresh104表和资源清理均通过。1项生命周期失败不能算20项业务通过。
+
+事前增加common-notify/config/NotifyAutoConfiguration.java精确写集，合计62根；现@ConditionalOnBean(RedissonClient)未声明生产Redisson自动配置顺序。先核当前4.6.1/Boot4的RedissonAutoConfigurationV4并用实际自动配置装配测试验证，再通过afterName固定顺序；不新增手工Redis实例、无内存降级，不在测试中补Store Bean冒充产品装配。真实完整应用的生产Store非空断言保留。当前Lead唯一产品writer，无服务在跑；下一次完整候选为本批第三次，若失败按既有四项复盘流程处理。02B及其余门禁尚未开始，不勾AC、不归档。
+
+所有owned服务/进程/匿名卷/端口均已清理。unit XML与真实runner脱敏证据按各自source坐标保留，不合并声称整票通过。
