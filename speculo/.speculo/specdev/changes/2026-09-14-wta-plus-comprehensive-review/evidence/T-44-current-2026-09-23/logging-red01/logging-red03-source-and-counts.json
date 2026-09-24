@@ -1,0 +1,54 @@
+{
+  "source_before": {
+    "head": "d4a156695d8072aa86bfb4b54574db0acadc85db",
+    "tree": "79313f96e5d8d85e00d1339f7d05d687c448a405",
+    "clean": true
+  },
+  "source_after": {
+    "head": "d4a156695d8072aa86bfb4b54574db0acadc85db",
+    "tree": "79313f96e5d8d85e00d1339f7d05d687c448a405",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "logging-red03-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssSqlLogRedactionUnitTest.xml",
+      "sha256": "f3724fb8ab75c150c7484c9a05d80cad42b3c02c28f4bbe4c0c644ff3686799c",
+      "suite": "org.namewta.test.oss.config.OssSqlLogRedactionUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "logsOnlySafeMetadataWhileProceedingWithOriginalBoundSqlAndFailure(String)[1]",
+          "kind": "failure",
+          "type": "java.lang.AssertionError"
+        },
+        {
+          "name": "logsOnlySafeMetadataWhileProceedingWithOriginalBoundSqlAndFailure(String)[2]",
+          "kind": "failure",
+          "type": "java.lang.AssertionError"
+        },
+        {
+          "name": "hostileMapperIdAndControlCharactersCannotInjectLogLines(String)[1]",
+          "kind": "failure",
+          "type": "java.lang.AssertionError"
+        },
+        {
+          "name": "hostileMapperIdAndControlCharactersCannotInjectLogLines(String)[2]",
+          "kind": "failure",
+          "type": "java.lang.AssertionError"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tests": 4,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0
+  }
+}

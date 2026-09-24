@@ -1,0 +1,21 @@
+{
+  "command": [
+    "env",
+    "JAVA_TOOL_OPTIONS=-Xms128m -Xmx1536m",
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=LogSanitizerTest#signedOssUrlsAndUploadTokensAreHiddenOnlyInLogCopies",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/srv/WTA-plus/backend",
+  "started_at": "2026-09-24T00:12:38.749718+00:00",
+  "finished_at": "2026-09-24T00:12:42.976513+00:00",
+  "exit_code": 1,
+  "log": "logging-red01.log"
+}

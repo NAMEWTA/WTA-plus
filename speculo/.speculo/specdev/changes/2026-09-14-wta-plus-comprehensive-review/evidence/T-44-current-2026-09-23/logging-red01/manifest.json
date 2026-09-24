@@ -1,0 +1,114 @@
+[
+  {
+    "file": "logging-red01-reports/wta-common/wta-common-json/target/surefire-reports/TEST-org.namewta.common.json.utils.LogSanitizerTest.xml",
+    "sha256": "9279f824ad6aa5f84c4c130e79fbaa5fa990c58cc61fff832d8ce3626a1f933c",
+    "source_sha256": "9279f824ad6aa5f84c4c130e79fbaa5fa990c58cc61fff832d8ce3626a1f933c",
+    "bytes": 16569,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red01-source-and-counts.json",
+    "sha256": "ce9836668c053d433005759dabcafdc26d58ce7b839d7511df4b5504f68283bd",
+    "source_sha256": "ce9836668c053d433005759dabcafdc26d58ce7b839d7511df4b5504f68283bd",
+    "bytes": 1070,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red01.json",
+    "sha256": "5c4e74b1deaa565b0fe96f5f9a6170f09296d3affb3bb228307f62483ed1764e",
+    "source_sha256": "5c4e74b1deaa565b0fe96f5f9a6170f09296d3affb3bb228307f62483ed1764e",
+    "bytes": 495,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red01.log",
+    "sha256": "f612625c78d0ea5ff3251c8e58fa7fc9db2f6b926b5d8d019dc0a86b4990a05a",
+    "source_sha256": "f612625c78d0ea5ff3251c8e58fa7fc9db2f6b926b5d8d019dc0a86b4990a05a",
+    "bytes": 14807,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red02-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+    "sha256": "b3584b154cbe70d68e399901e23b88c4216c3aabc9418d85e8453e1b546c86fa",
+    "source_sha256": "b3584b154cbe70d68e399901e23b88c4216c3aabc9418d85e8453e1b546c86fa",
+    "bytes": 37944,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red02-source-and-counts.json",
+    "sha256": "d09a563716fbec426e3a970c0de086fca81d37b1251e1f851bda8a275b5af206",
+    "source_sha256": "d09a563716fbec426e3a970c0de086fca81d37b1251e1f851bda8a275b5af206",
+    "bytes": 1080,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red02.json",
+    "sha256": "375dc7620b6ebb6890d1f864fe22681e5d158f46a789c157a325690f6ccdccbb",
+    "source_sha256": "375dc7620b6ebb6890d1f864fe22681e5d158f46a789c157a325690f6ccdccbb",
+    "bytes": 515,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red02.log",
+    "sha256": "1b6e2674e46a6c08dcdf3d0f5664617b1b4b32d86f233d14c9e26e7f11bbad31",
+    "source_sha256": "1b6e2674e46a6c08dcdf3d0f5664617b1b4b32d86f233d14c9e26e7f11bbad31",
+    "bytes": 37534,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red03-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.config.OssSqlLogRedactionUnitTest.xml",
+    "sha256": "f3724fb8ab75c150c7484c9a05d80cad42b3c02c28f4bbe4c0c644ff3686799c",
+    "source_sha256": "f3724fb8ab75c150c7484c9a05d80cad42b3c02c28f4bbe4c0c644ff3686799c",
+    "bytes": 105954,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red03-source-and-counts.json",
+    "sha256": "71dea18a9563d787a76b089acd7fb79472c934e86e7d849f5194d343b6570ceb",
+    "source_sha256": "71dea18a9563d787a76b089acd7fb79472c934e86e7d849f5194d343b6570ceb",
+    "bytes": 1641,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red03.json",
+    "sha256": "fa75324e009cf0ab6b597a35fd229433b66261eb960004e1cdad366b5aa7886c",
+    "source_sha256": "fa75324e009cf0ab6b597a35fd229433b66261eb960004e1cdad366b5aa7886c",
+    "bytes": 452,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-red03.log",
+    "sha256": "3222221dbb3411fb3e027ac01532009a8c1fd92b1817549365f01b6720f7139d",
+    "source_sha256": "3222221dbb3411fb3e027ac01532009a8c1fd92b1817549365f01b6720f7139d",
+    "bytes": 76398,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "checkpoint203-validator.json",
+    "sha256": "63c2626a541bfc291d2329150818b725f673816575acb2c1cdd0c32ac8d1f90b",
+    "source_sha256": "63c2626a541bfc291d2329150818b725f673816575acb2c1cdd0c32ac8d1f90b",
+    "bytes": 426,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "checkpoint203-validator.log",
+    "sha256": "ca1517be23f64b47b272be4d6e2c82ea61c38c96255c62475cf4777bd8063fc5",
+    "source_sha256": "ca1517be23f64b47b272be4d6e2c82ea61c38c96255c62475cf4777bd8063fc5",
+    "bytes": 24016,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "sql-log-interceptor-audit.md",
+    "sha256": "329c0bfe5e06ca53f090297081d00a4adc6b9a5d9bbd265a287b55ddd718d1e5",
+    "source_sha256": "329c0bfe5e06ca53f090297081d00a4adc6b9a5d9bbd265a287b55ddd718d1e5",
+    "bytes": 2118,
+    "test_jwt_redactions": 0
+  },
+  {
+    "file": "logging-review-a1.md",
+    "sha256": "5132f8aae3ef9bae8d2d0af0415987594d170c37dd6ed51278ddcd4b0d25add4",
+    "source_sha256": "5132f8aae3ef9bae8d2d0af0415987594d170c37dd6ed51278ddcd4b0d25add4",
+    "bytes": 6315,
+    "test_jwt_redactions": 0
+  }
+]

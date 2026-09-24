@@ -1,0 +1,39 @@
+{
+  "source_before": {
+    "head": "d4a156695d8072aa86bfb4b54574db0acadc85db",
+    "tree": "79313f96e5d8d85e00d1339f7d05d687c448a405",
+    "clean": true
+  },
+  "source_after": {
+    "head": "d4a156695d8072aa86bfb4b54574db0acadc85db",
+    "tree": "79313f96e5d8d85e00d1339f7d05d687c448a405",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "logging-red02-reports/wta-common/wta-common-web/target/surefire-reports/TEST-org.namewta.common.web.logging.SysLogFilterTest.xml",
+      "sha256": "b3584b154cbe70d68e399901e23b88c4216c3aabc9418d85e8453e1b546c86fa",
+      "suite": "org.namewta.common.web.logging.SysLogFilterTest",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "ossSignedResponseAndUploadPathAreRedactedWithoutChangingBusinessResponse",
+          "kind": "failure",
+          "type": "java.lang.AssertionError"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  }
+}
