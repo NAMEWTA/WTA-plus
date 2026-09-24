@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class OssBoundedTransferTest {
 
     @Test
-    void boundedDownloadRejectsOversizeAndCancelsPublisher() {
+    void boundedDownloadRejectsOversizeAndCancelsPublisher() throws Exception {
         AtomicBoolean cancelled = new AtomicBoolean();
         try (DefaultOssClientImpl client = client()) {
             S3AsyncClient original = client.s3AsyncClient;
@@ -42,7 +42,7 @@ class OssBoundedTransferTest {
     }
 
     @Test
-    void stalledPublisherIsCancelledAtDeadlineWithoutWaitingForAnotherChunk() {
+    void stalledPublisherIsCancelledAtDeadlineWithoutWaitingForAnotherChunk() throws Exception {
         AtomicBoolean cancelled = new AtomicBoolean();
         try (DefaultOssClientImpl client = client()) {
             S3AsyncClient original = client.s3AsyncClient;
@@ -60,7 +60,7 @@ class OssBoundedTransferTest {
     }
 
     @Test
-    void boundedReadAndPutReturnExactBytesAndSize() {
+    void boundedReadAndPutReturnExactBytesAndSize() throws Exception {
         AtomicBoolean cancelled = new AtomicBoolean();
         try (DefaultOssClientImpl client = client()) {
             S3AsyncClient original = client.s3AsyncClient;
