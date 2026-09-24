@@ -1,0 +1,19 @@
+# T42 Lead 四项复盘 / Dispatch03A
+
+R1/R2/R3依次为非Web上下文启动失败、测试登录未建立SaToken模型、完整业务20项4pass/16failure。三轮均固定clean source，失败原始日志/XML保留。原A1/A2/A3另3次也保留，总失败6，不改写成通过。
+
+## 共同失败模式
+
+已有单元夹具与真实完整应用之间存在装配和请求生命周期差异。逐步进入业务后，无HTTP请求的真实Worker路径仍没有被原lambda空身份单测覆盖；原引用断言也把逻辑解除误当物理删除。R3的4项通过不足以证明任何尚失败的复制/发送分支。
+
+## 最可能原因
+
+实际源码NotifyContextConfiguration把LoginHelper::getLoginUser直接交给RequestNotifyContextResolver；LoginHelper只捕获NotLoginException。SaToken1.45官方源码在无模型时抛SaTokenContextException，因此无请求Worker在Common NotifyDispatcher.resolveContext阶段失败，符合真实日志claim后无snapshot reserve、所有附件QUEUED。下一步真实配置Bean单测须直接证明这一诊断，而不凭推断宣称修复。两项release已返回true且关系RELEASED，OssLifecycleManager.unbind使用deactivateReference，测试SQL没有过滤del_flag，故仍数到历史行。
+
+## 下一轮具体改变
+
+Dispatch03A先加真实NotifyContextConfiguration Bean在无SaToken上下文时resolve的红灯测试；再仅在该配置supplier中用公开SaTokenContext.isValid()区分无请求后台线程，有请求仍调用LoginHelper且其他异常不吞。不得给Worker虚构登录、不得替换Snapshot/NotifyClient生产Bean、不得改泛用LoginHelper。事前新增唯一生产精确写路径NotifyContextConfiguration.java，其他测试在已有admin notify根内。引用释放断言分别核active零及原owner历史行del_flag=1保留；添加无敏感字段的Delivery/Outbox状态诊断帮助定位真实业务失败。固定新源码后先红绿小门禁再重跑20项真实Mail，未绿不堆入02B新故障矩阵。
+
+## 下一 owner / 路由
+
+已回到Goal Plan Lead完成本复盘，不重复盲派前writer。Lead接管Dispatch03A唯一产品写锁，cors/legacy/ops只读或私有准备；后台服务已全清理。新批从attempts0开始，历史6失败固定保留。02B仅在本批真实Mail门禁通过后另派，之后完整回归/ACK/HTTP/OpenAPI/default/full/core/前端/独立审查仍须完成。Ticket保持in_progress，全部AC未勾，Goal active。

@@ -1,0 +1,31 @@
+{
+  "candidate_head": "14140907c448f3d3f6030a7bb46102ca7496c2bd",
+  "source_path": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyMailAttachmentIntegrationTest.java",
+  "source_sha256": "53389f2e0db94614f8e9f1037a4d12fc809ec38d3d3df43eb1ee21d67b48c110",
+  "suite": "org.namewta.test.notify.NotifyMailAttachmentIntegrationTest",
+  "tests": 20,
+  "methods": [
+    "noAttachmentSubmitAndWorkerEachMakeZeroOssRequests",
+    "authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner",
+    "duplicateKeepsOneIntentAndRejectsChangedAttachmentSet",
+    "invalidOwnerAndQueuedSourceRevocationNeverReachSmtp",
+    "twoRecipientsShareOneOrderedPrivateSnapshot",
+    "relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp",
+    "lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot",
+    "copyCrossingLeaseFenceCannotInvokePhysicalMailSender",
+    "latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend",
+    "publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed",
+    "multipleAttachmentsReachMailSenderInSubmissionOrder",
+    "sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation",
+    "copyCrossingPersistedExpiryCannotInvokePhysicalMailSender",
+    "readySnapshotRechecksCurrentClientGrantAndPrivateTarget",
+    "cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot",
+    "undeliverableMailWithoutOutboxReleasesItsSourceReference",
+    "reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim",
+    "attachmentMapperRejectsStaleVersionAndHidesLogicalDelete",
+    "secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences",
+    "failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender"
+  ],
+  "expected_methods": "noAttachmentSubmitAndWorkerEachMakeZeroOssRequests,authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner,duplicateKeepsOneIntentAndRejectsChangedAttachmentSet,invalidOwnerAndQueuedSourceRevocationNeverReachSmtp,twoRecipientsShareOneOrderedPrivateSnapshot,relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp,lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot,copyCrossingLeaseFenceCannotInvokePhysicalMailSender,latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend,publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed,multipleAttachmentsReachMailSenderInSubmissionOrder,sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation,copyCrossingPersistedExpiryCannotInvokePhysicalMailSender,readySnapshotRechecksCurrentClientGrantAndPrivateTarget,cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot,undeliverableMailWithoutOutboxReleasesItsSourceReference,reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim,attachmentMapperRejectsStaleVersionAndHidesLogicalDelete,secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences,failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender",
+  "status": "INVENTORY_ONLY_NOT_EXECUTED"
+}

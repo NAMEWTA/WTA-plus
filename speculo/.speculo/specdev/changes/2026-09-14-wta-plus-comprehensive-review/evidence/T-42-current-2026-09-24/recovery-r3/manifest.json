@@ -1,0 +1,47 @@
+{
+  "status": "NOT_PASSED",
+  "recovery_attempt": 3,
+  "historical_failed_attempts": 6,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "2c676982036578f21796cd17f695fd8e8fc5279186e5cdc4ec8ff5788d91d80b",
+      "bytes": 1428
+    },
+    {
+      "path": "init.log",
+      "sha256": "548bf25d2e3e5e1283b5e5497949b57b3f694a07f793f8bc569ae739aefdfbc6",
+      "bytes": 64013
+    },
+    {
+      "path": "lead-retrospective-dispatch03a.md",
+      "sha256": "64eca86a0efb8724ab6f0efcdc77b79cc901bd2fff4a4c5308b100ef990db1a4",
+      "bytes": 2462
+    },
+    {
+      "path": "maven.log",
+      "sha256": "e60d9d9940607a7264751db23edc533fd116496294e06ac84b49cc87442a1746",
+      "bytes": 250240
+    },
+    {
+      "path": "r3-mail-methods.json",
+      "sha256": "70ecabff6a9b429a96a92e497f782e2606f45e4c61acee0fa4497f57f448ffdb",
+      "bytes": 2953
+    },
+    {
+      "path": "result.json",
+      "sha256": "ab82e20fe6e4c828d591a2f14f27a64ba81b470a8ee14aa935967024d83cd15b",
+      "bytes": 7723
+    },
+    {
+      "path": "xml/TEST-org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.xml",
+      "sha256": "71f367ff308e7192408cc8f910891934f2a92f146d4a6d822d8d44f717db6b8c",
+      "bytes": 297670
+    },
+    {
+      "path": "xml/org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.txt",
+      "sha256": "7e62b3e6c992e45ce0129414394ee63a117dc81ded04ef15125d64265ed37500",
+      "bytes": 7144
+    }
+  ]
+}

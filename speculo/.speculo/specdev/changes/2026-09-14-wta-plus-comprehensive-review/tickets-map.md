@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 230
+plan_revision: 231
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision230：T42恢复R2已启动完整MVC应用并执行20方法，因测试Sa-Token线程context缺失统一20error/0skip，资源全部清理。恢复attempts2/前批失败3保留，Lead只修测试上下文；17done/2cancelled/1in_progress/30ready。
+revision231：T42恢复R3真实20方法4通过/16failure/0error/0skip，owned资源清理完成；前三恢复失败保留，Lead四项复盘后Dispatch03A新批attempts0，累计失败6。17done/2cancelled/1in_progress/30ready，Goal active。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -792,3 +792,11 @@ revision229：T42恢复R1定向106/16套件零skip通过；真实MAIL完成104�
 revision230：T42恢复R2已启动完整MVC应用并执行20方法，因测试Sa-Token线程context缺失统一20error/0skip，资源全部清理。恢复attempts2/前批失败3保留，Lead只修测试上下文；17done/2cancelled/1in_progress/30ready。
 
 证据evidence/T-42-current-2026-09-24/recovery-r2/manifest.json，clean4f30529b。本机Sa-Token1.45源码证明手工服务测试需同时设置Servlet wrappers的modelBox与Spring RequestContextHolder；原夹具只设置后者。Lead在当前60根内修测试login与3个finally范围，恢复原上下文，不替换全局SaManager或生产认证。106定向通过沿用原始7070e1d7坐标，不宣称本轮重跑；下轮固定新SHA运行真实Mail20。私人HTTP工具的numeric JSON是观察项：公开合同仍可选string[]，未另增必须拒绝所有数字token的产品需求；字符串精度/合法性及权限负例和正式schema门槛不变，接受数字时仍须核实际ID精确和持久归属。其他ACK/唯一碰撞/身份负例待02B，AC不勾，Goal active。
+
+## revision231 — 无请求 Worker 上下文与引用历史验收修正
+
+revision231：T42恢复R3真实20方法4通过/16failure/0error/0skip，owned资源清理完成；前三恢复失败保留，Lead四项复盘后Dispatch03A新批attempts0，累计失败6。17done/2cancelled/1in_progress/30ready，Goal active。
+
+真实证据在evidence/T-42-current-2026-09-24/recovery-r3/manifest.json，clean源码14140907。R3已排除MVC/登录夹具前置问题，Worker确有claim而未进入复制；生产RequestNotifyContextResolver调用LoginHelper，在没有Sa-Token上下文的后台线程会抛上下文异常。下一固定候选先用真实配置Bean无上下文测试复现，再在NotifyContextConfiguration中通过官方SaTokenContext.isValid()仅对无请求线程返回空审计身份，有效请求仍按真实登录态；附件授权继续使用Intent持久actor，不能伪造Worker登录或吞任意认证异常。事前登记该配置精确写路径，合计61根。两项引用释放实际已RELEASED，sys_oss_ref采用逻辑删除；验收应核active=0、历史行del_flag=1仍保留，不修改生产删除语义。正例增加安全状态诊断，不输出地址/token/密钥。
+
+四项Lead复盘和Dispatch03A见同目录lead-retrospective-dispatch03a.md；前三次原始候选与R1/R2/R3永久保留，共6次失败。Lead为新批唯一产品writer，先完成无请求背景线程红绿测试及现20项真实门禁，再派Dispatch02B JDBC ACK/强制碰撞/身份反例。HTTP/OpenAPI v4已独立静态审查，无新阻断但未运行。106定向旧证据不改写，全部AC、full/core、E2E完成状态仍未通过，不归档。

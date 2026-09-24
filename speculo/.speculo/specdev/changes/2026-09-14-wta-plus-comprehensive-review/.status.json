@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-24T06:26:13.104126+00:00",
+  "updated_at": "2026-09-24T06:36:38.762690+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -193,7 +193,8 @@
     "revision227：T42首候选0595e2cc定向编译失败（实际0测试），attempts1且未验收；保留双轴审查并事前登记邮件发送预约事务端口2路径，共60根。17done/2cancelled/1in_progress/30ready，Goal active。",
     "revision228：T42前三候选失败全部保留；A3编译通过、105测试中104通过/1error/0skip。四项Lead复盘与Dispatch02A已落盘，恢复批attempts0、累计失败3；17done/2cancelled/1in_progress/30ready，Goal active。",
     "revision229：T42恢复R1定向106/16套件零skip通过；真实MAIL完成104表初始化但非Web上下文缺MVC Bean启动失败，20方法体执行0，owned资源已清理。恢复attempts1/前批失败3保留；17done/2cancelled/1in_progress/30ready。",
-    "revision230：T42恢复R2已启动完整MVC应用并执行20方法，因测试Sa-Token线程context缺失统一20error/0skip，资源全部清理。恢复attempts2/前批失败3保留，Lead只修测试上下文；17done/2cancelled/1in_progress/30ready。"
+    "revision230：T42恢复R2已启动完整MVC应用并执行20方法，因测试Sa-Token线程context缺失统一20error/0skip，资源全部清理。恢复attempts2/前批失败3保留，Lead只修测试上下文；17done/2cancelled/1in_progress/30ready。",
+    "revision231：T42恢复R3真实20方法4通过/16failure/0error/0skip，owned资源清理完成；前三恢复失败保留，Lead四项复盘后Dispatch03A新批attempts0，累计失败6。17done/2cancelled/1in_progress/30ready，Goal active。"
   ],
   "worktrees": [
     {
@@ -939,7 +940,7 @@
       "workspace_ref": "current",
       "source_checkpoint": null,
       "status": "active",
-      "updated_at": "2026-09-24T06:26:13.104126+00:00",
+      "updated_at": "2026-09-24T06:36:38.762690+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
@@ -966,7 +967,7 @@
           "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42-replan-2026-09-23.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42.md</Path>",
-        "attempts": 2,
+        "attempts": 0,
         "promotion_status": "pending"
       }
     }
