@@ -7,6 +7,7 @@ import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import org.namewta.notify.api.*;
 import org.namewta.notify.domain.entity.NotifyDelivery;
 import org.namewta.notify.domain.entity.NotifyIntent;
+import org.namewta.notify.domain.entity.NotifyIntentAttachment;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.entity.NotifyRecipient;
 import org.namewta.notify.dao.NotifyNotificationDao;
