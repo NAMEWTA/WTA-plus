@@ -755,7 +755,9 @@ public interface OssClient extends AutoCloseable {
     OssObjectStat headObject(String key);
 
     /**
-     * 有界查询默认存储桶对象；超时只表示结果未知。
+     * 有界查询默认存储桶对象。对象 HEAD 返回 404 时，以同一剩余预算 HEAD Bucket；
+     * 仅 Bucket 可达才报告对象不存在。Bucket 不存在、拒绝或无法核对均为未知；
+     * 缺少 Bucket HEAD 权限时，即使对象真实缺失也会保守返回未知。
      *
      * @param key 对象键
      * @param timeout 单次请求的总等待预算

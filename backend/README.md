@@ -29,7 +29,7 @@
 
 OSS 配置由数据库在启动时重建专用缓存；只有唯一合法的 PRIVATE 默认配置才可用于新上传。可选存储或诊断配置异常不会阻止核心启动。管理员可凭 `system:ossConfig:list` 使用 `POST /resource/oss/config/diagnose/{ossConfigId}` 诊断单个配置，公开结果仅含固定状态、原因、检查时间及带来源、范围、时间和固定依据的有限事实。策略及 ACL 是可理解的声明，桶 ACL READ 仅表示列举；匿名 HEAD/Range GET 只观察指定对象，403 是该对象当时的拒绝，未知不能推断全桶安全或匿名写已禁。诊断不作为上传、下载或迁移的门禁，也不修改远端 Bucket/Policy。`/actuator/health/readiness` 检查核心 DB/Redis，`/actuator/health/liveness` 报告进程存活状态，`/actuator/health/ossdiagnostics` 仅显示已检查配置的观察快照；这些 Actuator 路径仍受现有 Basic Auth 保护，根 `/actuator/health` 不是核心专用组。诊断的每个网络步骤超时为 100ms–3s，最多五个顺序步骤，网络等待最多 15s，并非整个 HTTP 请求三秒上限。
 
-OSS 迁移的建单短事务先按主键顺序锁配置，再锁对象与工单；远端预检和复制均在事务外。当前对象或未终结工单引用的配置冻结物理身份（配置键、Bucket、策略、endpoint、HTTPS 与 region），同一身份可轮换凭据。来源清理先持久化未知结果栅栏，再执行一次有界 DELETE；DELETE 或提交回执不确定时不重发、不恢复来源指针，后续只以有界 HEAD 核对来源已无对象且目标仍在，才能完成原工单。供应商取消请求并不证明远端操作已经撤回。
+OSS 迁移的建单短事务先按主键顺序锁配置，再锁对象与工单；远端预检和复制均在事务外。当前对象或未终结工单引用的配置冻结物理身份（配置键、Bucket、策略、endpoint、HTTPS 与 region），同一身份可轮换凭据。来源清理先持久化未知结果栅栏，再执行一次有界 DELETE；DELETE 或提交回执不确定时不重发、不恢复来源指针。后续有界对象 HEAD 若返回 404，还须在同一剩余预算内确认 Bucket 可达；只有来源对象确实缺失且目标仍在，才能完成原工单。Bucket 缺失、拒绝、超时或缺少 Bucket HEAD 权限时保守维持 UNKNOWN。供应商取消请求并不证明远端操作已经撤回。
 
 ## 模块结构
 

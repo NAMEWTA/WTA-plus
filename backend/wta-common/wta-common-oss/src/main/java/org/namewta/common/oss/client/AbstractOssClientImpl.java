@@ -51,6 +51,7 @@ import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
+import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
 import software.amazon.awssdk.services.s3.model.ListPartsRequest;
 import software.amazon.awssdk.services.s3.model.Part;
 import software.amazon.awssdk.services.s3.model.Permission;
@@ -2012,6 +2013,7 @@ public abstract class AbstractOssClientImpl implements OssClient {
     public OssObjectStat headObject(String key, Duration timeout) {
         validateObjectIdentity(defaultBucket(), key);
         Duration budget = requireMigrationTimeout(timeout);
+        long deadlineNanos = System.nanoTime() + budget.toNanos();
         try {
             var request = HeadObjectRequest.builder().bucket(defaultBucket()).key(key)
                 .overrideConfiguration(builder -> builder.apiCallTimeout(budget).apiCallAttemptTimeout(budget))
@@ -2021,9 +2023,33 @@ public abstract class AbstractOssClientImpl implements OssClient {
                 Optional.ofNullable(response.contentLength()).orElse(0L), response.contentType(),
                 response.eTag(), response.lastModified(), response.metadata(),
                 checksumMap(response.checksumCRC32(), response.checksumCRC32C(), response.checksumSHA1(), response.checksumSHA256()));
-        } catch (RuntimeException ex) {
-            throw toStorageException(ex);
+        } catch (RuntimeException objectFailure) {
+            Throwable cause = unwrapAsyncException(objectFailure);
+            if (!(cause instanceof S3Exception s3) || s3.statusCode() != 404) {
+                throw toStorageException(objectFailure);
+            }
+            // HeadObject 的 404 可能表示 Bucket 不存在；仅同一预算内确认 Bucket 可达才证明对象缺失。
+            try {
+                Duration remaining = migrationRemaining(deadlineNanos);
+                var bucketRequest = HeadBucketRequest.builder().bucket(defaultBucket())
+                    .overrideConfiguration(builder -> builder.apiCallTimeout(remaining)
+                        .apiCallAttemptTimeout(remaining)).build();
+                await(s3AsyncClient.headBucket(bucketRequest), remaining);
+            } catch (RuntimeException bucketFailure) {
+                throw S3StorageException.form(OssErrorCode.PROVIDER_ERROR,
+                    "OSS object absence could not be verified.");
+            }
+            throw toStorageException(objectFailure);
         }
+    }
+
+    private Duration migrationRemaining(long deadlineNanos) {
+        long nanos = deadlineNanos - System.nanoTime();
+        if (nanos < TimeUnit.MILLISECONDS.toNanos(1)) {
+            throw S3StorageException.form(OssErrorCode.PROVIDER_ERROR,
+                "OSS object absence verification timed out.");
+        }
+        return Duration.ofNanos(nanos);
     }
 
     @Override
@@ -2043,8 +2069,9 @@ public abstract class AbstractOssClientImpl implements OssClient {
     }
 
     private Duration requireMigrationTimeout(Duration timeout) {
-        if (timeout == null || timeout.isNegative() || timeout.isZero() || timeout.toMillis() < 1) {
-            throw new IllegalArgumentException("OSS migration timeout must be positive");
+        if (timeout == null || timeout.compareTo(Duration.ofMillis(1)) < 0
+            || timeout.compareTo(Duration.ofSeconds(30)) > 0) {
+            throw new IllegalArgumentException("OSS migration timeout must be between 1ms and 30s");
         }
         return timeout;
     }

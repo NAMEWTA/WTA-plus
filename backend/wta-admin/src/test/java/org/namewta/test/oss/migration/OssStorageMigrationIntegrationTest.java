@@ -258,6 +258,7 @@ class OssStorageMigrationIntegrationTest {
         String suffix = UUID.randomUUID().toString().replace("-", "");
         String privateBucket = "namewta-migration-private-" + suffix;
         String publicBucket = "namewta-migration-public-" + suffix;
+        String missingBucket = "missing-" + suffix;
         String cleanupKey = "migration/cleanup-" + suffix + ".txt";
         String rollbackKey = "migration/rollback-" + suffix + ".txt";
         try (S3Client bootstrap = bootstrap(endpointUri, accessKey, secretKey)) {
@@ -266,7 +267,9 @@ class OssStorageMigrationIntegrationTest {
             try (OssClient privateClient = client(PRIVATE_ROUTE, endpointUri, accessKey, secretKey,
                      privateBucket, AccessPolicy.PRIVATE);
                  OssClient publicClient = client(PUBLIC_ROUTE, endpointUri, accessKey, secretKey,
-                     publicBucket, AccessPolicy.PUBLIC_READ)) {
+                     publicBucket, AccessPolicy.PUBLIC_READ);
+                 OssClient missingSource = client(PRIVATE_ROUTE, endpointUri, accessKey, secretKey,
+                     missingBucket, AccessPolicy.PRIVATE)) {
                 DynamicRoutingDataSource routing = new DynamicRoutingDataSource(List.of());
                 routing.setPrimary("master"); routing.setStrict(true); routing.addDataSource("master", dataSource);
                 SqlSessionTemplate sessions = new SqlSessionTemplate(sqlSessionFactory(routing));
@@ -424,6 +427,14 @@ class OssStorageMigrationIntegrationTest {
                     assertThat(scalar(dataSource,
                         "select error_message from sys_oss_migration_item where oss_id=101"))
                         .isEqualTo(OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN);
+                    // 对象 HEAD 的 404 来自不存在的 Bucket，绝不可据此完成原工单。
+                    assertThatThrownBy(() -> withClients(missingSource, publicClient, () -> {
+                        service.cleanup(cleanupBatch, true); return null;
+                    })).isInstanceOf(OssMigrationException.class);
+                    assertThat(scalar(dataSource,
+                        "select error_message from sys_oss_migration_item where oss_id=101"))
+                        .isEqualTo(OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN);
+                    assertThat(physicalDeletes).hasValue(1);
                     releaseSourceHead.countDown();
                     assertThat(staleRestore.get(5, TimeUnit.SECONDS)).isInstanceOf(OssMigrationException.class);
                     assertThatThrownBy(() -> withClients(privateClient, publicClient, () -> {

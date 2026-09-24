@@ -29,6 +29,8 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
+import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
+import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
 import software.amazon.awssdk.services.s3.model.ListPartsRequest;
 import software.amazon.awssdk.services.s3.model.ListPartsResponse;
 import software.amazon.awssdk.services.s3.model.Part;
@@ -212,6 +214,38 @@ class OssClientProviderUnitTest {
             assertTrue(hangingDelete.isCancelled());
             verify(client.provider()).headObject(any(HeadObjectRequest.class));
             verify(client.provider()).deleteObject(any(DeleteObjectRequest.class));
+        }
+    }
+
+    @Test
+    void boundedMigrationHeadDistinguishesMissingObjectFromMissingOrUnreadableBucket() throws Exception {
+        try (TestOssClient client = new TestOssClient(clientConfig())) {
+            S3Exception object404 = (S3Exception) S3Exception.builder().statusCode(404).build();
+            when(client.provider().headObject(any(HeadObjectRequest.class)))
+                .thenReturn(CompletableFuture.failedFuture(object404));
+            when(client.provider().headBucket(any(HeadBucketRequest.class)))
+                .thenReturn(CompletableFuture.completedFuture(HeadBucketResponse.builder().build()),
+                    CompletableFuture.<HeadBucketResponse>failedFuture(
+                        (S3Exception) S3Exception.builder().statusCode(404).build()),
+                    CompletableFuture.<HeadBucketResponse>failedFuture(
+                        (S3Exception) S3Exception.builder().statusCode(403).build()));
+
+            assertEquals(OssErrorCode.OBJECT_NOT_FOUND,
+                assertThrows(S3StorageException.class,
+                    () -> client.headObject("missing-key", Duration.ofSeconds(1))).code());
+            assertEquals(OssErrorCode.PROVIDER_ERROR,
+                assertThrows(S3StorageException.class,
+                    () -> client.headObject("missing-bucket", Duration.ofSeconds(1))).code());
+            assertEquals(OssErrorCode.PROVIDER_ERROR,
+                assertThrows(S3StorageException.class,
+                    () -> client.headObject("unreadable-bucket", Duration.ofSeconds(1))).code());
+
+            CompletableFuture<HeadBucketResponse> hangingBucket = new CompletableFuture<>();
+            when(client.provider().headBucket(any(HeadBucketRequest.class))).thenReturn(hangingBucket);
+            assertEquals(OssErrorCode.PROVIDER_ERROR,
+                assertThrows(S3StorageException.class,
+                    () -> client.headObject("bucket-timeout", Duration.ofMillis(40))).code());
+            assertTrue(hangingBucket.isCancelled());
         }
     }
 
