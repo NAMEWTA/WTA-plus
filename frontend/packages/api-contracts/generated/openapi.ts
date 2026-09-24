@@ -10398,12 +10398,23 @@ export interface components {
             /** @description 桶权限类型（0=PRIVATE，2=PUBLIC_READ） */
             accessPolicy: string;
         };
-        /** @description 管理员单配置诊断公开投影；只含固定类别，不含配置或 Provider 原文。 */
+        /** @description 固定枚举名描述的限定观察事实，不表示整个 Bucket 的有效 IAM 判定。 */
+        Fact: {
+            subject?: string;
+            observation?: string;
+            source?: string;
+            scope?: string;
+            basis?: string;
+            /** Format: date-time */
+            observedAt?: string;
+        };
+        /** @description 管理端单配置诊断的安全投影；不包含桶、对象键、端点、凭据或原始供应商错误。 */
         OssStorageDiagnosticVo: {
             status?: string;
             reason?: string;
             /** Format: date-time */
             checkedAt?: string;
+            facts?: components["schemas"]["Fact"][];
         };
         /** @description 响应信息主体 */
         ROssStorageDiagnosticVo: {
