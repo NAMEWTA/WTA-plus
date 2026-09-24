@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "service_started": false,
+  "build_started": false,
+  "check_count": 20,
+  "checks": {
+    "runner_and_helper_ast_parse": true,
+    "all_helper_names_resolve": true,
+    "all_t44_sql_stages_registered": true,
+    "resource_and_source_cleanup_present": true,
+    "empty_optional_secret_filtered_from_argv_check": true,
+    "openapi_flag_passed_to_overlay": true,
+    "owned_initializer_database_required": true,
+    "all_oss_rows_rewritten": true,
+    "anomalous_default_scenarios_preserve_actual_baseline_count": true,
+    "explicit_health_paths": true,
+    "startup_no_oss_network_gate": true,
+    "two_post_delivery_ticks_bounded": true,
+    "notify_wake_only_publish_denial": true,
+    "fixed_local_failure_location_and_sanitized_http_details": true,
+    "numeric_rows_accepts_exact_values": true,
+    "numeric_rows_rejects_bad_shape": true,
+    "redis_passwords_only_in_private_config": true,
+    "acl_log_discards_arbitrary_fields": true,
+    "bounded_core_startup_accepts_only_known_transition": true,
+    "core_auth_failure_must_not_be_retried": true
+  },
+  "runner_sha256": "f62b36371caf6ec33e25a2f1146d057111dd022a4cd36bc279ec4e3d000abe14",
+  "helper_sha256": "7afb43db7d0086aeda0778389ad2fba95252dddf221eec406024101662c3bf46"
+}

@@ -1,0 +1,109 @@
+{
+  "gate": "T44 owned full-app core and scheduled Notify fallback",
+  "scenario": "minio-offline",
+  "run_id": "c8511c8ff56072a3",
+  "acceptance": true,
+  "exit_code": 0,
+  "source_before": {
+    "head": "e11c1b6f3a4a4a8bdc1746044d65fe8445c0865c",
+    "tree": "92781356146df461ab9815a13aa2884effc0740e",
+    "clean": true
+  },
+  "source_after": {
+    "head": "e11c1b6f3a4a4a8bdc1746044d65fe8445c0865c",
+    "tree": "92781356146df461ab9815a13aa2884effc0740e",
+    "clean": true
+  },
+  "started_utc": "2026-09-23T23:39:34.331160+00:00",
+  "owned": {
+    "oss_endpoint_mode": "closed_loopback",
+    "mysql_full_id": "55ca744d025d8fd028b7713903a57fda7550ae0c2adff3983a2313d5e6a50c2a",
+    "redis_full_id": "aa43cc3de5b47abc6cfd4214a1c857564c9b6b975e15e3fb1e732db5a027b110",
+    "baseline": {
+      "tables": 103,
+      "outboxes": 0,
+      "oss_config_rows": 5,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0
+    },
+    "backend_pgid": 1592272
+  },
+  "observed": {
+    "core_http": {
+      "core": {
+        "path": "/actuator/health/readiness",
+        "http_status": 200,
+        "status": "UP",
+        "reason_codes": []
+      },
+      "liveness": {
+        "path": "/actuator/health/liveness",
+        "http_status": 200,
+        "status": "UP",
+        "reason_codes": []
+      },
+      "oss": {
+        "path": "/actuator/health/ossdiagnostics",
+        "http_status": 503,
+        "status": "DOWN",
+        "reason_codes": []
+      },
+      "login_http": 200,
+      "menu_http": 200,
+      "menu_count": 8
+    },
+    "startup_oss_endpoint_connections": null,
+    "diagnostic": {
+      "requested": false
+    },
+    "openapi": {
+      "requested": false
+    }
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 1592272,
+      "live": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "0154bc249fa96d14545f53acd47d3808f0d1a366ca28b6494cb6f091ffa9e341": true
+    },
+    "ports_closed": {
+      "57385": true,
+      "32932": true,
+      "32933": true,
+      "33269": true
+    },
+    "errors": []
+  },
+  "package_proof_sha256": "278ffea43974724b5dff98718b78291f1128f958dd6d5d817252f63eb3927a78",
+  "jar_sha256_before": "835b4de84b911ff77ba20ba003218f30af015559dccfadcdbc30fdf1d8d069a8",
+  "helper_sha256": "7afb43db7d0086aeda0778389ad2fba95252dddf221eec406024101662c3bf46",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "jar_sha256_after": "835b4de84b911ff77ba20ba003218f30af015559dccfadcdbc30fdf1d8d069a8",
+  "finished_utc": "2026-09-23T23:40:04.127388+00:00",
+  "private_raw_logs": [
+    "backend.raw.log",
+    "init.raw.log"
+  ]
+}

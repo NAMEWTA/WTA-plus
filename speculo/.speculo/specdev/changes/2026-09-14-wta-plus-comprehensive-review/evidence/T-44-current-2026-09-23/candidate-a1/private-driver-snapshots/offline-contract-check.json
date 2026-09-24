@@ -1,0 +1,36 @@
+{
+  "download_access_types_from_runtime": [
+    "PRIVATE",
+    "PUBLIC"
+  ],
+  "mc_sha256": "01f866e9c5f9b87c2b09116fa5d7c06695b106242d829a8bb32990c00312e891",
+  "mysql_root_password_provided_to_init_env": true,
+  "presigned_request_fields": [
+    "method",
+    "url",
+    "requiredHeaders",
+    "expiresAt"
+  ],
+  "readme_sha256": "338f99f97544cb8e26fcc197387cc0cd00844f86e6077f8c1832795b12bd355c",
+  "script_ast_parse": true,
+  "script_sha256": "7e285d14757e5bbe8f09d40b1f68b2b442589ffa53305f0310bcdc0cff48d85a",
+  "service_or_test_run": false,
+  "snapshot_only": true,
+  "source_sha256": {
+    "download_controller": "cb37320fda31dd5b47545bc4c4ed92a3104648220a684458831bf888f7c98473",
+    "oss_access_runtime": "5cb2445da60ec611d58f65e4a1eeaaef8d58fe12a8d89840e574cdea9278ff08",
+    "oss_public_api": "252096a3731a412d8c12cbbbe07a050d7b1019cfc1c229a485ed3d281994993d",
+    "owned_initializer": "b8ea0d3f76ee158e9bc609ed148c9d0c61bbad97af6c2b16dc16bbba0f9dd34d",
+    "presigned_request": "59f290050f45a1e1fc59d709685cab4418698c411acc3f246931795b06b49043",
+    "upload_contract": "592dff3028d6a8b21e7503b53d1e7c9c6deefcc9ca138c7cf17c9e1921f9b30b",
+    "upload_controller": "553abe56b357009d19934bb7a511942086775069731ba2d2a2fb9dc0c43e341a"
+  },
+  "upload_init_response_fields": [
+    "uploadToken",
+    "mode",
+    "expiresAt",
+    "presignedRequest",
+    "partSize",
+    "partCount"
+  ]
+}

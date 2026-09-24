@@ -1,0 +1,101 @@
+{
+  "category_counts": {
+    "admin_control_password": 0,
+    "minio_app_access_key": 7,
+    "minio_app_secret_key": 1,
+    "minio_root_password": 0,
+    "minio_root_user": 0,
+    "monitor_password": 0,
+    "mysql_app_password": 0,
+    "mysql_root_password": 0,
+    "ordinary_user_password": 0,
+    "redis_password": 0
+  },
+  "context_retained": false,
+  "locations": [
+    {
+      "categories": {
+        "minio_app_access_key": 1
+      },
+      "exception_classes": [],
+      "log_line": 875,
+      "logger": "org.namewta.system.http",
+      "stack_file": null,
+      "stack_line": null
+    },
+    {
+      "categories": {
+        "minio_app_access_key": 1
+      },
+      "exception_classes": [],
+      "log_line": 913,
+      "logger": "org.namewta.system.http",
+      "stack_file": null,
+      "stack_line": null
+    },
+    {
+      "categories": {
+        "minio_app_access_key": 1
+      },
+      "exception_classes": [],
+      "log_line": 1065,
+      "logger": "org.namewta.system.http",
+      "stack_file": null,
+      "stack_line": null
+    },
+    {
+      "categories": {
+        "minio_app_access_key": 1,
+        "minio_app_secret_key": 1
+      },
+      "exception_classes": [],
+      "log_line": 1078,
+      "logger": "org.namewta.system.http",
+      "stack_file": null,
+      "stack_line": null
+    },
+    {
+      "categories": {
+        "minio_app_access_key": 1
+      },
+      "exception_classes": [],
+      "log_line": 1089,
+      "logger": "org.namewta.system.http",
+      "stack_file": null,
+      "stack_line": null
+    },
+    {
+      "categories": {
+        "minio_app_access_key": 1
+      },
+      "exception_classes": [],
+      "log_line": 1131,
+      "logger": "org.namewta.system.http",
+      "stack_file": null,
+      "stack_line": null
+    },
+    {
+      "categories": {
+        "minio_app_access_key": 1
+      },
+      "exception_classes": [],
+      "log_line": 1139,
+      "logger": "org.namewta.system.http",
+      "stack_file": null,
+      "stack_line": null
+    }
+  ],
+  "locations_truncated": 0,
+  "matching_lines": 7,
+  "redaction_counts": {
+    "authorization": 0,
+    "full_url": 10,
+    "jwt": 26,
+    "known_canary": 8,
+    "session_token": 0
+  },
+  "sanitized_sha256": "73b216fe1e9827a6119a374e520ac1fc1341baf1a17df42958daf66ee8e89be3",
+  "source_bytes": 159976,
+  "source_lines": 1195,
+  "source_raw_sha256": "ecff41ec667abe3caebe434c4bd6fa79725bccc1a1238324a15de8ac8ee91418"
+}

@@ -1,0 +1,83 @@
+{
+  "accepted": false,
+  "cleanup_errors": [],
+  "counts": {
+    "startup_minio_calls": 0,
+    "tables": 103
+  },
+  "diagnostic": {
+    "elapsed_ms": 148,
+    "invalid_policy_fail_closed": true,
+    "missing_public_canary_did_not_block_get": true,
+    "ordinary_denied": true,
+    "private_a_call_delta": 5,
+    "reason": "READY",
+    "safe_three_fields": true,
+    "status": "SERVING"
+  },
+  "failure": {
+    "phase": "diagnostic",
+    "sql": {
+      "errno": 1267,
+      "sqlstate": "HY000",
+      "stage": "diagnostic_audit"
+    },
+    "type": "Exception"
+  },
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "jar_sha256": "835b4de84b911ff77ba20ba003218f30af015559dccfadcdbc30fdf1d8d069a8",
+  "minimal_privilege": {
+    "bucket_policy_write_denied": true,
+    "object_acl_write_denied": true,
+    "object_head_allowed": true
+  },
+  "owned": {
+    "containers": [
+      "ed9240acc6bdf517dc3be7ed7acdaa8290e5c7250fb429143301c512a3b14822",
+      "8f3c65e5ff87c96a2ec0f6307c3d81993fd5a033d618589cb07864654f1bd0c2",
+      "034af179b6c9c9ff258488436c0a1f3258dff7d25c1ea2a14a679af29beef57d"
+    ],
+    "owner_label": "T-44-MINIO",
+    "ports": [
+      32936,
+      32937,
+      32938,
+      40513,
+      44949
+    ],
+    "private_ephemeral_files_removed": true,
+    "process_groups": [
+      1600923
+    ],
+    "run_id": "c4d6b1dd5e8d3a26",
+    "volumes": [
+      "fcc23b91db06b2119a8684cac1b78963efc49a738a714786f89a1cd9257e5f64",
+      "f6a0da9c070e8c39b2444af8636b63d942064552f9d27c270d413deadf49970e"
+    ]
+  },
+  "phase": "diagnostic",
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "source": {
+    "clean": true,
+    "head": "e11c1b6f3a4a4a8bdc1746044d65fe8445c0865c",
+    "tree": "92781356146df461ab9815a13aa2884effc0740e"
+  }
+}

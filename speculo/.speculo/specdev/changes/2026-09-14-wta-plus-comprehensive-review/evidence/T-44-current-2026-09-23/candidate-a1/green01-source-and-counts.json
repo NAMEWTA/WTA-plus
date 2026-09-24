@@ -1,0 +1,20 @@
+{
+  "source_before": {
+    "head": "e12df1214314af78297c9d6510001bb707199b0b",
+    "tree": "77bd027215975afe18227c8ee4fe277730697e71",
+    "clean": true
+  },
+  "source_after": {
+    "head": "e12df1214314af78297c9d6510001bb707199b0b",
+    "tree": "77bd027215975afe18227c8ee4fe277730697e71",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [],
+  "counts": {
+    "tests": 0,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

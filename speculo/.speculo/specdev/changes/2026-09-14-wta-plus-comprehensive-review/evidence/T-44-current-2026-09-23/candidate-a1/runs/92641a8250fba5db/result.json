@@ -1,0 +1,64 @@
+{
+  "accepted": false,
+  "cleanup_errors": [],
+  "counts": {
+    "tables": 103
+  },
+  "failure": {
+    "phase": "owned_minio",
+    "type": "RuntimeError"
+  },
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "jar_sha256": "835b4de84b911ff77ba20ba003218f30af015559dccfadcdbc30fdf1d8d069a8",
+  "minimal_privilege": {
+    "bucket_policy_write_denied": true,
+    "object_acl_write_denied": true,
+    "object_head_allowed": true
+  },
+  "owned": {
+    "containers": [
+      "6274f9ec69effc941e2fedfa6a30b2cd931294fb0c773548fc881b270b33766c",
+      "86ceb3349f687b4327921a6dff710364138941c260447c94b142b6de50db9db4",
+      "fd4e287a7f4ab3b58b67b8ee4a3bf872b42e3beddbd69a10940a85f84f93a970"
+    ],
+    "owner_label": "T-44-MINIO",
+    "ports": [
+      32918,
+      32919,
+      32920,
+      33285
+    ],
+    "private_ephemeral_files_removed": true,
+    "process_groups": [],
+    "run_id": "92641a8250fba5db",
+    "volumes": [
+      "e752b67e689014ccc9a9ada92c38b8b4117456b571adaf6261873edd7e8e4292",
+      "135060f84b6e2d6161b13aa1e96870f099269efbe8d72efff420cf8ae21c714d"
+    ]
+  },
+  "phase": "owned_minio",
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "source": {
+    "clean": true,
+    "head": "e11c1b6f3a4a4a8bdc1746044d65fe8445c0865c",
+    "tree": "92781356146df461ab9815a13aa2884effc0740e"
+  }
+}

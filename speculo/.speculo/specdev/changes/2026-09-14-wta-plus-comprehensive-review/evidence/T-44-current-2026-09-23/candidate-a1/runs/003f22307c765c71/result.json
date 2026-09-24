@@ -1,0 +1,119 @@
+{
+  "gate": "T44 owned full-app core and scheduled Notify fallback",
+  "scenario": "duplicate-default",
+  "run_id": "003f22307c765c71",
+  "acceptance": true,
+  "exit_code": 0,
+  "source_before": {
+    "head": "e11c1b6f3a4a4a8bdc1746044d65fe8445c0865c",
+    "tree": "92781356146df461ab9815a13aa2884effc0740e",
+    "clean": true
+  },
+  "source_after": {
+    "head": "e11c1b6f3a4a4a8bdc1746044d65fe8445c0865c",
+    "tree": "92781356146df461ab9815a13aa2884effc0740e",
+    "clean": true
+  },
+  "started_utc": "2026-09-23T23:38:01.319891+00:00",
+  "owned": {
+    "oss_endpoint_mode": "counted_loopback_503",
+    "mysql_full_id": "217ffd126dff6fb16f8731a9f61283f64f554a7f064215ddda6e1711fb89231b",
+    "redis_full_id": "bf78a0287a834d1e639e5d22bed13673da3f6f9a7ff599c9373b46a11656f539",
+    "baseline": {
+      "tables": 103,
+      "outboxes": 0,
+      "oss_config_rows": 5,
+      "external_deliveries": 0,
+      "enabled_external_accounts": 0
+    },
+    "backend_pgid": 1583551
+  },
+  "observed": {
+    "core_http": {
+      "core": {
+        "path": "/actuator/health/readiness",
+        "http_status": 200,
+        "status": "UP",
+        "reason_codes": []
+      },
+      "liveness": {
+        "path": "/actuator/health/liveness",
+        "http_status": 200,
+        "status": "UP",
+        "reason_codes": []
+      },
+      "oss": {
+        "path": "/actuator/health/ossdiagnostics",
+        "http_status": 503,
+        "status": "DOWN",
+        "reason_codes": []
+      },
+      "login_http": 200,
+      "menu_http": 200,
+      "menu_count": 8
+    },
+    "startup_oss_endpoint_connections": 0,
+    "unusable_default": {
+      "stale_default_key_cleared": true,
+      "stale_config_map_cleared": true,
+      "upload_http": 200,
+      "upload_error": "STORAGE_NOT_SERVING",
+      "remote_oss_connections": 0,
+      "config_rows": 5,
+      "default_rows": 2,
+      "invalid_default_rows": 0
+    },
+    "diagnostic": {
+      "requested": false
+    },
+    "openapi": {
+      "requested": false
+    }
+  },
+  "cleanup": {
+    "backend_process_group": {
+      "pgid": 1583551,
+      "live": []
+    },
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "003f7487a316511c49d17136a06048ecd7bb6a3fa4234525a35eec93d5df692f": true
+    },
+    "ports_closed": {
+      "44033": true,
+      "32926": true,
+      "32927": true,
+      "47153": true
+    },
+    "errors": []
+  },
+  "package_proof_sha256": "278ffea43974724b5dff98718b78291f1128f958dd6d5d817252f63eb3927a78",
+  "jar_sha256_before": "835b4de84b911ff77ba20ba003218f30af015559dccfadcdbc30fdf1d8d069a8",
+  "helper_sha256": "7afb43db7d0086aeda0778389ad2fba95252dddf221eec406024101662c3bf46",
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "sql_baselines": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "jar_sha256_after": "835b4de84b911ff77ba20ba003218f30af015559dccfadcdbc30fdf1d8d069a8",
+  "finished_utc": "2026-09-23T23:38:32.601351+00:00",
+  "private_raw_logs": [
+    "backend.raw.log",
+    "init.raw.log"
+  ]
+}

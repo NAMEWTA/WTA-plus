@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-23T23:15:20.755794+00:00",
+  "updated_at": "2026-09-23T23:59:20.503444+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -164,7 +164,8 @@
     "revision198：T40已在26f04b94当前候选验收完成；真实Chrome2零skip/retry、source/JAR同值cleanup[]；新Python26/strictE2Etypes/全前端760/3App329产物/fresh full通过，后端R2按精确输入等价复用。14done/2cancelled/34ready，无in_progress；下一T44，Goal active，尚未完成或归档change。",
     "revision199：T44已激活，19条写集及5项Skill绑定已登记；先补诊断阻断的红灯测试，再实施业务解耦、容错启动、单配置诊断和健康组分离。14done/2cancelled/T44 in_progress/33ready；Goal active，未完成或归档change。",
     "revision200：T44定向红灯已证实，固定11960110的53例为49pass/1failure/3error/0skip；三条诊断前置阻断及空service仍进入Provider的缺陷均可重现。Dispatch01B开始产品实现，完整候选attempts0；14done/2cancelled/T44 in_progress/33ready，Goal active。",
-    "revision201：T44事前扩精确ProfileSelfMaterialsBrowserIntegrationTest配置消费者；20写集，其余合同/计数不变。"
+    "revision201：T44事前扩精确ProfileSelfMaterialsBrowserIntegrationTest配置消费者；20写集，其余合同/计数不变。",
+    "revision202：T44 A1源码e11c1b6f定向148全过，默认1115中899pass/216环境skip，full包通过；七组核心启动/Notify轮询真实场景通过。MinIO功能链已通过但日志检测发现access key与secret key，A1安全验收失败，整票仍in_progress。26条精确写集登记后补日志红灯与修复；14done/2cancelled/1in_progress/33ready，Goal active。"
   ],
   "worktrees": [
     {
@@ -779,9 +780,9 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": "11960110ff4f5a8c99a885dbf2866578fc8493af",
+      "source_checkpoint": "e11c1b6f3a4a4a8bdc1746044d65fe8445c0865c",
       "status": "active",
-      "updated_at": "2026-09-23T23:08:19.829263+00:00",
+      "updated_at": "2026-09-23T23:59:20.503444+00:00",
       "integration": {
         "status": "pending",
         "parent_ref": "main",
@@ -808,7 +809,7 @@
           "evidence": null
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-44.md</Path>",
-        "attempts": 0,
+        "attempts": 1,
         "promotion_status": "pending"
       }
     }
