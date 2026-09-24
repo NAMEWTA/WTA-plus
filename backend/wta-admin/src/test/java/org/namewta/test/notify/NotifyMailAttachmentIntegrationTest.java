@@ -1,6 +1,11 @@
 package org.namewta.test.notify;
 
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
+import cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff;
+import cn.dev33.satoken.context.model.SaTokenContextModelBox;
+import cn.dev33.satoken.servlet.model.SaRequestForServlet;
+import cn.dev33.satoken.servlet.model.SaResponseForServlet;
+import cn.dev33.satoken.servlet.model.SaStorageForServlet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -353,6 +358,7 @@ class NotifyMailAttachmentIntegrationTest {
         byte[] original = "shared-private-snapshot".getBytes(StandardCharsets.UTF_8);
         long source = source(original, "shared.txt");
         RequestAttributes previous = RequestContextHolder.getRequestAttributes();
+        SaTokenContextModelBox previousSa = SaTokenContextForThreadLocalStaff.getModelBoxOrNull();
         long intentId;
         try {
             login();
@@ -363,8 +369,7 @@ class NotifyMailAttachmentIntegrationTest {
                 "owned-shared-" + UUID.randomUUID(), Map.of(), List.of(String.valueOf(source)));
             intentId = Long.parseLong(notifications.submit(command).notificationId());
         } finally {
-            if (previous == null) RequestContextHolder.resetRequestAttributes();
-            else RequestContextHolder.setRequestAttributes(previous);
+            restoreRequestContext(previous, previousSa);
         }
         ownedIntents.add(intentId);
         assertThat(db.queryForObject("select count(*) from notify_delivery where intent_id=?", Integer.class,
@@ -647,6 +652,7 @@ class NotifyMailAttachmentIntegrationTest {
         int sentBefore = sender.sent.size();
         long intentId;
         RequestAttributes previous = RequestContextHolder.getRequestAttributes();
+        SaTokenContextModelBox previousSa = SaTokenContextForThreadLocalStaff.getModelBoxOrNull();
         try {
             assertThat(db.update("update sys_user set email='' where user_id=?", USER)).isEqualTo(1);
             login();
@@ -659,8 +665,7 @@ class NotifyMailAttachmentIntegrationTest {
             ownedIntents.add(intentId);
         } finally {
             db.update("update sys_user set email=? where user_id=?", originalEmail, USER);
-            if (previous == null) RequestContextHolder.resetRequestAttributes();
-            else RequestContextHolder.setRequestAttributes(previous);
+            restoreRequestContext(previous, previousSa);
         }
         assertThat(db.queryForObject("select status from notify_delivery where intent_id=?", String.class, intentId))
             .isEqualTo("UNDELIVERABLE");
@@ -813,6 +818,7 @@ class NotifyMailAttachmentIntegrationTest {
 
     private NotificationReceipt submit(List<String> ids, String body, String idempotencyKey) {
         RequestAttributes previous = RequestContextHolder.getRequestAttributes();
+        SaTokenContextModelBox previousSa = SaTokenContextForThreadLocalStaff.getModelBoxOrNull();
         try {
             login();
             NotificationCommand command = new NotificationCommand("owned-t42", "demo-mail", "demo", body,
@@ -824,14 +830,17 @@ class NotifyMailAttachmentIntegrationTest {
             ownedIntents.add(Long.parseLong(receipt.notificationId()));
             return receipt;
         } finally {
-            if (previous == null) RequestContextHolder.resetRequestAttributes();
-            else RequestContextHolder.setRequestAttributes(previous);
+            restoreRequestContext(previous, previousSa);
         }
     }
 
     private void login() {
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(
-            new MockHttpServletRequest(), new MockHttpServletResponse()));
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request, response));
+        // Sa-Token 1.45 的生产 Servlet filter 使用独立线程上下文，不能只设置 Spring holder。
+        SaTokenContextForThreadLocalStaff.setModelBox(new SaRequestForServlet(request),
+            new SaResponseForServlet(response), new SaStorageForServlet(request));
         LoginUser user = new LoginUser();
         user.setUserId(USER);
         user.setUsername("WTA");
@@ -843,6 +852,14 @@ class NotifyMailAttachmentIntegrationTest {
         assertThat(authenticated).isNotNull();
         assertThat(authenticated.getUserId()).isEqualTo(USER);
         assertThat(authenticated.getClientPk()).isEqualTo(CLIENT);
+    }
+
+    private void restoreRequestContext(RequestAttributes previous, SaTokenContextModelBox previousSa) {
+        if (previous == null) RequestContextHolder.resetRequestAttributes();
+        else RequestContextHolder.setRequestAttributes(previous);
+        if (previousSa == null) SaTokenContextForThreadLocalStaff.clearModelBox();
+        else SaTokenContextForThreadLocalStaff.setModelBox(previousSa.getRequest(),
+            previousSa.getResponse(), previousSa.getStorage());
     }
 
     private long source(byte[] bytes, String originalName) {
