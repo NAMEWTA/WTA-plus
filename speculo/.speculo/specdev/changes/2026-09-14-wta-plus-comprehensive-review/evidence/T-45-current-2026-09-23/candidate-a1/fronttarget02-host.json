@@ -1,0 +1,17 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/admin-web",
+    "exec",
+    "vitest",
+    "run",
+    "src"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-24T01:51:30.508647+00:00",
+  "finished_at": "2026-09-24T01:51:36.025801+00:00",
+  "exit_code": 0,
+  "log": "fronttarget02-host.log"
+}

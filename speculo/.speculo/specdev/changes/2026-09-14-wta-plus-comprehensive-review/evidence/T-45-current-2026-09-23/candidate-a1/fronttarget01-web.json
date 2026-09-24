@@ -1,0 +1,18 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/web-domain-system",
+    "exec",
+    "vitest",
+    "run",
+    "src/oss-config/OssConfigPage.test.ts",
+    "src/index.test.ts"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-24T01:50:43.235073+00:00",
+  "finished_at": "2026-09-24T01:50:45.038865+00:00",
+  "exit_code": 0,
+  "log": "fronttarget01-web.log"
+}

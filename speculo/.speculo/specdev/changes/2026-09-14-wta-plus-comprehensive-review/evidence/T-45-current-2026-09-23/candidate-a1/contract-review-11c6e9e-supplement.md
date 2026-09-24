@@ -1,0 +1,16 @@
+# T45 fixed 11c6e9e HTTP-basis and unit-coverage supplement
+
+Read-only delta review: `8dc775b121c2e1f27e1d7326b2c680bc7e4a057a...11c6e9e6f74e218b8d75bb9d41a2c5c384e51b40`; only `AbstractOssClientImpl.java` and `OssAccessDiagnosticUnitTest.java` changed. No build, tests, service or repository writes by this reviewer. The prior same-user-session finding in `/tmp/wta-t45/contract-review-8dc775b.md` remains separate and pending its fixed delta.
+
+## Incremental source verdict: no new production blocker
+
+`AbstractOssClientImpl.java:1378–1400` now maps AWS service response status 401/403 to `HTTP_DENIED`, 404 to `HTTP_NOT_FOUND`, 3xx to `REDIRECT`, and other AWS response statuses including 500 to `HTTP_ERROR`; timeout, interrupt and non-response network failures keep their distinct basis. This prevents an actual policy HTTP 500 from being mislabeled a network failure, while no status becomes an ALLOWED/DENIED policy observation. The changed test (`OssAccessDiagnosticUnitTest.java:168–190`) correctly expects top-level `UNVERIFIED/INSUFFICIENT_EVIDENCE`, requires both policy facts to be `UNKNOWN/HTTP_ERROR`, preserves an independent anonymous GET denial, and checks the provider's sensitive text is absent from `toString`. The old top-level `POLICY_UNREADABLE` expectation was incompatible with the new partial-fact classifier; changing it is not a weakening of a real 403 case.
+
+## Narrow test-evidence gaps to close or explicitly cover in required real verification
+
+1. Deny precedence is not directly asserted for **the same action and same resource**. The existing `denyDeleteDoesNotHideAnAllowedPutDeclaration` checks independent actions, which is valuable but does not regress `Allow GetObject + Deny GetObject → POLICY_READ DENIED` or `Allow PutObject + Deny PutObject → POLICY_WRITE UNKNOWN rather than ALLOWED`. The implementation uses `readDeny` and per-action `writeAllows.removeAll(writeDenies)`, so this is a test gap rather than a demonstrated source bug. Ticket revision206 explicitly requires Deny precedence.
+2. `timeoutIsUnverifiedAndDoesNotLeakProviderDetails` (`:122–133`) covers the signed HEAD precheck's top-level timeout but does not assert the pending future was cancelled. Independent Policy/ACL timeout and anonymous HEAD timeout followed by a successful GET are not covered by that test. The suite does cover non-timeout independence (HEAD 404 + GET 206 at `:251–261`, signed HEAD 403 + GET 206 at `:358–369`), interrupted precheck stops later S3 probes (`:371–386`), and an ignored Range body does not hold the call (`:324–356`). A small focused test or the planned bounded, restricted MinIO driver should give evidence for cancellation and partial timeout facts; source static inspection alone cannot prove SDK work is actually reclaimed.
+
+Complex-policy coverage is substantive: Condition, NotAction, unrelated bucket/prefix, nonpublic principal, invalid JSON and unsupported IAM action all stay UNKNOWN in `:263–305`. The specific same-action Deny case above is the remaining meaningful policy-test omission; no general IAM interpreter expansion is requested.
+
+This is not a final candidate acceptance. I have not reused the failed `green01` run as a passing run for 11c6e9e and have not attributed future tests or the pending OpenAPI capture to this SHA.

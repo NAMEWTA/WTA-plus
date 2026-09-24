@@ -1,0 +1,119 @@
+{
+  "accepted": false,
+  "cleanup_errors": [],
+  "counts": {
+    "startup_minio_calls": 0,
+    "tables": 103
+  },
+  "diagnostic": {
+    "public_arrivals": 5,
+    "public_observed_provider_rows": [
+      {
+        "bucket_alias": "public",
+        "category": "ACL",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "GET",
+        "range": true,
+        "signed": false,
+        "status": 404
+      },
+      {
+        "bucket_alias": "public",
+        "category": "POLICY",
+        "count": 1,
+        "method": "GET",
+        "range": false,
+        "signed": true,
+        "status": 403
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": false,
+        "status": 404
+      },
+      {
+        "bucket_alias": "public",
+        "category": "OBJECT",
+        "count": 1,
+        "method": "HEAD",
+        "range": false,
+        "signed": true,
+        "status": 200
+      }
+    ]
+  },
+  "failure": {
+    "fixed_reason": "single-object anonymous fact differs",
+    "phase": "public",
+    "type": "RuntimeError"
+  },
+  "full_bundle_modules": [
+    "wta-system",
+    "wta-notify",
+    "wta-third",
+    "wta-sso",
+    "wta-profile-person",
+    "wta-profile-enterprise",
+    "wta-job",
+    "wta-ai",
+    "wta-demo",
+    "wta-workflow"
+  ],
+  "jar_sha256": "f85f0df578072c12317f50ea7a6c3841d9f2c7af8050c416b2969151e73dc3f1",
+  "minimal_privilege": {
+    "bucket_policy_write_denied": true,
+    "object_acl_write_denied": true,
+    "object_head_allowed": true
+  },
+  "owned": {
+    "containers": [
+      "a96aec7166e128b8b041c12f41d49afd297a2ad34a16510b3766a4d34335e39a",
+      "3112eaa7af51584f45a7253345d6aaa01b711295f55941b13685f6bc3f171887",
+      "73f6919ce4dd6eb2a08c55c642c4c792d39cc5bd491aaac4fbcd4c61824cf66e"
+    ],
+    "owner_label": "T-45-DIAGNOSTIC",
+    "ports": [
+      32972,
+      32973,
+      32974,
+      35099,
+      60467
+    ],
+    "private_ephemeral_files_removed": true,
+    "process_groups": [
+      1896998
+    ],
+    "run_id": "e9853018a23b0d59",
+    "volumes": [
+      "ffe20f43d2ac89f74bc788cbd6f50f463f2c240edc2df012fcab7e78ab8abc53",
+      "d32aea9965760027d3b35014c9364f3a7ec7c44e8e27097e4ee8522b1880cbde"
+    ]
+  },
+  "phase": "public",
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "e66676cda05145e8e1f17532bcaf3ce9c979671fa9a263b4097a43657f764aa5",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "74f1d963bd6c53021b86ecf2bc0c2e86c86eab217b59abfc4cb045b44d337c23",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "source": {
+    "clean": true,
+    "head": "081c75ff92b147bd338ca98a041182973596bca2",
+    "tree": "c2b19640b965b395b83f19faed5e0e4f08a9f493"
+  }
+}

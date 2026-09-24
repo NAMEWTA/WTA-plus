@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /srv/WTA-plus/frontend/apps/admin-web
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  21:50:47
+   Duration  2.39s (transform 1.53s, setup 0ms, import 2.19s, tests 69ms, environment 0ms)
+

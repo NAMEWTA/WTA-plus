@@ -1,0 +1,17 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "--filter",
+    "@namewta/domain-system",
+    "exec",
+    "vitest",
+    "run",
+    "src/resource-service.test.ts"
+  ],
+  "cwd": "/srv/WTA-plus/frontend",
+  "started_at": "2026-09-24T01:51:27.278781+00:00",
+  "finished_at": "2026-09-24T01:51:28.372581+00:00",
+  "exit_code": 0,
+  "log": "fronttarget02-domain.log"
+}

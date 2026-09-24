@@ -1,0 +1,13 @@
+{
+  "source_head": "081c75ff92b147bd338ca98a041182973596bca2",
+  "tests": {
+    "domain": 12,
+    "web": 17,
+    "host_subset": 7
+  },
+  "test_commands_exit": 0,
+  "wrapper_exit": 1,
+  "cause": "Admin Vite auto-import generator removes declarations not encountered in selected test subset",
+  "restored_only": "frontend/apps/admin-web/src/types/auto-imports.d.ts",
+  "next": "run full Admin suite with generated-source fence"
+}
