@@ -163,6 +163,44 @@ class OssAccessDiagnosticUnitTest {
         assertThat(brokenResult.toString()).doesNotContain("sensitive provider detail");
     }
 
+    @Test
+    void unreadablePolicyAndAclDoNotContradictObservedPublicObjectRead() throws Exception {
+        startServer(200, 206);
+
+        OssAccessDiagnostic result = client(unreadablePolicyAndAcl()).diagnoseAccess(
+            "diagnostic/canary.txt", AccessPolicy.PUBLIC_READ, Duration.ofSeconds(2));
+
+        assertThat(result.anonymousHeadAllowed()).isTrue();
+        assertThat(result.anonymousGetAllowed()).isTrue();
+        assertThat(result.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
+        assertThat(result.reason()).isNotEqualTo(OssAccessDiagnostic.Reason.POLICY_MISMATCH);
+        assertThat(result.anonymousWriteDenied()).isFalse();
+    }
+
+    @Test
+    void privateObject403AndUnreadablePolicyDoNotProveBucketWideSafety() throws Exception {
+        startServer(403, 403);
+
+        OssAccessDiagnostic result = client(unreadablePolicyAndAcl()).diagnoseAccess(
+            "diagnostic/canary.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(2));
+
+        assertThat(result.anonymousHeadAllowed()).isFalse();
+        assertThat(result.anonymousGetAllowed()).isFalse();
+        assertThat(result.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
+        assertThat(result.anonymousWriteDenied()).isFalse();
+    }
+
+    private S3AsyncClient unreadablePolicyAndAcl() {
+        S3AsyncClient s3 = mock(S3AsyncClient.class);
+        when(s3.headObject(any(Consumer.class)))
+            .thenReturn(CompletableFuture.completedFuture(HeadObjectResponse.builder().contentLength(1L).build()));
+        S3Exception denied = (S3Exception) S3Exception.builder().statusCode(403)
+            .message("sensitive provider detail").build();
+        when(s3.getBucketPolicy(any(Consumer.class))).thenReturn(CompletableFuture.failedFuture(denied));
+        when(s3.getBucketAcl(any(Consumer.class))).thenReturn(CompletableFuture.failedFuture(denied));
+        return s3;
+    }
+
     private S3AsyncClient provider(String policy, CompletableFuture<GetBucketAclResponse> acl) {
         S3AsyncClient s3 = mock(S3AsyncClient.class);
         when(s3.headObject(any(Consumer.class)))
