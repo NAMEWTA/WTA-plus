@@ -83,7 +83,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 @Tag("dev")
 @EnabledIfSystemProperty(named = "notify.mail.attachment.integration", matches = "true")
-@SpringBootTest(classes = NamewtaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = NamewtaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @Import(NotifyMailAttachmentIntegrationTest.CaptureMailConfiguration.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
