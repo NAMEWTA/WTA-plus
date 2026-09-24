@@ -1282,8 +1282,20 @@ public abstract class AbstractOssClientImpl implements OssClient {
     private List<OssAccessDiagnostic.Fact> anonymousReadFacts(String bucket, String key, Duration timeout) {
         List<OssAccessDiagnostic.Fact> facts = new ArrayList<>(2);
         try {
+            // 自定义域名已经绑定默认桶，与 DefaultOssObjectStore.publicUrl 使用相同的基础地址。
+            String base = config.domain().filter(StringUtils::isNotBlank)
+                .map(ignored -> config.getDomainUrl()).orElseGet(() -> config.getBucketUrl(bucket));
+            URI baseUri = URI.create(base);
+            if (baseUri.getHost() == null || baseUri.getUserInfo() != null
+                || baseUri.getRawQuery() != null || baseUri.getRawFragment() != null) {
+                throw new IllegalArgumentException("invalid diagnostic URL base");
+            }
+            String normalized = base;
+            while (normalized.endsWith(StringUtils.SLASH)) {
+                normalized = normalized.substring(0, normalized.length() - 1);
+            }
             String encodedKey = SdkHttpUtils.urlEncodeIgnoreSlashes(key);
-            URI objectUri = URI.create(config.getBucketUrl(bucket) + StringUtils.SLASH + encodedKey);
+            URI objectUri = URI.create(normalized + StringUtils.SLASH + encodedKey);
             try (HttpClient client = HttpClient.newBuilder().connectTimeout(timeout)
                 .followRedirects(HttpClient.Redirect.NEVER).build()) {
                 HttpRequest head = HttpRequest.newBuilder(objectUri).timeout(timeout)

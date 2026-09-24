@@ -41,6 +41,7 @@ class OssAccessDiagnosticUnitTest {
 
     private HttpServer server;
     private final List<String> observedMethods = new CopyOnWriteArrayList<>();
+    private final List<String> observedPaths = new CopyOnWriteArrayList<>();
 
     @AfterEach
     void stopServer() {
@@ -66,6 +67,41 @@ class OssAccessDiagnosticUnitTest {
             .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
         assertThat(observation(result, OssAccessDiagnostic.Subject.POLICY_WRITE))
             .isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
+    }
+
+    @Test
+    void anonymousProbesUseBucketBoundDomainAndEncodeObjectKeyExactlyOnce() throws Exception {
+        String key = "documents/a b+#.txt";
+        String path = "/assets/documents/a%20b%2B%23.txt";
+        startPathServer(path);
+        String domain = "127.0.0.1:" + server.getAddress().getPort() + "/assets///";
+
+        OssAccessDiagnostic result = client(provider(publicReadPolicy(), completedAcl()), domain)
+            .diagnoseAccess(key, AccessPolicy.PUBLIC_READ, Duration.ofSeconds(2));
+
+        assertThat(observation(result, OssAccessDiagnostic.Subject.OBJECT_HEAD))
+            .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
+        assertThat(observation(result, OssAccessDiagnostic.Subject.OBJECT_GET))
+            .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
+        assertThat(observedMethods).containsExactly("HEAD", "GET");
+        assertThat(observedPaths).containsExactly(path, path);
+    }
+
+    @Test
+    void invalidBucketBoundDomainsNeverIssueAnonymousRequests() throws Exception {
+        startPathServer("/assets/diagnostic/canary.txt");
+        String address = "127.0.0.1:" + server.getAddress().getPort();
+        for (String domain : List.of("user:secret@" + address + "/assets",
+            address + "/assets?credential=secret", address + "/assets#fragment")) {
+            OssAccessDiagnostic result = client(provider(publicReadPolicy(), completedAcl()), domain)
+                .diagnoseAccess("diagnostic/canary.txt", AccessPolicy.PUBLIC_READ, Duration.ofSeconds(2));
+            assertThat(observation(result, OssAccessDiagnostic.Subject.OBJECT_HEAD))
+                .isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
+            assertThat(observation(result, OssAccessDiagnostic.Subject.OBJECT_GET))
+                .isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
+        }
+        assertThat(observedMethods).isEmpty();
+        assertThat(observedPaths).isEmpty();
     }
 
     @Test
@@ -474,9 +510,18 @@ class OssAccessDiagnosticUnitTest {
     }
 
     private DiagnosticClient client(S3AsyncClient s3, boolean diagnosticSupported) {
+        return client(s3, diagnosticSupported, null);
+    }
+
+    private DiagnosticClient client(S3AsyncClient s3, String domain) {
+        return client(s3, true, domain);
+    }
+
+    private DiagnosticClient client(S3AsyncClient s3, boolean diagnosticSupported, String domain) {
         DiagnosticClient.initializingClient = s3;
         return new DiagnosticClient(OssClientConfig.builder()
             .endpoint("127.0.0.1:" + (server == null ? 1 : server.getAddress().getPort()))
+            .domain(domain)
             .useHttps(false)
             .usePathStyleAccess(true)
             .accessKey("access-key")
@@ -493,6 +538,19 @@ class OssAccessDiagnosticUnitTest {
         server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
         server.createContext("/bucket/diagnostic/canary.txt", exchange ->
             respond(exchange, "HEAD".equals(exchange.getRequestMethod()) ? headStatus : getStatus));
+        server.start();
+    }
+
+    private void startPathServer(String expectedPath) throws IOException {
+        observedMethods.clear();
+        observedPaths.clear();
+        server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/", exchange -> {
+            observedPaths.add(exchange.getRequestURI().getRawPath());
+            boolean expected = expectedPath.equals(exchange.getRequestURI().getRawPath());
+            int status = !expected ? 404 : "HEAD".equals(exchange.getRequestMethod()) ? 200 : 206;
+            respond(exchange, status);
+        });
         server.start();
     }
 
