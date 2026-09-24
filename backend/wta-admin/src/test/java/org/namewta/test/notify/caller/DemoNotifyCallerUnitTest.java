@@ -4,6 +4,10 @@ import org.namewta.notify.api.*;
 import org.namewta.demo.controller.MailSendController;
 import org.namewta.demo.controller.SmsController;
 import org.namewta.demo.controller.WebSocketController;
+import org.namewta.notify.domain.entity.NotifyChannelAccount;
+import org.namewta.notify.domain.entity.NotifySceneBinding;
+import org.namewta.notify.support.NotifySendPlanner;
+import org.namewta.notify.support.NotifyTemplateRenderer;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -33,6 +37,35 @@ class DemoNotifyCallerUnitTest {
         assertEquals(List.of(77L), requests.getAllValues().get(1).templateParams().get("attachmentOssIds"));
         assertEquals(List.of(77L, 88L), requests.getAllValues().get(2).templateParams().get("attachmentOssIds"));
         assertTrue(requests.getAllValues().stream().allMatch(request -> request.channels().equals(List.of(NotificationChannel.MAIL))));
+    }
+
+    @Test
+    void mailDemoBodyWithoutLinkPassesRealPlannerWhileNoticeStillNeedsPath() {
+        NotificationApplicationService notificationService = acceptingService();
+        new MailSendController(notificationService).sendSimpleMessage("user@example.com", "主题", "正文");
+        ArgumentCaptor<NotificationCommand> captured = ArgumentCaptor.forClass(NotificationCommand.class);
+        verify(notificationService).submit(captured.capture());
+        NotificationCommand command = captured.getValue();
+        NotifySceneBinding binding = new NotifySceneBinding();
+        binding.setAccountId(11L);
+        binding.setMailSubject("${title}");
+        binding.setMailBody("${content}");
+        NotifyChannelAccount account = new NotifyChannelAccount();
+        account.setAccountId(11L);
+        account.setChannel("MAIL");
+        account.setConfigKey("owned-mail");
+        account.setEnabled("Y");
+
+        var planned = NotifySendPlanner.preflight(command.sceneCode(), "MAIL",
+            NotifyTemplateRenderer.stringify(command.templateParams()), binding, account);
+        assertTrue(planned.ok(), () -> "正文邮件不得因缺少链接失败：" + planned.errorCode());
+        assertEquals("demo-mail", command.sceneCode());
+        assertEquals("主题", planned.subject());
+        assertEquals("正文", planned.body());
+        var protectedNotice = NotifySendPlanner.preflight("notice-published", "MAIL",
+            NotifyTemplateRenderer.stringify(command.templateParams()), binding, account);
+        assertFalse(protectedNotice.ok());
+        assertEquals("MISSING_VARIABLE", protectedNotice.errorCode());
     }
 
     @Test
