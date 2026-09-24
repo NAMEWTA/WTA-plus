@@ -1,6 +1,6 @@
 # WTA-plus comprehensive review：当前执行入口
 
-revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
+revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线，生产尚未优化；7写根内仅新增测量测试，common batch事务独立核查。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
 
 最近验收为T42，result `d95b464e46ec73d7a913809f4c84332a7f2eeffb`，详见 `evidence/T-42.md`；下一T43通知扇出测量。
 
@@ -504,3 +504,9 @@ revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/
 revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
 
 base `5417c257130216e2b283ca933d9496d76c10f46a`，source/result `d95b464e46ec73d7a913809f4c84332a7f2eeffb`，tree `39f18706226fed11ed19b5cdc1f822d60492350c`，current-workspace/direct-parent。完整证据见 `evidence/T-42.md` 与 `evidence/T-42-current-2026-09-24/complete-dispatch05/manifest.json`。Dispatch05修复8项真实分层错误后已复验新事务代理链；原失败、旧源验收与Windows单项用户豁免均保留原记录，不追认改写。当前批attempts1，未部署、推送或归档。
+
+## revision239 — T43基线测量启动
+
+revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线，生产尚未优化；7写根内仅新增测量测试，common batch事务独立核查。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
+
+基线 `dd250b947576505425b67ebac0a559c56616952c`；首轮精确产品写路径 `backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyFanoutMeasurementIntegrationTest.java`。Lead治理提交后cors_audit单writer；legacy_audit仓库只读审计，ops_audit仅/tmp驱动准备，Lead独占服务/命令/提交。固定三档各三次fresh同输入A/B、真实发布事务/固定10次结果/SQL行与执行数/锁等待/内存，故障回滚和唯一性为硬门禁；生产优化必须有A测量依据，聚合不新增状态机或虚构SLA。全部AC仍未勾，未运行不报通过。
