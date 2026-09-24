@@ -1,0 +1,39 @@
+{
+  "source_before": {
+    "head": "2534405fe3a44bad72da458d65648e0d6de1eba2",
+    "tree": "c0e51631ec27478c71659abd7db644d1b17c1feb",
+    "clean": true
+  },
+  "source_after": {
+    "head": "2534405fe3a44bad72da458d65648e0d6de1eba2",
+    "tree": "c0e51631ec27478c71659abd7db644d1b17c1feb",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "store-order-red-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest.xml",
+      "sha256": "555c9cee44087c362734bba2ec072c8299eb800d05f0c56fe51f6de60b89d029",
+      "suite": "org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "shouldDiscoverRedissonFromActualAutoConfigurationOrder",
+          "kind": "failure",
+          "type": "org.opentest4j.AssertionFailedError"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tests": 3,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  }
+}

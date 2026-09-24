@@ -1,0 +1,16 @@
+{
+  "kind": "t42-private-v5-offline-freeze",
+  "product_review_sha": "0595e2ccbd03474bced92809b2ac9056c9a15751",
+  "files": {
+    "safe_s3_count_proxy_v5.py": "0b465c2a3a518ad503daeeba787df14a9cc4be06f48d42de517ff9fc14020fca",
+    "run-notify-mail-attachment-integration-v5.py": "25ee81558bffd6e0a28b4130b06641bce0c450b9bb2cf7717e1d733179bc7faa",
+    "test_s3_fault_proxy_v5.py": "cc5214eb921f9117897b9825683ae2c029370407488f03078b01c99169b815cd",
+    "phase-fault-v5-runbook.md": "e8e6bbef865e3976c4139317afb6634cb6f3001d8dc87218c919af7782a7aaf3"
+  },
+  "offline": {
+    "py_compile_exit": 0,
+    "unittest_exit": 0,
+    "tests": 14
+  },
+  "real_service_executed": false
+}

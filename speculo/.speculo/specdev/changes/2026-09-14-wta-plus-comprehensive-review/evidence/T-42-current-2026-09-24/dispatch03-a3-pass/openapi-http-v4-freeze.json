@@ -1,0 +1,31 @@
+{
+  "kind": "T42 full-JAR OpenAPI and HTTP attachment contract private runner v4 freeze",
+  "runner": {
+    "path": "/tmp/wta-t42/capture-live-openapi-v4.py",
+    "sha256": "a467d3d9cb124308914d4e67a28819be407eaed4b6a4ef81d55bb6b5c80fbbee"
+  },
+  "offline_test": {
+    "path": "/tmp/wta-t42/test_openapi_http_capture_safety_v4.py",
+    "sha256": "f781df3edeba12dd99a6d76877235ee6e192437ec5b7cf5a4c9052b22776512c",
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "exit_code": 0
+  },
+  "runbook": {
+    "path": "/tmp/wta-t42/openapi-http-v4-runbook.md",
+    "sha256": "932a33af1be2da9646547e97917e13d183cc3bd0df0d1948df46874a7e11493e"
+  },
+  "static_preflight": {
+    "path": "/tmp/wta-t42/openapi-http-v4-preflight.json",
+    "exit_code": 0,
+    "service_started": false,
+    "observed_source_head": "4f30529bdb31c77eb6aa4d3c3c9c03ca3443fe29",
+    "observed_source_clean": false,
+    "note": "Preflight exit 0 confirms pinned inputs and SQL shape only; execution still requires a later exact clean HEAD and full JAR proof."
+  },
+  "previous_runner_sha256": "1a77d7034f4326b325be70bca69f8d5acbda74eccd76ff96c778ede0b25be728",
+  "py_compile_exit_code": 0,
+  "real_services_started": false,
+  "real_acceptance_run": false
+}

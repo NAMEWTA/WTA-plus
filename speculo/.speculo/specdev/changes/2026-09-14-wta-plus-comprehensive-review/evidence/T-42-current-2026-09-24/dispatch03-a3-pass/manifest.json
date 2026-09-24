@@ -1,0 +1,217 @@
+{
+  "status": "PARTIAL_GATES_PASSED_TICKET_PENDING",
+  "source_head": "764820dd90a17e5c6329fca5b5330000058dd1c7",
+  "historical_failed_attempts": 8,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "191f389595ff558e7128861d3c8f60afc00006fe72665dd96a8ddfbd6eae2c2b",
+      "bytes": 2344
+    },
+    {
+      "path": "dispatch03-a3-mail-methods.json",
+      "sha256": "7a9955d611ac03e2418e116c983c74f0f8d9e2c477ae822670f734a979fc1667",
+      "bytes": 2953
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAttachmentRuntimeRedTest.xml",
+      "sha256": "e2c22d1543dc57fe68db55a2a7fc4d35f1685257e0ddf0996e4d13063a898256",
+      "bytes": 93844
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest.xml",
+      "sha256": "16b35245dcf4b0e4da686462256f7a6bcce33362faac3d820fe3e303c5d43cc7",
+      "bytes": 93829
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest.xml",
+      "sha256": "199cb5b5b9724fb8cd8755b1c92a5c0956c5c822ff325fe3b8e3625ed0154fde",
+      "bytes": 94602
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+      "sha256": "138183ce7344faf9f0e320af75dd18750bc887f0ee6e52d891d0bc960465af01",
+      "bytes": 94766
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest.xml",
+      "sha256": "71e06d0a04ec8a9af48b7fcd41cff10bd406d7ea0e0706dceca2b30df8571835",
+      "bytes": 93515
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.xml",
+      "sha256": "656e8048c759376466819dd4d3620caf9043404b75b26f744d66d4fb0f73cd28",
+      "bytes": 94032
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest.xml",
+      "sha256": "9d062a1a26fa05d86c6c1ce663176b0a561dbec2cb68ccc3a1d2bda4732686d2",
+      "bytes": 93821
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyDispatcherUnitTest.xml",
+      "sha256": "9b8a834040f5df1e4c1604d4f10c0dec84e7729234e81c8eea0a48f3d8f0fc8b",
+      "bytes": 95351
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest.xml",
+      "sha256": "0314f526decf1ddf75286a9575e2c825c63e2ce3a1f43e8ec3521447a0c39af1",
+      "bytes": 93903
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest.xml",
+      "sha256": "f51f251fa637eb7daaea6247340b04e10218af585d1e1e4108f35ef0ef20d6d7",
+      "bytes": 95266
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest.xml",
+      "sha256": "e346f80050ec5f3f1d644e84b8e07dbaa91e7ae7ccd72594a3ad5c86d5f16aa7",
+      "bytes": 93998
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-common/wta-common-oss/target/surefire-reports/TEST-org.namewta.common.oss.client.OssBoundedTransferTest.xml",
+      "sha256": "85a638abca02a52292807fbd8509bd407d8fc6a8d3561c633cb232b1a6923ba0",
+      "bytes": 32921
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest.xml",
+      "sha256": "87f5ca07b307cf690fc9d4941a39ad29189726a78c1592e26f3017d5c2c5bd74",
+      "bytes": 59361
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.DispatchNotificationServiceTest.xml",
+      "sha256": "2fa77618fbbc8a844eb8ae225e638b639392b52fdbed0defbfaa2a78187c70ed",
+      "bytes": 61041
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest.xml",
+      "sha256": "b78cecb75567d709f4f4b18898bf56bfad3443167f6cd4b63e2356e3ef7e9932",
+      "bytes": 58253
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest.xml",
+      "sha256": "68bdf194e618f4a5ed4a9acd2177e79c4286db0dd612a3ec569ed6a7b14f005b",
+      "bytes": 58431
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest.xml",
+      "sha256": "b050e23bf627c15291690840c914125cf640d88e3c89b93861b55f451015f3c6",
+      "bytes": 60220
+    },
+    {
+      "path": "dispatch03-a3-targeted-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindNotificationTest.xml",
+      "sha256": "d44988fb3d1a23fb5d3231bb515bb785d99855425b6965d99c51dfeca3058707",
+      "bytes": 59503
+    },
+    {
+      "path": "dispatch03-a3-targeted-source-and-counts.json",
+      "sha256": "fa1a9c2576d1624d2dc3703478c04cfc872f60a9c0d44a5df143045f6795e03a",
+      "bytes": 9113
+    },
+    {
+      "path": "dispatch03-a3-targeted.json",
+      "sha256": "4f5c0bba6886a6fd7932661300d98d68064aff4f721794cfd16d26d6c9701cac",
+      "bytes": 1014
+    },
+    {
+      "path": "dispatch03-a3-targeted.log",
+      "sha256": "a790ac770c0a5c4dc8d72bf7b9de31c5cf9b16df8965e73ae0b4bc7638b1aee3",
+      "bytes": 78012
+    },
+    {
+      "path": "lead-retrospective-dispatch02b.md",
+      "sha256": "8bf1469cf4ad29c5b55b0286dd49a073761b9dd3ce63ef54d904dd224fa6a8c0",
+      "bytes": 3788
+    },
+    {
+      "path": "mail-run/init.log",
+      "sha256": "5cd51bae323ab1f28b06199d39c388cf919f1e9ed3c7992b8df3e4d256e79c3f",
+      "bytes": 64013
+    },
+    {
+      "path": "mail-run/maven.log",
+      "sha256": "14f883dae94470f15aa697220661bad8e7d7aead0d1732e28c921b7be4d74947",
+      "bytes": 362954
+    },
+    {
+      "path": "mail-run/result.json",
+      "sha256": "4fcb6b3935037286076a11f116d7aca96e45242ddc7419298f6e320160b4dc83",
+      "bytes": 8117
+    },
+    {
+      "path": "mail-run/xml/TEST-org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.xml",
+      "sha256": "c53ff36caec12986b8133a5cdb3c733439f40740e83ab43f8798e1cc84bdc149",
+      "bytes": 414708
+    },
+    {
+      "path": "mail-run/xml/org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.txt",
+      "sha256": "2e5cc426aad680115ce54a1fbc2376e25d2fbdb0da88ceeb3d22bd09fecd81c2",
+      "bytes": 369
+    },
+    {
+      "path": "notify-redisson-autoconfig-order-audit.md",
+      "sha256": "4ce04d1d469428a8f778167e980159991a0446c2f386336a77fa5657007a3970",
+      "bytes": 4719
+    },
+    {
+      "path": "openapi-http-v4-freeze.json",
+      "sha256": "8b1b8995299389ccf633b3f34f193f35c68890ff97ae6a54f83ad2dbe61c14fd",
+      "bytes": 1228
+    },
+    {
+      "path": "phase-fault-v5-freeze.json",
+      "sha256": "bf401b3cc1af29d1c1c80aa7b96f6e3796561ab4258cf9d850599a9e93513e05",
+      "bytes": 674
+    },
+    {
+      "path": "phase-fault-v5-runbook.md",
+      "sha256": "e8e6bbef865e3976c4139317afb6634cb6f3001d8dc87218c919af7782a7aaf3",
+      "bytes": 2834
+    },
+    {
+      "path": "review-openapi-http-v4-independent.md",
+      "sha256": "c558ddeebc46c465b3f4985194e9301ba40a273d40929f380e6c55768351c16d",
+      "bytes": 3276
+    },
+    {
+      "path": "run-notify-mail-attachment-integration-v5.py",
+      "sha256": "25ee81558bffd6e0a28b4130b06641bce0c450b9bb2cf7717e1d733179bc7faa",
+      "bytes": 37871
+    },
+    {
+      "path": "safe_s3_count_proxy_v5.py",
+      "sha256": "0b465c2a3a518ad503daeeba787df14a9cc4be06f48d42de517ff9fc14020fca",
+      "bytes": 17298
+    },
+    {
+      "path": "store-order-764820dd-review.md",
+      "sha256": "a482c7131414416df66777cb0c6f7d6f703b928f095cb5bf1610abd30b96a3a0",
+      "bytes": 2611
+    },
+    {
+      "path": "store-order-red-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest.xml",
+      "sha256": "555c9cee44087c362734bba2ec072c8299eb800d05f0c56fe51f6de60b89d029",
+      "bytes": 96105
+    },
+    {
+      "path": "store-order-red-source-and-counts.json",
+      "sha256": "9ff09eb504eb7f2ee16334e6f829af0d2c12ad3f80effb1ee532322e056edf8b",
+      "bytes": 1121
+    },
+    {
+      "path": "store-order-red.json",
+      "sha256": "e6e2e1de2d12244b147f883bc687c9946babf869173ca252c5b48048e6b5ad64",
+      "bytes": 470
+    },
+    {
+      "path": "store-order-red.log",
+      "sha256": "1f6bc4d45e5fbfb6e47752a4638eed82ecc502af002319b9b80a54eadadcef97",
+      "bytes": 67333
+    },
+    {
+      "path": "test_s3_fault_proxy_v5.py",
+      "sha256": "cc5214eb921f9117897b9825683ae2c029370407488f03078b01c99169b815cd",
+      "bytes": 11109
+    }
+  ]
+}

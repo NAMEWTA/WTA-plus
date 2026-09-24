@@ -1,0 +1,237 @@
+{
+  "source_before": {
+    "head": "764820dd90a17e5c6329fca5b5330000058dd1c7",
+    "tree": "dcdcf14db3615ef82acd59e94d98d8b928baa86d",
+    "clean": true
+  },
+  "source_after": {
+    "head": "764820dd90a17e5c6329fca5b5330000058dd1c7",
+    "tree": "dcdcf14db3615ef82acd59e94d98d8b928baa86d",
+    "clean": true
+  },
+  "exit_code": 0,
+  "reports": [
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAttachmentRuntimeRedTest.xml",
+      "sha256": "e2c22d1543dc57fe68db55a2a7fc4d35f1685257e0ddf0996e4d13063a898256",
+      "suite": "org.namewta.test.notify.NotifyAttachmentRuntimeRedTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest.xml",
+      "sha256": "16b35245dcf4b0e4da686462256f7a6bcce33362faac3d820fe3e303c5d43cc7",
+      "suite": "org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest.xml",
+      "sha256": "199cb5b5b9724fb8cd8755b1c92a5c0956c5c822ff325fe3b8e3625ed0154fde",
+      "suite": "org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+      "sha256": "138183ce7344faf9f0e320af75dd18750bc887f0ee6e52d891d0bc960465af01",
+      "suite": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest.xml",
+      "sha256": "71e06d0a04ec8a9af48b7fcd41cff10bd406d7ea0e0706dceca2b30df8571835",
+      "suite": "org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest.xml",
+      "sha256": "656e8048c759376466819dd4d3620caf9043404b75b26f744d66d4fb0f73cd28",
+      "suite": "org.namewta.test.notify.context.RequestNotifyContextResolverUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest.xml",
+      "sha256": "9d062a1a26fa05d86c6c1ce663176b0a561dbec2cb68ccc3a1d2bda4732686d2",
+      "suite": "org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyDispatcherUnitTest.xml",
+      "sha256": "9b8a834040f5df1e4c1604d4f10c0dec84e7729234e81c8eea0a48f3d8f0fc8b",
+      "suite": "org.namewta.test.notify.core.NotifyDispatcherUnitTest",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest.xml",
+      "sha256": "0314f526decf1ddf75286a9575e2c825c63e2ce3a1f43e8ec3521447a0c39af1",
+      "suite": "org.namewta.test.notify.idempotency.NotifyIdempotencyAutoConfigurationUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest.xml",
+      "sha256": "f51f251fa637eb7daaea6247340b04e10218af585d1e1e4108f35ef0ef20d6d7",
+      "suite": "org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest.xml",
+      "sha256": "e346f80050ec5f3f1d644e84b8e07dbaa91e7ae7ccd72594a3ad5c86d5f16aa7",
+      "suite": "org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-common/wta-common-oss/target/surefire-reports/TEST-org.namewta.common.oss.client.OssBoundedTransferTest.xml",
+      "sha256": "85a638abca02a52292807fbd8509bd407d8fc6a8d3561c633cb232b1a6923ba0",
+      "suite": "org.namewta.common.oss.client.OssBoundedTransferTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest.xml",
+      "sha256": "87f5ca07b307cf690fc9d4941a39ad29189726a78c1592e26f3017d5c2c5bd74",
+      "suite": "org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.DispatchNotificationServiceTest.xml",
+      "sha256": "2fa77618fbbc8a844eb8ae225e638b639392b52fdbed0defbfaa2a78187c70ed",
+      "suite": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+      "counts": {
+        "tests": 24,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest.xml",
+      "sha256": "b78cecb75567d709f4f4b18898bf56bfad3443167f6cd4b63e2356e3ef7e9932",
+      "suite": "org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest.xml",
+      "sha256": "68bdf194e618f4a5ed4a9acd2177e79c4286db0dd612a3ec569ed6a7b14f005b",
+      "suite": "org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest",
+      "counts": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest.xml",
+      "sha256": "b050e23bf627c15291690840c914125cf640d88e3c89b93861b55f451015f3c6",
+      "suite": "org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch03-a3-targeted-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindNotificationTest.xml",
+      "sha256": "d44988fb3d1a23fb5d3231bb515bb785d99855425b6965d99c51dfeca3058707",
+      "suite": "org.namewta.profile.person.service.impl.PersonRebindNotificationTest",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    }
+  ],
+  "counts": {
+    "tests": 113,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}
