@@ -2775,6 +2775,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/resource/oss/config/diagnose/{ossConfigId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 管理员显式诊断单个配置；诊断事实不参与上传下载或核心就绪。
+         * @description 管理员显式诊断单个配置；诊断事实不参与上传下载或核心就绪。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `system:ossConfig:list`<br><br>
+         */
+        post: operations["diagnose"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/resource/oss/config/changeStatus": {
         parameters: {
             query?: never;
@@ -10377,6 +10397,27 @@ export interface components {
             remark?: string;
             /** @description 桶权限类型（0=PRIVATE，2=PUBLIC_READ） */
             accessPolicy: string;
+        };
+        /** @description 管理员单配置诊断公开投影；只含固定类别，不含配置或 Provider 原文。 */
+        OssStorageDiagnosticVo: {
+            status?: string;
+            reason?: string;
+            /** Format: date-time */
+            checkedAt?: string;
+        };
+        /** @description 响应信息主体 */
+        ROssStorageDiagnosticVo: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /** @description 响应业务数据 */
+            data?: components["schemas"]["OssStorageDiagnosticVo"];
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
         };
         /** @description CallbackRequest HTTP 接口，负责参数校验和响应包装。 */
         CallbackRequest: {
@@ -20663,6 +20704,37 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    diagnose: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ossConfigId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROssStorageDiagnosticVo"];
                 };
             };
             /** @description Unauthorized */
