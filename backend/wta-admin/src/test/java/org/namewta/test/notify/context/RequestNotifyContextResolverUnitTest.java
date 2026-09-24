@@ -1,5 +1,8 @@
 package org.namewta.test.notify.context;
 
+import cn.dev33.satoken.SaManager;
+import cn.dev33.satoken.context.SaTokenContextForThreadLocalStaff;
+import cn.dev33.satoken.context.model.SaTokenContextModelBox;
 import org.namewta.common.notify.model.NotifyContext;
 import org.namewta.common.notify.config.NotifyAutoConfiguration;
 import org.namewta.common.notify.spi.NotifyContextResolver;
@@ -10,11 +13,33 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("dev")
 class RequestNotifyContextResolverUnitTest {
+
+    @Test
+    void actualApplicationBeanResolvesBackgroundThreadWithoutWebContext() {
+        SaTokenContextModelBox previous = SaTokenContextForThreadLocalStaff.getModelBoxOrNull();
+        RequestAttributes previousRequest = RequestContextHolder.getRequestAttributes();
+        try {
+            SaTokenContextForThreadLocalStaff.clearModelBox();
+            RequestContextHolder.resetRequestAttributes();
+            assertThat(SaManager.getSaTokenContext().isValid()).isFalse();
+            new ApplicationContextRunner()
+                .withUserConfiguration(NotifyContextConfiguration.class)
+                .run(context -> assertThat(context.getBean(NotifyContextResolver.class).resolve())
+                    .isEqualTo(NotifyContext.empty()));
+        } finally {
+            if (previous == null) SaTokenContextForThreadLocalStaff.clearModelBox();
+            else SaTokenContextForThreadLocalStaff.setModelBox(previous.getRequest(), previous.getResponse(), previous.getStorage());
+            if (previousRequest == null) RequestContextHolder.resetRequestAttributes();
+            else RequestContextHolder.setRequestAttributes(previousRequest);
+        }
+    }
 
     @Test
     void applicationConfigurationShouldReplaceEmptyAutoConfigurationFallback() {
