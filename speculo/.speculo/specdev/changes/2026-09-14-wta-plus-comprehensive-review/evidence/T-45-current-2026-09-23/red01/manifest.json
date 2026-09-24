@@ -1,0 +1,37 @@
+[
+  {
+    "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssAccessDiagnosticUnitTest.xml",
+    "bytes": 95623,
+    "sha256": "ad10111ce3dd061bca3aa195195ff15d1b800cb1f00565ec21ffe58233a0be4e"
+  },
+  {
+    "file": "red01-source-and-counts.json",
+    "bytes": 1265,
+    "sha256": "063d1e97523531bb94c6daa0a5a9bb25845ae36aa5d03daff3937ab0e9108707"
+  },
+  {
+    "file": "red01.json",
+    "bytes": 445,
+    "sha256": "3ccf491edfd44f0987fe62581613a80a309d3c853c390f8715059e2baa1c067c"
+  },
+  {
+    "file": "red01.log",
+    "bytes": 66212,
+    "sha256": "711543d8a8b92f26f84d4f8017b4e4cff210b943a36eb8e817fc6632b80a387a"
+  },
+  {
+    "file": "wta-t45-model-review.md",
+    "bytes": 6887,
+    "sha256": "634ee6ee5e7a2cbdca5ffdacfe831e3f12f811ec5021f04934f4771443f02cca"
+  },
+  {
+    "file": "checkpoint206-validator.json",
+    "bytes": 426,
+    "sha256": "4cd5072b95bef59b51820320eb641bbc4a6b1b58cb40a9da840200e17608413a"
+  },
+  {
+    "file": "checkpoint206-validator.log",
+    "bytes": 21926,
+    "sha256": "617a5479700af9e28f1d06eb241905d3c917d10759c9fb6b1024cb655b6b6567"
+  }
+]

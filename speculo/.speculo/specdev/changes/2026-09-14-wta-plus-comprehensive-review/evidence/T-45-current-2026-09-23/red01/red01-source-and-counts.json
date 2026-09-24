@@ -1,0 +1,44 @@
+{
+  "source_before": {
+    "head": "73edcbffc02037b466b387adcb898d58a33b7a6f",
+    "tree": "d117598f0a545d30b78b66417ed5490b8ed52d8d",
+    "clean": true
+  },
+  "source_after": {
+    "head": "73edcbffc02037b466b387adcb898d58a33b7a6f",
+    "tree": "d117598f0a545d30b78b66417ed5490b8ed52d8d",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "red01-reports/wta-admin/target/surefire-reports/TEST-org.namewta.common.oss.client.OssAccessDiagnosticUnitTest.xml",
+      "sha256": "ad10111ce3dd061bca3aa195195ff15d1b800cb1f00565ec21ffe58233a0be4e",
+      "suite": "org.namewta.common.oss.client.OssAccessDiagnosticUnitTest",
+      "counts": {
+        "tests": 8,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "unreadablePolicyAndAclDoNotContradictObservedPublicObjectRead",
+          "kind": "failure",
+          "type": "org.opentest4j.AssertionFailedError"
+        },
+        {
+          "name": "privateObject403AndUnreadablePolicyDoNotProveBucketWideSafety",
+          "kind": "failure",
+          "type": "org.opentest4j.AssertionFailedError"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tests": 8,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  }
+}
