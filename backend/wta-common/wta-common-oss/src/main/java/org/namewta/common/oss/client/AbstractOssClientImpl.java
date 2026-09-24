@@ -2043,6 +2043,77 @@ public abstract class AbstractOssClientImpl implements OssClient {
         }
     }
 
+    /** 同一 SDK 请求预算内限流消费字节；取消仍可能与供应商完成竞争，调用方须保留未知结果。 */
+    @Override
+    public byte[] downloadBounded(String key, long maxBytes, Duration timeout) {
+        validateObjectIdentity(defaultBucket(), key);
+        Duration budget = requireMigrationTimeout(timeout);
+        if (maxBytes < 1 || maxBytes >= Integer.MAX_VALUE) throw new IllegalArgumentException("Invalid download bound");
+        long deadlineNanos = System.nanoTime() + budget.toNanos();
+        java.util.concurrent.CompletableFuture<Void> transfer = new java.util.concurrent.CompletableFuture<>();
+        java.util.concurrent.atomic.AtomicBoolean stopped = new java.util.concurrent.atomic.AtomicBoolean();
+        java.util.concurrent.atomic.AtomicReference<org.reactivestreams.Subscription> subscription =
+            new java.util.concurrent.atomic.AtomicReference<>();
+        try {
+            var request = GetObjectRequest.builder().bucket(defaultBucket()).key(key)
+                .overrideConfiguration(builder -> builder.apiCallTimeout(budget).apiCallAttemptTimeout(budget))
+                .build();
+            var publisher = await(s3AsyncClient.getObject(request, AsyncResponseTransformer.toPublisher()), budget);
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            publisher.subscribe(new org.reactivestreams.Subscriber<java.nio.ByteBuffer>() {
+                @Override public void onSubscribe(org.reactivestreams.Subscription current) {
+                    if (!subscription.compareAndSet(null, current) || stopped.get()) current.cancel();
+                    else current.request(1);
+                }
+                @Override public void onNext(java.nio.ByteBuffer buffer) {
+                    if (stopped.get()) return;
+                    int next = buffer.remaining();
+                    if (next > maxBytes - output.size()) {
+                        stopped.set(true);
+                        subscription.get().cancel();
+                        transfer.completeExceptionally(S3StorageException.form(OssErrorCode.PROVIDER_ERROR,
+                            "OSS object exceeds download bound"));
+                        return;
+                    }
+                    byte[] part = new byte[next];
+                    buffer.get(part);
+                    output.write(part, 0, part.length);
+                    subscription.get().request(1);
+                }
+                @Override public void onError(Throwable failure) { transfer.completeExceptionally(failure); }
+                @Override public void onComplete() { transfer.complete(null); }
+            });
+            await(transfer, migrationRemaining(deadlineNanos));
+            return output.toByteArray();
+        } catch (RuntimeException failure) {
+            throw toStorageException(failure);
+        } finally {
+            stopped.set(true);
+            org.reactivestreams.Subscription current = subscription.get();
+            // CompletableFuture.cancel 只改变等待者状态，不会取消 SDK 发布者的 Subscription。
+            if (current != null && (!transfer.isDone() || transfer.isCancelled()
+                || transfer.isCompletedExceptionally())) current.cancel();
+        }
+    }
+
+    /** 请求和等待均用同一剩余预算；超时取消 future 不能证明远端未完成 PUT。 */
+    @Override
+    public PutObjectResult uploadBounded(String key, byte[] data, String contentType, Duration timeout) {
+        validateObjectIdentity(defaultBucket(), key);
+        Duration budget = requireMigrationTimeout(timeout);
+        if (data == null || data.length == 0) throw new IllegalArgumentException("Empty upload");
+        try {
+            var request = PutObjectRequest.builder().bucket(defaultBucket()).key(key)
+                .contentLength((long) data.length).contentType(contentType)
+                .overrideConfiguration(builder -> builder.apiCallTimeout(budget).apiCallAttemptTimeout(budget))
+                .build();
+            var response = await(s3AsyncClient.putObject(request, AsyncRequestBody.fromBytes(data)), budget);
+            return PutObjectResult.form("", key, response.eTag(), data.length);
+        } catch (RuntimeException failure) {
+            throw toStorageException(failure);
+        }
+    }
+
     private Duration migrationRemaining(long deadlineNanos) {
         long nanos = deadlineNanos - System.nanoTime();
         if (nanos < TimeUnit.MILLISECONDS.toNanos(1)) {

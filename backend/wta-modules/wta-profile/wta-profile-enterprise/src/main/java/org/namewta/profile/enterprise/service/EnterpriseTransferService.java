@@ -116,7 +116,7 @@ public class EnterpriseTransferService {
                 challengeId, "PHONE", List.of(target.phone()), "enterprise-transfer",
                 Map.of("code", code),
                 List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, expiresAt,
-                "profile:enterprise:transfer:" + challengeId, Map.of("audit", "REDACT_SENSITIVE")));
+                "profile:enterprise:transfer:" + challengeId, Map.of("audit", "REDACT_SENSITIVE"), java.util.List.of()));
         } catch (RuntimeException exception) {
             challenges.revoke(challengeId);
             throw new EnterpriseTransferException("ENTERPRISE_TRANSFER_DELIVERY_FAILED", exception);

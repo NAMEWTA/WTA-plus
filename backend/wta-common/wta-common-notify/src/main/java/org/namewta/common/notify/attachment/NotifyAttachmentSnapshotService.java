@@ -9,7 +9,8 @@ import java.util.List;
  */
 public interface NotifyAttachmentSnapshotService {
 
-    List<NotifyAttachmentSnapshot> createSnapshots(long notifyLogId, List<Long> sourceOssIds, NotifyContext context);
+    /** ownerIntentId 是持久 Intent 主键，同一意图的多条投递必须复用快照。 */
+    List<NotifyAttachmentSnapshot> createSnapshots(long ownerIntentId, List<Long> sourceOssIds, NotifyContext context);
 
     void cleanupSnapshots(List<NotifyAttachmentSnapshot> snapshots);
 }

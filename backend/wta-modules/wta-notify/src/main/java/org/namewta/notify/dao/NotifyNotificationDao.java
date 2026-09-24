@@ -26,6 +26,54 @@ public class NotifyNotificationDao {
     private final NotifyAttemptMapper attemptMapper;
     private final NotifyMessageMapper messageMapper;
     private final NotifyMessageRecipientMapper messageRecipientMapper;
+    private final NotifyIntentAttachmentMapper attachmentMapper;
+
+    /** 附件顺序和归属由物理关系行决定；空集合永不退化为全表扫描。 */
+    public List<NotifyIntentAttachment> attachments(Long intentId) {
+        return attachmentMapper.selectList(new LambdaQueryWrapper<NotifyIntentAttachment>()
+            .eq(NotifyIntentAttachment::getIntentId, intentId)
+            .eq(NotifyIntentAttachment::getDelFlag, "0")
+            .orderByAsc(NotifyIntentAttachment::getPosition));
+    }
+
+    /** 已锁定 Intent 后按关系 PK 顺序取得当前行，用于复制权和安全回收。 */
+    public List<NotifyIntentAttachment> lockAttachments(Long intentId) {
+        return attachmentMapper.selectList(new LambdaQueryWrapper<NotifyIntentAttachment>()
+            .eq(NotifyIntentAttachment::getIntentId, intentId)
+            .eq(NotifyIntentAttachment::getDelFlag, "0")
+            .orderByAsc(NotifyIntentAttachment::getIntentAttachmentId).last("for update"));
+    }
+
+    /** 幂等唯一键竞争后按提交顺序当前读关系，不能沿用 REPEATABLE READ 旧快照。 */
+    public List<NotifyIntentAttachment> lockAttachmentsByPosition(Long intentId) {
+        return attachmentMapper.selectList(new LambdaQueryWrapper<NotifyIntentAttachment>()
+            .eq(NotifyIntentAttachment::getIntentId, intentId)
+            .eq(NotifyIntentAttachment::getDelFlag, "0")
+            .orderByAsc(NotifyIntentAttachment::getPosition).last("for update"));
+    }
+
+    public int insert(NotifyIntentAttachment value) { return attachmentMapper.insert(value); }
+
+    public int saveAttachment(NotifyIntentAttachment value) {
+        return attachmentMapper.updateById(value);
+    }
+
+    /** 后台回收每轮只读有限候选，以主键游标遍历而不扫描全表后截断。 */
+    public List<NotifyIntentAttachment> attachmentReleaseCandidates(long afterId, int limit) {
+        return attachmentMapper.selectList(new LambdaQueryWrapper<NotifyIntentAttachment>()
+            .gt(NotifyIntentAttachment::getIntentAttachmentId, afterId)
+            .in(NotifyIntentAttachment::getStatus, "QUEUED", "READY")
+            .eq(NotifyIntentAttachment::getDelFlag, "0")
+            .orderByAsc(NotifyIntentAttachment::getIntentAttachmentId)
+            .last("limit " + Math.clamp(limit, 1, 100)));
+    }
+
+    /** 唯一键冲突后的幂等出口必须使用当前读，不能复用事务旧快照。 */
+    public NotifyIntent lockIntentByIdempotency(String appId, String key) {
+        return intentMapper.selectOne(new LambdaQueryWrapper<NotifyIntent>()
+            .eq(NotifyIntent::getAppId, appId).eq(NotifyIntent::getIdempotencyKey, key)
+            .last("for update"));
+    }
 
     public NotifyIntent intent(Long id) { return intentMapper.selectById(id); }
     /** 仅按本次有界投递结果的 ID 批量取策略；空集合绝不可退化为全表查询。 */

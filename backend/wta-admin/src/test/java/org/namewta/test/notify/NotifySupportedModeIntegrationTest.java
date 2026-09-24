@@ -248,7 +248,7 @@ class NotifySupportedModeIntegrationTest {
         var unsupported = new NotificationCommand("owned-t50", "owned", "owned", "owned", "EMAIL",
             List.of("synthetic@example.test"), "owned", Map.of(), List.of(NotificationChannel.MAIL),
             NotificationStrategy.ESCALATION, NotificationMode.ASYNC, 0,
-            null, null, "owned-t50-duplicate", Map.of());
+            null, null, "owned-t50-duplicate", Map.of(), java.util.List.of());
         assertThatThrownBy(() -> runtime.submit(unsupported)).isInstanceOf(ServiceException.class);
         assertThat(db.queryForObject("select count(*) from notify_intent where app_id='owned-t50'", Integer.class))
             .isEqualTo(1);
@@ -263,7 +263,7 @@ class NotifySupportedModeIntegrationTest {
         var expiry = dao.databaseNow().withNano(0).plusMinutes(5).toInstant(ZoneOffset.UTC);
         var command = new NotificationCommand("owned-t50", "owned", "owned", "owned-positive", "EMAIL",
             List.of("synthetic@example.test"), "owned", Map.of(), List.of(NotificationChannel.MAIL),
-            null, null, 0, null, expiry, "owned-t50-positive-" + IDS.incrementAndGet(), Map.of());
+            null, null, 0, null, expiry, "owned-t50-positive-" + IDS.incrementAndGet(), Map.of(), java.util.List.of());
         long id = Long.parseLong(runtime.submit(command).notificationId());
         ownedIntents.add(id);
         assertThat(dao.intent(id).getStrategy()).isEqualTo("ALL");

@@ -171,7 +171,7 @@ class NotifySmsDispatchIntegrationTest {
         GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults().setMetaObjectHandler(new InjectionMetaObjectHandler()));
         for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
             NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class,
-            NotifyMessageRecipientMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class)) {
+            NotifyMessageRecipientMapper.class, org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class)) {
             config.addMapper(mapper);
         }
         for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml",
@@ -185,7 +185,7 @@ class NotifySmsDispatchIntegrationTest {
         dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class),
             sessions.getMapper(NotifyRecipientMapper.class), sessions.getMapper(NotifyDeliveryMapper.class),
             sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
-            sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
+            sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class), sessions.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class));
         configDao = new NotifyConfigDao(sessions.getMapper(NotifyChannelAccountMapper.class),
             sessions.getMapper(NotifySceneBindingMapper.class));
 
@@ -571,7 +571,7 @@ class NotifySmsDispatchIntegrationTest {
             "PHONE", List.of("13812345678"), "auth-captcha",
             Map.of("code", code, "expireMinutes", "5"), List.of(NotificationChannel.SMS),
             NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
-            "idem-" + runId, Map.of("audit", "REDACT_SENSITIVE"));
+            "idem-" + runId, Map.of("audit", "REDACT_SENSITIVE"), java.util.List.of());
     }
 
     private void claimAndDispatch(long intentId) {

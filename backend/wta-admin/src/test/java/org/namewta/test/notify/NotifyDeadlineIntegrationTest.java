@@ -214,7 +214,7 @@ class NotifyDeadlineIntegrationTest {
         var command = new NotificationCommand("owned-t39", "owned", "owned", "owned-schedule", "EMAIL",
             List.of("synthetic@example.test"), "owned", Map.of("code", "synthetic"), List.of(NotificationChannel.MAIL),
             NotificationStrategy.ALL, NotificationMode.ASYNC, 0, schedule, expiry,
-            "owned-t39-" + IDS.incrementAndGet(), Map.of());
+            "owned-t39-" + IDS.incrementAndGet(), Map.of(), java.util.List.of());
         var receipt = runtime.submit(command);
         long id = Long.parseLong(receipt.notificationId()); ownedIntents.add(id);
         assertThat(dao.intent(id).getScheduledAt()).isEqualTo(schedule.truncatedTo(ChronoUnit.SECONDS).plusSeconds(1)
@@ -233,12 +233,12 @@ class NotifyDeadlineIntegrationTest {
         var runtime = new NotificationApplicationRuntimeService(dao, mock(UserService.class), dispatch, event -> {});
         var original = new NotificationCommand("owned-t39", "owned", "owned", "owned-duplicate", "EMAIL",
             List.of("synthetic@example.test"), "owned", Map.of(), List.of(NotificationChannel.MAIL),
-            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, base.plusSeconds(80), key, Map.of());
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, base.plusSeconds(80), key, Map.of(), java.util.List.of());
         long id = Long.parseLong(runtime.submit(original).notificationId()); ownedIntents.add(id);
         db.update("update notify_intent set expires_at=timestampadd(second,-1,utc_timestamp()) where intent_id=?", id);
         var attemptedExtension = new NotificationCommand("owned-t39", "owned", "owned", "owned-duplicate", "EMAIL",
             List.of("synthetic@example.test"), "owned", Map.of(), List.of(NotificationChannel.MAIL),
-            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, base.plusSeconds(300), key, Map.of());
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, base.plusSeconds(300), key, Map.of(), java.util.List.of());
         assertThatThrownBy(() -> runtime.submit(attemptedExtension)).isInstanceOf(ServiceException.class);
         assertThat(db.queryForObject("select count(*) from notify_outbox where intent_id=?", Integer.class, id)).isEqualTo(1);
         assertThat(dao.intent(id).getExpiresAt()).isBefore(dao.databaseNow());

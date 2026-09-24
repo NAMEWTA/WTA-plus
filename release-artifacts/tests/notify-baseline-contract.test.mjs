@@ -10,7 +10,7 @@ test('基座只保留当前通知持久化模型，不重新创建已退役的 S
   assert.doesNotMatch(ddl, /create\s+table\s+sys_notify_(?:delivery_)?log\b/i);
   assert.doesNotMatch(dml, /\bsys_notify_(?:delivery_)?log\b/i);
   for (const table of [
-    'notify_intent', 'notify_recipient', 'notify_delivery', 'notify_attempt', 'notify_outbox',
+    'notify_intent', 'notify_intent_attachment', 'notify_recipient', 'notify_delivery', 'notify_attempt', 'notify_outbox',
     'notify_notice', 'notify_notice_snapshot', 'notify_message', 'notify_message_recipient',
     'notify_channel_account', 'notify_scene_binding'
   ]) {
@@ -162,4 +162,5 @@ test('常见短信和邮件预设默认停用且不携带账号凭据或隐式�
   const accountIndex = splitSqlList(scenes[1]).indexOf('account_id');
   assert.ok(accountIndex >= 0);
   for (const row of splitSqlList(scenes[2])) assert.equal(splitSqlList(row.slice(1, -1))[accountIndex], 'null');
+  assert.match(scenes[2], /'demo-mail',\s*'MAIL',\s*null,\s*'\$\{title\}',\s*'\$\{content\}'/);
 });

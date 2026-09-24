@@ -34,7 +34,7 @@ test('new baseline keeps six SQL slots and retires vendor tables and menu seeds'
   assert.match(dml, /monitor\/snailjob\/index/);
   const tables = ['10-cde-base-ddl.sql', '20-cde-job.sql', '30-cde-workflow.sql', '40-cde-ai.sql']
     .flatMap(name => [...read(sqlRoot + name).matchAll(/create\s+table\s+(?:if\s+not\s+exists\s+)?`?(\w+)/gi)].map(match => match[1]));
-  assert.equal(new Set(tables).size, 103);
+  assert.equal(new Set(tables).size, 104);
   assert.equal(tables.some(name => name.startsWith('sai_')), false);
 });
 

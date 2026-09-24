@@ -5,6 +5,7 @@ import org.namewta.common.notify.core.NotifyDispatcher;
 import org.namewta.common.notify.event.NotifyDeliveryEvent;
 import org.namewta.common.notify.exception.NotifyAttachmentSnapshotException;
 import org.namewta.common.notify.model.*;
+import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.common.notify.registry.NotifyChannelRegistry;
 import org.namewta.common.notify.spi.NotifyChannelAdapter;
 import org.junit.jupiter.api.Tag;
@@ -35,7 +36,7 @@ class NotifyAttachmentDispatcherUnitTest {
         assertEquals(List.of(10L, 20L), snapshots.sources);
         assertEquals(7001L, snapshots.notifyLogId);
         assertEquals(List.of(1010L, 1020L), adapter.snapshotIds);
-        assertEquals(7001L, events.getFirst().notifyLogId());
+        assertEquals(7001L, events.getFirst().attachmentOwnerIntentId());
         assertEquals(List.of(1010L, 1020L), events.getFirst().attachmentSnapshotOssIds());
         assertEquals(0, snapshots.cleanupCalls.get());
     }
@@ -60,7 +61,7 @@ class NotifyAttachmentDispatcherUnitTest {
         NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
             NotifyContext::empty, event -> {
                 throw new IllegalStateException("listener down");
-            }, null, snapshots, () -> 7001L);
+            }, null, snapshots);
 
         assertThrows(org.namewta.common.notify.exception.NotifyDeliveryException.class,
             () -> dispatcher.send(request(List.of(10L))));
@@ -87,7 +88,7 @@ class NotifyAttachmentDispatcherUnitTest {
         };
         NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
             NotifyContext::empty, event -> {
-            }, null, snapshots, () -> 7001L);
+            }, null, snapshots);
 
         NotifyAttachmentSnapshotException exception = assertThrows(NotifyAttachmentSnapshotException.class,
             () -> dispatcher.send(request(List.of(10L))));
@@ -115,20 +116,38 @@ class NotifyAttachmentDispatcherUnitTest {
             }
         };
         NotifyDispatcher dispatcher = new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)),
-            NotifyContext::empty, events::add, null, snapshots, () -> 7001L);
+            NotifyContext::empty, events::add, null, snapshots);
 
         assertThrows(org.namewta.common.notify.exception.NotifyDeliveryException.class,
             () -> dispatcher.send(request(List.of(10L))));
         assertEquals(1, snapshots.cleanupCalls.get());
         assertEquals(1, events.size());
-        assertNull(events.getFirst().notifyLogId());
+        assertNull(events.getFirst().attachmentOwnerIntentId());
         assertTrue(events.getFirst().attachmentSnapshotOssIds().isEmpty());
+    }
+
+    @Test
+    void preSendGateIsInternalOnlyForFullAndRedactedEvents() {
+        for (NotifyAuditPolicy policy : List.of(NotifyAuditPolicy.FULL, NotifyAuditPolicy.REDACT_SENSITIVE)) {
+            List<NotifyDeliveryEvent> events = new ArrayList<>();
+            NotifyRequest.PreSendGate gate = new NotifyRequest.PreSendGate(() -> { });
+            NotifyRequest request = NotifyRequest.builder().requestId("owned-event")
+                .channel(NotifyChannel.of("test"))
+                .targets(List.of(NotifyTarget.email("to@example.com", NotifyTargetRole.TO)))
+                .content(new NotifyRichContent("subject", "content", false))
+                .auditPolicy(policy).preSendGate(gate).build();
+            dispatcher(new RecordingAdapter(false), new RecordingSnapshotService(false), events).send(request);
+            assertEquals(1, events.size());
+            assertNull(events.getFirst().request().preSendGate());
+            assertFalse(JsonUtils.toJsonString(request).contains("preSendGate"));
+            assertFalse(JsonUtils.toJsonString(events.getFirst().request()).contains("preSendGate"));
+        }
     }
 
     private NotifyDispatcher dispatcher(RecordingAdapter adapter, RecordingSnapshotService snapshots,
                                         List<NotifyDeliveryEvent> events) {
         return new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)), NotifyContext::empty,
-            events::add, null, snapshots, () -> 7001L);
+            events::add, null, snapshots);
     }
 
     private NotifyRequest request(List<Long> attachments) {
@@ -138,6 +157,7 @@ class NotifyAttachmentDispatcherUnitTest {
             .targets(List.of(NotifyTarget.email("to@example.com", NotifyTargetRole.TO)))
             .content(new NotifyRichContent("subject", "content", false))
             .attachmentOssIds(attachments)
+            .attachmentOwnerIntentId(attachments.isEmpty() ? null : 7001L)
             .build();
     }
 

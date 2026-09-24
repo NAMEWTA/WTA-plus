@@ -7,8 +7,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * 邮件通知 Adapter 测试。
@@ -55,5 +58,36 @@ class MailNotifyChannelAdapterUnitTest {
             org.namewta.common.notify.exception.NotifyValidationException.class,
             () -> adapter.send(new NotifyAdapterRequest(request, NotifyContext.empty())));
         assertEquals("UNKNOWN_PROVIDER", missing.code());
+    }
+
+    @Test
+    void preSendDatabaseGateClosesBeforePhysicalSenderAndPreservesSqlFailure() {
+        AtomicInteger sent = new AtomicInteger();
+        MailNotifyChannelAdapter adapter = new MailNotifyChannelAdapter(message -> {
+            sent.incrementAndGet();
+            return "should-not-send";
+        });
+        NotifyRequest.PreSendGate closed = new NotifyRequest.PreSendGate(() -> {
+            throw new NotifyRequest.PreSendClosed();
+        });
+        NotifyRequest request = mailWithGate(closed);
+        assertThrows(NotifyRequest.PreSendClosed.class,
+            () -> adapter.send(new NotifyAdapterRequest(request, NotifyContext.empty())));
+        assertEquals(0, sent.get());
+        assertEquals(true, closed.failed());
+
+        IllegalStateException databaseFailure = new IllegalStateException("owned database commit failed");
+        NotifyRequest.PreSendGate failed = new NotifyRequest.PreSendGate(() -> { throw databaseFailure; });
+        assertSame(databaseFailure, assertThrows(IllegalStateException.class,
+            () -> adapter.send(new NotifyAdapterRequest(mailWithGate(failed), NotifyContext.empty()))));
+        assertEquals(0, sent.get());
+        assertEquals(true, failed.failed());
+    }
+
+    private NotifyRequest mailWithGate(NotifyRequest.PreSendGate gate) {
+        return NotifyRequest.builder().channel(NotifyChannel.MAIL)
+            .targets(List.of(NotifyTarget.email("to@example.com")))
+            .content(new NotifyRichContent("subject", "content", false))
+            .preSendGate(gate).build();
     }
 }

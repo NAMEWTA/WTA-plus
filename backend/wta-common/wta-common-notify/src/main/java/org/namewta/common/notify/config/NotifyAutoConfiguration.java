@@ -1,7 +1,6 @@
 package org.namewta.common.notify.config;
 
 import org.namewta.common.notify.attachment.NotifyAttachmentSnapshotService;
-import org.namewta.common.notify.attachment.NotifyLogIdGenerator;
 import org.namewta.common.notify.core.NotifyClient;
 import org.namewta.common.notify.core.NotifyDispatcher;
 import org.namewta.common.notify.event.NotifyEventPublisher;
@@ -70,9 +69,8 @@ public class NotifyAutoConfiguration {
     public NotifyClient notifyClient(NotifyChannelRegistry registry, NotifyContextResolver contextResolver,
                                      NotifyEventPublisher eventPublisher,
                                      NotifyIdempotencyCoordinator idempotencyCoordinator,
-                                     ObjectProvider<NotifyAttachmentSnapshotService> attachmentSnapshotService,
-                                     ObjectProvider<NotifyLogIdGenerator> notifyLogIdGenerator) {
+                                     ObjectProvider<NotifyAttachmentSnapshotService> attachmentSnapshotService) {
         return new NotifyDispatcher(registry, contextResolver, eventPublisher, idempotencyCoordinator,
-            attachmentSnapshotService.getIfAvailable(), notifyLogIdGenerator.getIfAvailable());
+            attachmentSnapshotService.getIfAvailable());
     }
 }

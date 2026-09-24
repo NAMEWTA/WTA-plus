@@ -20,7 +20,9 @@ public record NotifyRequest(
     NotifyAuditPolicy auditPolicy,
     String idempotencyKey,
     Duration idempotencyWindow,
-    Map<String, String> metadata
+    Map<String, String> metadata,
+    Long attachmentOwnerIntentId,
+    @com.fasterxml.jackson.annotation.JsonIgnore PreSendGate preSendGate
 ) {
 
     public NotifyRequest {
@@ -52,6 +54,8 @@ public record NotifyRequest(
         private String idempotencyKey;
         private Duration idempotencyWindow;
         private Map<String, String> metadata = Map.of();
+        private Long attachmentOwnerIntentId;
+        private PreSendGate preSendGate;
 
         private Builder() {
         }
@@ -116,9 +120,46 @@ public record NotifyRequest(
             return this;
         }
 
+        /** 持久 Intent 主键，只由通知 Worker 设置，不从外部提交者模板或上下文推断。 */
+        public Builder attachmentOwnerIntentId(Long value) {
+            attachmentOwnerIntentId = value;
+            return this;
+        }
+
+        /** 仅运行时 Worker 设置；HTTP、持久化和监控事件不得携带此回调。 */
+        public Builder preSendGate(PreSendGate value) {
+            preSendGate = value;
+            return this;
+        }
+
         public NotifyRequest build() {
             return new NotifyRequest(requestId, bizType, bizId, channel, providerKey, targets, content,
-                attachmentOssIds, auditPolicy, idempotencyKey, idempotencyWindow, metadata);
+                attachmentOssIds, auditPolicy, idempotencyKey, idempotencyWindow, metadata,
+                attachmentOwnerIntentId, preSendGate);
         }
+    }
+
+    /** 在物化完成与真正进入 Provider 之间执行一次短事务栅栏；保留原失败实例。 */
+    public static final class PreSendGate implements Runnable {
+        private final Runnable delegate;
+        private volatile boolean failed;
+
+        public PreSendGate(Runnable delegate) { this.delegate = java.util.Objects.requireNonNull(delegate); }
+
+        @Override public void run() {
+            failed = false;
+            try { delegate.run(); }
+            catch (RuntimeException | Error failure) {
+                failed = true;
+                throw failure;
+            }
+        }
+
+        public boolean failed() { return failed; }
+    }
+
+    /** 栅栏已在数据库内关闭任务；调用链须释放本次幂等占位并直接停止。 */
+    public static final class PreSendClosed extends RuntimeException {
+        public PreSendClosed() { super("通知在供应商调用前已关闭"); }
     }
 }

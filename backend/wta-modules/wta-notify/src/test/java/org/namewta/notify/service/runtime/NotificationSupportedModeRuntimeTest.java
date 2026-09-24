@@ -102,7 +102,7 @@ class NotificationSupportedModeRuntimeTest {
         return new NotificationCommand("owned-app", "owned-scene", "OWNED", "owned-biz",
             "EMAIL", List.of("recipient@example.test"), "owned-template", Map.of(),
             List.of(NotificationChannel.MAIL), strategy, NotificationMode.ASYNC, priority,
-            null, null, "existing-request", Map.of());
+            null, null, "existing-request", Map.of(), java.util.List.of());
     }
 
     private static Stream<Arguments> unsupportedCommands() {

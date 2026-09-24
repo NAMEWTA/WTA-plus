@@ -31,7 +31,7 @@ class NotificationDeadlineRuntimeTest {
         Instant deadline = before.plusMinutes(2).toInstant(ZoneOffset.UTC);
         var command = new NotificationCommand("owned", "owned", "owned", "owned", "EMAIL",
             List.of("synthetic@example.test"), "owned", Map.of(), List.of(NotificationChannel.MAIL),
-            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, deadline, "owned-deadline", Map.of());
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, deadline, "owned-deadline", Map.of(), java.util.List.of());
 
         assertThrows(ServiceException.class, () -> service.submit(command));
         verify(dao, never()).insert(any(org.namewta.notify.domain.entity.NotifyIntent.class));

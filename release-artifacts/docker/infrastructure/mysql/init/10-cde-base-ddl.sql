@@ -316,7 +316,7 @@ create table sys_oss (
     service         varchar(20)  not null default 'minio'   comment '服务商',
     is_temp         char(1)      not null default 'N'        comment '是否临时对象（Y是 N否）',
     expire_time     datetime              default null      comment '临时对象过期时间',
-    delete_state    varchar(16)  not null default 'ACTIVE'   comment '对象删除状态（ACTIVE正常 PENDING等待供应商删除）',
+    delete_state    varchar(16)  not null default 'ACTIVE'   comment '对象状态（ACTIVE可用 NOT_READY通知私有快照预约中 PENDING等待供应商删除）',
     primary key (oss_id),
     key idx_sys_oss_temp_expire (is_temp, expire_time)
 ) engine=innodb comment ='OSS对象存储表';
@@ -1407,6 +1407,8 @@ create table notify_intent (
     content_snapshot longtext default null comment '内容快照',
     path_snapshot varchar(500) default null comment '跳转路径快照',
     metadata_json json default null comment '脱敏元数据',
+    attachment_actor_user_id bigint(20) default null comment '附件原提交者用户主键；仅服务端写入',
+    attachment_actor_client_pk bigint(20) default null comment '附件原提交者客户端主键；仅服务端写入',
     version int not null default 0 comment '乐观锁版本',
     create_dept bigint(20) default null comment '创建部门',
     create_time datetime not null comment '创建时间',
@@ -1419,6 +1421,35 @@ create table notify_intent (
     key idx_notify_intent_status_time (status, create_time),
     key idx_notify_intent_biz (biz_type, biz_id)
 ) engine=innodb comment='统一通知意图';
+
+create table notify_intent_attachment (
+    intent_attachment_id bigint(20) not null comment '附件关系真实主键，也是 OSS 引用主键',
+    intent_id bigint(20) not null comment '通知意图主键',
+    position int not null comment '提交时的附件顺序，从零开始',
+    source_oss_id bigint(20) not null comment '原附件 OSS 主键',
+    snapshot_oss_id bigint(20) default null comment '私有快照 OSS 主键',
+    source_service varchar(20) default null comment '来源存储配置键快照',
+    source_key varchar(255) default null comment '来源对象键快照',
+    target_service varchar(20) default null comment '目标私有存储配置键快照',
+    target_key varchar(255) default null comment '目标对象键快照',
+    file_name varchar(255) default null comment '授权时固定的原文件名',
+    content_type varchar(255) default null comment '授权时固定的内容类型',
+    file_size bigint(20) default null comment '授权时固定的字节数',
+    sha256 char(64) default null comment '已确认快照的 SHA-256',
+    status varchar(24) not null comment 'QUEUED/COPYING/READY/COPY_UNKNOWN/RELEASED',
+    copy_token varchar(64) default null comment '复制预约 fencing token',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint(20) default null comment '创建部门',
+    create_time datetime not null comment '创建时间',
+    update_time datetime default null comment '更新时间',
+    create_by bigint(20) default null comment '创建者',
+    update_by bigint(20) default null comment '更新者',
+    del_flag char(1) not null default '0' comment '删除标记',
+    primary key (intent_attachment_id),
+    unique key uk_notify_intent_attachment_position (intent_id, position),
+    unique key uk_notify_intent_attachment_snapshot (snapshot_oss_id),
+    key idx_notify_intent_attachment_source (source_oss_id, status)
+) engine=innodb comment='通知附件来源引用及可恢复私有快照预约';
 
 create table notify_recipient (
     recipient_id bigint(20) not null comment '接收者主键',

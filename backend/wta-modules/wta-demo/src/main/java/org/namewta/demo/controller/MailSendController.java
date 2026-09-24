@@ -75,10 +75,11 @@ public class MailSendController {
     }
 
     private void send(String to, String subject, String text, List<Long> ossIds) {
-        notificationService.submit(new NotificationCommand("demo", "notice-published", "demo_mail", to,
-            "EMAIL", List.of(to), "notice-published", Map.of("title", subject, "content", text, "path", "",
-            "attachmentOssIds", ossIds), List.of(NotificationChannel.MAIL), NotificationStrategy.ALL,
-            NotificationMode.ASYNC, 0, null, null, null, Map.of()));
+        notificationService.submit(new NotificationCommand("demo", "demo-mail", "demo_mail", to,
+            "EMAIL", List.of(to), "demo-mail", Map.of("title", subject, "content", text),
+            List.of(NotificationChannel.MAIL), NotificationStrategy.ALL,
+            NotificationMode.ASYNC, 0, null, null, null, Map.of(),
+            ossIds.stream().map(String::valueOf).toList()));
     }
 
 }

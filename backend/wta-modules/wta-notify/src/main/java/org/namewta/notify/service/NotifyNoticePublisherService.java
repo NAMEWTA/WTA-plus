@@ -67,7 +67,7 @@ public class NotifyNoticePublisherService {
             channels,
             NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
             NotifyNoticeVersionFence.idempotencyKey(notice.getNoticeId(), version),
-            NotifyNoticeVersionFence.initial(notice.getNoticeId(), snapshot.getSnapshotId(), version)));
+            NotifyNoticeVersionFence.initial(notice.getNoticeId(), snapshot.getSnapshotId(), version), java.util.List.of()));
         long intentId = receiptId(receipt);
         NotifyIntent intent = notificationDao.lockNoticeIntent(
             NotifyNoticeVersionFence.idempotencyKey(notice.getNoticeId(), version));

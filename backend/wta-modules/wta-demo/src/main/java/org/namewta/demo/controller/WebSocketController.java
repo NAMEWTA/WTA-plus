@@ -41,7 +41,7 @@ public class WebSocketController {
         notificationService.submit(new NotificationCommand("demo", "websocket-demo", "demo_websocket",
             String.valueOf(System.currentTimeMillis()), recipientType, recipients, "websocket-demo",
             java.util.Map.of("title", "实时消息", "content", message), List.of(NotificationChannel.IN_APP),
-            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null, null, java.util.Map.of()));
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null, null, java.util.Map.of(), java.util.List.of()));
         return R.ok("操作成功");
     }
 }

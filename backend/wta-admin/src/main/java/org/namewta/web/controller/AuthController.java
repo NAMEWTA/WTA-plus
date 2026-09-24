@@ -96,7 +96,7 @@ public class AuthController {
                 java.util.Map.of("title", "登录提醒", "content", "欢迎登录 WTA-Plus 后台管理系统"),
                 List.of(NotificationChannel.IN_APP), NotificationStrategy.ALL, NotificationMode.ASYNC, 0,
                 null, null, "login-welcome:" + userId + ":" + System.currentTimeMillis() / 60_000,
-                java.util.Map.of()));
+                java.util.Map.of(), java.util.List.of()));
         } catch (RuntimeException exception) {
             // Login notification is best effort and must not turn a successful login into an error.
             log.warn("Failed to enqueue login notification for user {}", userId, exception);

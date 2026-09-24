@@ -18,6 +18,8 @@ import org.namewta.system.api.domain.UserDTO;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.namewta.system.api.OssService;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -41,7 +44,8 @@ import java.util.Set;
 public class NotificationApplicationRuntimeService {
     private static final Set<String> PRE_SEND_FAILURES = Set.of(
         "UNBOUND_CHANNEL", "ACCOUNT_DISABLED", "ACCOUNT_CHANNEL_MISMATCH", "MISSING_VARIABLE",
-        "ACCOUNT_QUOTA", "TEMPLATE_QUOTA", "RECIPIENT_MINUTE_QUOTA", "RECIPIENT_DAY_QUOTA");
+        "ACCOUNT_QUOTA", "TEMPLATE_QUOTA", "RECIPIENT_MINUTE_QUOTA", "RECIPIENT_DAY_QUOTA",
+        "ATTACHMENT_SNAPSHOT_UNAVAILABLE");
     private static final Set<String> SMS_PRE_SEND_FAILURES = Set.of(
         "SMS_TEMPLATE_MISSING", "INVALID_TEMPLATE_PARAMETERS");
 
@@ -49,12 +53,25 @@ public class NotificationApplicationRuntimeService {
     private final UserService userService;
     private final DispatchNotificationService dispatchService;
     private final ApplicationEventPublisher events;
+    @Autowired(required = false)
+    private NotifyAttachmentActorPort attachmentActorPort;
+    @Autowired(required = false)
+    private OssService attachmentOssService;
+    @org.springframework.beans.factory.annotation.Value("${notify.attachment.max-count:20}")
+    private int attachmentMaxCount = OssService.NOTIFICATION_ATTACHMENT_MAX_COUNT;
+    @org.springframework.beans.factory.annotation.Value("${notify.attachment.max-single-bytes:10485760}")
+    private long attachmentMaxSingleBytes = OssService.NOTIFICATION_ATTACHMENT_MAX_BYTES;
+    @org.springframework.beans.factory.annotation.Value("${notify.attachment.max-total-bytes:26214400}")
+    private long attachmentMaxTotalBytes = OssService.NOTIFICATION_ATTACHMENT_TOTAL_BYTES;
 
     public NotificationReceipt submit(NotificationCommand command) {
         validate(command);
+        List<Long> attachmentIds = normalizeAttachmentIds(command.attachmentOssIds());
+        NotifyAttachmentActorPort.Actor actor = attachmentActor(attachmentIds);
         NotifyIntent duplicated = findDuplicate(command);
         if (duplicated != null) {
             requireUnexpired(duplicated);
+            requireSameAttachments(duplicated, attachmentIds, actor);
             return receipt(duplicated, dao.deliveries(duplicated.getIntentId()));
         }
 
@@ -82,18 +99,58 @@ public class NotificationApplicationRuntimeService {
         intent.setContentSnapshot(stringValue(command.templateParams(), "content", command.templateCode()));
         intent.setPathSnapshot(stringValue(command.templateParams(), "path", null));
         intent.setMetadataJson(JsonUtils.toJsonString(command.metadata()));
+        if (actor != null) {
+            intent.setAttachmentActorUserId(actor.userId());
+            intent.setAttachmentActorClientPk(actor.clientPk());
+        }
         intent.setVersion(0);
         // 解析收件人/配置可能耗时，提交前再用数据库时钟核对同一持久截止。
         requireUnexpired(intent);
         try {
             dao.insert(intent);
         } catch (DuplicateKeyException duplicate) {
-            NotifyIntent existing = findDuplicate(command);
+            NotifyIntent existing = blank(command.idempotencyKey()) ? null
+                : dao.lockIntentByIdempotency(command.appId(), command.idempotencyKey());
             if (existing != null) {
                 requireUnexpired(existing);
-                return receipt(existing, dao.deliveries(existing.getIntentId()));
+                requireSameAttachments(existing, attachmentIds, actor, true);
+                return receipt(existing, dao.lockDeliveries(existing.getIntentId()));
             }
             throw duplicate;
+        }
+
+        // 关系 PK 先持久化，然后在同一提交事务内锁源 OSS 并绑定此真实 PK。
+        // 未授权或任一来源失效时整笔 Intent/关系/Outbox 回滚。
+        for (int position = 0; position < attachmentIds.size(); position++) {
+            NotifyIntentAttachment relation = new NotifyIntentAttachment();
+            relation.setIntentAttachmentId(IdGeneratorUtil.nextLongId());
+            relation.setIntentId(intentId);
+            relation.setPosition(position);
+            relation.setSourceOssId(attachmentIds.get(position));
+            relation.setStatus("QUEUED");
+            relation.setVersion(0);
+            relation.setDelFlag("0");
+            if (dao.insert(relation) != 1) throw new IllegalStateException("通知附件关系写入失败");
+        }
+        if (!attachmentIds.isEmpty()) {
+            long totalBytes = 0;
+            for (NotifyIntentAttachment relation : dao.attachments(intentId).stream()
+                .sorted(Comparator.comparing(NotifyIntentAttachment::getSourceOssId)).toList()) {
+                OssService.NotificationAttachmentSource source = attachmentOssService.bindNotificationSource(
+                    relation.getIntentAttachmentId(), relation.getSourceOssId(), actor.userId(), actor.clientPk());
+                relation.setSourceService(source.service());
+                relation.setSourceKey(source.objectKey());
+                relation.setFileName(source.fileName());
+                relation.setContentType(source.contentType());
+                relation.setFileSize(source.fileSize());
+                if (attachmentMaxSingleBytes <= 0 || attachmentMaxTotalBytes <= 0
+                    || source.fileSize() <= 0 || source.fileSize() > attachmentMaxSingleBytes
+                    || source.fileSize() > attachmentMaxTotalBytes - totalBytes) {
+                    throw new ServiceException("邮件附件超出单件或总量上限");
+                }
+                totalBytes += source.fileSize();
+                if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("通知附件授权事实写入失败");
+            }
         }
 
         List<NotifyDelivery> deliveries = new ArrayList<>();
@@ -241,6 +298,12 @@ public class NotificationApplicationRuntimeService {
                 || task.getAttemptCount() >= task.getMaxAttempts()) continue;
             if ("FAILED".equals(delivery.getStatus()) && "DONE".equals(task.getStatus())
                 && safeLocalFailure(delivery)) {
+                if ("MAIL".equals(delivery.getChannel())
+                    && "ATTACHMENT_SNAPSHOT_UNAVAILABLE".equals(delivery.getErrorCode())
+                    && dao.lockAttachments(intent.getIntentId()).stream().anyMatch(row ->
+                        !Set.of("QUEUED", "READY").contains(row.getStatus()))) {
+                    throw new ServiceException("附件复制结果未知或已释放，需要人工核对");
+                }
                 eligible.add(new RetryCandidate(delivery, task));
             } else if ("IN_APP".equals(delivery.getChannel()) && "UNKNOWN".equals(delivery.getStatus())
                 && "DISPATCH_ERROR".equals(delivery.getErrorCode())
@@ -322,6 +385,9 @@ public class NotificationApplicationRuntimeService {
         if (command.channels().stream().anyMatch(Objects::isNull)) {
             throw new ServiceException("通知渠道不能为空");
         }
+        if (!command.attachmentOssIds().isEmpty() && !command.channels().contains(NotificationChannel.MAIL)) {
+            throw new ServiceException("附件仅可用于邮件投递");
+        }
         String recipientType = command.recipientType() == null
             ? "" : command.recipientType().trim().toUpperCase(java.util.Locale.ROOT);
         if (!Set.of("ALL", "USER", "PHONE", "EMAIL").contains(recipientType)) {
@@ -352,6 +418,49 @@ public class NotificationApplicationRuntimeService {
             if (!toLocal(expiresAt).isAfter(dao.databaseNow())) {
                 throw new ServiceException("通知已过截止时间");
             }
+        }
+    }
+
+    private List<Long> normalizeAttachmentIds(List<String> raw) {
+        if (raw == null || raw.isEmpty()) return List.of();
+        LinkedHashSet<Long> ids = new LinkedHashSet<>();
+        for (String value : raw) {
+            if (value == null || !value.matches("[1-9][0-9]{0,18}")) {
+                throw new ServiceException("附件编号必须为正整数十进制字符串");
+            }
+            try {
+                ids.add(Long.parseLong(value));
+            } catch (NumberFormatException exception) {
+                throw new ServiceException("附件编号超过有符号64位范围");
+            }
+        }
+        if (attachmentMaxCount <= 0 || ids.size() > attachmentMaxCount) throw new ServiceException("通知附件数量超过配置上限");
+        return List.copyOf(ids);
+    }
+
+    private NotifyAttachmentActorPort.Actor attachmentActor(List<Long> ids) {
+        if (ids.isEmpty()) return null;
+        NotifyAttachmentActorPort.Actor actor = attachmentActorPort == null ? null : attachmentActorPort.current();
+        if (actor == null || actor.userId() == null || actor.userId() <= 0
+            || actor.clientPk() == null || actor.clientPk() <= 0 || attachmentOssService == null) {
+            throw new ServiceException("附件提交需要已验证的用户及客户端身份");
+        }
+        return actor;
+    }
+
+    private void requireSameAttachments(NotifyIntent existing, List<Long> ids, NotifyAttachmentActorPort.Actor actor) {
+        requireSameAttachments(existing, ids, actor, false);
+    }
+
+    private void requireSameAttachments(NotifyIntent existing, List<Long> ids, NotifyAttachmentActorPort.Actor actor,
+                                        boolean currentRead) {
+        List<NotifyIntentAttachment> rows = currentRead
+            ? dao.lockAttachmentsByPosition(existing.getIntentId()) : dao.attachments(existing.getIntentId());
+        if (!Objects.equals(existing.getAttachmentActorUserId(), actor == null ? null : actor.userId())
+            || !Objects.equals(existing.getAttachmentActorClientPk(), actor == null ? null : actor.clientPk())
+            || !rows.stream()
+                .map(NotifyIntentAttachment::getSourceOssId).toList().equals(ids)) {
+            throw new ServiceException("同一幂等键的附件或提交者不一致");
         }
     }
 

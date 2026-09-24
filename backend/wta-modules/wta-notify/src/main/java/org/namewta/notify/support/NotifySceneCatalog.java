@@ -17,7 +17,7 @@ public final class NotifySceneCatalog {
      * @return 场景编码列表
      */
     public static List<String> sceneCodes() {
-        return List.of("auth-captcha", "person-rebind", "enterprise-transfer", "workflow-task", "notice-published");
+        return List.of("auth-captcha", "person-rebind", "enterprise-transfer", "workflow-task", "notice-published", "demo-mail");
     }
 
     /**
@@ -33,6 +33,7 @@ public final class NotifySceneCatalog {
             case "enterprise-transfer" -> "企业负责人转移";
             case "workflow-task" -> "工作流待办";
             case "notice-published" -> "公告发布";
+            case "demo-mail" -> "邮件演示";
             default -> sceneCode;
         };
     }
@@ -54,6 +55,9 @@ public final class NotifySceneCatalog {
                 new Variable("title", true, "标题", "业务标题"),
                 new Variable("content", true, "正文", "业务正文"),
                 new Variable("path", true, "/task", "跳转路径"));
+            case "demo-mail" -> List.of(
+                new Variable("title", true, "演示标题", "邮件标题"),
+                new Variable("content", true, "演示正文", "邮件正文"));
             default -> List.of();
         };
     }

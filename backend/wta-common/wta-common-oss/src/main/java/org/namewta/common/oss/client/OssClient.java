@@ -697,6 +697,16 @@ public interface OssClient extends AutoCloseable {
      */
     boolean delete(String key, Duration timeout);
 
+    /** 邮件附件专用：按本次剩余预算读取，订阅时即限制累计字节，超时取消请求。 */
+    default byte[] downloadBounded(String key, long maxBytes, Duration timeout) {
+        throw new UnsupportedOperationException("Bounded OSS download is not supported");
+    }
+
+    /** 邮件附件专用：单请求有界上传；超时仅表示结果未知，不证明远端未写入。 */
+    default PutObjectResult uploadBounded(String key, byte[] data, String contentType, Duration timeout) {
+        throw new UnsupportedOperationException("Bounded OSS upload is not supported");
+    }
+
     /**
      * 生成默认存储桶中文件下载的预签名 URL。
      *

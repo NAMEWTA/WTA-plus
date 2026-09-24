@@ -7,11 +7,18 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.nio.file.Path;
+import java.io.IOException;
 
 /**
  * 通用 OSS服务
  */
 public interface OssService {
+
+    /** 邮件快照独立的内存及投递边界；上传策略本身可能允许更大的源文件。 */
+    long NOTIFICATION_ATTACHMENT_MAX_BYTES = 10L * 1024 * 1024;
+    long NOTIFICATION_ATTACHMENT_TOTAL_BYTES = 25L * 1024 * 1024;
+    int NOTIFICATION_ATTACHMENT_MAX_COUNT = 20;
 
     /**
      * 通过 ossId 查询对应的 URL。
@@ -82,6 +89,35 @@ public interface OssService {
      * 在调用方完成业务权限校验后按服务端命名策略为私有对象生成下载授权。
      */
     OssDownloadUrl presignDownload(Long ossId, String policyName);
+
+    /** 在提交事务内锁定并授权源对象，随后绑定真实通知关系主键；不复活待删除对象。 */
+    NotificationAttachmentSource bindNotificationSource(Long relationId, Long sourceOssId,
+                                                         Long actorUserId, Long actorClientPk);
+
+    /** 在短事务内保留私有物理目标及真实引用；返回值不含存储凭据。 */
+    NotificationCopyReservation reserveNotificationSnapshot(Long relationId, Long sourceOssId,
+                                                            Long actorUserId, Long actorClientPk);
+
+    /** 在事务外执行受限下载、摘要校验及私有上传；失败/超时的目标必须保持未知。 */
+    NotificationCopyResult copyNotificationSnapshot(NotificationCopyReservation reservation);
+
+    /** 与通知关系 READY 写入同一事务，目标状态仅从 NOT_READY 转为 ACTIVE。 */
+    void confirmNotificationSnapshot(NotificationCopyReservation reservation, NotificationCopyResult result);
+
+    /** 仅物化已确认的私有目标；从不向邮件适配器暴露签名 URL。 */
+    void materializeNotificationSnapshot(Long relationId, Long sourceOssId, Long targetOssId, String expectedSha256,
+                                         Path destination) throws IOException;
+
+    /** 仅由通知聚合根的安全回收事务解除本关系的源和目标引用；不直接删除供应商对象。 */
+    void releaseNotificationReferences(Long relationId, Long sourceOssId, Long targetOssId);
+
+    record NotificationAttachmentSource(String service, String objectKey, String fileName,
+                                        String contentType, long fileSize) { }
+    record NotificationCopyReservation(Long relationId, Long sourceOssId, Long targetOssId,
+                                       String sourceService, String sourceKey, String targetService,
+                                       String targetKey, String fileName, String contentType, long fileSize,
+                                       Long actorUserId, Long actorClientPk) { }
+    record NotificationCopyResult(long fileSize, String sha256) { }
 
     record OssReferenceState(Long ossId, boolean temporary, LocalDateTime expireTime, long referenceCount) {
     }

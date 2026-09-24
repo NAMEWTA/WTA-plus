@@ -32,5 +32,8 @@ public class NotifyIntent extends BaseEntity {
     private String contentSnapshot;
     private String pathSnapshot;
     private String metadataJson;
+    /** 非空附件的原提交者；不能由 HTTP 请求指定。 */
+    private Long attachmentActorUserId;
+    private Long attachmentActorClientPk;
     private Integer version;
 }

@@ -74,7 +74,7 @@ public class CaptchaController {
                 "PHONE", List.of(phoneNumber), "auth-captcha",
                 Map.of("code", code, "expireMinutes", String.valueOf(Constants.CAPTCHA_EXPIRATION)),
                 List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, deadline,
-                captchaIdempotencyKey(NotificationChannel.SMS, phoneNumber), Map.of("audit", "REDACT_SENSITIVE")));
+                captchaIdempotencyKey(NotificationChannel.SMS, phoneNumber), Map.of("audit", "REDACT_SENSITIVE"), java.util.List.of()));
             if (!cacheCaptchaCode(key, code, deadline)) return R.fail("验证码短信发送失败");
         } catch (Exception ex) {
             log.error("验证码短信发送失败，异常类型={}", ex.getClass().getSimpleName());
@@ -114,7 +114,7 @@ public class CaptchaController {
                 "EMAIL", List.of(email), "auth-captcha",
                 Map.of("code", code, "expireMinutes", String.valueOf(Constants.CAPTCHA_EXPIRATION)),
                 List.of(NotificationChannel.MAIL), NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, deadline,
-                captchaIdempotencyKey(NotificationChannel.MAIL, email), Map.of("audit", "REDACT_SENSITIVE")));
+                captchaIdempotencyKey(NotificationChannel.MAIL, email), Map.of("audit", "REDACT_SENSITIVE"), java.util.List.of()));
             if (!cacheCaptchaCode(key, code, deadline)) throw new ServiceException("验证码邮件发送失败");
         } catch (Exception e) {
             log.error("验证码邮件发送失败，异常类型={}", e.getClass().getSimpleName());

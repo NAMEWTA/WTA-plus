@@ -126,7 +126,7 @@ public class PersonRebindNotificationService implements PersonRebindNotification
                     Long.toString(applicationId), "USER", List.of(Long.toString(userId)), "person-rebind",
                     java.util.Map.of("title", "实名认证绑定变更通知", "content", SAFE_TEXT), List.of(NotificationChannel.IN_APP),
                     NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
-                    internalRequestId(applicationId), java.util.Map.of("audit", "SAFE_TEXT")));
+                    internalRequestId(applicationId), java.util.Map.of("audit", "SAFE_TEXT"), java.util.List.of()));
                 return submissionResult(result, internalRequestId(applicationId));
             }
             if (SMS_TYPE.equals(type)) {
@@ -151,7 +151,7 @@ public class PersonRebindNotificationService implements PersonRebindNotification
             Long.toString(applicationId), "PHONE", List.of(phone), "person-rebind",
             java.util.Map.of(), List.of(NotificationChannel.SMS),
             NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null,
-            "profile:person:rebind:" + profileId + ":" + applicationId + ":sms", java.util.Map.of("audit", "REDACT_SENSITIVE")));
+            "profile:person:rebind:" + profileId + ":" + applicationId + ":sms", java.util.Map.of("audit", "REDACT_SENSITIVE"), java.util.List.of()));
         return submissionResult(result, requestId);
     }
     /** 如实记录提交时状态，QUEUED 不表示供应商已经受理或投递失败。 */

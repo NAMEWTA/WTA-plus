@@ -92,7 +92,7 @@ public class SysOssVo implements Serializable {
     private LocalDateTime expireTime;
 
     /**
-     * 对象删除状态（ACTIVE 正常，PENDING 等待供应商删除）。
+     * 对象状态（ACTIVE 可用，NOT_READY 通知私有快照预约中，PENDING 等待供应商删除）。
      */
     private String deleteState;
 

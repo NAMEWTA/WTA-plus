@@ -49,7 +49,9 @@
 - `channels` 只允许 `IN_APP`、`SMS`、`MAIL`；未实现渠道不得写入命令。未选择时由公告入口默认 `IN_APP`。
 - MAIL/SMS 调用方只传场景编码、模板码和已声明变量，不要传 `providerKey` 或写死完整句子。验证码场景编码为 `auth-captcha`。
 - 邮件 SMTP 与短信厂商账号、热配文案、模板码和收件人拦截的运行时权威是通知配置表，不是 YAML。YAML 最多保留 SMS4J 框架项（如 `config-type`）。
-- 提交只写入 Intent、Recipient、Delivery 和 Outbox；不要在业务事务中等待 Provider I/O。由 Outbox Worker 负责有限重试、幂等和死信，当前自定义回执必须带 `eventId`、短时窗口内的 `timestamp`、账号 `providerKey` 并通过原文 HMAC 验签；这不是腾讯/阿里原生推送格式。缺绑定、账号停用或限额用尽时该渠道失败关闭，不改选其他已启用账号。
+- 提交只写入 Intent、Recipient、Delivery 和 Outbox；MAIL 附件另在同一事务写 `notify_intent_attachment` 并由 System 对真实关系主键绑定来源 `sys_oss_ref`。不要在业务事务中等待 Provider I/O。由 Outbox Worker 负责有限重试、幂等和死信，当前自定义回执必须带 `eventId`、短时窗口内的 `timestamp`、账号 `providerKey` 并通过原文 HMAC 验签；这不是腾讯/阿里原生推送格式。缺绑定、账号停用或限额用尽时该渠道失败关闭，不改选其他已启用账号。
+- `NotificationCommand.attachmentOssIds` 只接受十进制字符串 ID，去重保序；空列表全链路不读 OSS。附件源由当前已认证 User+Client 授权，Intent 固定原 actor；System 是 `sys_oss`、目标 PRIVATE 配置和远端复制的 owner，Notify 是关系与复制状态的 owner，common 只持快照 SPI。目标 `NOT_READY` 行及真实引用在远端 PUT 前持久化；READY 才能物化，COPY_UNKNOWN 保持人工核对且不能盲重传或释放。默认去重后 20 件、10 MiB/件、25 MiB/意图，配置键见统一通知规范。多条 MAIL delivery 复用同 Intent 快照；取消/截止安全回收需要全部明确未发且无活租约，不能由单 delivery cleanup 删除。物化之后物理 SMTP 前再查 DB 截止与租约。
+- `demo-mail` 的中心包装模板只需要 title/content，没有业务 `path`；notice/workflow 仍要求链接变量，不能把演示特例扩散为业务模板规则。
 - 站内消息和消息盒子统一读取 `/notify/inbox`；实时提示只能使用 `/resource/message/ticket` 签发的一次性短时票据，禁止把长期 Bearer Token 放入 URL。
 
 ## 账号预设与回执事实

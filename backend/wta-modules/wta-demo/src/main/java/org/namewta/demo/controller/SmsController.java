@@ -92,7 +92,7 @@ public class SmsController {
             String.join(",", targets), "PHONE", targets, "auth-captcha",
             Map.of("code", "1234", "expireMinutes", "5"),
             List.of(NotificationChannel.SMS), NotificationStrategy.ALL, NotificationMode.ASYNC, 0,
-            null, null, null, Map.of())));
+            null, null, null, Map.of(), java.util.List.of())));
     }
 
 }

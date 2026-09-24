@@ -55,6 +55,7 @@ public final class NotifyCallbackProcessProbe {
                 GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults().setMetaObjectHandler(new InjectionMetaObjectHandler()));
                 for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
                     NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class,
+                    org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class,
                     NotifyProviderReceiptMapper.class)) config.addMapper(mapper);
                 String resource = "/mapper/notify/NotifyOutboxMapper.xml";
                 try (var stream = NotifyCallbackProcessProbe.class.getResourceAsStream(resource)) {
@@ -63,7 +64,7 @@ public final class NotifyCallbackProcessProbe {
                 var sessions = new SqlSessionTemplate(new MybatisSqlSessionFactoryBuilder().build(config));
                 var dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class), sessions.getMapper(NotifyRecipientMapper.class),
                     sessions.getMapper(NotifyDeliveryMapper.class), sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
-                    sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
+                    sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class), sessions.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class));
                 var results = transactional(new NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)), NotifyDispatchResultUseCase.class);
                 var receipts = new NotifyProviderReceiptDao(sessions.getMapper(NotifyProviderReceiptMapper.class));
                 var callbacks = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(dao, results, receipts)), ProviderCallbackUseCase.class);

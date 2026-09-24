@@ -422,6 +422,7 @@ public class NotifyDispatchResultService {
             || code.startsWith("SMS_") || code.endsWith("_QUOTA")
             || "CONTENT_SNAPSHOT_REQUIRED".equals(code) || "UNKNOWN_PROVIDER".equals(code)
             || "INVALID_TEMPLATE_PARAMETERS".equals(code) || "LOCAL_DISPATCH_ERROR".equals(code)
+            || "ATTACHMENT_SNAPSHOT_UNAVAILABLE".equals(code)
             || "PROVIDER_UNSENT_TERMINAL".equals(code));
     }
 }

@@ -137,7 +137,7 @@ class NotifyAtomicResultIntegrationTest {
         GlobalConfigUtils.setGlobalConfig(config, GlobalConfigUtils.defaults()
             .setMetaObjectHandler(new InjectionMetaObjectHandler()).setSqlInjector(new MPJSqlInjector()));
         for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
-            NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, NotifyProviderReceiptMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class,
+            NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class, NotifyProviderReceiptMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class,
             NotifyNoticeMapper.class, NotifyNoticeSnapshotMapper.class)) config.addMapper(mapper);
         for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml", "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml", "/mapper/notify/NotifyNoticeMapper.xml")) {
             try (var stream = getClass().getResourceAsStream(resource)) {
@@ -151,7 +151,7 @@ class NotifyAtomicResultIntegrationTest {
         sessions = new SqlSessionTemplate(sessionFactory);
         dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class), sessions.getMapper(NotifyRecipientMapper.class),
             sessions.getMapper(NotifyDeliveryMapper.class), sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
-            sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class));
+            sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class), sessions.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class));
         configDao = new NotifyConfigDao(sessions.getMapper(NotifyChannelAccountMapper.class), sessions.getMapper(NotifySceneBindingMapper.class));
         receiptMapper = sessions.getMapper(NotifyProviderReceiptMapper.class);
         receipts = new NotifyProviderReceiptDao(receiptMapper);

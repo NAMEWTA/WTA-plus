@@ -361,7 +361,7 @@ class NotifyOutboxWakePublisherTest {
             Map.of("title", "secret-title", "content", "通知正文"),
             List.of(NotificationChannel.IN_APP),
             NotificationStrategy.ALL, NotificationMode.ASYNC, 0,
-            null, null, "key-1", Map.of("token", "smtp-password"));
+            null, null, "key-1", Map.of("token", "smtp-password"), java.util.List.of());
     }
 
     private static final class RecordingTransport implements NotifyOutboxWakeTransport {

@@ -16,7 +16,7 @@ public record NotifyDeliveryEvent(
     NotifyContext context,
     NotifyResult result,
     String originalRequestId,
-    Long notifyLogId,
+    Long attachmentOwnerIntentId,
     List<Long> attachmentSnapshotOssIds,
     Instant occurredAt
 ) {

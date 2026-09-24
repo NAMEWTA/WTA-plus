@@ -165,7 +165,7 @@ class NotifyWakeIntegrationTest {
     private static NotificationCommand command(String key) {
         return new NotificationCommand("owned-t28", "owned", "OWNED", key, "USER", List.of("7"), "owned",
             Map.of("title", "Owned wake", "content", "Owned fixture"), List.of(NotificationChannel.IN_APP),
-            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null, "owned-t28-" + key, Map.of());
+            NotificationStrategy.ALL, NotificationMode.ASYNC, 0, null, null, "owned-t28-" + key, Map.of(), java.util.List.of());
     }
 
     private static void assertOneResult(JdbcTemplate db, long id) {

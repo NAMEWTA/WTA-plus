@@ -85,7 +85,7 @@ public class NotifyTestSendService {
             sceneCode, params, List.of(notifyChannel), NotificationStrategy.ALL, NotificationMode.ASYNC,
             0, null, null,
             "notify-config-test:" + sceneCode + ":" + channel + ":" + System.currentTimeMillis(),
-            Map.of("audit", "TEST")));
+            Map.of("audit", "TEST"), java.util.List.of()));
         return receipt == null || receipt.status() == null ? "UNKNOWN" : receipt.status().name();
     }
 

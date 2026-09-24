@@ -14,6 +14,7 @@ import org.namewta.common.notify.model.NotifyDeliveryStatus;
 import org.namewta.common.notify.exception.NotifyDeliveryException;
 import org.namewta.common.notify.exception.NotifyIdempotencyUnavailableException;
 import org.namewta.common.notify.exception.NotifyValidationException;
+import org.namewta.common.notify.exception.NotifyAttachmentSnapshotException;
 import org.namewta.common.notify.model.NotifyAuditPolicy;
 import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.json.utils.JsonUtils;
@@ -25,6 +26,7 @@ import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.domain.entity.NotifyChannelAccount;
 import org.namewta.notify.domain.entity.NotifyDelivery;
 import org.namewta.notify.domain.entity.NotifyIntent;
+import org.namewta.notify.domain.entity.NotifyIntentAttachment;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.entity.NotifySceneBinding;
 import org.namewta.notify.port.NotifyDispatchPort;
@@ -98,6 +100,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         String errorMessage = null;
         boolean smsClientEntered = false;
         boolean deadlineGateInProgress = false;
+        NotifyRequest.PreSendGate mailPreSendGate = null;
         try {
             NotifySendPlanner.Plan plan = planChannel(intent, delivery);
             if (!plan.ok()) {
@@ -105,6 +108,12 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorCode = plan.errorCode();
                 errorMessage = plan.errorMessage();
             } else {
+                if (NotificationChannel.MAIL.name().equals(delivery.getChannel())) {
+                    NotifyOutbox fencedOutbox = outbox;
+                    mailPreSendGate = new NotifyRequest.PreSendGate(() -> {
+                        if (!resultPort.deadlineGate(fencedOutbox)) throw new NotifyRequest.PreSendClosed();
+                    });
+                }
                 NotifyRequest request = NotifyRequest.builder()
                     .requestId(String.valueOf(delivery.getDeliveryId()))
                     .bizType(intent.getBizType())
@@ -113,6 +122,13 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                     .providerKey(plan.providerKey())
                     .targets(List.of(target(delivery)))
                     .content(toContent(plan))
+                    .attachmentOssIds(NotificationChannel.MAIL.name().equals(delivery.getChannel())
+                        && intent.getAttachmentActorUserId() != null
+                        ? dao.attachments(intent.getIntentId()).stream()
+                            .map(NotifyIntentAttachment::getSourceOssId).toList() : List.of())
+                    .attachmentOwnerIntentId(NotificationChannel.MAIL.name().equals(delivery.getChannel())
+                        && intent.getAttachmentActorUserId() != null ? intent.getIntentId() : null)
+                    .preSendGate(mailPreSendGate)
                     .auditPolicy(NotifyAuditSupport.redactSensitive(intent)
                         ? NotifyAuditPolicy.REDACT_SENSITIVE : NotifyAuditPolicy.FULL)
                     .idempotencyKey(String.valueOf(delivery.getDeliveryId()))
@@ -126,12 +142,21 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorCode = outcome.errorCode();
                 errorMessage = outcome.errorMessage();
             }
+        } catch (NotifyRequest.PreSendClosed closed) {
+            // deadlineGate 已收敛终态；租约丢失时也绝不补写或进入 SMTP。
+            return;
         } catch (NotifyDeliveryException exception) {
             if (deadlineGateInProgress) throw exception;
             result = exception.result();
             ProviderOutcome outcome = providerOutcome(result, delivery);
             errorCode = outcome.errorCode();
             errorMessage = outcome.errorMessage();
+        } catch (NotifyAttachmentSnapshotException exception) {
+            if (deadlineGateInProgress) throw exception;
+            // 快照阶段尚未进入 SMTP；保留可核对 COPY_UNKNOWN，不等外部回执也不盲重发。
+            delivery.setStatus("FAILED");
+            errorCode = "ATTACHMENT_SNAPSHOT_UNAVAILABLE";
+            errorMessage = "附件私有快照未确认";
         } catch (NotifyValidationException exception) {
             if (deadlineGateInProgress) throw exception;
             if (NotificationChannel.SMS.name().equals(delivery.getChannel())) {
@@ -158,7 +183,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 errorMessage = "供应商调用结果未知";
             }
         } catch (RuntimeException exception) {
-            if (deadlineGateInProgress) throw exception;
+            if (deadlineGateInProgress || mailPreSendGate != null && mailPreSendGate.failed()) throw exception;
             if (NotificationChannel.SMS.name().equals(delivery.getChannel()) && !smsClientEntered) {
                 // 尚未进入 NotifyClient，供应商必定未被调用；保留有界 Outbox 重试。
                 delivery.setStatus("FAILED");

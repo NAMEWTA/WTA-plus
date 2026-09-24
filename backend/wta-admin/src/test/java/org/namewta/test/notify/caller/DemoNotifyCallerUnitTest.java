@@ -33,9 +33,10 @@ class DemoNotifyCallerUnitTest {
         ArgumentCaptor<NotificationCommand> requests = ArgumentCaptor.forClass(NotificationCommand.class);
         verify(notificationService, times(3)).submit(requests.capture());
         assertTrue(requests.getAllValues().stream().allMatch(request -> request.priority() == 0));
-        assertEquals(List.of(), requests.getAllValues().get(0).templateParams().get("attachmentOssIds"));
-        assertEquals(List.of(77L), requests.getAllValues().get(1).templateParams().get("attachmentOssIds"));
-        assertEquals(List.of(77L, 88L), requests.getAllValues().get(2).templateParams().get("attachmentOssIds"));
+        assertEquals(List.of(), requests.getAllValues().get(0).attachmentOssIds());
+        assertEquals(List.of("77"), requests.getAllValues().get(1).attachmentOssIds());
+        assertEquals(List.of("77", "88"), requests.getAllValues().get(2).attachmentOssIds());
+        assertTrue(requests.getAllValues().stream().noneMatch(request -> request.templateParams().containsKey("attachmentOssIds")));
         assertTrue(requests.getAllValues().stream().allMatch(request -> request.channels().equals(List.of(NotificationChannel.MAIL))));
     }
 

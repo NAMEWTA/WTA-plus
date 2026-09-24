@@ -13,7 +13,7 @@ notificationService.submit(new NotificationCommand(
     "person-rebind", Map.of("name", displayName),
     List.of(NotificationChannel.IN_APP), NotificationStrategy.ALL,
     NotificationMode.ASYNC, 0, null, null,
-    "profile:person-rebind:" + userId + ":" + requestId, Map.of()));
+    "profile:person-rebind:" + userId + ":" + requestId, Map.of(), List.of()));
 ```
 
 `NotificationApplicationService` 还提供查询、失败重试和未完成通知取消。Controller、Workflow 页面和其他业务实现不得直接依赖通知 Mapper、ServiceImpl、Outbox 或渠道客户端。
@@ -32,7 +32,12 @@ notificationService.submit(new NotificationCommand(
 - 渠道仅使用已实现的 `IN_APP`、`SMS`、`MAIL`；未知历史值只能按“其他”展示，不能生成投递任务。
 - MAIL/SMS 正文权威在通知中心「通知配置」的场景绑定：邮件热配 `${name}` 文案，短信只绑定供应商模板码与参数映射。调用方不得传 `providerKey`，也不得把完整句子写入 `templateParams.content`。
 - SMTP 发件账号和短信厂商凭据保存在 `notify_channel_account`；YAML 不再作为发件人、`sms.blends` 或全局 `restricted`/`minute-max`/`account-max` 的运行时来源。
+- `demo-mail` 是正文邮件演示的独立场景：标题和正文仍由中心绑定模板包装，但不要求业务链接。`notice-published`、`workflow-task` 等业务模板仍必须提供 `path`，不能借演示场景绕过模板变量合同。
 - 业务通知默认异步。站内信、通知收件箱和消息盒子读取同一 `/notify/inbox` 数据源；SSE/WebSocket 只发送刷新事件，不承担持久化。
+
+MAIL 附件只从 `NotificationCommand.attachmentOssIds` 提交，HTTP 值为正的十进制字符串 ID；缺省空列表，重复 ID 保留首次出现的顺序。来源必须属于当前已认证用户及 Client，且在 System 中仍为 ACTIVE、配置存在且访问类型已知。Intent 持久保存原提交者，Worker 不使用自身会话或公开命令字段冒充授权；每次物化还要核原用户、Client 登录域和目标 PRIVATE 策略。默认上限为去重后 20 件、单件 10 MiB、合计 25 MiB，对应 `notify.attachment.max-count`、`max-single-bytes`、`max-total-bytes`；空文件、超限及失效来源在提交或复制前明确拒绝。业务上传策略可允许更大文件，不代表邮件附件也可用。
+
+来源引用在排队、复制结果未知时保持真实 `notify_intent_attachment` 关系；目标按关系主键预约不可下载的私有 `sys_oss` 与引用后再在事务外复制，实际目标字节须回读核 SHA-256。`COPY_UNKNOWN` 表示 PUT、结果提交或 ACK 未可证明，不能因对象暂时存在就盲设 READY、重拷、删除或重发邮件。运维应先停该任务的自动重试，按关系主键核源/目标 `sys_oss_ref`、固定 service/key、目标实际字节与摘要及远端写入是否结束；缺任一证明保持 UNKNOWN 并人工处置，不删除来源。多收件人共用同一组快照；单投递失败不清理共享附件。只有全部 MAIL 投递已终结、无活租约且明确未发，受控回收任务才能解除自有引用；外部已受理/未知或仍可人工重试的本地准备失败继续保留。SMTP 前还须再次核持久 deadline 和当前 lease；过期或失主不调用物理发送器，数据库异常按原异常外溢，不伪装供应商未知。
 
 公告发布的 `noticeVersion` 元数据绑定 Notice、Snapshot、Intent 的同一版本；撤回事务写持久版本栅栏和公告生命周期，Worker 在活租约与统一锁序内关闭该版本尚未获发送权的 Outbox。外部 Provider 已受理或结果未知的回执仍须保留并完成原结果，不能改写为“已撤回”。旧任务缺失可信版本事实时以 `NOTICE_VERSION_UNVERIFIED` 失败关闭，不自动重发；六 SQL 两条固定静态公告仅在快照身份匹配且无精确键或同业务 Intent 等窄条件下允许更新生命周期。含站内信的公告把 Snapshot、Intent 和模板参数路径同事务设为本人 `/notify/inbox?messageId=<messageId>`；仅外部渠道使用通用 `/notify/inbox`，本人深链在投递失败时仍由本人详情接口安全拒绝。收件人页面只用当前获授权的消息 ID 转换旧管理路径，路由 query 与会话变化的迟到响应不得显示旧身份正文。
 

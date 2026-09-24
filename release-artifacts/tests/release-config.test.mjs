@@ -354,7 +354,7 @@ test('MySQL initialization targets one protected wta-plus database', () => {
 
   assert.match(script, /database.*== wta-plus/);
   assert.match(script, /refusing existing database/);
-  assert.match(script, /EXPECTED_TABLES=103/);
+  assert.match(script, /EXPECTED_TABLES=104/);
   assert.match(script, /--default-character-set=utf8mb4/);
   assert.match(script, /access_policy='0'/);
   assert.match(script, /config_key='minio' THEN 'Y' ELSE 'N'/);

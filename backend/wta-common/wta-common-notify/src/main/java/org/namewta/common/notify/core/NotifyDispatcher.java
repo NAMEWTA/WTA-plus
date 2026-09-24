@@ -3,7 +3,6 @@ package org.namewta.common.notify.core;
 import org.namewta.common.notify.attachment.NotifyAttachmentResource;
 import org.namewta.common.notify.attachment.NotifyAttachmentSnapshot;
 import org.namewta.common.notify.attachment.NotifyAttachmentSnapshotService;
-import org.namewta.common.notify.attachment.NotifyLogIdGenerator;
 import org.namewta.common.notify.event.NotifyDeliveryEvent;
 import org.namewta.common.notify.event.NotifyEventPublisher;
 import org.namewta.common.notify.exception.NotifyAttachmentSnapshotException;
@@ -39,7 +38,6 @@ public final class NotifyDispatcher implements NotifyClient {
     private final NotifyEventPublisher eventPublisher;
     private final NotifyIdempotencyCoordinator idempotencyCoordinator;
     private final NotifyAttachmentSnapshotService attachmentSnapshotService;
-    private final NotifyLogIdGenerator notifyLogIdGenerator;
 
     public NotifyDispatcher(NotifyChannelRegistry registry, NotifyContextResolver contextResolver,
                             NotifyEventPublisher eventPublisher) {
@@ -50,14 +48,13 @@ public final class NotifyDispatcher implements NotifyClient {
     public NotifyDispatcher(NotifyChannelRegistry registry, NotifyContextResolver contextResolver,
                             NotifyEventPublisher eventPublisher,
                             NotifyIdempotencyCoordinator idempotencyCoordinator) {
-        this(registry, contextResolver, eventPublisher, idempotencyCoordinator, null, null);
+        this(registry, contextResolver, eventPublisher, idempotencyCoordinator, null);
     }
 
     public NotifyDispatcher(NotifyChannelRegistry registry, NotifyContextResolver contextResolver,
                             NotifyEventPublisher eventPublisher,
                             NotifyIdempotencyCoordinator idempotencyCoordinator,
-                            NotifyAttachmentSnapshotService attachmentSnapshotService,
-                            NotifyLogIdGenerator notifyLogIdGenerator) {
+                            NotifyAttachmentSnapshotService attachmentSnapshotService) {
         this.registry = registry;
         this.contextResolver = contextResolver;
         this.eventPublisher = eventPublisher;
@@ -65,7 +62,6 @@ public final class NotifyDispatcher implements NotifyClient {
             ? new NotifyIdempotencyCoordinator(null, new NotifyIdempotencyProperties())
             : idempotencyCoordinator;
         this.attachmentSnapshotService = attachmentSnapshotService;
-        this.notifyLogIdGenerator = notifyLogIdGenerator;
     }
 
     @Override
@@ -104,6 +100,11 @@ public final class NotifyDispatcher implements NotifyClient {
             release(claim);
             throw exception;
         } catch (RuntimeException exception) {
+            if (request.preSendGate() != null && request.preSendGate().failed()) {
+                cleanupSnapshots(snapshotBatch.snapshots());
+                release(claim);
+                throw exception;
+            }
             adapterResult = providerFailure(request);
             log.warn("通知渠道调用异常，channel={}, exception={}",
                 request.auditPolicy() == NotifyAuditPolicy.REDACT_SENSITIVE ? REDACTED : request.channel(),
@@ -161,21 +162,22 @@ public final class NotifyDispatcher implements NotifyClient {
         }
         return new NotifyRequest(request.requestId(), request.bizType(), request.bizId(), request.channel(),
             request.providerKey(), request.targets(), request.content(), normalized, request.auditPolicy(),
-            request.idempotencyKey(), request.idempotencyWindow(), request.metadata());
+            request.idempotencyKey(), request.idempotencyWindow(), request.metadata(),
+            request.attachmentOwnerIntentId(), request.preSendGate());
     }
 
     private SnapshotBatch createSnapshots(NotifyRequest request, NotifyContext context) {
         if (request.attachmentOssIds().isEmpty()) {
             return SnapshotBatch.empty();
         }
-        if (attachmentSnapshotService == null || notifyLogIdGenerator == null) {
+        if (attachmentSnapshotService == null) {
             throw new NotifyValidationException("ATTACHMENT_SNAPSHOT_NOT_CONFIGURED", "附件快照能力尚未装配");
         }
-        long notifyLogId = notifyLogIdGenerator.nextId();
-        if (notifyLogId <= 0) {
-            throw new NotifyAttachmentSnapshotException("INVALID_NOTIFY_LOG_ID", "通知日志主键生成失败");
+        Long ownerIntentId = request.attachmentOwnerIntentId();
+        if (ownerIntentId == null || ownerIntentId <= 0) {
+            throw new NotifyAttachmentSnapshotException("INVALID_ATTACHMENT_OWNER", "附件所属通知主键无效");
         }
-        List<NotifyAttachmentSnapshot> snapshots = attachmentSnapshotService.createSnapshots(notifyLogId,
+        List<NotifyAttachmentSnapshot> snapshots = attachmentSnapshotService.createSnapshots(ownerIntentId,
             request.attachmentOssIds(), context);
         try {
             validateSnapshots(request.attachmentOssIds(), snapshots);
@@ -183,7 +185,7 @@ public final class NotifyDispatcher implements NotifyClient {
             cleanupSnapshots(snapshots);
             throw exception;
         }
-        return new SnapshotBatch(notifyLogId, snapshots);
+        return new SnapshotBatch(ownerIntentId, snapshots);
     }
 
     private void validateSnapshots(List<Long> sourceOssIds, List<NotifyAttachmentSnapshot> snapshots) {
@@ -314,7 +316,7 @@ public final class NotifyDispatcher implements NotifyClient {
         try {
             boolean redact = request.auditPolicy() == NotifyAuditPolicy.REDACT_SENSITIVE;
             eventPublisher.publish(new NotifyDeliveryEvent(auditRequest(request), auditContext(context, redact),
-                auditResult(result, redact), null, redact ? null : snapshotBatch.notifyLogId(),
+                auditResult(result, redact), null, redact ? null : snapshotBatch.attachmentOwnerIntentId(),
                 redact ? List.of() : snapshotBatch.snapshotOssIds(), Instant.now()));
         } catch (RuntimeException exception) {
             log.warn("通知监控事件发布失败，requestId={}, exception={}", auditIdentifier(request),
@@ -339,7 +341,12 @@ public final class NotifyDispatcher implements NotifyClient {
 
     /** 仅事件得到脱敏副本；Provider 和幂等摘要始终使用原请求。 */
     private NotifyRequest auditRequest(NotifyRequest request) {
-        if (request.auditPolicy() != NotifyAuditPolicy.REDACT_SENSITIVE) return request;
+        if (request.auditPolicy() != NotifyAuditPolicy.REDACT_SENSITIVE) {
+            return new NotifyRequest(request.requestId(), request.bizType(), request.bizId(), request.channel(),
+                request.providerKey(), request.targets(), request.content(), request.attachmentOssIds(),
+                request.auditPolicy(), request.idempotencyKey(), request.idempotencyWindow(), request.metadata(),
+                request.attachmentOwnerIntentId(), null);
+        }
         List<NotifyTarget> targets = request.targets().stream()
             .map(target -> new NotifyTarget(REDACTED, REDACTED, REDACTED)).toList();
         NotifyContent content = switch (request.content()) {
@@ -349,7 +356,7 @@ public final class NotifyDispatcher implements NotifyClient {
         };
         return new NotifyRequest(REDACTED, REDACTED, REDACTED, request.channel(), REDACTED,
             targets, content, List.of(), request.auditPolicy(), REDACTED,
-            request.idempotencyWindow(), java.util.Map.of());
+            request.idempotencyWindow(), java.util.Map.of(), null, null);
     }
 
     private NotifyContext auditContext(NotifyContext context, boolean redact) {
@@ -374,7 +381,7 @@ public final class NotifyDispatcher implements NotifyClient {
         return value == null || value.isBlank();
     }
 
-    private record SnapshotBatch(Long notifyLogId, List<NotifyAttachmentSnapshot> snapshots) {
+    private record SnapshotBatch(Long attachmentOwnerIntentId, List<NotifyAttachmentSnapshot> snapshots) {
 
         private SnapshotBatch {
             snapshots = snapshots == null ? List.of() : List.copyOf(snapshots);

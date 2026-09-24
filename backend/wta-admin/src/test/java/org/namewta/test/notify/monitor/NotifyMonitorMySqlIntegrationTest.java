@@ -75,14 +75,14 @@ class NotifyMonitorMySqlIntegrationTest {
             configuration.setMapUnderscoreToCamelCase(true);
             GlobalConfigUtils.setGlobalConfig(configuration, GlobalConfigUtils.defaults());
             for (var mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
-                NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class)) {
+                NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class)) {
                 configuration.addMapper(mapper);
             }
             var sessions = new MybatisSqlSessionFactoryBuilder().build(configuration);
             try (var session = sessions.openSession(true)) {
                 var dao = new NotifyNotificationDao(session.getMapper(NotifyIntentMapper.class), session.getMapper(NotifyRecipientMapper.class),
                     session.getMapper(NotifyDeliveryMapper.class), session.getMapper(NotifyOutboxMapper.class), session.getMapper(NotifyAttemptMapper.class),
-                    session.getMapper(NotifyMessageMapper.class), session.getMapper(NotifyMessageRecipientMapper.class));
+                    session.getMapper(NotifyMessageMapper.class), session.getMapper(NotifyMessageRecipientMapper.class), session.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class));
                 var application = mock(NotificationApplicationService.class);
                 var useCase = new NotificationMonitorUseCase(application, new NotificationMonitorService(dao));
                 var all = useCase.deliveries(null, null, null);

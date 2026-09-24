@@ -33,6 +33,7 @@
 - 上传完成后以返回的 `ossId` 关联业务数据。创建、修改、删除业务记录时，在同一个 `@DSTransactional` 业务事务内调用 `reconcileReferences(refType, refId, previousOssIds, currentOssIds)`。
 - `refType` 必须是真实物理表名，`refId` 必须是真实业务主键；不得使用 Java 类名、显示名称、临时 UUID 或伪造 owner。删除业务数据必须同步解除引用。
 - 不得直接删除仍被业务引用的对象，不得绕过临时对象、引用计数和两阶段删除状态。清理任务默认先 dry-run；迁移、重试、回滚和 cleanup 必须经过显式权限与人工确认，不得在启动时自动执行生产变更。
+- Notify 邮件附件通过 `OssService.bindNotificationSource` 在同一提交事务核当前 User+Client、ACTIVE 来源和真实 `notify_intent_attachment` 主键，再绑定来源引用。System 不导入 Notify Mapper；Worker 使用 Intent 保存的原 actor，不把公开命令或执行线程身份当权限。目标 `sys_oss` 以 `NOT_READY` 和真实引用先持久预约，物理 PUT 在事务外按共享 30 秒总预算执行；下载期间硬限制字节数，目标回读核字节长度及 SHA-256 后才能确认 READY。COPY_UNKNOWN 保留目标与来源引用供人工核对，不凭暂时存在、Future 取消或数据库回滚假称远端 PUT 已撤销。READY 每次物化核原 actor 仍有登录域授权、源和目标有效且目标配置仍 PRIVATE；多收件人快照共享，不由单条发送失败释放。
 
 ### 配置与运行状态
 

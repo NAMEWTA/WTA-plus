@@ -66,6 +66,8 @@ public final class MailNotifyChannelAdapter implements NotifyChannelAdapter {
             if (accountResolver != null && message.account() == null) {
                 throw new NotifyValidationException("UNKNOWN_PROVIDER", "未找到可用的邮件账号");
             }
+            // 物化后的最终DB截止/租约检查必须处于 SMTP UNKNOWN catch 之外。
+            if (request.preSendGate() != null) request.preSendGate().run();
             long startedAt = System.nanoTime();
             try {
                 String messageId = sender.send(message);

@@ -25,6 +25,7 @@ import java.util.Map;
  * @param expiresAt 截止时间
  * @param idempotencyKey 幂等键
  * @param metadata 脱敏元数据
+ * @param attachmentOssIds 按提交顺序排列的附件源 OSS 主键十进制字符串；缺省为空
  */
 public record NotificationCommand(String appId, String sceneCode, String bizType, String bizId,
                                   String recipientType, List<String> recipientIds, String templateCode,
@@ -32,7 +33,7 @@ public record NotificationCommand(String appId, String sceneCode, String bizType
                                   NotificationStrategy strategy, NotificationMode mode,
                                   @JsonProperty(required = true) int priority,
                                   Instant scheduledAt, Instant expiresAt, String idempotencyKey,
-                                  Map<String, String> metadata) {
+                                  Map<String, String> metadata, List<String> attachmentOssIds) {
     public NotificationCommand {
         recipientIds = recipientIds == null ? List.of() : List.copyOf(recipientIds);
         templateParams = templateParams == null ? Map.of() : Map.copyOf(templateParams);
@@ -40,5 +41,6 @@ public record NotificationCommand(String appId, String sceneCode, String bizType
         strategy = strategy == null ? NotificationStrategy.ALL : strategy;
         mode = mode == null ? NotificationMode.ASYNC : mode;
         metadata = metadata == null ? Map.of() : Map.copyOf(metadata);
+        attachmentOssIds = attachmentOssIds == null ? List.of() : List.copyOf(attachmentOssIds);
     }
 }
