@@ -84,6 +84,7 @@ class NotifyAttachmentRuntimeRedTest {
         account.setChannel("MAIL");
         account.setConfigKey("owned-mail");
         account.setEnabled("Y");
+        account.setMinuteMax(100);
         when(configDao.findAccount(11L)).thenReturn(account);
         NotifyDispatchResultPort resultPort = mock(NotifyDispatchResultPort.class);
         when(resultPort.renew(any())).thenReturn(true);
