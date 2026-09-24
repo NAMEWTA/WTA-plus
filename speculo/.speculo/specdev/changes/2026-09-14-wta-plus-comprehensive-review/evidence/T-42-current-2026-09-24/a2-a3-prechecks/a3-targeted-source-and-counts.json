@@ -1,0 +1,219 @@
+{
+  "source_before": {
+    "head": "0adb76af881968b0f6641bdf6e7d364f8af4d965",
+    "tree": "e8ae0dc8f2ed5848deb6368585dda695e4548c57",
+    "clean": true
+  },
+  "source_after": {
+    "head": "0adb76af881968b0f6641bdf6e7d364f8af4d965",
+    "tree": "e8ae0dc8f2ed5848deb6368585dda695e4548c57",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAttachmentRuntimeRedTest.xml",
+      "sha256": "431d7fafecad0c9a5dd24b58304d3b454927460c5e36fd604e90eb259f369020",
+      "suite": "org.namewta.test.notify.NotifyAttachmentRuntimeRedTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest.xml",
+      "sha256": "d8aee5205daf96592a293c76ca27adf7f71f006b94d0b985ac800da407ab52ec",
+      "suite": "org.namewta.test.notify.attachment.MailAttachmentSnapshotUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest.xml",
+      "sha256": "28b6c07bae3d79b1271593a8750eb86c7ab1b29fe0ef7d70b85360694493cf2d",
+      "suite": "org.namewta.test.notify.attachment.NotifyAttachmentDispatcherUnitTest",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.DemoNotifyCallerUnitTest.xml",
+      "sha256": "133ba826ef7caf8310d89b7aa0ee3b07c8f60f956770816e287dcf23ea7bf75a",
+      "suite": "org.namewta.test.notify.caller.DemoNotifyCallerUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest.xml",
+      "sha256": "f6b41cdbddeaba8e110827fe3646aab5fcf5ef035f7df298d522ec0c6c079c86",
+      "suite": "org.namewta.test.notify.caller.NotifyCallerMigrationContractUnitTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest.xml",
+      "sha256": "921f73b83be4a996236a3e7072e0e269dba1022a0971465bc4b42e77b26b3f4b",
+      "suite": "org.namewta.test.notify.core.MailNotifyChannelAdapterUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.core.NotifyDispatcherUnitTest.xml",
+      "sha256": "ce777492ab3efa5f52c0d1bebed3bf652c86215201dd1a1fbce53486fac1aebb",
+      "suite": "org.namewta.test.notify.core.NotifyDispatcherUnitTest",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest.xml",
+      "sha256": "4baf19a9556d2aa1b205831f93fdd8b68fb28911b33ac9c7cf8b47405f64bbf9",
+      "suite": "org.namewta.test.notify.idempotency.NotifyIdempotencyDispatcherUnitTest",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest.xml",
+      "sha256": "19440c6bdd9aee89a80c295e679cb5dd15ac8357c35a2ae24a1d088e5aa94c93",
+      "suite": "org.namewta.test.oss.access.OssObjectMetadataServiceUnitTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 1,
+        "skipped": 0
+      },
+      "failed_cases": [
+        {
+          "name": "exposesAuthoritativePersistedUploadMetadataWithoutResolvingAUrl",
+          "kind": "error",
+          "type": "ServiceException(code=null, message=OSS_OBJECT_METADATA_UNAVAILABLE, detailMessage=null, data=null)\n at org.namewta.system.service.impl.SysOssServiceImpl.objectMetadata(SysOssServiceImpl.java"
+        }
+      ]
+    },
+    {
+      "file": "a3-targeted-reports/wta-common/wta-common-oss/target/surefire-reports/TEST-org.namewta.common.oss.client.OssBoundedTransferTest.xml",
+      "sha256": "8c31c137faf492e7f9f93f192e2e28e65b9659e98a2c466f1a2b4c6134bb7799",
+      "suite": "org.namewta.common.oss.client.OssBoundedTransferTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest.xml",
+      "sha256": "7513d1ea29f667bde0707d8f373b5ac4385525caab28afd9f48803834e065600",
+      "suite": "org.namewta.notify.adapter.event.NotifyOutboxWakePublisherTest",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.DispatchNotificationServiceTest.xml",
+      "sha256": "624afef5beaece94a99ff0c7175924e12060e2b6e2cd7ffdb3a98a87833a2f10",
+      "suite": "org.namewta.notify.service.runtime.DispatchNotificationServiceTest",
+      "counts": {
+        "tests": 24,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest.xml",
+      "sha256": "e8d967d2f64153e89180d6cc233f55e961378d0b869a933156d315218869d044",
+      "suite": "org.namewta.notify.service.runtime.NotificationDeadlineRuntimeTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-modules/wta-notify/target/surefire-reports/TEST-org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest.xml",
+      "sha256": "27e4663d1b6da292bb42b3b6d1c4126a22817d7da5b1d4d13407f05294fb5bb8",
+      "suite": "org.namewta.notify.service.runtime.NotificationSupportedModeRuntimeTest",
+      "counts": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-modules/wta-profile/wta-profile-enterprise/target/surefire-reports/TEST-org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest.xml",
+      "sha256": "fbd51a373344510d3e91e22c8133b0a78f005608e2e82cd05e05c559ff38ccd5",
+      "suite": "org.namewta.profile.enterprise.service.impl.EnterpriseTransferServiceTest",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "a3-targeted-reports/wta-modules/wta-profile/wta-profile-person/target/surefire-reports/TEST-org.namewta.profile.person.service.impl.PersonRebindNotificationTest.xml",
+      "sha256": "3a4d38347a6c8fe1b790a58f500392af024162ee7fddfe49d52ed57b90ccaf91",
+      "suite": "org.namewta.profile.person.service.impl.PersonRebindNotificationTest",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    }
+  ],
+  "counts": {
+    "tests": 105,
+    "failures": 0,
+    "errors": 1,
+    "skipped": 0
+  }
+}

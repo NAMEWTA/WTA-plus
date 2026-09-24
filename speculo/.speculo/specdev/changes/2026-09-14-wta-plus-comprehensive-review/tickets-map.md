@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 227
+plan_revision: 228
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision227：T42首候选0595e2cc定向编译失败（实际0测试），attempts1且未验收；保留双轴审查并事前登记邮件发送预约事务端口2路径，共60根。17done/2cancelled/1in_progress/30ready，Goal active。
+revision228：T42前三候选失败全部保留；A3编译通过、105测试中104通过/1error/0skip。四项Lead复盘与Dispatch02A已落盘，恢复批attempts0、累计失败3；17done/2cancelled/1in_progress/30ready，Goal active。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -774,3 +774,9 @@ A1不可判定完成：三个OSS测试close受检异常声明已由a20c977f修�
 新增关系补齐@Version/@TableLogic，去掉四处手工version+1，由真实Mapper更新验证乐观冲突和逻辑删除；不能沿用旧实体偏差。UNDELIVERABLE仅在其他全部安全条件成立时解除引用。真实反例须让底层sender阻塞，另连接取消与过期重领，确认CLOSE后仍不释放源/目标refs；保留真正未发送取消与无邮箱正例。补齐多附件第N项失败仍有主、DB提交不确定与幂等唯一键竞争/授权负例、实际HTTP字符串ID与正式OpenAPI等尚缺验收，不将静态检查或单元JSON替代真实证据。
 
 当前fixture受控线程/UNDELIVERABLE两文件尚未提交；cors_audit将继续唯一产品writer，Lead不并发构建或启动服务。所有新代码、default/full/core、真实E2E及生成合同待固定新源码后执行。
+
+## revision228 — 前置失败复盘与分段恢复
+
+revision228：T42前三候选失败全部保留；A3编译通过、105测试中104通过/1error/0skip。四项Lead复盘与Dispatch02A已落盘，恢复批attempts0、累计失败3；17done/2cancelled/1in_progress/30ready，Goal active。
+
+证据与四项复盘：evidence/T-42-current-2026-09-24/a2-a3-prechecks/lead-retrospective-dispatch02a.md。A1受检异常、A2缺import、A3旧metadata正向夹具缺ACTIVE状态；代码保守检查不放宽。Lead接管Dispatch02A，仅修已有OSS metadata测试夹具并补PENDING/NOT_READY/null反例，固定源码重跑16类门禁；通过后才派发JDBC ACK/强制幂等竞争/身份负例。53505153已实现持久发送预约、真实未发UNDELIVERABLE释放、新实体乐观锁/逻辑删除及20项full-context用例，均尚未真实验收。完整应用测试关闭owned Redis自动唤醒，手动驱动真实Worker，独立八类回归覆盖唤醒。HTTP/OpenAPI v3由ops在/tmp准备，未运行。60写集不变，当前唯一产品owner Lead；无构建/服务在跑。恢复批计数仅在本次四项复盘和新派单后按既有流程开始，前三次历史永久保留，不变成通过。

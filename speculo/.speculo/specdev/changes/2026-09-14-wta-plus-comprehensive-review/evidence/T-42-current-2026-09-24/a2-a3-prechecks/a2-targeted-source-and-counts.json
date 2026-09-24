@@ -1,0 +1,33 @@
+{
+  "source_before": {
+    "head": "535051539c4d9c0aa3a0674ce550df114084dc70",
+    "tree": "3993d215128f649f4871c8d4087ea26bebfdb9ab",
+    "clean": true
+  },
+  "source_after": {
+    "head": "535051539c4d9c0aa3a0674ce550df114084dc70",
+    "tree": "3993d215128f649f4871c8d4087ea26bebfdb9ab",
+    "clean": true
+  },
+  "exit_code": 1,
+  "reports": [
+    {
+      "file": "a2-targeted-reports/wta-common/wta-common-oss/target/surefire-reports/TEST-org.namewta.common.oss.client.OssBoundedTransferTest.xml",
+      "sha256": "3f0ba681c14ead55da83b4a1d2187bca507070654e9fdaa935ae1f70492e65e9",
+      "suite": "org.namewta.common.oss.client.OssBoundedTransferTest",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    }
+  ],
+  "counts": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}
