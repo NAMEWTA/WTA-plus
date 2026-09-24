@@ -70,6 +70,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.namewta.system.oss.migration.OssMigrationContracts.MigrationRequest;
 import static org.mockito.Mockito.mockStatic;
 
@@ -115,15 +116,21 @@ class OssStorageMigrationIntegrationTest {
                 DynamicRoutingDataSource routing = new DynamicRoutingDataSource(List.of());
                 routing.setPrimary("master");
                 routing.setStrict(true);
-                AtomicBoolean loseCommitAcknowledgement = new AtomicBoolean();
+                AtomicReference<String> armedReservationXid = new AtomicReference<>();
+                java.util.concurrent.atomic.AtomicInteger reservationArmCount = new java.util.concurrent.atomic.AtomicInteger();
+                java.util.concurrent.atomic.AtomicInteger reservationCommitHit = new java.util.concurrent.atomic.AtomicInteger();
                 routing.addDataSource("master", new org.springframework.jdbc.datasource.DelegatingDataSource(dataSource) {
                     @Override public Connection getConnection() throws SQLException {
                         Connection connection = dataSource.getConnection();
+                        String connectionXid = TransactionContext.getXID();
                         return (Connection) java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(),
                             new Class<?>[] {Connection.class}, (proxy, method, args) -> {
                                 if ("commit".equals(method.getName())
-                                    && loseCommitAcknowledgement.compareAndSet(true, false)) {
+                                    && connectionXid != null
+                                    && connectionXid.equals(armedReservationXid.get())
+                                    && reservationCommitHit.get() == 0) {
                                     connection.commit();
+                                    reservationCommitHit.incrementAndGet();
                                     throw new java.sql.SQLRecoverableException("owned commit acknowledgement lost");
                                 }
                                 try { return method.invoke(connection, args); }
@@ -143,7 +150,14 @@ class OssStorageMigrationIntegrationTest {
                                                         OssMigrationStatus status) {
                         if (item.getStage() == OssMigrationStage.SERVICE_SWITCHED
                             && rejectItemSwitch.compareAndSet(true, false)) return false;
-                        return super.updateItem(item, version, status);
+                        boolean updated = super.updateItem(item, version, status);
+                        if (updated && OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN.equals(item.getErrorMessage())) {
+                            String xid = TransactionContext.getXID();
+                            assertThat(xid).as("reservation XID after UNKNOWN CAS").isNotBlank();
+                            assertThat(armedReservationXid.compareAndSet(null, xid)).isTrue();
+                            reservationArmCount.incrementAndGet();
+                        }
+                        return updated;
                     }
                     @Override public boolean compareAndSetService(Long id, String expected, String target) {
                         if (rejectPointer.compareAndSet(true, false)) return false;
@@ -184,9 +198,13 @@ class OssStorageMigrationIntegrationTest {
                     .isInstanceOfSatisfying(OssMigrationException.class,
                         ex -> assertThat(ex.error()).isEqualTo(OssMigrationError.CLEANUP_WINDOW_OPEN));
                 clock.advance(Duration.ofMinutes(2));
-                loseCommitAcknowledgement.set(true);
-                assertThatThrownBy(() -> service.cleanup(cleanupBatch, true))
-                    .isInstanceOf(RuntimeException.class);
+                Throwable acknowledgementFailure = catchThrowable(() -> service.cleanup(cleanupBatch, true));
+                assertThat(acknowledgementFailure).isNotNull();
+                assertThat(causedBy(acknowledgementFailure, java.sql.SQLRecoverableException.class,
+                    "owned commit acknowledgement lost")).isTrue();
+                assertThat(armedReservationXid.get()).isNotBlank();
+                assertThat(reservationArmCount).hasValue(1);
+                assertThat(reservationCommitHit).hasValue(1);
                 assertThat(scalar(dataSource, "select error_message from sys_oss_migration_item where oss_id=101"))
                     .isEqualTo(OssMigrationAtomicService.CLEANUP_OUTCOME_UNKNOWN);
                 SysOssConfigMapper configMapper = sessions.getMapper(SysOssConfigMapper.class);
@@ -662,6 +680,14 @@ class OssStorageMigrationIntegrationTest {
             assertThat(result.next()).isTrue();
             return result.getString(1);
         }
+    }
+
+    private static boolean causedBy(Throwable failure, Class<? extends Throwable> type, String message) {
+        Set<Throwable> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+        for (Throwable cause = failure; cause != null && seen.add(cause); cause = cause.getCause()) {
+            if (type.isInstance(cause) && message.equals(cause.getMessage())) return true;
+        }
+        return false;
     }
 
     private static void dropTables(PooledDataSource dataSource) throws Exception {
