@@ -3775,7 +3775,8 @@
     "checks": [
       "两种竞争顺序均不删当前来源，恢复/清理结果明确",
       "指针/工单更新冲突回滚；删除确认丢失能安全幂等重试",
-      "单对象超时/失败不锁住整个批次，真实MinIO目标对象仍可读取"
+      "单对象超时/失败不锁住整个批次，真实MinIO目标对象仍可读取",
+      "未终结迁移保护源目标物理身份；创建与配置改删互斥，真实MySQL验证"
     ],
     "paths": [
       "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/migration/",
@@ -3787,7 +3788,11 @@
       "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/AbstractOssClientImpl.java",
       "backend/wta-admin/src/test/java/org/namewta/test/oss/client/",
       "backend/README.md",
-      ".agents/skills/wta-module-guide/references/modules/system/domains.md"
+      ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/mapper/SysOssConfigMapper.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssConfigServiceImpl.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/config/",
+      "backend/wta-modules/wta-system/AGENTS.md"
     ],
     "tests": [
       "OssStorageMigrationIntegrationTest：真实MySQL两连接＋阻塞替身＋MinIO对象存在验收"
@@ -3813,7 +3818,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 214,
+    "plan_revision": 215,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: OssStorageMigrationIntegrationTest：真实MySQL两连接＋阻塞替身＋MinIO对象存在验收",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
