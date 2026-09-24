@@ -3701,7 +3701,22 @@
       "backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/readiness/",
       "frontend/packages/web-domains/system/src/oss-config/",
       "frontend/packages/domains/system/src/oss-config/",
-      "backend/wta-admin/src/test/java/org/namewta/test/oss/readiness/"
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/readiness/",
+      "backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/client/OssClient.java",
+      "backend/wta-modules/wta-system/src/main/java/org/namewta/system/domain/vo/OssStorageDiagnosticVo.java",
+      "backend/wta-admin/src/test/java/org/namewta/test/oss/config/OssConfigHttpContractUnitTest.java",
+      "frontend/packages/domains/system/src/resource-service.ts",
+      "frontend/packages/domains/system/src/resource-service.test.ts",
+      "frontend/packages/domains/system/src/index.ts",
+      "frontend/packages/api-contracts/generated/openapi.ts",
+      "frontend/packages/api-contracts/openapi/current.json",
+      "frontend/packages/api-contracts/openapi/revisions/",
+      "backend/README.md",
+      ".agents/skills/wta-module-guide/references/modules/system/domains.md",
+      "frontend/packages/web-domains/system/src/runtime.ts",
+      "frontend/packages/web-domains/system/src/index.test.ts",
+      "frontend/apps/admin-web/src/router/adminManifestRegistry.ts",
+      "frontend/apps/admin-web/src/router/adminManifestRegistry.test.ts"
     ],
     "tests": [
       "OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示"
@@ -3728,7 +3743,7 @@
     ],
     "status": "in_progress",
     "ready": true,
-    "plan_revision": 206,
+    "plan_revision": 207,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
