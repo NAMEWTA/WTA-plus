@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * 统一通知自动装配。
  */
-@AutoConfiguration
+@AutoConfiguration(afterName = "org.redisson.spring.starter.RedissonAutoConfigurationV4")
 @EnableConfigurationProperties(NotifyIdempotencyProperties.class)
 public class NotifyAutoConfiguration {
 
