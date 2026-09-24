@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 224
+plan_revision: 225
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision224：T42事前扩展3条common OSS有界传输精确写集，共55根；复制按整体deadline、读取字节上限与目标digest验证，测试2MiB限制不进入产品。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision225：T42事前增加Mail适配器发信前期限/租约核验写集，共56根；附件复制物化后重新核验既有数据库gate，保留T39合同。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -750,3 +750,9 @@ NotificationCommand.attachmentOssIds使用List<String>，HTTP可选、缺省空�
 revision224：T42事前扩展3条common OSS有界传输精确写集，共55根；复制按整体deadline、读取字节上限与目标digest验证，测试2MiB限制不进入产品。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 现有OssClient仅HEAD/DELETE有Duration重载，新增受控下载/上传入口及OssBoundedTransferTest，保持其他调用语义。System源GET、目标PUT和目标GET共用绝对deadline，读流阶段硬限制字节、核对目标长度与SHA256；超时/中断取消不能证明远端PUT已停止，仍保留COPY_UNKNOWN预约和引用。邮件附件产品默认限制为去重后20件、单件10MiB、总量25MiB，提交前预检并同步可配置合同与文档；隔离测试代理2MiB仅为小型fixture限制。READY复用须核验原actor仍有效、目标仍PRIVATE且摘要一致；重复ID保序去重，唯一键冲突后的附件关系与返回投递使用当前读。新增Mapper遵循BaseMapperPlus硬约束。以上为实施约束，尚未验收通过。
+
+## revision225 — 附件物化后的发信前核验
+
+revision225：T42事前增加Mail适配器发信前期限/租约核验写集，共56根；附件复制物化后重新核验既有数据库gate，保留T39合同。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+新增精确写路径为common-mail/notify/MailNotifyChannelAdapter.java。NotifyRequest只由内部builder携带JSON忽略的beforeProviderSend回调，不扩HTTP NotificationCommand；审计事件FULL/REDACT均去除回调。Dispatch绑定本次真实outbox/token，Mail在全部物化后、物理sender调用前执行已有DB deadlineGate。false为已关闭，不再调用供应商；SQL/提交异常原样外溢。Mail和Common Dispatcher两层都不能把尚未发信的gate失败包装为provider UNKNOWN，当前幂等owner按未发送边界释放。补复制/物化跨截止或丢lease时MailSender零调用，以及异常和事件序列化断言。此处为事前实施合同，尚未验收。
