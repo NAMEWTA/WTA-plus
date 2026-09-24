@@ -7,6 +7,7 @@ import org.namewta.test.support.SqlBaselinePaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +36,7 @@ class OssNotifyMigrationUnitTest {
         assertTrue(ossRef.contains("实际物理表名"));
         assertTrue(ossRef.contains("ref_id"));
         assertTrue(ossRef.contains("uk_sys_oss_ref_object"));
-        assertFalse(ossRef.contains("client_pk"));
+        assertFalse(hasColumn(ossRef, "client_pk"));
 
         String notify = createTable(ddl, "notify_intent");
         assertCoreFields(notify);
@@ -43,7 +44,8 @@ class OssNotifyMigrationUnitTest {
         assertTrue(notify.contains("idempotency_key"));
         assertTrue(notify.contains("content_snapshot"));
         assertTrue(notify.contains("metadata_json"));
-        assertFalse(notify.contains("client_pk"));
+        assertTrue(hasColumn(notify, "attachment_actor_client_pk"));
+        assertFalse(hasColumn(notify, "client_pk"));
 
         String delivery = createTable(ddl, "notify_delivery");
         assertCoreFields(delivery);
@@ -74,7 +76,15 @@ class OssNotifyMigrationUnitTest {
         assertTrue(dml.contains("notify:notification:submit"));
         assertTrue(dml.contains("perms like 'system:notify:%'"));
         assertTrue(dml.contains("where not exists"));
-        assertFalse(dml.substring(dml.indexOf(DSL_MARKER)).contains("client_pk"));
+        assertFalse(containsStandaloneIdentifier(dml.substring(dml.indexOf(DSL_MARKER)), "client_pk"));
+    }
+
+    private boolean hasColumn(String table, String column) {
+        return Pattern.compile("(?m)^\\s*`?" + column + "`?\\s+").matcher(table).find();
+    }
+
+    private boolean containsStandaloneIdentifier(String sql, String identifier) {
+        return Pattern.compile("(?<![a-z0-9_])" + identifier + "(?![a-z0-9_])").matcher(sql).find();
     }
 
     private void assertBaseFields(String table) {

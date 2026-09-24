@@ -50,6 +50,38 @@
       "contractTest": "wta-modules/wta-profile/wta-profile-person/src/test/java/org/namewta/profile/person/service/impl/ProfileMaterialServiceTest.java"
     },
     {
+      "id": "notify-mail-attachment-source",
+      "module": "wta-notify",
+      "table": "notify_intent_attachment",
+      "carrier": "source_oss_id",
+      "encoding": "one authorized positive OSS id per ordered intent attachment relation",
+      "primaryKey": "intent_attachment_id",
+      "ownerService": "org.namewta.notify.service.runtime.NotificationApplicationRuntimeService",
+      "callerClass": "org.namewta.notify.service.runtime.NotificationApplicationRuntimeService",
+      "insertStrategy": "persist relation PK and original User/Client, then authorize ACTIVE source and bind its real relation reference in the submit transaction",
+      "updateStrategy": "source OSS id is immutable; copy reservation preserves source service and key while owner remains bound",
+      "deleteStrategy": "NotifyAttachmentSnapshotTransactions releases the source reference only after every MAIL delivery is terminal, no lease or unknown copy remains, and send_reserved is false",
+      "restoreStrategy": "COPY_UNKNOWN and send_reserved retain the source for manual reconciliation; a released relation cannot be requeued",
+      "carrierSource": "wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyIntentAttachment.java",
+      "contractTest": "wta-admin/src/test/java/org/namewta/test/notify/NotifyMailAttachmentIntegrationTest.java"
+    },
+    {
+      "id": "notify-mail-private-snapshot",
+      "module": "wta-notify",
+      "table": "notify_intent_attachment",
+      "carrier": "snapshot_oss_id",
+      "encoding": "one private target OSS id reserved under the relation PK before remote copy",
+      "primaryKey": "intent_attachment_id",
+      "ownerService": "org.namewta.notify.service.runtime.NotifyAttachmentSnapshotTransactions",
+      "callerClass": "org.namewta.notify.service.runtime.NotifyAttachmentSnapshotTransactions",
+      "insertStrategy": "reserve NOT_READY target and bind its real relation reference in one transaction before external copy",
+      "updateStrategy": "confirm target ACTIVE and relation READY together after bounded copy and target digest verification; uncertain result retains target and reference",
+      "deleteStrategy": "release source and target references only after all MAIL deliveries are provably unsent and no active lease or send reservation remains",
+      "restoreStrategy": "COPY_UNKNOWN keeps the stable target key and reference for manual verification; never retry the same uncertain PUT blindly",
+      "carrierSource": "wta-modules/wta-notify/src/main/java/org/namewta/notify/domain/entity/NotifyIntentAttachment.java",
+      "contractTest": "wta-admin/src/test/java/org/namewta/test/notify/NotifyMailAttachmentIntegrationTest.java"
+    },
+    {
       "id": "demo-rich-text-content",
       "module": "wta-demo",
       "table": "test_rich_text",

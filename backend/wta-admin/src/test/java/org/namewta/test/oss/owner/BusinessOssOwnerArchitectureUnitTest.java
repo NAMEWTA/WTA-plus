@@ -42,12 +42,14 @@ class BusinessOssOwnerArchitectureUnitTest {
 
         validateManifest(manifest, repository);
         assertCarrierCoverage(scanPersistentCarrierCandidates(repository), manifest);
-        assertCallerCoverage(scanReconcileCallers(repository), manifest);
+        assertCallerCoverage(scanReferenceCallers(repository), manifest);
 
         assertTrue(ownerCoordinates(manifest).containsAll(Set.of(
             "sys_user.avatar",
             "flow_his_task.ext",
-            "profile_material_ref.oss_id"
+            "profile_material_ref.oss_id",
+            "notify_intent_attachment.source_oss_id",
+            "notify_intent_attachment.snapshot_oss_id"
         )));
     }
 
@@ -236,11 +238,14 @@ class BusinessOssOwnerArchitectureUnitTest {
         }
     }
 
-    private Set<String> scanReconcileCallers(Path repository) throws Exception {
+    private Set<String> scanReferenceCallers(Path repository) throws Exception {
         Set<String> callers = new LinkedHashSet<>();
         for (Path file : productionJavaFiles(repository)) {
             String source = Files.readString(file);
-            if (!source.contains(".reconcileReferences(")) {
+            if (!source.contains(".reconcileReferences(")
+                && !source.contains(".bindNotificationSource(")
+                && !source.contains(".reserveNotificationSnapshot(")
+                && !source.contains(".releaseNotificationReferences(")) {
                 continue;
             }
             Matcher packageMatcher = PACKAGE.matcher(source);
