@@ -3741,15 +3741,15 @@
     "resources": [
       "oss:diagnostic-contract"
     ],
-    "status": "in_progress",
+    "status": "done",
     "ready": true,
-    "plan_revision": 211,
+    "plan_revision": 212,
     "review_date": "2026-09-23",
     "e2e_disposition": "required: OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示",
     "decision": "2026-09-23用户已接受全部设计选择并确认整体共识；按已接受ADR执行。",
     "notes": "Policy/ACL 403 被折叠为空，PublicAccess.from 误当否定事实；简化parser未完整处理Resource/Condition/Deny。",
-    "implementation_commit": null,
-    "result_sha": null,
+    "implementation_commit": "09be6db6c3bace8594f7db0fe49a221e3cc5f140",
+    "result_sha": "09be6db6c3bace8594f7db0fe49a221e3cc5f140",
     "contract_ids": [
       "AC-045"
     ],

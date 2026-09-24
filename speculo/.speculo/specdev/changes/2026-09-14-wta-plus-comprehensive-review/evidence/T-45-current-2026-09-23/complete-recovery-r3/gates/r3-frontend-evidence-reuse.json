@@ -1,0 +1,49 @@
+{
+  "prior_head": "be35584b0d8dcfbb560dc9f338c303dafc77fbfd",
+  "current": {
+    "head": "09be6db6c3bace8594f7db0fe49a221e3cc5f140",
+    "tree": "2d5459e7dc77ec4120516d97a63de17eee390be4",
+    "clean": true
+  },
+  "input_trees": {
+    "frontend": {
+      "prior": "1a18421835cab00dbcc1f12e7077f0bb114711ff",
+      "current": "1a18421835cab00dbcc1f12e7077f0bb114711ff"
+    },
+    ".agents": {
+      "prior": "629b58fe969c02e6917ea44a2420824252e2d406",
+      "current": "629b58fe969c02e6917ea44a2420824252e2d406"
+    },
+    "scripts": {
+      "prior": "58f0666836e2b3849f2f9a45bb0207e44e0a910b",
+      "current": "58f0666836e2b3849f2f9a45bb0207e44e0a910b"
+    }
+  },
+  "records": [
+    {
+      "file": "r1-frontend-architecture.json",
+      "sha256": "882df4836637636268ddccb9c347ab7b4d6b6472c6b51cfb587a129264e10bdf"
+    },
+    {
+      "file": "r1-frontend-architecture-tests.json",
+      "sha256": "7ba6fa58ff1dc58970f377a161459120c53a67fecaa4d937a6a540527cf4cd1b"
+    },
+    {
+      "file": "r1-frontend-openapi.json",
+      "sha256": "8a51180c7a2c1ad0949baa1ac23a9d0bc0fc9d309a65df12b85923def65564ed"
+    },
+    {
+      "file": "r1-frontend-lint.json",
+      "sha256": "8217160b7371e02a2c98f5fbeb8ac2f4ad1cf7371ed0e9936c00825767f97113"
+    },
+    {
+      "file": "r1-frontend-typecheck.json",
+      "sha256": "08f5e96d1bdc246462fc947c26e3070e26c4d7583b284148677a58a273ae2bf2"
+    },
+    {
+      "file": "r1-frontend-test.json",
+      "sha256": "799aded7092b8eb2d190bed7f1af867d1050b2756a6de3b7ed4c60e9aceed69f"
+    }
+  ],
+  "statement": "Reuse exact unchanged frontend input gates; production build rerun at current source below"
+}

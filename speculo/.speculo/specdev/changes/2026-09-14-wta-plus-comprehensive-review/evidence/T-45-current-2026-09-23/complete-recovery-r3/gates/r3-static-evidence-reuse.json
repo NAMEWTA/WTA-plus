@@ -1,0 +1,49 @@
+{
+  "source_before": "be35584b0d8dcfbb560dc9f338c303dafc77fbfd",
+  "source_current": "09be6db6c3bace8594f7db0fe49a221e3cc5f140",
+  "identical_input_trees": {
+    ".agents": {
+      "before": "629b58fe969c02e6917ea44a2420824252e2d406",
+      "after": "629b58fe969c02e6917ea44a2420824252e2d406"
+    },
+    "scripts": {
+      "before": "58f0666836e2b3849f2f9a45bb0207e44e0a910b",
+      "after": "58f0666836e2b3849f2f9a45bb0207e44e0a910b"
+    },
+    "docs/fm": {
+      "before": "3d576c2828c3e34d289241fb76a4d81d546c00f0",
+      "after": "3d576c2828c3e34d289241fb76a4d81d546c00f0"
+    },
+    "backend/wta-modules/wta-notify": {
+      "before": "70db5a494045fa4e6c7d6ebd9d2008fd35299a5c",
+      "after": "70db5a494045fa4e6c7d6ebd9d2008fd35299a5c"
+    },
+    "frontend": {
+      "before": "1a18421835cab00dbcc1f12e7077f0bb114711ff",
+      "after": "1a18421835cab00dbcc1f12e7077f0bb114711ff"
+    }
+  },
+  "records": [
+    {
+      "file": "r1static-skill-facts.json",
+      "sha256": "a5940355b2381f68f6b6c7c491d17c4bf796a25acded0d50c634131cf7480486"
+    },
+    {
+      "file": "r1static-fullstack-facts.json",
+      "sha256": "e14d7317a98342a790491c0ae73cfe2e4b60943688311f2bd6b9758171e83a8a"
+    },
+    {
+      "file": "r1static-notify-layered.json",
+      "sha256": "bd1e2ba0942a5bb5a54c660a68e3ef283b1ce5a4029ddc0e110528a6c9089e58"
+    },
+    {
+      "file": "r1static-fm.json",
+      "sha256": "2418e2405657550c266b44fe858f561912275224c10baff6a48a3e87ea1a121b"
+    },
+    {
+      "file": "r1static-handbooks.json",
+      "sha256": "e14756298bc23c200182abb8529db0dac5f43c1284f6fbfd601fdd009260b8fe"
+    }
+  ],
+  "changed_files": "Only existing parser and test content; no directory or handbook changes"
+}

@@ -1,0 +1,113 @@
+{
+  "gate": "T45 two exact OSS MinIO integration classes",
+  "run_id": "45cde3cd5fe92d7c",
+  "owner": "T-45-OSS-TWO",
+  "source_before": {
+    "head": "09be6db6c3bace8594f7db0fe49a221e3cc5f140",
+    "tree": "2d5459e7dc77ec4120516d97a63de17eee390be4",
+    "clean": true
+  },
+  "source_after": {
+    "head": "09be6db6c3bace8594f7db0fe49a221e3cc5f140",
+    "tree": "2d5459e7dc77ec4120516d97a63de17eee390be4",
+    "clean": true
+  },
+  "maven_exit_code": 0,
+  "suites": [
+    {
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "fresh": true,
+      "source_sha256": "b6fd0eb65563ae720a56a6f3531e7d144d31678f69fb8c5dc6f0529fd452e3bd",
+      "sanitized_sha256": "e2c278a714da3338b9493275fc8d16e111c362bda6eb8dcbe0a84353cee83727",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t45/oss-two-runs/45cde3cd5fe92d7c/xml/TEST-org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "verifiesPublicAndPrivateBoundariesWithoutMutatingPolicy"
+      ],
+      "private_properties_marker": true
+    },
+    {
+      "suite": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "fresh": true,
+      "source_sha256": "0f1ef39870ef94fda2729f173509db2a58075fd9f5a83eccd7175d8cb40c621a",
+      "sanitized_sha256": "a9f727fc914f7b176a909cc8c9c266fa1f0815baf3a9a807186781a133d756a6",
+      "redactions": 3,
+      "retained_path": "/tmp/wta-t45/oss-two-runs/45cde3cd5fe92d7c/xml/TEST-org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest.xml",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "resolvesStablePublicAndExpiringPrivateUrlsAgainstRealMinio"
+      ],
+      "private_properties_marker": true
+    }
+  ],
+  "cleanup": {
+    "maven_process_group": {
+      "pgid": 2035437,
+      "live_members": []
+    },
+    "owned_node_chrome_java_pids_remaining": [],
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "aac9d575a77913bf8ac6751e24dc6c5e4dab9d33c97d3e4378fb5918c3279954": true,
+      "1c66c16bb4c37d7c9bf6a998b8764950a3e18e615bac03e575885a05dd12527d": true
+    },
+    "loopback_ports_closed": {
+      "32991": true,
+      "32992": true,
+      "32993": true
+    },
+    "errors": []
+  },
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-24T02:57:08.076569+00:00",
+  "owned": {
+    "container_full_ids": [
+      "f7b2c8f0402a3e5010a9668d31b0ac89aa692707158ae90382bcc1d69284c003",
+      "9207548b0aa1302cd5d3f51d6770a9a47007eaa183abbd4c6cc4ca22c7b13e43",
+      "6c6cba55e7a381d180b38051a15a4be8b866fc3acd51521edbf3603573e45b6b"
+    ],
+    "loopback_ports": {
+      "mysql": 32991,
+      "redis": 32992,
+      "minio": 32993
+    },
+    "migration_database_empty_before": true,
+    "migration_database_name": "t45_oss_migration_45cde3cd5fe92d7c",
+    "minio_identity_scope": "owned bootstrap root",
+    "maven_pgid": 2035437
+  },
+  "surefire_text_reports": [
+    {
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessMinioIntegrationTest",
+      "source_sha256": "2502912f8a1bf09187f0b0da366bac44b518a21830b9b7d5159765e0e9862527",
+      "sanitized_sha256": "2502912f8a1bf09187f0b0da366bac44b518a21830b9b7d5159765e0e9862527",
+      "redactions": 0
+    },
+    {
+      "suite": "org.namewta.test.oss.access.OssAccessUrlMinioIntegrationTest",
+      "source_sha256": "d733f6d94d8b3ba80dd14a22695f75ce97f9f2af90437fc9bc76892cebcc5651",
+      "sanitized_sha256": "d733f6d94d8b3ba80dd14a22695f75ce97f9f2af90437fc9bc76892cebcc5651",
+      "redactions": 0
+    }
+  ],
+  "surefire_temp_files": [],
+  "owned_java_logs": [],
+  "maven_log": {
+    "source_sha256": "0359474e5dd41bb55d7848cdf6078ceb9f6b71b8505dc86a8b463e521ae0b471",
+    "sanitized_sha256": "0359474e5dd41bb55d7848cdf6078ceb9f6b71b8505dc86a8b463e521ae0b471",
+    "redactions": 0
+  },
+  "finished_utc": "2026-09-24T02:57:57.217992+00:00"
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "bash",
+    "scripts/ci/verify-admin-bundle.sh",
+    "core"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-24T03:01:49.550109+00:00",
+  "finished_at": "2026-09-24T03:01:49.957600+00:00",
+  "exit_code": 0,
+  "log": "r3core-core-bundle.log"
+}

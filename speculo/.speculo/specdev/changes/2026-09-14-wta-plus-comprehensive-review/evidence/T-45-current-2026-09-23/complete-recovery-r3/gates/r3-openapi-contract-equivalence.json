@@ -1,0 +1,15 @@
+{
+  "source_head": "09be6db6c3bace8594f7db0fe49a221e3cc5f140",
+  "current_run": "7d8fa892845f33d4",
+  "formal_generation_run": "6e5d5c24c38c793d",
+  "current_raw_sha256": "0922eb218a0ef1b941a49feb4cd31e7c11857687dd25af6381fe5352936959b5",
+  "prior_raw_sha256": "6f62122a5dcd959ee32adc2293c4b48785b1664fba748dcda59ef9ab99152a4c",
+  "root_keys_changed": [
+    "servers"
+  ],
+  "paths_equal": true,
+  "components_equal": true,
+  "path_count": 438,
+  "schema_count": 450,
+  "only_server_difference_is_owned_loopback_port": true
+}
