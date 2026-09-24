@@ -1,0 +1,29 @@
+{
+  "source_head": "42aa503ff5dce5c8ab9267d4bb813b494879b870",
+  "read_only": true,
+  "files": [
+    {
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationApplicationRuntimeService.java",
+      "sha256": "b37689a51895f60e001350a01b5de9fee948fef85b9f5580b524e1bd1f1cc0fd"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotifyDispatchResultService.java",
+      "sha256": "35301c96d653d225fad02fbf372e0a4e108d1fd0f8528a0e358a43c08766dffc"
+    },
+    {
+      "path": "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/service/runtime/NotificationMonitorService.java",
+      "sha256": "939deae155ce40be384c4a4d4f03b8adf3def2a8361b720b4afd0ae36240ef88"
+    },
+    {
+      "path": "backend/wta-modules/wta-profile/wta-profile-enterprise/src/main/java/org/namewta/profile/enterprise/service/EnterpriseTransferService.java",
+      "sha256": "2578864929400751b887f17aff3fcf25d50de92d3a95a32dee7177d5d4f66554"
+    }
+  ],
+  "findings": [
+    "ALL paginated 1000; strictly >100000 rejected before intent insertion; explicit lists have no equivalent uniform bound",
+    "Refresh aggregate takes intent then current locking read of every delivery; persisted status feeds query/cancel/retry",
+    "Enterprise transfer gates challenge activation on query ACCEPTED/DELIVERED; QUEUED/PROCESSING/UNKNOWN stays queued",
+    "Monitor joins persisted intents with delivery state; do not switch to read-time-only aggregate",
+    "Baseline physical SQL and timing not yet executed"
+  ]
+}

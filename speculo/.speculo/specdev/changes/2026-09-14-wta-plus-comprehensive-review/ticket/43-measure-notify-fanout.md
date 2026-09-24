@@ -138,3 +138,11 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 ## revision239 — Dispatch01 测量基线
 
 基线 `dd250b947576505425b67ebac0a559c56616952c`。首轮只新增已登记测试根内 `NotifyFanoutMeasurementIntegrationTest.java`，生产写入与聚合不改；Lead提交治理后将该单文件产品写锁交给cors_audit，Lead独占命令、服务、提交及治理。legacy_audit只读核查batch事务与聚合消费者，ops_audit只在/tmp准备owned驱动。100/1000/10000各三次fresh库，真实公告UseCase发布、固定10次IN_APP结果、SQL/JDBC batch/返回行数、时间/内存/锁等待及回滚控制；无数据不写提升，10次结果不冒充全量成本。同字节探针与驱动用于后续A/B，三候选失败先四项复盘。精确方案见 `evidence/T-43-current-2026-09-24/dispatch01-measurement-packet.md`；所有AC待真实验收。
+
+### Dispatch01 Lead 接管与测量口径细化（实测前）
+
+cors_audit已交还唯一产品写锁；测量类摘要 `94ae510b968474abc30a34fbd8a8a7a9431b90ecfd9fcfc0ed36b0f64e78186a`。Lead追加已登记Notify测试根内精确文件 `backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/service/runtime/NotificationAllRecipientLimitTest.java`，仅确认ALL 100000到达首次Intent写入口、100001写前拒绝，不称十万人真实持久化或性能；私有稿已独立静态复核。生产代码仍不改。
+
+初稿双层MyBatis/JDBC探针改为真实JDBC层计数及正控制，减少测量干扰；记录executeQuery/update/batch/addBatch与实返行、FOR UPDATE、物理commit/rollback，不把executeBatch调用次数称网络往返/服务端语句数。AOP仅观察生产OSS和提交后Wake，均有正控制；不替换业务Bean。预热为三次只读公告查询，结果是新JVM中的首次业务发布或固定十次结果，不能称充分JIT预热后的稳态性能或全量完成成本。各堆池阶段内峰值之和也不称同一时刻堆峰值。
+
+锁等待取owned MySQL全局状态前后差量，无竞争时零仅说明本样本未观察到等待；无法读取记null而非伪零，最终验收需实际可用值或补充证据。批量优化前必须完成A；B保持本测量类和驱动逐字节相同，额外批次原子性/混合目标验证另设测试。独占驱动v2在/tmp，SHA256 `93edf8f32d861365ea9140da31ea9304f8c3409493b514de0e957561329e33bb`；v1未运行且原字节保留。先编译和100人发布smoke，再21个独立fresh库矩阵（发布/十次结果各三档三重复，加10k回滚三重复）。离线驱动12项只证明驱动自身安全检查，不是产品验收。当前所有业务AC未勾。
