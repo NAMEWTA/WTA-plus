@@ -62,6 +62,24 @@ class OssObjectMetadataServiceUnitTest {
             .hasMessageContaining("OSS_OBJECT_METADATA_UNAVAILABLE");
     }
 
+    @Test
+    void failsClosedForUnavailableStatesEvenWithCompleteMetadata() {
+        SysOssMapper mapper = mock(SysOssMapper.class);
+        SysOssServiceImpl service = new SysOssServiceImpl(mapper, mock(SysOssConfigMapper.class),
+            mock(SysOssMigrationItemMapper.class), mock(OssLifecycleManager.class));
+        for (String state : new String[] {"PENDING", "NOT_READY", null}) {
+            SysOss unavailable = oss(11L, "identity/front.jpg",
+                "{\"fileSize\":1048576,\"contentType\":\"image/jpeg\"}");
+            unavailable.setDeleteState(state);
+            when(mapper.selectById(11L)).thenReturn(unavailable);
+
+            assertThatThrownBy(() -> service.objectMetadata(11L))
+                .as("仅 ACTIVE 对象可提供可用元数据，实际状态: %s", state)
+                .isInstanceOf(ServiceException.class)
+                .hasMessageContaining("OSS_OBJECT_METADATA_UNAVAILABLE");
+        }
+    }
+
     private SysOss oss(long id, String fileName, String ext) {
         SysOss oss = new SysOss();
         oss.setOssId(id);
@@ -70,6 +88,7 @@ class OssObjectMetadataServiceUnitTest {
         oss.setFileSuffix(fileName.substring(fileName.lastIndexOf('.')));
         oss.setExt1(ext);
         oss.setCreateBy(77L);
+        oss.setDeleteState("ACTIVE");
         return oss;
     }
 }
