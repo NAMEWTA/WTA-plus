@@ -243,5 +243,10 @@
     "file": "checkpoint217-validator.log",
     "bytes": 21046,
     "sha256": "ce8ff2ad8916e14444061d284f271f62b67068ab9d52a8153a90b776896d636b"
+  },
+  {
+    "file": "real01-ack-injection-diagnosis.md",
+    "bytes": 4280,
+    "sha256": "cfe4b83d74f1b233da7905564794db4243772b7221dd83dc387e6148201bdf21"
   }
 ]
