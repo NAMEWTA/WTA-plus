@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision225，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**run已激活，revision226，ready_for_execution=true；T40/T41/T44/T45/T46已完成，T42执行中。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision225：T42事前增加Mail适配器发信前期限/租约核验写集，共56根；附件复制物化后重新核验既有数据库gate，保留T39合同。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision226：T42事前补充SysOss实体/VO状态说明写集，共58根；NOT_READY不可作为普通可用附件，元数据与URL均仅接受ACTIVE。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 ### Pending Decisions and Blockers
 
@@ -755,3 +755,9 @@ revision224：T42事前扩展3条common OSS有界传输精确写集，共55根�
 revision225：T42事前增加Mail适配器发信前期限/租约核验写集，共56根；附件复制物化后重新核验既有数据库gate，保留T39合同。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 新增精确写路径为common-mail/notify/MailNotifyChannelAdapter.java。NotifyRequest只由内部builder携带JSON忽略的beforeProviderSend回调，不扩HTTP NotificationCommand；审计事件FULL/REDACT均去除回调。Dispatch绑定本次真实outbox/token，Mail在全部物化后、物理sender调用前执行已有DB deadlineGate。false为已关闭，不再调用供应商；SQL/提交异常原样外溢。Mail和Common Dispatcher两层都不能把尚未发信的gate失败包装为provider UNKNOWN，当前幂等owner按未发送边界释放。补复制/物化跨截止或丢lease时MailSender零调用，以及异常和事件序列化断言。此处为事前实施合同，尚未验收。
+
+## revision226 — 未就绪快照状态合同
+
+revision226：T42事前补充SysOss实体/VO状态说明写集，共58根；NOT_READY不可作为普通可用附件，元数据与URL均仅接受ACTIVE。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+新增2条精确路径仅用于补全SysOss与SysOssVo的NOT_READY语义说明；六SQL同列注释同步。NOT_READY表示通知私有快照预约未确认，不是可下载对象；普通objectMetadata与访问URL入口仅接受ACTIVE。复制结果不确定时保留NOT_READY、真实关系引用与稳定目标键，不能将其包装为可用附件。配套真实故障用例核对metadata及URL拒绝。尚未验收通过，产品writer仍为cors_audit，Lead不并发构建。

@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 225
+plan_revision: 226
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision225：T42事前增加Mail适配器发信前期限/租约核验写集，共56根；附件复制物化后重新核验既有数据库gate，保留T39合同。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+revision226：T42事前补充SysOss实体/VO状态说明写集，共58根；NOT_READY不可作为普通可用附件，元数据与URL均仅接受ACTIVE。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -756,3 +756,9 @@ revision224：T42事前扩展3条common OSS有界传输精确写集，共55根�
 revision225：T42事前增加Mail适配器发信前期限/租约核验写集，共56根；附件复制物化后重新核验既有数据库gate，保留T39合同。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
 
 新增精确写路径为common-mail/notify/MailNotifyChannelAdapter.java。NotifyRequest只由内部builder携带JSON忽略的beforeProviderSend回调，不扩HTTP NotificationCommand；审计事件FULL/REDACT均去除回调。Dispatch绑定本次真实outbox/token，Mail在全部物化后、物理sender调用前执行已有DB deadlineGate。false为已关闭，不再调用供应商；SQL/提交异常原样外溢。Mail和Common Dispatcher两层都不能把尚未发信的gate失败包装为provider UNKNOWN，当前幂等owner按未发送边界释放。补复制/物化跨截止或丢lease时MailSender零调用，以及异常和事件序列化断言。此处为事前实施合同，尚未验收。
+
+## revision226 — 未就绪快照状态合同
+
+revision226：T42事前补充SysOss实体/VO状态说明写集，共58根；NOT_READY不可作为普通可用附件，元数据与URL均仅接受ACTIVE。17done/2cancelled/1in_progress/30ready，完整候选attempts0，Goal active。
+
+新增2条精确路径仅用于补全SysOss与SysOssVo的NOT_READY语义说明；六SQL同列注释同步。NOT_READY表示通知私有快照预约未确认，不是可下载对象；普通objectMetadata与访问URL入口仅接受ACTIVE。复制结果不确定时保留NOT_READY、真实关系引用与稳定目标键，不能将其包装为可用附件。配套真实故障用例核对metadata及URL拒绝。尚未验收通过，产品writer仍为cors_audit，Lead不并发构建。
