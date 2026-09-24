@@ -1,0 +1,33 @@
+{
+  "candidate_head": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
+  "source_sha256": "c064d3bf29fff3cd53f76666c46eb2bf111f304b83f485e1679fc5018824d30b",
+  "expected_methods": [
+    "noAttachmentSubmitAndWorkerEachMakeZeroOssRequests",
+    "authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner",
+    "duplicateKeepsOneIntentAndRejectsChangedAttachmentSet",
+    "invalidOwnerAndQueuedSourceRevocationNeverReachSmtp",
+    "twoRecipientsShareOneOrderedPrivateSnapshot",
+    "relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp",
+    "lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot",
+    "copyCrossingLeaseFenceCannotInvokePhysicalMailSender",
+    "latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend",
+    "publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed",
+    "multipleAttachmentsReachMailSenderInSubmissionOrder",
+    "sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation",
+    "copyCrossingPersistedExpiryCannotInvokePhysicalMailSender",
+    "readySnapshotRechecksCurrentClientGrantAndPrivateTarget",
+    "cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot",
+    "undeliverableMailWithoutOutboxReleasesItsSourceReference",
+    "reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim",
+    "attachmentMapperRejectsStaleVersionAndHidesLogicalDelete",
+    "secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences",
+    "failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender",
+    "submitCommitBeforeAcknowledgementRollsBackAllOwnedFactsAndCanRetry",
+    "submitCommitAfterAcknowledgementKeepsOneOwnedReceiptOnRetry",
+    "mailSendReservationCommitBeforeAcknowledgementCannotSendOrPartiallyReserve",
+    "mailSendReservationCommitAfterAcknowledgementFencesReleaseWithoutSending",
+    "forcedUniqueKeyCollisionUsesCurrentReadForOneOwnedRelation",
+    "sameKeyAndAttachmentWithDifferentAuthenticatedUserRejectsOldReceipt",
+    "sameKeyAndAttachmentWithDifferentAuthenticatedClientRejectsOldReceipt"
+  ]
+}

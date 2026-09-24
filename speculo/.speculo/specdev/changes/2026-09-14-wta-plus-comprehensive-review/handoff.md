@@ -1,6 +1,6 @@
 # 恢复入口
 
-revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/core、前端771和三App构建通过；Notify layered静态门禁8错误阻止关闭。事前新增3路径共69根，Dispatch05修正分层事务入口；17done/2cancelled/1in_progress/30ready。
+revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
 
 ## 历史恢复记录（以下状态仅属于各自revision）
 
@@ -690,3 +690,9 @@ revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/
 四项Lead复盘已保留：缺陷是新增generic adapters越过Port直接访问DAO/Service、ActorPort错放runtime、Transactions类命名及事务位置违反既有规则；Lead发现分层门禁顺序过晚。下一实质变化仅校正依赖和事务层次，不改业务状态、安全、SQL或HTTP合同，不放宽校验规则。ActorPort移port；新增SnapshotPort与SnapshotUseCase；旧Transactions改为runtime的SnapshotService并移除事务注解；UseCase实现Port且四个public方法逐个经Spring代理进入原短事务；复制I/O仍在事务外。adapter只持Port及现有OssService；候选读取也经Port→UseCase→Service→DAO。确认参数通过端口自有合同传递，不以全限定类名隐藏违规。owner清单同步真实Service，测试改为注入端口，原断言不削弱。
 
 三个新精确路径事前登记在frontmatter，合计69根；其余改名删除、adapter、runtime与两测试及owner清单已在原66根。Lead负责固定源码、构建、服务及提交；治理提交后cors_audit才取得本派单唯一产品写锁。先跑Notify分层，再定向/真实Mail27与Notify135/default/full/core/HTTP；后端事务图变化后不得自动复用旧真实验收。前端/schema如确实无变更，可通过明确输入等价证据保留本轮原坐标。Dispatch05新批attempts0，此前所有候选失败、JDT恢复及v4失败永久保留，无盲重跑、不归档。
+
+## revision238 — T42当前候选验收完成
+
+revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
+
+base `5417c257130216e2b283ca933d9496d76c10f46a`，source/result `d95b464e46ec73d7a913809f4c84332a7f2eeffb`，tree `39f18706226fed11ed19b5cdc1f822d60492350c`，current-workspace/direct-parent。完整证据见 `evidence/T-42.md` 与 `evidence/T-42-current-2026-09-24/complete-dispatch05/manifest.json`。Dispatch05修复8项真实分层错误后已复验新事务代理链；原失败、旧源验收与Windows单项用户豁免均保留原记录，不追认改写。当前批attempts1，未部署、推送或归档。

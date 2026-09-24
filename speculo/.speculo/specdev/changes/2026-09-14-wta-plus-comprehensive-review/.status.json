@@ -45,7 +45,7 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-24T08:05:06.085842+00:00",
+  "updated_at": "2026-09-24T08:28:21.735455+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
@@ -200,7 +200,8 @@
     "revision234：T42当前113单元及20真实MAIL通过证据保持，02B三测试文件由cors_audit独占补验；事前登记3处104表事实文档，实际唯一写集64根。整票未完成，17done/2cancelled/1in_progress/30ready，补验批attempts0。",
     "revision235：T42补强后的真实Mail27与八类135回归全部零skip通过；原BEFORE证据缺口及预置绑定10→11断言失败均保留。当前17done/2cancelled/1in_progress/30ready，补验批attempts3；用户已豁免T48真实Windows运行，其余验收不变。",
     "revision236：T42真实Mail27/135回归通过保持；全默认clean恢复排除旧问题字节码后1183项检出2fail/1error（244环境skip），三项测试/载体合同待同步，未完成。事前新增2写路径共66根；17done/2cancelled/1in_progress/30ready。",
-    "revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/core、前端771和三App构建通过；Notify layered静态门禁8错误阻止关闭。事前新增3路径共69根，Dispatch05修正分层事务入口；17done/2cancelled/1in_progress/30ready。"
+    "revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/core、前端771和三App构建通过；Notify layered静态门禁8错误阻止关闭。事前新增3路径共69根，Dispatch05修正分层事务入口；17done/2cancelled/1in_progress/30ready。",
+    "revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。"
   ],
   "worktrees": [
     {
@@ -944,37 +945,37 @@
       "parent_branch": "main",
       "branch": "main",
       "workspace_ref": "current",
-      "source_checkpoint": null,
-      "status": "active",
-      "updated_at": "2026-09-24T08:05:06.085842+00:00",
+      "source_checkpoint": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
+      "status": "integrated",
+      "updated_at": "2026-09-24T08:28:21.735455+00:00",
       "integration": {
-        "status": "pending",
+        "status": "passed",
         "parent_ref": "main",
         "parent_before_sha": "5417c257130216e2b283ca933d9496d76c10f46a",
-        "source_sha": null,
+        "source_sha": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
         "candidate_sha": null,
         "candidate_tree_sha": null,
         "candidate_branch": null,
         "candidate_workspace_ref": null,
-        "result_sha": null,
+        "result_sha": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
         "method": "direct-parent",
         "conflict_paths": [],
-        "verification": "pending",
+        "verification": "passed",
         "full_suite": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42-replan-2026-09-23.md</Path>"
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42.md</Path>"
         },
         "e2e": {
           "required": true,
-          "status": "pending",
+          "status": "passed",
           "reason": null,
-          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42-replan-2026-09-23.md</Path>"
+          "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42.md</Path>"
         },
         "evidence": "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42.md</Path>",
-        "attempts": 0,
-        "promotion_status": "pending"
+        "attempts": 1,
+        "promotion_status": "applied"
       }
     }
   ]

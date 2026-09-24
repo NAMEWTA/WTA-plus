@@ -1,0 +1,231 @@
+{
+  "gate": "T42 full-Spring mail attachment integration",
+  "run_id": "57cd7d5353524ca5",
+  "owner": "T-42-MAIL-ATTACHMENT",
+  "expected_methods": [
+    "noAttachmentSubmitAndWorkerEachMakeZeroOssRequests",
+    "authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner",
+    "duplicateKeepsOneIntentAndRejectsChangedAttachmentSet",
+    "invalidOwnerAndQueuedSourceRevocationNeverReachSmtp",
+    "twoRecipientsShareOneOrderedPrivateSnapshot",
+    "relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp",
+    "lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot",
+    "copyCrossingLeaseFenceCannotInvokePhysicalMailSender",
+    "latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend",
+    "publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed",
+    "multipleAttachmentsReachMailSenderInSubmissionOrder",
+    "sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation",
+    "copyCrossingPersistedExpiryCannotInvokePhysicalMailSender",
+    "readySnapshotRechecksCurrentClientGrantAndPrivateTarget",
+    "cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot",
+    "undeliverableMailWithoutOutboxReleasesItsSourceReference",
+    "reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim",
+    "attachmentMapperRejectsStaleVersionAndHidesLogicalDelete",
+    "secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences",
+    "failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender",
+    "submitCommitBeforeAcknowledgementRollsBackAllOwnedFactsAndCanRetry",
+    "submitCommitAfterAcknowledgementKeepsOneOwnedReceiptOnRetry",
+    "mailSendReservationCommitBeforeAcknowledgementCannotSendOrPartiallyReserve",
+    "mailSendReservationCommitAfterAcknowledgementFencesReleaseWithoutSending",
+    "forcedUniqueKeyCollisionUsesCurrentReadForOneOwnedRelation",
+    "sameKeyAndAttachmentWithDifferentAuthenticatedUserRejectsOldReceipt",
+    "sameKeyAndAttachmentWithDifferentAuthenticatedClientRejectsOldReceipt"
+  ],
+  "source_before": {
+    "head": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
+    "tree": "39f18706226fed11ed19b5cdc1f822d60492350c",
+    "clean": true
+  },
+  "source_after": {
+    "head": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
+    "tree": "39f18706226fed11ed19b5cdc1f822d60492350c",
+    "clean": true
+  },
+  "maven_exit_code": 0,
+  "suites": [
+    {
+      "suite": "org.namewta.test.notify.NotifyMailAttachmentIntegrationTest",
+      "fresh": true,
+      "source_sha256": "10b148ab3e8d196ab4413609ddb5d818d71629c0af72424efdd14be44fa60134",
+      "sanitized_sha256": "e3922c4281cc66b052ab4d45a2629a12b9f2da8fe7eec53b037e2766bdc2b506",
+      "redactions": 7,
+      "retained_path": "/tmp/wta-t42/runs/57cd7d5353524ca5/xml/TEST-org.namewta.test.notify.NotifyMailAttachmentIntegrationTest.xml",
+      "counts": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "methods": [
+        "noAttachmentSubmitAndWorkerEachMakeZeroOssRequests",
+        "authorizedSourceIsPrivateSnapshotWithRealBytesAndStableOwner",
+        "duplicateKeepsOneIntentAndRejectsChangedAttachmentSet",
+        "invalidOwnerAndQueuedSourceRevocationNeverReachSmtp",
+        "twoRecipientsShareOneOrderedPrivateSnapshot",
+        "relationResultWriteFailureRetainsOwnedUnknownAndNoSmtp",
+        "lostPutAcknowledgementStaysUnknownWithoutResendOrUnownedSnapshot",
+        "copyCrossingLeaseFenceCannotInvokePhysicalMailSender",
+        "latePutAfterSharedDeadlineRemainsOwnedUnknownAndCannotSend",
+        "publicReadSourceCopiesIntoCurrentPrivateTargetAndMissingPrivateFailsClosed",
+        "multipleAttachmentsReachMailSenderInSubmissionOrder",
+        "sameIdempotencyKeyConcurrentSubmissionReturnsOneOwnedRelation",
+        "copyCrossingPersistedExpiryCannotInvokePhysicalMailSender",
+        "readySnapshotRechecksCurrentClientGrantAndPrivateTarget",
+        "cancelledUnsentIntentReleasesOnlyItsReferencesAndCannotRequeueReleasedSnapshot",
+        "undeliverableMailWithoutOutboxReleasesItsSourceReference",
+        "reservedPhysicalSendSurvivesCancelAndExpiredLeaseReclaim",
+        "attachmentMapperRejectsStaleVersionAndHidesLogicalDelete",
+        "secondAttachmentConfirmationFailureKeepsFirstReadyAndAllReferences",
+        "failedSecondSendReservationRollsBackEveryRelationAndNeverCallsSender",
+        "submitCommitBeforeAcknowledgementRollsBackAllOwnedFactsAndCanRetry",
+        "submitCommitAfterAcknowledgementKeepsOneOwnedReceiptOnRetry",
+        "mailSendReservationCommitBeforeAcknowledgementCannotSendOrPartiallyReserve",
+        "mailSendReservationCommitAfterAcknowledgementFencesReleaseWithoutSending",
+        "forcedUniqueKeyCollisionUsesCurrentReadForOneOwnedRelation",
+        "sameKeyAndAttachmentWithDifferentAuthenticatedUserRejectsOldReceipt",
+        "sameKeyAndAttachmentWithDifferentAuthenticatedClientRejectsOldReceipt"
+      ],
+      "private_properties_marker": true
+    }
+  ],
+  "owned": {
+    "container_full_ids": [
+      "c8e469e6ac3937cf97a85c884c1e04b4feb0ac4830b086dcf45e98249d0f84d5",
+      "aeb71d320e32e38bc5a6d3c29cb4695a7de1cc90ce1d55b1e2eb0301c9676bf0",
+      "b3303aa6e0f47c7e5db123a9c09919001f0ef4c2b1b3f178e5b0ee5a39c270d8"
+    ],
+    "anonymous_volumes": [
+      "28263bb09dd31c9d5736b604938e32f0e80477ce222ca1129aaf2a3d305283e7",
+      "f71f7f17f2449f41b2de9d3a147638cc736fb7d0a733adbeb94c1e2b6f8743bf"
+    ],
+    "loopback_ports": {
+      "mysql": 33035,
+      "redis": 33036,
+      "minio": 33037,
+      "s3_count_proxy": 41345,
+      "s3_count_reader": 34649
+    },
+    "maven_pgid": 2691945
+  },
+  "cleanup": {
+    "maven_group_live_members": [],
+    "owned_processes_remaining": [],
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "28263bb09dd31c9d5736b604938e32f0e80477ce222ca1129aaf2a3d305283e7": true,
+      "f71f7f17f2449f41b2de9d3a147638cc736fb7d0a733adbeb94c1e2b6f8743bf": true
+    },
+    "loopback_ports_closed": {
+      "33035": true,
+      "33036": true,
+      "33037": true,
+      "41345": true,
+      "34649": true
+    },
+    "errors": []
+  },
+  "acceptance": true,
+  "exit_code": 0,
+  "started_utc": "2026-09-24T08:14:30.872517+00:00",
+  "test_source_sha256": "c064d3bf29fff3cd53f76666c46eb2bf111f304b83f485e1679fc5018824d30b",
+  "six_sql_sha256": {
+    "10-cde-base-ddl.sql": "98570ed734d38f4b29ccdc6ba4b4c5db58c4c48942c98251c9823758ee506db7",
+    "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+    "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+    "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+    "50-cde-base-dml.sql": "b87610b0ca02319e5aa02daee585b6c4309b74f9c588af1c49564df6d4ed76c6",
+    "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+  },
+  "init": {
+    "exit_code": 0,
+    "raw_sha256": "a75ec2e267e21c1c585effd0e5d6d2f5ff920c5db7d0e8cd7e95555f16a6defc",
+    "sanitized_sha256": "a75ec2e267e21c1c585effd0e5d6d2f5ff920c5db7d0e8cd7e95555f16a6defc",
+    "redactions": 0
+  },
+  "schema_tables": 104,
+  "oss_config_rows": 5,
+  "s3_baseline": {
+    "request_count": 0
+  },
+  "surefire_text_reports": [
+    {
+      "suite": "org.namewta.test.notify.NotifyMailAttachmentIntegrationTest",
+      "source_sha256": "a9093395614bdba2161e9e232e5db9923a1c5fcdfa3e7ddac758718b24fde8ca",
+      "sanitized_sha256": "a9093395614bdba2161e9e232e5db9923a1c5fcdfa3e7ddac758718b24fde8ca",
+      "redactions": 0
+    }
+  ],
+  "surefire_temp_files": [],
+  "owned_java_logs": [],
+  "maven_log": {
+    "source_sha256": "9ef0d0c38ec6fd3029e8cb9977a6e59c12d48840d83226df9c6c73e83f624e8f",
+    "sanitized_sha256": "9ef0d0c38ec6fd3029e8cb9977a6e59c12d48840d83226df9c6c73e83f624e8f",
+    "redactions": 0
+  },
+  "s3_total": {
+    "arrivals": 144,
+    "facts": [
+      {
+        "method": "DELETE",
+        "category": "OBJECT",
+        "bucket_alias": "snapshot",
+        "signed": true,
+        "range": false,
+        "status": 204,
+        "count": 2
+      },
+      {
+        "method": "DELETE",
+        "category": "OBJECT",
+        "bucket_alias": "source",
+        "signed": true,
+        "range": false,
+        "status": 204,
+        "count": 34
+      },
+      {
+        "method": "GET",
+        "category": "OBJECT",
+        "bucket_alias": "snapshot",
+        "signed": true,
+        "range": false,
+        "status": 200,
+        "count": 1
+      },
+      {
+        "method": "GET",
+        "category": "OBJECT",
+        "bucket_alias": "source",
+        "signed": true,
+        "range": false,
+        "status": 200,
+        "count": 50
+      },
+      {
+        "method": "PUT",
+        "category": "OBJECT",
+        "bucket_alias": "snapshot",
+        "signed": true,
+        "range": false,
+        "status": 200,
+        "count": 2
+      },
+      {
+        "method": "PUT",
+        "category": "OBJECT",
+        "bucket_alias": "source",
+        "signed": true,
+        "range": false,
+        "status": 200,
+        "count": 55
+      }
+    ]
+  },
+  "s3_fault_status": {
+    "mode": "HOLD_CANCELLED",
+    "dropped": 4,
+    "held": 3,
+    "released": 3
+  },
+  "finished_utc": "2026-09-24T08:16:04.031493+00:00"
+}

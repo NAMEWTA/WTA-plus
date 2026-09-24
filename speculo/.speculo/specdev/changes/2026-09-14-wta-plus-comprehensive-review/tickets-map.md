@@ -1,7 +1,7 @@
 ---
 schema_version: 3
 plan_contract_version: 1
-plan_revision: 237
+plan_revision: 238
 requested_deliverables: [{"name": "完整Tickets Map", "count": 1}, {"name": "Goal Plan", "count": 1}]
 deliverable_policy: "用户要求全面重规划；保留31历史票并新增19个行为切片，共50票不是用户指定数量。完整修订所有活动文档，旧证据原字节保留。"
 artifact: "tickets-map"
@@ -19,7 +19,7 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 
 ### 总体实施背景
 
-revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/core、前端771和三App构建通过；Notify layered静态门禁8错误阻止关闭。事前新增3路径共69根，Dispatch05修正分层事务入口；17done/2cancelled/1in_progress/30ready。
+revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
 
 分层保持Notify layered、System classic；公开API由wta-api，SQL仅六份基座，前端依赖方向不变。外部I/O与本地消息事务分开；外部UNKNOWN不盲重试；元数据只查DB，移除诊断门禁必须先保留本地权限/访问类型校验。用户此前“无兼容窗口”不取消外部协议、安全或数据保护。
 
@@ -38,7 +38,7 @@ revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/
 
 ## 2. 执行清单
 
-50票中17done、2cancelled、T42 in_progress、30ready；AC-001/003仍由T30复验。
+50票中18done、2cancelled、30ready，无in_progress；AC-001/003仍由T30复验。
 
 | ID | Ticket | 可观察产出 | Blocked By | Depth | Risk | Ready | Owner | Contract IDs | Wave/Gate | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -83,7 +83,7 @@ revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/
 | T-39 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/39-enforce-notification-deadlines.md</Path> | 统一截止时刻驱动验证码 TTL 与 command；提交/重试拒绝到期，Worker 发请求前检查，过期任务结束且 Provider 调用为零。 | T-38 | deep | high | yes | single-agent | AC-039 | W-notify | done |
 | T-40 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/40-retract-notice-and-read-snapshot.md</Path> | 撤回只停止该发布版本未开始发送的任务，保留已送达内容与审计；本人从收件箱读快照，无需公告管理权限。 | T-38, T-39, T-41 | deep | high | yes | single-agent | AC-040 | W-journey | done |
 | T-41 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/41-paged-personal-inbox.md</Path> | 完整收件箱使用项目 PageQuery/PageResult 分页，稳定 create_time/message_id 排序；本人第501条可取，顶部只取最近摘要。全部已读仍作用本人全部消息。 | T-34 | deep | high | yes | single-agent | AC-041 | W-journey | done |
-| T-42 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path> | 正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。 | T-35, T-37, T-44 | deep | high | yes | single-agent | AC-042 | W-close | in_progress |
+| T-42 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/42-mail-attachment-contract.md</Path> | 正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。 | T-35, T-37, T-44 | deep | high | yes | single-agent | AC-042 | W-close | done |
 | T-43 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/43-measure-notify-fanout.md</Path> | 代表性规模有可重复 SQL/时延/锁等待基线；保持现有总量上限与持久聚合语义，优先减少插入往返，测量不足不引入新计数状态机。 | T-36, T-38, T-39 | standard | medium | yes | single-agent | AC-043 | W-close | ready |
 | T-44 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/44-optional-oss-diagnostics.md</Path> | 业务仅校验当前对象/配置/权限/预期访问类型，远端操作按实际结果反馈；管理员诊断独立，坏的可选存储不阻断核心就绪。 | — | deep | high | yes | single-agent | AC-044 | W-oss | done |
 | T-45 | <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/45-bounded-oss-diagnostic-facts.md</Path> | 诊断仅报告观察事实与范围：读403为未知，单对象匿名读取只证明该对象，PRIVATE未知不能宣称全桶安全。 | T-44 | deep | high | yes | single-agent | AC-045 | W-oss | done |
@@ -158,7 +158,7 @@ T-49同时依赖T-44与T-48。完整真实依赖从frontmatter重建，图是摘
 | AC-039 | T-39, T-30 | 可控时钟 runtime/worker、CaptchaNotifyCallerUnitTest、真实 DB 过期任务终结 | covered | T-39 当前候选已验收，见 evidence/T-39.md；整体集成仍待 T-30 |
 | AC-040 | T-40, T-30 | 真实发布→撤回→Worker→inbox；普通用户浏览器详情与越权 | covered | T-40 当前候选已验收，见 evidence/T-40.md；整体集成仍待 T-30 |
 | AC-041 | T-41, T-30 | 真实 MySQL分页＋HTTP 登录身份过滤＋前端分页组件/浏览器 | covered | T-41 当前候选已验收，见 evidence/T-41.md；整体集成仍待 T-30 |
-| AC-042 | T-42, T-30 | DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器 | covered | 规划覆盖；当前not-run，不代表通过 |
+| AC-042 | T-42, T-30 | DemoNotifyCallerUnitTest、NotifyAttachmentDispatcherUnitTest、真实 owner/快照引用＋假邮件物理适配器 | covered | 当前候选验收见evidence/T-42.md；T30最终复验仍待完成 |
 | AC-043 | T-43, T-30 | 真实 MySQL代表规模、SQL计数、现有原子结果/fence回归 | covered | 规划覆盖；当前not-run，不代表通过 |
 | AC-044 | T-44, T-30 | OssStorageReadiness*、OssLifecycle*、OssUpload*；核心启动＋最小权限MinIO与health组 | covered | T-44 当前候选已验收，见 evidence/T-44.md；整体集成仍待 T-30 |
 | AC-045 | T-45, T-30 | OssAccessDiagnosticUnitTest、受限MinIO读权限与诊断展示 | covered | T-45 当前候选已验收，见 evidence/T-45.md；整体集成仍待 T-30 |
@@ -858,3 +858,9 @@ revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/
 四项Lead复盘已保留：缺陷是新增generic adapters越过Port直接访问DAO/Service、ActorPort错放runtime、Transactions类命名及事务位置违反既有规则；Lead发现分层门禁顺序过晚。下一实质变化仅校正依赖和事务层次，不改业务状态、安全、SQL或HTTP合同，不放宽校验规则。ActorPort移port；新增SnapshotPort与SnapshotUseCase；旧Transactions改为runtime的SnapshotService并移除事务注解；UseCase实现Port且四个public方法逐个经Spring代理进入原短事务；复制I/O仍在事务外。adapter只持Port及现有OssService；候选读取也经Port→UseCase→Service→DAO。确认参数通过端口自有合同传递，不以全限定类名隐藏违规。owner清单同步真实Service，测试改为注入端口，原断言不削弱。
 
 三个新精确路径事前登记在frontmatter，合计69根；其余改名删除、adapter、runtime与两测试及owner清单已在原66根。Lead负责固定源码、构建、服务及提交；治理提交后cors_audit才取得本派单唯一产品写锁。先跑Notify分层，再定向/真实Mail27与Notify135/default/full/core/HTTP；后端事务图变化后不得自动复用旧真实验收。前端/schema如确实无变更，可通过明确输入等价证据保留本轮原坐标。Dispatch05新批attempts0，此前所有候选失败、JDT恢复及v4失败永久保留，无盲重跑、不归档。
+
+## revision238 — T42当前候选验收完成
+
+revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
+
+base `5417c257130216e2b283ca933d9496d76c10f46a`，source/result `d95b464e46ec73d7a913809f4c84332a7f2eeffb`，tree `39f18706226fed11ed19b5cdc1f822d60492350c`，current-workspace/direct-parent。完整证据见 `evidence/T-42.md` 与 `evidence/T-42-current-2026-09-24/complete-dispatch05/manifest.json`。Dispatch05修复8项真实分层错误后已复验新事务代理链；原失败、旧源验收与Windows单项用户豁免均保留原记录，不追认改写。当前批attempts1，未部署、推送或归档。

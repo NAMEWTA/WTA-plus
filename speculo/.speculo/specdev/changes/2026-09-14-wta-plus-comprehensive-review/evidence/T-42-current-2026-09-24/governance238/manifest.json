@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "log": "revision238-validator.log",
+      "exit_code": 1,
+      "errors": 8,
+      "reason": "canonical Evidence heading and workspace marker format only"
+    },
+    {
+      "log": "revision238-validator-fixed.log",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 166
+    },
+    {
+      "log": "revision238-validator-final.log",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 166,
+      "scope": "final canonical headings/current-state links"
+    }
+  ],
+  "files": [
+    {
+      "path": "revision238-validator.log",
+      "sha256": "35ed6c1c5f5427ac02409403a2c48af8c589e7a5e1291fbc54b2d211cf2a6228",
+      "bytes": 18848
+    },
+    {
+      "path": "revision238-validator-fixed.log",
+      "sha256": "8fc3e75bb3a92f25300f489060080dc2ebf55f8249d5142ccfbd7c2a4fc6e12a",
+      "bytes": 18296
+    },
+    {
+      "path": "revision238-validator-final.log",
+      "sha256": "8fc3e75bb3a92f25300f489060080dc2ebf55f8249d5142ccfbd7c2a4fc6e12a",
+      "bytes": 18296
+    }
+  ],
+  "source_head": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
+  "scope": "governance documentation working diff only; no product input changes"
+}

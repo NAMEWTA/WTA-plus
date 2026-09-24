@@ -1,0 +1,5 @@
+# Dispatch05 d95 private retained evidence
+
+Technical T-42 candidate acceptance is recorded by the exact-source tests and Lead acceptance JSON. This stage retains terminal targeted/default/full/core/static results, fresh Mail27/Notify135 XML, actual full-JAR HTTP/OpenAPI, independent reviews, frontend input-equivalence and scope/provenance, with source and retained hashes. Prior failed dispatch04 and v4 HTTP evidence remain at their separate coordinates. Default 244 environment skips are not passes. Frontend 771 tests and 329 outputs remain original 73c28 evidence reused only under byte-identical frontend/tooling input trees.
+
+This stage is for T-42 governance validation. It does not declare the whole change complete, deployed, pushed or archived. Runtime tests use owned services and a fake physical Mail sender, not actual SMTP. No raw environment/properties/credentials or JAR is copied; only full/core artifact manifests/proofs. JWT-shaped values in logs/XML are redacted with per-file original and retained SHA and counts in manifest.json.

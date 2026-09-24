@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "scripts/ci/verify-agent-handbooks.mjs"
+  ],
+  "cwd": "/srv/WTA-plus",
+  "started_at": "2026-09-24T08:22:44.398829+00:00",
+  "finished_at": "2026-09-24T08:22:44.460524+00:00",
+  "exit_code": 0,
+  "log": "static05-handbooks.log"
+}

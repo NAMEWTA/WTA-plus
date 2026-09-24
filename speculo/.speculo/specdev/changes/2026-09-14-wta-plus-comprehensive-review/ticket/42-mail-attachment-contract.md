@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-42"
 title: "无链接邮件与授权附件完整送入适配器"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -32,8 +32,10 @@ Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-revi
 ## 1. 战略与来源
 
 - 来源：R64-N-09；AC-042；本轮用户请求与<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>。
-- 当前事实：Demo Mail 使用 notice-published＋空 path；attachmentOssIds 只在参数 Map，dispatch 未映射。旧 ADR-0009 的 sys_notify_log owner 已退役。 当前生产仅有快照SPI与测试替身，未发现生产SnapshotService；不能把测试替身当作已实现能力。
+- 实施前事实：Demo Mail 使用 notice-published＋空 path；attachmentOssIds 只在参数 Map，dispatch 未映射。旧 ADR-0009 的 sys_notify_log owner 已退役。 当前生产仅有快照SPI与测试替身，未发现生产SnapshotService；不能把测试替身当作已实现能力。
 - 可观察产出：正文邮件无需伪造链接；专用 demo-mail 场景以主题/正文包装模板发送。显式附件字段经授权/冻结/持久化传递，零附件不访问 OSS。
+
+当前实现已具备真实生产快照适配、持久Intent/附件关系及原User/Client授权重验，当前候选验收见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-42.md</Path>。
 
 ## 2. 决策状态
 
@@ -99,7 +101,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 | 失败/竞争 | 一个/多个授权附件实际交给适配器；无附件 OSS 调用零次 | 明确失败/安全恢复，无伪成功、越权及部分提交 | 同上，记录故障注入与状态 |
 | 回归 | 现有同域测试＋消费者＋适用静态门禁 | 越权/丢失/待删除附件拒绝；部分快照失败不发送且无孤儿资源；异步 worker 不能绕过原提交者身份，重试与去重不复制无限快照；全应用装配证明生产快照SPI存在；不能只用mock通过 | 同上，记录测试数/skip/源码 |
 
-命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。以下为实施期命令，本轮未执行：
+命令在仓根执行，`cd backend`表示该条命令切cwd；每条独立运行。下列为计划命令；实际命令与源码坐标见当前Evidence：
 
 - `cd backend && ./mvnw -pl wta-modules/wta-notify,wta-admin -am test`
 - `node --test release-artifacts/tests/notify-baseline-contract.test.mjs`
@@ -121,15 +123,15 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-042`：无链接正文邮件发送；notice/workflow 必填 path 校验仍有效。
-- [ ] `AC-042`：一个/多个授权附件实际交给适配器；无附件 OSS 调用零次。
-- [ ] `AC-042`：越权/丢失/待删除附件拒绝；部分快照失败不发送且无孤儿资源。
-- [ ] `AC-042`：异步 worker 不能绕过原提交者身份，重试与去重不复制无限快照。
-- [ ] `AC-042`：全应用装配证明生产快照SPI存在；不能只用mock通过。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-042`：无链接正文邮件发送；notice/workflow 必填 path 校验仍有效。
+- [x] `AC-042`：一个/多个授权附件实际交给适配器；无附件 OSS 调用零次。
+- [x] `AC-042`：越权/丢失/待删除附件拒绝；部分快照失败不发送且无孤儿资源。
+- [x] `AC-042`：异步 worker 不能绕过原提交者身份，重试与去重不复制无限快照。
+- [x] `AC-042`：全应用装配证明生产快照SPI存在；不能只用mock通过。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 
@@ -274,3 +276,9 @@ revision237：T42真实Mail27/135及HTTP、默认940执行/244环境skip、full/
 四项Lead复盘已保留：缺陷是新增generic adapters越过Port直接访问DAO/Service、ActorPort错放runtime、Transactions类命名及事务位置违反既有规则；Lead发现分层门禁顺序过晚。下一实质变化仅校正依赖和事务层次，不改业务状态、安全、SQL或HTTP合同，不放宽校验规则。ActorPort移port；新增SnapshotPort与SnapshotUseCase；旧Transactions改为runtime的SnapshotService并移除事务注解；UseCase实现Port且四个public方法逐个经Spring代理进入原短事务；复制I/O仍在事务外。adapter只持Port及现有OssService；候选读取也经Port→UseCase→Service→DAO。确认参数通过端口自有合同传递，不以全限定类名隐藏违规。owner清单同步真实Service，测试改为注入端口，原断言不削弱。
 
 三个新精确路径事前登记在frontmatter，合计69根；其余改名删除、adapter、runtime与两测试及owner清单已在原66根。Lead负责固定源码、构建、服务及提交；治理提交后cors_audit才取得本派单唯一产品写锁。先跑Notify分层，再定向/真实Mail27与Notify135/default/full/core/HTTP；后端事务图变化后不得自动复用旧真实验收。前端/schema如确实无变更，可通过明确输入等价证据保留本轮原坐标。Dispatch05新批attempts0，此前所有候选失败、JDT恢复及v4失败永久保留，无盲重跑、不归档。
+
+## revision238 — T42当前候选验收完成
+
+revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
+
+base `5417c257130216e2b283ca933d9496d76c10f46a`，source/result `d95b464e46ec73d7a913809f4c84332a7f2eeffb`，tree `39f18706226fed11ed19b5cdc1f822d60492350c`，current-workspace/direct-parent。完整证据见 `evidence/T-42.md` 与 `evidence/T-42-current-2026-09-24/complete-dispatch05/manifest.json`。Dispatch05修复8项真实分层错误后已复验新事务代理链；原失败、旧源验收与Windows单项用户豁免均保留原记录，不追认改写。当前批attempts1，未部署、推送或归档。

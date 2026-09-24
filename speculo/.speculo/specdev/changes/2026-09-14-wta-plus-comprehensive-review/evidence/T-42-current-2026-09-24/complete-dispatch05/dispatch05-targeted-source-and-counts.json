@@ -1,0 +1,69 @@
+{
+  "source_before": {
+    "head": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
+    "tree": "39f18706226fed11ed19b5cdc1f822d60492350c",
+    "clean": true
+  },
+  "source_after": {
+    "head": "d95b464e46ec73d7a913809f4c84332a7f2eeffb",
+    "tree": "39f18706226fed11ed19b5cdc1f822d60492350c",
+    "clean": true
+  },
+  "exit_code": 0,
+  "reports": [
+    {
+      "file": "dispatch05-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest.xml",
+      "sha256": "1147fc4b23a7d422393ef07618befae9ca14dbd2f7b3e33d8e6f60795a75ff9b",
+      "suite": "org.namewta.test.migration.ossnotify.OssNotifyMigrationUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch05-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.notify.NotifyAttachmentRuntimeRedTest.xml",
+      "sha256": "6f366b5b7edde20b8a68511c0ea4e0021c933f32ec26d126834d89630abc5ab3",
+      "suite": "org.namewta.test.notify.NotifyAttachmentRuntimeRedTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch05-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.owner.BusinessOssOwnerArchitectureUnitTest.xml",
+      "sha256": "0bacc1a08d8dec395eca7f3df61a5d22686a67d5ab8068d0042c3d9b5078007b",
+      "suite": "org.namewta.test.oss.owner.BusinessOssOwnerArchitectureUnitTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    },
+    {
+      "file": "dispatch05-targeted-reports/wta-admin/target/surefire-reports/TEST-org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest.xml",
+      "sha256": "fc37576b2f8f6ca1ea5dd859927550dc23797fd72533119fbd15df269f573dbb",
+      "suite": "org.namewta.test.oss.readiness.OssStorageReadinessArchitectureUnitTest",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failed_cases": []
+    }
+  ],
+  "counts": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

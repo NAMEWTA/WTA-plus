@@ -1,0 +1,63 @@
+# Evidence: T-42 — 无链接邮件与持久授权附件闭环
+
+最终实现候选 `d95b464e46ec73d7a913809f4c84332a7f2eeffb`。当前证据及最终裁决以本文件、complete-dispatch05 manifest和同源验证记录共同为准；旧候选失败及通过记录保留原坐标。
+
+## 1. 实现摘要
+
+Demo邮件使用独立demo-mail场景及title/content包装模板，不再为正文邮件伪造path；公告和工作流的path必填保持。NotificationCommand新增可选attachmentOssIds十进制字符串数组，缺省空；提交前按正整数Long范围校验、保序去重，并限制默认20件、单件10MiB、合计25MiB。HTTP不接受客户端提供actor，服务端保存原User与Client，异步物化再次验证当前权限。
+
+Notify以真实Intent和notify_intent_attachment关系持有源/快照引用，System通过公开OssService执行对象授权及存储操作；生产Snapshot SPI已有实现，没有恢复sys_notify_log。无附件不访问OSS。关系继承BaseEntity并显式版本锁/逻辑删除；新环境六SQL实际初始化104表，现有数据库不重放基座。
+
+## 2. 持久事务、资源与失败边界
+
+提交的Intent/关系/Outbox/源引用同笔事务。快照NOT_READY预约、稳定目标和引用先提交，再在事务外复制；源GET、目标PUT和验证GET共享整体有界预算、字节上限与SHA校验。READY也重验原actor授权和PRIVATE目标。复制、迟到PUT或提交回执未知保留COPY_UNKNOWN与owner/ref，不盲重拷或删除。
+
+最终物理邮件调用前再次验证数据库租约/期限，原子设置所有READY关系的单调send_reserved；提交不确定异常不能被包装成可安全重试的provider结果。仅当所有MAIL均确定未发、没有活租约或未知复制，且每条关系send_reserved明确false时可解除引用；true/null在取消或租约接管后继续保护。无Outbox的UNDELIVERABLE也经过同一锁内检查，逻辑释放保留历史。
+
+Dispatch05将四个短事务移至NotifyAttachmentSnapshotUseCase的public代理方法，Adapter通过SnapshotPort进入UseCase→SnapshotService→DAO；ActorPort归port。复制与物化仍在事务外，调用链无self-invocation。后台审计上下文通过SaTokenContext.isValid区分无请求线程，附件授权仍使用持久原actor；NotifyAutoConfiguration显式在RedissonAutoConfigurationV4之后装配生产幂等Store，无Redis时不退化成内存成功。
+
+## 3. 范围、来源与集成出口
+
+base/parent_before为`5417c257130216e2b283ca933d9496d76c10f46a`，source/result为`d95b464e46ec73d7a913809f4c84332a7f2eeffb`，tree为`39f18706226fed11ed19b5cdc1f822d60492350c`。86个实际非治理路径全部位于69个事前登记根，base是result祖先；current-workspace/direct-parent，无新worktree或远程操作。末次13路径结构修复包括两类迁移、端口/UseCase、适配器、测试及真实OSS owner清单，未放宽检查器或增加allowlist。
+
+Lead负责源码固定、构建、隔离服务、治理和提交；cors_audit在派单期间是唯一产品writer，legacy_audit独立审查，ops_audit独立核运行及安全留存。所有测试结果按自己的真实source与命令记录，不以治理提交SHA冒充测试源码。
+
+## 4. AC-042 逐项证据
+
+| 验收 | 实际证明 |
+|---|---|
+| 无链接正文发送；公告/工作流仍需path | Demo调用/Runtime/Dispatcher单元与完整应用MAIL执行；原两行为红灯保留 |
+| 一件/多件授权附件真实进入适配器；无附件零OSS | Mail27验证私有快照字节、顺序、共享和每阶段S3请求；真实HTTP省略/空数组均零关系/零S3 |
+| 越权、缺失、待删除拒绝；部分失败无无主对象 | 提交及READY重验，真实关系/引用/NOT_READY/UNKNOWN核验，第二项预约或确认失败及迟到PUT保留可追踪owner |
+| 异步遵守原User/Client；重试去重不无限复制 | 源/Client撤权、换有效User或Client同幂等键拒绝、强制唯一插入碰撞当前读、重复投递共享引用 |
+| 全应用生产SPI可用 | @SpringBootTest运行真实Notify/System/DAO/MySQL/Redis/MinIO，代理正控制实际执行；只替换最末端物理MailNotificationSender |
+
+## 5. Workspace Verification
+
+固定d95定向4类10项零失败/错误/跳过。默认`./mvnw test`实际265套1184总项，其中940执行通过、244环境skip，零失败；不能把244计作通过。full clean package及bundle清单exit0，JAR SHA256 `13616132d12c5b14b63612d9e153d5d309a107c6841fccec21780f0d99602c56`。core package/bundle均exit0，JAR SHA256 `f1b40816e971b7b03c045ed189652f10012c90c8903e434f6c726820ad47f276`；core是打包清单验证，真实HTTP使用full。
+
+前端在clean73c28e751f6276e45b0488ab5d8eacbf9f0c77fb实际执行architecture/OpenAPI/lint/typecheck/test/build:prod，663 Vitest+108 Node=771通过（单独运行的101架构例已含于108，不重复相加），三App311+14+4=329产物。73c28→d95的frontend/.agents/scripts/release-artifacts四棵Git树完全相同；新full HTTP的OpenAPI除一次性servers地址外与正式源完整结构相同，故保留原生成物和前端验收坐标，未宣称在d95重跑前端。
+
+## 6. 实际集成与HTTP
+
+Mail run `57cd7d5353524ca5`：27个唯一方法，27/0fail/0error/0skip，源码前后同clean d95。四项提交故障包括BEFORE真实KILL确认且进入driver commit、AFTER真实commit完成后丢回执；测试不以预先抛异常替代物理提交故障。强制唯一碰撞及身份变更反例也实际执行。AopUtils.isAopProxy装配断言通过，新UseCase事务图已真验收。
+
+通知run `74c5b32f424f893f`：8类135/0/0/0，同clean d95；覆盖原子结果/事务回滚、deadline/fence、模式拒绝、手动重试、真实Redis幂等、短信分发、企业排队及唤醒。仅证明这8类实际范围，不代替余票的浏览器或最终发布验收。
+
+HTTP run `65515ae9c04c0b30`：同d95/full JAR，实际密码登录、上传init→presigned PUT→complete，19位大整数ID精确绑定原actor/Client和单引用；省略及空附件无关系与S3调用。零/负数/小数/溢出/前导零/空白/缺失对象均拒绝且零写；无token与无权限普通用户分别R.code401/403，传输HTTP实际200；非法参数R.code500仅证明失败关闭，不冒称HTTP4xx。数字JSON本次被兼容绑定且精确持久化；公开schema仍为可选string[]，未承诺必须拒绝全部数字token。4个意图均安排未来执行，due outbox=0，外部账号禁用，无实际SMTP。
+
+live OpenAPI完整438路径/450schemas，无路径/operation/schema丢失，默认SSE保持。正式源由c980真实应用经fetch/generate/check生成，revision95e5ae4b；本次d95响应与其paths/components及除servers之外所有结构一致。三个真实runner各自记录精确源码前后、命令与实际报告；Mail/Notify以fresh XML核验执行，HTTP额外绑定full-JAR前后哈希。各自owned容器/卷/端口/进程清理均有独立记录且cleanup errors为空。
+
+## 7. 双轴审查与故障保留
+
+独立合同审查核对授权/owner/锁序/复制UNKNOWN/send_reserved、原事务逻辑和新Port/UseCase依赖方向；运行审查核验精确fresh XML、注入命中证明、JAR来源、真实HTTP和清理。原writer自审明确标记，不能冒充独立验收。
+
+原编译失败、非Web装配、测试会话、后台无请求上下文、生产幂等Store顺序、BEFORE注入缺口、10→11预置断言、架构owner清单和诊断扫描范围、构建问题字节码、验证码隔离夹具，以及最终8个分层错误全部保留。Dispatch04的功能绿色未覆盖分层错误，Lead四项复盘后事前登记Dispatch05；新批attempts1，旧候选计数不抹除。早期为排除target并发写临时暂停过JDT并恢复；本次d95各guard实际匹配0个进程，不宣称本次暂停过编辑器。
+
+## 8. 静态门禁与记录边界
+
+最终固定d95的工程facts、全栈facts、Notify layered（113 Java）、FM、handbooks均exit0；release-contracts 128项零失败/跳过且四类Compose验证通过，结果见static05命令记录；提交前工作树的layered113 Java通过只作辅助，不能代替固定来源门禁。完整命令/cwd/时间/退出码、报告与SHA在complete-dispatch05 manifest；环境条件测试未运行项透明保留。Windows实机仅按用户明确豁免，不计入任何测试通过数。
+
+## 9. 风险与交付定位
+
+Copy取消不证明远端PUT终止，UNKNOWN必须保留引用并由责任人核对；已进入物理发送或结果不确定不能通过撤回承诺追回邮件。真实集成用隔离合成数据与假物理sender，不能推断供应商SMTP投递或生产容量。完整change仍有剩余票据和T30最终候选验收；本票关闭不表示可立即归档，没有push、部署或生产数据库更改。
