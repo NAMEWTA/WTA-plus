@@ -1,0 +1,62 @@
+{
+  "cleanup_error_count": 0,
+  "exit_code": 0,
+  "finished_utc": "2026-09-24T02:47:49.257831+00:00",
+  "gate": "T45 one owned MinIO policy shape",
+  "owned_cleanup": true,
+  "phase": "cleanup",
+  "probe": {
+    "facts": {
+      "ACL_LIST": {
+        "basis": "ACL_NO_GRANT",
+        "observation": "UNKNOWN",
+        "scope": "BUCKET"
+      },
+      "ACL_WRITE_RISK": {
+        "basis": "ACL_NO_GRANT",
+        "observation": "UNKNOWN",
+        "scope": "BUCKET"
+      },
+      "OBJECT_GET": {
+        "basis": "HTTP_SUCCESS",
+        "observation": "ALLOWED",
+        "scope": "OBJECT"
+      },
+      "OBJECT_HEAD": {
+        "basis": "HTTP_SUCCESS",
+        "observation": "ALLOWED",
+        "scope": "OBJECT"
+      },
+      "POLICY_READ": {
+        "basis": "INVALID_POLICY",
+        "observation": "UNKNOWN",
+        "scope": "BUCKET"
+      },
+      "POLICY_WRITE": {
+        "basis": "INVALID_POLICY",
+        "observation": "UNKNOWN",
+        "scope": "BUCKET"
+      }
+    },
+    "shape": {
+      "action_array": true,
+      "action_get": true,
+      "has_condition": false,
+      "has_not": false,
+      "principal_aws_array": true,
+      "principal_aws_star": true,
+      "resource_array": true,
+      "resource_match": true,
+      "statement_array": true,
+      "statement_count": 1,
+      "submitted_equal": true
+    },
+    "summary": {
+      "reason": "INSUFFICIENT_EVIDENCE",
+      "verification": "UNVERIFIED"
+    }
+  },
+  "run_id": "fb6caa8cfb7564b2",
+  "source_same_clean": true,
+  "started_utc": "2026-09-24T02:47:42.765426+00:00"
+}

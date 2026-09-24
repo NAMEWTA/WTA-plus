@@ -1,0 +1,24 @@
+{
+  "execute_template": "python3 /tmp/wta-t45/run-oss-two-integration.py --execute --expected-head <clean-40-hex-SHA>",
+  "files": {
+    "oss-two-integration-runbook.md": "e6c9a254ef449db0554cc31b968c9157a1fd1c2eb51f3fc5defbdefb61a45b71",
+    "run-oss-two-integration.py": "6a473403d68d302b300c0e99c49f96b308b9afcf4f6b8dfe9c7882d1749c966f",
+    "test_run_oss_two_integration_offline.py": "b52564db460fd23ddf6ac7c2bc11b56a4bab95859baa63dd4355384ada382c56"
+  },
+  "kind": "T45-owned-two-suite-JUnit-offline-freeze",
+  "offline_tests": {
+    "command": "python3 /tmp/wta-t45/test_run_oss_two_integration_offline.py",
+    "exit_code": 0,
+    "tests": 4
+  },
+  "real_execution": "not_run",
+  "schema_version": 1,
+  "source_template": {
+    "path": "/tmp/wta-t44/run-oss-seven-integration.py",
+    "sha256": "d4289ed24d44492684edb51fa96641598ae0bbfa015dd681172831ea99a69090"
+  },
+  "syntax": {
+    "command": "python3 -m py_compile /tmp/wta-t45/run-oss-two-integration.py /tmp/wta-t45/test_run_oss_two_integration_offline.py",
+    "exit_code": 0
+  }
+}

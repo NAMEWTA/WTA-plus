@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "v3_ui_config_sha256": "ca8fb0010c2827663c0f14c866bff78311fcda250904b4860539546d05662a54",
+    "v3_ui_server_sha256": "6821f6724fc7571c48802bbc2288b79c1f47da1983530318f0d0d6dceff3e26e",
+    "v3_ui_spec_sha256": "c36ec034aa472b6213abe5d2f4a40e71b97d04fc03ffc5e107d5bca3982605ad"
+  },
+  "execute_template": "python3 /tmp/wta-t45/run-minio-diagnostic-ui-v4.py --execute --expected-head <new-clean-SHA> --expected-jar-sha256 <new-full-JAR-SHA> --package-proof <new-private-proof.json> --dist-manifest <new-private-manifest.json>",
+  "files": {
+    "run-minio-diagnostic-ui-v4.py": "afb76c7321027459d60318a78b88716637de0fcf862e49973f58b03cd74e2859",
+    "test_run_minio_diagnostic_ui_v4.py": "785276a2c2a6a0660f70e1519dc5af917b4b49a138c38f6d6db002af971b94db",
+    "ui-v4-fixture-runbook.md": "ed050aa0844a4acc6b523ec36d1b8596b9b5a6acb2126de28e8d0b0adc8bcf53"
+  },
+  "kind": "T45-private-UI-v4-offline-freeze",
+  "offline": {
+    "py_compile_exit": 0,
+    "static_preflight_exit": 0,
+    "unchanged_server_tests": 4,
+    "v4_runner_tests": 10
+  },
+  "real_execution": "not_run",
+  "schema_version": 1,
+  "v3_manifest_sha256": "725a0b08318b5a36e7e96f92eedfe63c1c2479fcf46f2e83d0c7105d9b2d4686"
+}

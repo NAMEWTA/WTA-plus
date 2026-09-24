@@ -252,3 +252,9 @@ backend d1fd57fb，生成候选9c567ba0。真实run6e5d5c24c38c793d确认公开�
 revision210：T45前批3候选停止并完成四项复盘；C3前端771/三App329/full通过，但Chrome1pass1fail、0skip/flaky、cleanup0，脚本旧文案与页面不匹配，首失败行未保留故不猜测。Dispatch02仅修私有验收脚本；恢复批attempts0，原3次永久保留。15done/2cancelled/1in_progress/32ready，Goal active。
 
 权威恢复入口：`evidence/dispatch-T-45-recovery.md`。C3证据与安全独立意见在candidate-c3/manifest.json；C3 full JAR与311文件Admin dist绑定同源，浏览器失败不能被其它门禁替代。新恢复批先冻结私有UIv3、再严格同源验证；产品保持C3，前批3次不可追认为通过。
+
+## revision211 — 实测失败与Principal解析修复
+
+revision211：T45恢复R1 Chrome行数失败、R2 owned清理SQL排序规则失败均保留；真实2JUnit有1项POLICY_READ失败。独占MinIO与Jackson复核定位对象Principal的asText异常，Dispatch03仅修解析类型守卫与回归测试；恢复attempts2不重置。15done/2cancelled/1in_progress/32ready，Goal active。
+
+权威补充派单：`evidence/dispatch-T-45-parser.md`；完整失败与探针证据：`evidence/T-45-current-2026-09-23/recovery-r1-r2/manifest.json`。前次Dispatch02冻结产品决定被此实测缺陷的窄修取代，非扩大合同；既有失败不追认、attempts不静默清零。

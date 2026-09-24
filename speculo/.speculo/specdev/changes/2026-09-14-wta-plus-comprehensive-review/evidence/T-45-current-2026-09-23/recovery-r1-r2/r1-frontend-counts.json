@@ -1,0 +1,8 @@
+{
+  "vitest": 663,
+  "node": 108,
+  "total": 771,
+  "extra_architecture_tests": 101,
+  "extra_architecture_tests_already_included_in_node": true,
+  "source": "be35584b0d8dcfbb560dc9f338c303dafc77fbfd"
+}

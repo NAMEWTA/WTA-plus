@@ -1,0 +1,17 @@
+{
+  "execute_template": "python3 /tmp/wta-t45/run-minio-diagnostic-ui-v5.py --execute --expected-head <new-clean-SHA> --expected-jar-sha256 <new-full-JAR-SHA> --package-proof <new-private-proof.json> --dist-manifest <new-private-manifest.json>",
+  "files": {
+    "run-minio-diagnostic-ui-v5.py": "7e2c238ebf2209554b222b031ee35177ef76e62d376ef67ef9fa7e9aa48f762d",
+    "test_run_minio_diagnostic_ui_v5.py": "8ebdcd15edac0a59dedd09963120820b609d0cf8e88e471425fdef87ca0244cf",
+    "ui-v5-collation-review.md": "21e3acf7b8829b2cafef2c289f922c49c65f84691bc7a31bdce1fcb4b7feda73"
+  },
+  "kind": "T45-private-UI-v5-collation-offline-freeze",
+  "offline": {
+    "py_compile_exit": 0,
+    "static_preflight_exit": 0,
+    "v5_runner_tests": 11
+  },
+  "real_execution": "not_run",
+  "schema_version": 1,
+  "v4_manifest_sha256": "c52320b95efd49e785b8380ec24f005f3b61758dadefaa320cbfe2babec3e298"
+}

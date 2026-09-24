@@ -1,0 +1,9 @@
+# T-45 Dispatch03 — Jackson 对象 Principal 修复
+
+R1 be355源码的前端771/三App329、full与5静态门禁通过；Chrome v3 run c8ce84f90b58bf05 在spec46的row count失败，实际count未保留。UIv4 run9d62ae67389c950b实际GET首屏7条、bad/public/private均在、未知策略1，证明非法负例混入真实列表；精准DELETE遇MySQL1267/HY000，未到Chrome，cleanup均0。v5仅使用已有compared_hexsql显式utf8mb4_general_ci，继续ID+key+policy9和rowcount1守卫；保留负例证据后隔离，原浏览器用例不放宽。
+
+真实两JUnit run0627f8329450e8f7：AccessUrl1pass；Readiness1fail/0skip，公开匿名HEAD/GET通过但POLICY_READ预期ALLOWED实际UNKNOWN；其后匿名PUT负控和策略不变断言尚未执行。单MinIO探针fb6caa8cfb7564b2回读与提交完全相同、无Condition/Not、Principal/Action/Resource均符合子集，basis为INVALID_POLICY。零网络Jackson3复核及独立legacy审查证明ObjectNode.asText抛JsonNodeException，被policyFacts catch映射；不能改测试期待UNKNOWN掩盖实现缺陷。
+
+cors_audit为唯一产品writer，仅允许原登记的AbstractOssClientImpl.java与OssAccessDiagnosticUnitTest.java：publicPrincipal先判isTextual，再处理唯一AWS属性且文本或单文本数组；所有其它Principal返回false保持COMPLEX_POLICY。新增真实Jackson对象AWS字符串/单字符串数组正例及对象/数字/多元素负例，保留裸星号、Condition/Not/资源/Action/Deny语义。不得改公开合同/生成物、真实两JUnit期待或其它产品行为；不跑构建/服务/提交。Lead提交并串行执行定向、默认、full/core、真实两JUnit和UIv5；前端源码完全未变时精确记录输入树等价复用已过的前端门禁，同SHA重建用于真实UI的dist，禁止冒称全前端重测。
+
+此前3次完整候选及恢复R1/R2原始结果永久保留，恢复attempts=2。新候选是第3次；若失败须先完成四项复盘后才能继续。当前AC未勾、未完成/推送/部署/归档。证据见recovery-r1-r2/manifest.json。

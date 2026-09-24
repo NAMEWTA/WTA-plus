@@ -1,0 +1,25 @@
+{
+  "execute_template": "python3 /tmp/wta-t45/run-minio-diagnostic-ui-v3.py --execute --expected-head <new-clean-current-SHA> --expected-jar-sha256 <new-full-JAR-SHA> --package-proof <new-private-package-proof.json> --dist-manifest <new-private-admin-dist-manifest.json>",
+  "files": {
+    "run-minio-diagnostic-ui-v3.py": "310e6d3cc73f0befea80010d34f1e1fe21f40b1aa6936d47406f6feda2d54ef8",
+    "ui-v2-to-v3-selector-review.md": "664760581a31f3b0d35b22b03f24826602192d0f2e977926e9e411758f800f62",
+    "ui-v3/oss-diagnostic-real.spec.ts": "c36ec034aa472b6213abe5d2f4a40e71b97d04fc03ffc5e107d5bca3982605ad",
+    "ui-v3/owned_admin_dist_server.py": "6821f6724fc7571c48802bbc2288b79c1f47da1983530318f0d0d6dceff3e26e",
+    "ui-v3/playwright.config.ts": "ca8fb0010c2827663c0f14c866bff78311fcda250904b4860539546d05662a54",
+    "ui-v3/test_owned_admin_dist_server.py": "01d3a22c993b8e802c9a93d858754576fe8673065b8e58d0986d3b05c2ce0642",
+    "ui-v3/test_run_minio_diagnostic_ui_v3.py": "40bddf199f1a11b4a459682df0ebd65f7a2a838ad77180b5649b5bbe0afa3d88"
+  },
+  "kind": "T45-private-UI-v3-offline-freeze",
+  "offline": {
+    "py_compile_exit": 0,
+    "runner_tests": 7,
+    "server_tests": 4,
+    "static_preflight_exit": 0,
+    "ts_syntax_diagnostics": 0,
+    "ts_syntax_files": 2
+  },
+  "real_execution": "not_run",
+  "reviewed_product_head": "d98936b6881ad7c8093476a65fe9736203c60af7",
+  "schema_version": 1,
+  "v2_manifest_sha256": "c3da1b7f8e35e85c5be61c73d5b9ecdc66b48609823f11472da970fd55712f14"
+}
