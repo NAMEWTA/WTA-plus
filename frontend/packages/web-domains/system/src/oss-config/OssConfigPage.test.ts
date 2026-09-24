@@ -53,7 +53,7 @@ function fixture() {
   const instance = app.mount(node());
   let mounted = true;
   const state = Reflect.get(instance.$, 'setupState') as {
-    handleDiagnose(row: { ossConfigId: string }): Promise<void>;
+    handleDiagnose(row: { ossConfigId?: string }): Promise<void>;
     closeDiagnostic(): void;
     diagnosticVisible: boolean;
     diagnosticLoading: boolean;
@@ -165,6 +165,18 @@ describe('OSS config access policy page', () => {
     try {
       f.canRead.value = false;
       await f.state.handleDiagnose({ ossConfigId: '1' });
+      expect(f.requests).toHaveLength(0);
+      expect(f.state.diagnosticVisible).toBe(false);
+    } finally {
+      f.unmount();
+    }
+  });
+
+  it('does not issue a diagnosis for a table row without a configuration ID', async () => {
+    const f = fixture();
+    try {
+      await f.state.handleDiagnose({});
+      await f.state.handleDiagnose({ ossConfigId: '' });
       expect(f.requests).toHaveLength(0);
       expect(f.state.diagnosticVisible).toBe(false);
     } finally {

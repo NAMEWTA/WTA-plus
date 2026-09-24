@@ -326,10 +326,11 @@ const closeDiagnostic = () => {
   diagnosticOwner.value = undefined;
   diagnosticGeneration.value = undefined;
 };
-const handleDiagnose = async (row: OssConfigVO) => {
+const handleDiagnose = async (row: Partial<OssConfigVO>) => {
+  const id = row.ossConfigId;
   const owner = runtime.currentUserId();
   const session = runtime.sessionSnapshot();
-  if (owner == null || !session.identityLoaded || !hasDiagnosticAccess()) {
+  if (id == null || id === '' || owner == null || !session.identityLoaded || !hasDiagnosticAccess()) {
     closeDiagnostic();
     return;
   }
@@ -349,7 +350,7 @@ const handleDiagnose = async (row: OssConfigVO) => {
       && now.identityLoaded && now.generation === session.generation && hasDiagnosticAccess();
   };
   try {
-    const response = await diagnoseOssConfig(row.ossConfigId, abort.signal);
+    const response = await diagnoseOssConfig(id, abort.signal);
     if (current()) diagnosticResult.value = response.data;
   } catch {
     if (current()) diagnosticError.value = '诊断暂不可用，请稍后重试';
