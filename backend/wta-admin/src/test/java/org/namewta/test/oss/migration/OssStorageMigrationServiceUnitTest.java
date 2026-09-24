@@ -15,6 +15,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -212,6 +217,51 @@ class OssStorageMigrationServiceUnitTest {
     }
 
     @Test
+    void unpublishCannotRestoreSourceAfterCleanupHasEnteredProviderDelete() throws Exception {
+        long batchId = service.publish(10L, "public");
+        SysOssMigrationItem item = store.items.values().iterator().next();
+        item.setCleanupEligibleTime(NOW);
+        CountDownLatch deleteEntered = new CountDownLatch(1);
+        CountDownLatch releaseDelete = new CountDownLatch(1);
+        objects.beforeDelete = () -> {
+            deleteEntered.countDown();
+            try {
+                if (!releaseDelete.await(15, TimeUnit.SECONDS)) {
+                    throw new IllegalStateException("timed out waiting to release test deletion");
+                }
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("test deletion interrupted", interrupted);
+            }
+        };
+        ExecutorService callers = Executors.newFixedThreadPool(2);
+        Future<?> cleanup = callers.submit(() -> service.cleanup(batchId, true));
+        try {
+            assertThat(deleteEntered.await(5, TimeUnit.SECONDS)).isTrue();
+            Future<RuntimeException> restore = callers.submit(() -> {
+                try {
+                    service.unpublish(10L);
+                    return null;
+                } catch (RuntimeException rejected) {
+                    return rejected;
+                }
+            });
+            assertThat(restore.get(5, TimeUnit.SECONDS)).isInstanceOf(OssMigrationException.class);
+            assertThat(store.objects.get(10L).getService()).isEqualTo("public");
+        } finally {
+            releaseDelete.countDown();
+            try {
+                cleanup.get(5, TimeUnit.SECONDS);
+            } finally {
+                callers.shutdownNow();
+                assertThat(callers.awaitTermination(5, TimeUnit.SECONDS)).isTrue();
+            }
+        }
+        assertThat(objects.deleteCalls).hasValue(1);
+        assertThat(store.objects.get(10L).getService()).isEqualTo("public");
+    }
+
+    @Test
     void contributesBothRoutesForActiveItems() {
         service.start(new MigrationRequest(List.of(10L), "public"));
         OssMigrationRequiredConfigContributor contributor = new OssMigrationRequiredConfigContributor(store);
@@ -376,6 +426,7 @@ class OssStorageMigrationServiceUnitTest {
         private int deleteFailures;
         private RuntimeException transferError;
         private Runnable beforeTransfer = () -> { };
+        private Runnable beforeDelete = () -> { };
 
         @Override public Inspection inspect(String source, String target, String key, long maxVerifyBytes) {
             if (accessPolicyMismatch) {
@@ -393,6 +444,7 @@ class OssStorageMigrationServiceUnitTest {
         @Override public boolean exists(String service, String key) { return !absentServices.contains(service); }
         @Override public void delete(String service, String key) {
             deleteCalls.incrementAndGet();
+            beforeDelete.run();
             if (deleteFailures-- > 0) throw new IllegalStateException("provider delete failed");
         }
     }
