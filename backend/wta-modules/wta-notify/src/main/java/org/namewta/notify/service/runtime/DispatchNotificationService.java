@@ -111,7 +111,7 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 if (NotificationChannel.MAIL.name().equals(delivery.getChannel())) {
                     NotifyOutbox fencedOutbox = outbox;
                     mailPreSendGate = new NotifyRequest.PreSendGate(() -> {
-                        if (!resultPort.deadlineGate(fencedOutbox)) throw new NotifyRequest.PreSendClosed();
+                        if (!resultPort.beginMailProviderSend(fencedOutbox)) throw new NotifyRequest.PreSendClosed();
                     });
                 }
                 NotifyRequest request = NotifyRequest.builder()

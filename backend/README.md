@@ -135,7 +135,7 @@ App Origin 清单注入 `WEB_CORS_ALLOWED_ORIGINS`，值为逗号分隔的精确
 
 `NotificationCommand.attachmentOssIds` 在 HTTP 中使用正十进制字符串，缺省为空；通知提交把来源真实引用与原 User/Client 同事务保存，Worker 在事务外创建独立 PRIVATE 快照并回读核 SHA-256。默认 `notify.attachment.max-count=20`、`notify.attachment.max-single-bytes=10485760`、`notify.attachment.max-total-bytes=26214400`，可按部署容量显式配置；空文件和超限拒绝，测试代理的 2 MiB 限额不是产品上限。复制源 GET、目标 PUT、目标 GET 共用 30 秒预算；超时后的远端写入仍可能迟到，因此 `COPY_UNKNOWN` 的目标行、固定 key 和真实引用必须保留。
 
-排查未知结果时以 `notify_intent_attachment.intent_attachment_id` 对照 `source_oss_id`、`snapshot_oss_id`、`source_service/source_key`、`target_service/target_key`、`status`、`sha256` 和两条 `sys_oss_ref`；还需确认旧 PUT 已结束以及远端目标实际字节，不因仅有对象或 ACK 超时而手改 READY/删除 key。不能确定时维持未知并人工隔离。正常回收仅处理全部 MAIL 任务已终结、无活租约且明确未发送的 Intent；已受理、供应商结果未知、COPY_UNKNOWN 或可人工重试的准备失败保留引用。此基座新增 `notify_intent_attachment`，新库六 SQL 为 104 表；已有库不能重放基座，按发布差异执行审查过的迁移。
+排查未知结果时以 `notify_intent_attachment.intent_attachment_id` 对照 `source_oss_id`、`snapshot_oss_id`、`source_service/source_key`、`target_service/target_key`、`status`、`sha256`、`send_reserved` 和两条 `sys_oss_ref`；还需确认旧 PUT 已结束以及远端目标实际字节，不因仅有对象或 ACK 超时而手改 READY/删除 key。不能确定时维持未知并人工隔离。正常回收仅处理全部 MAIL 任务已终结、无活租约、明确未发送且每条关系 `send_reserved=0` 的 Intent；物理发信前短事务将全部 READY 关系预约为 `send_reserved=1`，该值单向保留，表示可能已发送，不等于供应商已接受。取消、过期、租约重领、已受理、供应商结果未知、COPY_UNKNOWN 或可人工重试的准备失败均不能抹去该发送权事实或盲删引用。提交不确定时禁止进入物理 sender。此基座新增 `notify_intent_attachment`，新库六 SQL 为 104 表；已有库不能重放基座，按发布差异执行审查过的迁移。
 
 数据库初始化与发布资产由仓根 `release-artifacts/docker/infrastructure/mysql/init/` 统一维护，本仓库不再保留 `script/` 或 SQL 副本。后端 SQL 合同测试默认从 monorepo 定位该目录；为隔离验证显式提供其他基座副本时，通过 `-Dnamewta.sql.root=/绝对路径/release-artifacts/docker/infrastructure/mysql/init` 显式指定六文件基座目录。
 

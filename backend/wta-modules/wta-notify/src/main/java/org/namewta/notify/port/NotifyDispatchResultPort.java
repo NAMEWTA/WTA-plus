@@ -17,6 +17,14 @@ public interface NotifyDispatchResultPort {
     boolean deadlineGate(NotifyOutbox lease);
 
     /**
+     * 最终 MAIL 物理发送前，在活租约与数据库截止校验后持久预约发送权。
+     * 仅本短事务提交成功并返回 true 才允许进入供应商；true 不表示供应商已接受。
+     * @param lease 带原领取状态和 owner/token 的任务
+     * @return 当前租约仍可发信且预约已提交
+     */
+    boolean beginMailProviderSend(NotifyOutbox lease);
+
+    /**
      * 提交一次投递结果。
      * @param lease 本次领取的 owner/token
      * @param result 事务外调用的结果快照

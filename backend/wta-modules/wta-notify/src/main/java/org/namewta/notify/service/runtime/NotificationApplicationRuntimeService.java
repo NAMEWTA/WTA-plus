@@ -128,6 +128,7 @@ public class NotificationApplicationRuntimeService {
             relation.setPosition(position);
             relation.setSourceOssId(attachmentIds.get(position));
             relation.setStatus("QUEUED");
+            relation.setSendReserved(false);
             relation.setVersion(0);
             relation.setDelFlag("0");
             if (dao.insert(relation) != 1) throw new IllegalStateException("通知附件关系写入失败");

@@ -24,6 +24,10 @@ public class NotifyDispatchResultUseCase implements NotifyDispatchResultPort {
 
     @Override
     @DSTransactional
+    public boolean beginMailProviderSend(NotifyOutbox lease) { return service.beginMailProviderSend(lease); }
+
+    @Override
+    @DSTransactional
     public void complete(NotifyOutbox lease, Result result) { service.complete(lease, result); }
 
     @Override

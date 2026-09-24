@@ -1,12 +1,14 @@
 package org.namewta.notify.service.runtime;
 
 import lombok.RequiredArgsConstructor;
+import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import org.namewta.notify.api.InAppNotificationPort;
 import org.namewta.notify.dao.NotifyNotificationDao;
 import org.namewta.notify.domain.entity.NotifyAttempt;
 import org.namewta.notify.domain.entity.NotifyDelivery;
 import org.namewta.notify.domain.entity.NotifyIntent;
+import org.namewta.notify.domain.entity.NotifyIntentAttachment;
 import org.namewta.notify.domain.entity.NotifyOutbox;
 import org.namewta.notify.domain.policy.NotificationAggregatePolicy;
 import org.namewta.notify.domain.policy.NotificationDeliveryPolicy;
@@ -16,6 +18,7 @@ import org.namewta.notify.port.NotifyDispatchResultPort.Result;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /** 结果写回规则；调用方必须经过 NotifyDispatchResultUseCase 的动态事务代理。 */
@@ -65,6 +68,36 @@ public class NotifyDispatchResultService {
         NotifyIntent intent = dao.lockIntent(outbox.getIntentId());
         NotifyDelivery delivery = dao.lockDelivery(outbox.getDeliveryId());
         return deadlineGateLocked(lease, intent, outbox, delivery);
+    }
+
+    /**
+     * 仅 MAIL 物理 sender 入口预约持久发送权；前一轮普通 deadlineGate 不改变此事实。
+     * 锁序为 Intent→Outbox→Delivery→附件关系，事务提交不确定时调用方不得进入 sender。
+     */
+    public boolean beginMailProviderSend(NotifyOutbox lease) {
+        NotifyOutbox outbox = lockActive(lease);
+        if (outbox == null) return false;
+        NotifyIntent intent = dao.lockIntent(outbox.getIntentId());
+        NotifyDelivery delivery = dao.lockDelivery(outbox.getDeliveryId());
+        if (!deadlineGateLocked(lease, intent, outbox, delivery)) return false;
+        if (!"MAIL".equals(delivery.getChannel())) throw new ServiceException("邮件发送预约渠道不匹配");
+        List<NotifyIntentAttachment> relations = dao.lockAttachments(intent.getIntentId());
+        boolean hasActor = intent.getAttachmentActorUserId() != null && intent.getAttachmentActorClientPk() != null;
+        if ((intent.getAttachmentActorUserId() == null) != (intent.getAttachmentActorClientPk() == null)
+            || hasActor != !relations.isEmpty()) {
+            throw new ServiceException("邮件附件持久归属不完整");
+        }
+        for (NotifyIntentAttachment relation : relations) {
+            if (!"READY".equals(relation.getStatus()) || relation.getSnapshotOssId() == null
+                || relation.getSnapshotOssId() <= 0) throw new ServiceException("邮件附件私有快照未就绪");
+        }
+        for (NotifyIntentAttachment relation : relations) {
+            if (!Boolean.TRUE.equals(relation.getSendReserved())) {
+                relation.setSendReserved(true);
+                if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("邮件发送预约写入失败");
+            }
+        }
+        return true;
     }
 
     /** 持有 Intent→Outbox→Delivery 锁后，按来源证据、DB 时钟和本地消息事实决定下一步。 */

@@ -1437,6 +1437,7 @@ create table notify_intent_attachment (
     file_size bigint(20) default null comment '授权时固定的字节数',
     sha256 char(64) default null comment '已确认快照的 SHA-256',
     status varchar(24) not null comment 'QUEUED/COPYING/READY/COPY_UNKNOWN/RELEASED',
+    send_reserved tinyint(1) not null default 0 comment '曾在有效租约下预约物理邮件发送权，1仅表示可能已发送',
     copy_token varchar(64) default null comment '复制预约 fencing token',
     version int not null default 0 comment '乐观锁版本',
     create_dept bigint(20) default null comment '创建部门',

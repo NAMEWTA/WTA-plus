@@ -1,7 +1,9 @@
 package org.namewta.notify.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.namewta.common.mybatis.core.domain.BaseEntity;
@@ -26,7 +28,11 @@ public class NotifyIntentAttachment extends BaseEntity {
     private String sha256;
     /** QUEUED、COPYING、READY、COPY_UNKNOWN、RELEASED。 */
     private String status;
+    /** 物理 MAIL sender 的持久发送权曾被预约；true 不代表供应商已接受。 */
+    private Boolean sendReserved;
     private String copyToken;
+    @Version
     private Integer version;
+    @TableLogic
     private String delFlag;
 }

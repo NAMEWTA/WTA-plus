@@ -40,7 +40,6 @@ public class NotifyAttachmentSnapshotTransactions {
         relation.setTargetKey(reservation.targetKey());
         relation.setCopyToken(UUID.randomUUID().toString());
         relation.setStatus("COPYING");
-        relation.setVersion(relation.getVersion() + 1);
         if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("附件复制预约写入失败");
         return new Prepared(relation, reservation);
     }
@@ -60,7 +59,6 @@ public class NotifyAttachmentSnapshotTransactions {
         relation.setSha256(result.sha256());
         relation.setStatus("READY");
         relation.setCopyToken(null);
-        relation.setVersion(relation.getVersion() + 1);
         if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("附件复制结果写入失败");
         return relation;
     }
@@ -72,14 +70,13 @@ public class NotifyAttachmentSnapshotTransactions {
         NotifyIntentAttachment relation = locked(intentId, relationId);
         if ("COPYING".equals(relation.getStatus()) && Objects.equals(token, relation.getCopyToken())) {
             relation.setStatus("COPY_UNKNOWN");
-            relation.setVersion(relation.getVersion() + 1);
             if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("附件未知状态写入失败");
         }
     }
 
     /**
      * 只有本聚合全部 MAIL 任务无活租约、都已结束且明确未发送，才解除共享快照/源引用。
-     * COPY_UNKNOWN 和 COPYing 始终保留稳定目标，防迟到 PUT 在回收后制造无主对象。
+     * COPY_UNKNOWN 和 COPYING 始终保留稳定目标，防迟到 PUT 在回收后制造无主对象。
      */
     @DSTransactional
     public boolean releaseIfSafe(Long intentId) {
@@ -91,13 +88,15 @@ public class NotifyAttachmentSnapshotTransactions {
         List<NotifyDelivery> deliveries = dao.lockDeliveries(intentId);
         List<NotifyIntentAttachment> relations = dao.lockAttachments(intentId);
         if (relations.isEmpty() || relations.stream().anyMatch(row ->
-            !java.util.Arrays.asList("QUEUED", "READY", "RELEASED").contains(row.getStatus()))) return false;
+            !Boolean.FALSE.equals(row.getSendReserved())
+                || !java.util.Arrays.asList("QUEUED", "READY", "RELEASED").contains(row.getStatus()))) return false;
         if (outboxes.stream().anyMatch(row -> !java.util.Arrays.asList("DONE", "DEAD_LETTER").contains(row.getStatus())
             || row.getLeaseOwner() != null || row.getLeaseToken() != null || row.getLeaseUntil() != null)) return false;
         for (NotifyDelivery delivery : deliveries) {
             if (!"MAIL".equals(delivery.getChannel())) continue;
             if (delivery.getProviderMessageId() != null || delivery.getAcceptedAt() != null) return false;
-            if ("CANCELLED".equals(delivery.getStatus())) continue;
+            if ("CANCELLED".equals(delivery.getStatus())
+                || "UNDELIVERABLE".equals(delivery.getStatus())) continue;
             // 可人工重试的本地准备失败要保留来源；COPY_UNKNOWN 在前面已直接拒绝释放。
             if (!"FAILED".equals(delivery.getStatus()) || !java.util.Arrays.asList("NOTIFICATION_EXPIRED",
                 "NOTICE_RETRACTED").contains(delivery.getErrorCode())) return false;
@@ -108,7 +107,6 @@ public class NotifyAttachmentSnapshotTransactions {
             ossService.releaseNotificationReferences(relation.getIntentAttachmentId(),
                 relation.getSourceOssId(), relation.getSnapshotOssId());
             relation.setStatus("RELEASED");
-            relation.setVersion(relation.getVersion() + 1);
             if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("附件引用解除失败");
         }
         return true;
