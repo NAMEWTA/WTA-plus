@@ -61,6 +61,9 @@ describe('system web manifest', () => {
       (policy: SystemPasswordPolicy, password: string) => readonly SystemPasswordViolation[]
     >();
     expectTypeOf<SystemWebRuntime['copyText']>().toEqualTypeOf<(value: string) => Promise<void>>();
+    expectTypeOf<SystemWebRuntime['sessionSnapshot']>().toEqualTypeOf<
+      () => Readonly<{ generation: number; identityLoaded: boolean }>
+    >();
   });
 
   it('registers only for an explicitly selected App composition', () => {

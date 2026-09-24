@@ -31,6 +31,8 @@ function fixture() {
   const requests: Array<ReturnType<typeof deferred<ReturnType<typeof diagnostic>>> & { signal?: AbortSignal }> = [];
   const identity = ref<string | undefined>('admin-A');
   const canRead = ref(true);
+  const generation = ref(10);
+  const identityLoaded = ref(true);
   const runtime = {
     service: { resources: { ossConfigs: {
       list: async () => ({ data: { rows: [], total: 0 } }),
@@ -43,6 +45,7 @@ function fixture() {
     dicts: () => ({ sys_yes_no: [] }),
     currentUserId: () => identity.value,
     hasPermission: () => canRead.value,
+    sessionSnapshot: () => ({ generation: generation.value, identityLoaded: identityLoaded.value }),
     confirm: vi.fn(), success: vi.fn()
   } as unknown as SystemWebRuntime;
   const app = renderer.createApp({ ...(OssConfigPage as unknown as ComponentOptions), render: () => null }, { runtime });
@@ -57,7 +60,7 @@ function fixture() {
     diagnosticError: string;
     diagnosticResult?: ReturnType<typeof diagnostic>['data'];
   };
-  return { state, requests, identity, canRead, unmount: () => {
+  return { state, requests, identity, canRead, generation, identityLoaded, unmount: () => {
     if (mounted) { mounted = false; app.unmount(); }
   } };
 }
@@ -164,6 +167,51 @@ describe('OSS config access policy page', () => {
       await f.state.handleDiagnose({ ossConfigId: '1' });
       expect(f.requests).toHaveLength(0);
       expect(f.state.diagnosticVisible).toBe(false);
+    } finally {
+      f.unmount();
+    }
+  });
+
+  it('rejects a prior response after the same user starts a new session with unchanged permission', async () => {
+    const f = fixture();
+    try {
+      const old = f.state.handleDiagnose({ ossConfigId: '1' });
+      f.generation.value++;
+      await vi.waitFor(() => expect(f.requests[0].signal?.aborted).toBe(true));
+      expect(f.state.diagnosticVisible).toBe(false);
+      f.requests[0].resolve(diagnostic('OBJECT_GET'));
+      await old;
+      expect(f.state.diagnosticResult).toBeUndefined();
+
+      const current = f.state.handleDiagnose({ ossConfigId: '1' });
+      f.requests[1].resolve(diagnostic('POLICY_READ'));
+      await current;
+      expect(f.state.diagnosticResult?.facts[0].subject).toBe('POLICY_READ');
+    } finally {
+      f.unmount();
+    }
+  });
+
+  it('clears displayed facts when identity loading starts and sends nothing until loaded', async () => {
+    const f = fixture();
+    try {
+      const ready = f.state.handleDiagnose({ ossConfigId: '1' });
+      f.requests[0].resolve(diagnostic('OBJECT_GET'));
+      await ready;
+      expect(f.state.diagnosticResult?.facts[0].subject).toBe('OBJECT_GET');
+
+      f.identityLoaded.value = false;
+      await vi.waitFor(() => expect(f.state.diagnosticVisible).toBe(false));
+      expect(f.state.diagnosticResult).toBeUndefined();
+      await f.state.handleDiagnose({ ossConfigId: '1' });
+      expect(f.requests).toHaveLength(1);
+
+      f.identityLoaded.value = true;
+      f.generation.value++;
+      const next = f.state.handleDiagnose({ ossConfigId: '1' });
+      f.requests[1].resolve(diagnostic('POLICY_READ'));
+      await next;
+      expect(f.state.diagnosticResult?.facts[0].subject).toBe('POLICY_READ');
     } finally {
       f.unmount();
     }

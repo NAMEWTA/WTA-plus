@@ -196,6 +196,10 @@ export const adminSystemWebRuntime: SystemWebRuntime = {
     const user = getActivePinia()?.state.value.user as { userId?: string | number } | undefined;
     return user?.userId;
   },
+  sessionSnapshot: () => {
+    const user = useUserStore();
+    return { generation: user.sessionGeneration, identityLoaded: user.identityLoaded };
+  },
   passwordPolicy: {
     load: async () => requirePasswordPolicy(await identityAccessService.getClientContext()),
     validate: (policy, password) => validatePassword(policy, password)

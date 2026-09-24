@@ -122,13 +122,15 @@ class OssAccessDiagnosticUnitTest {
     @Test
     void timeoutIsUnverifiedAndDoesNotLeakProviderDetails() {
         S3AsyncClient s3 = mock(S3AsyncClient.class);
-        when(s3.headObject(any(Consumer.class))).thenReturn(new CompletableFuture<>());
+        CompletableFuture<HeadObjectResponse> pending = new CompletableFuture<>();
+        when(s3.headObject(any(Consumer.class))).thenReturn(pending);
 
         OssAccessDiagnostic result = client(s3).diagnoseAccess(
             "diagnostic/canary.txt", AccessPolicy.PRIVATE, Duration.ofMillis(50));
 
         assertThat(result.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
         assertThat(result.reason()).isEqualTo(OssAccessDiagnostic.Reason.TIMEOUT);
+        assertThat(pending).isCancelled();
         assertThat(result.toString()).doesNotContain("access-key", "secret-key", "http://");
     }
 
@@ -235,6 +237,43 @@ class OssAccessDiagnosticUnitTest {
         assertThat(result.verification()).isEqualTo(OssAccessDiagnostic.Verification.MISMATCH);
         assertThat(result.reason()).isEqualTo(OssAccessDiagnostic.Reason.ANONYMOUS_WRITE_ALLOWED);
         assertThat(observation(result, OssAccessDiagnostic.Subject.POLICY_WRITE))
+            .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
+    }
+
+    @Test
+    void exactDenyOverridesAllowForTheSameReadAndWriteActionsOnly() throws Exception {
+        startServer(403, 403);
+        String statements = "{\"Statement\":["
+            + "{\"Effect\":\"Allow\",\"Principal\":\"*\","
+            + "\"Action\":[\"s3:GetObject\",\"s3:PutObject\"],\"Resource\":\"arn:aws:s3:::bucket/*\"},"
+            + "{\"Effect\":\"Deny\",\"Principal\":\"*\","
+            + "\"Action\":[\"s3:GetObject\",\"s3:PutObject\"],\"Resource\":\"arn:aws:s3:::bucket/*\"}]}";
+        OssAccessDiagnostic result = client(provider(statements, completedAcl())).diagnoseAccess(
+            "diagnostic/canary.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(2));
+        assertThat(observation(result, OssAccessDiagnostic.Subject.POLICY_READ))
+            .isEqualTo(OssAccessDiagnostic.Observation.DENIED);
+        assertThat(observation(result, OssAccessDiagnostic.Subject.POLICY_WRITE))
+            .isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN);
+        assertThat(result.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
+    }
+
+    @Test
+    void timedOutPolicyAndAclReadsCancelFuturesYetPreserveAnonymousGetSuccess() throws Exception {
+        startServer(200, 206);
+        S3AsyncClient s3 = provider(publicReadPolicy(), completedAcl());
+        CompletableFuture<GetBucketPolicyResponse> pending = new CompletableFuture<>();
+        CompletableFuture<GetBucketAclResponse> pendingAcl = new CompletableFuture<>();
+        when(s3.getBucketPolicy(any(Consumer.class))).thenReturn(pending);
+        when(s3.getBucketAcl(any(Consumer.class))).thenReturn(pendingAcl);
+        OssAccessDiagnostic result = client(s3).diagnoseAccess(
+            "diagnostic/canary.txt", AccessPolicy.PUBLIC_READ, Duration.ofMillis(300));
+        assertThat(pending).isCancelled();
+        assertThat(pendingAcl).isCancelled();
+        assertThat(result.facts()).filteredOn(fact -> fact.subject() == OssAccessDiagnostic.Subject.POLICY_READ)
+            .extracting(OssAccessDiagnostic.Fact::basis).containsExactly(OssAccessDiagnostic.Basis.TIMEOUT);
+        assertThat(result.facts()).filteredOn(fact -> fact.subject() == OssAccessDiagnostic.Subject.ACL_LIST)
+            .extracting(OssAccessDiagnostic.Fact::basis).containsExactly(OssAccessDiagnostic.Basis.TIMEOUT);
+        assertThat(observation(result, OssAccessDiagnostic.Subject.OBJECT_GET))
             .isEqualTo(OssAccessDiagnostic.Observation.ALLOWED);
     }
 
@@ -371,15 +410,18 @@ class OssAccessDiagnosticUnitTest {
     @Test
     void interruptedSignedPrecheckStopsBeforeIndependentProviderProbes() {
         S3AsyncClient s3 = mock(S3AsyncClient.class);
-        when(s3.headObject(any(Consumer.class))).thenReturn(new CompletableFuture<>());
+        CompletableFuture<HeadObjectResponse> pending = new CompletableFuture<>();
+        when(s3.headObject(any(Consumer.class))).thenReturn(pending);
         OssAccessDiagnostic result;
         try {
             Thread.currentThread().interrupt();
             result = client(s3).diagnoseAccess(
                 "diagnostic/canary.txt", AccessPolicy.PRIVATE, Duration.ofSeconds(2));
+            assertThat(Thread.currentThread().isInterrupted()).isTrue();
         } finally {
             Thread.interrupted();
         }
+        assertThat(pending).isCancelled();
         assertThat(result.verification()).isEqualTo(OssAccessDiagnostic.Verification.UNVERIFIED);
         assertThat(result.facts()).allSatisfy(fact ->
             assertThat(fact.observation()).isEqualTo(OssAccessDiagnostic.Observation.UNKNOWN));

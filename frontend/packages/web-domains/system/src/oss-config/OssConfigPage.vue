@@ -282,6 +282,7 @@ const diagnosticLoading = ref(false);
 const diagnosticError = ref('');
 const diagnosticResult = ref<OssStorageDiagnostic>();
 const diagnosticOwner = ref<string | number>();
+const diagnosticGeneration = ref<number>();
 let diagnosticVersion = 0;
 let pageMounted = true;
 let diagnosticAbort: AbortController | undefined;
@@ -308,9 +309,9 @@ const basisLabel = (basis: OssDiagnosticBasis) => ({
   NO_SUCH_POLICY: '服务明确返回无策略文档', POLICY_UNREADABLE: '策略不可读取',
   COMPLEX_POLICY: '策略超出有限解释范围', INVALID_POLICY: '策略文档无效',
   ACL_GRANT: '存在匿名 ACL 授权', ACL_NO_GRANT: '未观察到可解释的匿名 ACL 授权',
-  ACL_UNREADABLE: 'ACL 不可读取', HTTP_SUCCESS: '该对象请求成功',
-  HTTP_DENIED: '该对象请求被拒绝', HTTP_NOT_FOUND: '该对象返回 404',
-  REDIRECT: '该对象请求被重定向', HTTP_ERROR: '该对象请求返回异常状态',
+  ACL_UNREADABLE: 'ACL 不可读取', HTTP_SUCCESS: '该请求成功',
+  HTTP_DENIED: '该请求被拒绝', HTTP_NOT_FOUND: '服务返回 404',
+  REDIRECT: '该请求被重定向', HTTP_ERROR: '该请求返回异常状态',
   TIMEOUT: '请求超时', NETWORK_ERROR: '网络请求失败', INTERRUPTED: '请求中断',
   NOT_EVALUATED: '未能评估', UNSUPPORTED: 'Provider 不支持该诊断'
 })[basis];
@@ -323,10 +324,12 @@ const closeDiagnostic = () => {
   diagnosticResult.value = undefined;
   diagnosticError.value = '';
   diagnosticOwner.value = undefined;
+  diagnosticGeneration.value = undefined;
 };
 const handleDiagnose = async (row: OssConfigVO) => {
   const owner = runtime.currentUserId();
-  if (owner == null || !hasDiagnosticAccess()) {
+  const session = runtime.sessionSnapshot();
+  if (owner == null || !session.identityLoaded || !hasDiagnosticAccess()) {
     closeDiagnostic();
     return;
   }
@@ -335,12 +338,16 @@ const handleDiagnose = async (row: OssConfigVO) => {
   diagnosticAbort = abort;
   const version = ++diagnosticVersion;
   diagnosticOwner.value = owner;
+  diagnosticGeneration.value = session.generation;
   diagnosticVisible.value = true;
   diagnosticLoading.value = true;
   diagnosticError.value = '';
   diagnosticResult.value = undefined;
-  const current = () => pageMounted && diagnosticVersion === version
-    && runtime.currentUserId() === owner && hasDiagnosticAccess();
+  const current = () => {
+    const now = runtime.sessionSnapshot();
+    return pageMounted && diagnosticVersion === version && runtime.currentUserId() === owner
+      && now.identityLoaded && now.generation === session.generation && hasDiagnosticAccess();
+  };
   try {
     const response = await diagnoseOssConfig(row.ossConfigId, abort.signal);
     if (current()) diagnosticResult.value = response.data;
@@ -355,8 +362,13 @@ const handleDiagnose = async (row: OssConfigVO) => {
     }
   }
 };
-watch(() => [runtime.currentUserId(), hasDiagnosticAccess()] as const, ([owner, allowed]) => {
-  if (!allowed || diagnosticOwner.value !== undefined && diagnosticOwner.value !== owner) closeDiagnostic();
+watch(() => {
+  const session = runtime.sessionSnapshot();
+  return [runtime.currentUserId(), hasDiagnosticAccess(), session.generation, session.identityLoaded] as const;
+}, ([owner, allowed, generation, loaded]) => {
+  if (!allowed || !loaded
+    || (diagnosticOwner.value !== undefined && diagnosticOwner.value !== owner)
+    || (diagnosticGeneration.value !== undefined && diagnosticGeneration.value !== generation)) closeDiagnostic();
 });
 
 const queryFormRef = ref<ElFormInstance>();

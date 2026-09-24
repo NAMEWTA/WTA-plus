@@ -50,6 +50,8 @@ export interface SystemWebRuntime {
   config(key: string): Promise<string | undefined>;
   hasPermission(permission: string): boolean;
   currentUserId(): string | number | undefined;
+  /** 宿主现有身份生命周期的非敏感快照；不暴露 token。 */
+  sessionSnapshot(): Readonly<{ generation: number; identityLoaded: boolean }>;
   passwordPolicy: {
     load(): Promise<SystemPasswordPolicy>;
     validate(policy: SystemPasswordPolicy, password: string): readonly SystemPasswordViolation[];

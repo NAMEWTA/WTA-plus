@@ -133,6 +133,20 @@ describe('admin selected manifest registry', () => {
     expect(JSON.stringify([a, suspended, loading, b])).not.toContain('token-canary');
   });
 
+  it('projects the existing Admin generation and identity readiness without exposing its token', () => {
+    inboxHost.user = reactive({
+      token: 'private-session-token-canary', sessionGeneration: 31, userId: '101', identityLoaded: true
+    });
+    const initial = adminSystemWebRuntime.sessionSnapshot();
+    expect(initial).toEqual({ generation: 31, identityLoaded: true });
+    inboxHost.user.sessionGeneration++;
+    expect(adminSystemWebRuntime.sessionSnapshot()).toEqual({ generation: 32, identityLoaded: true });
+    inboxHost.user.identityLoaded = false;
+    const loading = adminSystemWebRuntime.sessionSnapshot();
+    expect(loading).toEqual({ generation: 32, identityLoaded: false });
+    expect(JSON.stringify([initial, loading])).not.toContain('private-session-token-canary');
+  });
+
   it('does not register retired AI pages while keeping unrelated monitor registrations', () => {
     expect(resolveAdminWebRegistration('ai/chat/index', 'ai')).toBeUndefined();
     expect(resolveAdminWebRegistration('monitor/snailai/index', 'system')).toBeUndefined();
