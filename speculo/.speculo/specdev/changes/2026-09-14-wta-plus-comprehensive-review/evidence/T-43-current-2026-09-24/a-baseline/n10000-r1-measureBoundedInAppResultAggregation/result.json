@@ -1,0 +1,139 @@
+{
+  "fanout_size": 10000,
+  "repetition": 1,
+  "method": "measureBoundedInAppResultAggregation",
+  "run_id": "3bb2e3038b56995c",
+  "phase": "cleanup",
+  "acceptance": true,
+  "cleanup": {
+    "errors": [],
+    "maven_group_live_members": [],
+    "owned_processes_remaining": [],
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "c316be3da50adbcd675e7c473e63ca65a662483f184991dc34baff878d6c6830": true
+    },
+    "loopback_ports_closed": {
+      "33071": true,
+      "33072": true
+    }
+  },
+  "started_utc": "2026-09-24T09:08:38.148345+00:00",
+  "source_before": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "owned": {
+    "container_full_ids": [
+      "5660e8f1143fab192eeab90bc03eb313bce7f682f10c3ddb5da4df9c5e056410",
+      "ec0feae93a59066309b0509baac1482f3dff2250a8fc0f042f2e5e3a3693539a"
+    ],
+    "anonymous_volumes": [
+      "c316be3da50adbcd675e7c473e63ca65a662483f184991dc34baff878d6c6830"
+    ],
+    "loopback_ports": {
+      "mysql": 33071,
+      "redis": 33072
+    }
+  },
+  "schema_tables": 104,
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-o",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotifyFanoutMeasurementIntegrationTest#measureBoundedInAppResultAggregation",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dsurefire.systemPropertiesFile=/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r1-measureBoundedInAppResultAggregation/test.properties",
+    "test"
+  ],
+  "maven_pgid": 2830939,
+  "maven_exit_code": 0,
+  "last_started_phase": "reports",
+  "xml": {
+    "source_sha256": "119c885c3aa6b7068a6c5e8f44b4858c597755b890b08c2682ce8c3e31ed7ca9",
+    "sanitized_sha256": "ac8b477446a4bcf09eb3b6bfcc5d36efe25dfe0d6d563c5e1f999bb6c4b84bc9",
+    "redactions": 18,
+    "counts": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "methods": [
+      "measureBoundedInAppResultAggregation"
+    ],
+    "marker": true,
+    "valid": true
+  },
+  "surefire_text": [
+    {
+      "name": "org.namewta.test.notify.NotifyFanoutMeasurementIntegrationTest.txt",
+      "source_sha256": "b547778ca1a4cf0ead7676cec3bd85308fb5c4f01e89fa070c73027e3e9bbef4",
+      "sanitized_sha256": "b547778ca1a4cf0ead7676cec3bd85308fb5c4f01e89fa070c73027e3e9bbef4",
+      "redactions": 0
+    }
+  ],
+  "metrics": {
+    "fanout_size": 10000,
+    "run_marker": "3bb2e3038b56995c",
+    "measurements": {
+      "setup_oss_boundary_calls": 0,
+      "jdbc_returned_rows": 100349,
+      "jdbc_rollback_calls": 0,
+      "row_lock_time_ms_delta": 0,
+      "message_rows": 1,
+      "oss_boundary_calls": 0,
+      "jdbc_execute_batch_calls": 0,
+      "jdbc_execute_update_calls": 71,
+      "message_recipient_rows": 10,
+      "jdbc_execute_query_calls": 360,
+      "jdbc_delivery_for_update_rows": 100030,
+      "outbox_rows": 10000,
+      "gc_collection_time_ms_delta": 21,
+      "gc_collection_count_delta": 5,
+      "result_elapsed_ns": 890128403,
+      "row_lock_status_available": true,
+      "row_lock_waits_delta": 0,
+      "recipient_rows": 10000,
+      "jdbc_delivery_for_update_calls": 40,
+      "jdbc_commit_calls": 40,
+      "dispatched_count": 10,
+      "heap_used_before_bytes": 240875344,
+      "jdbc_add_batch_calls": 0,
+      "delivery_rows": 10000,
+      "heap_pool_individual_peaks_sum_bytes": 275367040,
+      "heap_used_after_bytes": 184666040,
+      "attempt_rows": 10
+    },
+    "method": "measureBoundedInAppResultAggregation"
+  },
+  "metrics_sha256": "ccc4f73be31795f469faae51f3c512eb09cfb714ea024674ad019e960584a391",
+  "maven_log": {
+    "source_sha256": "94d5f8b29501a9e5cbee87fdf584f5dddfb45e74a67ae85881a48ca8b91550e6",
+    "sanitized_sha256": "321998f8920f97d87cb0a82c124f6f54cfcfb168ba2aa165c3d2555431906a6f",
+    "redactions": 13
+  },
+  "application_logs": [
+    {
+      "source_sha256": "426a8e88d457fb8a20628319a9a4b277996669c56668102f559a141d99506f29",
+      "sanitized_sha256": "08dc76f0c818be7ee1adefb2758199af8575b59e356efa6975e63deb05f11ac6",
+      "redactions": 12,
+      "retained_path": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r1-measureBoundedInAppResultAggregation/app-1.log"
+    }
+  ],
+  "source_after": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "finished_utc": "2026-09-24T09:09:39.913203+00:00",
+  "metrics_file": "n10000-r1-measureBoundedInAppResultAggregation/metrics.json"
+}

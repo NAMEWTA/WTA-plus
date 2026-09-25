@@ -156,6 +156,7 @@ public class NotificationApplicationRuntimeService {
             }
         }
 
+        List<NotifyRecipient> recipients = new ArrayList<>(users.size());
         List<NotifyDelivery> deliveries = new ArrayList<>();
         List<NotifyOutbox> outboxes = new ArrayList<>();
         // 秒精度列可能向上舍入；立即任务取数据库当前整秒，保证提交后的首次 wake 已可 claim。
@@ -172,7 +173,7 @@ public class NotificationApplicationRuntimeService {
                 "phone", Objects.toString(user.phone(), ""),
                 "email", Objects.toString(user.email(), ""))));
             recipient.setStatus("ACTIVE");
-            dao.insert(recipient);
+            recipients.add(recipient);
             for (NotificationChannel channel : command.channels()) {
                 NotifyDelivery delivery = new NotifyDelivery();
                 delivery.setDeliveryId(IdGeneratorUtil.nextLongId());
@@ -185,13 +186,11 @@ public class NotificationApplicationRuntimeService {
                 delivery.setStatus(blank(targetValue) ? "UNDELIVERABLE" : "PENDING");
                 delivery.setAttemptCount(0);
                 delivery.setVersion(0);
-                dao.insert(delivery);
                 deliveries.add(delivery);
 
                 if (!"PENDING".equals(delivery.getStatus())) {
                     delivery.setErrorCode("TARGET_UNAVAILABLE");
                     delivery.setErrorMessage("通知目标缺少有效联系方式");
-                    dao.update(delivery);
                     continue;
                 }
 
@@ -207,10 +206,10 @@ public class NotificationApplicationRuntimeService {
                 if (channel != NotificationChannel.IN_APP) {
                     outbox.setLastErrorCode(NotifyOutbox.DEADLINE_UNSENT_READY);
                 }
-                dao.insert(outbox);
                 outboxes.add(outbox);
             }
         }
+        dao.insertFanout(recipients, deliveries, outboxes);
         if (outboxes.isEmpty()) {
             dispatchService.refreshAggregate(intentId);
         } else {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.notify.mapper.NotifyRecipientMapper">
+    <!-- 同一条语句插入一批接收者，仍走当前 SqlSession，不另开会提交的 BATCH 会话。 -->
+    <insert id="insertBatch">
+        insert into notify_recipient (
+            recipient_id, intent_id, recipient_type, recipient_key, user_id,
+            target_snapshot_json, status, suppress_reason,
+            create_dept, create_by, create_time, update_by, update_time
+        ) values
+        <foreach collection="rows" item="row" separator=",">
+            (#{row.recipientId}, #{row.intentId}, #{row.recipientType}, #{row.recipientKey},
+             #{row.userId,jdbcType=BIGINT}, #{row.targetSnapshotJson,jdbcType=VARCHAR},
+             #{row.status}, #{row.suppressReason,jdbcType=VARCHAR},
+             #{row.createDept,jdbcType=BIGINT}, #{row.createBy,jdbcType=BIGINT},
+             #{row.createTime}, #{row.updateBy,jdbcType=BIGINT}, #{row.updateTime})
+        </foreach>
+    </insert>
+</mapper>

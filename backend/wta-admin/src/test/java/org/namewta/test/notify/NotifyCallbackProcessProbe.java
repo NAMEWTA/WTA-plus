@@ -64,7 +64,8 @@ public final class NotifyCallbackProcessProbe {
                 var sessions = new SqlSessionTemplate(new MybatisSqlSessionFactoryBuilder().build(config));
                 var dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class), sessions.getMapper(NotifyRecipientMapper.class),
                     sessions.getMapper(NotifyDeliveryMapper.class), sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
-                    sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class), sessions.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class));
+                    sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class), sessions.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class),
+                    new org.namewta.common.mybatis.handler.InjectionMetaObjectHandler());
                 var results = transactional(new NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)), NotifyDispatchResultUseCase.class);
                 var receipts = new NotifyProviderReceiptDao(sessions.getMapper(NotifyProviderReceiptMapper.class));
                 var callbacks = transactional(new ProviderCallbackUseCase(new ProviderCallbackService(dao, results, receipts)), ProviderCallbackUseCase.class);

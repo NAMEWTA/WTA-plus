@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.namewta.notify.mapper.NotifyDeliveryMapper">
+    <!-- 同一条语句插入一批投递。缺目标的错误码在插入前写好，避免再逐行 UPDATE。 -->
+    <insert id="insertBatch">
+        insert into notify_delivery (
+            delivery_id, intent_id, recipient_id, user_id, channel, target_value, status,
+            attempt_count, provider_key, provider_message_id, error_code, error_message,
+            accepted_at, receipt_query_at, delivered_at, read_at, version,
+            create_dept, create_by, create_time, update_by, update_time
+        ) values
+        <foreach collection="rows" item="row" separator=",">
+            (#{row.deliveryId}, #{row.intentId}, #{row.recipientId}, #{row.userId,jdbcType=BIGINT},
+             #{row.channel}, #{row.targetValue,jdbcType=VARCHAR}, #{row.status}, #{row.attemptCount},
+             #{row.providerKey,jdbcType=VARCHAR}, #{row.providerMessageId,jdbcType=VARCHAR},
+             #{row.errorCode,jdbcType=VARCHAR}, #{row.errorMessage,jdbcType=VARCHAR},
+             #{row.acceptedAt,jdbcType=TIMESTAMP}, #{row.receiptQueryAt,jdbcType=TIMESTAMP},
+             #{row.deliveredAt,jdbcType=TIMESTAMP}, #{row.readAt,jdbcType=TIMESTAMP}, #{row.version},
+             #{row.createDept,jdbcType=BIGINT}, #{row.createBy,jdbcType=BIGINT}, #{row.createTime},
+             #{row.updateBy,jdbcType=BIGINT}, #{row.updateTime})
+        </foreach>
+    </insert>
+
     <select id="selectSmsReceiptCandidate" resultType="org.namewta.notify.domain.entity.NotifyDelivery">
         select d.* from notify_delivery d
         join notify_channel_account a on a.channel = 'SMS' and a.config_key = d.provider_key

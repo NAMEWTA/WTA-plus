@@ -1,6 +1,6 @@
 # 工作记录
 
-revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线，生产尚未优化；7写根内仅新增测量测试，common batch事务独立核查。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
+revision240：T43 A基线21次已抄入evidence，AC-043仍未勾；正在同一动态事务内改为500行多值插入，聚合状态机不改。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线�
 
 ## Current status
 
-revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线，生产尚未优化；7写根内仅新增测量测试，common batch事务独立核查。18done/2cancelled/1in_progress/29ready；Goal active，未归档。 当前无产品writer或本票运行服务。
+revision240：T43 A基线21次已抄入evidence，AC-043仍未勾；正在同一动态事务内改为500行多值插入，聚合状态机不改。18done/2cancelled/1in_progress/29ready；Goal active，未归档。 当前无产品writer或本票运行服务。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -794,3 +794,9 @@ base `5417c257130216e2b283ca933d9496d76c10f46a`，source/result `d95b464e46ec73d
 revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线，生产尚未优化；7写根内仅新增测量测试，common batch事务独立核查。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
 
 基线 `dd250b947576505425b67ebac0a559c56616952c`；首轮精确产品写路径 `backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyFanoutMeasurementIntegrationTest.java`。Lead治理提交后cors_audit单writer；legacy_audit仓库只读审计，ops_audit仅/tmp驱动准备，Lead独占服务/命令/提交。固定三档各三次fresh同输入A/B、真实发布事务/固定10次结果/SQL行与执行数/锁等待/内存，故障回滚和唯一性为硬门禁；生产优化必须有A测量依据，聚合不新增状态机或虚构SLA。全部AC仍未勾，未运行不报通过。
+
+## revision240 — A基线入证，批量写入尚未验收
+
+revision240：T43 A基线21次已抄入evidence，AC-043仍未勾；正在同一动态事务内改为500行多值插入，聚合状态机不改。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
+
+A基线源码 `7933bdff61a5dbd620b869be7171b61b83fed845`，证据 `evidence/T-43-current-2026-09-24/a-baseline.md`。10k发布约30005次单行写、executeBatch为0；三次失败回滚后三张关系表为0。同探针的批量后测量尚未运行，因此不写性能提升，不勾AC。

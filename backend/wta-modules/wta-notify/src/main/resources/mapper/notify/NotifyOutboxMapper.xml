@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.namewta.notify.mapper.NotifyOutboxMapper">
+    <!-- 同一条语句插入一批 Outbox，提交仍由外层动态事务决定。 -->
+    <insert id="insertBatch">
+        insert into notify_outbox (
+            outbox_id, intent_id, delivery_id, status, available_at, attempt_count, next_attempt_at,
+            lease_owner, lease_until, lease_token, max_attempts, last_error_code, last_error_message,
+            create_dept, create_by, create_time, update_by, update_time
+        ) values
+        <foreach collection="rows" item="row" separator=",">
+            (#{row.outboxId}, #{row.intentId}, #{row.deliveryId}, #{row.status}, #{row.availableAt},
+             #{row.attemptCount}, #{row.nextAttemptAt,jdbcType=TIMESTAMP},
+             #{row.leaseOwner,jdbcType=VARCHAR}, #{row.leaseUntil,jdbcType=TIMESTAMP},
+             #{row.leaseToken,jdbcType=VARCHAR}, #{row.maxAttempts},
+             #{row.lastErrorCode,jdbcType=VARCHAR}, #{row.lastErrorMessage,jdbcType=VARCHAR},
+             #{row.createDept,jdbcType=BIGINT}, #{row.createBy,jdbcType=BIGINT}, #{row.createTime},
+             #{row.updateBy,jdbcType=BIGINT}, #{row.updateTime})
+        </foreach>
+    </insert>
+
     <select id="selectClaimable" resultType="org.namewta.notify.domain.entity.NotifyOutbox">
         select * from notify_outbox
         where status in ('READY', 'PROCESSING') and available_at &lt;= #{now}

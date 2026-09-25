@@ -1,0 +1,136 @@
+{
+  "fanout_size": 10000,
+  "repetition": 2,
+  "method": "failedFanoutInsertRollsBackNoticeAndWake",
+  "run_id": "15dbf109cf3ed8ec",
+  "phase": "cleanup",
+  "acceptance": true,
+  "cleanup": {
+    "errors": [],
+    "maven_group_live_members": [],
+    "owned_processes_remaining": [],
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "45b959f4b90fa3e9786366df2aea43f73b8506abd5a9371cde4216e2f57a88a3": true
+    },
+    "loopback_ports_closed": {
+      "33079": true,
+      "33080": true
+    }
+  },
+  "started_utc": "2026-09-24T09:12:28.895926+00:00",
+  "source_before": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "owned": {
+    "container_full_ids": [
+      "ffc53f4bc6081e1a16fa02c1e56fd796a17d62e086952cfdb23e79196af6ba0e",
+      "cbfc7fe897535a684d51246f758c3071bd0d8b34d21eb94da66a9320d08d228a"
+    ],
+    "anonymous_volumes": [
+      "45b959f4b90fa3e9786366df2aea43f73b8506abd5a9371cde4216e2f57a88a3"
+    ],
+    "loopback_ports": {
+      "mysql": 33079,
+      "redis": 33080
+    }
+  },
+  "schema_tables": 104,
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-o",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotifyFanoutMeasurementIntegrationTest#failedFanoutInsertRollsBackNoticeAndWake",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dsurefire.systemPropertiesFile=/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r2-failedFanoutInsertRollsBackNoticeAndWake/test.properties",
+    "test"
+  ],
+  "maven_pgid": 2842820,
+  "maven_exit_code": 0,
+  "last_started_phase": "reports",
+  "xml": {
+    "source_sha256": "22b19ad4495872c4a7585cb557decc86906ed4f5dfd66432317b8b66b6b3de32",
+    "sanitized_sha256": "fe90e184412460a77d5092f8950fa6a6d996800098f3eea04c5fa341ded86758",
+    "redactions": 18,
+    "counts": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "methods": [
+      "failedFanoutInsertRollsBackNoticeAndWake"
+    ],
+    "marker": true,
+    "valid": true
+  },
+  "surefire_text": [
+    {
+      "name": "org.namewta.test.notify.NotifyFanoutMeasurementIntegrationTest.txt",
+      "source_sha256": "1c7e71fe337642d7ebe2b7ef3299306a86f226a27843749a3acf26b3d51a405b",
+      "sanitized_sha256": "1c7e71fe337642d7ebe2b7ef3299306a86f226a27843749a3acf26b3d51a405b",
+      "redactions": 0
+    }
+  ],
+  "metrics": {
+    "fanout_size": 10000,
+    "run_marker": "15dbf109cf3ed8ec",
+    "measurements": {
+      "jdbc_execute_query_calls": 15,
+      "publish_elapsed_ns": 3199082043,
+      "jdbc_delivery_for_update_rows": 0,
+      "outbox_rows": 0,
+      "jdbc_returned_rows": 10002,
+      "jdbc_rollback_calls": 1,
+      "gc_collection_time_ms_delta": 14,
+      "wake_after_commit_calls": 0,
+      "row_lock_time_ms_delta": 0,
+      "gc_collection_count_delta": 2,
+      "row_lock_status_available": true,
+      "row_lock_waits_delta": 0,
+      "recipient_rows": 0,
+      "oss_boundary_calls": 0,
+      "jdbc_delivery_for_update_calls": 0,
+      "jdbc_commit_calls": 0,
+      "heap_used_before_bytes": 238564528,
+      "jdbc_execute_batch_calls": 0,
+      "jdbc_add_batch_calls": 0,
+      "delivery_rows": 0,
+      "heap_pool_individual_peaks_sum_bytes": 279626352,
+      "jdbc_execute_update_calls": 3003,
+      "heap_used_after_bytes": 257763896,
+      "attempt_rows": 0
+    },
+    "method": "failedFanoutInsertRollsBackNoticeAndWake"
+  },
+  "metrics_sha256": "ea72e15650116e570cc9284d7cdd175470035ee497ee7b4ad4df62b36b38a2c0",
+  "maven_log": {
+    "source_sha256": "a09be6aaf8565f40a0cd16e9904ef40e5dc26304d6a31c53a5b5950f0762dc6c",
+    "sanitized_sha256": "a1bc7875b6da21d4352fe71e41e4117f80b6759daf83abf27f0c0dd9f359c760",
+    "redactions": 13
+  },
+  "application_logs": [
+    {
+      "source_sha256": "fffbb8c6e9825f91bf7f2cc9efc3328d10c0ed42ad912f0e027a4e0892d3e089",
+      "sanitized_sha256": "3c34763aa93f0224492f9d85df2f5296298169c3b2de17d4a65ab66fddb61fcf",
+      "redactions": 12,
+      "retained_path": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r2-failedFanoutInsertRollsBackNoticeAndWake/app-1.log"
+    }
+  ],
+  "source_after": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "finished_utc": "2026-09-24T09:13:14.287112+00:00",
+  "metrics_file": "n10000-r2-failedFanoutInsertRollsBackNoticeAndWake/metrics.json"
+}

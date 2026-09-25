@@ -1,0 +1,204 @@
+{
+  "mode": "matrix",
+  "expected_head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+  "source_before": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "fingerprint": {
+    "test_probe_sha256": "94ae510b968474abc30a34fbd8a8a7a9431b90ecfd9fcfc0ed36b0f64e78186a",
+    "driver_sha256": "93edf8f32d861365ea9140da31ea9304f8c3409493b514de0e957561329e33bb",
+    "owned_helper_sha256": "7afb43db7d0086aeda0778389ad2fba95252dddf221eec406024101662c3bf46",
+    "sql_sha256": {
+      "10-cde-base-ddl.sql": "98570ed734d38f4b29ccdc6ba4b4c5db58c4c48942c98251c9823758ee506db7",
+      "20-cde-job.sql": "904c100c76fd851273271d1bcfbcb4409d6296bc432bb95172b9b71afaee36e5",
+      "30-cde-workflow.sql": "00c7163998754b0d3b9f634a750f196133400c0b9a6faa56b8dbb8b012f3fd04",
+      "40-cde-ai.sql": "6a92f023d9fdfb25466ac86e18d23ba211a73e2c34f6d6e2721007c45a5fa1d6",
+      "50-cde-base-dml.sql": "b87610b0ca02319e5aa02daee585b6c4309b74f9c588af1c49564df6d4ed76c6",
+      "60-cde-nacos.sql": "07d658b4c5502de682a6de08de31f315220caff4fe3ae4f11084c932fbb2b987"
+    },
+    "image_ids": {
+      "mysql:8.4.9": "sha256:c36050afdca850f23cef85703f84c7531a5ae155a11b5ee1c60acb09937c4084",
+      "redis:8.6.3": "sha256:4d25e2fe601f7ffaeb4437cb6ced3518bc36edf34ebe98863c80836943d94529"
+    },
+    "java_version_sha256": "5b4412738541184e84f6b2d7520d4f4a7c2a455f60650491464c61adcbbbdeb0",
+    "java_version_numbers": [
+      21,
+      0,
+      12
+    ],
+    "java_launcher_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "heap": "-Xms128m -Xmx1536m",
+    "mysql_schema_tables": 104,
+    "sizes": [
+      100,
+      1000,
+      10000
+    ],
+    "repetitions": 3,
+    "methods": [
+      "measurePublishedAllInAppFanout",
+      "measureBoundedInAppResultAggregation",
+      "failedFanoutInsertRollsBackNoticeAndWake"
+    ]
+  },
+  "reference_input_sha256": null,
+  "planned": 21,
+  "runs": [
+    {
+      "fanout_size": 100,
+      "repetition": 1,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n100-r1-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 100,
+      "repetition": 1,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n100-r1-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 100,
+      "repetition": 2,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n100-r2-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 100,
+      "repetition": 2,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n100-r2-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 100,
+      "repetition": 3,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n100-r3-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 100,
+      "repetition": 3,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n100-r3-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 1000,
+      "repetition": 1,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r1-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 1000,
+      "repetition": 1,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r1-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 1000,
+      "repetition": 2,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r2-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 1000,
+      "repetition": 2,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r2-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 1000,
+      "repetition": 3,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r3-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 1000,
+      "repetition": 3,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r3-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 1,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r1-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 1,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r1-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 1,
+      "method": "failedFanoutInsertRollsBackNoticeAndWake",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r1-failedFanoutInsertRollsBackNoticeAndWake/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 2,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r2-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 2,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r2-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 2,
+      "method": "failedFanoutInsertRollsBackNoticeAndWake",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r2-failedFanoutInsertRollsBackNoticeAndWake/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 3,
+      "method": "measurePublishedAllInAppFanout",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r3-measurePublishedAllInAppFanout/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 3,
+      "method": "measureBoundedInAppResultAggregation",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r3-measureBoundedInAppResultAggregation/result.json"
+    },
+    {
+      "fanout_size": 10000,
+      "repetition": 3,
+      "method": "failedFanoutInsertRollsBackNoticeAndWake",
+      "accepted": true,
+      "result": "/tmp/wta-t43/runs/af951e784d5c79e4/n10000-r3-failedFanoutInsertRollsBackNoticeAndWake/result.json"
+    }
+  ],
+  "acceptance": true,
+  "source_after": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "smoke_passed": false
+}

@@ -11,6 +11,9 @@ import java.util.List;
 /** Outbox Mapper。 */
 @Mapper
 public interface NotifyOutboxMapper extends BaseMapper<NotifyOutbox> {
+    /** 当前会话内的多值插入；调用方保证非空且已填充审计字段。 */
+    int insertBatch(@Param("rows") List<NotifyOutbox> rows);
+
     /** 领取到期且可执行的 Outbox 任务。 */
     List<NotifyOutbox> selectClaimable(@Param("now") LocalDateTime now, @Param("limit") int limit);
 

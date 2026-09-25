@@ -1,0 +1,139 @@
+{
+  "fanout_size": 1000,
+  "repetition": 3,
+  "method": "measurePublishedAllInAppFanout",
+  "run_id": "f11b841df6888906",
+  "phase": "cleanup",
+  "acceptance": true,
+  "cleanup": {
+    "errors": [],
+    "maven_group_live_members": [],
+    "owned_processes_remaining": [],
+    "remaining_owned_full_ids": [],
+    "anonymous_volumes_absent": {
+      "6904be1780e0439c6b61bb9ced1a6ae383f42d62503d3b678af5583b6c4419e9": true
+    },
+    "loopback_ports_closed": {
+      "33065": true,
+      "33066": true
+    }
+  },
+  "started_utc": "2026-09-24T09:05:51.051568+00:00",
+  "source_before": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "owned": {
+    "container_full_ids": [
+      "3d7aa61cd40d5d789880380c08a332bed745758f0095a65f64b2b7e05091238c",
+      "12baee9a75f6bf121bc99c789d4d951611d5e776f0af7bb6b4b89179f98ae93a"
+    ],
+    "anonymous_volumes": [
+      "6904be1780e0439c6b61bb9ced1a6ae383f42d62503d3b678af5583b6c4419e9"
+    ],
+    "loopback_ports": {
+      "mysql": 33065,
+      "redis": 33066
+    }
+  },
+  "schema_tables": 104,
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-o",
+    "-Pdev",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=NotifyFanoutMeasurementIntegrationTest#measurePublishedAllInAppFanout",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DforkCount=1",
+    "-DreuseForks=false",
+    "-Dsurefire.systemPropertiesFile=/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r3-measurePublishedAllInAppFanout/test.properties",
+    "test"
+  ],
+  "maven_pgid": 2822244,
+  "maven_exit_code": 0,
+  "last_started_phase": "reports",
+  "xml": {
+    "source_sha256": "0f4ed65f1bf7a02f7d9ea7a79697d9adfa89655a5ed77cae5f58014c67c6b7ec",
+    "sanitized_sha256": "1a902db4400b9da9b9cbd09451e2958a99a7dfd1e36fcd9efd65f3648ca26c32",
+    "redactions": 18,
+    "counts": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "methods": [
+      "measurePublishedAllInAppFanout"
+    ],
+    "marker": true,
+    "valid": true
+  },
+  "surefire_text": [
+    {
+      "name": "org.namewta.test.notify.NotifyFanoutMeasurementIntegrationTest.txt",
+      "source_sha256": "8dc8e038b9bd974fcb9c291122c32977422748268fd66bb5f56486d215560dcc",
+      "sanitized_sha256": "8dc8e038b9bd974fcb9c291122c32977422748268fd66bb5f56486d215560dcc",
+      "redactions": 0
+    }
+  ],
+  "metrics": {
+    "measurements": {
+      "publish_elapsed_ns": 3165994118,
+      "jdbc_returned_rows": 2004,
+      "jdbc_rollback_calls": 0,
+      "row_lock_time_ms_delta": 0,
+      "message_rows": 0,
+      "oss_boundary_calls": 0,
+      "jdbc_execute_batch_calls": 0,
+      "intent_rows": 1,
+      "jdbc_execute_update_calls": 3005,
+      "message_recipient_rows": 0,
+      "jdbc_execute_query_calls": 9,
+      "jdbc_delivery_for_update_rows": 0,
+      "outbox_rows": 1000,
+      "gc_collection_time_ms_delta": 11,
+      "wake_after_commit_calls": 1,
+      "gc_collection_count_delta": 2,
+      "row_lock_status_available": true,
+      "row_lock_waits_delta": 0,
+      "recipient_rows": 1000,
+      "jdbc_delivery_for_update_calls": 0,
+      "jdbc_commit_calls": 1,
+      "heap_used_before_bytes": 156532280,
+      "jdbc_add_batch_calls": 0,
+      "delivery_rows": 1000,
+      "heap_pool_individual_peaks_sum_bytes": 258244152,
+      "heap_used_after_bytes": 163581592,
+      "attempt_rows": 0
+    },
+    "method": "measurePublishedAllInAppFanout",
+    "fanout_size": 1000,
+    "run_marker": "f11b841df6888906"
+  },
+  "metrics_sha256": "6ecae2c2aae9210283676f7d11e7281d9becdfd8a138eac50cdc2d3a55c29e48",
+  "maven_log": {
+    "source_sha256": "4f56e9bfc36522b13f78abdf72cbd430a09a4423ee90b9f0cc618c7efd36d29b",
+    "sanitized_sha256": "a42cde61dab4095ae3493fdeb5b8a8752f00cc919634b71b55dc90fe1f2782fb",
+    "redactions": 13
+  },
+  "application_logs": [
+    {
+      "source_sha256": "8dc7d028372d896327a8206faca7762ef980b43a41d78412dd54c9d10dc9dba1",
+      "sanitized_sha256": "ca7072c08677e2e2fee801600e4aaff6a8180fb1d2a12d9629e045d932e36b58",
+      "redactions": 12,
+      "retained_path": "/tmp/wta-t43/runs/af951e784d5c79e4/n1000-r3-measurePublishedAllInAppFanout/app-1.log"
+    }
+  ],
+  "source_after": {
+    "head": "7933bdff61a5dbd620b869be7171b61b83fed845",
+    "tree": "1922e7eafefe6943bbf566fced742768db72592a",
+    "clean": true
+  },
+  "finished_utc": "2026-09-24T09:06:35.050580+00:00",
+  "metrics_file": "n1000-r3-measurePublishedAllInAppFanout/metrics.json"
+}

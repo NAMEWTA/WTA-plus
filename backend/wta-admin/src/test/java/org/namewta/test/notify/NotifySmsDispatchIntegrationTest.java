@@ -185,7 +185,8 @@ class NotifySmsDispatchIntegrationTest {
         dao = new NotifyNotificationDao(sessions.getMapper(NotifyIntentMapper.class),
             sessions.getMapper(NotifyRecipientMapper.class), sessions.getMapper(NotifyDeliveryMapper.class),
             sessions.getMapper(NotifyOutboxMapper.class), sessions.getMapper(NotifyAttemptMapper.class),
-            sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class), sessions.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class));
+            sessions.getMapper(NotifyMessageMapper.class), sessions.getMapper(NotifyMessageRecipientMapper.class), sessions.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class),
+            new org.namewta.common.mybatis.handler.InjectionMetaObjectHandler());
         configDao = new NotifyConfigDao(sessions.getMapper(NotifyChannelAccountMapper.class),
             sessions.getMapper(NotifySceneBindingMapper.class));
 

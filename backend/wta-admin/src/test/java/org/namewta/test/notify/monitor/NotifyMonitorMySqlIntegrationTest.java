@@ -82,7 +82,8 @@ class NotifyMonitorMySqlIntegrationTest {
             try (var session = sessions.openSession(true)) {
                 var dao = new NotifyNotificationDao(session.getMapper(NotifyIntentMapper.class), session.getMapper(NotifyRecipientMapper.class),
                     session.getMapper(NotifyDeliveryMapper.class), session.getMapper(NotifyOutboxMapper.class), session.getMapper(NotifyAttemptMapper.class),
-                    session.getMapper(NotifyMessageMapper.class), session.getMapper(NotifyMessageRecipientMapper.class), session.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class));
+                    session.getMapper(NotifyMessageMapper.class), session.getMapper(NotifyMessageRecipientMapper.class), session.getMapper(org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class),
+                    new org.namewta.common.mybatis.handler.InjectionMetaObjectHandler());
                 var application = mock(NotificationApplicationService.class);
                 var useCase = new NotificationMonitorUseCase(application, new NotificationMonitorService(dao));
                 var all = useCase.deliveries(null, null, null);

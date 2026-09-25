@@ -2,7 +2,9 @@ package org.namewta.notify.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.namewta.common.mybatis.core.page.PageQuery;
 import org.namewta.common.mybatis.core.query.LambdaJoinQueryBuilder;
 import org.namewta.common.mybatis.core.query.QueryBuilder;
@@ -14,11 +16,15 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 /** 通知运行时持久化边界，业务服务不得直接依赖 MyBatis Mapper。 */
 @Repository
 @RequiredArgsConstructor
 public class NotifyNotificationDao {
+    /** 多值 INSERT 的行上限，避免超过预处理参数个数。 */
+    private static final int FANOUT_BATCH = 500;
+
     private final NotifyIntentMapper intentMapper;
     private final NotifyRecipientMapper recipientMapper;
     private final NotifyDeliveryMapper deliveryMapper;
@@ -27,6 +33,7 @@ public class NotifyNotificationDao {
     private final NotifyMessageMapper messageMapper;
     private final NotifyMessageRecipientMapper messageRecipientMapper;
     private final NotifyIntentAttachmentMapper attachmentMapper;
+    private final MetaObjectHandler metaObjectHandler;
 
     /** 附件顺序和归属由物理关系行决定；空集合永不退化为全表扫描。 */
     public List<NotifyIntentAttachment> attachments(Long intentId) {
@@ -175,6 +182,29 @@ public class NotifyNotificationDao {
     public int insert(NotifyIntent value) { return intentMapper.insert(value); }
     public int update(NotifyIntent value) { return intentMapper.updateById(value); }
     public NotifyRecipient insert(NotifyRecipient value) { recipientMapper.insert(value); return value; }
+
+    /**
+     * 在当前动态事务的 SqlSession 内批量写入扇出关系。
+     * 不使用会在块末调用 session.commit 的独立 BATCH 会话。
+     */
+    public void insertFanout(List<NotifyRecipient> recipients, List<NotifyDelivery> deliveries, List<NotifyOutbox> outboxes) {
+        insertChunks(recipients, recipientMapper::insertBatch, "接收者");
+        insertChunks(deliveries, deliveryMapper::insertBatch, "投递");
+        insertChunks(outboxes, outboxMapper::insertBatch, "Outbox");
+    }
+
+    private <T> void insertChunks(List<T> rows, ToIntFunction<List<T>> insertBatch, String label) {
+        if (rows == null || rows.isEmpty()) return;
+        for (T row : rows) metaObjectHandler.insertFill(SystemMetaObject.forObject(row));
+        for (int offset = 0; offset < rows.size(); offset += FANOUT_BATCH) {
+            List<T> chunk = rows.subList(offset, Math.min(rows.size(), offset + FANOUT_BATCH));
+            int affected = insertBatch.applyAsInt(chunk);
+            if (affected != chunk.size()) {
+                throw new IllegalStateException(label + "批量写入行数不符: " + affected + "/" + chunk.size());
+            }
+        }
+    }
+
     public int insert(NotifyDelivery value) { return deliveryMapper.insert(value); }
     public int update(NotifyDelivery value) { return deliveryMapper.updateById(value); }
     public NotifyDelivery delivery(Long id) { return deliveryMapper.selectById(id); }
