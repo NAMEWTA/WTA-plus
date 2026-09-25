@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-30"
 title: "完成升级整体验收与可审查交付"
-status: "ready"
+status: "done"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -142,19 +142,21 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-030`：全部已接受AC均有实际命令/退出码/环境/源码checkpoint。
-- [ ] `AC-030`：required E2E与失败注入全部完成，not-run不能被标通过。
-- [ ] `AC-030`：未增加安全/类型豁免或删除测试制造绿色。
-- [ ] `AC-030`：用户能据artifact digest批准明确候选，未自动发布。
+- [x] `AC-030`：全部已接受AC均有实际命令/退出码/环境/源码checkpoint。
+- [x] `AC-030`：required E2E与失败注入全部完成，not-run不能被标通过。
+- [x] `AC-030`：未增加安全/类型豁免或删除测试制造绿色。
+- [x] `AC-030`：用户能据artifact digest批准明确候选，未自动发布。
 
-- [ ] `AC-030`：AC-001—AC-050全部有当前候选通过证据，报告18项全部有关闭结论。
-- [ ] `AC-030`：历史共同result及worktrees空缺已按事实处置，未伪造验收时点或新空提交。
-- [ ] `AC-030`：真实MySQL/Redis/MinIO及浏览器所需场景无required skip，full/core/三App同源候选完整。
-- [ ] `AC-030`：G-security-external和所有归档必需条件关闭，未批准风险不消失；部署、永久知识、归档移动按授权执行。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-030`：AC-001—AC-050全部有当前候选通过证据，报告18项全部有关闭结论。
+- [x] `AC-030`：历史共同result及worktrees空缺已按事实处置，未伪造验收时点或新空提交。
+- [x] `AC-030`：真实MySQL/Redis/MinIO及浏览器所需场景无required skip，full/core/三App同源候选完整。
+- [x] `AC-030`：G-security-external和所有归档必需条件关闭，未批准风险不消失；部署、永久知识、归档移动按授权执行。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+同一候选 `6002e7ad` 完成组合验收。真实服务用例 0 skip。full/core 在清空 `wta-admin/target` 后分别通过。未归档、未推送、未部署。Windows 仍是 `user-waived/not-run`。证据见 `evidence/T-30-replan-2026-09-23.md`。
 
 ## 11. SKILL 调用计划
 

@@ -1,6 +1,6 @@
 # 工作记录
 
-revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 项、0 skip。无新实现。29done/20cancelled/1ready。Goal active，未归档。
+revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/core 与三 App 通过。30done/20cancelled/0ready。未归档、未推送。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 �
 
 ## Current status
 
-revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 项、0 skip。无新实现。29done/20cancelled/1ready。Goal active，未归档。
+revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/core 与三 App 通过。30done/20cancelled/0ready。未归档、未推送。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -978,3 +978,9 @@ revision269：T28关闭。真实 MySQL/Redis 唤醒 1 项、0 skip。夹具补�
 revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 项、0 skip。无新实现。29done/20cancelled/1ready。Goal active，未归档。
 
 证据 `evidence/T-31-replan-2026-09-23.md`。HEAD `851662d7`。未推送、未归档。
+
+## revision271 — T30同一候选组合验收
+
+revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/core 与三 App 通过。30done/20cancelled/0ready。未归档、未推送。
+
+证据 `evidence/T-30-replan-2026-09-23.md`。Windows 仍是 `user-waived/not-run`。未推送、未归档。
