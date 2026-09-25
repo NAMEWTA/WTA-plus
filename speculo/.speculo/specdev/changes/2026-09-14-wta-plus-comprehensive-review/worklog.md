@@ -1,6 +1,6 @@
 # 工作记录
 
-revision266：T20按当前复验取消重复施工。全前端 663 项、0 skip。12 包严格，其余债已列出。无新实现。28done/17cancelled/5ready。Goal active，未归档。
+revision267：T26按当前复验取消重复施工。真实 MySQL/Redis HTTP 4 项、0 skip。无新实现。28done/18cancelled/4ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision266：T20按当前复验取消重复施工。全前端 663 项、0 skip�
 
 ## Current status
 
-revision266：T20按当前复验取消重复施工。全前端 663 项、0 skip。12 包严格，其余债已列出。无新实现。28done/17cancelled/5ready。Goal active，未归档。
+revision267：T26按当前复验取消重复施工。真实 MySQL/Redis HTTP 4 项、0 skip。无新实现。28done/18cancelled/4ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -954,3 +954,9 @@ revision265：T25按当前复验取消重复施工。真实 MySQL 部门树 14 �
 revision266：T20按当前复验取消重复施工。全前端 663 项、0 skip。12 包严格，其余债已列出。无新实现。28done/17cancelled/5ready。Goal active，未归档。
 
 证据 `evidence/T-20-replan-2026-09-23.md`。HEAD `04aba028`。未推送、未归档。
+
+## revision267 — T26当前复验取消重复施工
+
+revision267：T26按当前复验取消重复施工。真实 MySQL/Redis HTTP 4 项、0 skip。无新实现。28done/18cancelled/4ready。Goal active，未归档。
+
+证据 `evidence/T-26-replan-2026-09-23.md`。HEAD `7447af6f`。未推送、未归档。

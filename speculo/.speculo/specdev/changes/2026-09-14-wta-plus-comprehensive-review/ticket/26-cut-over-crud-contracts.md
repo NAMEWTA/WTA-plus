@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-26"
 title: "按资源合同清除旧CRUD方法并同步客户端"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -124,14 +124,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-026`：每个候选有迁移或保留理由，不遗漏调用者。
-- [ ] `AC-026`：已迁移CRUD无旧PUT/PATCH/DELETE可达入口。
-- [ ] `AC-026`：前后端method/path/权限/日志与OpenAPI快照一致。
-- [ ] `AC-026`：生成/源码门禁和代表资源E2E通过。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-026`：每个候选有迁移或保留理由，不遗漏调用者。
+- [x] `AC-026`：已迁移CRUD无旧PUT/PATCH/DELETE可达入口。
+- [x] `AC-026`：前后端method/path/权限/日志与OpenAPI快照一致。
+- [x] `AC-026`：生成/源码门禁和代表资源E2E通过。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-026，无新实现。真实 MySQL/Redis HTTP 4 项、0 skip。OpenAPI 快照与 32 个模板校验通过。证据见 `evidence/T-26-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
