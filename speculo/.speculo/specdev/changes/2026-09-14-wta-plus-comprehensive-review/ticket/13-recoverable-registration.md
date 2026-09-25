@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-13"
 title: "完成Home注册开关与验证码重试交互"
-status: "ready"
+status: "done"
 kind: "review"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -122,14 +122,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-013`：服务端关闭注册时入口与页面均准确，后端仍拒绝直接调用。
-- [ ] `AC-013`：验证码错误后无需整页刷新即可再次成功。
-- [ ] `AC-013`：慢旧captcha不能覆盖新uuid。
-- [ ] `AC-013`：提交/取消/失败后按钮状态恢复。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-013`：服务端关闭注册时入口与页面均准确，后端仍拒绝直接调用。
+- [x] `AC-013`：验证码错误后无需整页刷新即可再次成功。
+- [x] `AC-013`：慢旧captcha不能覆盖新uuid。
+- [x] `AC-013`：提交/取消/失败后按钮状态恢复。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+本轮只新增夹具 `backend/wta-admin/src/test/java/org/namewta/test/security/RegistrationRecoveryIntegrationTest.java`（原写集未列出）。它用 HTTPS 打开已构建的 admin 与 home。未改生产注册代码。证据见 `evidence/T-13-replan-2026-09-23.md`。
 
 ## 11. SKILL 调用计划
 
