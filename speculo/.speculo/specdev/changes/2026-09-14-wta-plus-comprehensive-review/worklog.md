@@ -1,6 +1,6 @@
 # 工作记录
 
-revision262：T22按当前复验取消重复施工。真实 MySQL/Redis 66 项、0 skip。无新实现。28done/13cancelled/9ready。Goal active，未归档。
+revision263：T23按当前复验取消重复施工。回调场景在同一 66 项里、0 skip；notify 回归 117 项、0 skip。无新实现。28done/14cancelled/8ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision262：T22按当前复验取消重复施工。真实 MySQL/Redis 66 项�
 
 ## Current status
 
-revision262：T22按当前复验取消重复施工。真实 MySQL/Redis 66 项、0 skip。无新实现。28done/13cancelled/9ready。Goal active，未归档。
+revision263：T23按当前复验取消重复施工。回调场景在同一 66 项里、0 skip；notify 回归 117 项、0 skip。无新实现。28done/14cancelled/8ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -930,3 +930,9 @@ revision261：T21关闭。公开页 Chrome 29 项、0 skip。注册失败后焦�
 revision262：T22按当前复验取消重复施工。真实 MySQL/Redis 66 项、0 skip。无新实现。28done/13cancelled/9ready。Goal active，未归档。
 
 证据 `evidence/T-22-replan-2026-09-23.md`。HEAD `ea124ded`。未推送、未归档。
+
+## revision263 — T23当前复验取消重复施工
+
+revision263：T23按当前复验取消重复施工。回调场景在同一 66 项里、0 skip；notify 回归 117 项、0 skip。无新实现。28done/14cancelled/8ready。Goal active，未归档。
+
+证据 `evidence/T-23-replan-2026-09-23.md`。HEAD `449376aa`。未推送、未归档。

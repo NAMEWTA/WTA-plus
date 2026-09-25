@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-23"
 title: "将供应商回调幂等纳入持久事务"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -119,14 +119,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-023`：回滚后相同事件可重试成功。
-- [ ] `AC-023`：跨实例相同事件不重复生效，不同provider同ID互不影响。
-- [ ] `AC-023`：乱序/伪签名/迟到回调按现有规则失败关闭或no-op。
-- [ ] `AC-023`：重启不丢幂等记录，聚合与delivery一致。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-023`：回滚后相同事件可重试成功。
+- [x] `AC-023`：跨实例相同事件不重复生效，不同provider同ID互不影响。
+- [x] `AC-023`：乱序/伪签名/迟到回调按现有规则失败关闭或no-op。
+- [x] `AC-023`：重启不丢幂等记录，聚合与delivery一致。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-023，无新实现。回调场景在真实 MySQL/Redis 的 66 项里，0 skip；notify 模块回归 117 项、0 skip。上游 Redis 门控 2 项 skip 不计入通过。证据见 `evidence/T-23-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
