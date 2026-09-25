@@ -1,0 +1,18 @@
+{
+  "fanout_size": 1000,
+  "repetition": 1,
+  "method": "measurePublishedAllInAppFanout",
+  "acceptance": true,
+  "phase": "cleanup",
+  "source_before": {
+    "head": "9267ecb52cd8ec8c663a41f06b10eb7e0b3fe6ca",
+    "tree": "00f26fc360f6fa0caf714c097a0a205e496c8771",
+    "clean": true
+  },
+  "source_after": {
+    "head": "9267ecb52cd8ec8c663a41f06b10eb7e0b3fe6ca",
+    "tree": "00f26fc360f6fa0caf714c097a0a205e496c8771",
+    "clean": true
+  },
+  "schema_tables": 104
+}

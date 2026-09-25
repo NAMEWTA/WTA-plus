@@ -1,6 +1,6 @@
 # 工作记录
 
-revision240：T43 A基线21次已抄入evidence，AC-043仍未勾；正在同一动态事务内改为500行多值插入，聚合状态机不改。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
+revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由305/3005/30005降到8/11/65；10k回滚后三张关系表为0。聚合未改、无新SLA。19done/2cancelled/29ready；下一T48。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision240：T43 A基线21次已抄入evidence，AC-043仍未勾；正在同一
 
 ## Current status
 
-revision240：T43 A基线21次已抄入evidence，AC-043仍未勾；正在同一动态事务内改为500行多值插入，聚合状态机不改。18done/2cancelled/1in_progress/29ready；Goal active，未归档。 当前无产品writer或本票运行服务。
+revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由305/3005/30005降到8/11/65；10k回滚后三张关系表为0。聚合未改、无新SLA。19done/2cancelled/29ready；下一T48。Goal active，未归档。 当前无产品writer或本票运行服务。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -800,3 +800,9 @@ revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线�
 revision240：T43 A基线21次已抄入evidence，AC-043仍未勾；正在同一动态事务内改为500行多值插入，聚合状态机不改。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
 
 A基线源码 `7933bdff61a5dbd620b869be7171b61b83fed845`，证据 `evidence/T-43-current-2026-09-24/a-baseline.md`。10k发布约30005次单行写、executeBatch为0；三次失败回滚后三张关系表为0。同探针的批量后测量尚未运行，因此不写性能提升，不勾AC。
+
+## revision241 — T43当前候选关闭
+
+revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由305/3005/30005降到8/11/65；10k回滚后三张关系表为0。聚合未改、无新SLA。19done/2cancelled/29ready；下一T48。Goal active，未归档。
+
+证据 `evidence/T-43-replan-2026-09-23.md`。实现提交 `9267ecb52cd8ec8c663a41f06b10eb7e0b3fe6ca`。未推送、未归档。
