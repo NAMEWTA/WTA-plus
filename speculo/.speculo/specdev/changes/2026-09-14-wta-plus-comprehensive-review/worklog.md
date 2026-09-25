@@ -1,6 +1,6 @@
 # 工作记录
 
-revision252：T11按当前复验取消重复施工。两 App HTTPS 旅程 6 项、0 skip，生产包无 ECB/私钥。无新实现。23done/8cancelled/19ready。Goal active，未归档。
+revision253：T12关闭。会话与导航 Chrome 20 项、0 skip。24done/8cancelled/18ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision252：T11按当前复验取消重复施工。两 App HTTPS 旅程 6 项�
 
 ## Current status
 
-revision252：T11按当前复验取消重复施工。两 App HTTPS 旅程 6 项、0 skip，生产包无 ECB/私钥。无新实现。23done/8cancelled/19ready。Goal active，未归档。
+revision253：T12关闭。会话与导航 Chrome 20 项、0 skip。24done/8cancelled/18ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -870,3 +870,9 @@ revision251：T08按当前复验取消重复施工。三 Origin Chrome 5 项加�
 revision252：T11按当前复验取消重复施工。两 App HTTPS 旅程 6 项、0 skip，生产包无 ECB/私钥。无新实现。23done/8cancelled/19ready。Goal active，未归档。
 
 证据 `evidence/T-11-replan-2026-09-23.md`。HEAD `408f12d1`。未推送、未归档。
+
+## revision253 — T12当前候选关闭
+
+revision253：T12关闭。会话与导航 Chrome 20 项、0 skip。24done/8cancelled/18ready。Goal active，未归档。
+
+证据 `evidence/T-12-replan-2026-09-23.md`。HEAD `89f94a9b`。未推送、未归档。
