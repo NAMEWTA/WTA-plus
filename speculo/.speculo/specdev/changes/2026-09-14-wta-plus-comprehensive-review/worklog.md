@@ -1,6 +1,6 @@
 # 工作记录
 
-revision247：T06按当前复验取消重复施工。真实 HTTPS/Chrome SSO 1 项加单测 16 项、0 skip。无新实现。21done/5cancelled/24ready。Goal active，未归档。
+revision248：T07关闭。真实 Chrome 回调旅程 12 项 0 skip，外域 returnTo 单测含在 13 项 0 skip 内。22done/5cancelled/23ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision247：T06按当前复验取消重复施工。真实 HTTPS/Chrome SSO 1 �
 
 ## Current status
 
-revision247：T06按当前复验取消重复施工。真实 HTTPS/Chrome SSO 1 项加单测 16 项、0 skip。无新实现。21done/5cancelled/24ready。Goal active，未归档。
+revision248：T07关闭。真实 Chrome 回调旅程 12 项 0 skip，外域 returnTo 单测含在 13 项 0 skip 内。22done/5cancelled/23ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -840,3 +840,9 @@ revision246：T05按当前复验取消重复施工。真实 Redis 防重租约 7
 revision247：T06按当前复验取消重复施工。真实 HTTPS/Chrome SSO 1 项加单测 16 项、0 skip。无新实现。21done/5cancelled/24ready。Goal active，未归档。
 
 证据 `evidence/T-06-replan-2026-09-23.md`。HEAD `56eda485`。未推送、未归档。
+
+## revision248 — T07当前候选关闭
+
+revision248：T07关闭。真实 Chrome 回调旅程 12 项 0 skip，外域 returnTo 单测含在 13 项 0 skip 内。22done/5cancelled/23ready。Goal active，未归档。
+
+证据 `evidence/T-07-replan-2026-09-23.md`。HEAD `450c9d11549d16d9da4e809d57f19f6fb9741a01`。未推送、未归档。

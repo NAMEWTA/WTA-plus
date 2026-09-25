@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-07"
 title: "修复SSO回调编码与可恢复登录旅程"
-status: "ready"
+status: "done"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -120,14 +120,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-007`：复杂state往返相等且无重复code/state参数。
-- [ ] `AC-007`：过期、错state、错误verifier均失败关闭且用户可重新授权。
-- [ ] `AC-007`：成功回到原App内路径，带外域returnTo被拒。
-- [ ] `AC-007`：日志与UI不暴露code/verifier/token。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-007`：复杂state往返相等且无重复code/state参数。
+- [x] `AC-007`：过期、错state、错误verifier均失败关闭且用户可重新授权。
+- [x] `AC-007`：成功回到原App内路径，带外域returnTo被拒。
+- [x] `AC-007`：日志与UI不暴露code/verifier/token。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+本轮只改旅程夹具 `backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java`（原写集未列出该测试）。它在服务浏览器前按 `/admin/`、`/home/` 与 `/api` 构建两个 App，并把整段进程等待从 180 秒调到 600 秒。未改 SSO 生产类，未改跟踪的 `.env`。证据见 `evidence/T-07-replan-2026-09-23.md`。
 
 ## 11. SKILL 调用计划
 
