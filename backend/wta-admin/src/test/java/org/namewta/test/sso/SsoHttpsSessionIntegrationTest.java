@@ -234,13 +234,22 @@ class SsoHttpsSessionIntegrationTest {
                 redirects.set(Map.of(ADMIN_CLIENT, List.of(adminOrigin + "/admin-app/sso/callback"),
                     HOME_CLIENT, List.of(homeOrigin + "/home-app/sso/callback")));
             } else if (journey) {
+                // Checked-in production defaults are / and /prod-api. This journey serves /admin and /home with /api.
+                command(root.resolve("frontend"), List.of("corepack", "pnpm", "--filter", "@namewta/admin-web", "build"),
+                    Map.of("VITE_APP_CONTEXT_PATH", "/admin/", "VITE_APP_BASE_API", "/api"));
+                command(root.resolve("frontend"), List.of("corepack", "pnpm", "--filter", "@namewta/home-web", "build"),
+                    Map.of("VITE_APP_CONTEXT_PATH", "/home/", "VITE_APP_BASE_API", "/api"));
                 var admin = httpsConnector(server);
                 var home = httpsConnector(server);
                 String adminOrigin = "https://127.0.0.1:" + admin.getLocalPort();
                 String homeOrigin = "https://127.0.0.1:" + home.getLocalPort();
-                apps.put(admin.getLocalPort(), new AppFiles(root.resolve("frontend/apps/admin-web/dist"), "/admin/"));
-                apps.put(home.getLocalPort(), new AppFiles(root.resolve("frontend/apps/home-web/dist"), "/home/"));
+                Path adminDist = root.resolve("frontend/apps/admin-web/dist");
+                Path homeDist = root.resolve("frontend/apps/home-web/dist");
+                apps.put(admin.getLocalPort(), new AppFiles(adminDist, "/admin/"));
+                apps.put(home.getLocalPort(), new AppFiles(homeDist, "/home/"));
                 for (AppFiles app : apps.values()) assertThat(app.dist().resolve("index.html")).isRegularFile();
+                assertThat(Files.readString(adminDist.resolve("index.html"))).contains("/admin/assets/");
+                assertThat(Files.readString(homeDist.resolve("index.html"))).contains("/home/assets/");
                 browserEnvironment.put("SSO_TEST_ADMIN_ORIGIN", adminOrigin + "/admin");
                 browserEnvironment.put("SSO_TEST_HOME_ORIGIN", homeOrigin + "/home");
                 redirects.set(Map.of(ADMIN_CLIENT, List.of(adminOrigin + "/admin/sso/callback"), HOME_CLIENT, List.of(homeOrigin + "/home/sso/callback")));
@@ -410,14 +419,18 @@ class SsoHttpsSessionIntegrationTest {
     }
 
     private void command(Path cwd, List<String> command, Map<String, String> environment) throws Exception {
-        Path output = Files.createTempFile(directory, "command-", ".log");
+        String logOverride = System.getProperty("sso.command.log");
+        Path output = logOverride == null ? Files.createTempFile(directory, "command-", ".log") : Path.of(logOverride);
         var builder = new ProcessBuilder(command).directory(cwd.toFile()).redirectErrorStream(true).redirectOutput(output.toFile());
         builder.environment().putAll(environment);
         var process = builder.start();
-        if (!process.waitFor(180, TimeUnit.SECONDS)) {
+        // Twelve serial Chrome journeys outlive the old 180s wait. Playwright still fails a stuck test on its own timeout.
+        if (!process.waitFor(600, TimeUnit.SECONDS)) {
             process.descendants().forEach(ProcessHandle::destroyForcibly);
             process.destroyForcibly();
-            throw new IOException("Owned test command timed out: " + command.getFirst());
+            String partial = Files.readString(output);
+            int start = Math.max(0, partial.length() - 4000);
+            throw new IOException("Owned test command timed out: " + command.getFirst() + "\n" + partial.substring(start));
         }
         String result = Files.readString(output);
         assertThat(process.exitValue()).as(command + "\n" + result).isZero();
