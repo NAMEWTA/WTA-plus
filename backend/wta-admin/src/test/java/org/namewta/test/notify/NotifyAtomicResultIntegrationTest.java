@@ -139,7 +139,7 @@ class NotifyAtomicResultIntegrationTest {
         for (Class<?> mapper : List.of(NotifyIntentMapper.class, NotifyRecipientMapper.class, NotifyDeliveryMapper.class,
             NotifyOutboxMapper.class, NotifyAttemptMapper.class, NotifyMessageMapper.class, NotifyMessageRecipientMapper.class, org.namewta.notify.mapper.NotifyIntentAttachmentMapper.class, NotifyProviderReceiptMapper.class, NotifyChannelAccountMapper.class, NotifySceneBindingMapper.class,
             NotifyNoticeMapper.class, NotifyNoticeSnapshotMapper.class)) config.addMapper(mapper);
-        for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml", "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml", "/mapper/notify/NotifyNoticeMapper.xml")) {
+        for (String resource : List.of("/mapper/notify/NotifyOutboxMapper.xml", "/mapper/notify/NotifyRecipientMapper.xml", "/mapper/notify/NotifyChannelAccountMapper.xml", "/mapper/notify/NotifyDeliveryMapper.xml", "/mapper/notify/NotifyNoticeMapper.xml")) {
             try (var stream = getClass().getResourceAsStream(resource)) {
                 assertThat(stream).isNotNull();
                 new XMLMapperBuilder(stream, config, resource, config.getSqlFragments()).parse();
