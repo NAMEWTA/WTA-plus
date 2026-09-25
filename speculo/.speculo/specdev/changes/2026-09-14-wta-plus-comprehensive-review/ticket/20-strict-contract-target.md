@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-20"
 title: "收紧已触及的TypeScript合同边界"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -123,14 +123,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-020`：受影响边界类型检查通过，nullable与非法transport样本有明确处理。
-- [ ] `AC-020`：不增加双cast、ignore或检查排除来消除诊断。
-- [ ] `AC-020`：全量现有typecheck仍通过；严格化范围与诊断记录一致。
-- [ ] `AC-020`：未触及存量严格债明确列出，不冒充全仓strict完成。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-020`：受影响边界类型检查通过，nullable与非法transport样本有明确处理。
+- [x] `AC-020`：不增加双cast、ignore或检查排除来消除诊断。
+- [x] `AC-020`：全量现有typecheck仍通过；严格化范围与诊断记录一致。
+- [x] `AC-020`：未触及存量严格债明确列出，不冒充全仓strict完成。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-020，无新实现。12 个包保持三项严格检查；根配置和其余 18 个包的空值债已列出，不声称全仓 strict。全前端 663 项、0 skip。证据见 `evidence/T-20-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。本票 E2E 为 not-required。
 
 ## 11. SKILL 调用计划
 
