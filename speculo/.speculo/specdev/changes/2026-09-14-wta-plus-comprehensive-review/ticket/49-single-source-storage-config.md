@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-49"
 title: "配置保留真实差异并收敛无效重复项"
-status: "in_progress"
+status: "done"
 kind: "bug"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -119,13 +119,13 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-049`：每个删除配置有真实无消费者/代码默认证据，SINGLE与MULTIPART各可用。
-- [ ] `AC-049`：切默认存储不重路由历史对象，权限/类型/大小仍失败关闭。
-- [ ] `AC-049`：无canary可接入；无附件通知不创建OSS客户端；OIDC信任项不删。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-049`：每个删除配置有真实无消费者/代码默认证据，SINGLE与MULTIPART各可用。
+- [x] `AC-049`：切默认存储不重路由历史对象，权限/类型/大小仍失败关闭。
+- [x] `AC-049`：无canary可接入；无附件通知不创建OSS客户端；OIDC信任项不删。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
 ## 11. SKILL 调用计划
 

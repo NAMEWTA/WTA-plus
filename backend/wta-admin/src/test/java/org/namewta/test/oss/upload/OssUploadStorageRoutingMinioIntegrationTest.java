@@ -73,7 +73,8 @@ class OssUploadStorageRoutingMinioIntegrationTest {
                 MemoryTicketStore tickets = new MemoryTicketStore();
                 MemoryMetadataStore metadata = new MemoryMetadataStore();
                 AtomicReference<String> defaultKey = new AtomicReference<>("private-route");
-                OssUploadService service = new OssUploadService(properties(), identity(), tickets,
+                OssUploadProperties uploadProperties = properties();
+                OssUploadService service = new OssUploadService(uploadProperties, identity(), tickets,
                     new DefaultOssUploadObjectStore(), metadata, readiness(), defaultKey::get);
                 HttpClient http = HttpClient.newHttpClient();
 
@@ -95,8 +96,28 @@ class OssUploadStorageRoutingMinioIntegrationTest {
                 assertThat(metadata.registered.get(privateInit.uploadToken()).service()).isEqualTo("private-route");
                 assertThat(privateClient.headObject(uploadedKeys[1]).size()).isEqualTo(privateBody.length);
                 assertThat(rawGet(http, endpointUri, privateBucket, uploadedKeys[1])).isEqualTo(403);
+                uploadProperties.requirePolicy("attachment").setAllowedClientPks(Set.of(999L));
+                assertThatThrownBy(() -> service.init(new InitRequest("attachment", "denied.bin",
+                    4, "application/octet-stream", "denied-fingerprint")))
+                    .isInstanceOf(OssUploadException.class)
+                    .extracting(error -> ((OssUploadException) error).error())
+                    .isEqualTo(OssUploadError.ACCESS_DENIED);
+                uploadProperties.requirePolicy("attachment").setAllowedClientPks(Set.of());
+                assertThatThrownBy(() -> service.init(new InitRequest("attachment", "typed.bin",
+                    4, "text/html", "type-fingerprint")))
+                    .isInstanceOf(OssUploadException.class)
+                    .extracting(error -> ((OssUploadException) error).error())
+                    .isEqualTo(OssUploadError.INVALID_FILE);
+                assertThatThrownBy(() -> service.init(new InitRequest("attachment", "huge.bin",
+                    uploadProperties.requirePolicy("attachment").getMaxSize() + 1,
+                    "application/octet-stream", "size-fingerprint")))
+                    .isInstanceOf(OssUploadException.class)
+                    .extracting(error -> ((OssUploadException) error).error())
+                    .isEqualTo(OssUploadError.INVALID_FILE);
 
                 defaultKey.set("public-route");
+                assertThat(tickets.get(privateInit.uploadToken()).service()).isEqualTo("private-route");
+                assertThat(privateClient.headObject(uploadedKeys[1]).size()).isEqualTo(privateBody.length);
                 assertThatThrownBy(() -> service.init(new InitRequest("portal", "portal.txt",
                     4, "application/octet-stream", "public-fingerprint")))
                     .isInstanceOf(OssUploadException.class)

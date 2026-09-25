@@ -1,6 +1,6 @@
 # 工作记录
 
-revision243：T49进行中。avatar 的 SINGLE 策略已去掉无用分片参数，属性测试 4 项 0 跳过。MinIO 默认存储切换未跑，AC-049 未勾。20done/2cancelled/1in_progress/27ready。Goal active，未归档。
+revision244：T49关闭。真实 MinIO 默认存储切换 1 项 0 skip，属性测试 4 项 0 skip，无附件提交不调用 OSS。21done/2cancelled/27ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision243：T49进行中。avatar 的 SINGLE 策略已去掉无用分片参数
 
 ## Current status
 
-revision243：T49进行中。avatar 的 SINGLE 策略已去掉无用分片参数，属性测试 4 项 0 跳过。MinIO 默认存储切换未跑，AC-049 未勾。20done/2cancelled/1in_progress/27ready。Goal active，未归档。
+revision244：T49关闭。真实 MinIO 默认存储切换 1 项 0 skip，属性测试 4 项 0 skip，无附件提交不调用 OSS。21done/2cancelled/27ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -816,3 +816,9 @@ revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍�
 ## revision243 — T49尚未关闭
 
 revision243：T49进行中。avatar 的 SINGLE 策略已去掉无用分片参数，属性测试 4 项 0 跳过。MinIO 默认存储切换未跑，AC-049 未勾。20done/2cancelled/1in_progress/27ready。Goal active，未归档。
+
+## revision244 — T49当前候选关闭
+
+revision244：T49关闭。真实 MinIO 默认存储切换 1 项 0 skip，属性测试 4 项 0 skip，无附件提交不调用 OSS。21done/2cancelled/27ready。Goal active，未归档。
+
+证据 `evidence/T-49-replan-2026-09-23.md`。未推送、未归档。
