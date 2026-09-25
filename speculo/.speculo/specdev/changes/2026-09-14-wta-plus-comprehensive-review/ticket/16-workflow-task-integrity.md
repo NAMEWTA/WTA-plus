@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-16"
 title: "保证流程任务读取和办理对象一致"
-status: "ready"
+status: "done"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -121,14 +121,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-016`：B失败绝不发出A的审批请求。
-- [ ] `AC-016`：陌生用户读取任务节点/变量被拒，合法办理人/发起人按既有规则可读。
-- [ ] `AC-016`：双击/过期任务不重复推进流程。
-- [ ] `AC-016`：快速切换、关闭、网络乱序与服务端失败可恢复。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-016`：B失败绝不发出A的审批请求。
+- [x] `AC-016`：陌生用户读取任务节点/变量被拒，合法办理人/发起人按既有规则可读。
+- [x] `AC-016`：双击/过期任务不重复推进流程。
+- [x] `AC-016`：快速切换、关闭、网络乱序与服务端失败可恢复。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+本轮只新增浏览器运行配置 `frontend/playwright.task-integrity.config.ts` 与 `frontend/vite.task-integrity.config.ts`（原写集未列出）。默认 Playwright 配置忽略该用例。未改流程生产代码。证据见 `evidence/T-16-replan-2026-09-23.md`。
 
 ## 11. SKILL 调用计划
 
