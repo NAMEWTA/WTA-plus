@@ -1,6 +1,6 @@
 # 工作记录
 
-revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由305/3005/30005降到8/11/65；10k回滚后三张关系表为0。聚合未改、无新SLA。19done/2cancelled/29ready；下一T48。Goal active，未归档。
+revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍单独可调用。Windows 实机为 user-waived/not-run。20done/2cancelled/28ready；下一T49。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由30
 
 ## Current status
 
-revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由305/3005/30005降到8/11/65；10k回滚后三张关系表为0。聚合未改、无新SLA。19done/2cancelled/29ready；下一T48。Goal active，未归档。 当前无产品writer或本票运行服务。
+revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍单独可调用。Windows 实机为 user-waived/not-run。20done/2cancelled/28ready；下一T49。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -806,3 +806,9 @@ A基线源码 `7933bdff61a5dbd620b869be7171b61b83fed845`，证据 `evidence/T-43
 revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由305/3005/30005降到8/11/65；10k回滚后三张关系表为0。聚合未改、无新SLA。19done/2cancelled/29ready；下一T48。Goal active，未归档。
 
 证据 `evidence/T-43-replan-2026-09-23.md`。实现提交 `9267ecb52cd8ec8c663a41f06b10eb7e0b3fe6ca`。未推送、未归档。
+
+## revision242 — T48当前候选关闭
+
+revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍单独可调用。Windows 实机为 user-waived/not-run。20done/2cancelled/28ready；下一T49。Goal active，未归档。
+
+证据 `evidence/T-48-replan-2026-09-23.md`。夹具命令退出码 0，node 测试 3 通过 0 跳过。未推送、未归档。

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# 本地前台启动：先选择前端或后端，再选择是否清理缓存。
-# 选前端后还会指定 frontend/apps 下带 dev 脚本的应用。当前终端运行，Ctrl+C 停止。
+# 本地前台启动。子命令：start、build、doctor、repair。
+# 无参数时菜单只转发到这些子命令。日常 start 不 clean、不重装、不校验 JAR 哨兵，
+# 也不把 server.port 写成 Spring 参数。深度清理只在 repair。
 #
 # 后端两段式都必须留在 backend 聚合根：
 # 根 POM 以 import 引入仓内 wta-common-bom、wta-profile-bom。它们不是模块依赖，
@@ -388,15 +389,18 @@ ensure_frontend_dependencies() {
 }
 
 start_frontend() {
-  local app_name app_dir app_port app_context package_name visit_url mode
+  local app_name=${1:-}
+  local mode=${2:-direct}
+  local app_dir app_port app_context package_name visit_url
   local -a vite_args
 
   resolve_pnpm_runner
   require_command node
   [[ -f "${frontend_dir}/package.json" ]] || fail "前端目录不完整：${frontend_dir}"
   [[ -f "${frontend_dir}/pnpm-lock.yaml" ]] || fail "缺少前端 lockfile：${frontend_dir}/pnpm-lock.yaml"
-  app_name=$(choose_frontend_app)
-  mode=$(choose_frontend_mode)
+  if [[ -z "${app_name}" ]]; then
+    app_name=$(choose_frontend_app)
+  fi
   app_dir="${frontend_dir}/apps/${app_name}"
   package_name=$(read_frontend_package_name "${app_dir}/package.json")
   app_port=$(resolve_vite_env_key "${app_dir}" VITE_APP_PORT)
@@ -566,29 +570,37 @@ prepare_backend_reactor() {
   esac
 }
 
-start_backend() {
-  local mode
-  require_command java
-  require_command jar
-  resolve_mvnw_cmd
-  [[ -r "${backend_build_guard}" ]] || fail "缺少后端构建保护模块：${backend_build_guard}"
-  mode=$(choose_backend_mode)
+# 只决定占用检查用的端口。不导出、不覆盖 SERVER_PORT，也不把它传给 Spring。
+resolve_checked_port() {
+  if [[ -n "${SERVER_PORT+x}" ]]; then
+    if [[ ! "${SERVER_PORT}" =~ ^[0-9]+$ ]] || (( 10#${SERVER_PORT} < 1 || 10#${SERVER_PORT} > 65535 )); then
+      fail "SERVER_PORT 不是有效端口。"
+    fi
+    backend_port="${SERVER_PORT}"
+    return 0
+  fi
+  load_backend_port
+}
 
+acquire_backend_build_lock() {
+  [[ -r "${backend_build_guard}" ]] || fail "缺少后端构建保护模块：${backend_build_guard}"
   # shellcheck source=lib/backend-build-guard.sh
   source "${backend_build_guard}"
   backend_build_lock_install_cleanup_traps
   backend_build_lock_acquire "${backend_dir}" || fail "当前后端工作区无法取得独占构建锁。"
+}
 
+start_backend() {
+  require_command java
+  require_command jar
+  resolve_mvnw_cmd
   [[ -s "${backend_dir}/${backend_local_config}" ]] || fail "缺少非空的本地后端配置：${backend_dir}/${backend_local_config}"
   [[ -f "${backend_dir}/pom.xml" ]] || fail "未找到后端 pom.xml：${backend_dir}/pom.xml"
   [[ -f "${backend_dir}/wta-admin/pom.xml" ]] || fail "未找到 wta-admin 模块：${backend_dir}/wta-admin"
-  load_backend_port
+  resolve_checked_port
   ensure_port_available "${backend_port}" "后端"
 
   cd "${backend_dir}" || fail "无法进入后端目录：${backend_dir}"
-  prepare_backend_reactor "${mode}"
-  verify_system_artifacts
-  backend_build_lock_release
   # Private configuration is excluded from classpath resources and release JARs.
   # Keep an operator-provided external location authoritative.
   if [[ -z "${SPRING_CONFIG_ADDITIONAL_LOCATION:-}" ]]; then
@@ -598,31 +610,127 @@ start_backend() {
     esac
     export SPRING_CONFIG_ADDITIONAL_LOCATION="optional:file:${runtime_config}"
   fi
-  echo "正在以前台 dev,local profiles 启动 wta-admin，端口 ${backend_port}，按 Ctrl+C 停止..."
+  echo "正在以前台 dev,local profiles 启动 wta-admin。端口由 SERVER_PORT 或外部配置决定，脚本不覆盖，按 Ctrl+C 停止..."
   exec "${mvnw_cmd[@]}" -pl wta-admin -Dmaven.test.skip=true -Pdev spring-boot:run \
-    -Dspring-boot.run.profiles=dev,local \
-    "-Dspring-boot.run.arguments=--server.port=${backend_port}"
+    -Dspring-boot.run.profiles=dev,local
+}
+
+build_backend() {
+  require_command java
+  resolve_mvnw_cmd
+  [[ -f "${backend_dir}/pom.xml" ]] || fail "未找到后端 pom.xml：${backend_dir}/pom.xml"
+  cd "${backend_dir}" || fail "无法进入后端目录：${backend_dir}"
+  acquire_backend_build_lock
+  echo "正在增量安装后端本地 Maven reactor（不 clean，跳过测试，仅 wta-admin 及其依赖）..."
+  run_mvnw -pl wta-admin -am -Dmaven.test.skip=true -Plocal install || fail "后端依赖安装失败。"
+  backend_build_lock_release
+}
+
+repair_backend() {
+  require_command java
+  require_command jar
+  resolve_mvnw_cmd
+  [[ -f "${backend_dir}/pom.xml" ]] || fail "未找到后端 pom.xml：${backend_dir}/pom.xml"
+  cd "${backend_dir}" || fail "无法进入后端目录：${backend_dir}"
+  acquire_backend_build_lock
+  prepare_backend_reactor clean
+  verify_system_artifacts
+  backend_build_lock_release
+  echo "repair: 后端已 clean install 并完成产物检查。日常 start 不会重复这一步。"
+}
+
+doctor_backend() {
+  require_command java
+  require_command jar
+  resolve_mvnw_cmd
+  [[ -f "${backend_dir}/pom.xml" ]] || fail "未找到后端 pom.xml：${backend_dir}/pom.xml"
+  cd "${backend_dir}" || fail "无法进入后端目录：${backend_dir}"
+  acquire_backend_build_lock
+  verify_system_artifacts
+  backend_build_lock_release
+  echo "doctor: 后端产物检查完成，未安装、未清理、未启动。"
+}
+
+repair_frontend() {
+  local app_name=${1:-}
+  local app_dir
+  resolve_pnpm_runner
+  require_command node
+  [[ -f "${frontend_dir}/package.json" ]] || fail "前端目录不完整：${frontend_dir}"
+  [[ -f "${frontend_dir}/pnpm-lock.yaml" ]] || fail "缺少前端 lockfile：${frontend_dir}/pnpm-lock.yaml"
+  if [[ -z "${app_name}" ]]; then
+    app_name=$(choose_frontend_app)
+  fi
+  app_dir="${frontend_dir}/apps/${app_name}"
+  [[ -d "${app_dir}" ]] || fail "未找到前端应用：${app_name}"
+  cd "${frontend_dir}" || fail "无法进入前端目录：${frontend_dir}"
+  echo "repair: 正在清理 ${app_name} 的 Vite 缓存和 dist，并按 lockfile 重装依赖..."
+  clear_frontend_dev_caches "${app_dir}" yes
+  "${pnpm_runner[@]}" install --frozen-lockfile || fail "前端依赖安装失败。"
+  echo "repair: 前端修复完成。日常 start 不会重复清理或重装已有依赖。"
 }
 
 start_dev_main() {
   local choice
-  echo "请选择要启动的本地测试服务：" >&2
-  echo "1、启动前端" >&2
-  echo "2、启动后端" >&2
-  choice=$(read_menu_choice "请输入选项 [1-2]：") || fail "未读取到启动选项。" 2
+  echo "请选择：" >&2
+  echo "1、start 前端（不清理、依赖已在则不重装）" >&2
+  echo "2、start 后端（不 clean、不覆盖端口）" >&2
+  echo "3、build 后端" >&2
+  echo "4、doctor 后端" >&2
+  echo "5、repair 后端" >&2
+  echo "6、repair 前端" >&2
+  choice=$(read_menu_choice "请输入选项 [1-6]：") || fail "未读取到启动选项。" 2
   case "${choice}" in
-    1)
-      start_frontend
+    1) start_frontend ;;
+    2) start_backend ;;
+    3) build_backend ;;
+    4) doctor_backend ;;
+    5) repair_backend ;;
+    6) repair_frontend ;;
+    *) fail "无效选项：${choice}（只能输入 1 到 6）。" 2 ;;
+  esac
+}
+
+dispatch_dev_command() {
+  local command=${1:-}
+  shift || true
+  case "${command}" in
+    start)
+      case "${1:-}" in
+        backend) start_backend ;;
+        frontend) start_frontend "${2:-}" ;;
+        *) fail "start 需要 frontend 或 backend。" ;;
+      esac
       ;;
-    2)
-      start_backend
+    build)
+      case "${1:-backend}" in
+        backend) build_backend ;;
+        *) fail "build 目前只接受 backend。" ;;
+      esac
+      ;;
+    doctor)
+      case "${1:-backend}" in
+        backend) doctor_backend ;;
+        *) fail "doctor 目前只接受 backend。" ;;
+      esac
+      ;;
+    repair)
+      case "${1:-backend}" in
+        backend) repair_backend ;;
+        frontend) repair_frontend "${2:-}" ;;
+        *) fail "repair 需要 frontend 或 backend。" ;;
+      esac
       ;;
     *)
-      fail "无效选项：${choice}（只能输入 1 或 2）。" 2
+      fail "未知子命令：${command}。可用 start、build、doctor、repair。"
       ;;
   esac
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  start_dev_main
+  if [[ $# -gt 0 ]]; then
+    dispatch_dev_command "$@"
+  else
+    start_dev_main
+  fi
 fi

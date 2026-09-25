@@ -383,7 +383,7 @@ fake_bin="${test_root}/bin"
 mkdir -p "${fake_bin}"
 ln -s /usr/bin/false "${fake_bin}/lsof"
 set +e
-start_conflict_output=$(printf '2\n3\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
+start_conflict_output=$(PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" repair backend 2>&1)
 start_conflict_status=$?
 set -e
 backend_build_lock_release
@@ -391,8 +391,8 @@ if [[ ${start_conflict_status} -eq 0 ]]; then
   echo "start-dev lock conflict unexpectedly succeeded" >&2
   exit 1
 fi
-if [[ "${start_conflict_output}" != *"请选择后端启动方式"* ]]; then
-  echo "start-dev lock conflict did not ask for a backend mode: ${start_conflict_output}" >&2
+if [[ "${start_conflict_output}" == *"正在刷新后端本地 Maven reactor"* ]]; then
+  echo "start-dev lock conflict did not stop before repair: ${start_conflict_output}" >&2
   exit 1
 fi
 if [[ "${start_conflict_output}" != *"PID $$"* ]]; then
@@ -410,7 +410,7 @@ git -C "${start_backend}" init -q
 git -C "${start_backend}" add -- wta-admin/src/main/resources/application-local.yml
 
 set +e
-tracked_config_output=$(printf '2\n3\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
+tracked_config_output=$(PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" repair backend 2>&1)
 tracked_config_status=$?
 set -e
 if [[ ${tracked_config_status} -eq 0 ]]; then
@@ -427,19 +427,15 @@ if [[ "${tracked_config_output}" != *"正在刷新后端本地 Maven reactor"* ]
 fi
 
 set +e
-direct_backend_output=$(printf '2\n1\n' | PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" 2>&1)
+direct_backend_output=$(PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" start backend 2>&1)
 direct_backend_status=$?
 set -e
-if [[ ${direct_backend_status} -eq 0 ]]; then
-  echo "start-dev direct backend mode unexpectedly completed" >&2
+if [[ ${direct_backend_status} -ne 0 ]]; then
+  echo "start-dev ordinary start failed before the server handoff: ${direct_backend_output}" >&2
   exit 1
 fi
-if [[ "${direct_backend_output}" != *"跳过后端 Maven clean/install"* ]]; then
-  echo "start-dev direct backend mode did not skip Maven install: ${direct_backend_output}" >&2
-  exit 1
-fi
-if [[ "${direct_backend_output}" == *"正在刷新后端本地 Maven reactor"* ]]; then
-  echo "start-dev direct backend mode invoked a clean install: ${direct_backend_output}" >&2
+if [[ "${direct_backend_output}" == *"正在刷新后端本地 Maven reactor"* || "${direct_backend_output}" == *"--server.port"* ]]; then
+  echo "start-dev ordinary start deep-repaired or overrode the port: ${direct_backend_output}" >&2
   exit 1
 fi
 

@@ -31,10 +31,9 @@ scripts/
 
 ### 作用
 
-开发完成后，从父仓库根目录按菜单启动一个本地人工测试进程：
+开发完成后，从父仓库根目录启动一个本地人工测试进程。子命令是 `start`、`build`、`doctor`、`repair`；无参数菜单只转发到这些子命令。
 
-1. 启动前端，再选择 `frontend/apps` 下带 `dev` 脚本的应用和启动方式；
-2. 启动后端，再选择是否清理 Maven `target` 并重新安装。
+日常 `start` 不执行 Maven `clean`、不重装已有前端依赖、不跑 JAR 哨兵，也不把端口写成 `--server.port`。`SERVER_PORT` 或外部 `application-local.yml` 仍由 Spring 自己读取。深度清理只在显式 `repair`。
 
 脚本不创建后台进程，也不重定向服务日志。依赖或缓存准备完成后，Vite 或 Spring Boot 会直接接管脚本进程，
 持续在当前终端输出实时日志；按 `Ctrl+C` 停止服务后返回调用脚本的终端。
@@ -43,6 +42,8 @@ scripts/
 
 ```bash
 ./scripts/start-dev.sh
+./scripts/start-dev.sh start backend
+./scripts/start-dev.sh repair backend
 ```
 
 Windows PowerShell 或 CMD 需要 Git for Windows 提供的 `bash`：
@@ -100,7 +101,7 @@ bash scripts/start-dev.sh
 
 1. 停止同一后端工作区中仍在运行的 Maven/IDE build；确认 VS Code 已应用工作区中的
    `"java.autobuild.enabled": false`，不要删除仍有存活 owner PID 的锁。
-2. 重新执行 `./scripts/start-dev.sh`，选择后端，再选择「清理 Maven target 并重新安装后启动」。stale lock 会自动清理，reactor 会重新 `clean install`。
+2. 重新执行 `./scripts/start-dev.sh repair backend`。stale lock 会自动清理，reactor 会重新 `clean install`。日常 `start` 不会做这一步。
 3. 若仍提示 class 集合或哨兵缺失，检查错误中显示的 target/installed JAR，确认没有外部构建持续写入；
    然后再次串行启动。脚本不会在产物不完整时进入 Spring Boot。
 4. 若极端 `SIGKILL` 留下错误中显示的 `.reclaim` 目录，先核对其 `owner` PID 已不存在，再只删除该 owner 文件

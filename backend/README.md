@@ -60,7 +60,8 @@ Redis 地址、端口和逻辑库可由 `REDIS_HOST`、`REDIS_PORT`、`REDIS_DAT
 模板没有密码默认值，缺少必需变量会明确报出缺失的配置键。不要把真实值写回模板、提交或粘贴到日志。
 
 仓根 `scripts/start-dev.sh` 显式加载这份外部文件；已有 `SPRING_CONFIG_ADDITIONAL_LOCATION`
-保持优先。直接通过 Maven 启动时，从 `backend/` 为该变量指定
+保持优先。日常 `start` 不追加 `--server.port`，已有 `SERVER_PORT` 也不会被脚本改写。
+直接通过 Maven 启动时，从 `backend/` 为该变量指定
 `optional:file:$PWD/wta-admin/src/main/resources/application-local.yml`。生产配置由部署环境注入。
 HTTP 本地 SSO 如需关闭 Secure Cookie，必须仅在 dev/local 显式设置 `SSO_COOKIE_SECURE=false`；
 模板不关闭验证码或生产安全默认值。
