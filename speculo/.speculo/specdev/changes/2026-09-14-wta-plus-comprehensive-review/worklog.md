@@ -1,6 +1,6 @@
 # 工作记录
 
-revision269：T28关闭。真实 MySQL/Redis 唤醒 1 项、0 skip。夹具补上接收者批量语句。29done/19cancelled/2ready。Goal active，未归档。
+revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 项、0 skip。无新实现。29done/20cancelled/1ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision269：T28关闭。真实 MySQL/Redis 唤醒 1 项、0 skip。夹具补�
 
 ## Current status
 
-revision269：T28关闭。真实 MySQL/Redis 唤醒 1 项、0 skip。夹具补上接收者批量语句。29done/19cancelled/2ready。Goal active，未归档。
+revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 项、0 skip。无新实现。29done/20cancelled/1ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -972,3 +972,9 @@ revision268：T27按当前复验取消重复施工。真实 MySQL 演示树 15 �
 revision269：T28关闭。真实 MySQL/Redis 唤醒 1 项、0 skip。夹具补上接收者批量语句。29done/19cancelled/2ready。Goal active，未归档。
 
 证据 `evidence/T-28-replan-2026-09-23.md`。HEAD `459c5a3e`。未推送、未归档。
+
+## revision270 — T31当前复验取消重复施工
+
+revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 项、0 skip。无新实现。29done/20cancelled/1ready。Goal active，未归档。
+
+证据 `evidence/T-31-replan-2026-09-23.md`。HEAD `851662d7`。未推送、未归档。
