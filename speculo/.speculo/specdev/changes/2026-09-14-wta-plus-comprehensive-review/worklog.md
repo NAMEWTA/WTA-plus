@@ -1,6 +1,6 @@
 # 工作记录
 
-revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/core 与三 App 通过。30done/20cancelled/0ready。未归档、未推送。
+revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据。T43 同环境 100/1000/10000 与万级回滚零残留仍以原记录为准。30done/20cancelled/0ready。未归档、未推送。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/
 
 ## Current status
 
-revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/core 与三 App 通过。30done/20cancelled/0ready。未归档、未推送。
+revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据。T43 同环境 100/1000/10000 与万级回滚零残留仍以原记录为准。30done/20cancelled/0ready。未归档、未推送。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -984,3 +984,9 @@ revision270：T31按当前复验取消重复施工。真实 Profile→Notify 8 �
 revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/core 与三 App 通过。30done/20cancelled/0ready。未归档、未推送。
 
 证据 `evidence/T-30-replan-2026-09-23.md`。Windows 仍是 `user-waived/not-run`。未推送、未归档。
+
+## revision272 — AC-001 与 AC-032—AC-050 证据处置
+
+revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据。T43 同环境 100/1000/10000 与万级回滚零残留仍以原记录为准。30done/20cancelled/0ready。未归档、未推送。
+
+证据仍是各票原文件，未改写历史结果。`6002e7ad` 只复跑了 100 人扇出。Windows 仍是 `user-waived/not-run`。未推送、未归档。
