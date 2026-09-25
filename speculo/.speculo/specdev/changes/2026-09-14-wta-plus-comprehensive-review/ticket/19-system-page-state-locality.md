@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-19"
 title: "收敛System大页面中的异步状态与重复封装"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -123,14 +123,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-019`：快速筛选时旧响应不能覆盖新列表，失败/loading可恢复。
-- [ ] `AC-019`：权限树与用户编辑状态相互独立。
-- [ ] `AC-019`：提取前后功能/权限/排序/分页行为相同。
-- [ ] `AC-019`：每个超过1k行文件有职责删除或保留理由，无同义薄wrapper堆叠。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-019`：快速筛选时旧响应不能覆盖新列表，失败/loading可恢复。
+- [x] `AC-019`：权限树与用户编辑状态相互独立。
+- [x] `AC-019`：提取前后功能/权限/排序/分页行为相同。
+- [x] `AC-019`：每个超过1k行文件有职责删除或保留理由，无同义薄wrapper堆叠。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-019，无新实现。页面查询 26 项、全前端 663 项，均 0 skip。证据见 `evidence/T-19-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。本票 E2E 为 not-required。
 
 ## 11. SKILL 调用计划
 
