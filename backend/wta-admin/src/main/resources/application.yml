@@ -120,8 +120,6 @@ oss:
         allowed-content-types: [image/jpeg, image/png, image/webp]
         object-prefix: direct/avatar
         mode: SINGLE
-        multipart-threshold: 10485760
-        part-size: 5242880
         required-permission: system:oss:upload
       image:
         expected-access-policy: PRIVATE

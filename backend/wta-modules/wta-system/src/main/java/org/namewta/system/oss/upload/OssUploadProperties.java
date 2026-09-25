@@ -77,13 +77,19 @@ public class OssUploadProperties implements InitializingBean {
             || policy.objectPrefix.endsWith("/")) {
             invalid("uploadPolicy objectPrefix 不安全: " + key);
         }
-        if (policy.mode == null || policy.partSize < MIN_PART_SIZE || policy.partSize > MAX_PART_SIZE
-            || policy.multipartThreshold < 1) {
-            invalid("uploadPolicy Multipart 参数无效: " + key);
+        if (policy.mode == null) {
+            invalid("uploadPolicy 必须声明 mode: " + key);
         }
-        long partCount = ceilDiv(policy.maxSize, policy.partSize);
-        if (partCount > 10_000) {
-            invalid("uploadPolicy 最大文件会超过 10000 个 Part: " + key);
+        // SINGLE 不使用分片参数；省略时不得因为默认分片值被当成无效配置。
+        if (policy.mode != OssUploadMode.SINGLE) {
+            if (policy.partSize < MIN_PART_SIZE || policy.partSize > MAX_PART_SIZE
+                || policy.multipartThreshold < 1) {
+                invalid("uploadPolicy Multipart 参数无效: " + key);
+            }
+            long partCount = ceilDiv(policy.maxSize, policy.partSize);
+            if (partCount > 10_000) {
+                invalid("uploadPolicy 最大文件会超过 10000 个 Part: " + key);
+            }
         }
         for (String contentType : policy.allowedContentTypes) {
             if (contentType == null || (!contentType.matches("[a-z0-9.+-]+/[a-z0-9.+*-]+"))) {

@@ -1,6 +1,6 @@
 # 工作记录
 
-revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍单独可调用。Windows 实机为 user-waived/not-run。20done/2cancelled/28ready；下一T49。Goal active，未归档。
+revision243：T49进行中。avatar 的 SINGLE 策略已去掉无用分片参数，属性测试 4 项 0 跳过。MinIO 默认存储切换未跑，AC-049 未勾。20done/2cancelled/1in_progress/27ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍�
 
 ## Current status
 
-revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍单独可调用。Windows 实机为 user-waived/not-run。20done/2cancelled/28ready；下一T49。Goal active，未归档。
+revision243：T49进行中。avatar 的 SINGLE 策略已去掉无用分片参数，属性测试 4 项 0 跳过。MinIO 默认存储切换未跑，AC-049 未勾。20done/2cancelled/1in_progress/27ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -812,3 +812,7 @@ revision241：T43在9267ecb5关闭。同探针发布写执行100/1000/10000由30
 revision242：T48关闭。日常 start 不 clean、不覆盖端口；repair 仍单独可调用。Windows 实机为 user-waived/not-run。20done/2cancelled/28ready；下一T49。Goal active，未归档。
 
 证据 `evidence/T-48-replan-2026-09-23.md`。夹具命令退出码 0，node 测试 3 通过 0 跳过。未推送、未归档。
+
+## revision243 — T49尚未关闭
+
+revision243：T49进行中。avatar 的 SINGLE 策略已去掉无用分片参数，属性测试 4 项 0 跳过。MinIO 默认存储切换未跑，AC-049 未勾。20done/2cancelled/1in_progress/27ready。Goal active，未归档。

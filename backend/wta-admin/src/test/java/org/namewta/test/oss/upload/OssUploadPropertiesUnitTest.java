@@ -31,6 +31,22 @@ class OssUploadPropertiesUnitTest {
     }
 
     @Test
+    void singleModeDoesNotNeedMultipartParameters() {
+        OssUploadProperties.Policy policy = new OssUploadProperties.Policy();
+        policy.setMode(OssUploadMode.SINGLE);
+        policy.setPartSize(0);
+        policy.setMultipartThreshold(0);
+        policy.setMaxSize(10L * 1024 * 1024);
+        policy.setAllowedContentTypes(Set.of("image/png"));
+        policy.setObjectPrefix("direct/avatar");
+        policy.setExpectedAccessPolicy(AccessPolicy.PRIVATE);
+        OssUploadProperties properties = new OssUploadProperties();
+        properties.setPolicies(Map.of("avatar", policy));
+        assertDoesNotThrow(properties::validate);
+        assertEquals(OssUploadMode.SINGLE, properties.requirePolicy("avatar").resolveMode(500L * 1024 * 1024));
+    }
+
+    @Test
     void shouldRejectMissingAccessPolicy() {
         OssUploadProperties properties = validProperties();
         properties.getPolicies().get("general").setExpectedAccessPolicy(null);
