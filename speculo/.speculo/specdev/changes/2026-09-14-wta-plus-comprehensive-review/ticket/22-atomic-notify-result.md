@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-22"
 title: "原子提交通知投递结果与lease fence"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -119,14 +119,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-022`：任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致。
-- [ ] `AC-022`：旧lease不能覆盖新owner结果。
-- [ ] `AC-022`：双worker只产生符合合同的结果记录。
-- [ ] `AC-022`：provider去重能力不足时风险明确且不宣称exactly-once。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-022`：任意一条SQL失败不会留下Delivery/Attempt/Outbox不一致。
+- [x] `AC-022`：旧lease不能覆盖新owner结果。
+- [x] `AC-022`：双worker只产生符合合同的结果记录。
+- [x] `AC-022`：provider去重能力不足时风险明确且不宣称exactly-once。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-022，无新实现。真实 MySQL/Redis 66 项、0 skip。证据见 `evidence/T-22-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
