@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-08"
 title: "补齐SSO独立Origin发布合同"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -120,14 +120,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-008`：每个shipped App均有且仅有完整配套，缺项在promotion前失败。
-- [ ] `AC-008`：SSO三端跳转、刷新、过期、跨OriginCookie可运行。
-- [ ] `AC-008`：已发布current在配置失败时不改变。
-- [ ] `AC-008`：发布清单与Compose、Nginx、文档一致。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-008`：每个shipped App均有且仅有完整配套，缺项在promotion前失败。
+- [x] `AC-008`：SSO三端跳转、刷新、过期、跨OriginCookie可运行。
+- [x] `AC-008`：已发布current在配置失败时不改变。
+- [x] `AC-008`：发布清单与Compose、Nginx、文档一致。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-008，无新实现。三 Origin Nginx 旅程 5 个 Chrome 场景加 Client 上下文单测 3 项，均 0 skip。证据见 `evidence/T-08-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 

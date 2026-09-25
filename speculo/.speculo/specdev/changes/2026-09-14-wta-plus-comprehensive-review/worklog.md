@@ -1,6 +1,6 @@
 # 工作记录
 
-revision250：T10按当前复验取消重复施工。发布合同 128 项、0 skip。无新实现。23done/6cancelled/21ready。Goal active，未归档。
+revision251：T08按当前复验取消重复施工。三 Origin Chrome 5 项加上下文单测 3 项、0 skip。无新实现。23done/7cancelled/20ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision250：T10按当前复验取消重复施工。发布合同 128 项、0 sk
 
 ## Current status
 
-revision250：T10按当前复验取消重复施工。发布合同 128 项、0 skip。无新实现。23done/6cancelled/21ready。Goal active，未归档。
+revision251：T08按当前复验取消重复施工。三 Origin Chrome 5 项加上下文单测 3 项、0 skip。无新实现。23done/7cancelled/20ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -858,3 +858,9 @@ revision249：T09关闭。三端 dev/prod 模式、full/core 包和镜像合同�
 revision250：T10按当前复验取消重复施工。发布合同 128 项、0 skip。无新实现。23done/6cancelled/21ready。Goal active，未归档。
 
 证据 `evidence/T-10-replan-2026-09-23.md`。HEAD `c426ec98`。未推送、未归档。
+
+## revision251 — T08当前复验取消重复施工
+
+revision251：T08按当前复验取消重复施工。三 Origin Chrome 5 项加上下文单测 3 项、0 skip。无新实现。23done/7cancelled/20ready。Goal active，未归档。
+
+证据 `evidence/T-08-replan-2026-09-23.md`。HEAD `ecc163ed`。未推送、未归档。
