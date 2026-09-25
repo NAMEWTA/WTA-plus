@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-11"
 title: "删除浏览器共享私钥与ECB传输包装"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -123,14 +123,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-011`：生产bundle不再携带该共享响应私钥或ECB路径。
-- [ ] `AC-011`：正常登录、注册、错误响应及下载可运行。
-- [ ] `AC-011`：机器调用HMAC与OSS签名不被删除。
-- [ ] `AC-011`：传输切换有前后端同批发布、流量隔离与整体恢复方案（不承诺多容器原子热更新）。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-011`：生产bundle不再携带该共享响应私钥或ECB路径。
+- [x] `AC-011`：正常登录、注册、错误响应及下载可运行。
+- [x] `AC-011`：机器调用HMAC与OSS签名不被删除。
+- [x] `AC-011`：传输切换有前后端同批发布、流量隔离与整体恢复方案（不承诺多容器原子热更新）。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-011，无新实现。两 App HTTPS 旅程 6 项、0 skip；生产包扫描无 ECB、JSEncrypt、私钥或 encrypt-key。证据见 `evidence/T-11-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
