@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-21"
 title: "统一公开页面的可访问交互基线"
-status: "ready"
+status: "done"
 kind: "review"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -122,14 +122,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-021`：只用键盘可完成公开流程，焦点可见且错误能被读屏发现。
-- [ ] `AC-021`：移动/放大页面无遮挡必要动作和横向不可达内容。
-- [ ] `AC-021`：不同App品牌差异不被当成bug强制同化。
-- [ ] `AC-021`：报告记录真实截图/可访问性结果，静态检查不冒充视觉通过。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-021`：只用键盘可完成公开流程，焦点可见且错误能被读屏发现。
+- [x] `AC-021`：移动/放大页面无遮挡必要动作和横向不可达内容。
+- [x] `AC-021`：不同App品牌差异不被当成bug强制同化。
+- [x] `AC-021`：报告记录真实截图/可访问性结果，静态检查不冒充视觉通过。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前候选 `cfb57baa` 满足 AC-021。Chrome 29 项、0 skip。注册失败后焦点回到错误提示，输入框在 `:focus-within` 时画出焦点环。证据见 `evidence/T-21-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
