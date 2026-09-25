@@ -25,7 +25,7 @@
           <el-button native-type="button" aria-label="刷新验证码" :aria-busy="preparing" :disabled="submitting" @click="refreshCaptcha()">刷新验证码</el-button>
         </div>
       </el-form-item>
-      <p v-if="errorMessage" class="error" role="alert" aria-live="polite">{{ errorMessage }}</p>
+      <p v-if="errorMessage" ref="errorRef" class="error" role="alert" aria-live="polite" tabindex="-1">{{ errorMessage }}</p>
       <p class="status" aria-live="polite">{{ preparing ? '正在检查注册入口' : ready ? '注册入口已就绪' : '注册入口暂不可用' }}</p>
       <el-button v-if="!ready && !preparing && !submitting" native-type="button" @click="prepare()">重新检查注册入口</el-button>
       <el-button type="primary" native-type="submit" :loading="submitting" :disabled="!ready || preparing" class="submit">注册</el-button>
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { IdentityAccessError, type LoginVerification } from '@namewta/domain-admin';
 import { identityAccessService } from '@/application/services';
@@ -47,6 +47,7 @@ const preparing = ref(false);
 const submitting = ref(false);
 const ready = ref(false);
 const errorMessage = ref('');
+const errorRef = ref<HTMLElement>();
 const captchaEnabled = ref(false);
 const verification = ref<LoginVerification>();
 const form = reactive({ username: '', phoneNumber: '', password: '', confirmPassword: '', code: '' });
@@ -78,6 +79,7 @@ async function prepare(preserveError = false) {
   } finally {
     if (current(attempt)) preparing.value = false;
   }
+  if (current(attempt) && preserveError && errorMessage.value) await focusError();
 }
 
 async function refreshCaptcha(preserveError = false) {
@@ -119,11 +121,16 @@ async function submit() {
     if (!(error instanceof IdentityAccessError)) {
       clearSecrets();
       refresh = true;
-    }
+    } else await focusError();
   } finally {
     if (current(attempt)) submitting.value = false;
   }
   if (refresh && current(attempt)) await prepare(true);
+}
+
+async function focusError() {
+  await nextTick();
+  errorRef.value?.focus();
 }
 
 async function cancel() {
@@ -146,6 +153,8 @@ onUnmounted(() => { active = false; generation++; clearSecrets(); });
 .captcha { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px; }
 .captcha img { width: 120px; max-width: 100%; height: 38px; object-fit: contain; }
 .register-form :deep(.el-button) { max-width: 100%; height: auto; min-height: 32px; white-space: normal; line-height: 1.5; }
+.register-form :deep(.el-input__wrapper:focus-within) { box-shadow: 0 0 0 1px var(--el-color-primary) inset; }
+.error:focus-visible { outline: 2px solid var(--el-color-primary); outline-offset: 2px; }
 .submit { width: 100%; margin: 12px 0 0; }
 .back { display: block; margin: 16px auto 0; color: #0f766e; }
 .error { color: #b42318; font-size: 13px; }
