@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-24"
 title: "恢复Third并发租约并明确限额热更新"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -119,14 +119,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-024`：崩溃后permit在规定上限内恢复，不依赖人工删key。
-- [ ] `AC-024`：正常/超时/异常释放正确，旧请求不伤害新租约。
-- [ ] `AC-024`：管理阈值变更在声明时机跨实例一致生效。
-- [ ] `AC-024`：Redis不可用时按既有失败合同拒绝，日志不回显凭据。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-024`：崩溃后permit在规定上限内恢复，不依赖人工删key。
+- [x] `AC-024`：正常/超时/异常释放正确，旧请求不伤害新租约。
+- [x] `AC-024`：管理阈值变更在声明时机跨实例一致生效。
+- [x] `AC-024`：Redis不可用时按既有失败合同拒绝，日志不回显凭据。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-024，无新实现。隔离 Redis/MySQL 12 项、0 skip。`wta-third` 的 local 回归 33 项、0 skip。默认 dev profile 不执行这些 local 用例，未把 tests=0 计为通过。证据见 `evidence/T-24-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
