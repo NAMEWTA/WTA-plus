@@ -37,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -214,9 +215,9 @@ class NotifyOutboxWakePublisherTest {
             TransactionContext.bind("notify-outbox-wake-submit");
             try {
                 runtime.submit(submitCommand());
-                verify(dao).insert(argThat((NotifyOutbox outbox) ->
-                    outbox.getAvailableAt().equals(java.time.LocalDateTime.of(2026, 9, 19, 0, 0))
-                        && outbox.getNextAttemptAt().equals(outbox.getAvailableAt())));
+                verify(dao).insertFanout(anyList(), anyList(), argThat(outboxes -> outboxes.size() == 1
+                    && outboxes.getFirst().getAvailableAt().equals(java.time.LocalDateTime.of(2026, 9, 19, 0, 0))
+                    && outboxes.getFirst().getNextAttemptAt().equals(outboxes.getFirst().getAvailableAt())));
                 assertTrue(transport.published.isEmpty());
                 TransactionContext.getSynchronizations().getFirst().afterCommit();
                 assertEquals(1, transport.published.size());
