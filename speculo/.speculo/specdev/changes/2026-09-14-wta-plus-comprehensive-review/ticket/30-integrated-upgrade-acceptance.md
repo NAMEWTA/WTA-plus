@@ -156,7 +156,7 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 - [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
 - [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
 
-同一候选 `6002e7ad` 完成组合验收。真实服务用例 0 skip。full/core 的通过记录是 `7aca0c86` 上分别清空 `wta-admin/target` 后的校验，见 `evidence/T-30-bundle-full-7aca0c86.out` 与 `evidence/T-30-bundle-core-7aca0c86.out`。未归档、未推送、未部署。Windows 仍是 `user-waived/not-run`。证据见 `evidence/T-30-replan-2026-09-23.md`。
+同一候选 `6002e7ad` 完成组合验收。真实服务用例 0 skip。full/core 的通过记录是 `4d2c1412` 上分别清空 `wta-admin/target` 后的校验：`evidence/T-30-bundle-full-4d2c1412.out` 为 `full bundle contents verified`、退出码 0，`evidence/T-30-bundle-core-4d2c1412.out` 为 `core bundle contents verified`、退出码 0。未归档、未推送、未部署。Windows 仍是 `user-waived/not-run`。证据见 `evidence/T-30-replan-2026-09-23.md`。
 
 ## 11. SKILL 调用计划
 

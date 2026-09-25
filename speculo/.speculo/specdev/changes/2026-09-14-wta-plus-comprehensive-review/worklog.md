@@ -1,6 +1,6 @@
 # 工作记录
 
-revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 0。30done/20cancelled/0ready。未归档、未推送。
+revision274：`4d2c1412` 上分别清空 target 后，full/core 校验标准输出与退出码 0 已入证据。30done/20cancelled/0ready。未归档、未推送。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 
 
 ## Current status
 
-revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 0。30done/20cancelled/0ready。未归档、未推送。
+revision274：`4d2c1412` 上分别清空 target 后，full/core 校验标准输出与退出码 0 已入证据。30done/20cancelled/0ready。未归档、未推送。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -996,3 +996,9 @@ revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据
 revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 0。30done/20cancelled/0ready。未归档、未推送。
 
 两次都先删除 `backend/wta-admin/target`。full 打印 `full bundle contents verified`，core 打印 `core bundle contents verified`。旧的缺包或错包记录不是这次通过。未推送、未归档。
+
+## revision274 — T30 full/core 在 4d2c1412 复验
+
+revision274：`4d2c1412` 上分别清空 target 后，full/core 校验标准输出与退出码 0 已入证据。30done/20cancelled/0ready。未归档、未推送。
+
+`verify-admin-bundle.sh full` 的标准输出只有 `full bundle contents verified`，退出码 0。再次删除 target 后，`verify-admin-bundle.sh core` 的标准输出只有 `core bundle contents verified`，退出码 0。旧的 stale target 记录不是这次通过。未推送、未归档。
