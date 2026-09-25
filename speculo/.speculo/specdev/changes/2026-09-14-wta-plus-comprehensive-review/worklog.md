@@ -1,6 +1,6 @@
 # 工作记录
 
-revision254：T13关闭。注册与验证码 Chrome 10 项加服务端拒绝 7 项、0 skip。25done/8cancelled/17ready。Goal active，未归档。
+revision255：T15按当前复验取消重复施工。Profile 185 项、0 skip。无新实现。25done/9cancelled/16ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision254：T13关闭。注册与验证码 Chrome 10 项加服务端拒绝 7 �
 
 ## Current status
 
-revision254：T13关闭。注册与验证码 Chrome 10 项加服务端拒绝 7 项、0 skip。25done/8cancelled/17ready。Goal active，未归档。
+revision255：T15按当前复验取消重复施工。Profile 185 项、0 skip。无新实现。25done/9cancelled/16ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -882,3 +882,9 @@ revision253：T12关闭。会话与导航 Chrome 20 项、0 skip。24done/8cance
 revision254：T13关闭。注册与验证码 Chrome 10 项加服务端拒绝 7 项、0 skip。25done/8cancelled/17ready。Goal active，未归档。
 
 证据 `evidence/T-13-replan-2026-09-23.md`。HEAD `f2f166c9`。未推送、未归档。
+
+## revision255 — T15当前复验取消重复施工
+
+revision255：T15按当前复验取消重复施工。Profile 185 项、0 skip。无新实现。25done/9cancelled/16ready。Goal active，未归档。
+
+证据 `evidence/T-15-replan-2026-09-23.md`。HEAD `b9c482a4`。未推送、未归档。
