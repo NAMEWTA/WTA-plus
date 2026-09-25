@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-09"
 title: "统一App模式、bundle与依赖服务验证矩阵"
-status: "ready"
+status: "done"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -129,14 +129,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-009`：build:dev最终三个App均development，build:prod均production。
-- [ ] `AC-009`：core/full产物必需与禁用列表逐项断言。
-- [ ] `AC-009`：测试证据与打包候选匹配，不以skip冒充测试通过。
-- [ ] `AC-009`：CI与部署镜像版本相同或有明确差异测试。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-009`：build:dev最终三个App均development，build:prod均production。
+- [x] `AC-009`：core/full产物必需与禁用列表逐项断言。
+- [x] `AC-009`：测试证据与打包候选匹配，不以skip冒充测试通过。
+- [x] `AC-009`：CI与部署镜像版本相同或有明确差异测试。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+本轮偏差：默认 `./mvnw test` 在 `NotifyOutboxWakePublisherTest` 仍按单行 `insert(NotifyOutbox)` 断言，扇出改为 `insertFanout` 后该断言失配并让 Mockito 在报缺失调用时崩溃。只改了该测试的断言，未改生产写入。证据见 `evidence/T-09-replan-2026-09-23.md`。247 个服务门控 skip 不计通过。
 
 ## 11. SKILL 调用计划
 

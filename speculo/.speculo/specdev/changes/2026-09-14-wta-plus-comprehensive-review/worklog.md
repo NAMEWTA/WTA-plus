@@ -1,6 +1,6 @@
 # 工作记录
 
-revision248：T07关闭。真实 Chrome 回调旅程 12 项 0 skip，外域 returnTo 单测含在 13 项 0 skip 内。22done/5cancelled/23ready。Goal active，未归档。
+revision249：T09关闭。三端 dev/prod 模式、full/core 包和镜像合同通过。默认套件 944 实际执行、247 服务门控 skip 不计通过。23done/5cancelled/22ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision248：T07关闭。真实 Chrome 回调旅程 12 项 0 skip，外域 retu
 
 ## Current status
 
-revision248：T07关闭。真实 Chrome 回调旅程 12 项 0 skip，外域 returnTo 单测含在 13 项 0 skip 内。22done/5cancelled/23ready。Goal active，未归档。
+revision249：T09关闭。三端 dev/prod 模式、full/core 包和镜像合同通过。默认套件 944 实际执行、247 服务门控 skip 不计通过。23done/5cancelled/22ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -846,3 +846,9 @@ revision247：T06按当前复验取消重复施工。真实 HTTPS/Chrome SSO 1 �
 revision248：T07关闭。真实 Chrome 回调旅程 12 项 0 skip，外域 returnTo 单测含在 13 项 0 skip 内。22done/5cancelled/23ready。Goal active，未归档。
 
 证据 `evidence/T-07-replan-2026-09-23.md`。HEAD `450c9d11549d16d9da4e809d57f19f6fb9741a01`。未推送、未归档。
+
+## revision249 — T09当前候选关闭
+
+revision249：T09关闭。三端 dev/prod 模式、full/core 包和镜像合同通过。默认套件 944 实际执行、247 服务门控 skip 不计通过。23done/5cancelled/22ready。Goal active，未归档。
+
+证据 `evidence/T-09-replan-2026-09-23.md`。HEAD `a139dbc5`。未推送、未归档。
