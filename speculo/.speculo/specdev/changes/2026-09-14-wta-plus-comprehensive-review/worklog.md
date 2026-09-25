@@ -1,6 +1,6 @@
 # 工作记录
 
-revision258：T18按当前复验取消重复施工。真实 MinIO Chrome 10 项加上传单测 14 项、0 skip。无新实现。27done/10cancelled/13ready。Goal active，未归档。
+revision259：T14按当前复验取消重复施工。真实 MySQL/Redis/MinIO Chrome 8 项、0 skip。无新实现。27done/11cancelled/12ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision258：T18按当前复验取消重复施工。真实 MinIO Chrome 10 项�
 
 ## Current status
 
-revision258：T18按当前复验取消重复施工。真实 MinIO Chrome 10 项加上传单测 14 项、0 skip。无新实现。27done/10cancelled/13ready。Goal active，未归档。
+revision259：T14按当前复验取消重复施工。真实 MySQL/Redis/MinIO Chrome 8 项、0 skip。无新实现。27done/11cancelled/12ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -906,3 +906,9 @@ revision257：T17关闭。设计器单测 23 项加预览 Chrome 5 项、0 skip�
 revision258：T18按当前复验取消重复施工。真实 MinIO Chrome 10 项加上传单测 14 项、0 skip。无新实现。27done/10cancelled/13ready。Goal active，未归档。
 
 证据 `evidence/T-18-replan-2026-09-23.md`。HEAD `a43d133d`。未推送、未归档。
+
+## revision259 — T14当前复验取消重复施工
+
+revision259：T14按当前复验取消重复施工。真实 MySQL/Redis/MinIO Chrome 8 项、0 skip。无新实现。27done/11cancelled/12ready。Goal active，未归档。
+
+证据 `evidence/T-14-replan-2026-09-23.md`。HEAD `5039d361`。未推送、未归档。

@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-14"
 title: "补齐个人与企业自助认证材料闭环"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -122,14 +122,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-014`：新个人CN_RESIDENT_ID上传正反面后完成提交。
-- [ ] `AC-014`：企业必填及条件材料齐备时完成提交，缺项定位准确。
-- [ ] `AC-014`：取消/失败/过期OSS/刷新不会伪造完成或越owner访问。
-- [ ] `AC-014`：后端必填校验不被关闭，真实浏览器+MySQL+OSS验收通过。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-014`：新个人CN_RESIDENT_ID上传正反面后完成提交。
+- [x] `AC-014`：企业必填及条件材料齐备时完成提交，缺项定位准确。
+- [x] `AC-014`：取消/失败/过期OSS/刷新不会伪造完成或越owner访问。
+- [x] `AC-014`：后端必填校验不被关闭，真实浏览器+MySQL+OSS验收通过。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-014，无新实现。真实 MySQL/Redis/MinIO Chrome 8 项，0 skip。证据见 `evidence/T-14-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
