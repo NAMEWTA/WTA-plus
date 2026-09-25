@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-10"
 title: "删除混源局部发布并实现原子stage"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -119,14 +119,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-010`：manifest每个artifact的digest和source可追溯。
-- [ ] `AC-010`：缺模板/坏SQL/坏JAR/中断时current/context SHA256完全不变。
-- [ ] `AC-010`：单目标构建不能stage为完整release。
-- [ ] `AC-010`：恢复只操作本次stage，不触及他人文件或历史发布。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-010`：manifest每个artifact的digest和source可追溯。
+- [x] `AC-010`：缺模板/坏SQL/坏JAR/中断时current/context SHA256完全不变。
+- [x] `AC-010`：单目标构建不能stage为完整release。
+- [x] `AC-010`：恢复只操作本次stage，不触及他人文件或历史发布。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-010，无新实现。发布合同测试 128 项、0 skip。证据见 `evidence/T-10-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
