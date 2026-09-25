@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-18"
 title: "明确上传完成、引用移除和导入失败生命周期"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
@@ -121,14 +121,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-018`：下载URL失败不生成无人回收的Blob URL，也不把已完成上传误报失败。
-- [ ] `AC-018`：导入网络失败、业务错误、401和取消均复位且可重试。
-- [ ] `AC-018`：业务提交等待上传与材料归属登记完成。
-- [ ] `AC-018`：现有OSS删除权限/引用保护不退化；若保留本地URL则replace/remove/unmount释放。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-018`：下载URL失败不生成无人回收的Blob URL，也不把已完成上传误报失败。
+- [x] `AC-018`：导入网络失败、业务错误、401和取消均复位且可重试。
+- [x] `AC-018`：业务提交等待上传与材料归属登记完成。
+- [x] `AC-018`：现有OSS删除权限/引用保护不退化；若保留本地URL则replace/remove/unmount释放。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-018，无新实现。真实 MinIO Chrome 10 项加上传服务单测 14 项，均 0 skip。证据见 `evidence/T-18-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
