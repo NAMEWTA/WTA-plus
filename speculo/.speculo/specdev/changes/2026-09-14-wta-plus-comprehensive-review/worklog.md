@@ -1,6 +1,6 @@
 # 工作记录
 
-revision274：`4d2c1412` 上分别清空 target 后，full/core 校验标准输出与退出码 0 已入证据。30done/20cancelled/0ready。未归档、未推送。
+revision275：full/core 通过记录固定为打包时的 `4d2c1412`，不把后续文档提交说成打包点。30done/20cancelled/0ready。未归档、未推送。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision274：`4d2c1412` 上分别清空 target 后，full/core 校验标准输�
 
 ## Current status
 
-revision274：`4d2c1412` 上分别清空 target 后，full/core 校验标准输出与退出码 0 已入证据。30done/20cancelled/0ready。未归档、未推送。
+revision275：full/core 通过记录固定为打包时的 `4d2c1412`，不把后续文档提交说成打包点。30done/20cancelled/0ready。未归档、未推送。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -1002,3 +1002,9 @@ revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 
 revision274：`4d2c1412` 上分别清空 target 后，full/core 校验标准输出与退出码 0 已入证据。30done/20cancelled/0ready。未归档、未推送。
 
 `verify-admin-bundle.sh full` 的标准输出只有 `full bundle contents verified`，退出码 0。再次删除 target 后，`verify-admin-bundle.sh core` 的标准输出只有 `core bundle contents verified`，退出码 0。旧的 stale target 记录不是这次通过。未推送、未归档。
+
+## revision275 — 打包点与文档提交分开
+
+revision275：full/core 通过记录固定为打包时的 `4d2c1412`，不把后续文档提交说成打包点。30done/20cancelled/0ready。未归档、未推送。
+
+标准输出与退出码 0 仍是 `evidence/T-30-bundle-full-4d2c1412.out` 和 `evidence/T-30-bundle-core-4d2c1412.out`。未推送、未归档。
