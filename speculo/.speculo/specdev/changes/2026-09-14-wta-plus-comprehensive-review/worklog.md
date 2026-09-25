@@ -1,6 +1,6 @@
 # 工作记录
 
-revision245：T04按当前复验取消重复施工。真实单/双 Nginx 与直连 IPv4/IPv6 为 1+11 项、0 skip。无新实现。21done/3cancelled/26ready。Goal active，未归档。
+revision246：T05按当前复验取消重复施工。真实 Redis 防重租约 7 项、0 skip。无新实现。21done/4cancelled/25ready。Goal active，未归档。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision245：T04按当前复验取消重复施工。真实单/双 Nginx 与直�
 
 ## Current status
 
-revision245：T04按当前复验取消重复施工。真实单/双 Nginx 与直连 IPv4/IPv6 为 1+11 项、0 skip。无新实现。21done/3cancelled/26ready。Goal active，未归档。
+revision246：T05按当前复验取消重复施工。真实 Redis 防重租约 7 项、0 skip。无新实现。21done/4cancelled/25ready。Goal active，未归档。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -828,3 +828,9 @@ revision244：T49关闭。真实 MinIO 默认存储切换 1 项 0 skip，属性�
 revision245：T04按当前复验取消重复施工。真实单/双 Nginx 与直连 IPv4/IPv6 为 1+11 项、0 skip。无新实现。21done/3cancelled/26ready。Goal active，未归档。
 
 证据 `evidence/T-04-replan-2026-09-23.md`。HEAD `e134d29bbc573653d430077e88bb0b7f9d29908a`。未推送、未归档。
+
+## revision246 — T05当前复验取消重复施工
+
+revision246：T05按当前复验取消重复施工。真实 Redis 防重租约 7 项、0 skip。无新实现。21done/4cancelled/25ready。Goal active，未归档。
+
+证据 `evidence/T-05-replan-2026-09-23.md`。HEAD `671bfc86`。未推送、未归档。
