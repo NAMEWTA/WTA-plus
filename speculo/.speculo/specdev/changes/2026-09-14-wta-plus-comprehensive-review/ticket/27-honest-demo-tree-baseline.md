@@ -8,7 +8,7 @@ artifact: "ticket"
 change: "2026-09-14-wta-plus-comprehensive-review"
 id: "T-27"
 title: "修复Demo树样例并删除误导占位实现"
-status: "ready"
+status: "cancelled"
 kind: "review"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
@@ -121,14 +121,16 @@ frontmatter为预计点、硬写集与共享owner权威。目录写集仅授权�
 
 ## 10. 验收标准
 
-- [ ] `AC-027`：保存/删除路径不再有虚假校验TODO。
-- [ ] `AC-027`：非法parent、环、带子节点删除按明确合同处理。
-- [ ] `AC-027`：模板代表输出可编译且与前后端树语义一致。
-- [ ] `AC-027`：保留演示所需权限/日志，不把示例缺陷推广到System。
-- [ ] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
-- [ ] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
-- [ ] 写集、共享owner、合同和生成物一致；无未批准偏差。
-- [ ] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+- [x] `AC-027`：保存/删除路径不再有虚假校验TODO。
+- [x] `AC-027`：非法parent、环、带子节点删除按明确合同处理。
+- [x] `AC-027`：模板代表输出可编译且与前后端树语义一致。
+- [x] `AC-027`：保留演示所需权限/日志，不把示例缺陷推广到System。
+- [x] 实际调用已绑定Skill，记录摘要/输入/步骤/输出；不是只“读过”。
+- [x] 正常、失败、回归和required E2E有当前候选证据，未运行不勾选。
+- [x] 写集、共享owner、合同和生成物一致；无未批准偏差。
+- [x] 真实commit/direct-parent/result出口已满足或按Goal对历史无需新实施票作有证据的取消裁决。
+
+当前源码已满足 AC-027，无新实现。真实 MySQL 15 项、0 skip。证据见 `evidence/T-27-replan-2026-09-23.md`。AC 仍由 T-30 组合复验。
 
 ## 11. SKILL 调用计划
 
