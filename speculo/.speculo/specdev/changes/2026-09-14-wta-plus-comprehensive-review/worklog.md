@@ -1,6 +1,6 @@
 # 工作记录
 
-revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据。T43 同环境 100/1000/10000 与万级回滚零残留仍以原记录为准。30done/20cancelled/0ready。未归档、未推送。
+revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 0。30done/20cancelled/0ready。未归档、未推送。
 
 ## Goal
 
@@ -8,7 +8,7 @@ revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据
 
 ## Current status
 
-revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据。T43 同环境 100/1000/10000 与万级回滚零残留仍以原记录为准。30done/20cancelled/0ready。未归档、未推送。
+revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 0。30done/20cancelled/0ready。未归档、未推送。
 
 ## 规划阶段历史记录（revision138，不代表当前执行授权）
 
@@ -990,3 +990,9 @@ revision271：T30在 `6002e7ad` 完成组合验收。真实服务 0 skip。full/
 revision272：AC-001 与 AC-032—AC-050 的前置条件改为引用各票证据。T43 同环境 100/1000/10000 与万级回滚零残留仍以原记录为准。30done/20cancelled/0ready。未归档、未推送。
 
 证据仍是各票原文件，未改写历史结果。`6002e7ad` 只复跑了 100 人扇出。Windows 仍是 `user-waived/not-run`。未推送、未归档。
+
+## revision273 — T30 full/core 当前树复验
+
+revision273：`7aca0c86` 上分别清空 target 后，full/core 校验均退出 0。30done/20cancelled/0ready。未归档、未推送。
+
+两次都先删除 `backend/wta-admin/target`。full 打印 `full bundle contents verified`，core 打印 `core bundle contents verified`。旧的缺包或错包记录不是这次通过。未推送、未归档。
