@@ -30,3 +30,9 @@
 归档前治理提交 `8853ca3349195812d011c65977cfed5d939f1b3b` 已push；其clean complete：0 errors/0 warnings。用户授权按当前补验完成并归档。已按计划原子移动全部 10836 文件，其中原Git跟踪 9827 文件；逐文件SHA-256核对仅 `.status.json` 的已列明归档元数据变化，其他内容原样保留，ignored本地证据也随目录移动、未强行新增追踪。完整清单见 `2026-09-26-specdev-2026-09-14-wta-plus-comprehensive-review-manifest.json`。全局active只移除本change，OIDC条目保持；无永久知识或其他清理。
 
 源不存在、目标完整、全局active/archived无重叠、目标schema字段已回读确认。最后归档commit后再次运行complete与包级自检，随后push。
+
+## 归档后验证补遗
+
+2026-09-26T23:58:57.247252+00:00：归档提交 `3219bb78ae06f6dc9b6885d4038c1c04d926b793` 后工作树clean；`node speculo/workflows/specdev/common/tools/validate-specdev.mjs --stage complete --repo /srv/WTA-plus speculo/.speculo/specdev/archive/2026-09/2026-09-14-wta-plus-comprehensive-review` 与 `--self-check` 均 exit 0、0 errors/0 warnings。再次回读源/目标/全局索引/归档状态一致。移动暂存阶段的Git状态读取失败未被视为通过，最终以此clean提交后的真实校验为准。
+
+归档目录从此只读。本补遗只更新commands报告；提交补遗后重复complete，再执行用户授权的最终push。无部署、永久知识提升或额外删除。
