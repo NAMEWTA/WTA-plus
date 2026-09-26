@@ -1,0 +1,84 @@
+{
+  "source_before": {
+    "head": "c671b8cfbc7f2894b49580cc81f2e097ee066807",
+    "tree": "3c6ea60ca1ef6ba8823d2dcb50f589a3c16f2f9d",
+    "clean": true
+  },
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "wta-admin",
+    "-am",
+    "-Dtest=OssCleanupMySqlIntegrationTest,OssStorageMigrationIntegrationTest,MinioOssClientIntegrationTest,OssUploadPropertiesUnitTest,OssUploadStorageRoutingMinioIntegrationTest,AttachmentFreeSubmitDoesNotTouchOssTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-Dsurefire.systemPropertiesFile=/tmp/wta-archive-services-b1ddcba2/test.properties",
+    "test"
+  ],
+  "cwd": "backend",
+  "containers": [
+    "1b8bf7ed48c1ba93c7ff956655347b1c94ffce7274b57bbe94ccbb2d2dcf38ac",
+    "2fcaaf95bb3c95fd13fa9a949715b6c89f1a54c464992291e39ea9b151d4ee8a"
+  ],
+  "counts": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "name": "org.namewta.test.notify.AttachmentFreeSubmitDoesNotTouchOssTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "org.namewta.test.oss.upload.OssUploadStorageRoutingMinioIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "org.namewta.test.oss.client.MinioOssClientIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "org.namewta.test.oss.migration.OssStorageMigrationIntegrationTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "org.namewta.test.oss.upload.OssUploadPropertiesUnitTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "org.namewta.test.oss.lifecycle.OssCleanupMySqlIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "source_after": {
+    "head": "c671b8cfbc7f2894b49580cc81f2e097ee066807",
+    "tree": "3c6ea60ca1ef6ba8823d2dcb50f589a3c16f2f9d",
+    "clean": true
+  },
+  "exit_code": 0,
+  "cleanup": [
+    0,
+    0
+  ]
+}

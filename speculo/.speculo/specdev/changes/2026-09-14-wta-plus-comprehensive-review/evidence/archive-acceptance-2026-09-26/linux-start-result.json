@@ -1,0 +1,106 @@
+{
+  "commands": [
+    {
+      "command": [
+        "bash",
+        "/srv/WTA-plus/release-artifacts/scripts/init-mysql-container.sh",
+        "--container",
+        "3ad2bb8499cb021a6ddd79a4515ef8bb29b7db7215817dd9ef77d6488541489e",
+        "--env-file",
+        "/tmp/wta-archive-linux-0cc5b278/mysql-init.env"
+      ],
+      "exit_code": 0,
+      "log": "init.log"
+    },
+    {
+      "command": [
+        "bash",
+        "/tmp/wta-archive-linux-0cc5b278/workspace with spaces/scripts/start-dev.sh",
+        "build",
+        "backend"
+      ],
+      "exit_code": 0,
+      "log": "build-backend.log"
+    },
+    {
+      "command": [
+        "bash",
+        "/tmp/wta-archive-linux-0cc5b278/workspace with spaces/scripts/start-dev.sh",
+        "start",
+        "backend"
+      ],
+      "exit_code": "terminated-after-readiness",
+      "ready_http_status": 200,
+      "port": 49983,
+      "log": "backend-start-1.log",
+      "no_clean_or_install": true
+    },
+    {
+      "command": [
+        "bash",
+        "/tmp/wta-archive-linux-0cc5b278/workspace with spaces/scripts/start-dev.sh",
+        "start",
+        "backend"
+      ],
+      "exit_code": "terminated-after-readiness",
+      "ready_http_status": 200,
+      "port": 49983,
+      "log": "backend-start-2.log",
+      "no_clean_or_install": true
+    },
+    {
+      "command": [
+        "bash",
+        "/tmp/wta-archive-linux-0cc5b278/workspace with spaces/scripts/start-dev.sh",
+        "doctor",
+        "backend"
+      ],
+      "exit_code": 0,
+      "log": "doctor-backend.log"
+    },
+    {
+      "command": [
+        "bash",
+        "/tmp/wta-archive-linux-0cc5b278/workspace with spaces/scripts/start-dev.sh",
+        "start",
+        "frontend",
+        "home-web"
+      ],
+      "exit_code": "terminated-after-readiness",
+      "ready_http_status": 200,
+      "port": 33283,
+      "log": "frontend-start-1.log",
+      "no_clean_or_install": true
+    },
+    {
+      "command": [
+        "bash",
+        "/tmp/wta-archive-linux-0cc5b278/workspace with spaces/scripts/start-dev.sh",
+        "start",
+        "frontend",
+        "home-web"
+      ],
+      "exit_code": "terminated-after-readiness",
+      "ready_http_status": 200,
+      "port": 33283,
+      "log": "frontend-start-2.log",
+      "no_clean_or_install": true
+    }
+  ],
+  "source_before": {
+    "head": "c671b8cfbc7f2894b49580cc81f2e097ee066807",
+    "tree": "3c6ea60ca1ef6ba8823d2dcb50f589a3c16f2f9d",
+    "clean": true
+  },
+  "workspace_path_has_spaces": true,
+  "source_after": {
+    "head": "c671b8cfbc7f2894b49580cc81f2e097ee066807",
+    "tree": "3c6ea60ca1ef6ba8823d2dcb50f589a3c16f2f9d",
+    "clean": true
+  },
+  "cleanup": [
+    0,
+    0
+  ],
+  "exit_code": 0
+}

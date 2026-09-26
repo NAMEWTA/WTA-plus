@@ -226,3 +226,7 @@
 ## 2026-09-26 归档激活
 
 用户明确要求先 commit/push，再归档，再 commit/push。Lead 激活 specdev/archive-and-consolidate，唯一目标为本 change；相邻 OIDC change 不在写入范围。当前修复验证结果见 reviews/adversarial-2026-09-26.md。先核历史 Evidence/集成记录并如实补齐；不将用户归档授权解释为测试豁免。知识处理采用 mechanical-only：本次无永久知识写入、合并或清理，已有项目 Skill 事实随实现提交。
+
+### 归档补验准备
+
+第一批94091cda/c671b8cf已推送。clean c671上前端完整门禁、后端1210总项（959执行、251环境skip）、release、包级自检通过；真实Linux前后端各两次启动+doctor通过，MySQL/MinIO存储10项零skip通过，结果见evidence/archive-acceptance-2026-09-26。规范化12票Evidence保留旧原文及历史clean缺口；替代验收裁决等待用户。补审发现T43聚合探针仍预期领取50条，现同步为10次单条claim/dispatch并保留聚合断言；新计量包含claim，不能与旧基线直接比较，等待新clean提交专项运行。

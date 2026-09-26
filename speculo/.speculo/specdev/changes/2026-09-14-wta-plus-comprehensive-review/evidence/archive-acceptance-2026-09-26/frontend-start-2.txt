@@ -1,0 +1,20 @@
+前端启动方式：保留缓存并直接启动。
+前端依赖已存在，跳过 pnpm install。
+正在前台启动 home-web（@namewta/home-web），启动后请访问 http://127.0.0.1:33283/，按 Ctrl+C 停止...
+
+> @namewta/home-web@0.0.0 dev /srv/WTA-plus/frontend/apps/home-web
+> vite serve --mode development --strictPort
+
+
+  VITE v8.1.5  ready in 232 ms
+
+  ➜  Local:   http://localhost:33283/
+  ➜  Network: http://172.16.105.9:33283/
+  ➜  Network: http://10.77.0.2:33283/
+  ➜  Network: http://172.21.0.1:33283/
+  ➜  Network: http://172.17.0.1:33283/
+  ➜  Network: http://172.18.0.1:33283/
+  ➜  Network: http://198.18.0.1:33283/
+/srv/WTA-plus/frontend/apps/home-web:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @namewta/home-web@0.0.0 dev: `vite serve --mode development --strictPort`
+Command failed with signal "SIGTERM"

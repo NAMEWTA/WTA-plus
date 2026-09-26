@@ -1,0 +1,123 @@
+[
+  {
+    "ticket": "T-07",
+    "implementation_or_record_commit": "450c9d11549d16d9da4e809d57f19f6fb9741a01",
+    "parent": "268879cbaf0a3c3a19f6dd59bcdc553d7c1ead8f",
+    "tree": "3675573bd330cd6d4d9b79314006f26b6e78b3c0",
+    "subject": "test(sso): build the admin and home bases before the callback journey",
+    "paths": [
+      "backend/wta-admin/src/test/java/org/namewta/test/sso/SsoHttpsSessionIntegrationTest.java"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-07-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-09",
+    "implementation_or_record_commit": "a139dbc505ebe8e89125091581c7461a0aa97452",
+    "parent": "85050cd74cd01f3d179d304ff3ddebe6b8e3cc3d",
+    "tree": "ecc8b3466485acb2c14acfd50dd014251f1f9d8b",
+    "subject": "test(notify): expect the batched fan-out insert before wake",
+    "paths": [
+      "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-09-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-12",
+    "implementation_or_record_commit": "89f94a9b566c7f3e524e8869cd5f4581fb8f780d",
+    "parent": "a5619748a420218c4bfd16723e89c58cfc1789a1",
+    "tree": "afe52d3cbabd9349ef31badfeb563a2ae469f5de",
+    "subject": "test(session): prove logout and navigation on the built apps",
+    "paths": [
+      "backend/wta-admin/src/test/java/org/namewta/test/security/SessionNavigationLifecycleIntegrationTest.java"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-12-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-13",
+    "implementation_or_record_commit": "f2f166c9aebebfb3a7312eb2c1e0abe66b961a48",
+    "parent": "3ce596470f4de3d2834f87ce07d2f34ad47132bb",
+    "tree": "f005570c23585e453e1e54b55e16785c4a674577",
+    "subject": "test(registration): prove captcha retry on the built apps",
+    "paths": [
+      "backend/wta-admin/src/test/java/org/namewta/test/security/RegistrationRecoveryIntegrationTest.java"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-13-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-16",
+    "implementation_or_record_commit": "b5cd3db5766e3b2afe7e0c896a4a5f10df091bec",
+    "parent": "410de23f29a083507b98fd236d43d4c6b379292d",
+    "tree": "9949a6e59bcd90902530dc876bdb191054ebc924",
+    "subject": "test(workflow): run the task switch fixture in Chrome",
+    "paths": [
+      "frontend/playwright.task-integrity.config.ts",
+      "frontend/vite.task-integrity.config.ts"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-17",
+    "implementation_or_record_commit": "90c80ca6e797cf441945c4fa5dbe053b4a94fa7c",
+    "parent": "9e9a70c5448a8b060078cc4084aef51009cd2619",
+    "tree": "605422a13cf913ddfdb67b4b823c0a9903d2639f",
+    "subject": "test(workflow): run the designer spec with the installed Chrome",
+    "paths": [
+      "frontend/playwright.workflow-definition.config.ts"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-17-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-21",
+    "implementation_or_record_commit": "cfb57baa384f0148919cc7d5596ccfd3e0b65119",
+    "parent": "15bacc9531c621eb3572ed914184a98563a19226",
+    "tree": "5c7306cc897cdf6a8c8bf39635a31daaa8bf8a39",
+    "subject": "fix(home): keep registration focus visible after a failed retry",
+    "paths": [
+      "frontend/apps/home-web/src/views/RegisterPage.vue"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-21-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-28",
+    "implementation_or_record_commit": "459c5a3ee52d78d55b259978dfcf279299a733ef",
+    "parent": "2e84f93ed994ac4813ce7d235b4dd1ff70d02624",
+    "tree": "d3fba610334304e8e948440fe4f66d508bd9b747",
+    "subject": "test(notify): load the recipient batch statement in the owned fixture",
+    "paths": [
+      "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyAtomicResultIntegrationTest.java"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-28-replan-2026-09-23.md",
+    "historical_clean_proof": "not found in retained replan evidence; cannot infer clean from git commit graph"
+  },
+  {
+    "ticket": "T-30",
+    "implementation_or_record_commit": "3be2e381b7deb3ee6193bf1210d3018456e35beb",
+    "parent": "6002e7ad1abd3ff7b3c0d4e4f2c6e8838605d46d",
+    "tree": "0bb322a49d538c2e2afb3ce31d80930ea4bd569f",
+    "subject": "docs(review): record the T-30 combined acceptance on 6002e7ad",
+    "paths": [
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-replan-2026-09-23.md",
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md",
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/30-integrated-upgrade-acceptance.md",
+      "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/worklog.md"
+    ],
+    "ancestor_of_current_head": true,
+    "replan_evidence": "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-30-replan-2026-09-23.md",
+    "historical_clean_proof": "T30 narrative says clean before commands, no original status output identified"
+  }
+]

@@ -1,0 +1,248 @@
+正在以前台 dev,local profiles 启动 wta-admin。端口由 SERVER_PORT 或外部配置决定，脚本不覆盖，按 Ctrl+C 停止...
+[INFO] Scanning for projects...
+[INFO]
+[INFO] -----------------------< org.namewta:wta-admin >------------------------
+[INFO] Building wta-admin 6.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] >>> spring-boot:4.1.0:run (default-cli) > test-compile @ wta-admin >>>
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ wta-admin ---
+[INFO] Copying 9 resources from src/main/resources to target/classes
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO]
+[INFO] --- flatten:1.7.3:flatten (flatten) @ wta-admin ---
+[INFO] Generating flattened POM of project org.namewta:wta-admin:jar:6.0.0...
+[INFO]
+[INFO] --- compiler:3.15.0:compile (default-compile) @ wta-admin ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ wta-admin ---
+[INFO] Not copying test resources
+[INFO]
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ wta-admin ---
+[INFO] Not compiling test sources
+[INFO]
+[INFO] <<< spring-boot:4.1.0:run (default-cli) < test-compile @ wta-admin <<<
+[INFO]
+[INFO]
+[INFO] --- spring-boot:4.1.0:run (default-cli) @ wta-admin ---
+[INFO] Attaching agents: []
+19:43:08,746 |-WARN in ch.qos.logback.core.joran.action.ConversionRuleAction - [converterClass] attribute is deprecated and replaced by [class]. See element [conversionRule] near line 9
+Application Version: 6.0.0
+Spring Boot Version: 4.1.0
+__________            _____.___.__         ____   ____                     __________.__
+\______   \__ __  ____\__  |   |__|        \   \ /   /_ __   ____          \______   \  |  __ __  ______
+ |       _/  |  \/  _ \/   |   |  |  ______ \   Y   /  |  \_/ __ \   ______ |     ___/  | |  |  \/  ___/
+ |    |   \  |  (  <_> )____   |  | /_____/  \     /|  |  /\  ___/  /_____/ |    |   |  |_|  |  /\___ \
+ |____|_  /____/ \____// ______|__|           \___/ |____/  \___  >         |____|   |____/____//____  >
+        \/             \/                                       \/                                   \/
+
+2026-09-26 19:43:09 [main] INFO  org.namewta.NamewtaApplication
+ - Starting NamewtaApplication using Java 21.0.12.1 with PID 315075 (/srv/WTA-plus/backend/wta-admin/target/classes started by root in /srv/WTA-plus/backend/wta-admin)
+2026-09-26 19:43:09 [main] INFO  org.namewta.NamewtaApplication
+ - The following 2 profiles are active: "dev", "local"
+2026-09-26 19:43:09 [background-preinit] INFO  o.h.validator.internal.util.Version
+ - HV000001: Hibernate Validator 9.1.0.Final
+2026-09-26 19:43:12 [main] WARN  o.s.c.a.ConfigurationClassPostProcessor
+ - Cannot enhance @Configuration bean definition 'com.yomahub.liteflow.springboot.config.LiteflowMainAutoConfiguration' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static' and/or marking the containing configuration class as 'proxyBeanMethods=false'.
+2026-09-26 19:43:12 [main] WARN  o.s.core.annotation.MergedAnnotation
+ - Failed to introspect meta-annotation @AutoConfigureAfter on class com.yomahub.liteflow.springboot.metrics.LiteflowMetricsAutoConfiguration: java.lang.TypeNotPresentException: Type org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration not present
+2026-09-26 19:43:12 [main] INFO  c.g.y.a.MybatisPlusJoinAutoConfiguration
+ - MPJ SqlSessionFactory bean definition: sqlSessionFactory factoryBeanName: com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration factoryMethodName: sqlSessionFactory source: public org.apache.ibatis.session.SqlSessionFactory com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration.sqlSessionFactory(javax.sql.DataSource)
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'com.yomahub.liteflow.springboot.config.LiteflowPropertyAutoConfiguration' of type [com.yomahub.liteflow.springboot.config.LiteflowPropertyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [componentScanner]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'liteflow-com.yomahub.liteflow.springboot.LiteflowProperty' of type [com.yomahub.liteflow.springboot.LiteflowProperty] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [componentScanner]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'liteflow.monitor-com.yomahub.liteflow.springboot.LiteflowMonitorProperty' of type [com.yomahub.liteflow.springboot.LiteflowMonitorProperty] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [componentScanner]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'liteflowConfig' of type [com.yomahub.liteflow.property.LiteflowConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [componentScanner]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'com.yomahub.liteflow.spi.spring.SpringAware' of type [com.yomahub.liteflow.spi.spring.SpringAware] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [componentScanner]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] INFO  c.yomahub.liteflow.util.LOGOPrinter
+ -
+================================================================================================
+		 _     ___ _____ _____      _____ _     _____        __
+		| |   |_ _|_   _| ____|    |  ___| |   / _ \ \      / /
+		| |    | |  | | |  _| _____| |_  | |  | | | \ \ /\ / /
+		| |___ | |  | | | |__|_____|  _| | |__| |_| |\ V  V /
+		|_____|___| |_| |_____|    |_|   |_____\___/  \_/\_/
+
+		Version: 2.16.1.2
+		Make your code amazing.
+		website：https://liteflow.cc
+================================================================================================
+
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerAutoConfiguration' of type [org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [serverAnnotatedMethodBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'serverAnnotatedBeanRegistry' of type [org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerAutoConfiguration$ServerMcpAnnotatedBeans] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [serverAnnotatedMethodBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+ - Bean 'spring.ai.mcp.server.annotation-scanner-org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerProperties' of type [org.springframework.ai.mcp.server.common.autoconfigure.annotations.McpServerAnnotationScannerProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [serverAnnotatedMethodBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2026-09-26 19:43:13 [main] INFO  org.eclipse.jetty.server.Server
+ - jetty-12.1.10; built: 2026-05-31T04:45:52.925Z; git: 986024525891c2c20ff08c58ba300dc3b9847586; jvm 21.0.12.1+1-LTS
+2026-09-26 19:43:13 [main] INFO  o.n.common.json.config.JacksonConfig
+ - 初始化 jackson 配置
+2026-09-26 19:43:14 [main] INFO  o.e.j.s.DefaultSessionIdManager
+ - Session workerName=node0
+2026-09-26 19:43:14 [main] INFO  o.e.j.server.handler.ContextHandler
+ - Started osbjs.JettyEmbeddedWebAppContext@502f9271{application,/,b=[file:///tmp/jetty-docbase.49983.5550457581799502609/, jar:file:///root/.m2/repository/org/dromara/warm/warm-flow-plugin-vue3-ui/1.8.9/warm-flow-plugin-vue3-ui-1.8.9.jar!/META-INF/resources/],a=AVAILABLE,h=oeje11s.SessionHandler@74e14434{STARTED}}
+2026-09-26 19:43:14 [main] INFO  o.e.j.e.s.ServletContextHandler
+ - Started osbjs.JettyEmbeddedWebAppContext@502f9271{application,/,b=[file:///tmp/jetty-docbase.49983.5550457581799502609/, jar:file:///root/.m2/repository/org/dromara/warm/warm-flow-plugin-vue3-ui/1.8.9/warm-flow-plugin-vue3-ui-1.8.9.jar!/META-INF/resources/],a=AVAILABLE,h=oeje11s.SessionHandler@74e14434{STARTED}}
+2026-09-26 19:43:14 [main] INFO  org.eclipse.jetty.server.Server
+ - Started oejs.Server@3f64a088{STARTING}[12.1.10,sto=0] @410ms
+2026-09-26 19:43:14 [main] INFO  c.g.y.a.MybatisPlusJoinAutoConfiguration
+ - mybatis plus join properties config complete
+2026-09-26 19:43:14 [main] INFO  com.zaxxer.hikari.HikariDataSource
+ - master - Starting...
+2026-09-26 19:43:14 [main] INFO  com.zaxxer.hikari.pool.HikariPool
+ - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@4f0ea6f8
+2026-09-26 19:43:14 [main] INFO  com.zaxxer.hikari.HikariDataSource
+ - master - Start completed.
+2026-09-26 19:43:14 [main] INFO  c.b.d.d.DynamicRoutingDataSource
+ - dynamic-datasource - add a datasource named [master] success
+2026-09-26 19:43:14 [main] INFO  c.b.d.d.DynamicRoutingDataSource
+ - dynamic-datasource initial loaded [1] datasource,primary datasource named [master]
+2026-09-26 19:43:14 [main] INFO  c.g.y.a.MybatisPlusJoinAutoConfiguration
+ - mybatis plus join SqlInjector init
+ _ _   |_  _ _|_. ___ _ |    _
+| | |\/|_)(_| | |_\  |_)||_|_\
+     /               |
+                        3.5.15
+Consume Time：15 ms Mapper ID：org.namewta.notify.mapper.NotifyChannelAccountMapper.selectList Command Type：SELECT
+2026-09-26 19:43:16 [main] INFO  o.n.common.redis.config.RedisConfig
+ - 初始化 redis 配置
+2026-09-26 19:43:16 [main] INFO  org.redisson.Version
+ - Redisson 4.6.1
+2026-09-26 19:43:17 [redisson-netty-1-5] INFO  o.r.connection.ConnectionsHolder
+ - 1 connections initialized for 127.0.0.1/127.0.0.1:33175
+2026-09-26 19:43:17 [redisson-netty-1-3] INFO  o.r.connection.ConnectionsHolder
+ - 8 connections initialized for 127.0.0.1/127.0.0.1:33175
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[completeAutoPass] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[completeExecute] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[completeNeedAutoPass] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[completePrepare] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[instanceDeleteEvent] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[instanceDeleteExecute] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[instanceDeleteExists] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[instanceDeleteLoad] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[taskOpExecute] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[taskOpLoad] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[taskOpNeedNotify] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[taskOpNotify] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[taskOpPrepare] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[startExecute] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[startExists] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[startPrepareInstance] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[startPrepareRequest] has been found
+2026-09-26 19:43:18 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[startResume] has been found
+____ ____    ___ ____ _  _ ____ _  _
+[__  |__| __  |  |  | |_/  |___ |\ |
+___] |  |     |  |__| | \_ |___ | \|
+https://sa-token.cc (v1.45.0)
+2026-09-26 19:43:20 [main] INFO  c.b.m.s.MybatisPlusApplicationContextAware
+ - Register ApplicationContext instances org.springframework.boot.web.server.servlet.context.AnnotationConfigServletWebServerApplicationContext@4bb8855f
+ _ _   |_  _ _|_. ___ _ |    _  .  _  .  _
+| | |\/|_)(_| | |_\  |_)||_|_\  | (_) | | |
+     /               |          /
+                                    1.5.9
+
+   ▄     ▄                             ▄▄▄▄▄▄   ▄
+   █  █  █  ▄▄▄    ▄ ▄▄  ▄▄▄▄▄         █        █     ▄▄▄  ▄     ▄
+   ▀ █▀█ █ ▀   █   █▀  ▀ █ █ █  ▄▄▄▄▄  █▄▄▄▄▄   █    █▀ ▀█ ▀▄ ▄ ▄▀
+    ██ ██▀ ▄▀▀▀█   █     █ █ █         █        █    █   █  █▄█▄█
+    █   █  ▀▄▄▀█   █     █ █ █         █        █▄▄  ▀█▄█▀   █ █
+
+   :: Warm-Flow ::     (v1.8.9)
+
+2026-09-26 19:43:20 [main] INFO  o.d.w.p.modes.sb.config.BeanConfig
+ - 【warm-flow】，加载完成
+2026-09-26 19:43:20 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[noop] has been found
+2026-09-26 19:43:20 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[fail] has been found
+2026-09-26 19:43:20 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[contextRequired] has been found
+2026-09-26 19:43:20 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[alwaysTrue] has been found
+2026-09-26 19:43:20 [main] INFO  c.y.l.p.i.CmpAroundAspectBeanProcess
+ - component[alwaysFalse] has been found
+Consume Time：1 ms Mapper ID：org.namewta.third.mapper.ThirdEndpointMapper.selectList Command Type：SELECT
+2026-09-26 19:43:21 [main] INFO  c.y.l.p.factory.FlowParserProvider
+ - flow info loaded from local file,path=classpath:liteflow/*.el.xml
+2026-09-26 19:43:21 [main] INFO  o.e.j.s.h.ContextHandler.application
+ - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26 19:43:21 [main] INFO  o.e.jetty.server.AbstractConnector
+ - Started oejs.ServerConnector@3881f391{HTTP/1.1, (http/1.1)}{127.0.0.1:49983}
+ ________  _____ ______   ________  ___   ___        ___
+|\   ____\|\   _ \  _   \|\   ____\|\  \ |\  \      |\  \
+\ \  \___|\ \  \\\__\ \  \ \  \___|\ \  \\_\  \     \ \  \
+ \ \_____  \ \  \\|__| \  \ \_____  \ \______  \  __ \ \  \
+  \|____|\  \ \  \    \ \  \|____|\  \|_____|\  \|\  \\_\  \
+    ____\_\  \ \__\    \ \__\____\_\  \     \ \__\ \________\
+   |\_________\|__|     \|__|\_________\     \|__|\|________|
+   \|_________|             \|_________|
+V 3.3.5
+2026-09-26 19:43:21 [main] INFO  org.namewta.NamewtaApplication
+ - Started NamewtaApplication in 13.434 seconds (process running for 14.219)
+Consume Time：1 ms Mapper ID：org.namewta.notify.mapper.NotifyIntentAttachmentMapper.selectList Command Type：SELECT
+Consume Time：3 ms Mapper ID：org.namewta.notify.mapper.NotifyOutboxMapper.databaseNow Command Type：SELECT
+Consume Time：1 ms Mapper ID：org.namewta.notify.mapper.NotifyOutboxMapper.selectClaimable Command Type：SELECT
+2026-09-26 19:43:21 [schedule-pool-3] INFO  o.n.n.a.worker.NotifyOutboxWorker
+ - notify outbox drain trigger=POLL claimed=0 batches=1
+Consume Time：2 ms Mapper ID：org.namewta.system.mapper.SysOssConfigMapper.selectList Command Type：SELECT
+2026-09-26 19:43:21 [qtp1355436187-39] INFO  org.namewta.system.http
+ - {"记录时间":"2026-09-26T23:43:21.742598880Z","事件类型":"请求进入","请求标识":"c333e997-5379-436b-94fd-0fe013fb8b93","请求方法":"GET","请求路径":"/","请求参数":{},"请求头":{"Accept-Encoding":["identity"],"Host":["127.0.0.1:49983"],"User-Agent":["Python-urllib/3.14"],"Connection":["close"]},"内容类型":null,"内容长度":-1,"正文已记录":false,"正文长度":0,"正文已截断":false,"正文省略原因":"未提供内容类型"}
+2026-09-26 19:43:21 [main] INFO  o.n.s.runner.SystemApplicationRunner
+ - 初始化OSS配置成功
+2026-09-26 19:43:21 [qtp1355436187-39] INFO  org.namewta.system.http
+ - {"记录时间":"2026-09-26T23:43:21.799037971Z","事件类型":"响应返回","请求标识":"c333e997-5379-436b-94fd-0fe013fb8b93","请求方法":"GET","请求路径":"/","响应状态":200,"响应头":{"Date":["Sat, 26 Sep 2026 23:43:21 GMT"],"X-Request-Id":["c333e997-5379-436b-94fd-0fe013fb8b93"],"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["text/plain;charset=utf-8"],"Content-Length":["110"]},"内容类型":"text/plain;charset=utf-8","内容长度":110,"耗时毫秒":58,"处理完成":true,"正文已记录":true,"正文长度":110,"正文已截断":false,"正文":"[REDACTED]"}
+2026-09-26 19:43:21 [main] INFO  org.namewta.NamewtaApplication
+ -
+==================
+访问地址：http://127.0.0.1:49983/
+启动时间：2026-09-26 19:43:09
+运行的系统：Linux 7.0.0-31-generic（amd64）
+启动耗时：13.88 秒
+运行内存：已用 162.06 MB / 最大 5.79 GB
+==================
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  o.e.jetty.server.AbstractConnector
+ - Stopped oejs.ServerConnector@3881f391{HTTP/1.1, (http/1.1)}{127.0.0.1:49983}
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  o.n.c.core.config.ThreadPoolConfig
+ - ====关闭后台任务任务线程池====
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  c.b.d.d.DynamicRoutingDataSource
+ - dynamic-datasource start closing ....
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource
+ - master - Shutdown initiated...
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource
+ - master - Shutdown completed.
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  c.b.d.d.d.DefaultDataSourceDestroyer
+ - dynamic-datasource close the datasource named [master] success,
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  c.b.d.d.DynamicRoutingDataSource
+ - dynamic-datasource all closed success,bye
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  org.eclipse.jetty.server.Server
+ - Stopped oejs.Server@3f64a088{STOPPING}[12.1.10,sto=0]
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  o.e.j.s.h.ContextHandler.application
+ - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2026-09-26 19:43:21 [SpringApplicationShutdownHook] INFO  o.e.j.e.s.ServletContextHandler
+ - Stopped osbjs.JettyEmbeddedWebAppContext@502f9271{application,/,b=[file:///tmp/jetty-docbase.49983.5550457581799502609/, jar:file:///root/.m2/repository/org/dromara/warm/warm-flow-plugin-vue3-ui/1.8.9/warm-flow-plugin-vue3-ui-1.8.9.jar!/META-INF/resources/],a=AVAILABLE,h=oeje11s.SessionHandler@74e14434{STOPPED}}

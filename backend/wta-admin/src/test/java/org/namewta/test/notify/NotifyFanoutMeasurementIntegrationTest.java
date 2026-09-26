@@ -196,7 +196,7 @@ class NotifyFanoutMeasurementIntegrationTest {
         method = "measureBoundedInAppResultAggregation";
         seedExactlyActiveUsers();
         insertDraft();
-        // 相同未优化发布输入，但只对领取后的十次结果提交计时。
+        // 按当前串行 Worker 逐次领取并立即完成十条；本轮计时包含领取，不与旧探针直接比较。
         ossBoundary.start();
         try {
             notices.publish(NOTICE_ID);
@@ -205,15 +205,18 @@ class NotifyFanoutMeasurementIntegrationTest {
         }
         assertThat(measurements.get("setup_oss_boundary_calls")).isEqualTo(0L);
         long intent = assertPublishedRows();
-        List<NotifyOutbox> owned = claims.claim("owned-t43-result-" + marker).stream()
-            .filter(row -> intent == row.getIntentId()).toList();
-        assertThat(owned).hasSize(50);
-        assertThat(owned.stream().map(NotifyOutbox::getLeaseToken).toList()).doesNotContainNull();
         Map<String, Long> lockBefore = readLockStatus();
         JdbcMeter.Sample result = jdbc.start();
         ossBoundary.start();
         try {
-            for (NotifyOutbox lease : owned.subList(0, 10)) dispatch.dispatch(lease);
+            for (int completed = 0; completed < 10; completed++) {
+                List<NotifyOutbox> owned = claims.claim("owned-t43-result-" + marker);
+                assertThat(owned).hasSize(1);
+                NotifyOutbox lease = owned.getFirst();
+                assertThat(lease.getIntentId()).isEqualTo(intent);
+                assertThat(lease.getLeaseToken()).isNotNull();
+                dispatch.dispatch(lease);
+            }
         } finally {
             result.stop();
             measurements.put("oss_boundary_calls", ossBoundary.stop());
@@ -236,6 +239,7 @@ class NotifyFanoutMeasurementIntegrationTest {
         assertThat(db.queryForObject("select status from notify_intent where intent_id=?", String.class, intent))
             .isEqualTo(expected);
         measurements.put("dispatched_count", 10);
+        measurements.put("result_includes_claim", true);
         measurements.put("recipient_rows", count("notify_recipient", intent));
         measurements.put("delivery_rows", count("notify_delivery", intent));
         measurements.put("outbox_rows", count("notify_outbox", intent));

@@ -1,0 +1,32 @@
+[
+  {
+    "path": "frontend-start-1.txt",
+    "sanitized_input_sha256": "d8736d220f2530fc56ce995a2baa8ee480bfea681947ca545d858116f9efb7d3",
+    "normalized_sha256": "d8736d220f2530fc56ce995a2baa8ee480bfea681947ca545d858116f9efb7d3",
+    "normalization": "strip ANSI and trailing whitespace only; original already sanitized by runner"
+  },
+  {
+    "path": "doctor-backend.txt",
+    "sanitized_input_sha256": "7220f5d79833899cbc5f4ebb419d26560af563a53ab6b2fbbc680c4d67a423c4",
+    "normalized_sha256": "7220f5d79833899cbc5f4ebb419d26560af563a53ab6b2fbbc680c4d67a423c4",
+    "normalization": "strip ANSI and trailing whitespace only; original already sanitized by runner"
+  },
+  {
+    "path": "backend-start-1.txt",
+    "sanitized_input_sha256": "acde8085321e38e3be31adcd96b14a1541cf2574c06e3975b684b4fd59e09ff0",
+    "normalized_sha256": "db41bc0cea5aea5cb75b0da35e818ec94ce039ad34cf0f25be2c9ff9e4937895",
+    "normalization": "strip ANSI and trailing whitespace only; original already sanitized by runner"
+  },
+  {
+    "path": "backend-start-2.txt",
+    "sanitized_input_sha256": "d7c00a9bd8ae6a0c4db55e8771fef55a5ee6f95792c68dbe445733bcfeabac19",
+    "normalized_sha256": "29c9d45fc959437a383a026c9069aa7878b72ceb199df362389110e659f4f9ba",
+    "normalization": "strip ANSI and trailing whitespace only; original already sanitized by runner"
+  },
+  {
+    "path": "frontend-start-2.txt",
+    "sanitized_input_sha256": "fdfae1a182bddd64d7497b7fc5632a5c6332f0169f63ec03fb67700f0175e025",
+    "normalized_sha256": "fdfae1a182bddd64d7497b7fc5632a5c6332f0169f63ec03fb67700f0175e025",
+    "normalization": "strip ANSI and trailing whitespace only; original already sanitized by runner"
+  }
+]

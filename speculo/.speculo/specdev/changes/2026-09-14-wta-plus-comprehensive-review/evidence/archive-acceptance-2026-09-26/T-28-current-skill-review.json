@@ -1,0 +1,45 @@
+{
+  "id": "wta-common-modules-guide",
+  "phase": "implement",
+  "operation": "apply-scope-contract",
+  "sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c",
+  "status": "passed",
+  "ticket_id": "T-28",
+  "reviewed_at": "2026-09-26T23:47:40Z",
+  "review_kind": "current-static-retrospective-implementation-review",
+  "scope": "T-28 common Redis entry-point/artifact selection, adapter placement, bounded async publish, subscriber resource ownership and poll fallback",
+  "source_head": "c671b8cfbc7f2894b49580cc81f2e097ee066807",
+  "phase_meaning": "implement 表示按当前 Skill 回审既有实现的适用合同，不表示本轮重写实现，也不声称历史执行曾使用当前新 SHA。",
+  "tests_run_in_this_review": false,
+  "repository_files_modified": false,
+  "inputs_read": [
+    ".agents/skills/wta-common-modules-guide/SKILL.md",
+    ".agents/skills/wta-common-modules-guide/references/other-utils.md",
+    ".agents/skills/namewta-fullstack-development/references/backend/framework-usage.md",
+    "backend/wta-modules/wta-notify/pom.xml",
+    "backend/wta-common/wta-common-redis/src/main/java/org/namewta/common/redis/utils/RedisUtils.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisher.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWakeSubscriber.java",
+    "backend/wta-modules/wta-notify/src/main/java/org/namewta/notify/adapter/worker/NotifyOutboxWorker.java",
+    "backend/wta-modules/wta-notify/src/test/java/org/namewta/notify/adapter/event/NotifyOutboxWakePublisherTest.java",
+    "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyWakeIntegrationTest.java",
+    "speculo/.speculo/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-28-replan-2026-09-23.md",
+    "/tmp/wta-review-backend-final.log"
+  ],
+  "evidence": [
+    "2026-09-26 实际读取当前 guide/Redis reference/framework-usage，并以 sha256sum 取得绑定 SHA d7b7e105…；git rev-parse HEAD 为 c671b8cf…。",
+    "wta-notify/pom.xml 显式依赖 org.namewta:wta-common-redis，版本继承 BOM/revision；没有将父 wta-common POM 当作 jar 或新建 Redis client。",
+    "NotifyOutboxWakePublisher 位于 adapter/event；@DsTxEventListener(AFTER_COMMIT) 才发唤醒。生产 publishViaRedis 使用准确 FQN RedisUtils.getClient().getTopic(channel).publishAsync(signal)，复用 RedisUtils 静态 Spring 管理客户端；未在 UseCase/DAO直连Redis，未创建线程池或同义公共工具。现有 RedisUtils.publish 是同步调用，使用同一客户端 Future 是实现独立等待上限所需的提交后适配。",
+    "生产等待上限固定 250ms；Future.get(timeout, MILLISECONDS) 超时/执行/运行异常取消 pending 并留下 poll；InterruptedException 取消 pending 后恢复线程中断标志。只记录 outboxId 和异常类型，不输出收件人/正文/凭据。publisher 不调用 Worker 或本地同步事件链。",
+    "NotifyOutboxWakeSubscriber 经 RedisUtils.subscribeAndGetListenerId 订阅并持有 listenerId，destroy 调 RedisUtils.unsubscribe；订阅异常不阻止启动，worker异常在消息入口隔离。NotifyOutboxWorker 的 AtomicBoolean 合并重叠 wake/poll、finally释放，信号outboxId仅hint，统一claim+dispatch，默认固定延迟poll 60000ms，无应用级无限队列/新增executor。",
+    "git diff --name-only 459c5a3e HEAD 对 publisher/subscriber/worker/RedisUtils/NotifyWakeIntegrationTest 五条路径输出为空，读取时这五路径与当前Skill入口 git status --porcelain 输出为空；只证明这些直接输入字节未变，不声称所有依赖或测试运行时环境等价。",
+    "已保留真实服务回归 T-28-replan-2026-09-23.md：459c5a3e，owned MySQL/Redis，NotifyWakeIntegrationTest 1/0/0/0；commitMs347、firstProviderMs456、pausedRedisCommitMs270，100额外wake不重复、移除订阅后READY由poll收敛、1200ms Redis pause后仍提交并poll成功；同轮AtomicResult66/0/0/0。此为历史运行记录，本次没有新跑。",
+    "核对 /tmp/wta-review-backend-final.log 既有实际运行：NotifyOutboxWakePublisherTest 10 tests/0 failure/0 error/0 skip；NotifyOutboxWorkerWakePollTest 9/0/0/0；NotifyOutboxWakeScopeGateTest 3/0/0/0；BUILD SUCCESS。Publisher测试包含有界等待、cancel、中断恢复、AFTER_COMMIT和PII载荷负例。日志里的 NotifyWakeIntegrationTest 为1 skip，明确不当作本轮真实Redis验收通过。"
+  ],
+  "limits": [
+    "passed 仅为这次已执行的当前 Skill 静态实现回审；不是 full_suite/e2e 的新执行或最终change完成声明。",
+    "250ms 是取得异步 Future 后等待发布确认上限，不是所有本地构造/调度/应用端到端耗时上限；取消 Future 不证明远端已撤销。",
+    "真实 MySQL/Redis wake 回归沿用有明示来源的旧记录；未填造历史 clean exact-HEAD/status 输出。",
+    "旧 Skill e92775… 的历史记录继续保留；本当前审查单独成立，不能把其日期/SHA倒填为旧时已执行。"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "captured_at": "2026-09-26T23:48:28.086406+00:00",
+  "source_head": "c671b8cfbc7f2894b49580cc81f2e097ee066807",
+  "source_tree": "3c6ea60ca1ef6ba8823d2dcb50f589a3c16f2f9d",
+  "source_clean_before": true,
+  "source_clean_after": true,
+  "commands": [
+    {
+      "cwd": "frontend",
+      "command": "pnpm lint && pnpm typecheck && pnpm test",
+      "exit_code": 0
+    },
+    {
+      "cwd": "backend",
+      "command": "./mvnw -B -ntp test",
+      "exit_code": 0,
+      "tests": 1210,
+      "passed": 959,
+      "skipped": 251
+    },
+    {
+      "cwd": ".",
+      "command": "bash release-artifacts/scripts/verify-release.sh",
+      "exit_code": 0
+    },
+    {
+      "cwd": ".",
+      "command": "node .agents/skills/engineering-standards/scripts/validate-skill-facts.mjs",
+      "exit_code": 0
+    },
+    {
+      "cwd": ".",
+      "command": "node speculo/workflows/specdev/common/tools/validate-specdev.mjs --self-check",
+      "exit_code": 0
+    }
+  ],
+  "historical_clean_substitution": "pending-user-decision",
+  "windows": "user-waived/not-run",
+  "runtime_results": [
+    "linux-start-result.json",
+    "storage-tests-result.json"
+  ]
+}

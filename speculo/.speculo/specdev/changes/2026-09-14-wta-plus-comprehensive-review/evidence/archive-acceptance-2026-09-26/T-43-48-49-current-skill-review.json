@@ -1,0 +1,266 @@
+{
+  "reviewed_at": "2026-09-26T23:49:05.944530+00:00",
+  "review_type": "current retrospective implementation and verification review",
+  "historical_execution_claim": false,
+  "scope": "T-43/T-48/T-49 existing skill bindings; binding phase is historical plan metadata, actual operation is current review of existing code and evidence",
+  "source": {
+    "head": "c671b8cfbc7f2894b49580cc81f2e097ee066807",
+    "tree": "3c6ea60ca1ef6ba8823d2dcb50f589a3c16f2f9d",
+    "clean": false
+  },
+  "repository_mutations": false,
+  "tests_run_by_this_agent": false,
+  "commands_run": [
+    {
+      "command": "node .agents/skills/namewta-fullstack-development/scripts/validate-module-mode.mjs backend/wta-modules/wta-notify --mode layered",
+      "cwd": "/srv/WTA-plus",
+      "exit_code": 0,
+      "stdout": "Validated layered module: backend/wta-modules/wta-notify (113 Java files)"
+    }
+  ],
+  "limitations": [
+    "Historical T48/T49 clean-source gaps remain; current c671 clean execution does not prove historical clean.",
+    "Windows real-machine execution remains user-waived/not-run; never counted as tested.",
+    "T43 legacy A/B measurement remains historical; current gated aggregation probe is stale after serial claim change.",
+    "Review does not assert completed archive gates or full-suite results beyond referenced runs."
+  ],
+  "findings": [
+    {
+      "id": "B-CURRENT-01",
+      "ticket": "T-43",
+      "severity": "verification failure",
+      "status": "open",
+      "source": "backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyFanoutMeasurementIntegrationTest.java:208-217",
+      "cause": "measureBoundedInAppResultAggregation expects one claim call to yield 50 and dispatches first 10, while current NotifyOutboxClaimService.claim uses claimCandidates(nowUtc,1). The enabled current integration probe would fail at hasSize(50).",
+      "required_action": "Adapt probe to current one-at-a-time claim/dispatch; preserve exactly ten result operations and identify changed instrumentation vs historical same-probe numbers. Re-run affected real probe before calling current T43 verification passed."
+    }
+  ],
+  "records": [
+    {
+      "ticket": "T-43",
+      "id": "engineering-standards",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "current_skill_sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "NotificationApplicationUseCase.java:24 uses public @DSTransactional submit; Runtime creates recipient/delivery/outbox IDs via IdGeneratorUtil before DAO batch.",
+        "NotifyNotificationDao.java:209-225 keeps Mapper/MetaObjectHandler in DAO, fills BaseEntity audit fields, chunks 500, checks exact affected row count, no independent BATCH SqlSession.",
+        "Notify{Recipient,Delivery,Outbox}Mapper.xml bind rows via #{...}; missing-target Delivery error written before insert, no SQL string interpolation.",
+        "Historical b-candidate real MySQL results retain rollback/wake/rowcount and clean9267 identity; current layered113 check passed."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-43",
+      "id": "namewta-fullstack-development",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b",
+      "current_skill_sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "NotificationApplicationUseCase -> NotificationApplicationRuntimeService -> NotifyNotificationDao -> Mapper/XML remains five-layer owner path. No new HTTP/frontend/public DTO/DDL contract introduced by batching.",
+        "Runtime imports UserService/OssService public wta-api contracts; no System Mapper access; unchanged notice authorization and target resolution upstream.",
+        "Current layered validator passed (113 Java files); existing source tests cover ALL100000 first-insert acceptance/100001 pre-write refusal."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-43",
+      "id": "wta-module-guide",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3",
+      "current_skill_sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "Notify index maps same submit usecase, notice publisher, DAO and six SQL owner; current POM depends wta-api/common artifacts, no wta-system implementation dependency.",
+        "Batch changes remain Notify-owned recipient/delivery/outbox; no new schema owner or cross-module runtime path."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-43",
+      "id": "wta-common-modules-guide",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c",
+      "current_skill_sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "Runtime uses org.namewta.common.mybatis.utils.IdGeneratorUtil and org.namewta.common.json.utils.JsonUtils; public business entry is NotificationApplicationService.",
+        "DAO alone imports MyBatis/SystemMetaObject; no new parent wta-common jar dependency or external provider I/O introduced."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-43",
+      "id": "engineering-standards",
+      "phase": "verify",
+      "operation": "verify-affected-contract-and-quality-gates",
+      "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "current_skill_sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "binding_hash_matches_current": true,
+      "status": "failed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "NotificationApplicationUseCase.java:24 uses public @DSTransactional submit; Runtime creates recipient/delivery/outbox IDs via IdGeneratorUtil before DAO batch.",
+        "NotifyNotificationDao.java:209-225 keeps Mapper/MetaObjectHandler in DAO, fills BaseEntity audit fields, chunks 500, checks exact affected row count, no independent BATCH SqlSession.",
+        "Notify{Recipient,Delivery,Outbox}Mapper.xml bind rows via #{...}; missing-target Delivery error written before insert, no SQL string interpolation.",
+        "Historical b-candidate real MySQL results retain rollback/wake/rowcount and clean9267 identity; current layered113 check passed.",
+        "B-CURRENT-01 current gated aggregation probe fails structurally; no passed assertion for current T43 verification."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-48",
+      "id": "engineering-standards",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "current_skill_sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "scripts/start-dev.sh:712-746 ordinary direct start bypasses preparation; no --server.port, no clean/install. External SPRING_CONFIG_LOCATION/ADDITIONAL_LOCATION honored; Vite inherited env prioritized at148.",
+        "build/repair/doctor are explicit at749-781; held build lock and cache safety fixtures remain. release-artifacts/tests/local-config-safety.test.mjs includes external-config-only, placeholder, menu and no-stdin cases.",
+        "/tmp/wta-archive-linux-0cc5b278/result.json: same clean c671 before/after, actual space-path backend twice and home frontend twice HTTP200/no clean-install; backend build and doctor exit0; runner exit0, cleanup0/0. Foreground commands intentionally terminated after readiness, not exit0 process passes."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-48",
+      "id": "engineering-standards",
+      "phase": "verify",
+      "operation": "verify-affected-contract-and-quality-gates",
+      "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "current_skill_sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "scripts/start-dev.sh:712-746 ordinary direct start bypasses preparation; no --server.port, no clean/install. External SPRING_CONFIG_LOCATION/ADDITIONAL_LOCATION honored; Vite inherited env prioritized at148.",
+        "build/repair/doctor are explicit at749-781; held build lock and cache safety fixtures remain. release-artifacts/tests/local-config-safety.test.mjs includes external-config-only, placeholder, menu and no-stdin cases.",
+        "/tmp/wta-archive-linux-0cc5b278/result.json: same clean c671 before/after, actual space-path backend twice and home frontend twice HTTP200/no clean-install; backend build and doctor exit0; runner exit0, cleanup0/0. Foreground commands intentionally terminated after readiness, not exit0 process passes."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-49",
+      "id": "engineering-standards",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "current_skill_sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "OssUploadProperties.validatePolicy validates expectedAccessPolicy, size/MIME/prefix and TTL; only SINGLE bypasses irrelevant part-size/threshold validation. AUTO/MULTIPART retain bounds and max10000parts.",
+        "OssUploadService.init:authorizePolicy before prepare; currentDefaultStorageKey taken from injected key service, ticket saves service/bucket; subsequent object calls use ticket.service.",
+        "/tmp/wta-archive-services-b1ddcba2/summary.json: clean c671 before/after, actual Maven exit0, six suites10 tests0fail/error/skip, cleanup0/0; relevant properties4, real routing1, no-attachment1."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-49",
+      "id": "namewta-fullstack-development",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b",
+      "current_skill_sha256": "675c053c11d8b22cd394c875f48688242d8e8328dd14e69657f5d5b12f2af68b",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "T49 removes irrelevant SINGLE YAML only, no frontend/API transport contract or new table/migration; existing backend remains final policy/Client authorizer.",
+        "Real MinIO routing test uploads private multipart, changes injected default to public-route, verifies historical original service and rejects incompatible new upload plus wrong Client/MIME/size; no canary creation."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-49",
+      "id": "wta-module-guide",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3",
+      "current_skill_sha256": "bb57a781314abe316f06ba9538f62043f1bd053904c0832969e575c09731a7a3",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "System classic registration preserved; OssUploadService and DefaultOssUploadObjectStore remain System internal implementation; historical object route is stored service.",
+        "Notification empty-attachment test confirms public OssService unused for empty list; no System Mapper leakage into Notify."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-49",
+      "id": "wta-common-modules-guide",
+      "phase": "implement",
+      "operation": "apply-scope-contract",
+      "sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c",
+      "current_skill_sha256": "d7b7e105c37499e0e0f8ad9b1e2dbf379100df5b6a47e0d6affb04483f8b162c",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "DefaultOssUploadObjectStore is System infrastructure adapter using precise org.namewta.common.oss.factory.OssFactory / client.OssClient entry, no direct SDK in business Runtime.",
+        "RedisOssDefaultStorageKey delegates RedisUtils using OssConstant.DEFAULT_CONFIG_KEY; per-upload ticket service authoritative after default changes; common access-policy enum reused."
+      ],
+      "historical_clean_gap_closed": false
+    },
+    {
+      "ticket": "T-49",
+      "id": "engineering-standards",
+      "phase": "verify",
+      "operation": "verify-affected-contract-and-quality-gates",
+      "sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "current_skill_sha256": "dbc475149e3588cb840c15e0bb287920b876c0eef4c4004dde078de1c4fca6d9",
+      "binding_hash_matches_current": true,
+      "status": "passed",
+      "executed_at": "2026-09-26T23:49:05.944530+00:00",
+      "actual_operation": "review existing implementation and available verification at current source; not historical execution replay",
+      "review_scope": "bound ticket scope, not full repository approval",
+      "evidence": [
+        "OssUploadProperties.validatePolicy validates expectedAccessPolicy, size/MIME/prefix and TTL; only SINGLE bypasses irrelevant part-size/threshold validation. AUTO/MULTIPART retain bounds and max10000parts.",
+        "OssUploadService.init:authorizePolicy before prepare; currentDefaultStorageKey taken from injected key service, ticket saves service/bucket; subsequent object calls use ticket.service.",
+        "/tmp/wta-archive-services-b1ddcba2/summary.json: clean c671 before/after, actual Maven exit0, six suites10 tests0fail/error/skip, cleanup0/0; relevant properties4, real routing1, no-attachment1."
+      ],
+      "historical_clean_gap_closed": false
+    }
+  ]
+}
