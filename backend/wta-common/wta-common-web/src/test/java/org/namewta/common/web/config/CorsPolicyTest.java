@@ -57,20 +57,44 @@ class CorsPolicyTest {
     }
 
     @Test
-    void wildcardIsRejectedEvenWhenCredentialsAreDisabled() {
+    void wildcardEchoesHttpOriginAndCredentials() throws Exception {
         var properties = new CorsProperties();
-        properties.setAllowCredentials(false);
         properties.setAllowedOrigins(List.of("*"));
-        assertThatThrownBy(() -> new ResourcesConfig().corsFilter(properties))
-            .isInstanceOf(IllegalArgumentException.class);
+        var filter = new ResourcesConfig().corsFilter(properties);
+        for (String method : List.of("POST", "OPTIONS")) {
+            var request = new MockHttpServletRequest(method, "/auth/login");
+            request.setServerName("127.0.0.1");
+            request.setServerPort(38888);
+            request.addHeader("Origin", "http://172.16.105.9:5177");
+            if ("OPTIONS".equals(method)) {
+                request.addHeader("Access-Control-Request-Method", "POST");
+                request.addHeader("Access-Control-Request-Headers", "Content-Type");
+            }
+            var response = new MockHttpServletResponse();
+            var reached = new AtomicBoolean();
+            filter.doFilter(request, response, (req, res) -> reached.set(true));
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(reached.get()).isEqualTo("POST".equals(method));
+            assertThat(response.getHeader("Access-Control-Allow-Origin")).isEqualTo("http://172.16.105.9:5177");
+            assertThat(response.getHeader("Access-Control-Allow-Credentials")).isEqualTo("true");
+        }
     }
 
     @Test
-    void wildcardConfigurationFailsBeforeAnyRequestIsServed() {
+    void wildcardStillRejectsNonHttpOrigins() throws Exception {
         var properties = new CorsProperties();
         properties.setAllowedOrigins(List.of("*"));
-        assertThatThrownBy(() -> new ResourcesConfig().corsFilter(properties))
-            .isInstanceOf(IllegalArgumentException.class);
+        var filter = new ResourcesConfig().corsFilter(properties);
+        for (String origin : List.of("null", "file:///tmp")) {
+            var request = new MockHttpServletRequest("POST", "/auth/login");
+            request.addHeader("Origin", origin);
+            var response = new MockHttpServletResponse();
+            var reached = new AtomicBoolean();
+            filter.doFilter(request, response, (req, res) -> reached.set(true));
+            assertThat(response.getStatus()).as(origin).isEqualTo(403);
+            assertThat(reached).as(origin).isFalse();
+            assertThat(response.getHeader("Access-Control-Allow-Origin")).isNull();
+        }
     }
 
     @Test

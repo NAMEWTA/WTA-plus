@@ -12,6 +12,7 @@
 - `docker/`：镜像、Compose、Nginx、基础设施和可观测配置。
 - `docker/frontend/nginx/html/nginx-lb/`：统一 LB 的内部静态维护页；上游返回 404 或常见 5xx 时保留原状态码展示。
 - `skills/wta-namewta-nginx-config/`：新增前端 App 与维护 LB/Nginx 的项目内动态 Skill。
+- `doc/`：换环境时的域名、OSS 与初始化对照，不代替发布命令或生产批准。
 
 所有示例命令默认从仓根执行（明确 `cd backend` 的子 shell 除外）。发布清单和本地夹具验证不代表已提交的干净版本或已部署环境；以具体 manifest、验收证据与批准记录判定交付状态。
 

@@ -31,9 +31,9 @@ scripts/
 
 ### 作用
 
-开发完成后，从父仓库根目录启动一个本地人工测试进程。子命令是 `start`、`build`、`doctor`、`repair`；无参数菜单只转发到这些子命令。
+开发完成后，从父仓库根目录前台启动一个本地人工测试进程。无参数时按菜单选择：先选前端或后端，再选启动方式；前端还会选择应用。选完就启动，清理和重新安装不会停在半路。
 
-日常 `start` 不执行 Maven `clean`、不重装已有前端依赖、不跑 JAR 哨兵，也不把端口写成 `--server.port`。`SERVER_PORT` 或外部 `application-local.yml` 仍由 Spring 自己读取。深度清理只在显式 `repair`。
+数字参数按同一菜单顺序补齐。文字子命令 `start`、`build`、`doctor`、`repair` 仍然可用。省略模式的 `start` 不执行 Maven `clean`、不重装已有前端依赖、不跑 JAR 哨兵，也不把端口写成 `--server.port`。`SERVER_PORT` 或外部 `application-local.yml` 仍由 Spring 自己读取。`repair`、`build`、`doctor` 只准备或检查，不启动。
 
 脚本不创建后台进程，也不重定向服务日志。依赖或缓存准备完成后，Vite 或 Spring Boot 会直接接管脚本进程，
 持续在当前终端输出实时日志；按 `Ctrl+C` 停止服务后返回调用脚本的终端。
@@ -41,9 +41,14 @@ scripts/
 ### 使用方式
 
 ```bash
-./scripts/start-dev.sh
-./scripts/start-dev.sh start backend
-./scripts/start-dev.sh repair backend
+./scripts/start-dev.sh                      # 交互选择：先选前端或后端，再选启动方式；前端还会选择应用。选完就启动
+./scripts/start-dev.sh 1 2 admin-web        # 前端不清理，直接启动 admin-web。依赖已安装则跳过 install
+./scripts/start-dev.sh 2 1                  # 后端清理 target、重新安装并校验产物，然后启动
+./scripts/start-dev.sh 2 3                  # 后端不清理、不重新安装，直接启动。可能仍使用已安装的旧依赖
+./scripts/start-dev.sh start backend        # 与「后端不清理直接启动」相同，不校验 JAR
+./scripts/start-dev.sh start backend clean  # 与「后端清理安装后启动」相同
+./scripts/start-dev.sh repair backend       # 只做后端清理安装和产物校验，不启动
+./scripts/start-dev.sh --help               # 打印完整用法，不启动任何服务
 ```
 
 Windows PowerShell 或 CMD 需要 Git for Windows 提供的 `bash`：
@@ -52,29 +57,44 @@ Windows PowerShell 或 CMD 需要 Git for Windows 提供的 `bash`：
 bash scripts/start-dev.sh
 ```
 
-第一级菜单只有「启动前端」和「启动后端」。前端应用按目录名排序，菜单显示包名和 development 环境的
-`VITE_APP_PORT`。端口按 Vite 顺序读取 `.env`、`.env.local`、`.env.development`、`.env.development.local`，
-后读到的非空值覆盖先前的值；脚本只取端口和 `VITE_APP_CONTEXT_PATH`，不打印其他键。
+交互菜单和数字参数使用同一套序号。没写全时，标准输入是终端就只问剩余步骤；不是终端就直接失败，不会等待输入。
+
+| 顺序 | 前端 `1` | 后端 `2` |
+| --- | --- | --- |
+| 第 2 个参数 | `1` 完全清理后重新安装并启动；`2` 不清理，直接启动 | `1` 清理 Maven target 并重新安装后启动；`2` 增量安装后启动；`3` 不清理，直接启动 |
+| 第 3 个参数 | 应用序号或目录名，例如 `admin-web`。只有一个可启动应用时可以省略 | 无 |
+
+前端应用按目录名排序，菜单显示包名和 development 环境的 `VITE_APP_PORT`。端口按 Vite 顺序读取 `.env`、`.env.local`、`.env.development`、`.env.development.local`，后读到的非空值覆盖先前的值；脚本只取端口和 `VITE_APP_CONTEXT_PATH`，不打印其他键。要在脚本里稳定指定应用时写目录名，不要依赖序号。
 
 前端启动方式：
 
 | 选项 | 行为 |
 | --- | --- |
-| 直接启动 | 保留 Vite 预构建缓存。`frontend/node_modules` 已存在时跳过 install，否则 `pnpm install --frozen-lockfile`。 |
-| 清理当前应用缓存 | 删除该应用以及工作区根上的 `node_modules/.vite`、`node_modules/.cache`、`node_modules/.unocss`、应用内 `.vite` 和 `*.tsbuildinfo`，再用 `vite --force` 重新预构建。不删除 `node_modules` 和 `dist`。 |
-| 清理并重装 | 在上一档之外再删除该应用 `dist`，并总是按 lockfile 重装依赖。 |
+| 完全清理后启动 | 删除该应用以及工作区根上的 `node_modules/.vite`、`node_modules/.cache`、`node_modules/.unocss`、应用内 `.vite`、`*.tsbuildinfo` 和该应用 `dist`，总是 `pnpm install --frozen-lockfile`，再用 `vite --force` 启动。不删除 `node_modules` 本身或 pnpm store。 |
+| 直接启动 | 保留 Vite 预构建缓存和 `dist`。`frontend/node_modules` 已存在时跳过 install，否则 `pnpm install --frozen-lockfile`。 |
 
 后端启动方式：
 
 | 选项 | 行为 |
 | --- | --- |
-| 直接启动 | 不执行 Maven `clean/install`，只校验已有 `wta-system` 产物。产物缺失时失败，需改选清理安装。 |
-| 增量安装 | 在聚合根执行 `-pl wta-admin -am install`，不 `clean`。MapStruct Plus 可能因 `target/generated-sources` 中的旧 `AutoMapperConfig` 编译失败。 |
-| 清理并重新安装 | 推荐用于生成源或依赖异常。同一聚合根执行 `-pl wta-admin -am -Plocal clean install`，跳过测试。 |
+| 清理并重新安装后启动 | 在聚合根执行 `-pl wta-admin -am -Plocal clean install`，跳过测试，校验 `wta-system` 产物，释放构建锁，然后前台启动。 |
+| 增量安装后启动 | 同一范围执行不带 `clean` 的 `install`，再校验并启动。MapStruct Plus 可能因 `target/generated-sources` 中的旧 `AutoMapperConfig` 编译失败；这时改用清理安装。 |
+| 直接启动 | 不执行 Maven `clean/install`，也不校验已有 JAR。依赖模块若已改过但没重新安装，启动的仍可能是已安装的旧代码。 |
+
+文字子命令：
+
+| 命令 | 行为 |
+| --- | --- |
+| `start frontend [应用] [direct\|clean]` | 省略模式时等于直接启动。`clean` 等于前端完全清理后启动。应用和模式两个词不要求固定顺序。 |
+| `start backend [direct\|install\|clean]` | 省略模式时等于直接启动。`install` 和 `clean` 准备成功后会启动。 |
+| `build backend` | 只做增量 install，不校验，不启动。不等于菜单里的后端 `2`。 |
+| `doctor backend` | 只校验已有产物，不安装，不启动。 |
+| `repair frontend [应用]` | 做前端完全清理的安装步骤，不启动。 |
+| `repair backend` | 做后端清理安装和产物校验，不启动。 |
 
 两段后端命令都留在 `backend/`：根 POM 以 import 引入仓内 `wta-common-bom` 和 `wta-profile-bom`，`-am` 不会安装这两个 BOM；进入 `wta-admin` 后 reactor 看不到它们。`spring-boot:run` 不带 `-am`，否则没有主类的依赖模块也会执行该目标；聚合根没有 spring-boot 插件前缀，所以必须带 `-pl wta-admin`。安装使用 Maven profile `local`，启动使用 Maven profile `dev` 和 Spring profiles `dev,local`。
 
-构建或直接启动前，脚本比较 `backend/wta-modules/wta-system/target/classes` 与 target JAR、`wta-admin` 实际 Maven classpath 中已安装 JAR 的 class 集合，并检查 admin 登录链依赖的关键类型。通过后释放构建锁，再以前台方式启动。Windows 上 Maven classpath 使用 `;` 和盘符路径，脚本按平台分隔符解析，不会把 `D:\` 中的冒号当成 Unix classpath 分隔符。该脚本用于启动人工测试环境，不能替代前后端自动测试和质量门禁。
+增量安装或清理安装完成、前台启动之前，脚本比较 `backend/wta-modules/wta-system/target/classes` 与 target JAR、`wta-admin` 实际 Maven classpath 中已安装 JAR 的 class 集合，并检查 admin 登录链依赖的关键类型。通过后释放构建锁，再启动。直接启动和 `build backend` 不跑这道校验。`doctor` 和 `repair` 会校验，但都不启动。Windows 上 Maven classpath 使用 `;` 和盘符路径，脚本按平台分隔符解析，不会把 `D:\` 中的冒号当成 Unix classpath 分隔符。该脚本用于启动人工测试环境，不能替代前后端自动测试和质量门禁。
 
 ### 前置条件与保护
 
@@ -89,10 +109,10 @@ bash scripts/start-dev.sh
 - 前端缓存删除只允许 `.vite`、`.cache`、`.unocss`、`dist` 和 `*.tsbuildinfo`。解析后的路径必须仍在 `frontend/` 内；`node_modules` 本身、pnpm store 和源码不删除。
 - 脚本不会读取或输出本地配置中的账号、密码等敏感值，也不会删除本机 Maven 仓库。
 - 仓库不要求 `.vscode/settings.json` 存在。使用 Java 自动构建的编辑器时，应在自己的工作区设置关闭对 Maven `target/` 的并行写入；不要在 reactor 运行中触发 IDE 编译。
-- 同一后端工作区的第二个受管启动会立即失败，并显示持锁 PID；正常退出或 `Ctrl+C`/`TERM` 会清理锁，
-  owner PID 已不存在的 stale lock 会被安全替换。含未知内容或元数据不匹配的锁不会被递归删除。
+- 同一后端工作区里，安装和校验使用的构建锁被占用时会立即失败，并显示持锁 PID。省略模式的直接启动不取这把锁。
+  正常退出或 `Ctrl+C`/`TERM` 会清理锁，owner PID 已不存在的 stale lock 会被安全替换。含未知内容或元数据不匹配的锁不会被递归删除。
 - 锁只协调 `start-dev.sh` 的安装和校验。运行后端启动时不要同时从其他终端或 IDE 对同一工作区执行 Maven
-  `clean/package/install`；这些外部进程不获取脚本锁，但构建后的 JAR 完整性门会阻止已发现的半成品继续启动。
+  `clean/package/install`；这些外部进程不获取脚本锁。JAR 完整性门只拦增量安装、清理安装、`doctor` 和 `repair`；直接启动不跑这道门。
 
 所有可执行 Shell 入口都启用了 `set -euo pipefail`：命令失败、使用未定义变量或管道中的任一命令失败时，
 脚本都会立即以非零状态退出，使 CI 能够准确判定门禁失败。
@@ -101,9 +121,9 @@ bash scripts/start-dev.sh
 
 1. 停止同一后端工作区中仍在运行的 Maven/IDE build；确认 VS Code 已应用工作区中的
    `"java.autobuild.enabled": false`，不要删除仍有存活 owner PID 的锁。
-2. 重新执行 `./scripts/start-dev.sh repair backend`。stale lock 会自动清理，reactor 会重新 `clean install`。日常 `start` 不会做这一步。
-3. 若仍提示 class 集合或哨兵缺失，检查错误中显示的 target/installed JAR，确认没有外部构建持续写入；
-   然后再次串行启动。脚本不会在产物不完整时进入 Spring Boot。
+2. 只想重建、先不启动时，执行 `./scripts/start-dev.sh repair backend`。要清理并立刻启动，执行 `./scripts/start-dev.sh 2 1` 或 `./scripts/start-dev.sh start backend clean`。stale lock 会自动清理。省略模式的 `start backend` 不会 `clean install`。
+3. 若 `install`、`clean`、`doctor` 或 `repair` 提示 class 集合或哨兵缺失，检查错误中显示的 target/installed JAR，确认没有外部构建持续写入；
+   然后再次串行启动。这些路径不会在产物不完整时进入 Spring Boot。直接启动不检查产物。
 4. 若极端 `SIGKILL` 留下错误中显示的 `.reclaim` 目录，先核对其 `owner` PID 已不存在，再只删除该 owner 文件
    与已变空的 `.reclaim` 目录；不得递归删除锁根目录或仍有活动 PID 的锁。
 

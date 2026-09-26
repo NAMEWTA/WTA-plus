@@ -1,8 +1,50 @@
 # 恢复入口
 
-revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
+2026-09-25：用户要求只解释并持久化 OSS/文件存储实现和 S3 配置要求，不改产品代码。当前 `main` 为 `5259e3b5`，比 `origin/main` 超前 255，工作区干净。变更未归档、未推送。50 票为 30 done / 20 cancelled / 0 ready。Windows 真机仍是 `user-waived/not-run`，不是测试通过。
+
+账本与合同只引用，不抄正文：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/.status.json</Path>、`source.md`、`spec.md`、`worklog.md`。本目录没有 `triage.md` 或 `publish.md`。当前工作仍是 `specdev/implement`，`archived` 为 false。同题命令报告见 <Path>{roots.state}/commands/handoff/2026-09-25-wta-plus-comprehensive-review-oss-s3-config.md</Path>。
+
+## OSS 与文件存储
+
+没有第二套文件存储。`OssFactory` 找不到默认配置时抛出的「文件存储服务类型无法找到」指的就是 S3 兼容后端。OSS 服务登记文件并签发地址；业务保存 `ossId`，不保存文件本体。
+
+- 配置表 `sys_oss_config`：一行一个桶。`access_policy` 只允许 `0`（PRIVATE）或 `2`（PUBLIC_READ）。`status=Y` 表示新上传使用的默认配置，不是普通启用开关。
+- 对象表 `sys_oss`：`file_name` 是对象键，`service` 是上传时的配置键。读、下、删都按这个键找原桶。切换默认配置不搬迁旧对象。
+- 引用表 `sys_oss_ref`：业务在保存数据的同一事务调用 `reconcileReferences`。有引用就不再是临时对象；最后一条引用解除后重新变成临时对象。管理端删除只把无引用对象标成待删除，不立刻删桶内对象。
+- 客户端在 `backend/wta-common/wta-common-oss/`。`OssFactory` 从 Redis 取配置并用 AWS S3 SDK 建客户端。默认指针是 `sys_oss:default_config`。
+- 浏览器直传是 `/resource/oss/uploads`。字节不经过业务服务器。策略在 `backend/wta-admin/src/main/resources/application.yml` 的 `oss.direct-upload.policies`。完成后核对大小、类型、指纹和常见文件头，再登记临时 `sys_oss`。
+- 服务端本地文件走 `SysOssServiceImpl.upload(File)`，使用当前默认配置，不走浏览器策略和文件头校验。
+- 已授权后用 `resolveAccessUrl`。公共读返回无签名地址；私有返回短时签名。`presignDownload` 只用于私有对象。邮件附件另复制私有快照，不把签名地址交给适配器。
+
+实现入口：<Path>backend/wta-api/src/main/java/org/namewta/system/api/OssService.java</Path>、<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssServiceImpl.java</Path>、<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/service/impl/SysOssConfigServiceImpl.java</Path>、<Path>backend/wta-modules/wta-system/src/main/java/org/namewta/system/oss/upload/OssUploadService.java</Path>、<Path>backend/wta-common/wta-common-oss/src/main/java/org/namewta/common/oss/factory/OssFactory.java</Path>。
+
+## S3 配置要求
+
+管理页是对象存储配置，接口 `/resource/oss/config`。页面把 PRIVATE/PUBLIC_READ 编码成 `0`/`2`。
+
+- 配置 key：2 到 20 个字符且全库唯一。启动只接受字母或数字开头，其余只能是字母、数字、点、下划线、连字符。不符合的行会被忽略，不能上传。
+- accessKey、桶名、访问站点都是 2 到 100 个字符。secretKey 新建时同样要求；编辑留空则沿用旧密钥。
+- 访问站点只填主机，可带端口，不写协议。`isHttps=Y/N` 决定 HTTP 或 HTTPS。
+- 前缀、区域、自定义域名、备注可空。空区域按 `us-east-1`。
+- 全库恰好一个 `status=Y`，且必须是私有。公共读不能当默认。不能在编辑里把当前默认改成 `N`，要切到另一行私有配置。默认配置不能删除。
+- 启动时 `init()` 只缓存结构完整的配置。恰好一行有效私有默认配置时才写 Redis 默认指针。没有指针时新上传报「文件存储服务类型无法找到」。
+- 站点含 `aliyun`、`qcloud`、`qiniu`、`obs` 时用虚拟主机风格。MinIO 及其他地址用路径风格，形如 `https://主机:端口/桶名/对象键`。
+- 公共读要给浏览器直开时，页面要求填写可公开访问的 `domainUrl`。服务端保存不强制该字段。
+- 已被对象引用后，不能改配置 key、桶名、访问类型、访问站点、是否 HTTPS 和区域。空白区域与 `us-east-1` 视为同一值。密钥可以轮换。前缀和自定义域名可以改，但已写入的对象键不改写。有引用或四个内置主键的配置不能删除。
+
+## 建议 skills
+
+- `wta-module-guide`：system 域的 OSS 配置、生命周期和跨模块 `OssService`。
+- `wta-common-modules-guide`：`OssFactory` / `OssClient`；业务不要直接建 S3 客户端。
+- `engineering-standards`：只有接着改代码、合同或交付时才读。
+
+下一会话不要据此重新施工、归档或推送。用户只要求留下以上事实。
 
 ## 历史恢复记录（以下状态仅属于各自revision）
+
+revision238 及更早只保留当时的票状态，不代表当前 30 done / 20 cancelled。
+
+revision238：T42在d95b464e完成当前候选验收；真实Mail27/通知135零skip及HTTP通过，默认940执行/244环境skip、full/core、分层及静态门禁通过；前端771与329产物按精确输入等价复用原73c28证据。18done/2cancelled/30ready，无in_progress；下一T43，Goal active，未归档。
 
 当前revision172：12done/2cancelled/36ready；T50最终84ce0a9已验收。无产品writer，下一T41；/tmp/wta-t41-implementation-design.md及real-environment-outline.md为只读准备。以下历史保持原时点。
 

@@ -439,6 +439,132 @@ if [[ "${direct_backend_output}" == *"正在刷新后端本地 Maven reactor"* |
   exit 1
 fi
 
+invoke_start_dev() {
+  set +e
+  start_dev_output=$(PATH="${fake_bin}:${PATH}" "${start_workspace}/scripts/start-dev.sh" "$@" 2>&1)
+  start_dev_status=$?
+  set -e
+}
+
+invoke_start_dev 2 3
+if [[ ${start_dev_status} -ne 0 ]]; then
+  echo "numeric direct backend start failed before the server handoff: ${start_dev_output}" >&2
+  exit 1
+fi
+if [[ "${start_dev_output}" == *"正在刷新后端本地 Maven reactor"* || "${start_dev_output}" == *"正在增量安装后端本地 Maven reactor"* || "${start_dev_output}" == *"--server.port"* ]]; then
+  echo "numeric direct backend start prepared or overrode the port: ${start_dev_output}" >&2
+  exit 1
+fi
+
+expect_locked_prepare_rejected() {
+  invoke_start_dev "$@"
+  if [[ ${start_dev_status} -eq 0 ]]; then
+    echo "$* unexpectedly succeeded while the build lock was held: ${start_dev_output}" >&2
+    exit 1
+  fi
+  if [[ "${start_dev_output}" == *"正在刷新后端本地 Maven reactor"* || "${start_dev_output}" == *"正在增量安装后端本地 Maven reactor"* ]]; then
+    echo "$* prepared before rejecting the lock: ${start_dev_output}" >&2
+    exit 1
+  fi
+  if [[ "${start_dev_output}" != *"PID $$"* ]]; then
+    echo "$* did not report owner PID: ${start_dev_output}" >&2
+    exit 1
+  fi
+}
+
+backend_build_lock_acquire "${start_backend}"
+expect_locked_prepare_rejected 2 1
+expect_locked_prepare_rejected start backend clean
+backend_build_lock_release
+
+expect_prepare_without_handoff() {
+  local required=${1}
+  shift
+  invoke_start_dev "$@"
+  if [[ ${start_dev_status} -eq 0 ]]; then
+    echo "$* unexpectedly handed off to Spring Boot: ${start_dev_output}" >&2
+    exit 1
+  fi
+  if [[ "${start_dev_output}" != *"${required}"* ]]; then
+    echo "$* did not prepare with '${required}': ${start_dev_output}" >&2
+    exit 1
+  fi
+  if [[ "${start_dev_output}" == *"正在以前台"* ]]; then
+    echo "$* reached the server handoff after a failed prepare: ${start_dev_output}" >&2
+    exit 1
+  fi
+}
+
+expect_prepare_without_handoff "正在刷新后端本地 Maven reactor" 2 1
+if [[ "${start_dev_output}" == *"正在增量安装后端本地 Maven reactor"* ]]; then
+  echo "numeric clean backend start used the incremental installer: ${start_dev_output}" >&2
+  exit 1
+fi
+expect_prepare_without_handoff "正在刷新后端本地 Maven reactor" start backend clean
+expect_prepare_without_handoff "正在增量安装后端本地 Maven reactor" 2 2
+if [[ "${start_dev_output}" == *"正在刷新后端本地 Maven reactor"* ]]; then
+  echo "numeric incremental backend start cleaned the reactor: ${start_dev_output}" >&2
+  exit 1
+fi
+expect_prepare_without_handoff "正在增量安装后端本地 Maven reactor" start backend install
+if [[ "${start_dev_output}" == *"正在刷新后端本地 Maven reactor"* ]]; then
+  echo "word incremental backend start cleaned the reactor: ${start_dev_output}" >&2
+  exit 1
+fi
+
+help_output=$("${workspace_root}/scripts/start-dev.sh" --help)
+if [[ "${help_output}" != *"1 2 admin-web"* || "${help_output}" != *"repair backend"* ]]; then
+  echo "start-dev help did not describe numeric and word modes: ${help_output}" >&2
+  exit 1
+fi
+set +e
+unknown_output=$("${workspace_root}/scripts/start-dev.sh" no-such 2>&1)
+unknown_status=$?
+set -e
+if [[ ${unknown_status} -ne 2 ]]; then
+  echo "unknown start-dev command exited ${unknown_status}: ${unknown_output}" >&2
+  exit 1
+fi
+
+set +e
+missing_frontend_output=$(
+  bash -c '
+    set -euo pipefail
+    source "$1"
+    resolve_dev_selection 1
+  ' _ "${workspace_root}/scripts/start-dev.sh" </dev/null 2>&1
+)
+missing_frontend_status=$?
+missing_backend_output=$(
+  bash -c '
+    set -euo pipefail
+    source "$1"
+    resolve_dev_selection 2
+  ' _ "${workspace_root}/scripts/start-dev.sh" </dev/null 2>&1
+)
+missing_backend_status=$?
+missing_app_output=$(
+  bash -c '
+    set -euo pipefail
+    source "$1"
+    resolve_dev_selection 1 2
+  ' _ "${workspace_root}/scripts/start-dev.sh" </dev/null 2>&1
+)
+missing_app_status=$?
+set -e
+if [[ ${missing_frontend_status} -ne 2 || "${missing_frontend_output}" != *"不是终端"* || "${missing_frontend_output}" != *"前端启动方式"* ]]; then
+  echo "incomplete frontend selection did not fail closed (status ${missing_frontend_status}): ${missing_frontend_output}" >&2
+  exit 1
+fi
+if [[ ${missing_backend_status} -ne 2 || "${missing_backend_output}" != *"不是终端"* || "${missing_backend_output}" != *"后端启动方式"* ]]; then
+  echo "incomplete backend selection did not fail closed (status ${missing_backend_status}): ${missing_backend_output}" >&2
+  exit 1
+fi
+if [[ ${missing_app_status} -ne 2 || "${missing_app_output}" != *"不是终端"* || "${missing_app_output}" != *"前端应用"* ]]; then
+  echo "incomplete app selection did not fail closed (status ${missing_app_status}): ${missing_app_output}" >&2
+  exit 1
+fi
+
 (
   # shellcheck source=../start-dev.sh
   source "${workspace_root}/scripts/start-dev.sh"
@@ -449,9 +575,80 @@ fi
   grep -F "2、home-web（@namewta/home-web，5175）" "${menu_file}" >/dev/null
   grep -F "3、sso-web（@namewta/sso-web，4176）" "${menu_file}" >/dev/null
   frontend_mode=$(choose_frontend_mode < <(printf ' 2 \n') 2>/dev/null)
-  [[ "${frontend_mode}" == "clear-cache" ]]
+  [[ "${frontend_mode}" == "direct" ]]
+  frontend_clean_mode=$(choose_frontend_mode < <(printf '1\n') 2>/dev/null)
+  [[ "${frontend_clean_mode}" == "clean" ]]
+  set +e
+  frontend_bad_output=$(choose_frontend_mode < <(printf '3\n') 2>&1)
+  frontend_bad_status=$?
+  set -e
+  [[ ${frontend_bad_status} -eq 2 ]]
+  [[ "${frontend_bad_output}" == *"只能输入 1 或 2"* ]]
   backend_mode=$(choose_backend_mode < <(printf '3\r\n') 2>/dev/null)
-  [[ "${backend_mode}" == "clean" ]]
+  [[ "${backend_mode}" == "direct" ]]
+  backend_clean_mode=$(choose_backend_mode < <(printf '1\n') 2>/dev/null)
+  [[ "${backend_clean_mode}" == "clean" ]]
+  backend_install_mode=$(choose_backend_mode < <(printf '2\n') 2>/dev/null)
+  [[ "${backend_install_mode}" == "install" ]]
+
+  resolve_dev_selection 1 2 admin-web
+  [[ "${dev_selection_target}" == "frontend" ]]
+  [[ "${dev_selection_mode}" == "direct" ]]
+  [[ "${dev_selection_app}" == "admin-web" ]]
+  resolve_dev_selection 1 2 1
+  [[ "${dev_selection_target}" == "frontend" ]]
+  [[ "${dev_selection_mode}" == "direct" ]]
+  [[ "${dev_selection_app}" == "admin-web" ]]
+  resolve_dev_selection 1 1 2
+  [[ "${dev_selection_mode}" == "clean" ]]
+  [[ "${dev_selection_app}" == "home-web" ]]
+  resolve_dev_selection 2 1
+  [[ "${dev_selection_target}" == "backend" ]]
+  [[ "${dev_selection_mode}" == "clean" ]]
+  [[ -z "${dev_selection_app}" ]]
+  resolve_dev_selection 2 2
+  [[ "${dev_selection_mode}" == "install" ]]
+  resolve_dev_selection 2 3
+  [[ "${dev_selection_mode}" == "direct" ]]
+
+  resolve_start_frontend_args clean admin-web
+  [[ "${dev_selection_mode}" == "clean" ]]
+  [[ "${dev_selection_app}" == "admin-web" ]]
+  resolve_start_frontend_args admin-web direct
+  [[ "${dev_selection_mode}" == "direct" ]]
+  [[ "${dev_selection_app}" == "admin-web" ]]
+  resolve_start_frontend_args reinstall sso-web
+  [[ "${dev_selection_mode}" == "clean" ]]
+  [[ "${dev_selection_app}" == "sso-web" ]]
+  resolve_start_backend_args
+  [[ "${dev_selection_target}" == "backend" ]]
+  [[ "${dev_selection_mode}" == "direct" ]]
+  [[ -z "${dev_selection_app}" ]]
+  resolve_start_backend_args install
+  [[ "${dev_selection_mode}" == "install" ]]
+
+  assert_selection_rejected() {
+    local output status
+    set +e
+    output=$(resolve_dev_selection "$@" 2>&1)
+    status=$?
+    set -e
+    if [[ ${status} -ne 2 ]]; then
+      echo "selection $* exited ${status}, want 2: ${output}" >&2
+      exit 1
+    fi
+  }
+  assert_selection_rejected 3
+  assert_selection_rejected 1 9
+  assert_selection_rejected 1 admin-web
+  assert_selection_rejected 2 3 extra
+  set +e
+  backend_mode_name_output=$(resolve_start_backend_args 1 2>&1)
+  backend_mode_name_status=$?
+  set -e
+  [[ ${backend_mode_name_status} -eq 2 ]]
+  [[ "${backend_mode_name_output}" == *"direct、install 或 clean"* ]]
+
   [[ "$(build_visit_url 5177 /)" == "http://127.0.0.1:5177/" ]]
   [[ "$(build_visit_url 5177 admin)" == "http://127.0.0.1:5177/admin" ]]
 
@@ -555,6 +752,23 @@ EOF
   echo "start-dev menu, port parser, or cache cleanup contract failed" >&2
   exit 1
 }
+
+one_app_root="${test_root}/one-app/frontend"
+mkdir -p "${one_app_root}/apps/only-web"
+printf '%s\n' '{"name":"@namewta/only-web","scripts":{"dev":"vite"}}' >"${one_app_root}/apps/only-web/package.json"
+one_app_output=$(
+  bash -c '
+    set -euo pipefail
+    source "$1"
+    frontend_dir=$2
+    resolve_dev_selection 1 2
+    printf "%s %s\n" "${dev_selection_mode}" "${dev_selection_app}"
+  ' _ "${workspace_root}/scripts/start-dev.sh" "${one_app_root}" </dev/null
+)
+if [[ "${one_app_output}" != "direct only-web" ]]; then
+  echo "single frontend app was not selected without a prompt: ${one_app_output}" >&2
+  exit 1
+fi
 
 # 必须在独立进程的顶层 shell 里调用。放进 ( ) 或 || 会让 set -e 被忽略，测不出 shopt -p 的退出码。
 top_level_cache="${test_root}/top-level-cache"

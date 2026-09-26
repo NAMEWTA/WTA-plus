@@ -47,13 +47,12 @@ class SsoCorsProfileBindingTest {
     }
 
     @Test
-    void productionWildcardWithCredentialsFailsAtStartup() {
+    void productionWildcardAllowsAnyHttpOrigin() {
         production().withPropertyValues("WEB_CORS_ALLOWED_ORIGINS=*")
             .run(context -> {
-                assertThat(context).hasFailed();
-                assertThat(rootCause(context.getStartupFailure()))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("CORS requires exact HTTP(S) origins without wildcards");
+                assertThat(context).hasNotFailed().hasSingleBean(CorsFilter.class);
+                assertThat(context.getBean(CorsProperties.class).allowsAnyHttpOrigin()).isTrue();
+                assertThat(context.getBean(CorsProperties.class).validatedOrigins()).isEmpty();
             });
     }
 
@@ -78,13 +77,5 @@ class SsoCorsProfileBindingTest {
     private ApplicationContextRunner production() {
         return runner.withPropertyValues("spring.profiles.active=prod",
             "spring.config.location=classpath:/application.yml");
-    }
-
-    private static Throwable rootCause(Throwable failure) {
-        Throwable cause = failure;
-        while (cause.getCause() != null) {
-            cause = cause.getCause();
-        }
-        return cause;
     }
 }
