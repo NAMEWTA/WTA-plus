@@ -24,3 +24,9 @@
 完成治理提交前 complete 仅剩预期的 Git dirty 错误（1 error/0 warnings）；非空实现区间、串行父链、30条集成记录、30 done/20 cancelled、Skill记录和交付数量均已过校验。归档前先提交并推送治理记录，再要求 complete=0 和clean，未通过则不移动。
 
 路径预检：唯一目标；目标不存在；本change仅在active；无父实现change；无triage源Issue或publish请求；源无逃逸符号链接。归档计划获用户当前指令授权，执行阶段保持 mechanical-only。原历史deviations已保存在change证据中，仅移除过期活动投影，不删除原事实。
+
+## 已执行归档
+
+归档前治理提交 `8853ca3349195812d011c65977cfed5d939f1b3b` 已push；其clean complete：0 errors/0 warnings。用户授权按当前补验完成并归档。已按计划原子移动全部 10836 文件，其中原Git跟踪 9827 文件；逐文件SHA-256核对仅 `.status.json` 的已列明归档元数据变化，其他内容原样保留，ignored本地证据也随目录移动、未强行新增追踪。完整清单见 `2026-09-26-specdev-2026-09-14-wta-plus-comprehensive-review-manifest.json`。全局active只移除本change，OIDC条目保持；无永久知识或其他清理。
+
+源不存在、目标完整、全局active/archived无重叠、目标schema字段已回读确认。最后归档commit后再次运行complete与包级自检，随后push。
