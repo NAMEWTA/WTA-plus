@@ -18,4 +18,10 @@ public interface OssObjectStore {
     String publicUrl(SysOss oss);
 
     void delete(SysOss oss);
+
+    /** 有界删除；异常不能证明供应商未执行，调用者必须保留持久预约。 */
+    void delete(SysOss oss, Duration timeout);
+
+    /** 仅在对象缺失且 Bucket 可达时返回 false；不可确认时抛异常。 */
+    boolean exists(SysOss oss, Duration timeout);
 }

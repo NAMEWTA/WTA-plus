@@ -27,6 +27,7 @@
             delete_state = 'ACTIVE',
             update_time = now()
         where oss_id = #{ossId}
+          and delete_state != 'DELETING'
     </update>
 
     <update id="markDeletePending">
@@ -36,6 +37,12 @@
             delete_state = 'PENDING',
             update_time = now()
         where oss_id = #{ossId}
+          and delete_state != 'DELETING'
+    </update>
+
+    <update id="reserveDeletion">
+        update sys_oss set delete_state = 'DELETING', update_time = now()
+        where oss_id = #{ossId} and delete_state = 'PENDING'
     </update>
 
     <update id="compareAndSetService">

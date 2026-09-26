@@ -66,13 +66,9 @@ Redis 地址、端口和逻辑库可由 `REDIS_HOST`、`REDIS_PORT`、`REDIS_DAT
 HTTP 本地 SSO 如需关闭 Secure Cookie，必须仅在 dev/local 显式设置 `SSO_COOKIE_SECURE=false`；
 模板不关闭验证码或生产安全默认值。
 
-应用 CORS 默认不许可跨来源浏览器请求，同源请求无需配置。生产发布从固定版本的
-App Origin 清单注入 `WEB_CORS_ALLOWED_ORIGINS`，值为逗号分隔的精确
-`http(s)://host[:port]`，不能使用 `*`、路径或通配子域；无效配置会使应用启动失败。
-本地模板仅列出当前 Admin、Home、SSO Vite 代理使用的 `127.0.0.1`
-入口（5177、5175、4176）。浏览器继续请求各 App 的同源代理路径；若开发入口的主机名或
-端口不同，必须显式设置对应的精确 Origin。对象存储桶的浏览器直传 CORS 由桶配置单独管理，
-不会因应用 CORS 白名单改变而扩大。CORS 只约束浏览器读取跨来源响应，接口仍按自身认证与权限规则鉴权。
+应用 CORS 的公共默认值为单独 `*`，允许任意 HTTP(S) Origin 并回显请求来源，兼容凭证请求；这是明确的配置选择。`WEB_CORS_ALLOWED_ORIGINS` 可覆盖为逗号分隔的精确 `http(s)://host[:port]` 列表，空值关闭跨来源许可。`*` 必须独占列表，不能混入精确来源；路径、通配子域及非 HTTP(S) 来源不受支持。生产发布仍可从固定版本 App Origin 清单注入精确列表。
+
+对象存储桶的浏览器直传 CORS 单独管理；应用 CORS 不修改桶策略。CORS 只约束浏览器读取跨来源响应，接口仍按自身认证与权限规则鉴权。
 
 本地配置和 `.example.yml/.yaml` 同时从 Maven 资源复制和 JAR 打包中排除，
 旧 `target/classes` 残留也不能进入新 JAR。升级时先在仓库外安全备份原本机配置，更新后恢复到忽略路径；

@@ -102,7 +102,8 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         boolean deadlineGateInProgress = false;
         NotifyRequest.PreSendGate mailPreSendGate = null;
         try {
-            NotifySendPlanner.Plan plan = planChannel(intent, delivery);
+            PreparedPlan prepared = planChannel(intent, delivery);
+            NotifySendPlanner.Plan plan = prepared.plan();
             if (!plan.ok()) {
                 delivery.setStatus("FAILED");
                 errorCode = plan.errorCode();
@@ -111,6 +112,11 @@ public class DispatchNotificationService implements NotifyDispatchPort {
                 if (NotificationChannel.MAIL.name().equals(delivery.getChannel())) {
                     NotifyOutbox fencedOutbox = outbox;
                     mailPreSendGate = new NotifyRequest.PreSendGate(() -> {
+                        // 共享附件复制与本地物化完成后才占用配额，等待其他收件人的复制不算发送。
+                        if (!resultPort.deadlineGate(fencedOutbox)) throw new NotifyRequest.PreSendClosed();
+                        NotifySendPlanner.Plan quotaPlan = prepared.acquireMailQuota().get();
+                        if (!quotaPlan.ok()) throw new MailQuotaRejected(quotaPlan.errorCode(), quotaPlan.errorMessage());
+                        // 配额 I/O 可能跨过截止时间；发送预约必须再核一次持久 deadline 与租约。
                         if (!resultPort.beginMailProviderSend(fencedOutbox)) throw new NotifyRequest.PreSendClosed();
                     });
                 }
@@ -145,6 +151,10 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         } catch (NotifyRequest.PreSendClosed closed) {
             // deadlineGate 已收敛终态；租约丢失时也绝不补写或进入 SMTP。
             return;
+        } catch (MailQuotaRejected rejected) {
+            delivery.setStatus("FAILED");
+            errorCode = rejected.code;
+            errorMessage = rejected.getMessage();
         } catch (NotifyDeliveryException exception) {
             if (deadlineGateInProgress) throw exception;
             result = exception.result();
@@ -153,6 +163,10 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             errorMessage = outcome.errorMessage();
         } catch (NotifyAttachmentSnapshotException exception) {
             if (deadlineGateInProgress) throw exception;
+            if ("ATTACHMENT_COPY_IN_PROGRESS".equals(exception.code())) {
+                resultPort.settle(outbox, Disposition.WAIT);
+                return;
+            }
             // 快照阶段尚未进入 SMTP；保留可核对 COPY_UNKNOWN，不等外部回执也不盲重发。
             delivery.setStatus("FAILED");
             errorCode = "ATTACHMENT_SNAPSHOT_UNAVAILABLE";
@@ -337,7 +351,21 @@ public class DispatchNotificationService implements NotifyDispatchPort {
         return code != null && LOCAL_VALIDATION_CODES.contains(code) ? code : "VALIDATION_ERROR";
     }
 
-    private NotifySendPlanner.Plan planChannel(NotifyIntent intent, NotifyDelivery delivery) {
+    /** 同一份账号、绑定和参数快照用于纯预检及延后的 MAIL 配额预约。 */
+    private record PreparedPlan(NotifySendPlanner.Plan plan,
+                                java.util.function.Supplier<NotifySendPlanner.Plan> acquireMailQuota) { }
+
+    /** 配额确定拒绝发生在 SMTP 前，不能被映射为供应商 UNKNOWN。 */
+    private static final class MailQuotaRejected extends RuntimeException {
+        private final String code;
+
+        private MailQuotaRejected(String code, String message) {
+            super(message);
+            this.code = code;
+        }
+    }
+
+    private PreparedPlan planChannel(NotifyIntent intent, NotifyDelivery delivery) {
         String sceneCode = intent.getSceneCode() == null || intent.getSceneCode().isBlank()
             ? intent.getTemplateCode() : intent.getSceneCode();
         NotifySceneBinding binding = configDao.findBinding(sceneCode, delivery.getChannel());
@@ -345,8 +373,14 @@ public class DispatchNotificationService implements NotifyDispatchPort {
             ? null : configDao.findAccount(binding.getAccountId());
         @SuppressWarnings("unchecked")
         Map<String, Object> raw = JsonUtils.parseObject(intent.getTemplateParamsJson(), Map.class);
-        return NotifySendPlanner.plan(sceneCode, delivery.getChannel(), delivery.getTargetValue(),
-            NotifyTemplateRenderer.stringify(raw), binding, account, quotaPort);
+        Map<String, String> params = NotifyTemplateRenderer.stringify(raw);
+        java.util.function.Supplier<NotifySendPlanner.Plan> acquireQuota = () -> NotifySendPlanner.plan(
+            sceneCode, delivery.getChannel(), delivery.getTargetValue(), params, binding, account, quotaPort);
+        if (NotificationChannel.MAIL.name().equals(delivery.getChannel())) {
+            return new PreparedPlan(NotifySendPlanner.preflight(sceneCode, delivery.getChannel(),
+                params, binding, account), acquireQuota);
+        }
+        return new PreparedPlan(acquireQuota.get(), null);
     }
 
     private NotifyTarget target(NotifyDelivery delivery) {

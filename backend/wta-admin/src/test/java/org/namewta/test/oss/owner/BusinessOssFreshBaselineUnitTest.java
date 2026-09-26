@@ -33,7 +33,7 @@ class BusinessOssFreshBaselineUnitTest {
 
         assertFalse(fixture.manager().cleanupExpired(10L, now, true));
 
-        verify(fixture.ossMapper()).updateLifecycle(10L, "N", null);
+        verify(fixture.ossMapper(), never()).updateLifecycle(10L, "N", null);
         verifyNoInteractions(fixture.objectStore());
         verify(fixture.ossMapper(), never()).markDeletePending(anyLong(), any());
         verify(fixture.ossMapper(), never()).deleteById(anyLong());
@@ -111,7 +111,9 @@ class BusinessOssFreshBaselineUnitTest {
         OssObjectStore objectStore = mock(OssObjectStore.class);
         OssLifecycleProperties properties = new OssLifecycleProperties();
         return new Fixture(ossMapper, refMapper, objectStore,
-            new OssLifecycleManager(ossMapper, refMapper, objectStore, properties));
+            new OssLifecycleManager(ossMapper, refMapper, objectStore, properties,
+                mock(org.namewta.system.oss.readiness.OssStorageReadinessRegistry.class),
+                new org.namewta.system.oss.service.OssCleanupAtomicService(ossMapper, refMapper)));
     }
 
     private SysOss oss(Long id, String temporary, LocalDateTime expireTime) {

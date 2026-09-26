@@ -564,6 +564,144 @@ class DispatchNotificationServiceTest {
         verify(fixture.dao, never()).insert(any(org.namewta.notify.domain.entity.NotifyAttempt.class));
     }
 
+    @Test
+    void copyingWaitConsumesNeitherAttemptNorQuotaAndReadyRetrySendsOnce() {
+        var snapshots = mock(org.namewta.common.notify.attachment.NotifyAttachmentSnapshotService.class);
+        var store = mailIdempotencyStore();
+        AtomicInteger physicalSends = new AtomicInteger();
+        NotifyDispatcher dispatcher = mailDispatcher(message -> {
+            physicalSends.incrementAndGet();
+            return "owned-mail-message";
+        }, snapshots, store);
+        MemoryQuota quota = new MemoryQuota();
+        Fixture fixture = fixture("MAIL", quota, dispatcher);
+        LocalDateTime now = LocalDateTime.of(2026, 9, 26, 12, 0);
+        when(fixture.dao.databaseNow()).thenReturn(now);
+        fixture.outbox.setLeaseUntil(now.plusMinutes(1));
+        fixture.outbox.setLastErrorCode(NotifyOutbox.DEADLINE_UNSENT_READY);
+        fixture.intent.setAttachmentActorUserId(7L);
+        fixture.intent.setAttachmentActorClientPk(8L);
+        var relation = new org.namewta.notify.domain.entity.NotifyIntentAttachment();
+        relation.setSourceOssId(77L);
+        relation.setSnapshotOssId(88L);
+        relation.setStatus("READY");
+        relation.setSendReserved(false);
+        when(fixture.dao.attachments(1L)).thenReturn(List.of(relation));
+        when(fixture.dao.lockAttachments(1L)).thenReturn(List.of(relation));
+        when(fixture.dao.saveAttachment(any())).thenReturn(1);
+        var readySnapshot = new org.namewta.common.notify.attachment.NotifyAttachmentSnapshot(77L,
+            new org.namewta.common.notify.attachment.NotifyAttachmentResource(88L, "owned.txt", "text/plain", 5,
+                target -> java.nio.file.Files.writeString(target, "owned")));
+        when(snapshots.createSnapshots(anyLong(), any(), any()))
+            .thenThrow(new org.namewta.common.notify.exception.NotifyAttachmentSnapshotException(
+                "ATTACHMENT_COPY_IN_PROGRESS", "copy in progress"))
+            .thenReturn(List.of(readySnapshot));
+        NotifySceneBinding binding = binding(11L, "MAIL", "${code}", "${expireMinutes}");
+        binding.setRestricted("Y");
+        binding.setTemplateMinuteMax(1);
+        binding.setRecipientMinuteMax(1);
+        binding.setRecipientDayMax(1);
+        NotifyChannelAccount account = mailAccount(11L, "owned-mail", "Y");
+        account.setMinuteMax(1);
+        when(fixture.configDao.findBinding("auth-captcha", "MAIL")).thenReturn(binding);
+        when(fixture.configDao.findAccount(11L)).thenReturn(account);
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals("PENDING", fixture.delivery.getStatus());
+        assertEquals("READY", fixture.outbox.getStatus());
+        assertEquals(now.plusSeconds(30), fixture.outbox.getNextAttemptAt());
+        assertEquals(0, fixture.delivery.getAttemptCount());
+        assertEquals(0, fixture.outbox.getAttemptCount());
+        assertTrue(quota.counts.isEmpty());
+        assertEquals(0, physicalSends.get());
+        verify(store).release(any());
+        verify(fixture.dao, never()).insert(any(org.namewta.notify.domain.entity.NotifyAttempt.class));
+
+        // 模拟下一次到期领取，沿用同一份内容和每分钟/每天上限 1。
+        when(fixture.dao.databaseNow()).thenReturn(now.plusSeconds(30));
+        fixture.outbox.setStatus("PROCESSING");
+        fixture.outbox.setLeaseToken("second-token");
+        fixture.outbox.setLeaseUntil(now.plusSeconds(90));
+        fixture.outbox.setClaimedFromReady(true);
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals(1, physicalSends.get());
+        assertEquals("ACCEPTED", fixture.delivery.getStatus());
+        assertEquals("DONE", fixture.outbox.getStatus());
+        assertEquals(1, fixture.delivery.getAttemptCount());
+        assertEquals(1, fixture.outbox.getAttemptCount());
+        assertTrue(quota.counts.values().stream().allMatch(value -> value.get() == 1));
+    }
+
+    @Test
+    void realMailGateQuotaRejectionIsLocalFailureAndNeverCallsSmtp() {
+        AtomicInteger sends = new AtomicInteger();
+        NotifyIdempotencyStore store = mailIdempotencyStore();
+        NotifyDispatcher dispatcher = mailDispatcher(message -> {
+            sends.incrementAndGet();
+            return "unexpected";
+        }, null, store);
+        Fixture fixture = fixture("MAIL", (key, limit, duration) -> false, dispatcher);
+        when(fixture.configDao.findBinding("auth-captcha", "MAIL"))
+            .thenReturn(binding(11L, "MAIL", "${code}", "${expireMinutes}"));
+        when(fixture.configDao.findAccount(11L)).thenReturn(mailAccount(11L, "owned-mail", "Y"));
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals(0, sends.get());
+        assertEquals("FAILED", fixture.delivery.getStatus());
+        assertEquals("ACCOUNT_QUOTA", fixture.delivery.getErrorCode());
+        assertEquals("DONE", fixture.outbox.getStatus());
+        verify(store).release(any());
+    }
+
+    @Test
+    void mailGateRechecksDeadlineAfterQuotaBeforeSmtpReservation() {
+        var clock = new java.util.concurrent.atomic.AtomicReference<>(LocalDateTime.of(2026, 9, 26, 12, 0));
+        AtomicInteger sends = new AtomicInteger();
+        NotifyDispatcher dispatcher = mailDispatcher(message -> {
+            sends.incrementAndGet();
+            return "unexpected";
+        }, null, mailIdempotencyStore());
+        Fixture fixture = fixture("MAIL", (key, limit, duration) -> {
+            clock.set(clock.get().plusSeconds(2));
+            return true;
+        }, dispatcher);
+        fixture.intent.setExpiresAt(clock.get().plusSeconds(1));
+        fixture.outbox.setLeaseUntil(clock.get().plusMinutes(1));
+        fixture.outbox.setLastErrorCode(NotifyOutbox.DEADLINE_UNSENT_READY);
+        when(fixture.dao.databaseNow()).thenAnswer(call -> clock.get());
+        when(fixture.configDao.findBinding("auth-captcha", "MAIL"))
+            .thenReturn(binding(11L, "MAIL", "${code}", "${expireMinutes}"));
+        when(fixture.configDao.findAccount(11L)).thenReturn(mailAccount(11L, "owned-mail", "Y"));
+
+        fixture.service.dispatch(fixture.outbox);
+
+        assertEquals(0, sends.get());
+        assertEquals("FAILED", fixture.delivery.getStatus());
+        assertEquals("NOTIFICATION_EXPIRED", fixture.delivery.getErrorCode());
+        assertEquals("DONE", fixture.outbox.getStatus());
+        verify(fixture.dao, never()).insert(any(org.namewta.notify.domain.entity.NotifyAttempt.class));
+    }
+
+    private NotifyIdempotencyStore mailIdempotencyStore() {
+        NotifyIdempotencyStore store = mock(NotifyIdempotencyStore.class);
+        AtomicInteger nonce = new AtomicInteger();
+        when(store.acquire(anyString(), anyString(), anyString(), any())).thenAnswer(call ->
+            new NotifyIdempotencyStore.Acquired(call.getArgument(0), call.getArgument(1),
+                call.getArgument(2), "mail-" + nonce.incrementAndGet(), call.getArgument(3)));
+        return store;
+    }
+
+    private NotifyDispatcher mailDispatcher(org.namewta.common.mail.notify.MailNotificationSender sender,
+        org.namewta.common.notify.attachment.NotifyAttachmentSnapshotService snapshots, NotifyIdempotencyStore store) {
+        var adapter = new org.namewta.common.mail.notify.MailNotifyChannelAdapter(sender,
+            key -> new cn.hutool.extra.mail.MailAccount());
+        return new NotifyDispatcher(new NotifyChannelRegistry(List.of(adapter)), NotifyContext::empty, event -> { },
+            new NotifyIdempotencyCoordinator(store, new NotifyIdempotencyProperties()), snapshots);
+    }
+
     private void publishedNotice(Fixture fixture, long noticeId) {
         fixture.intent.setAppId("notify");
         fixture.intent.setSceneCode("notice-published");
@@ -607,8 +745,15 @@ class DispatchNotificationServiceTest {
         NotifyNotificationDao dao = mock(NotifyNotificationDao.class);
         ObjectProvider<InAppNotificationPort> inApp = mock(ObjectProvider.class);
         NotifyConfigDao configDao = mock(NotifyConfigDao.class);
+        // 旧测试的 mock 是物理发送替身：像真实 Mail Adapter 一样在调用它之前执行栅栏。
+        // 使用真实 Dispatcher 的附件/幂等回归由真实 Adapter 执行栅栏，不在这里重复调用。
+        NotifyClient pipeline = "MAIL".equals(channel) && org.mockito.Mockito.mockingDetails(notifyClient).isMock()
+            ? request -> {
+                request.preSendGate().run();
+                return notifyClient.send(request);
+            } : notifyClient;
         DispatchNotificationService service = new DispatchNotificationService(
-            dao, notifyClient, inApp, configDao, quotaPort, new org.namewta.notify.usecase.NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)));
+            dao, pipeline, inApp, configDao, quotaPort, new org.namewta.notify.usecase.NotifyDispatchResultUseCase(new NotifyDispatchResultService(dao)));
         NotifyIntent intent = new NotifyIntent();
         intent.setIntentId(1L);
         intent.setSceneCode("auth-captcha");

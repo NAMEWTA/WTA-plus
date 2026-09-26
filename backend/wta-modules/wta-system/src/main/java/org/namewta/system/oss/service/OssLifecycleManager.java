@@ -42,16 +42,25 @@ public class OssLifecycleManager {
     private final OssObjectStore objectStore;
     private final OssLifecycleProperties properties;
     private final OssStorageReadinessRegistry readinessRegistry;
+    private final OssCleanupAtomicService cleanupAtomic;
+    private static final Duration CLEANUP_IO_TIMEOUT = Duration.ofSeconds(5);
 
     @Autowired
     public OssLifecycleManager(SysOssMapper ossMapper, SysOssRefMapper refMapper, OssObjectStore objectStore,
                                OssLifecycleProperties properties,
-                               OssStorageReadinessRegistry readinessRegistry) {
+                               OssStorageReadinessRegistry readinessRegistry, OssCleanupAtomicService cleanupAtomic) {
         this.ossMapper = ossMapper;
         this.refMapper = refMapper;
         this.objectStore = objectStore;
         this.properties = properties;
         this.readinessRegistry = readinessRegistry;
+        this.cleanupAtomic = cleanupAtomic;
+    }
+
+    /** 既有嵌入式访问/引用入口；物理清理必须显式注入被代理的短事务服务。 */
+    public OssLifecycleManager(SysOssMapper ossMapper, SysOssRefMapper refMapper, OssObjectStore objectStore,
+                               OssLifecycleProperties properties, OssStorageReadinessRegistry readinessRegistry) {
+        this(ossMapper, refMapper, objectStore, properties, readinessRegistry, null);
     }
 
     /**
@@ -67,6 +76,7 @@ public class OssLifecycleManager {
     public OssService.OssReferenceState bind(Long ossId, String refType, String refId) {
         validateReference(refType, refId);
         SysOss oss = requireLocked(ossId);
+        requireNotDeleting(oss);
         long before = refMapper.countActiveByOssId(ossId);
         if (!refMapper.existsActive(ossId, refType, refId)) {
             if (refMapper.restoreReference(ossId, refType, refId) == 0) {
@@ -90,6 +100,7 @@ public class OssLifecycleManager {
     public OssService.OssReferenceState unbind(Long ossId, String refType, String refId) {
         validateReference(refType, refId);
         SysOss oss = requireLocked(ossId);
+        requireNotDeleting(oss);
         long count = refMapper.countActiveByOssId(ossId);
         boolean deactivated = refMapper.existsActive(ossId, refType, refId)
             && refMapper.deactivateReference(ossId, refType, refId) > 0;
@@ -182,6 +193,7 @@ public class OssLifecycleManager {
             throw new OssLifecycleException(OssLifecycleError.OBJECT_NOT_FOUND, "部分 OSS 对象不存在");
         }
         for (SysOss oss : objects) {
+            requireNotDeleting(oss);
             if (refMapper.countActiveByOssId(oss.getOssId()) > 0) {
                 throw new OssLifecycleException(OssLifecycleError.OBJECT_REFERENCED,
                     "OSS 对象仍被业务数据引用: " + oss.getOssId());
@@ -234,25 +246,29 @@ public class OssLifecycleManager {
         return true;
     }
 
-    @DSTransactional
+    /** 预约提交后才发一次有界删除；回执不确定时保留 DELETING，后续只确认缺失。 */
     public boolean cleanupExpired(Long ossId, LocalDateTime now, boolean dryRun) {
-        SysOss oss = requireLocked(ossId);
-        if (!"Y".equals(oss.getIsTemp()) || oss.getExpireTime() == null || oss.getExpireTime().isAfter(now)) {
-            return false;
+        if (cleanupAtomic == null || com.baomidou.dynamic.datasource.tx.TransactionContext.getXID() != null
+            || org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive()) {
+            throw new IllegalStateException("OSS cleanup requires independent committed reservation transactions");
         }
-        if (refMapper.countActiveByOssId(ossId) > 0) {
-            ossMapper.updateLifecycle(ossId, "N", null);
-            return false;
+        OssCleanupAtomicService.Plan plan = cleanupAtomic.reserve(ossId, now, dryRun);
+        if (plan == null) return false;
+        if (!plan.checkProvider()) return true;
+        if (plan.deleteRequired()) {
+            objectStore.delete(plan.object(), CLEANUP_IO_TIMEOUT);
+        } else if (objectStore.exists(plan.object(), CLEANUP_IO_TIMEOUT)) {
+            throw new OssLifecycleException(OssLifecycleError.PROVIDER_DELETE_FAILED,
+                "OSS 删除结果尚未确认，保留清理预约");
         }
-        if (dryRun) {
-            return true;
+        return cleanupAtomic.complete(plan.object());
+    }
+
+    private void requireNotDeleting(SysOss oss) {
+        if (OssCleanupAtomicService.DELETING.equals(oss.getDeleteState())) {
+            throw new OssLifecycleException(OssLifecycleError.OBJECT_DELETE_PENDING,
+                "OSS 对象清理已开始，不能恢复或修改引用");
         }
-        if (!DELETE_PENDING.equals(oss.getDeleteState())) {
-            ossMapper.markDeletePending(ossId, now);
-            return true;
-        }
-        objectStore.delete(oss);
-        return ossMapper.deleteById(ossId) > 0;
     }
 
     public List<Long> findExpiredTempIds(LocalDateTime now) {
@@ -278,7 +294,7 @@ public class OssLifecycleManager {
 
     private SysOss requireDownloadable(Long ossId) {
         SysOss oss = require(ossId);
-        if (DELETE_PENDING.equals(oss.getDeleteState())) {
+        if (DELETE_PENDING.equals(oss.getDeleteState()) || OssCleanupAtomicService.DELETING.equals(oss.getDeleteState())) {
             throw new OssLifecycleException(OssLifecycleError.OBJECT_DELETE_PENDING,
                 "OSS 对象正在删除: " + ossId);
         }

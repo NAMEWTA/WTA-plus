@@ -129,3 +129,5 @@
 - SPI：`wta-common/wta-common-sensitive/src/main/java/org/namewta/common/sensitive/core/SensitiveService.java` `isSensitive(roleKey[], perms[])`。
 - 实现：`service/impl/SysSensitiveServiceImpl.java`。未登录返回要脱敏；角色与权限同时配置时需两者都命中才不脱敏；超管（`LoginHelper.isSuperAdmin()`）不脱敏。
 - 业务模块不要直接注入该实现；走 common-sensitive 注解链路。
+
+- 普通临时对象清理先在独立短事务将 `PENDING` 预约为 `DELETING`，提交确认后才执行一次有界 DELETE；结果未知时保留预约，仅用有界 HEAD（对象缺失且 Bucket 可达）收敛，禁止绑定、解绑、删除或恢复重置预约。`NOT_READY` 通知快照绑定保留既有合同。单对象公开仅在迁移成功时返回成功，失败保留工单并反馈失败。

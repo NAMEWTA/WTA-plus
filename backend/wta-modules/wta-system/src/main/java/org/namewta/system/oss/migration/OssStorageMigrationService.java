@@ -48,7 +48,14 @@ public class OssStorageMigrationService {
         if (ossId == null || ossId <= 0) {
             throw new OssMigrationException(OssMigrationError.INVALID_REQUEST, "公开对象无效");
         }
-        return start(new MigrationRequest(List.of(ossId), targetConfigKey));
+        long batchId = start(new MigrationRequest(List.of(ossId), targetConfigKey));
+        List<SysOssMigrationItem> items = store.listItems(batchId);
+        if (items.size() != 1 || (items.getFirst().getStatus() != OssMigrationStatus.CLEANUP_ELIGIBLE
+            && items.getFirst().getStatus() != OssMigrationStatus.COMPLETED)) {
+            throw new OssMigrationException(OssMigrationError.COPY_FAILED,
+                "公开文件失败，请查看迁移工单 " + batchId);
+        }
+        return batchId;
     }
 
     public void unpublish(Long ossId) {

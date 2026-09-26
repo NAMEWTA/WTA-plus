@@ -53,6 +53,12 @@ public class NotifyAttachmentSnapshotAdapter implements NotifyAttachmentSnapshot
                         "附件私有快照结果未确认", exception);
                 }
             }
+            if ("COPYING".equals(current.getStatus())) {
+                throw new NotifyAttachmentSnapshotException("ATTACHMENT_COPY_IN_PROGRESS", "共享附件正在复制，请稍后投递");
+            }
+            if ("COPY_UNKNOWN".equals(current.getStatus())) {
+                throw new NotifyAttachmentSnapshotException("ATTACHMENT_COPY_UNCERTAIN", "共享附件复制结果需要人工核对");
+            }
             if (!"READY".equals(current.getStatus()) || current.getSnapshotOssId() == null) {
                 throw new NotifyAttachmentSnapshotException("ATTACHMENT_NOT_READY", "附件私有快照未就绪");
             }

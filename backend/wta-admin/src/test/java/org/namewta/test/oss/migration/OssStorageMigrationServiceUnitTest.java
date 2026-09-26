@@ -94,6 +94,16 @@ class OssStorageMigrationServiceUnitTest {
     }
 
     @Test
+    void publishReportsAccessFailureInsteadOfReturningSuccessfulBatchId() {
+        accessVerifier.fail = true;
+        assertThatThrownBy(() -> service.publish(10L, "public"))
+            .isInstanceOf(OssMigrationException.class);
+        assertThat(store.objects.get(10L).getService()).isEqualTo("private");
+        assertThat(store.items.values()).singleElement().satisfies(item ->
+            assertThat(item.getStatus()).isEqualTo(OssMigrationStatus.FAILED));
+    }
+
+    @Test
     void publishThenUnpublishRestoresTheSameOssRow() {
         long batchId = service.publish(10L, "public");
 

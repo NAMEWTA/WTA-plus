@@ -63,7 +63,7 @@ public class SysOss extends BaseEntity {
     private LocalDateTime expireTime;
 
     /**
-     * 对象状态（ACTIVE 可用，NOT_READY 通知私有快照预约中，PENDING 等待供应商删除）。
+     * 对象状态（ACTIVE 可用，NOT_READY 通知私有快照预约中，PENDING 可恢复待删除，DELETING 已预约删除或结果未知）。
      */
     private String deleteState;
 

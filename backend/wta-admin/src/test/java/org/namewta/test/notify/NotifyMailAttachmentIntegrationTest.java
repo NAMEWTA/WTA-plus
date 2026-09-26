@@ -371,6 +371,34 @@ class NotifyMailAttachmentIntegrationTest {
         }
     }
 
+    @Test @Order(4)
+    void abandonedCopyPersistsUnknownBeforeAdapterFailureAndUsesDatabaseUtcStart() {
+        long source = source("abandoned-copy".getBytes(StandardCharsets.UTF_8), "abandoned.txt");
+        long intentId = Long.parseLong(submit(List.of(String.valueOf(source)), "abandoned-copy").notificationId());
+        var relation = dao.attachments(intentId).getFirst();
+        var before = dao.databaseNow().minusSeconds(1);
+        var prepared = snapshotTransactions.reserve(intentId, relation.getIntentAttachmentId());
+        var reserved = dao.attachments(intentId).getFirst();
+        assertThat(reserved.getStatus()).isEqualTo("COPYING");
+        assertThat(reserved.getUpdateTime()).isBetween(before, dao.databaseNow().plusSeconds(1));
+        int sentBefore = sender.sent.size();
+        db.update("update notify_intent_attachment set update_time=timestampadd(second,-61,utc_timestamp(6)) "
+            + "where intent_attachment_id=?", relation.getIntentAttachmentId());
+
+        assertThatThrownBy(() -> snapshotService.createSnapshots(intentId, List.of(source), NotifyContext.empty()))
+            .isInstanceOf(org.namewta.common.notify.exception.NotifyAttachmentSnapshotException.class);
+
+        var unknown = dao.attachments(intentId).getFirst();
+        assertThat(unknown.getStatus()).isEqualTo("COPY_UNKNOWN");
+        assertThat(unknown.getSnapshotOssId()).isEqualTo(reserved.getSnapshotOssId());
+        assertThat(unknown.getCopyToken()).isEqualTo(reserved.getCopyToken());
+        assertThat(sender.sent).hasSize(sentBefore);
+        assertThatThrownBy(() -> snapshotTransactions.confirm(intentId, relation.getIntentAttachmentId(),
+            reserved.getCopyToken(), prepared, 14L, "late-result"))
+            .isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
+        assertThat(dao.attachments(intentId).getFirst().getStatus()).isEqualTo("COPY_UNKNOWN");
+    }
+
     @Test @Order(5)
     void twoRecipientsShareOneOrderedPrivateSnapshot() {
         byte[] original = "shared-private-snapshot".getBytes(StandardCharsets.UTF_8);

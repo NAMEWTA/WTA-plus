@@ -81,6 +81,46 @@ class NotifyOutboxClaimConcurrencyTest {
         assertTrue(holder.getLeaseOwner() != null && holder.getLeaseToken() != null);
     }
 
+    @Test
+    void serialWorkerClaimsNextExternalTaskOnlyWhenItCanStart() {
+        var clock = new java.util.concurrent.atomic.AtomicReference<>(LocalDateTime.of(2026, 9, 26, 12, 0));
+        List<NotifyOutbox> rows = new ArrayList<>();
+        for (long id = 1; id <= 3; id++) {
+            NotifyOutbox row = readyRow();
+            row.setOutboxId(id);
+            row.setDeliveryId(id);
+            rows.add(row);
+        }
+        NotifyNotificationDao dao = mock(NotifyNotificationDao.class);
+        when(dao.databaseNow()).thenAnswer(call -> clock.get());
+        when(dao.claimCandidates(any(), anyInt())).thenAnswer(call -> rows.stream()
+            .filter(row -> "READY".equals(row.getStatus())
+                || "PROCESSING".equals(row.getStatus()) && !row.getLeaseUntil().isAfter(clock.get()))
+            .limit(call.<Integer>getArgument(1)).toList());
+        when(dao.deliveryChannels(any())).thenReturn(java.util.Map.of(1L, "MAIL", 2L, "MAIL", 3L, "MAIL"));
+        when(dao.claimOutbox(anyLong(), anyString(), anyString(), any(), any(), any(boolean.class)))
+            .thenReturn(1);
+        var claim = new org.namewta.notify.usecase.NotifyOutboxClaimUseCase(new NotifyOutboxClaimService(dao));
+        AtomicInteger sent = new AtomicInteger();
+        org.namewta.notify.port.NotifyDispatchPort dispatch = org.mockito.Mockito.mock(
+            org.namewta.notify.port.NotifyDispatchPort.class);
+        org.mockito.Mockito.doAnswer(call -> {
+            NotifyOutbox row = call.getArgument(0);
+            assertTrue(row.getLeaseUntil().isAfter(clock.get()), "尚未外呼的任务必须拥有新领取的有效租约");
+            assertEquals(Boolean.TRUE, row.getClaimedFromReady());
+            // 三个单次小于租约的 I/O 累计超过 60 秒；后排任务不得提前消耗租约。
+            clock.set(clock.get().plusSeconds(31));
+            row.setStatus("DONE");
+            sent.incrementAndGet();
+            return null;
+        }).when(dispatch).dispatch(any());
+
+        new org.namewta.notify.adapter.worker.NotifyOutboxWorker(claim, dispatch).poll();
+
+        assertEquals(3, sent.get());
+        assertTrue(rows.stream().allMatch(row -> "DONE".equals(row.getStatus())));
+    }
+
     private static NotifyOutbox readyRow() {
         NotifyOutbox row = new NotifyOutbox();
         row.setOutboxId(7L);

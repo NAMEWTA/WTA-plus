@@ -20,6 +20,34 @@ import static org.mockito.Mockito.when;
 class OssAccessUrlProviderUnitTest {
 
     @Test
+    void boundedCleanupTreatsOnlyVerifiedObjectAbsenceAsMissing() {
+        OssClient client = mock(OssClient.class);
+        SysOss oss = new SysOss();
+        oss.setService("private");
+        oss.setFileName("owned/file.txt");
+        java.time.Duration timeout = java.time.Duration.ofSeconds(5);
+        try (MockedStatic<OssFactory> factory = mockStatic(OssFactory.class)) {
+            factory.when(() -> OssFactory.instance("private")).thenReturn(client);
+            DefaultOssObjectStore provider = new DefaultOssObjectStore();
+            when(client.headObject(oss.getFileName(), timeout)).thenThrow(
+                org.namewta.common.oss.exception.S3StorageException.form(
+                    org.namewta.common.oss.exception.OssErrorCode.OBJECT_NOT_FOUND, "missing"));
+            assertThat(provider.exists(oss, timeout)).isFalse();
+            org.mockito.Mockito.doThrow(org.namewta.common.oss.exception.S3StorageException.form(
+                org.namewta.common.oss.exception.OssErrorCode.PROVIDER_ERROR, "bucket unknown"))
+                .when(client).headObject(oss.getFileName(), timeout);
+            org.assertj.core.api.Assertions.assertThatThrownBy(() -> provider.exists(oss, timeout))
+                .isInstanceOf(org.namewta.common.oss.exception.S3StorageException.class);
+            when(client.delete(oss.getFileName(), timeout)).thenReturn(false);
+            org.assertj.core.api.Assertions.assertThatThrownBy(() -> provider.delete(oss, timeout))
+                .isInstanceOf(org.namewta.system.oss.exception.OssLifecycleException.class);
+            when(client.delete(oss.getFileName(), timeout)).thenReturn(true);
+            provider.delete(oss, timeout);
+            org.mockito.Mockito.verify(client, org.mockito.Mockito.never()).delete(oss.getFileName());
+        }
+    }
+
+    @Test
     void publicUrlUsesBucketBoundDomainAndStructurallyEncodesObjectKey() {
         OssClient client = mock(OssClient.class);
         when(client.config()).thenReturn(OssClientConfig.builder()

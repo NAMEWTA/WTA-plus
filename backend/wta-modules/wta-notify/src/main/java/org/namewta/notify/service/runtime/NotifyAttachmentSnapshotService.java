@@ -41,6 +41,17 @@ public class NotifyAttachmentSnapshotService {
             .filter(item -> Objects.equals(item.getIntentAttachmentId(), relationId)).findFirst()
             .orElseThrow(() -> new ServiceException("附件关系不属于通知"));
         if ("READY".equals(relation.getStatus())) return new Prepared(relation, null);
+        if ("COPYING".equals(relation.getStatus())) {
+            // 复制本身只有 30 秒预算。进程丢失后最多等待 60 秒，转未知而非重拷。
+            var now = dao.databaseNow();
+            if (relation.getUpdateTime() == null || relation.getUpdateTime().isAfter(now)
+                || !relation.getUpdateTime().plusSeconds(60).isAfter(now)) {
+                relation.setStatus("COPY_UNKNOWN");
+                if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("附件复制超时状态写入失败");
+            }
+            // 返回后由 Adapter 报告忙或未知，避免抛异常回滚刚保存的 COPY_UNKNOWN。
+            return new Prepared(relation, null);
+        }
         if (!"QUEUED".equals(relation.getStatus())) throw new ServiceException("附件复制结果未确认，需要人工核对");
         OssService.NotificationCopyReservation reservation = ossService.reserveNotificationSnapshot(
             relationId, relation.getSourceOssId(), intent.getAttachmentActorUserId(), intent.getAttachmentActorClientPk());
@@ -49,7 +60,7 @@ public class NotifyAttachmentSnapshotService {
         relation.setTargetKey(reservation.targetKey());
         relation.setCopyToken(UUID.randomUUID().toString());
         relation.setStatus("COPYING");
-        if (dao.saveAttachment(relation) != 1) throw new IllegalStateException("附件复制预约写入失败");
+        if (dao.saveAttachmentCopyReservation(relation) != 1) throw new IllegalStateException("附件复制预约写入失败");
         return new Prepared(relation, reservation);
     }
 

@@ -23,6 +23,8 @@ public interface SysOssMapper extends BaseMapperPlus<SysOss, SysOssVo> {
 
     int markDeletePending(@Param("ossId") Long ossId, @Param("expireTime") LocalDateTime expireTime);
 
+    int reserveDeletion(@Param("ossId") Long ossId);
+
     int compareAndSetService(@Param("ossId") Long ossId, @Param("expectedService") String expectedService,
                              @Param("targetService") String targetService);
 

@@ -316,7 +316,7 @@ create table sys_oss (
     service         varchar(20)  not null default 'minio'   comment '服务商',
     is_temp         char(1)      not null default 'N'        comment '是否临时对象（Y是 N否）',
     expire_time     datetime              default null      comment '临时对象过期时间',
-    delete_state    varchar(16)  not null default 'ACTIVE'   comment '对象状态（ACTIVE可用 NOT_READY通知私有快照预约中 PENDING等待供应商删除）',
+    delete_state    varchar(16)  not null default 'ACTIVE'   comment '对象状态（ACTIVE可用 NOT_READY通知私有快照预约中 PENDING可恢复待删除 DELETING删除预约或未知）',
     primary key (oss_id),
     key idx_sys_oss_temp_expire (is_temp, expire_time)
 ) engine=innodb comment ='OSS对象存储表';

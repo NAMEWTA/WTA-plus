@@ -59,6 +59,24 @@ public class DefaultOssObjectStore implements OssObjectStore {
         }
     }
 
+    @Override
+    public void delete(SysOss oss, Duration timeout) {
+        if (!client(oss).delete(oss.getFileName(), timeout)) {
+            throw new OssLifecycleException(OssLifecycleError.PROVIDER_DELETE_FAILED, "OSS Provider 删除失败");
+        }
+    }
+
+    @Override
+    public boolean exists(SysOss oss, Duration timeout) {
+        try {
+            client(oss).headObject(oss.getFileName(), timeout);
+            return true;
+        } catch (org.namewta.common.oss.exception.S3StorageException failure) {
+            if (failure.code() == org.namewta.common.oss.exception.OssErrorCode.OBJECT_NOT_FOUND) return false;
+            throw failure;
+        }
+    }
+
     private OssClient client(SysOss oss) {
         return OssFactory.instance(oss.getService());
     }

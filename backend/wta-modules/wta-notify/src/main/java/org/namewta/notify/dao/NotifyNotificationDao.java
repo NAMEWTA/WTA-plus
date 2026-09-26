@@ -65,6 +65,25 @@ public class NotifyNotificationDao {
         return attachmentMapper.updateById(value);
     }
 
+    /**
+     * 预约仍走实体乐观锁和审计填充，再在同一事务将复制起点校准为数据库 UTC。
+     * updateById 的通用审计使用 JVM 本地时间，不能直接与 Worker 的数据库 UTC 截止比较。
+     */
+    public int saveAttachmentCopyReservation(NotifyIntentAttachment value) {
+        int affected = saveAttachment(value);
+        if (affected != 1) return affected;
+        LocalDateTime startedAt = databaseNow();
+        int stamped = attachmentMapper.update(null, new LambdaUpdateWrapper<NotifyIntentAttachment>()
+            .eq(NotifyIntentAttachment::getIntentAttachmentId, value.getIntentAttachmentId())
+            .eq(NotifyIntentAttachment::getIntentId, value.getIntentId())
+            .eq(NotifyIntentAttachment::getStatus, "COPYING")
+            .eq(NotifyIntentAttachment::getCopyToken, value.getCopyToken())
+            .set(NotifyIntentAttachment::getUpdateTime, startedAt));
+        if (stamped != 1) throw new IllegalStateException("附件复制起点写入失败");
+        value.setUpdateTime(startedAt);
+        return 1;
+    }
+
     /** 后台回收每轮只读有限候选，以主键游标遍历而不扫描全表后截断。 */
     public List<NotifyIntentAttachment> attachmentReleaseCandidates(long afterId, int limit) {
         return attachmentMapper.selectList(new LambdaQueryWrapper<NotifyIntentAttachment>()

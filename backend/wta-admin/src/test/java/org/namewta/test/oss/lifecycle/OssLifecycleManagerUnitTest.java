@@ -15,6 +15,7 @@ import org.namewta.system.oss.readiness.OssStorageReadinessEntry;
 import org.namewta.system.oss.readiness.OssStorageReadinessProperties;
 import org.namewta.system.oss.readiness.OssStorageReadinessRegistry;
 import org.namewta.system.oss.service.OssLifecycleManager;
+import org.namewta.system.oss.service.OssCleanupAtomicService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -262,7 +263,7 @@ class OssLifecycleManagerUnitTest {
         InOrder order = inOrder(fixture.ossMapper, fixture.refMapper, fixture.objectStore);
         order.verify(fixture.ossMapper).selectByIdForUpdate(10L);
         order.verify(fixture.refMapper).countActiveByOssId(10L);
-        order.verify(fixture.objectStore).delete(oss);
+        order.verify(fixture.objectStore).delete(oss, Duration.ofSeconds(5));
         order.verify(fixture.ossMapper).deleteById(10L);
     }
 
@@ -288,7 +289,7 @@ class OssLifecycleManagerUnitTest {
         when(fixture.ossMapper.selectByIdForUpdate(10L)).thenReturn(oss);
         when(fixture.refMapper.countActiveByOssId(10L)).thenReturn(0L);
         doThrow(new OssLifecycleException(OssLifecycleError.PROVIDER_DELETE_FAILED, "failed"))
-            .when(fixture.objectStore).delete(oss);
+            .when(fixture.objectStore).delete(oss, Duration.ofSeconds(5));
 
         OssLifecycleException exception = assertThrows(OssLifecycleException.class,
             () -> fixture.manager.cleanupExpired(10L, now, false));
@@ -451,6 +452,81 @@ class OssLifecycleManagerUnitTest {
         assertTrue(properties.isCleanupDryRun());
     }
 
+    @Test
+    void reservedDeletionCannotBeReactivatedThroughAnyMutation() {
+        Fixture fixture = fixture();
+        SysOss deleting = oss(10L, "Y", LocalDateTime.now().minusMinutes(1));
+        deleting.setDeleteState("DELETING");
+        when(fixture.ossMapper.selectByIdForUpdate(10L)).thenReturn(deleting);
+        when(fixture.ossMapper.selectByIdsForUpdate(List.of(10L))).thenReturn(List.of(deleting));
+        assertThrows(OssLifecycleException.class, () -> fixture.manager.bind(10L, "biz_contract", "100"));
+        assertThrows(OssLifecycleException.class, () -> fixture.manager.unbind(10L, "biz_contract", "100"));
+        assertThrows(OssLifecycleException.class, () -> fixture.manager.deleteObjects(List.of(10L)));
+        assertThrows(OssLifecycleException.class, () -> fixture.manager.restoreObjects(List.of(10L)));
+        verify(fixture.ossMapper, never()).updateLifecycle(anyLong(), anyString(), any());
+        verify(fixture.ossMapper, never()).markDeletePending(anyLong(), any());
+        verifyNoInteractions(fixture.refMapper, fixture.objectStore);
+    }
+
+    @Test
+    void lostDeleteAcknowledgementPreservesReservationAndOnlyProbesOnRetry() {
+        Fixture fixture = fixture();
+        LocalDateTime now = LocalDateTime.now();
+        SysOss object = oss(10L, "Y", now.minusMinutes(1));
+        object.setDeleteState("PENDING");
+        when(fixture.ossMapper.selectByIdForUpdate(10L)).thenReturn(object);
+        doThrow(new IllegalStateException("acknowledgement lost"))
+            .when(fixture.objectStore).delete(object, Duration.ofSeconds(5));
+        assertThrows(IllegalStateException.class, () -> fixture.manager.cleanupExpired(10L, now, false));
+        assertEquals("DELETING", object.getDeleteState());
+        when(fixture.objectStore.exists(object, Duration.ofSeconds(5))).thenReturn(true);
+        assertThrows(OssLifecycleException.class, () -> fixture.manager.cleanupExpired(10L, now, false));
+        when(fixture.objectStore.exists(object, Duration.ofSeconds(5))).thenThrow(new IllegalStateException("unknown"));
+        assertThrows(IllegalStateException.class, () -> fixture.manager.cleanupExpired(10L, now, false));
+        doReturn(false).when(fixture.objectStore).exists(object, Duration.ofSeconds(5));
+        when(fixture.ossMapper.deleteById(10L)).thenReturn(1);
+        assertTrue(fixture.manager.cleanupExpired(10L, now, false));
+        verify(fixture.objectStore, times(1)).delete(object, Duration.ofSeconds(5));
+        verify(fixture.ossMapper, times(1)).reserveDeletion(10L);
+    }
+
+    @Test
+    void failedReservationNeverCallsProvider() {
+        Fixture fixture = fixture();
+        LocalDateTime now = LocalDateTime.now();
+        SysOss object = oss(10L, "Y", now.minusMinutes(1));
+        object.setDeleteState("PENDING");
+        when(fixture.ossMapper.selectByIdForUpdate(10L)).thenReturn(object);
+        when(fixture.ossMapper.reserveDeletion(10L)).thenReturn(0);
+        assertThrows(OssLifecycleException.class, () -> fixture.manager.cleanupExpired(10L, now, false));
+        verifyNoInteractions(fixture.objectStore);
+    }
+
+    @Test
+    void cleanupRejectsCallerTransactionBeforeAnyDatabaseOrProviderWork() {
+        Fixture fixture = fixture();
+        com.baomidou.dynamic.datasource.tx.TransactionContext.bind("outer-cleanup-test");
+        try {
+            assertThrows(IllegalStateException.class,
+                () -> fixture.manager.cleanupExpired(10L, LocalDateTime.now(), false));
+            verifyNoInteractions(fixture.objectStore);
+            verify(fixture.ossMapper, never()).selectByIdForUpdate(anyLong());
+        } finally {
+            com.baomidou.dynamic.datasource.tx.TransactionContext.remove();
+        }
+    }
+
+    @Test
+    void notificationReservationMayStillBindBeforeItsSnapshotBecomesReady() {
+        Fixture fixture = fixture();
+        SysOss object = oss(10L, "N", null);
+        object.setDeleteState("NOT_READY");
+        when(fixture.ossMapper.selectByIdForUpdate(10L)).thenReturn(object);
+        fixture.manager.bind(10L, "notify_intent_attachment", "100");
+        verify(fixture.refMapper).insert(any(SysOssRef.class));
+        verify(fixture.ossMapper, never()).updateLifecycle(anyLong(), anyString(), any());
+    }
+
     private Fixture fixture() {
         return fixture(mock(OssStorageReadinessRegistry.class));
     }
@@ -460,8 +536,11 @@ class OssLifecycleManagerUnitTest {
         SysOssRefMapper refMapper = mock(SysOssRefMapper.class);
         OssObjectStore objectStore = mock(OssObjectStore.class);
         OssLifecycleProperties properties = new OssLifecycleProperties();
+        when(ossMapper.markDeletePending(anyLong(), any())).thenReturn(1);
+        when(ossMapper.reserveDeletion(anyLong())).thenReturn(1);
         return new Fixture(ossMapper, refMapper, objectStore, properties, readinessRegistry,
-            new OssLifecycleManager(ossMapper, refMapper, objectStore, properties, readinessRegistry));
+            new OssLifecycleManager(ossMapper, refMapper, objectStore, properties, readinessRegistry,
+                new OssCleanupAtomicService(ossMapper, refMapper)));
     }
 
     private SysOss oss(Long id, String temporary, LocalDateTime expireTime) {

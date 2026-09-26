@@ -37,7 +37,7 @@ notificationService.submit(new NotificationCommand(
 
 MAIL 附件只从 `NotificationCommand.attachmentOssIds` 提交，HTTP 值为正的十进制字符串 ID；缺省空列表，重复 ID 保留首次出现的顺序。来源必须属于当前已认证用户及 Client，且在 System 中仍为 ACTIVE、配置存在且访问类型已知。Intent 持久保存原提交者，Worker 不使用自身会话或公开命令字段冒充授权；每次物化还要核原用户、Client 登录域和目标 PRIVATE 策略。默认上限为去重后 20 件、单件 10 MiB、合计 25 MiB，对应 `notify.attachment.max-count`、`max-single-bytes`、`max-total-bytes`；空文件、超限及失效来源在提交或复制前明确拒绝。业务上传策略可允许更大文件，不代表邮件附件也可用。
 
-来源引用在排队、复制结果未知时保持真实 `notify_intent_attachment` 关系；目标按关系主键预约不可下载的私有 `sys_oss` 与引用后再在事务外复制，实际目标字节须回读核 SHA-256。`COPY_UNKNOWN` 表示 PUT、结果提交或 ACK 未可证明，不能因对象暂时存在就盲设 READY、重拷、删除或重发邮件。运维应先停该任务的自动重试，按关系主键核源/目标 `sys_oss_ref`、固定 service/key、目标实际字节与摘要及远端写入是否结束；缺任一证明保持 UNKNOWN 并人工处置，不删除来源。多收件人共用同一组快照；单投递失败不清理共享附件。只有全部 MAIL 投递已终结、无活租约、明确未发且所有关系 `send_reserved=0`，受控回收任务才能解除自有引用；`send_reserved=1` 是已取得过物理发送权的单向持久事实，即使取消、过期或新租约关闭任务也不能据此推断未发。历史空值、外部已受理/未知或仍可人工重试的本地准备失败继续保留。SMTP 前独立结果事务须先核持久 deadline、当前 lease 和所有关系 READY，再原子置 `send_reserved=1`；事务提交不确定或任一关系写入失败都禁止进入物理发送器，数据库异常按原异常外溢，不伪装供应商未知。
+来源引用在排队、复制结果未知时保持真实 `notify_intent_attachment` 关系；目标按关系主键预约不可下载的私有 `sys_oss` 与引用后再在事务外复制，实际目标字节须回读核 SHA-256。`COPY_UNKNOWN` 表示 PUT、结果提交或 ACK 未可证明，不能因对象暂时存在就盲设 READY、重拷、删除或重发邮件。运维应先停该任务的自动重试，按关系主键核源/目标 `sys_oss_ref`、固定 service/key、目标实际字节与摘要及远端写入是否结束；缺任一证明保持 UNKNOWN 并人工处置，不删除来源。多收件人共用同一组快照；单投递失败不清理共享附件。并发读到 `COPYING` 时延后投递，不占用发送配额或尝试次数；预约起点使用数据库 UTC，超过 60 秒或起点不可确认时持久转为 `COPY_UNKNOWN`，不重新复制。MAIL 配额在附件准备完成后、物理发送预约前获取，获取后再次核对持久 deadline/lease。只有全部 MAIL 投递已终结、无活租约、明确未发且所有关系 `send_reserved=0`，受控回收任务才能解除自有引用；`send_reserved=1` 是已取得过物理发送权的单向持久事实，即使取消、过期或新租约关闭任务也不能据此推断未发。历史空值、外部已受理/未知或仍可人工重试的本地准备失败继续保留。SMTP 前独立结果事务须先核持久 deadline、当前 lease 和所有关系 READY，再原子置 `send_reserved=1`；事务提交不确定或任一关系写入失败都禁止进入物理发送器，数据库异常按原异常外溢，不伪装供应商未知。
 
 公告发布的 `noticeVersion` 元数据绑定 Notice、Snapshot、Intent 的同一版本；撤回事务写持久版本栅栏和公告生命周期，Worker 在活租约与统一锁序内关闭该版本尚未获发送权的 Outbox。外部 Provider 已受理或结果未知的回执仍须保留并完成原结果，不能改写为“已撤回”。旧任务缺失可信版本事实时以 `NOTICE_VERSION_UNVERIFIED` 失败关闭，不自动重发；六 SQL 两条固定静态公告仅在快照身份匹配且无精确键或同业务 Intent 等窄条件下允许更新生命周期。含站内信的公告把 Snapshot、Intent 和模板参数路径同事务设为本人 `/notify/inbox?messageId=<messageId>`；仅外部渠道使用通用 `/notify/inbox`，本人深链在投递失败时仍由本人详情接口安全拒绝。收件人页面只用当前获授权的消息 ID 转换旧管理路径，路由 query 与会话变化的迟到响应不得显示旧身份正文。
 
@@ -45,7 +45,7 @@ MAIL 附件只从 `NotificationCommand.attachmentOssIds` 提交，HTTP 值为正
 
 `controller -> usecase -> service -> dao -> mapper/XML` 是 `wta-notify` 的固定链路。UseCase 负责事务、目标解析、幂等和状态迁移；Service 负责规则；DAO 封装 MyBatis-Plus Wrapper、分页、锁和批量更新；Provider/Outbox Worker/Callback 只能通过端口或事件接入。
 
-发布必须在同一业务事务内写入通知意图、接收者快照和 Outbox。Worker 使用租约 owner/token 更新，续租失败时禁止继续写入投递结果。当前自定义回执入口必须验证 HMAC 原文、`providerKey`、`eventId` 和时间窗，状态只能单向升级，重复事件不重复刷新聚合状态。原文从入口有界缓存读取，不使用 XSS 改写后的视图验签；回执含精确收件地址，HTTP/操作日志必须只保留元数据及脱敏摘要。`notify_provider_receipt` 按渠道、账号配置标识和事件编号持久去重，凭据与状态、聚合同事务；不同事实复用事件编号必须拒绝，早到未关联不得消费事件，记录不自动过期。账号标识创建后不可变，逻辑删除仍保留唯一命名空间。腾讯/阿里原生推送没有本接口的 HMAC 合同，不能直接接入或宣称已支持；SMTP 受理也不等于送达。
+发布必须在同一业务事务内写入通知意图、接收者快照和 Outbox。当前 Worker 串行发送，每次只领取即将执行的一条任务，避免批量预领让后排任务租约提前耗尽。Worker 使用租约 owner/token 更新，续租失败时禁止继续写入投递结果。当前自定义回执入口必须验证 HMAC 原文、`providerKey`、`eventId` 和时间窗，状态只能单向升级，重复事件不重复刷新聚合状态。原文从入口有界缓存读取，不使用 XSS 改写后的视图验签；回执含精确收件地址，HTTP/操作日志必须只保留元数据及脱敏摘要。`notify_provider_receipt` 按渠道、账号配置标识和事件编号持久去重，凭据与状态、聚合同事务；不同事实复用事件编号必须拒绝，早到未关联不得消费事件，记录不自动过期。账号标识创建后不可变，逻辑删除仍保留唯一命名空间。腾讯/阿里原生推送没有本接口的 HMAC 合同，不能直接接入或宣称已支持；SMTP 受理也不等于送达。
 
 腾讯/阿里的原生送达核对复用账号密钥进行官方只读签名查询，固定HTTPS端点，不通过禁用验签接收原生推送。查询预约只修改Delivery的`receipt_query_at`，不得复用发送租约或重新发送；供应商I/O必须在事务外。确认结果复用持久receipt、状态与聚合事务，内部`native-sms:`事件前缀不得由自定义HTTP回执占用。当前自动核对窗口为71小时；超窗、缺流水号、查询失败/截断/歧义均保持已受理，不推断送达。
 

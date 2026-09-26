@@ -27,7 +27,8 @@ public class NotifyOutboxClaimService {
     public List<NotifyOutbox> claim(String owner) {
         LocalDateTime nowUtc = dao.databaseNow();
         LocalDateTime leaseUntil = nowUtc.plusSeconds(60);
-        List<NotifyOutbox> candidates = dao.claimCandidates(nowUtc, 50);
+        // Worker 串行投递，只预约即将执行的一条，避免后排任务在等待前序 I/O 时耗尽租约。
+        List<NotifyOutbox> candidates = dao.claimCandidates(nowUtc, 1);
         var channels = dao.deliveryChannels(candidates.stream().map(NotifyOutbox::getDeliveryId)
             .filter(Objects::nonNull).distinct().toList());
         return candidates.stream().filter(outbox -> {
