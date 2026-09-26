@@ -17,7 +17,7 @@ ready_for_execution: true
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**run已激活，revision239，ready_for_execution=true；T42已完成，当前T43基线测量。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**2026-09-26 当前执行：50 票已有终态记录，本轮对抗性修复及回归已完成；历史完成证据缺口仍阻断归档，见 reviews/adversarial-2026-09-26.md。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
 
 ## 1. Outcome and Authority
 
@@ -208,7 +208,7 @@ Implementation commit：同change既有全部提交授权＋本次明确Goal执�
 
 ### Current Status
 
-revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线，生产尚未优化；7写根内仅新增测量测试，common batch事务独立核查。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
+2026-09-26：当前源码已包含 T43 及后续实现，票据为 30 done / 20 cancelled；对抗性审查发现新实现缺陷与完成证据缺口，修复及验证记录见 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/adversarial-2026-09-26.md</Path>。保持 active，未归档。
 
 ### Pending Decisions and Blockers
 

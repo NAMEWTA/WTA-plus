@@ -222,3 +222,7 @@
 - **质量审查：** <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/plan-quality-review-2026-09-23.md</Path>。443共享路径提示按唯一Lead/current串行处理。
 - **验证：** <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-validation.json</Path>；<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-integrity.json</Path>。
 - **后续：** 用户自行激活目标后按Goal恢复；本轮无产品实施和外部副作用。
+
+## 2026-09-26 归档激活
+
+用户明确要求先 commit/push，再归档，再 commit/push。Lead 激活 specdev/archive-and-consolidate，唯一目标为本 change；相邻 OIDC change 不在写入范围。当前修复验证结果见 reviews/adversarial-2026-09-26.md。先核历史 Evidence/集成记录并如实补齐；不将用户归档授权解释为测试豁免。知识处理采用 mechanical-only：本次无永久知识写入、合并或清理，已有项目 Skill 事实随实现提交。

@@ -12,7 +12,7 @@ status: "cancelled"
 kind: "review"
 planning_depth: "deep"
 planning_depth_reason: "公共合同/事务/安全/数据及恢复边界"
-ready: true
+ready: false
 risk: "medium"
 blocked_by: ["T-12", "T-14", "T-19"]
 contract_ids: ["AC-020"]

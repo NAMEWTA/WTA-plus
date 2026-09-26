@@ -26,6 +26,9 @@ shared_path_owners: ["<Path>backend/wta-common/wta-common-web/src/main/java/org/
 
 # T-33：恢复精确来源的 CORS 默认边界
 
+> 2026-09-26 当前合同覆盖：用户明确要求保留当前 OSS/CORS 通配符。单独 `*` 对 HTTP(S) 来源回显，可携带凭证；精确列表、空列表、非法来源与混写仍按当前实现处理。下文原计划及验收勾选属于 `da48f850` 的历史合同，不是当前通配符行为的验收结论；当前 AC-033 以 Spec 与本轮审查记录为准。
+
+
 Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>。
 唯一执行者先完整读Map→命中项目Skill入口/按scope引用→本票与上游。用户已激活Goal，允许gpt-6-sol/xhigh子代理。T-33产品写集由cors_audit独占，Lead负责状态与验收；current串行，无新worktree。
 

@@ -28,6 +28,17 @@ describe('OSS file presentation', () => {
     expect(ossRowMutation({ deleteState: 'ACTIVE' })).toBe('delete');
   });
 
+  it('does not preview, restore or delete a reserved cleanup with an uncertain outcome', () => {
+    const row = { ossId: 9, deleteState: 'DELETING', fileSuffix: '.png' };
+    expect(ossFilePresentation(row, true)).toBe('deleting');
+    expect(ossRowMutation(row)).toBe('none');
+    const targets = ossDeleteTargets([row, { ossId: 10, deleteState: 'ACTIVE' }]);
+    expect(targets.removable.map(item => item.ossId)).toEqual([10]);
+    expect(targets.pending).toEqual([]);
+    expect(targets.deleting).toEqual([row]);
+    expect(ossDeleteConfirmMessage([10], 0, 1)).toContain('清理结果待确认的文件本次不操作');
+  });
+
   it('keeps pending rows out of a bulk delete and says to restore them', () => {
     const rows = [{ ossId: 1, deleteState: 'PENDING' }, { ossId: 2, deleteState: 'ACTIVE' }];
     const { pending, removable } = ossDeleteTargets(rows);

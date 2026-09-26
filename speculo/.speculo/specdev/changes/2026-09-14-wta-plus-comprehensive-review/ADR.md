@@ -2,6 +2,10 @@
 
 2026-09-23。用户只授权规划。D-002—009已获本轮用户明确答复，以下决定成为当前计划合同；用户已在LOG-018确认整体G共识；既有ADR-CR-001—009继续按已实现范围保留。当前代码与历史实施记录以<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/current-source-audit.json</Path>、<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/legacy-ticket-audit.json</Path>和旧Evidence为准。
 
+## 2026-09-26 用户确认：通配符设计
+
+用户明确 OSS 与应用 CORS 通配符是有意设计并要求保留。当前 application.yml 使用单独 `*`，只回显 HTTP(S) Origin；精确列表仍支持，通配符与精确列表混写、路径和通配子域仍拒绝。该决定替代 T-33/AC-033 原先“任何通配符拒绝启动”的策略要求；历史证据仍只证明其当时版本，不修改旧结果。应用 CORS 与桶 CORS 分别配置，业务认证/对象权限保持独立。
+
 ## 当前决定与替代关系
 
 | ID | 状态 | 来源 | 决定/替代 |

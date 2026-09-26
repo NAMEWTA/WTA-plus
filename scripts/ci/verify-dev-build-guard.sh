@@ -795,4 +795,15 @@ if [[ ${top_level_status} -ne 0 || "${top_level_output}" != *"CLEAR_DONE"* ]]; t
   exit 1
 fi
 
+# The dev-server port must agree with Vite's inherited environment precedence.
+vite_env_output=$(VITE_APP_PORT=49123 bash -c '
+  set -euo pipefail
+  source "$1"
+  resolve_vite_env_key "$2/apps/home-web" VITE_APP_PORT
+' _ "${workspace_root}/scripts/start-dev.sh" "${workspace_root}/frontend")
+if [[ "${vite_env_output}" != "49123" ]]; then
+  echo "inherited Vite port was replaced by a dotenv value" >&2
+  exit 1
+fi
+
 echo "backend lock lifecycle, Windows classpath parsing, module JAR class-set verification, and start-dev choice contracts passed"

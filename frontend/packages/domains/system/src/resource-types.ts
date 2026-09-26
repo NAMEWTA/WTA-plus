@@ -84,7 +84,7 @@ export interface OssVO extends BaseEntity {
   restorable?: boolean;
   isTemp: 'Y' | 'N';
   expireTime?: string;
-  deleteState: 'ACTIVE' | 'PENDING';
+  deleteState: 'ACTIVE' | 'PENDING' | 'DELETING';
   referenceCount: number;
   references: Array<{ refType: string; refId: string }>;
 }

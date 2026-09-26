@@ -125,6 +125,7 @@
               :src="previewUrl(scope.row)"
               :preview-src-list="[previewUrl(scope.row)]"
             />
+            <span v-else-if="filePresentation(scope.row) === 'deleting'">{{ deletingMessage }}</span>
             <span v-else-if="filePresentation(scope.row) === 'deleted'">{{ deletedMessage }}</span>
             <span v-else-if="filePresentation(scope.row) !== 'image'" v-text="scope.row.url" />
           </template>
@@ -145,7 +146,8 @@
         </el-table-column>
         <el-table-column label="生命周期" align="center" width="116">
           <template #default="scope">
-            <el-tag v-if="scope.row.deleteState === 'PENDING'" type="danger" effect="light">待删除</el-tag>
+            <el-tag v-if="scope.row.deleteState === 'DELETING'" type="danger" effect="light">清理待确认</el-tag>
+            <el-tag v-else-if="scope.row.deleteState === 'PENDING'" type="danger" effect="light">待删除</el-tag>
             <el-tag v-else-if="scope.row.isTemp === 'Y'" type="warning" effect="light">临时</el-tag>
             <el-tag v-else type="success" effect="light">已绑定</el-tag>
           </template>
@@ -278,6 +280,7 @@ import {
 import { parseTime } from '../utils';
 import {
   OSS_DELETED_MESSAGE,
+  OSS_DELETING_MESSAGE,
   ossDeleteConfirmMessage,
   ossDeleteTargets,
   ossFilePresentation,
@@ -293,6 +296,7 @@ const { list: listOssConfigs } = runtime.service.resources.ossConfigs;
 const download = { oss: runtime.downloadOss };
 const modal = { confirm: runtime.confirm, msgSuccess: runtime.success, msgError: runtime.error };
 const deletedMessage = OSS_DELETED_MESSAGE;
+const deletingMessage = OSS_DELETING_MESSAGE;
 const router = useRouter();
 
 const referenceSummary = (oss: any) =>
@@ -524,6 +528,10 @@ const submitForm = () => {
 };
 /** 下载按钮操作 */
 const handleDownload = (row: Partial<OssVO>) => {
+  if (row.deleteState === 'DELETING') {
+    modal.msgError(deletingMessage);
+    return;
+  }
   if (row.deleteState === 'PENDING') {
     modal.msgError(deletedMessage);
     return;
@@ -542,13 +550,13 @@ const handlePreviewListResource = async (preview: boolean) => {
 /** 删除按钮操作 */
 const handleDelete = async (row?: Partial<OssVO>) => {
   const targets = row?.ossId ? [row] : selectedRows.value;
-  const { pending, removable } = ossDeleteTargets(targets);
+  const { pending, removable, deleting } = ossDeleteTargets(targets);
   if (removable.length === 0) {
-    modal.msgError(row?.ossId ? deletedMessage : '所选文件已处于待删除，请使用行内恢复');
+    modal.msgError(deleting.length > 0 ? deletingMessage : row?.ossId ? deletedMessage : '所选文件已处于待删除，请使用行内恢复');
     return;
   }
   const ossIds = removable.map(item => item.ossId).filter(id => id !== undefined);
-  await modal.confirm(ossDeleteConfirmMessage(ossIds, pending.length));
+  await modal.confirm(ossDeleteConfirmMessage(ossIds, pending.length, deleting.length));
   setMutationLoading(true);
   await delOss(ossIds).finally(() => setMutationLoading(false));
   if (await getList() === 'applied') modal.msgSuccess('删除成功');

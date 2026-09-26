@@ -22,6 +22,8 @@ router.beforeEach(async to => {
   const user = useUserStore();
   const navigation = useNavigationStore();
   const token = getToken();
+  // 回调建立新会话，不依赖可能已过期的旧业务 token 恢复身份。
+  if (to.path === '/sso/callback') return true;
   if (!token) {
     if (['/login', '/register', '/', '/sso/callback'].includes(to.path)) return true;
     return { path: '/', query: { redirect: to.fullPath } };

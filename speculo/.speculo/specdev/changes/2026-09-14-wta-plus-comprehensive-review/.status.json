@@ -3,7 +3,7 @@
   "artifact": "change-status",
   "change": "2026-09-14-wta-plus-comprehensive-review",
   "change_status": "active",
-  "current_work": "specdev/implement",
+  "current_work": "specdev/archive-and-consolidate",
   "works_run": [
     "specdev/grill-with-docs",
     "specdev/spec",
@@ -45,13 +45,13 @@
     ]
   },
   "created_at": "2026-09-14T14:54:23.207405+08:00",
-  "updated_at": "2026-09-24T08:38:12.331238+00:00",
+  "updated_at": "2026-09-26T23:37:02.481917+00:00",
   "completed_at": null,
   "archived": false,
   "archive_path": null,
   "blockers": [
-    "HISTORY: original31 require factual reconciliation and current acceptance; old shared result is not per-ticket proof.",
-    "INTEGRATION: remaining30 tickets and final combined candidate gates pending."
+    "AR-08: complete校验仍有104项错误，历史Done票缺规范Evidence/逐票集成记录；不得补造历史clean HEAD事实。",
+    "2026-09-26对抗性审查AR-01—07已修复且相关验证通过，改动保留于未提交工作树；见 reviews/adversarial-2026-09-26.md。"
   ],
   "deviations": [
     "2026-09-18 USER: activate T-tickets and P-goal-plan in plan mode; supersedes review-only draft restriction; no subagents, one serial writer. Previous review-architecture checkpoint handed off after completed re-review.",

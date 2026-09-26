@@ -31,7 +31,7 @@ Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-rev
 4. 发送前遵守截止和取消，重试准确定位delivery；无任务不伪装QUEUED。撤回保留已送达与不可撤销外部边界（D-002已接受）。
 5. 普通邮件无需业务链接，附件经授权与快照实际发送；无附件零OSS调用。生产快照适配及归属按已接受D-009实施，不能只复用测试替身。
 6. OSS访问依据对象/配置/授权/访问类型，管理诊断报告有界事实；并发恢复/清理不得删除当前来源。readiness规则替代与锁取舍按已接受D-003/D-008实施。
-7. 公开仓库无真实本地凭据，CORS精确受信；日常start/build/repair职责清楚，默认存储与历史对象各用自己的权威事实。
+7. 公开仓库无真实本地凭据，CORS按显式列表或用户选择的单独通配符配置；日常start/build/repair职责清楚，默认存储与历史对象各用自己的权威事实。
 
 ### 状态与失败不变量
 
@@ -93,7 +93,7 @@ AC-001—031保留稳定编号和既有行为，不把新问题塞进旧finding�
 | AC-030 | 当前候选 `6002e7ad`；证据 `evidence/T-30-replan-2026-09-23.md`；未归档、未推送 | 完成升级整体验收与可审查交付 | AC-001—AC-050全部有当前候选通过证据，报告18项全部有关闭结论；历史共同result及worktrees空缺已按事实处置，未伪造验收时点或新空提交；真实MySQL/Redis/MinIO及浏览器所需场景无required skip，full/core/三App同源候选完整；G-security-external和所有归档必需条件关闭，未批准风险不消失；部署、永久知识、归档移动按授权执行 | required: 同一候选完整运行SSO/Profile/workflow/Notify/Third/树/三App发布及失败恢复；T-30 |
 | AC-031 | 当前源码已满足，无新实现；证据 `evidence/T-31-replan-2026-09-23.md`；T-30 仍负责组合复验 | 修复企业转移发码的同步/排队合同阻断 | 真实Notify返回QUEUED时send不抛DELIVERY_FAILED，transfer与通知同事务提交；只有匹配用户、已提交transfer、有效验证码及ACCEPTED/DELIVERED通知可以确认；QUEUED/失败/过期不可确认；发送或确认事务失败后无错误绑定，Redis残留不可越权且可重新发码恢复；真实跨模块测试不固定mock ACCEPTED；重复确认不重复转移，PersonRebind/Captcha/TestSend状态各自准确 | required: 真Profile→Notify QUEUED、worker受理→确认及DB/Redis部分失败、重复确认/错用户/绑定变更；T-31 |
 | AC-032 | 已关闭；证据 `evidence/T-32-replan-2026-09-23.md`；result `bafd5d51`；发布 128 项与 Spring 3 项均 0 skip；外部轮换见 `evidence/G-security-external-2026-09-23.md` | 移除受跟踪本地凭据并交付轮换清单 | git ls-files 不再包含本地真实配置；示例与公开产物无真实凭据；使用合成凭据覆盖配置加载与脱敏，缺 secret 不被弱默认值替代；轮换清单逐项记录环境、账号、依赖连接、负责人和证据状态；未执行保持未验证 | Git 跟踪清单、合成配置加载、日志脱敏；实际轮换是 G-security-external 的外部动作；T-32 |
-| AC-033 | 已关闭；证据 `evidence/T-33.md`；result `da48f850`；专用 24 项与 2 个 Chrome 通过；默认套件 123 个环境门控 skip 不计通过 | 恢复精确来源的 CORS 默认边界 | 恶意 Origin 无许可响应头，受信来源与同源开发可用；生产通配+credentials 明确配置失败，无按请求 Origin 自动加入白名单；SSO Cookie/预检回归通过，桶权限不因后端 CORS 改动而扩大 | 真实 Servlet/CorsFilter 测试与 Spring profile 绑定；T-33 |
+| AC-033 | 原 T-33 证据仅对应旧策略；2026-09-26 用户确认保留当前通配符，当前回归见本轮审查记录 | 支持精确来源及单独通配符 | 单独 `*` 允许 HTTP(S) Origin 回显及凭证；精确列表拒绝未列来源；拒绝 null/non-HTTP、混合通配与路径；应用与桶 CORS 独立，业务鉴权保持 | 当前 CorsPolicy/CorsServlet/ProfileBinding 回归；T-33 |
 | AC-034 | 已关闭；证据 `evidence/T-34.md`；result `177eb5bd`；真实收件箱 1/1、0 skip | 关闭实时连接时仍加载本人消息盒子 | flag=false 仍有 GET inbox，后端实时服务关闭仍可读；退出 A 登录 B，A 延迟结果及错误不能污染 B；无 token 才清空；正文不重复，加载失败可重试且不冒充空列表 | 现有 push.test.ts、notice 组件、真实 Admin 登录→打开盒子；T-34 |
 | AC-035 | 已关闭；证据 `evidence/T-35.md`；result `fd8c3464`；38 类 170 项与真实短信 8 项均 0 skip | 打通短信内容快照与真实分发器合同 | 有效 SMS 实际适配器调用一次，模板参数正确且快照非空；空快照仍被拒绝；本地错误无 WAITING_RECEIPT；敏感值不进入普通日志、管理快照或 Evidence | DispatchNotificationServiceTest、NotifyDispatcherUnitTest、CaptchaNotifyCallerUnitTest 的真实跨层组合；T-35 |
 | AC-036 | 已关闭；证据 `evidence/T-36-replan-2026-09-23.md`；result `64d67d5`；原子 66 项与唤醒 1 项均 0 skip | 站内信落库与结果同事务且可安全重试 | 并发两个用户一条共享消息、每人一条关系；重复任务不增加关系；任一 SQL/提交失败不留下消息与结果部分提交，失效租约零写入；实时发送失败不回滚或重复已落库消息；本地暂时失败能重试收敛 | 扩展 NotifyAtomicResultIntegrationTest；真实 DSTransactional 代理、MySQL 双连接、提交故障与 AFTER_COMMIT；T-36 |

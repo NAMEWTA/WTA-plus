@@ -12,7 +12,7 @@ status: "cancelled"
 kind: "review"
 planning_depth: "standard"
 planning_depth_reason: "局部多文件可观察行为或既有实现验收"
-ready: true
+ready: false
 risk: "medium"
 blocked_by: ["T-18"]
 contract_ids: ["AC-019"]

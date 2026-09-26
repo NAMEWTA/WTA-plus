@@ -1,22 +1,25 @@
 import { createRenderer, nextTick, ssrContextKey } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import Callback from './SsoCallbackPage.vue';
-import { useUserStore } from '@/store/user';
+import Callback from './sso-callback.vue';
+import { useUserStore } from '@/store/modules/user';
 
 const fixture = vi.hoisted(() => ({
   token: 'old-token', exchange: vi.fn(), replace: vi.fn(), getInfo: vi.fn(), logout: vi.fn(),
   navigationLoaded: true, resetRoutes: vi.fn()
 }));
 vi.mock('vue-router', () => ({ useRouter: () => ({ replace: fixture.replace }) }));
-vi.mock('@/application/sso', () => ({ homeSso: { handleCallback: fixture.exchange }, homeSsoRedirectUri: vi.fn() }));
+vi.mock('@/application/sso', () => ({ adminSso: { handleCallback: fixture.exchange }, adminSsoRedirectUri: vi.fn() }));
 vi.mock('@/application/services', () => ({ identityAccessService: fixture }));
 vi.mock('@/application/session', () => ({
   getToken: () => fixture.token, removeToken: () => { fixture.token = ''; },
   session: { getToken: () => fixture.token, setToken: (token: string) => { fixture.token = token; } }
 }));
-vi.mock('@/application/http', () => ({ homeHttp: { cancelPending: vi.fn() }, relogin: { show: false } }));
-vi.mock('@/store/navigation', () => ({ useNavigationStore: () => ({ resetRoutes: fixture.resetRoutes }) }));
+vi.mock('@/application/http', () => ({ adminHttp: { cancelPending: vi.fn() }, isRelogin: { show: false } }));
+vi.mock('@/store/modules/navigation', () => ({ useNavigationStore: () => ({ resetRoutes: fixture.resetRoutes }) }));
+vi.mock('@/utils/push', () => ({ closePush: vi.fn() }));
+vi.mock('@/store/modules/notice', () => ({ useNoticeStore: () => ({ clearNotice: vi.fn() }) }));
+vi.mock('@/store/modules/tagsView', () => ({ useTagsViewStore: () => ({ resetSession: vi.fn() }) }));
 
 type HostNode = { parent?: HostNode; children: HostNode[] };
 const node = (): HostNode => ({ children: [] });
@@ -51,8 +54,8 @@ async function mountPending() {
   return { user, complete: async () => { complete({ accessToken: 'sso-token', returnTo: '/profile' }); await pending; await nextTick(); } };
 }
 
-describe('homeSso callback session ownership', () => {
-  it('replaces the old identity and navigation before accepting the homeSso token', async () => {
+describe('adminSso callback session ownership', () => {
+  it('replaces the old identity and navigation before accepting the adminSso token', async () => {
     const { user, complete } = await mountPending();
     await complete();
     expect(fixture.token).toBe('sso-token'); expect(user.token).toBe('sso-token');

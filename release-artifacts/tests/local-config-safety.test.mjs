@@ -93,11 +93,34 @@ exit 1
     assert.equal(readFileSync(path.join(directory, 'backend/mvnw-log'), 'utf8').includes('--server.port'), false);
     assert.equal((kept.stdout + kept.stderr).includes(`SERVER_PORT=${port}`), false);
     writeFileSync(path.join(directory, 'backend/mvnw-log'), '');
-    const menu = spawnSync('bash', [path.join(directory, 'scripts/start-dev.sh')], {
-      cwd: directory, env: preserved, input: '2\n', encoding: 'utf8', timeout: 30000
+    const menu = spawnSync('bash', [path.join(directory, 'scripts/start-dev.sh'), '2', '3'], {
+      cwd: directory, env: preserved, encoding: 'utf8', timeout: 30000
     });
     assert.equal(menu.status, 0, menu.stderr + menu.stdout);
     assert.equal(readFileSync(path.join(directory, 'backend/mvnw-log'), 'utf8').includes('spring-boot:run'), true);
+    writeFileSync(path.join(directory, 'backend/mvnw-log'), '');
+    const piped = spawnSync('bash', [path.join(directory, 'scripts/start-dev.sh')], {
+      cwd: directory, env: preserved, input: '2\n', encoding: 'utf8', timeout: 30000
+    });
+    assert.equal(piped.status, 2);
+    assert.equal(readFileSync(path.join(directory, 'backend/mvnw-log'), 'utf8'), '');
+    put(localConfig, 'server:\n  port: ${OWNED_PORT:38888}\n');
+    const placeholderEnv = { ...preserved };
+    delete placeholderEnv.SERVER_PORT;
+    const placeholder = spawnSync('bash', [path.join(directory, 'scripts/start-dev.sh'), 'start', 'backend'], {
+      cwd: directory, env: placeholderEnv, encoding: 'utf8', timeout: 30000
+    });
+    assert.equal(placeholder.status, 0, placeholder.stderr + placeholder.stdout);
+    rmSync(path.join(directory, localConfig));
+    for (const key of ['SPRING_CONFIG_ADDITIONAL_LOCATION', 'SPRING_CONFIG_LOCATION']) {
+      const env = { ...preserved, [key]: 'optional:file:/explicit/operator-config/' };
+      delete env.SERVER_PORT;
+      const external = spawnSync('bash', [path.join(directory, 'scripts/start-dev.sh'), 'start', 'backend'], {
+        cwd: directory, env, encoding: 'utf8', timeout: 30000
+      });
+      assert.equal(external.status, 0, external.stderr + external.stdout);
+    }
+
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

@@ -149,6 +149,11 @@ resolve_vite_env_key() {
   local app_dir=${1}
   local key=${2}
   local file value result=""
+  # Vite gives inherited environment variables precedence over every dotenv file.
+  if [[ -n ${!key+x} ]]; then
+    printf '%s' "${!key}"
+    return 0
+  fi
   local files=(
     "${app_dir}/.env"
     "${app_dir}/.env.local"
@@ -625,7 +630,9 @@ load_backend_port() {
       raw=${raw%%#*}
       raw=$(trim_env_value "${raw}")
       if [[ ! "${raw}" =~ ^[0-9]+$ ]]; then
-        fail "后端本地配置的顶层 server.port 不是有效端口。"
+        # Spring resolves placeholders and imported configuration at runtime.
+        backend_port=""
+        return 0
       fi
       port="${raw}"
       break
@@ -674,6 +681,11 @@ resolve_checked_port() {
     backend_port="${SERVER_PORT}"
     return 0
   fi
+  if [[ -n "${SPRING_CONFIG_ADDITIONAL_LOCATION:-}${SPRING_CONFIG_LOCATION:-}" ]]; then
+    # External config may contain imports/placeholders; Spring owns its resolution.
+    backend_port=""
+    return 0
+  fi
   load_backend_port
 }
 
@@ -707,11 +719,13 @@ start_backend() {
   require_command java
   require_command jar
   resolve_mvnw_cmd
-  [[ -s "${backend_dir}/${backend_local_config}" ]] || fail "缺少非空的本地后端配置：${backend_dir}/${backend_local_config}"
+  if [[ -z "${SPRING_CONFIG_ADDITIONAL_LOCATION:-}${SPRING_CONFIG_LOCATION:-}" ]]; then
+    [[ -s "${backend_dir}/${backend_local_config}" ]] || fail "缺少非空的本地后端配置：${backend_dir}/${backend_local_config}"
+  fi
   [[ -f "${backend_dir}/pom.xml" ]] || fail "未找到后端 pom.xml：${backend_dir}/pom.xml"
   [[ -f "${backend_dir}/wta-admin/pom.xml" ]] || fail "未找到 wta-admin 模块：${backend_dir}/wta-admin"
   resolve_checked_port
-  ensure_port_available "${backend_port}" "后端"
+  if [[ -n "${backend_port}" ]]; then ensure_port_available "${backend_port}" "后端"; fi
 
   cd "${backend_dir}" || fail "无法进入后端目录：${backend_dir}"
   # direct 不安装、不校验。install 和 clean 在接管进程前释放构建锁。
@@ -720,7 +734,7 @@ start_backend() {
   fi
   # Private configuration is excluded from classpath resources and release JARs.
   # Keep an operator-provided external location authoritative.
-  if [[ -z "${SPRING_CONFIG_ADDITIONAL_LOCATION:-}" ]]; then
+  if [[ -z "${SPRING_CONFIG_ADDITIONAL_LOCATION:-}${SPRING_CONFIG_LOCATION:-}" ]]; then
     runtime_config="${backend_dir}/${backend_local_config}"
     case "$(uname -s 2>/dev/null)" in
       MINGW* | MSYS* | CYGWIN*) runtime_config=$(cygpath -m -- "${runtime_config}") ;;
