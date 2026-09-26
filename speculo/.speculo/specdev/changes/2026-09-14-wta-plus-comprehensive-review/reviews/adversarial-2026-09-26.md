@@ -58,6 +58,10 @@ Lead 拥有本记录与状态，产品实现按唯一 writer 串行交接。只�
 
 本轮 AR-01—07 实现修复与回归已完成；仍需补齐历史票级 Evidence/集成事实，才能关闭 change。`T-43`、`T-48`、`T-49` 的规范 Evidence 文件缺失；另有历史 Evidence 结构、Skill 执行记录和 Done/集成记录不一致。不能将本轮未提交工作树测试回写为历史 clean HEAD 通过记录。Windows 仍按用户豁免处理。
 
-[用户指定的归档入口](../../../../../workflows/specdev/A-archive-and-consolidate/A-archive-and-consolidate.md)要求“确认 `change_status: completed`、完成 owner 已写入时间和证据、无 blocker/deviation”。当前 `change_status=active` 且 complete exit 1，因此没有进入机械移动或永久知识提升。[全局归档 Skill](../../../../../skills/archive-and-consolidate/SKILL.md)要求“Stop before side effects when the required input, owner, reference, confirmation, schema, or recovery evidence is missing”。此处阻断来自实际缺失的完成证据；本轮不请求归档确认，因为还没有满足前置门的可执行归档计划。
+<Path>{roots.workflows}/specdev/A-archive-and-consolidate/A-archive-and-consolidate.md</Path>要求“确认 `change_status: completed`、完成 owner 已写入时间和证据、无 blocker/deviation”。当前 `change_status=active` 且 complete exit 1，因此没有进入机械移动或永久知识提升。<Path>{roots.skills}/archive-and-consolidate/SKILL.md</Path>要求“Stop before side effects when the required input, owner, reference, confirmation, schema, or recovery evidence is missing”。此处阻断来自实际缺失的完成证据；本轮不请求归档确认，因为还没有满足前置门的可执行归档计划。
 
 `DELETING` 或 `COPY_UNKNOWN` 的外部结果无法证明时继续保留对象/引用，需要人工核对；这是有意禁止自动恢复或重发的边界。此审查不宣称全仓不存在其他缺陷。
+
+## 归档激活后续
+
+前述104项是首轮审查时点结果；本轮补充验收、用户明确批准的历史证据接纳方式，以及真实提交坐标规范化已另行记录于 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/archive-acceptance-2026-09-26/README.md</Path>。T43领取探针失配已修正并真实smoke通过。最终完成与归档状态以提交后complete校验及归档报告为准。

@@ -34,10 +34,19 @@
       "exit_code": 0
     }
   ],
-  "historical_clean_substitution": "pending-user-decision",
+  "historical_clean_substitution": "user-approved 2026-09-26: 同意采用本轮补充验收",
   "windows": "user-waived/not-run",
   "runtime_results": [
     "linux-start-result.json",
     "storage-tests-result.json"
-  ]
+  ],
+  "fanout_smoke": {
+    "source": "d0759fdf4c826337bb789cfcfed8addadc702e1b",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "full_matrix_rerun": false
+  }
 }

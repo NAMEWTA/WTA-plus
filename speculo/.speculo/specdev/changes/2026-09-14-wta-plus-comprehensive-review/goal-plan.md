@@ -2,7 +2,7 @@
 schema_version: 6
 artifact: "goal-plan"
 change: "2026-09-14-wta-plus-comprehensive-review"
-status: "in_progress"
+status: "completed"
 modes: ["high-assurance", "release-coordination", "migration"]
 orchestration: "lead-directed"
 lead: "single-agent"
@@ -10,14 +10,14 @@ implementation_agent_limit: 1
 integration_attempt_limit: 3
 ticket_workspace_policy: "current"
 integration_gate: "direct-parent"
-ready_for_execution: true
+ready_for_execution: false
 ---
 
 # Goal Plan：完成本review change并满足归档前置
 
 Goal：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/goal-plan.md</Path>；Map：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/tickets-map.md</Path>；Spec：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/spec.md</Path>；Tickets：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ticket/</Path>；Evidence：<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/</Path>。
 
-**2026-09-26 当前执行：50 票已有终态记录，本轮对抗性修复及回归已完成；历史完成证据缺口仍阻断归档，见 reviews/adversarial-2026-09-26.md。** 用户要求执行全部50票，以代码及真实验收为完成依据；单人串行/current-direct-parent。
+**2026-09-26 当前执行：30 done / 20 cancelled；本轮补充验收与用户裁决已落实，等待完成治理提交后的 clean/complete 确认后归档。**
 
 ## 1. Outcome and Authority
 
@@ -869,3 +869,7 @@ base `5417c257130216e2b283ca933d9496d76c10f46a`，source/result `d95b464e46ec73d
 revision239：T43启动，先用真实公告链和MySQL测100/1000/10000基线，生产尚未优化；7写根内仅新增测量测试，common batch事务独立核查。18done/2cancelled/1in_progress/29ready；Goal active，未归档。
 
 基线 `dd250b947576505425b67ebac0a559c56616952c`；首轮精确产品写路径 `backend/wta-admin/src/test/java/org/namewta/test/notify/NotifyFanoutMeasurementIntegrationTest.java`。Lead治理提交后cors_audit单writer；legacy_audit仓库只读审计，ops_audit仅/tmp驱动准备，Lead独占服务/命令/提交。固定三档各三次fresh同输入A/B、真实发布事务/固定10次结果/SQL行与执行数/锁等待/内存，故障回滚和唯一性为硬门禁；生产优化必须有A测量依据，聚合不新增状态机或虚构SLA。全部AC仍未勾，未运行不报通过。
+
+## 2026-09-26 最终完成裁决
+
+30 done / 20 cancelled；全部 AC 按真实票级 replan、对抗性修复及本轮补充验收接纳。用户明确批准历史 clean 缺口的当前补验替代，历史事实不改写；所有此前进度段落作为时点记录保留。Gate 的最终结果以 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/archive-acceptance-2026-09-26/README.md</Path> 为准。无部署、真实供应商投递或 Windows 实机通过声明。归档和前后 commit/push 已由用户授权。

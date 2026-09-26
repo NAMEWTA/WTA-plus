@@ -230,3 +230,7 @@
 ### 归档补验准备
 
 第一批94091cda/c671b8cf已推送。clean c671上前端完整门禁、后端1210总项（959执行、251环境skip）、release、包级自检通过；真实Linux前后端各两次启动+doctor通过，MySQL/MinIO存储10项零skip通过，结果见evidence/archive-acceptance-2026-09-26。规范化12票Evidence保留旧原文及历史clean缺口；替代验收裁决等待用户。补审发现T43聚合探针仍预期领取50条，现同步为10次单条claim/dispatch并保留聚合断言；新计量包含claim，不能与旧基线直接比较，等待新clean提交专项运行。
+
+### 完成裁决
+
+用户已批准采用本轮补充验收。T43探针在clean d0759fdf的真实MySQL/Redis smoke通过，未冒充完整矩阵；补齐真实实现坐标和当前验收定位，历史deviations逐字转存evidence/archive-acceptance-2026-09-26/historical-deviations.json，活动blocker清空。完成治理提交后再次执行complete/clean校验，随后机械归档，不写永久知识。

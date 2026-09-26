@@ -18,7 +18,7 @@ blocked_by: []
 contract_ids: ["AC-016"]
 owner: "single-agent"
 expected_changes: ["<Path>frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue</Path>", "<Path>frontend/packages/web-domains/workflow/src/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/playwright.config.ts</Path>"]
-writable_paths: ["<Path>frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue</Path>", "<Path>frontend/packages/web-domains/workflow/src/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/playwright.config.ts</Path>"]
+writable_paths: ["<Path>frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue</Path>", "<Path>frontend/packages/web-domains/workflow/src/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/playwright.config.ts</Path>", "<Path>frontend/playwright.task-integrity.config.ts</Path>", "<Path>frontend/vite.task-integrity.config.ts</Path>"]
 read_only_paths: ["<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/source.md</Path>", "<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/ADR.md</Path>", "<Path>{roots.state}/specdev/adr/</Path>", "<Path>{roots.state}/specdev/changes/2026-09-21-wta-sso-oidc-upgrade/</Path>"]
 shared_paths: ["<Path>frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue</Path>", "<Path>frontend/packages/web-domains/workflow/src/</Path>", "<Path>backend/wta-modules/wta-workflow/</Path>", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path>", "<Path>frontend/e2e/</Path>", "<Path>frontend/playwright.config.ts</Path>"]
 shared_path_owners: ["<Path>frontend/packages/web-domains/workflow/src/components/ProcessActionDialog.vue</Path> => single-agent (Lead; exclusive current workspace; T-16 turn only)", "<Path>frontend/packages/web-domains/workflow/src/</Path> => single-agent (Lead; exclusive current workspace; T-16 turn only)", "<Path>backend/wta-modules/wta-workflow/</Path> => single-agent (Lead; exclusive current workspace; T-16 turn only)", "<Path>backend/wta-admin/src/test/java/org/namewta/test/</Path> => single-agent (Lead; exclusive current workspace; T-16 turn only)", "<Path>frontend/e2e/</Path> => single-agent (Lead; exclusive current workspace; T-16 turn only)", "<Path>frontend/playwright.config.ts</Path> => single-agent (Lead; exclusive current workspace; T-16 turn only)"]
@@ -147,3 +147,10 @@ frontmatter每个必需绑定在implement阶段输入本票、真实调用方和
 <Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/evidence/T-16.md</Path>及其引用日志是历史证据，本轮未重跑业务测试。原Ticket全文见<Path>{roots.state}/specdev/changes/2026-09-14-wta-plus-comprehensive-review/reviews/replan-2026-09-23-before/ticket/16-workflow-task-integrity.md</Path>，不得按旧“尚未实现/提交暂缓”描述重复执行。
 
 旧计划把所有票result设为同一整批提交且当前worktrees为空，不满足现行逐票验收记录合同；Lead须查原始记录。不能补造当时clean状态，不能为关闭历史票创建空commit。若现代码满足合同且无需新实现，经当前行为证据及明确处置可cancelled并保留AC由T-30覆盖；否则按真实修复重新形成产品提交，既有历史证据仍不删。
+
+## 2026-09-26 补充验收范围登记
+
+现有 replan 已实际交付以下测试路径，但旧计划 frontmatter 遗漏。当前采用用户批准的补充验收，将其明确纳入本票验收范围；这不是对旧派单时点的追认，也没有新增实现或扩展生产功能：
+
+- <Path>frontend/playwright.task-integrity.config.ts</Path>
+- <Path>frontend/vite.task-integrity.config.ts</Path>
