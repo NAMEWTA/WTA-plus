@@ -10,27 +10,31 @@
 
 数据是一个 MySQL 8.4 库 `wta-plus`，加上 Redis 和 MinIO。全新空库按六份 SQL 初始化；已经有数据的库不能重放这六份脚本。
 
-| 前端 | 开发时浏览器打开 | 开发时代理到后端 | 生产时浏览器打开 | 生产时接口怎么到后端 |
-| --- | --- | --- | --- | --- |
-| admin-web | `http://127.0.0.1:5177/` | `/dev-api` → `http://127.0.0.1:38888` | 业务负载均衡上的 `/<管理端前缀>/` | `/<前缀>/prod-api`，由 Nginx 去掉前缀后转到后端 |
-| home-web | `http://127.0.0.1:5175/` | 同上 | 同一个业务负载均衡上的 `/<门户前缀>/` | 同上 |
-| sso-web | `http://127.0.0.1:4176/` | 同源 `/sso` → `http://127.0.0.1:38888` | 独立入口 `/<SSO 前缀>/`，不进业务负载均衡 | 页面走 SSO 前缀，接口保持 `/sso` |
+
+| 前端        | 开发时浏览器打开                 | 开发时代理到后端                              | 生产时浏览器打开                   | 生产时接口怎么到后端                         |
+| --------- | ------------------------ | ------------------------------------- | -------------------------- | ---------------------------------- |
+| admin-web | `http://127.0.0.1:5177/` | `/dev-api` → `http://127.0.0.1:38888` | 业务负载均衡上的 `/<管理端前缀>/`       | `/<前缀>/prod-api`，由 Nginx 去掉前缀后转到后端 |
+| home-web  | `http://127.0.0.1:5175/` | 同上                                    | 同一个业务负载均衡上的 `/<门户前缀>/`     | 同上                                 |
+| sso-web   | `http://127.0.0.1:4176/` | 同源 `/sso` → `http://127.0.0.1:38888`  | 独立入口 `/<SSO 前缀>/`，不进业务负载均衡 | 页面走 SSO 前缀，接口保持 `/sso`             |
+
 
 管理端和门户的公开 Client 标识写在各自的 `.env.development` 里，分别是 `e5cd7e4891bf95d1d19206ce24a7b32e` 和 `428a8310cd442757ae699df5d894f051`。它们不是密钥，但必须和库里的 `sys_client.client_id` 一致。SSO 页面不使用这两个标识；它的接口基址是空的 `VITE_SSO_API`，表示走同源 `/sso`。
 
-不要为了换环境去改 `frontend/apps/*/.env.production`。发布脚本会按 env 里的前缀覆盖 `VITE_APP_CONTEXT_PATH` 和 `VITE_APP_BASE_API`。`VITE_*` 会进浏览器包，不能放数据库、Redis 或 MinIO 密码。
+不要为了换环境去改 `frontend/apps/*/.env.production`。发布脚本会按 env 里覆盖 `VITE_APP_CONTEXT_PATH` 和 `VITE_APP_BASE_API`。`VITE_*` 会进浏览器包，不能放数据库、Redis 或 MinIO 密码。
 
 ## 这几种地址不是一回事
 
-| 名称 | 开发时的值 | 它决定什么 |
-| --- | --- | --- |
-| 页面 Origin | `http://127.0.0.1:5177`、`5175`、`4176` | 浏览器页面的协议、主机和端口。`localhost` 和 `127.0.0.1` 是不同来源，路径和结尾 `/` 不算 Origin |
-| 业务接口前缀 | `/dev-api`，生产是 `/<前缀>/prod-api` | 只到 Spring Boot。浏览器不把这个前缀写成对象存储地址 |
-| `WEB_CORS_ALLOWED_ORIGINS` | 公开模板默认三个 `127.0.0.1` 入口 | 只决定浏览器能不能读取后端的跨源响应。接口仍要登录和权限 |
-| `SSO_WEB_ORIGIN` | 发布样例是独立的 SSO 主机 | SSO 认人页的来源。SSO 路径前缀不放进这条 CORS 名单 |
-| `MINIO_API_CORS_ALLOW_ORIGIN` | 样例默认 `*` | 对象存储自己的浏览器来源白名单。上传时浏览器会直接访问它 |
-| `sys_oss_config.endpoint` | 基座先写本机占位，初始化后改成 env 里的值 | 后端连对象存储，也是预签名 URL 里的主机。浏览器必须能够访问它 |
-| `sys_oss_config.domain_url` | 初始化不填 | 只给以后单独做的公共读配置用。默认私有对象不靠它 |
+
+| 名称                            | 开发时的值                                 | 它决定什么                                                              |
+| ----------------------------- | ------------------------------------- | ------------------------------------------------------------------ |
+| 页面 Origin                     | `http://127.0.0.1:5177`、`5175`、`4176` | 浏览器页面的协议、主机和端口。`localhost` 和 `127.0.0.1` 是不同来源，路径和结尾 `/` 不算 Origin |
+| 业务接口前缀                        | `/dev-api`，生产是 `/<前缀>/prod-api`       | 只到 Spring Boot。浏览器不把这个前缀写成对象存储地址                                   |
+| `WEB_CORS_ALLOWED_ORIGINS`    | 公开模板默认三个 `127.0.0.1` 入口               | 只决定浏览器能不能读取后端的跨源响应。接口仍要登录和权限                                       |
+| `SSO_WEB_ORIGIN`              | 发布样例是独立的 SSO 主机                       | SSO 认人页的来源。SSO 路径前缀不放进这条 CORS 名单                                   |
+| `MINIO_API_CORS_ALLOW_ORIGIN` | 样例默认 `*`                              | 对象存储自己的浏览器来源白名单。上传时浏览器会直接访问它                                       |
+| `sys_oss_config.endpoint`     | 基座先写本机占位，初始化后改成 env 里的值               | 后端连对象存储，也是预签名 URL 里的主机。浏览器必须能够访问它                                  |
+| `sys_oss_config.domain_url`   | 初始化不填                                 | 只给以后单独做的公共读配置用。默认私有对象不靠它                                           |
+
 
 应用 CORS 和对象存储 CORS 要分别改。改了 `WEB_CORS_ALLOWED_ORIGINS`，不会自动放行浏览器向 MinIO 的 PUT。
 
@@ -66,17 +70,16 @@
 2. 填写三个 `*_WEB_PREFIX`、三个 `*_WEB_ORIGIN`、证书目录 `NAMEWTA_CERT_ROOT` 和 `NAMEWTA_BIND_HOST`。管理端前缀不要使用 `admin`、`monitor`、`snail-job` 或 `snail-ai`。样例里的 `.invalid` 主机不能用于真正构建。
 3. 确认目标 MySQL 里还没有 `wta-plus` 库，也没有同名应用账号。初始化脚本遇到已存在的库或账号会拒绝执行。
 4. 按这个顺序导入，且只导入这些文件：
-
    ```text
-   10-cde-base-ddl.sql
-   20-cde-job.sql
-   30-cde-workflow.sql
-   40-cde-ai.sql
-   50-cde-base-dml.sql
-   60-cde-nacos.sql
+    10-cde-base-ddl.sql
+    20-cde-job.sql
+    30-cde-workflow.sql
+    40-cde-ai.sql
+    50-cde-base-dml.sql
+    60-cde-nacos.sql
    ```
 
-   产品表结构只改第 1 份，产品数据只改第 5 份。第 6 份初始化独立库 `nacos`，不把 Nacos 表建进 `wta-plus`。不要另加第七份迁移脚本。
+    产品表结构只改第 1 份，产品数据只改第 5 份。第 6 份初始化独立库 `nacos`，不把 Nacos 表建进 `wta-plus`。不要另加第七份迁移脚本。
 5. 导入后，`init-mysql-container.sh` 用 env 覆盖 `minio` 和 `image` 的访问密钥、桶名和 endpoint，并检查启用中的默认配置恰好是私有的 `minio`。然后在对象存储里建好对应的桶和私有探针对象，再把 MinIO CORS 从 `*` 改成三个真实 Origin。
 6. 后端使用 `SPRING_PROFILES_ACTIVE=prod`。生产不要关闭 SSO 的 Secure Cookie。OpenAPI 若启用，替换开发用的 KEK，不要沿用仓库里的默认值。
 7. 邮件、短信和第三方对象存储不在这六份 SQL 里，由目标环境单独配置。Nacos 默认关闭；要启用时先准备独立库、管理员密码和与 Spring profile 对应的 namespace，再按发布说明打开。
@@ -91,11 +94,14 @@
 
 ## 对照时看这些文件
 
-| 要确认的事 | 文件 |
-| --- | --- |
-| 发布变量样例 | `release-artifacts/.env.example` |
-| 新库初始化和 OSS 行覆盖 | `release-artifacts/scripts/init-mysql-container.sh` |
-| 表结构和种子数据 | `release-artifacts/docker/infrastructure/mysql/init/` |
-| 直传策略和清理开关 | `backend/wta-admin/src/main/resources/application.yml` |
-| 本机 CORS 模板 | `backend/wta-admin/src/main/resources/application-local.example.yml` |
-| 三个前端的开发端口和代理 | `frontend/apps/admin-web/.env.development`、`frontend/apps/home-web/.env.development`、`frontend/apps/sso-web/.env.development` |
+
+| 要确认的事          | 文件                                                                                                                            |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 发布变量样例         | `release-artifacts/.env.example`                                                                                              |
+| 新库初始化和 OSS 行覆盖 | `release-artifacts/scripts/init-mysql-container.sh`                                                                           |
+| 表结构和种子数据       | `release-artifacts/docker/infrastructure/mysql/init/`                                                                         |
+| 直传策略和清理开关      | `backend/wta-admin/src/main/resources/application.yml`                                                                        |
+| 本机 CORS 模板     | `backend/wta-admin/src/main/resources/application-local.example.yml`                                                          |
+| 三个前端的开发端口和代理   | `frontend/apps/admin-web/.env.development`、`frontend/apps/home-web/.env.development`、`frontend/apps/sso-web/.env.development` |
+
+
