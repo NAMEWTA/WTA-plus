@@ -28,6 +28,7 @@ import java.util.List;
 @LiteflowComponent("startExecute")
 public class StartExecuteComponent extends NodeComponent {
 
+    private final org.namewta.workflow.service.impl.WorkflowClientScopeService clientScope;
     private final InsService insService;
     private final TaskService taskService;
     private final FlwInstanceBizExtMapper flwInstanceBizExtMapper;
@@ -40,7 +41,9 @@ public class StartExecuteComponent extends NodeComponent {
             .flowCode(context.getStartProcessBo().getFlowCode())
             .variable(context.getVariables())
             .flowStatus(BusinessStatusEnum.DRAFT.getStatus());
+        Long initiatorClient = clientScope.initiatorClient(context.getStartProcessBo());
         Instance instance = insService.start(context.getBusinessId(), flowParams);
+        clientScope.snapshot(instance, initiatorClient);
         context.setInstance(instance);
         saveBizExt(context, instance);
 

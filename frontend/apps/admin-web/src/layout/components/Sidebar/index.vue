@@ -1,6 +1,10 @@
 <template>
-  <div class="sidebar-shell" :class="{ 'has-logo': showLogo }" :style="menuStyle">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+  <SidebarFrame
+    :class="{ 'has-logo': showLogo }"
+    :theme="sideTheme === 'theme-dark' ? 'dark' : 'light'"
+    :style="menuStyle"
+  >
+    <template #brand><logo v-if="showLogo" :collapse="isCollapse" /></template>
     <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper">
       <transition :enter-active-class="animateConfig.menuSearchAnimate.enter" mode="out-in">
         <el-menu
@@ -15,10 +19,11 @@
         </el-menu>
       </transition>
     </el-scrollbar>
-  </div>
+  </SidebarFrame>
 </template>
 
 <script setup lang="ts">
+import SidebarFrame from '@namewta/web-kit-ui-element/sidebar-frame';
 import { RouteRecordRaw } from 'vue-router';
 import animateConfig from '@/animate';
 import { useAppStore } from '@/store/modules/app';
@@ -55,34 +60,3 @@ const menuStyle = computed(() => ({
   '--el-menu-active-color': theme.value
 }));
 </script>
-
-<style lang="scss" scoped>
-.sidebar-shell {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 10px 8px 12px;
-  border: 1px solid var(--app-sidebar-border);
-  border-radius: var(--app-radius-base);
-  box-shadow: var(--app-shadow-sm);
-  background: v-bind(bgColor) !important;
-  overflow: hidden;
-}
-
-:deep(.el-scrollbar__view) {
-  min-height: 0;
-  padding-bottom: 12px;
-}
-
-:deep(.el-scrollbar) {
-  flex: 1;
-  min-height: 0;
-  height: auto !important;
-}
-
-:deep(.el-scrollbar__wrap) {
-  height: 100%;
-  overflow-x: hidden;
-}
-</style>

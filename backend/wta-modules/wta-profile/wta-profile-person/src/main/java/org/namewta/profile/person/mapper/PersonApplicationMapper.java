@@ -221,4 +221,10 @@ public interface PersonApplicationMapper extends BaseMapperPlus<ProfilePersonApp
      * 定义查询映射（selectActiveProjections）。
      */
     List<PersonActiveProjectionRow> selectActiveProjections(@Param("userIds") Set<Long> userIds);
+    /** 按本人有效绑定查询当前认证版本，防止暴露他人档案。 */
+    PersonVersionRow selectSelfVersion(@Param("userId") long userId);
+
+    /** 查询本人的当前退回原因。 */
+    String selectReturnReason(@Param("userId") long userId);
+
 }

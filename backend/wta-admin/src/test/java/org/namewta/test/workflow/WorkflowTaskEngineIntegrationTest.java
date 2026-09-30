@@ -109,10 +109,16 @@ class WorkflowTaskEngineIntegrationTest {
             var db = new JdbcTemplate(routing);
             var configuration = new MybatisConfiguration(new Environment("workflow-owned", new SpringManagedTransactionFactory(), routing));
             configuration.setMapUnderscoreToCamelCase(true);
-            GlobalConfigUtils.setGlobalConfig(configuration, GlobalConfigUtils.defaults());
+            GlobalConfigUtils.setGlobalConfig(configuration, GlobalConfigUtils.defaults().setMetaObjectHandler(new org.namewta.common.mybatis.handler.InjectionMetaObjectHandler()).setSqlInjector(new com.github.yulichang.injector.MPJSqlInjector()));
+            var pagination = new com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor();
+            pagination.addInnerInterceptor(new com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor());
+            configuration.addInterceptor(pagination);
             for (Class<?> mapper : List.of(FlowDefinitionMapper.class, FlowNodeMapper.class, FlowSkipMapper.class,
-                FlowInstanceMapper.class, FlowTaskMapper.class, FlowHisTaskMapper.class, FlowUserMapper.class, FlowFormMapper.class)) configuration.addMapper(mapper);
-            var sessions = new SqlSessionTemplate(new MybatisSqlSessionFactoryBuilder().build(configuration));
+                FlowInstanceMapper.class, FlowTaskMapper.class, FlowHisTaskMapper.class, FlowUserMapper.class, FlowFormMapper.class,
+                FlowInstanceNodeClientMapper.class, FlwTaskMapper.class, FlwHisTaskMapper.class, FlwUserMapper.class, FlwInstanceBizExtMapper.class)) configuration.addMapper(mapper);
+            var factory = new MybatisSqlSessionFactoryBuilder().build(configuration);
+            new com.github.yulichang.config.MPJInterceptorConfig(List.of(factory), new com.github.yulichang.interceptor.MPJInterceptor(), false);
+            var sessions = new SqlSessionTemplate(factory);
             for (Class<?> mapper : configuration.getMapperRegistry().getMappers()) context.getBeanFactory().registerSingleton(mapper.getSimpleName(), sessions.getMapper(mapper));
             var beans = new BeanConfig(); beans.setNewEntity();
             context.getBeanFactory().registerSingleton("engineChart", beans.chartService());
@@ -140,11 +146,17 @@ class WorkflowTaskEngineIntegrationTest {
                 .setJwtSecretKey("owned-workflow-fixture-secret-at-least-32-characters"));
             SaManager.setSaTokenContext(new SaTokenContextForSpringInJakartaServlet());
             SaManager.setStpInterface(new SaPermissionImpl()); StpUtil.setStpLogic(new StpLogicJwtForSimple());
+            var directory = mock(org.namewta.system.api.WorkflowAssigneeDirectoryService.class);
+            when(directory.eligibleUsers(anyLong(), anyCollection())).thenAnswer(invocation ->
+                ((Collection<Long>) invocation.getArgument(1)).stream().filter(id -> id != 9999L).toList());
+            var scope = new org.namewta.workflow.service.impl.WorkflowClientScopeService(sessions.getMapper(FlowInstanceNodeClientMapper.class), directory);
+            var common = mock(IFlwCommonService.class);
+            when(common.applyNodeCode(anyLong())).thenReturn("apply");
             var tasks = new FlwTaskServiceImpl(FlowEngine.taskService(), FlowEngine.insService(), FlowEngine.defService(), FlowEngine.hisTaskService(),
                 FlowEngine.nodeService(), sessions.getMapper(FlowTaskMapper.class), sessions.getMapper(FlowHisTaskMapper.class),
-                mock(org.namewta.system.api.UserService.class), mock(FlwTaskMapper.class), mock(FlwHisTaskMapper.class), mock(FlwCategoryMapper.class),
-                sessions.getMapper(FlowNodeMapper.class), assignees, mock(IFlwCommonService.class), mock(IFlwNodeExtService.class), mock(WorkflowHistoryOssOwner.class));
-            var completing = completionProxy(tasks, context, sessions, redis, liteflowTouched);
+                mock(org.namewta.system.api.UserService.class), sessions.getMapper(FlwTaskMapper.class), sessions.getMapper(FlwUserMapper.class), sessions.getMapper(FlwHisTaskMapper.class), mock(FlwCategoryMapper.class),
+                sessions.getMapper(FlowNodeMapper.class), assignees, common, mock(IFlwNodeExtService.class), mock(WorkflowHistoryOssOwner.class));
+            var completing = completionProxy(tasks, context, sessions, redis, liteflowTouched, scope);
             seedDefinition(db);
             login(2001L);
             var instance = FlowEngine.insService().start("owned-task-16", FlowParams.build().flowCode("owned-task-integrity").flowStatus("waiting").variable(new HashMap<>()));
@@ -220,6 +232,7 @@ class WorkflowTaskEngineIntegrationTest {
             org.junit.jupiter.api.Assertions.assertAll(
                 () -> assertThat(nextDenied).as("stranger next nodes").isInstanceOf(NotPermissionException.class),
                 () -> assertThat(backDenied).as("stranger back nodes").isInstanceOf(NotPermissionException.class));
+            crossClientReview(db, sessions, completing, scope, context, common);
         } finally {
             RequestContextHolder.setRequestAttributes(previousRequest);
             redis.shutdown(); routing.destroy(); ownedDao.destroy(); SaManager.setSaTokenDao(previousDao);
@@ -236,7 +249,7 @@ class WorkflowTaskEngineIntegrationTest {
             FrameInvoker.frameInvoker = previousFrame; FlowEngine.setFlowConfig(previousFlow); FlowEngine.jsonConvert = previousJson;
         }
     }
-    private static FlwTaskServiceImpl completionProxy(FlwTaskServiceImpl target, GenericApplicationContext context, SqlSessionTemplate sessions, RedissonClient redis, boolean[] touched) throws Exception {
+    private static FlwTaskServiceImpl completionProxy(FlwTaskServiceImpl target, GenericApplicationContext context, SqlSessionTemplate sessions, RedissonClient redis, boolean[] touched, org.namewta.workflow.service.impl.WorkflowClientScopeService scope) throws Exception {
         var config = new LiteflowConfig(); config.setPrintBanner(false); config.setPrintExecutionLog(false);
         com.yomahub.liteflow.property.LiteflowConfigGetter.setLiteflowConfig(config);
         assertThat(FlowBus.containChain("completeTaskChain")).isFalse(); touched[0] = true;
@@ -246,7 +259,7 @@ class WorkflowTaskEngineIntegrationTest {
         FlowBus.addManagedNode("completePrepare", new CompletePrepareComponent(sessions.getMapper(FlowTaskMapper.class), FlowEngine.insService()));
         FlowBus.addManagedNode("completeExecute", new CompleteExecuteComponent(FlowEngine.taskService(), history));
         FlowBus.addManagedNode("completeNeedAutoPass", new CompleteNeedAutoPassComponent());
-        FlowBus.addManagedNode("completeAutoPass", new CompleteAutoPassComponent(FlowEngine.taskService(), sessions.getMapper(FlowTaskMapper.class)));
+        FlowBus.addManagedNode("completeAutoPass", new CompleteAutoPassComponent(scope, FlowEngine.taskService(), sessions.getMapper(FlowTaskMapper.class)));
         FlowBus.addManagedNode("noop", new NoopComponent());
         try (var input = WorkflowTaskEngineIntegrationTest.class.getResourceAsStream("/liteflow/task-chain.el.xml")) {
             var factory = javax.xml.parsers.DocumentBuilderFactory.newInstance(); factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -266,17 +279,104 @@ class WorkflowTaskEngineIntegrationTest {
         return (FlwTaskServiceImpl) proxy.getProxy();
     }
     private static void login(long id, String... permissions) {
+        loginAt(id, 1L, permissions);
+    }
+    private static void loginAt(long id, long clientPk, String... permissions) {
         var request = new MockHttpServletRequest(); request.addHeader("User-Agent", "Mozilla/5.0 OwnedWorkflowFixture/1.0");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request, new MockHttpServletResponse()));
         var user = new LoginUser(); user.setUserId(id); user.setUsername("owned-" + id); user.setUserType("sys_user");
-        user.setClientPk(1L); user.setClientKey("admin-web"); user.setDeptId(1L); user.setIpaddr("127.0.0.1"); user.setLoginLocation("owned fixture");
+        user.setClientPk(clientPk); user.setClientKey("owned-client-" + clientPk); user.setDeptId(1L); user.setIpaddr("127.0.0.1"); user.setLoginLocation("owned fixture");
         user.setMenuPermission(Set.of(permissions)); user.setRolePermission(Set.of("owned"));
-        LoginHelper.login(user, new SaLoginParameter().setTimeout(300).setExtra(LoginHelper.CLIENT_PK_KEY, 1L).setExtra(LoginHelper.CLIENT_KEY, "admin-web"));
+        LoginHelper.login(user, new SaLoginParameter().setTimeout(300).setExtra(LoginHelper.CLIENT_PK_KEY, clientPk).setExtra(LoginHelper.CLIENT_KEY, "owned-client-" + clientPk));
     }
     private static Task onlyTask(JdbcTemplate db, long instance) {
         List<Long> ids = db.queryForList("select id from flow_task where instance_id=? and del_flag='0'", Long.class, instance);
         assertThat(ids).hasSize(1); return FlowEngine.taskService().getById(ids.getFirst());
     }
+    /** 同一用户在 B/C 两端有身份时也必须切换端；退回后所有审核节点从头重审。 */
+    private static void crossClientReview(JdbcTemplate db, SqlSessionTemplate sessions, FlwTaskServiceImpl completing,
+            org.namewta.workflow.service.impl.WorkflowClientScopeService scope, GenericApplicationContext context, IFlwCommonService common) {
+        db.update("insert into flow_definition (id,flow_code,flow_name,version,is_publish) values (917000,'owned-cross-client','Cross client','1',1)");
+        String[] names = {"start", "apply", "review", "final", "admin", "end"};
+        String[] clients = {"", "INITIATOR", "2", "3", "4", ""};
+        for (int i = 0; i < names.length; i++) {
+            int type = i == 0 ? 0 : i == 5 ? 2 : 1;
+            String user = i == 1 ? "2001" : i == 4 ? "2004" : "2002";
+            String ext = type == 1 ? "[{\"code\":\"WorkflowClientPk\",\"value\":\"" + clients[i] + "\"}]" : null;
+            db.update("insert into flow_node (id,node_type,definition_id,node_code,node_name,permission_flag,node_ratio,version,ext) values (?,?,917000,?,?,?,'0','1',?)", 917001+i,type,names[i],names[i],user,ext);
+            if (i > 0) db.update("insert into flow_skip (id,definition_id,now_node_code,now_node_type,next_node_code,next_node_type,skip_type) values (?,917000,?,?,?,?, 'PASS')",917010+i,names[i-1],i==1?0:1,names[i],type);
+        }
+        var extensions = mock(IFlwNodeExtService.class);
+        when(extensions.parseNodeExt(anyString(), anyMap())).thenReturn(new org.namewta.workflow.domain.vo.NodeExtVo());
+        var events = mock(org.namewta.workflow.handler.FlowProcessEventHandler.class);
+        var listener = new org.namewta.workflow.listener.WorkflowGlobalListener(
+            completing, mock(IFlwInstanceService.class), events, common, extensions,
+            mock(org.namewta.system.api.UserService.class), scope);
+        context.getBeanFactory().registerSingleton("workflowGlobalListener", listener);
+        ReflectionTestUtils.setField(FlowEngine.class, "globalListener", listener);
+        loginAt(2001, 1);
+        scope.validateDefinition(917000L);
+        var instance = FlowEngine.insService().start("owned-cross-client-business", FlowParams.build().flowCode("owned-cross-client")
+            .flowStatus("waiting").variable(new HashMap<>(Map.of("snapshotVersion", 1, "submissionId", 101L, "autoPass", true))));
+        scope.snapshot(instance, 1L);
+        var proxyFactory = new org.springframework.aop.aspectj.annotation.AspectJProxyFactory(completing);
+        proxyFactory.setProxyTargetClass(true);
+        proxyFactory.addAspect(new org.namewta.workflow.service.impl.WorkflowClientGuardAspect(scope));
+        var guarded = (IFlwTaskService) proxyFactory.getProxy();
+        var reviews = new org.namewta.workflow.service.impl.WorkflowTaskReviewServiceImpl(scope, guarded);
+        reviews.approve(onlyTask(db, instance.getId()).getId(), "提交申请");
+        Task firstReview = onlyTask(db, instance.getId());
+        assertThat(firstReview.getNodeCode()).isEqualTo("review");
+        loginAt(2002, 1);
+        assertThatThrownBy(() -> reviews.approve(firstReview.getId(), "错误客户端")).isInstanceOf(NotPermissionException.class);
+        loginAt(2002, 2);
+        assertThat(reviews.requireTaskContext(firstReview.getId()).submissionId()).isEqualTo(101L);
+        var page = new org.namewta.common.mybatis.core.page.PageQuery(); page.setPageNum(1); page.setPageSize(10);
+        var filter = new org.namewta.workflow.domain.bo.FlowTaskBo(); filter.setFlowCode("owned-cross-client");
+        assertThat(guarded.pageByTaskWait(filter, page).getTotal()).isEqualTo(1);
+        loginAt(2002, 3);
+        assertThat(guarded.pageByTaskWait(filter, page).getTotal()).isZero();
+        loginAt(2002, 2);
+        var transfer = new org.namewta.workflow.domain.bo.TaskOperationBo(); transfer.setTaskId(firstReview.getId()); transfer.setUserId("9999");
+        assertThatThrownBy(() -> guarded.taskOperation(transfer, "transfer")).isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
+        reviews.approve(firstReview.getId(), "B 初审");
+        Task secondReview = onlyTask(db, instance.getId());
+        assertThat(secondReview.getNodeCode()).as("同一用户跨端不自动通过").isEqualTo("final");
+        assertThat(guarded.pageByTaskFinish(filter, page).getTotal()).isEqualTo(1);
+        verify(events, never()).processHandler(anyString(), any(), eq("finish"), anyMap(), anyBoolean());
+        loginAt(2002, 3);
+        assertThatThrownBy(() -> reviews.readTaskContext(firstReview.getId())).isInstanceOf(NotPermissionException.class);
+        reviews.returnToApplicant(secondReview.getId(), "补充材料");
+        assertThat(onlyTask(db, instance.getId()).getNodeCode()).isEqualTo("apply");
+        loginAt(2001, 1);
+        var resubmitted = FlowEngine.insService().getById(instance.getId());
+        FlowEngine.taskService().mergeVariable(resubmitted, new HashMap<>(Map.of("snapshotVersion", 2, "submissionId", 102L)));
+        FlowEngine.insService().updateById(resubmitted);
+        Task applicant = onlyTask(db, instance.getId());
+        var invalidAssignment = new CompleteTaskBo(); invalidAssignment.setTaskId(applicant.getId());
+        invalidAssignment.setVariables(new HashMap<>(Map.of("pass:review", "9999")));
+        assertThatThrownBy(() -> guarded.completeTask(invalidAssignment)).isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
+        assertThat(onlyTask(db, instance.getId()).getId()).as("分派越界与历史写入共同回滚").isEqualTo(applicant.getId());
+        reviews.approve(applicant.getId(), "重新提交");
+        Task newFirst = onlyTask(db, instance.getId());
+        assertThat(newFirst.getNodeCode()).isEqualTo("review");
+        loginAt(2002, 2);
+        assertThat(reviews.readTaskContext(firstReview.getId()).submissionId()).as("旧已办保留原提交").isEqualTo(101L);
+        assertThat(reviews.requireTaskContext(newFirst.getId()).submissionId()).isEqualTo(102L);
+        reviews.approve(newFirst.getId(), "B 重新初审");
+        loginAt(2002, 3);
+        reviews.approve(onlyTask(db, instance.getId()).getId(), "C 终审");
+        Task admin = onlyTask(db, instance.getId());
+        assertThat(admin.getNodeCode()).isEqualTo("admin");
+        loginAt(2004, 4);
+        reviews.approve(admin.getId(), "D 管理端审核");
+        assertThat(FlowEngine.taskService().getByInsId(instance.getId())).isEmpty();
+        verify(events).processHandler(anyString(), any(), eq("finish"), anyMap(), eq(false));
+        assertThat(db.queryForObject("select count(*) from flow_instance_node_client where instance_id=?", Long.class, instance.getId())).isEqualTo(4);
+        assertThatThrownBy(() -> reviews.approve(admin.getId(), "重复审核")).isInstanceOf(org.namewta.common.core.exception.ServiceException.class);
+        System.out.println("Cross-client: A -> B -> C -> applicant -> B -> C -> D; pagination, history snapshots and autoPass isolation verified");
+    }
+
     private static void seedDefinition(JdbcTemplate db) {
         db.update("insert into flow_definition (id,flow_code,flow_name,version,is_publish) values (916000,'owned-task-integrity','Owned integrity','1',1)");
         String[] names = {"start", "apply", "review", "final", "end"};

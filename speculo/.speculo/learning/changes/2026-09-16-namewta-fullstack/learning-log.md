@@ -10,3 +10,4 @@
 | 2026-09-17T14:40:00.000Z | /goal | U1…U9 teach-then-mine 结束。85 Lesson + 85 `GP-*-b01`。矩阵 covered=163 / deferred=7 / covered-by-parent=5 / uncovered=0。重写 `goal/verify.md` 完成即停。 |
 | 2026-09-22T08:30:00.000Z | learning/lesson | 学习者指定 `SysOssMigrationController`、直传与后端上传是否独立、当前实现、以及 MinIO 创建配置。写入 `lessons/L-086-oss-migration-and-minio.md`。不改 Goal 链，不写作业，不宣称掌握。`current_work` 清空。 |
 | 2026-09-22T09:10:00.000Z | learning/lesson | 学习者指定 `application.yml` 第 82–218 行的读写与每个键的含义，并追问 `storage-config-key: minio` 写死是否必须改。写入 `lessons/L-087-oss-direct-upload-yaml.md`。不改 Goal 链，不写作业。`current_work` 清空。 |
+| 2026-09-28T04:02:25.000Z | learning/lesson | 学习者询问流程能否配置为 A/B/C Client 与管理端 Client 分级审核。写入 `lessons/L-088-workflow-cross-client-approval.md`。结论：节点无 Client 列，待办比较用户 ID；登录域与 `access_path` 是另外两扇门。不改 Goal 链，不写作业。`current_work` 清空。 |

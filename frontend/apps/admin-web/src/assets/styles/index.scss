@@ -8,11 +8,6 @@
 @use './transition.scss';
 @use './base/document';
 @use './layout/surface';
-@use './layout/sidebar/shell' as sidebar-shell;
-@use './layout/sidebar/menu';
-@use './layout/sidebar/collapsed';
-@use './layout/sidebar/responsive';
-@use './layout/sidebar/popper' as sidebar-popper;
 @use './components/legacy-utilities';
 @use './components/misc';
 @use './components/page-shell';

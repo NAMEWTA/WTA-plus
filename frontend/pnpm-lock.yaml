@@ -140,6 +140,9 @@ importers:
       '@namewta/domain-notify':
         specifier: workspace:*
         version: link:../../packages/domains/notify
+      '@namewta/domain-oidc':
+        specifier: workspace:*
+        version: link:../../packages/domains/oidc
       '@namewta/domain-profile':
         specifier: workspace:*
         version: link:../../packages/domains/profile
@@ -176,6 +179,9 @@ importers:
       '@namewta/web-domain-notify':
         specifier: workspace:*
         version: link:../../packages/web-domains/notify
+      '@namewta/web-domain-oidc':
+        specifier: workspace:*
+        version: link:../../packages/web-domains/oidc
       '@namewta/web-domain-profile':
         specifier: workspace:*
         version: link:../../packages/web-domains/profile
@@ -194,6 +200,9 @@ importers:
       '@namewta/web-kit-permission':
         specifier: workspace:*
         version: link:../../packages/web-kit/permission
+      '@namewta/web-kit-ui-element':
+        specifier: workspace:*
+        version: link:../../packages/web-kit/ui-element
       '@vueuse/core':
         specifier: 14.3.0
         version: 14.3.0(vue@3.5.40(typescript@6.0.3))
@@ -333,6 +342,9 @@ importers:
       '@namewta/domain-system':
         specifier: workspace:*
         version: link:../../packages/domains/system
+      '@namewta/domain-workflow':
+        specifier: workspace:*
+        version: link:../../packages/domains/workflow
       '@namewta/platform-app-runtime':
         specifier: workspace:*
         version: link:../../packages/platform/app-runtime
@@ -348,6 +360,12 @@ importers:
       '@namewta/web-domain-profile':
         specifier: workspace:*
         version: link:../../packages/web-domains/profile
+      '@namewta/web-domain-workflow':
+        specifier: workspace:*
+        version: link:../../packages/web-domains/workflow
+      '@namewta/web-kit-ui-element':
+        specifier: workspace:*
+        version: link:../../packages/web-kit/ui-element
       axios:
         specifier: 'catalog:'
         version: 1.18.1
@@ -394,6 +412,12 @@ importers:
 
   apps/sso-web:
     dependencies:
+      '@namewta/web-kit-ui-element':
+        specifier: workspace:*
+        version: link:../../packages/web-kit/ui-element
+      element-plus:
+        specifier: 'catalog:'
+        version: 2.14.3(vue@3.5.40(typescript@6.0.3))
       vue:
         specifier: 'catalog:'
         version: 3.5.40(typescript@6.0.3)
@@ -537,6 +561,28 @@ importers:
         version: 4.1.10(@types/node@26.1.1)(happy-dom@20.14.0)(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(sass@1.102.0)(yaml@2.9.0))
 
   packages/domains/notify:
+    dependencies:
+      '@namewta/api-contracts':
+        specifier: workspace:*
+        version: link:../../api-contracts
+      '@namewta/platform-app-runtime':
+        specifier: workspace:*
+        version: link:../../platform/app-runtime
+      '@namewta/platform-contracts':
+        specifier: workspace:*
+        version: link:../../platform/contracts
+    devDependencies:
+      oxlint:
+        specifier: 'catalog:'
+        version: 1.75.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 4.1.10
+        version: 4.1.10(@types/node@26.1.1)(happy-dom@20.14.0)(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(sass@1.102.0)(yaml@2.9.0))
+
+  packages/domains/oidc:
     dependencies:
       '@namewta/api-contracts':
         specifier: workspace:*
@@ -737,6 +783,9 @@ importers:
       '@namewta/platform-app-runtime':
         specifier: workspace:*
         version: link:../../platform/app-runtime
+      '@namewta/web-kit-ui-element':
+        specifier: workspace:*
+        version: link:../../web-kit/ui-element
       element-plus:
         specifier: 'catalog:'
         version: 2.14.3(vue@3.5.40(typescript@6.0.3))
@@ -822,6 +871,37 @@ importers:
         specifier: 3.3.8
         version: 3.3.8(typescript@6.0.3)
 
+  packages/web-domains/oidc:
+    dependencies:
+      '@namewta/domain-oidc':
+        specifier: workspace:*
+        version: link:../../domains/oidc
+      '@namewta/platform-app-runtime':
+        specifier: workspace:*
+        version: link:../../platform/app-runtime
+      element-plus:
+        specifier: 'catalog:'
+        version: 2.14.3(vue@3.5.40(typescript@6.0.3))
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.40(typescript@6.0.3)
+    devDependencies:
+      '@vue/compiler-sfc':
+        specifier: 'catalog:'
+        version: 3.5.40
+      oxlint:
+        specifier: 'catalog:'
+        version: 1.75.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 4.1.10
+        version: 4.1.10(@types/node@26.1.1)(happy-dom@20.14.0)(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(sass@1.102.0)(yaml@2.9.0))
+      vue-tsc:
+        specifier: 3.3.8
+        version: 3.3.8(typescript@6.0.3)
+
   packages/web-domains/profile:
     dependencies:
       '@namewta/domain-profile':
@@ -830,6 +910,9 @@ importers:
       '@namewta/platform-app-runtime':
         specifier: workspace:*
         version: link:../../platform/app-runtime
+      '@namewta/web-kit-ui-element':
+        specifier: workspace:*
+        version: link:../../web-kit/ui-element
       element-plus:
         specifier: 'catalog:'
         version: 2.14.3(vue@3.5.40(typescript@6.0.3))
@@ -1043,6 +1126,34 @@ importers:
         version: 4.1.10(@types/node@26.1.1)(happy-dom@20.14.0)(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(sass@1.102.0)(yaml@2.9.0))
       vue-tsc:
         specifier: 3.3.8
+        version: 3.3.8(typescript@6.0.3)
+
+  packages/web-kit/ui-element:
+    dependencies:
+      '@iconify-json/tabler':
+        specifier: 1.2.3
+        version: 1.2.3
+      '@iconify/vue':
+        specifier: ^5.0.1
+        version: 5.0.1(vue@3.5.40(typescript@6.0.3))
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.40(typescript@6.0.3)
+    devDependencies:
+      '@vue/compiler-sfc':
+        specifier: 'catalog:'
+        version: 3.5.40
+      oxlint:
+        specifier: 'catalog:'
+        version: 1.75.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 4.1.10
+        version: 4.1.10(@types/node@26.1.1)(happy-dom@20.14.0)(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(sass@1.102.0)(yaml@2.9.0))
+      vue-tsc:
+        specifier: ^3.3.8
         version: 3.3.8(typescript@6.0.3)
 
   tooling/architecture:

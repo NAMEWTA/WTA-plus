@@ -70,7 +70,10 @@
     "vue-router": "catalog:",
     "vue-types": "7.0.0",
     "vxe-pc-ui": "4.16.22",
-    "vxe-table": "4.20.8"
+    "vxe-table": "4.20.8",
+    "@namewta/web-kit-ui-element": "workspace:*",
+    "@namewta/domain-oidc": "workspace:*",
+    "@namewta/web-domain-oidc": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

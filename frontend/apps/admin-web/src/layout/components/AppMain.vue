@@ -47,41 +47,6 @@ function addIframe() {
 }
 </script>
 
-<style lang="scss" scoped>
-.app-main {
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  padding: 12px;
-
-  &:fullscreen,
-  &:-webkit-full-screen,
-  &:-moz-full-screen,
-  &:-ms-fullscreen {
-    background: var(--el-bg-color);
-    overflow-y: auto;
-  }
-}
-
-.app-main:not(.with-fixed-header) {
-  min-height: calc(100vh - 64px);
-}
-
-.app-main.with-tags-view:not(.with-fixed-header) {
-  min-height: calc(100vh - 105px);
-}
-
-.app-main.with-fixed-header {
-  padding-top: 76px;
-  min-height: calc(100vh - 76px);
-}
-
-.app-main.with-fixed-header.with-tags-view {
-  min-height: calc(100vh - 111px);
-  padding-top: 111px;
-}
-</style>
 <style lang="scss">
 // fix css style bug in open el-dialog
 .el-popup-parent--hidden {

@@ -31,3 +31,6 @@ export function createProfileWebDomain(runtimeInput: ProfileWebRuntime | undefin
     registrations: Object.freeze([...materialTag.registrations, ...person.registrations, ...enterprise.registrations])
   });
 }
+
+export { createProfileReviewWebDomain } from './review/registration';
+export type { ProfileReviewWebRuntime } from './review/runtime';

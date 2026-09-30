@@ -28,6 +28,17 @@ captcha:
   charLength: 4
 
 namewta:
+  oidc:
+    enabled: ${OIDC_ENABLED:false}
+    issuer: ${OIDC_ISSUER:}
+    sso-web-url: ${OIDC_SSO_WEB_URL:}
+    jwk-set-file: ${OIDC_JWK_SET_FILE:}
+    active-kid: ${OIDC_ACTIVE_KID:}
+    state-encryption-key: ${OIDC_STATE_ENCRYPTION_KEY:}
+    session-cookie-name: ${namewta.sso.cookie-name:Sso-Token}
+    allow-http: ${OIDC_ALLOW_HTTP:false}
+    code-ttl-seconds: 300
+    access-ttl-seconds: 600
   web:
     request-body:
       # 普通JSON及需要缓存的文本正文；与日志前缀和机器签名正文分开计限。
@@ -47,7 +58,7 @@ namewta:
 
 web:
   cors:
-    # 默认不许可跨来源请求。发布时可注入逗号分隔的精确 Origin，或单独一项 *。
+    # 默认不许可跨来源请求。发布时可注入逗号分隔的精确 Origin、主机/IP 通配或 *，支持混写。
     allowed-origins: "${WEB_CORS_ALLOWED_ORIGINS:}"
 
 # 可选 Nacos 稀疏配置覆盖。关闭时不创建客户端或监听器。

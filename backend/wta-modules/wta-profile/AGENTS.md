@@ -26,7 +26,7 @@ Profile 新增模块聚合入口，承载 person、enterprise 两个隔离子域
 
 ## Verification
 
-在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-profile -am -DskipTests compile`，再按 person/enterprise 模块测试配置执行验证。
+在 `backend/` 目录执行 `./mvnw -pl wta-modules/wta-profile/wta-profile-person,wta-modules/wta-profile/wta-profile-enterprise -am -DskipTests compile`，再按 person/enterprise 模块测试配置执行验证。必须显式选择业务子模块；只选择 `wta-profile` 聚合 POM 不会编译或测试两个子域。
 
 ## Read Next
 

@@ -2,6 +2,7 @@ import { createOssUploadClient } from '@namewta/adapter-oss-upload-browser';
 import { createIdentityAccessService } from '@namewta/domain-admin';
 import { createProfileService } from '@namewta/domain-profile';
 import { createSystemService } from '@namewta/domain-system';
+import { createWorkflowDefinitionService } from '@namewta/domain-workflow';
 import { homeHttp } from './http';
 import { session } from './session';
 
@@ -14,6 +15,7 @@ export const identityAccessService = createIdentityAccessService({
   session
 });
 export const profileService = createProfileService(domainHttp);
+export const workflowService = createWorkflowDefinitionService(domainHttp);
 
 const materialUploadClient = createOssUploadClient({
   clientId: import.meta.env.VITE_APP_CLIENT_ID,
@@ -25,7 +27,10 @@ const materialUploadClient = createOssUploadClient({
   }
 });
 
-export async function uploadProfileMaterial(file: File, options: { signal: AbortSignal; onProgress(percent: number): void }) {
+export async function uploadProfileMaterial(
+  file: File,
+  options: { signal: AbortSignal; onProgress(percent: number): void }
+) {
   const result = await materialUploadClient.upload(file, { ...options, policy: 'general' });
   return { ossId: String(result.id) };
 }

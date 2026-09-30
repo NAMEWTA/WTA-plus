@@ -11,6 +11,7 @@ import org.namewta.profile.enterprise.domain.bo.EnterpriseApplicationSaveBo;
 import org.namewta.profile.enterprise.domain.bo.EnterpriseApplicationSubmitBo;
 import org.namewta.profile.enterprise.domain.vo.EnterpriseApplicationProbeVo;
 import org.namewta.profile.enterprise.domain.vo.EnterpriseApplicationVo;
+import org.namewta.profile.enterprise.domain.vo.EnterpriseSelfSummaryVo;
 import org.namewta.profile.enterprise.usecase.EnterpriseApplicationUseCase;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
@@ -72,4 +73,12 @@ public class EnterpriseApplicationController {
     public R<EnterpriseApplicationProbeVo> probe(@Valid @RequestBody EnterpriseApplicationProbeBo command) {
         return R.ok(service.probe(command));
     }
+    /** 查询当前登录人的认证摘要，用户编号不接受请求参数。 */
+    @io.swagger.v3.oas.annotations.Operation(operationId = "getEnterpriseSelfSummary")
+    @GetMapping("/summary")
+    @SaCheckPermission("profile:enterprise:apply")
+    public R<EnterpriseSelfSummaryVo> summary() {
+        return R.ok(service.summary(LoginHelper.getUserId()));
+    }
+
 }

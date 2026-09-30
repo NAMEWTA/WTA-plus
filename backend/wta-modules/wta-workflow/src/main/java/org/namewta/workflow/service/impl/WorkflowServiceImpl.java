@@ -171,6 +171,9 @@ public class WorkflowServiceImpl implements WorkflowService {
      */
     @Override
     public boolean completeTask(CompleteTaskDTO completeTask) {
+        if (Boolean.TRUE.equals(cn.hutool.core.convert.Convert.toBool(completeTask.getVariables().get("ignore")))) {
+            return WorkflowTrustedExecution.run(() -> flwTaskService.completeTask(BeanUtil.toBean(completeTask, CompleteTaskBo.class)));
+        }
         return flwTaskService.completeTask(BeanUtil.toBean(completeTask, CompleteTaskBo.class));
     }
 
@@ -188,7 +191,7 @@ public class WorkflowServiceImpl implements WorkflowService {
         completeTask.setMessage(message);
         // 忽略权限(系统后台发起审批 无用户信息 需要忽略权限)
         completeTask.getVariables().put("ignore", true);
-        return flwTaskService.completeTask(completeTask);
+        return WorkflowTrustedExecution.run(() -> flwTaskService.completeTask(completeTask));
     }
 
     /**
@@ -198,13 +201,14 @@ public class WorkflowServiceImpl implements WorkflowService {
      * @return 首节点办理成功返回 {@code true}
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional
     public boolean startCompleteTask(StartProcessDTO startProcess) {
         StartProcessBo processBo = new StartProcessBo();
         processBo.setBusinessId(startProcess.getBusinessId());
         processBo.setFlowCode(startProcess.getFlowCode());
         processBo.setVariables(startProcess.getVariables());
         processBo.setHandler(startProcess.getHandler());
+        processBo.setInitiatorClientPk(startProcess.getInitiatorClientPk());
         processBo.setBizExt(BeanUtil.toBean(startProcess.getBizExt(), FlowInstanceBizExt.class));
 
         StartProcessReturnDTO result = flwTaskService.startWorkFlow(processBo);
@@ -213,6 +217,10 @@ public class WorkflowServiceImpl implements WorkflowService {
         taskBo.setMessageType(Collections.singletonList(MessageTypeEnum.SYSTEM_MESSAGE.getCode()));
         taskBo.setVariables(startProcess.getVariables());
         taskBo.setHandler(startProcess.getHandler());
+        if (startProcess.getInitiatorClientPk() != null) {
+            taskBo.getVariables().put("ignore", true);
+            return WorkflowTrustedExecution.run(() -> flwTaskService.completeTask(taskBo));
+        }
         return flwTaskService.completeTask(taskBo);
     }
 }

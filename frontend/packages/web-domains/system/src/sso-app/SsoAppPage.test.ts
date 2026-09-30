@@ -13,11 +13,11 @@ describe('SSO 管理 page', () => {
     expect(source).toContain('data-testid="sso-admin-title"');
     expect(source).toContain('data-testid="sso-admin-create"');
     expect(source).toContain('data-testid="sso-admin-deliver"');
-    expect(source).toContain('SSO 管理');
+    expect(source).toContain('自有应用 SSO');
     expect(source).toContain('创建应用');
     expect(source).toContain('拿配置');
     expect(source).toContain('精确回调');
-    expect(source).toContain('客户端管理不承担创建主路径');
+    expect(source).toContain('为 Admin、Home 等自有客户端配置登录回调与接入信息');
     expect(source).toContain('runtime.service.ssoApps');
     expect(source).toContain("openDialog('创建 SSO 应用')");
     expect(source).not.toContain('没有接入');

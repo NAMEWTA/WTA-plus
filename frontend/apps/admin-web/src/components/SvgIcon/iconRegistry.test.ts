@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
 import { getIcon } from '@iconify/vue';
+import { describe, expect, it, vi } from 'vitest';
 import { FALLBACK_ICON, resolveIcon, tablerIconNames } from './iconRegistry';
 
 describe('icon registry', () => {

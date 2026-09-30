@@ -1,3 +1,5 @@
+import { oidcDomainModule } from '@namewta/domain-oidc';
+import { createOidcWebDomain } from '@namewta/web-domain-oidc';
 import { adminDomainModule, requirePasswordPolicy, validatePassword } from '@namewta/domain-admin';
 import { demoDomainModule } from '@namewta/domain-demo';
 import { notifyDomainModule } from '@namewta/domain-notify';
@@ -33,7 +35,8 @@ import {
   thirdService,
   workflowService,
   notificationService,
-  notificationDirectory
+  notificationDirectory,
+  oidcService
 } from '@/application/services';
 import WorkflowTreePanel from '@/components/TreePanel/index.vue';
 import { sanitizeHtml } from '@/utils/sanitize';
@@ -233,6 +236,20 @@ const adminThirdWebRuntime: ThirdWebRuntime = {
   error: message => void import('@/application/host/feedback').then(({ default: modal }) => modal.msgError(message))
 };
 const thirdManifest = createThirdWebDomain(adminThirdWebRuntime);
+const oidcManifest = createOidcWebDomain({
+  service: oidcService,
+  hasPermission: permission => createAdminAccessEvaluator().hasPermission(permission),
+  confirm: async message => {
+    const { default: modal } = await import('@/application/host/feedback');
+    await modal.confirm(message);
+  },
+  copyText: async value => {
+    if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+    await navigator.clipboard.writeText(value);
+  },
+  success: message => void import('@/application/host/feedback').then(({ default: modal }) => modal.msgSuccess(message))
+});
+
 
 export const adminMonitorWebRuntime: MonitorWebRuntime = {
   service: monitorService,
@@ -373,7 +390,8 @@ const runtime = composeAppRuntime<Component>({
     systemDomainModule,
     profileDomainModule,
     thirdDomainModule,
-    notifyDomainModule
+    notifyDomainModule,
+    oidcDomainModule
   ],
   manifests: [
     createAdminWebDomain({
@@ -389,9 +407,10 @@ const runtime = composeAppRuntime<Component>({
     profileManifest,
     adminExternalMonitorManifest,
     thirdManifest,
-    notifyManifest
+    notifyManifest,
+    oidcManifest
   ],
-  selectedDomainIds: ['admin', 'demo', 'workflow', 'system', 'profile', 'third', 'notify'],
+  selectedDomainIds: ['admin', 'demo', 'workflow', 'system', 'profile', 'third', 'notify', 'oidc'],
   selectedManifestIds: [
     'web-domain-admin',
     'web-domain-demo',
@@ -401,7 +420,8 @@ const runtime = composeAppRuntime<Component>({
     'web-domain-profile',
     'admin-external-monitor',
     'web-domain-third',
-    'web-domain-notify'
+    'web-domain-notify',
+    'web-domain-oidc'
   ]
 });
 

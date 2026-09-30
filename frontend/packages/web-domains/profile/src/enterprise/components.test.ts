@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import review from '../review/ProfileReviewPage.vue?raw';
 import detail from './EnterpriseProfileDetailPanel.vue?raw';
 import page from './EnterpriseProfilePage.vue?raw';
-import review from './EnterpriseProfileReviewPage.vue?raw';
 
 describe('enterprise profile page contracts', () => {
   it('keeps legal representative and responsible account as distinct concepts', () => {
@@ -34,9 +34,12 @@ describe('enterprise profile page contracts', () => {
 
   it('uses review-only endpoints and maps override decisions to the backend contract', () => {
     expect(review).toContain('archive.review(applicationId.value)');
-    expect(review).toContain('archive.reviewMaterial(applicationId.value');
-    expect(review).toContain("decision.value === 'APPROVE' ? 'APPROVED' : 'REJECTED'");
-    expect(review).toContain('completeWorkflowTask');
+    expect(review).toContain('archive.reviewMaterial(context.value.applicationId');
+    expect(review).toContain('decision: overrideDecision.value');
+    expect(review).toContain('拒绝（终态）');
+    expect(review).toContain('taskReview.decide(taskId.value');
+    expect(review).toContain('taskReview.context(taskId.value)');
+    expect(review).not.toContain('<pre>');
     expect(review).not.toMatch(/console\./);
   });
 });

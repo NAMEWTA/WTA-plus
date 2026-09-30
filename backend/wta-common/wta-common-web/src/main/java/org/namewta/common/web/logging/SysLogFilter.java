@@ -42,6 +42,13 @@ public class SysLogFilter implements Filter {
     private static final String REDACTED_HEADER_VALUE = "[REDACTED]";
     private static final Logger FAILURE_LOG = LoggerFactory.getLogger(SysLogFilter.class);
 
+    private java.util.List<org.namewta.common.core.service.HttpProtocolPolicy> protocolPolicies = java.util.List.of();
+    /** 配置期注入协议隐私策略，不允许请求期间更改。 */
+    /** 接入禁止采集协议参数及响应正文的声明，普通请求继续沿用现有日志。 */
+    public void setProtocolPolicies(
+            java.util.List<org.namewta.common.core.service.HttpProtocolPolicy> policies) {
+        this.protocolPolicies = java.util.List.copyOf(policies);
+    }
     private final int maxBodyBytes;
     private final int maxRequestBytes;
     private final SysLogEventSink eventSink;
@@ -65,6 +72,11 @@ public class SysLogFilter implements Filter {
             return;
         }
 
+        String protocolPath=httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        if (protocolPolicies.stream().anyMatch(policy -> policy.isSensitivePath(protocolPath))) {
+            chain.doFilter(request, response);
+            return;
+        }
         ExchangeState state = (ExchangeState) httpRequest.getAttribute(STATE_ATTRIBUTE);
         HttpServletRequest effectiveRequest = httpRequest;
         boolean initialDispatch = state == null;

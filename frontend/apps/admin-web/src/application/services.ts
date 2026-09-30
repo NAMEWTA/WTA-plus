@@ -2,6 +2,7 @@ import { createOssUploadClient, transferToOss, type OssTransfer } from '@namewta
 import { createIdentityAccessService } from '@namewta/domain-admin';
 import { createDemoService, createRichTextService, type RichTextAssetAccess, type RichTextAssetKind } from '@namewta/domain-demo';
 import { createNotificationService } from '@namewta/domain-notify';
+import { createOidcService } from '@namewta/domain-oidc';
 import { createProfileService } from '@namewta/domain-profile';
 import { createOpenApiService, createSystemService } from '@namewta/domain-system';
 import { createMonitorService } from '@namewta/domain-system/monitor';
@@ -86,3 +87,5 @@ export const notificationDirectory = {
 };
 export const monitorService = createMonitorService(domainHttp);
 export const thirdService = createThirdService(domainHttp);
+
+export const oidcService = createOidcService(domainHttp);

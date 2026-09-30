@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.profile.person.mapper.PersonDisclosureMapper">
+    <!-- 字段只能命中固定枚举名；未授权列返回 null，脱敏查询不读取完整证件到 JVM。 -->
+    <select id="selectDisclosure" resultType="org.namewta.profile.person.domain.model.read.PersonDisclosureRow">
+        select b.user_id
+            , <choose><when test="fields.contains('PERSON_PROFILE_ID')">b.person_profile_id</when><otherwise>null</otherwise></choose> as profile_id
+            , <choose><when test="fields.contains('PERSON_VERIFIED_AT')">v.published_time</when><otherwise>null</otherwise></choose> as verified_at
+            , <choose><when test="fields.contains('PERSON_FULL_NAME')">v.full_name</when><otherwise>null</otherwise></choose> as full_name
+            , <choose><when test="fields.contains('PERSON_GENDER')">v.gender</when><otherwise>null</otherwise></choose> as gender
+            , <choose><when test="fields.contains('PERSON_BIRTH_DATE')">v.birth_date</when><otherwise>null</otherwise></choose> as birth_date
+            , <choose><when test="fields.contains('PERSON_DOCUMENT_TYPE')">v.document_type_code</when><otherwise>null</otherwise></choose> as document_type
+            , <choose><when test="fields.contains('PERSON_DOCUMENT_NUMBER_MASKED')">case when char_length(v.document_number) > 4 then concat(repeat('*', char_length(v.document_number) - 4), right(v.document_number, 4)) else repeat('*', char_length(v.document_number)) end</when><otherwise>null</otherwise></choose> as document_number_masked
+            , <choose><when test="fields.contains('PERSON_DOCUMENT_NUMBER')">v.document_number</when><otherwise>null</otherwise></choose> as document_number
+            , <choose><when test="fields.contains('PERSON_VALID_FROM')">v.valid_from</when><otherwise>null</otherwise></choose> as valid_from
+            , <choose><when test="fields.contains('PERSON_VALID_UNTIL')">v.valid_until</when><otherwise>null</otherwise></choose> as valid_until
+          from profile_person_binding b
+          join profile_person p on p.person_profile_id = b.person_profile_id
+          join profile_person_version v on v.person_version_id = p.current_version_id
+         where b.user_id = #{userId}
+           and b.status = 'ACTIVE' and b.del_flag = '0'
+           and p.status = 'ACTIVE' and p.del_flag = '0'
+           and v.status = 'CURRENT' and v.del_flag = '0'
+    </select>
+</mapper>
+

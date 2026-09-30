@@ -2,6 +2,9 @@ package org.namewta.profile.person.service;
 import org.namewta.profile.person.domain.application.PersonDocumentTypeRule;
 import org.namewta.profile.person.domain.application.PersonApplication;
 import org.namewta.profile.person.domain.vo.PersonApplicationVo;
+import org.namewta.profile.person.domain.vo.PersonSelfSummaryVo;
+import org.namewta.profile.person.domain.vo.PersonSelfProfileVo;
+import org.namewta.profile.person.domain.vo.PersonSelfIdentityVo;
 import org.namewta.profile.person.domain.bo.PersonApplicationSaveBo;
 import org.namewta.profile.person.domain.application.PersonDraftUpdate;
 import org.namewta.profile.person.domain.application.PersonIdentityFields;
@@ -820,4 +823,26 @@ public class PersonApplicationService implements PersonApplicationPublicationPor
      */
     private record PublicationTarget(PersonProfileRow profile, PersonBindingRow binding, boolean successor) {
     }
+    /**
+     * 查询本人状态和已认证资料；完成的申请不重新暴露为可编辑草稿。
+     * @param userId 可信登录用户编号
+     * @return 当前申请与有效认证档案
+     */
+    public PersonSelfSummaryVo summary(long userId) {
+        PersonApplicationVo current = current(userId);
+        var row = dao.selectSelfVersion(userId);
+        PersonSelfProfileVo profile = row == null ? null : new PersonSelfProfileVo(
+            row.getPersonProfileId(), row.getPublishedTime(), new PersonSelfIdentityVo(
+                row.getFullName(),
+                row.getDocumentTypeCode(),
+                row.getDocumentNumber(),
+                row.getGender(),
+                row.getBirthDate(),
+                row.getValidFrom(),
+                row.getValidUntil()));
+        String status = current != null ? current.status() : profile != null ? "VERIFIED" : "UNVERIFIED";
+        return new PersonSelfSummaryVo(status,
+            "BACK".equals(status) ? dao.selectReturnReason(userId) : null, current, profile);
+    }
+
 }

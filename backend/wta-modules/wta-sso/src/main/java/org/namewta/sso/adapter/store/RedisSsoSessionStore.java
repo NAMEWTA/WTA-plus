@@ -6,6 +6,7 @@ import org.namewta.sso.api.SsoAuthenticatedUser;
 import org.namewta.sso.config.SsoProperties;
 import org.namewta.sso.port.SsoSessionPort;
 import org.namewta.sso.support.SsoBearerTokens;
+import org.namewta.sso.support.SsoSessionRecords;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,7 +27,8 @@ public class RedisSsoSessionStore implements SsoSessionPort {
     @Override
     public String create(SsoAuthenticatedUser user) {
         String sessionId = SsoBearerTokens.create();
-        RedisUtils.setCacheObject(KEY_PREFIX + sessionId, user, properties.getSessionTtl());
+        SsoAuthenticatedUser stored = SsoSessionRecords.create(user, java.time.Instant.now(), properties.getSessionTtl());
+        RedisUtils.setCacheObject(KEY_PREFIX + sessionId, stored, properties.getSessionTtl());
         return sessionId;
     }
 

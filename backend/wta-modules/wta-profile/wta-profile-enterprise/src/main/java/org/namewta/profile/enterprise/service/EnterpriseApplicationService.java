@@ -3,6 +3,9 @@ import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import org.namewta.profile.enterprise.domain.application.EnterpriseDocumentTypeRule;
 import org.namewta.profile.enterprise.domain.application.EnterpriseApplication;
 import org.namewta.profile.enterprise.domain.vo.EnterpriseApplicationVo;
+import org.namewta.profile.enterprise.domain.vo.EnterpriseSelfSummaryVo;
+import org.namewta.profile.enterprise.domain.vo.EnterpriseSelfProfileVo;
+import org.namewta.profile.enterprise.domain.vo.EnterpriseSelfIdentityVo;
 import org.namewta.profile.enterprise.domain.bo.EnterpriseApplicationSaveBo;
 import org.namewta.profile.enterprise.domain.application.EnterpriseDraftUpdate;
 import org.namewta.profile.enterprise.domain.application.EnterpriseIdentityFields;
@@ -890,4 +893,36 @@ public class EnterpriseApplicationService implements EnterpriseApplicationPublic
     private EnterpriseApplicationException failure(String category) {
         return new EnterpriseApplicationException(category);
     }
+    /**
+     * 查询本人状态和已认证资料；完成的申请不重新暴露为可编辑草稿。
+     * @param userId 可信登录用户编号
+     * @return 当前申请与有效认证档案
+     */
+    public EnterpriseSelfSummaryVo summary(long userId) {
+        EnterpriseApplicationVo current = current(userId);
+        var row = dao.selectSelfVersion(userId);
+        EnterpriseSelfProfileVo profile = row == null ? null : new EnterpriseSelfProfileVo(
+            row.getEnterpriseProfileId(), row.getPublishedTime(), new EnterpriseSelfIdentityVo(
+                row.getEnterpriseName(),
+                row.getUnifiedCreditCode(),
+                row.getEnterpriseType(),
+                row.getLegalRepresentativeName(),
+                row.getLegalDocumentTypeCode(),
+                row.getLegalDocumentNumber(),
+                row.getEstablishedDate(),
+                row.getBusinessTermFrom(),
+                row.getBusinessTermUntil(),
+                row.getRegisteredAddress(),
+                row.getBusinessScope(),
+                row.getContactName(),
+                row.getContactPhone(),
+                row.getEmail(),
+                row.getRegisteredCapital(),
+                row.getIndustryCode(),
+                row.getWebsite()));
+        String status = current != null ? current.status() : profile != null ? "VERIFIED" : "UNVERIFIED";
+        return new EnterpriseSelfSummaryVo(status,
+            "BACK".equals(status) ? dao.selectReturnReason(userId) : null, current, profile);
+    }
+
 }

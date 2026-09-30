@@ -273,4 +273,14 @@ public class PersonApplicationDao {
     public List<PersonActiveProjectionRow> selectActiveProjections(Set<Long> userIds) {
         return mapper.selectActiveProjections(userIds);
     }
+    /** 查询本人有效绑定的当前版本。 */
+    public PersonVersionRow selectSelfVersion(long userId) {
+        return mapper.selectSelfVersion(userId);
+    }
+
+    /** 查询本人当前退回申请的意见。 */
+    public String selectReturnReason(long userId) {
+        return mapper.selectReturnReason(userId);
+    }
+
 }

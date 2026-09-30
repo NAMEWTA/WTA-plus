@@ -57,14 +57,26 @@ class SsoCorsProfileBindingTest {
     }
 
     @Test
-    void localExampleBindsOnlyCurrentViteProxyOriginsAndCanBeOverridden() {
+    void productionBindsMixedWildcardConfiguration() {
+        production().withPropertyValues(
+            "WEB_CORS_ALLOWED_ORIGINS=https://admin.example.test,http://192.168.*:*,https://*.internal.test,*")
+            .run(context -> {
+                assertThat(context).hasNotFailed().hasSingleBean(CorsFilter.class);
+                var properties = context.getBean(CorsProperties.class);
+                assertThat(properties.validatedOrigins()).containsExactly("https://admin.example.test");
+                assertThat(properties.validatedOriginPatterns()).containsExactly(
+                    "http://192.168.*:[*]", "https://*.internal.test", "http://*", "https://*");
+            });
+    }
+
+    @Test
+    void localExampleDefaultsToWildcardAndCanBeOverridden() {
         var local = runner.withPropertyValues("spring.profiles.active=local",
             "spring.config.location=" + Path.of("src/main/resources/application-local.example.yml")
                 .toAbsolutePath().toUri());
         local.run(context -> {
             assertThat(context).hasNotFailed().hasSingleBean(CorsFilter.class);
-            assertThat(context.getBean(CorsProperties.class).validatedOrigins())
-                .containsExactly("http://127.0.0.1:5177", "http://127.0.0.1:5175", "http://127.0.0.1:4176");
+            assertThat(context.getBean(CorsProperties.class).allowsAnyHttpOrigin()).isTrue();
         });
         local.withPropertyValues("WEB_CORS_ALLOWED_ORIGINS=http://127.0.0.1:6177")
             .run(context -> {

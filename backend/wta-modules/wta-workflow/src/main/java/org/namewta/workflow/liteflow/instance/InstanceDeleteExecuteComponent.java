@@ -28,6 +28,7 @@ import java.util.Objects;
 @LiteflowComponent("instanceDeleteExecute")
 public class InstanceDeleteExecuteComponent extends NodeComponent {
 
+    private final org.namewta.workflow.service.impl.WorkflowClientScopeService clientScope;
     private final InsService insService;
     private final FlowHisTaskMapper flowHisTaskMapper;
     private final FlowTaskMapper flowTaskMapper;
@@ -37,6 +38,7 @@ public class InstanceDeleteExecuteComponent extends NodeComponent {
     public void process() {
         InstanceDeleteContext context = getContextBean(InstanceDeleteContext.class);
         deleteCopyUsers(context.getDeleteInstanceIds());
+        clientScope.deleteSnapshots(context.getDeleteInstanceIds());
         if (!context.isHistory()) {
             context.setResult(insService.remove(context.getDeleteInstanceIds()));
             return;

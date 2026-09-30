@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import review from '../review/ProfileReviewPage.vue?raw';
 import detail from './PersonProfileDetailPanel.vue?raw';
 import page from './PersonProfilePage.vue?raw';
-import review from './PersonProfileReviewPage.vue?raw';
 
 describe('person profile page contracts', () => {
   it('keeps direct create usable with tagged uploads and host user lookup', () => {
@@ -25,10 +25,13 @@ describe('person profile page contracts', () => {
 
   it('loads workflow review and materials from the closed review capability', () => {
     expect(review).toContain('archive.review(applicationId.value)');
-    expect(review).toContain('archive.reviewMaterial(applicationId.value');
-    expect(review).toContain('completeWorkflowTask');
-    expect(review).toContain("decision.value === 'APPROVE' ? 'APPROVED' : 'REJECTED'");
-    expect(review).toContain('archive.decide(applicationId.value');
+    expect(review).toContain('archive.reviewMaterial(context.value.applicationId');
+    expect(review).toContain('taskReview.decide(taskId.value');
+    expect(review).toContain('taskReview.context(taskId.value)');
+    expect(review).not.toContain('<pre>');
+    expect(review).toContain('decision: overrideDecision.value');
+    expect(review).toContain('拒绝（终态）');
+    expect(review).toContain('archive.decide(context.value.applicationId');
     expect(review).not.toMatch(/console\./);
   });
 });

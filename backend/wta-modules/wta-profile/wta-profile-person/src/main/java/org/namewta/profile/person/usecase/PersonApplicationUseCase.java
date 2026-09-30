@@ -3,6 +3,7 @@ package org.namewta.profile.person.usecase;
 import org.namewta.profile.person.domain.bo.PersonApplicationSaveBo;
 import org.namewta.profile.person.domain.application.PersonApplicationProcessCommand;
 import org.namewta.profile.person.domain.vo.PersonApplicationVo;
+import org.namewta.profile.person.domain.vo.PersonSelfSummaryVo;
 
 /**
  * PersonApplicationUseCase 应用用例合同，定义入口可调用的业务场景。
@@ -29,4 +30,7 @@ public interface PersonApplicationUseCase {
 
     /** 接收工作流事件并编排申请状态回写。 */
     void handleProcess(PersonApplicationProcessCommand command);
+    /** 查询本人认证状态与有效资料。 */
+    PersonSelfSummaryVo summary(long userId);
+
 }

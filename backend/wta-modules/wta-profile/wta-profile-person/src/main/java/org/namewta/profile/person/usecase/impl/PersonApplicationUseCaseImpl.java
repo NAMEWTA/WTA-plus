@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.namewta.profile.person.domain.bo.PersonApplicationSaveBo;
 import org.namewta.profile.person.domain.application.PersonApplicationProcessCommand;
 import org.namewta.profile.person.domain.vo.PersonApplicationVo;
+import org.namewta.profile.person.domain.vo.PersonSelfSummaryVo;
 import org.namewta.profile.person.service.PersonApplicationService;
 import org.namewta.profile.person.usecase.PersonApplicationUseCase;
 import org.springframework.stereotype.Service;
@@ -51,4 +52,11 @@ public class PersonApplicationUseCaseImpl implements PersonApplicationUseCase {
     public void handleProcess(PersonApplicationProcessCommand command) {
         service.handleProcess(command);
     }
+    /** 在同一读取事务中组装本人认证状态。 */
+    @Override
+    @DSTransactional
+    public PersonSelfSummaryVo summary(long userId) {
+        return service.summary(userId);
+    }
+
 }

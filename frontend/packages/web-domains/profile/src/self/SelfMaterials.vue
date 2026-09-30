@@ -93,18 +93,64 @@ defineExpose({ validate, showError });
 </script>
 
 <style scoped>
-.self-materials { margin-top: 24px; border-top: 1px solid #dbe4ea; padding-top: 12px; }
-.self-materials h2 { font-size: 20px; }
-.self-materials > p { color: #64748b; margin: 10px 0; }
-.material-row { padding: 16px 0; border-bottom: 1px solid #e2e8f0; }
-.material-row--missing { outline: 2px solid #dc2626; outline-offset: 4px; }
-.material-row__title, .material-row li { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.material-row h3 { margin: 0; font-size: 16px; }
-.material-row ul { padding: 0; list-style: none; }
-.material-row li { margin: 10px 0; }
-.material-picker { display: block; margin-top: 12px; }
-.material-picker input { display: block; margin-top: 6px; max-width: 100%; }
-.material-error { color: #b91c1c; margin: 12px 0; }
-.material-progress { max-width: 480px; }
-.material-preview { display: block; max-width: 100%; max-height: 65vh; margin: 0 auto 12px; }
+.self-materials {
+  margin-top: 24px;
+  border-top: 1px solid var(--app-surface-border);
+  padding-top: 12px;
+}
+.self-materials h2 {
+  font-size: 20px;
+}
+.self-materials > p {
+  color: var(--app-text-muted);
+  margin: 10px 0;
+}
+.material-row {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--app-surface-border);
+}
+.material-row--missing {
+  outline: 2px solid var(--app-text-danger);
+  outline-offset: 4px;
+}
+.material-row__title,
+.material-row li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.material-row h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.material-row ul {
+  padding: 0;
+  list-style: none;
+}
+.material-row li {
+  margin: 10px 0;
+}
+.material-picker {
+  display: block;
+  margin-top: 12px;
+}
+.material-picker input {
+  display: block;
+  margin-top: 6px;
+  max-width: 100%;
+}
+.material-error {
+  color: var(--app-text-danger);
+  margin: 12px 0;
+}
+.material-progress {
+  max-width: 480px;
+}
+.material-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 65vh;
+  margin: 0 auto 12px;
+}
 </style>

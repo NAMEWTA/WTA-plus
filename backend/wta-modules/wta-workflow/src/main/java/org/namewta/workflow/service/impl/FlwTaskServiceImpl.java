@@ -57,6 +57,7 @@ import org.namewta.workflow.domain.vo.NodeExtVo;
 import org.namewta.workflow.mapper.FlwCategoryMapper;
 import org.namewta.workflow.mapper.FlwHisTaskMapper;
 import org.namewta.workflow.mapper.FlwTaskMapper;
+import org.namewta.workflow.mapper.FlwUserMapper;
 import org.namewta.workflow.oss.WorkflowHistoryOssOwner;
 import org.namewta.workflow.service.IFlwCommonService;
 import org.namewta.workflow.service.IFlwNodeExtService;
@@ -97,6 +98,7 @@ public class FlwTaskServiceImpl implements IFlwTaskService {
     private final FlowHisTaskMapper flowHisTaskMapper;
     private final UserService userService;
     private final FlwTaskMapper flwTaskMapper;
+    private final FlwUserMapper flwUserMapper;
     private final FlwHisTaskMapper flwHisTaskMapper;
     private final FlwCategoryMapper flwCategoryMapper;
     private final FlowNodeMapper flowNodeMapper;
@@ -112,7 +114,7 @@ public class FlwTaskServiceImpl implements IFlwTaskService {
      * @return 启动后的流程实例标识与首个任务标识
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional
     @Lock4j(keys = {"#startProcessBo.flowCode + #startProcessBo.businessId"})
     public StartProcessReturnDTO startWorkFlow(StartProcessBo startProcessBo) {
         StartProcessContext context = new StartProcessContext(startProcessBo);
@@ -269,7 +271,7 @@ public class FlwTaskServiceImpl implements IFlwTaskService {
      */
     @Override
     public PageResult<FlowTaskVo> pageByTaskCopy(FlowTaskBo flowTaskBo, PageQuery pageQuery) {
-        Page<FlowTaskVo> page = flwTaskMapper.getTaskCopyByPage(pageQuery.build(), flowTaskBo, categoryIds(flowTaskBo), LoginHelper.getUserIdStr());
+        Page<FlowTaskVo> page = flwUserMapper.getTaskCopyByPage(pageQuery.build(), flowTaskBo, categoryIds(flowTaskBo), LoginHelper.getUserIdStr());
         return PageResult.build(page.getRecords(), page.getTotal());
     }
 

@@ -41,6 +41,18 @@
 | S-L087-05 | 工作树 | `OssUploadCleanupTask.java` | 2026-09-22 | `cleanup-enabled` 与 `cleanup-dry-run` 的直传清理语义 | high |
 | S-L087-06 | 工作树 | `OssStorageReadinessService.java` | 2026-09-22 | 启用策略的 `storage-config-key` 进入必检集合 | high |
 | S-L087-07 | 工作树 | `DefaultOssUploadObjectStore.java` | 2026-09-22 | 按 configKey 取客户端并拼接对象键 | high |
+| S-L088-01 | 工作树 | `backend/wta-modules/wta-workflow/.../WorkflowPermissionHandler.java` | 2026-09-28 | `permissions()` 与 `getHandler()` 只返回当前用户 ID | high |
+| S-L088-02 | 工作树 | `TaskAssigneeEnum`、`FlwTaskAssigneeServiceImpl`、`SysUserServiceImpl.selectUsersByRoleIds` | 2026-09-28 | 办理人只有用户/角色/部门/岗位/SpEL；角色展开不看 Client | high |
+| S-L088-03 | 工作树 | `SysTaskAssigneeServiceImpl` | 2026-09-28 | 设计器角色名单限定当前 `clientPk`；用户/部门/岗位不按 Client | high |
+| S-L088-04 | 工作树 | `FlwTaskMapper.getListRunTask`、`FlwTaskServiceImpl.pageByTaskWait` | 2026-09-28 | 待办查询只等于 `processed_by` | high |
+| S-L088-05 | 工作树 | `SecurityConfig.validateClientAccessRules`、`ClientAccessPaths` | 2026-09-28 | 非空 `access_path` 在进接口前拦截；home 不追加工作流路径 | high |
+| S-L088-06 | 工作树 | `ClientUserTypeAccessService`、`SysLoginService.buildLoginUser` | 2026-09-28 | 登录必须持有该 Client 的登录域；会话角色按 Client 加载 | high |
+| S-L088-07 | 工作树 | `SysRole.clientId`、`SysRoleServiceImpl.validateUsersHaveRoleClientType` | 2026-09-28 | 角色属于 Client；授角色前检查登录域 | high |
+| S-L088-08 | 项目事实 | `30-cde-workflow.sql`、`WarmFlowConfig` | 2026-09-28 | 流程表无 `client_id`；`permission_flag` 长度 200；本模块不使用 `tenant_id` | high |
+| S-L088-09 | 本地源码包 | Warm-Flow `1.8.9` `ExpressionUtil`、`TaskServiceImpl.checkAuth`、`FlowParams.getPermissionFlag` | 2026-09-28 | 生成待办时展开办理人；办理比较用户标识；`ignore` 跳过 | high |
+| S-L088-10 | 工作树 | `WorkflowGlobalListener.assignment`、`CompleteExecuteComponent`、`CompleteTaskBo` | 2026-09-28 | 申请节点改成发起人；办理请求可带 `ignore` 和 `handler` | high |
+| S-L088-11 | 工作树 | `frontend/apps/admin-web` 的 workflow 组装；`home-web` 无 workflow 引用 | 2026-09-28 | 流程页面只在管理端 App | high |
+| S-L088-12 | 工作树 | `SpelRuleComponent`、`VariablesEnum`、`FlwNodeExtServiceImpl` | 2026-09-28 | SpEL 只有部门负责人；节点扩展没有 Client 变量 | high |
 
 ## 项目事实 / 外部证据 / 类比 / 未知
 
@@ -54,6 +66,8 @@
 | 类比 | 大楼分房间 | 仅教学；失效处：房间之间仍有 `wta-api` 门，不是完全隔绝 |
 | 未知 | home-web / sso-web 是否已在生产部署 | 本机未验证部署 |
 | 未知 | GitHub Actions 是否 required check | S-009 `pending-decision` |
+| 项目事实 | 流程节点不能按 Client 约束办理会话；待办比较用户 ID。设计器角色名单随当前 Client 变化。种子里工作流菜单归管理端，`home` 的 `access_path` 不含 `/workflow/**`，流程页面只在 `admin-web` | S-L088-01 … S-L088-12、S-010 |
+| 未知 | 运行中的库是否手工改过工作流菜单归属或其他 Client 的 `access_path` | 本课未连库；代码路径不依赖该事实 |
 
 ## 未决冲突
 

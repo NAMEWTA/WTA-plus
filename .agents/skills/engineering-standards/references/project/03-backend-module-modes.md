@@ -17,6 +17,7 @@
 |---|---|---|---|
 | `layered` | `wta-modules/wta-profile` | 新增 Profile 业务试点，person/enterprise 使用五层 | 作为新模块参考实现；新增能力必须保持五层和中文 Javadoc |
 | `layered` | `wta-modules/wta-notify` | 统一通知控制面，含公告、收件箱、Outbox 和通知配置 | 新增能力必须保持五层；邮件/短信账号运行时以数据库为准 |
+| `layered` | `wta-modules/wta-oidc` | 第三方标准 OIDC Provider 与逐字段身份资料授权 | 五层、公开账户/SSO/Profile API，独立协议令牌与应用目录 |
 | `layered` | `wta-modules/wta-sso` | 第一方 SSO Authorization Code + PKCE | 新增能力必须保持五层；仅经 wta-api 读取用户与 Client |
 | `layered` | `wta-modules/wta-third` | 第三方 Provider/Endpoint 控制面及 Gateway；源码为 controller -> usecase -> service -> dao -> mapper | 保持当前五层，SPI/HTTP适配器归模块owner |
 | `classic` | `wta-modules/wta-system` | 既有用户、组织、权限、资源和监控能力 | 保持现状；只在触及文件按 Ratchet 收紧，不发动无关重构 |

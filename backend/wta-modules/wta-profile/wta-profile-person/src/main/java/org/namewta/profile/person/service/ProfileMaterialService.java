@@ -696,4 +696,21 @@ public class ProfileMaterialService implements ProfileMaterialPort {
      */
     private record Shape(int depth) {
     }
+    /** 根据任务授权列出不可变提交材料。 */
+    public List<MaterialReferenceView> listForTask(MaterialOwnerKey ownerKey, Long taskId) {
+        MaterialOwner owner = lockOwner(ownerKey);
+        accessPolicy.requireTaskRead(owner, taskId);
+        return references(ownerKey).stream().map(this::view).toList();
+    }
+
+    /** 根据任务授权读取材料，仍校验材料引用属于该提交快照。 */
+    public org.namewta.profile.api.material.ProfileTaskMaterialPort.MaterialAccessUrl accessUrlForTask(MaterialOwnerKey ownerKey, Long materialRefId, Long taskId) {
+        MaterialOwner owner = lockOwner(ownerKey);
+        accessPolicy.requireTaskRead(owner, taskId);
+        MaterialReference reference = requireReference(materialRefId);
+        requireSameOwner(ownerKey, reference);
+        var access = ossService.resolveAccessUrl(reference.ossId());
+        return access == null ? null : new org.namewta.profile.api.material.ProfileTaskMaterialPort.MaterialAccessUrl(
+            access.accessType(), access.url(), access.expiresAt(), access.fileName());
+    }
 }

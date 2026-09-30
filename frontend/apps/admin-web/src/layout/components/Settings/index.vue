@@ -193,6 +193,7 @@ const radiusBase = ref(settingsStore.radiusBase);
 // 是否暗黑模式
 const isDark = useDark({
   storageKey: 'useDarkKey',
+  initialValue: 'light',
   valueDark: 'dark',
   valueLight: 'light'
 });

@@ -1,133 +1,150 @@
 <template>
-  <main class="profile-center">
-    <header class="profile-center__header">
-      <span class="eyebrow">USER CENTER</span>
-      <h1>档案中心</h1>
-      <p>完善身份资料，完成个人或企业认证后即可使用对应服务。</p>
-    </header>
-    <section v-if="isCenter" class="profile-center__options" aria-label="认证类型">
-      <article class="verification-option">
-        <div class="verification-option__icon">人</div>
-        <div>
-          <h2>个人认证</h2>
-          <p>提交个人身份信息，建立可信的个人档案。</p>
-        </div>
-        <el-button v-if="runtime.hasPermission('profile:person:apply')" type="primary" plain @click="open('/profile/person')">开始认证</el-button>
-      </article>
-      <article class="verification-option">
-        <div class="verification-option__icon verification-option__icon--enterprise">企</div>
-        <div>
-          <h2>企业认证</h2>
-          <p>提交企业主体与法定代表人资料，完成企业认证。</p>
-        </div>
-        <el-button v-if="runtime.hasPermission('profile:enterprise:apply')" type="primary" plain @click="open('/profile/enterprise')">开始认证</el-button>
-      </article>
-    </section>
-    <EnterpriseTransferPanel v-if="isCenter" :runtime="runtime" />
+  <div class="profile-center">
+    <template v-if="isCenter">
+      <header class="profile-center__header">
+        <h1>个人中心</h1>
+        <p>管理实名认证与企业认证资料，查看申请进度。</p>
+      </header>
+      <el-alert v-if="failure" :title="failure" type="error" :closable="false" show-icon>
+        <el-button link @click="load">重新加载</el-button>
+      </el-alert>
+      <section class="profile-center__options" aria-label="认证类型" v-loading="loading">
+        <el-card v-for="option in options" :key="option.kind" shadow="never">
+          <div class="verification-option">
+            <SvgIcon :icon-class="option.icon" size="32px" />
+            <div>
+              <h2>{{ option.label }}</h2>
+              <p>{{ option.description }}</p>
+              <el-tag
+                v-if="option.summary"
+                :type="
+                  option.summary.status === 'VERIFIED'
+                    ? 'success'
+                    : option.summary.status === 'WAITING'
+                      ? 'warning'
+                      : 'info'
+                "
+              >
+                {{ certificationLabel(option.summary.status) }}
+              </el-tag>
+            </div>
+            <el-button type="primary" plain :disabled="loading || !option.summary" @click="router.push(option.path)">
+              {{ option.label }}
+            </el-button>
+          </div>
+          <p v-if="option.summary?.returnReason" class="return-reason">退回原因：{{ option.summary.returnReason }}</p>
+        </el-card>
+      </section>
+    </template>
     <router-view />
-  </main>
+  </div>
 </template>
-
 <script setup lang="ts">
-import { computed } from 'vue';
+import type { PersonCertificationSummary, EnterpriseCertificationSummary } from '@namewta/domain-profile';
+import SvgIcon from '@namewta/web-kit-ui-element/icon';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { ProfileSelfWebRuntime } from './runtime';
-import EnterpriseTransferPanel from './EnterpriseTransferPanel.vue';
-
+import { certificationLabel } from './certification-status';
 const { runtime } = defineProps<{ runtime: ProfileSelfWebRuntime }>();
 const router = useRouter();
 const route = useRoute();
 const isCenter = computed(() => route.path === '/profile' || route.path === '/profile/');
-const open = (path: string) => router.push(path);
+const person = ref<PersonCertificationSummary>();
+const enterprise = ref<EnterpriseCertificationSummary>();
+const loading = ref(false);
+const failure = ref('');
+let generation = 0;
+onBeforeUnmount(() => {
+  generation++;
+});
+const options = computed(() =>
+  [
+    {
+      kind: 'enterprise',
+      label: '企业认证',
+      description: '填写企业主体、法定代表人与联系资料。',
+      icon: 'tabler:building',
+      path: '/profile/enterprise',
+      summary: enterprise.value
+    },
+    {
+      kind: 'person',
+      label: '实名认证',
+      description: '填写个人身份信息并提交认证材料。',
+      icon: 'tabler:user',
+      path: '/profile/person',
+      summary: person.value
+    }
+  ].filter(option => runtime.hasPermission(`profile:${option.kind}:apply`))
+);
+async function load() {
+  const current = ++generation;
+  loading.value = true;
+  failure.value = '';
+  const results = await Promise.allSettled([
+    runtime.hasPermission('profile:person:apply')
+      ? runtime.service.person.application.summary()
+      : Promise.resolve(undefined),
+    runtime.hasPermission('profile:enterprise:apply')
+      ? runtime.service.enterprise.application.summary()
+      : Promise.resolve(undefined)
+  ]);
+  if (current !== generation) return;
+  const [personResult, enterpriseResult] = results;
+  person.value = personResult.status === 'fulfilled' ? personResult.value?.data : undefined;
+  enterprise.value = enterpriseResult.status === 'fulfilled' ? enterpriseResult.value?.data : undefined;
+  if (results.some(result => result.status === 'rejected')) failure.value = '部分认证状态加载失败，请重新加载。';
+  loading.value = false;
+}
+watch(
+  isCenter,
+  center => {
+    if (center) void load();
+  },
+  { immediate: true }
+);
 </script>
-
 <style scoped>
 .profile-center {
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: 48px 32px;
+  min-width: 0;
 }
-
 .profile-center__header {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
-
-.eyebrow {
-  color: #0f766e;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-h1,
-h2,
-p {
-  margin: 0;
-}
-
 h1 {
-  margin-top: 8px;
-  color: #172033;
-  font-size: 34px;
+  margin: 0;
+  font-size: 20px;
 }
-
-.profile-center__header p {
-  margin-top: 10px;
-  color: #64748b;
+h2 {
+  margin: 0;
+  font-size: 16px;
 }
-
+p {
+  color: var(--app-text-muted);
+  margin: 8px 0;
+}
 .profile-center__options {
   display: grid;
-  gap: 16px;
+  gap: 12px;
+  margin-top: 12px;
 }
-
 .verification-option {
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) auto;
-  gap: 18px;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 16px;
   align-items: center;
-  padding: 24px;
-  border: 1px solid #dbe4ea;
-  border-radius: 8px;
-  background: #fff;
 }
-
-.verification-option__icon {
-  display: grid;
-  width: 52px;
-  height: 52px;
-  place-items: center;
-  border-radius: 50%;
-  color: #fff;
-  background: #0f766e;
-  font-size: 22px;
-  font-weight: 700;
+.verification-option > .svg-icon {
+  color: var(--app-text-accent);
 }
-
-.verification-option__icon--enterprise {
-  background: #2563eb;
+.return-reason {
+  color: var(--app-text-danger);
 }
-
-.verification-option h2 {
-  color: #172033;
-  font-size: 18px;
-}
-
-.verification-option p {
-  margin-top: 6px;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-@media (max-width: 640px) {
-  .profile-center {
-    padding: 32px 18px;
-  }
-
+@media (max-width: 600px) {
   .verification-option {
-    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-columns: 32px minmax(0, 1fr);
   }
-
   .verification-option .el-button {
     grid-column: 2;
     justify-self: start;

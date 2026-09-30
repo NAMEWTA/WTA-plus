@@ -60,6 +60,7 @@ vi.mock('@/application/services', () => {
     notificationService: createService(),
     notificationDirectory: { searchUsers: vi.fn(), usersByIds: vi.fn(), userTypes: vi.fn() },
     openApiService: createService(),
+    oidcService: createService(),
     profileService: {
       materialTags: methods(['archive', 'changeStatus', 'create', 'tree', 'update']),
       person: { archive: { ...methods(archiveMethods), eligibleUsers: personEligibleUsers } },

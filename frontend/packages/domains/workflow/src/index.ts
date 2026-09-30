@@ -132,6 +132,8 @@ export interface FlowCopy {
 }
 
 export interface WorkflowTask {
+  /** 已办行 id 是历史记录主键，taskId 才是审核任务主键。 */
+  taskId?: string | number;
   applyNode?: boolean;
   businessCode: string;
   businessId: string;
@@ -337,7 +339,7 @@ export const workflowDomainModule: DomainModule = Object.freeze({
 
 export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefinitionService {
   const request = <T = unknown>(config: Parameters<HttpClient['request']>[0]) => http.request<ApiResponse<T>>(config);
-  return Object.freeze({
+  return Object.freeze<WorkflowDefinitionService>({
     users: createUserQueryPort(http),
     listCategories: query => request<CategoryVO[]>({ url: '/workflow/category/list', method: 'get', params: query }),
     getCategory: id => request<CategoryVO>({ url: '/workflow/category/' + segment(id), method: 'get' }),
@@ -360,7 +362,13 @@ export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefin
     setDefinitionActive: (id, active) =>
       request({ url: '/workflow/definition/active/' + segment(id), method: 'post', params: { active } }),
     importDefinition: (data, signal) =>
-      request({ url: '/workflow/definition/importDef', method: 'post', data, headers: { repeatSubmit: false }, ...(signal ? { signal } : {}) }),
+      request({
+        url: '/workflow/definition/importDef',
+        method: 'post',
+        data,
+        headers: { repeatSubmit: false },
+        ...(signal ? { signal } : {})
+      }),
     publishDefinition: id => request({ url: '/workflow/definition/publish/' + segment(id), method: 'post' }),
     unpublishDefinition: id => request({ url: '/workflow/definition/unPublish/' + segment(id), method: 'post' }),
     getDefinitionXmlString: id =>
@@ -439,17 +447,24 @@ export function createWorkflowDefinitionService(http: HttpClient): WorkflowDefin
         url: '/workflow/task/currentTaskAllUser/' + segment(taskId),
         method: 'get'
       });
-      return { ...response, data: response.data?.map(source => {
-        // 任务参与人只需要展示身份，手机号仅由需要联系信息的目录消费者使用。
-        const { phoneNumber: _phoneNumber, ...user } = projectUserSummary(source);
-        return user;
-      }) ?? [] };
+      return {
+        ...response,
+        data:
+          response.data?.map(source => {
+            // 任务参与人只需要展示身份，手机号仅由需要联系信息的目录消费者使用。
+            const { phoneNumber: _phoneNumber, ...user } = projectUserSummary(source);
+            return user;
+          }) ?? []
+      };
     },
     getNextNodes: data =>
       request<Record<string, unknown>[]>({
         url: '/workflow/task/getNextNodeList',
         method: 'get',
-        params: { taskId: data.taskId, ...(data.variables === undefined ? {} : { variables: JSON.stringify(data.variables) }) }
+        params: {
+          taskId: data.taskId,
+          ...(data.variables === undefined ? {} : { variables: JSON.stringify(data.variables) })
+        }
       }),
     urgeTask: data => request({ url: '/workflow/task/urgeTask', method: 'post', data }),
     pageRunningInstances: query =>

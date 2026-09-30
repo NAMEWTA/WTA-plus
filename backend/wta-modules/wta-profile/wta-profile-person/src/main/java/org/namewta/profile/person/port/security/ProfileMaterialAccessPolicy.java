@@ -18,4 +18,8 @@ public interface ProfileMaterialAccessPolicy {
 
     /** 校验并获取读取权限。 */
     void requireRead(MaterialOwner owner);
+    /** 任务读取要求独立的任务身份与不可变提交快照校验。 */
+    default void requireTaskRead(MaterialOwner owner, Long taskId) {
+        throw new UnsupportedOperationException("Task material access is not configured");
+    }
 }

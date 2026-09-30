@@ -3531,6 +3531,109 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/oidc/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description <br><h3>访问权限</h3><br>> **权限策略**：忽略权限检查<br> */
+        get: operations["begin"];
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>> **权限策略**：忽略权限检查<br> */
+        post: operations["finish"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/applications/{id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:edit`<br><br> */
+        post: operations["status_3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/applications/{id}/rotate-secret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:rotate`<br><br> */
+        post: operations["rotate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/applications/{id}/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:remove`<br><br> */
+        post: operations["delete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/applications/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:edit`<br><br> */
+        post: operations["update_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/applications/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:add`<br><br> */
+        post: operations["create_3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/notify/notification": {
         parameters: {
             query?: never;
@@ -4241,7 +4344,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:richtext:edit`<br><br> */
-        post: operations["update_1"];
+        post: operations["update_2"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4275,7 +4378,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:richtext:add`<br><br> */
-        post: operations["create_3"];
+        post: operations["create_4"];
         delete?: never;
         options?: never;
         head?: never;
@@ -7269,6 +7372,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/oidc/login-context": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description <br><h3>访问权限</h3><br>> **权限策略**：忽略权限检查<br> */
+        get: operations["context"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/provider": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:list`<br><br> */
+        get: operations["provider"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/fields": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:list`<br><br> */
+        get: operations["fields"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/applications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:list`<br><br> */
+        get: operations["list_23"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oidc/admin/applications/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `oidc:application:query`<br><br> */
+        get: operations["detail_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/notify/recipients/search": {
         parameters: {
             query?: never;
@@ -7354,7 +7542,7 @@ export interface paths {
          * 公告分页。
          * @description 公告分页。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `notify:notice:list`<br><br>
          */
-        get: operations["list_23"];
+        get: operations["list_24"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7414,7 +7602,7 @@ export interface paths {
          * 查询当前用户的有界收件箱页面。
          * @description 查询当前用户的有界收件箱页面。
          */
-        get: operations["list_24"];
+        get: operations["list_25"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7434,7 +7622,7 @@ export interface paths {
          * 仅返回当前用户确有收件关系的消息正文。
          * @description 仅返回当前用户确有收件关系的消息正文。
          */
-        get: operations["detail_2"];
+        get: operations["detail_3"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7514,7 +7702,7 @@ export interface paths {
          * 分页查询操作日志记录。
          * @description 分页查询操作日志记录。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:operlog:list`<br><br>
          */
-        get: operations["list_25"];
+        get: operations["list_26"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7554,7 +7742,7 @@ export interface paths {
          * 获取在线用户监控列表，并按 IP 或用户名条件过滤当前有效会话。
          * @description 获取在线用户监控列表，并按 IP 或用户名条件过滤当前有效会话。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:online:list`<br><br>
          */
-        get: operations["list_26"];
+        get: operations["list_27"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7574,7 +7762,7 @@ export interface paths {
          * 分页查询系统访问记录。
          * @description 分页查询系统访问记录。<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `monitor:logininfo:list`<br><br>
          */
-        get: operations["list_27"];
+        get: operations["list_28"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7634,7 +7822,7 @@ export interface paths {
          * 查询测试树表列表
          * @description 查询测试树表列表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:tree:list`<br><br>
          */
-        get: operations["list_28"];
+        get: operations["list_29"];
         put?: never;
         post?: never;
         delete?: never;
@@ -8044,7 +8232,7 @@ export interface paths {
             cookie?: never;
         };
         /** @description <br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:richtext:list`<br><br> */
-        get: operations["list_29"];
+        get: operations["list_30"];
         put?: never;
         post?: never;
         delete?: never;
@@ -8503,7 +8691,7 @@ export interface paths {
          * 查询测试单表列表
          * @description 查询测试单表列表<br><h3>访问权限</h3><br>**权限校验：**<br><br>- `demo:demo:list`<br><br>
          */
-        get: operations["list_30"];
+        get: operations["list_31"];
         put?: never;
         post?: never;
         delete?: never;
@@ -8619,6 +8807,134 @@ export interface paths {
         get: operations["index"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/person/application/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getPersonSelfSummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/enterprise/application/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getEnterpriseSelfSummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/person/review/tasks/{taskId}/materials/{materialRefId}/access-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getPersonTaskMaterial"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/person/review/tasks/{taskId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getPersonTaskReview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/person/review/tasks/{taskId}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["decidePersonReviewTask"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/enterprise/review/tasks/{taskId}/materials/{materialRefId}/access-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getEnterpriseTaskMaterial"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/enterprise/review/tasks/{taskId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getEnterpriseTaskReview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/profile/enterprise/review/tasks/{taskId}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["decideEnterpriseReviewTask"];
         delete?: never;
         options?: never;
         head?: never;
@@ -9034,13 +9350,13 @@ export interface components {
             id?: number;
             version?: string;
             updateBy?: string;
+            delFlag?: string;
             /** Format: date-time */
             createTime?: string;
             ext?: string;
             createBy?: string;
             /** Format: date-time */
             updateTime?: string;
-            delFlag?: string;
             nodeCode?: string;
             nodeName?: string;
             nodeRatio?: string;
@@ -9065,12 +9381,12 @@ export interface components {
             /** Format: int64 */
             nodeId?: number;
             updateBy?: string;
+            delFlag?: string;
             /** Format: date-time */
             createTime?: string;
             createBy?: string;
             /** Format: date-time */
             updateTime?: string;
-            delFlag?: string;
             /** Format: int64 */
             definitionId?: number;
             nextNodeCode?: string;
@@ -9086,12 +9402,12 @@ export interface components {
             id?: number;
             type?: string;
             updateBy?: string;
+            delFlag?: string;
             /** Format: date-time */
             createTime?: string;
             createBy?: string;
             /** Format: date-time */
             updateTime?: string;
-            delFlag?: string;
             /** Format: int64 */
             associated?: number;
             processedBy?: string;
@@ -9165,13 +9481,13 @@ export interface components {
             id?: number;
             variable?: string;
             updateBy?: string;
+            delFlag?: string;
             /** Format: date-time */
             createTime?: string;
             ext?: string;
             createBy?: string;
             /** Format: date-time */
             updateTime?: string;
-            delFlag?: string;
             businessId?: string;
             nodeCode?: string;
             nodeName?: string;
@@ -9186,8 +9502,8 @@ export interface components {
             formPath?: string;
             /** Format: int32 */
             activityStatus?: number;
-            defJson?: string;
             tenantId?: string;
+            defJson?: string;
         };
         NodeJson: {
             /** Format: int32 */
@@ -9261,13 +9577,13 @@ export interface components {
             version?: string;
             formContent?: string;
             updateBy?: string;
+            delFlag?: string;
             /** Format: date-time */
             createTime?: string;
             ext?: string;
             createBy?: string;
             /** Format: date-time */
             updateTime?: string;
-            delFlag?: string;
             /** Format: int32 */
             isPublish?: number;
             formPath?: string;
@@ -11091,6 +11407,86 @@ export interface components {
             /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
             error?: components["schemas"]["ErrorInfo"];
         };
+        /** @description 应用启用状态变更输入。 */
+        OidcStatusBo: {
+            /** Format: int32 */
+            version: number;
+            enabled: boolean;
+        };
+        /** @description 非机密应用详情，不含任何凭据摘要。 */
+        OidcApplicationVo: {
+            applicationId?: string;
+            name?: string;
+            clientId?: string;
+            redirectUris?: string[];
+            postLogoutRedirectUris?: string[];
+            allowedFields?: string[];
+            allowedScopes?: string[];
+            clientAuthenticationMethod?: string;
+            pkceRequired?: boolean;
+            enabled?: boolean;
+            /** Format: int32 */
+            version?: number;
+            /** Format: date-time */
+            createTime?: string;
+        };
+        /** @description 响应信息主体 */
+        ROidcApplicationVo: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /** @description 响应业务数据 */
+            data?: components["schemas"]["OidcApplicationVo"];
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        /** @description 防止陈旧管理写覆盖。 */
+        OidcVersionBo: {
+            /** Format: int32 */
+            version: number;
+        };
+        /** @description 明文密钥只在创建或轮换当次返回。 */
+        OidcApplicationSecretVo: {
+            application?: components["schemas"]["OidcApplicationVo"];
+            clientSecret?: string;
+        };
+        /** @description 响应信息主体 */
+        ROidcApplicationSecretVo: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /** @description 响应业务数据 */
+            data?: components["schemas"]["OidcApplicationSecretVo"];
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        /** @description 应用登记和编辑输入；凭据与 Client ID 始终由服务端生成。 */
+        OidcApplicationBo: {
+            /** @description 应用主键以字符串传输，防止浏览器丢失雪花 ID 精度。 */
+            applicationId?: string;
+            /**
+             * Format: int32
+             * @description 修改时必填的乐观版本；新建不需要提供。
+             */
+            version?: number;
+            name: string;
+            redirectUris: string[];
+            postLogoutRedirectUris?: string[];
+            /** @description 可披露字段代码；未提供时只使用基础默认集合，空集合表示仅公开 sub。 */
+            allowedFields?: string[];
+            /** @description 机密客户端认证方式，默认 HTTP Basic，可显式改为表单密钥。 */
+            clientAuthenticationMethod?: string;
+            /** @description 默认要求 S256 PKCE，只有管理员显式关闭时才允许省略。 */
+            pkceRequired?: boolean;
+        };
         /** @description 统一通知提交命令。 */
         NotificationCommand: {
             /** @description 通知应用标识 */
@@ -12015,10 +12411,7 @@ export interface components {
              * @description 流程实例表id
              */
             instanceId?: number;
-            /**
-             * Format: int64
-             * @description 任务表id
-             */
+            /** Format: int64 */
             taskId?: number;
             /**
              * Format: int32
@@ -12459,13 +12852,13 @@ export interface components {
             id?: number;
             version?: string;
             updateBy?: string;
+            delFlag?: string;
             /** Format: date-time */
             createTime?: string;
             ext?: string;
             createBy?: string;
             /** Format: date-time */
             updateTime?: string;
-            delFlag?: string;
             category?: string;
             flowCode?: string;
             nodeList?: components["schemas"]["Node"][];
@@ -12476,10 +12869,10 @@ export interface components {
             formPath?: string;
             /** Format: int32 */
             activityStatus?: number;
-            userList?: components["schemas"]["User"][];
             tenantId?: string;
             modelValue?: string;
             listenerPath?: string;
+            userList?: components["schemas"]["User"][];
         };
         /** @description 响应信息主体 */
         RDefinition: {
@@ -13982,6 +14375,16 @@ export interface components {
             /** Format: int64 */
             userId?: number;
             username?: string;
+            /**
+             * Format: date-time
+             * @description 返回首次认证时间；旧会话为空，不能据此声明近期认证。
+             */
+            authenticatedAt?: string;
+            /**
+             * Format: date-time
+             * @description 返回会话创建时确定的到期时间。
+             */
+            expiresAt?: string;
         };
         /** @description 响应信息主体 */
         RSsoAuthorizeVo: {
@@ -14843,6 +15246,80 @@ export interface components {
             data?: components["schemas"]["EnterpriseReviewContextVo"];
             /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
             error?: components["schemas"]["ErrorInfo"];
+        };
+        /** @description 浏览器登录事务的最小展示信息。 */
+        OidcLoginContextVo: {
+            applicationName?: string;
+            forceLogin?: boolean;
+        };
+        /** @description 响应信息主体 */
+        ROidcLoginContextVo: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /** @description 响应业务数据 */
+            data?: components["schemas"]["OidcLoginContextVo"];
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        /** @description 发行方非机密状态。 */
+        OidcProviderVo: {
+            issuer?: string;
+            discoveryUrl?: string;
+            ready?: boolean;
+            enabled?: boolean;
+            scopes?: string[];
+        };
+        /** @description 响应信息主体 */
+        ROidcProviderVo: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /** @description 响应业务数据 */
+            data?: components["schemas"]["OidcProviderVo"];
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        /** @description 管理端可披露字段目录，不含实际用户数据。 */
+        OidcFieldVo: {
+            key?: string;
+            label?: string;
+            scope?: string;
+            sensitive?: boolean;
+            defaultEnabled?: boolean;
+            group?: string;
+        };
+        /** @description 响应信息主体 */
+        RListOidcFieldVo: {
+            /**
+             * Format: int32
+             * @description 响应状态码
+             */
+            code?: number;
+            /** @description 响应提示信息 */
+            msg?: string;
+            /** @description 响应业务数据 */
+            data?: components["schemas"]["OidcFieldVo"][];
+            /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        /** @description 表格分页数据对象 */
+        PageResultOidcApplicationVo: {
+            /**
+             * Format: int64
+             * @description 总记录数
+             */
+            total?: number;
+            /** @description 列表数据 */
+            rows?: components["schemas"]["OidcApplicationVo"][];
         };
         /** @description 通知目标选择器使用的最小用户视图。 */
         NotifyRecipientUserVo: {
@@ -15860,6 +16337,92 @@ export interface components {
             /** @description 响应业务数据 */
             data?: components["schemas"]["AuthClientContextVo"];
             /** @description 机器可读的错误合同，旧客户端可继续使用 code/msg/data。 */
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        EnterpriseSelfIdentityVo: {
+            enterpriseName?: string;
+            unifiedCreditCode?: string;
+            enterpriseType?: string;
+            legalRepresentativeName?: string;
+            legalDocumentTypeCode?: string;
+            legalDocumentNumber?: string;
+            /** Format: date */
+            establishedDate?: string;
+            /** Format: date */
+            businessTermFrom?: string;
+            /** Format: date */
+            businessTermUntil?: string;
+            registeredAddress?: string;
+            businessScope?: string;
+            contactName?: string;
+            contactPhone?: string;
+            email?: string;
+            registeredCapital?: number;
+            industryCode?: string;
+            website?: string;
+        };
+        EnterpriseSelfProfileVo: {
+            /** Format: int64 */
+            profileId?: number;
+            /** Format: date-time */
+            verifiedAt?: string;
+            identity?: components["schemas"]["EnterpriseSelfIdentityVo"];
+        };
+        EnterpriseSelfSummaryVo: {
+            status?: string;
+            returnReason?: string;
+            currentApplication?: components["schemas"]["EnterpriseApplicationVo"];
+            certifiedProfile?: components["schemas"]["EnterpriseSelfProfileVo"];
+        };
+        EnterpriseTaskDecisionBo: {
+            decision: string;
+            reason: string;
+            /** Format: int32 */
+            snapshotVersion?: number;
+        };
+        PersonSelfIdentityVo: {
+            fullName?: string;
+            documentTypeCode?: string;
+            documentNumber?: string;
+            gender?: string;
+            /** Format: date */
+            birthDate?: string;
+            /** Format: date */
+            validFrom?: string;
+            /** Format: date */
+            validUntil?: string;
+        };
+        PersonSelfProfileVo: {
+            /** Format: int64 */
+            profileId?: number;
+            /** Format: date-time */
+            verifiedAt?: string;
+            identity?: components["schemas"]["PersonSelfIdentityVo"];
+        };
+        PersonSelfSummaryVo: {
+            status?: string;
+            returnReason?: string;
+            currentApplication?: components["schemas"]["PersonApplicationVo"];
+            certifiedProfile?: components["schemas"]["PersonSelfProfileVo"];
+        };
+        PersonTaskDecisionBo: {
+            decision: string;
+            reason: string;
+            /** Format: int32 */
+            snapshotVersion?: number;
+        };
+        REnterpriseSelfSummaryVo: {
+            /** Format: int32 */
+            code?: number;
+            msg?: string;
+            data?: components["schemas"]["EnterpriseSelfSummaryVo"];
+            error?: components["schemas"]["ErrorInfo"];
+        };
+        RPersonSelfSummaryVo: {
+            /** Format: int32 */
+            code?: number;
+            msg?: string;
+            data?: components["schemas"]["PersonSelfSummaryVo"];
             error?: components["schemas"]["ErrorInfo"];
         };
     };
@@ -22100,6 +22663,245 @@ export interface operations {
             };
         };
     };
+    begin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    finish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    status_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OidcStatusBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROidcApplicationVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    rotate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OidcVersionBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROidcApplicationSecretVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OidcVersionBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RVoid"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    update_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OidcApplicationBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROidcApplicationVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    create_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OidcApplicationBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROidcApplicationSecretVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
     submit_3: {
         parameters: {
             query?: never;
@@ -23242,7 +24044,7 @@ export interface operations {
             };
         };
     };
-    update_1: {
+    update_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -23312,7 +24114,7 @@ export interface operations {
             };
         };
     };
-    create_3: {
+    create_4: {
         parameters: {
             query?: never;
             header?: never;
@@ -28308,6 +29110,159 @@ export interface operations {
             };
         };
     };
+    context: {
+        parameters: {
+            query: {
+                request: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROidcLoginContextVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    provider: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROidcProviderVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    fields: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RListOidcFieldVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    list_23: {
+        parameters: {
+            query?: {
+                name?: string;
+                pageNum?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResultOidcApplicationVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    detail_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ROidcApplicationVo"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
     search: {
         parameters: {
             query: {
@@ -28435,7 +29390,7 @@ export interface operations {
             };
         };
     };
-    list_23: {
+    list_24: {
         parameters: {
             query: {
                 query: components["schemas"]["NotifyNoticeBo"];
@@ -28535,7 +29490,7 @@ export interface operations {
             };
         };
     };
-    list_24: {
+    list_25: {
         parameters: {
             query?: {
                 pageNum?: number;
@@ -28567,7 +29522,7 @@ export interface operations {
             };
         };
     };
-    detail_2: {
+    detail_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -28696,7 +29651,7 @@ export interface operations {
             };
         };
     };
-    list_25: {
+    list_26: {
         parameters: {
             query: {
                 /** @description 查询条件 */
@@ -28759,7 +29714,7 @@ export interface operations {
             };
         };
     };
-    list_26: {
+    list_27: {
         parameters: {
             query: {
                 /** @description IP地址 */
@@ -28793,7 +29748,7 @@ export interface operations {
             };
         };
     };
-    list_27: {
+    list_28: {
         parameters: {
             query: {
                 /** @description 查询条件 */
@@ -28895,7 +29850,7 @@ export interface operations {
             };
         };
     };
-    list_28: {
+    list_29: {
         parameters: {
             query: {
                 bo: components["schemas"]["TestTreeBo"];
@@ -29479,7 +30434,7 @@ export interface operations {
             };
         };
     };
-    list_29: {
+    list_30: {
         parameters: {
             query: {
                 pageQuery: components["schemas"]["PageQuery"];
@@ -30149,7 +31104,7 @@ export interface operations {
             };
         };
     };
-    list_30: {
+    list_31: {
         parameters: {
             query: {
                 bo: components["schemas"]["TestDemoBo"];
@@ -30334,6 +31289,188 @@ export interface operations {
                 };
                 content: {
                     "*/*": string;
+                };
+            };
+        };
+    };
+    getPersonSelfSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RPersonSelfSummaryVo"];
+                };
+            };
+        };
+    };
+    getEnterpriseSelfSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["REnterpriseSelfSummaryVo"];
+                };
+            };
+        };
+    };
+    getPersonTaskMaterial: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                taskId: number;
+                materialRefId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RPersonProfileAccessUrl"];
+                };
+            };
+        };
+    };
+    getPersonTaskReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                taskId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RPersonReviewContextVo"];
+                };
+            };
+        };
+    };
+    decidePersonReviewTask: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                taskId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PersonTaskDecisionBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RVoid"];
+                };
+            };
+        };
+    };
+    getEnterpriseTaskMaterial: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                taskId: number;
+                materialRefId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["REnterpriseProfileAccessUrl"];
+                };
+            };
+        };
+    };
+    getEnterpriseTaskReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                taskId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["REnterpriseReviewContextVo"];
+                };
+            };
+        };
+    };
+    decideEnterpriseReviewTask: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                taskId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnterpriseTaskDecisionBo"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RVoid"];
                 };
             };
         };

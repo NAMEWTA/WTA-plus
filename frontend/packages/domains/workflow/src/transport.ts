@@ -1,7 +1,7 @@
 import type { OpenApiSchema } from '@namewta/api-contracts';
 import type { WorkflowTask } from './index';
 
-export type WorkflowTaskTransport = OpenApiSchema<'FlowTaskVo'>;
+export type WorkflowTaskTransport = OpenApiSchema<'FlowTaskVo'> & Pick<OpenApiSchema<'FlowHisTaskVo'>, 'taskId'>;
 
 const projectDate = (value: string | undefined): Date | undefined => {
   if (!value) return undefined;
@@ -12,6 +12,7 @@ const projectDate = (value: string | undefined): Date | undefined => {
 export function projectWorkflowTaskTransport(value: WorkflowTaskTransport): WorkflowTask {
   return {
     applyNode: value.applyNode,
+    taskId: value.taskId,
     businessCode: value.businessCode ?? '',
     businessId: value.businessId ?? '',
     businessTitle: value.businessTitle ?? '',

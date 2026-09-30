@@ -1,18 +1,27 @@
 <template>
-  <main class="sso-callback">
-    <h1>{{ failure ? '登录未完成' : '正在完成 SSO 登录…' }}</h1>
-    <p v-if="failure" role="alert">{{ failure.message }}</p>
-    <button v-if="failure" type="button" :disabled="busy" @click="restart">{{ busy ? '正在重新授权…' : '重新授权' }}</button>
-    <RouterLink v-if="failure" :to="{ path: '/login', query: { redirect: returnTo } }">返回登录页</RouterLink>
+  <main class="sso-callback ui-auth-page ui-auth-page--embedded">
+    <StatusPanel
+      :title="failure ? '登录未完成' : '正在完成 SSO 登录…'"
+      :message="failure?.message ?? '请稍候，即将进入应用。'"
+      :error="Boolean(failure)"
+      :busy="busy"
+    >
+      <el-button v-if="failure" type="primary" :disabled="busy" @click="restart">
+        {{ busy ? '正在重新授权…' : '重新授权' }}
+      </el-button>
+      <RouterLink v-if="failure" :to="{ path: '/login', query: { redirect: returnTo } }">返回登录页</RouterLink>
+    </StatusPanel>
   </main>
 </template>
 <script setup lang="ts">
+import { SsoCallbackError } from '@namewta/platform-auth';
+import StatusPanel from '@namewta/web-kit-ui-element/status-panel';
+import { ElButton } from 'element-plus';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { SsoCallbackError } from '@namewta/platform-auth';
-import { homeSso, homeSsoRedirectUri } from '@/application/sso';
 import { identityAccessService } from '@/application/services';
 import { session } from '@/application/session';
+import { homeSso, homeSsoRedirectUri } from '@/application/sso';
 import { useUserStore } from '@/store/user';
 
 const router = useRouter();
@@ -20,7 +29,9 @@ const userStore = useUserStore();
 const failure = ref<SsoCallbackError>();
 const busy = ref(false);
 let active = true;
-onBeforeUnmount(() => { active = false; });
+onBeforeUnmount(() => {
+  active = false;
+});
 
 function currentSession() {
   const generation = userStore.sessionGeneration;
@@ -36,13 +47,20 @@ async function restart() {
   try {
     const context = await identityAccessService.getClientContext();
     if (!isCurrent()) return;
-    if (!context.clientEnabled || !context.ssoEnabled || context.authMode === 'local' || !context.ssoAuthorizeUrl) throw new SsoCallbackError('exchange');
-    await homeSso.startSsoLogin({ authorizeUrl: context.ssoAuthorizeUrl, clientId: import.meta.env.VITE_APP_CLIENT_ID,
-      redirectUri: homeSsoRedirectUri(), returnTo: returnTo.value });
+    if (!context.clientEnabled || !context.ssoEnabled || context.authMode === 'local' || !context.ssoAuthorizeUrl)
+      throw new SsoCallbackError('exchange');
+    await homeSso.startSsoLogin({
+      authorizeUrl: context.ssoAuthorizeUrl,
+      clientId: import.meta.env.VITE_APP_CLIENT_ID,
+      redirectUri: homeSsoRedirectUri(),
+      returnTo: returnTo.value
+    });
   } catch (error) {
     if (!isCurrent()) return;
     failure.value = error instanceof SsoCallbackError ? error : new SsoCallbackError('network');
-  } finally { busy.value = false; }
+  } finally {
+    busy.value = false;
+  }
 }
 
 onMounted(async () => {
@@ -67,17 +85,3 @@ onMounted(async () => {
   }
 });
 </script>
-<style scoped>
-.sso-callback {
-  min-height: 40vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 24px;
-  text-align: center;
-}
-button { padding: 10px 20px; cursor: pointer; }
-button:focus-visible, a:focus-visible { outline: 2px solid #0284c7; outline-offset: 4px; }
-</style>

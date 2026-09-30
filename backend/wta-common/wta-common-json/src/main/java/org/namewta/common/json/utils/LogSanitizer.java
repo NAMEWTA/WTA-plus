@@ -47,7 +47,7 @@ public final class LogSanitizer {
         if (name == null) {
             return false;
         }
-        if (isNotifyCallbackPath(requestPath)) return true;
+        if (isNotifyCallbackPath(requestPath) || normalizePath(requestPath).startsWith("/oidc/")) return true;
         String normalized = normalize(name);
         if (SENSITIVE_NAMES.contains(normalized)
             || isCredentialQueryName(normalized)
@@ -71,7 +71,7 @@ public final class LogSanitizer {
 
     /** 凭据签发与授权跳转的 HTTP/操作日志均仅保留元数据。 */
     public static boolean omitResponseBody(String requestPath) {
-        return CREDENTIAL_RESPONSES.contains(normalizePath(requestPath));
+        return normalizePath(requestPath).startsWith("/oidc/") || CREDENTIAL_RESPONSES.contains(normalizePath(requestPath));
     }
 
     /** 完整 JSON 脱敏后再由调用者截断；非法、标量正文或序列化失败只返回固定摘要。 */
@@ -223,7 +223,7 @@ public final class LogSanitizer {
 
     private static boolean isOAuthPath(String requestPath) {
         String path = normalizePath(requestPath);
-        return path.startsWith("/sso/") || path.startsWith("/auth/social/") || path.equals("/auth/login");
+        return path.startsWith("/oidc/") || path.startsWith("/sso/") || path.startsWith("/auth/social/") || path.equals("/auth/login");
     }
 
     /** 回执包含精确收件地址，HTTP 与操作日志均只保留元数据；不改变验签原文。 */

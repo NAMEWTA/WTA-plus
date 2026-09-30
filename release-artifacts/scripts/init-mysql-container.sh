@@ -8,7 +8,7 @@ ENV_FILE="${RELEASE_ROOT}/.env"
 SQL_DIR="${RELEASE_ROOT}/docker/infrastructure/mysql/init"
 MYSQL_CONTAINER="namewta-data-mysql"
 # The ordered 10/20/30/40/50/60 baseline creates 104 application tables, including durable provider receipts.
-EXPECTED_TABLES=104
+EXPECTED_TABLES=108
 
 readonly SQL_FILES=(
   "10-cde-base-ddl.sql"

@@ -54,6 +54,7 @@ public class WorkflowGlobalListener implements GlobalListener {
     private final IFlwCommonService flwCommonService;
     private final IFlwNodeExtService nodeExtService;
     private final UserService userService;
+    private final org.namewta.workflow.service.impl.WorkflowClientScopeService clientScope;
 
     /**
      * 任务创建回调，当前预留扩展。
@@ -129,6 +130,7 @@ public class WorkflowGlobalListener implements GlobalListener {
                 flowTask.setPermissionList(List.of(instance.getCreateBy()));
             }
         }
+        clientScope.validateAssignments(listenerVariable);
     }
 
     /**

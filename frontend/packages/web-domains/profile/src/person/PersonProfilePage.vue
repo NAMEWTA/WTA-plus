@@ -54,7 +54,7 @@
     </el-drawer>
 
     <el-dialog v-model="createVisible" title="新建个人档案" width="min(720px, 94vw)">
-      <PersonIdentityForm :model="createForm.identity" />
+      <PersonIdentityForm v-model:model="createForm.identity" />
       <el-form :model="createForm" label-width="96px">
         <el-form-item label="绑定账户">
           <el-select

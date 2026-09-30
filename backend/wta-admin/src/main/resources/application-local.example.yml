@@ -31,8 +31,8 @@ spring:
 snail-job:
   enabled: false
 
-# 浏览器仍走各 Vite App 的同源 API 代理；代理转发时保留的 Origin 仅许可这些本机入口。
-# 使用其他主机名或端口时，通过 WEB_CORS_ALLOWED_ORIGINS 显式列出准确 Origin。
+# 内网开发允许任意 HTTP(S) Origin，也可改成逗号分隔的精确地址和通配规则。
+# 例如 http://192.168.*:*,https://*.example.test,http://127.0.0.1:5177。
 web:
   cors:
-    allowed-origins: "${WEB_CORS_ALLOWED_ORIGINS:http://127.0.0.1:5177,http://127.0.0.1:5175,http://127.0.0.1:4176}"
+    allowed-origins: "${WEB_CORS_ALLOWED_ORIGINS:*}"

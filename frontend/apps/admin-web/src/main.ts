@@ -1,10 +1,15 @@
 import HighLight from '@highlightjs/vue-plugin';
+import { initializeIcons } from '@namewta/web-kit-ui-element/icons';
+import { initializeTheme } from '@namewta/web-kit-ui-element/theme';
 import { ElDialog } from 'element-plus';
 import { createApp } from 'vue';
+import 'virtual:uno.css';
+import 'element-plus/dist/index.css';
+import 'element-plus/theme-chalk/dark/css-vars.css';
+import '@namewta/web-kit-ui-element/theme.css';
+import '@namewta/web-kit-ui-element/shell.css';
 import VxeUIPlugin, { VxeUI } from 'vxe-pc-ui';
 import VxeTablePlugin from 'vxe-table';
-import 'virtual:uno.css';
-import 'element-plus/theme-chalk/dark/css-vars.css';
 import '@/assets/styles/index.scss';
 import 'highlight.js/styles/atom-one-dark.css';
 import 'highlight.js/lib/common';
@@ -24,6 +29,9 @@ VxeUI.setConfig({
 });
 
 ElDialog.props.closeOnClickModal.default = false;
+
+initializeTheme();
+initializeIcons();
 
 const app = createApp(App);
 

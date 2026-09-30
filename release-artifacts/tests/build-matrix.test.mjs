@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const required = ['wta-system', 'wta-common-notify', 'wta-common-oss', 'wta-third', 'wta-sso', 'wta-notify', 'wta-profile-person', 'wta-profile-enterprise'];
+const required = ['wta-system', 'wta-common-notify', 'wta-common-oss', 'wta-third', 'wta-sso', 'wta-oidc', 'wta-notify', 'wta-profile-person', 'wta-profile-enterprise'];
 const optional = ['wta-job', 'wta-ai','wta-common-ai', 'wta-demo', 'wta-workflow'];
 
 function verify(mode, modules, outsideRepository = false) {

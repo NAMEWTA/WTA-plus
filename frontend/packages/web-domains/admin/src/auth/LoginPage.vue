@@ -1,79 +1,85 @@
 <template>
-  <section class="identity-login" aria-labelledby="identity-login-title">
-    <div class="identity-login__intro">
-      <p class="identity-login__eyebrow">CLIENT WORKSPACE</p>
-      <h1 id="identity-login-title">{{ runtime.title ?? '客户服务入口' }}</h1>
-      <p>{{ runtime.description ?? '登录客户工作台，查看服务资料并处理示例业务。' }}</p>
-    </div>
-
-    <el-form class="identity-login__form" label-position="top" :aria-busy="preparing || submitting" @submit.prevent="submit">
-      <div class="identity-login__sso">
-        <p class="identity-login__social-label">第三方登录</p>
-        <div class="identity-login__social-row">
-          <el-button
-            v-if="ssoEnabled"
-            circle
-            data-testid="sso-first-provider"
-            native-type="button"
-            :disabled="!ready"
-            title="WTA SSO"
-            aria-label="WTA SSO"
-            @click="startSso"
-          >
-            <svg class="identity-login__sso-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M1.5 4h4.2l3.5 12.2L12 8.6l2.8 7.6L18.3 4H22.5L16.8 21h-4.1L12 14.7 11.3 21H7.2L1.5 4z" />
-            </svg>
-          </el-button>
-        </div>
-      </div>
-      <el-form-item v-if="authMode !== 'sso'" label="用户名">
-        <el-input v-model="form.username" name="username" autocomplete="username" :disabled="!ready || submitting" />
-      </el-form-item>
-      <el-form-item v-if="authMode !== 'sso'" label="密码">
-        <el-input
-          v-model="form.password"
-          name="password"
-          type="password"
-          autocomplete="current-password"
-          show-password
-          :disabled="!ready || submitting"
-        />
-      </el-form-item>
-      <el-form-item v-if="authMode !== 'sso' && verification?.captchaEnabled" label="验证码">
-        <div class="identity-login__captcha">
-          <el-input v-model="form.code" name="code" :disabled="!ready || submitting" />
-          <img :src="captchaImage" alt="验证码图片" />
-          <el-button
-            native-type="button"
-            aria-label="刷新验证码"
-            :loading="preparing"
-            :disabled="submitting"
-            @click="prepare"
-          >
-            刷新
-          </el-button>
-        </div>
-      </el-form-item>
-      <p v-if="errorMessage" class="identity-login__error" role="alert">{{ errorMessage }}</p>
-      <el-button v-if="!ready && !preparing" native-type="button" @click="prepare">重新检查登录入口</el-button>
-      <el-button
-        v-if="authMode !== 'sso'"
-        class="identity-login__submit"
-        type="primary"
-        native-type="submit"
-        :loading="submitting"
-        :disabled="!ready || preparing"
+  <section class="identity-login ui-auth-page ui-auth-page--embedded">
+    <AuthPanel
+      :title="runtime.title ?? '用户登录'"
+      :description="runtime.description ?? '使用您的账号，继续访问用户中心。'"
+      eyebrow="NAMEWTA"
+    >
+      <el-form
+        class="identity-login__form"
+        label-position="top"
+        :aria-busy="preparing || submitting"
+        @submit.prevent="submit"
       >
-        登录
-      </el-button>
-      <p class="identity-login__status" aria-live="polite">
-        {{ ready ? '入口已就绪' : preparing ? '正在检查入口状态' : '入口暂不可用' }}
-      </p>
-    </el-form>
+        <div class="identity-login__sso">
+          <p class="identity-login__social-label">第三方登录</p>
+          <div class="identity-login__social-row">
+            <el-button
+              v-if="ssoEnabled"
+              circle
+              data-testid="sso-first-provider"
+              native-type="button"
+              :disabled="!ready"
+              title="WTA SSO"
+              aria-label="WTA SSO"
+              @click="startSso"
+            >
+              <svg class="identity-login__sso-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M1.5 4h4.2l3.5 12.2L12 8.6l2.8 7.6L18.3 4H22.5L16.8 21h-4.1L12 14.7 11.3 21H7.2L1.5 4z" />
+              </svg>
+            </el-button>
+          </div>
+        </div>
+        <el-form-item v-if="authMode !== 'sso'" label="用户名">
+          <el-input v-model="form.username" name="username" autocomplete="username" :disabled="!ready || submitting" />
+        </el-form-item>
+        <el-form-item v-if="authMode !== 'sso'" label="密码">
+          <el-input
+            v-model="form.password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            show-password
+            :disabled="!ready || submitting"
+          />
+        </el-form-item>
+        <el-form-item v-if="authMode !== 'sso' && verification?.captchaEnabled" label="验证码">
+          <div class="identity-login__captcha">
+            <el-input v-model="form.code" name="code" :disabled="!ready || submitting" />
+            <img :src="captchaImage" alt="验证码图片" />
+            <el-button
+              native-type="button"
+              aria-label="刷新验证码"
+              :loading="preparing"
+              :disabled="submitting"
+              @click="prepare"
+            >
+              刷新
+            </el-button>
+          </div>
+        </el-form-item>
+        <p v-if="errorMessage" class="identity-login__error" role="alert">{{ errorMessage }}</p>
+        <el-button v-if="!ready && !preparing" native-type="button" @click="prepare">重新检查登录入口</el-button>
+        <el-button
+          v-if="authMode !== 'sso'"
+          class="identity-login__submit"
+          type="primary"
+          native-type="submit"
+          :loading="submitting"
+          :disabled="!ready || preparing"
+        >
+          登录
+        </el-button>
+        <p class="identity-login__status" aria-live="polite">
+          {{ ready ? '入口已就绪' : preparing ? '正在检查入口状态' : '入口暂不可用' }}
+        </p>
+      </el-form>
+    </AuthPanel>
   </section>
 </template>
 
 <script setup lang="ts">
+import AuthPanel from '@namewta/web-kit-ui-element/auth-panel';
 import { onMounted, onUnmounted } from 'vue';
 import type { IdentityAccessWebRuntime } from '../runtime';
 import { createIdentityLoginState } from '../loginState';
@@ -107,122 +113,56 @@ onUnmounted(state.dispose);
 </script>
 
 <style scoped>
-.identity-login {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 390px);
-  gap: 48px;
-  align-items: center;
-  min-height: calc(100vh - 164px);
-}
-
-.identity-login__intro h1 {
-  margin: 10px 0 14px;
-  color: var(--client-text);
-  font-size: 46px;
-  line-height: 1.12;
-}
-
-.identity-login__intro p:last-child {
-  max-width: 560px;
-  color: var(--client-text-muted);
-  line-height: 1.8;
-}
-
-.identity-login__eyebrow {
-  margin: 0;
-  color: var(--client-accent-strong);
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .identity-login__form {
-  --el-border-color: #7b8794;
   min-width: 0;
-  padding: clamp(12px, 4vw, 30px);
-  border: 1px solid var(--client-line);
-  border-radius: var(--client-radius);
-  background: var(--client-surface);
-  box-shadow: var(--client-shadow);
 }
-
 .identity-login__social-label {
   margin: 0 0 10px;
-  color: var(--client-text-muted);
+  color: var(--app-text-muted);
   font-size: 13px;
 }
-
 .identity-login__social-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 20px;
 }
-
 .identity-login__sso-icon {
   width: 1em;
   height: 1em;
   fill: currentColor;
 }
-
 .identity-login__submit {
   width: 100%;
   margin-left: 0;
-  min-height: 42px;
 }
-
 .identity-login__captcha {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 112px auto;
   gap: 8px;
   align-items: center;
 }
-
 .identity-login__captcha img {
   width: 112px;
   max-width: 100%;
   height: 38px;
-  border: 1px solid var(--client-line);
+  border: 1px solid var(--app-surface-border);
   object-fit: contain;
 }
-
-.identity-login__form :deep(.el-button) {
-  max-width: 100%;
-  height: auto;
-  min-height: 32px;
-  white-space: normal;
-  line-height: 1.5;
-}
-
-.identity-login__form :deep(.identity-login__submit) {
-  min-height: 42px;
-}
-
 .identity-login__error {
-  color: #b42318;
+  color: var(--app-text-danger);
   font-size: 14px;
 }
-
 .identity-login__status {
   margin: 16px 0 0;
-  color: var(--client-text-muted);
+  color: var(--app-text-muted);
   font-size: 13px;
   text-align: center;
 }
-
 @media (max-width: 760px) {
-  .identity-login {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    min-height: auto;
-  }
-
-  .identity-login__intro h1 {
-    font-size: 36px;
-  }
-
   .identity-login__captcha {
     grid-template-columns: minmax(0, 1fr) auto;
   }
-
   .identity-login__captcha img {
     grid-column: 1 / -1;
   }

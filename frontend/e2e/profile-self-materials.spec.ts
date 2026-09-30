@@ -26,7 +26,7 @@ function identityNumber(sequence: number) {
 }
 async function person(page: Page, sequence = 123) {
   await page.goto(`${origin}/profile/person`);
-  await expect(page.getByRole('heading', { name: '个人认证', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '实名认证', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '保存草稿', exact: true })).toBeEnabled();
   await fill(page, '姓名', '材料验证'); await fill(page, '证件号码', identityNumber(sequence));
   await item(page, '性别').locator('.el-select__wrapper').click(); await page.getByRole('option', { name: '男', exact: true }).click();

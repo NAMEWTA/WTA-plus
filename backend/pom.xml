@@ -466,6 +466,11 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.namewta</groupId>
+                <artifactId>wta-oidc</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

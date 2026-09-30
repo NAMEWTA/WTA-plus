@@ -322,6 +322,38 @@ function appOrigins(apps, envFile, environment) {
   return validateOriginMatrix(apps, Object.fromEntries(apps.map((app) => [app.id, values[app.originEnv] ?? ''])), environment);
 }
 
+// Same comma-separated HTTP(S) Origin grammar as CorsProperties. Port lists are
+// intentionally excluded because commas separate Origin entries in the env value.
+function validateCorsOrigins(values) {
+  require(Array.isArray(values) && values.length > 0, 'missing CORS origin configuration');
+  return [...new Set(values.map((raw) => {
+    require(typeof raw === 'string', 'invalid CORS origin');
+    const value = raw.trim();
+    if (value === '*') return value;
+    const match = value.match(/^https?:\/\/([a-z0-9*.-]+|\[[0-9a-f:.]+])(?::([0-9]+|\*|\[\*]))?$/i);
+    require(match, 'CORS requires HTTP(S) origins or patterns without paths');
+    const [, host, port] = match;
+    require(!port || port === '*' || port === '[*]' || (Number(port) >= 1 && Number(port) <= 65535), 'invalid CORS origin port');
+    if (!host.startsWith('[')) {
+      require(host.split('.').every((label) => /^[a-z0-9*](?:[a-z0-9*-]*[a-z0-9*])?$/i.test(label)), 'invalid CORS origin host');
+    }
+    try { new URL(value.replace(/:\[\*\]$|:\*$/, ':443').replaceAll('*', 'wildcard')); }
+    catch { fail('invalid CORS origin'); }
+    return value.endsWith(':*') ? value.slice(0, -1) + '[*]' : value;
+  }))].sort();
+}
+
+function corsOrigins(envFile, origins) {
+  const configured = envValues(envFile).WEB_CORS_ALLOWED_ORIGINS;
+  return validateCorsOrigins(configured?.trim() ? configured.split(',') : Object.values(origins));
+}
+
+function manifestCorsOrigins(manifest) {
+  // Existing schema v2 releases predate the independent CORS setting.
+  return Object.hasOwn(manifest, 'corsAllowedOrigins') ? manifest.corsAllowedOrigins
+    : validateCorsOrigins(Object.values(manifest.appOrigins));
+}
+
 function formatTemplate(template, prefix, environment) {
   return template.replaceAll('{prefix}', prefix).replaceAll('{environment}', environment);
 }
@@ -457,6 +489,7 @@ function validatePayload(root, metadata) {
   require(Object.keys(apps).length === registeredIds.size && Object.keys(apps).every((app) => registeredIds.has(app)), 'manifest differs from shipped app registry');
   require(sameSet(new Set(Object.keys(metadata.appOrigins)), new Set(Object.keys(apps))), 'missing App origin matrix');
   require(same(validateOriginMatrix(registered, metadata.appOrigins, metadata.environment), metadata.appOrigins), 'noncanonical App origin matrix');
+  require(same(validateCorsOrigins(manifestCorsOrigins(metadata)), manifestCorsOrigins(metadata)), 'noncanonical CORS origin configuration');
   require(same(applicationMatrix(registered, apps, metadata.appOrigins, metadata.environment), metadata.applicationMatrix), 'release application matrix mismatch');
   for (const app of registered) require(app.apiKind !== 'sso' || apps[app.id] !== 'sso', 'SSO static prefix collides with /sso API');
   for (const name of Object.keys(BACKENDS)) {
@@ -548,6 +581,7 @@ function resolveRelease(environment, envFile = null) {
   if (envFile !== null) {
     require(same(prefixes(Object.keys(manifest.apps), envFile), manifest.apps), 'runtime prefixes differ from built app prefixes');
     require(same(appOrigins(appRegistry(version), envFile, environment), manifest.appOrigins), 'runtime origins differ from release origin matrix');
+    require(same(corsOrigins(envFile, manifest.appOrigins), manifestCorsOrigins(manifest)), 'runtime CORS origins differ from release configuration');
   }
   return version;
 }
@@ -826,6 +860,7 @@ async function build(args) {
     const appNames = registered.map((app) => app.id);
     const apps = args.target === 'backend' ? {} : prefixes(appNames, args.envFile);
     const origins = complete ? appOrigins(registered, args.envFile, args.env) : {};
+    const corsAllowedOrigins = complete ? corsOrigins(args.envFile, origins) : [];
     const matrix = complete ? applicationMatrix(registered, apps, origins, args.env) : {};
     if (complete) {
       const archivedRelease = path.join(archived.source, 'release-artifacts');
@@ -846,7 +881,7 @@ async function build(args) {
     }
     require(await cleanSource() === revision, 'source changed during build; candidate discarded');
     const metadata = {
-      environment: args.env, backendBundle: args.bundle, target: 'all', apps, appOrigins: origins, applicationMatrix: matrix,
+      environment: args.env, backendBundle: args.bundle, target: 'all', apps, appOrigins: origins, corsAllowedOrigins, applicationMatrix: matrix,
       source: {
         revision, tree: await run(['git', '-C', REPO_ROOT, 'rev-parse', `${revision}^{tree}`], { capture: true }),
         archiveSha256: archived.archiveDigest, clean: true,

@@ -340,7 +340,7 @@ insert into sys_dict_data values(1761600000000000036, 0, '安卓', 'android', 's
 insert into sys_dict_data values(1761600000000000037, 0, 'iOS', 'ios', 'sys_device_type', '', 'default', 'N', 1761000000000000103, 1761100000000000001, sysdate(), null, null, 'iOS');
 insert into sys_dict_data values(1761600000000000038, 0, '小程序', 'xcx', 'sys_device_type', '', 'default', 'N', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '小程序');
 
-insert into sys_config values(1761700000000000001, '用户管理-账号初始密码', 'sys.user.initPassword', '123456', 'Y', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '初始化密码 123456');
+insert into sys_config values(1761700000000000001, '用户管理-旧版初始密码（已停用）', 'sys.user.initPassword', '123456', 'Y', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '已停用的旧版兼容参数；当前账号初始化规则见 sys.user.passwordPolicy，本值不是当前账号初始密码；完整初始化时将随机化此兼容值。');
 insert into sys_config values(1761700000000000002, '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'false', 'Y', 1761000000000000103, 1761100000000000001, sysdate(), null, null, '是否开启注册用户功能（true开启，false关闭）');
 insert into sys_config values(1761700000000000003, 'OSS预览列表资源开关', 'sys.oss.previewListResource', 'true', 'Y', 1761000000000000103, 1761100000000000001, sysdate(), null, null, 'true:开启, false:关闭');
 
@@ -449,7 +449,7 @@ set user_type_id     = 1762100000000000002,
     client_secret    = 'home123',
     grant_type       = 'password,sms,social',
     device_type      = 'pc',
-    access_path      = '/home/**,/system/user/getInfo,/system/menu/getRouters,/auth/logout,/profile/**'
+    access_path      = '/home/**,/system/user/getInfo,/system/menu/getRouters,/auth/logout,/profile/**,/workflow/task/**'
 where id = 1762000000000000002;
 
 -- ----------------------------
@@ -515,7 +515,7 @@ where not exists (select 1 from sys_menu where menu_id = 1761400000000001081);
 
 -- ============================================================================
 -- NAMEWTA-BASE-DSL-004
--- 当前完整基座只保留管理端与用户端两个 Client、两个角色和用户档案中心。
+-- 当前业务入口保留管理端与用户端；默认角色维持原义，额外提供非默认任务审核角色。
 delete from sys_role_menu
 where role_id in (1761300000000000003, 1761300000000000004, 1761300000000000011, 1761300000000000012)
    or menu_id in (1761400000000002001, 1761400000000002002, 1761400000000002003);
@@ -529,9 +529,9 @@ where role_id in (1761300000000000003, 1761300000000000004, 1761300000000000011,
 delete from sys_client where id in (1762000000000000003, 1762000000000000004);
 
 insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache, menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
-values (2100500000000000100, 1762000000000000002, '档案中心', 0, 1, 'profile', 'profile/center/index', '', 'N', 'Y', 'M', '0', '0', '', 'tabler:id', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '用户档案认证中心'),
-       (2100500000000000101, 1762000000000000002, '个人认证', 2100500000000000100, 1, 'person', 'profile/person/application', '', 'N', 'Y', 'C', '1', '0', 'profile:person:apply', 'tabler:user', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '个人实名认证申请'),
-       (2100500000000000102, 1762000000000000002, '企业认证', 2100500000000000100, 2, 'enterprise', 'profile/enterprise/application', '', 'N', 'Y', 'C', '1', '0', 'profile:enterprise:apply', 'tabler:building', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '企业实名认证申请'),
+values (2100500000000000100, 1762000000000000002, '个人中心', 0, 1, 'profile', 'profile/center/index', '', 'N', 'Y', 'M', '0', '0', '', 'tabler:id', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '用户档案认证中心'),
+       (2100500000000000101, 1762000000000000002, '实名认证', 2100500000000000100, 1, 'person', 'profile/person/application', '', 'N', 'Y', 'C', '1', '0', 'profile:person:apply', 'tabler:user', '/profile', '', 1761000000000000103, 1761100000000000001, sysdate(), '个人实名认证申请'),
+       (2100500000000000102, 1762000000000000002, '企业认证', 2100500000000000100, 2, 'enterprise', 'profile/enterprise/application', '', 'N', 'Y', 'C', '1', '0', 'profile:enterprise:apply', 'tabler:building', '/profile', '', 1761000000000000103, 1761100000000000001, sysdate(), '企业实名认证申请'),
        (2100500000000000103, 1762000000000000002, '个人认证材料', 2100500000000000101, 1, '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:person:material', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '仅办理本人申请材料'),
        (2100500000000000104, 1762000000000000002, '企业认证材料', 2100500000000000102, 1, '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:enterprise:material', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '仅办理本人申请材料'),
        (2100500000000000105, 1762000000000000002, '认证材料上传', 2100500000000000100, 3, '', '', '', 'N', 'Y', 'F', '0', '0', 'system:oss:upload', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '上传私有材料，不授予OSS管理读删权限');
@@ -542,6 +542,35 @@ values (1761300000000000010, 2100500000000000100),
        (1761300000000000010, 2100500000000000103),
        (1761300000000000010, 2100500000000000104),
        (1761300000000000010, 2100500000000000105);
+
+
+-- 跨端任务参与菜单只授予专门审核角色，普通注册用户仍只拥有本人认证能力。
+insert into sys_role (role_id, client_id, role_name, role_key, role_sort, data_scope,
+                     menu_check_strictly, dept_check_strictly, status, del_flag,
+                     create_dept, create_by, create_time, remark)
+values (2100700000000000001, 1762000000000000002, '用户端审核员', 'home_reviewer', 2, '5',
+        1, 1, '0', '0', 1761000000000000103, 1761100000000000001, sysdate(),
+        '非默认角色；显式分配用户后仅办理属于本客户端且指派给本人的任务');
+
+insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component,
+                     query_param, is_frame, is_cache, menu_type, visible, status, perms,
+                     icon, active_menu, ext, create_dept, create_by, create_time, remark)
+values
+    (2100500000000000110, 1762000000000000002, '待办任务', 0, 2, 'taskWaiting',
+     'workflow/task/taskWaiting', '', 'N', 'Y', 'C', '0', '0', 'workflow:task:participate',
+     'tabler:clipboard-check', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '本客户端的本人待办'),
+    (2100500000000000111, 1762000000000000002, '已办任务', 0, 3, 'taskFinish',
+     'workflow/task/taskFinish', '', 'N', 'Y', 'C', '0', '0', 'workflow:task:participate',
+     'tabler:history', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '本客户端的本人已办'),
+    (2100500000000000112, 1762000000000000002, '实名认证审核', 0, 4, 'person-review',
+     'profile/person/review', '', 'N', 'N', 'C', '1', '0', 'profile:person:task-review',
+     'tabler:user-check', '/taskWaiting', '', 1761000000000000103, 1761100000000000001, sysdate(), '只读任务对应提交与材料'),
+    (2100500000000000113, 1762000000000000002, '企业认证审核', 0, 5, 'enterprise-review',
+     'profile/enterprise/review', '', 'N', 'N', 'C', '1', '0', 'profile:enterprise:task-review',
+     'tabler:building', '/taskWaiting', '', 1761000000000000103, 1761100000000000001, sysdate(), '只读任务对应提交与材料');
+insert into sys_role_menu (role_id, menu_id)
+values (2100700000000000001, 2100500000000000110), (2100700000000000001, 2100500000000000111),
+       (2100700000000000001, 2100500000000000112), (2100700000000000001, 2100500000000000113);
 
 -- NAMEWTA-BASE-DSL-004-END
 
@@ -605,7 +634,7 @@ update sys_config
 set config_value = concat(char(65), char(97), char(49), char(33), upper(hex(random_bytes(8)))),
     update_by = 1761100000000000001,
     update_time = sysdate(),
-    remark = concat_ws('；', nullif(remark, ''), 'NAMEWTA-PASSWORD-DSL-001：旧键已随机化并退役')
+    remark = 'NAMEWTA-PASSWORD-DSL-001：旧键已随机化并退役。当前新增、导入和重置密码均按 sys.user.passwordPolicy 生成；本值不是当前账号初始密码，修改本参数不影响当前密码初始化。'
 where config_key = 'sys.user.initPassword'
   and remark not like '%NAMEWTA-PASSWORD-DSL-001%';
 
@@ -614,9 +643,21 @@ insert into sys_config (config_id, config_name, config_key, config_value, config
 select 2093282875312267265, '统一密码策略', 'sys.user.passwordPolicy',
        '{"version":1,"minimumLength":8,"maximumLength":30,"requireUppercase":true,"requireLowercase":true,"requireDigit":true,"requireSpecial":true,"allowedSpecialCharacters":"@$!%*?&","generator":{"length":12,"uppercaseCharacters":"ABCDEFGHJKLMNPQRSTUVWXYZ","lowercaseCharacters":"abcdefghijkmnopqrstuvwxyz","digitCharacters":"23456789","specialCharacters":"@$!%*?&"},"defaultPassword":{"mode":"RANDOM"}}',
        'Y', 1761000000000000103, 1761100000000000001, sysdate(), null, null,
-       '统一密码策略 v1；保存后必须刷新 sys_config 集群缓存'
+       '初始化由 defaultPassword.mode 控制：RANDOM 每次按 generator.length 随机生成（默认12位）；FIXED 使用 fixedValue，且须满足同一策略。默认长度8–30位，同时含大小写字母、数字和 @$!%*?& 中的特殊字符。新增账号、导入新账号及永久重置候选均用此规则；导入不回显密码，可由管理员重置或签发临时密码。修改策略不改变已有账号密码；保存后刷新 sys_config 集群缓存。'
 from dual
 where not exists (select 1 from sys_config where config_id = 2093282875312267265);
+
+-- 仅修正系统旧说明；不重置兼容值、策略配置或任何用户密码。存量环境须评审此差异，不能重放基座。
+update sys_config
+set config_name = '用户管理-旧版初始密码（已停用）',
+    remark = 'NAMEWTA-PASSWORD-DSL-001：旧键已随机化并退役。当前新增、导入和重置密码均按 sys.user.passwordPolicy 生成；本值不是当前账号初始密码，修改本参数不影响当前密码初始化。'
+where config_key = 'sys.user.initPassword'
+  and (config_name = '用户管理-账号初始密码' or remark like '初始化密码 123456%');
+
+update sys_config
+set remark = '初始化由 defaultPassword.mode 控制：RANDOM 每次按 generator.length 随机生成（默认12位）；FIXED 使用 fixedValue，且须满足同一策略。默认长度8–30位，同时含大小写字母、数字和 @$!%*?& 中的特殊字符。新增账号、导入新账号及永久重置候选均用此规则；导入不回显密码，可由管理员重置或签发临时密码。修改策略不改变已有账号密码；保存后刷新 sys_config 集群缓存。'
+where config_key = 'sys.user.passwordPolicy'
+  and remark = '统一密码策略 v1；保存后必须刷新 sys_config 集群缓存';
 
 -- 临时密码签发不继承永久重置权限；只定义功能权限，不自动授予普通角色。
 insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param,
@@ -1436,7 +1477,7 @@ values
     (2100400000000000005, '个人启用实名认证供应商', 'profile.person.provider.enabled', 'manual', 'Y', 1761000000000000103, 1761100000000000001, sysdate(), '逗号分隔稳定providerCode'),
     (2100400000000000006, '企业启用实名认证供应商', 'profile.enterprise.provider.enabled', 'manual', 'Y', 1761000000000000103, 1761100000000000001, sysdate(), '逗号分隔稳定providerCode');
 
--- 两套实名认证流程独立发布；审核任务由超级管理员角色承接，业务权限仍由 profile:*:review 控制。
+-- 两套实名认证流程独立发布；审核任务由管理端超级管理员角色承接，任务权限由 profile:*:task-review 控制。
 insert into flow_definition
     (id, flow_code, flow_name, model_value, category, version, is_publish, form_custom, form_path,
      activity_status, create_time, create_by, update_time, update_by, del_flag)
@@ -1450,35 +1491,34 @@ values
 
 insert into flow_node
     (id, node_type, definition_id, node_code, node_name, permission_flag, node_ratio, coordinate,
-     form_custom, form_path, version, create_time, create_by, update_time, update_by, del_flag)
+     form_custom, form_path, ext, version, create_time, create_by, update_time, update_by, del_flag)
 values
-    (2100610000000000001, 0, 2100600000000000001, 'person_apply', '提交申请', null,
-     '0', '100,100|100,100', 'N', null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100610000000000002, 1, 2100600000000000001, 'person_review', '人工复核',
-     'role:1761300000000000001', '0', '300,100|300,100', 'Y', 'profile/person/review', '1', sysdate(),
-     '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100610000000000003, 2, 2100600000000000001, 'person_finish', '复核完成', null,
-     '0', '500,100|500,100', 'N', null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100610000000000011, 0, 2100600000000000002, 'enterprise_apply', '提交申请', null,
-     '0', '100,100|100,100', 'N', null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100610000000000012, 1, 2100600000000000002, 'enterprise_review', '人工复核',
-     'role:1761300000000000001', '0', '300,100|300,100', 'Y', 'profile/enterprise/review', '1', sysdate(),
-     '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100610000000000013, 2, 2100600000000000002, 'enterprise_finish', '复核完成', null,
-     '0', '500,100|500,100', 'N', null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0');
+    (2100610000000000001, 0, 2100600000000000001, 'person_start', '开始', null, '0', '100,100|100,100', 'N', null, null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100610000000000004, 1, 2100600000000000001, 'person_apply', '提交申请', null, '0', '300,100|300,100', 'N', null, '[ {"code":"WorkflowClientPk","value":"INITIATOR"} ]', '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100610000000000002, 1, 2100600000000000001, 'person_review', '人工复核', 'role:1761300000000000001', '0', '500,100|500,100', 'Y', 'profile/person/review', '[ {"code":"WorkflowClientPk","value":"1762000000000000001"} ]', '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100610000000000003, 2, 2100600000000000001, 'person_finish', '复核完成', null, '0', '700,100|700,100', 'N', null, null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100610000000000011, 0, 2100600000000000002, 'enterprise_start', '开始', null, '0', '100,100|100,100', 'N', null, null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100610000000000014, 1, 2100600000000000002, 'enterprise_apply', '提交申请', null, '0', '300,100|300,100', 'N', null, '[ {"code":"WorkflowClientPk","value":"INITIATOR"} ]', '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100610000000000012, 1, 2100600000000000002, 'enterprise_review', '人工复核', 'role:1761300000000000001', '0', '500,100|500,100', 'Y', 'profile/enterprise/review', '[ {"code":"WorkflowClientPk","value":"1762000000000000001"} ]', '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100610000000000013, 2, 2100600000000000002, 'enterprise_finish', '复核完成', null, '0', '700,100|700,100', 'N', null, null, '1', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0');
 
 insert into flow_skip
     (id, definition_id, now_node_code, now_node_type, next_node_code, next_node_type,
      skip_name, skip_type, coordinate, create_time, create_by, update_time, update_by, del_flag)
 values
-    (2100620000000000001, 2100600000000000001, 'person_apply', 0, 'person_review', 1,
-     '提交', 'PASS', '120,100;250,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100620000000000002, 2100600000000000001, 'person_review', 1, 'person_finish', 2,
-     '完成', 'PASS', '350,100;480,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100620000000000011, 2100600000000000002, 'enterprise_apply', 0, 'enterprise_review', 1,
-     '提交', 'PASS', '120,100;250,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
-    (2100620000000000012, 2100600000000000002, 'enterprise_review', 1, 'enterprise_finish', 2,
-     '完成', 'PASS', '350,100;480,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0');
+    (2100620000000000003, 2100600000000000001, 'person_start', 0, 'person_apply', 1, '开始', 'PASS', '120,100;250,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100620000000000001, 2100600000000000001, 'person_apply', 1, 'person_review', 1, '提交', 'PASS', '350,100;450,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100620000000000002, 2100600000000000001, 'person_review', 1, 'person_finish', 2, '完成', 'PASS', '550,100;680,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100620000000000013, 2100600000000000002, 'enterprise_start', 0, 'enterprise_apply', 1, '开始', 'PASS', '120,100;250,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100620000000000011, 2100600000000000002, 'enterprise_apply', 1, 'enterprise_review', 1, '提交', 'PASS', '350,100;450,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0'),
+    (2100620000000000012, 2100600000000000002, 'enterprise_review', 1, 'enterprise_finish', 2, '完成', 'PASS', '550,100;680,100', sysdate(), '1761100000000000001', sysdate(), '1761100000000000001', '0');
+
+-- 现有请假示例也采用同一显式客户端规则；只给没有本方配置的种子节点补齐。
+update flow_node n
+left join flow_skip s on s.definition_id = n.definition_id and s.next_node_code = n.node_code and s.now_node_type = 0
+set n.ext = JSON_ARRAY_APPEND(CASE WHEN JSON_VALID(n.ext) THEN n.ext ELSE JSON_ARRAY() END, '$',
+    JSON_OBJECT('code', 'WorkflowClientPk', 'value', CASE WHEN s.id IS NOT NULL THEN 'INITIATOR' ELSE '1762000000000000001' END))
+where n.node_type = 1 and (n.ext is null or n.ext not like '%WorkflowClientPk%');
 
 insert into sys_dict_type
     (dict_id, dict_name, dict_type, create_dept, create_by, create_time, remark)
@@ -1523,6 +1563,21 @@ values
     (2100500000000000025, 1762000000000000001, '企业档案覆盖', 2100500000000000020, 5, '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:enterprise:override', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '直建与管理员覆盖能力'),
     (2100500000000000030, 1762000000000000001, '材料标签', 2100500000000000001, 3, 'material-tag', 'profile/materialTag/index', '', 'N', 'Y', 'C', '0', '0', 'profile:material-tag:query', 'tabler:hierarchy-2', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '档案材料标签树'),
     (2100500000000000031, 1762000000000000001, '材料标签管理', 2100500000000000030, 1, '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:material-tag:manage', '#', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '完整材料目录管理能力');
+
+
+-- 任务审核与档案全局查看/管理员覆盖使用独立权限。
+insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component,
+                     query_param, is_frame, is_cache, menu_type, visible, status, perms,
+                     icon, active_menu, ext, create_dept, create_by, create_time, remark)
+values
+    (2100500000000000016, 1762000000000000001, '实名任务审核', 2100500000000000010, 6,
+     '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:person:task-review', '#', '', '',
+     1761000000000000103, 1761100000000000001, sysdate(), '只办理本客户端中分配给本人的实名认证任务'),
+    (2100500000000000026, 1762000000000000001, '企业任务审核', 2100500000000000020, 6,
+     '', '', '', 'N', 'Y', 'F', '0', '0', 'profile:enterprise:task-review', '#', '', '',
+     1761000000000000103, 1761100000000000001, sysdate(), '只办理本客户端中分配给本人的企业认证任务');
+insert into sys_role_menu (role_id, menu_id)
+values (1761300000000000001, 2100500000000000016), (1761300000000000001, 2100500000000000026);
 
 insert into sys_menu
     (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
@@ -1805,7 +1860,7 @@ where not exists (
 
 insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
      menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
-select 2100900000000000100, 1762000000000000001, 'SSO 管理', 1761400000000000001, 15, 'ssoApp', 'system/ssoApp/index', '', 'N', 'Y',
+select 2100900000000000100, 1762000000000000001, '自有应用 SSO', 1761400000000000001, 15, 'ssoApp', 'system/ssoApp/index', '', 'N', 'Y',
        'C', '0', '0', 'system:ssoApp:list', 'tabler:key', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '独立 SSO 管理：创建应用与配置交付'
 from dual
 where not exists (select 1 from sys_menu where menu_id = 2100900000000000100);
@@ -1833,3 +1888,43 @@ values (1761300000000000001, 2100900000000000100),
        (1761300000000000001, 2100900000000000102),
        (1761300000000000001, 2100900000000000103),
        (1761300000000000001, 2100900000000000104);
+
+-- NAMEWTA-OIDC-DML-001
+-- 第三方 OIDC 管理由 Admin Client 的显式权限授权。
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100900000000000200,1762000000000000001,'单点登录',1761400000000000001,14,'oidcApp','oidc/application/index','','N','N',
+    'C','0','0','oidc:application:list','tabler:login','','',1761000000000000103,1761100000000000001,sysdate(),'OIDC应用与资料授权'
+from dual where not exists (select 1 from sys_menu where menu_id=2100900000000000200);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100900000000000201,1762000000000000001,'应用查询',2100900000000000200,1,'','','','N','N',
+    'F','0','0','oidc:application:query','#','','',1761000000000000103,1761100000000000001,sysdate(),'OIDC应用与资料授权'
+from dual where not exists (select 1 from sys_menu where menu_id=2100900000000000201);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100900000000000202,1762000000000000001,'应用新增',2100900000000000200,2,'','','','N','N',
+    'F','0','0','oidc:application:add','#','','',1761000000000000103,1761100000000000001,sysdate(),'OIDC应用与资料授权'
+from dual where not exists (select 1 from sys_menu where menu_id=2100900000000000202);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100900000000000203,1762000000000000001,'应用修改',2100900000000000200,3,'','','','N','N',
+    'F','0','0','oidc:application:edit','#','','',1761000000000000103,1761100000000000001,sysdate(),'OIDC应用与资料授权'
+from dual where not exists (select 1 from sys_menu where menu_id=2100900000000000203);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100900000000000204,1762000000000000001,'应用删除',2100900000000000200,4,'','','','N','N',
+    'F','0','0','oidc:application:remove','#','','',1761000000000000103,1761100000000000001,sysdate(),'OIDC应用与资料授权'
+from dual where not exists (select 1 from sys_menu where menu_id=2100900000000000204);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100900000000000205,1762000000000000001,'密钥重置',2100900000000000200,5,'','','','N','N',
+    'F','0','0','oidc:application:rotate','#','','',1761000000000000103,1761100000000000001,sysdate(),'OIDC应用与资料授权'
+from dual where not exists (select 1 from sys_menu where menu_id=2100900000000000205);
+insert ignore into sys_role_menu (role_id,menu_id) values
+    (1761300000000000001,2100900000000000200),
+    (1761300000000000001,2100900000000000201),
+    (1761300000000000001,2100900000000000202),
+    (1761300000000000001,2100900000000000203),
+    (1761300000000000001,2100900000000000204),
+    (1761300000000000001,2100900000000000205);

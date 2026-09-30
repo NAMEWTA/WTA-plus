@@ -29,7 +29,7 @@ tooling       -> 不进入产品运行时
 
 ## 后端定位
 
-- 当前一级 domain/web-domain 与后端 owner 一一对应：`admin`、`ai`、`demo`、`profile`、`notify`、`third`、`system`、`workflow`。`gen` 已物理删除，不得恢复为运行时领域。
+- 当前一级 domain/web-domain 与后端 owner 一一对应：`admin`、`demo`、`profile`、`notify`、`third`、`system`、`workflow`。`gen` 已物理删除，不得恢复为运行时领域。
 - 资源目录对应实际消费的 Controller 稳定 base path，使用 kebab-case，不复制 `Sys`、`Flw` 等 Java 实现前缀。
 - `/system/dict/data` 对应 `packages/domains/system/src/dict-data`；存在页面时对应 `packages/web-domains/system/src/dict-data`。
 - `/monitor/loginInfo` 等监控资源归 `system/src/monitor/*`。
@@ -40,7 +40,7 @@ tooling       -> 不进入产品运行时
 ## App 显式组合
 
 - App 的领域选择分布在三个必须同步的编译期入口：`package.json#dependencies` 声明可用包，`src/application/services.ts` 注入 adapter 并创建所选 service，`src/router/*ManifestRegistry.ts` 注入 runtime 并组合所选 domain/web-domain manifest。
-- `admin-web` 当前选择 `admin`、`ai`、`demo`、`profile`、`notify`、`third`、`system`、`workflow`；不存在 `gen` service、manifest 或依赖。
+- `admin-web` 当前选择 `admin`、`demo`、`profile`、`notify`、`third`、`system`、`workflow`；不存在 `gen` service、manifest 或依赖。
 - 三个入口的集合必须一致。只安装依赖、只创建 service 或只注册 manifest 都是不完整组合；未选择、缺少 domain/runtime、重复 registration 和未知组件键失败关闭。
 - 未激活的未来终端尚未进入工作区，只保留 README，不参与当前 App 组合。
 - `taro-request`、`taro-storage` 只保留 README，尚无包清单、依赖和实现。

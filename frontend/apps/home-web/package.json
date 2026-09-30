@@ -31,7 +31,10 @@
     "element-plus": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "@namewta/web-kit-ui-element": "workspace:*",
+    "@namewta/domain-workflow": "workspace:*",
+    "@namewta/web-domain-workflow": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

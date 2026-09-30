@@ -100,7 +100,7 @@ select_release() {
   [[ "${cert_root}" == /* ]] || cert_root="${RELEASE_ROOT}/docker/${cert_root}"
   export NAMEWTA_DATA_ROOT="${data_root}" NAMEWTA_CERT_ROOT="${cert_root}"
   DOCKER_ROOT="${RELEASE_VERSION}/docker"
-  # TLS terminates at Nginx; the backend still needs the exact approved browser Origins.
+  # CORS is an independent release setting; App/SSO addresses remain exact Origins.
   # Read the already resolved version, never resolve current again during this operation.
   local value origin_values=()
   while IFS= read -r value; do origin_values+=("${value}"); done < <(
@@ -115,7 +115,7 @@ if (sso.length !== 1) {
   console.error('exactly one shipped SSO App is required');
   process.exit(1);
 }
-console.log([...new Set(Object.values(manifest.appOrigins))].sort().join(','));
+console.log((manifest.corsAllowedOrigins ?? [...new Set(Object.values(manifest.appOrigins))].sort()).join(','));
 console.log(manifest.appOrigins[sso[0].id]);
 console.log('/' + manifest.apps[sso[0].id] + '/');
 JS

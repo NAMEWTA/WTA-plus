@@ -125,14 +125,22 @@ class ProfileSchemaContractTest {
             .contains("profile_subject_status", "profile_application_status", "profile_binding_status");
 
         assertThat(block)
-            .contains("'100,100|100,100'", "'300,100|300,100'", "'500,100|500,100'")
+            .contains("'100,100|100,100'", "'300,100|300,100'", "'500,100|500,100'", "'700,100|700,100'")
             .doesNotContain("'100,100', 'N'", "'300,100', 'Y'", "'500,100', 'N'");
         assertThat(block)
-            .contains("'提交', 'PASS', '120,100;250,100'", "'完成', 'PASS', '350,100;480,100'")
+            .contains("'开始', 'PASS', '120,100;250,100'", "'提交', 'PASS', '350,100;450,100'",
+                "'完成', 'PASS', '550,100;680,100'")
             .doesNotContain("'提交', 'PASS', '200,100'", "'完成', 'PASS', '400,100'");
 
+        for (String kind : List.of("person", "enterprise")) {
+            assertThat(block).contains("'" + kind + "_start', 0, '" + kind + "_apply', 1")
+                .contains("'" + kind + "_apply', 1, '" + kind + "_review', 1")
+                .contains("'" + kind + "_review', 1, '" + kind + "_finish', 2");
+        }
+        assertThat(block).contains("WorkflowClientPk", "INITIATOR");
+
         for (String domain : List.of("person", "enterprise")) {
-            for (String capability : List.of("apply", "query", "material", "review", "manage", "override")) {
+            for (String capability : List.of("apply", "query", "material", "review", "task-review", "manage", "override")) {
                 assertThat(block).contains("profile:" + domain + ":" + capability);
             }
         }

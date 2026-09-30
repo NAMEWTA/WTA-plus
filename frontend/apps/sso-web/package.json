@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "@namewta/web-kit-ui-element": "workspace:*",
+    "element-plus": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",

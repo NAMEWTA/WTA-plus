@@ -9,6 +9,7 @@
 | 场景 | 走哪条面 | 路径 |
 |---|---|---|
 | 业务单据提交、后台无人会话办理、按业务 id 删实例、查状态/变量 | 注入 `org.namewta.workflow.api.WorkflowService` | `backend/wta-api/src/main/java/org/namewta/workflow/api/WorkflowService.java` |
+| 业务任务详情与人工审核（含跨客户端） | 注入 `WorkflowTaskReviewService`，业务模块另验业务权限和材料范围 | `backend/wta-api/src/main/java/org/namewta/workflow/api/WorkflowTaskReviewService.java` |
 | 回写业务表状态、节点副作用、级联删单据 | `@EventListener` 订阅 `ProcessEvent` / `ProcessTaskEvent` / `ProcessDeleteEvent` | `backend/wta-api/src/main/java/org/namewta/workflow/api/event/` |
 | 人在工作流中心办待办、看已办/抄送、驳回、催办、委派转办 | REST `/workflow/task/*`（前端工作流页） | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwTaskController.java` |
 | 设计/发布流程定义、分类、SpEL 规则 | REST `/workflow/definition` `/workflow/category` `/workflow/spel` + Warm-Flow UI | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwDefinitionController.java`；`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwCategoryController.java`；`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java` |
@@ -34,7 +35,7 @@
 2. **先落库业务主键**，再把 `id.toString()` 作为 `StartProcessDTO.businessId`。空 `businessId` 会在 `StartPrepareRequestComponent` 被拒绝（「启动工作流时必须包含业务ID」）。路径：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/liteflow/start/StartPrepareRequestComponent.java`
 3. **在设计器发布 `flowCode`**。未发布会抛「流程【code】未发布」。路径：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/liteflow/start/StartPrepareInstanceComponent.java`。节点 `formPath` 指向业务 Vue 页。
 4. **业务 Service 注入 `WorkflowService`**。模块已依赖 `wta-api` 即可；Bean 由 `wta-admin` 装配 `WorkflowServiceImpl`。路径：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/WorkflowServiceImpl.java`
-5. **提交**：先 `insertOrUpdate` 单据，再组 `StartProcessDTO(businessId, flowCode, variables)`。后端无人会话加 `variables.ignore=true`。申请人首节点一并办掉时调 `startCompleteTask`；只要实例不要办首任务时调 `startWorkFlow`。
+5. **提交**：先 `insertOrUpdate` 单据，再组 `StartProcessDTO(businessId, flowCode, variables)`。后台无人会话必须明确 `initiatorClientPk` 与 `handler`；`startCompleteTask` 在可信Java边界内办理申请节点。申请人首节点一并办掉时调 `startCompleteTask`；只要实例不要办首任务时调 `startWorkFlow`。
 6. **监听**：
    - `ProcessEvent`：按 `flowCode` 过滤，把 `status` 回写业务表；`submit==true` 时请假样例强制写成 `waiting`。
    - `ProcessTaskEvent`：按 `nodeCode` 做节点副作用。
@@ -49,7 +50,7 @@
 | 调用方 | 方法 | 权限 |
 |---|---|---|
 | 业务 Service / 定时任务 | `WorkflowService.completeTask(CompleteTaskDTO)` 或 `completeTask(taskId, message)` | 必须 `ignore=true`（后一重载已自动设置，见 `WorkflowServiceImpl`） |
-| 已登录用户在待办页办理 | `POST /workflow/task/completeTask` | 走 `WorkflowPermissionHandler.permissions()`（当前用户 id） |
+| 已登录用户在待办页办理 | `POST /workflow/task/completeTask` | 同时校验实例节点冻结 Client 与当前任务办理人，禁止提交 handler 或 ignore 等系统参数 |
 
 `startCompleteTask` 固定 `messageType=SYSTEM_MESSAGE`（站内信 `"1"`）。自定义消息类型用 `startWorkFlow` + `completeTask(CompleteTaskDTO)`。
 
@@ -84,3 +85,13 @@ router.push({
 ## 可选装配
 
 `WorkflowServiceImpl` 带 `@ConditionalOnEnable`。`warm-flow.enabled=false` 时不要假设 Bean 存在。关闭后的启动失败形态未实测；需要关闭工作流仍能启动业务模块时，用 `ObjectProvider` 或 `@Autowired(required=false)` 并处理空引用。路径：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/common/ConditionalOnEnable.java`
+
+## 跨客户端节点与提交快照
+
+定义结构为 `START → 申请人 BETWEEN → 审核 BETWEEN（可多个）→ END`。申请节点扩展配置 `WorkflowClientPk=INITIATOR`，其余人工节点指定 Client 主键；再从该 Client 选择角色或用户。发布时检查 Client、角色归属和静态用户资格，运行时再次校验展开后用户的目标端登录资格。首申请节点是 `startCompleteTask` 唯一自动提交的业务申请入口，不能把实际审核节点放在该位置。
+
+在业务提交事务中通过 variables 写入不可变提交标识（如 `snapshotVersion`、`submissionId`），任务详情先调用 `readTaskContext` 再按返回 businessId 与提交标识读取对应快照。材料链接也须在相同 taskId 的业务权限范围内签发。审核先 `requireTaskContext`，再调用 `approve`；不通过调用 `returnToApplicant`，意见与业务记录由业务 UseCase 在同一 `@DSTransactional` 内写入。引擎 BACK 事件回写退回状态；新提交从原申请节点重走全部审核。
+
+同用户在不同端有身份不等于可跨端办理。当前端看不到其他端的待办/已办，转办/委派/加签也不能改变节点 Client。全局实例监控继续使用独立 `workflow:instance:list` 权限；普通轨迹读取与撤销按参与关系和原发起端约束。
+
+升级时先建立自有快照表，明确存量实例每个人工节点的 Client 与原发起端后回填。缺少快照会明确拒绝；不能按当前登录端或默认管理端自动补权。已发布定义采用复制新版本补齐扩展后发布，运行实例保留原节点快照。引擎第三方表结构不作修改。

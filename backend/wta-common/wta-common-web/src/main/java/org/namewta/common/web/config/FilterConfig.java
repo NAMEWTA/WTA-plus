@@ -35,8 +35,9 @@ public class FilterConfig {
         asyncSupported = true,
         dispatcherTypes = DispatcherType.REQUEST
     )
-    public XssFilter xssFilter(XssProperties xssProperties, RequestBodyProperties bodyProperties) {
-        return new XssFilter(xssProperties, bodyProperties.maxBytes());
+    public XssFilter xssFilter(XssProperties xssProperties, RequestBodyProperties bodyProperties,
+            org.springframework.beans.factory.ObjectProvider<org.namewta.common.core.service.HttpProtocolPolicy> policies) {
+        return new XssFilter(xssProperties, bodyProperties.maxBytes(), policies.orderedStream().toList());
     }
 
     /**

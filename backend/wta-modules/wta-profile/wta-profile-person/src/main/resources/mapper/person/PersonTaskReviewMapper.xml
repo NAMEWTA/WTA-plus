@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.profile.person.mapper.PersonTaskReviewMapper">
+    <sql id="reviewSnapshot">
+        select a.person_application_id application_id, a.applicant_user_id, a.status,
+               s.submission_seq, a.decision_version, a.version,
+               s.person_submission_id submission_id, s.field_snapshot_json, s.submitted_time
+          from profile_person_application a
+          join profile_person_submission s on s.person_application_id = a.person_application_id
+         where a.person_application_id = #{applicationId}
+           and s.person_submission_id = #{submissionId} and a.del_flag = '0' and s.del_flag = '0'
+    </sql>
+    <select id="selectReview" resultType="org.namewta.profile.person.domain.model.read.PersonTaskReviewRow">
+        <include refid="reviewSnapshot" />
+    </select>
+    <select id="lockReview" resultType="org.namewta.profile.person.domain.model.read.PersonTaskReviewRow">
+        <include refid="reviewSnapshot" />
+           and a.status = 'WAITING' and a.submission_seq = s.submission_seq
+         for update
+    </select>
+    <update id="recordReturnReason">
+        update profile_person_application set decision_reason = #{reason},
+               update_by = #{operatorId}, update_time = current_timestamp
+         where person_application_id = #{applicationId} and submission_seq = #{snapshotVersion}
+           and status = 'WAITING' and del_flag = '0'
+    </update>
+</mapper>

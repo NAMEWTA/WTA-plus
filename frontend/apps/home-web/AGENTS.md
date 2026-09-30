@@ -13,7 +13,7 @@
 `package.json` 提供开发、构建、lint、typecheck 和 test 脚本；`vite.config.ts` 负责 Home Web 的环境、代理与端口。产品源码入口按 README 规划，实际文件以当前工作树为准。
 
 ## Dependencies
-只从 `packages/**` 的公开入口组合 admin/profile domain 和 profile self web-domain，不依赖 admin-web。
+只从 `packages/**` 的公开入口组合 admin/profile/workflow domain、profile self/review 和 workflow task web-domain，不依赖 admin-web。登录布局复用 ui-element 框架，App 保留自己的导航、会话和菜单状态。待办/已办和审核页仍由服务端菜单授权；工作流表单通过 componentKey 映射当前客户端实际路由，已办必须传原始 taskId。
 
 档案自助材料通过 App 注入 `uploadMaterial`，使用 OSS adapter 的私有 `general` 策略；预览、登记和移除引用经过 Profile owner 接口，不授予通用 OSS 管理查询、下载或删除权限。
 

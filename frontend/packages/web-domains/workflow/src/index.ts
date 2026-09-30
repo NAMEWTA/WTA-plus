@@ -203,3 +203,5 @@ export function createWorkflowWebDomain(runtimeInput: WorkflowWebRuntime | undef
     ])
   });
 }
+
+export { createWorkflowTaskWebDomain, type WorkflowTaskWebRuntime } from './task/registration';

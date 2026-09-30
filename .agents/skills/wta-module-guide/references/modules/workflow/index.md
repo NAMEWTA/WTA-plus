@@ -1,6 +1,6 @@
 # wta-workflow 模块索引
 
-`wta-workflow` 是当前存量 Warm-Flow 模块。本轮保持其内部 `IFlw*`、LiteFlow chain、Warm-Flow handler 和 REST 实现不变；其他业务模块只通过 `wta-api` 的 `WorkflowService` 和公开事件接入。
+`wta-workflow` 是当前存量 Warm-Flow 模块。保持既有 classic 分层；节点 Client 约束由专用作用域服务与入口守卫统一执行。其他业务模块通过 `wta-api` 的 `WorkflowService`、`WorkflowTaskReviewService` 和公开事件接入。
 
 ## 何时读取
 
@@ -22,3 +22,9 @@
 ## 边界提醒
 
 流程表单只是定义上的 `formPath` 路由元数据，不是业务模块可调用的表单引擎。`businessId` 必须先对应已落库业务主键；流程状态应与 `BusinessStatusEnum` 对齐。具体字段和实现路径以 capability/integration reference 及源码为准。
+
+## 跨客户端人工任务
+
+每个人工审核节点在 `node.ext` 配置 `WorkflowClientPk`，申请节点使用 `INITIATOR`。实例启动时写入 `flow_instance_node_client`，运行和历史查询不读取可变定义来猜 Client。角色与直接指定用户共用节点 Client 规则；系统指派目录提供 Client、角色归属与登录域校验。
+
+`WorkflowTaskReviewService` 将任务读写资格与业务快照标识作为公开合同；历史读取取 `flow_his_task.variable` 中当时的 submissionId/snapshotVersion。人机 HTTP 不接收系统忽略权限参数。已发布/使用定义只能复制新版本修改。存量实例缺失 Client 快照时必须先完成明确归属的升级，不能回落到全 Client。

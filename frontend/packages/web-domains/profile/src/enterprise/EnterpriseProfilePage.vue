@@ -54,7 +54,7 @@
     </el-drawer>
 
     <el-dialog v-model="createVisible" title="新建企业档案" width="min(900px, 96vw)" top="4vh">
-      <EnterpriseIdentityForm :model="createForm.identity" />
+      <EnterpriseIdentityForm v-model:model="createForm.identity" />
       <el-form :model="createForm" label-width="112px">
         <el-form-item label="认证负责人">
           <el-select

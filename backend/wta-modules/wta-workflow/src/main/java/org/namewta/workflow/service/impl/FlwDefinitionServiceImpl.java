@@ -52,6 +52,8 @@ import java.util.List;
 @Service
 public class FlwDefinitionServiceImpl implements IFlwDefinitionService {
 
+    private final WorkflowClientScopeService clientScope;
+
     private final DefService defService;
     private final FlowDefinitionMapper flowDefinitionMapper;
     private final FlowHisTaskMapper flowHisTaskMapper;
@@ -118,6 +120,7 @@ public class FlwDefinitionServiceImpl implements IFlwDefinitionService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean publish(Long id) {
+        clientScope.validateDefinition(id);
         List<FlowNode> flowNodes = flowNodeMapper.selectList(
             QueryBuilder.lambda(FlowNode.class).eq(FlowNode::getDefinitionId, id).build());
         List<String> errorMsg = new ArrayList<>();

@@ -265,4 +265,14 @@ public class EnterpriseApplicationDao {
     public long countSourceVersionRelationship(long sourceId, long versionId) {
         return mapper.countSourceVersionRelationship(sourceId, versionId);
     }
+    /** 查询本人有效绑定的当前版本。 */
+    public EnterpriseVersionRow selectSelfVersion(long userId) {
+        return mapper.selectSelfVersion(userId);
+    }
+
+    /** 查询本人当前退回申请的意见。 */
+    public String selectReturnReason(long userId) {
+        return mapper.selectReturnReason(userId);
+    }
+
 }

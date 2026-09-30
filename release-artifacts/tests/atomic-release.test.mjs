@@ -13,6 +13,57 @@ const write = (file, text) => {
   fs.writeFileSync(file, text);
 };
 
+test('explicit wildcard CORS is sealed and forwarded without replacing App origins', () => {
+  const f = fixture();
+  try {
+    fs.appendFileSync(path.join(f.release, '.env'), 'WEB_CORS_ALLOWED_ORIGINS=http://192.168.*:*,https://*.internal.test,https://localhost:4441,*\n');
+    const id = f.build();
+    const manifest = JSON.parse(fs.readFileSync(path.join(f.version(id), 'release-manifest.json')));
+    assert.deepEqual(manifest.corsAllowedOrigins, ['*', 'http://192.168.*:[*]', 'https://*.internal.test', 'https://localhost:4441']);
+    assert.equal(manifest.appOrigins['admin-web'], 'https://localhost:4441');
+    f.stage(id);
+    const calls = path.join(f.scratch, 'cors-docker-calls.jsonl');
+    const result = spawnSync('bash', [path.join(f.release, 'scripts/docker-manage.sh'), 'config', 'backend'], {
+      encoding: 'utf8', env: { ...f.env, DOCKER_CALLS: calls },
+    });
+    assert.equal(result.status, 0, result.stderr);
+    const records = fs.readFileSync(calls, 'utf8').trim().split('\n').map(JSON.parse);
+    assert.equal(records.at(-1).cors, manifest.corsAllowedOrigins.join(','));
+    fs.writeFileSync(path.join(f.release, '.env'), fs.readFileSync(path.join(f.release, '.env'), 'utf8')
+      .replace('WEB_CORS_ALLOWED_ORIGINS=http://192.168.*:*,https://*.internal.test,https://localhost:4441,*', 'WEB_CORS_ALLOWED_ORIGINS=https://changed.internal.test'));
+    const drift = f.cli('resolve', '--env', 'prod', '--env-file', path.join(f.release, '.env'));
+    assert.notEqual(drift.status, 0);
+    assert.match(drift.stderr, /runtime CORS origins differ/);
+  } finally { f.dispose(); }
+});
+
+test('CORS falls back to App origins and rejects malformed patterns at build time', () => {
+  const f = fixture();
+  try {
+    const id = f.build();
+    const manifest = JSON.parse(fs.readFileSync(path.join(f.version(id), 'release-manifest.json')));
+    assert.deepEqual(manifest.corsAllowedOrigins, Object.values(manifest.appOrigins).sort());
+    const base = fs.readFileSync(path.join(f.release, '.env'), 'utf8');
+    for (const invalid of ['https://*.internal.test/path', 'https://*.internal.test:65536', 'null', '*://internal.test', 'https://user@*.internal.test']) {
+      fs.writeFileSync(path.join(f.release, '.env'), base + `WEB_CORS_ALLOWED_ORIGINS=${invalid}\n`);
+      const result = f.cli('build', '--target', 'all', '--env', 'prod');
+      assert.notEqual(result.status, 0, invalid);
+      assert.match(result.stderr, /CORS/);
+    }
+  } finally { f.dispose(); }
+});
+
+test('older schema v2 releases without explicit CORS retain their App origin defaults', () => {
+  const f = fixture();
+  try {
+    const id = f.build();
+    const legacy = reseal(f, id, (_root, manifest) => { delete manifest.corsAllowedOrigins; });
+    f.stage(legacy);
+    const resolved = f.ok('resolve', '--env', 'prod', '--env-file', path.join(f.release, '.env'));
+    assert.equal(resolved, f.version(legacy));
+  } finally { f.dispose(); }
+});
+
 function reseal(f, id, mutate) {
   const original = f.version(id);
   const scratch = path.join(f.release, 'builds/corruption-fixture');

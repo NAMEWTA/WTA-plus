@@ -41,6 +41,7 @@ public class FlwTaskAssigneeServiceImpl implements IFlwTaskAssigneeService, Hand
 
     private static final String DEFAULT_GROUP_NAME = "默认分组";
 
+    private final WorkflowAssigneeDirectoryService clientDirectory;
     private final TaskAssigneeService taskAssigneeService;
     private final UserService userService;
     private final DeptService deptService;
@@ -71,6 +72,21 @@ public class FlwTaskAssigneeServiceImpl implements IFlwTaskAssigneeService, Hand
         // 转换查询条件为 TaskAssigneeBody
         TaskAssigneeBody taskQuery = BeanUtil.toBean(query, TaskAssigneeBody.class);
 
+        if (type == TaskAssigneeEnum.ROLE || type == TaskAssigneeEnum.USER) {
+            var clients = clientDirectory.clients();
+            Long clientPk = StringUtils.isNotBlank(query.getGroupId())
+                ? Long.valueOf(query.getGroupId()) : org.namewta.common.satoken.utils.LoginHelper.getLoginUser().getClientPk();
+            taskQuery.setClientPk(clientPk);
+            taskQuery.setGroupId(null);
+            TaskAssigneeDTO dto = fetchTaskAssigneeData(type, taskQuery);
+            String clientName = clients.stream().filter(client -> client.clientPk().equals(clientPk))
+                .map(WorkflowAssigneeDirectoryService.Client::clientKey).findFirst().orElse("");
+            dto.getList().forEach(item -> item.setHandlerName(clientName + " / " + item.getHandlerName()));
+            var tree = new TreeFunDto<WorkflowAssigneeDirectoryService.Client>(clients)
+                .setId(client -> String.valueOf(client.clientPk())).setName(WorkflowAssigneeDirectoryService.Client::clientKey)
+                .setParentId(client -> "0");
+            return getHandlerSelectVo(buildHandlerData(dto, type), tree);
+        }
         // 统一查询并构建业务数据
         TaskAssigneeDTO dto = fetchTaskAssigneeData(type, taskQuery);
         List<DeptDTO> depts = fetchDeptData(type);
@@ -155,7 +171,7 @@ public class FlwTaskAssigneeServiceImpl implements IFlwTaskAssigneeService, Hand
         if (StringUtils.isEmpty(groupName)) {
             return DEFAULT_GROUP_NAME;
         }
-        if (type.needsDeptService()) {
+        if (type.needsDeptService() && type != TaskAssigneeEnum.USER) {
             return deptService.selectDeptNameByIds(groupName);
         }
         return DEFAULT_GROUP_NAME;
@@ -258,7 +274,7 @@ public class FlwTaskAssigneeServiceImpl implements IFlwTaskAssigneeService, Hand
         List<Long> longIds = StreamUtils.toList(ids, Convert::toLong);
         return switch (type) {
             case USER -> userService.selectListByIds(longIds);
-            case ROLE -> userService.selectUsersByRoleIds(longIds);
+            case ROLE -> userService.selectListByIds(longIds.stream().flatMap(roleId -> clientDirectory.roleUsers(roleId).stream()).distinct().toList());
             case DEPT -> userService.selectUsersByDeptIds(longIds);
             case POST -> userService.selectUsersByPostIds(longIds);
             default -> new ArrayList<>();

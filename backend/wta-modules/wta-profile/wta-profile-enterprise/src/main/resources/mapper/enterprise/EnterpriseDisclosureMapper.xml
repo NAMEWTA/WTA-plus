@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.profile.enterprise.mapper.EnterpriseDisclosureMapper">
+    <!-- 字段只能命中固定枚举名；未授权列返回 null，脱敏查询不读取完整证件到 JVM。 -->
+    <select id="selectDisclosure" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseDisclosureRow">
+        select b.user_id
+            , <choose><when test="fields.contains('ENTERPRISE_PROFILE_ID')">b.enterprise_profile_id</when><otherwise>null</otherwise></choose> as profile_id
+            , <choose><when test="fields.contains('ENTERPRISE_VERIFIED_AT')">v.published_time</when><otherwise>null</otherwise></choose> as verified_at
+            , <choose><when test="fields.contains('ENTERPRISE_NAME')">v.enterprise_name</when><otherwise>null</otherwise></choose> as name
+            , <choose><when test="fields.contains('ENTERPRISE_CREDIT_CODE')">v.unified_credit_code</when><otherwise>null</otherwise></choose> as credit_code
+            , <choose><when test="fields.contains('ENTERPRISE_TYPE')">v.enterprise_type</when><otherwise>null</otherwise></choose> as type
+            , <choose><when test="fields.contains('ENTERPRISE_LEGAL_REPRESENTATIVE_NAME')">v.legal_representative_name</when><otherwise>null</otherwise></choose> as legal_representative_name
+            , <choose><when test="fields.contains('ENTERPRISE_LEGAL_DOCUMENT_TYPE')">v.legal_document_type_code</when><otherwise>null</otherwise></choose> as legal_document_type
+            , <choose><when test="fields.contains('ENTERPRISE_LEGAL_DOCUMENT_NUMBER_MASKED')">case when char_length(v.legal_document_number) > 4 then concat(repeat('*', char_length(v.legal_document_number) - 4), right(v.legal_document_number, 4)) else repeat('*', char_length(v.legal_document_number)) end</when><otherwise>null</otherwise></choose> as legal_document_number_masked
+            , <choose><when test="fields.contains('ENTERPRISE_LEGAL_DOCUMENT_NUMBER')">v.legal_document_number</when><otherwise>null</otherwise></choose> as legal_document_number
+            , <choose><when test="fields.contains('ENTERPRISE_ESTABLISHED_DATE')">v.established_date</when><otherwise>null</otherwise></choose> as established_date
+            , <choose><when test="fields.contains('ENTERPRISE_BUSINESS_TERM_FROM')">v.business_term_from</when><otherwise>null</otherwise></choose> as business_term_from
+            , <choose><when test="fields.contains('ENTERPRISE_BUSINESS_TERM_UNTIL')">v.business_term_until</when><otherwise>null</otherwise></choose> as business_term_until
+            , <choose><when test="fields.contains('ENTERPRISE_REGISTERED_ADDRESS')">v.registered_address</when><otherwise>null</otherwise></choose> as registered_address
+            , <choose><when test="fields.contains('ENTERPRISE_BUSINESS_SCOPE')">v.business_scope</when><otherwise>null</otherwise></choose> as business_scope
+            , <choose><when test="fields.contains('ENTERPRISE_CONTACT_NAME')">v.contact_name</when><otherwise>null</otherwise></choose> as contact_name
+            , <choose><when test="fields.contains('ENTERPRISE_CONTACT_PHONE')">v.contact_phone</when><otherwise>null</otherwise></choose> as contact_phone
+            , <choose><when test="fields.contains('ENTERPRISE_EMAIL')">v.email</when><otherwise>null</otherwise></choose> as email
+            , <choose><when test="fields.contains('ENTERPRISE_REGISTERED_CAPITAL')">v.registered_capital</when><otherwise>null</otherwise></choose> as registered_capital
+            , <choose><when test="fields.contains('ENTERPRISE_INDUSTRY_CODE')">v.industry_code</when><otherwise>null</otherwise></choose> as industry_code
+            , <choose><when test="fields.contains('ENTERPRISE_WEBSITE')">v.website</when><otherwise>null</otherwise></choose> as website
+          from profile_enterprise_binding b
+          join profile_enterprise p on p.enterprise_profile_id = b.enterprise_profile_id
+          join profile_enterprise_version v on v.enterprise_version_id = p.current_version_id
+         where b.user_id = #{userId}
+           and b.status = 'ACTIVE' and b.del_flag = '0'
+           and p.status = 'ACTIVE' and p.del_flag = '0'
+           and v.status = 'CURRENT' and v.del_flag = '0'
+    </select>
+</mapper>
+

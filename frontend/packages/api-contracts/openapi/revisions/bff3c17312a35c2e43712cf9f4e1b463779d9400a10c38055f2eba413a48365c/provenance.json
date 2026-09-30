@@ -1,0 +1,13 @@
+{
+  "backendCommit": "4c9697abdb2366a76468681cccd51050d8cdc83c",
+  "backendRepository": "backend working tree: baseline HTTP snapshot plus ProfileReviewOpenApiContractTest reflection delta",
+  "generator": "openapi-typescript@7.13.0",
+  "openapiVersion": "3.1.0",
+  "rawSha256": "2a4561d5a94d3240157c4d22dfbfe36fd1e58ed37bd38a559980a00905a67188",
+  "runtimeEndpoint": "/v3/api-docs baseline + actual Java Profile summary/task-review and FlowHisTaskVo delta",
+  "totals": {
+    "paths": 457,
+    "schemas": 474,
+    "tags": 80
+  }
+}

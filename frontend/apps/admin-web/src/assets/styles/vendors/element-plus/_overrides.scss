@@ -26,16 +26,6 @@
   font-weight: 500;
 }
 
-// --- primary 品牌色（亮色；暗色见 tokens/_theme-dark） ---
-.el-button--primary {
-  --el-button-bg-color: var(--app-accent-strong);
-  --el-button-border-color: var(--app-accent-strong);
-  --el-button-hover-bg-color: #4a7cff;
-  --el-button-hover-border-color: #4a7cff;
-  --el-button-active-bg-color: #2e5ce0;
-  --el-button-active-border-color: #2e5ce0;
-}
-
 // --- 表格 CSS 变量接业务 token ---
 .el-table {
   --el-table-border-color: var(--app-surface-border);

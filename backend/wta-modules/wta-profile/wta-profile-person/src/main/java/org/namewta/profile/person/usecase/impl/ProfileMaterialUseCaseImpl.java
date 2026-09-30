@@ -99,4 +99,19 @@ public class ProfileMaterialUseCaseImpl implements ProfileMaterialUseCase {
         ProfileMaterialPort.MaterialOwnerKey source, ProfileMaterialPort.MaterialOwnerKey target) {
         return service.snapshotImmutable(source, target);
     }
+    /** 通过任务范围读取材料，保持所有者锁处于事务内。 */
+    @Override
+    @DSTransactional
+    public List<ProfileMaterialPort.MaterialReferenceView> listForTask(
+        ProfileMaterialPort.MaterialOwnerKey owner, Long taskId) {
+        return service.listForTask(owner, taskId);
+    }
+
+    /** 通过任务范围签发材料访问地址。 */
+    @Override
+    @DSTransactional
+    public org.namewta.profile.api.material.ProfileTaskMaterialPort.MaterialAccessUrl accessUrlForTask(
+        ProfileMaterialPort.MaterialOwnerKey owner, Long materialRefId, Long taskId) {
+        return service.accessUrlForTask(owner, materialRefId, taskId);
+    }
 }

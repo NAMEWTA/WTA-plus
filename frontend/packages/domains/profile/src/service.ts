@@ -19,6 +19,7 @@ import { createPersonApplicationService, type PersonApplicationResourceService }
 import { createPersonArchiveService, type PersonArchiveService } from './person/archive/service';
 import { createPersonMaterialService, type PersonMaterialService } from './person/materials/service';
 import { createPersonRebindService, type PersonRebindService } from './person/rebind/service';
+import { createProfileTaskReviewService, type ProfileTaskReviewService } from './task-review';
 
 export type MaterialReferenceService = PersonMaterialService;
 
@@ -40,6 +41,7 @@ export interface ProfileService {
   readonly enterprise: {
     readonly application: EnterpriseApplicationService;
     readonly archive: EnterpriseArchiveService;
+    readonly taskReview: ProfileTaskReviewService;
     readonly materials: EnterpriseMaterialService;
     readonly transfer: EnterpriseTransferService;
   };
@@ -47,6 +49,7 @@ export interface ProfileService {
   readonly person: {
     readonly application: PersonApplicationService;
     readonly archive: PersonArchiveService;
+    readonly taskReview: ProfileTaskReviewService;
     readonly materials: PersonMaterialService;
     readonly rebind: PersonRebindService;
   };
@@ -76,12 +79,14 @@ export function createProfileService(http: HttpClient): ProfileService {
     materialTags: createMaterialTagService(http),
     person: Object.freeze({
       application: personApplication,
+      taskReview: createProfileTaskReviewService(http, 'person'),
       archive: createPersonArchiveService(http),
       materials: createPersonMaterialService(http),
       rebind: personRebind
     }),
     enterprise: Object.freeze({
       application: enterpriseApplication,
+      taskReview: createProfileTaskReviewService(http, 'enterprise'),
       archive: createEnterpriseArchiveService(http),
       materials: createEnterpriseMaterialService(http),
       transfer: enterpriseTransfer

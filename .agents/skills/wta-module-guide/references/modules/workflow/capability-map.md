@@ -54,7 +54,7 @@
 
 ## 公开合同 wta-api
 
-唯一推荐 Java 门面：`backend/wta-api/src/main/java/org/namewta/workflow/api/WorkflowService.java`
+流程生命周期 Java 门面：`backend/wta-api/src/main/java/org/namewta/workflow/api/WorkflowService.java`
 实现：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/WorkflowServiceImpl.java`（`@ConditionalOnEnable` + `@Service`）
 
 | 方法 | 行为（以接口 JavaDoc + 实现为准） |
@@ -67,7 +67,7 @@
 | `startWorkFlow(StartProcessDTO)` | Bean 拷到 `StartProcessBo` 后调 `IFlwTaskService.startWorkFlow`，返回 `StartProcessReturnDTO` |
 | `completeTask(CompleteTaskDTO)` | Bean 拷到 `CompleteTaskBo` 后办理；后台无人会话须 `variables.put("ignore", true)` |
 | `completeTask(Long taskId, String message)` | 便捷办理，内部自动 `ignore=true` |
-| `startCompleteTask(StartProcessDTO)` | `@Transactional`：先 `startWorkFlow`，再办理首任务；`messageType` 固定为 `MessageTypeEnum.SYSTEM_MESSAGE`（`"1"` 站内信） |
+| `startCompleteTask(StartProcessDTO)` | `@DSTransactional`：先 `startWorkFlow`，再办理首任务；`messageType` 固定为 `MessageTypeEnum.SYSTEM_MESSAGE`（`"1"` 站内信） |
 
 DTO（`backend/wta-api/src/main/java/org/namewta/workflow/api/domain/`）：
 
@@ -185,7 +185,7 @@ DTO（`backend/wta-api/src/main/java/org/namewta/workflow/api/domain/`）：
 | `/workflow/spel` | `FlwSpelController` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/FlwSpelController.java` | `GET /list`、`GET /{id}`、`POST`、`POST /update`、`POST /{ids}` |
 | `/workflow/leave` | `TestLeaveController` | `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/controller/TestLeaveController.java` | 见 [leave-sample.md](leave-sample.md)；提交入口 `POST /submitAndFlowStart` |
 
-Warm-Flow UI 插件自带 `/warm-flow*` 控制器来自第三方 jar，本仓库无源码。安全排除：`backend/wta-admin/src/main/resources/application.yml` 含 `/warm-flow-ui/config` 与 `/warm-flow/save-json`。
+Warm-Flow UI 插件自带 `/warm-flow*` 控制器来自第三方 jar，本仓库无源码。`WorkflowHttpGuardAspect` 对 `/warm-flow/save-json` 等第三方入口执行设计权限、发布版本保护和任务Client校验，不能仅依赖插件自身鉴权。
 
 ## 开关与装配
 
@@ -253,3 +253,15 @@ Warm-Flow UI 插件自带 `/warm-flow*` 控制器来自第三方 jar，本仓库
 历史：实例轨迹 `IFlwInstanceService.flowHisTaskList` + REST `GET /workflow/instance/flowHisTaskList/{businessId}`；已办分页 `pageByTaskFinish`（`FlwHisTaskMapper.getListFinishTask`：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/mapper/FlwHisTaskMapper.java`）。不要虚构额外的历史或表单 API。
 
 流程图悬浮提示：`FlwChartExtServiceImpl` 实现 Warm-Flow `ChartExtService`：`backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/FlwChartExtServiceImpl.java`。
+
+## 节点 Client 与业务任务审核
+
+- `WorkflowNodeClientPolicy` 读取 node.ext 的唯一 `WorkflowClientPk` 项。申请节点固定 `INITIATOR`；每个人工审核节点指定一个实际 Client 主键。用户、角色与表达式共用节点 Client。
+- `WorkflowClientScopeService` 在启动事务内保存 `flow_instance_node_client`（实例+节点唯一）。待办/已办/抄送分页在 SQL 中按该表过滤；错误 Client 的人工完成、退回、转办、委派、加签、改派都会拒绝。`CompleteAutoPassComponent` 不跨 Client 自动完成。
+- `WorkflowGlobalListener.assignment` 完成角色/表达式/动态办理人展开后直接验证目标端登录资格，空候选拒绝。校验直接调用服务，不能使用会被 `GlobalListener.notify` 内部调用绕过的 Spring AOP。
+- `WorkflowAssigneeDirectoryService` 由 System 实现：正常Client与登录域、角色归属、活动用户及其登录域关系；默认角色动态展开为该登录域活动成员。设计器用户/角色选择器左侧可选 Client。
+- 业务任务详情使用 `WorkflowTaskReviewService.readTaskContext(taskId)`，仅本端当前办理人或本人历史办理人；写操作先 `requireTaskContext`，再 `approve` 或 `returnToApplicant`。上下文含 businessId、flowCode、snapshotVersion、submissionId。历史取 flow_his_task.variable 当时快照，不能回退到已重提的新实例变量。
+- `StartProcessDTO.initiatorClientPk` 只供可信 Java 后台调用，并同时指定 handler。人机入口从会话取得Client，拒绝覆盖handler及ignore/ignoreDepute/ignoreCooperate/snapshotVersion/submissionId等内部变量。
+- 新实例加载已发布定义；重提走 StartResume，保留原定义和节点Client，核对原申请端与申请人后更新提交变量。定义已发布或已有实例后不可原地编辑，需复制新版本。
+
+实现入口位于 `backend/wta-modules/wta-workflow/src/main/java/org/namewta/workflow/service/impl/WorkflowClientScopeService.java`、`WorkflowClientGuardAspect.java`、`WorkflowHttpGuardAspect.java`、`WorkflowTaskReviewServiceImpl.java`；公开合同位于 `backend/wta-api/src/main/java/org/namewta/workflow/api/`。

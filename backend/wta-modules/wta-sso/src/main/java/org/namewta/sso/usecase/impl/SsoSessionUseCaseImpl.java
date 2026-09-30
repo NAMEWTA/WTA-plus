@@ -2,6 +2,7 @@ package org.namewta.sso.usecase.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.namewta.sso.api.SsoAuthenticatedUser;
+import org.namewta.sso.api.SsoSessionSnapshot;
 import org.namewta.sso.service.SsoSessionService;
 import org.namewta.sso.usecase.SsoSessionUseCase;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -31,6 +32,11 @@ public class SsoSessionUseCaseImpl implements SsoSessionUseCase {
     @Override
     public SsoAuthenticatedUser current(String sessionId) {
         return sessionService.current(sessionId);
+    }
+
+    @Override
+    public SsoSessionSnapshot currentSnapshot(String sessionId) {
+        return sessionService.currentSnapshot(sessionId);
     }
 
     /**

@@ -37,7 +37,10 @@ public class SysLogConfig {
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.ASYNC}
     )
     public SysLogFilter sysLogFilter(SysLogProperties properties, RequestBodyProperties bodyProperties,
-                                     JsonMapper jsonMapper) {
-        return new SysLogFilter(properties.maxBodyBytes(), bodyProperties.maxBytes(), new SysLogEventWriter(jsonMapper));
+                                     JsonMapper jsonMapper,
+            org.springframework.beans.factory.ObjectProvider<org.namewta.common.core.service.HttpProtocolPolicy> policies) {
+        var filter = new SysLogFilter(properties.maxBodyBytes(), bodyProperties.maxBytes(), new SysLogEventWriter(jsonMapper));
+        filter.setProtocolPolicies(policies.orderedStream().toList());
+        return filter;
     }
 }

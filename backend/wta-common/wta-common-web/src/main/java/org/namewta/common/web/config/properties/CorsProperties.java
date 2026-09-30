@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.net.URI;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 跨域配置属性。
@@ -13,14 +14,17 @@ import java.util.List;
 @ConfigurationProperties(prefix = "web.cors")
 public class CorsProperties {
 
+    private static final Pattern ORIGIN_PATTERN = Pattern.compile(
+        "(?i)^https?://(?:[a-z0-9*.-]+|\\[[0-9a-f:.]+])(?::(?:[0-9]+|\\*|\\[\\*]))?$");
+
     /**
      * 是否允许携带凭证。
      */
     private Boolean allowCredentials = true;
 
     /**
-     * 精确来源白名单，默认无跨来源访问；同源请求无需 CORS 许可。
-     * 唯一一项为 {@code *} 时允许任意 HTTP(S) 来源，不能和精确来源混写。
+     * HTTP(S) 来源，支持精确地址、主机/IP 通配和 {@code *} 混写。
+     * 端口通配可用 {@code :*} 或 {@code :[*]}；空配置不许可跨来源请求。
      */
     private List<String> allowedOrigins = List.of();
 
@@ -40,26 +44,49 @@ public class CorsProperties {
     private Long maxAge = 1800L;
 
     /**
-     * @return 配置是否为单独一项 {@code *}，表示允许任意 HTTP(S) 来源
-     * @throws IllegalArgumentException {@code *} 与精确来源同时出现，或列表本身非法
+     * @return 配置是否包含 {@code *}，表示允许任意 HTTP(S) 来源
+     * @throws IllegalArgumentException 任一来源格式非法
      */
     public boolean allowsAnyHttpOrigin() {
-        return configuredOrigins().size() == 1 && "*".equals(configuredOrigins().getFirst());
+        return validatedValues().contains("*");
     }
 
     /**
-     * @return 经校验的精确 HTTP(S) 来源；空配置或单独的 {@code *} 都不返回精确来源
-     * @throws IllegalArgumentException 错误配置时拒绝启动，不自动放宽信任
+     * @return 经校验的精确 HTTP(S) 来源，通配规则由 validatedOriginPatterns 返回
+     * @throws IllegalArgumentException 任一来源格式非法
      */
     public List<String> validatedOrigins() {
-        List<String> values = configuredOrigins();
-        if (values.isEmpty() || (values.size() == 1 && "*".equals(values.getFirst()))) {
-            return List.of();
-        }
-        if (values.contains("*")) {
-            throw new IllegalArgumentException("CORS wildcard cannot be combined with exact origins");
-        }
-        return values.stream().map(this::exactOrigin).toList();
+        return validatedValues().stream().filter(value -> !value.contains("*")).toList();
+    }
+
+    /**
+     * 将通配规则转换为 Spring 支持的 Origin pattern，保持凭证请求回显实际来源。
+     *
+     * @return HTTP(S) 通配规则；不会向浏览器返回通配 Allow-Origin
+     * @throws IllegalArgumentException 任一来源格式非法
+     */
+    public List<String> validatedOriginPatterns() {
+        return validatedValues().stream().filter(value -> value.contains("*"))
+            .flatMap(value -> "*".equals(value) ? List.of("http://*", "https://*").stream()
+                : List.of(value.endsWith(":*") ? value.substring(0, value.length() - 1) + "[*]" : value).stream())
+            .distinct().toList();
+    }
+
+    private List<String> validatedValues() {
+        return configuredOrigins().stream().map(value -> {
+            if ("*".equals(value)) {
+                return value;
+            }
+            if (value.contains("*")) {
+                if (!ORIGIN_PATTERN.matcher(value).matches()) {
+                    throw new IllegalArgumentException("CORS requires HTTP(S) origin patterns without paths");
+                }
+                // 校验通配之外的 URL 和端口；不接受路径、用户信息或无效端口。
+                exactOrigin(value.replace(":[*]", ":443").replace(":*", ":443").replace("*", "wildcard"));
+                return value;
+            }
+            return exactOrigin(value);
+        }).distinct().toList();
     }
 
     private List<String> configuredOrigins() {

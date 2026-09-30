@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,6 +50,7 @@ class PasswordMigrationMySqlIntegrationTest {
 
         try {
             freshAndRepeat(dataSource);
+            correctsRetiredRemarksWithoutChangingExistingValues(dataSource);
             upgradeAndRollback(dataSource);
             conflictingPreflightStopsBeforeWrites(dataSource);
         } finally {
@@ -112,6 +114,23 @@ class PasswordMigrationMySqlIntegrationTest {
             "select count(*) from " + MENU_TABLE + " where menu_id=" + PERMISSION_ID));
         assertEquals("preserve-me", scalar(dataSource,
             "select config_value from " + CONFIG_TABLE + " where config_id=777"));
+    }
+
+    private void correctsRetiredRemarksWithoutChangingExistingValues(PooledDataSource dataSource) throws Exception {
+        prepareBaseline(dataSource, "Already9!Retired", "初始化密码 123456；NAMEWTA-PASSWORD-DSL-001：旧键已随机化并退役");
+        executeMigration(dataSource);
+        assertEquals("Already9!Retired", scalar(dataSource,
+            "select config_value from " + CONFIG_TABLE + " where config_key='sys.user.initPassword'"));
+        assertEquals("用户管理-旧版初始密码（已停用）", scalar(dataSource,
+            "select config_name from " + CONFIG_TABLE + " where config_key='sys.user.initPassword'"));
+        String remark = scalar(dataSource,
+            "select remark from " + CONFIG_TABLE + " where config_key='sys.user.initPassword'");
+        assertTrue(remark.contains("NAMEWTA-PASSWORD-DSL-001"));
+        assertTrue(remark.contains("本值不是当前账号初始密码"));
+        assertFalse(remark.contains("初始化密码 123456"));
+        assertTrue(scalar(dataSource,
+            "select remark from " + CONFIG_TABLE + " where config_key='sys.user.passwordPolicy'")
+            .contains("RANDOM 每次按 generator.length 随机生成"));
     }
 
     private void conflictingPreflightStopsBeforeWrites(PooledDataSource dataSource) throws Exception {

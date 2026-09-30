@@ -9,7 +9,8 @@ export const profilePermissions = Object.freeze({
     material: 'profile:person:material',
     override: 'profile:person:override',
     query: 'profile:person:query',
-    review: 'profile:person:review'
+    review: 'profile:person:review',
+    taskReview: 'profile:person:task-review'
   }),
   enterprise: Object.freeze({
     apply: 'profile:enterprise:apply',
@@ -17,6 +18,7 @@ export const profilePermissions = Object.freeze({
     material: 'profile:enterprise:material',
     override: 'profile:enterprise:override',
     query: 'profile:enterprise:query',
-    review: 'profile:enterprise:review'
+    review: 'profile:enterprise:review',
+    taskReview: 'profile:enterprise:task-review'
   })
 });

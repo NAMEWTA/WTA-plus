@@ -61,7 +61,12 @@
 | `wta-modules/wta-system` | 用户、Client、角色、菜单、权限等核心系统能力 | controller/service/mapper contracts | `src/test/java`; 实际模块测试 |
 | `wta-modules/wta-workflow` | WarmFlow 工作流能力 | controller/service contracts | none |
 | `wta-modules/wta-third` | 第三方 HTTP Provider/Endpoint 管理、凭据安全、RestClient Gateway、显式适配器 SPI、限流与出站观测 | `org.namewta.third.api.ThirdPartyGateway`；管理 API 位于 `org.namewta.third.controller.admin` | `src/test/java`; crypto/path security tests; external MySQL/Redis/HTTP/browser gates are recorded by the change release evidence |
+| `wta-modules/wta-oidc` | 第三方 OIDC Provider、应用与字段授权、持久凭据事实 | `/oidc/admin/**`、固定协议端点、Spring Authorization Server 适配 | `src/test/java`; layered; full/core 共用 |
 | `wta-modules/wta-sso` | 第一方 SSO Authorization Code + PKCE、SSO 域会话 | `controller/anonymous` authorize/token/revoke/login | `src/test/java`; layered module; `validate-module-mode` required |
+
+## 共享 Web 外观
+
+`frontend/packages/web-kit/ui-element` 已激活，为 Admin/Home/SSO 提供同源 CSS 主题、显式初始化与 AuthPanel/StatusPanel；Admin/Home 登录后共用 AppShell、TopbarFrame、SidebarFrame 和离线 Iconify 图标。App 保留品牌、菜单、路由和会话所有权，共享壳层不依赖 App store。
 
 ## 依赖方向
 
@@ -97,3 +102,5 @@
 ## 外部 AI 平台边界
 
 [wta-ai](https://github.com/NAMEWTA/wta-ai) 是独立项目，不属于本表的 Maven 模块或前端工作区。其 Python 后端、双前端及发布脚本由独立仓库拥有；与本仓集成通过公开网络 API，不形成源码路径或发布产物依赖。本仓 wta-ai / wta-common-ai 名称仍指 Java Maven 占位。
+
+OIDC 前端由 `packages/domains/oidc` 和 `packages/web-domains/oidc` 拥有，Admin 显式组合；三 App 共用已激活 `packages/web-kit/ui-element` 的主题、AuthPanel 和 StatusPanel。OIDC 第三方应用与第一方 sys_client 分离，账户准入读取正常 sys_user，资料按应用字段策略经公开 API 投影。

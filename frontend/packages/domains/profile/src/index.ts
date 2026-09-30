@@ -125,3 +125,12 @@ export const profileDomainModule: DomainModule = Object.freeze({
     'enterprise-archive'
   ])
 });
+
+export type {
+  CertificationStatus,
+  CertificationSummary,
+  PersonCertificationSummary,
+  EnterpriseCertificationSummary
+} from './self-summary';
+export { projectPersonIdentity, projectEnterpriseIdentity } from './self-summary';
+export type { TaskReviewDecision, ProfileTaskReviewService } from './task-review';

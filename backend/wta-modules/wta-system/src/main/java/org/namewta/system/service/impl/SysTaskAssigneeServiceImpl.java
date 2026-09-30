@@ -39,6 +39,9 @@ public class SysTaskAssigneeServiceImpl implements TaskAssigneeService {
     private final ISysDeptService deptService;
     private final ISysUserService userService;
     private final ISysRoleService roleService;
+    private final org.namewta.system.mapper.SysClientMapper workflowClients;
+    private final org.namewta.system.mapper.SysUserMapper workflowUsers;
+    private final org.namewta.system.api.WorkflowAssigneeDirectoryService workflowDirectory;
 
     /**
      * 查询角色并返回任务指派的列表，支持分页
@@ -54,7 +57,8 @@ public class SysTaskAssigneeServiceImpl implements TaskAssigneeService {
         bo.setRoleName(taskQuery.getHandlerName());
         bo.setStatus(SystemConstants.NORMAL);
         LoginUser loginUser = LoginHelper.getLoginUser();
-        bo.setClientId(loginUser == null ? null : loginUser.getClientPk());
+        bo.setClientId(taskQuery.getClientPk() != null ? taskQuery.getClientPk() : loginUser == null ? null : loginUser.getClientPk());
+        workflowDirectory.requireClient(bo.getClientId());
         Map<String, Object> params = bo.getParams();
         params.put("beginTime", taskQuery.getBeginTime());
         params.put("endTime", taskQuery.getEndTime());
@@ -122,6 +126,20 @@ public class SysTaskAssigneeServiceImpl implements TaskAssigneeService {
     @Override
     public TaskAssigneeDTO selectUsersByTaskAssigneeList(TaskAssigneeBody taskQuery) {
         PageQuery pageQuery = new PageQuery(taskQuery.getPageSize(), taskQuery.getPageNum());
+        if (taskQuery.getClientPk() != null) {
+            workflowDirectory.requireClient(taskQuery.getClientPk());
+            var client = workflowClients.selectById(taskQuery.getClientPk());
+            var wrapper = org.namewta.common.mybatis.core.query.QueryBuilder.lambda(org.namewta.system.domain.SysUser.class)
+                .eq(org.namewta.system.domain.SysUser::getStatus, SystemConstants.NORMAL)
+                .likeIfText(org.namewta.system.domain.SysUser::getUserName, taskQuery.getHandlerCode())
+                .likeIfText(org.namewta.system.domain.SysUser::getNickName, taskQuery.getHandlerName()).build();
+            wrapper.apply("user_id in (select user_id from sys_user_type_rel where user_type_id={0} and status='0')", client.getUserTypeId());
+            var selected = workflowUsers.selectPageUserList(pageQuery.build(), wrapper);
+            var handlers = TaskAssigneeDTO.convertToHandlerList(selected.getRecords(),
+                item -> Convert.toStr(item.getUserId()), SysUserVo::getUserName, SysUserVo::getNickName,
+                item -> client.getClientKey(), SysUserVo::getCreateTime);
+            return new TaskAssigneeDTO(selected.getTotal(), handlers);
+        }
         SysUserBo bo = new SysUserBo();
         bo.setUserName(taskQuery.getHandlerCode());
         bo.setNickName(taskQuery.getHandlerName());

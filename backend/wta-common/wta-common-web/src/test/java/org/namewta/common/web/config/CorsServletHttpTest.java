@@ -29,6 +29,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CorsServletHttpTest {
 
     @Test
+    void wildcardAndMixedPatternsEchoCredentialsThroughRealServlet() throws Exception {
+        for (List<String> origins : List.of(List.of("*", "https://exact.example.test"),
+            List.of("http://192.168.*:*", "https://*.internal.test:8443", "https://exact.example.test"))) {
+            var properties = new CorsProperties();
+            properties.setAllowedOrigins(origins);
+            try (var server = new TestServer(properties)) {
+                for (String origin : List.of("http://192.168.1.20:5177", "https://app.internal.test:8443",
+                    "https://exact.example.test")) {
+                    for (String method : List.of("POST", "OPTIONS")) {
+                        var response = server.request(method, origin, "OPTIONS".equals(method));
+                        assertThat(response.statusCode()).isEqualTo("OPTIONS".equals(method) ? 200 : 204);
+                        assertThat(response.headers().firstValue("Access-Control-Allow-Origin")).hasValue(origin);
+                        assertThat(response.headers().firstValue("Access-Control-Allow-Credentials")).hasValue("true");
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     void exactOriginsPassAndHostileOriginsNeverReceiveCorsPermission() throws Exception {
         var properties = new CorsProperties();
         properties.setAllowedOrigins(List.of("https://admin.example.test", "http://127.0.0.1:5177"));

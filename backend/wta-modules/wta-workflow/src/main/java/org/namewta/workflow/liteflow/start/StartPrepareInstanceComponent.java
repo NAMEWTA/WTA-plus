@@ -20,9 +20,12 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
 /**
  * 加载流程定义并补齐启动变量。
  */
+@lombok.RequiredArgsConstructor
 @ConditionalOnEnable
 @LiteflowComponent("startPrepareInstance")
 public class StartPrepareInstanceComponent extends NodeComponent {
+
+    private final org.namewta.workflow.service.impl.WorkflowClientScopeService clientScope;
 
     @Override
     public void process() {
@@ -31,6 +34,7 @@ public class StartPrepareInstanceComponent extends NodeComponent {
         if (ObjectUtil.isNull(definition)) {
             throw new ServiceException("流程【" + context.getStartProcessBo().getFlowCode() + "】未发布，请先在流程设计器中发布流程定义");
         }
+        clientScope.validateDefinition(definition.getId());
         context.setDefinition(definition);
 
         Map<String, Object> variables = context.getVariables();

@@ -54,6 +54,22 @@ server {
         add_header Cache-Control 'no-store' always;
     }
 
+    # 标准协议端点固定在 Issuer 根路径；管理 API 不暴露到 SSO Origin。
+    location ~ ^/(?:\.well-known/(?:openid-configuration|oauth-authorization-server)|oidc/(?:authorize|token|jwks|userinfo|introspect|revoke|logout|login-context))$ {
+        proxy_pass http://backend_server;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Forwarded '';
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_cache off;
+        add_header Cache-Control 'no-store' always;
+        # 后端协议默认 no-referrer；退出确认页需 same-origin 使同源表单保留 Origin。
+        # 保留后端的逐端点策略，避免重复 header 覆盖退出确认页。
+    }
+
     location = /${APP_PREFIX} {
         return 302 /${APP_PREFIX}/;
     }

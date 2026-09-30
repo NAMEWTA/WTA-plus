@@ -71,6 +71,7 @@ public class FlwNodeExtServiceImpl implements NodeExtService, IFlwNodeExtService
     }
 
     private final DictService dictService;
+    private final org.namewta.system.api.WorkflowAssigneeDirectoryService clientDirectory;
 
     /**
      * 获取节点扩展属性
@@ -88,6 +89,23 @@ public class FlwNodeExtServiceImpl implements NodeExtService, IFlwNodeExtService
             List.of(ButtonPermissionEnum.class)));
         // 自定义构建 规则参考 NodeExt 与 warm-flow文档说明
         // nodeExtList.add(buildNodeExt("xxx_xxx", "xxx", 1, List);
+        NodeExt clientTab = new NodeExt();
+        clientTab.setCode("workflow_client");
+        clientTab.setName("办理客户端");
+        clientTab.setType(1);
+        NodeExt.ChildNode client = new NodeExt.ChildNode();
+        client.setCode(org.namewta.workflow.domain.policy.WorkflowNodeClientPolicy.CODE);
+        client.setLabel("办理客户端");
+        client.setType(3);
+        client.setMultiple(false);
+        client.setMust(false);
+        client.setDesc("申请节点选择发起客户端；审核节点必须指定客户端，角色或用户均须具备该端资格。");
+        List<NodeExt.DictItem> options = new ArrayList<>();
+        options.add(new NodeExt.DictItem("发起客户端（仅申请节点）", "INITIATOR"));
+        clientDirectory.clients().forEach(item -> options.add(new NodeExt.DictItem(item.clientKey(), String.valueOf(item.clientPk()))));
+        client.setDict(options);
+        clientTab.setChilds(List.of(client));
+        nodeExtList.add(clientTab);
         return nodeExtList;
     }
 
@@ -238,6 +256,8 @@ public class FlwNodeExtServiceImpl implements NodeExtService, IFlwNodeExtService
 
                 nodeExtVo.setButtonPermissions(buttonList);
 
+            } else if (org.namewta.workflow.domain.policy.WorkflowNodeClientPolicy.CODE.equals(code)) {
+                // 办理客户端由独立不可变快照校验，不注入可编辑流程变量。
             } else if (CopySettingEnum.class.getSimpleName().equals(code)) {
                 List<String> permissions = spelSmartSplit(value).stream()
                     .map(s -> {

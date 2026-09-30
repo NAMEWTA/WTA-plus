@@ -25,6 +25,7 @@
         <module>wta-third</module>
         <module>wta-notify</module>
         <module>wta-sso</module>
+        <module>wta-oidc</module>
     </modules>
 
 </project>

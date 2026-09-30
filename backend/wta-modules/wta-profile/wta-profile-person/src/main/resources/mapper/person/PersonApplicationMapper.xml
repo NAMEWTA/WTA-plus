@@ -388,4 +388,18 @@
                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">#{userId}</foreach>
                  order by b.user_id
     </select>
+    <select id="selectSelfVersion" resultType="org.namewta.profile.person.domain.model.read.PersonVersionRow">
+        select v.* from profile_person_binding b
+          join profile_person p on p.person_profile_id = b.person_profile_id
+          join profile_person_version v on v.person_version_id = p.current_version_id
+         where b.user_id = #{userId} and b.status = 'ACTIVE' and b.del_flag = '0'
+           and p.status = 'ACTIVE' and p.del_flag = '0'
+           and v.status = 'CURRENT' and v.del_flag = '0'
+    </select>
+
+    <select id="selectReturnReason" resultType="java.lang.String">
+        select decision_reason from profile_person_application
+         where applicant_user_id = #{userId} and status = 'BACK' and del_flag = '0'
+         order by update_time desc limit 1
+    </select>
 </mapper>

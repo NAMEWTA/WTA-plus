@@ -7,6 +7,7 @@ import org.namewta.profile.enterprise.domain.bo.EnterpriseApplicationProbeBo;
 import org.namewta.profile.enterprise.domain.bo.EnterpriseApplicationSaveBo;
 import org.namewta.profile.enterprise.domain.vo.EnterpriseApplicationProbeVo;
 import org.namewta.profile.enterprise.domain.vo.EnterpriseApplicationVo;
+import org.namewta.profile.enterprise.domain.vo.EnterpriseSelfSummaryVo;
 import org.namewta.profile.enterprise.domain.application.EnterpriseApplicationProcessCommand;
 import org.namewta.profile.enterprise.service.EnterpriseApplicationService;
 import org.namewta.profile.enterprise.usecase.EnterpriseApplicationUseCase;
@@ -54,4 +55,11 @@ public class EnterpriseApplicationUseCaseImpl implements EnterpriseApplicationUs
     public void handleProcess(EnterpriseApplicationProcessCommand command) {
         service.handleProcess(command);
     }
+    /** 在同一读取事务中组装本人认证状态。 */
+    @Override
+    @DSTransactional
+    public EnterpriseSelfSummaryVo summary(long userId) {
+        return service.summary(userId);
+    }
+
 }

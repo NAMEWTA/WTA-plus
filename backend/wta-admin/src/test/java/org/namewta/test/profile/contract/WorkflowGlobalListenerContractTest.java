@@ -30,7 +30,8 @@ class WorkflowGlobalListenerContractTest {
         FlowProcessEventHandler events = mock(FlowProcessEventHandler.class);
         WorkflowGlobalListener listener = new WorkflowGlobalListener(
             mock(IFlwTaskService.class), mock(IFlwInstanceService.class), events,
-            mock(IFlwCommonService.class), mock(IFlwNodeExtService.class), mock(UserService.class));
+            mock(IFlwCommonService.class), mock(IFlwNodeExtService.class), mock(UserService.class),
+            mock(org.namewta.workflow.service.impl.WorkflowClientScopeService.class));
         Definition definition = mock(Definition.class);
         when(definition.getFlowCode()).thenReturn("profile_person_verification");
         Instance instance = mock(Instance.class);

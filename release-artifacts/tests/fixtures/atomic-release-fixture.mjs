@@ -52,7 +52,7 @@ if (process.env.BUILD_WAIT) {
   while (!fs.existsSync(process.env.BUILD_WAIT + '.continue')) Atomics.wait(pause, 0, 0, 20);
 }
 const marker = fs.readFileSync(path.resolve(root, '../marker.txt'));
-const base = ['wta-system','wta-common-notify','wta-common-oss','wta-third','wta-sso','wta-notify','wta-profile-person','wta-profile-enterprise'];
+const base = ['wta-system','wta-common-notify','wta-common-oss','wta-third','wta-sso','wta-oidc','wta-notify','wta-profile-person','wta-profile-enterprise'];
 const extra = process.argv.some((value) => value.includes('bundle-core')) ? [] : ['wta-job','wta-ai','wta-common-ai','wta-demo','wta-workflow'];
 function zipStore(entries) {
   const locals = [];
@@ -145,6 +145,7 @@ console.log(argv.join(' '));
   const env = { ...process.env, PATH: bin + ':' + process.env.PATH };
   // Avoid unrelated host prefix/image overrides affecting isolated fixtures.
   for (const key of Object.keys(env)) if (key.endsWith('_PREFIX')) delete env[key];
+  delete env.WEB_CORS_ALLOWED_ORIGINS;
   const git = (...args) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   git('init', '-q'); git('config', 'user.name', 'release fixture'); git('config', 'user.email', 'fixture@example.invalid');
   const commit = () => { git('add', '.'); git('-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'synthetic release fixture'); return git('rev-parse', 'HEAD'); };

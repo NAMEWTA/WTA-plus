@@ -67,7 +67,13 @@
       </div>
     </el-card>
     <UserSelect v-if="canFilterUsers" ref="userSelect" :service="runtime.service" @confirm="filterUsers" />
-    <UserSelect ref="assigneeSelect" :service="runtime.service" :multiple="false" @confirm="assign" />
+    <UserSelect
+      v-if="managementRuntime && mode === 'all-waiting'"
+      ref="assigneeSelect"
+      :service="runtime.service"
+      :multiple="false"
+      @confirm="assign"
+    />
     <el-dialog v-model="urgeVisible" title="任务催办" width="480px">
       <el-checkbox-group v-model="urgeMessageType">
         <el-checkbox value="1" disabled>站内信</el-checkbox>
@@ -81,8 +87,9 @@
       </template>
     </el-dialog>
     <ProcessActionDialog
+      v-if="managementRuntime && mode === 'all-waiting'"
       ref="processActions"
-      :runtime="runtime"
+      :runtime="managementRuntime"
       :allow-complete="false"
       mode="intervention"
       @completed="load"
@@ -92,15 +99,25 @@
 
 <script setup lang="ts">
 import type { TaskQuery, UserSummary, WorkflowTask } from '@namewta/domain-workflow';
-import { computed, reactive, ref } from 'vue';
+import { computed, onBeforeUnmount, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { WorkflowWebRuntime } from '../runtime';
+import type { WorkflowTaskWebRuntime } from './registration';
 import ProcessActionDialog from '../components/ProcessActionDialog.vue';
 import UserSelect from '../components/UserSelect.vue';
 import { createUrgePayload } from '../runtime-actions';
 
 type Mode = 'waiting' | 'finished' | 'copy' | 'all-waiting';
-const props = defineProps<{ mode: Mode; runtime: WorkflowWebRuntime }>();
+const props = defineProps<{
+  mode: Mode;
+  runtime: WorkflowWebRuntime | WorkflowTaskWebRuntime;
+  participantOnly?: boolean;
+}>();
+const managementRuntime = computed(() => ('fileUpload' in props.runtime ? props.runtime : undefined));
+let generation = 0;
+onBeforeUnmount(() => {
+  generation++;
+});
 const router = useRouter();
 const query = reactive<TaskQuery>({ pageNum: 1, pageSize: 10, flowName: '', nodeName: '' });
 const rows = ref<WorkflowTask[]>([]);
@@ -116,7 +133,7 @@ const urgeTasks = ref<WorkflowTask[]>([]);
 const processActions = ref<InstanceType<typeof ProcessActionDialog>>();
 const userSelect = ref<InstanceType<typeof UserSelect>>();
 const assigneeSelect = ref<InstanceType<typeof UserSelect>>();
-const canFilterUsers = computed(() => props.mode !== 'copy');
+const canFilterUsers = computed(() => props.mode !== 'copy' && !props.participantOnly);
 const isActionable = computed(() => props.mode === 'waiting');
 
 const loaders = {
@@ -127,6 +144,7 @@ const loaders = {
 };
 
 async function load() {
+  const current = ++generation;
   loading.value = true;
   failure.value = '';
   try {
@@ -135,12 +153,13 @@ async function load() {
         ? props.runtime.service.pageAllTaskFinished
         : loaders[props.mode];
     const response = await loader(query);
+    if (current !== generation) return;
     rows.value = response.data?.rows ?? [];
     total.value = response.data?.total ?? 0;
   } catch (error: unknown) {
-    failure.value = error instanceof Error ? error.message : '任务查询失败';
+    if (current === generation) failure.value = error instanceof Error ? error.message : '任务查询失败';
   } finally {
-    loading.value = false;
+    if (current === generation) loading.value = false;
   }
 }
 
@@ -157,10 +176,24 @@ function filterUsers(users: UserSummary[]) {
   search();
 }
 function openTask(row: unknown) {
-  const task = row as WorkflowTask;
+  if (!row || typeof row !== 'object') return;
+  const task = rows.value.find(item => item.id === Reflect.get(row, 'id'));
+  if (!task) return;
+  const taskId = props.mode === 'finished' ? task.taskId : (task.taskId ?? task.id);
+  if (!taskId) return props.runtime.error('当前记录缺少原始任务编号，无法查看审核资料');
+  if ('openWorkflowForm' in props.runtime && props.runtime.openWorkflowForm) {
+    void props.runtime.openWorkflowForm({ ...task, taskId }, isActionable.value);
+    return;
+  }
+  const target = router.resolve({ path: task.formPath });
+  if (
+    !task.formPath.startsWith('/') ||
+    !target.matched.some(record => record.name && !record.path.includes(':pathMatch'))
+  )
+    return props.runtime.error('当前客户端未配置此任务的办理页面');
   void router.push({
     path: task.formPath,
-    query: { id: task.businessId, taskId: String(task.id), type: isActionable.value ? 'approval' : 'view' }
+    query: { id: task.businessId, taskId: String(taskId), type: isActionable.value ? 'approval' : 'view' }
   });
 }
 function openUrge(tasks: readonly unknown[]) {

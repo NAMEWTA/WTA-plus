@@ -1681,6 +1681,25 @@ create table sso_authorization_code (
     key idx_sso_authorization_code_expire (expire_time)
 ) engine=innodb comment='SSO 一次性授权码';
 
+-- 工作流实例节点办理客户端快照：项目自有，不修改 WarmFlow 第三方表。
+CREATE TABLE flow_instance_node_client (
+    instance_node_client_id bigint NOT NULL COMMENT '实例节点客户端主键',
+    instance_id bigint NOT NULL COMMENT '流程实例ID',
+    node_code varchar(100) NOT NULL COMMENT '定义版本中的节点编码',
+    client_pk bigint NOT NULL COMMENT '办理客户端主键',
+    applicant_node tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否申请人节点',
+    version int NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+    create_dept bigint DEFAULT NULL COMMENT '创建部门',
+    create_by bigint DEFAULT NULL COMMENT '创建人',
+    create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_by bigint DEFAULT NULL COMMENT '更新人',
+    update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    del_flag char(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除标识',
+    PRIMARY KEY (instance_node_client_id),
+    UNIQUE KEY uk_flow_instance_node_client (instance_id, node_code),
+    KEY idx_flow_node_client_scope (client_pk, instance_id, node_code)
+) ENGINE=InnoDB COMMENT='流程实例节点办理客户端快照';
+
 CREATE TABLE test_demo
 (
     id          bigint(0)    NOT NULL COMMENT '主键',
@@ -1716,3 +1735,79 @@ CREATE TABLE test_tree
     PRIMARY KEY (id) USING BTREE,
     KEY idx_test_tree_parent_id (parent_id)
 ) ENGINE = InnoDB COMMENT = '测试树表';
+
+-- NAMEWTA-OIDC-DDL-001
+-- OIDC 应用与一次性凭据事实；新环境完整初始化，已有环境只应用版本差异。
+create table oidc_application (
+    application_id bigint not null comment '第三方应用主键',
+    name varchar(128) not null comment '应用显示名称',
+    client_id varchar(100) character set ascii collate ascii_bin not null comment '不可变协议客户端标识',
+    client_secret_hash varchar(100) not null comment '客户端密钥BCrypt摘要',
+    redirect_uris_json text not null comment '精确登录回调地址JSON数组',
+    post_logout_redirect_uris_json text not null comment '精确退出回调地址JSON数组',
+    allowed_fields_json text not null comment '允许发布的字段代码JSON数组',
+    client_authentication_method varchar(32) not null default 'client_secret_basic' comment '密钥认证方式',
+    pkce_required tinyint(1) not null default 1 comment '是否强制PKCE S256',
+    enabled tinyint(1) not null default 1 comment '是否启用应用',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (application_id),
+    unique key uk_oidc_application_client (client_id)
+) engine=InnoDB default charset=utf8mb4 comment='OIDC第三方应用';
+
+create table oidc_subject (
+    subject_id bigint not null comment '身份映射主键',
+    user_id bigint not null comment '权威WTA账户主键',
+    subject varchar(64) character set ascii collate ascii_bin not null comment '不可变且不复用的协议用户标识',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (subject_id),
+    unique key uk_oidc_subject_user (user_id),
+    unique key uk_oidc_subject_value (subject)
+) engine=InnoDB default charset=utf8mb4 comment='OIDC稳定用户标识映射';
+
+create table oidc_authorization (
+    authorization_id bigint not null comment '授权事实主键',
+    framework_id varchar(100) character set ascii collate ascii_bin not null comment '协议框架授权标识',
+    application_id bigint not null comment '授权所属第三方应用',
+    user_id bigint not null comment '授权WTA账户',
+    session_hash char(64) character set ascii collate ascii_bin not null comment '中央会话标识SHA256摘要',
+    subject varchar(64) character set ascii collate ascii_bin not null comment '协议用户标识',
+    allowed_fields_json text not null comment '授权时允许字段快照JSON',
+    authorized_scopes varchar(300) not null comment '已批准的协议范围',
+    status varchar(16) not null comment '授权状态ACTIVE有效PENDING待激活REVOKED已撤销',
+    code_hash char(64) character set ascii collate ascii_bin default null comment '授权码SHA256摘要',
+    code_expires_at datetime default null comment '授权码到期时间',
+    code_consumed tinyint(1) not null default 0 comment '授权码是否已原子消费',
+    access_token_hash char(64) character set ascii collate ascii_bin default null comment '访问令牌SHA256摘要',
+    access_expires_at datetime default null comment '访问令牌到期时间',
+    id_token_hash char(64) character set ascii collate ascii_bin default null comment '身份令牌SHA256摘要',
+    authorization_json longtext not null comment 'AES-GCM认证加密的完整协议状态',
+    expires_at datetime not null comment '授权清理到期时间',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (authorization_id),
+    unique key uk_oidc_authorization_framework (framework_id),
+    unique key uk_oidc_authorization_code (code_hash),
+    unique key uk_oidc_authorization_access (access_token_hash),
+    key idx_oidc_authorization_id_token (id_token_hash),
+    key idx_oidc_authorization_application (application_id,status),
+    key idx_oidc_authorization_session (session_hash,status),
+    key idx_oidc_authorization_user (user_id,status),
+    key idx_oidc_authorization_expiry (expires_at)
+) engine=InnoDB default charset=utf8mb4 comment='OIDC授权与凭据消费撤销事实';

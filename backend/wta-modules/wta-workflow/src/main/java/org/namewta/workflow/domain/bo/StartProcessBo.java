@@ -39,6 +39,10 @@ public class StartProcessBo implements Serializable {
      */
     private String handler;
 
+    /** 系统 Java 调用显式指定发起端；人工 HTTP 始终从登录会话推导。 */
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private Long initiatorClientPk;
+
     /**
      * 流程变量，前端会提交一个元素{'entity': {业务详情数据对象}}
      */

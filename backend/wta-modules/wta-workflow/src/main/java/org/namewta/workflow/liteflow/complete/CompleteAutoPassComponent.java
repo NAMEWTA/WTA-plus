@@ -34,6 +34,7 @@ import static org.namewta.workflow.common.constant.FlowConstant.*;
 @LiteflowComponent("completeAutoPass")
 public class CompleteAutoPassComponent extends NodeComponent {
 
+    private final org.namewta.workflow.service.impl.WorkflowClientScopeService clientScope;
     private final TaskService taskService;
     private final FlowTaskMapper flowTaskMapper;
 
@@ -62,7 +63,7 @@ public class CompleteAutoPassComponent extends NodeComponent {
             return;
         }
         for (FlowTask task : flowTaskList) {
-            if (task.getId().equals(taskId)) {
+            if (task.getId().equals(taskId) || !clientScope.isCurrentClient(task)) {
                 continue;
             }
             // 自动审批只处理当前登录人仍是办理人的后续任务，避免替其他候选人或并行分支误审批。

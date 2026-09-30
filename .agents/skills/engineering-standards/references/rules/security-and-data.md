@@ -10,6 +10,8 @@ Source: `repository-fact` (`AGENTS.md`, `engineering-standards`, `namewta-fullst
 
 Rule: 权限、路由、角色和会话始终限定当前 Client；缺少 Token `clientPk` 时拒绝而非回退全局数据；超管也不能跨 Client；前端筛选或隐藏不是授权边界。
 
+工作流的跨端指派是显式授权的独立合同：流程设计权限可通过专用指派目录选择目标 Client 的角色/用户，普通 RBAC 查询仍限当前 Client。人工节点的办理 Client 在实例启动时冻结；任务列表、详情和办理同时验证当前会话 Client 与任务资格，超管不绕过节点 Client。角色展开和指定用户都须满足目标 Client 登录域，不能通过切换线程登录上下文实现跨端。
+
 Verification: customization map review；跨 Client 负向测试；检查 mapper/service 查询同时包含用户与 Client 上下文。
 
 ### SEC-002 Client 标识语义

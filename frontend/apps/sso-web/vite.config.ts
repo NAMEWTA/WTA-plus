@@ -1,4 +1,5 @@
 import vue from '@vitejs/plugin-vue';
+import { readFile } from 'node:fs/promises';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
@@ -10,7 +11,12 @@ export default defineConfig(({ mode }) => {
       {
         name: 'sso-build-mode',
         apply: 'build',
-        generateBundle() {
+        async generateBundle() {
+          this.emitFile({
+            type: 'asset',
+            fileName: 'oidc-theme.css',
+            source: await readFile(new URL(import.meta.resolve('@namewta/web-kit-ui-element/theme.css')), 'utf8')
+          });
           this.emitFile({
             type: 'asset',
             fileName: 'build-mode.json',
@@ -25,6 +31,14 @@ export default defineConfig(({ mode }) => {
       port: Number(env.VITE_APP_PORT || 4176),
       open: false,
       proxy: {
+        '/oidc': {
+          target: env.VITE_SSO_API_PROXY || 'http://127.0.0.1:38888',
+          changeOrigin: true
+        },
+        '/.well-known': {
+          target: env.VITE_SSO_API_PROXY || 'http://127.0.0.1:38888',
+          changeOrigin: true
+        },
         '/sso': {
           target: env.VITE_SSO_API_PROXY || 'http://127.0.0.1:38888',
           changeOrigin: true

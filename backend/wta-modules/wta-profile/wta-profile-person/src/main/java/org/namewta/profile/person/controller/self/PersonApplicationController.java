@@ -3,6 +3,7 @@ package org.namewta.profile.person.controller.self;
 import jakarta.validation.Valid;
 
 import org.namewta.profile.person.domain.vo.PersonApplicationVo;
+import org.namewta.profile.person.domain.vo.PersonSelfSummaryVo;
 import org.namewta.profile.person.domain.bo.PersonApplicationSaveBo;
 import org.namewta.profile.person.domain.bo.PersonApplicationSubmitBo;
 import org.namewta.profile.person.usecase.PersonApplicationUseCase;
@@ -60,4 +61,12 @@ public class PersonApplicationController {
     public R<PersonApplicationVo> submit(@Valid @RequestBody PersonApplicationSubmitBo command) {
         return R.ok(service.submit(LoginHelper.getUserId(), command.expectedVersion()));
     }
+    /** 查询当前登录人的认证摘要，用户编号不接受请求参数。 */
+    @io.swagger.v3.oas.annotations.Operation(operationId = "getPersonSelfSummary")
+    @GetMapping("/summary")
+    @SaCheckPermission("profile:person:apply")
+    public R<PersonSelfSummaryVo> summary() {
+        return R.ok(service.summary(LoginHelper.getUserId()));
+    }
+
 }

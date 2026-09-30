@@ -68,7 +68,7 @@ rg --files backend -g '**/src/test/java/**/*.java' -g '!**/target/**'
 
 ## 发布产物合同
 
-`release-manage.sh` 通过 `release-state.mjs` 从同一干净 Git 归档完成全量构建，生成 `builds/versions/<ID>` 不可变目录及逐文件来源/摘要 manifest。局部构建仅写 development；显式 stage 校验后一次替换 current 符号链接。docker-manage 每次命令固定版本路径，显式重建容器；数据、日志、证书留在独立运行目录。运行时多容器切换不承诺原子性，源 SQL 仍只有六份基座。三端 Origin 和 callback/authorize 矩阵进入 manifest，消费时拒绝运行参数漂移；生产 SSO 使用独立 hostname/HTTPS 入口及根 /sso API，不进入业务 LB。SSO_WEB_BASE_PATH由版本prefix派生，真实AuthController的clientContext包含同一base授权地址。
+`release-manage.sh` 通过 `release-state.mjs` 从同一干净 Git 归档完成全量构建，生成 `builds/versions/<ID>` 不可变目录及逐文件来源/摘要 manifest。局部构建仅写 development；显式 stage 校验后一次替换 current 符号链接。docker-manage 每次命令固定版本路径，显式重建容器；数据、日志、证书留在独立运行目录。运行时多容器切换不承诺原子性，源 SQL 仍只有六份基座。三端 Origin、callback/authorize 矩阵和独立 CORS 选择进入 manifest，消费时拒绝运行参数漂移；CORS 支持精确 HTTP(S) Origin、主机/IP/端口通配及 `*` 混写，未配置则采用三端 Origin。生产 SSO 使用独立 hostname/HTTPS 入口及根 /sso API，不进入业务 LB。SSO_WEB_BASE_PATH由版本prefix派生，真实AuthController的clientContext包含同一base授权地址。
 
 ## 未知与冲突
 
@@ -82,6 +82,8 @@ SSO 发布验证入口：`bash scripts/sso-hard-e2e.sh --release-origin --eviden
 
 Admin/Home 浏览器传输统一为 HTTPS 上的普通 JSON/二进制合同；不再包含共享响应私钥、ECB 包装、crypto-browser 适配器或后端 API 加解密过滤器。机器 HMAC、OSS 签名与数据库字段加密保持各自合同。前后端须使用同一发布版本，切换与恢复需先隔离流量，不承诺跨容器原子热更新。
 
-当前 AI 退出边界：wta-ai / wta-common-ai 仅保留 Maven 占位；三个可部署 Java 应用为 Admin、Monitor、SnailJob。六份 SQL 中 40-cde-ai.sql 仅 SET NAMES utf8mb4;；新业务库 104 张表，旧 AI 数据保留，不重放基座或迁移。
+当前 AI 退出边界：wta-ai / wta-common-ai 仅保留 Maven 占位；三个可部署 Java 应用为 Admin、Monitor、SnailJob。六份 SQL 中 40-cde-ai.sql 仅 SET NAMES utf8mb4;；新业务库 108 张表（含流程实例节点 Client 快照），旧 AI 数据保留，不重放基座或迁移。
 
 AI 平台项目归属（2026-09-20 用户决定）：完整 AI Agent 平台已转由独立公开仓库 [NAMEWTA/wta-ai](https://github.com/NAMEWTA/wta-ai) 承接，拥有自己的前后端、release-artifacts 与 scripts；不再规划于本仓 backend/wta-extend。本仓现有 Java AI Maven 占位保持原状，WTA-plus 可作为外部 API 消费者；独立平台的数据库、工程规范与发布门禁由新项目维护。
+
+第三方 OIDC 能力由 wta-oidc 组装，标准端点位于独立 SSO Origin 的 `/oidc/*` 和根 Discovery；`/oidc/admin/**` 仍受 Admin Client 权限保护。配置以 `OIDC_*` 部署变量注入，密钥来自运行目录，不携带默认私钥。三个前端 App 共用 ui-element 主题，第一方 `/sso/oauth2/*` 合同继续保留。完整验收状态见当前任务 `docs/oidc-ui/worklog.md`，不能把代码存在等同已部署。

@@ -38,7 +38,8 @@ public class StartPrepareRequestComponent extends NodeComponent {
         context.setBizExt(context.getStartProcessBo().getBizExt());
 
         Map<String, Object> variables = context.getVariables();
-        variables.put(INITIATOR, LoginHelper.getUserIdStr());
+        variables.put(INITIATOR, StringUtils.isBlank(context.getStartProcessBo().getHandler())
+            ? LoginHelper.getUserIdStr() : context.getStartProcessBo().getHandler());
         variables.put(INITIATOR_DEPT_ID, LoginHelper.getDeptId());
         variables.put(BUSINESS_ID, businessId);
 

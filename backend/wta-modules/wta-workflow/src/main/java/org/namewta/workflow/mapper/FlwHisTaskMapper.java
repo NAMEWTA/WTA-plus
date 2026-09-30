@@ -10,6 +10,7 @@ import org.dromara.warm.flow.orm.entity.FlowHisTask;
 import org.dromara.warm.flow.orm.entity.FlowInstance;
 import org.namewta.workflow.common.enums.TaskStatusEnum;
 import org.namewta.workflow.domain.FlowInstanceBizExt;
+import org.namewta.workflow.domain.FlowInstanceNodeClient;
 import org.namewta.workflow.domain.bo.FlowTaskBo;
 import org.namewta.workflow.domain.vo.FlowHisTaskVo;
 
@@ -34,8 +35,8 @@ public interface FlwHisTaskMapper extends BaseMapperPlus<FlowHisTask, FlowHisTas
      */
     default Page<FlowHisTaskVo> getListFinishTask(Page<FlowHisTaskVo> page, FlowTaskBo bo, List<String> categoryIds, String userId) {
         Map<String, Object> params = bo.getParams();
-        return QueryBuilder.lambdaJoin("a", FlowHisTask.class)
-            .select(FlowHisTask::getId, FlowHisTask::getNodeCode, FlowHisTask::getNodeName,
+        return selectJoinPage(page, FlowHisTaskVo.class, QueryBuilder.lambdaJoin("a", FlowHisTask.class)
+            .select(FlowHisTask::getId, FlowHisTask::getTaskId, FlowHisTask::getNodeCode, FlowHisTask::getNodeName,
                 FlowHisTask::getCooperateType, FlowHisTask::getApprover, FlowHisTask::getCollaborator,
                 FlowHisTask::getNodeType, FlowHisTask::getTargetNodeCode, FlowHisTask::getTargetNodeName,
                 FlowHisTask::getDefinitionId, FlowHisTask::getInstanceId)
@@ -49,6 +50,9 @@ public interface FlwHisTaskMapper extends BaseMapperPlus<FlowHisTask, FlowHisTas
             .leftJoin(FlowInstance.class, "b", FlowInstance::getId, FlowHisTask::getInstanceId)
             .leftJoin(FlowDefinition.class, "c", FlowDefinition::getId, FlowHisTask::getDefinitionId)
             .leftJoin(FlowInstanceBizExt.class, "biz", FlowInstanceBizExt::getInstanceId, FlowInstance::getId)
+            .leftJoin(FlowInstanceNodeClient.class, "nc", FlowInstanceNodeClient::getInstanceId, FlowHisTask::getInstanceId)
+            .apply(true, "nc.node_code = a.node_code")
+            .eq("nc", FlowInstanceNodeClient::getClientPk, params.get("workflowClientPk"))
             .in("a", FlowHisTask::getNodeType, List.of(1, 3, 4))
             .ne("a", FlowHisTask::getFlowStatus, TaskStatusEnum.COPY.getStatus())
             .likeIfText("a", FlowHisTask::getNodeName, bo.getNodeName())
@@ -62,7 +66,7 @@ public interface FlwHisTaskMapper extends BaseMapperPlus<FlowHisTask, FlowHisTas
             .eqIfText("a", FlowHisTask::getApprover, userId)
             .orderByDesc("a", FlowHisTask::getCreateTime)
             .orderByDesc("a", FlowHisTask::getUpdateTime)
-            .page(page, FlowHisTaskVo.class);
+            .build());
     }
 
 }

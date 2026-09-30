@@ -29,6 +29,8 @@ class ClientAccessPathsTest {
         assertTrue(ClientAccessPaths.allows(resolved, "/system/menu/getRouters"));
         assertTrue(ClientAccessPaths.allows(resolved, "/auth/logout"));
         assertTrue(ClientAccessPaths.allows(resolved, "/profile/person/application"));
+        assertTrue(ClientAccessPaths.allows(resolved, "/workflow/task/pageByTaskWait"));
+        assertFalse(ClientAccessPaths.allows(resolved, "/workflow/definition/list"));
         assertFalse(ClientAccessPaths.allows(resolved, "/system/client/list"));
         assertFalse(ClientAccessPaths.allows(resolved, "/system/user/list"));
     }

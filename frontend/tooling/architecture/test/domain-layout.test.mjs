@@ -5,12 +5,13 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const workspaceRoot = join(dirname(fileURLToPath(import.meta.url)), '../../..');
-const canonicalDomains = ['admin', 'demo', 'notify', 'profile', 'system', 'third', 'workflow'];
+const canonicalDomains = ['admin', 'demo', 'notify', 'oidc', 'profile', 'system', 'third', 'workflow'];
 const removedDomains = ['ai', 'identity-access', 'system-admin', 'devtools', 'operations', 'gen'];
 const backendModules = {
   admin: 'wta-admin',
   demo: 'wta-demo',
   notify: 'wta-notify',
+  oidc: 'wta-oidc',
   profile: 'wta-profile',
   system: 'wta-system',
   third: 'wta-third',

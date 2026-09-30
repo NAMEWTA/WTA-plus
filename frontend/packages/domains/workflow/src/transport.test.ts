@@ -5,6 +5,7 @@ describe('workflow OpenAPI transport boundary', () => {
   it('converts every non-isomorphic transport field without leaking generated-only fields', () => {
     const transport: WorkflowTaskTransport = {
       id: 1,
+      taskId: 42,
       instanceId: 2,
       definitionId: 3,
       flowCode: 'leave',
@@ -21,6 +22,7 @@ describe('workflow OpenAPI transport boundary', () => {
 
     expect(projected).toMatchObject({
       id: 1,
+      taskId: 42,
       instanceId: '2',
       definitionId: '3',
       flowCode: 'leave',

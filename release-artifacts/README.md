@@ -119,7 +119,7 @@ bash release-artifacts/scripts/docker-manage.sh up infrastructure --profile rust
 
 每条 docker-manage 命令先解析并校验一次 current，整个命令固定该版本的 Compose、镜像上下文和只读挂载；`up` 显式使用 `--build --force-recreate`，应用镜像标签包含版本 ID。已运行容器的 bind mount 不会自动跟随指针。多服务的运行时升级不是原子事务；失败需选择旧版本并重建受影响服务，再验证健康。
 
-运行前缀及 Origin 必须与 manifest 一致，否则 Docker 操作前拒绝。docker-manage 从固定版本导出精确 `WEB_CORS_ALLOWED_ORIGINS` 和 `SSO_WEB_ORIGIN`，后端 Compose 传入配置；`SSO_WEB_BASE_PATH` 从固定版本的 SSO prefix 派生为 `/<prefix>/`，真实 `/auth/client/context` 将它与独立 Origin 组合为授权页面地址。该 base 不进入 CORS Origin。`TRUSTED_PROXY_CIDRS` 仍需按真实拓扑显式配置，不能猜测可信网段。`RELEASE_ENV` 默认 `prod`，`RELEASE_ENV_FILE` 指定运行 env。持久数据默认仍位于发布根的 `docker/runtime`，相对 `NAMEWTA_DATA_ROOT` 也锚定发布根的 docker 目录；Nginx 日志在其 `nginx/log/` 下。证书由 `NAMEWTA_CERT_ROOT` 指定，默认发布根的 `docker/frontend/nginx/cert`。这些运行目录不进入不可变版本，不随版本切换迁移。
+运行前缀、App Origin 及 CORS 配置必须与 manifest 一致，否则 Docker 操作前拒绝。`WEB_CORS_ALLOWED_ORIGINS` 支持精确 HTTP(S) Origin、主机/IP 通配和 `*` 混写，任意端口写 `:*` 或 `:[*]`；内网 env 示例为 `*`，未配置则采用三 App Origin。构建将选择写入 `corsAllowedOrigins`，docker-manage 从固定版本原样导出，后端 Compose 传入配置。旧 schema v2 manifest 没有此字段时继续采用原 App Origin 矩阵。实际 App 和 `SSO_WEB_ORIGIN` 地址仍为精确 Origin；`SSO_WEB_BASE_PATH` 从固定版本的 SSO prefix 派生为 `/<prefix>/`，真实 `/auth/client/context` 将它与独立 Origin 组合为授权页面地址。该 base 不进入 CORS Origin。`TRUSTED_PROXY_CIDRS` 仍需按真实拓扑显式配置，不能猜测可信网段。`RELEASE_ENV` 默认 `prod`，`RELEASE_ENV_FILE` 指定运行 env。持久数据默认仍位于发布根的 `docker/runtime`，相对 `NAMEWTA_DATA_ROOT` 也锚定发布根的 docker 目录；Nginx 日志在其 `nginx/log/` 下。证书由 `NAMEWTA_CERT_ROOT` 指定，默认发布根的 `docker/frontend/nginx/cert`。这些运行目录不进入不可变版本，不随版本切换迁移。
 
 不要使用 `docker compose down -v`。MySQL、Redis、MinIO、RustFS、Loki、Grafana 和 Prometheus 数据均需按 `NAMEWTA_DATA_ROOT` 单独备份。
 
@@ -224,4 +224,6 @@ TTL 会即时生效；其他允许键只记录为需重启，`nacos.config.*` �
 
 ## 外部依赖
 
-Snail AI 服务及其 Docling/PaddleOCR 接入已退出；两份 Java Maven 占位保留。40-cde-ai.sql 仅声明字符集，六份 SQL 初始化新业务库104张表，已有 AI 数据保留且不迁移，禁止重放基座。SMTP、短信、第三方 OSS 等集成同样由目标环境配置提供。
+第三方 OIDC 默认关闭；持久签名密钥、状态加密密钥、固定 HTTPS Issuer 和已有数据库升级注意事项见[统一登录部署说明](../docs/oidc-ui/README.md)。
+
+Snail AI 服务及其 Docling/PaddleOCR 接入已退出；两份 Java Maven 占位保留。40-cde-ai.sql 仅声明字符集，六份 SQL 初始化新业务库107张表，已有 AI 数据保留且不迁移，禁止重放基座。SMTP、短信、第三方 OSS 等集成同样由目标环境配置提供。

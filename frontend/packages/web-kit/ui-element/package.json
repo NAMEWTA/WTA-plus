@@ -1,0 +1,37 @@
+{
+  "name": "@namewta/web-kit-ui-element",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./auth-panel": "./src/AuthPanel.vue",
+    "./status-panel": "./src/StatusPanel.vue",
+    "./theme": "./src/theme.ts",
+    "./theme.css": "./src/theme.css",
+    "./app-shell": "./src/AppShell.vue",
+    "./topbar-frame": "./src/TopbarFrame.vue",
+    "./sidebar-frame": "./src/SidebarFrame.vue",
+    "./shell": "./src/shell.ts",
+    "./shell.css": "./src/shell.css",
+    "./icon": "./src/SvgIcon.vue",
+    "./icons": "./src/iconRegistry.ts"
+  },
+  "scripts": {
+    "build": "vue-tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint src",
+    "test": "vitest run src",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "vue": "catalog:",
+    "@iconify/vue": "^5.0.1",
+    "@iconify-json/tabler": "1.2.3"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "4.1.10",
+    "vue-tsc": "^3.3.8"
+  }
+}

@@ -29,7 +29,7 @@
 | ----------------------------- | ------------------------------------- | ------------------------------------------------------------------ |
 | 页面 Origin                     | `http://127.0.0.1:5177`、`5175`、`4176` | 浏览器页面的协议、主机和端口。`localhost` 和 `127.0.0.1` 是不同来源，路径和结尾 `/` 不算 Origin |
 | 业务接口前缀                        | `/dev-api`，生产是 `/<前缀>/prod-api`       | 只到 Spring Boot。浏览器不把这个前缀写成对象存储地址                                   |
-| `WEB_CORS_ALLOWED_ORIGINS`    | 公开模板默认三个 `127.0.0.1` 入口               | 只决定浏览器能不能读取后端的跨源响应。接口仍要登录和权限                                       |
+| `WEB_CORS_ALLOWED_ORIGINS`    | 内网开发与发布样例为 `*`；发布未配置时取三个 App Origin | 只决定浏览器能不能读取后端的跨源响应。接口仍要登录和权限                                       |
 | `SSO_WEB_ORIGIN`              | 发布样例是独立的 SSO 主机                       | SSO 认人页的来源。SSO 路径前缀不放进这条 CORS 名单                                   |
 | `MINIO_API_CORS_ALLOW_ORIGIN` | 样例默认 `*`                              | 对象存储自己的浏览器来源白名单。上传时浏览器会直接访问它                                       |
 | `sys_oss_config.endpoint`     | 基座先写本机占位，初始化后改成 env 里的值               | 后端连对象存储，也是预签名 URL 里的主机。浏览器必须能够访问它                                  |
@@ -38,9 +38,11 @@
 
 应用 CORS 和对象存储 CORS 要分别改。改了 `WEB_CORS_ALLOWED_ORIGINS`，不会自动放行浏览器向 MinIO 的 PUT。
 
-生产的 `WEB_CORS_ALLOWED_ORIGINS` 必须是逗号分隔的精确 `https://主机[:端口]`。不能是 `*`、不能带路径、不能写通配子域，配错会导致后端启动失败。本机被 Git 忽略的 `application-local.yml` 如果使用单独的 `*`，那只属于当前开发进程，不能抄进生产 env。公开模板 `application-local.example.yml` 列出的是 `http://127.0.0.1:5177,http://127.0.0.1:5175,http://127.0.0.1:4176`。
+`WEB_CORS_ALLOWED_ORIGINS` 在所有 profile 中都支持逗号分隔的精确 Origin、主机/IP 通配和 `*` 混写，例如 `http://127.0.0.1:5177,http://192.168.*:*,https://*.example.test:8443`；`*` 表示任意 HTTP(S) 来源，`:*` 与 `:[*]` 都表示任意端口。不填写路径或结尾 `/`；`null`、`file:` 和无效端口仍不属于有效配置。后端回显实际请求 Origin，因此支持携带凭证的请求。公开 `application-local.example.yml` 和发布 `.env.example` 均给出内网 `*` 示例。
 
-生产 Origin 必须是 HTTPS。SSO 和两个业务应用必须使用不同主机名，只改端口不能隔离 Cookie。`TRUSTED_PROXY_CIDRS` 按真实网关网段填写，不要猜。
+发布构建将选择记录为 manifest 的 `corsAllowedOrigins`，运行 env 必须与该记录一致；docker-manage 将记录传给后端，不再用三 App 地址覆盖显式选择。留空或省略此配置时，发布脚本采用三个 App 的精确 Origin。调整已发布环境的 CORS 需重新构建并选择对应版本。
+
+实际 App 入口 `ADMIN_WEB_ORIGIN`、`HOME_WEB_ORIGIN`、`SSO_WEB_ORIGIN` 仍填写精确地址，生产入口必须是 HTTPS。SSO 和两个业务应用必须使用不同主机名，只改端口不能隔离 Cookie。`TRUSTED_PROXY_CIDRS` 按真实网关网段填写，不要猜。
 
 ## 上生产时 OSS 要注意什么
 
@@ -103,5 +105,4 @@
 | 直传策略和清理开关      | `backend/wta-admin/src/main/resources/application.yml`                                                                        |
 | 本机 CORS 模板     | `backend/wta-admin/src/main/resources/application-local.example.yml`                                                          |
 | 三个前端的开发端口和代理   | `frontend/apps/admin-web/.env.development`、`frontend/apps/home-web/.env.development`、`frontend/apps/sso-web/.env.development` |
-
 

@@ -18,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 通用配置
@@ -60,13 +59,9 @@ public class ResourcesConfig implements WebMvcConfigurer {
     public CorsFilter corsFilter(CorsProperties corsProperties) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(corsProperties.getAllowCredentials());
-        if (corsProperties.allowsAnyHttpOrigin()) {
-            // 浏览器不允许 Access-Control-Allow-Origin: * 与凭证同时出现。
-            // 只匹配 HTTP(S)，因此 null 和 file: 仍然拒绝。
-            config.setAllowedOriginPatterns(List.of("http://*", "https://*"));
-        } else {
-            config.setAllowedOrigins(corsProperties.validatedOrigins());
-        }
+        config.setAllowedOrigins(corsProperties.validatedOrigins());
+        // Origin patterns 回显实际来源，因此通配规则也能与凭证请求并用。
+        config.setAllowedOriginPatterns(corsProperties.validatedOriginPatterns());
         config.setAllowedHeaders(corsProperties.getAllowedHeaders());
         config.setAllowedMethods(corsProperties.getAllowedMethods());
         config.setMaxAge(corsProperties.getMaxAge());
@@ -94,8 +89,9 @@ public class ResourcesConfig implements WebMvcConfigurer {
      * @return 响应增强处理器
      */
     @Bean
-    public ResponseEnhancementAdvice responseEnhancementAdvice(JsonValueEnhancer jsonValueEnhancer) {
-        return new ResponseEnhancementAdvice(jsonValueEnhancer);
+    public ResponseEnhancementAdvice responseEnhancementAdvice(JsonValueEnhancer jsonValueEnhancer,
+            org.springframework.beans.factory.ObjectProvider<org.namewta.common.core.service.HttpProtocolPolicy> policies) {
+        return new ResponseEnhancementAdvice(jsonValueEnhancer, policies.orderedStream().toList());
     }
 
 }

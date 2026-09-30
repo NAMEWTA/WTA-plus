@@ -67,6 +67,17 @@ class PasswordMigrationUnitTest {
     }
 
     @Test
+    void initializationRemarksDescribeCurrentPolicyAndRetiredCompatibilityKey() throws Exception {
+        String dml = readDml();
+        assertTrue(dml.contains("用户管理-旧版初始密码（已停用）"));
+        assertTrue(dml.contains("本值不是当前账号初始密码"));
+        assertTrue(dml.contains("RANDOM 每次按 generator.length 随机生成（默认12位）"));
+        assertTrue(dml.contains("FIXED 使用 fixedValue，且须满足同一策略"));
+        assertTrue(dml.contains("修改策略不改变已有账号密码"));
+        assertFalse(dml.contains("null, null, '初始化密码 123456'"));
+    }
+
+    @Test
     void documentsPreflightRepeatRollbackAndForwardCompensation() throws Exception {
         String migration = migration(readDml());
 
@@ -81,7 +92,9 @@ class PasswordMigrationUnitTest {
     private static String migration(String dml) {
         int marker = dml.indexOf(MARKER);
         assertTrue(marker >= 0, "missing password migration marker");
-        return dml.substring(marker);
+        int end = dml.indexOf(MARKER + "-END", marker);
+        assertTrue(end > marker, "missing password migration end marker");
+        return dml.substring(marker, end);
     }
 
     private static String readDml() throws IOException {

@@ -99,7 +99,7 @@ async function login(page: Page, app: App) {
 }
 
 async function logoutUI(page: Page, app: App) {
-  if (app.kind === 'home') await page.getByRole('button', { name: '退出', exact: true }).click();
+  if (app.kind === 'home') { await page.getByRole('button', { name: '账户菜单' }).click(); await page.getByRole('menuitem', { name: '退出登录', exact: true }).click(); }
   else {
     await page.locator('.avatar-wrapper').click();
     await page.getByRole('menuitem', { name: /退出/ }).click();

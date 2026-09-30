@@ -8,51 +8,75 @@
       </div>
       <el-tag v-if="form.status" :type="statusType">{{ statusText }}</el-tag>
     </header>
-    <el-form :disabled="locked || materialBusy || materialPending || !editable" :model="form" label-position="top" class="verification-form">
-      <el-divider content-position="left">企业主体</el-divider>
-      <div class="form-grid">
-        <el-form-item label="企业名称"><el-input v-model="form.enterpriseName" /></el-form-item>
-        <el-form-item label="统一信用代码"><el-input v-model="form.unifiedCreditCode" /></el-form-item>
-        <el-form-item label="企业类型"><el-input v-model="form.enterpriseType" /></el-form-item>
-        <el-form-item label="成立日期"><el-date-picker v-model="form.establishedDate" type="date" value-format="YYYY-MM-DD" /></el-form-item>
-        <el-form-item label="营业期限起"><el-date-picker v-model="form.businessTermFrom" type="date" value-format="YYYY-MM-DD" clearable /></el-form-item>
-        <el-form-item label="营业期限止"><el-date-picker v-model="form.businessTermUntil" type="date" value-format="YYYY-MM-DD" clearable /></el-form-item>
-        <el-form-item label="注册地址"><el-input v-model="form.registeredAddress" /></el-form-item>
-        <el-form-item label="经营范围"><el-input v-model="form.businessScope" type="textarea" :rows="2" /></el-form-item>
-      </div>
-      <el-divider content-position="left">法定代表人</el-divider>
-      <div class="form-grid">
-        <el-form-item label="法定代表人"><el-input v-model="form.legalRepresentativeName" /></el-form-item>
-        <el-form-item label="证件类型"><el-select v-model="form.legalDocumentTypeCode" filterable><el-option v-for="item in documentTypes" :key="item.value" :label="item.label" :value="item.value" /></el-select></el-form-item>
-        <el-form-item label="证件号码"><el-input v-model="form.legalDocumentNumber" /></el-form-item>
-        <el-form-item label="经办人是法定代表人"><el-switch v-model="form.handlerIsLegalRepresentative" /></el-form-item>
-      </div>
-      <el-divider content-position="left">联系信息</el-divider>
-      <div class="form-grid">
-        <el-form-item label="联系人"><el-input v-model="form.contactName" /></el-form-item>
-        <el-form-item label="联系电话"><el-input v-model="form.contactPhone" /></el-form-item>
-        <el-form-item label="企业邮箱"><el-input v-model="form.email" /></el-form-item>
-        <el-form-item label="注册资本"><el-input-number v-model="form.registeredCapital" :min="0" :precision="2" /></el-form-item>
-        <el-form-item label="行业编码"><el-input v-model="form.industryCode" /></el-form-item>
-        <el-form-item label="企业网站"><el-input v-model="form.website" /></el-form-item>
-      </div>
-    </el-form>
-    <SelfMaterials v-if="loaded" ref="materialSection" :runtime="runtime" profile-type="ENTERPRISE" :owner-id="application?.enterpriseApplicationId" :document-type-code="'*'" :handler-is-legal-representative="form.handlerIsLegalRepresentative" :editable="editable" :locked="locked" @busy="materialBusy = $event" @pending="materialPending = $event" />
+    <el-alert v-if="returnReason" type="warning" :title="`退回原因：${returnReason}`" :closable="false" show-icon />
+    <el-card v-if="certified && !application" shadow="never" class="verification-form">
+      <p class="certified-time">认证完成时间：{{ certified.verifiedAt || '—' }}</p>
+      <IdentityDetails profile-type="ENTERPRISE" :identity="certified.identity" />
+    </el-card>
+    <el-card v-else shadow="never" class="verification-form">
+      <EnterpriseIdentityForm
+        :model="form"
+        :disabled="locked || materialBusy || materialPending || !editable"
+        @update:model="Object.assign(form, $event)"
+      >
+        <template #legal-extra>
+          <el-col :span="24">
+            <el-form-item label="经办人是法定代表人">
+              <el-switch v-model="form.handlerIsLegalRepresentative" />
+            </el-form-item>
+          </el-col>
+        </template>
+      </EnterpriseIdentityForm>
+    </el-card>
+    <SelfMaterials
+      v-if="loaded && (!certified || application)"
+      ref="materialSection"
+      :runtime="runtime"
+      profile-type="ENTERPRISE"
+      :owner-id="application?.enterpriseApplicationId"
+      :document-type-code="'*'"
+      :handler-is-legal-representative="form.handlerIsLegalRepresentative"
+      :editable="editable"
+      :locked="locked"
+      @busy="materialBusy = $event"
+      @pending="materialPending = $event"
+    />
     <div v-if="editable" class="form-actions">
-      <el-button :loading="saving" :disabled="locked || materialBusy || materialPending || !loaded" @click="save">保存草稿</el-button>
-      <el-button type="primary" :loading="submitting" :disabled="locked || materialBusy || materialPending || !loaded" @click="submit">提交认证</el-button>
+      <el-button :loading="saving" :disabled="locked || materialBusy || materialPending || !loaded" @click="save">
+        保存草稿
+      </el-button>
+      <el-button
+        type="primary"
+        :loading="submitting"
+        :disabled="locked || materialBusy || materialPending || !loaded"
+        @click="submit"
+      >
+        提交认证
+      </el-button>
     </div>
+    <EnterpriseTransferPanel v-if="certified && !application" :runtime="runtime" @transferred="load" />
     <el-button v-if="!loaded && !loading" @click="load">重新加载申请</el-button>
   </main>
 </template>
 
 <script setup lang="ts">
 import type { EnterpriseApplication, EnterpriseIdentity } from '@namewta/domain-profile';
-import { computed, onMounted, reactive, ref } from 'vue';
+import type { EnterpriseCertificationSummary, CertificationStatus } from '@namewta/domain-profile';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import type { ProfileSelfWebRuntime } from './runtime';
+import EnterpriseIdentityForm from '../enterprise/EnterpriseIdentityForm.vue';
+import IdentityDetails from '../IdentityDetails.vue';
+import { certificationLabel } from './certification-status';
+import EnterpriseTransferPanel from './EnterpriseTransferPanel.vue';
 import SelfMaterials from './SelfMaterials.vue';
 
 const { runtime } = defineProps<{ runtime: ProfileSelfWebRuntime }>();
+const certified = ref<EnterpriseCertificationSummary['certifiedProfile']>(null);
+const returnReason = ref<string | null>(null);
+let active = true;
+onBeforeUnmount(() => {
+  active = false;
+});
 const loading = ref(false);
 const saving = ref(false);
 const submitting = ref(false);
@@ -62,12 +86,36 @@ const materialBusy = ref(false);
 const materialPending = ref(false);
 const materialSection = ref<InstanceType<typeof SelfMaterials>>();
 const locked = computed(() => loading.value || saving.value || submitting.value);
-const editable = computed(() => !form.status || ['DRAFT', 'BACK', 'CANCEL'].includes(form.status));
-const emptyIdentity = (): EnterpriseIdentity => ({ businessScope: '', businessTermFrom: '', businessTermUntil: '', contactName: '', contactPhone: '', email: '', enterpriseName: '', enterpriseType: '', establishedDate: '', industryCode: '', legalDocumentNumber: '', legalDocumentTypeCode: 'CN_RESIDENT_ID', legalRepresentativeName: '', registeredAddress: '', registeredCapital: 0, unifiedCreditCode: '', website: '' });
+const editable = computed(
+  () =>
+    (!certified.value || Boolean(application.value)) &&
+    (!form.status || ['UNVERIFIED', 'DRAFT', 'BACK', 'CANCEL'].includes(form.status))
+);
+const emptyIdentity = (): EnterpriseIdentity => ({
+  businessScope: '',
+  businessTermFrom: '',
+  businessTermUntil: '',
+  contactName: '',
+  contactPhone: '',
+  email: '',
+  enterpriseName: '',
+  enterpriseType: '',
+  establishedDate: '',
+  industryCode: '',
+  legalDocumentNumber: '',
+  legalDocumentTypeCode: 'CN_RESIDENT_ID',
+  legalRepresentativeName: '',
+  registeredAddress: '',
+  registeredCapital: 0,
+  unifiedCreditCode: '',
+  website: ''
+});
 const form = reactive({ ...emptyIdentity(), handlerIsLegalRepresentative: true, expectedVersion: 0, status: '' });
-const documentTypes = [['居民身份证', 'CN_RESIDENT_ID'], ['香港居民身份证', 'HK_RESIDENT_ID'], ['澳门居民身份证', 'MO_RESIDENT_ID'], ['台湾居民身份证', 'TW_RESIDENT_ID'], ['中国护照', 'CN_PASSPORT']].map(([label, value]) => ({ label, value }));
-const statusText = computed(() => ({ DRAFT: '草稿', BACK: '已退回', WAITING: '审核中', FINISH: '已完成' })[form.status] ?? form.status);
-const statusType = computed(() => (form.status === 'FINISH' ? 'success' : form.status === 'WAITING' ? 'warning' : 'info'));
+const statusText = computed(() => certificationLabel(form.status as CertificationStatus));
+const statusType = computed(() =>
+  form.status === 'VERIFIED' ? 'success' : form.status === 'WAITING' ? 'warning' : 'info'
+);
+
 function setApplication(value: EnterpriseApplication | null) {
   application.value = value;
   if (value) Object.assign(form, value, { expectedVersion: value.version });
@@ -75,50 +123,129 @@ function setApplication(value: EnterpriseApplication | null) {
 async function load() {
   loading.value = true;
   try {
-    setApplication((await runtime.service.enterprise.application.current()).data ?? null);
+    const summary = (await runtime.service.enterprise.application.summary()).data;
+    if (!active) return;
+    certified.value = summary.certifiedProfile;
+    returnReason.value = summary.returnReason;
+    Object.assign(form, emptyIdentity(), { expectedVersion: 0, status: summary.status });
+    setApplication(summary.currentApplication);
     loaded.value = true;
   } catch (error) {
-    runtime.error(error instanceof Error ? error.message : '认证资料加载失败');
-  } finally { loading.value = false; }
+    if (active) runtime.error(error instanceof Error ? error.message : '认证资料加载失败');
+  } finally {
+    loading.value = false;
+  }
 }
 function valid() {
-  const required = [form.enterpriseName, form.unifiedCreditCode, form.enterpriseType, form.legalRepresentativeName, form.legalDocumentTypeCode, form.legalDocumentNumber, form.establishedDate, form.registeredAddress, form.businessScope, form.contactName, form.contactPhone];
-  if (required.some(value => !String(value).trim())) { runtime.warning('请完整填写企业认证资料'); return false; }
+  const required = [
+    form.enterpriseName,
+    form.unifiedCreditCode,
+    form.enterpriseType,
+    form.legalRepresentativeName,
+    form.legalDocumentTypeCode,
+    form.legalDocumentNumber,
+    form.establishedDate,
+    form.registeredAddress,
+    form.businessScope,
+    form.contactName,
+    form.contactPhone
+  ];
+  if (required.some(value => !String(value).trim())) {
+    runtime.warning('请完整填写企业认证资料');
+    return false;
+  }
   return true;
 }
 async function save() {
   if (!loaded.value || !editable.value || locked.value || materialBusy.value || materialPending.value) return;
   saving.value = true;
   try {
-    const result = await runtime.service.enterprise.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion });
+    const result = await runtime.service.enterprise.application.save({
+      ...emptyIdentity(),
+      ...form,
+      expectedVersion: form.expectedVersion
+    });
+    if (!active) return;
     setApplication(result.data ?? null);
     runtime.success('企业认证草稿已保存');
-  } catch (error) { runtime.error(error instanceof Error ? error.message : '保存失败，请稍后重试'); }
-  finally { saving.value = false; }
+  } catch (error) {
+    if (active) runtime.error(error instanceof Error ? error.message : '保存失败，请稍后重试');
+  } finally {
+    saving.value = false;
+  }
 }
 async function submit() {
-  if (!loaded.value || !editable.value || locked.value || materialBusy.value || materialPending.value || !valid() || !materialSection.value?.validate()) return;
+  if (
+    !loaded.value ||
+    !editable.value ||
+    locked.value ||
+    materialBusy.value ||
+    materialPending.value ||
+    !valid() ||
+    !materialSection.value?.validate()
+  )
+    return;
   submitting.value = true;
   try {
-    try { await runtime.confirm('提交后资料将进入审核，确认继续吗？'); } catch { return; }
-    const saved = await runtime.service.enterprise.application.save({ ...emptyIdentity(), ...form, expectedVersion: form.expectedVersion });
+    try {
+      await runtime.confirm('提交后资料将进入审核，确认继续吗？');
+    } catch {
+      return;
+    }
+    if (!active) return;
+    const saved = await runtime.service.enterprise.application.save({
+      ...emptyIdentity(),
+      ...form,
+      expectedVersion: form.expectedVersion
+    });
     const version = saved.data?.version ?? form.expectedVersion;
+    if (!active) return;
     setApplication(saved.data ?? null);
     const result = await runtime.service.enterprise.application.submit(version);
+    if (!active) return;
     setApplication(result.data ?? null);
+    returnReason.value = null;
     runtime.success('企业认证已提交');
-  } catch (error) { runtime.error(materialSection.value?.showError(error) ?? '提交失败，请稍后重试'); }
-  finally { submitting.value = false; }
+  } catch (error) {
+    if (active) runtime.error(materialSection.value?.showError(error) ?? '提交失败，请稍后重试');
+  } finally {
+    submitting.value = false;
+  }
 }
 onMounted(load);
 </script>
 
 <style scoped>
-.verification-page { max-width: 1100px; margin: 0 auto; padding: 40px 32px; }
-.verification-page__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
-.eyebrow { color: #2563eb; font-size: 12px; font-weight: 700; letter-spacing: .12em; }
-h1, p { margin: 0; } h1 { margin-top: 8px; color: #172033; font-size: 30px; } .verification-page__header p { margin-top: 8px; color: #64748b; }
-.verification-form { padding: 28px; border: 1px solid #dbe4ea; border-radius: 8px; background: #fff; }
-.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 20px; } .form-actions { display: flex; gap: 10px; margin-top: 16px; }
-@media (max-width: 700px) { .verification-page { padding: 28px 18px; } .verification-form { padding: 18px; } .form-grid { grid-template-columns: 1fr; } }
+.verification-page {
+  min-width: 0;
+}
+.verification-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+h1 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--app-text-title);
+}
+.verification-page__header p,
+.certified-time {
+  margin: 8px 0;
+  color: var(--app-text-muted);
+}
+.eyebrow {
+  display: none;
+}
+.verification-form {
+  margin-top: 12px;
+}
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
 </style>

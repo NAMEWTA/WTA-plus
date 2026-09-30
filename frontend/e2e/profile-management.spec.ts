@@ -79,6 +79,7 @@ async function installApi(page: Page, state: State) {
             'profile:material-tag:manage',
             'profile:person:query',
             'profile:person:review',
+            'profile:person:task-review',
             'profile:person:material',
             'profile:person:manage',
             'profile:person:override',
@@ -169,7 +170,7 @@ async function installApi(page: Page, state: State) {
           total: 1
         }
       });
-    if (path === '/profile/person/archive/application/301/review-context')
+    if (path === '/profile/person/review/tasks/task-901')
       return json(route, {
         code: 200,
         data: {
@@ -185,12 +186,11 @@ async function installApi(page: Page, state: State) {
           materials: []
         }
       });
-    if (path === '/workflow/task/completeTask' && request.method() === 'POST') {
+    if (path === '/profile/person/review/tasks/task-901/decision' && request.method() === 'POST') {
       state.completedTasks.push(request.postDataJSON());
       return json(route, { code: 200, data: null });
     }
-    if (path === '/notify/inbox')
-      return json(route, { code: 200, data: { rows: [], total: 0, unreadTotal: 0 } });
+    if (path === '/notify/inbox') return json(route, { code: 200, data: { rows: [], total: 0, unreadTotal: 0 } });
     if (path === '/resource/message/close') return json(route, { code: 200, data: null });
     if (path === '/resource/message/ticket') return json(route, { code: 200, data: 'owned-push-ticket' });
     if (path === '/resource/message') return route.fulfill({ contentType: 'text/event-stream', body: '' });
@@ -199,7 +199,9 @@ async function installApi(page: Page, state: State) {
   });
 }
 
-test('profile manifests resolve all management surfaces and submit a workflow rejection', async ({ page }) => {
+test('profile manifests resolve all management surfaces and return a task application for supplementation', async ({
+  page
+}) => {
   const state: State = { completedTasks: [], unknownRequests: [] };
   await installApi(page, state);
 
@@ -220,9 +222,9 @@ test('profile manifests resolve all management surfaces and submit a workflow re
   await expect(page.getByText('示例科技有限公司', { exact: true })).toBeVisible();
 
   await page.goto('/profile/person/review?id=301&taskId=task-901');
-  await expect(page.getByRole('heading', { name: '个人认证审核' })).toBeVisible();
-  await expect(page.getByText('不可变申请快照', { exact: true })).toBeVisible();
-  await page.getByText('驳回', { exact: true }).click();
+  await expect(page.getByRole('heading', { name: '实名认证审核' })).toBeVisible();
+  await expect(page.getByText('申请资料', { exact: true })).toBeVisible();
+  await page.getByText('退回补充', { exact: true }).click();
   await page.getByRole('textbox', { name: '审核意见' }).fill('材料信息不一致');
   await page.getByRole('button', { name: '提交流程审核' }).click();
   await page.getByRole('button', { name: '确定' }).click();
@@ -231,9 +233,9 @@ test('profile manifests resolve all management surfaces and submit a workflow re
     .poll(() => state.completedTasks)
     .toEqual([
       {
-        taskId: 'task-901',
-        message: '材料信息不一致',
-        variables: { profileDecision: 'REJECT' }
+        decision: 'RETURN',
+        reason: '材料信息不一致',
+        snapshotVersion: 1
       }
     ]);
   expect(state.unknownRequests).toEqual([]);

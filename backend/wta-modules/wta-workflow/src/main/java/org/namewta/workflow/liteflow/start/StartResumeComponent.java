@@ -26,6 +26,7 @@ import java.util.List;
 @LiteflowComponent("startResume")
 public class StartResumeComponent extends NodeComponent {
 
+    private final org.namewta.workflow.service.impl.WorkflowClientScopeService clientScope;
     private final TaskService taskService;
     private final InsService insService;
     private final FlwInstanceBizExtMapper flwInstanceBizExtMapper;
@@ -33,10 +34,17 @@ public class StartResumeComponent extends NodeComponent {
     @Override
     public void process() {
         StartProcessContext context = getContextBean(StartProcessContext.class);
+        Long clientPk = clientScope.initiatorClient(context.getStartProcessBo());
+        String handler = context.getStartProcessBo().getHandler();
+        clientScope.requireApplicant(context.getExistingInstance(), clientPk,
+            handler == null || handler.isBlank() ? org.namewta.common.satoken.utils.LoginHelper.getUserIdStr() : handler);
         BusinessStatusEnum.checkStartStatus(context.getExistingInstance().getFlowStatus());
         List<Task> taskList = taskService.list(new FlowTask().setInstanceId(context.getExistingInstance().getId()));
         if (CollUtil.isEmpty(taskList)) {
             throw new ServiceException("流程实例缺少任务，请检查流程定义配置");
+        }
+        if (taskList.size() != 1 || !taskList.getFirst().getNodeCode().equals(clientScope.applicantNode(context.getExistingInstance().getId()))) {
+            throw new ServiceException("重提必须从原申请节点开始");
         }
         taskService.mergeVariable(context.getExistingInstance(), context.getVariables());
         insService.updateById(context.getExistingInstance());

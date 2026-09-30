@@ -287,6 +287,10 @@ public class FlwInstanceServiceImpl implements IFlwInstanceService {
     public PageResult<FlowInstanceVo> selectCurrentInstanceList(FlowInstanceBo instanceBo, PageQuery pageQuery) {
         MPJLambdaWrapper<FlowInstance> queryWrapper = buildQueryWrapper(instanceBo);
         queryWrapper.eq("fi", FlowInstance::getCreateBy, LoginHelper.getUserIdStr());
+        queryWrapper.leftJoin(org.namewta.workflow.domain.FlowInstanceNodeClient.class, "origin",
+            org.namewta.workflow.domain.FlowInstanceNodeClient::getInstanceId, FlowInstance::getId)
+            .eq("origin", org.namewta.workflow.domain.FlowInstanceNodeClient::getApplicantNode, true)
+            .eq("origin", org.namewta.workflow.domain.FlowInstanceNodeClient::getClientPk, LoginHelper.getLoginUser().getClientPk());
         Page<FlowInstanceVo> page = flwInstanceMapper.selectInstanceList(pageQuery.build(), queryWrapper);
         return PageResult.build(page.getRecords(), page.getTotal());
     }

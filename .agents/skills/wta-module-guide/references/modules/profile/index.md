@@ -45,7 +45,7 @@ Profile 后端 Controller 与前端资源的当前映射如下。`web-domain` �
 
 自助材料页通过 `GET /profile/material-tags/requirements` 读取数据库中按 profileType、documentTypeCode 和 handlerIsLegalRepresentative 选择的必填规则。该查询只用于提示；提交时仍由服务端按已保存申请独立校验。上传先保存草稿取得 WORKING owner，再登记 OSS 引用；预览与移除都经过 owner 权限校验，移除引用不物理删除 OSS 对象。`current` 查询只返回 DRAFT/BACK/CANCEL/WAITING，已完成申请不作为可编辑 current 返回。
 
-当前 `frontend/packages/api-contracts/openapi/current.json` 是不可变快照版本的指针；必须读取对应 `openapi/revisions/<revision>/source.json`，不能把指针本身误当路径清单。当前版本已包含 50 条 `/profile/**` 路径，`generated/openapi.ts` 也有 Profile 传输类型。
+当前 `frontend/packages/api-contracts/openapi/current.json` 是不可变快照版本的指针；必须读取对应 `openapi/revisions/<revision>/source.json`，不能把指针本身误当路径清单。当前版本包含 59 条 `/profile/**` 路径（含本人摘要与按任务审核），`generated/openapi.ts` 也有 Profile 传输类型。本轮新增合同由实际 Controller/模型反射导出后合入原 HTTP 快照，来源如实记录在 provenance，未宣称重新抓取完整运行时文档。
 
 企业转移资源通过 generated `EnterpriseTransferSendBo`、`EnterpriseTransferConfirmBo`、`EnterpriseTransferVo` 映射为 domain 自有状态合同；其他存量 Profile 资源的映射以源码为准，不再以“快照不存在”解释独立类型。变更命中的资源应同步校核生成 transport 与 domain 模型；Web 只依赖 domain 公开合同。
 

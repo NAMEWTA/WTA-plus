@@ -398,4 +398,18 @@
            and s.del_flag = '0'
     </select>
 
+    <select id="selectSelfVersion" resultType="org.namewta.profile.enterprise.domain.model.read.EnterpriseVersionRow">
+        select v.* from profile_enterprise_binding b
+          join profile_enterprise p on p.enterprise_profile_id = b.enterprise_profile_id
+          join profile_enterprise_version v on v.enterprise_version_id = p.current_version_id
+         where b.user_id = #{userId} and b.status = 'ACTIVE' and b.del_flag = '0'
+           and p.status = 'ACTIVE' and p.del_flag = '0'
+           and v.status = 'CURRENT' and v.del_flag = '0'
+    </select>
+
+    <select id="selectReturnReason" resultType="java.lang.String">
+        select decision_reason from profile_enterprise_application
+         where applicant_user_id = #{userId} and status = 'BACK' and del_flag = '0'
+         order by update_time desc limit 1
+    </select>
 </mapper>

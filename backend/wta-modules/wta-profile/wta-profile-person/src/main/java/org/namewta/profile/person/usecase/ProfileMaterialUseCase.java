@@ -62,4 +62,10 @@ public interface ProfileMaterialUseCase {
      */
     List<ProfileMaterialPort.MaterialReferenceView> snapshotImmutable(
         ProfileMaterialPort.MaterialOwnerKey source, ProfileMaterialPort.MaterialOwnerKey target);
+    /** 列出经过任务授权的提交材料。 */
+    List<ProfileMaterialPort.MaterialReferenceView> listForTask(ProfileMaterialPort.MaterialOwnerKey owner, Long taskId);
+
+    /** 获取经过任务授权的提交材料访问地址。 */
+    org.namewta.profile.api.material.ProfileTaskMaterialPort.MaterialAccessUrl accessUrlForTask(
+        ProfileMaterialPort.MaterialOwnerKey owner, Long materialRefId, Long taskId);
 }

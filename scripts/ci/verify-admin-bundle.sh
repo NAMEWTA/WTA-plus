@@ -23,7 +23,7 @@ if [[ ! -f "$artifact" ]]; then
 fi
 
 entries=$(jar tf "$artifact")
-required=(wta-system wta-common-notify wta-common-oss wta-third wta-sso wta-notify wta-profile-person wta-profile-enterprise)
+required=(wta-system wta-common-notify wta-common-oss wta-third wta-sso wta-oidc wta-notify wta-profile-person wta-profile-enterprise)
 optional=(wta-job wta-ai wta-common-ai wta-demo wta-workflow)
 
 contains_artifact() {

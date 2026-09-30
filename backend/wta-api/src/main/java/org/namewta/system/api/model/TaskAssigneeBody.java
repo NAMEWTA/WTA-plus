@@ -31,6 +31,9 @@ public class TaskAssigneeBody implements Serializable {
      */
     private String groupId;
 
+    /** 显式选择的办理客户端主键；为空时保持当前客户端查询。 */
+    private Long clientPk;
+
     /**
      * 开始时间
      */

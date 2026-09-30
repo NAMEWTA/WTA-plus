@@ -4,8 +4,8 @@
       <template #header>
         <div class="toolbar-shell">
           <div class="table-heading">
-            <h3 data-testid="sso-admin-title">SSO 管理</h3>
-            <p class="table-subtitle">创建应用并交付配置。客户端管理不承担创建主路径。</p>
+            <h3 data-testid="sso-admin-title">自有应用 SSO</h3>
+            <p class="table-subtitle">为 Admin、Home 等自有客户端配置登录回调与接入信息。</p>
           </div>
           <div class="toolbar-actions">
             <el-button

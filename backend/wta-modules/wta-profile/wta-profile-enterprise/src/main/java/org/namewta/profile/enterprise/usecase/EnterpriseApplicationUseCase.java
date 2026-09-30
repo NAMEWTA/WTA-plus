@@ -4,6 +4,7 @@ import org.namewta.profile.enterprise.domain.bo.EnterpriseApplicationProbeBo;
 import org.namewta.profile.enterprise.domain.bo.EnterpriseApplicationSaveBo;
 import org.namewta.profile.enterprise.domain.vo.EnterpriseApplicationProbeVo;
 import org.namewta.profile.enterprise.domain.vo.EnterpriseApplicationVo;
+import org.namewta.profile.enterprise.domain.vo.EnterpriseSelfSummaryVo;
 import org.namewta.profile.enterprise.domain.application.EnterpriseApplicationProcessCommand;
 
 /**
@@ -29,4 +30,7 @@ public interface EnterpriseApplicationUseCase {
 
     /** 接收工作流事件并编排申请状态回写。 */
     void handleProcess(EnterpriseApplicationProcessCommand command);
+    /** 查询本人认证状态与有效资料。 */
+    EnterpriseSelfSummaryVo summary(long userId);
+
 }

@@ -3,7 +3,7 @@ package org.namewta.common.web.filter;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import org.namewta.common.core.service.HttpProtocolPolicy;
 import org.namewta.common.core.utils.StringUtils;
 import org.namewta.common.web.config.properties.XssProperties;
 import org.namewta.common.core.exception.RequestBodyTooLargeException;
@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * 防止 XSS 攻击的过滤器，对非排除请求执行参数与请求体清洗。
  */
-@RequiredArgsConstructor
 public class XssFilter implements Filter {
     /**
      * 跳过 XSS 过滤的请求路径集合。
@@ -25,6 +24,18 @@ public class XssFilter implements Filter {
 
     private final XssProperties properties;
     private final int maxBodyBytes;
+    private final List<HttpProtocolPolicy> protocolPolicies;
+    /** 保留未装配协议适配器时的既有构造入口。 */
+    public XssFilter(XssProperties properties, int maxBodyBytes) {
+        this(properties, maxBodyBytes, List.of());
+    }
+    /** 接入标准协议原文边界，同时保留普通业务的清洗策略。 */
+    public XssFilter(XssProperties properties, int maxBodyBytes, List<HttpProtocolPolicy> policies) {
+        this.properties = properties;
+        this.maxBodyBytes = maxBodyBytes;
+        this.protocolPolicies = List.copyOf(policies);
+    }
+
 
     /**
      * 初始化过滤器并加载配置中的排除路径。
@@ -76,6 +87,8 @@ public class XssFilter implements Filter {
      */
     private boolean handleExcludeURL(HttpServletRequest request, HttpServletResponse response) {
         String url = request.getServletPath();
+        String path = request.getRequestURI().substring(request.getContextPath().length());
+        if (protocolPolicies.stream().anyMatch(policy -> policy.isProtocolPath(path))) return true;
         String method = request.getMethod();
         // GET DELETE 不过滤
         if (method == null || HttpMethod.GET.matches(method) || HttpMethod.DELETE.matches(method)) {

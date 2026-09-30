@@ -206,4 +206,10 @@ public interface EnterpriseApplicationMapper extends BaseMapperPlus<ProfileEnter
      */
     long countSourceVersionRelationship(@Param("sourceId") long sourceId,
                                         @Param("versionId") long versionId);
+    /** 按本人有效绑定查询当前认证版本，防止暴露他人档案。 */
+    EnterpriseVersionRow selectSelfVersion(@Param("userId") long userId);
+
+    /** 查询本人的当前退回原因。 */
+    String selectReturnReason(@Param("userId") long userId);
+
 }

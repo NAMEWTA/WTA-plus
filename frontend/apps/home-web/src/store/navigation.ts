@@ -1,16 +1,17 @@
 import type { ServerMenuMeta, ServerMenuNode } from '@namewta/domain-admin';
+import type { RouteRecordRaw } from 'vue-router';
 import { projectServerRoutes } from '@namewta/platform-app-runtime';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { RouteRecordRaw } from 'vue-router';
 import { identityAccessService } from '@/application/services';
-import { createHomeManifestDiagnostic } from '@/router/manifestDiagnostic';
 import { resolveHomeWebRegistration } from '@/router/homeManifestRegistry';
+import { createHomeManifestDiagnostic } from '@/router/manifestDiagnostic';
 import { adaptServerMenuRoutes, type HomeRouteComponent } from '@/router/serverMenuAdapter';
 
 export const useNavigationStore = defineStore('home-navigation', () => {
   const routes = ref<RouteRecordRaw[]>([]);
   const navigationLoaded = ref(false);
+  const componentPaths = ref<Record<string, string>>({});
   let generation = 0;
   const removeRoutes: Array<() => void> = [];
 
@@ -19,11 +20,14 @@ export const useNavigationStore = defineStore('home-navigation', () => {
     navigationLoaded.value = false;
     for (const remove of removeRoutes.splice(0).toReversed()) remove();
     routes.value = [];
+    componentPaths.value = {};
   };
   const registerRoute = (route: RouteRecordRaw, install: (route: RouteRecordRaw) => () => void) => {
     removeRoutes.push(install(route));
   };
-  const finishRecovery = () => { navigationLoaded.value = true; };
+  const finishRecovery = () => {
+    navigationLoaded.value = true;
+  };
 
   const generateRoutes = async () => {
     resetRoutes();
@@ -37,9 +41,19 @@ export const useNavigationStore = defineStore('home-navigation', () => {
       createDiagnostic: createHomeManifestDiagnostic
     });
     const generated = adaptServerMenuRoutes(projected);
+    const paths: Record<string, string> = {};
+    const collect = (nodes: readonly ServerMenuNode[], parent = '') => {
+      for (const node of nodes) {
+        const path = node.path.startsWith('/') ? node.path : `${parent}/${node.path}`.replace(/\/+/g, '/');
+        if (typeof node.component === 'string') paths[node.component] = path;
+        if (node.children) collect(node.children, path);
+      }
+    };
+    collect(menus);
+    componentPaths.value = paths;
     routes.value = generated;
     return generated;
   };
 
-  return { routes, navigationLoaded, generateRoutes, resetRoutes, registerRoute, finishRecovery };
+  return { routes, navigationLoaded, componentPaths, generateRoutes, resetRoutes, registerRoute, finishRecovery };
 });
