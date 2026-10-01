@@ -1,11 +1,12 @@
 import type { AuthConfigQuery } from '@namewta/domain-system';
 import { onBeforeUnmount, onMounted, ref, shallowRef, watch, type Ref } from 'vue';
 import type { SystemWebRuntime } from '../runtime';
+import { authConfigError } from './errors';
 
 interface Resource<T> {
   list(query: AuthConfigQuery, signal?: AbortSignal): Promise<{ rows: T[]; total: number }>;
   get(id: string, signal?: AbortSignal): Promise<T>;
-  save(value: T, signal?: AbortSignal): Promise<void>;
+  save(value: T, signal?: AbortSignal): Promise<string>;
   remove(value: T, signal?: AbortSignal): Promise<void>;
   refresh(signal?: AbortSignal): Promise<void>;
 }
@@ -14,7 +15,8 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
   runtime: SystemWebRuntime,
   service: Resource<T>,
   permission: string,
-  empty: () => T
+  empty: () => T,
+  query: () => Partial<AuthConfigQuery> = () => ({})
 ) {
   const rows = shallowRef<T[]>([]);
   const total = ref(0);
@@ -41,13 +43,13 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
     loading.value = true;
     error.value = '';
     try {
-      const result = await service.list({ pageNum: pageNum.value, pageSize: 20 }, queryAbort.signal);
+      const result = await service.list({ ...query(), pageNum: pageNum.value, pageSize: 20 }, queryAbort.signal);
       if (current() && version === requestVersion) {
         rows.value = result.rows;
         total.value = result.total;
       }
-    } catch {
-      if (current() && version === requestVersion) error.value = '配置加载失败，请重试';
+    } catch (failure) {
+      if (current() && version === requestVersion) error.value = authConfigError(failure, '配置加载失败，请重试');
     } finally {
       if (current() && version === requestVersion) loading.value = false;
     }
@@ -71,8 +73,8 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
         draft.value = value;
         visible.value = true;
       }
-    } catch {
-      if (current()) error.value = '配置读取失败，请重试';
+    } catch (failure) {
+      if (current()) error.value = authConfigError(failure, '配置读取失败，请重试');
     } finally {
       if (current()) busy.value = false;
     }
@@ -82,14 +84,15 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
     busy.value = true;
     error.value = '';
     try {
-      await service.save(draft.value, lifetime.signal);
+      const id = await service.save(draft.value, lifetime.signal);
       if (current()) {
         close();
         runtime.success('配置已保存');
         await load();
+        if (current()) return id;
       }
-    } catch {
-      if (current()) error.value = '保存失败，请检查填写内容；版本冲突时请关闭后重新编辑。';
+    } catch (failure) {
+      if (current()) error.value = authConfigError(failure, '保存失败，请检查填写内容；版本冲突时请关闭后重新编辑。');
     } finally {
       if (current()) busy.value = false;
     }
@@ -106,8 +109,8 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
     try {
       await service.remove(row, lifetime.signal);
       if (current()) await load();
-    } catch {
-      if (current()) error.value = '删除失败，配置可能已被引用或变更，请刷新后重试';
+    } catch (failure) {
+      if (current()) error.value = authConfigError(failure, '删除失败，配置可能已被引用或变更，请刷新后重试');
     } finally {
       if (current()) busy.value = false;
     }
@@ -121,8 +124,8 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
         runtime.success('缓存已刷新');
         await load();
       }
-    } catch {
-      if (current()) error.value = '缓存刷新失败，请稍后重试';
+    } catch (failure) {
+      if (current()) error.value = authConfigError(failure, '缓存刷新失败，请稍后重试');
     } finally {
       if (current()) busy.value = false;
     }
@@ -147,6 +150,10 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
     const row = rows.value.find(item => item.id === id);
     if (row) return edit(row);
   };
+  const search = () => {
+    pageNum.value = 1;
+    return load();
+  };
   const removeById = (id: unknown) => {
     const row = rows.value.find(item => item.id === id);
     if (row) return remove(row);
@@ -163,6 +170,7 @@ export function useAuthConfig<T extends { id?: string; version: number }>(
     visible,
     draft,
     load,
+    search,
     create,
     edit,
     close,

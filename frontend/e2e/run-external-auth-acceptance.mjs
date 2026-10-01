@@ -31,8 +31,14 @@ const assert = (condition, label) => {
 const localPath = (origin, path) => `${origin.replace(/\/$/, '')}${path}`;
 const adminTarget = fixture.adminTarget || '/index';
 const homeTarget = fixture.homeTarget || '/profile';
-const adminBase = new URL(fixture.adminOrigin).origin;
-const homeBase = new URL(fixture.homeOrigin).origin;
+// App URL 可以带部署前缀；仅比较 Origin 会把同域的其他 App 误判为回调完成。
+const adminBase = fixture.adminOrigin;
+const homeBase = fixture.homeOrigin;
+function belongsToApp(url, appBase) {
+  const base = new URL(appBase);
+  const prefix = base.pathname.replace(/\/$/, '');
+  return url.origin === base.origin && (!prefix || url.pathname === prefix || url.pathname.startsWith(`${prefix}/`));
+}
 async function context() {
   const value = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1440, height: 1000 } });
   value.setDefaultTimeout(20000);
@@ -59,30 +65,30 @@ async function localLogin(page) {
 async function finishCentral(page, credentials, appOrigin, firstBinding = false, requireSessionReuse = false) {
   await page.waitForURL(
     url =>
-      url.origin === new URL(fixture.ssoOrigin).origin ||
-      (!firstBinding && url.origin === appOrigin && !url.pathname.endsWith('/login')),
+      belongsToApp(url, fixture.ssoOrigin) ||
+      (!firstBinding && belongsToApp(url, appOrigin) && !url.pathname.endsWith('/login')),
     { timeout: 30000 }
   );
-  if (new URL(page.url()).origin === appOrigin) return;
+  if (belongsToApp(new URL(page.url()), appOrigin)) return;
   const login = page.locator('input[name="username"]');
   const result = await Promise.race([
     login.waitFor({ state: 'visible', timeout: 30000 }).then(() => 'password'),
     page
-      .waitForURL(url => url.origin === appOrigin && url.pathname.endsWith('/social-callback'), { timeout: 30000 })
+      .waitForURL(url => belongsToApp(url, appOrigin) && url.pathname.endsWith('/social-callback'), { timeout: 30000 })
       .then(() => 'callback')
   ]);
   if (result === 'password') {
     assert(!requireSessionReuse, 'Existing central session must not require another password');
     await login.fill(credentials.username);
     await page.locator('input[name="password"]').fill(credentials.password);
-    await page.getByRole('button', { name: '登录并继续', exact: true }).click();
+    await page.getByRole('button', { name: fixture.centralLoginButton || '登录并继续', exact: true }).click();
   }
 }
 async function socialLogin(page, app, credentials, requireSessionReuse = false) {
   const origin = app === 'admin' ? fixture.adminOrigin : fixture.homeOrigin;
   await page.goto(localPath(origin, '/login'));
   await page.getByRole('button', { name: fixture.providerName, exact: true }).click();
-  await finishCentral(page, credentials, new URL(origin).origin, false, requireSessionReuse);
+  await finishCentral(page, credentials, origin, false, requireSessionReuse);
 }
 async function accountCommand(page, command, admin = false) {
   await page.locator('.avatar-container .el-dropdown').click();
@@ -150,9 +156,11 @@ try {
 
   step = 'Cross-app global logout';
   await accountCommand(home, '退出全部应用');
-  const centralConfirmation = home.getByRole('button', { name: /确认退出|退出登录|继续退出|^退出$|^确认$/ });
+  const centralConfirmation = home.getByRole('button', { name: fixture.centralLogoutButton || /确认退出|退出登录|继续退出|^退出$|^确认$/ });
   await Promise.race([
-    home.waitForURL(url => url.origin === homeBase && url.pathname.endsWith('/logout/callback'), { timeout: 30000 }),
+    home.waitForURL(url => belongsToApp(url, homeBase) && url.pathname.endsWith('/logout/callback'), {
+      timeout: 30000
+    }),
     centralConfirmation
       .first()
       .waitFor({ state: 'visible', timeout: 30000 })
@@ -172,7 +180,7 @@ try {
     .toBe(true);
   await noToken(admin, 'Admin-Token');
   await admin.getByRole('button', { name: fixture.providerName, exact: true }).click();
-  await admin.waitForURL(url => url.origin === new URL(fixture.ssoOrigin).origin, { timeout: 30000 });
+  await admin.waitForURL(url => belongsToApp(url, fixture.ssoOrigin), { timeout: 30000 });
   await expect(admin.locator('input[name="username"]')).toBeVisible();
   pass('RP initiated global logout ends both business sessions');
 

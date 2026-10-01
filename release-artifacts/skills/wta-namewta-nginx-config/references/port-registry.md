@@ -17,7 +17,7 @@
 ## 分配规则
 
 1. 新 App 独立宿主机端口从 41080 起选择未占用值，不能占用已有 4xxxx 端口。
-2. 业务 App 和 HTTP SSO 内部监听80，TLS SSO 监听443并保留仅内部80健康端口；业务 LB 使用 Docker 服务名寻址，禁止加入 SSO。
+2. 业务 App 和 HTTP SSO 内部监听80，TLS SSO 监听443并保留仅内部80健康端口；LB 使用已启用 App 的 Docker 服务名寻址，SSO 可使用共享入口。
 3. 前缀只允许字母、数字和连字符，不含首尾斜杠。
 4. `admin`、`monitor`、`snail-job`、`snail-ai`、`dev-api`、`prod-api`、`actuator` 是保留前缀（snail-ai 仅防止退役路径复用，不表示服务仍运行）；SSO 另禁止静态 prefix 为 `sso`。
 5. App 名 `foo-bar` 对应 `FOO_BAR_PREFIX`、`FOO_BAR_PORT` 与 `FOO_BAR_ORIGIN`。
@@ -29,4 +29,4 @@
 node release-artifacts/skills/wta-namewta-nginx-config/scripts/add_app.mjs --list
 ```
 
-端口/服务/模板以 apps.json 与 Compose 双向校验为准；真实运行端口可由 env 指定，Origin 必须与浏览器实际入口匹配。SSO hostname 必须与业务 App 分离，不能仅换端口。
+端口/服务/模板以 apps.json 与 Compose 双向校验为准；实际启动集合由 manifest.enabledApps 固定，禁用 App 不占端口。真实运行端口可由 env 指定，Origin 必须与浏览器实际入口匹配。SSO 可独立域名或共享域名不同静态前缀部署。

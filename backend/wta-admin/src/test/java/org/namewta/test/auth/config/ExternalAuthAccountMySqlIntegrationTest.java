@@ -199,15 +199,35 @@ class ExternalAuthAccountMySqlIntegrationTest {
     }
 
     @Test
-    void competingSubjectsForSameUserAndIssuerAreSerializedByUserRowLock() throws Exception {
+    void explicitPairwiseSubjectsCanBindTheSameUserWithoutLosingEitherConcurrentBinding() throws Exception {
         seedUser(992101, "13800138001");
         try (var threads = Executors.newFixedThreadPool(2)) {
             var start = new CountDownLatch(1);
             var first = threads.submit(() -> { await(start); return tryBind(992101L, "one"); });
             var second = threads.submit(() -> { await(start); return tryBind(992101L, "two"); });
             start.countDown(); assertThat(List.of(first.get(10, TimeUnit.SECONDS), second.get(10, TimeUnit.SECONDS)))
-                .containsExactlyInAnyOrder(true, false);
+                .containsExactly(true, true);
         }
+        assertThat(count("sys_social")).isEqualTo(2);
+        assertThat(accounts.findUser(identity("one", null), "OIDC")).isEqualTo(992101L);
+        assertThat(accounts.findUser(identity("two", null), "OIDC")).isEqualTo(992101L);
+        accounts.bind(992101L, "corporate", "OIDC", identity("one", null));
+        assertThat(count("sys_social")).isEqualTo(2);
+        seedUser(992102, "13800138002");
+        assertThatThrownBy(() -> accounts.bind(992102L, "corporate", "OIDC", identity("two", null)))
+            .isInstanceOf(ServiceException.class).hasMessageContaining("已绑定其他账号");
+        Long firstBinding = db.queryForObject("select id from sys_social where subject = 'one'", Long.class);
+        accounts.unbind(992101L, firstBinding);
+        assertThat(accounts.findUser(identity("one", null), "OIDC")).isNull();
+        assertThat(accounts.findUser(identity("two", null), "OIDC")).isEqualTo(992101L);
+    }
+
+    @Test
+    void justAuthStillRejectsASecondSubjectForTheSameIssuer() {
+        seedUser(992101, "13800138001");
+        accounts.bind(992101L, "corporate", "GITHUB", identity("one", null));
+        assertThatThrownBy(() -> accounts.bind(992101L, "corporate", "GITHUB", identity("two", null)))
+            .isInstanceOf(ServiceException.class).hasMessageContaining("请先解绑");
         assertThat(count("sys_social")).isEqualTo(1);
     }
 

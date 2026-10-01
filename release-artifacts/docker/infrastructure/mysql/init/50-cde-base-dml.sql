@@ -1860,8 +1860,8 @@ where not exists (
 
 insert into sys_menu (menu_id, client_id, menu_name, parent_id, order_num, path, component, query_param, is_frame, is_cache,
      menu_type, visible, status, perms, icon, active_menu, ext, create_dept, create_by, create_time, remark)
-select 2100900000000000100, 1762000000000000001, '自有应用 SSO', 1761400000000000001, 15, 'ssoApp', 'system/ssoApp/index', '', 'N', 'Y',
-       'C', '0', '0', 'system:ssoApp:list', 'tabler:key', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '独立 SSO 管理：创建应用与配置交付'
+select 2100900000000000100, 1762000000000000001, '旧第一方 SSO（兼容）', 1761400000000000001, 15, 'ssoApp', 'system/ssoApp/index', '', 'N', 'Y',
+       'C', '0', '0', 'system:ssoApp:list', 'tabler:key', '', '', 1761000000000000103, 1761100000000000001, sysdate(), '旧第一方协议兼容入口；新 App 使用应用登录接入'
 from dual
 where not exists (select 1 from sys_menu where menu_id = 2100900000000000100);
 
@@ -1893,7 +1893,7 @@ values (1761300000000000001, 2100900000000000100),
 -- 第三方 OIDC 管理由 Admin Client 的显式权限授权。
 insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
     menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
-select 2100900000000000200,1762000000000000001,'单点登录',1761400000000000001,14,'oidcApp','oidc/application/index','','N','N',
+select 2100900000000000200,1762000000000000001,'OIDC服务端应用',1761400000000000001,14,'oidcApp','oidc/application/index','','N','N',
     'C','0','0','oidc:application:list','tabler:login','','',1761000000000000103,1761100000000000001,sysdate(),'OIDC应用与资料授权'
 from dual where not exists (select 1 from sys_menu where menu_id=2100900000000000200);
 insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
@@ -1957,7 +1957,7 @@ insert ignore into sys_role_menu (role_id,menu_id) values
     (1761300000000000001,2100910000000000103);
 insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
     menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
-select 2100910000000000200,1762000000000000001,'身份接入配置',1761400000000000001,16,'externalAuthRegistration','system/auth/registration','','N','N',
+select 2100910000000000200,1762000000000000001,'应用登录接入',1761400000000000001,16,'externalAuthRegistration','system/auth/registration','','N','N',
     'C','0','0','system:authRegistration:list','tabler:plug-connected','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
 from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000200);
 insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
@@ -1984,7 +1984,7 @@ insert ignore into sys_role_menu (role_id,menu_id) values
 -- NAMEWTA-AUTH-RUNTIME-DML-001：首次安装不携带Issuer或任何默认私钥。
 insert into sso_service_config (service_config_id,settings_json,version,del_flag,create_time) select 1,'{"enabled":false,"webOrigin":"","webBasePath":"/","cookieName":"Sso-Token","cookieSecure":true,"codeTtlSeconds":300,"sessionTtlSeconds":28800}',0,'0',sysdate() from dual where not exists (select 1 from sso_service_config where service_config_id=1);
 insert into oidc_service_config (service_config_id,settings_json,version,del_flag,create_time) select 1,'{"enabled":false,"issuer":"","ssoWebUrl":"","allowHttp":false,"codeTtlSeconds":300,"accessTtlSeconds":600,"interactionTtlSeconds":300,"sso":{"enabled":false,"webOrigin":"","webBasePath":"/","cookieName":"Sso-Token","cookieSecure":true,"codeTtlSeconds":300,"sessionTtlSeconds":28800}}',0,'0',sysdate() from dual where not exists (select 1 from oidc_service_config where service_config_id=1);
-insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000100,1762000000000000001,'认证服务配置',1761400000000000001,17,'oidcService','oidc/service','','N','N','C','0','0','oidc:service:query','tabler:settings','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000100);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000100,1762000000000000001,'OIDC服务端设置',1761400000000000001,17,'oidcService','oidc/service','','N','N','C','0','0','oidc:service:query','tabler:settings','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000100);
 insert ignore into sys_role_menu(role_id,menu_id) values(1761300000000000001,2100920000000000100);
 insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000101,1762000000000000001,'认证服务修改',2100920000000000100,1,'','','','N','N','F','0','0','oidc:service:edit','#','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000101);
 insert ignore into sys_role_menu(role_id,menu_id) values(1761300000000000001,2100920000000000101);

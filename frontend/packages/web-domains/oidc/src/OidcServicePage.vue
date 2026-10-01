@@ -2,7 +2,7 @@
   <section class="app-container oidc-service" v-loading="loading">
     <el-card>
       <template #header>
-        <h2>统一登录服务</h2>
+        <h2>OIDC 服务端设置</h2>
         <p>管理本服务对外提供的 OIDC 参数、密钥和退出通知。</p>
       </template>
       <el-alert v-if="error" :title="error" type="error" :closable="false" />

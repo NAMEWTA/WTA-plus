@@ -120,10 +120,14 @@ async function accountAction(command: string) {
   if (command === 'bindings') return navigate('/account/bindings');
   if (command === 'globalLogout') {
     try {
-      await ElMessageBox.confirm('将退出当前应用与统一登录会话，其他已接入应用会同步退出。', '退出全部应用', {
-        confirmButtonText: '确认退出',
-        cancelButtonText: '取消'
-      });
+      await ElMessageBox.confirm(
+        '将退出当前应用和单点登录服务；其他应用会在收到有效的退出通知后退出。',
+        '退出全部应用',
+        {
+          confirmButtonText: '确认退出',
+          cancelButtonText: '取消'
+        }
+      );
     } catch {
       return;
     }

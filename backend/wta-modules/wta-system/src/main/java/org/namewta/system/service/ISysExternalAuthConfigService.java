@@ -3,11 +3,21 @@ package org.namewta.system.service;
 import org.namewta.common.core.domain.PageResult;
 import org.namewta.common.mybatis.core.page.PageQuery;
 import org.namewta.system.domain.bo.*;
-import org.namewta.system.domain.vo.SysAuthProviderVo;
+import org.namewta.system.domain.vo.*;
 import org.namewta.system.domain.vo.SysAuthRegistrationVo;
 
 /** 外部身份源及业务客户端接入管理。 */
 public interface ISysExternalAuthConfigService {
+    /** 校验当前已登录 Client 是 Admin；具体操作仍由 Controller 权限控制。 */
+    void requireAdminClient();
+    /** 查询供接入配置选择的业务 App；clientIds 是 OAuth 字符串，不能传数据库主键。 */
+    java.util.List<ExternalAuthClientOptionVo> clientOptions(String keyword, java.util.List<String> clientIds);
+    /** 接入编辑专用身份源目录；搜索最多 50 项，并补入当前选中项。 */
+    java.util.List<ExternalAuthProviderOptionVo> providerOptions(String keyword, Long selectedId);
+    /** 返回登记在对方控制台所需的公开参数，不推断其他 App 的公网地址。 */
+    ExternalAuthConnectionInfoVo connectionInfo(long id);
+    /** 在写事务外检查新鲜 Discovery；不校验客户端密钥或实际登录。 */
+    OidcMetadataDiagnosticVo oidcMetadata(String issuer);
     /** 身份源分页。 */
     PageResult<SysAuthProviderVo> providers(SysAuthProviderBo query, PageQuery page);
     /** 身份源详情。 */

@@ -36,17 +36,31 @@ public class ExternalAuthSessionStore {
             String endSessionEndpoint,
             String postLogoutRedirectUri) {}
 
-    public record Status(String authSource, boolean globalLogoutAvailable) {}
+    /** 兼容旧退出按钮标志，同时区分 RP 退出能力与已保存的 sid 会话关联。 */
+    public record Status(
+            String authSource,
+            boolean globalLogoutAvailable,
+            boolean rpInitiatedLogoutAvailable,
+            boolean backchannelSessionLinked) {
+        /** 保留既有 Java 调用签名；旧标志仅能证明 RP 退出能力，不能推断后台通知已接通。 */
+        public Status(String authSource, boolean globalLogoutAvailable) {
+            this(authSource, globalLogoutAvailable, globalLogoutAvailable, false);
+        }
+    }
 
     public record Logout(String endSessionUrl, String state) {}
 
-    /** 一次本地令牌签发和关联登记在同一 sid 锁内完成；缓存失败立即撤销新令牌。 */
+    /**
+     * 保存每次 OIDC 登录的加密 RP 退出资料；缓存失败立即撤销新令牌。
+     * 仅存在有效 sid 时才在 sid 锁内登记后台退出分组，无 sid 的登录不创建公共空值分组。
+     */
     public LoginVo issue(
             ExternalAuthRegistration registration,
             OidcIdentity identity,
             Function<String, LoginVo> issueToken) {
-        if (!"OIDC".equals(registration.protocol()) || identity.sessionId() == null)
-            return issueToken.apply(null);
+        if (!"OIDC".equals(registration.protocol())) return issueToken.apply(null);
+        if (!hasSessionId(identity.sessionId()))
+            return issueAndRemember(registration, identity, issueToken, null);
         String group =
                 group(identity.issuer(), registration.externalClientId(), identity.sessionId());
         return locked(
@@ -54,39 +68,42 @@ public class ExternalAuthSessionStore {
                 () -> {
                     if (RedisUtils.isExistsObject(group + ":revoked"))
                         throw new ServiceException("中央会话已退出，请重新登录");
-                    String sessionKey = OidcProtocolClient.randomToken();
-                    LoginVo result = issueToken.apply(sessionKey);
-                    try {
-                        Session session =
-                                new Session(
-                                        registration.id(),
-                                        identity.issuer(),
-                                        registration.externalClientId(),
-                                        identity.sessionId(),
-                                        identity.idToken(),
-                                        identity.endSessionEndpoint(),
-                                        registration.postLogoutRedirectUri());
-                        String encrypted =
-                                cipher.encrypt("rp-session", JsonUtils.toJsonString(session));
-                        long ttl = result.getExpireIn();
-                        if (ttl > 0)
-                            RedisUtils.setCacheObject(
-                                    sessionKey(sessionKey), encrypted, Duration.ofSeconds(ttl));
-                        else RedisUtils.setCacheObject(sessionKey(sessionKey), encrypted);
-                        boolean first = !RedisUtils.isExistsObject(group + ":tokens");
-                        long remaining = RedisUtils.getTimeToLive(group + ":tokens");
-                        RedisUtils.addCacheSet(group + ":tokens", result.getAccessToken());
-                        if (ttl > 0 && (first || remaining >= 0 && remaining < ttl * 1000))
-                            RedisUtils.expire(group + ":tokens", Duration.ofSeconds(ttl));
-                        else if (ttl < 0)
-                            RedisUtils.getClient().getSet(group + ":tokens").clearExpire();
-                        result.setGlobalLogoutAvailable(globalAvailable(session));
-                        return result;
-                    } catch (RuntimeException failure) {
-                        StpUtil.logoutByTokenValue(result.getAccessToken());
-                        throw failure;
-                    }
+                    return issueAndRemember(registration, identity, issueToken, group);
                 });
+    }
+
+    private LoginVo issueAndRemember(
+            ExternalAuthRegistration registration,
+            OidcIdentity identity,
+            Function<String, LoginVo> issueToken,
+            String group) {
+        String sessionKey = OidcProtocolClient.randomToken();
+        LoginVo result = issueToken.apply(sessionKey);
+        try {
+            Session session = new Session(
+                    registration.id(), identity.issuer(), registration.externalClientId(),
+                    identity.sessionId(), identity.idToken(), identity.endSessionEndpoint(),
+                    registration.postLogoutRedirectUri());
+            String encrypted = cipher.encrypt("rp-session", JsonUtils.toJsonString(session));
+            long ttl = result.getExpireIn();
+            if (ttl > 0)
+                RedisUtils.setCacheObject(sessionKey(sessionKey), encrypted, Duration.ofSeconds(ttl));
+            else RedisUtils.setCacheObject(sessionKey(sessionKey), encrypted);
+            if (group != null) {
+                boolean first = !RedisUtils.isExistsObject(group + ":tokens");
+                long remaining = RedisUtils.getTimeToLive(group + ":tokens");
+                RedisUtils.addCacheSet(group + ":tokens", result.getAccessToken());
+                if (ttl > 0 && (first || remaining >= 0 && remaining < ttl * 1000))
+                    RedisUtils.expire(group + ":tokens", Duration.ofSeconds(ttl));
+                else if (ttl < 0)
+                    RedisUtils.getClient().getSet(group + ":tokens").clearExpire();
+            }
+            result.setGlobalLogoutAvailable(globalAvailable(session));
+            return result;
+        } catch (RuntimeException failure) {
+            StpUtil.logoutByTokenValue(result.getAccessToken());
+            throw failure;
+        }
     }
 
     /** 全退按 issuer/client/sid 限定，不撤销该用户其他设备或本地密码会话。 */
@@ -110,7 +127,9 @@ public class ExternalAuthSessionStore {
         StpUtil.checkLogin();
         Object source = StpUtil.getExtra(SOURCE_EXTRA);
         Session session = current();
-        return new Status(source instanceof String text ? text : "LOCAL", globalAvailable(session));
+        boolean rpLogout = globalAvailable(session);
+        return new Status(source instanceof String text ? text : "LOCAL", rpLogout, rpLogout,
+                session != null && hasSessionId(session.sid()));
     }
 
     /** 使用服务端保存的 ID Token hint 和已登记回跳生成标准 RP 发起退出地址。 */
@@ -151,6 +170,10 @@ public class ExternalAuthSessionStore {
                 && session.idToken() != null
                 && session.postLogoutRedirectUri() != null
                 && !session.postLogoutRedirectUri().isBlank();
+    }
+
+    private static boolean hasSessionId(String sid) {
+        return sid != null && !sid.isBlank();
     }
 
     private static String sessionKey(String id) {

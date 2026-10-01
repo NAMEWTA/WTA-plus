@@ -2,8 +2,8 @@
   <section class="app-container">
     <el-card>
       <template #header>
-        <h2>第三方身份源</h2>
-        <p>配置外部登录服务，再为各业务客户端建立接入配置。</p>
+        <h2>外部身份源</h2>
+        <p>业务 App 使用此身份提供方登录。自有 SSO 与第三方 OIDC 使用相同接入方式；此页不配置 OIDC 服务端。</p>
       </template>
       <el-space wrap>
         <el-button v-if="runtime.hasPermission('system:authProvider:add')" type="primary" @click="create">
@@ -14,6 +14,19 @@
         </el-button>
         <el-button @click="load">刷新列表</el-button>
       </el-space>
+      <el-form inline @submit.prevent="search">
+        <el-form-item label="名称">
+          <el-input v-model="query.name" clearable placeholder="搜索身份源名称" />
+        </el-form-item>
+        <el-form-item label="标识"><el-input v-model="query.providerKey" clearable /></el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="query.enabled" clearable style="width: 120px">
+            <el-option label="启用" :value="true" />
+            <el-option label="停用" :value="false" />
+          </el-select>
+        </el-form-item>
+        <el-button native-type="submit">查询</el-button>
+      </el-form>
       <el-alert v-if="error" :title="error" type="error" :closable="false" />
       <el-table v-loading="loading" :data="rows">
         <el-table-column label="名称" prop="name" />
@@ -74,7 +87,13 @@
           <el-input v-model="draft.name" />
         </el-form-item>
         <el-form-item label="协议">
-          <el-select v-model="draft.protocol" filterable allow-create default-first-option>
+          <el-select
+            v-model="draft.protocol"
+            :disabled="Boolean(draft.id)"
+            filterable
+            allow-create
+            default-first-option
+          >
             <el-option v-for="item in protocols" :key="item" :value="item" :label="item" />
           </el-select>
         </el-form-item>
@@ -84,8 +103,19 @@
           prop="issuer"
           :rules="[{ required: true, type: 'url', message: '请输入外部 OIDC 服务的完整 Issuer 地址' }]"
         >
-          <el-input v-model="draft.issuer" placeholder="https://sso.example.com" />
+          <el-input v-model="draft.issuer" :disabled="Boolean(draft.id)" placeholder="https://sso.example.com" />
         </el-form-item>
+        <p v-if="draft.id">身份源标识、协议与 Issuer 保持稳定；需切换提供方时请新增身份源。</p>
+        <template v-if="draft.protocol === 'OIDC'">
+          <el-form-item label="默认客户端认证方式">
+            <el-select v-model="authenticationMethod">
+              <el-option label="HTTP Basic" value="client_secret_basic" />
+              <el-option label="表单 Client Secret" value="client_secret_post" />
+            </el-select>
+            <small>各业务 App 可在接入配置中覆盖。</small>
+          </el-form-item>
+          <OidcMetadataPanel :runtime="runtime" :issuer="draft.issuer" :authentication-method="authenticationMethod" />
+        </template>
         <el-form-item label="图标"><el-input v-model="draft.icon" placeholder="tabler:key" /></el-form-item>
         <el-form-item label="启用"><el-switch v-model="draft.enabled" /></el-form-item>
         <el-collapse>
@@ -103,12 +133,21 @@
   </section>
 </template>
 <script setup lang="ts">
-import type { AuthProviderConfig } from '@namewta/domain-system';
 import type { FormInstance } from 'element-plus';
-import { ref, watch } from 'vue';
+import {
+  oidcAuthenticationMethod,
+  parseAuthOptions,
+  type AuthProviderConfig,
+  type AuthConfigQuery
+} from '@namewta/domain-system';
+import { reactive, ref, watch } from 'vue';
 import type { SystemWebRuntime } from '../runtime';
+import { authConfigError } from './errors';
+import OidcMetadataPanel from './OidcMetadataPanel.vue';
 import { useAuthConfig } from './useAuthConfig';
 const { runtime } = defineProps<{ runtime: SystemWebRuntime }>();
+const query = reactive<Partial<AuthConfigQuery>>({});
+const authenticationMethod = ref('client_secret_basic');
 const empty = (): AuthProviderConfig => ({
   providerKey: '',
   name: '',
@@ -129,33 +168,34 @@ const {
   visible,
   draft,
   load,
+  search,
   create,
   editById,
   close,
   save,
   removeById,
   refresh
-} = useAuthConfig(runtime, runtime.service.authConfig.providers, 'system:authProvider', empty);
+} = useAuthConfig(runtime, runtime.service.authConfig.providers, 'system:authProvider', empty, () => query);
 const form = ref<FormInstance>();
 const optionsText = ref('{}');
 const protocols = ['OIDC', 'GITHUB', 'GITEE', 'WECHAT_OPEN', 'MAXKEY', 'TOPIAM'];
 watch(visible, value => {
-  optionsText.value = value ? JSON.stringify(draft.value.options, null, 2) : '{}';
+  const { authenticationMethod: _method, ...advanced } = value ? draft.value.options : {};
+  optionsText.value = JSON.stringify(advanced, null, 2);
+  try {
+    authenticationMethod.value = oidcAuthenticationMethod(draft.value.options, {});
+  } catch (failure) {
+    error.value = authConfigError(failure, '客户端认证方式无效');
+  }
 });
 async function submit() {
   if (!(await form.value?.validate().catch(() => false))) return;
   try {
-    const value: unknown = JSON.parse(optionsText.value);
-    if (
-      !value ||
-      typeof value !== 'object' ||
-      Array.isArray(value) ||
-      Object.values(value).some(item => typeof item !== 'string')
-    )
-      throw new Error();
-    draft.value.options = value as Record<string, string>;
-  } catch {
-    error.value = '高级扩展参数必须是字符串值的 JSON 对象';
+    const options = parseAuthOptions(optionsText.value);
+    draft.value.options =
+      draft.value.protocol === 'OIDC' ? { ...options, authenticationMethod: authenticationMethod.value } : options;
+  } catch (failure) {
+    error.value = authConfigError(failure, '高级扩展参数无效');
     return;
   }
   await save();

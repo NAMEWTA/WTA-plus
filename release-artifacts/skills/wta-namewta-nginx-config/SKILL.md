@@ -5,7 +5,7 @@ description: 维护 wta-vue-plus-docs 的 release-artifacts 多 App Nginx 部署
 
 # NAMEWTA 多 App Nginx 配置
 
-`apps.json` 是显式发布清单。业务 App 由 `namewta-nginx-lb` 按前缀剥离后转发，也支持独立端口带前缀访问；sso-web 使用专用 HTTP/TLS 服务，不加入共享 LB，生产使用不同 hostname 的 HTTPS Origin。
+`apps.json` 是显式构建库存。`NAMEWTA_ENABLED_APPS` 决定运行集合，默认三端，Admin 必选；manifest 封存 `enabledApps`，构建生成完整 active Compose/LB 配置，禁用 App 不保留服务、DNS upstream、路由或 TLS 挂载。业务 App 由 `namewta-nginx-lb` 按前缀剥离后转发，也支持独立端口带前缀访问；启用的 sso-web 可使用专用 HTTP/TLS 服务或共享 LB，生产 Origin 使用 HTTPS。
 
 修改前读取：
 
@@ -63,15 +63,14 @@ bash release-artifacts/scripts/docker-manage.sh up frontend
 4. 业务 TLS 在 LB 终止；SSO 有独立 TLS 服务，使用 NAMEWTA_CERT_ROOT/sso-web。证书和私钥不入库，生产浏览器 Origin 必须 HTTPS。
 5. `/admin/`、`/snail-job/` 和 actuator 规则是保留路由；退役的 `snail-ai` 仍禁止作为 App 前缀，以免旧链接指向新业务，不再注册 upstream 或服务路由。
 6. 管理端私有前缀不得由根路径跳转公开。
-7. manifest 保存精确 Origin/入口矩阵，运行参数必须匹配；SSO 与业务 hostname 必须不同（端口不能隔离 Cookie）。SSO 入口仅接受自身 Origin 或无 Origin 的 API 请求。
+7. manifest 保存启用集合与对应精确 Origin/入口矩阵，运行参数必须匹配；同域部署使用不同静态前缀及独立 SSO Cookie。SSO 入口仅接受自身 Origin 或无 Origin 的 API 请求。外部 OIDC 不要求运行本项目 SSO。
 8. access log 省略查询参数；不把这项规则外推为所有 error log 已脱敏。health 不写 access log。
 
 ## 验证
 
 ```bash
 bash release-artifacts/scripts/verify-release.sh
-docker compose --env-file release-artifacts/.env \
-  -f release-artifacts/docker/docker-compose-frontend.yml config --quiet
+bash release-artifacts/scripts/docker-manage.sh config frontend
 docker exec namewta-nginx-admin-web nginx -t
 docker exec namewta-nginx-lb nginx -t
 ```

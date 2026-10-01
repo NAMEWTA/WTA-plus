@@ -24,7 +24,7 @@ class ExternalAuthManagementValidationTest {
     private final SysAuthRegistrationMapper registrations = mock(SysAuthRegistrationMapper.class);
     private final SysClientMapper clients = mock(SysClientMapper.class);
     private final SysExternalAuthConfigServiceImpl service = new SysExternalAuthConfigServiceImpl(providers, registrations,
-        clients, mock(SocialSecretCipher.class), mock(ApplicationEventPublisher.class), mock(ExternalAuthConfigurationCache.class));
+        clients, mock(SocialSecretCipher.class), mock(ApplicationEventPublisher.class), mock(ExternalAuthConfigurationCache.class), mock(org.namewta.common.social.oidc.OidcProtocolClient.class));
 
     @ParameterizedTest
     @ValueSource(strings = {"", "*", "../other", "key with spaces"})

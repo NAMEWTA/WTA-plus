@@ -4,8 +4,11 @@
       <template #header>
         <div class="page-heading">
           <div>
-            <h2>单点登录</h2>
-            <p>为第三方应用配置统一登录，以及可获取的账户资料。</p>
+            <h2>OIDC 服务端应用</h2>
+            <p>
+              本平台向这些应用提供身份认证与账户资料。业务 App 使用其他身份源登录，请到「外部身份源」与「业务 App
+              登录接入」。
+            </p>
           </div>
           <el-button v-if="can('add')" type="primary" :disabled="!loaded" @click="openCreate">创建应用</el-button>
         </div>

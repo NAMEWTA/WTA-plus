@@ -24,6 +24,8 @@ public class SysAuthRegistrationVo implements Serializable {
     private Long version;
     /** 身份源主键。 */
     private Long providerId;
+    /** 身份源名称；由查询批量补齐，避免页面逐行请求。 */
+    private String providerName;
     /** 本平台业务客户端标识。 */
     private String businessClientId;
     /** 外部平台分配的客户端标识。 */

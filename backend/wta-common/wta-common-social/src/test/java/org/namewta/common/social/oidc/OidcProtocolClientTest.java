@@ -25,6 +25,8 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /** 使用真实 HTTP、RSA 签名和协议表单，验证 RP 不接受替换身份或错误受众。 */
@@ -39,6 +41,9 @@ class OidcProtocolClientTest {
     private OidcClientSettings settings;
     private String tokenResponse;
     private volatile int jwksStatus = 200;
+    private String discoveryResponse;
+    private volatile int discoveryStatus = 200;
+    private final AtomicInteger discoveryRequests = new AtomicInteger();
     private String userInfo =
             "{\"sub\":\"subject-a\",\"name\":\"测试用户\",\"phone_number\":\"13800000001\"}";
     private final AtomicReference<String> exchangeForm = new AtomicReference<>();
@@ -57,6 +62,16 @@ class OidcProtocolClientTest {
                         issuer + "/jwks",
                         issuer + "/userinfo",
                         issuer + "/logout");
+        discoveryResponse = JsonUtils.toJsonString(discoveryDocument());
+        server.createContext(
+                "/.well-known/openid-configuration",
+                exchange -> {
+                    discoveryRequests.incrementAndGet();
+                    byte[] body = discoveryResponse.getBytes(StandardCharsets.UTF_8);
+                    exchange.sendResponseHeaders(discoveryStatus, body.length);
+                    exchange.getResponseBody().write(body);
+                    exchange.close();
+                });
         server.createContext(
                 "/jwks",
                 exchange -> {
@@ -128,6 +143,147 @@ class OidcProtocolClientTest {
                 .doesNotContain("owned-secret");
         assertThat(exchangeAuthorization.get()).startsWith("Basic ");
         assertThat(identity.toString()).doesNotContain(identity.idToken(), "subject-a");
+    }
+
+    @Test
+    void userInfoMergesOnlyNonblankProfileFieldsAndCannotReplaceVerifiedProtocolClaims() throws Exception {
+        tokenResponse = token(claims().claim("nonce", "nonce-a").claim("sid", "verified-sid")
+                .claim("auth_time", NOW.minusSeconds(60).getEpochSecond())
+                .claim("name", "ID Token Name").claim("phone_number", "13800000002")
+                .claim("email", "id-token@example.test").build());
+        userInfo = JsonUtils.toJsonString(Map.of(
+                "sub", "subject-a", "name", "UserInfo Name", "phone_number", " ",
+                "iss", "https://wrong-issuer.test", "sid", "forged-sid", "nonce", "forged-nonce",
+                "auth_time", 0));
+
+        var identity = client.exchange(settings, "code", "verifier", "nonce-a");
+
+        assertThat(identity.name()).isEqualTo("UserInfo Name");
+        assertThat(identity.phoneNumber()).isEqualTo("13800000002");
+        assertThat(identity.email()).isEqualTo("id-token@example.test");
+        assertThat(identity.issuer()).isEqualTo(issuer);
+        assertThat(identity.subject()).isEqualTo("subject-a");
+        assertThat(identity.sessionId()).isEqualTo("verified-sid");
+        assertThat(identity.authenticatedAt()).isEqualTo(NOW.minusSeconds(60).getEpochSecond());
+    }
+
+    @Test
+    void userInfoStandardValuesOverrideIdTokenValuesAndAbsentEndpointUsesIdToken() throws Exception {
+        tokenResponse = token(claims().claim("nonce", "nonce-a")
+                .claim("name", "ID Name").claim("phone_number", "13800000002")
+                .claim("email", "old@example.test").build());
+        userInfo = "{\"sub\":\"subject-a\",\"phone_number\":\"13800000003\",\"email\":\"new@example.test\"}";
+        var merged = client.exchange(settings, "code", "verifier", "nonce-a");
+        assertThat(merged.name()).isEqualTo("ID Name");
+        assertThat(merged.phoneNumber()).isEqualTo("13800000003");
+        assertThat(merged.email()).isEqualTo("new@example.test");
+        metadata = new OidcMetadata(issuer, issuer + "/authorize", issuer + "/token", issuer + "/jwks", null, issuer + "/logout");
+        var idOnly = client.exchange(settings, "code", "verifier", "nonce-a");
+        assertThat(idOnly.phoneNumber()).isEqualTo("13800000002");
+        assertThat(idOnly.email()).isEqualTo("old@example.test");
+        assertThat(idOnly.sessionId()).isNull();
+    }
+
+    @Test
+    void discoveryDiagnosticsAlwaysFetchFreshMetadataWithoutRedisOrCredentials() {
+        var document = discoveryDocument();
+        document.put("scopes_supported", List.of("openid", "profile"));
+        document.put("response_types_supported", List.of("code", "code id_token"));
+        document.put("code_challenge_methods_supported", List.of("S256"));
+        document.put("id_token_signing_alg_values_supported", List.of("RS256"));
+        document.put("token_endpoint_auth_methods_supported", List.of("client_secret_post"));
+        document.put("backchannel_logout_supported", true);
+        document.put("backchannel_logout_session_supported", true);
+        discoveryResponse = JsonUtils.toJsonString(document);
+
+        var first = client.diagnose(issuer);
+        assertThat(first.metadata()).isEqualTo(metadata);
+        assertThat(first.scopesSupported()).containsExactly("openid", "profile");
+        assertThat(first.supportsAuthorizationCode()).isTrue();
+        assertThat(first.supportsPkceS256()).isTrue();
+        assertThat(first.supportsRs256()).isTrue();
+        assertThat(first.supportsClientSecretBasic()).isFalse();
+        assertThat(first.supportsClientSecretPost()).isTrue();
+        assertThat(first.backchannelLogoutSupported()).isTrue();
+        assertThat(first.backchannelLogoutSessionSupported()).isTrue();
+        assertThat(first.rpInitiatedLogoutSupported()).isTrue();
+        assertThat(first.checkedAt()).isEqualTo(NOW);
+        assertThatThrownBy(() -> first.scopesSupported().add("email"))
+                .isInstanceOf(UnsupportedOperationException.class);
+
+        document.put("authorization_endpoint", issuer + "/authorize-v2");
+        discoveryResponse = JsonUtils.toJsonString(document);
+        assertThat(client.diagnose(issuer).metadata().authorizationEndpoint()).endsWith("/authorize-v2");
+        assertThat(discoveryRequests.get()).isEqualTo(2);
+    }
+
+    @Test
+    void discoveryDefaultsBasicAuthenticationAndDoesNotInventMissingCapabilities() {
+        var document = discoveryDocument();
+        document.remove("end_session_endpoint");
+        discoveryResponse = JsonUtils.toJsonString(document);
+        var result = client.diagnose(issuer);
+        assertThat(result.tokenEndpointAuthMethodsSupported()).containsExactly("client_secret_basic");
+        assertThat(result.supportsClientSecretBasic()).isTrue();
+        assertThat(result.supportsClientSecretPost()).isFalse();
+        assertThat(result.codeChallengeMethodsSupported()).isEmpty();
+        assertThat(result.responseTypesSupported()).isEmpty();
+        assertThat(result.idTokenSigningAlgValuesSupported()).isEmpty();
+        assertThat(result.scopesSupported()).isEmpty();
+        assertThat(result.backchannelLogoutSupported()).isFalse();
+        assertThat(result.backchannelLogoutSessionSupported()).isFalse();
+        assertThat(result.rpInitiatedLogoutSupported()).isFalse();
+    }
+
+    @Test
+    void discoveryRejectsIssuerEndpointAndMalformedCapabilityDeclarations() {
+        for (Map.Entry<String, Object> invalid : Map.<String, Object>of(
+                "issuer", "https://wrong-issuer.test",
+                "jwks_uri", "file:///etc/passwd",
+                "response_types_supported", "code",
+                "token_endpoint_auth_methods_supported", List.of(42),
+                "backchannel_logout_supported", "true").entrySet()) {
+            var document = discoveryDocument();
+            document.put(invalid.getKey(), invalid.getValue());
+            discoveryResponse = JsonUtils.toJsonString(document);
+            assertThatThrownBy(() -> client.diagnose(issuer)).isInstanceOf(ServiceException.class);
+        }
+    }
+
+    @Test
+    void discoveryFailuresExplainTheManagementStageWithoutReturningRemotePayload() {
+        discoveryStatus = 503;
+        discoveryResponse = "owned-remote-sensitive-detail";
+        assertThatThrownBy(() -> client.diagnose(issuer))
+                .isInstanceOfSatisfying(ServiceException.class, error -> {
+                    assertThat(error.getCode()).isEqualTo(503);
+                    assertThat(error.getMessage()).contains("获取失败").doesNotContain(discoveryResponse);
+                });
+        discoveryStatus = 200;
+        assertThatThrownBy(() -> client.diagnose(issuer))
+                .hasMessageContaining("JSON 对象").hasMessageNotContaining(discoveryResponse);
+        var document = discoveryDocument();
+        document.put("issuer", "https://wrong.test");
+        discoveryResponse = JsonUtils.toJsonString(document);
+        assertThatThrownBy(() -> client.diagnose(issuer)).hasMessageContaining("issuer 与配置不一致");
+        document.put("issuer", issuer);
+        document.put("jwks_uri", "file:///tmp/key");
+        discoveryResponse = JsonUtils.toJsonString(document);
+        assertThatThrownBy(() -> client.diagnose(issuer)).hasMessageContaining("元数据或端点格式无效");
+    }
+
+    @Test
+    void urlValidationUsesRuntimePolicyWithoutNetworkRequests() {
+        try (var strict = new OidcProtocolClient(HttpClient.newHttpClient(), Clock.fixed(NOW, ZoneOffset.UTC), false)) {
+            strict.validateUrl("https://unreachable.invalid/callback?app=home");
+            assertThatThrownBy(() -> strict.validateUrl(issuer)).isInstanceOf(ServiceException.class);
+            for (String value : List.of("", "https://user:pass@issuer.test", "https://issuer.test/#fragment", "file:///tmp/issuer")) {
+                assertThatThrownBy(() -> strict.validateUrl(value)).isInstanceOf(ServiceException.class);
+            }
+            assertThatThrownBy(() -> strict.validateUrl(null)).isInstanceOf(ServiceException.class);
+        }
+        client.validateUrl(issuer);
+        assertThat(discoveryRequests.get()).isZero();
     }
 
     @Test
@@ -238,6 +394,13 @@ class OidcProtocolClientTest {
                 .isNotEqualTo(OidcProtocolClient.identityKey("a", "bc"));
         assertThat(OidcProtocolClient.identityKey("issuer", "Alice"))
                 .isNotEqualTo(OidcProtocolClient.identityKey("issuer", "alice"));
+    }
+
+    private Map<String, Object> discoveryDocument() {
+        return new LinkedHashMap<>(Map.of(
+                "issuer", issuer, "authorization_endpoint", issuer + "/authorize",
+                "token_endpoint", issuer + "/token", "jwks_uri", issuer + "/jwks",
+                "userinfo_endpoint", issuer + "/userinfo", "end_session_endpoint", issuer + "/logout"));
     }
 
     private JWTClaimsSet.Builder claims() {

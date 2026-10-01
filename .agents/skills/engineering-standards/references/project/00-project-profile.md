@@ -89,3 +89,5 @@ Admin/Home 浏览器传输统一为 HTTPS 上的普通 JSON/二进制合同；�
 AI 平台项目归属（2026-09-20 用户决定）：完整 AI Agent 平台已转由独立公开仓库 [NAMEWTA/wta-ai](https://github.com/NAMEWTA/wta-ai) 承接，拥有自己的前后端、release-artifacts 与 scripts；不再规划于本仓 backend/wta-extend。本仓现有 Java AI Maven 占位保持原状，WTA-plus 可作为外部 API 消费者；独立平台的数据库、工程规范与发布门禁由新项目维护。
 
 第三方 OIDC 能力由 wta-oidc 组装，标准端点位于已登记 SSO Issuer 的 `/oidc/*` 和根 Discovery；`/oidc/admin/**` 仍受 Admin Client 权限保护。SSO/OIDC/JustAuth 业务配置由 MySQL 管理、Redis 缓存，凭据由 `AUTH_CONFIG_ROOT_KEY` 加密；Issuer/Cookie 结构字段维护重启激活，不读取旧 `OIDC_*`/JustAuth YAML 业务配置。Admin/Home 分别作为标准 OIDC RP 接入，本地登录注册保留。三个前端 App 共用 ui-element 主题，第一方 `/sso/oauth2/*` 合同继续保留。完整验收状态见当前任务 `docs/oidc-app-integration/worklog.md`，不能把代码存在等同已部署。
+
+应用登录接入由 Admin（基座 clientKey=pc）统一管理，复用 sys_auth_provider/sys_auth_registration/options。配置读写继续共享 MySQL 与版本化 Redis 快照；同一登录流程的后端实例共享 Redis DB/key-prefix、AUTH_CONFIG_ROOT_KEY 与兼容的 Sa-Token 配置。三个 App 保留构建库存，manifest.enabledApps 声明实际运行集合（Admin必选），生成的 Compose/LB 仅包含启用端，禁用端不要求 Origin/证书/DNS；docker-manage 校验运行集合与 manifest 一致。外部 OIDC 接入不要求启用自有 Provider/SSO Web。接入字段、兼容范围与本次验证见 docs/oidc-app-integration/README.md 和 docs/oidc-login-management/worklog.md。

@@ -15,7 +15,9 @@ import org.namewta.system.auth.ExternalAuthConfigurationCache;
 import org.namewta.system.auth.ExternalAuthJson;
 import org.namewta.system.domain.*;
 import org.namewta.system.domain.bo.*;
-import org.namewta.system.domain.vo.SysAuthProviderVo;
+import org.namewta.system.domain.vo.*;
+import org.namewta.common.satoken.utils.LoginHelper;
+import org.namewta.common.social.oidc.OidcProtocolClient;
 import org.namewta.system.domain.vo.SysAuthRegistrationVo;
 import org.namewta.system.domain.vo.ExternalAuthLegacyImportResultVo;
 import org.namewta.system.event.ExternalAuthConfigChangedEvent;
@@ -40,6 +42,122 @@ public class SysExternalAuthConfigServiceImpl implements ISysExternalAuthConfigS
     private final SocialSecretCipher cipher;
     private final ApplicationEventPublisher publisher;
     private final ExternalAuthConfigurationCache cache;
+    private final OidcProtocolClient oidc;
+
+    @Override
+    public void requireAdminClient() {
+        var login = LoginHelper.getLoginUser();
+        var client = login == null || login.getClientPk() == null ? null : clientMapper.selectById(login.getClientPk());
+        // pc 是初始化基座中的 Admin App key；不能把业务目标 App 切换为当前授权上下文。
+        if (client == null || !"pc".equals(client.getClientKey()) || !"0".equals(client.getStatus())) {
+            throw new ServiceException("请在 Admin 管理端管理应用登录接入");
+        }
+    }
+
+    @Override
+    public List<ExternalAuthClientOptionVo> clientOptions(String keyword, List<String> clientIds) {
+        if (keyword != null && keyword.length() > 200 || clientIds != null && clientIds.size() > 200) {
+            throw new ServiceException("查询条件过长，请缩小范围");
+        }
+        var query = Wrappers.lambdaQuery(SysClient.class)
+            .select(SysClient::getClientId, SysClient::getClientKey, SysClient::getStatus,
+                SysClient::getGrantType, SysClient::getRegisterEnabled)
+            .orderByAsc(SysClient::getClientKey, SysClient::getClientId);
+        if (keyword != null && !keyword.isBlank()) {
+            query.and(part -> part.like(SysClient::getClientKey, keyword.trim()).or().like(SysClient::getClientId, keyword.trim()));
+        }
+        if (clientIds != null && !clientIds.isEmpty()) {
+            query.in(SysClient::getClientId, clientIds);
+        }
+        var clients = clientMapper.selectList(query);
+        if (clients.isEmpty()) return List.of();
+        var registrations = registrationMapper.selectList(Wrappers.lambdaQuery(SysAuthRegistration.class)
+            .select(SysAuthRegistration::getBusinessClientId, SysAuthRegistration::getProviderId, SysAuthRegistration::getEnabled)
+            .in(SysAuthRegistration::getBusinessClientId, clients.stream().map(SysClient::getClientId).toList()));
+        var providerIds = registrations.stream().map(SysAuthRegistration::getProviderId).distinct().toList();
+        Set<Long> enabledProviders = providerIds.isEmpty() ? Set.of() : new HashSet<>(providerMapper.selectList(
+            Wrappers.lambdaQuery(SysAuthProvider.class).select(SysAuthProvider::getId)
+                .in(SysAuthProvider::getId, providerIds).eq(SysAuthProvider::getEnabled, true))
+            .stream().map(SysAuthProvider::getId).toList());
+        var byClient = registrations.stream().collect(java.util.stream.Collectors.groupingBy(SysAuthRegistration::getBusinessClientId));
+        return clients.stream().map(client -> {
+            boolean social = hasSocial(client);
+            boolean active = "0".equals(client.getStatus()) && social;
+            var configured = byClient.getOrDefault(client.getClientId(), List.of());
+            long enabled = active ? configured.stream().filter(item -> Boolean.TRUE.equals(item.getEnabled())
+                && enabledProviders.contains(item.getProviderId())).count() : 0;
+            String reason = !"0".equals(client.getStatus()) ? "客户端已停用" : !social ? "未开放 social 授权" : null;
+            return new ExternalAuthClientOptionVo(client.getClientId(), client.getClientKey(), client.getStatus(), social,
+                Boolean.TRUE.equals(client.getRegisterEnabled()), configured.size(), enabled, reason);
+        }).toList();
+    }
+
+    @Override
+    public List<ExternalAuthProviderOptionVo> providerOptions(String keyword, Long selectedId) {
+        if (keyword != null && keyword.length() > 200) throw new ServiceException("查询条件过长，请缩小范围");
+        var query = QueryBuilder.lambda(SysAuthProvider.class).likeIfText(SysAuthProvider::getName, keyword)
+            .build().orderByAsc(SysAuthProvider::getName, SysAuthProvider::getId);
+        var rows = new ArrayList<>(providerMapper.selectPage(new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(1, 50, false), query).getRecords());
+        if (selectedId != null && rows.stream().noneMatch(row -> Objects.equals(row.getId(), selectedId))) {
+            rows.addFirst(requireProvider(requiredId(selectedId)));
+        }
+        return rows.stream().map(provider -> {
+            String method = ExternalAuthJson.options(provider.getOptionsJson()).get("authenticationMethod");
+            return new ExternalAuthProviderOptionVo(provider.getId(), provider.getProviderKey(), provider.getName(),
+                provider.getProtocol(), provider.getIssuer(), Boolean.TRUE.equals(provider.getEnabled()),
+                method == null ? Map.of() : Map.of("authenticationMethod", method));
+        }).toList();
+    }
+
+    @Override
+    public ExternalAuthConnectionInfoVo connectionInfo(long id) {
+        var registration = requireRegistration(id);
+        var provider = requireProvider(registration.getProviderId());
+        var options = mergedOptions(provider, ExternalAuthJson.options(registration.getOptionsJson()));
+        boolean isOidc = "OIDC".equals(provider.getProtocol());
+        String base = options.get("apiPublicBase");
+        String backchannel = "";
+        if (isOidc && base != null && !base.isBlank()) {
+            absoluteUrl(base, "业务 API 外部地址", true);
+            backchannel = stripTrailingSlash(base) + "/auth/social/backchannel/" + id;
+        }
+        return new ExternalAuthConnectionInfoVo(id, provider.getName(), provider.getProviderKey(), provider.getProtocol(),
+            provider.getIssuer(), isOidc ? stripTrailingSlash(provider.getIssuer()) + "/.well-known/openid-configuration" : null,
+            registration.getBusinessClientId(), registration.getExternalClientId(), options.getOrDefault("authenticationMethod", "client_secret_basic"),
+            options.getOrDefault("appPublicUrl", ""), registration.getRedirectUri(), registration.getPostLogoutRedirectUri(), ExternalAuthJson.scopes(registration.getScopesJson()),
+            backchannel, registrationMapper.selectCurrentStamp(id) != null,
+            registration.getClientSecretCiphertext() != null && !registration.getClientSecretCiphertext().isBlank());
+    }
+
+    @Override
+    public OidcMetadataDiagnosticVo oidcMetadata(String issuer) {
+        absoluteUrl(issuer, "OIDC issuer", true);
+        var result = oidc.diagnose(issuer);
+        var metadata = result.metadata();
+        return new OidcMetadataDiagnosticVo(issuer, stripTrailingSlash(issuer) + "/.well-known/openid-configuration",
+            metadata.authorizationEndpoint(), metadata.tokenEndpoint(), metadata.jwksUri(), metadata.userInfoEndpoint(),
+            metadata.endSessionEndpoint(), result.tokenEndpointAuthMethodsSupported(), result.scopesSupported(),
+            result.codeChallengeMethodsSupported(), result.responseTypesSupported(), result.idTokenSigningAlgValuesSupported(),
+            result.backchannelLogoutSupported(), result.backchannelLogoutSessionSupported(), result.checkedAt());
+    }
+
+    /** 以登记的绝对路径生成交付地址，保留部署子路径。 */
+    private static String stripTrailingSlash(String value) {
+        return value.replaceAll("/+$", "");
+    }
+
+    /** 身份源选项作为默认值，接入选项显式覆盖。 */
+    private static Map<String, String> mergedOptions(SysAuthProvider provider, Map<String, String> registrationOptions) {
+        var result = new HashMap<>(ExternalAuthJson.options(provider.getOptionsJson()));
+        result.putAll(registrationOptions);
+        return result;
+    }
+
+    /** 与运行时入口查询使用同一 social 授权判定。 */
+    private static boolean hasSocial(SysClient client) {
+        return client.getGrantType() != null
+            && Arrays.stream(client.getGrantType().split(",")).map(String::trim).anyMatch("social"::equals);
+    }
 
     @Override
     public PageResult<SysAuthProviderVo> providers(SysAuthProviderBo query, PageQuery page) {
@@ -105,12 +223,22 @@ public class SysExternalAuthConfigServiceImpl implements ISysExternalAuthConfigS
             .eqIfPresent(SysAuthRegistration::getProviderId, query.getProviderId())
             .eqIfText(SysAuthRegistration::getBusinessClientId, query.getBusinessClientId())
             .eqIfPresent(SysAuthRegistration::getEnabled, query.getEnabled()).build().orderByAsc(SysAuthRegistration::getId));
-        return PageResult.build(result.getRecords().stream().map(this::registrationVo).toList(), result.getTotal());
+        var rows = result.getRecords().stream().map(this::registrationVo).toList();
+        if (!rows.isEmpty()) {
+            var providerIds = rows.stream().map(SysAuthRegistrationVo::getProviderId).distinct().toList();
+            var names = providerMapper.selectList(Wrappers.lambdaQuery(SysAuthProvider.class)
+                .select(SysAuthProvider::getId, SysAuthProvider::getName).in(SysAuthProvider::getId, providerIds))
+                .stream().collect(java.util.stream.Collectors.toMap(SysAuthProvider::getId, SysAuthProvider::getName));
+            rows.forEach(row -> row.setProviderName(names.get(row.getProviderId())));
+        }
+        return PageResult.build(rows, result.getTotal());
     }
 
     @Override
     public SysAuthRegistrationVo registration(long id) {
-        return registrationVo(requireRegistration(id));
+        var row = registrationVo(requireRegistration(id));
+        row.setProviderName(requireProvider(row.getProviderId()).getName());
+        return row;
     }
 
     @Override
@@ -132,6 +260,7 @@ public class SysExternalAuthConfigServiceImpl implements ISysExternalAuthConfigS
                 throw new ServiceException("接入所属身份源、业务客户端与外部客户端不可修改，请新建接入");
             }
         }
+        validateOidcRegistration(provider, bo, previous);
         var entity = MapstructUtils.convert(bo, SysAuthRegistration.class);
         entity.setId(create ? IdGeneratorUtil.nextLongId() : previous.getId());
         entity.setVersion(create ? 0L : previous.getVersion());
@@ -274,8 +403,7 @@ public class SysExternalAuthConfigServiceImpl implements ISysExternalAuthConfigS
 
     private void requireSocialClient(String businessClientId) {
         var client = clientMapper.selectOne(Wrappers.lambdaQuery(SysClient.class).eq(SysClient::getClientId, businessClientId));
-        if (client == null || !"0".equals(client.getStatus()) || client.getGrantType() == null
-            || Arrays.stream(client.getGrantType().split(",")).map(String::trim).noneMatch("social"::equals)) {
+        if (client == null || !"0".equals(client.getStatus()) || !hasSocial(client)) {
             throw new ServiceException("业务客户端不存在、已停用或未开放 social 授权");
         }
     }
@@ -311,6 +439,8 @@ public class SysExternalAuthConfigServiceImpl implements ISysExternalAuthConfigS
         }
         if ("OIDC".equals(bo.getProtocol())) {
             absoluteUrl(bo.getIssuer(), "OIDC issuer", true);
+            oidc.validateUrl(bo.getIssuer());
+            validateAuthenticationMethod(options(bo.getOptions()));
         } else if (bo.getIssuer() != null && !bo.getIssuer().isBlank()) {
             absoluteUrl(bo.getIssuer(), "issuer", true);
         }
@@ -338,6 +468,39 @@ public class SysExternalAuthConfigServiceImpl implements ISysExternalAuthConfigS
         }
         options(bo.getOptions());
         scopes(bo.getScopes());
+    }
+
+    /** 保存只做静态校验，不在数据库事务内调用身份提供方。 */
+    private void validateOidcRegistration(SysAuthProvider provider, SysAuthRegistrationBo bo, SysAuthRegistration previous) {
+        if (!"OIDC".equals(provider.getProtocol())) return;
+        var effectiveOptions = mergedOptions(provider, options(bo.getOptions()));
+        validateAuthenticationMethod(effectiveOptions);
+        if (!scopes(bo.getScopes()).contains("openid")) {
+            throw new ServiceException("OIDC scope 必须包含 openid");
+        }
+        if ((bo.getClientSecret() == null || bo.getClientSecret().isBlank())
+            && (previous == null || previous.getClientSecretCiphertext() == null || previous.getClientSecretCiphertext().isBlank())) {
+            throw new ServiceException("OIDC 机密客户端必须配置 Client Secret；编辑时留空仅保留已有密钥");
+        }
+        oidc.validateUrl(provider.getIssuer());
+        oidc.validateUrl(bo.getRedirectUri());
+        if (bo.getPostLogoutRedirectUri() != null && !bo.getPostLogoutRedirectUri().isBlank()) {
+            oidc.validateUrl(bo.getPostLogoutRedirectUri());
+        }
+        for (String key : List.of("appPublicUrl", "apiPublicBase")) {
+            String value = effectiveOptions.get(key);
+            if (value != null && !value.isBlank()) {
+                absoluteUrl(value, key, true);
+                oidc.validateUrl(value);
+            }
+        }
+    }
+
+    /** 支持的认证方式与现有机密客户端协议实现保持一致。 */
+    private static void validateAuthenticationMethod(Map<String, String> value) {
+        if (!Set.of("client_secret_basic", "client_secret_post").contains(value.getOrDefault("authenticationMethod", "client_secret_basic"))) {
+            throw new ServiceException("OIDC 客户端认证方式只支持 client_secret_basic 或 client_secret_post");
+        }
     }
 
     private static Map<String, String> options(Map<String, String> value) {

@@ -64,6 +64,31 @@ test('older schema v2 releases without explicit CORS retain their App origin def
   } finally { f.dispose(); }
 });
 
+test('older schema v2 releases without enabledApps keep their original all-App Compose', () => {
+  const f = fixture();
+  try {
+    const id = f.build();
+    const legacy = reseal(f, id, (root, manifest) => {
+      delete manifest.enabledApps;
+      const generated = ['docker/docker-compose-frontend-active.yml',
+        'docker/frontend/nginx/lb/nginx-lb-http-active.conf.template',
+        'docker/frontend/nginx/lb/nginx-lb-tls-active.conf.template'];
+      for (const relative of generated) fs.unlinkSync(path.join(root, relative));
+      manifest.files = manifest.files.filter((file) => !generated.includes(file.path));
+    });
+    f.stage(legacy);
+    assert.equal(f.ok('resolve', '--env', 'prod', '--env-file', path.join(f.release, '.env')), f.version(legacy));
+    const calls = path.join(f.scratch, 'legacy-docker-calls.jsonl');
+    const result = spawnSync('bash', [path.join(f.release, 'scripts/docker-manage.sh'), 'config', 'frontend'], {
+      encoding: 'utf8', env: { ...f.env, DOCKER_CALLS: calls },
+    });
+    assert.equal(result.status, 0, result.stderr);
+    const call = fs.readFileSync(calls, 'utf8').trim().split('\n').map(JSON.parse).at(-1);
+    assert.ok(call.args.includes(path.join(f.version(legacy), 'docker/docker-compose-frontend.yml')));
+    assert.equal(call.enabledApps, 'admin-web,home-web,sso-web');
+  } finally { f.dispose(); }
+});
+
 function reseal(f, id, mutate) {
   const original = f.version(id);
   const scratch = path.join(f.release, 'builds/corruption-fixture');

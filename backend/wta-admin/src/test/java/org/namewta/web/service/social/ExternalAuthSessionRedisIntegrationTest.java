@@ -2,6 +2,8 @@ package org.namewta.web.service.social;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -17,6 +19,8 @@ import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.core.utils.SpringUtils;
 import org.namewta.common.redis.config.RedisConfig;
 import org.namewta.common.redis.config.properties.RedissonProperties;
+import org.namewta.common.redis.utils.RedisUtils;
+import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.common.social.crypto.SocialSecretCipher;
 import org.namewta.common.social.oidc.OidcIdentity;
 import org.namewta.system.api.model.ExternalAuthRegistration;
@@ -40,6 +44,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 用真实 Redis、生产 codec 和锁验证 RP 签发/全退竞态。每例独立 JVM 隔离 RedisUtils 的静态客户端， 仅替换 SaToken
@@ -67,6 +72,11 @@ class ExternalAuthSessionRedisIntegrationTest {
     @Test
     void duplicateLogoutIsIdempotentAndKeepsTheRevocationTombstone() throws Exception {
         runProbe("duplicate");
+    }
+
+    @Test
+    void oidcWithoutSidStoresEncryptedExpiringRpSessionAndCanLogoutOnAnotherNode() throws Exception {
+        runProbe("no-sid");
     }
 
     private void runProbe(String scenario) throws Exception {
@@ -130,6 +140,7 @@ class ExternalAuthSessionRedisIntegrationTest {
                     case "issue-first" -> probe.issueFirst();
                     case "isolation" -> probe.isolation();
                     case "duplicate" -> probe.duplicate();
+                    case "no-sid" -> probe.noSid();
                     default -> throw new IllegalArgumentException("未知场景");
                 }
             } finally {
@@ -224,6 +235,48 @@ class ExternalAuthSessionRedisIntegrationTest {
             assertEquals(1, revoked.get());
             assertTrue(tokens.isEmpty());
             assertThrows(ServiceException.class, () -> issue(registration, "sid-a", "late-token"));
+        }
+
+        private void noSid() {
+            AtomicReference<String> sessionId = new AtomicReference<>();
+            var result = store.issue(registration, identity(registration, null), key -> {
+                sessionId.set(key);
+                return issueToken("no-sid-token");
+            });
+            assertNotNull(sessionId.get());
+            assertTrue(result.isGlobalLogoutAvailable());
+            String key = "auth:external:session:" + sessionId.get();
+            String encrypted = RedisUtils.getCacheObject(key);
+            assertNotNull(encrypted);
+            assertFalse(encrypted.contains("owned-id-token"));
+            assertTrue(RedisUtils.getTimeToLive(key) > 3_500_000);
+            assertTrue(RedisUtils.getTimeToLive(key) <= 3_600_000);
+            var cipher = new SocialSecretCipher(Base64.getEncoder().encodeToString(new byte[32]));
+            var remembered = JsonUtils.parseObject(cipher.decrypt("rp-session", encrypted), ExternalAuthSessionStore.Session.class);
+            assertNull(remembered.sid());
+            assertEquals("owned-id-token", remembered.idToken());
+            try (var keys = RedisUtils.getClient().getKeys().getKeysStreamByPattern("auth:external:sid:*")) {
+                assertEquals(0, keys.count());
+            }
+
+            // 模拟同集群另一个业务实例，使用相同根密钥及共享 Redis 读取发起节点的会话。
+            var anotherNode = new ExternalAuthSessionStore(cipher);
+            try (MockedStatic<StpUtil> actions = mockStatic(StpUtil.class)) {
+                actions.when(() -> StpUtil.getExtra(ExternalAuthSessionStore.SESSION_EXTRA)).thenReturn(sessionId.get());
+                actions.when(() -> StpUtil.getExtra(ExternalAuthSessionStore.SOURCE_EXTRA)).thenReturn("OIDC");
+                var status = anotherNode.status();
+                assertTrue(status.rpInitiatedLogoutAvailable());
+                assertTrue(status.globalLogoutAvailable());
+                assertFalse(status.backchannelSessionLinked());
+                var logout = anotherNode.beginLogout();
+                assertTrue(logout.endSessionUrl().startsWith(registration.issuer() + "/logout?"));
+                assertTrue(logout.endSessionUrl().contains("id_token_hint=owned-id-token"));
+                assertTrue(logout.endSessionUrl().contains("post_logout_redirect_uri=https%3A%2F%2Frp.test%2Flogged-out"));
+                actions.verify(StpUtil::logout);
+            }
+            assertTrue(tokens.contains("no-sid-token"));
+            revoke(registration, "unrelated-sid");
+            assertTrue(tokens.contains("no-sid-token"));
         }
 
         private void issue(ExternalAuthRegistration client, String sid, String token) {

@@ -31,6 +31,7 @@ Profiles: ai (Elasticsearch), tls (LB HTTPS), metrics (Prometheus/Linux exporter
 
 通过 RELEASE_ENV_FILE 指定 env 文件，默认 release-artifacts/.env。
 RELEASE_ENV 默认为 prod。每条命令固定已校验版本；up 显式 build/recreate。
+NAMEWTA_ENABLED_APPS 与已构建 manifest 一致，Admin 必选；默认启用三个 App。
 EOF
 }
 
@@ -61,7 +62,13 @@ compose_file() {
     infrastructure) printf '%s' "${DOCKER_ROOT}/docker-compose-infrastructure.yml" ;;
     observability) printf '%s' "${DOCKER_ROOT}/docker-compose-observability.yml" ;;
     backend) printf '%s' "${DOCKER_ROOT}/docker-compose-backend.yml" ;;
-    frontend) printf '%s' "${DOCKER_ROOT}/docker-compose-frontend.yml" ;;
+    frontend)
+      if [[ -f "${DOCKER_ROOT}/docker-compose-frontend-active.yml" ]]; then
+        printf '%s' "${DOCKER_ROOT}/docker-compose-frontend-active.yml"
+      else
+        printf '%s' "${DOCKER_ROOT}/docker-compose-frontend.yml"
+      fi
+      ;;
     *) error "未知分类: $1"; return 1 ;;
   esac
 }
@@ -110,19 +117,18 @@ import path from 'node:path';
 const version = process.argv[2];
 const manifest = JSON.parse(fs.readFileSync(path.join(version, 'release-manifest.json'), 'utf8'));
 const registry = JSON.parse(fs.readFileSync(path.join(version, 'apps.json'), 'utf8'));
-const sso = registry.apps.filter((app) => app.shipped && app.apiKind === 'sso');
-if (sso.length !== 1) {
-  console.error('exactly one shipped SSO App is required');
-  process.exit(1);
-}
+const enabled = manifest.enabledApps ?? registry.apps.filter((app) => app.shipped).map((app) => app.id);
+const sso = registry.apps.find((app) => enabled.includes(app.id) && app.apiKind === 'sso');
 console.log((manifest.corsAllowedOrigins ?? [...new Set(Object.values(manifest.appOrigins))].sort()).join(','));
-console.log(manifest.appOrigins[sso[0].id]);
-console.log('/' + manifest.apps[sso[0].id] + '/');
+console.log(sso ? manifest.appOrigins[sso.id] : '');
+console.log(sso ? '/' + manifest.apps[sso.id] + '/' : '');
+console.log(enabled.join(','));
 JS
   )
-  [[ ${#origin_values[@]} -eq 3 ]] || { error "无法读取固定版本的Origin矩阵"; return 1; }
+  [[ ${#origin_values[@]} -eq 4 ]] || { error "无法读取固定版本的Origin矩阵"; return 1; }
   export WEB_CORS_ALLOWED_ORIGINS="${origin_values[0]}" SSO_WEB_ORIGIN="${origin_values[1]}"
   export SSO_WEB_BASE_PATH="${origin_values[2]}"
+  export NAMEWTA_ENABLED_APPS="${origin_values[3]}"
   # Per-version tags prevent a failed/partial image build from retagging the running release.
   export NAMEWTA_ADMIN_IMAGE="namewta/namewta-admin:${RELEASE_VERSION##*/}"
   export NAMEWTA_MONITOR_IMAGE="namewta/namewta-monitor-admin:${RELEASE_VERSION##*/}"

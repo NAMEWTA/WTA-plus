@@ -4,8 +4,11 @@
       <template #header>
         <div class="toolbar-shell">
           <div class="table-heading">
-            <h3 data-testid="sso-admin-title">自有应用 SSO</h3>
-            <p class="table-subtitle">为 Admin、Home 等自有客户端配置登录回调与接入信息。</p>
+            <h3 data-testid="sso-admin-title">旧第一方 SSO（兼容）</h3>
+            <p class="table-subtitle">
+              维护已有 /sso/oauth2 协议应用。新业务 App 使用自有或第三方 OIDC，请到「外部身份源」与「业务 App
+              登录接入」配置。
+            </p>
           </div>
           <div class="toolbar-actions">
             <el-button
@@ -174,7 +177,10 @@ const handleUpdate = async (row: ClientVO) => {
 };
 
 const revealOnce = async (clientId?: string, secret?: string) => {
-  const lines = [`clientId: ${clientId ?? ''}`, secret ? `sso_secret（只此一次）: ${secret}` : '密钥：已配置，明文不再回显'];
+  const lines = [
+    `clientId: ${clientId ?? ''}`,
+    secret ? `sso_secret（只此一次）: ${secret}` : '密钥：已配置，明文不再回显'
+  ];
   await ElMessageBox.alert(lines.join('\n'), '请立即保存配置', { confirmButtonText: '已保存' });
 };
 

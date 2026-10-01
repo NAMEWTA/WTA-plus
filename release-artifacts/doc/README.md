@@ -6,16 +6,18 @@
 
 ## 后端和三个前端怎么配合
 
-后端是一个 Java 21、Spring Boot 4.1 应用。`backend/wta-admin` 只负责组装，业务在 `wta-modules`，跨模块合同在 `wta-api`，OSS、通知和 HTTP 日志在 `wta-common`。一套后端同时服务管理端、用户门户和第一方 SSO。三个应用的登录域、菜单、角色和 Token 按 Client 分开，不共用会话。
+后端是一个 Java 21、Spring Boot 4.1 应用。`backend/wta-admin` 只负责组装，业务在 `wta-modules`，跨模块合同在 `wta-api`，OSS、通知和 HTTP 日志在 `wta-common`。一套后端可同时服务管理端、用户门户和自建 SSO。业务应用的登录域、菜单、角色和 Token 按 Client 区分。
 
-数据是一个 MySQL 8.4 库 `wta-plus`，加上 Redis 和 MinIO。全新空库按六份 SQL 初始化；已经有数据的库不能重放这六份脚本。
+数据是一个 MySQL 8.4 库 `wta-plus`，加上 Redis 和 MinIO。多台业务后端共用该业务库；跨节点会话还需共用 Redis 实例、逻辑 DB、key prefix、认证根密钥和兼容的 Sa-Token 配置。全新空库按六份 SQL 初始化；已经有数据的库不能重放这六份脚本。
+
+`NAMEWTA_ENABLED_APPS` 默认启用三端，Admin 必选，Home/SSO 可选；例如 `admin-web` 或 `admin-web,home-web`。`shipped` 构建库存仍包含三端，manifest 的 `enabledApps` 决定实际 Compose 和入口。只给已启用 App 填地址和准备证书，禁用 App 没有服务或路由。接入外部 OIDC 不要求开启本项目中央 Provider/SSO Web。
 
 
 | 前端        | 开发时浏览器打开                 | 开发时代理到后端                              | 生产时浏览器打开                   | 生产时接口怎么到后端                         |
 | --------- | ------------------------ | ------------------------------------- | -------------------------- | ---------------------------------- |
 | admin-web | `http://127.0.0.1:5177/` | `/dev-api` → `http://127.0.0.1:38888` | 业务负载均衡上的 `/<管理端前缀>/`       | `/<前缀>/prod-api`，由 Nginx 去掉前缀后转到后端 |
 | home-web  | `http://127.0.0.1:5175/` | 同上                                    | 同一个业务负载均衡上的 `/<门户前缀>/`     | 同上                                 |
-| sso-web   | `http://127.0.0.1:4176/` | 同源 `/sso` → `http://127.0.0.1:38888`  | 独立入口 `/<SSO 前缀>/`，不进业务负载均衡 | 页面走 SSO 前缀，接口保持 `/sso`             |
+| sso-web   | `http://127.0.0.1:4176/` | 同源 `/sso` → `http://127.0.0.1:38888`  | 启用后可用独立入口或共享 LB 的 `/<SSO 前缀>/` | 页面走 SSO 前缀，协议保持根路径              |
 
 
 管理端和门户的公开 Client 标识写在各自的 `.env.development` 里，分别是 `e5cd7e4891bf95d1d19206ce24a7b32e` 和 `428a8310cd442757ae699df5d894f051`。它们不是密钥，但必须和库里的 `sys_client.client_id` 一致。SSO 页面不使用这两个标识；它的接口基址是空的 `VITE_SSO_API`，表示走同源 `/sso`。
@@ -29,7 +31,7 @@
 | ----------------------------- | ------------------------------------- | ------------------------------------------------------------------ |
 | 页面 Origin                     | `http://127.0.0.1:5177`、`5175`、`4176` | 浏览器页面的协议、主机和端口。`localhost` 和 `127.0.0.1` 是不同来源，路径和结尾 `/` 不算 Origin |
 | 业务接口前缀                        | `/dev-api`，生产是 `/<前缀>/prod-api`       | 只到 Spring Boot。浏览器不把这个前缀写成对象存储地址                                   |
-| `WEB_CORS_ALLOWED_ORIGINS`    | 内网开发与发布样例为 `*`；发布未配置时取三个 App Origin | 只决定浏览器能不能读取后端的跨源响应。接口仍要登录和权限                                       |
+| `WEB_CORS_ALLOWED_ORIGINS`    | 内网开发与发布样例为 `*`；发布未配置时取启用 App 的 Origin | 只决定浏览器能不能读取后端的跨源响应。接口仍要登录和权限                                       |
 | `SSO_WEB_ORIGIN`              | 发布样例是独立的 SSO 主机                       | SSO 认人页的来源。SSO 路径前缀不放进这条 CORS 名单                                   |
 | `MINIO_API_CORS_ALLOW_ORIGIN` | 样例默认 `*`                              | 对象存储自己的浏览器来源白名单。上传时浏览器会直接访问它                                       |
 | `sys_oss_config.endpoint`     | 基座先写本机占位，初始化后改成 env 里的值               | 后端连对象存储，也是预签名 URL 里的主机。浏览器必须能够访问它                                  |
@@ -40,9 +42,9 @@
 
 `WEB_CORS_ALLOWED_ORIGINS` 在所有 profile 中都支持逗号分隔的精确 Origin、主机/IP 通配和 `*` 混写，例如 `http://127.0.0.1:5177,http://192.168.*:*,https://*.example.test:8443`；`*` 表示任意 HTTP(S) 来源，`:*` 与 `:[*]` 都表示任意端口。不填写路径或结尾 `/`；`null`、`file:` 和无效端口仍不属于有效配置。后端回显实际请求 Origin，因此支持携带凭证的请求。公开 `application-local.example.yml` 和发布 `.env.example` 均给出内网 `*` 示例。
 
-发布构建将选择记录为 manifest 的 `corsAllowedOrigins`，运行 env 必须与该记录一致；docker-manage 将记录传给后端，不再用三 App 地址覆盖显式选择。留空或省略此配置时，发布脚本采用三个 App 的精确 Origin。调整已发布环境的 CORS 需重新构建并选择对应版本。
+发布构建将选择记录为 manifest 的 `corsAllowedOrigins`，运行 env 必须与该记录一致；docker-manage 将记录传给后端，不再用 App 地址覆盖显式选择。留空或省略此配置时，发布脚本采用已启用 App 的精确 Origin。调整已发布环境的 CORS 或启用集合需重新构建并选择对应版本。
 
-实际 App 入口 `ADMIN_WEB_ORIGIN`、`HOME_WEB_ORIGIN`、`SSO_WEB_ORIGIN` 仍填写精确地址，生产入口必须是 HTTPS。SSO 和两个业务应用必须使用不同主机名，只改端口不能隔离 Cookie。`TRUSTED_PROXY_CIDRS` 按真实网关网段填写，不要猜。
+已启用 App 的 `ADMIN_WEB_ORIGIN`、`HOME_WEB_ORIGIN`、`SSO_WEB_ORIGIN` 填写精确地址，生产入口必须是 HTTPS。可以同域不同前缀或分域部署；SSO 保持独立 Cookie 名和协议路径，不将共享域名当成共享业务令牌。`TRUSTED_PROXY_CIDRS` 按真实网关网段填写。
 
 ## 上生产时 OSS 要注意什么
 
@@ -58,7 +60,7 @@
 
 浏览器和对象存储：
 
-- `MINIO_API_CORS_ALLOW_ORIGIN` 在 `.env.example` 里默认是 `*`，只适合本机。生产改成三个前端真实的 `https://主机`，逗号分隔，不要带路径或结尾 `/`。
+- `MINIO_API_CORS_ALLOW_ORIGIN` 在 `.env.example` 里默认是 `*`。按实际访问需要填写已启用前端的 `https://主机`，逗号分隔，不要带路径或结尾 `/`。
 - `endpoint` 必须是浏览器能打开的地址。写成仅容器内网可解析的主机名时，后端仍能签发 URL，浏览器 PUT 会失败。
 - `init-mysql-container.sh` 会把 `minio` 和 `image` 两行的 `is_https` 写成 `N`。对象存储如果对外是 HTTPS，初始化完成后要把这一列改为 `Y`，否则签名出来的是 HTTP。`MINIO_ENDPOINT` 本身不带 `http://`。
 - 分片上传要求对象存储的 CORS 暴露 `ETag`，并允许 `PUT`。签名要求的请求头至少包括 `content-type` 和 `x-amz-meta-upload-fingerprint`，以接口返回的 `requiredHeaders` 为准。
@@ -69,7 +71,7 @@
 ## 换一套新的空环境
 
 1. 复制 `release-artifacts/.env.example`，落到未被 Git 跟踪、权限 `0600` 的 env 文件。替换全部占位口令，至少包括数据库、Redis、MinIO，以及 `MINIO_ENDPOINT`、`MINIO_BUCKET`、`MINIO_DIAGNOSTIC_OBJECT`。
-2. 填写三个 `*_WEB_PREFIX`、三个 `*_WEB_ORIGIN`、证书目录 `NAMEWTA_CERT_ROOT` 和 `NAMEWTA_BIND_HOST`。管理端前缀不要使用 `admin`、`monitor`、`snail-job` 或 `snail-ai`。样例里的 `.invalid` 主机不能用于真正构建。
+2. 选择 `NAMEWTA_ENABLED_APPS`，填写已启用 App 的 `*_WEB_PREFIX`、`*_WEB_ORIGIN`、证书目录 `NAMEWTA_CERT_ROOT` 和 `NAMEWTA_BIND_HOST`。管理端前缀不要使用 `admin`、`monitor`、`snail-job` 或 `snail-ai`。启用 App 的 `.invalid` 主机不能用于真正构建。
 3. 确认目标 MySQL 里还没有 `wta-plus` 库，也没有同名应用账号。初始化脚本遇到已存在的库或账号会拒绝执行。
 4. 按这个顺序导入，且只导入这些文件：
    ```text
@@ -105,4 +107,3 @@
 | 直传策略和清理开关      | `backend/wta-admin/src/main/resources/application.yml`                                                                        |
 | 本机 CORS 模板     | `backend/wta-admin/src/main/resources/application-local.example.yml`                                                          |
 | 三个前端的开发端口和代理   | `frontend/apps/admin-web/.env.development`、`frontend/apps/home-web/.env.development`、`frontend/apps/sso-web/.env.development` |
-

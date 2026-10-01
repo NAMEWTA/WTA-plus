@@ -46,7 +46,7 @@ VITE_APP_CONTEXT_PATH=/<prefix>/
 VITE_APP_BASE_API=/<prefix>/<env>-api
 ```
 
-Vite 会优先使用进程环境，因此无需修改 App 的 `.env.development` 或 `.env.production`。不可变版本的 release-manifest.json 保存 apps 前缀、appOrigins 和 applicationMatrix，消费时校验一致性。SSO 单独设置 VITE_SSO_API 为空，router 使用 import.meta.env.BASE_URL，根 /sso API 不剥离 namespace。
+Vite 会优先使用进程环境，因此无需修改 App 的 `.env.development` 或 `.env.production`。不可变版本的 release-manifest.json 保存全部 shipped apps 前缀，以及运行集合 enabledApps、该集合的 appOrigins 和 applicationMatrix，消费时校验一致性。`NAMEWTA_ENABLED_APPS` 默认三端、Admin 必选；生成的 active Compose/LB 删除禁用 App 的服务、DNS upstream、路由和 TLS 挂载，不要求禁用 App 的外部地址。SSO 单独设置 VITE_SSO_API 为空，router 使用 import.meta.env.BASE_URL，根 /sso API 不剥离 namespace。
 
 ## TLS
 
@@ -55,7 +55,7 @@ Vite 会优先使用进程环境，因此无需修改 App 的 `.env.development`
 - `error_page 497` 不得携带内部监听端口。
 - 保留 `absolute_redirect off`、`port_in_redirect off`、`server_name_in_redirect off`。
 - sso-web 已登记独立 TLS service/template/41483 默认端口及 NAMEWTA_CERT_ROOT/sso-web 证书目录，不能让多个容器争用同一宿主机端口。
-- SSO 与业务生产 hostname 不同，Origin 必须 HTTPS；SSO 不进入业务 LB，根路径404，子路径通过命名 location 回退到 SPA。health 保持 /healthz。
+- 启用的 SSO 可使用独立 hostname 或共享 LB 的不同静态前缀，生产 Origin 必须 HTTPS；根路径404，子路径通过命名 location 回退到 SPA。health 保持 /healthz。禁用 SSO 后，开启 tls profile 也不生成 SSO 服务或证书挂载。
 
 ## 新 App 修改面
 

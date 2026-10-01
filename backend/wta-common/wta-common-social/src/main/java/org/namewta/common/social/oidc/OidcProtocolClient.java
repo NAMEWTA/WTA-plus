@@ -39,6 +39,8 @@ import java.util.Set;
 @Component
 public class OidcProtocolClient implements AutoCloseable {
     private static final String LOGOUT_EVENT = "http://schemas.openid.net/event/backchannel-logout";
+    private static final Set<String> PROFILE_CLAIMS =
+            Set.of("name", "nickname", "preferred_username", "phone_number", "email");
     private static final SecureRandom RANDOM = new SecureRandom();
     private final HttpClient http;
     private final Clock clock;
@@ -95,19 +97,100 @@ public class OidcProtocolClient implements AutoCloseable {
         String key = "auth:oidc:discovery:" + identityKey(issuer, "");
         String cached = RedisUtils.getCacheObject(key);
         if (cached != null) return JsonUtils.parseObject(cached, OidcMetadata.class);
+        OidcMetadata metadata = metadata(issuer, fetchDiscovery(issuer));
+        RedisUtils.setCacheObject(key, JsonUtils.toJsonString(metadata), Duration.ofMinutes(5));
+        return metadata;
+    }
+
+    /**
+     * 实时检查发行方公开元数据；不读写 Discovery 缓存，不发送客户端凭据或授权码。
+     *
+     * @param issuer 管理员登记的精确发行者地址，使用与登录相同的 HTTP(S) 策略
+     * @return 当前节点实际获取的端点、能力声明及观察时间
+     * @throws ServiceException 网络不可用、发行者不匹配、端点或元数据格式无效时明确失败
+     */
+    public OidcDiscoveryDiagnostics diagnose(String issuer) {
+        try {
+            checkedUri(issuer);
+        } catch (ServiceException failure) {
+            throw diagnosticFailure("OIDC Discovery 发行者地址不符合当前环境的 HTTP(S) 地址规则", failure);
+        }
+        String body;
+        try {
+            body = send(request(issuer.replaceAll("/$", "") + "/.well-known/openid-configuration").GET().build());
+        } catch (ServiceException failure) {
+            throw diagnosticFailure("OIDC Discovery 获取失败，请检查网络、发行者地址和远端服务状态", failure);
+        }
+        Map<String, Object> json;
+        try {
+            json = json(body);
+        } catch (ServiceException failure) {
+            throw diagnosticFailure("OIDC Discovery 元数据不是有效的 JSON 对象", failure);
+        }
+        if (!issuer.equals(text(json, "issuer")))
+            throw new ServiceException("OIDC Discovery 返回的 issuer 与配置不一致");
+        try {
+            return new OidcDiscoveryDiagnostics(
+                    metadata(issuer, json),
+                    stringList(json, "scopes_supported", List.of()),
+                    stringList(json, "response_types_supported", List.of()),
+                    stringList(json, "code_challenge_methods_supported", List.of()),
+                    stringList(json, "id_token_signing_alg_values_supported", List.of()),
+                    stringList(json, "token_endpoint_auth_methods_supported", List.of("client_secret_basic")),
+                    booleanValue(json, "backchannel_logout_supported"),
+                    booleanValue(json, "backchannel_logout_session_supported"),
+                    clock.instant());
+        } catch (ServiceException failure) {
+            throw diagnosticFailure("OIDC Discovery 元数据或端点格式无效，请检查提供方配置", failure);
+        }
+    }
+
+    private static ServiceException diagnosticFailure(String message, ServiceException cause) {
+        var failure = new ServiceException(message, cause);
+        failure.setCode(cause.getCode());
+        return failure;
+    }
+
+    /**
+     * 校验配置地址，复用协议请求的地址策略且不发起网络访问。
+     *
+     * @param value 不含用户信息或片段的绝对 HTTP(S) 地址；HTTP 仅在全部激活环境均为 local/dev 时允许
+     * @throws ServiceException 地址或协议不符合当前运行环境策略
+     */
+    public void validateUrl(String value) {
+        checkedUri(value);
+    }
+
+    private Map<String, Object> fetchDiscovery(String issuer) {
+        checkedUri(issuer);
         Map<String, Object> json =
                 getJson(issuer.replaceAll("/$", "") + "/.well-known/openid-configuration", null);
         if (!issuer.equals(required(json, "issuer"))) throw failure();
-        OidcMetadata metadata =
-                new OidcMetadata(
-                        issuer,
-                        endpoint(json, "authorization_endpoint", true),
-                        endpoint(json, "token_endpoint", true),
-                        endpoint(json, "jwks_uri", true),
-                        endpoint(json, "userinfo_endpoint", false),
-                        endpoint(json, "end_session_endpoint", false));
-        RedisUtils.setCacheObject(key, JsonUtils.toJsonString(metadata), Duration.ofMinutes(5));
-        return metadata;
+        return json;
+    }
+
+    private OidcMetadata metadata(String issuer, Map<String, Object> json) {
+        return new OidcMetadata(
+                issuer,
+                endpoint(json, "authorization_endpoint", true),
+                endpoint(json, "token_endpoint", true),
+                endpoint(json, "jwks_uri", true),
+                endpoint(json, "userinfo_endpoint", false),
+                endpoint(json, "end_session_endpoint", false));
+    }
+
+    private static List<String> stringList(Map<String, Object> json, String name, List<String> fallback) {
+        if (!json.containsKey(name)) return fallback;
+        if (!(json.get(name) instanceof List<?> values)
+                || values.stream().anyMatch(value -> !(value instanceof String text) || text.isBlank()))
+            throw failure();
+        return values.stream().map(String.class::cast).distinct().toList();
+    }
+
+    private static boolean booleanValue(Map<String, Object> json, String name) {
+        if (!json.containsKey(name)) return false;
+        if (!(json.get(name) instanceof Boolean value)) throw failure();
+        return value;
     }
 
     /** 构建标准授权地址，私有业务上下文仅保存于本地事务。 */
@@ -173,10 +256,16 @@ public class OidcProtocolClient implements AutoCloseable {
                                     .withoutPadding()
                                     .encode(Arrays.copyOf(digest(accessToken), 16))))
                 throw failure();
-            Map<String, Object> profile = claims.getClaims();
+            Map<String, Object> profile = new LinkedHashMap<>(claims.getClaims());
             if (metadata.userInfoEndpoint() != null) {
-                profile = getJson(metadata.userInfoEndpoint(), accessToken);
-                if (!claims.getSubject().equals(required(profile, "sub"))) throw failure();
+                Map<String, Object> userInfo = getJson(metadata.userInfoEndpoint(), accessToken);
+                if (!claims.getSubject().equals(required(userInfo, "sub"))) throw failure();
+                // 只合并实际发布的标准资料；缺失/空值保留已验证 ID Token 的值。
+                // iss、sub、sid、nonce、auth_time 等协议声明始终来自验签后的 ID Token。
+                for (String name : PROFILE_CLAIMS) {
+                    String value = text(userInfo, name);
+                    if (value != null && !value.isBlank()) profile.put(name, value);
+                }
             }
             Date authTime = claims.getDateClaim("auth_time");
             return new OidcIdentity(
@@ -270,6 +359,7 @@ public class OidcProtocolClient implements AutoCloseable {
     }
 
     private URI checkedUri(String value) {
+        if (value == null || value.isBlank()) throw failure();
         try {
             URI uri = URI.create(value);
             if (uri.getHost() == null

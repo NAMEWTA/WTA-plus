@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import zlib from 'node:zlib';
+import { ACTIVE_FRONTEND_COMPOSE, activeFrontendFiles, enabledApps } from './active-apps.mjs';
 
 const SCRIPT_PATH = fs.realpathSync(fileURLToPath(import.meta.url));
 const RELEASE_ROOT = path.dirname(path.dirname(SCRIPT_PATH));
@@ -168,15 +169,16 @@ function envValues(file) {
   return { ...values, ...process.env };
 }
 
-function prefixes(apps, envFile) {
+function prefixes(apps, envFile, enabled = apps) {
   const values = envValues(envFile);
   const result = {};
   for (const app of apps) {
     const key = `${app.toUpperCase().replaceAll('-', '_')}_PREFIX`;
-    const value = values[key] ?? '';
+    // Disabled Apps remain build inventory, but need no deployment configuration.
+    const value = enabled.includes(app) ? values[key] ?? '' : app;
     require(fullMatch('[A-Za-z0-9][A-Za-z0-9-]*', value) && !value.startsWith('replace-') && !RESERVED.has(value),
       `${key} missing, placeholder or reserved/invalid prefix`);
-    require(!Object.values(result).includes(value), 'duplicate app prefix');
+    require(!enabled.includes(app) || !enabled.some((id) => result[id] === value), 'duplicate app prefix');
     result[app] = value;
   }
   return result;
@@ -270,6 +272,14 @@ function appRegistry(release, frontend = null) {
     require(sameSet(discovered, new Set(rows.map((row) => row.id))), 'unregistered or missing frontend App');
   }
   return active;
+}
+
+function manifestEnabledApps(metadata, registered) {
+  if (!Object.hasOwn(metadata, 'enabledApps')) return registered.map((app) => app.id);
+  require(Array.isArray(metadata.enabledApps) && metadata.enabledApps.every((id) => typeof id === 'string'), 'invalid enabled App selection');
+  const canonical = enabledApps(registered, metadata.enabledApps.join(','));
+  require(same(canonical, metadata.enabledApps), 'noncanonical enabled App selection');
+  return canonical;
 }
 
 function splitOrigin(value, label) {
@@ -477,10 +487,18 @@ function validatePayload(root, metadata) {
   const registered = appRegistry(root);
   const registeredIds = new Set(registered.map((app) => app.id));
   require(Object.keys(apps).length === registeredIds.size && Object.keys(apps).every((app) => registeredIds.has(app)), 'manifest differs from shipped app registry');
-  require(sameSet(new Set(Object.keys(metadata.appOrigins)), new Set(Object.keys(apps))), 'missing App origin matrix');
-  require(same(validateOriginMatrix(registered, metadata.appOrigins, metadata.environment), metadata.appOrigins), 'noncanonical App origin matrix');
+  const enabled = manifestEnabledApps(metadata, registered);
+  const active = registered.filter((app) => enabled.includes(app.id));
+  require(sameSet(new Set(Object.keys(metadata.appOrigins)), new Set(enabled)), 'missing App origin matrix');
+  require(same(validateOriginMatrix(active, metadata.appOrigins, metadata.environment), metadata.appOrigins), 'noncanonical App origin matrix');
   require(same(validateCorsOrigins(manifestCorsOrigins(metadata)), manifestCorsOrigins(metadata)), 'noncanonical CORS origin configuration');
-  require(same(applicationMatrix(registered, apps, metadata.appOrigins, metadata.environment), metadata.applicationMatrix), 'release application matrix mismatch');
+  require(same(applicationMatrix(active, apps, metadata.appOrigins, metadata.environment), metadata.applicationMatrix), 'release application matrix mismatch');
+  if (Object.hasOwn(metadata, 'enabledApps')) {
+    for (const [relative, content] of Object.entries(activeFrontendFiles(root, registered, enabled))) {
+      require(isFile(path.join(root, relative)) && readText(path.join(root, relative)) === content,
+        `enabled App deployment configuration mismatch: ${relative}`);
+    }
+  }
   for (const app of registered) require(app.apiKind !== 'sso' || apps[app.id] !== 'sso', 'SSO static prefix collides with /sso API');
   for (const name of Object.keys(BACKENDS)) {
     const context = path.join(root, 'docker/backend/images', name);
@@ -501,7 +519,7 @@ function validatePayload(root, metadata) {
     const mode = readJson(path.join(base, `html/${app}/build-mode.json`));
     require(same(mode, { app, mode: metadata.environment === 'prod' ? 'production' : 'development' }), `wrong build mode: ${app}`);
   }
-  require(new Set(Object.values(apps)).size === Object.keys(apps).length, 'duplicate app prefix');
+  require(new Set(enabled.map((id) => apps[id])).size === enabled.length, 'duplicate app prefix');
 }
 
 function seal(root, metadata) {
@@ -569,8 +587,11 @@ function resolveRelease(environment, envFile = null) {
   const version = releasePath(parts[1]);
   const manifest = verify(version, environment);
   if (envFile !== null) {
-    require(same(prefixes(Object.keys(manifest.apps), envFile), manifest.apps), 'runtime prefixes differ from built app prefixes');
-    require(same(appOrigins(appRegistry(version), envFile, environment), manifest.appOrigins), 'runtime origins differ from release origin matrix');
+    const registered = appRegistry(version);
+    const enabled = manifestEnabledApps(manifest, registered);
+    require(same(enabledApps(registered, envValues(envFile).NAMEWTA_ENABLED_APPS), enabled), 'runtime enabled Apps differ from release selection');
+    require(same(prefixes(Object.keys(manifest.apps), envFile, enabled), manifest.apps), 'runtime prefixes differ from built app prefixes');
+    require(same(appOrigins(registered.filter((app) => enabled.includes(app.id)), envFile, environment), manifest.appOrigins), 'runtime origins differ from release origin matrix');
     require(same(corsOrigins(envFile, manifest.appOrigins), manifestCorsOrigins(manifest)), 'runtime CORS origins differ from release configuration');
   }
   return version;
@@ -848,16 +869,21 @@ async function build(args) {
     fs.mkdirSync(output);
     const registered = args.target === 'backend' ? [] : appRegistry(path.join(archived.source, 'release-artifacts'), path.join(archived.source, 'frontend'));
     const appNames = registered.map((app) => app.id);
-    const apps = args.target === 'backend' ? {} : prefixes(appNames, args.envFile);
-    const origins = complete ? appOrigins(registered, args.envFile, args.env) : {};
+    const enabled = args.target === 'backend' ? [] : enabledApps(registered, envValues(args.envFile).NAMEWTA_ENABLED_APPS);
+    const active = registered.filter((app) => enabled.includes(app.id));
+    const apps = args.target === 'backend' ? {} : prefixes(appNames, args.envFile, enabled);
+    const origins = complete ? appOrigins(active, args.envFile, args.env) : {};
     const corsAllowedOrigins = complete ? corsOrigins(args.envFile, origins) : [];
-    const matrix = complete ? applicationMatrix(registered, apps, origins, args.env) : {};
+    const matrix = complete ? applicationMatrix(active, apps, origins, args.env) : {};
     if (complete) {
       const archivedRelease = path.join(archived.source, 'release-artifacts');
       for (const name of ['docker', 'scripts', 'skills']) copyTree(path.join(archivedRelease, name), path.join(output, name));
       for (const name of ['README.md', '.env.example', 'apps.json']) copyFile(path.join(archivedRelease, name), path.join(output, name));
       validateSql(output);
       for (const app of Object.keys(apps)) require(isFile(path.join(output, `docker/frontend/nginx/apps/nginx-${app}.conf.template`)), `missing nginx template: ${app}`);
+      for (const [relative, content] of Object.entries(activeFrontendFiles(output, registered, enabled))) {
+        writeText(path.join(output, relative), content);
+      }
     }
     await compileArtifacts(archived.source, output, args, apps, registered);
     if (!complete) {
@@ -871,14 +897,16 @@ async function build(args) {
     }
     require(await cleanSource() === revision, 'source changed during build; candidate discarded');
     const metadata = {
-      environment: args.env, backendBundle: args.bundle, target: 'all', apps, appOrigins: origins, corsAllowedOrigins, applicationMatrix: matrix,
+      environment: args.env, backendBundle: args.bundle, target: 'all', apps, enabledApps: enabled,
+      appOrigins: origins, corsAllowedOrigins, applicationMatrix: matrix,
       source: {
         revision, tree: await run(['git', '-C', REPO_ROOT, 'rev-parse', `${revision}^{tree}`], { capture: true }),
         archiveSha256: archived.archiveDigest, clean: true,
       },
     };
     for (const category of CATEGORIES) {
-      await run(['docker', 'compose', '--env-file', args.envFile, '-f', path.join(output, `docker/docker-compose-${category}.yml`), 'config', '--quiet']);
+      const relative = category === 'frontend' ? ACTIVE_FRONTEND_COMPOSE : `docker/docker-compose-${category}.yml`;
+      await run(['docker', 'compose', '--env-file', args.envFile, '-f', path.join(output, relative), 'config', '--quiet']);
     }
     const manifest = seal(output, metadata);
     const releaseId = versionId(output, manifest);

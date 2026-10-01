@@ -76,12 +76,16 @@ public class ExternalAuthAccountTransactionService {
             if (!existing.equals(userId)) throw new ServiceException("该第三方身份已绑定其他账号");
             return;
         }
-        Long existingIssuer =
-                socialMapper.selectCount(
-                        new LambdaQueryWrapper<SysSocial>()
-                                .eq(SysSocial::getUserId, userId)
-                                .eq(SysSocial::getIssuer, identity.issuer()));
-        if (existingIssuer > 0) throw new ServiceException("请先解绑该身份源的原账号，再绑定新账号");
+        // OIDC 的不同 App 可以获得同一人的不同 pairwise sub，均需当前用户明确授权绑定。
+        // 精确 issuer+sub 的唯一所有权仍由前置查询、用户锁和 identity_key 唯一键共同保证。
+        if (!"OIDC".equals(protocol)) {
+            Long existingIssuer =
+                    socialMapper.selectCount(
+                            new LambdaQueryWrapper<SysSocial>()
+                                    .eq(SysSocial::getUserId, userId)
+                                    .eq(SysSocial::getIssuer, identity.issuer()));
+            if (existingIssuer > 0) throw new ServiceException("请先解绑该身份源的原账号，再绑定新账号");
+        }
         insertBinding(userId, user.getUserName(), providerKey, identity);
     }
 

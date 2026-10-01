@@ -18,7 +18,7 @@
 
 ## 配置
 
-真实密码只写入未纳入版本管理的 env 文件。私有路径前缀从该文件输入，构建后会出现在浏览器资产和产物 manifest 中，不写回源码。先复制变量名并替换全部占位值：
+真实密码只写入未纳入版本管理的 env 文件。私有路径前缀从该文件输入，构建后会出现在浏览器资产和产物 manifest 中，不写回源码。先复制变量名并替换已启用服务所需的占位值：
 
 ```bash
 cp release-artifacts/.env.example release-artifacts/.env
@@ -28,9 +28,13 @@ cp release-artifacts/.env.example release-artifacts/.env
 
 发布基座 SQL 仍包含当前版本必须保留的初始化账号/客户端默认凭据（例如初始密码和演示客户端密钥）。这些值只用于首次初始化兼容性，已在发布风险清单中标记；生产环境必须在首次登录后立即轮换，并通过未入库的 env/密钥管理覆盖，禁止在新配置、脚本或文档中新增明文密钥。
 
-完整构建以 `apps.json` 的显式 shipped 清单决定发布面；目录扫描仅检测未登记或缺失 App。当前发布清单登记 admin-web、home-web、sso-web，逐项校验 package、构建命令、Compose 服务及挂载、Nginx、env、端口和入口。`release-manage.sh check-apps` 可只读检查配套。缺项或漂移在构建/晋升前失败，不改变已选版本。
+完整构建以 `apps.json` 的显式 `shipped` 清单决定产物库存；目录扫描仅检测未登记或缺失 App。当前仍构建 admin-web、home-web、sso-web，逐项校验 package、构建命令、Compose 服务及挂载、Nginx、env、端口和入口。`release-manage.sh check-apps` 可只读检查配套。缺项或漂移在构建/晋升前失败，不改变已选版本。
 
-运行 env 必须填写三个 `*_WEB_ORIGIN`（仅 scheme、hostname、可选 port）和 `*_WEB_PREFIX`。生产 Origin 必须 HTTPS，SSO 与业务 App 必须使用不同 hostname；仅换端口不能隔离 Cookie。真实 DNS、TLS 和端口由部署环境确定，样例中的 `.invalid` 占位值不能用于构建。manifest 的 `appOrigins` 和 `applicationMatrix` 保存规范化 Origin、base、API、callback/authorize URL，需将精确 callback URL 登记到后端对应 SSO Client。
+`NAMEWTA_ENABLED_APPS` 决定运行集合，默认 `admin-web,home-web,sso-web`，Admin 必选。可使用 `admin-web`、`admin-web,home-web` 或 `admin-web,sso-web`。构建将选择封存在 manifest 的 `enabledApps`，生成 `docker/docker-compose-frontend-active.yml` 和 `nginx-lb-{http,tls}-active.conf.template`；docker-manage 只消费这个完整生成配置。禁用 App 的服务、静态 DNS upstream、路由和 TLS 挂载均被移除，即使开启 `tls` profile 也不会启动禁用的 SSO。旧 manifest 未声明 `enabledApps` 时保持全部启用的兼容行为。修改集合后重新 build/stage，运行 env 与已选版本不同会被拒绝。
+
+只需填写已启用 App 的 `*_WEB_ORIGIN`（仅 scheme、hostname、可选 port）和 `*_WEB_PREFIX`；禁用 App 的构建库存使用其 App ID 作静态前缀，不代表可直接启用。生产 Origin 必须 HTTPS，可同域不同前缀或不同域名；真实 DNS、TLS 和端口由部署环境确定，启用 App 的 `.invalid` 占位值不能用于构建。manifest 的 `appOrigins` 和 `applicationMatrix` 仅保存启用 App 的规范化 Origin、base、API、callback/authorize URL。精确回调地址登记到对应身份提供方。使用外部 OIDC 时无需启用本项目 SSO Web 或中央 Provider。
+
+多台业务后端共用同一 MySQL 业务库。跨节点登录、回调和退出还需共享 Redis 实例、逻辑 DB、`redisson.key-prefix`、`AUTH_CONFIG_ROOT_KEY`，并保持 Sa-Token 的登录类型、Token 名称、JWT 密钥和会话设置兼容。双后端共用 Compose 环境块；`REDIS_DATABASE=0`、`REDIS_KEY_PREFIX=WTA` 沿用当前默认。已有集群保留既有命名空间，不按前端 App 拆分数据库或缓存。
 
 ## 构建
 
@@ -58,7 +62,7 @@ bash release-artifacts/scripts/release-manage.sh bundle --env prod
 
 需要 Linux、Bash、Git、JDK/Maven Wrapper、Node.js >=20.19、pnpm、Docker Compose，以及发布锁使用的 `flock`（util-linux）。完整构建拒绝 tracked/untracked 脏源码，将同一 Git revision 归档到本次临时目录，从该快照完成后端 clean package、依赖安装和逐 App 构建；不创建 Git worktree，不复用原工作树 target/dist。局部开发构建不产生可晋升的 manifest。
 
-`release-manifest.json` schema 2 记录唯一 source revision、tree、源码归档摘要、构建模式、三端 Origin/入口矩阵和每文件的来源、SHA-256、大小、可执行位。版本内同时包含四个 JAR、各 App、六份 SQL 快照、Nginx/Compose 配置与运行脚本。SQL 快照是构建输出，唯一编辑源仍是本仓六份基座。manifest 校验用于检测错件、损坏和混源，不替代可信发布者签名或真实 MySQL schema 门禁。
+`release-manifest.json` schema 2 记录唯一 source revision、tree、源码归档摘要、构建模式、启用 App 集合及其 Origin/入口矩阵和每文件的来源、SHA-256、大小、可执行位。版本内同时包含三个 JAR、各 App、六份 SQL 快照、Nginx/Compose 配置与运行脚本。SQL 快照是构建输出，唯一编辑源仍是本仓六份基座。manifest 校验用于检测错件、损坏和混源，不替代可信发布者签名或真实 MySQL schema 门禁。
 
 build 完成后仍不改变 current。stage 重新校验完整版本，再在同一目录内用一次 rename 替换符号链接；此前失败或中断保持旧指针和所有源 Docker 上下文不变。跨过该原子边界后看到完整新版本；不能承诺进程在切换后被强杀仍返回成功。发布操作通过固定 inode 的 `flock` 串行，失败只清理本次随机临时目录，不扫描删除历史或他人的 stage。SIGKILL 留下的临时目录不自动清理，需核对 owner 后单独处理。旧的实体 current 目录被明确拒绝，不自动迁移或删除。
 
@@ -68,6 +72,12 @@ build 完成后仍不改变 current。stage 重新校验完整版本，再在同
 
 ```bash
 bash release-artifacts/scripts/verify-release.sh
+```
+
+可另用已缓存的 `nginx:1.31.1` 镜像验证四种启用组合的 HTTP/TLS 配置。夹具不开放宿主端口，仅提供已启用 App 的 DNS 名，TLS 只准备 LB 证书，并清理本次临时容器和文件：
+
+```bash
+node --test --test-concurrency=1 release-artifacts/tests/enabled-apps-nginx.e2e.mjs
 ```
 
 Nacos 的真实运行验收会创建并销毁独立的 MySQL、Redis、Nacos 与双应用实例。它不读取

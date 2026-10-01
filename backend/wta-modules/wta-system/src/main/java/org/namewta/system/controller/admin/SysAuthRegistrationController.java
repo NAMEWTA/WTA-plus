@@ -33,13 +33,41 @@ public class SysAuthRegistrationController {
     @GetMapping("/list")
     @SaCheckPermission("system:authRegistration:list")
     public R<PageResult<SysAuthRegistrationVo>> list(SysAuthRegistrationBo bo, PageQuery page) {
+        service.requireAdminClient();
         return R.ok(service.registrations(bo, page));
+    }
+
+    /** 跨 App 目录仅供 Admin 接入配置；不改变普通 RBAC 的 Client 隔离。 */
+    @GetMapping("/client-options")
+    @SaCheckPermission("system:authRegistration:list")
+    public R<java.util.List<org.namewta.system.domain.vo.ExternalAuthClientOptionVo>> clientOptions(
+        @RequestParam(required = false) String keyword, @RequestParam(required = false) java.util.List<String> clientIds) {
+        service.requireAdminClient();
+        return R.ok(service.clientOptions(keyword, clientIds));
+    }
+
+    /** 仅具有接入管理权限时也能选择身份源，不要求完整身份源配置读取权限。 */
+    @GetMapping("/provider-options")
+    @SaCheckPermission("system:authRegistration:list")
+    public R<java.util.List<org.namewta.system.domain.vo.ExternalAuthProviderOptionVo>> providerOptions(
+        @RequestParam(required = false) String keyword, @RequestParam(required = false) @Positive Long selectedId) {
+        service.requireAdminClient();
+        return R.ok(service.providerOptions(keyword, selectedId));
+    }
+
+    /** 登记在对方控制台的公开参数；不包含密钥。 */
+    @GetMapping("/{id}/connection-info")
+    @SaCheckPermission("system:authRegistration:list")
+    public R<org.namewta.system.domain.vo.ExternalAuthConnectionInfoVo> connectionInfo(@PathVariable @Positive long id) {
+        service.requireAdminClient();
+        return R.ok(service.connectionInfo(id));
     }
 
     /** 详情不包含密钥及密文。 */
     @GetMapping("/{id}")
     @SaCheckPermission("system:authRegistration:list")
     public R<SysAuthRegistrationVo> detail(@PathVariable @Positive long id) {
+        service.requireAdminClient();
         return R.ok(service.registration(id));
     }
 
@@ -49,6 +77,7 @@ public class SysAuthRegistrationController {
     @RepeatSubmit
     @Log(title = "外部身份接入", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public R<Long> add(@Validated(AddGroup.class) @RequestBody SysAuthRegistrationBo bo) {
+        service.requireAdminClient();
         return R.ok(service.saveRegistration(bo, true));
     }
 
@@ -58,6 +87,7 @@ public class SysAuthRegistrationController {
     @RepeatSubmit
     @Log(title = "外部身份接入", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Long> edit(@Validated(EditGroup.class) @RequestBody SysAuthRegistrationBo bo) {
+        service.requireAdminClient();
         return R.ok(service.saveRegistration(bo, false));
     }
 
@@ -66,6 +96,7 @@ public class SysAuthRegistrationController {
     @SaCheckPermission("system:authRegistration:remove")
     @Log(title = "外部身份接入", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> remove(@Valid @RequestBody ExternalAuthRemoveBo bo) {
+        service.requireAdminClient();
         service.removeRegistration(bo);
         return R.ok();
     }
@@ -76,6 +107,7 @@ public class SysAuthRegistrationController {
     @RepeatSubmit
     @Log(title = "旧外部身份配置导入", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public R<ExternalAuthLegacyImportResultVo> importLegacy(@Valid @RequestBody ExternalAuthLegacyImportBo bo) {
+        service.requireAdminClient();
         return R.ok(service.importLegacy(bo));
     }
 
@@ -84,6 +116,7 @@ public class SysAuthRegistrationController {
     @SaCheckPermission("system:authRegistration:edit")
     @Log(title = "外部身份接入缓存刷新", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> refresh() {
+        service.requireAdminClient();
         service.refresh();
         return R.ok();
     }

@@ -31,13 +31,23 @@ public class SysAuthProviderController {
     @GetMapping("/list")
     @SaCheckPermission("system:authProvider:list")
     public R<PageResult<SysAuthProviderVo>> list(SysAuthProviderBo bo, PageQuery page) {
+        service.requireAdminClient();
         return R.ok(service.providers(bo, page));
+    }
+
+    /** 读取新鲜 Discovery；不保存配置、不校验密钥或完整登录。 */
+    @GetMapping("/oidc-metadata")
+    @SaCheckPermission(value = {"system:authProvider:list", "system:authRegistration:list"}, mode = cn.dev33.satoken.annotation.SaMode.OR)
+    public R<org.namewta.system.domain.vo.OidcMetadataDiagnosticVo> oidcMetadata(@RequestParam String issuer) {
+        service.requireAdminClient();
+        return R.ok(service.oidcMetadata(issuer));
     }
 
     /** 详情不包含密钥及密文。 */
     @GetMapping("/{id}")
     @SaCheckPermission("system:authProvider:list")
     public R<SysAuthProviderVo> detail(@PathVariable @Positive long id) {
+        service.requireAdminClient();
         return R.ok(service.provider(id));
     }
 
@@ -47,6 +57,7 @@ public class SysAuthProviderController {
     @RepeatSubmit
     @Log(title = "外部身份源", businessType = BusinessType.INSERT, isSaveRequestData = false, isSaveResponseData = false)
     public R<Long> add(@Validated(AddGroup.class) @RequestBody SysAuthProviderBo bo) {
+        service.requireAdminClient();
         return R.ok(service.saveProvider(bo, true));
     }
 
@@ -56,6 +67,7 @@ public class SysAuthProviderController {
     @RepeatSubmit
     @Log(title = "外部身份源", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Long> edit(@Validated(EditGroup.class) @RequestBody SysAuthProviderBo bo) {
+        service.requireAdminClient();
         return R.ok(service.saveProvider(bo, false));
     }
 
@@ -64,6 +76,7 @@ public class SysAuthProviderController {
     @SaCheckPermission("system:authProvider:remove")
     @Log(title = "外部身份源", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> remove(@Valid @RequestBody ExternalAuthRemoveBo bo) {
+        service.requireAdminClient();
         service.removeProvider(bo);
         return R.ok();
     }
@@ -73,6 +86,7 @@ public class SysAuthProviderController {
     @SaCheckPermission("system:authProvider:edit")
     @Log(title = "外部身份源缓存刷新", businessType = BusinessType.UPDATE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> refresh() {
+        service.requireAdminClient();
         service.refresh();
         return R.ok();
     }

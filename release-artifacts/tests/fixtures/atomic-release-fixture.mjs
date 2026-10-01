@@ -129,6 +129,7 @@ if (process.env.DOCKER_CALLS) {
     cors: process.env.WEB_CORS_ALLOWED_ORIGINS ?? null,
     sso: process.env.SSO_WEB_ORIGIN ?? null,
     ssoBase: process.env.SSO_WEB_BASE_PATH ?? null,
+    enabledApps: process.env.NAMEWTA_ENABLED_APPS ?? null,
   }) + '\\n');
 }
 // Switch the pointer between Compose calls to prove the manager pins one resolved version.
@@ -146,6 +147,7 @@ console.log(argv.join(' '));
   // Avoid unrelated host prefix/image overrides affecting isolated fixtures.
   for (const key of Object.keys(env)) if (key.endsWith('_PREFIX')) delete env[key];
   delete env.WEB_CORS_ALLOWED_ORIGINS;
+  delete env.NAMEWTA_ENABLED_APPS;
   const git = (...args) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   git('init', '-q'); git('config', 'user.name', 'release fixture'); git('config', 'user.email', 'fixture@example.invalid');
   const commit = () => { git('add', '.'); git('-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'synthetic release fixture'); return git('rev-parse', 'HEAD'); };

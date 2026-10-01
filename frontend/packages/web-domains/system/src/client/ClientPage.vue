@@ -86,17 +86,33 @@
         <el-table-column v-if="false" label="id" align="center" prop="id" />
         <el-table-column label="客户端id" align="center" prop="clientId" />
         <el-table-column label="客户端key" align="center" prop="clientKey" />
-        <el-table-column label="SSO 接入" align="center" width="120">
+        <el-table-column label="外部登录接入" align="center" min-width="190">
           <template #default="scope">
-            <el-tag
-              v-if="ssoAccessState(scope.row) === 'bound'"
-              data-testid="sso-access-success"
-              type="success"
-              size="small"
-            >
-              已接入
-            </el-tag>
-            <el-tag v-else data-testid="sso-access-missing" type="danger" size="small">没有接入</el-tag>
+            <div class="external-auth-access">
+              <template v-if="authClients[scope.row.clientId]">
+                <el-tag :type="authClients[scope.row.clientId].enabledProviderCount ? 'success' : 'info'">
+                  启用 {{ authClients[scope.row.clientId].enabledProviderCount }} / 配置
+                  {{ authClients[scope.row.clientId].providerCount }}
+                </el-tag>
+              </template>
+              <span v-else>
+                {{
+                  authCountsLoading
+                    ? '读取中'
+                    : runtime.hasPermission('system:authRegistration:list')
+                      ? '状态暂不可用'
+                      : '无读取权限'
+                }}
+              </span>
+              <el-button
+                v-if="runtime.hasPermission('system:authRegistration:list')"
+                link
+                type="primary"
+                @click="openExternalAuth(scope.row.clientId)"
+              >
+                管理接入
+              </el-button>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="客户端秘钥" align="center" prop="clientSecret" />
@@ -329,32 +345,58 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-divider content-position="left">SSO 接入（非创建主路径）</el-divider>
-        <el-form-item v-if="form.id" label="接入状态">
-          <el-tag
-            v-if="ssoAccessState(form) === 'bound'"
-            data-testid="sso-access-success"
-            type="success"
-          >
-            已接入
-          </el-tag>
-          <el-tag v-else data-testid="sso-access-missing" type="danger">没有接入</el-tag>
-        </el-form-item>
-        <el-form-item label="登记回调">
-          <el-input :model-value="form.ssoRedirectUris" type="textarea" :rows="2" readonly placeholder="请到「SSO 管理」创建应用并交付精确回调" />
-        </el-form-item>
-        <el-form-item label="登录模式" prop="ssoAuthMode">
-          <el-select v-model="form.ssoAuthMode" placeholder="sso / both">
-            <el-option label="仅 SSO" value="sso" />
-            <el-option label="本地与 SSO 并存" value="both" />
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="form.id" label="完成接入">
-          <el-button type="primary" data-testid="sso-bind-own-app" :disabled="!isSsoRegistered(form)" @click="handleBindSso">
-            完成自有 App 接入
-          </el-button>
-          <div class="form-item-tip">未在 SSO 管理登记精确回调时不得接入。创建应用请使用独立「SSO 管理」菜单。</div>
-        </el-form-item>
+        <el-divider content-position="left">外部登录接入</el-divider>
+        <p>
+          自有 SSO 与第三方 OIDC 统一在「业务 App 登录接入」配置。身份源入口按本 Client 的 social
+          授权与启用状态生效，本地登录保留。
+        </p>
+        <el-button
+          v-if="form.clientId && runtime.hasPermission('system:authRegistration:list')"
+          @click="openExternalAuth(String(form.clientId))"
+        >
+          管理此 App 的外部登录
+        </el-button>
+        <el-collapse>
+          <el-collapse-item title="旧第一方 SSO（兼容）" name="legacy-sso">
+            <el-alert
+              title="以下配置仅供旧 /sso/oauth2 协议兼容使用，不代表当前 OIDC 外部登录接入状态。"
+              type="info"
+              :closable="false"
+            />
+            <el-form-item v-if="form.id" label="接入状态">
+              <el-tag v-if="ssoAccessState(form) === 'bound'" data-testid="sso-access-success" type="success">
+                已接入
+              </el-tag>
+              <el-tag v-else data-testid="sso-access-missing" type="danger">没有接入</el-tag>
+            </el-form-item>
+            <el-form-item label="登记回调">
+              <el-input
+                :model-value="form.ssoRedirectUris"
+                type="textarea"
+                :rows="2"
+                readonly
+                placeholder="在旧第一方 SSO 兼容管理中登记"
+              />
+            </el-form-item>
+            <el-form-item label="登录模式" prop="ssoAuthMode">
+              <el-select v-model="form.ssoAuthMode" placeholder="sso / both">
+                <el-option label="仅 SSO" value="sso" />
+                <el-option label="本地与 SSO 并存" value="both" />
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="form.id" label="完成接入">
+              <el-button
+                type="primary"
+                data-testid="sso-bind-own-app"
+                :disabled="!isSsoRegistered(form)"
+                @click="handleBindSso"
+              >
+                完成自有 App 接入
+              </el-button>
+              <div class="form-item-tip">仅用于已有第一方协议应用；新接入请使用「业务 App 登录接入」。</div>
+            </el-form-item>
+          </el-collapse-item>
+        </el-collapse>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -367,11 +409,20 @@
 </template>
 
 <script setup name="Client" lang="ts">
-import type { ClientForm, ClientQuery, ClientVO, RoleQuery, RoleVO, UserTypeVO } from '@namewta/domain-system';
-import { isSsoRegistered, ssoAccessState } from '@namewta/domain-system';
+import type {
+  AuthClientOption,
+  ClientForm,
+  ClientQuery,
+  ClientVO,
+  RoleQuery,
+  RoleVO,
+  UserTypeVO
+} from '@namewta/domain-system';
 import type { FormInstance as ElFormInstance } from 'element-plus';
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { isSsoRegistered, ssoAccessState } from '@namewta/domain-system';
+import { onMounted, onBeforeUnmount, reactive, ref, toRefs, watch } from 'vue';
 import type { SystemWebRuntime } from '../runtime';
+import { authConfigError } from '../auth-config/errors';
 import { useFormDialog, useLoading, useSearchReset, useSearchToggle, useTableSelection } from '../composables';
 
 const { runtime } = defineProps<{ runtime: SystemWebRuntime }>();
@@ -395,6 +446,45 @@ const { sys_normal_disable, sys_grant_type, sys_device_type } = runtime.dicts(
 );
 
 const clientList = ref<ClientVO[]>([]);
+const authClients = ref<Record<string, AuthClientOption>>({});
+const authCountsLoading = ref(false);
+let authCountsController: AbortController | undefined;
+let authCountsVersion = 0;
+const authIdentity = runtime.sessionSnapshot().generation;
+function cancelAuthCounts() {
+  authCountsVersion++;
+  authCountsController?.abort();
+  authClients.value = {};
+  authCountsLoading.value = false;
+}
+async function loadAuthCounts(clientIds: string[]) {
+  cancelAuthCounts();
+  if (
+    !clientIds.length ||
+    !runtime.hasPermission('system:authRegistration:list') ||
+    runtime.sessionSnapshot().generation !== authIdentity
+  )
+    return;
+  const current = authCountsVersion;
+  authCountsController = new AbortController();
+  authCountsLoading.value = true;
+  try {
+    const rows = await runtime.service.authConfig.clientOptions({ clientIds }, authCountsController.signal);
+    if (current === authCountsVersion) authClients.value = Object.fromEntries(rows.map(item => [item.clientId, item]));
+  } catch (failure) {
+    if (current === authCountsVersion)
+      runtime.error(authConfigError(failure, '外部登录接入状态读取失败，请刷新列表重试'));
+  } finally {
+    if (current === authCountsVersion) authCountsLoading.value = false;
+  }
+}
+async function openExternalAuth(clientId: string) {
+  if (runtime.hasPermission('system:authRegistration:list')) {
+    await runtime.closeAndOpenPage({ path: '/system/externalAuthRegistration', query: { businessClientId: clientId } });
+  }
+}
+watch(() => runtime.sessionSnapshot().generation, cancelAuthCounts);
+onBeforeUnmount(cancelAuthCounts);
 const userTypeOptions = ref<UserTypeVO[]>([]);
 const defaultRoleOptions = ref<RoleVO[]>([]);
 const { loading, withLoading } = useLoading(true);
@@ -513,6 +603,7 @@ const getList = async () => {
     const res = await listClient(queryParams.value);
     clientList.value = res.data?.rows;
     total.value = res.data?.total;
+    await loadAuthCounts((clientList.value ?? []).map(item => item.clientId));
   });
 };
 
@@ -598,6 +689,7 @@ const handleStatusChange = async (row: Partial<ClientVO>) => {
     await modal.confirm('确认要"' + text + '"吗?');
     await changeStatus(row.clientId, row.status);
     modal.msgSuccess(text + '成功');
+    await loadAuthCounts(clientList.value.map(item => item.clientId));
   } catch (err) {
     row.status = row.status === '0' ? '1' : '0';
   }
@@ -611,6 +703,12 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .system-client-page {
+  .external-auth-access {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
   :deep(.grant-type-tag) {
     width: 100%;
     display: flex;

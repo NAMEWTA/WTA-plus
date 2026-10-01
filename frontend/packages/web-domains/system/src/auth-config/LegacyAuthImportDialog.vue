@@ -14,7 +14,9 @@
     <p>选择旧 YAML 或 JSON 文件，核对预览后导入。仅导入其中的 justauth.type；示例空值和已有配置会跳过。</p>
     <el-alert v-if="error" :title="error" type="error" :closable="false" />
     <el-form label-position="top">
-      <el-form-item label="目标业务客户端 ID"><el-input v-model="businessClientId" :disabled="busy" /></el-form-item>
+      <el-form-item label="目标业务客户端">
+        <AuthClientSelect v-if="visible" v-model="businessClientId" :runtime="runtime" :disabled="busy" />
+      </el-form-item>
       <el-form-item label="首次登录策略">
         <el-radio-group v-model="firstLoginPolicy" :disabled="busy">
           <el-radio value="BIND_ONLY">仅已绑定账号</el-radio>
@@ -53,6 +55,7 @@ import {
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { parseAllDocuments } from 'yaml';
 import type { SystemWebRuntime } from '../runtime';
+import AuthClientSelect from './AuthClientSelect.vue';
 const { visible, runtime } = defineProps<{ visible: boolean; runtime: SystemWebRuntime }>();
 const emit = defineEmits<{ close: []; imported: [] }>();
 const businessClientId = ref('');

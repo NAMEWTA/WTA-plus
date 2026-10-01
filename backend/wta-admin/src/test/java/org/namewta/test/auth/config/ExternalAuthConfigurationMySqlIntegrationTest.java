@@ -57,6 +57,7 @@ class ExternalAuthConfigurationMySqlIntegrationTest {
     private SysAuthProviderController providerController;
     private SysAuthRegistrationController registrationController;
     private Object previousFactory, previousContext;
+    private org.mockito.MockedStatic<org.namewta.common.satoken.utils.LoginHelper> loginContext;
 
     @BeforeAll
     void open() throws Exception {
@@ -78,6 +79,8 @@ class ExternalAuthConfigurationMySqlIntegrationTest {
         context.registerBean(DsTxEventListenerFactory.class);
         context.registerBean(ExternalAuthConfigurationCache.class);
         context.registerBean(ExternalAuthConfigChangeListener.class);
+        context.getEnvironment().setActiveProfiles("dev");
+        context.registerBean(org.namewta.common.social.oidc.OidcProtocolClient.class);
         context.refresh();
         var config = new MybatisConfiguration(new Environment("external-auth-owned", new SpringManagedTransactionFactory(), routing));
         config.setMapUnderscoreToCamelCase(true);
@@ -96,9 +99,10 @@ class ExternalAuthConfigurationMySqlIntegrationTest {
         var cipher = new SocialSecretCipher(Base64.getEncoder().encodeToString(new byte[32]));
         var cache = context.getBean(ExternalAuthConfigurationCache.class);
         management = transactional(new SysExternalAuthConfigServiceImpl(sessions.getMapper(SysAuthProviderMapper.class),
-            sessions.getMapper(SysAuthRegistrationMapper.class), sessions.getMapper(SysClientMapper.class), cipher, context, cache));
+            sessions.getMapper(SysAuthRegistrationMapper.class), sessions.getMapper(SysClientMapper.class), cipher, context, cache, context.getBean(org.namewta.common.social.oidc.OidcProtocolClient.class)));
         runtime = new ExternalAuthConfigurationServiceImpl(sessions.getMapper(SysAuthProviderMapper.class),
             sessions.getMapper(SysAuthRegistrationMapper.class), cache, cipher);
+        // Controller 仍验证管理端；测试为隔离数据库创建真实 Admin Client 会话上下文。
         providerController = new SysAuthProviderController(management);
         registrationController = new SysAuthRegistrationController(management);
     }
@@ -108,8 +112,16 @@ class ExternalAuthConfigurationMySqlIntegrationTest {
         db.update("delete from sys_auth_registration"); db.update("delete from sys_auth_provider");
         db.update("delete from sys_client where client_id='external-auth-owned'");
         db.update("insert into sys_client(id,client_id,client_key,grant_type,status) values (991001,'external-auth-owned','external-auth-owned','password,social','0')");
+        db.update("insert into sys_client(id,client_id,client_key,grant_type,status) select 991002,'external-auth-admin','pc','password,social','0' where not exists (select 1 from sys_client where client_key='pc')");
+        var login = new org.namewta.system.api.model.LoginUser();
+        login.setClientPk(db.queryForObject("select id from sys_client where client_key='pc'", Long.class));
+        loginContext = org.mockito.Mockito.mockStatic(org.namewta.common.satoken.utils.LoginHelper.class);
+        loginContext.when(org.namewta.common.satoken.utils.LoginHelper::getLoginUser).thenReturn(login);
         redis.getKeys().deleteByPattern("system:external-auth:*");
     }
+
+    @AfterEach
+    void clearLogin() { if (loginContext != null) loginContext.close(); }
 
     @AfterAll
     void close() throws Exception {

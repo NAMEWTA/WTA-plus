@@ -1,6 +1,29 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createSocialService, readSocialLogin, readSocialProviders } from './social';
 describe('external identity API', () => {
+  it('distinguishes RP logout from a sid link and preserves the legacy session response', async () => {
+    const request = vi
+      .fn()
+      .mockResolvedValueOnce({ data: { authSource: 'OIDC', globalLogoutAvailable: true } })
+      .mockResolvedValueOnce({
+        data: {
+          authSource: 'OIDC',
+          globalLogoutAvailable: true,
+          rpInitiatedLogoutAvailable: true,
+          backchannelSessionLinked: false
+        }
+      });
+    const service = createSocialService({ request }, 'home');
+    expect(await service.session()).toMatchObject({
+      globalLogoutAvailable: true,
+      rpInitiatedLogoutAvailable: true,
+      backchannelSessionLinked: false
+    });
+    expect(await service.session()).toMatchObject({
+      rpInitiatedLogoutAvailable: true,
+      backchannelSessionLinked: false
+    });
+  });
   it('projects provider display fields and rejects malformed configuration', () => {
     expect(
       readSocialProviders([

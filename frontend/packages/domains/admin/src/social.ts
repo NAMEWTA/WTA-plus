@@ -37,7 +37,10 @@ export interface SocialBinding {
 }
 export interface SocialSession {
   authSource: string;
+  /** 兼容旧服务端；表示能发起中央退出，不证明其他 App 已收到通知。 */
   globalLogoutAvailable: boolean;
+  rpInitiatedLogoutAvailable?: boolean;
+  backchannelSessionLinked?: boolean;
 }
 
 function record(value: unknown): Record<string, unknown> {
@@ -148,7 +151,12 @@ export function createSocialService(http: HttpClient, clientId: string) {
       const row = record(await request('/auth/social/session', 'get'));
       return {
         authSource: optional(row.authSource) || 'LOCAL',
-        globalLogoutAvailable: row.globalLogoutAvailable === true
+        globalLogoutAvailable: row.globalLogoutAvailable === true,
+        rpInitiatedLogoutAvailable:
+          row.rpInitiatedLogoutAvailable === undefined
+            ? row.globalLogoutAvailable === true
+            : row.rpInitiatedLogoutAvailable === true,
+        backchannelSessionLinked: row.backchannelSessionLinked === true
       };
     },
     async logout(): Promise<{ endSessionUrl: string; state: string }> {

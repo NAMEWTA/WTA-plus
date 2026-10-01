@@ -43,7 +43,7 @@
 | `wta-common/wta-common-security` | 安全注解/权限合同 | package surface | none |
 | `wta-common/wta-common-sensitive` | 敏感数据处理 | package surface | none |
 | `wta-common/wta-common-sms` | Spring SMS 集成 | package surface | `src/test/java`; `SmsDeliveryQueryClientTest` |
-| `wta-common/wta-common-social` | 社交登录适配 | package surface | none |
+| `wta-common/wta-common-social` | 社交登录适配、标准 OIDC 客户端与公开元数据诊断 | package surface | `src/test/java`; 协议、配置诊断与密钥合同 |
 | `wta-common/wta-common-translation` | 翻译/字典适配 | package surface | none |
 | `wta-common/wta-common-web` | Spring MVC、错误映射、Actuator 基础 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-extend` | 独立应用聚合 POM | none | no source root |

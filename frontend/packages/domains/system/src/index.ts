@@ -153,4 +153,5 @@ export const systemDomainModule: DomainModule = Object.freeze({
 });
 
 export * from './auth-config/service';
+export * from './auth-config/connection';
 export * from './auth-config/legacy';
