@@ -1,6 +1,7 @@
 package org.namewta.sso.adapter.store;
 
 import lombok.RequiredArgsConstructor;
+
 import org.namewta.common.redis.utils.RedisUtils;
 import org.namewta.sso.api.SsoAuthenticatedUser;
 import org.namewta.sso.config.SsoProperties;
@@ -9,9 +10,7 @@ import org.namewta.sso.support.SsoBearerTokens;
 import org.namewta.sso.support.SsoSessionRecords;
 import org.springframework.stereotype.Component;
 
-/**
- * SSO 域会话存放在 Redis，Cookie 只持有会话标识。
- */
+/** SSO 域会话存放在 Redis，Cookie 只持有会话标识。 */
 @Component
 @RequiredArgsConstructor
 public class RedisSsoSessionStore implements SsoSessionPort {
@@ -21,20 +20,17 @@ public class RedisSsoSessionStore implements SsoSessionPort {
 
     private final SsoProperties properties;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String create(SsoAuthenticatedUser user) {
         String sessionId = SsoBearerTokens.create();
-        SsoAuthenticatedUser stored = SsoSessionRecords.create(user, java.time.Instant.now(), properties.getSessionTtl());
-        RedisUtils.setCacheObject(KEY_PREFIX + sessionId, stored, properties.getSessionTtl());
+        var ttl = properties.getSessionTtl();
+        SsoAuthenticatedUser stored = SsoSessionRecords.create(user, java.time.Instant.now(), ttl);
+        RedisUtils.setCacheObject(KEY_PREFIX + sessionId, stored, ttl);
         return sessionId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SsoAuthenticatedUser find(String sessionId) {
         if (!SsoBearerTokens.isValid(sessionId)) {
@@ -43,9 +39,7 @@ public class RedisSsoSessionStore implements SsoSessionPort {
         return RedisUtils.getCacheObject(KEY_PREFIX + sessionId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void delete(String sessionId) {
         if (!SsoBearerTokens.isValid(sessionId)) {

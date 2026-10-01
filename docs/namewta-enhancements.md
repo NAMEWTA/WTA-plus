@@ -18,7 +18,7 @@ NAMEWTA 是 WTA-plus 的产品发行线。目录所有权和安全不变量以�
 | `packages/web-kit/*` | 多个 Web 消费者共同使用的壳层、基础组件和设计 token |
 | `packages/api-contracts` | 可追溯、确定性生成的 OpenAPI 传输合同 |
 
-当前工作区构建包含 Admin、Home、SSO；[发布清单](../release-artifacts/apps.json)登记三者的配套入口。SSO 使用独立 Origin 的认人页；构建通过、历史预览和已部署状态不能互相推导。真实部署需经过[发布门禁](../release-artifacts/README.md)。未激活终端不参与构建、路由和权限注册。
+当前工作区构建包含 Admin、Home、SSO；[发布清单](../release-artifacts/apps.json)登记三者的配套入口。SSO 使用已登记 Origin 的独立登录页，可与业务 App 同域分前缀或分域部署；构建通过、历史预览和已部署状态不能互相推导。真实部署需经过[发布门禁](../release-artifacts/README.md)。未激活终端不参与构建、路由和权限注册。
 
 domain 与后端模块一一对应为 `admin`、`system`、`workflow`、`demo`、`profile`、`notify`、`third`、`ai`；包内第二层按 Controller 的稳定 HTTP 资源命名。由此可以从 `/system/client` 直接定位到 `frontend/packages/domains/system/src/client`，再定位到 `frontend/packages/web-domains/system/src/client` 的 Web 表现层。
 

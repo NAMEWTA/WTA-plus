@@ -5,6 +5,8 @@ export interface OidcApplication {
   clientId: string;
   redirectUris: string[];
   postLogoutRedirectUris: string[];
+  backchannelLogoutUri?: string;
+  backchannelLogoutSessionRequired?: boolean;
   allowedFields: string[];
   clientAuthenticationMethod: 'client_secret_basic' | 'client_secret_post';
   pkceRequired: boolean;
@@ -17,6 +19,8 @@ export interface OidcApplicationInput {
   name: string;
   redirectUris: string[];
   postLogoutRedirectUris: string[];
+  backchannelLogoutUri?: string;
+  backchannelLogoutSessionRequired?: boolean;
   allowedFields: string[];
   clientAuthenticationMethod: OidcApplication['clientAuthenticationMethod'];
   pkceRequired: boolean;

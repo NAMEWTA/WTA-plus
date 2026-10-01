@@ -16,6 +16,10 @@
     </description>
 
     <dependencies>
+        <dependency>
+            <groupId>org.namewta</groupId>
+            <artifactId>wta-common-social</artifactId>
+        </dependency>
         <!-- 通用工具-->
         <dependency>
             <groupId>org.namewta</groupId>

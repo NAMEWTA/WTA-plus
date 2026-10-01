@@ -291,6 +291,8 @@ describe('system transport contracts', () => {
       backendModules: ['wta-system'],
       capabilities: [
         'client',
+        'external-auth-provider',
+        'external-auth-registration',
         'user',
         'user-type',
         'role',

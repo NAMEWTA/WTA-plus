@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.system.mapper.SysAuthProviderMapper">
+    <resultMap id="provider" type="org.namewta.system.domain.SysAuthProvider" autoMapping="true">
+        <id property="id" column="auth_provider_id"/>
+        <result property="optionsJson" column="options"/>
+    </resultMap>
+    <select id="selectForUpdate" resultMap="provider">
+        SELECT * FROM sys_auth_provider WHERE auth_provider_id = #{id} AND del_flag = '0' FOR UPDATE
+    </select>
+    <select id="selectForLogout" resultMap="provider">
+        SELECT * FROM sys_auth_provider WHERE auth_provider_id = #{id}
+    </select>
+</mapper>

@@ -5,6 +5,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { request as httpRequest } from 'node:http';
 import { createServer, request as httpsRequest } from 'node:https';
 import { join } from 'node:path';
+import { startFirstPartyAuthorization } from './first-party-sso-fixture.mjs';
 
 const directory = process.env.OIDC_ACCEPTANCE_DIR;
 if (!directory?.startsWith('/tmp/namewta-oidc-real-')) throw new Error('Owned acceptance directory required');
@@ -448,8 +449,13 @@ try {
   step = 'first-party Admin SSO compatibility';
   const firstParty = await browser.newContext({ ignoreHTTPSErrors: true });
   const adminPage = await firstParty.newPage();
-  await adminPage.goto('https://admin.localhost:19441/login');
-  await adminPage.getByTestId('sso-first-provider').click();
+  await startFirstPartyAuthorization(adminPage, {
+    app: 'admin',
+    appOrigin: 'https://admin.localhost:19441',
+    clientId: 'e5cd7e4891bf95d1d19206ce24a7b32e',
+    authorizeUrl: `${issuer}/authorize`,
+    returnTo: '/index'
+  });
   await adminPage.locator('input[name="username"]').waitFor({ timeout: 20000 });
   await adminPage.locator('input[name="username"]').fill(credentials.username);
   await adminPage.locator('input[name="password"]').fill(credentials.password);
@@ -463,8 +469,13 @@ try {
   pass('Original Admin SSO browser login remains compatible');
   step = 'first-party Home central session reuse';
   const homePage = await firstParty.newPage();
-  await homePage.goto('https://home.localhost:19442/login');
-  await homePage.getByTestId('sso-first-provider').click();
+  await startFirstPartyAuthorization(homePage, {
+    app: 'home',
+    appOrigin: 'https://home.localhost:19442',
+    clientId: '428a8310cd442757ae699df5d894f051',
+    authorizeUrl: `${issuer}/authorize`,
+    returnTo: '/profile'
+  });
   await homePage.waitForURL(
     url => url.origin === 'https://home.localhost:19442' && !['/login', '/sso/callback'].includes(url.pathname),
     { timeout: 30000 }

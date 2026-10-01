@@ -226,8 +226,8 @@ class BrowserHttpsTransportIntegrationTest {
 
         AuthController authController() {
             var registration = new SysRegisterService(userService, captcha, clients, types, grants, policy);
-            return new AuthController(null, mock(SysLoginService.class), registration, null, clients,
-                mock(NotificationApplicationService.class), policy, new SsoProperties());
+            return new AuthController(mock(SysLoginService.class), registration, null, clients,
+                mock(NotificationApplicationService.class), policy, mock(org.namewta.system.api.ExternalAuthConfigurationService.class), null);
         }
 
         LoginVo login(String body, SysClientVo client) {

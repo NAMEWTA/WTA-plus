@@ -9,6 +9,9 @@ import org.namewta.system.password.PasswordPolicyProjection;
 @Data
 public class AuthClientContextVo {
 
+    /** 当前业务 Client 可使用的外部认证入口，不包含凭据。 */
+    private java.util.List<org.namewta.system.api.model.ExternalAuthEntry> providers = java.util.List.of();
+
     /**
      * 客户端是否可用
      */

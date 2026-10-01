@@ -35,7 +35,11 @@ const route = useRoute();
 const navigation = useNavigationStore();
 const primaryMenu = computed(() => navigation.routes.find(item => !item.hidden));
 const isUserCenter = computed(
-  () => route.path !== '/' && route.path !== '/login' && route.path !== '/register' && route.path !== '/sso/callback'
+  () =>
+    route.path !== '/' &&
+    route.path !== '/login' &&
+    route.path !== '/register' &&
+    !['/sso/callback', '/social-callback', '/logout/callback'].includes(route.path)
 );
 const registration = useRegistrationAvailabilityStore();
 watch(

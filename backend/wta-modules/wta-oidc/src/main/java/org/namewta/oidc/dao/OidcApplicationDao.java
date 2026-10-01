@@ -23,6 +23,11 @@ public class OidcApplicationDao {
         return mapper.selectById(id);
     }
 
+    /** 退出只读入口保留已删除应用的登记，不恢复其签发能力。 */
+    public OidcApplication findForLogout(Long id) {
+        return mapper.findForLogout(id);
+    }
+
     /** 读取独立 OIDC 客户端登记，不进行第一方 Client 准入。 */
     public OidcApplication client(String id) {
         return mapper.selectOne(

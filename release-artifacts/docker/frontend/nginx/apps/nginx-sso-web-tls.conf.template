@@ -1,4 +1,4 @@
-# This service owns an independent Web Origin. Never add it to the shared App LB.
+# SSO may use an independent Origin or a shared LB with its own static prefix.
 log_format sso_access '$remote_addr $request_method $uri $status';
 
 # Other first-party Apps may be approved by the shared backend CORS policy. They
@@ -7,6 +7,11 @@ map $http_origin $sso_origin_allowed {
     default 0;
     '' 1;
     '${APP_ORIGIN}' 1;
+}
+
+map $http_x_forwarded_proto $sso_forwarded_scheme {
+    default $scheme;
+    https https;
 }
 
 upstream backend_server {
@@ -52,9 +57,9 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Forwarded '';
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto $sso_forwarded_scheme;
         proxy_buffering off;
         proxy_cache off;
         add_header Cache-Control 'no-store' always;
@@ -66,9 +71,9 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Forwarded '';
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto $sso_forwarded_scheme;
         proxy_buffering off;
         proxy_cache off;
         add_header Cache-Control 'no-store' always;

@@ -2,24 +2,43 @@ package org.namewta.sso.domain;
 
 import org.namewta.sso.api.SsoAuthenticatedUser;
 
-/**
- * OAuth 授权与换票命令。
- */
+/** OAuth 授权与换票命令。 */
 public final class SsoOAuthCommands {
 
-    private SsoOAuthCommands() {
+    private SsoOAuthCommands() {}
+
+    /** 授权请求。 */
+    public record AuthorizeCommand(
+            String responseType,
+            String clientId,
+            String redirectUri,
+            String state,
+            String codeChallenge,
+            String codeChallengeMethod,
+            SsoAuthenticatedUser user,
+            String sessionId) {
+        /** 保留原始内部命令构造器；生产HTTP始终传入可信Cookie上下文。 */
+        public AuthorizeCommand(
+                String responseType,
+                String clientId,
+                String redirectUri,
+                String state,
+                String codeChallenge,
+                String codeChallengeMethod,
+                SsoAuthenticatedUser user) {
+            this(
+                    responseType,
+                    clientId,
+                    redirectUri,
+                    state,
+                    codeChallenge,
+                    codeChallengeMethod,
+                    user,
+                    null);
+        }
     }
 
-    /**
-     * 授权请求。
-     */
-    public record AuthorizeCommand(String responseType, String clientId, String redirectUri, String state,
-                                   String codeChallenge, String codeChallengeMethod, SsoAuthenticatedUser user) {
-    }
-
-    /**
-     * 授权结果。
-     */
+    /** 授权结果。 */
     public record AuthorizeResult(boolean loginRequired, String redirectUri) {
         /**
          * 需要先登录。
@@ -41,9 +60,11 @@ public final class SsoOAuthCommands {
         }
     }
 
-    /**
-     * 换票请求。
-     */
-    public record TokenCommand(String grantType, String code, String redirectUri, String clientId, String codeVerifier) {
-    }
+    /** 换票请求。 */
+    public record TokenCommand(
+            String grantType,
+            String code,
+            String redirectUri,
+            String clientId,
+            String codeVerifier) {}
 }

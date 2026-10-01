@@ -3,14 +3,17 @@ package org.namewta.oidc.service;
 import lombok.RequiredArgsConstructor;
 
 import org.namewta.oidc.domain.OidcPrincipal;
-import org.namewta.profile.api.domain.*;
-import org.namewta.sso.api.*;
-import org.namewta.system.api.*;
+import org.namewta.profile.api.domain.ProfileDisclosureField;
+import org.namewta.sso.api.SsoSessionSnapshot;
 import org.namewta.system.api.domain.AccountIdentity;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /** 实时 WTA 账户与核准资料投影，不向资料端请求未授权字段。 */
 @Service
@@ -47,6 +50,11 @@ public class OidcIdentityService {
                 || p.authTime() != s.authenticatedAt().getEpochSecond())
             throw new OAuth2AuthenticationException("invalid_grant");
         return user;
+    }
+
+    /** 签发事务先锁会话，再锁应用，所有路径保持同一锁顺序。 */
+    public void lockSession(OidcPrincipal p) {
+        identity.lockSession(p.sessionId());
     }
 
     /** 删除指定 SSO 会话，不扩大到其他浏览器。 */

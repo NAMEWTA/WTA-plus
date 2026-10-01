@@ -10,7 +10,8 @@ import org.namewta.oidc.domain.OidcAuthorization;
 import org.namewta.oidc.mapper.OidcAuthorizationMapper;
 import org.springframework.stereotype.Repository;
 
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /** 授权原子消费、最终签发与撤销全部在主库决定。 */
 @Repository
@@ -111,13 +112,22 @@ public class OidcAuthorizationDao {
                         .setSql("version=version+1"));
     }
 
+    /** 已实际签出ID Token的RP需要接收退出，撤销过的授权也保留关联事实。 */
+    public java.util.List<OidcAuthorization> sessionGrants(String hash) {
+        return mapper.selectList(
+                new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<
+                                OidcAuthorization>()
+                        .eq(OidcAuthorization::getSessionHash, hash)
+                        .isNotNull(OidcAuthorization::getIdTokenHash));
+    }
+
     /** 持久撤销当前 SSO 会话关联的授权。 */
     public void revokeSession(String hash) {
         mapper.update(
                 null,
                 new LambdaUpdateWrapper<OidcAuthorization>()
                         .eq(OidcAuthorization::getSessionHash, hash)
-                        .ne(OidcAuthorization::getStatus, "REVOKED")
+                        .set(OidcAuthorization::getSessionClosed, true)
                         .set(OidcAuthorization::getStatus, "REVOKED")
                         .setSql("version=version+1"));
     }

@@ -7,6 +7,10 @@ export function applicationInputTransport(input: OidcApplicationInput): OpenApiS
     name: input.name,
     redirectUris: [...input.redirectUris],
     postLogoutRedirectUris: [...input.postLogoutRedirectUris],
+    ...(input.backchannelLogoutUri !== undefined ? { backchannelLogoutUri: input.backchannelLogoutUri } : {}),
+    ...(input.backchannelLogoutSessionRequired !== undefined
+      ? { backchannelLogoutSessionRequired: input.backchannelLogoutSessionRequired }
+      : {}),
     allowedFields: [...input.allowedFields],
     clientAuthenticationMethod: input.clientAuthenticationMethod,
     pkceRequired: input.pkceRequired

@@ -36,7 +36,8 @@
     "element-plus": "catalog:",
     "vue": "catalog:",
     "vue-json-pretty": "2.6.0",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "yaml": "catalog:"
   },
   "devDependencies": {
     "@vue/compiler-sfc": "catalog:",

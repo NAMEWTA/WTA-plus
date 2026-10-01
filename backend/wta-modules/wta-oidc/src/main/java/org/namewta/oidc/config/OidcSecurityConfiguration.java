@@ -1,6 +1,6 @@
 package org.namewta.oidc.config;
 
-import com.nimbusds.jose.jwk.*;
+import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
@@ -8,11 +8,17 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
 import org.namewta.common.core.service.HttpProtocolPolicy;
-import org.namewta.oidc.adapter.api.*;
+import org.namewta.oidc.adapter.api.OidcClaims;
+import org.namewta.oidc.adapter.api.OidcCodeExchangeProvider;
+import org.namewta.oidc.adapter.api.OidcFormBodyFilter;
+import org.namewta.oidc.adapter.api.OidcLoginFilter;
+import org.namewta.oidc.adapter.api.OidcOpaqueIntrospector;
+import org.namewta.oidc.adapter.api.OidcOwnedTokenProvider;
 import org.namewta.oidc.domain.OidcPrincipal;
 import org.namewta.oidc.service.OidcKeyService;
-import org.namewta.oidc.usecase.*;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.namewta.oidc.usecase.OidcAuthorizationUseCase;
+import org.namewta.oidc.usecase.OidcInteractionUseCase;
+import org.namewta.oidc.usecase.OidcProtocolUseCase;
 import org.springframework.context.annotation.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -35,12 +41,26 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /** 只接管 OIDC 精确协议端点，普通业务请求继续使用 Sa-Token。 */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(OidcProperties.class)
 public class OidcSecurityConfiguration {
+    @Bean
+    /** 数据库服务先冻结结构，再构造Spring AuthorizationServerSettings。 */
+    public OidcProperties oidcProperties(
+            org.namewta.oidc.service.OidcConfigurationService service,
+            org.namewta.sso.api.SsoRuntimeConfiguration sso) {
+        var properties = new OidcProperties();
+        properties.bind(service::current);
+        properties.setSessionCookieName(sso.current().cookieName());
+        properties.setSessionCookieSecure(sso.current().cookieSecure());
+        return properties;
+    }
+
     /** Spring Security 仅匹配这些标准端点，管理与第一方 SSO 不在其中。 */
     public static final Set<String> PATHS =
             Set.of(
@@ -312,7 +332,11 @@ public class OidcSecurityConfiguration {
                                     p.startsWith("/.well-known/") || p.equals("/oidc/jwks");
                             if (properties.getIssuer() == null
                                     || properties.getIssuer().isBlank()
-                                    || !discovery && (!properties.isEnabled() || !keys.ready())) {
+                                    || !discovery
+                                            && (!keys.ready()
+                                                    || Set.of("/oidc/authorize", "/oidc/token")
+                                                                    .contains(p)
+                                                            && !properties.isEnabled())) {
                                 unavailable(response);
                                 return;
                             }
@@ -359,6 +383,8 @@ public class OidcSecurityConfiguration {
         m.put("subject_types_supported", List.of("public"));
         m.put("id_token_signing_alg_values_supported", List.of("RS256"));
         m.put("end_session_endpoint", p.getIssuer() + "/oidc/logout");
+        m.put("backchannel_logout_supported", true);
+        m.put("backchannel_logout_session_supported", true);
         m.put("claims_parameter_supported", false);
         m.put("request_parameter_supported", false);
         m.put("request_uri_parameter_supported", false);

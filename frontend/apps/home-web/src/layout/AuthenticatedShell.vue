@@ -61,7 +61,11 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item command="profile">个人中心</el-dropdown-item>
-                  <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
+                  <el-dropdown-item command="bindings">账号绑定</el-dropdown-item>
+                  <el-dropdown-item divided command="logout">退出当前应用</el-dropdown-item>
+                  <el-dropdown-item v-if="user.globalLogoutAvailable" command="globalLogout">
+                    退出全部应用
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -80,8 +84,10 @@ import SvgIcon from '@namewta/web-kit-ui-element/icon';
 import { SHELL_MOBILE_BREAKPOINT } from '@namewta/web-kit-ui-element/shell';
 import SidebarFrame from '@namewta/web-kit-ui-element/sidebar-frame';
 import TopbarFrame from '@namewta/web-kit-ui-element/topbar-frame';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { createAppSocialRuntime } from '@/application/social';
 import { useNavigationStore } from '@/store/navigation';
 import { useUserStore } from '@/store/user';
 import HomeMenuItem from './HomeMenuItem.vue';
@@ -111,6 +117,23 @@ async function navigate(path: string) {
 }
 async function accountAction(command: string) {
   if (command === 'profile') return navigate('/profile');
+  if (command === 'bindings') return navigate('/account/bindings');
+  if (command === 'globalLogout') {
+    try {
+      await ElMessageBox.confirm('将退出当前应用与统一登录会话，其他已接入应用会同步退出。', '退出全部应用', {
+        confirmButtonText: '确认退出',
+        cancelButtonText: '取消'
+      });
+    } catch {
+      return;
+    }
+    try {
+      await createAppSocialRuntime().globalLogout();
+    } catch {
+      ElMessage.error('统一退出未完成，请重试');
+    }
+    return;
+  }
   if (command !== 'logout') return;
   try {
     await user.logout();

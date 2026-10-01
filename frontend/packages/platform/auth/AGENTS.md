@@ -20,3 +20,5 @@
 
 ## Read Next
 认证领域读取 [domain-admin](../../domains/admin/AGENTS.md)。
+
+`social-transaction.ts` 提供按 namespace/client/state 隔离的一次性事务与退出状态校验；`sha256.ts` 为认证和 OSS 指纹提供无浏览器依赖的哈希实现，兼容内网 HTTP。

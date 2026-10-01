@@ -9,6 +9,14 @@ import lombok.Data;
 @Data
 public class LoginVo {
 
+    /** 无令牌的首次登录分支：COMPLETE_PROFILE 或 BIND_REQUIRED。 */
+    private String nextAction = "LOGIN_COMPLETE";
+    private String registrationTicket;
+    private java.util.List<String> requiredFields;
+    private String message;
+    private String authSource = "LOCAL";
+    private boolean globalLogoutAvailable;
+
     /**
      * 授权令牌
      */

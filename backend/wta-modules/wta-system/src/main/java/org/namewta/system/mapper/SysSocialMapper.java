@@ -9,4 +9,7 @@ import org.namewta.system.domain.vo.SysSocialVo;
  */
 public interface SysSocialMapper extends BaseMapperPlus<SysSocial, SysSocialVo> {
 
+    /** 绑定与解绑按用户串行；调用方必须已开启数据库事务。 */
+    Long lockUser(@org.apache.ibatis.annotations.Param("userId") Long userId);
+
 }

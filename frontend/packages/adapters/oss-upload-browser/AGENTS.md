@@ -13,7 +13,7 @@
 公开入口为 `@namewta/adapter-oss-upload-browser`，见 [package.json](package.json)。
 
 ## Dependencies
-只依赖 `platform-contracts`；地址、令牌和网关由 App 注入，不拥有领域权限。
+依赖 `platform-contracts` 与 `platform-auth` 的纯 SHA-256；地址、令牌和网关由 App 注入，不拥有领域权限。
 
 ## Verification
 `pnpm --filter @namewta/adapter-oss-upload-browser lint`、`typecheck`、`test`。

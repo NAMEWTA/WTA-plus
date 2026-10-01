@@ -30,4 +30,7 @@ public class SocialLoginBody extends LoginBody {
     @NotBlank(message = "{social.state.not.blank}")
     private String socialState;
 
+    /** 发起浏览器持有的短期事务凭据，不参与第三方协议传输。 */
+    private String transactionKey;
+
 }

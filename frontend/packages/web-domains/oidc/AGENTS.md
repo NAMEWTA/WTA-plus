@@ -11,3 +11,5 @@
 ## Verification
 
 `pnpm --filter @namewta/web-domain-oidc lint`、`typecheck`、`test`、`build`。
+
+`OidcServicePage.vue` 对应 `oidc/service`，管理 Provider 服务设置、私钥写入与退出通知重试。与 System 的外部 RP 接入配置页面分别维护。

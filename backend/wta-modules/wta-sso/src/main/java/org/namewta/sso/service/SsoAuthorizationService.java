@@ -5,9 +5,9 @@ import org.namewta.common.core.exception.ServiceException;
 import org.namewta.common.core.utils.StringUtils;
 import org.namewta.common.mybatis.utils.IdGeneratorUtil;
 import org.namewta.sso.api.SsoClientView;
+import org.namewta.sso.dao.SsoAuthorizationCodeDao;
 import org.namewta.sso.domain.SsoAuthorizationCode;
 import org.namewta.sso.domain.SsoOAuthCommands;
-import org.namewta.sso.dao.SsoAuthorizationCodeDao;
 import org.namewta.sso.port.SsoBusinessTokenPort;
 import org.namewta.sso.port.SsoClientCatalogPort;
 import org.namewta.sso.port.SsoIdentityPort;
@@ -26,9 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Authorization Code + PKCE 核心协议：签发、换票与负向拒绝。
- */
+/** Authorization Code + PKCE 核心协议：签发、换票与负向拒绝。 */
 public class SsoAuthorizationService {
 
     private final SsoAuthorizationCodeDao codeDao;
@@ -36,24 +34,36 @@ public class SsoAuthorizationService {
     private final SsoIdentityPort identityPort;
     private final SsoBusinessTokenPort tokenPort;
     private final Clock clock;
-    private final Duration codeTtl;
+    private final java.util.function.Supplier<Duration> codeTtl;
 
     /**
      * 组装授权服务。
      *
-     * @param codeDao       授权码 DAO
+     * @param codeDao 授权码 DAO
      * @param clientCatalog Client 目录
-     * @param identityPort  认人与准入
-     * @param tokenPort     业务 Token
-     * @param clock         时钟
-     * @param codeTtl       授权码 TTL
+     * @param identityPort 认人与准入
+     * @param tokenPort 业务 Token
+     * @param clock 时钟
+     * @param codeTtl 授权码 TTL
      */
-    public SsoAuthorizationService(SsoAuthorizationCodeDao codeDao,
-                                   SsoClientCatalogPort clientCatalog,
-                                   SsoIdentityPort identityPort,
-                                   SsoBusinessTokenPort tokenPort,
-                                   Clock clock,
-                                   Duration codeTtl) {
+    public SsoAuthorizationService(
+            SsoAuthorizationCodeDao codeDao,
+            SsoClientCatalogPort clientCatalog,
+            SsoIdentityPort identityPort,
+            SsoBusinessTokenPort tokenPort,
+            Clock clock,
+            Duration codeTtl) {
+        this(codeDao, clientCatalog, identityPort, tokenPort, clock, () -> codeTtl);
+    }
+
+    /** 生产注入热配置读取器及持久会话关联端口。 */
+    public SsoAuthorizationService(
+            SsoAuthorizationCodeDao codeDao,
+            SsoClientCatalogPort clientCatalog,
+            SsoIdentityPort identityPort,
+            SsoBusinessTokenPort tokenPort,
+            Clock clock,
+            java.util.function.Supplier<Duration> codeTtl) {
         this.codeDao = codeDao;
         this.clientCatalog = clientCatalog;
         this.identityPort = identityPort;
@@ -85,21 +95,30 @@ public class SsoAuthorizationService {
         if (command.user() == null) {
             return SsoOAuthCommands.AuthorizeResult.needsLogin();
         }
+        String sessionHash =
+                command.sessionId() == null
+                        ? null
+                        : org.namewta.sso.support.SsoSessionHashes.hash(command.sessionId());
         identityPort.assertClientAccess(command.user().getUserId(), client.getClientId());
         SsoAuthorizationCode code = new SsoAuthorizationCode();
         code.setAuthorizationCodeId(IdGeneratorUtil.nextLongId());
         code.setAuthorizationCode(SsoBearerTokens.create());
         code.setClientId(client.getClientId());
+        code.setSessionHash(sessionHash);
         code.setRedirectUri(command.redirectUri().trim());
         code.setCodeChallenge(command.codeChallenge().trim());
         code.setState(command.state());
         code.setUserId(command.user().getUserId());
         code.setUsername(command.user().getUsername());
         code.setConsumed(Boolean.FALSE);
-        code.setExpireTime(LocalDateTime.now(clock).plus(codeTtl));
+        code.setExpireTime(LocalDateTime.now(clock).plus(codeTtl.get()));
         code.setVersion(0);
         codeDao.insert(code);
-        return SsoOAuthCommands.AuthorizeResult.redirect(appendQuery(command.redirectUri().trim(), code.getAuthorizationCode(), command.state()));
+        return SsoOAuthCommands.AuthorizeResult.redirect(
+                appendQuery(
+                        command.redirectUri().trim(),
+                        code.getAuthorizationCode(),
+                        command.state()));
     }
 
     /**
@@ -125,7 +144,8 @@ public class SsoAuthorizationService {
         if (Boolean.TRUE.equals(record.getConsumed())) {
             throw new ServiceException("授权码已使用");
         }
-        if (record.getExpireTime() == null || !record.getExpireTime().isAfter(LocalDateTime.now(clock))) {
+        if (record.getExpireTime() == null
+                || !record.getExpireTime().isAfter(LocalDateTime.now(clock))) {
             throw new ServiceException("授权码已过期");
         }
         if (!StringUtils.equals(record.getClientId(), command.clientId())) {
@@ -140,7 +160,15 @@ public class SsoAuthorizationService {
         }
         SsoClientView client = requireEnabledClient(record.getClientId());
         LoginUser loginUser = identityPort.buildLoginUser(record.getUserId(), client.getClientId());
-        return tokenPort.issue(loginUser, client);
+        var issued = tokenPort.issue(loginUser, client, record.getSessionHash());
+        return issued;
+    }
+
+    /** 供换票用例在消费前取得持久中央会话摘要。 */
+    public String sessionHash(String code) {
+        var row = codeDao.findByCode(code);
+        if (row == null) throw new ServiceException("授权码无效");
+        return row.getSessionHash();
     }
 
     /**
@@ -180,15 +208,20 @@ public class SsoAuthorizationService {
         }
         try {
             URI uri = URI.create(value);
-            if (uri.getRawFragment() != null || uri.getHost() == null || uri.getUserInfo() != null
-                || !("https".equalsIgnoreCase(uri.getScheme()) || "http".equalsIgnoreCase(uri.getScheme()))) {
+            if (uri.getRawFragment() != null
+                    || uri.getHost() == null
+                    || uri.getUserInfo() != null
+                    || !("https".equalsIgnoreCase(uri.getScheme())
+                            || "http".equalsIgnoreCase(uri.getScheme()))) {
                 throw new IllegalArgumentException();
             }
             // 注册URL已有的普通query保持原编码，但响应保留字段不能被预置或重复。
             if (uri.getRawQuery() != null) {
-                Set<String> reserved = Set.of("code", "state", "error", "error_description", "error_uri");
+                Set<String> reserved =
+                        Set.of("code", "state", "error", "error_description", "error_uri");
                 for (String parameter : uri.getRawQuery().split("&")) {
-                    String name = URLDecoder.decode(parameter.split("=", 2)[0], StandardCharsets.UTF_8);
+                    String name =
+                            URLDecoder.decode(parameter.split("=", 2)[0], StandardCharsets.UTF_8);
                     if (reserved.contains(name)) throw new IllegalArgumentException();
                 }
             }
@@ -201,9 +234,9 @@ public class SsoAuthorizationService {
         // fromUri保留注册URL的raw组件；仅对新值编码一次，避免已有%xx被双重编码。
         URI callback = URI.create(URI.create(redirectUri).toASCIIString());
         return UriComponentsBuilder.fromUri(callback)
-            .queryParam("code", UriUtils.encode(code, StandardCharsets.UTF_8))
-            .queryParam("state", UriUtils.encode(state, StandardCharsets.UTF_8))
-            .build(true).toUriString();
+                .queryParam("code", UriUtils.encode(code, StandardCharsets.UTF_8))
+                .queryParam("state", UriUtils.encode(state, StandardCharsets.UTF_8))
+                .build(true)
+                .toUriString();
     }
-
 }

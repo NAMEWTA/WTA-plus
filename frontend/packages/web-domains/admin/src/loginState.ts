@@ -1,4 +1,4 @@
-import type { IdentitySession, LoginVerification } from '@namewta/domain-admin';
+import type { IdentitySession, LoginVerification, SocialProvider } from '@namewta/domain-admin';
 import { computed, reactive, ref } from 'vue';
 import type { IdentityAccessWebRuntime } from './runtime';
 
@@ -12,6 +12,7 @@ export function createIdentityLoginState(runtime: IdentityAccessWebRuntime) {
   const errorMessage = ref('');
   const verification = ref<LoginVerification>();
   const form = reactive({ username: '', password: '', code: '' });
+  const providers = ref<readonly SocialProvider[]>([]);
   const ssoEnabled = ref(false);
   const ssoAuthorizeUrl = ref('');
   const authMode = ref<'local' | 'sso' | 'both'>('both');
@@ -30,6 +31,7 @@ export function createIdentityLoginState(runtime: IdentityAccessWebRuntime) {
       .then(result => {
         if (!active) return;
         verification.value = result.verification;
+        providers.value = result.context.providers ?? [];
         ssoEnabled.value = result.context.ssoEnabled === true;
         ssoAuthorizeUrl.value = result.context.ssoAuthorizeUrl ?? '';
         authMode.value =
@@ -72,6 +74,7 @@ export function createIdentityLoginState(runtime: IdentityAccessWebRuntime) {
     dispose: () => {
       active = false;
     },
+    providers,
     authMode,
     errorMessage,
     form,

@@ -4,6 +4,11 @@ import type { IdentityAccessWebRuntime } from './runtime';
 import { requireIdentityAccessWebRuntime } from './runtime';
 
 export type { IdentityAccessWebRuntime } from './runtime';
+export { createSocialWebRuntime } from './socialRuntime';
+export type { SocialWebRuntime, SocialWebPorts } from './socialRuntime';
+export { default as SocialCallbackPage } from './auth/SocialCallbackPage.vue';
+export { default as SocialBindingsPage } from './auth/SocialBindingsPage.vue';
+export { default as LogoutCallbackPage } from './auth/LogoutCallbackPage.vue';
 
 export const identityAccessWebMessages = Object.freeze({
   title: '客户服务入口',

@@ -20,3 +20,5 @@
 
 ## Read Next
 领域合同读取 [domain-system](../../domains/system/AGENTS.md)。
+
+`auth-config/` 组合身份源、客户端接入页面与旧 YAML/JSON 导入预览；导入只提取 justauth.type，原文件与密钥不进入浏览器存储。

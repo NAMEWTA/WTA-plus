@@ -104,3 +104,5 @@
 [wta-ai](https://github.com/NAMEWTA/wta-ai) 是独立项目，不属于本表的 Maven 模块或前端工作区。其 Python 后端、双前端及发布脚本由独立仓库拥有；与本仓集成通过公开网络 API，不形成源码路径或发布产物依赖。本仓 wta-ai / wta-common-ai 名称仍指 Java Maven 占位。
 
 OIDC 前端由 `packages/domains/oidc` 和 `packages/web-domains/oidc` 拥有，Admin 显式组合；三 App 共用已激活 `packages/web-kit/ui-element` 的主题、AuthPanel 和 StatusPanel。OIDC 第三方应用与第一方 sys_client 分离，账户准入读取正常 sys_user，资料按应用字段策略经公开 API 投影。
+
+Admin/Home 外部认证复用 `wta-common-social` 协议客户端、System 身份源/接入配置与 `wta-admin` social 编排。Provider 的配置、版本密钥、持久中央会话和退出 outbox 分属 `wta-oidc`/`wta-sso`；RP 不依赖其持久实现。初始化与部署见 `docs/oidc-app-integration/README.md`。

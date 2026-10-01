@@ -22,3 +22,5 @@
 
 ## Read Next
 终端组合与领域边界读取 [前端 Skill](../../../.agents/skills/namewta-fullstack-development/SKILL.md)；Profile 合同读取 [domain-profile](../../packages/domains/profile/AGENTS.md) 和 [web-domain-profile](../../packages/web-domains/profile/AGENTS.md)。
+
+Home 使用配置驱动的标准 OIDC 第三方登录，与 Admin 复用 `/social-callback` 页面和会话代次检查；首次登录需要手机号时补填，冲突引导登录原账号后到静态 `/account/bindings` 绑定。本地登录注册保持，`/logout/callback` 只显示退出结果，不自动登录。旧 `/sso/callback` 保留处理已有第一方协议回调，旧第一方授权发起不再作为产品入口。

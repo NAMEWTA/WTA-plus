@@ -12,17 +12,22 @@ import org.namewta.oidc.adapter.api.OidcBrowserCookies;
 import org.namewta.oidc.config.OidcProperties;
 import org.namewta.oidc.domain.OidcPrincipal;
 import org.namewta.oidc.support.OidcSecrets;
-import org.namewta.oidc.usecase.*;
+import org.namewta.oidc.usecase.OidcAuthorizationUseCase;
+import org.namewta.oidc.usecase.OidcInteractionUseCase;
+import org.namewta.oidc.usecase.OidcProtocolUseCase;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /** RP 发起退出必须使用真实签发记录，并由绑定浏览器的 CSRF 确认完成。 */
 @SaIgnore
@@ -98,6 +103,8 @@ public class OidcLogoutController {
                                     + "'><button type=submit>确认退出</button></form></main></html>");
         } catch (OAuth2AuthenticationException ex) {
             error(response);
+        } catch (RuntimeException ex) {
+            unavailable(response);
         }
     }
 
@@ -127,13 +134,12 @@ public class OidcLogoutController {
                                     .contains(target))
                 throw new OAuth2AuthenticationException("invalid_request");
             interactions.consume(tx, browser);
-            authorizations.revokeSession(sid);
             protocol.logout(sid);
             response.addHeader(
                     "Set-Cookie",
                     ResponseCookie.from(properties.getSessionCookieName(), "")
                             .httpOnly(true)
-                            .secure(!properties.isAllowHttp())
+                            .secure(properties.isSessionCookieSecure())
                             .sameSite("Lax")
                             .path("/")
                             .maxAge(0)
@@ -165,6 +171,8 @@ public class OidcLogoutController {
             }
         } catch (OAuth2AuthenticationException ex) {
             error(response);
+        } catch (RuntimeException ex) {
+            unavailable(response);
         }
     }
 
@@ -182,5 +190,13 @@ public class OidcLogoutController {
         r.setStatus(400);
         r.setContentType("application/json");
         r.getWriter().write("{\"error\":\"invalid_request\"}");
+    }
+
+    /** 基础设施失败保留协议 HTTP 失败状态，避免统一业务异常处理器改写为 HTTP 200。 */
+    private void unavailable(HttpServletResponse response) throws IOException {
+        response.setStatus(503);
+        response.setContentType("application/json");
+        response.setHeader("Cache-Control", "no-store");
+        response.getWriter().write("{\"error\":\"temporarily_unavailable\"}");
     }
 }

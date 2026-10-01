@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.namewta.oidc.mapper.OidcApplicationMapper"/>
+<mapper namespace="org.namewta.oidc.mapper.OidcApplicationMapper">
+    <!-- 历史退出保留已删除的应用登记；登录和管理读取仍走逻辑删除过滤。 -->
+    <select id="findForLogout" resultType="org.namewta.oidc.domain.OidcApplication">
+        SELECT * FROM oidc_application WHERE application_id=#{id}
+    </select>
+</mapper>

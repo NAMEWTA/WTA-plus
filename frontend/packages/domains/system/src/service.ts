@@ -4,6 +4,15 @@ import type { DeptForm, DeptQuery, DeptTreeVO, DeptVO } from './dept/types';
 import type { MenuForm, MenuQuery, MenuTreeOption, MenuVO, RoleMenuTree } from './menu/types';
 import type { PostForm, PostQuery, PostVO } from './post/types';
 import type { RoleDeptTree, RoleForm, RoleQuery, RoleVO } from './role/types';
+import type {
+  ApiResponse,
+  Identifier,
+  IdentifierList,
+  PageResult,
+  RoleUserAssignment,
+  RoleUserCancellation,
+  UserRoleAssignment
+} from './types';
 import type { UserTypeForm, UserTypeQuery, UserTypeVO } from './user-type/types';
 import type {
   ResetPasswordCandidate,
@@ -15,23 +24,16 @@ import type {
   UserQuery,
   UserVO
 } from './user/types';
+import { createAuthConfigurationService, type AuthConfigurationService } from './auth-config/service';
 import { createSystemResourceService, type SystemResourceService } from './resource-service';
 import { projectResetPasswordCandidateTransport, projectTemporaryPasswordTransport } from './transport';
-import type {
-  ApiResponse,
-  Identifier,
-  IdentifierList,
-  PageResult,
-  RoleUserAssignment,
-  RoleUserCancellation,
-  UserRoleAssignment
-} from './types';
 import { createUserQueryPort, type UserQueryPort } from './user/public';
 
 const segment = (value: IdentifierList) =>
   (Array.isArray(value) ? value : [value]).map(item => encodeURIComponent(String(item))).join(',');
 
 export interface SystemService {
+  readonly authConfig: AuthConfigurationService;
   readonly identity: {
     loadInfo(): Promise<unknown>;
     loadMenus(): Promise<unknown>;
@@ -184,6 +186,7 @@ export function createSystemService(http: HttpClient): SystemService {
       loadMenus: async () => (await request<unknown>({ url: '/system/menu/getRouters', method: 'get' })).data
     }),
     resources: createSystemResourceService(http),
+    authConfig: createAuthConfigurationService(http),
     clients,
     ssoApps,
     publicUsers,
@@ -245,7 +248,8 @@ export function createSystemService(http: HttpClient): SystemService {
           method: 'get',
           params: { clientId }
         }),
-      updateAuthRoles: (params: UserRoleAssignment) => request({ url: '/system/user/authRole', method: 'post', params }),
+      updateAuthRoles: (params: UserRoleAssignment) =>
+        request({ url: '/system/user/authRole', method: 'post', params }),
       listByDepartment: (id: Identifier) =>
         request<UserVO[]>({ url: '/system/user/list/dept/' + segment(id), method: 'get' }),
       departmentTree: () => request<DeptTreeVO[]>({ url: '/system/user/deptTree', method: 'get' })

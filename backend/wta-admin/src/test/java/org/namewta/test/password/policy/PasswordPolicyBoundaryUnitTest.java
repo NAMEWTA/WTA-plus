@@ -67,7 +67,7 @@ class PasswordPolicyBoundaryUnitTest {
         when(clientService.queryByClientId("web-client")).thenReturn(client);
         SsoProperties ssoProperties = new SsoProperties();
         ssoProperties.setEnabled(true);
-        AuthController controller = new AuthController(null, null, null, null, clientService, null, policyService, ssoProperties);
+        AuthController controller = new AuthController(null, null, null, clientService, null, policyService, mock(org.namewta.system.api.ExternalAuthConfigurationService.class), null);
 
         AuthClientContextVo context = controller.clientContext("web-client", null).getData();
 

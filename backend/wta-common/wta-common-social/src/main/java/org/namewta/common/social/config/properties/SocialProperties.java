@@ -1,17 +1,13 @@
 package org.namewta.common.social.config.properties;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 /**
- * Social 配置属性
+ * 按数据库快照构造的 JustAuth 参数；不再绑定 YAML 或环境变量。
  */
 @Data
-@Component
-@ConfigurationProperties(prefix = "justauth")
 public class SocialProperties {
 
     /**

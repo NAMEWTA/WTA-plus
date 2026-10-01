@@ -28,9 +28,28 @@ export function createOidcWebDomain(runtime: OidcWebRuntime): WebDomainManifest<
           'oidc:application:remove',
           'oidc:application:rotate'
         ])
+      },
+      {
+        id: 'oidc-service',
+        permissions: Object.freeze([
+          'oidc:service:query',
+          'oidc:service:edit',
+          'oidc:key:manage',
+          'oidc:logout:query',
+          'oidc:logout:retry'
+        ])
       }
     ]),
     registrations: Object.freeze([
+      {
+        id: 'oidc-service',
+        componentKey: 'oidc/service',
+        componentName: 'OidcService',
+        load: async () => {
+          const { default: page } = await import('./OidcServicePage.vue');
+          return defineComponent({ name: 'OidcService', setup: () => () => h(page, { runtime }) });
+        }
+      },
       {
         id: 'oidc-application',
         componentKey: 'oidc/application/index',

@@ -71,20 +71,22 @@ function usage(message) {
 
 function parseArgs(argv) {
   let evidence = null;
+  let reuseDependencies = false;
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === '--evidence') {
       evidence = argv[index + 1];
       if (!evidence || evidence.startsWith('--')) usage('missing value for --evidence');
       index += 1;
-    } else usage(`unrecognized arguments: ${token}`);
+    } else if (token === '--reuse-dependencies') reuseDependencies = true;
+    else usage(`unrecognized arguments: ${token}`);
   }
   if (!evidence) usage('missing required argument --evidence');
-  return path.resolve(evidence);
+  return { evidence: path.resolve(evidence), reuseDependencies };
 }
 
 async function main() {
-  const evidence = parseArgs(process.argv.slice(2));
+  const { evidence, reuseDependencies } = parseArgs(process.argv.slice(2));
   if (fs.existsSync(evidence)) {
     console.error('Refusing to overwrite prior evidence');
     return 1;
@@ -175,7 +177,9 @@ async function main() {
       npm_config_workspace_concurrency: '1',
       RAYON_NUM_THREADS: '1',
     };
-    await run(['corepack', 'pnpm', 'build:dependencies'], path.join(ROOT, 'frontend'), environment);
+    if (!reuseDependencies) await run(['corepack', 'pnpm', 'build:dependencies'], path.join(ROOT, 'frontend'), environment);
+    record.reused_dependencies = reuseDependencies;
+    const builds = path.join(temporary, 'apps');
     for (const [app, prefix] of [['admin-web', 'admin-app'], ['home-web', 'home-app'], ['sso-web', 'sso-app']]) {
       const buildEnvironment = {
         ...environment,
@@ -183,8 +187,8 @@ async function main() {
         VITE_APP_BASE_API: `/${prefix}/prod-api`,
         VITE_SSO_API: '',
       };
-      await run(['corepack', 'pnpm', '--filter', `@namewta/${app}`, 'build:prod'], path.join(ROOT, 'frontend'), buildEnvironment);
-      const dist = path.join(ROOT, 'frontend/apps', app, 'dist');
+      const dist = path.join(builds, app);
+      await run(['corepack', 'pnpm', '--filter', `@namewta/${app}`, 'build:prod', '--outDir', dist], path.join(ROOT, 'frontend'), buildEnvironment);
       assertSame(JSON.parse(fs.readFileSync(path.join(dist, 'build-mode.json'), 'utf8')), { app, mode: 'production' });
       record.built_apps ??= {};
       record.built_apps[app] = crypto.createHash('sha256').update(fs.readFileSync(path.join(dist, 'index.html'))).digest('hex');
@@ -224,15 +228,18 @@ async function main() {
     }
 
     for (const app of ['admin', 'home']) {
-      await nginx(app, path.join(templates, `apps/nginx-${app}-web.conf.template`), path.join(ROOT, `frontend/apps/${app}-web/dist`),
+      await nginx(app, path.join(templates, `apps/nginx-${app}-web.conf.template`), path.join(builds, `${app}-web`),
         { APP_PREFIX: `${app}-app`, BACKEND_SERVER1: backend, BACKEND_SERVER2: backend }, { alias: `namewta-nginx-${app}-web` });
     }
+    await nginx('sso', path.join(templates, 'apps/nginx-sso-web.conf.template'), path.join(builds, 'sso-web'),
+      { APP_PREFIX: 'sso-app', APP_ORIGIN: origins.sso, BACKEND_SERVER1: backend, BACKEND_SERVER2: backend },
+      { alias: 'namewta-nginx-sso-web' });
     for (const app of ['admin', 'home']) {
       await nginx(`${app}-tls`, path.join(templates, 'lb/nginx-lb-tls.conf.template'), path.join(templates, 'html'),
-        { APP_ADMIN_WEB_PREFIX: 'admin-app', APP_HOME_WEB_PREFIX: 'home-app', LB_SERVER_NAME: '127.0.0.1' },
+        { APP_ADMIN_WEB_PREFIX: 'admin-app', APP_HOME_WEB_PREFIX: 'home-app', APP_SSO_WEB_PREFIX: 'sso-app', LB_SERVER_NAME: '127.0.0.1' },
         { port: ports[app], tlsDir: 'lb' });
     }
-    await nginx('sso-tls', path.join(templates, 'apps/nginx-sso-web-tls.conf.template'), path.join(ROOT, 'frontend/apps/sso-web/dist'),
+    await nginx('sso-tls', path.join(templates, 'apps/nginx-sso-web-tls.conf.template'), path.join(builds, 'sso-web'),
       { APP_PREFIX: 'sso-app', APP_ORIGIN: origins.sso, BACKEND_SERVER1: backend, BACKEND_SERVER2: backend },
       { port: ports.sso, tlsDir: 'sso-web' });
 
@@ -246,6 +253,7 @@ async function main() {
     const redisPort = output(['docker', 'port', redis, '6379/tcp']).split(':').at(-1);
     const command = ['./mvnw', '-B', '-ntp', '-pl', 'wta-admin', '-am', 'test', '-Dtest=SsoHttpsSessionIntegrationTest,AuthClientContextSsoUnitTest',
       '-Dsurefire.failIfNoSpecifiedTests=false', '-Dsso.release.integration=true',
+      `-Dsso.fixture.dist=${path.join(builds, 'sso-web')}`,
       `-Dsso.release.backend.host=${gateway}`, `-Dsso.release.backend.port=${backendPort}`,
       `-Dsso.redis.integration.port=${redisPort}`,
       `-Dsso.mysql.integration.url=jdbc:mysql://127.0.0.1:${mysqlPort}/${database}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai`,

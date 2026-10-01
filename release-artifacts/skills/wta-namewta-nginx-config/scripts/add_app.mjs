@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const RESERVED_PREFIXES = new Set([
-  'admin', 'monitor', 'snail-job', 'snail-ai', 'dev-api', 'prod-api', 'actuator',
+  'admin', 'monitor', 'snail-job', 'snail-ai', 'dev-api', 'prod-api', 'actuator', 'oidc', 'sso',
 ]);
 const RESERVED_PORTS = new Set([
   40080, 40443, 42080, 42081, 43000, 43080, 43081, 43306, 46379, 47888, 48080, 48081,
@@ -164,8 +164,8 @@ function patchCompose(repo, app, port, registration, writer) {
     environment:
       TZ: Asia/Shanghai
       APP_PREFIX: "\${${prefixKey}:?${prefixKey} is required}"
-      BACKEND_SERVER1: "\${BACKEND_SERVER1:-namewta-server1:8080}"
-      BACKEND_SERVER2: "\${BACKEND_SERVER2:-namewta-server2:8080}"
+      BACKEND_SERVER1: "\${${envKey(app, 'BACKEND_SERVER1')}:-\${BACKEND_SERVER1:-namewta-server1:8080}}"
+      BACKEND_SERVER2: "\${${envKey(app, 'BACKEND_SERVER2')}:-\${BACKEND_SERVER2:-namewta-server2:8080}}"
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "\${NAMEWTA_BIND_HOST:-127.0.0.1}:\${${portKey}:-${port}}:80"
@@ -195,8 +195,8 @@ function patchCompose(repo, app, port, registration, writer) {
     environment:
       TZ: Asia/Shanghai
       APP_PREFIX: "\${${prefixKey}:?${prefixKey} is required}"
-      BACKEND_SERVER1: "\${BACKEND_SERVER1:-namewta-server1:8080}"
-      BACKEND_SERVER2: "\${BACKEND_SERVER2:-namewta-server2:8080}"
+      BACKEND_SERVER1: "\${${envKey(app, 'BACKEND_SERVER1')}:-\${BACKEND_SERVER1:-namewta-server1:8080}}"
+      BACKEND_SERVER2: "\${${envKey(app, 'BACKEND_SERVER2')}:-\${BACKEND_SERVER2:-namewta-server2:8080}}"
       NGINX_ENVSUBST_FILTER: "^(APP_|BACKEND_|LB_)"
     ports:
       - "\${NAMEWTA_BIND_HOST:-127.0.0.1}:\${${tls.portEnv}:-${tls.defaultPort}}:443"
@@ -219,9 +219,10 @@ function patchCompose(repo, app, port, registration, writer) {
 
   const bindAppEnvironment = (block) => {
     if (!/^      APP_PREFIX:/m.test(block)) return block;
+    const matchedPrefix = block.match(/APP_PREFIX: \"\$\{([A-Z0-9_]+)_PREFIX:/)?.[1];
     const bindings = {
-      BACKEND_SERVER1: '"${BACKEND_SERVER1:-namewta-server1:8080}"',
-      BACKEND_SERVER2: '"${BACKEND_SERVER2:-namewta-server2:8080}"',
+      BACKEND_SERVER1: `"\${${matchedPrefix}_BACKEND_SERVER1:-\${BACKEND_SERVER1:-namewta-server1:8080}}"`,
+      BACKEND_SERVER2: `"\${${matchedPrefix}_BACKEND_SERVER2:-\${BACKEND_SERVER2:-namewta-server2:8080}}"`,
     };
     if (registration.apiKind === 'sso' && block.includes(`\${${prefixKey}:?`)) {
       bindings.APP_ORIGIN = `"\${${registration.originEnv}:?${registration.originEnv} is required}"`;
@@ -394,7 +395,7 @@ function main() {
     registration = {
       id: args.app, package: packageName, shipped: true, prefixEnv: prefixKey,
       originEnv: envKey(args.app, 'ORIGIN'), portEnv: portKey, defaultPort: port, apiKind: 'business',
-      callbackPath: '/sso/callback', composeService: `namewta-nginx-${args.app}`,
+      callbackPath: '/social-callback', composeService: `namewta-nginx-${args.app}`,
       nginxTemplate: `docker/frontend/nginx/apps/nginx-${args.app}.conf.template`, ingress: 'lb', healthPath: '/healthz',
     };
     registry.apps.push(registration);

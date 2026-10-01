@@ -55,6 +55,11 @@ public class OidcAuthorizationPersistenceService {
         dao.revokeApplication(id);
     }
 
+    /** 返回中央会话已登录的RP授权，供退出事务登记投递。 */
+    public java.util.List<OidcAuthorization> sessionGrants(String hash) {
+        return dao.sessionGrants(hash);
+    }
+
     /** 持久撤销当前 SSO 会话关联的授权。 */
     public void revokeSession(String hash) {
         dao.revokeSession(hash);

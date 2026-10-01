@@ -41,6 +41,10 @@ export function mapApplication(value: unknown): OidcApplication {
     clientId: string(row.clientId),
     redirectUris: strings(row.redirectUris),
     postLogoutRedirectUris: strings(row.postLogoutRedirectUris),
+    ...(row.backchannelLogoutUri != null ? { backchannelLogoutUri: string(row.backchannelLogoutUri) } : {}),
+    ...(row.backchannelLogoutSessionRequired != null
+      ? { backchannelLogoutSessionRequired: boolean(row.backchannelLogoutSessionRequired) }
+      : {}),
     allowedFields: strings(row.allowedFields),
     clientAuthenticationMethod: method,
     pkceRequired: boolean(row.pkceRequired),

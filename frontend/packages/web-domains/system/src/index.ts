@@ -36,6 +36,18 @@ async function runtimeView(
 
 export function createSystemWebDomain(runtime: SystemWebRuntime): WebDomainManifest<Component> {
   const registrations = [
+    [
+      'system-auth-provider',
+      'system/auth/provider',
+      'ExternalAuthProvider',
+      () => import('./auth-config/AuthProviderPage.vue')
+    ],
+    [
+      'system-auth-registration',
+      'system/auth/registration',
+      'ExternalAuthRegistration',
+      () => import('./auth-config/AuthRegistrationPage.vue')
+    ],
     ['system-client', 'system/client/index', 'Client', () => import('./client/ClientPage.vue')],
     ['system-sso-app', 'system/ssoApp/index', 'SsoApp', () => import('./sso-app/SsoAppPage.vue')],
     ['system-user', 'system/user/index', 'User', () => import('./user/UserPage.vue')],
@@ -63,6 +75,8 @@ export function createSystemWebDomain(runtime: SystemWebRuntime): WebDomainManif
     ]),
     permissions: Object.freeze(
       Object.entries({
+        authProvider: ['list', 'add', 'edit', 'remove'],
+        authRegistration: ['list', 'add', 'edit', 'remove'],
         client: ['list', 'query', 'add', 'edit', 'remove', 'export'],
         ssoApp: ['list', 'query', 'add', 'edit', 'remove'],
         user: ['list', 'query', 'add', 'edit', 'remove', 'export', 'import', 'resetPwd', 'temporaryPassword'],

@@ -1,6 +1,8 @@
 package org.namewta.oidc.domain.bo;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import lombok.Data;
 
@@ -35,4 +37,10 @@ public class OidcApplicationBo {
 
     /** 默认要求 S256 PKCE，只有管理员显式关闭时才允许省略。 */
     private Boolean pkceRequired = true;
+
+    /** 标准退出接收地址，必须从Provider服务器可达。 */
+    @Size(max = 2048)
+    private String backchannelLogoutUri;
+
+    private Boolean backchannelLogoutSessionRequired = true;
 }

@@ -10,12 +10,17 @@ import org.namewta.oidc.config.OidcProperties;
 import org.namewta.oidc.dao.OidcApplicationDao;
 import org.namewta.oidc.domain.OidcApplication;
 import org.namewta.oidc.domain.bo.OidcApplicationBo;
-import org.namewta.oidc.domain.vo.*;
-import org.namewta.oidc.support.*;
+import org.namewta.oidc.domain.vo.OidcApplicationSecretVo;
+import org.namewta.oidc.domain.vo.OidcApplicationVo;
+import org.namewta.oidc.domain.vo.OidcFieldVo;
+import org.namewta.oidc.support.OidcSecrets;
+import org.namewta.oidc.support.OidcUriPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /** 应用登记规则与凭据生命周期，不调用第一方 Client 准入。 */
 @Service
@@ -34,6 +39,11 @@ public class OidcApplicationService {
     /** 读取标识对应的当前持久记录，不存在时返回空。 */
     public OidcApplication find(Long id) {
         return id == null ? null : dao.find(id);
+    }
+
+    /** 已删除应用仍需接收历史会话的全局退出；不能用于登录。 */
+    public OidcApplication findForLogout(Long id) {
+        return dao.findForLogout(id);
     }
 
     /** 按管理主键读取应用，缺失或已逻辑删除时报告应用不存在。 */
@@ -68,7 +78,9 @@ public class OidcApplicationService {
                 Boolean.TRUE.equals(app.getPkceRequired()),
                 Boolean.TRUE.equals(app.getEnabled()),
                 app.getVersion(),
-                app.getCreateTime());
+                app.getCreateTime(),
+                app.getBackchannelLogoutUri(),
+                Boolean.TRUE.equals(app.getBackchannelLogoutSessionRequired()));
     }
 
     /** 按确定顺序分页查询，限制单页记录数量。 */
@@ -143,6 +155,12 @@ public class OidcApplicationService {
                         .map(OidcFieldVo::key)
                         .toList();
         if (!known.containsAll(allow)) throw new ServiceException("存在未知身份字段");
+        String backchannel = bo.getBackchannelLogoutUri();
+        if (backchannel != null && !backchannel.isBlank())
+            OidcUriPolicy.validate(backchannel, properties.isAllowHttp());
+        app.setBackchannelLogoutUri(backchannel == null ? "" : backchannel.strip());
+        app.setBackchannelLogoutSessionRequired(
+                !Boolean.FALSE.equals(bo.getBackchannelLogoutSessionRequired()));
         app.setName(bo.getName().strip());
         app.setClientAuthenticationMethod(bo.getClientAuthenticationMethod());
         app.setPkceRequired(!Boolean.FALSE.equals(bo.getPkceRequired()));

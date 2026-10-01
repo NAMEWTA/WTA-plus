@@ -1,6 +1,7 @@
 package org.namewta.oidc.port;
 
-import org.namewta.profile.api.domain.*;
+import org.namewta.profile.api.domain.ProfileDisclosure;
+import org.namewta.profile.api.domain.ProfileDisclosureField;
 import org.namewta.sso.api.SsoSessionSnapshot;
 import org.namewta.system.api.domain.AccountIdentity;
 
@@ -16,6 +17,11 @@ public interface OidcIdentityPort {
 
     /** 删除指定 SSO 会话，不扩大到其他浏览器。 */
     void logout(String sid);
+
+    /** 签发事务锁定中央会话；生产适配器必须实现持久锁。 */
+    default void lockSession(String sid) {
+        throw new IllegalStateException("中央会话锁适配器未安装");
+    }
 
     /** 仅向资料模块请求已经核准的字段集合。 */
     ProfileDisclosure profile(Long userId, Set<ProfileDisclosureField> fields);

@@ -2,6 +2,7 @@ import { adminDomainModule } from '@namewta/domain-admin';
 import { profileDomainModule } from '@namewta/domain-profile';
 import { workflowDomainModule } from '@namewta/domain-workflow';
 import { composeAppRuntime, AppRuntimeError, type WebComponentRegistration } from '@namewta/platform-app-runtime';
+import { safeSsoReturnTo } from '@namewta/platform-auth';
 import { createAdminWebDomain } from '@namewta/web-domain-admin';
 import { createProfileSelfWebDomain, createProfileReviewWebDomain } from '@namewta/web-domain-profile';
 import { createWorkflowTaskWebDomain } from '@namewta/web-domain-workflow/task';
@@ -9,21 +10,22 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { hasPermission } from '@/application/access';
 import { identityAccessService, profileService, workflowService, uploadProfileMaterial } from '@/application/services';
 import { getToken } from '@/application/session';
-import { homeSso, homeSsoRedirectUri } from '@/application/sso';
+import { createAppSocialRuntime } from '@/application/social';
 
 const identityManifest = createAdminWebDomain({
   service: identityAccessService,
   title: '用户登录',
   description: '登录用户中心，完成个人或企业认证。',
-  startSsoLogin: ({ authorizeUrl }) =>
-    homeSso.startSsoLogin({
-      authorizeUrl,
-      clientId: import.meta.env.VITE_APP_CLIENT_ID,
-      redirectUri: homeSsoRedirectUri(),
-      returnTo: new URLSearchParams(window.location.search).get('redirect') || '/profile'
-    }),
-  onAuthenticated: () => {
-    window.location.href = `${import.meta.env.VITE_APP_CONTEXT_PATH}profile`;
+  startSocialLogin: providerKey =>
+    createAppSocialRuntime().start(
+      providerKey,
+      'LOGIN',
+      new URLSearchParams(window.location.search).get('redirect') || '/profile'
+    ),
+  onAuthenticated: async () => {
+    const target = new URLSearchParams(window.location.search).get('redirect') || '/profile';
+    const { default: router } = await import('./index');
+    await router.replace(safeSsoReturnTo(target));
   }
 });
 const selfManifest = createProfileSelfWebDomain({

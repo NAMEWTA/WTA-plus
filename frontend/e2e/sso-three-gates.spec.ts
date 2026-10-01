@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { startFirstPartyAuthorization } from './first-party-sso-fixture.mjs';
 
 const adminUrl = process.env.ADMIN_WEB_URL ?? 'http://127.0.0.1:4174';
 const homeUrl = process.env.HOME_WEB_URL ?? 'http://127.0.0.1:4175';
+const authorizeUrl = process.env.SSO_TEST_AUTHORIZE_URL ?? 'http://127.0.0.1:4176/authorize';
 const screenshotDir = resolve(process.cwd(), '../temp/team/lead/e2e');
 const adminClientId = 'e5cd7e4891bf95d1d19206ce24a7b32e';
 const homeClientId = '428a8310cd442757ae699df5d894f051';
@@ -33,20 +35,13 @@ function extraClientId(token: string): string {
   }
 }
 
-test.describe('SSO three hard gates', () => {
-  test('AC-001 default provider, AC-002 reuse, AC-003 isolation', async ({ page, context, request }) => {
+test.describe('First-party SSO compatibility gates', () => {
+  test('AC-001 explicit protocol fixture, AC-002 reuse, AC-003 isolation', async ({ page, context, request }) => {
     test.setTimeout(120_000);
     await page.goto(`${adminUrl}/login`);
-    const firstProvider = page.getByTestId('sso-first-provider');
-    await expect(firstProvider).toBeVisible({ timeout: 20_000 });
-    await expect(firstProvider).toHaveClass(/is-circle/);
-    await expect(firstProvider.locator('svg')).toBeVisible();
-    await expect(page.locator('.social-actions .el-button').first()).toHaveAttribute(
-      'data-testid',
-      'sso-first-provider'
-    );
-    await expect(firstProvider).not.toHaveText(/^\s*WTA SSO\s*$/);
-    await page.screenshot({ path: shot('sso-ac001-default-provider-path.png'), fullPage: true });
+    await expect(page.getByRole('textbox', { name: '用户名', exact: true })).toBeVisible();
+    await expect(page.getByTestId('sso-first-provider')).toHaveCount(0);
+    await page.screenshot({ path: shot('sso-ac001-local-login-retained.png'), fullPage: true });
 
     let adminClientFromApi = '';
     page.on('response', async response => {
@@ -59,25 +54,37 @@ test.describe('SSO three hard gates', () => {
       }
     });
 
-    await firstProvider.click();
-    await page.waitForURL(/127\.0\.0\.1:4176|\/authorize/, { timeout: 20_000 });
+    await startFirstPartyAuthorization(page, {
+      app: 'admin',
+      appOrigin: adminUrl,
+      clientId: adminClientId,
+      authorizeUrl,
+      returnTo: '/index'
+    });
+    await page.waitForURL(url => url.origin === new URL(authorizeUrl).origin, { timeout: 20_000 });
     const password = page.locator('input[name="password"]');
     if (await password.isVisible()) {
       await page.locator('input[name="username"]').fill('WTA');
       await password.fill('admin123');
       await page.locator('button[type="submit"]').click();
     }
-    await page.waitForURL(url => {
-      const parsed = new URL(url);
-      return parsed.port === '4174' && parsed.pathname !== '/login';
-    }, { timeout: 30_000 });
+    await page.waitForURL(
+      url => {
+        const parsed = new URL(url);
+        return parsed.origin === new URL(adminUrl).origin && parsed.pathname !== '/login';
+      },
+      { timeout: 30_000 }
+    );
     await expect
       .poll(async () => page.evaluate(() => window.localStorage.getItem('Admin-Token')), { timeout: 20_000 })
       .toBeTruthy();
-    await page.waitForURL(url => {
-      const path = new URL(url).pathname;
-      return path !== '/login' && path !== '/sso/callback';
-    }, { timeout: 20_000 });
+    await page.waitForURL(
+      url => {
+        const path = new URL(url).pathname;
+        return path !== '/login' && path !== '/sso/callback';
+      },
+      { timeout: 20_000 }
+    );
     await page.screenshot({ path: shot('sso-ac001-admin-logged-in.png'), fullPage: true });
 
     const adminToken = String(await page.evaluate(() => window.localStorage.getItem('Admin-Token')));
@@ -94,38 +101,45 @@ test.describe('SSO three hard gates', () => {
         }
       }
     });
-    await home.goto(`${homeUrl}/login`);
-    const homeSso = home.getByTestId('sso-first-provider');
-    await expect(homeSso).toBeVisible({ timeout: 20_000 });
-    await expect(homeSso).toHaveClass(/is-circle/);
-    await expect(homeSso.locator('svg')).toBeVisible();
-    await homeSso.click();
+    await startFirstPartyAuthorization(home, {
+      app: 'home',
+      appOrigin: homeUrl,
+      clientId: homeClientId,
+      authorizeUrl,
+      returnTo: '/profile'
+    });
     const sawSsoWeb = home
-      .waitForURL(/127\.0\.0\.1:4176/, { timeout: 20_000 })
+      .waitForURL(url => url.origin === new URL(authorizeUrl).origin, { timeout: 20_000 })
       .then(async () => {
         await expect(home.locator('input[name="password"]')).toHaveCount(0);
       })
       .catch(() => undefined);
-    await home.waitForURL(url => {
-      const parsed = new URL(url);
-      return parsed.port === '4175';
-    }, { timeout: 30_000 });
+    await home.waitForURL(
+      url => {
+        const parsed = new URL(url);
+        return parsed.origin === new URL(homeUrl).origin;
+      },
+      { timeout: 30_000 }
+    );
     await sawSsoWeb;
     await expect(home.locator('input[name="password"]')).toHaveCount(0);
-    await home.waitForURL(url => {
-      const parsed = new URL(url);
-      return (
-        parsed.port === '4175' &&
-        parsed.pathname !== '/login' &&
-        parsed.pathname !== '/sso/callback' &&
-        !parsed.pathname.endsWith('/sso/callback')
-      );
-    }, { timeout: 30_000 });
+    await home.waitForURL(
+      url => {
+        const parsed = new URL(url);
+        return (
+          parsed.origin === new URL(homeUrl).origin &&
+          parsed.pathname !== '/login' &&
+          parsed.pathname !== '/sso/callback' &&
+          !parsed.pathname.endsWith('/sso/callback')
+        );
+      },
+      { timeout: 30_000 }
+    );
     await expect
       .poll(async () => home.evaluate(() => window.localStorage.getItem('Home-Token')), { timeout: 20_000 })
       .toBeTruthy();
     const homeHeader = home.locator('header');
-    await expect(homeHeader.getByRole('button', { name: '退出' })).toBeVisible({ timeout: 20_000 });
+    await expect(home.locator('.avatar-container .el-dropdown')).toBeVisible({ timeout: 20_000 });
     await expect(homeHeader.getByRole('link', { name: '登录', exact: true })).toHaveCount(0);
     await expect(home.getByText('没有访问权限')).toHaveCount(0);
     await expect(home).toHaveURL(/\/profile/);
@@ -135,14 +149,17 @@ test.describe('SSO three hard gates', () => {
     expect(adminClient).not.toEqual(homeClient);
     expect(adminClient === 'sso' || homeClient === 'sso').toBeFalsy();
 
-    const cross = await request.get('http://127.0.0.1:38888/system/user/getInfo', {
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-        clientid: homeClientId
+    const cross = await request.get(
+      `${process.env.SSO_TEST_BACKEND_ORIGIN ?? 'http://127.0.0.1:38888'}/system/user/getInfo`,
+      {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          clientid: homeClientId
+        }
       }
-    });
+    );
     const crossBody = (await cross.json()) as { code?: number; msg?: string };
-    await expect(homeHeader.getByRole('button', { name: '退出' })).toBeVisible();
+    await expect(home.locator('.avatar-container .el-dropdown')).toBeVisible();
     await expect(home.getByText('没有访问权限')).toHaveCount(0);
     await home.screenshot({ path: shot('sso-ac003-client-isolation.png'), fullPage: true });
     expect(crossBody.code).not.toBe(200);

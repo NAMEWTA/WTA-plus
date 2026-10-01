@@ -36,6 +36,10 @@
           <el-form-item label="退出完成地址">
             <el-input v-model="form.logoutText" type="textarea" :rows="2" placeholder="可选，每行一个完整地址" />
           </el-form-item>
+          <el-form-item label="后端退出通知地址">
+            <el-input v-model="form.backchannelLogoutUri" placeholder="第三方业务后端接收 logout_token 的完整地址" />
+          </el-form-item>
+          <el-checkbox v-model="form.backchannelLogoutSessionRequired">退出通知包含会话标识 sid</el-checkbox>
           <el-form-item label="客户端认证方式">
             <el-select v-model="form.clientAuthenticationMethod">
               <el-option label="HTTP Basic（推荐）" value="client_secret_basic" />
@@ -88,6 +92,8 @@ const form = reactive({
   name: '',
   redirectText: '',
   logoutText: '',
+  backchannelLogoutUri: '',
+  backchannelLogoutSessionRequired: true,
   allowedFields: [] as string[],
   clientAuthenticationMethod: 'client_secret_basic' as OidcApplicationInput['clientAuthenticationMethod'],
   pkceRequired: true
@@ -101,6 +107,8 @@ watch(
       name: app?.name ?? '',
       redirectText: app?.redirectUris.join('\n') ?? '',
       logoutText: app?.postLogoutRedirectUris.join('\n') ?? '',
+      backchannelLogoutUri: app?.backchannelLogoutUri ?? '',
+      backchannelLogoutSessionRequired: app?.backchannelLogoutSessionRequired ?? true,
       allowedFields: app
         ? [...app.allowedFields]
         : props.fields.filter(field => field.defaultEnabled).map(field => field.key),
@@ -119,6 +127,8 @@ async function submit() {
     name: form.name.trim(),
     redirectUris: redirectLines(form.redirectText),
     postLogoutRedirectUris: redirectLines(form.logoutText),
+    backchannelLogoutUri: form.backchannelLogoutUri.trim(),
+    backchannelLogoutSessionRequired: form.backchannelLogoutSessionRequired,
     allowedFields: [...form.allowedFields],
     clientAuthenticationMethod: form.clientAuthenticationMethod,
     pkceRequired: form.pkceRequired

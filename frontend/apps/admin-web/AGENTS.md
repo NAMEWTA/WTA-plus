@@ -20,3 +20,5 @@
 
 ## Read Next
 页面能力读取 `packages/web-domains/*/AGENTS.md`，领域服务读取 `packages/domains/*/AGENTS.md`。
+
+外部第三方登录入口由 `/auth/client/context.providers` 配置驱动；本地登录/注册保留。`application/social.ts` 注入 App 会话与 Router，复用身份 Web domain 的按 state 事务、callback、绑定与全局退出。`/sso/callback` 兼容重定向到登录页；旧第一方 SSO 交换源码只保留协议回归，不再作为产品登录入口。

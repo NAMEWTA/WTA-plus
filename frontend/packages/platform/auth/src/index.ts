@@ -1,4 +1,6 @@
 import type { ErrorPresenter, NavigationPort, SessionPort } from '@namewta/platform-contracts';
+export { createSocialTransactionStore } from './social-transaction';
+export type { SocialTransaction, SocialTransactionStorage } from './social-transaction';
 
 export interface SsoPendingAuth {
   clientId: string;
@@ -85,7 +87,10 @@ const ssoFailureMessages: Record<SsoFailureKind, string> = {
 
 /** 只携带固定文案和安全的应用内路径，不保留网络错误中的凭据或请求正文。 */
 export class SsoCallbackError extends Error {
-  constructor(readonly kind: SsoFailureKind, readonly returnTo = '/') {
+  constructor(
+    readonly kind: SsoFailureKind,
+    readonly returnTo = '/'
+  ) {
     super(ssoFailureMessages[kind]);
     this.name = 'SsoCallbackError';
   }
@@ -93,8 +98,12 @@ export class SsoCallbackError extends Error {
 
 /** 返回值交给当前App的Router，其base负责限定最终应用路径。 */
 export function safeSsoReturnTo(value: string): string {
-  if (!value.startsWith('/') || value.startsWith('//') || value.includes('\\')
-    || [...value].some(character => character.charCodeAt(0) <= 32 || character.charCodeAt(0) === 127)) {
+  if (
+    !value.startsWith('/') ||
+    value.startsWith('//') ||
+    value.includes('\\') ||
+    [...value].some(character => character.charCodeAt(0) <= 32 || character.charCodeAt(0) === 127)
+  ) {
     throw new SsoCallbackError('return-path');
   }
   const url = new URL(value, 'https://app.invalid');
@@ -109,21 +118,35 @@ export function buildSsoCallbackUri(origin: string, contextPath: string): string
   const value = contextPath.trim().replace(/^\/+|\/+$/g, '');
   if (value && !/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(value)) throw new SsoCallbackError('return-path');
   const url = new URL(origin);
-  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.pathname !== '/' || url.search || url.hash) {
+  if (
+    !['http:', 'https:'].includes(url.protocol) ||
+    url.username ||
+    url.password ||
+    url.pathname !== '/' ||
+    url.search ||
+    url.hash
+  ) {
     throw new SsoCallbackError('return-path');
   }
   return new URL(`${value ? `/${value}` : ''}/sso/callback`, url).toString();
 }
 
 function responseObject(value: unknown): Record<string, unknown> | undefined {
-  return typeof value === 'object' && value !== null && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : undefined;
 }
 
 export function readSsoTokenResponse(value: unknown): { accessToken: string; clientId: string } {
   const body = responseObject(value);
   if (body?.code !== 200) throw new SsoCallbackError(body?.msg === '授权码已过期' ? 'expired' : 'exchange');
   const data = responseObject(body.data);
-  if (typeof data?.access_token !== 'string' || !data.access_token || typeof data.client_id !== 'string' || !data.client_id) {
+  if (
+    typeof data?.access_token !== 'string' ||
+    !data.access_token ||
+    typeof data.client_id !== 'string' ||
+    !data.client_id
+  ) {
     throw new SsoCallbackError('exchange');
   }
   return { accessToken: data.access_token, clientId: data.client_id };
@@ -131,20 +154,40 @@ export function readSsoTokenResponse(value: unknown): { accessToken: string; cli
 
 function readPendingAuth(value: unknown): SsoPendingAuth | null {
   const pending = responseObject(value);
-  if (!pending || typeof pending.clientId !== 'string' || !pending.clientId
-    || typeof pending.redirectUri !== 'string' || !pending.redirectUri
-    || typeof pending.state !== 'string' || !pending.state
-    || typeof pending.verifier !== 'string' || !/^[A-Za-z0-9._~-]{43,128}$/.test(pending.verifier)
-    || typeof pending.returnTo !== 'string') return null;
+  if (
+    !pending ||
+    typeof pending.clientId !== 'string' ||
+    !pending.clientId ||
+    typeof pending.redirectUri !== 'string' ||
+    !pending.redirectUri ||
+    typeof pending.state !== 'string' ||
+    !pending.state ||
+    typeof pending.verifier !== 'string' ||
+    !/^[A-Za-z0-9._~-]{43,128}$/.test(pending.verifier) ||
+    typeof pending.returnTo !== 'string'
+  )
+    return null;
   try {
-    return { clientId: pending.clientId, redirectUri: pending.redirectUri, state: pending.state,
-      verifier: pending.verifier, returnTo: safeSsoReturnTo(pending.returnTo) };
-  } catch { return null; }
+    return {
+      clientId: pending.clientId,
+      redirectUri: pending.redirectUri,
+      state: pending.state,
+      verifier: pending.verifier,
+      returnTo: safeSsoReturnTo(pending.returnTo)
+    };
+  } catch {
+    return null;
+  }
 }
 
 export function createSsoAuth(ports: SsoAuthPorts) {
   return {
-    async startSsoLogin(input: { authorizeUrl: string; clientId: string; redirectUri: string; returnTo?: string }): Promise<void> {
+    async startSsoLogin(input: {
+      authorizeUrl: string;
+      clientId: string;
+      redirectUri: string;
+      returnTo?: string;
+    }): Promise<void> {
       ports.storage.clear();
       if (!input.authorizeUrl) throw new Error('缺少 SSO 授权地址');
       const returnTo = safeSsoReturnTo(input.returnTo ?? '/');
@@ -182,12 +225,26 @@ export function createSsoAuth(ports: SsoAuthPorts) {
         // 消费发生在任何await之前；网络结果不明时也不允许重用原code/verifier。
         ports.storage.clear();
       }
-      if (!pending || !state || state !== pending.state || !code || params.getAll('code').length !== 1
-        || params.getAll('state').length !== 1 || params.has('error') || params.has('error_description') || params.has('error_uri')) {
+      if (
+        !pending ||
+        !state ||
+        state !== pending.state ||
+        !code ||
+        params.getAll('code').length !== 1 ||
+        params.getAll('state').length !== 1 ||
+        params.has('error') ||
+        params.has('error_description') ||
+        params.has('error_uri')
+      ) {
         throw new SsoCallbackError('state', pending?.returnTo);
       }
       try {
-        const token = await ports.exchangeToken({ clientId: pending.clientId, code, codeVerifier: pending.verifier, redirectUri: pending.redirectUri });
+        const token = await ports.exchangeToken({
+          clientId: pending.clientId,
+          code,
+          codeVerifier: pending.verifier,
+          redirectUri: pending.redirectUri
+        });
         if (!token.accessToken || token.clientId !== pending.clientId) throw new SsoCallbackError('exchange');
         return { ...token, returnTo: pending.returnTo };
       } catch (error) {
@@ -227,3 +284,5 @@ export function requestRelogin({ navigation, presenter, session, state }: Relogi
     }
   })();
 }
+
+export { sha256Bytes } from './sha256';

@@ -6,16 +6,21 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.*;
 import org.namewta.oidc.config.OidcProperties;
 import org.namewta.oidc.controller.anonymous.OidcLogoutController;
-import org.namewta.oidc.domain.*;
+import org.namewta.oidc.domain.OidcApplication;
+import org.namewta.oidc.domain.OidcPrincipal;
 import org.namewta.oidc.service.OidcInteractionService.Interaction;
 import org.namewta.oidc.support.OidcSecrets;
-import org.namewta.oidc.usecase.*;
+import org.namewta.oidc.usecase.OidcAuthorizationUseCase;
+import org.namewta.oidc.usecase.OidcInteractionUseCase;
+import org.namewta.oidc.usecase.OidcProtocolUseCase;
 import org.springframework.mock.web.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Tag("dev")
 class OidcLogoutControllerTest {
@@ -104,7 +109,46 @@ class OidcLogoutControllerTest {
         assertThat(response.getContentAsString()).contains("oidc-theme.css", "oidc-card");
         assertThat(response.getHeader("Set-Cookie"))
                 .contains("Sso-Token=", "Max-Age=0", "Secure", "HttpOnly");
-        verify(authorizations).revokeSession("sid");
+        verify(authorizations, never()).revokeSession(any()); // 撤销与outbox由统一中央会话事务负责
         verify(protocol).logout("sid");
+    }
+
+    @Test
+    void unavailableLogoutLedgerReturnsProtocol503WithoutClearingSessionCookie() throws Exception {
+        doThrow(new IllegalStateException("internal database details"))
+                .when(protocol)
+                .logout("sid");
+        var request = request("POST");
+        request.setParameter("csrf", "csrf");
+        var response = new MockHttpServletResponse();
+        controller.finish(request, response);
+        assertThat(response.getStatus()).isEqualTo(503);
+        assertThat(response.getContentAsString())
+                .isEqualTo("{\"error\":\"temporarily_unavailable\"}");
+        assertThat(response.getHeader("Set-Cookie")).isNull();
+        assertThat(response.getHeader("Location")).isNull();
+    }
+
+    @Test
+    void unavailableLogoutHintReturnsProtocol503() throws Exception {
+        when(authorizations.logoutHint("hint"))
+                .thenThrow(new IllegalStateException("private details"));
+        var response = new MockHttpServletResponse();
+        controller.begin(request("GET"), response);
+        assertThat(response.getStatus()).isEqualTo(503);
+        assertThat(response.getContentAsString())
+                .isEqualTo("{\"error\":\"temporarily_unavailable\"}");
+    }
+
+    @Test
+    void protocolValidationFailureRemains400() throws Exception {
+        when(authorizations.logoutHint("hint"))
+                .thenThrow(
+                        new org.springframework.security.oauth2.core.OAuth2AuthenticationException(
+                                "invalid_request"));
+        var response = new MockHttpServletResponse();
+        controller.begin(request("GET"), response);
+        assertThat(response.getStatus()).isEqualTo(400);
+        assertThat(response.getContentAsString()).isEqualTo("{\"error\":\"invalid_request\"}");
     }
 }

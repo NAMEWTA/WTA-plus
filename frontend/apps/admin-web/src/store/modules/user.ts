@@ -23,6 +23,8 @@ export const useUserStore = defineStore('user', () => {
   const avatar = ref('');
   const roles = ref<Array<string>>([]); // 用户角色编码集合 → 判断路由权限
   const permissions = ref<Array<string>>([]); // 用户权限编码集合 → 判断按钮权限
+  const authSource = ref('LOCAL');
+  const globalLogoutAvailable = ref(false);
   const identityLoaded = ref(false);
   const sessionGeneration = ref(0);
   let logoutAttempt: Promise<void> | undefined;
@@ -57,11 +59,17 @@ export const useUserStore = defineStore('user', () => {
     nickname.value = user.nickName;
     avatar.value = profile;
     userId.value = user.userId;
+    const socialSession = await identityAccessService.external?.session().catch(() => undefined);
+    if (current !== sessionGeneration.value || requestedToken !== getToken()) return;
+    authSource.value = socialSession?.authSource ?? 'LOCAL';
+    globalLogoutAvailable.value = socialSession?.globalLogoutAvailable === true;
     identityLoaded.value = true;
   };
 
   const clearLocalSession = () => {
     sessionGeneration.value++;
+    authSource.value = 'LOCAL';
+    globalLogoutAvailable.value = false;
     identityLoaded.value = false;
     token.value = '';
     roles.value = [];
@@ -96,7 +104,11 @@ export const useUserStore = defineStore('user', () => {
       }
     })();
     logoutAttempt = attempt;
-    void attempt.finally(() => { if (logoutAttempt === attempt) logoutAttempt = undefined; }).catch(() => undefined);
+    void attempt
+      .finally(() => {
+        if (logoutAttempt === attempt) logoutAttempt = undefined;
+      })
+      .catch(() => undefined);
     return attempt;
   };
 
@@ -105,6 +117,8 @@ export const useUserStore = defineStore('user', () => {
   };
 
   return {
+    authSource,
+    globalLogoutAvailable,
     userId,
     token,
     nickname,

@@ -35,6 +35,13 @@ public class SysSocial extends BaseEntity {
      */
     private String authId;
 
+    /** 外部身份的准确发行方；OIDC 不使用内部用户编号。 */
+    private String issuer;
+    /** 区分大小写的外部 subject。 */
+    private String subject;
+    /** issuer/sub 的长度定界摘要，数据库唯一约束保证并发绑定唯一。 */
+    private String identityKey;
+
     /**
      * 用户来源
      */

@@ -1,9 +1,9 @@
 import { projectSystemUserTransport } from '@namewta/domain-system';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { homeHttp, relogin } from '@/application/http';
 import { identityAccessService } from '@/application/services';
 import { getToken, removeToken, session } from '@/application/session';
-import { homeHttp, relogin } from '@/application/http';
 import { useNavigationStore } from './navigation';
 
 export const useUserStore = defineStore('home-user', () => {
@@ -12,6 +12,8 @@ export const useUserStore = defineStore('home-user', () => {
   const permissions = ref<string[]>([]);
   const nickname = ref('');
   const userId = ref<string | number>('');
+  const authSource = ref('LOCAL');
+  const globalLogoutAvailable = ref(false);
   const identityLoaded = ref(false);
   const sessionGeneration = ref(0);
   let logoutAttempt: Promise<void> | undefined;
@@ -35,10 +37,16 @@ export const useUserStore = defineStore('home-user', () => {
     permissions.value = [...info.permissions];
     nickname.value = user.nickName || user.userName || '';
     userId.value = user.userId;
+    const socialSession = await identityAccessService.external?.session().catch(() => undefined);
+    if (current !== sessionGeneration.value || requestedToken !== getToken()) return;
+    authSource.value = socialSession?.authSource ?? 'LOCAL';
+    globalLogoutAvailable.value = socialSession?.globalLogoutAvailable === true;
     identityLoaded.value = true;
   };
   const clearLocalSession = () => {
     sessionGeneration.value++;
+    authSource.value = 'LOCAL';
+    globalLogoutAvailable.value = false;
     token.value = '';
     roles.value = [];
     permissions.value = [];
@@ -65,8 +73,27 @@ export const useUserStore = defineStore('home-user', () => {
       }
     })();
     logoutAttempt = attempt;
-    void attempt.finally(() => { if (logoutAttempt === attempt) logoutAttempt = undefined; }).catch(() => undefined);
+    void attempt
+      .finally(() => {
+        if (logoutAttempt === attempt) logoutAttempt = undefined;
+      })
+      .catch(() => undefined);
     return attempt;
   };
-  return { token, roles, permissions, nickname, userId, identityLoaded, sessionGeneration, login, getInfo, logout, clearLocalSession, session };
+  return {
+    authSource,
+    globalLogoutAvailable,
+    token,
+    roles,
+    permissions,
+    nickname,
+    userId,
+    identityLoaded,
+    sessionGeneration,
+    login,
+    getInfo,
+    logout,
+    clearLocalSession,
+    session
+  };
 });

@@ -1,79 +1,72 @@
 package org.namewta.web.controller;
 
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.namewta.common.core.constant.SystemConstants;
-import org.namewta.sso.config.SsoProperties;
+import org.namewta.system.api.ExternalAuthConfigurationService;
+import org.namewta.system.api.model.ExternalAuthEntry;
 import org.namewta.system.domain.vo.SysClientVo;
 import org.namewta.system.password.PasswordPolicyService;
 import org.namewta.system.service.ISysClientService;
-import org.namewta.web.domain.vo.AuthClientContextVo;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @Tag("local")
 @Tag("dev")
 class AuthClientContextSsoUnitTest {
-
     @Test
-    void publishedBasePathIsIncludedInTheActualClientContext() {
-        ISysClientService clientService = mock(ISysClientService.class);
-        SysClientVo client = new SysClientVo();
-        client.setStatus(SystemConstants.NORMAL);
-        client.setSsoEnabled(true);
-        when(clientService.queryByClientId("home")).thenReturn(client);
-        SsoProperties properties = new SsoProperties();
-        properties.setWebOrigin("https://sso.example.invalid/");
-        properties.setWebBasePath("/sso-app/");
-        AuthController controller = new AuthController(null, null, null, null, clientService, null,
-            mock(PasswordPolicyService.class), properties);
-
-        assertEquals("https://sso.example.invalid/sso-app/authorize", controller.clientContext("home", null).getData().getSsoAuthorizeUrl());
-        for (String invalid : new String[]{"//foreign/", "/../", "/sso?next=/", "sso-app", "/sso-app", "/nested/path/"}) {
-            assertThrows(IllegalArgumentException.class, () -> properties.setWebBasePath(invalid));
-        }
+    void exposesOnlyDatabaseConfiguredEntriesForTheRequestedClient() {
+        var clients = mock(ISysClientService.class);
+        var configurations = mock(ExternalAuthConfigurationService.class);
+        var client = activeClient("password,social");
+        when(clients.queryByClientId("home")).thenReturn(client);
+        when(configurations.listEnabled("home")).thenReturn(List.of(new ExternalAuthEntry("company", "统一登录", "tabler:login", "OIDC")));
+        var context = controller(clients, configurations).clientContext("home", null).getData();
+        assertEquals("both", context.getAuthMode());
+        assertEquals("company", context.getProviders().getFirst().providerKey());
+        assertFalse(context.getSsoEnabled());
+        assertNull(context.getSsoAuthorizeUrl());
+        verify(configurations).listEnabled("home");
     }
 
     @Test
-    void exposesSsoContextFieldsWhenEnabled() {
-        ISysClientService clientService = mock(ISysClientService.class);
-        PasswordPolicyService policyService = mock(PasswordPolicyService.class);
-        SysClientVo client = new SysClientVo();
-        client.setStatus(SystemConstants.NORMAL);
-        client.setSsoEnabled(true);
-        client.setSsoAuthMode("both");
-        when(clientService.queryByClientId("e5cd7e4891bf95d1d19206ce24a7b32e")).thenReturn(client);
-        SsoProperties properties = new SsoProperties();
-        properties.setEnabled(true);
-        properties.setWebOrigin("http://127.0.0.1:4176");
-        AuthController controller = new AuthController(null, null, null, null, clientService, null, policyService, properties);
-
-        AuthClientContextVo vo = controller.clientContext("e5cd7e4891bf95d1d19206ce24a7b32e", null).getData();
-        assertTrue(vo.getSsoEnabled());
-        assertEquals("http://127.0.0.1:4176/authorize", vo.getSsoAuthorizeUrl());
-        assertEquals("both", vo.getAuthMode());
-    }
-
-    @Test
-    void keepsLocalLoginWhenAuthModeBoth() {
-        ISysClientService clientService = mock(ISysClientService.class);
-        SysClientVo client = new SysClientVo();
-        client.setStatus(SystemConstants.NORMAL);
-        client.setSsoEnabled(true);
+    void preservesLocalBootstrapWhenNoExternalProviderIsConfigured() {
+        var clients = mock(ISysClientService.class);
+        var configurations = mock(ExternalAuthConfigurationService.class);
+        var client = activeClient("password,social");
         client.setSsoAuthMode("sso");
-        when(clientService.queryByClientId("home")).thenReturn(client);
-        SsoProperties properties = new SsoProperties();
-        properties.setEnabled(true);
-        properties.setWebOrigin("http://127.0.0.1:4176/");
-        AuthController controller = new AuthController(null, null, null, null, clientService, null, mock(PasswordPolicyService.class), properties);
-        AuthClientContextVo vo = controller.clientContext("home", null).getData();
-        assertEquals("sso", vo.getAuthMode());
-        assertTrue(vo.getClientEnabled());
-        assertFalse(Boolean.TRUE.equals(vo.getRegisterEnabled()));
+        when(clients.queryByClientId("home")).thenReturn(client);
+        when(configurations.listEnabled("home")).thenReturn(List.of());
+        var context = controller(clients, configurations).clientContext(null, "home").getData();
+        assertEquals("local", context.getAuthMode());
+        assertTrue(context.getClientEnabled());
+        assertTrue(context.getProviders().isEmpty());
+    }
+
+    @Test
+    void disabledOrNonSocialClientsCannotDiscoverAnotherClientsProviders() {
+        var clients = mock(ISysClientService.class);
+        var configurations = mock(ExternalAuthConfigurationService.class);
+        var client = activeClient("password,notsocial");
+        when(clients.queryByClientId("home")).thenReturn(client);
+        assertTrue(controller(clients, configurations).clientContext("home", null).getData().getProviders().isEmpty());
+        client.setGrantType("social");
+        client.setStatus(SystemConstants.DISABLE);
+        assertTrue(controller(clients, configurations).clientContext("home", null).getData().getProviders().isEmpty());
+        verifyNoInteractions(configurations);
+    }
+
+    private static AuthController controller(ISysClientService clients, ExternalAuthConfigurationService configurations) {
+        return new AuthController(null, null, null, clients, null, mock(PasswordPolicyService.class), configurations, null);
+    }
+
+    private static SysClientVo activeClient(String grant) {
+        var client = new SysClientVo();
+        client.setStatus(SystemConstants.NORMAL);
+        client.setGrantType(grant);
+        return client;
     }
 }

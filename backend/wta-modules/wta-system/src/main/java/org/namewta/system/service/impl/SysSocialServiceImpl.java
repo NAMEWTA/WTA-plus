@@ -113,7 +113,10 @@ public class SysSocialServiceImpl implements ISysSocialService {
      */
     @Override
     public Boolean deleteWithValidById(Long id) {
-        return socialMapper.deleteById(id) > 0;
+        Long userId = org.namewta.common.satoken.utils.LoginHelper.getUserId();
+        if (userId == null) throw new org.namewta.common.core.exception.ServiceException("请先登录");
+        return socialMapper.delete(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<SysSocial>()
+            .eq(SysSocial::getId, id).eq(SysSocial::getUserId, userId)) > 0;
     }
 
 

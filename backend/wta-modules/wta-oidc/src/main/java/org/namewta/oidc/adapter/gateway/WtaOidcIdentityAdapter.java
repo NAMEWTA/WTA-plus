@@ -1,12 +1,15 @@
 package org.namewta.oidc.adapter.gateway;
 
-import lombok.RequiredArgsConstructor;
 
 import org.namewta.oidc.port.OidcIdentityPort;
 import org.namewta.profile.api.ProfileDisclosureService;
-import org.namewta.profile.api.domain.*;
-import org.namewta.sso.api.*;
-import org.namewta.system.api.*;
+import org.namewta.profile.api.domain.ProfileDisclosure;
+import org.namewta.profile.api.domain.ProfileDisclosureField;
+import org.namewta.sso.api.SsoSessionAccess;
+import org.namewta.sso.api.SsoSessionLifecycle;
+import org.namewta.sso.api.SsoSessionSnapshot;
+import org.namewta.system.api.AccountIdentityService;
+import org.namewta.system.api.OssService;
 import org.namewta.system.api.domain.AccountIdentity;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Component;
@@ -15,12 +18,44 @@ import java.util.Set;
 
 /** 仅经 wta-api 读取各领域当前事实。 */
 @Component
-@RequiredArgsConstructor
 public class WtaOidcIdentityAdapter implements OidcIdentityPort {
     private final ObjectProvider<SsoSessionAccess> sessions;
     private final AccountIdentityService accounts;
     private final ProfileDisclosureService profiles;
     private final ObjectProvider<OssService> oss;
+    private final ObjectProvider<SsoSessionLifecycle> lifecycle;
+
+    /** 生产构造器显式注入持久会话锁公共API。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    public WtaOidcIdentityAdapter(
+            ObjectProvider<SsoSessionAccess> sessions,
+            AccountIdentityService accounts,
+            ProfileDisclosureService profiles,
+            ObjectProvider<OssService> oss,
+            ObjectProvider<SsoSessionLifecycle> lifecycle) {
+        this.sessions = sessions;
+        this.accounts = accounts;
+        this.profiles = profiles;
+        this.oss = oss;
+        this.lifecycle = lifecycle;
+    }
+
+    /** 保留旧显式装配合同；缺持久锁的实例不能签发新凭据。 */
+    public WtaOidcIdentityAdapter(
+            ObjectProvider<SsoSessionAccess> sessions,
+            AccountIdentityService accounts,
+            ProfileDisclosureService profiles,
+            ObjectProvider<OssService> oss) {
+        this(sessions, accounts, profiles, oss, null);
+    }
+
+    /** 通过公共API持有中央会话锁，缺失实现时停止签发。 */
+    @Override
+    public void lockSession(String sid) {
+        var api = lifecycle == null ? null : lifecycle.getIfAvailable();
+        if (api == null) throw new IllegalStateException("中央会话锁不可用");
+        api.requireActiveLocked(sid);
+    }
 
     /** 读取可信 SSO 会话快照，缺失或失效时为空。 */
     public SsoSessionSnapshot session(String sid) {

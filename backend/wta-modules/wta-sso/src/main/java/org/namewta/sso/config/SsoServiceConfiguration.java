@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
 
-/**
- * SSO 服务时钟与授权引擎。
- */
+/** SSO 服务时钟与授权引擎。 */
 @Configuration
 public class SsoServiceConfiguration {
 
@@ -29,21 +27,23 @@ public class SsoServiceConfiguration {
     /**
      * 授权引擎。
      *
-     * @param codeDao       授权码 DAO
+     * @param codeDao 授权码 DAO
      * @param clientCatalog 目录
-     * @param identityPort  认人
-     * @param tokenPort     令牌
-     * @param clock         时钟
-     * @param properties    配置
+     * @param identityPort 认人
+     * @param tokenPort 令牌
+     * @param clock 时钟
+     * @param properties 配置
      * @return 授权服务
      */
     @Bean
-    public SsoAuthorizationService ssoAuthorizationService(SsoAuthorizationCodeDao codeDao,
-                                                           SsoClientCatalogPort clientCatalog,
-                                                           SsoIdentityPort identityPort,
-                                                           SsoBusinessTokenPort tokenPort,
-                                                           Clock clock,
-                                                           SsoProperties properties) {
-        return new SsoAuthorizationService(codeDao, clientCatalog, identityPort, tokenPort, clock, properties.getCodeTtl());
+    public SsoAuthorizationService ssoAuthorizationService(
+            SsoAuthorizationCodeDao codeDao,
+            SsoClientCatalogPort clientCatalog,
+            SsoIdentityPort identityPort,
+            SsoBusinessTokenPort tokenPort,
+            Clock clock,
+            SsoProperties properties) {
+        return new SsoAuthorizationService(
+                codeDao, clientCatalog, identityPort, tokenPort, clock, properties::getCodeTtl);
     }
 }

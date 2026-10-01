@@ -8,7 +8,9 @@ import {
   type ClientAuthContext,
   type PasswordPolicyViolation
 } from './password-policy';
+import { createSocialService, readSocialProviders, type SocialService } from './social';
 import { projectClientAuthContextTransport } from './transport';
+export * from './social';
 
 export * from './password-policy';
 export * from './transport';
@@ -128,6 +130,7 @@ export interface IdentityAccessManagementService extends IdentityAccessService {
   register(input: RegistrationInput): Promise<void>;
   socialCallback(input: SocialCallbackInput): Promise<SocialCallbackResult>;
   socialLogin(input: SocialCallbackInput): Promise<IdentitySession>;
+  readonly external: SocialService;
   readonly social: {
     bindingUrl(source: string): Promise<ApiResponse<string>>;
     unlock(socialId: string | number): Promise<ApiResponse>;
@@ -169,10 +172,14 @@ function parseClientAuthContext(value: unknown): ClientAuthContext {
   }
   if (!context.clientEnabled) throw clientContextError();
   const projected = projectClientAuthContextTransport(context);
-  const authMode = context.authMode === 'local' || context.authMode === 'sso' || context.authMode === 'both' ? context.authMode : undefined;
+  const authMode =
+    context.authMode === 'local' || context.authMode === 'sso' || context.authMode === 'both'
+      ? context.authMode
+      : undefined;
   const ssoAuthorizeUrl = typeof context.ssoAuthorizeUrl === 'string' ? context.ssoAuthorizeUrl.trim() : '';
   return Object.freeze({
     ...projected,
+    providers: readSocialProviders(context.providers),
     ...(authMode ? { authMode } : {}),
     ...(context.ssoEnabled === true ? { ssoEnabled: true } : {}),
     ...(ssoAuthorizeUrl ? { ssoAuthorizeUrl } : {})
@@ -264,11 +271,7 @@ function menuBoolean(menu: UnknownObject, key: string, path: string): boolean | 
   return value;
 }
 
-function menuStringList(
-  menu: UnknownObject,
-  key: string,
-  path: string
-): readonly string[] | undefined {
+function menuStringList(menu: UnknownObject, key: string, path: string): readonly string[] | undefined {
   const value = menu[key];
   if (value === undefined || value === null) return undefined;
   if (!Array.isArray(value) || value.some(item => typeof item !== 'string' || !item.trim())) {
@@ -346,7 +349,8 @@ export function createIdentityAccessService({
   let currentVerification: LoginVerification | undefined;
   let contextAttempt: { generation: number; promise: Promise<ClientAuthContext> } | undefined;
   const assertSessionCurrent = (generation: number) => {
-    if (generation !== sessionGeneration) throw new IdentityAccessError('session-invalidated', '会话已结束，请重新登录');
+    if (generation !== sessionGeneration)
+      throw new IdentityAccessError('session-invalidated', '会话已结束，请重新登录');
   };
   let context: ClientAuthContext | undefined;
 
@@ -366,12 +370,17 @@ export function createIdentityAccessService({
         headers: { isToken: false }
       });
       assertSessionCurrent(generation);
-      if (preparation !== preparationGeneration) throw new IdentityAccessError('preparation-superseded', '认证准备已更新，请重试');
+      if (preparation !== preparationGeneration)
+        throw new IdentityAccessError('preparation-superseded', '认证准备已更新，请重试');
       context = parseClientAuthContext(contextResponse.data);
       return context;
     })();
     contextAttempt = { generation, promise };
-    void promise.finally(() => { if (contextAttempt?.promise === promise) contextAttempt = undefined; }).catch(() => undefined);
+    void promise
+      .finally(() => {
+        if (contextAttempt?.promise === promise) contextAttempt = undefined;
+      })
+      .catch(() => undefined);
     return promise;
   };
 
@@ -402,6 +411,7 @@ export function createIdentityAccessService({
 
   return Object.freeze<IdentityAccessManagementService>({
     client,
+    external: createSocialService(http, client.clientId),
     social: Object.freeze({
       bindingUrl: (source: string) =>
         http.request<ApiResponse<string>>({
@@ -537,8 +547,12 @@ export function createIdentityAccessService({
       currentVerification = undefined;
       context = undefined;
       try {
-        await http.request<ApiResponse<unknown>>({ url: '/auth/logout', method: 'post', timeout: 10000,
-          headers: { repeatSubmit: false } });
+        await http.request<ApiResponse<unknown>>({
+          url: '/auth/logout',
+          method: 'post',
+          timeout: 10000,
+          headers: { repeatSubmit: false }
+        });
       } finally {
         // A late logout must not erase a session established by a later login.
         if (generation === sessionGeneration && session.getToken() === previousToken) session.clear();

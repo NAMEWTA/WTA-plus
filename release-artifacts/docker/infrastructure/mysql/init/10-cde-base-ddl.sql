@@ -9,6 +9,9 @@ create table sys_social
     id                 bigint           not null        comment '主键',
     user_id            bigint           not null        comment '用户ID',
     auth_id            varchar(255)     not null        comment '平台+平台唯一id',
+    issuer             varchar(2048)    default null    comment '外部身份发行方',
+    subject            varchar(255)     collate utf8mb4_bin default null comment '外部身份主题（区分大小写）',
+    identity_key       char(64)         collate utf8mb4_bin default null comment '发行方与主题唯一摘要',
     source             varchar(255)     not null        comment '用户来源',
     open_id            varchar(255)     default null    comment '平台编号唯一id',
     user_name          varchar(30)      not null        comment '登录账号',
@@ -34,7 +37,8 @@ create table sys_social
     update_by          bigint(20)                       comment '更新者',
     update_time        datetime                         comment '更新时间',
     del_flag           char(1)          default '0'     comment '删除标志（0代表存在 1代表删除）',
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    unique key uk_sys_social_identity (identity_key)
 ) engine=innodb comment = '社会化关系表';
 
 -- ----------------------------
@@ -1662,6 +1666,7 @@ create table sso_authorization_code (
     authorization_code_id bigint(20) not null comment '授权码主键',
     authorization_code varchar(128) not null comment '一次性授权码',
     client_id varchar(64) not null comment '目标业务客户端标识',
+    session_hash char(64) character set ascii collate ascii_bin default null comment '中央会话摘要，旧码无值需重新认证',
     redirect_uri varchar(1000) not null comment '绑定的回调地址',
     code_challenge varchar(128) not null comment 'PKCE S256 挑战',
     state varchar(128) default null comment 'CSRF state',
@@ -1748,6 +1753,8 @@ create table oidc_application (
     allowed_fields_json text not null comment '允许发布的字段代码JSON数组',
     client_authentication_method varchar(32) not null default 'client_secret_basic' comment '密钥认证方式',
     pkce_required tinyint(1) not null default 1 comment '是否强制PKCE S256',
+    backchannel_logout_uri varchar(2048) default null comment '标准后端退出接收地址',
+    backchannel_logout_session_required tinyint(1) not null default 1 comment '接收退出时是否要求会话标识',
     enabled tinyint(1) not null default 1 comment '是否启用应用',
     version int not null default 0 comment '乐观锁版本',
     create_dept bigint default null comment '创建部门',
@@ -1786,6 +1793,7 @@ create table oidc_authorization (
     allowed_fields_json text not null comment '授权时允许字段快照JSON',
     authorized_scopes varchar(300) not null comment '已批准的协议范围',
     status varchar(16) not null comment '授权状态ACTIVE有效PENDING待激活REVOKED已撤销',
+    session_closed tinyint(1) not null default 0 comment '中央会话已关闭且退出任务已持久登记',
     code_hash char(64) character set ascii collate ascii_bin default null comment '授权码SHA256摘要',
     code_expires_at datetime default null comment '授权码到期时间',
     code_consumed tinyint(1) not null default 0 comment '授权码是否已原子消费',
@@ -1811,3 +1819,161 @@ create table oidc_authorization (
     key idx_oidc_authorization_user (user_id,status),
     key idx_oidc_authorization_expiry (expires_at)
 ) engine=InnoDB default charset=utf8mb4 comment='OIDC授权与凭据消费撤销事实';
+
+-- NAMEWTA-AUTH-RUNTIME-DDL-001：认证运行配置、持久中央会话和标准退出任务。
+create table sso_service_config (
+    service_config_id bigint not null comment '中央认证服务配置主键',
+    settings_json longtext not null comment '无明文凭据的服务目标配置JSON',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (service_config_id)
+) engine=InnoDB default charset=utf8mb4 comment='中央认证服务配置';
+
+create table oidc_service_config (
+    service_config_id bigint not null comment 'OIDC服务配置主键',
+    settings_json longtext not null comment '无明文凭据的服务目标配置JSON',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (service_config_id)
+) engine=InnoDB default charset=utf8mb4 comment='OIDC服务配置';
+
+create table oidc_key_material (
+    key_material_id bigint not null comment 'OIDC版本化密钥材料主键',
+    kind varchar(16) not null comment '密钥用途SIGNING签名STATE状态保护',
+    kid varchar(64) character set ascii collate ascii_bin not null comment '不可变密钥版本标识',
+    encrypted_material longtext not null comment '启动根密钥认证加密后的密钥材料',
+    active tinyint(1) not null default 0 comment '是否用于新签发或新状态加密',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (key_material_id),
+    unique key uk_oidc_key_kid (kid),
+    key idx_oidc_key_active (kind,active)
+) engine=InnoDB default charset=utf8mb4 comment='OIDC版本化密钥材料';
+
+create table sso_session (
+    session_id bigint not null comment '中央认证会话持久事实主键',
+    session_hash char(64) character set ascii collate ascii_bin not null comment '原始随机Cookie的SHA256摘要',
+    user_id bigint not null comment '已认证本地账户',
+    username varchar(64) not null comment '认证时账户名',
+    authenticated_at datetime(6) not null comment '固定原始认证时间UTC',
+    expires_at datetime(6) not null comment '会话固定截止时间UTC',
+    status varchar(16) not null comment 'ACTIVE有效REVOKED已撤销',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (session_id),
+    unique key uk_sso_session_hash (session_hash),
+    key idx_sso_session_expiry (status,expires_at)
+) engine=InnoDB default charset=utf8mb4 comment='中央认证会话持久事实';
+
+create table sso_business_session (
+    business_session_id bigint not null comment '中央认证关联第一方业务会话主键',
+    session_hash char(64) character set ascii collate ascii_bin not null comment '所属中央会话摘要',
+    client_id varchar(100) not null comment '业务客户端标识',
+    token_hash char(64) character set ascii collate ascii_bin not null comment '业务令牌SHA256摘要',
+    encrypted_token longtext not null comment '供全退注销的认证加密业务令牌',
+    status varchar(16) not null comment 'ACTIVE有效PENDING待注销REVOKED注销完成',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (business_session_id),
+    unique key uk_sso_business_token (token_hash),
+    key idx_sso_business_session (session_hash,status),
+    key idx_sso_business_pending (status,business_session_id)
+) engine=InnoDB default charset=utf8mb4 comment='中央认证关联第一方业务会话';
+
+create table oidc_logout_outbox (
+    logout_outbox_id bigint not null comment 'OIDC标准后端退出投递主键',
+    application_id bigint not null comment '目标第三方应用主键',
+    client_id varchar(100) character set ascii collate ascii_bin not null comment 'JWT接收者客户端标识快照',
+    issuer varchar(512) not null comment '预约退出时的发行方快照',
+    session_hash char(64) character set ascii collate ascii_bin not null comment '与IDToken一致的公开会话标识',
+    subject varchar(64) character set ascii collate ascii_bin not null comment '协议用户标识快照',
+    target_uri varchar(2048) not null comment '已登记退出接收地址快照',
+    status varchar(16) not null comment 'READY待发送DELIVERING持租约DONE成功FAILED待人工处理',
+    attempts int not null default 0 comment '本次重试周期已尝试次数',
+    next_attempt_at datetime not null comment '下次投递时间UTC',
+    lease_token varchar(64) default null comment '当前工作者租约标识',
+    lease_until datetime default null comment '租约截止时间UTC',
+    last_error varchar(64) default null comment '稳定失败码，不含协议正文',
+    version int not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (logout_outbox_id),
+    unique key uk_oidc_logout_session_app (session_hash,application_id),
+    key idx_oidc_logout_dispatch (status,next_attempt_at,lease_until)
+) engine=InnoDB default charset=utf8mb4 comment='OIDC标准后端退出投递';
+
+-- NAMEWTA-EXTERNAL-AUTH-DDL-001：外部身份源及按业务客户端的接入配置。
+create table sys_auth_provider (
+    auth_provider_id bigint not null comment '外部身份源主键',
+    provider_key varchar(64) character set ascii collate ascii_bin not null comment '稳定身份源标识，删除后不复用',
+    name varchar(200) not null comment '身份源显示名称',
+    icon varchar(200) default null comment '身份源组件图标',
+    protocol varchar(40) character set ascii collate ascii_bin not null comment 'OIDC或JustAuth来源编码',
+    issuer varchar(2048) default null comment 'OIDC发行者地址',
+    enabled tinyint(1) not null default 0 comment '是否启用新登录',
+    options json default null comment '公开扩展参数，不允许存放密钥',
+    version bigint not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除）',
+    primary key (auth_provider_id),
+    unique key uk_sys_auth_provider_key (provider_key)
+) engine=InnoDB default charset=utf8mb4 comment='外部身份源管理配置';
+create table sys_auth_registration (
+    auth_registration_id bigint not null comment '外部身份接入主键',
+    provider_id bigint not null comment '外部身份源主键',
+    business_client_id varchar(200) character set ascii collate ascii_bin not null comment '本平台业务客户端标识',
+    external_client_id varchar(200) not null comment '外部平台分配的客户端标识',
+    client_secret_ciphertext text default null comment '版本化AES-GCM加密的外部客户端密钥',
+    redirect_uri varchar(2048) not null comment '精确登录回调地址',
+    post_logout_redirect_uri varchar(2048) default null comment '精确退出回调地址',
+    scopes json default null comment '授权范围列表',
+    first_login_policy varchar(20) not null default 'BIND_ONLY' comment '首次登录策略BIND_ONLY仅绑定AUTO_REGISTER自动注册',
+    enabled tinyint(1) not null default 0 comment '是否启用新登录',
+    options json default null comment '覆盖身份源的公开扩展参数',
+    version bigint not null default 0 comment '乐观锁版本',
+    create_dept bigint default null comment '创建部门',
+    create_time datetime default null comment '创建时间',
+    create_by bigint default null comment '创建人',
+    update_time datetime default null comment '更新时间',
+    update_by bigint default null comment '更新人',
+    del_flag char(1) not null default '0' comment '逻辑删除标志（0正常1删除），墓碑用于退出验证',
+    active_slot varchar(240) character set ascii collate ascii_bin generated always as
+        (case when del_flag = '0' then concat(provider_id, ':', business_client_id) else null end) stored comment '未删除接入唯一槽位，墓碑不占用',
+    primary key (auth_registration_id),
+    unique key uk_sys_auth_registration_active (active_slot),
+    key idx_sys_auth_registration_provider (provider_id),
+    key idx_sys_auth_registration_client (business_client_id,enabled,del_flag)
+) engine=InnoDB default charset=utf8mb4 comment='按业务客户端配置的外部身份接入';

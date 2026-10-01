@@ -3,7 +3,7 @@
     <AuthPanel :title="title || '管理工作台'" description="登录管理工作台，继续处理您的业务。" eyebrow="NAMEWTA">
       <template #header-action><lang-select /></template>
       <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form" @submit.prevent="handleLogin">
-        <el-form-item v-if="authMode !== 'sso'" prop="username">
+        <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
             aria-label="用户名"
@@ -16,7 +16,7 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item v-if="authMode !== 'sso'" prop="password">
+        <el-form-item prop="password">
           <el-input
             v-model="loginForm.password"
             aria-label="密码"
@@ -29,7 +29,7 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item v-if="authMode !== 'sso' && captchaEnabled" prop="code" class="captcha-row">
+        <el-form-item v-if="captchaEnabled" prop="code" class="captcha-row">
           <el-input
             v-model="loginForm.code"
             aria-label="验证码"
@@ -51,64 +51,22 @@
           </router-link>
         </div>
 
-        <div class="social-panel">
+        <div v-if="providers.length" class="social-panel">
           <span class="social-label">第三方登录</span>
           <div class="social-actions">
             <el-button
-              v-if="ssoEnabled"
-              circle
-              data-testid="sso-first-provider"
-              :disabled="!loginEnabled"
-              title="WTA SSO"
-              aria-label="WTA SSO"
-              @click="doSsoLogin"
+              v-for="provider in providers"
+              :key="provider.providerKey"
+              :disabled="!loginEnabled || socialLoading"
+              @click="doSocialLogin(provider.providerKey)"
             >
-              <svg-icon icon-class="wta" />
-            </el-button>
-            <el-button
-              circle
-              :disabled="!loginEnabled"
-              :title="$t('login.social.wechat')"
-              @click="doSocialLogin('wechat')"
-            >
-              <svg-icon icon-class="wechat" />
-            </el-button>
-            <el-button
-              circle
-              :disabled="!loginEnabled"
-              :title="$t('login.social.maxkey')"
-              @click="doSocialLogin('maxkey')"
-            >
-              <svg-icon icon-class="maxkey" />
-            </el-button>
-            <el-button
-              circle
-              :disabled="!loginEnabled"
-              :title="$t('login.social.topiam')"
-              @click="doSocialLogin('topiam')"
-            >
-              <svg-icon icon-class="topiam" />
-            </el-button>
-            <el-button
-              circle
-              :disabled="!loginEnabled"
-              :title="$t('login.social.gitee')"
-              @click="doSocialLogin('gitee')"
-            >
-              <svg-icon icon-class="gitee" />
-            </el-button>
-            <el-button
-              circle
-              :disabled="!loginEnabled"
-              :title="$t('login.social.github')"
-              @click="doSocialLogin('github')"
-            >
-              <svg-icon icon-class="github" />
+              <svg-icon :icon-class="provider.icon || 'tabler:key'" />
+              {{ provider.name }}
             </el-button>
           </div>
         </div>
 
-        <el-form-item v-if="authMode !== 'sso'" class="submit-row">
+        <el-form-item class="submit-row">
           <el-button
             :loading="loading || authContextState === 'loading'"
             :disabled="!loginEnabled"
@@ -127,14 +85,17 @@
   </main>
 </template>
 <script setup lang="ts">
+import type { SocialProvider } from '@namewta/domain-admin';
 import { identityAccessWebMessages } from '@namewta/web-domain-admin';
 import AuthPanel from '@namewta/web-kit-ui-element/auth-panel';
 import { to } from 'await-to-js';
 import { useI18n } from 'vue-i18n';
 import { identityAccessService } from '@/application/services';
-import { adminSso, adminSsoRedirectUri } from '@/application/sso';
+import { createAppSocialRuntime } from '@/application/social';
 import { type AdminLoginInput, useUserStore } from '@/store/modules/user';
 
+const providers = ref<readonly SocialProvider[]>([]);
+const socialLoading = ref(false);
 const title = import.meta.env.VITE_APP_TITLE;
 const currentYear = new Date().getFullYear();
 const userStore = useUserStore();
@@ -182,9 +143,6 @@ const captchaLoading = ref(true);
 let captchaGeneration = 0;
 let pageActive = true;
 const loginEnabled = computed(() => authContextState.value === 'available' && !captchaLoading.value && !loading.value);
-const ssoEnabled = ref(false);
-const ssoAuthorizeUrl = ref('');
-const authMode = ref<'local' | 'sso' | 'both'>('both');
 const redirect = ref('/');
 const loginRef = ref<ElFormInstance>();
 
@@ -265,23 +223,22 @@ const getLoginData = () => {
   } as AdminLoginInput;
 };
 
-const doSsoLogin = async () => {
-  if (!loginEnabled.value || !ssoAuthorizeUrl.value) return;
-  await adminSso.startSsoLogin({
-    authorizeUrl: ssoAuthorizeUrl.value,
-    clientId: import.meta.env.VITE_APP_CLIENT_ID,
-    redirectUri: adminSsoRedirectUri(),
-    returnTo:
-      typeof router.currentRoute.value.query.redirect === 'string' ? router.currentRoute.value.query.redirect : '/'
-  });
-};
-
-const doSocialLogin = async (type: string) => {
-  if (!loginEnabled.value) {
-    return;
+const doSocialLogin = async (providerKey: string) => {
+  if (!loginEnabled.value || socialLoading.value) return;
+  socialLoading.value = true;
+  try {
+    await createAppSocialRuntime().start(
+      providerKey,
+      'LOGIN',
+      typeof router.currentRoute.value.query.redirect === 'string'
+        ? decodeURIComponent(router.currentRoute.value.query.redirect)
+        : '/index'
+    );
+  } catch {
+    ElMessage.error('第三方登录入口暂不可用，请重试');
+  } finally {
+    socialLoading.value = false;
   }
-  const res = await identityAccessService.social.bindingUrl(type);
-  window.location.href = res.data;
 };
 
 const loadClientAuthContext = async () => {
@@ -297,9 +254,7 @@ const loadClientAuthContext = async () => {
     }
     authContextState.value = 'available';
     register.value = context.registerEnabled;
-    ssoEnabled.value = context.ssoEnabled === true;
-    ssoAuthorizeUrl.value = context.ssoAuthorizeUrl ?? '';
-    authMode.value = context.authMode === 'sso' || context.authMode === 'local' ? context.authMode : 'both';
+    providers.value = context.providers ?? [];
   } catch {
     if (!pageActive) return;
     authContextState.value = 'unavailable';

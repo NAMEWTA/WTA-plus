@@ -11,17 +11,19 @@ test('public entry replaces forwarding chains while internal app proxies append'
     const source = fs.readFileSync(path.join(root, `docker/frontend/nginx/lb/nginx-lb-${kind}.conf.template`), 'utf8');
     const routes = [...source.matchAll(/location[^\n]*\{([\s\S]*?)\n    \}/g)]
       .filter(([, route]) => route.includes('proxy_pass'));
-    assert.equal(routes.length, 5);
+    assert.equal(routes.length, 8);
     for (const [, route] of routes) {
       assert.match(route, /proxy_set_header X-Forwarded-For \$remote_addr;/);
       assert.match(route, /proxy_set_header Forwarded "";/);
       assert.doesNotMatch(route, /\$proxy_add_x_forwarded_for/);
     }
   }
-  for (const app of ['admin', 'home']) {
+  for (const app of ['admin', 'home', 'sso']) {
     const source = fs.readFileSync(path.join(root, `docker/frontend/nginx/apps/nginx-${app}-web.conf.template`), 'utf8');
     assert.match(source, /proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;/);
   }
+  const ssoTls = fs.readFileSync(path.join(root, 'docker/frontend/nginx/apps/nginx-sso-web-tls.conf.template'), 'utf8');
+  assert.match(ssoTls, /proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;/);
 });
 
 test('generated public app routes also replace client supplied XFF', () => {

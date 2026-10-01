@@ -14,10 +14,10 @@ test('every shipped App has a complete explicit release registration', () => {
   assert.equal(result.status, 0, result.stderr);
 });
 
-test('SSO has its own ingress and proxies the real same-origin SSO API namespace', () => {
+test('SSO supports independent ingress and shared LB protocol routing', () => {
   const registry = JSON.parse(fs.readFileSync(path.join(root, 'apps.json')));
   const sso = registry.apps.find((app) => app.id === 'sso-web');
-  assert.equal(sso.ingress, 'dedicated');
+  assert.equal(sso.ingress, 'lb');
   const template = fs.readFileSync(path.join(root, sso.nginxTemplate), 'utf8');
   assert.match(template, /location \^~ \/sso\//);
   assert.match(template, /location = \/healthz/);
@@ -26,7 +26,9 @@ test('SSO has its own ingress and proxies the real same-origin SSO API namespace
   assert.match(compose, /^  namewta-nginx-sso-web-tls:$/m);
   for (const name of ['nginx-lb-http.conf.template', 'nginx-lb-tls.conf.template']) {
     const lb = fs.readFileSync(path.join(root, 'docker/frontend/nginx/lb', name), 'utf8');
-    assert.doesNotMatch(lb, /app_sso_web|APP_SSO_WEB_PREFIX/);
+    assert.match(lb, /app_sso_web/);
+    assert.match(lb, /APP_SSO_WEB_PREFIX/);
+    assert.match(lb, /proxy_intercept_errors off/);
   }
 });
 
@@ -59,16 +61,10 @@ const scenarios = [
   ['missing prefix', /SSO_WEB_PREFIX missing/, (f) => {
     const file = path.join(f.release, '.env'); fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(/^SSO_WEB_PREFIX=.*\n/m, ''));
   }],
-  ['same SSO Origin', /independent Web Origin/, (f) => {
-    const file = path.join(f.release, '.env'); fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(/^SSO_WEB_ORIGIN=.*$/m, 'SSO_WEB_ORIGIN=https://localhost:4441'));
-  }],
-  ['same SSO hostname with a different port', /separate hostname/, (f) => {
-    const file = path.join(f.release, '.env'); fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(/^SSO_WEB_ORIGIN=.*$/m, 'SSO_WEB_ORIGIN=https://localhost:9999'));
-  }],
   ['production HTTP Origin', /require HTTPS/, (f) => {
     const file = path.join(f.release, '.env'); fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(/^SSO_WEB_ORIGIN=.*$/m, 'SSO_WEB_ORIGIN=http://sso.localhost:4443'));
   }],
-  ['SSO API/static prefix collision', /prefix collides/, (f) => {
+  ['SSO API/static prefix collision', /reserved\/invalid prefix/, (f) => {
     const file = path.join(f.release, '.env'); fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(/^SSO_WEB_PREFIX=.*$/m, 'SSO_WEB_PREFIX=sso'));
   }],
   ['invalid API route', /unsupported API route/, (f) => {
@@ -129,3 +125,15 @@ test('runtime Origin changes are rejected before the selected release reaches Do
     assert.equal(fs.readlinkSync(f.current), 'versions/' + id);
   } finally { f.dispose(); }
 });
+
+for (const origin of ['https://localhost:4441', 'https://localhost:9999']) {
+  test(`shared SSO hostname/origin is supported: ${origin}`, () => {
+    const f = fixture();
+    try {
+      const file = path.join(f.release, '.env');
+      fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(/^SSO_WEB_ORIGIN=.*$/m, `SSO_WEB_ORIGIN=${origin}`));
+      const result = f.cli('build', '--target', 'all', '--env', 'prod');
+      assert.equal(result.status, 0, result.stderr);
+    } finally { f.dispose(); }
+  });
+}

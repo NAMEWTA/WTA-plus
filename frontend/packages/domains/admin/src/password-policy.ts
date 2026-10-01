@@ -22,6 +22,7 @@ export interface PasswordPolicy {
 }
 
 export interface ClientAuthContext {
+  providers?: readonly import('./social').SocialProvider[];
   authMode?: 'local' | 'sso' | 'both';
   clientEnabled: boolean;
   passwordPolicy?: PasswordPolicy;

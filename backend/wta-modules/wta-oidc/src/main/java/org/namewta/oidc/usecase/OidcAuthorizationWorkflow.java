@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.oidc.adapter.codec.OidcAuthorizationCodec;
-import org.namewta.oidc.domain.*;
-import org.namewta.oidc.service.*;
-import org.namewta.oidc.support.*;
+import org.namewta.oidc.domain.OidcAuthorization;
+import org.namewta.oidc.domain.OidcPrincipal;
+import org.namewta.oidc.service.OidcApplicationService;
+import org.namewta.oidc.service.OidcAuthorizationPersistenceService;
+import org.namewta.oidc.service.OidcIdentityService;
+import org.namewta.oidc.service.OidcKeyService;
+import org.namewta.oidc.support.OidcSecrets;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -14,7 +18,9 @@ import org.springframework.security.oauth2.server.authorization.*;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /** 授权状态及当前身份校验，存储完整框架状态前始终认证加密。 */
 @Service
@@ -60,6 +66,7 @@ public class OidcAuthorizationWorkflow {
     @com.baomidou.dynamic.datasource.annotation.DSTransactional
     public void saveInitial(OAuth2Authorization value) {
         var p = principal(value);
+        identities.lockSession(p);
         identities.require(p);
         var app = apps.lockClient(value.getRegisteredClientId());
         if (app == null || !Boolean.TRUE.equals(app.getEnabled()))
@@ -120,8 +127,10 @@ public class OidcAuthorizationWorkflow {
     }
 
     /** 完成最终状态校验或退出确认，拒绝复活已撤销授权。 */
+    @com.baomidou.dynamic.datasource.annotation.DSTransactional
     public void finish(OAuth2Authorization value) {
         var p = principal(value);
+        identities.lockSession(p);
         identities.require(p);
         var app = apps.client(value.getRegisteredClientId());
         if (app == null || !Boolean.TRUE.equals(app.getEnabled()))

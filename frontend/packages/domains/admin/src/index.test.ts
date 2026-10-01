@@ -42,51 +42,88 @@ describe('registration preparation lifecycle', () => {
   const deferred = () => {
     let resolve!: (value: unknown) => void;
     let reject!: (error: Error) => void;
-    const promise = new Promise<unknown>((success, failure) => { resolve = success; reject = failure; });
+    const promise = new Promise<unknown>((success, failure) => {
+      resolve = success;
+      reject = failure;
+    });
     return { promise, resolve, reject };
   };
   const fixture = () => {
     const harness = createHarness({});
     const request = vi.fn().mockResolvedValue(context);
-    const service = createIdentityAccessService({ ...harness, client: { clientId: 'registration-proof' }, http: { request } });
+    const service = createIdentityAccessService({
+      ...harness,
+      client: { clientId: 'registration-proof' },
+      http: { request }
+    });
     return { request, service };
   };
 
   it('shares an in-flight Client context read between public entry and form preparation', async () => {
-    const { request, service } = fixture(); const pending = deferred(); request.mockReturnValue(pending.promise);
-    const first = service.getClientContext(); const second = service.getClientContext();
-    pending.resolve(context); await first; await second;
+    const { request, service } = fixture();
+    const pending = deferred();
+    request.mockReturnValue(pending.promise);
+    const first = service.getClientContext();
+    const second = service.getClientContext();
+    pending.resolve(context);
+    await first;
+    await second;
     expect(request).toHaveBeenCalledTimes(1);
   });
 
   it('rejects a slow older captcha after a newer challenge is ready', async () => {
-    const { request, service } = fixture(); await service.getClientContext();
-    const older = deferred(); const newer = deferred();
+    const { request, service } = fixture();
+    await service.getClientContext();
+    const older = deferred();
+    const newer = deferred();
     request.mockReturnValueOnce(older.promise).mockReturnValueOnce(newer.promise);
-    const first = service.getVerification().then(value => ({ value }), error => ({ error }));
+    const first = service.getVerification().then(
+      value => ({ value }),
+      error => ({ error })
+    );
     const second = service.getVerification();
-    newer.resolve(challenge('new')); await expect(second).resolves.toMatchObject({ uuid: 'new' });
+    newer.resolve(challenge('new'));
+    await expect(second).resolves.toMatchObject({ uuid: 'new' });
     older.resolve(challenge('old'));
     await expect(first).resolves.toMatchObject({ error: { code: 'preparation-superseded' } });
   });
 
   it('does not let an older success reopen registration after the latest captcha failed', async () => {
-    const { request, service } = fixture(); await service.getClientContext();
-    const older = deferred(); const newer = deferred();
+    const { request, service } = fixture();
+    await service.getClientContext();
+    const older = deferred();
+    const newer = deferred();
     request.mockReturnValueOnce(older.promise).mockReturnValueOnce(newer.promise);
     const first = service.getVerification().catch(() => undefined);
     const second = service.getVerification().catch(() => undefined);
-    newer.reject(new Error('owned network failure')); await second;
-    older.resolve(challenge('old')); await first;
-    await expect(service.register({ username: 'owned', phoneNumber: '13800138000', password: 'OwnedPass!9', code: '1234', uuid: 'old' }))
-      .rejects.toMatchObject({ code: 'client-context-unavailable' });
+    newer.reject(new Error('owned network failure'));
+    await second;
+    older.resolve(challenge('old'));
+    await first;
+    await expect(
+      service.register({
+        username: 'owned',
+        phoneNumber: '13800138000',
+        password: 'OwnedPass!9',
+        code: '1234',
+        uuid: 'old'
+      })
+    ).rejects.toMatchObject({ code: 'client-context-unavailable' });
   });
 
   it('requires a new one-time captcha after a remote registration attempt failed', async () => {
-    const { request, service } = fixture(); await service.getClientContext();
-    request.mockResolvedValueOnce(challenge('consumed')); await service.getVerification();
+    const { request, service } = fixture();
+    await service.getClientContext();
+    request.mockResolvedValueOnce(challenge('consumed'));
+    await service.getVerification();
     request.mockRejectedValueOnce(new Error('owned rejected attempt'));
-    const input = { username: 'owned', phoneNumber: '13800138000', password: 'OwnedPass!9', code: '1234', uuid: 'consumed' };
+    const input = {
+      username: 'owned',
+      phoneNumber: '13800138000',
+      password: 'OwnedPass!9',
+      code: '1234',
+      uuid: 'consumed'
+    };
     await service.register(input).catch(() => undefined);
     const sent = request.mock.calls.length;
     await expect(service.register(input)).rejects.toMatchObject({ code: 'client-context-unavailable' });
@@ -96,7 +133,8 @@ describe('registration preparation lifecycle', () => {
 
 describe('identity access domain', () => {
   it.each([undefined, null, '', '   ', '12345', '12800138000'])(
-    'rejects invalid registration phone %j before sending or consuming the captcha', async (phoneNumber) => {
+    'rejects invalid registration phone %j before sending or consuming the captcha',
+    async phoneNumber => {
       const harness = createHarness({
         '/auth/client/context': { code: 200, data: { clientEnabled: true, registerEnabled: true, passwordPolicy } },
         '/auth/code': { code: 200, data: { captchaEnabled: true, uuid: 'phone-challenge', img: 'image' } },
@@ -105,8 +143,9 @@ describe('identity access domain', () => {
       const service = createIdentityAccessService({ ...harness, client: { clientId: 'phone-proof' } });
       await service.prepareLogin();
       const input = { username: 'new-user', password: 'ValidPass!9', code: '1234', uuid: 'phone-challenge' };
-      await expect(service.register({ ...input, phoneNumber: phoneNumber as string }))
-        .rejects.toMatchObject({ code: 'invalid-credentials' });
+      await expect(service.register({ ...input, phoneNumber: phoneNumber as string })).rejects.toMatchObject({
+        code: 'invalid-credentials'
+      });
       expect(harness.requests.map(request => request.url)).toEqual(['/auth/client/context', '/auth/code']);
       await expect(service.register({ ...input, phoneNumber: '13800138000' })).resolves.toBeUndefined();
     }
@@ -123,7 +162,10 @@ describe('identity access domain', () => {
     const input = { username: 'new-user', password: 'ValidPass!9', phoneNumber: '13800138000' };
     await service.register(input);
     expect(harness.requests.at(-1)?.data).toEqual({
-      username: 'new-user', password: 'ValidPass!9', phoneNumber: '13800138000', clientId: 'phone-proof'
+      username: 'new-user',
+      password: 'ValidPass!9',
+      phoneNumber: '13800138000',
+      clientId: 'phone-proof'
     });
   });
 
@@ -172,7 +214,7 @@ describe('identity access domain', () => {
     });
 
     await expect(service.prepareLogin()).resolves.toEqual({
-      context: { clientEnabled: true, registerEnabled: false },
+      context: { clientEnabled: true, registerEnabled: false, providers: [] },
       verification: { captchaEnabled: false }
     });
     expect(harness.requests).toEqual([
@@ -448,7 +490,12 @@ describe('identity access domain', () => {
 
     await service.prepareLogin();
     await expect(
-      service.register({ username: 'new-user', phoneNumber: '13800138000', password: 'secret', confirmPassword: 'secret' })
+      service.register({
+        username: 'new-user',
+        phoneNumber: '13800138000',
+        password: 'secret',
+        confirmPassword: 'secret'
+      })
     ).rejects.toMatchObject({ code: 'registration-disabled' });
     expect(harness.requests.map(request => request.url)).toEqual(['/auth/client/context', '/auth/code']);
   });
@@ -467,7 +514,12 @@ describe('identity access domain', () => {
 
     await service.prepareLogin();
     await expect(
-      service.register({ username: 'new-user', phoneNumber: '13800138000', password: 'ValidPass!9', confirmPassword: 'ValidPass!9' })
+      service.register({
+        username: 'new-user',
+        phoneNumber: '13800138000',
+        password: 'ValidPass!9',
+        confirmPassword: 'ValidPass!9'
+      })
     ).rejects.toMatchObject({ code: 'password-policy-unavailable' });
     expect(harness.requests.map(request => request.url)).toEqual(['/auth/client/context', '/auth/code']);
   });
@@ -629,15 +681,22 @@ describe('auth session invalidation', () => {
     await expect(service.logout()).rejects.toThrow('owned timeout');
     expect(harness.session.clear).toHaveBeenCalledOnce();
     expect(request).toHaveBeenCalledWith(expect.objectContaining({ url: '/auth/logout', timeout: 10000 }));
-    await expect(service.login({ username: 'owned', password: 'owned' })).rejects.toMatchObject({ code: 'client-context-unavailable' });
+    await expect(service.login({ username: 'owned', password: 'owned' })).rejects.toMatchObject({
+      code: 'client-context-unavailable'
+    });
   });
 
   it('does not install a login token whose response arrives after logout', async () => {
     const { harness, service } = setup();
     await service.prepareLogin();
     let complete!: (value: unknown) => void;
-    vi.spyOn(harness.http, 'request').mockImplementation(config => config.url === '/auth/login'
-      ? new Promise(resolve => { complete = resolve; }) : Promise.resolve({ code: 200 } as never));
+    vi.spyOn(harness.http, 'request').mockImplementation(config =>
+      config.url === '/auth/login'
+        ? new Promise(resolve => {
+            complete = resolve;
+          })
+        : Promise.resolve({ code: 200 } as never)
+    );
     const login = service.login({ username: 'owned', password: 'owned' }).catch(error => error);
     await service.logout();
     complete({ code: 200, data: { access_token: 'owned-stale-token' } });
@@ -650,9 +709,16 @@ describe('auth session invalidation', () => {
     let token = 'old-owned-token';
     vi.mocked(harness.session.getToken).mockImplementation(() => token);
     let complete!: (value: unknown) => void;
-    vi.spyOn(harness.http, 'request').mockImplementation(() => new Promise(resolve => { complete = resolve; }));
+    vi.spyOn(harness.http, 'request').mockImplementation(
+      () =>
+        new Promise(resolve => {
+          complete = resolve;
+        })
+    );
     const logout = service.logout();
-    token = 'new-owned-token'; complete({ code: 200 }); await logout;
+    token = 'new-owned-token';
+    complete({ code: 200 });
+    await logout;
     expect(harness.session.clear).not.toHaveBeenCalled();
   });
 });

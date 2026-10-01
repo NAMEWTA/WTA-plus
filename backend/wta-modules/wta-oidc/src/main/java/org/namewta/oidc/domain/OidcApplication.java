@@ -1,6 +1,9 @@
 package org.namewta.oidc.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +24,8 @@ public class OidcApplication extends BaseEntity {
     private String allowedFieldsJson;
     private String clientAuthenticationMethod;
     private Boolean pkceRequired;
+    private String backchannelLogoutUri;
+    private Boolean backchannelLogoutSessionRequired;
     private Boolean enabled;
     @Version private Integer version;
     @TableLogic private String delFlag;

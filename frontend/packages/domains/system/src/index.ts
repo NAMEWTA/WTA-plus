@@ -7,11 +7,7 @@ export {
   projectSystemUserTransport,
   projectTemporaryPasswordTransport
 } from './transport';
-export type {
-  ResetPasswordCandidateTransport,
-  SystemUserTransport,
-  TemporaryPasswordTransport
-} from './transport';
+export type { ResetPasswordCandidateTransport, SystemUserTransport, TemporaryPasswordTransport } from './transport';
 export {
   createOpenApiService,
   groupOpenApiCatalog,
@@ -47,15 +43,16 @@ export type {
   OpenApiUserQuery,
   TargetUserOpenApiService
 } from './open-api';
-export {
-  createSystemResourceService,
-  ResourceContractError,
-  ResourceSecurityError
-} from './resource-service';
+export { createSystemResourceService, ResourceContractError, ResourceSecurityError } from './resource-service';
 export type { SystemResourceService } from './resource-service';
 export type {
-  OssDiagnosticBasis, OssDiagnosticFact, OssDiagnosticObservation, OssDiagnosticScope,
-  OssDiagnosticSource, OssDiagnosticSubject, OssStorageDiagnostic
+  OssDiagnosticBasis,
+  OssDiagnosticFact,
+  OssDiagnosticObservation,
+  OssDiagnosticScope,
+  OssDiagnosticSource,
+  OssDiagnosticSubject,
+  OssStorageDiagnostic
 } from './oss-config/types';
 export type {
   ConfigForm,
@@ -94,12 +91,7 @@ export type {
 } from './resource-types';
 
 export type { ClientForm, ClientQuery, ClientVO } from './client/types';
-export {
-  isSsoRegistered,
-  ssoAccessState,
-  systemSsoAppResource,
-  type SsoAccessState
-} from './client';
+export { isSsoRegistered, ssoAccessState, systemSsoAppResource, type SsoAccessState } from './client';
 export type { DeptForm, DeptQuery, DeptTreeVO, DeptVO } from './dept/types';
 export type {
   MenuForm,
@@ -140,6 +132,8 @@ export const systemDomainModule: DomainModule = Object.freeze({
   backendModules: Object.freeze(['wta-system']),
   capabilities: Object.freeze([
     'client',
+    'external-auth-provider',
+    'external-auth-registration',
     'user',
     'user-type',
     'role',
@@ -157,3 +151,6 @@ export const systemDomainModule: DomainModule = Object.freeze({
     'monitor-operlog'
   ])
 });
+
+export * from './auth-config/service';
+export * from './auth-config/legacy';

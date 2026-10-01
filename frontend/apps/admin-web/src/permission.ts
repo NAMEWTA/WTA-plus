@@ -13,7 +13,15 @@ import router from './router';
 const NProgress = ('default' in NProgressModule ? NProgressModule.default : NProgressModule) as typeof NProgressModule;
 
 NProgress.configure({ showSpinner: false });
-const whiteList = ['/login', '/register', '/social-callback', '/sso/callback', '/register*', '/register/*'];
+const whiteList = [
+  '/login',
+  '/register',
+  '/social-callback',
+  '/logout/callback',
+  '/sso/callback',
+  '/register*',
+  '/register/*'
+];
 
 const isWhiteList = (path: string) => {
   return whiteList.some(pattern => isPathMatch(pattern, path));
@@ -32,7 +40,10 @@ router.beforeEach(async to => {
     return { path: '/login', query: { redirect: encodeURIComponent(to.fullPath || '/') } };
   }
   if (to.meta.title) useSettingsStore().setTitle(to.meta.title as string);
-  if (to.path === '/login') { NProgress.done(); return { path: '/' }; }
+  if (to.path === '/login') {
+    NProgress.done();
+    return { path: '/' };
+  }
   if (isWhiteList(to.path)) return true;
   if (user.identityLoaded && navigation.navigationLoaded && user.token === token) return true;
   const generation = user.sessionGeneration;
@@ -49,7 +60,9 @@ router.beforeEach(async to => {
         if (findDuplicateRouteNames([existing, [route]]).length) throw new Error('菜单路由名称冲突');
         navigation.registerRoute(route, value => router.addRoute(value));
       },
-      createReplacement: () => { navigation.finishRecovery(); }
+      createReplacement: () => {
+        navigation.finishRecovery();
+      }
     }).finally(() => {
       if (recovery?.promise === promise) {
         isRelogin.navigationPending = false;

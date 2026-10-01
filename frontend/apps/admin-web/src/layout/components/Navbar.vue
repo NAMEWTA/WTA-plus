@@ -92,7 +92,10 @@
                 <span>{{ $t('navbar.layoutSetting') }}</span>
               </el-dropdown-item>
               <el-dropdown-item divided command="logout">
-                <span>{{ $t('navbar.logout') }}</span>
+                <span>退出当前应用</span>
+              </el-dropdown-item>
+              <el-dropdown-item v-if="userStore.globalLogoutAvailable" command="globalLogout">
+                退出全部应用
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -106,6 +109,7 @@
 import type { ElMessageBoxOptions } from 'element-plus';
 import { CaretBottom } from '@element-plus/icons-vue';
 import TopbarFrame from '@namewta/web-kit-ui-element/topbar-frame';
+import { createAppSocialRuntime } from '@/application/social';
 import appLogo from '@/assets/logo/logo.svg';
 import WTADoc from '@/components/WTADoc/index.vue';
 import WTAGit from '@/components/WTAGit/index.vue';
@@ -165,14 +169,30 @@ const setLayout = () => {
   emits('setLayout');
 };
 // 定义Command方法对象 通过key直接调用方法
-const commandMap: { [key: string]: any } = {
+const globalLogout = async () => {
+  try {
+    await ElMessageBox.confirm('将退出当前应用与统一登录会话，其他已接入应用会同步退出。', '退出全部应用', {
+      confirmButtonText: '确认退出',
+      cancelButtonText: '取消'
+    });
+  } catch {
+    return;
+  }
+  try {
+    await createAppSocialRuntime().globalLogout();
+  } catch {
+    ElMessage.error('统一退出未完成，请重试');
+  }
+};
+const commandMap: Record<string, () => void | Promise<void>> = {
+  globalLogout,
   setLayout,
   logout
 };
 const handleCommand = (command: string) => {
   // 判断是否存在该方法
   if (commandMap[command]) {
-    commandMap[command]();
+    void commandMap[command]();
   }
 };
 </script>

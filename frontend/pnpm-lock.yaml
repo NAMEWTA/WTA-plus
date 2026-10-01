@@ -474,6 +474,9 @@ importers:
 
   packages/adapters/oss-upload-browser:
     dependencies:
+      '@namewta/platform-auth':
+        specifier: workspace:*
+        version: link:../../platform/auth
       '@namewta/platform-contracts':
         specifier: workspace:*
         version: link:../../platform/contracts
@@ -783,6 +786,9 @@ importers:
       '@namewta/platform-app-runtime':
         specifier: workspace:*
         version: link:../../platform/app-runtime
+      '@namewta/platform-auth':
+        specifier: workspace:*
+        version: link:../../platform/auth
       '@namewta/web-kit-ui-element':
         specifier: workspace:*
         version: link:../../web-kit/ui-element
@@ -962,6 +968,9 @@ importers:
       vue-router:
         specifier: 'catalog:'
         version: 5.2.0(@vue/compiler-sfc@3.5.40)(pinia@4.0.2(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.40(typescript@6.0.3)))(rolldown@1.1.5)(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(sass@1.102.0)(yaml@2.9.0))(vue@3.5.40(typescript@6.0.3))
+      yaml:
+        specifier: 'catalog:'
+        version: 2.9.0
     devDependencies:
       '@vue/compiler-sfc':
         specifier: 'catalog:'

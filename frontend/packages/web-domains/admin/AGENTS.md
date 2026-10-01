@@ -20,3 +20,5 @@
 
 ## Read Next
 领域合同读取 [domain-admin](../../domains/admin/AGENTS.md)。
+
+`socialRuntime.ts` 与 `auth/Social*Page.vue` 由 Admin/Home 共同消费，复用 platform-auth 的一次性事务与纯 SHA-256 指纹；宿主注入 sessionStorage、会话代次、token 接收和导航。事务不得把原 token 存进 sessionStorage。

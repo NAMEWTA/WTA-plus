@@ -19,7 +19,7 @@ public final class ClientAccessPaths {
 
     private static final String SEPARATOR_REGEX = "[,;\\r\\n]+";
     private static final List<String> HOME_IDENTITY_APIS = List.of(
-        IDENTITY_GET_INFO, IDENTITY_MENUS, AUTH_LOGOUT, PROFILE, WORKFLOW_TASKS);
+        IDENTITY_GET_INFO, IDENTITY_MENUS, AUTH_LOGOUT, "/auth/social/**", PROFILE, WORKFLOW_TASKS);
 
     private ClientAccessPaths() {
     }

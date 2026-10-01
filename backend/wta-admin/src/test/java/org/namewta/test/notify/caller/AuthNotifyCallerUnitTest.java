@@ -40,8 +40,9 @@ class AuthNotifyCallerUnitTest {
         client.setGrantType("password");
         client.setStatus(SystemConstants.NORMAL);
         when(clients.queryByClientId("owned-client")).thenReturn(client);
-        AuthController controller = new AuthController(null, null, null, null, clients, notifications, null, null);
+        AuthController controller = new AuthController(null, null, null, clients, notifications, null, null, null);
         LoginVo loginResult = new LoginVo();
+        loginResult.setAccessToken("fixture-business-token");
         // Controller 仍执行真实 LoginBody 校验；仅给静态 SpringUtil 一个本地 Validator/JSON mapper。
         try (var validatorFactory = Validation.buildDefaultValidatorFactory();
              MockedStatic<SpringUtil> spring = mockStatic(SpringUtil.class);

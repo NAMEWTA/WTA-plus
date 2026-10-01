@@ -1,6 +1,7 @@
 import type { HttpClient } from '@namewta/platform-contracts';
 import type { OidcApplicationInput, OidcApplicationQuery } from './types';
 import { mapApplication, mapDelivery, mapFields, mapPage, mapProvider, responseData } from './mapper';
+import { createOidcConfigurationService } from './service-settings';
 import { applicationInputTransport, applicationUpdateTransport } from './transport';
 
 const base = '/oidc/admin/applications';
@@ -13,6 +14,7 @@ export function createOidcService(http: HttpClient) {
   const post = async (url: string, data: unknown, signal?: AbortSignal) =>
     responseData(await http.request<unknown>({ url, method: 'post', data, signal }));
   return {
+    configuration: createOidcConfigurationService(http),
     list: async (params: OidcApplicationQuery, signal?: AbortSignal) =>
       mapPage(await http.request<unknown>({ url: base, method: 'get', params, signal })),
     get: async (id: string, signal?: AbortSignal) => mapApplication(await get(`${base}/${key(id)}`, signal)),

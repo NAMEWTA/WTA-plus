@@ -80,7 +80,7 @@
               <resetPwd />
             </el-tab-pane>
             <el-tab-pane label="第三方应用" name="thirdParty">
-              <thirdParty :auths="state.auths" />
+              <ThirdParty />
             </el-tab-pane>
             <el-tab-pane label="在线设备" name="onlineDevice">
               <onlineDevice :devices="state.devices" />
@@ -105,19 +105,17 @@ import ThirdParty from './thirdParty.vue';
 import UserAvatar from './userAvatar.vue';
 import UserInfo from './userInfo.vue';
 
-const activeTab = ref('userinfo');
+const activeTab = ref(useRoute().query.tab === 'thirdParty' ? 'thirdParty' : 'userinfo');
 interface State {
   user: Partial<UserVO>;
   roleGroup: string;
   postGroup: string;
-  auths: any;
   devices: any;
 }
 const state = ref<State>({
   user: {},
   roleGroup: '',
   postGroup: '',
-  auths: [],
   devices: []
 });
 
@@ -131,10 +129,6 @@ const getUser = async () => {
   state.value.postGroup = res.data.postGroup;
 };
 
-const getAuths = async () => {
-  const res = await systemService.resources.social.list();
-  state.value.auths = res.data;
-};
 const getOnlines = async () => {
   const res = await monitorService.online.current();
   state.value.devices = res.data?.rows;
@@ -142,7 +136,6 @@ const getOnlines = async () => {
 
 onMounted(() => {
   getUser();
-  getAuths();
   getOnlines();
 });
 </script>

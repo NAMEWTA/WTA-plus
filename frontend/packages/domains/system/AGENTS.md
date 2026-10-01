@@ -20,3 +20,5 @@ Controller 资源位于 `src/client/`、`src/user/`、`src/oss/`、`src/monitor/
 
 ## Read Next
 页面实现读取 [web-domain-system](../../web-domains/system/AGENTS.md)。
+
+`auth-config/` 维护外部身份源、按业务客户端接入及旧 JustAuth 显式导入合同。配置密钥只写，详情仅投影 secretConfigured；保存/删除携带读取版本。

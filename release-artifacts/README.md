@@ -119,7 +119,7 @@ bash release-artifacts/scripts/docker-manage.sh up infrastructure --profile rust
 
 每条 docker-manage 命令先解析并校验一次 current，整个命令固定该版本的 Compose、镜像上下文和只读挂载；`up` 显式使用 `--build --force-recreate`，应用镜像标签包含版本 ID。已运行容器的 bind mount 不会自动跟随指针。多服务的运行时升级不是原子事务；失败需选择旧版本并重建受影响服务，再验证健康。
 
-运行前缀、App Origin 及 CORS 配置必须与 manifest 一致，否则 Docker 操作前拒绝。`WEB_CORS_ALLOWED_ORIGINS` 支持精确 HTTP(S) Origin、主机/IP 通配和 `*` 混写，任意端口写 `:*` 或 `:[*]`；内网 env 示例为 `*`，未配置则采用三 App Origin。构建将选择写入 `corsAllowedOrigins`，docker-manage 从固定版本原样导出，后端 Compose 传入配置。旧 schema v2 manifest 没有此字段时继续采用原 App Origin 矩阵。实际 App 和 `SSO_WEB_ORIGIN` 地址仍为精确 Origin；`SSO_WEB_BASE_PATH` 从固定版本的 SSO prefix 派生为 `/<prefix>/`，真实 `/auth/client/context` 将它与独立 Origin 组合为授权页面地址。该 base 不进入 CORS Origin。`TRUSTED_PROXY_CIDRS` 仍需按真实拓扑显式配置，不能猜测可信网段。`RELEASE_ENV` 默认 `prod`，`RELEASE_ENV_FILE` 指定运行 env。持久数据默认仍位于发布根的 `docker/runtime`，相对 `NAMEWTA_DATA_ROOT` 也锚定发布根的 docker 目录；Nginx 日志在其 `nginx/log/` 下。证书由 `NAMEWTA_CERT_ROOT` 指定，默认发布根的 `docker/frontend/nginx/cert`。这些运行目录不进入不可变版本，不随版本切换迁移。
+运行前缀、App Origin 及 CORS 配置必须与 manifest 一致，否则 Docker 操作前拒绝。`WEB_CORS_ALLOWED_ORIGINS` 支持精确 HTTP(S) Origin、主机/IP 通配和 `*` 混写，任意端口写 `:*` 或 `:[*]`；内网 env 示例为 `*`，未配置则采用三 App Origin。构建将选择写入 `corsAllowedOrigins`，docker-manage 从固定版本原样导出，后端 Compose 传入配置。旧 schema v2 manifest 没有此字段时继续采用原 App Origin 矩阵。实际 App 和 `SSO_WEB_ORIGIN` 地址仍为精确 Origin，可同域或独立域名。认证业务配置通过管理页保存到 MySQL，Issuer 与 SSO 页面路径应匹配发布矩阵；`/auth/client/context` 返回当前业务 Client 的外部身份源入口。静态 base 不进入 CORS Origin。`TRUSTED_PROXY_CIDRS` 仍需按真实拓扑显式配置，不能猜测可信网段。`RELEASE_ENV` 默认 `prod`，`RELEASE_ENV_FILE` 指定运行 env。持久数据默认仍位于发布根的 `docker/runtime`，相对 `NAMEWTA_DATA_ROOT` 也锚定发布根的 docker 目录；Nginx 日志在其 `nginx/log/` 下。证书由 `NAMEWTA_CERT_ROOT` 指定，默认发布根的 `docker/frontend/nginx/cert`。这些运行目录不进入不可变版本，不随版本切换迁移。
 
 不要使用 `docker compose down -v`。MySQL、Redis、MinIO、RustFS、Loki、Grafana 和 Prometheus 数据均需按 `NAMEWTA_DATA_ROOT` 单独备份。
 
@@ -177,13 +177,13 @@ bash release-artifacts/scripts/init-mysql-container.sh \
 
 业务 App Nginx 也映射独立宿主机端口，可直接访问 `http://<host>:<app-port>/<app-prefix>/`。证书由运维投放到上述独立 `NAMEWTA_CERT_ROOT`，不得提交私钥。
 
-SSO 使用独立入口，**不加入业务 LB**：`/<SSO_WEB_PREFIX>/authorize` 提供页面与刷新回退，根 `/sso/*` 保持原路径反代后端。构建设置 `VITE_SSO_API` 为空，路由和资源共用 Vite base。根 `/` 不跳转到登录页；`/healthz` 返回健康状态。SSO 入口拒绝非自身 Origin 的浏览器 API 请求，Cookie 保持后端默认 Secure、HttpOnly、host-only，不传给其他 hostname。
+SSO 保留独立入口，同时支持共享域名的 LB 路由：`/<SSO_WEB_PREFIX>/authorize` 提供页面与刷新回退，根 `/sso/*` 保持原路径反代后端。构建设置 `VITE_SSO_API` 为空，路由和资源共用 Vite base。根 `/` 不跳转到登录页；`/healthz` 返回健康状态。SSO 入口拒绝非自身 Origin 的浏览器 API 请求，Cookie 保持后端默认 Secure、HttpOnly、host-only；同域部署时由独立 Cookie 名与应用令牌命名空间区分。共享 LB 保留 `/oidc/*`、Discovery 和 `/sso/*` 协议路径及状态码。
 
 | App | HTTP 变量/默认端口 | HTTPS 入口 | API |
 |---|---|---|---|
 | admin-web | `ADMIN_WEB_PORT` / 41080 | 业务 LB `LB_HTTPS_PORT` / 40443 | `/<prefix>/<env>-api` |
 | home-web | `HOME_WEB_PORT` / 41082 | 业务 LB `LB_HTTPS_PORT` / 40443 | `/<prefix>/<env>-api` |
-| sso-web | `SSO_WEB_PORT` / 41083 | `SSO_WEB_HTTPS_PORT` / 41483 | `/sso` |
+| sso-web | `SSO_WEB_PORT` / 41083 | `SSO_WEB_HTTPS_PORT` / 41483 或共享 LB | `/sso` |
 
 SSO TLS 服务读取 `${NAMEWTA_CERT_ROOT}/sso-web/fullchain.pem`、`privkey.pem`；业务 LB 读取 `lb/`。默认 HTTP 端口只绑定 loopback，可供可信 TLS 入口转发；生产浏览器只能使用配置的 HTTPS Origin。SSO TLS 的 HTTP 健康端口只供容器内部探测。access log 仅记录方法、路径与状态，省略授权查询参数；这不代表所有 Nginx error log 已完成凭据脱敏。
 
@@ -227,3 +227,5 @@ TTL 会即时生效；其他允许键只记录为需重启，`nacos.config.*` �
 第三方 OIDC 默认关闭；持久签名密钥、状态加密密钥、固定 HTTPS Issuer 和已有数据库升级注意事项见[统一登录部署说明](../docs/oidc-ui/README.md)。
 
 Snail AI 服务及其 Docling/PaddleOCR 接入已退出；两份 Java Maven 占位保留。40-cde-ai.sql 仅声明字符集，六份 SQL 初始化新业务库107张表，已有 AI 数据保留且不迁移，禁止重放基座。SMTP、短信、第三方 OSS 等集成同样由目标环境配置提供。
+
+认证接入与初始化见 [Admin/Home 外部 OIDC](../docs/oidc-app-integration/README.md)。每个 App 可通过 `ADMIN_WEB_BACKEND_SERVER1/2`、`HOME_WEB_BACKEND_SERVER1/2`、`SSO_WEB_BACKEND_SERVER1/2` 覆盖公共上游。认证配置与密钥已迁移到数据库管理，后端环境仅保留 `AUTH_CONFIG_ROOT_KEY`；原 `OIDC_*` 不再作为业务配置入口。

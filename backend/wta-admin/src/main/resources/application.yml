@@ -28,17 +28,6 @@ captcha:
   charLength: 4
 
 namewta:
-  oidc:
-    enabled: ${OIDC_ENABLED:false}
-    issuer: ${OIDC_ISSUER:}
-    sso-web-url: ${OIDC_SSO_WEB_URL:}
-    jwk-set-file: ${OIDC_JWK_SET_FILE:}
-    active-kid: ${OIDC_ACTIVE_KID:}
-    state-encryption-key: ${OIDC_STATE_ENCRYPTION_KEY:}
-    session-cookie-name: ${namewta.sso.cookie-name:Sso-Token}
-    allow-http: ${OIDC_ALLOW_HTTP:false}
-    code-ttl-seconds: 300
-    access-ttl-seconds: 600
   web:
     request-body:
       # 普通JSON及需要缓存的文本正文；与日志前缀和机器签名正文分开计限。
@@ -46,20 +35,16 @@ namewta:
     client-address:
       # 逗号分隔的IPv4/IPv6 CIDR；默认空，只信socket peer。发布前按拓扑实测。
       trusted-proxies: ${TRUSTED_PROXY_CIDRS:}
-  sso:
-    enabled: true
-    web-origin: ${SSO_WEB_ORIGIN:http://127.0.0.1:4176}
-    web-base-path: ${SSO_WEB_BASE_PATH:/}
-    cookie-name: Sso-Token
-    # 仅local/dev可显式false使用HTTP；生产或未知profile拒绝关闭Secure。
-    cookie-secure: ${SSO_COOKIE_SECURE:true}
-    code-ttl: 5m
-    session-ttl: 8h
 
 web:
   cors:
     # 默认不许可跨来源请求。发布时可注入逗号分隔的精确 Origin、主机/IP 通配或 *，支持混写。
     allowed-origins: "${WEB_CORS_ALLOWED_ORIGINS:}"
+
+# 认证业务配置由 MySQL 页面管理；根密钥仅用于加密数据库中的凭据。
+authentication:
+  secrets:
+    root-key: ${AUTH_CONFIG_ROOT_KEY:}
 
 # 可选 Nacos 稀疏配置覆盖。关闭时不创建客户端或监听器。
 nacos:

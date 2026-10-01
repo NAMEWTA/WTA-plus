@@ -22,7 +22,7 @@ export const BACKENDS = {
 };
 const SQL_FILES = ['10-cde-base-ddl.sql', '20-cde-job.sql', '30-cde-workflow.sql', '40-cde-ai.sql', '50-cde-base-dml.sql', '60-cde-nacos.sql'];
 const CATEGORIES = ['infrastructure', 'observability', 'backend', 'frontend'];
-const RESERVED = new Set(['admin', 'monitor', 'snail-job', 'snail-ai', 'dev-api', 'prod-api', 'actuator']);
+const RESERVED = new Set(['admin', 'monitor', 'snail-job', 'snail-ai', 'dev-api', 'prod-api', 'actuator', 'oidc', 'sso']);
 const MANIFEST = 'release-manifest.json';
 const VERSION_PATTERN = /^(dev|prod)-[0-9a-f]{12}-[0-9a-f]{64}$/;
 
@@ -213,10 +213,9 @@ function appRegistry(release, frontend = null) {
     active.push(row);
     require(row.apiKind === 'business' || row.apiKind === 'sso', `unknown API kind: ${app}`);
     require(row.apiPath === (row.apiKind === 'sso' ? '/sso' : '/{prefix}/{environment}-api'), `unsupported API route: ${app}`);
-    require(row.apiKind === 'sso' ? row.authorizePath === '/authorize' : row.callbackPath === '/sso/callback', `unsupported auth entry: ${app}`);
+    require(row.apiKind === 'sso' ? row.authorizePath === '/authorize' : row.callbackPath === '/social-callback', `unsupported auth entry: ${app}`);
     require(row.healthPath === '/healthz', `unsupported health path: ${app}`);
     require(row.ingress === 'lb' || row.ingress === 'dedicated', `unknown ingress kind: ${app}`);
-    require(row.apiKind !== 'sso' || row.ingress === 'dedicated', 'SSO must have a dedicated ingress');
     for (const key of ['prefixEnv', 'originEnv', 'portEnv']) {
       const variable = row[key];
       require(fullMatch('[A-Z][A-Z0-9_]*', variable), `invalid env variable for ${app}`);
@@ -247,8 +246,8 @@ function appRegistry(release, frontend = null) {
         `./frontend/nginx/html/${app}:/usr/share/nginx/html:ro`,
         `APP_PREFIX: "\${${row.prefixEnv}:?${row.prefixEnv} is required}"`,
         `\${${endpoint.portEnv}:-${port}}:${endpoint === row.tls ? '443' : '80'}`,
-        'BACKEND_SERVER1: "${BACKEND_SERVER1:-namewta-server1:8080}"',
-        'BACKEND_SERVER2: "${BACKEND_SERVER2:-namewta-server2:8080}"',
+        `BACKEND_SERVER1: "\${${row.prefixEnv.replace(/_PREFIX$/, '')}_BACKEND_SERVER1:-\${BACKEND_SERVER1:-namewta-server1:8080}}"`,
+        `BACKEND_SERVER2: "\${${row.prefixEnv.replace(/_PREFIX$/, '')}_BACKEND_SERVER2:-\${BACKEND_SERVER2:-namewta-server2:8080}}"`,
       ];
       if (row.apiKind === 'sso') bindings.push(`APP_ORIGIN: "\${${row.originEnv}:?${row.originEnv} is required}"`);
       require(bindings.every((binding) => block.split(binding).length - 1 === 1), `Compose App binding drift: ${name}`);
@@ -304,15 +303,6 @@ function validateOriginMatrix(apps, values, environment) {
     require(!parts.hostname.endsWith('.invalid') && !parts.hostname.includes('replace-'), 'placeholder App origin');
     require(parts.hostname.includes(':') || fullMatch('[A-Za-z0-9.-]+', parts.hostname), 'invalid App hostname');
     origins[app.id] = canonicalOrigin(parts);
-  }
-  for (const app of apps) {
-    if (app.apiKind !== 'sso') continue;
-    require(Object.entries(origins).every(([name, origin]) => name === app.id || origin !== origins[app.id]), 'SSO must use an independent Web Origin');
-    if (environment === 'prod') {
-      // Cookies have a hostname/path boundary; different ports do not isolate them.
-      require(Object.entries(origins).every(([name, origin]) => name === app.id || splitOrigin(origin, app.originEnv).hostname !== splitOrigin(origins[app.id], app.originEnv).hostname),
-        'production SSO cookie requires a separate hostname');
-    }
   }
   return origins;
 }

@@ -41,8 +41,9 @@ async function install(page: Page, state = fixture()) {
               registerEnabled: true,
               passwordPolicy: policy,
               authMode: 'both',
-              ssoEnabled: true,
-              ssoAuthorizeUrl: origin('sso') + '/authorize'
+              ssoEnabled: false,
+              ssoAuthorizeUrl: null,
+              providers: [{ providerKey: 'owned-oidc', name: '测试统一登录', icon: 'tabler:key' }]
             }
           });
     if (path === '/auth/code')
@@ -59,7 +60,16 @@ async function install(page: Page, state = fixture()) {
     if (path === '/system/user/getInfo')
       return json(route, {
         code: 200,
-        data: { user: { userId: '7', userName: 'owned-user', nickName: 'Owned user' }, roles: [], permissions: [] }
+        data: {
+          user: { userId: '7', userName: 'owned-user', nickName: 'Owned user' },
+          roles: [],
+          permissions: ['profile:person:apply', 'profile:enterprise:apply']
+        }
+      });
+    if (/^\/profile\/(person|enterprise)\/application\/summary$/.test(path))
+      return json(route, {
+        code: 200,
+        data: { status: 'UNVERIFIED', returnReason: null, currentApplication: null, certifiedProfile: null }
       });
     if (path === '/system/menu/getRouters')
       return json(route, {
@@ -154,7 +164,12 @@ const pages = [
     selector: '.register',
     text: ['.ui-auth-panel__description', '.register-tip', '.submit-button', '.link-type']
   },
-  { app: 'admin', path: '/sso/callback', selector: '.sso-callback', text: ['.sso-callback p'] },
+  {
+    app: 'admin',
+    path: '/social-callback',
+    selector: '.ui-auth-page',
+    text: ['.ui-auth-panel__description', '.ui-auth-panel [role=alert]']
+  },
   {
     app: 'home',
     path: '/login',
@@ -167,7 +182,12 @@ const pages = [
     selector: '.register-page',
     text: ['.register-intro p', '.status', '.submit', 'footer']
   },
-  { app: 'home', path: '/sso/callback', selector: '.sso-callback', text: ['.sso-callback p', 'footer'] },
+  {
+    app: 'home',
+    path: '/social-callback',
+    selector: '.ui-auth-page',
+    text: ['.ui-auth-panel__description', '.ui-auth-panel [role=alert]', 'footer']
+  },
   { app: 'sso', path: authorization, selector: '.sso-card', text: ['.hint', '.status', 'button[type=submit]'] }
 ] as const;
 
@@ -190,7 +210,7 @@ for (const theme of ['light', 'dark'] as const)
             if (entry.path === '/login' || entry.path === '/register')
               await expect(scope.getByLabel('用户名', { exact: true })).toBeEnabled();
             if (entry.app === 'sso') await expect(page.getByLabel('密码', { exact: true })).toBeVisible();
-            if (entry.path === '/sso/callback') await expect(scope.getByRole('alert')).toBeVisible();
+            if (entry.path === '/social-callback') await expect(scope.getByRole('alert')).toBeVisible();
             if (entry.path === '/login' || entry.path === '/register')
               await expect(scope.locator('button[type=submit]')).toBeEnabled();
             // Sample settled rendered colors, after disabled-to-ready CSS transitions finish.
@@ -297,9 +317,13 @@ test('Admin registration submits once with Enter and preserves retry after a rej
   await page.waitForLoadState('networkidle');
   await expect(page.locator('.submit-button')).toBeEnabled();
   for (const [label, value] of [
-    ['用户名', 'owned-user'], ['手机号码', '13800138000'], ['密码', 'OwnedPass!9'],
-    ['确认密码', 'OwnedPass!9'], ['验证码', 'owned']
-  ]) await typeWithKeyboard(page, page.getByLabel(label, { exact: true }), value);
+    ['用户名', 'owned-user'],
+    ['手机号码', '13800138000'],
+    ['密码', 'OwnedPass!9'],
+    ['确认密码', 'OwnedPass!9'],
+    ['验证码', 'owned']
+  ])
+    await typeWithKeyboard(page, page.getByLabel(label, { exact: true }), value);
   await page.keyboard.press('Enter');
   await expect.poll(() => state.registerCalls).toBe(1);
   await expect(page.locator('.submit-button')).toBeEnabled();
@@ -312,14 +336,19 @@ for (const dark of [false, true]) {
     test(`Server logout card uses emitted shared theme ${dark ? 'dark' : 'light'} ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       // 只验收服务端 HTML 的样式消费；真实退出事务由 OIDC 协议验收覆盖。
-      await page.setContent('<!doctype html><html lang="zh-CN"><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><main class="oidc-card"><h1>退出统一登录</h1><p>退出后，继续访问应用时需要重新登录。</p><form><button type="button">确认退出</button></form></main></body></html>');
+      await page.setContent(
+        '<!doctype html><html lang="zh-CN"><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><main class="oidc-card"><h1>退出统一登录</h1><p>退出后，继续访问应用时需要重新登录。</p><form><button type="button">确认退出</button></form></main></body></html>'
+      );
       await page.addStyleTag({ url: origin('sso') + '/oidc-theme.css' });
       await page.evaluate(value => document.documentElement.classList.toggle('dark', value), dark);
       const card = page.locator('.oidc-card');
       await expect(card).toBeVisible();
-      expect(await card.evaluate(node => node.getBoundingClientRect().width)).toBeLessThanOrEqual(Math.min(440, width - 32));
+      expect(await card.evaluate(node => node.getBoundingClientRect().width)).toBeLessThanOrEqual(
+        Math.min(440, width - 32)
+      );
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      for (const selector of ['h1', 'p', 'button']) expect((await contrast(card.locator(selector))).ratio).toBeGreaterThanOrEqual(4.5);
+      for (const selector of ['h1', 'p', 'button'])
+        expect((await contrast(card.locator(selector))).ratio).toBeGreaterThanOrEqual(4.5);
       const button = card.getByRole('button', { name: '确认退出' });
       expect(await button.evaluate(node => node.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
       await tabTo(page, button);
@@ -354,7 +383,7 @@ test('Home login can fail and complete using only keyboard input', async ({ page
   if (!directory) throw new Error('Owned artifact directory required');
   for (const dark of [false, true]) {
     await page.evaluate(value => document.documentElement.classList.toggle('dark', value), dark);
-    await expect(page.locator('.verification-option').first()).toHaveCSS(
+    await expect(page.locator('.profile-center .el-card').first()).toHaveCSS(
       'background-color',
       dark ? 'rgb(17, 24, 39)' : 'rgb(255, 255, 255)'
     );
@@ -424,21 +453,16 @@ test('SSO network retry and failed password status remain accessible to keyboard
   expect(state.authorizeCalls).toBe(1);
 });
 
-test('Home callback preserves live errors and keyboard restart/back navigation', async ({ page }) => {
+test('Home external callback preserves live errors and keyboard return navigation', async ({ page }) => {
   await install(page);
-  await page.goto(origin('home') + '/sso/callback');
+  await page.goto(origin('home') + '/social-callback');
   await expect(page.getByRole('alert')).toBeVisible();
-  const back = page.getByRole('link', { name: '返回登录页' });
+  const back = page.getByRole('button', { name: '返回登录页' });
   await tabTo(page, back);
   await visibleFocus(back);
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/login\?/);
-  await page.goto(origin('home') + '/sso/callback');
-  const retry = page.getByRole('button', { name: '重新授权', exact: true });
-  await tabTo(page, retry);
-  await visibleFocus(retry);
-  await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(new RegExp(origin('sso') + '/authorize\\?'));
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(page.getByRole('button', { name: '测试统一登录', exact: true })).toBeVisible();
 });
 
 for (const theme of ['light', 'dark'] as const)

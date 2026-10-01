@@ -4,10 +4,15 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.*;
-import org.namewta.oidc.adapter.api.*;
-import org.namewta.oidc.config.*;
+import org.namewta.oidc.adapter.api.OidcClaims;
+import org.namewta.oidc.adapter.api.OidcLoginFilter;
+import org.namewta.oidc.adapter.api.OidcOpaqueIntrospector;
+import org.namewta.oidc.config.OidcProperties;
+import org.namewta.oidc.config.OidcSecurityConfiguration;
 import org.namewta.oidc.service.OidcKeyService;
-import org.namewta.oidc.usecase.*;
+import org.namewta.oidc.usecase.OidcAuthorizationUseCase;
+import org.namewta.oidc.usecase.OidcInteractionUseCase;
+import org.namewta.oidc.usecase.OidcProtocolUseCase;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.*;
 import org.springframework.mock.web.*;
@@ -233,6 +238,30 @@ class OidcSecurityChainTest {
     @EnableWebSecurity
     @Import(OidcSecurityConfiguration.class)
     static class Fixture {
+        @Bean
+        org.namewta.oidc.service.OidcConfigurationService configuration() {
+            var service = mock(org.namewta.oidc.service.OidcConfigurationService.class);
+            when(service.current())
+                    .thenReturn(
+                            new org.namewta.oidc.domain.OidcServiceSettings(
+                                    true,
+                                    "https://sso.example",
+                                    "https://sso.example",
+                                    false,
+                                    300,
+                                    600,
+                                    300,
+                                    org.namewta.sso.api.SsoRuntimeSettings.defaults()));
+            return service;
+        }
+
+        @Bean
+        org.namewta.sso.api.SsoRuntimeConfiguration centralConfiguration() {
+            var service = mock(org.namewta.sso.api.SsoRuntimeConfiguration.class);
+            when(service.current()).thenReturn(org.namewta.sso.api.SsoRuntimeSettings.defaults());
+            return service;
+        }
+
         @Bean
         OidcKeyService keys() {
             return mock(OidcKeyService.class);

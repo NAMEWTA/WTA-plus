@@ -15,6 +15,8 @@ describe('system web manifest', () => {
   it('publishes all server-facing governance keys and permission groups', () => {
     const manifest = createSystemWebDomain(runtime);
     expect(manifest.registrations.map(item => [item.componentKey, item.componentName])).toEqual([
+      ['system/auth/provider', 'ExternalAuthProvider'],
+      ['system/auth/registration', 'ExternalAuthRegistration'],
       ['system/client/index', 'Client'],
       ['system/ssoApp/index', 'SsoApp'],
       ['system/user/index', 'User'],
@@ -33,6 +35,8 @@ describe('system web manifest', () => {
     ]);
     expect(manifest.permissions.flatMap(item => item.permissions)).toEqual(
       expect.arrayContaining([
+        'system:authProvider:list',
+        'system:authRegistration:edit',
         'system:client:list',
         'system:ssoApp:list',
         'system:user:list',

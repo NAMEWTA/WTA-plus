@@ -12,7 +12,7 @@ WTA 是账户和用户资料的权威来源。第三方系统作为机密 Web �
 
 停用、删除、重置密钥和修改回调/认证方式/PKCE 会撤销原授权。修改字段白名单则立即缩小 UserInfo 的可见范围；新增字段须重新授权，不会扩张已有令牌权限。配置写入带版本检查，过期表单不能覆盖新设置。
 
-原「SSO 应用」用于自有 Admin/Home 客户端，原 `/sso/oauth2/*` 合同保留。
+原「SSO 应用」和 `/sso/oauth2/*` 合同保留供兼容接入；Admin/Home 新入口已改为标准 OIDC，详见 [接入说明](../oidc-app-integration/README.md)。
 
 ## 第三方接入合同
 
@@ -29,7 +29,7 @@ WTA 是账户和用户资料的权威来源。第三方系统作为机密 Web �
 | 签名 | RS256；RP 固定 issuer、audience、算法并校验签名、有效期、nonce |
 | 主体 | 持久 UUID `sub`，与用户名修改无关，各应用引用同一 WTA 主体 |
 
-RP 应自行生成和验证 `state`、`nonce` 及 S256 PKCE verifier。回调地址精确匹配，不支持通配符。只支持 `authorization_code`，不提供 refresh token、implicit、password grant、公开 SPA 客户端或外部身份源 Broker。
+RP 应自行生成和验证 `state`、`nonce` 及 S256 PKCE verifier。回调地址精确匹配，不支持通配符。只支持 `authorization_code`，不提供 refresh token、implicit、password grant、公开 SPA 客户端；外部身份源接入另由业务 social 编排处理。
 
 ID Token 携带最小身份及 `auth_time` / `sid`；可选资料通过 UserInfo 获取。UserInfo 总是有 `sub`，其他字段同时满足 **授权时快照 ∩ 当前应用配置 ∩ 已授予 scope**。账户停用/删除、中央会话失效、应用停用或授权撤销都会阻止继续取资料。业务 Sa-Token 与 OIDC access token 不能互换使用。
 
@@ -44,23 +44,13 @@ ID Token 携带最小身份及 `auth_time` / `sid`；可选资料通过 UserInfo
 
 自定义对象内字段名去掉管理目录中的分组前缀，例如配置字段 `person_document_number_masked` 输出为 `wta_person.document_number_masked`，`enterprise_legal_document_number` 输出为 `wta_enterprise.legal_document_number`。未开放或不存在的资料省略，不伪造邮箱/手机已验证标记。个人与企业各读取当前有效的一份档案；不发布附件、草稿、历史、审核意见、内部角色或权限。
 
-退出范围是当前中央登录会话及其 OIDC 授权；第三方系统仍需自行结束本地会话。本版不提供向其他 RP 推送退出通知。
+退出范围是当前中央登录会话及其关联应用会话。支持标准后台退出通知与持久重试任务；第三方 RP 须登记回调并处理已验证的 Logout Token。
 
 ## 运维配置
 
-OIDC 默认关闭。启用前必须具备固定 HTTPS SSO Origin、持久签名私钥和独立的状态加密密钥。两台后端必须共享同一套配置；不要在每次启动时重新生成密钥。
+OIDC 默认关闭。全部业务配置、版本化签名私钥和状态密钥现由 MySQL 管理、Redis 缓存，环境只保留 `AUTH_CONFIG_ROOT_KEY`。旧 `OIDC_*` 和 `namewta.oidc.*` 不再生效。首次安装、维护重启、Admin/Home 两应用登记及旧配置迁移请按 [当前操作说明](../oidc-app-integration/README.md) 执行；旧验收工作记录仅代表对应历史版本。
 
-```bash
-node scripts/oidc/init-keys.mjs --directory /absolute/runtime/secrets/oidc
-```
-
-该命令要求目标目录不存在，创建目录权限 0700、文件权限 0600。`jwks.json` 为 RSA3072 私钥集；`oidc.env` 包含 active kid 和独立 32 字节 AES 状态加密密钥。不要把这些文件提交到源码、发到工单或打印到日志。容器编排已将 `${NAMEWTA_DATA_ROOT:-./runtime}/secrets/oidc` 只读挂载到 `/wta/secrets/oidc`。
-
-配置 `OIDC_ENABLED=true`，从受保护的 `oidc.env` 注入 `OIDC_ACTIVE_KID` 和 `OIDC_STATE_ENCRYPTION_KEY`。默认 issuer 为 `SSO_WEB_ORIGIN`，前端位置为 `SSO_WEB_ORIGIN + SSO_WEB_BASE_PATH`；协议端点始终位于 Origin 根目录，不随前端路径前缀改变。应用私有配置也可使用 `namewta.oidc.*`；不要将私钥或密钥写到 `VITE_*`。
-
-公开 JWKS 中保留仍处于有效期内的旧公钥；签名密钥轮换需要先发布新旧公钥，再切换 active kid，并等待旧令牌全部过期后移除旧公钥。各实例重启加载相同配置。状态加密密钥用于已持久化的框架授权状态，不应随意更换；更换会使旧授权不能恢复，需要统一撤销并重新登录。备份数据库时同时受控备份密钥。
-
-新增 `oidc_application`、`oidc_subject`、`oidc_authorization` 三表和六项菜单/按钮权限已加入既有六文件 MySQL 基线，完整基线为 107 表。全新环境使用正式初始化器。已有数据库升级必须审阅新增三表及菜单差异后受控应用，**不能对已有业务库重跑含重建表操作的完整基线**。本次工作不执行生产部署或既有环境升级。
+新业务基座共 116 张表。已有数据库只应用审阅后的 canonical SQL 差异，不重放完整基座。迁移需安排旧中央会话退出后重新认证。
 
 SSO Nginx 仅将明确的协议路径反代到后端，管理路径不经 SSO 站点暴露。协议响应不套业务 `R` 包装，且不记录请求/响应载荷；管理 POST 仍使用权限与审计控制。Secret 保存 BCrypt 摘要，访问凭据查询使用摘要，框架持久状态使用 AES-GCM 加密。
 

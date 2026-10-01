@@ -7,10 +7,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.zhyd.oauth.model.AuthResponse;
-import me.zhyd.oauth.model.AuthUser;
-import me.zhyd.oauth.request.AuthRequest;
-import me.zhyd.oauth.utils.AuthStateUtils;
 import org.namewta.common.core.constant.SystemConstants;
 import org.namewta.common.core.domain.R;
 import org.namewta.common.core.domain.model.LoginBody;
@@ -19,9 +15,6 @@ import org.namewta.common.core.utils.StringUtils;
 import org.namewta.common.core.utils.ValidatorUtils;
 import org.namewta.common.json.utils.JsonUtils;
 import org.namewta.common.satoken.utils.LoginHelper;
-import org.namewta.common.social.config.properties.SocialLoginConfigProperties;
-import org.namewta.common.social.config.properties.SocialProperties;
-import org.namewta.common.social.utils.SocialUtils;
 import org.namewta.notify.api.NotificationApplicationService;
 import org.namewta.notify.api.NotificationChannel;
 import org.namewta.notify.api.NotificationCommand;
@@ -33,7 +26,6 @@ import org.namewta.system.domain.vo.SysClientVo;
 import org.namewta.system.password.PasswordPolicyService;
 import org.namewta.system.service.ISysClientService;
 import org.namewta.system.service.ISysSocialService;
-import org.namewta.sso.config.SsoProperties;
 import org.namewta.web.domain.vo.AuthClientContextVo;
 import org.namewta.web.domain.vo.LoginVo;
 import org.namewta.web.service.IAuthStrategy;
@@ -54,14 +46,14 @@ import java.util.List;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final SocialProperties socialProperties;
     private final SysLoginService loginService;
     private final SysRegisterService registerService;
     private final ISysSocialService socialUserService;
     private final ISysClientService clientService;
     private final NotificationApplicationService notificationService;
     private final PasswordPolicyService passwordPolicyService;
-    private final SsoProperties ssoProperties;
+    private final org.namewta.system.api.ExternalAuthConfigurationService externalConfigurations;
+    private final org.namewta.web.service.social.ExternalAuthService externalAuth;
 
 
     /**
@@ -80,7 +72,8 @@ public class AuthController {
         String grantType = loginBody.getGrantType();
         SysClientVo client = clientService.queryByClientId(clientId);
         // 查询不到 client 或 client 内不包含 grantType
-        if (ObjectUtil.isNull(client) || !StringUtils.contains(client.getGrantType(), grantType)) {
+        if (ObjectUtil.isNull(client) || client.getGrantType() == null
+            || java.util.Arrays.stream(client.getGrantType().split(",")).map(String::trim).noneMatch(grantType::equals)) {
             log.info("客户端id: {} 认证类型：{} 异常!.", clientId, grantType);
             return R.fail(MessageUtils.message("auth.grant.type.error"));
         } else if (!SystemConstants.NORMAL.equals(client.getStatus())) {
@@ -89,6 +82,7 @@ public class AuthController {
         // 登录
         LoginVo loginVo = IAuthStrategy.login(body, client, grantType);
 
+        if (loginVo.getAccessToken() == null) return R.ok(loginVo);
         Long userId = LoginHelper.getUserId();
         try {
             notificationService.submit(new NotificationCommand("admin-web", "auth-login", "LOGIN_SUCCESS",
@@ -111,15 +105,11 @@ public class AuthController {
      * @return 跳转地址
      */
     @GetMapping("/binding/{source}")
-    public R<String> authBinding(@PathVariable("source") String source) {
-        SocialLoginConfigProperties obj = socialProperties.getType().get(source);
-        if (ObjectUtil.isNull(obj)) {
-            return R.fail(source + "平台账号暂不支持");
-        }
-        AuthRequest authRequest = SocialUtils.getAuthRequest(source, socialProperties);
-        String authorizeUrl = authRequest.authorize(AuthStateUtils.createState());
-        return R.data(authorizeUrl);
+    public R<String> authBinding(@PathVariable("source") String source,
+        @RequestHeader(value = "clientid", required = false) String clientId) {
+        return R.ok(externalAuth.legacyAuthorize(source, clientId));
     }
+
 
     /**
      * 处理前端回调后的社交账号绑定。
@@ -129,19 +119,8 @@ public class AuthController {
      */
     @PostMapping("/social/callback")
     @Log(title = "社交账号绑定", businessType = BusinessType.GRANT, isSaveRequestData = false, isSaveResponseData = false)
-    public R<Void> socialCallback(@RequestBody SocialLoginBody loginBody) {
-        // 校验token
-        StpUtil.checkLogin();
-        // 获取第三方登录信息
-        AuthResponse<AuthUser> response = SocialUtils.loginAuth(
-            loginBody.getSource(), loginBody.getSocialCode(),
-            loginBody.getSocialState(), socialProperties);
-        AuthUser authUserData = response.getData();
-        // 判断授权响应是否成功
-        if (!response.ok()) {
-            return R.fail(response.getMsg());
-        }
-        loginService.socialRegister(authUserData);
+    public R<Void> socialCallback(@Validated @RequestBody SocialLoginBody loginBody) {
+        externalAuth.bind(loginBody);
         return R.ok();
     }
 
@@ -155,10 +134,9 @@ public class AuthController {
     @PostMapping("/unlock/{socialId}")
     @Log(title = "社交账号解绑", businessType = BusinessType.DELETE, isSaveRequestData = false, isSaveResponseData = false)
     public R<Void> unlockSocial(@PathVariable Long socialId) {
-        // 校验token
         StpUtil.checkLogin();
-        Boolean rows = socialUserService.deleteWithValidById(socialId);
-        return rows ? R.ok() : R.fail("取消授权失败");
+        externalAuth.unbind(socialId);
+        return R.ok();
     }
 
 
@@ -200,17 +178,11 @@ public class AuthController {
         boolean clientEnabled = SystemConstants.NORMAL.equals(client.getStatus());
         vo.setClientEnabled(clientEnabled);
         vo.setRegisterEnabled(clientEnabled && Boolean.TRUE.equals(client.getRegisterEnabled()));
-        String authMode = StringUtils.blankToDefault(client.getSsoAuthMode(), "both");
-        vo.setAuthMode(authMode);
-        boolean ssoEnabled = clientEnabled && ssoProperties.isEnabled() && Boolean.TRUE.equals(client.getSsoEnabled());
-        vo.setSsoEnabled(ssoEnabled);
-        if (ssoEnabled && StringUtils.isNotBlank(ssoProperties.getWebOrigin())) {
-            String origin = StringUtils.trim(ssoProperties.getWebOrigin());
-            if (origin.endsWith("/")) {
-                origin = origin.substring(0, origin.length() - 1);
-            }
-            vo.setSsoAuthorizeUrl(origin + ssoProperties.getWebBasePath() + "authorize");
+        if (clientEnabled && client.getGrantType() != null
+            && java.util.Arrays.stream(client.getGrantType().split(",")).map(String::strip).anyMatch("social"::equals)) {
+            vo.setProviders(externalConfigurations.listEnabled(resolvedClientId));
         }
+        vo.setAuthMode(vo.getProviders().isEmpty() ? "local" : "both");
         if (clientEnabled) {
             vo.setPasswordPolicy(passwordPolicyService.publicProjection());
         }

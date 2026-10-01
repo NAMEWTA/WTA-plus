@@ -1928,3 +1928,69 @@ insert ignore into sys_role_menu (role_id,menu_id) values
     (1761300000000000001,2100900000000000203),
     (1761300000000000001,2100900000000000204),
     (1761300000000000001,2100900000000000205);
+
+-- NAMEWTA-EXTERNAL-AUTH-DML-001：管理端外部身份源与接入配置。
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000100,1762000000000000001,'外部身份源',1761400000000000001,15,'externalAuthProvider','system/auth/provider','','N','N',
+    'C','0','0','system:authProvider:list','tabler:cloud-lock','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000100);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000101,1762000000000000001,'外部身份源新增',2100910000000000100,1,'','','','N','N',
+    'F','0','0','system:authProvider:add','#','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000101);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000102,1762000000000000001,'外部身份源编辑与刷新',2100910000000000100,2,'','','','N','N',
+    'F','0','0','system:authProvider:edit','#','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000102);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000103,1762000000000000001,'外部身份源删除',2100910000000000100,3,'','','','N','N',
+    'F','0','0','system:authProvider:remove','#','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000103);
+insert ignore into sys_role_menu (role_id,menu_id) values
+    (1761300000000000001,2100910000000000100),
+    (1761300000000000001,2100910000000000101),
+    (1761300000000000001,2100910000000000102),
+    (1761300000000000001,2100910000000000103);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000200,1762000000000000001,'身份接入配置',1761400000000000001,16,'externalAuthRegistration','system/auth/registration','','N','N',
+    'C','0','0','system:authRegistration:list','tabler:plug-connected','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000200);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000201,1762000000000000001,'身份接入配置新增',2100910000000000200,1,'','','','N','N',
+    'F','0','0','system:authRegistration:add','#','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000201);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000202,1762000000000000001,'身份接入配置编辑与刷新',2100910000000000200,2,'','','','N','N',
+    'F','0','0','system:authRegistration:edit','#','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000202);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,
+    menu_type,visible,status,perms,icon,active_menu,ext,create_dept,create_by,create_time,remark)
+select 2100910000000000203,1762000000000000001,'身份接入配置删除',2100910000000000200,3,'','','','N','N',
+    'F','0','0','system:authRegistration:remove','#','','',1761000000000000103,1761100000000000001,sysdate(),'外部身份源与按业务客户端接入管理'
+from dual where not exists (select 1 from sys_menu where menu_id=2100910000000000203);
+insert ignore into sys_role_menu (role_id,menu_id) values
+    (1761300000000000001,2100910000000000200),
+    (1761300000000000001,2100910000000000201),
+    (1761300000000000001,2100910000000000202),
+    (1761300000000000001,2100910000000000203);
+
+-- NAMEWTA-AUTH-RUNTIME-DML-001：首次安装不携带Issuer或任何默认私钥。
+insert into sso_service_config (service_config_id,settings_json,version,del_flag,create_time) select 1,'{"enabled":false,"webOrigin":"","webBasePath":"/","cookieName":"Sso-Token","cookieSecure":true,"codeTtlSeconds":300,"sessionTtlSeconds":28800}',0,'0',sysdate() from dual where not exists (select 1 from sso_service_config where service_config_id=1);
+insert into oidc_service_config (service_config_id,settings_json,version,del_flag,create_time) select 1,'{"enabled":false,"issuer":"","ssoWebUrl":"","allowHttp":false,"codeTtlSeconds":300,"accessTtlSeconds":600,"interactionTtlSeconds":300,"sso":{"enabled":false,"webOrigin":"","webBasePath":"/","cookieName":"Sso-Token","cookieSecure":true,"codeTtlSeconds":300,"sessionTtlSeconds":28800}}',0,'0',sysdate() from dual where not exists (select 1 from oidc_service_config where service_config_id=1);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000100,1762000000000000001,'认证服务配置',1761400000000000001,17,'oidcService','oidc/service','','N','N','C','0','0','oidc:service:query','tabler:settings','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000100);
+insert ignore into sys_role_menu(role_id,menu_id) values(1761300000000000001,2100920000000000100);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000101,1762000000000000001,'认证服务修改',2100920000000000100,1,'','','','N','N','F','0','0','oidc:service:edit','#','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000101);
+insert ignore into sys_role_menu(role_id,menu_id) values(1761300000000000001,2100920000000000101);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000102,1762000000000000001,'认证密钥管理',2100920000000000100,2,'','','','N','N','F','0','0','oidc:key:manage','#','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000102);
+insert ignore into sys_role_menu(role_id,menu_id) values(1761300000000000001,2100920000000000102);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000103,1762000000000000001,'退出投递查询',2100920000000000100,3,'','','','N','N','F','0','0','oidc:logout:query','#','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000103);
+insert ignore into sys_role_menu(role_id,menu_id) values(1761300000000000001,2100920000000000103);
+insert into sys_menu (menu_id,client_id,menu_name,parent_id,order_num,path,component,query_param,is_frame,is_cache,menu_type,visible,status,perms,icon,remark,create_dept,create_by,create_time) select 2100920000000000104,1762000000000000001,'退出投递重试',2100920000000000100,4,'','','','N','N','F','0','0','oidc:logout:retry','#','认证配置由MySQL管理，结构变更维护重启',1761000000000000103,1761100000000000001,sysdate() from dual where not exists (select 1 from sys_menu where menu_id=2100920000000000104);
+insert ignore into sys_role_menu(role_id,menu_id) values(1761300000000000001,2100920000000000104);

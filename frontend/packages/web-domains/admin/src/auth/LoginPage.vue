@@ -11,29 +11,25 @@
         :aria-busy="preparing || submitting"
         @submit.prevent="submit"
       >
-        <div class="identity-login__sso">
+        <div v-if="providers.length" class="identity-login__sso">
           <p class="identity-login__social-label">第三方登录</p>
           <div class="identity-login__social-row">
             <el-button
-              v-if="ssoEnabled"
-              circle
-              data-testid="sso-first-provider"
+              v-for="provider in providers"
+              :key="provider.providerKey"
               native-type="button"
-              :disabled="!ready"
-              title="WTA SSO"
-              aria-label="WTA SSO"
-              @click="startSso"
+              :disabled="!ready || submitting"
+              @click="startSocial(provider.providerKey)"
             >
-              <svg class="identity-login__sso-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M1.5 4h4.2l3.5 12.2L12 8.6l2.8 7.6L18.3 4H22.5L16.8 21h-4.1L12 14.7 11.3 21H7.2L1.5 4z" />
-              </svg>
+              <SvgIcon :icon-class="provider.icon || 'tabler:key'" />
+              {{ provider.name }}
             </el-button>
           </div>
         </div>
-        <el-form-item v-if="authMode !== 'sso'" label="用户名">
+        <el-form-item label="用户名">
           <el-input v-model="form.username" name="username" autocomplete="username" :disabled="!ready || submitting" />
         </el-form-item>
-        <el-form-item v-if="authMode !== 'sso'" label="密码">
+        <el-form-item label="密码">
           <el-input
             v-model="form.password"
             name="password"
@@ -43,7 +39,7 @@
             :disabled="!ready || submitting"
           />
         </el-form-item>
-        <el-form-item v-if="authMode !== 'sso' && verification?.captchaEnabled" label="验证码">
+        <el-form-item v-if="verification?.captchaEnabled" label="验证码">
           <div class="identity-login__captcha">
             <el-input v-model="form.code" name="code" :disabled="!ready || submitting" />
             <img :src="captchaImage" alt="验证码图片" />
@@ -61,7 +57,6 @@
         <p v-if="errorMessage" class="identity-login__error" role="alert">{{ errorMessage }}</p>
         <el-button v-if="!ready && !preparing" native-type="button" @click="prepare">重新检查登录入口</el-button>
         <el-button
-          v-if="authMode !== 'sso'"
           class="identity-login__submit"
           type="primary"
           native-type="submit"
@@ -80,6 +75,7 @@
 
 <script setup lang="ts">
 import AuthPanel from '@namewta/web-kit-ui-element/auth-panel';
+import SvgIcon from '@namewta/web-kit-ui-element/icon';
 import { onMounted, onUnmounted } from 'vue';
 import type { IdentityAccessWebRuntime } from '../runtime';
 import { createIdentityLoginState } from '../loginState';
@@ -88,24 +84,19 @@ import { requireIdentityAccessWebRuntime } from '../runtime';
 const props = defineProps<{ runtime: IdentityAccessWebRuntime }>();
 const runtime = requireIdentityAccessWebRuntime(props.runtime);
 const state = createIdentityLoginState(runtime);
-const {
-  authMode,
-  captchaImage,
-  errorMessage,
-  form,
-  prepare,
-  preparing,
-  ready,
-  ssoAuthorizeUrl,
-  ssoEnabled,
-  submit,
-  submitting,
-  verification
-} = state;
+const { providers, captchaImage, errorMessage, form, prepare, preparing, ready, submit, submitting, verification } =
+  state;
 
-const startSso = async () => {
-  if (!ssoAuthorizeUrl.value) return;
-  await runtime.startSsoLogin?.({ authorizeUrl: ssoAuthorizeUrl.value });
+const startSocial = async (providerKey: string) => {
+  if (submitting.value) return;
+  submitting.value = true;
+  try {
+    await runtime.startSocialLogin?.(providerKey);
+  } catch {
+    errorMessage.value = '第三方登录入口暂不可用，请重试';
+  } finally {
+    submitting.value = false;
+  }
 };
 
 onMounted(prepare);

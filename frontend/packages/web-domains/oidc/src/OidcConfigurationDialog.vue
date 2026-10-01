@@ -74,7 +74,8 @@ const configuration = computed(() => {
     { label: 'Issuer', value: props.provider?.issuer ?? '', secret: false },
     { label: 'Client ID', value: app.clientId, secret: false },
     { label: 'Scopes', value: applicationScopes(app, props.fields).join(' '), secret: false },
-    { label: '客户端认证方式', value: app.clientAuthenticationMethod, secret: false }
+    { label: '客户端认证方式', value: app.clientAuthenticationMethod, secret: false },
+    { label: '后端退出通知地址', value: app.backchannelLogoutUri || '未配置', secret: false }
   ];
   if (props.secret) values.splice(3, 0, { label: 'Client Secret（仅本次显示）', value: props.secret, secret: true });
   return values;

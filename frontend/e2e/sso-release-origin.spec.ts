@@ -1,16 +1,36 @@
-import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { startFirstPartyAuthorization } from './first-party-sso-fixture.mjs';
 
-interface AppFixture { kind: 'admin' | 'home'; clientId: string; env: string; tokenKey: string; target: string }
+interface AppFixture {
+  kind: 'admin' | 'home';
+  clientId: string;
+  env: string;
+  tokenKey: string;
+  target: string;
+}
 
 const apps: AppFixture[] = [
-  { kind: 'admin', clientId: 'e5cd7e4891bf95d1d19206ce24a7b32e', env: 'SSO_TEST_ADMIN_ORIGIN', tokenKey: 'Admin-Token', target: '/index?source=release#restored' },
-  { kind: 'home', clientId: '428a8310cd442757ae699df5d894f051', env: 'SSO_TEST_HOME_ORIGIN', tokenKey: 'Home-Token', target: '/profile?source=release#restored' }
+  {
+    kind: 'admin',
+    clientId: 'e5cd7e4891bf95d1d19206ce24a7b32e',
+    env: 'SSO_TEST_ADMIN_ORIGIN',
+    tokenKey: 'Admin-Token',
+    target: '/index?source=release#restored'
+  },
+  {
+    kind: 'home',
+    clientId: '428a8310cd442757ae699df5d894f051',
+    env: 'SSO_TEST_HOME_ORIGIN',
+    tokenKey: 'Home-Token',
+    target: '/profile?source=release#restored'
+  }
 ];
 
 function ownedUrl(name: string): string {
   const value = process.env[name];
-  if (!value || !['localhost', '127.0.0.1'].includes(new URL(value).hostname)) throw new Error(`Owned fixture required: ${name}`);
+  if (!value || !['localhost', '127.0.0.1'].includes(new URL(value).hostname))
+    throw new Error(`Owned fixture required: ${name}`);
   return value;
 }
 
@@ -21,30 +41,57 @@ async function systemFixtures(page: Page, app: AppFixture) {
     if (path.startsWith('/sso/') || path === '/auth/client/context') return route.continue();
     let data: unknown = [];
     if (path === '/auth/code') data = { captchaEnabled: false };
-    if (path === '/system/user/getInfo') data = { user: { userId: '7', userName: 'sso-test-user', nickName: 'Owned SSO user', avatarUrl: '' }, roles: ['owned-role'], permissions: [] };
-    if (path === '/system/menu/getRouters') data = app.kind === 'home'
-      ? [{ path: '/profile', name: 'ProfileCenter', component: 'profile/center/index', meta: { title: '档案中心' } }]
-      : [];
+    if (path === '/system/user/getInfo')
+      data = {
+        user: { userId: '7', userName: 'sso-test-user', nickName: 'Owned SSO user', avatarUrl: '' },
+        roles: ['owned-role'],
+        permissions: []
+      };
+    if (path === '/system/menu/getRouters')
+      data =
+        app.kind === 'home'
+          ? [
+              {
+                path: '/profile',
+                name: 'ProfileCenter',
+                component: 'profile/center/index',
+                meta: { title: '档案中心' }
+              }
+            ]
+          : [];
     await route.fulfill({ json: { code: 200, data } });
   });
 }
 
 async function login(page: Page, app: AppFixture) {
   const response = await page.request.get(ownedUrl(app.env) + '/prod-api/auth/client/context', {
-    headers: { clientid: app.clientId }, timeout: 5000
+    headers: { clientid: app.clientId },
+    timeout: 5000
   });
   expect(response.status()).toBe(200);
-  expect(await response.json()).toMatchObject({ code: 200, data: {
-    clientEnabled: true, ssoEnabled: true, ssoAuthorizeUrl: ownedUrl('SSO_TEST_AUTHORIZE_URL'),
-    passwordPolicy: { minimumLength: 8, maximumLength: 30 }
-  } });
-  await page.goto(`${ownedUrl(app.env)}/login?${new URLSearchParams({ redirect: app.target })}`);
-  await page.getByTestId('sso-first-provider').click();
+  expect(await response.json()).toMatchObject({
+    code: 200,
+    data: {
+      clientEnabled: true,
+      ssoEnabled: false,
+      ssoAuthorizeUrl: null,
+      passwordPolicy: { minimumLength: 8, maximumLength: 30 }
+    }
+  });
+  await startFirstPartyAuthorization(page, {
+    app: app.kind,
+    appOrigin: ownedUrl(app.env),
+    clientId: app.clientId,
+    authorizeUrl: ownedUrl('SSO_TEST_AUTHORIZE_URL'),
+    returnTo: app.target
+  });
   const authorize = new URL(ownedUrl('SSO_TEST_AUTHORIZE_URL'));
-  await expect.poll(() => {
-    const current = new URL(page.url());
-    return current.origin === authorize.origin && current.pathname === authorize.pathname;
-  }).toBe(true);
+  await expect
+    .poll(() => {
+      const current = new URL(page.url());
+      return current.origin === authorize.origin && current.pathname === authorize.pathname;
+    })
+    .toBe(true);
   await page.reload();
   await page.getByLabel('用户名').fill('sso-test-user');
   await page.getByLabel('密码').fill('owned-sso-test-only');
@@ -62,7 +109,9 @@ async function success(page: Page, app: AppFixture) {
 
 for (const app of apps) {
   test.describe(`T-08 ${app.kind} through release Nginx`, () => {
-    test.beforeEach(async ({ page }) => { await systemFixtures(page, app); });
+    test.beforeEach(async ({ page }) => {
+      await systemFixtures(page, app);
+    });
 
     test('HTTPS login, callback and page refresh preserve the App session', async ({ page }) => {
       await login(page, app);
@@ -93,21 +142,26 @@ test('T-08 three HTTPS health routes and host-only SSO cookie boundaries', async
     expect(await response.text()).toBe('ok\n');
   }
   const loginResponse = await page.request.post(sso + '/sso/login', {
-    headers: { Origin: sso }, data: { username: 'sso-test-user', password: 'owned-sso-test-only' }
+    headers: { Origin: sso },
+    data: { username: 'sso-test-user', password: 'owned-sso-test-only' }
   });
   expect(loginResponse.status()).toBe(200);
   expect((await loginResponse.json()).code).toBe(200);
   const cookie = (await context.cookies(sso)).find(row => row.name === 'Sso-Token');
-  expect(Boolean(cookie?.secure && cookie.httpOnly && cookie.path === '/' && !cookie.domain.startsWith('.'))).toBe(true);
+  expect(Boolean(cookie?.secure && cookie.httpOnly && cookie.path === '/' && !cookie.domain.startsWith('.'))).toBe(
+    true
+  );
   for (const app of apps) {
     expect((await context.cookies(ownedUrl(app.env))).some(row => row.name === 'Sso-Token')).toBe(false);
-    const forbidden = await page.request.get(sso + '/sso/session', { headers: { Origin: new URL(ownedUrl(app.env)).origin } });
+    const forbidden = await page.request.get(sso + '/sso/session', {
+      headers: { Origin: new URL(ownedUrl(app.env)).origin }
+    });
     expect(forbidden.status()).toBe(403);
     const hiddenControl = await page.request.post(ownedUrl(app.env) + '/prod-api/__test/expire-session');
     expect(hiddenControl.status()).toBe(404);
   }
   await page.goto(ownedUrl('SSO_TEST_AUTHORIZE_URL'));
-  await expect(page.getByRole('heading', { name: 'WTA SSO', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '统一登录', exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.cookie.includes('Sso-Token'))).toBe(false);
   expect(await page.evaluate(() => Object.keys(localStorage).some(key => /token/i.test(key)))).toBe(false);
   const session = await page.request.get(sso + '/sso/session', { headers: { Origin: sso } });

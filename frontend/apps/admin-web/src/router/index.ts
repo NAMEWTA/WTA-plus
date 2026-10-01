@@ -40,8 +40,9 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/social-callback',
     hidden: true,
-    component: () => import('@/layout/components/SocialCallback/index.vue')
+    component: () => import('@/views/SocialCallbackPage.vue')
   },
+  { path: '/logout/callback', component: () => import('@/views/LogoutCallbackPage.vue'), hidden: true },
   {
     path: '/login',
     component: () => import('@/views/login.vue'),

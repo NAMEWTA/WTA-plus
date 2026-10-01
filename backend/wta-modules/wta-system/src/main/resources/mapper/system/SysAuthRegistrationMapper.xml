@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namewta.system.mapper.SysAuthRegistrationMapper">
+    <resultMap id="registration" type="org.namewta.system.domain.SysAuthRegistration" autoMapping="true">
+        <id property="id" column="auth_registration_id"/>
+        <result property="optionsJson" column="options"/>
+        <result property="scopesJson" column="scopes"/>
+    </resultMap>
+    <select id="countAllForProvider" resultType="long">
+        SELECT COUNT(*) FROM sys_auth_registration WHERE provider_id = #{providerId}
+    </select>
+    <select id="selectForLogout" resultMap="registration">
+        SELECT * FROM sys_auth_registration WHERE auth_registration_id = #{id}
+    </select>
+    <!-- SQL 中直接复核三方状态，避免已停用配置被共享缓存重新激活。 -->
+    <sql id="enabledJoin">
+        FROM sys_auth_registration r
+        JOIN sys_auth_provider p ON p.auth_provider_id = r.provider_id AND p.del_flag = '0' AND p.enabled = 1
+        JOIN sys_client c ON c.client_id = r.business_client_id AND c.del_flag = '0' AND c.status = '0'
+        WHERE r.del_flag = '0' AND r.enabled = 1 AND FIND_IN_SET('social', REPLACE(c.grant_type, ' ', '')) &gt; 0
+    </sql>
+    <sql id="stampColumns">
+        r.auth_registration_id AS id, r.version, r.provider_id AS providerId, p.version AS providerVersion
+    </sql>
+    <select id="selectEnabledStamp" resultType="org.namewta.system.domain.read.ExternalAuthRuntimeStamp">
+        SELECT <include refid="stampColumns"/> <include refid="enabledJoin"/>
+        AND p.provider_key = #{providerKey} AND r.business_client_id = #{businessClientId}
+    </select>
+    <select id="selectCurrentStamp" resultType="org.namewta.system.domain.read.ExternalAuthRuntimeStamp">
+        SELECT <include refid="stampColumns"/> <include refid="enabledJoin"/>
+        AND r.auth_registration_id = #{id}
+    </select>
+    <select id="selectEnabledEntries" resultType="org.namewta.system.api.model.ExternalAuthEntry">
+        SELECT p.provider_key AS providerKey, p.name, p.icon, p.protocol <include refid="enabledJoin"/>
+        AND r.business_client_id = #{businessClientId}
+        ORDER BY p.name, p.provider_key
+    </select>
+</mapper>

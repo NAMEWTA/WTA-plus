@@ -1,6 +1,9 @@
 package org.namewta.oidc.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +26,7 @@ public class OidcAuthorization extends BaseEntity {
     private String allowedFieldsJson;
     private String authorizedScopes;
     private String status;
+    private Boolean sessionClosed;
     private String codeHash;
     private LocalDateTime codeExpiresAt;
     private Boolean codeConsumed;
