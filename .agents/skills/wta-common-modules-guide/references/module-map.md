@@ -128,10 +128,11 @@
 
 ### 13. wta-common-satoken
 
-- POM：`wta-common/wta-common-satoken/pom.xml`，description「wta-common-satoken 权限认证」。显式 common：`wta-common-core`、`wta-common-redis`。
+- POM：`wta-common/wta-common-satoken/pom.xml`，description「wta-common-satoken 权限认证」。显式 common：`wta-common-core`、`wta-common-redis`；公开业务合同来自已有 `wta-api` 依赖，不依赖业务实现模块。
 - 源码根：`wta-common/wta-common-satoken/src/main/java/org/namewta/common/satoken/`
-- AutoConfiguration.imports：`config/SaTokenConfig.java`
+- AutoConfiguration.imports：`config/SaTokenConfig.java`、`config/ProfileQueryAutoConfiguration.java`、`config/ProfileAccessAutoConfiguration.java`
 - 入口：`utils/LoginHelper.java`（「登录鉴权助手」；`user_type` × `device` 多用户体系）；`config/SaTokenConfig.java`；`core/service/SaPermissionImpl.java`；`core/dao/PlusSaTokenDao.java`
+- 当前账户档案：`profile/ProfileAccess.java`、薄静态入口 `profile/ProfileHelper.java`；`profile/annotation/RequirePersonVerified.java` 与 `RequireEnterpriseVerified.java` 经一个延迟解析访问组件的 Advisor 检查，复用现有 Profile 公共 API。
 
 ### 14. wta-common-security
 

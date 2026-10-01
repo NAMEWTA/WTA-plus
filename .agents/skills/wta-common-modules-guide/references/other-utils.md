@@ -95,6 +95,10 @@ FQN：`org.namewta.common.satoken.utils.LoginHelper`。JavaDoc「登录鉴权助
 
 配套：`config/SaTokenConfig.java`、`core/service/SaPermissionImpl.java`、`core/dao/PlusSaTokenDao.java`（同模块 `src/main/java/org/namewta/common/satoken/`）。
 
+当前账户档案入口位于同模块 `profile/ProfileAccess.java` 和 `profile/ProfileHelper.java`：`currentSummary`、两种 `is*Verified`、`requireVerified(ProfileType...)`、`currentDisclosure(核准字段集合)`。前者可注入，后者只委派且不缓存 Bean/身份。未登录或缺少可信普通用户/Client 上下文拒绝；查询异常不会被转换成 false。后台与异步调用显式账户参数的既有 `ProfileService`/`ProfileDisclosureService`。
+
+`profile/annotation/RequirePersonVerified` 和 `RequireEnterpriseVerified` 适用于 Spring 代理的公开实例方法及类，要求累加 AND、超管不豁免。自调用、非代理对象及 CGLIB final 方法不能依赖注解。详情与装配兼容见仓根 `docs/profile-access/README.md`。
+
 ## push
 
 | FQN | 职责 | 路径 |

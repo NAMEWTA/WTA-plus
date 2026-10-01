@@ -9,6 +9,7 @@
 | MyBatis-Plus / SQL | `BaseMapperPlus`、`QueryBuilder`、MPJ、Mapper XML | layered: DAO/Mapper；classic: ServiceImpl/Mapper | layered 的 Wrapper、分页、条件更新和行锁只在 DAO；Mapper 只声明 SQL；复杂查询进入 XML |
 | JSON | `org.namewta.common.json.utils.JsonUtils` | Service、纯 Codec、必要时 Controller transport 适配 | UseCase 只编排 Service，不直接处理序列化；不直接新建 Jackson/ObjectMapper；专用 Codec 才可封装序列化细节 |
 | 登录态 / Sa-Token | `org.namewta.common.satoken.utils.LoginHelper`、现有 `@SaCheckPermission`/`@SaIgnore` | Controller 和安全适配器 | 当前用户、userType、client 信息在入口解析后作为明确参数传入 UseCase；不要在 DAO 读取会话 |
+| 当前账户档案 / 认证门禁 | `org.namewta.common.satoken.profile.ProfileAccess`、薄静态 `ProfileHelper`、`@RequirePersonVerified` / `@RequireEnterpriseVerified` | 当前账户读取在 Controller/安全适配器；注解可置于经过 Spring 代理的公开业务入口 | 只消费现有 Profile API，类/方法要求累加；后台显式传 actor/userId，经公开 API 或外部 Port 查询。Service 方法体不隐式读取登录态，关键写入仍事务内复核归属 |
 | Redis / 锁 / 限流 | `org.namewta.common.redis.utils.RedisUtils`、`CacheUtils`、`@RepeatSubmit`、`@RateLimiter` | Service 的外部 Store/Port、Controller 注解 | 普通缓存不直接持有 `RedissonClient`；复杂原子操作才在有 owner 的 Store adapter 中使用 Redisson；锁查询必须经 Service 在 UseCase 事务内调用 |
 | OSS | `wta-api` 的 `OssService`；基础设施实现使用 `OssFactory`/`OssClient` | Service 的外部 Gateway/Port；system 基础设施 | 业务模块不得直接依赖 OSS 客户端实现；文件引用、删除和 URL 生成必须保留当前 API 合同 |
 | 通知 | `org.namewta.common.notify.core.NotifyClient`/`NotifyDispatcher`、`NotifyChannelAdapter` | Service 的外部 Port 或提交后事件适配器 | 说明提交时机、幂等键、失败补偿和敏感字段脱敏；不要自行直连邮件、短信渠道 |

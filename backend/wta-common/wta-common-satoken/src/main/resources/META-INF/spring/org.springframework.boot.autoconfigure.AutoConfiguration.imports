@@ -1,1 +1,3 @@
 org.namewta.common.satoken.config.SaTokenConfig
+org.namewta.common.satoken.config.ProfileQueryAutoConfiguration
+org.namewta.common.satoken.config.ProfileAccessAutoConfiguration

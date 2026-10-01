@@ -17,6 +17,10 @@
 
 重构只能替换实现内部结构；方法、返回字段、批量语义、锁内复核和敏感字段最小化保持不变。
 
+当前登录账户的便捷入口由 `wta-common-satoken` 的 `ProfileAccess`/`ProfileHelper` 提供，认证注解为 `RequirePersonVerified`、`RequireEnterpriseVerified`。它们仅适配登录上下文和调用公开 API，不查询 Profile 的 Mapper。组合器由 common-satoken 中立自动配置装配，person 的 `ProfileApiConfiguration` 保留兼容入口；旧 API/DTO、无贡献者和自定义 Bean 覆盖语义保持不变。
+
+认证依据是绑定 ACTIVE、档案 ACTIVE、当前版本 CURRENT 且未删除，不能用自助页优先显示的申请状态判断。企业认证指当前负责人绑定，现模型每账号最多一个有效企业，不隐含个人实名或法人身份。查询未增加证件/营业期限的自动过期规则；注解不替代事务内锁与版本复核。
+
 ## External contracts
 
 - system：`org.namewta.system.api.UserService`、`ConfigService`、`OssService` 及 common SPI；通知统一依赖 `org.namewta.notify.api.NotificationApplicationService`。

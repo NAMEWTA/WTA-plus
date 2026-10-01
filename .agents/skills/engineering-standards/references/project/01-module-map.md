@@ -39,7 +39,7 @@
 | `wta-common/wta-common-push` | Spring 推送/WebSocket/SSE 基础 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-common/wta-common-redis` | Spring/Redis 缓存、锁与限流 | package surface | `src/test/java`; 实际模块测试 |
 | `wta-common/wta-common-richtext` | 富文本清洗、规范化与 OSS 资源引用桥 | package surface | `src/test/java` |
-| `wta-common/wta-common-satoken` | Spring/Sa-Token 认证基础 | package surface | none |
+| `wta-common/wta-common-satoken` | Spring/Sa-Token 认证基础、当前账户档案访问与认证注解 | LoginHelper、ProfileAccess/ProfileHelper、认证注解与中立查询装配 | `src/test/java` |
 | `wta-common/wta-common-security` | 安全注解/权限合同 | package surface | none |
 | `wta-common/wta-common-sensitive` | 敏感数据处理 | package surface | none |
 | `wta-common/wta-common-sms` | Spring SMS 集成 | package surface | `src/test/java`; `SmsDeliveryQueryClientTest` |

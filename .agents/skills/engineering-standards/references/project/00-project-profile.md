@@ -70,6 +70,8 @@ rg --files backend -g '**/src/test/java/**/*.java' -g '!**/target/**'
 
 `release-manage.sh` 通过 `release-state.mjs` 从同一干净 Git 归档完成全量构建，生成 `builds/versions/<ID>` 不可变目录及逐文件来源/摘要 manifest。局部构建仅写 development；显式 stage 校验后一次替换 current 符号链接。docker-manage 每次命令固定版本路径，显式重建容器；数据、日志、证书留在独立运行目录。运行时多容器切换不承诺原子性，源 SQL 仍只有六份基座。三端 Origin、callback/authorize 矩阵和独立 CORS 选择进入 manifest，消费时拒绝运行参数漂移；CORS 支持精确 HTTP(S) Origin、主机/IP/端口通配及 `*` 混写，未配置则采用三端 Origin。生产使用 HTTPS；SSO 可独立域名部署或共享域名使用独立静态前缀，根 /sso、/oidc 与 Discovery 经 SSO 入口代理。各 App 可配置独立后端上游。真实 AuthController 的 clientContext 仅返回当前业务 Client 的数据库身份源入口。
 
+Profile 当前账户访问与认证注解由 `wta-common-satoken` 的 `ProfileAccess`、`ProfileHelper` 和 `RequirePersonVerified/RequireEnterpriseVerified` 提供，复用 `wta-api` 的摘要/字段发布合同。公共组合器由中立自动配置装配，个人模块保留兼容配置入口。认证按有效绑定实时查询，注解不代替 Client/RBAC 或事务内归属复核；使用说明见 `docs/profile-access/README.md`。
+
 ## 未知与冲突
 
 - `pending-decision`: GitHub Actions 工作流尚未通过提交后的远程运行验证，也尚未确认分支保护 required checks；在此之前不得报告为已强制的远程合并门禁。
